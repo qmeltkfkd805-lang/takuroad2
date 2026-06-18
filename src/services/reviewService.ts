@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
 import { Review, ReviewFormData } from '@/types/review'
 
-// DB 응답 → UI Review 타입으로 변환
 function toReview(raw: any): Review {
   return {
     id:         raw.id,
@@ -24,7 +23,6 @@ function toReview(raw: any): Review {
   }
 }
 
-// 샵 리뷰 목록
 export async function getReviews(shopId: string): Promise<Review[]> {
   const supabase = createClient()
 
@@ -45,7 +43,6 @@ export async function getReviews(shopId: string): Promise<Review[]> {
   return (data ?? []).map(toReview)
 }
 
-// 리뷰 작성
 export async function createReview(
   shopId: string,
   userId: string,
@@ -74,7 +71,6 @@ export async function createReview(
   return toReview(data)
 }
 
-// 리뷰 수정
 export async function updateReview(
   id: string,
   userId: string,
@@ -88,12 +84,52 @@ export async function updateReview(
     .eq('user_id', userId)
 }
 
-// 리뷰 soft delete
 export async function deleteReview(id: string, userId: string): Promise<void> {
   const supabase = createClient()
-  await supabase
+  const { error } = await supabase
     .from('reviews')
-    .update({ is_deleted: true } as never)
+    .update({ is_deleted: true } as any)
     .eq('id', id)
     .eq('user_id', userId)
+
+  if (error) console.error('deleteReview error:', JSON.stringify(error))
+}
+
+export async function uploadReviewImages(
+  reviewId: string,
+  files: File[]
+): Promise<string[]> {
+  const supabase = createClient()
+  const urls: string[] = []
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i]
+    const ext = file.name.split('.').pop()
+    const path = `${reviewId}/${i}.${ext}`
+
+    const { error } = await supabase.storage
+      .from('review-images')
+      .upload(path, file, { upsert: true })
+
+    if (!error) {
+      const { data } = supabase.storage
+        .from('review-images')
+        .getPublicUrl(path)
+      urls.push(data.publicUrl)
+    }
+  }
+
+  if (urls.length > 0) {
+    await supabase
+      .from('review_images')
+      .insert(
+        urls.map((url, i) => ({
+          review_id: reviewId,
+          image_url: url,
+          sort_order: i,
+        })) as any
+      )
+  }
+
+  return urls
 }

@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { getReviews, createReview, deleteReview } from '@/services/reviewService'
+import { getReviews, createReview, deleteReview, uploadReviewImages } from '@/services/reviewService'
 import { Review } from '@/types/review'
 import Link from 'next/link'
 import { ROUTES } from '@/lib/constants/routes'
@@ -20,7 +20,10 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
   const [showForm, setShowForm] = useState(false)
   const [stars, setStars] = useState(5)
   const [content, setContent] = useState('')
+  const [images, setImages] = useState<File[]>([])
+  const [previews, setPreviews] = useState<string[]>([])
   const [submitting, setSubmitting] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     getReviews(shopId).then(data => {
@@ -29,6 +32,22 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
     })
   }, [shopId])
 
+  function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? [])
+    if (files.length === 0) return
+    const newImages = [...images, ...files].slice(0, 5)
+    setImages(newImages)
+    const newPreviews = newImages.map(f => URL.createObjectURL(f))
+    setPreviews(newPreviews)
+  }
+
+  function removeImage(idx: number) {
+    const newImages = images.filter((_, i) => i !== idx)
+    const newPreviews = previews.filter((_, i) => i !== idx)
+    setImages(newImages)
+    setPreviews(newPreviews)
+  }
+
   async function handleSubmit() {
     if (!user || !profile) return
     if (!content.trim()) return
@@ -36,9 +55,17 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
     setSubmitting(true)
     const newReview = await createReview(shopId, user.id, { stars, content, images: [] })
     if (newReview) {
-      setReviews(prev => [newReview, ...prev])
+      if (images.length > 0) {
+        await uploadReviewImages(newReview.id, images)
+        const updated = await getReviews(shopId)
+        setReviews(updated)
+      } else {
+        setReviews(prev => [newReview, ...prev])
+      }
       setContent('')
       setStars(5)
+      setImages([])
+      setPreviews([])
       setShowForm(false)
     }
     setSubmitting(false)
@@ -121,7 +148,54 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
             }}
           />
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
+          {/* 이미지 미리보기 */}
+          {previews.length > 0 && (
+            <div style={{ display: 'flex', gap: '8px', marginTop: '10px', flexWrap: 'wrap' }}>
+              {previews.map((url, i) => (
+                <div key={i} style={{ position: 'relative' }}>
+                  <img
+                    src={url}
+                    alt=""
+                    style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px' }}
+                  />
+                  <button
+                    onClick={() => removeImage(i)}
+                    style={{
+                      position: 'absolute', top: '-6px', right: '-6px',
+                      width: '20px', height: '20px', borderRadius: '50%',
+                      background: 'var(--red)', color: '#fff',
+                      border: 'none', cursor: 'pointer', fontSize: '11px',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}
+                  >✕</button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* 하단 버튼 */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={images.length >= 5}
+              style={{
+                padding: '8px 12px', borderRadius: '8px',
+                border: '1.5px solid var(--border)',
+                background: 'var(--surface)', color: 'var(--muted)',
+                fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
+              }}
+            >
+              📷 사진 {images.length > 0 ? `${images.length}/5` : '추가'}
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageSelect}
+              style={{ display: 'none' }}
+            />
+
             <button
               onClick={handleSubmit}
               disabled={submitting || !content.trim()}
@@ -164,25 +238,28 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
   )
 }
 
-// 리뷰 아이템
 function ReviewItem({ review, currentUserId, onDelete }: {
   review: Review
   currentUserId: string | null
   onDelete: (id: string) => void
 }) {
   const isOwn = currentUserId === review.user_id
+  const [imgIdx, setImgIdx] = useState<number | null>(null)
   const date = new Date(review.created_at).toLocaleDateString('ko-KR', {
     year: 'numeric', month: 'long', day: 'numeric',
   })
 
+  function prev() {
+    setImgIdx(i => (i !== null && i > 0 ? i - 1 : i))
+  }
+
+  function next() {
+    setImgIdx(i => (i !== null && i < review.images.length - 1 ? i + 1 : i))
+  }
+
   return (
-    <div style={{
-      padding: '14px 0',
-      borderBottom: '1px solid var(--border)',
-    }}>
-      {/* 작성자 + 별점 */}
+    <div style={{ padding: '14px 0', borderBottom: '1px solid var(--border)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-        {/* 아바타 */}
         <div style={{
           width: '32px', height: '32px', borderRadius: '50%',
           background: 'var(--surface2)', overflow: 'hidden',
@@ -195,7 +272,6 @@ function ReviewItem({ review, currentUserId, onDelete }: {
             review.author?.nickname?.[0] ?? '?'
           )}
         </div>
-
         <div style={{ flex: 1 }}>
           <div style={{ fontWeight: 700, fontSize: '13px' }}>
             {review.author?.nickname ?? '익명'}
@@ -207,7 +283,6 @@ function ReviewItem({ review, currentUserId, onDelete }: {
             <span style={{ fontSize: '11px', color: 'var(--muted)' }}>{date}</span>
           </div>
         </div>
-
         {isOwn && (
           <button
             onClick={() => onDelete(review.id)}
@@ -221,14 +296,12 @@ function ReviewItem({ review, currentUserId, onDelete }: {
         )}
       </div>
 
-      {/* 내용 */}
       {review.content && (
         <p style={{ fontSize: '14px', lineHeight: 1.7, color: 'var(--text)', margin: '0' }}>
           {review.content}
         </p>
       )}
 
-      {/* 리뷰 이미지 */}
       {review.images.length > 0 && (
         <div style={{ display: 'flex', gap: '6px', marginTop: '10px', flexWrap: 'wrap' }}>
           {review.images.map((url, i) => (
@@ -236,9 +309,91 @@ function ReviewItem({ review, currentUserId, onDelete }: {
               key={i}
               src={url}
               alt=""
-              style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px' }}
+              onClick={() => setImgIdx(i)}
+              style={{
+                width: '80px', height: '80px', objectFit: 'cover',
+                borderRadius: '8px', cursor: 'pointer',
+              }}
             />
           ))}
+        </div>
+      )}
+
+      {/* 이미지 크게 보기 + 좌우 넘기기 */}
+      {imgIdx !== null && (
+        <div
+          onClick={() => setImgIdx(null)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 999,
+            background: 'rgba(0,0,0,.92)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer',
+          }}
+        >
+          {/* 이미지 */}
+          <img
+            src={review.images[imgIdx]}
+            alt=""
+            style={{ maxWidth: '90vw', maxHeight: '80vh', objectFit: 'contain', borderRadius: '8px' }}
+          />
+
+          {/* 이전 버튼 */}
+          {imgIdx > 0 && (
+            <button
+              onClick={e => { e.stopPropagation(); prev() }}
+              style={{
+                position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)',
+                background: 'rgba(255,255,255,.2)', border: 'none',
+                color: '#fff', fontSize: '24px', cursor: 'pointer',
+                width: '44px', height: '44px', borderRadius: '50%',
+              }}
+            >‹</button>
+          )}
+
+          {/* 다음 버튼 */}
+          {imgIdx < review.images.length - 1 && (
+            <button
+              onClick={e => { e.stopPropagation(); next() }}
+              style={{
+                position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)',
+                background: 'rgba(255,255,255,.2)', border: 'none',
+                color: '#fff', fontSize: '24px', cursor: 'pointer',
+                width: '44px', height: '44px', borderRadius: '50%',
+              }}
+            >›</button>
+          )}
+
+          {/* 닫기 버튼 */}
+          <button
+            onClick={() => setImgIdx(null)}
+            style={{
+              position: 'absolute', top: '16px', right: '16px',
+              background: 'rgba(255,255,255,.2)', border: 'none',
+              color: '#fff', fontSize: '20px', cursor: 'pointer',
+              width: '36px', height: '36px', borderRadius: '50%',
+            }}
+          >✕</button>
+
+          {/* 인디케이터 */}
+          {review.images.length > 1 && (
+            <div style={{
+              position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
+              display: 'flex', gap: '6px',
+            }}>
+              {review.images.map((_, i) => (
+                <div
+                  key={i}
+                  onClick={e => { e.stopPropagation(); setImgIdx(i) }}
+                  style={{
+                    width: i === imgIdx ? '20px' : '8px', height: '8px',
+                    borderRadius: '4px',
+                    background: i === imgIdx ? '#fff' : 'rgba(255,255,255,.4)',
+                    cursor: 'pointer', transition: 'all .2s',
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
