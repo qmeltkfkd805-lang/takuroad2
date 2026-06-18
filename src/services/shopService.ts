@@ -271,3 +271,54 @@ export async function updateShop(
 
   return true
 }
+
+// 태그별 샵 목록
+export async function getShopsByTag(tagSlug: string): Promise<Shop[]> {
+  const supabase = createClient()
+
+  const { data, error } = await supabase
+    .from('shop_tags')
+    .select(`
+      shops (
+        id, slug, name, description,
+        addr, country, region, city, district,
+        lat, lng, google_place_id,
+        hours, parking, parking_note, shop_link,
+        start_date, end_date, event_info,
+        rating_avg, rating_count, visit_count, bookmark_count,
+        is_verified, is_claimed, status,
+        added_by, owner_id, created_at, updated_at,
+        shop_images ( image_url, is_cover, sort_order ),
+        shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+      )
+    `)
+    .eq('tags.slug', tagSlug)
+    .eq('shops.status', 'active')
+
+  if (error) return []
+  return (data ?? [])
+    .map((d: any) => d.shops)
+    .filter(Boolean)
+    .map(toShop)
+}
+
+// 태그 정보 조회
+export async function getTagBySlug(slug: string) {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('tags')
+    .select('id, name, slug, created_at')
+    .eq('slug', slug)
+    .maybeSingle()
+  return data
+}
+
+// 전체 태그 목록 (인기순)
+export async function getAllTags() {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('tags')
+    .select('id, name, slug, created_at')
+    .order('name')
+  return data ?? []
+}
