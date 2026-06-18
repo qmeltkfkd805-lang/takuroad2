@@ -18,21 +18,33 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
   const markersRef = useRef<MarkerRef[]>([])
   const [isLoaded, setIsLoaded] = useState(false)
 
-  // 카카오맵 초기화
   useEffect(() => {
     if (!containerRef.current) return
 
-    window.kakao.maps.load(() => {
-      const map = new window.kakao.maps.Map(containerRef.current, {
-        center: new window.kakao.maps.LatLng(37.5519, 127.0738),
-        level: 8,
+    function initMap() {
+      if (!window.kakao || !window.kakao.maps) {
+        setTimeout(initMap, 100)
+        return
+      }
+      if (!containerRef.current) return
+      if (mapRef.current) {
+        setIsLoaded(true)
+        return
+      }
+      window.kakao.maps.load(() => {
+        if (!containerRef.current) return
+        const map = new window.kakao.maps.Map(containerRef.current, {
+          center: new window.kakao.maps.LatLng(37.5519, 127.0738),
+          level: 8,
+        })
+        mapRef.current = map
+        setIsLoaded(true)
       })
-      mapRef.current = map
-      setIsLoaded(true)
-    })
+    }
+
+    initMap()
   }, [containerRef])
 
-  // 마커 추가
   const addMarker = useCallback((
     shop: Shop,
     offset: { lat: number; lng: number },
@@ -45,10 +57,8 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     const color = catInfo.color ?? '#e8006f'
 
     const el = document.createElement('div')
-    el.className = 'taku-marker'
     el.style.cssText = 'cursor:pointer;display:flex;flex-direction:column;align-items:center'
 
-    // 마커 버블
     const bubble = document.createElement('div')
     const shortName = shop.name
       .replace(/\s*(홍대점|잠실점|부산점|강남점|신촌점|수원점|코엑스점|용산점|성수점).*$/, '')
@@ -64,10 +74,8 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
       'font-weight:700',
       'white-space:nowrap',
       'box-shadow:0 2px 8px rgba(0,0,0,.15)',
-      'transition:all .2s',
     ].join(';')
 
-    // 말풍선 꼬리
     const tail = document.createElement('div')
     tail.style.cssText = [
       'width:0;height:0',
@@ -93,34 +101,28 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     markersRef.current.push({ overlay, id: shop.id })
   }, [])
 
-  // 전체 마커 제거
   const clearMarkers = useCallback(() => {
     markersRef.current.forEach(m => m.overlay.setMap(null))
     markersRef.current = []
   }, [])
 
-  // 지도 중심 이동
   const moveCenter = useCallback((lat: number, lng: number, level = 4) => {
     if (!mapRef.current) return
     mapRef.current.setCenter(new window.kakao.maps.LatLng(lat, lng))
     mapRef.current.setLevel(level)
   }, [])
 
-  // 클릭 이벤트 등록
   const onMapClick = useCallback((cb: () => void) => {
     if (!mapRef.current) return
     window.kakao.maps.event.addListener(mapRef.current, 'click', cb)
   }, [])
 
-  // 마커 일괄 렌더링 (겹침 처리 포함)
   const renderMarkers = useCallback((
     shops: Shop[],
     activeId: string | null,
     onClick: (shop: Shop) => void
   ) => {
     clearMarkers()
-
-    // 같은 좌표 그룹화 (겹침 방지)
     const posMap: Record<string, Shop[]> = {}
     shops.forEach(s => {
       if (!s.lat || !s.lng) return
@@ -128,7 +130,6 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
       if (!posMap[key]) posMap[key] = []
       posMap[key].push(s)
     })
-
     shops.forEach(s => {
       if (!s.lat || !s.lng) return
       const key = `${Math.round(s.lat * 1000)},${Math.round(s.lng * 1000)}`

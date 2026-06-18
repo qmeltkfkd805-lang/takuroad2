@@ -1,10 +1,9 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { env } from '@/lib/env'
+import { useRouter } from 'next/navigation'
 import { useShops } from '@/hooks/useShops'
-import { useSearch } from '@/hooks/useSearch'
-import { useCurrentLocation, formatDistance } from '@/hooks/useCurrentLocation'
+import { useCurrentLocation } from '@/hooks/useCurrentLocation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import KakaoMap from './KakaoMap'
 import CategoryFilter from './CategoryFilter'
@@ -16,30 +15,29 @@ import Link from 'next/link'
 import { ROUTES } from '@/lib/constants/routes'
 
 export default function MapPage() {
+  const router = useRouter()
   const { user, profile } = useAuth()
   const {
-    filtered, mapShops, regions, loading,
+    filtered, mapShops, loading,
     selectedCat, setSelectedCat,
     selectedRegion, setSelectedRegion,
     selectedShop, setSelectedShop,
   } = useShops()
 
-  const { query, setQuery, results, isOpen: searchOpen, setIsOpen: setSearchOpen, clearSearch } = useSearch(filtered)
-  const { location, requestLocation } = useCurrentLocation()
+  const { requestLocation } = useCurrentLocation()
   const [listOpen, setListOpen] = useState(false)
 
   const handleSelectShop = useCallback((shop: Shop) => {
     setSelectedShop(shop)
     setListOpen(false)
-    clearSearch()
-  }, [setSelectedShop, clearSearch])
+  }, [setSelectedShop])
 
   const handleMapClick = useCallback(() => {
     setSelectedShop(null)
   }, [setSelectedShop])
 
   return (
-    <div style={{ position: 'fixed', inset: 0, background: 'var(--bg) ' }}>
+    <div style={{ position: 'fixed', inset: 0, background: 'var(--bg)' }}>
 
       {/* 상단 헤더 바 */}
       <div style={{
@@ -58,56 +56,17 @@ export default function MapPage() {
           TAKUROAD
         </div>
 
-        {/* 검색창 */}
-        <div style={{ flex: 1, position: 'relative' }}>
-          <input
-            type="text"
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            onFocus={() => query && setSearchOpen(true)}
-            placeholder="샵 이름, 지역 검색..."
-            style={{
-              width: '100%', padding: '8px 12px',
-              border: '1.5px solid var(--border)', borderRadius: '10px',
-              fontSize: '13px', fontFamily: 'inherit',
-              background: 'var(--surface2)', color: 'var(--text)',
-              outline: 'none', boxSizing: 'border-box',
-            }}
-          />
-          {query && (
-            <button
-              onClick={clearSearch}
-              style={{
-                position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)',
-                background: 'none', border: 'none', cursor: 'pointer',
-                color: 'var(--muted)', fontSize: '14px',
-              }}
-            >✕</button>
-          )}
-
-          {/* 검색 드롭다운 */}
-          {searchOpen && results.length > 0 && (
-            <div style={{
-              position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0,
-              background: 'var(--surface)', border: '1.5px solid var(--border)',
-              borderRadius: '10px', boxShadow: 'var(--sh-md)', zIndex: 200,
-              overflow: 'hidden',
-            }}>
-              {results.map(shop => (
-                <div
-                  key={shop.id}
-                  onClick={() => handleSelectShop(shop)}
-                  style={{
-                    padding: '10px 14px', cursor: 'pointer', fontSize: '13px',
-                    borderBottom: '1px solid var(--border)',
-                  }}
-                >
-                  <span style={{ fontWeight: 700 }}>{shop.name}</span>
-                  <span style={{ color: 'var(--muted)', marginLeft: '8px' }}>{shop.addr}</span>
-                </div>
-              ))}
-            </div>
-          )}
+        {/* 검색창 — 클릭하면 /search 로 이동 */}
+        <div
+          onClick={() => router.push('/search')}
+          style={{
+            flex: 1, padding: '8px 12px',
+            border: '1.5px solid var(--border)', borderRadius: '10px',
+            fontSize: '13px', color: 'var(--muted)',
+            background: 'var(--surface2)', cursor: 'pointer',
+          }}
+        >
+          샵 이름, 지역 검색...
         </div>
 
         {/* 목록 버튼 */}
@@ -180,7 +139,6 @@ export default function MapPage() {
         position: 'absolute', right: '12px', bottom: '100px', zIndex: 130,
         display: 'flex', flexDirection: 'column', gap: '8px',
       }}>
-        {/* 현재 위치 */}
         <button
           onClick={requestLocation}
           title="현재 위치"
@@ -191,7 +149,6 @@ export default function MapPage() {
           }}
         >📍</button>
 
-        {/* 샵 등록 */}
         {user && (
           <Link
             href={ROUTES.shopNew}
