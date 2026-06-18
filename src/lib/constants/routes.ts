@@ -1,0 +1,15 @@
+export const ROUTES = {
+  home:        '/',
+  login:       '/login',
+  shop:        (slug: string) => `/shop/${slug}`,
+  shopNew:     '/shop/new',
+  shopEdit:    (slug: string) => `/shop/${slug}/edit`,
+  tag:         (slug: string) => `/tag/${slug}`,
+  region:      (city: string) => `/region/${city}`,
+  profile:     '/profile',
+  admin:       '/admin',
+  about:       '/about',
+  contact:     '/contact',
+  terms:       '/terms',
+  privacy:     '/privacy',
+} as const
