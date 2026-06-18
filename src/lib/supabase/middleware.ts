@@ -26,10 +26,8 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  // 세션 갱신 (중요: getUser() 호출 필수)
   const { data: { user } } = await supabase.auth.getUser()
 
-  // 보호된 라우트 처리
   const protectedPaths = ['/shop/new', '/profile']
   const isProtected = protectedPaths.some(path =>
     request.nextUrl.pathname.startsWith(path)
@@ -37,8 +35,9 @@ export async function updateSession(request: NextRequest) {
 
   if (isProtected && !user) {
     const url = request.nextUrl.clone()
+    const currentPath = request.nextUrl.pathname
     url.pathname = '/login'
-    url.searchParams.set('redirect', request.nextUrl.pathname)
+    url.searchParams.set('redirect', currentPath)
     return NextResponse.redirect(url)
   }
 

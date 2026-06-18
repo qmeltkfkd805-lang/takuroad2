@@ -174,3 +174,100 @@ export async function getSavedShopIds(userId: string): Promise<string[]> {
 
   return (data ?? []).map((d: any) => d.shop_id)
 }
+
+// 샵 등록
+export async function createShop(
+  data: ShopFormData,
+  userId: string
+): Promise<{ slug: string } | null> {
+  const supabase = createClient()
+
+  const { data: shop, error } = await supabase
+    .from('shops')
+    .insert({
+      slug:         data.slug,
+      name:         data.name,
+      description:  data.description || null,
+      addr:         data.addr || null,
+      lat:          data.lat,
+      lng:          data.lng,
+      hours:        data.hours,
+      parking:      data.parking,
+      parking_note: data.parking_note || null,
+      shop_link:    data.shop_link || null,
+      start_date:   data.start_date || null,
+      end_date:     data.end_date || null,
+      event_info:   data.event_info || null,
+      added_by:     userId,
+      owner_id:     userId,
+      status:       'pending',
+    } as any)
+    .select('slug, id')
+    .single()
+
+  if (error || !shop) return null
+
+  // 카테고리 연결
+  if (data.cats.length > 0) {
+    const { data: cats } = await supabase
+      .from('categories')
+      .select('id, name')
+      .in('name', data.cats)
+
+    if (cats && cats.length > 0) {
+      await supabase
+        .from('shop_categories')
+        .insert(cats.map((c: any) => ({ shop_id: shop.id, category_id: c.id })) as any)
+    }
+  }
+
+  return { slug: shop.slug }
+}
+
+// 샵 수정
+export async function updateShop(
+  shopId: string,
+  data: ShopFormData,
+  userId: string
+): Promise<boolean> {
+  const supabase = createClient()
+
+  const { error } = await supabase
+    .from('shops')
+    .update({
+      name:         data.name,
+      description:  data.description || null,
+      addr:         data.addr || null,
+      lat:          data.lat,
+      lng:          data.lng,
+      hours:        data.hours,
+      parking:      data.parking,
+      parking_note: data.parking_note || null,
+      shop_link:    data.shop_link || null,
+      start_date:   data.start_date || null,
+      end_date:     data.end_date || null,
+      event_info:   data.event_info || null,
+    } as any)
+    .eq('id', shopId)
+    .eq('owner_id', userId)
+
+  if (error) return false
+
+  // 카테고리 재연결
+  await supabase.from('shop_categories').delete().eq('shop_id', shopId)
+
+  if (data.cats.length > 0) {
+    const { data: cats } = await supabase
+      .from('categories')
+      .select('id, name')
+      .in('name', data.cats)
+
+    if (cats && cats.length > 0) {
+      await supabase
+        .from('shop_categories')
+        .insert(cats.map((c: any) => ({ shop_id: shopId, category_id: c.id })) as any)
+    }
+  }
+
+  return true
+}
