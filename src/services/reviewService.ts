@@ -133,3 +133,42 @@ export async function uploadReviewImages(
 
   return urls
 }
+
+// AI 요약 조회
+export async function getAiSummary(shopId: string): Promise<{ summary_text: string; review_count: number } | null> {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('shop_ai_summaries')
+    .select('summary_text, review_count')
+    .eq('shop_id', shopId)
+    .maybeSingle()
+  return data
+}
+
+// AI 요약 생성 요청
+export async function generateAiSummary(shopId: string): Promise<{ summary: string } | { error: string }> {
+  const response = await fetch('/api/summarize-reviews', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ shopId }),
+  })
+  return response.json()
+}
+
+// 내가 쓴 후기 전체 (샵 정보 포함)
+export async function getMyReviews(userId: string) {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('reviews')
+    .select(`
+      id, shop_id, stars, content, likes, created_at,
+      shops ( id, name, slug ),
+      review_images ( image_url, sort_order )
+    `)
+    .eq('user_id', userId)
+    .eq('is_deleted', false)
+    .order('created_at', { ascending: false })
+
+  if (error) return []
+  return data ?? []
+}

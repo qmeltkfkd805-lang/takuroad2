@@ -445,3 +445,112 @@ export async function getEvidenceFileUrl(path: string): Promise<string | null> {
   if (error) return null
   return data.signedUrl
 }
+
+// 내가 등록한 샵 목록 (마이페이지용)
+export async function getMyShops(userId: string): Promise<Shop[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('shops')
+    .select(`
+      id, slug, name, description,
+      addr, country, region, city, district,
+      lat, lng, google_place_id,
+      hours, parking, parking_note, shop_link,
+      start_date, end_date, event_info,
+      rating_avg, rating_count, visit_count, bookmark_count,
+      is_verified, is_claimed, status,
+      added_by, owner_id, created_at, updated_at,
+      shop_images ( image_url, is_cover, sort_order ),
+      shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+    `)
+    .eq('added_by', userId)
+    .neq('status', 'deleted')
+    .order('created_at', { ascending: false })
+
+  if (error) return []
+  return (data ?? []).map(toShop)
+}
+
+// 내가 찜한 샵 전체 (saved_shops JOIN shops)
+export async function getSavedShops(userId: string): Promise<Shop[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('saved_shops')
+    .select(`
+      shops (
+        id, slug, name, description,
+        addr, country, region, city, district,
+        lat, lng, google_place_id,
+        hours, parking, parking_note, shop_link,
+        start_date, end_date, event_info,
+        rating_avg, rating_count, visit_count, bookmark_count,
+        is_verified, is_claimed, status,
+        added_by, owner_id, created_at, updated_at,
+        shop_images ( image_url, is_cover, sort_order ),
+        shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+      )
+    `)
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+
+  if (error) return []
+  return (data ?? [])
+    .map((d: any) => d.shops)
+    .filter(Boolean)
+    .map(toShop)
+}
+
+// 내 인증 신청 전체 현황
+export async function getMyVerifyRequests(userId: string) {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('shop_verify_requests')
+    .select(`
+      id, status, note, created_at,
+      shops ( id, name, slug )
+    `)
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+
+  if (error) return []
+  return data ?? []
+}
+
+// 닉네임 변경
+export async function updateNickname(userId: string, nickname: string): Promise<{ ok: boolean; error?: string }> {
+  const supabase = createClient()
+
+  const { data: existing } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('nickname', nickname)
+    .neq('id', userId)
+    .maybeSingle()
+
+  if (existing) return { ok: false, error: '이미 사용 중인 닉네임이에요' }
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({ nickname } as any)
+    .eq('id', userId)
+
+  return { ok: !error }
+}
+
+// 계정 탈퇴 (soft delete 방식 — profiles는 유지, 관련 데이터 정리)
+export async function deleteAccount(userId: string): Promise<boolean> {
+  const supabase = createClient()
+
+  // 내가 등록한 샵 → added_by/owner_id 유지하되 익명화는 운영 정책에 따라 추후 결정
+  // 일단은 auth 계정 자체를 삭제 (Supabase Auth는 클라이언트에서 자기 계정 삭제 불가하므로
+  // 별도 RPC 또는 관리자 처리 필요 — 여기서는 profiles 비활성화로 대체)
+  const { error } = await supabase
+    .from('profiles')
+    .update({ nickname: `삭제된사용자_${userId.slice(0, 8)}` } as any)
+    .eq('id', userId)
+
+  if (error) return false
+
+  await supabase.auth.signOut()
+  return true
+}
