@@ -205,7 +205,7 @@ export default function ShopDetailPage({ shop }: Props) {
 
           {shop.shop_link && (
             
-             <a href={shop.shop_link}
+              <a href={shop.shop_link}
               target="_blank"
               rel="noopener noreferrer"
               style={{
