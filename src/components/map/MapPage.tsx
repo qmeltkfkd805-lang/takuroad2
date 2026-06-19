@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useShops } from '@/hooks/useShops'
 import { useCurrentLocation } from '@/hooks/useCurrentLocation'
+import { useNotifications } from '@/hooks/useNotifications'
 import { useAuth } from '@/components/layout/AuthProvider'
 import KakaoMap from './KakaoMap'
 import CategoryFilter from './CategoryFilter'
@@ -17,6 +18,7 @@ import { ROUTES } from '@/lib/constants/routes'
 export default function MapPage() {
   const router = useRouter()
   const { user, profile } = useAuth()
+  const { unreadCount } = useNotifications()
   const {
     filtered, mapShops, loading,
     selectedCat, setSelectedCat,
@@ -47,7 +49,6 @@ export default function MapPage() {
         padding: '10px 12px',
         display: 'flex', alignItems: 'center', gap: '8px',
       }}>
-        {/* 로고 */}
         <div style={{
           fontFamily: "'Cute Font', cursive",
           fontSize: '22px', color: 'var(--accent)',
@@ -56,7 +57,6 @@ export default function MapPage() {
           TAKUROAD
         </div>
 
-        {/* 검색창 — 클릭하면 /search 로 이동 */}
         <div
           onClick={() => router.push('/search')}
           style={{
@@ -69,7 +69,6 @@ export default function MapPage() {
           샵 이름, 지역 검색...
         </div>
 
-        {/* 목록 버튼 */}
         <button
           onClick={() => setListOpen(v => !v)}
           style={{
@@ -84,7 +83,29 @@ export default function MapPage() {
           목록
         </button>
 
-        {/* 프로필 / 로그인 */}
+        {/* 알림 벨 */}
+        {user && (
+          <Link href="/notifications" style={{
+            position: 'relative', width: '32px', height: '32px',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '18px', flexShrink: 0,
+          }}>
+            🔔
+            {unreadCount > 0 && (
+              <span style={{
+                position: 'absolute', top: '0', right: '0',
+                minWidth: '15px', height: '15px', borderRadius: '8px',
+                background: 'var(--red)', color: '#fff',
+                fontSize: '9px', fontWeight: 900,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                padding: '0 3px',
+              }}>
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
+          </Link>
+        )}
+
         {user ? (
           <Link href={ROUTES.profile} style={{
             width: '32px', height: '32px', borderRadius: '50%',

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getReviews, createReview, deleteReview, uploadReviewImages } from '@/services/reviewService'
+import { getComments, createComment, deleteComment, ReviewComment } from '@/services/commentService'
 import { Review } from '@/types/review'
 import Link from 'next/link'
 import { ROUTES } from '@/lib/constants/routes'
@@ -29,6 +30,15 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
     getReviews(shopId).then(data => {
       setReviews(data)
       setLoading(false)
+
+      // URL hash로 특정 리뷰 위치로 스크롤
+      const hash = window.location.hash
+      if (hash.startsWith('#review-')) {
+        setTimeout(() => {
+          const el = document.getElementById(hash.slice(1))
+          el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }, 300)
+      }
     })
   }, [shopId])
 
@@ -80,7 +90,6 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
 
   return (
     <div>
-      {/* 헤더 */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
         <h2 style={{ fontSize: '15px', fontWeight: 900 }}>
           리뷰 {reviews.length > 0 && <span style={{ color: 'var(--muted)', fontWeight: 400 }}>({reviews.length})</span>}
@@ -108,14 +117,12 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
         )}
       </div>
 
-      {/* 리뷰 작성 폼 */}
       {showForm && (
         <div style={{
           background: 'var(--surface2)', borderRadius: '12px',
           padding: '16px', marginBottom: '20px',
           border: '1.5px solid var(--border)',
         }}>
-          {/* 별점 */}
           <div style={{ display: 'flex', gap: '6px', marginBottom: '12px' }}>
             {[1,2,3,4,5].map(s => (
               <button
@@ -133,7 +140,6 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
             </span>
           </div>
 
-          {/* 내용 */}
           <textarea
             value={content}
             onChange={e => setContent(e.target.value)}
@@ -148,7 +154,6 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
             }}
           />
 
-          {/* 이미지 미리보기 */}
           {previews.length > 0 && (
             <div style={{ display: 'flex', gap: '8px', marginTop: '10px', flexWrap: 'wrap' }}>
               {previews.map((url, i) => (
@@ -173,7 +178,6 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
             </div>
           )}
 
-          {/* 하단 버튼 */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
             <button
               onClick={() => fileInputRef.current?.click()}
@@ -212,7 +216,6 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
         </div>
       )}
 
-      {/* 리뷰 목록 */}
       {loading ? (
         <div style={{ padding: '30px 0', textAlign: 'center', color: 'var(--muted)', fontSize: '14px' }}>
           불러오는 중...
@@ -230,6 +233,7 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
               review={review}
               currentUserId={user?.id ?? null}
               onDelete={handleDelete}
+              accentColor={accentColor}
             />
           ))}
         </div>
@@ -238,16 +242,34 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
   )
 }
 
-function ReviewItem({ review, currentUserId, onDelete }: {
+function ReviewItem({ review, currentUserId, onDelete, accentColor }: {
   review: Review
   currentUserId: string | null
   onDelete: (id: string) => void
+  accentColor: string
 }) {
   const isOwn = currentUserId === review.user_id
   const [imgIdx, setImgIdx] = useState<number | null>(null)
+  const [comments, setComments] = useState<ReviewComment[]>([])
+  const [showComments, setShowComments] = useState(false)
+  const [commentText, setCommentText] = useState('')
+  const [submittingComment, setSubmittingComment] = useState(false)
+  const [highlighted, setHighlighted] = useState(false)
   const date = new Date(review.created_at).toLocaleDateString('ko-KR', {
     year: 'numeric', month: 'long', day: 'numeric',
   })
+
+  // hash로 들어온 리뷰면 자동으로 댓글 펼치고 강조 표시
+  useEffect(() => {
+    const hash = window.location.hash
+    if (hash === `#review-${review.id}`) {
+      loadComments()
+      setShowComments(true)
+      setHighlighted(true)
+      const timer = setTimeout(() => setHighlighted(false), 2500)
+      return () => clearTimeout(timer)
+    }
+  }, [review.id])
 
   function prev() {
     setImgIdx(i => (i !== null && i > 0 ? i - 1 : i))
@@ -257,8 +279,44 @@ function ReviewItem({ review, currentUserId, onDelete }: {
     setImgIdx(i => (i !== null && i < review.images.length - 1 ? i + 1 : i))
   }
 
+  async function loadComments() {
+    const data = await getComments(review.id)
+    setComments(data)
+  }
+
+  function toggleComments() {
+    if (!showComments) loadComments()
+    setShowComments(v => !v)
+  }
+
+  async function handleCommentSubmit() {
+    if (!currentUserId || !commentText.trim()) return
+    setSubmittingComment(true)
+    const newComment = await createComment(review.id, currentUserId, commentText.trim())
+    if (newComment) {
+      setComments(prev => [...prev, newComment])
+      setCommentText('')
+    }
+    setSubmittingComment(false)
+  }
+
+  async function handleCommentDelete(commentId: string) {
+    if (!currentUserId) return
+    if (!confirm('댓글을 삭제할까요?')) return
+    await deleteComment(commentId, currentUserId)
+    setComments(prev => prev.filter(c => c.id !== commentId))
+  }
+
   return (
-    <div style={{ padding: '14px 0', borderBottom: '1px solid var(--border)' }}>
+    <div
+      id={`review-${review.id}`}
+      style={{
+        padding: '14px', borderBottom: '1px solid var(--border)',
+        borderRadius: '10px', margin: '0 -14px',
+        background: highlighted ? `${accentColor}12` : 'transparent',
+        transition: 'background 1s ease',
+      }}
+    >
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
         <div style={{
           width: '32px', height: '32px', borderRadius: '50%',
@@ -319,7 +377,86 @@ function ReviewItem({ review, currentUserId, onDelete }: {
         </div>
       )}
 
-      {/* 이미지 크게 보기 + 좌우 넘기기 */}
+      <button
+        onClick={toggleComments}
+        style={{
+          background: 'none', border: 'none', fontSize: '12px',
+          color: 'var(--muted)', cursor: 'pointer', padding: '8px 0 0',
+          fontWeight: 700,
+        }}
+      >
+        💬 댓글 {showComments ? '숨기기' : '보기'} {comments.length > 0 && `(${comments.length})`}
+      </button>
+
+      {showComments && (
+        <div style={{ marginTop: '10px', paddingLeft: '8px' }}>
+          {comments.map(c => (
+            <div key={c.id} style={{
+              display: 'flex', gap: '8px', padding: '8px 0',
+              borderTop: '1px solid var(--border)',
+            }}>
+              <div style={{
+                width: '24px', height: '24px', borderRadius: '50%',
+                background: 'var(--surface2)', overflow: 'hidden',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '10px', fontWeight: 700, color: 'var(--muted)', flexShrink: 0,
+              }}>
+                {c.author?.avatar_url ? (
+                  <img src={c.author.avatar_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  c.author?.nickname?.[0] ?? '?'
+                )}
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 700 }}>{c.author?.nickname ?? '익명'}</span>
+                  {currentUserId === c.user_id && (
+                    <button
+                      onClick={() => handleCommentDelete(c.id)}
+                      style={{ background: 'none', border: 'none', fontSize: '11px', color: 'var(--muted)', cursor: 'pointer' }}
+                    >삭제</button>
+                  )}
+                </div>
+                <p style={{ fontSize: '13px', color: 'var(--text)', margin: '2px 0 0' }}>{c.content}</p>
+              </div>
+            </div>
+          ))}
+
+          {currentUserId ? (
+            <div style={{ display: 'flex', gap: '6px', marginTop: '10px' }}>
+              <input
+                type="text"
+                value={commentText}
+                onChange={e => setCommentText(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleCommentSubmit()}
+                placeholder="댓글을 남겨보세요"
+                style={{
+                  flex: 1, padding: '8px 10px',
+                  border: '1.5px solid var(--border)', borderRadius: '8px',
+                  fontSize: '13px', fontFamily: 'inherit',
+                  background: 'var(--surface2)', color: 'var(--text)',
+                  outline: 'none',
+                }}
+              />
+              <button
+                onClick={handleCommentSubmit}
+                disabled={submittingComment || !commentText.trim()}
+                style={{
+                  padding: '8px 14px', borderRadius: '8px', border: 'none',
+                  background: !commentText.trim() ? 'var(--border)' : accentColor,
+                  color: '#fff', fontSize: '12px', fontWeight: 700,
+                  cursor: 'pointer', fontFamily: 'inherit',
+                }}
+              >등록</button>
+            </div>
+          ) : (
+            <p style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '8px' }}>
+              <Link href={ROUTES.login} style={{ color: accentColor }}>로그인</Link> 후 댓글을 남길 수 있어요
+            </p>
+          )}
+        </div>
+      )}
+
       {imgIdx !== null && (
         <div
           onClick={() => setImgIdx(null)}
@@ -330,14 +467,11 @@ function ReviewItem({ review, currentUserId, onDelete }: {
             cursor: 'pointer',
           }}
         >
-          {/* 이미지 */}
           <img
             src={review.images[imgIdx]}
             alt=""
             style={{ maxWidth: '90vw', maxHeight: '80vh', objectFit: 'contain', borderRadius: '8px' }}
           />
-
-          {/* 이전 버튼 */}
           {imgIdx > 0 && (
             <button
               onClick={e => { e.stopPropagation(); prev() }}
@@ -349,8 +483,6 @@ function ReviewItem({ review, currentUserId, onDelete }: {
               }}
             >‹</button>
           )}
-
-          {/* 다음 버튼 */}
           {imgIdx < review.images.length - 1 && (
             <button
               onClick={e => { e.stopPropagation(); next() }}
@@ -362,8 +494,6 @@ function ReviewItem({ review, currentUserId, onDelete }: {
               }}
             >›</button>
           )}
-
-          {/* 닫기 버튼 */}
           <button
             onClick={() => setImgIdx(null)}
             style={{
@@ -373,8 +503,6 @@ function ReviewItem({ review, currentUserId, onDelete }: {
               width: '36px', height: '36px', borderRadius: '50%',
             }}
           >✕</button>
-
-          {/* 인디케이터 */}
           {review.images.length > 1 && (
             <div style={{
               position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
