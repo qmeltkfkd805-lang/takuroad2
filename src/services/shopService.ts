@@ -348,3 +348,106 @@ export async function getMyVerifyRequest(shopId: string, userId: string) {
     .maybeSingle()
   return data
 }
+
+// === 관리자 전용 함수 ===
+
+// 승인 대기 샵 목록
+export async function getPendingShops(): Promise<Shop[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('shops')
+    .select(`
+      id, slug, name, description,
+      addr, country, region, city, district,
+      lat, lng, google_place_id,
+      hours, parking, parking_note, shop_link,
+      start_date, end_date, event_info,
+      rating_avg, rating_count, visit_count, bookmark_count,
+      is_verified, is_claimed, status,
+      added_by, owner_id, created_at, updated_at,
+      shop_images ( image_url, is_cover, sort_order ),
+      shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+    `)
+    .eq('status', 'pending')
+    .order('created_at', { ascending: false })
+
+  if (error) return []
+  return (data ?? []).map(toShop)
+}
+
+// 샵 승인
+export async function approveShop(shopId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase
+    .from('shops')
+    .update({ status: 'active', is_verified: true } as any)
+    .eq('id', shopId)
+  return !error
+}
+
+// 샵 거절 (숨김 처리)
+export async function rejectShop(shopId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase
+    .from('shops')
+    .update({ status: 'hidden' } as any)
+    .eq('id', shopId)
+  return !error
+}
+
+// 인증 신청 대기 목록 (샵 정보 + 신청자 정보 포함)
+export async function getPendingVerifyRequests() {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('shop_verify_requests')
+    .select(`
+      id, shop_id, user_id, note, evidence_url, status, created_at,
+      shops ( id, name, slug ),
+      profiles ( id, nickname )
+    `)
+    .eq('status', 'pending')
+    .order('created_at', { ascending: false })
+
+  if (error) return []
+  return data ?? []
+}
+
+// 인증 신청 승인
+export async function approveVerifyRequest(requestId: string, shopId: string, userId: string): Promise<boolean> {
+  const supabase = createClient()
+
+  const { error: reqError } = await supabase
+    .from('shop_verify_requests')
+    .update({ status: 'approved' } as any)
+    .eq('id', requestId)
+
+  if (reqError) return false
+
+  const { error: shopError } = await supabase
+    .from('shops')
+    .update({ is_claimed: true, owner_id: userId } as any)
+    .eq('id', shopId)
+
+  return !shopError
+}
+
+// 인증 신청 거절
+export async function rejectVerifyRequest(requestId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase
+    .from('shop_verify_requests')
+    .update({ status: 'rejected' } as any)
+    .eq('id', requestId)
+  return !error
+}
+
+// 인증 증빙파일 URL 가져오기 (private 버킷이라 signed URL 필요)
+export async function getEvidenceFileUrl(path: string): Promise<string | null> {
+  const supabase = createClient()
+  const { data, error } = await supabase.storage
+    .from('verify-documents')
+    .createSignedUrl(path, 60 * 5) // 5분간 유효
+
+  if (error) return null
+  return data.signedUrl
+}
