@@ -9,6 +9,7 @@ import { getTodayStatus, formatBusinessHours, getPopupStatus } from '@/lib/utils
 import { ROUTES } from '@/lib/constants/routes'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useSaved } from '@/hooks/useSaved'
+import VerifyRequestButton from './VerifyRequestButton'
 import ReviewSection from './ReviewSection'
 
 interface Props {
@@ -203,8 +204,8 @@ export default function ShopDetailPage({ shop }: Props) {
           </button>
 
           {shop.shop_link && (
-            <a
-              href={shop.shop_link}
+            
+             <a href={shop.shop_link}
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -216,8 +217,8 @@ export default function ShopDetailPage({ shop }: Props) {
           )}
 
           {shop.addr && (
-            <a
-              href={`https://map.kakao.com/link/search/${encodeURIComponent(shop.name)}`}
+            
+              <a href={`https://map.kakao.com/link/search/${encodeURIComponent(shop.name)}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -289,6 +290,10 @@ export default function ShopDetailPage({ shop }: Props) {
         )}
 
         <div style={{ height: '1px', background: 'var(--border)', margin: '0 0 24px' }} />
+
+        {!shop.is_claimed && (
+          <VerifyRequestButton shopId={shop.id} shopName={shop.name} accentColor={color} />
+        )}
 
         <ReviewSection shopId={shop.id} shopName={shop.name} accentColor={color} />
 

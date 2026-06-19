@@ -1,14 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
 import { Shop } from '@/types/shop'
 
-// ============================================================
-// shopService
-// 모든 샵 관련 Supabase 쿼리는 여기서만 관리
-// Hook은 이 함수만 호출 — supabase 직접 접근 안 함
-// select("*") 사용 금지 — 필요한 컬럼만 명시
-// ============================================================
-
-// DB 응답 → UI Shop 타입으로 변환
 export function toShop(raw: any): Shop {
   const cats = (raw.shop_categories ?? [])
     .map((sc: any) => sc.categories?.name)
@@ -16,7 +8,6 @@ export function toShop(raw: any): Shop {
 
   const images = (raw.shop_images ?? [])
     .sort((a: any, b: any) => {
-      // is_cover=true 우선, 그 다음 sort_order
       if (a.is_cover && !b.is_cover) return -1
       if (!a.is_cover && b.is_cover) return 1
       return a.sort_order - b.sort_order
@@ -60,7 +51,6 @@ export function toShop(raw: any): Shop {
   }
 }
 
-// 지도용 샵 전체 목록
 export async function getShops(): Promise<Shop[]> {
   const supabase = createClient()
 
@@ -90,7 +80,6 @@ export async function getShops(): Promise<Shop[]> {
   return (data ?? []).map(toShop)
 }
 
-// 슬러그로 단일 샵 조회 (상세 페이지용)
 export async function getShopBySlug(slug: string): Promise<Shop | null> {
   const supabase = createClient()
 
@@ -117,7 +106,6 @@ export async function getShopBySlug(slug: string): Promise<Shop | null> {
   return toShop(data)
 }
 
-// 검색
 export async function searchShops(query: string): Promise<Shop[]> {
   if (!query.trim()) return []
 
@@ -139,13 +127,11 @@ export async function searchShops(query: string): Promise<Shop[]> {
   return (data ?? []).map(toShop)
 }
 
-// 조회수 증가 (RPC)
 export async function incrementVisit(shopId: string): Promise<void> {
   const supabase = createClient()
   await (supabase as any).rpc('increment_visit_count', { p_shop_id: shopId })
 }
 
-// 찜 추가 (Step 09에서 활성화)
 export async function saveBookmark(shopId: string, userId: string): Promise<void> {
   const supabase = createClient()
   await supabase
@@ -153,7 +139,6 @@ export async function saveBookmark(shopId: string, userId: string): Promise<void
     .insert({ shop_id: shopId, user_id: userId } as any)
 }
 
-// 찜 제거
 export async function removeBookmark(shopId: string, userId: string): Promise<void> {
   const supabase = createClient()
   await supabase
@@ -163,7 +148,6 @@ export async function removeBookmark(shopId: string, userId: string): Promise<vo
     .eq('user_id', userId)
 }
 
-// 내 찜 샵 ID 목록
 export async function getSavedShopIds(userId: string): Promise<string[]> {
   const supabase = createClient()
 
@@ -175,9 +159,8 @@ export async function getSavedShopIds(userId: string): Promise<string[]> {
   return (data ?? []).map((d: any) => d.shop_id)
 }
 
-// 샵 등록
 export async function createShop(
-  data: ShopFormData,
+  data: any,
   userId: string
 ): Promise<{ slug: string } | null> {
   const supabase = createClient()
@@ -207,7 +190,6 @@ export async function createShop(
 
   if (error || !shop) return null
 
-  // 카테고리 연결
   if (data.cats.length > 0) {
     const { data: cats } = await supabase
       .from('categories')
@@ -224,10 +206,9 @@ export async function createShop(
   return { slug: shop.slug }
 }
 
-// 샵 수정
 export async function updateShop(
   shopId: string,
-  data: ShopFormData,
+  data: any,
   userId: string
 ): Promise<boolean> {
   const supabase = createClient()
@@ -253,7 +234,6 @@ export async function updateShop(
 
   if (error) return false
 
-  // 카테고리 재연결
   await supabase.from('shop_categories').delete().eq('shop_id', shopId)
 
   if (data.cats.length > 0) {
@@ -302,7 +282,6 @@ export async function getShopsByTag(tagSlug: string): Promise<Shop[]> {
     .map(toShop)
 }
 
-// 태그 정보 조회
 export async function getTagBySlug(slug: string) {
   const supabase = createClient()
   const { data } = await supabase
@@ -313,7 +292,6 @@ export async function getTagBySlug(slug: string) {
   return data
 }
 
-// 전체 태그 목록 (인기순)
 export async function getAllTags() {
   const supabase = createClient()
   const { data } = await supabase
@@ -321,4 +299,52 @@ export async function getAllTags() {
     .select('id, name, slug, created_at')
     .order('name')
   return data ?? []
+}
+
+// 샵 주인 인증 신청 (파일 업로드 포함)
+export async function requestShopVerify(
+  shopId: string,
+  userId: string,
+  note: string,
+  file: File | null
+): Promise<boolean> {
+  const supabase = createClient()
+  let evidenceUrl: string | null = null
+
+  if (file) {
+    const ext = file.name.split('.').pop()
+    const path = `${userId}/${shopId}-${Date.now()}.${ext}`
+
+    const { error: uploadError } = await supabase.storage
+      .from('verify-documents')
+      .upload(path, file)
+
+    if (!uploadError) {
+      evidenceUrl = path
+    }
+  }
+
+  const { error } = await supabase
+    .from('shop_verify_requests')
+    .insert({
+      shop_id: shopId,
+      user_id: userId,
+      note,
+      evidence_url: evidenceUrl,
+    } as any)
+
+  return !error
+}
+
+export async function getMyVerifyRequest(shopId: string, userId: string) {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('shop_verify_requests')
+    .select('id, status, note, evidence_url, created_at')
+    .eq('shop_id', shopId)
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  return data
 }
