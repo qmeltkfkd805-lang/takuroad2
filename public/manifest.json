@@ -1,0 +1,24 @@
+{
+  "name": "타쿠로드 - 덕후의 성지순례 지도",
+  "short_name": "타쿠로드",
+  "description": "한국의 애니·오타쿠 쇼핑 명소를 한눈에",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fdf6ff",
+  "theme_color": "#e8006f",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
