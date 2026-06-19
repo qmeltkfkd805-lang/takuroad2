@@ -8,6 +8,7 @@ import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import { getTodayStatus, formatBusinessHours, getPopupStatus } from '@/lib/utils/date'
 import { ROUTES } from '@/lib/constants/routes'
 import { useAuth } from '@/components/layout/AuthProvider'
+import { useSaved } from '@/hooks/useSaved'
 import ReviewSection from './ReviewSection'
 
 interface Props {
@@ -17,6 +18,7 @@ interface Props {
 export default function ShopDetailPage({ shop }: Props) {
   const router = useRouter()
   const { user } = useAuth()
+  const { isSaved, toggleSave } = useSaved()
   const [imgIdx, setImgIdx] = useState(0)
 
   const catInfo = CATEGORY_NAME_MAP[shop.cat]
@@ -29,7 +31,6 @@ export default function ShopDetailPage({ shop }: Props) {
   return (
     <div style={{ maxWidth: '680px', margin: '0 auto', background: 'var(--surface)', minHeight: '100dvh' }}>
 
-      {/* 상단 네비 */}
       <div style={{
         position: 'sticky', top: 0, zIndex: 50,
         background: 'var(--surface)',
@@ -60,7 +61,6 @@ export default function ShopDetailPage({ shop }: Props) {
         )}
       </div>
 
-      {/* 이미지 갤러리 */}
       {shop.images.length > 0 ? (
         <div style={{ position: 'relative', height: '260px', background: 'var(--surface2)', overflow: 'hidden' }}>
           <img
@@ -70,7 +70,6 @@ export default function ShopDetailPage({ shop }: Props) {
           />
           {shop.images.length > 1 && (
             <>
-              {/* 이미지 인디케이터 */}
               <div style={{
                 position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)',
                 display: 'flex', gap: '5px',
@@ -88,7 +87,6 @@ export default function ShopDetailPage({ shop }: Props) {
                   />
                 ))}
               </div>
-              {/* 좌우 버튼 */}
               {imgIdx > 0 && (
                 <button onClick={() => setImgIdx(i => i - 1)} style={{
                   position: 'absolute', left: '8px', top: '50%', transform: 'translateY(-50%)',
@@ -117,7 +115,6 @@ export default function ShopDetailPage({ shop }: Props) {
 
       <div style={{ padding: '20px 16px' }}>
 
-        {/* 샵 이름 + 인증 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
           <h1 style={{ fontSize: '22px', fontWeight: 900, lineHeight: 1.3 }}>{shop.name}</h1>
           {shop.is_verified && (
@@ -128,7 +125,6 @@ export default function ShopDetailPage({ shop }: Props) {
           )}
         </div>
 
-        {/* 카테고리 태그 */}
         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '12px' }}>
           {shop.cats.map(cat => {
             const ci = CATEGORY_NAME_MAP[cat]
@@ -144,7 +140,6 @@ export default function ShopDetailPage({ shop }: Props) {
           })}
         </div>
 
-        {/* 별점 */}
         {shop.rating_count > 0 && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '16px' }}>
             <span style={{ color: '#f59e0b', fontSize: '16px' }}>
@@ -155,7 +150,6 @@ export default function ShopDetailPage({ shop }: Props) {
           </div>
         )}
 
-        {/* 팝업 상태 */}
         {popupStatus.status && (
           <div style={{
             padding: '10px 14px', borderRadius: '10px',
@@ -176,7 +170,6 @@ export default function ShopDetailPage({ shop }: Props) {
           </div>
         )}
 
-        {/* 액션 버튼 */}
         <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
           <button
             onClick={() => router.push(`/?shop=${shop.slug}`)}
@@ -188,9 +181,32 @@ export default function ShopDetailPage({ shop }: Props) {
           >
             🗺️ 지도에서 보기
           </button>
+
+          <button
+            onClick={async () => {
+              if (!user) {
+                router.push(ROUTES.login)
+                return
+              }
+              await toggleSave(shop.id)
+            }}
+            style={{
+              padding: '11px 16px', borderRadius: '10px',
+              border: `1.5px solid ${isSaved(shop.id) ? color : 'var(--border)'}`,
+              background: isSaved(shop.id) ? `${color}15` : 'var(--surface)',
+              fontWeight: 700, fontSize: '14px',
+              color: isSaved(shop.id) ? color : 'var(--text)',
+              cursor: 'pointer', fontFamily: 'inherit',
+            }}
+          >
+            {isSaved(shop.id) ? '🔖 찜함' : '🏷️ 찜하기'}
+          </button>
+
           {shop.shop_link && (
             <a
-              href={shop.shop_link} target="_blank" rel="noopener noreferrer"
+              href={shop.shop_link}
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
                 padding: '11px 16px', borderRadius: '10px',
                 border: '1.5px solid var(--border)', fontWeight: 700,
@@ -198,10 +214,12 @@ export default function ShopDetailPage({ shop }: Props) {
               }}
             >🔗</a>
           )}
+
           {shop.addr && (
             <a
               href={`https://map.kakao.com/link/search/${encodeURIComponent(shop.name)}`}
-              target="_blank" rel="noopener noreferrer"
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
                 padding: '11px 16px', borderRadius: '10px',
                 border: '1.5px solid var(--border)', fontWeight: 700,
@@ -211,10 +229,8 @@ export default function ShopDetailPage({ shop }: Props) {
           )}
         </div>
 
-        {/* 구분선 */}
         <div style={{ height: '1px', background: 'var(--border)', margin: '0 0 20px' }} />
 
-        {/* 상세 정보 */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
 
           {shop.addr && (
@@ -231,7 +247,6 @@ export default function ShopDetailPage({ shop }: Props) {
               {todayStatus.todayHours && (
                 <span style={{ color: 'var(--muted)', marginLeft: '8px' }}>{todayStatus.todayHours}</span>
               )}
-              {/* 전체 영업시간 */}
               <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
                 {hoursFormatted.map(h => (
                   <div key={h.day} style={{ display: 'flex', gap: '12px', fontSize: '12px' }}>
@@ -260,7 +275,6 @@ export default function ShopDetailPage({ shop }: Props) {
           )}
         </div>
 
-        {/* 설명 */}
         {shop.description && (
           <>
             <h2 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '10px' }}>소개</h2>
@@ -274,10 +288,8 @@ export default function ShopDetailPage({ shop }: Props) {
           </>
         )}
 
-        {/* 구분선 */}
         <div style={{ height: '1px', background: 'var(--border)', margin: '0 0 24px' }} />
 
-        {/* 리뷰 섹션 */}
         <ReviewSection shopId={shop.id} shopName={shop.name} accentColor={color} />
 
       </div>
@@ -285,7 +297,6 @@ export default function ShopDetailPage({ shop }: Props) {
   )
 }
 
-// 정보 행 공통 컴포넌트
 function InfoRow({ icon, label, children }: {
   icon: string
   label: string
