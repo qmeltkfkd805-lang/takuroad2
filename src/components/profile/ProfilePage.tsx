@@ -18,6 +18,7 @@ import VerifyStatusTab from './VerifyStatusTab'
 import AccountSettingsTab from './AccountSettingsTab'
 import BadgesTab from './BadgesTab'
 import CollectionTab from './CollectionTab'
+import { useSearchParams } from 'next/navigation'
 
 type Tab = 'passport' | 'chronicle' | 'saved' | 'routes' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
 
@@ -38,7 +39,8 @@ const TABS: { key: Tab; label: string; icon: string }[] = [
 export default function ProfilePage() {
   const router = useRouter()
   const { user, profile, loading, signOut } = useAuth()
-  const [tab, setTab] = useState<Tab>('passport')
+  const initialTab = (useSearchParams().get('tab') as Tab) ?? 'passport'
+const [tab, setTab] = useState<Tab>(initialTab)
   const [passport, setPassport] = useState<OtakuPassport | null>(null)
   const [showTitleSelector, setShowTitleSelector] = useState(false)
 

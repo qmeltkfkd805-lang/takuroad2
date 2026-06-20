@@ -28,8 +28,8 @@ export default function ShopForm({ mode, shop }: Props) {
   const [form, setForm] = useState<ShopFormData>(EMPTY_FORM)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
-
-  const isCreateMode = mode === 'create'
+  const [createdShopId, setCreatedShopId] = useState<string | null>(null)
+  const [createdShopSlug, setCreatedShopSlug] = useState<string | null>(null)
 
   useEffect(() => {
     if (!user) router.push(ROUTES.login)
@@ -60,15 +60,6 @@ export default function ShopForm({ mode, shop }: Props) {
     setForm(prev => ({ ...prev, [key]: value }))
   }
 
-  function toggleCat(cat: string) {
-    setForm(prev => ({
-      ...prev,
-      cats: prev.cats.includes(cat)
-        ? prev.cats.filter(c => c !== cat)
-        : [...prev.cats, cat],
-    }))
-  }
-
   function handleNameChange(name: string) {
     set('name', name)
     if (mode === 'create') {
@@ -80,7 +71,7 @@ export default function ShopForm({ mode, shop }: Props) {
     if (!user) return
     if (!form.name.trim()) return setError('샵 이름을 입력해주세요')
     if (!form.slug.trim()) return setError('슬러그를 입력해주세요')
-    if (form.cats.length === 0) return setError('카테고리를 하나 이상 선택해주세요')
+    if (form.cats.length === 0) return setError('카테고리를 선택해주세요')
 
     setSubmitting(true)
     setError('')
@@ -92,7 +83,10 @@ export default function ShopForm({ mode, shop }: Props) {
         setSubmitting(false)
         return
       }
-      router.push(`${ROUTES.shopEdit(result.slug)}?welcome=1`)
+      // 등록 성공 → 같은 화면에서 이어서 작품/굿즈 입력 가능하게
+      setCreatedShopId(result.id)
+      setCreatedShopSlug(result.slug)
+      setSubmitting(false)
     } else if (shop) {
       const ok = await updateShop(shop.id, form, user.id)
       if (!ok) {
@@ -103,6 +97,9 @@ export default function ShopForm({ mode, shop }: Props) {
       router.push(ROUTES.shop(shop.slug))
     }
   }
+
+  // 등록 완료 후 표시할 shopId (등록 직후는 createdShopId, 수정 모드면 기존 shop.id)
+  const enrichmentShopId = mode === 'edit' ? shop?.id : createdShopId
 
   return (
     <div style={{ maxWidth: '600px', margin: '0 auto', padding: '0 0 80px' }}>
@@ -115,90 +112,108 @@ export default function ShopForm({ mode, shop }: Props) {
           background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer',
         }}>←</button>
         <h1 style={{ fontSize: '16px', fontWeight: 900 }}>
-          {mode === 'create' ? '샵 등록 (1분이면 끝나요)' : '샵 수정'}
+          {mode === 'create' ? '샵 등록' : '샵 수정'}
         </h1>
       </div>
 
       <div style={{ padding: '20px 16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-        <Field label="샵 이름 *">
-          <input
-            type="text"
-            value={form.name}
-            onChange={e => handleNameChange(e.target.value)}
-            placeholder="예: 애니메이트 홍대"
-            style={inputStyle}
-          />
-        </Field>
-
-        <Field label="슬러그 *" hint="URL에 사용되는 영문 주소예요 (예: animate-hongdae)">
-          <input
-            type="text"
-            value={form.slug}
-            onChange={e => set('slug', e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
-            placeholder="animate-hongdae"
-            style={inputStyle}
-          />
-          <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '4px' }}>
-            → /shop/{form.slug || '...'}
+        {/* 등록 완료 후에는 기본정보 폼을 숨기고 안내 + 작품/굿즈 입력만 보여줌 */}
+        {createdShopId ? (
+          <div style={{
+            padding: '14px', borderRadius: '10px',
+            background: 'var(--green-l)', color: 'var(--green)',
+            fontWeight: 700, fontSize: '14px', textAlign: 'center',
+          }}>
+            ✓ 샵이 등록됐어요! 아래에서 취급 작품과 굿즈를 이어서 입력해보세요.
           </div>
-        </Field>
-
-        <Field label="카테고리 *">
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-            {CATEGORIES.map(cat => {
-              const selected = form.cats.includes(cat.name)
-              return (
-                <button
-                  key={cat.slug}
-                  onClick={() => toggleCat(cat.name)}
-                  style={{
-                    padding: '6px 12px', borderRadius: '20px', cursor: 'pointer',
-                    border: `1.5px solid ${selected ? cat.color : 'var(--border)'}`,
-                    background: selected ? cat.color : 'var(--surface)',
-                    color: selected ? '#fff' : 'var(--text)',
-                    fontSize: '13px', fontWeight: 700, fontFamily: 'inherit',
-                  }}
-                >
-                  {cat.icon} {cat.name}
-                </button>
-              )
-            })}
-          </div>
-        </Field>
-
-        <Field label="주소">
-          <input
-            type="text"
-            value={form.addr}
-            onChange={e => set('addr', e.target.value)}
-            placeholder="예: 서울 마포구 와우산로 21"
-            style={inputStyle}
-          />
-        </Field>
-
-        <Field label="소개">
-          <textarea
-            value={form.description}
-            onChange={e => set('description', e.target.value)}
-            placeholder="샵에 대한 간단한 소개를 입력해주세요"
-            rows={4}
-            style={{ ...inputStyle, resize: 'vertical' }}
-          />
-        </Field>
-
-        <Field label="공식 링크">
-          <input
-            type="url"
-            value={form.shop_link}
-            onChange={e => set('shop_link', e.target.value)}
-            placeholder="https://..."
-            style={inputStyle}
-          />
-        </Field>
-
-        {!isCreateMode && (
+        ) : (
           <>
+            <Field label="샵 이름 *">
+              <input
+                type="text"
+                value={form.name}
+                onChange={e => handleNameChange(e.target.value)}
+                placeholder="예: 애니메이트 홍대"
+                style={inputStyle}
+              />
+            </Field>
+
+            <Field label="슬러그 *" hint="URL에 사용되는 영문 주소예요 (예: animate-hongdae)">
+              <input
+                type="text"
+                value={form.slug}
+                onChange={e => set('slug', e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                placeholder="animate-hongdae"
+                style={inputStyle}
+              />
+              <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '4px' }}>
+                → /shop/{form.slug || '...'}
+              </div>
+            </Field>
+
+            <Field label="카테고리 *" hint="이 가게의 주요 성격을 하나만 선택해주세요">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '10px' }}>
+                {CATEGORIES.map(cat => {
+                  const selected = form.cats.includes(cat.name)
+                  return (
+                    <button
+                      key={cat.slug}
+                      onClick={() => setForm(prev => ({ ...prev, cats: [cat.name] }))}
+                      style={{
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+                        padding: '16px 10px', borderRadius: '14px', cursor: 'pointer',
+                        border: `2px solid ${selected ? cat.color : 'var(--border)'}`,
+                        background: selected ? cat.bgColor : 'var(--surface)',
+                        fontFamily: 'inherit', textAlign: 'center',
+                      }}
+                    >
+                      <div style={{
+                        width: '40px', height: '40px', borderRadius: '50%',
+                        background: cat.color, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: '20px',
+                      }}>
+                        {cat.icon}
+                      </div>
+                      <span style={{ fontSize: '13px', fontWeight: 900, color: selected ? cat.color : 'var(--text)' }}>
+                        {cat.name}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            </Field>
+
+            <Field label="주소">
+              <input
+                type="text"
+                value={form.addr}
+                onChange={e => set('addr', e.target.value)}
+                placeholder="예: 서울 마포구 와우산로 21"
+                style={inputStyle}
+              />
+            </Field>
+
+            <Field label="소개">
+              <textarea
+                value={form.description}
+                onChange={e => set('description', e.target.value)}
+                placeholder="샵에 대한 간단한 소개를 입력해주세요"
+                rows={4}
+                style={{ ...inputStyle, resize: 'vertical' }}
+              />
+            </Field>
+
+            <Field label="공식 링크">
+              <input
+                type="url"
+                value={form.shop_link}
+                onChange={e => set('shop_link', e.target.value)}
+                placeholder="https://..."
+                style={inputStyle}
+              />
+            </Field>
+
             <Field label="주차">
               <div style={{ display: 'flex', gap: '8px' }}>
                 {[
@@ -261,44 +276,57 @@ export default function ShopForm({ mode, shop }: Props) {
                 />
               </Field>
             )}
+
+            {error && (
+              <div style={{
+                padding: '12px', borderRadius: '8px',
+                background: 'var(--red-l)', color: 'var(--red)',
+                fontSize: '13px', fontWeight: 700,
+              }}>
+                {error}
+              </div>
+            )}
+
+            <button
+              onClick={handleSubmit}
+              disabled={submitting}
+              style={{
+                width: '100%', padding: '14px', borderRadius: '12px',
+                background: submitting ? 'var(--border)' : 'var(--accent)',
+                color: '#fff', border: 'none',
+                fontWeight: 900, fontSize: '16px',
+                cursor: submitting ? 'not-allowed' : 'pointer',
+                fontFamily: 'inherit',
+              }}
+            >
+              {submitting ? '처리 중...' : mode === 'create' ? '등록 완료' : '수정 완료'}
+            </button>
+
+            {mode === 'create' && (
+              <p style={{ fontSize: '12px', color: 'var(--muted)', textAlign: 'center', marginTop: '-12px' }}>
+                등록 후 관리자 승인 후 지도에 표시돼요.
+              </p>
+            )}
           </>
         )}
 
-        {error && (
-          <div style={{
-            padding: '12px', borderRadius: '8px',
-            background: 'var(--red-l)', color: 'var(--red)',
-            fontSize: '13px', fontWeight: 700,
-          }}>
-            {error}
-          </div>
-        )}
-
-        <button
-          onClick={handleSubmit}
-          disabled={submitting}
-          style={{
-            width: '100%', padding: '14px', borderRadius: '12px',
-            background: submitting ? 'var(--border)' : 'var(--accent)',
-            color: '#fff', border: 'none',
-            fontWeight: 900, fontSize: '16px',
-            cursor: submitting ? 'not-allowed' : 'pointer',
-            fontFamily: 'inherit',
-          }}
-        >
-          {submitting ? '처리 중...' : mode === 'create' ? '등록 완료' : '수정 완료'}
-        </button>
-
-        {mode === 'create' && (
-          <p style={{ fontSize: '12px', color: 'var(--muted)', textAlign: 'center', marginTop: '-12px' }}>
-            등록 후 관리자 승인 후 지도에 표시돼요. 영업시간, 작품, 굿즈 정보는 등록 후 천천히 추가할 수 있어요.
-          </p>
-        )}
-
-        {mode === 'edit' && shop && (
+        {/* 취급 분야 / 작품 / 굿즈 — 등록 직후 또는 수정 모드에서 항상 표시 */}
+        {enrichmentShopId && (
           <>
             <div style={{ height: '1px', background: 'var(--border)', margin: '8px 0' }} />
-            <ShopEnrichmentSection shopId={shop.id} />
+            <ShopEnrichmentSection shopId={enrichmentShopId} />
+            {createdShopId && createdShopSlug && (
+              <button
+  onClick={() => router.push('/profile?tab=shops')}
+                style={{
+                  width: '100%', padding: '12px', borderRadius: '10px',
+                  border: '1px solid var(--border)', background: 'var(--surface)',
+                  fontWeight: 700, fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit',
+                }}
+              >
+                완료, 샵 페이지로 이동
+              </button>
+            )}
           </>
         )}
       </div>

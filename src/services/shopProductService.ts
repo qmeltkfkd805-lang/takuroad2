@@ -177,3 +177,23 @@ export async function searchProductsAcrossShops(query: string) {
 
   return data ?? []
 }
+
+// 샵 전체의 취급 분야 (작품 무관, 간단한 칩 선택)
+export async function getShopGoodsCategories(shopId: string): Promise<string[]> {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('shop_goods_categories')
+    .select('goods_type_id')
+    .eq('shop_id', shopId)
+  return (data ?? []).map((d: any) => d.goods_type_id)
+}
+
+export async function updateShopGoodsCategories(shopId: string, goodsTypeIds: string[]): Promise<boolean> {
+  const supabase = createClient()
+  await supabase.from('shop_goods_categories').delete().eq('shop_id', shopId)
+  if (goodsTypeIds.length === 0) return true
+  const { error } = await supabase
+    .from('shop_goods_categories')
+    .insert(goodsTypeIds.map(id => ({ shop_id: shopId, goods_type_id: id })) as any)
+  return !error
+}

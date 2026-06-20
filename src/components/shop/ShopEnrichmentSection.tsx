@@ -5,6 +5,7 @@ import { getAllTags } from '@/services/shopService'
 import {
   getShopTags, updateShopTags, getShopProductsBySeries,
   upsertShopProduct, getAllGoodsTypes, Availability, AVAILABILITY_LABEL,
+  getShopGoodsCategories, updateShopGoodsCategories,
 } from '@/services/shopProductService'
 import { useAuth } from '@/components/layout/AuthProvider'
 
@@ -20,24 +21,28 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
   const [myTags, setMyTags] = useState<any[]>([])
   const [allGoodsTypes, setAllGoodsTypes] = useState<any[]>([])
   const [products, setProducts] = useState<any[]>([])
+  const [myGoodsCategories, setMyGoodsCategories] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
   const [savingTags, setSavingTags] = useState(false)
+  const [savingCategories, setSavingCategories] = useState(false)
 
   useEffect(() => {
     loadAll()
   }, [shopId])
 
   async function loadAll() {
-    const [tags, shopTags, goodsTypes, productsBySeries] = await Promise.all([
+    const [tags, shopTags, goodsTypes, productsBySeries, goodsCategories] = await Promise.all([
       getAllTags(),
       getShopTags(shopId),
       getAllGoodsTypes(),
       getShopProductsBySeries(shopId),
+      getShopGoodsCategories(shopId),
     ])
     setAllTags(tags)
     setMyTags(shopTags)
     setAllGoodsTypes(goodsTypes)
     setProducts(productsBySeries)
+    setMyGoodsCategories(goodsCategories)
     setLoading(false)
   }
 
@@ -54,6 +59,18 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
     await updateShopTags(shopId, myTags.map(t => t.id))
     await loadAll()
     setSavingTags(false)
+  }
+
+  function toggleGoodsCategory(id: string) {
+    setMyGoodsCategories(prev =>
+      prev.includes(id) ? prev.filter(g => g !== id) : [...prev, id]
+    )
+  }
+
+  async function saveGoodsCategories() {
+    setSavingCategories(true)
+    await updateShopGoodsCategories(shopId, myGoodsCategories)
+    setSavingCategories(false)
   }
 
   async function cycleAvailability(tagId: string, goodsTypeId: string, current: Availability) {
@@ -76,6 +93,50 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+
+      {/* 취급 분야 (작품 무관, 칩 형태 간단 선택) */}
+      <div>
+        <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '6px' }}>📦 취급 분야</h3>
+        <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '10px' }}>
+          이 가게에서 주로 취급하는 분야를 선택해주세요 (복수 선택 가능)
+        </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
+          {allGoodsTypes.map((gt: any) => {
+            const selected = myGoodsCategories.includes(gt.id)
+            return (
+              <button
+                key={gt.id}
+                onClick={() => toggleGoodsCategory(gt.id)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '6px',
+                  padding: '8px 14px', borderRadius: '20px', cursor: 'pointer',
+                  border: `1.5px solid ${selected ? 'var(--accent)' : 'var(--border)'}`,
+                  background: selected ? 'var(--accent-l)' : 'var(--surface)',
+                  color: selected ? 'var(--accent)' : 'var(--text)',
+                  fontSize: '13px', fontWeight: 700, fontFamily: 'inherit',
+                }}
+              >
+                <span>{gt.icon}</span>
+                <span>{gt.name}</span>
+                {selected && <span style={{ fontSize: '12px' }}>✓</span>}
+              </button>
+            )
+          })}
+        </div>
+        <button
+          onClick={saveGoodsCategories}
+          disabled={savingCategories}
+          style={{
+            padding: '9px 16px', borderRadius: '8px', border: 'none',
+            background: 'var(--accent)', color: '#fff', fontWeight: 700,
+            fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
+          }}
+        >
+          {savingCategories ? '저장 중...' : '취급 분야 저장'}
+        </button>
+      </div>
+
+      <div style={{ height: '1px', background: 'var(--border)' }} />
 
       {/* 1단계: 취급 작품 (가벼운 입력) */}
       <div>

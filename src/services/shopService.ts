@@ -162,7 +162,7 @@ export async function getSavedShopIds(userId: string): Promise<string[]> {
 export async function createShop(
   data: any,
   userId: string
-): Promise<{ slug: string } | null> {
+): Promise<{ slug: string; id: string } | null> {
   const supabase = createClient()
 
   const { data: shop, error } = await supabase
@@ -203,7 +203,7 @@ export async function createShop(
     }
   }
 
-  return { slug: shop.slug }
+  return { slug: shop.slug, id: shop.id }
 }
 
 export async function updateShop(
