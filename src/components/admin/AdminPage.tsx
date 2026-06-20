@@ -12,8 +12,9 @@ import { Shop } from '@/types/shop'
 import Link from 'next/link'
 import { ROUTES } from '@/lib/constants/routes'
 import OfficialRouteTab from './OfficialRouteTab'
+import SeasonalEventTab from './SeasonalEventTab'
 
-type Tab = 'shops' | 'verify' | 'routes'
+type Tab = 'shops' | 'verify' | 'routes' | 'events'
 
 export default function AdminPage() {
   const router = useRouter()
@@ -88,7 +89,7 @@ export default function AdminPage() {
       }}>
         <h1 style={{ fontSize: '18px', fontWeight: 900, marginBottom: '12px' }}>관리자 페이지</h1>
 
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '2px' }}>
           <TabButton active={tab === 'shops'} onClick={() => setTab('shops')}>
             샵 승인 {pendingShops.length > 0 && `(${pendingShops.length})`}
           </TabButton>
@@ -97,6 +98,9 @@ export default function AdminPage() {
           </TabButton>
           <TabButton active={tab === 'routes'} onClick={() => setTab('routes')}>
             공식 루트
+          </TabButton>
+          <TabButton active={tab === 'events'} onClick={() => setTab('events')}>
+            시즌 이벤트
           </TabButton>
         </div>
       </div>
@@ -212,6 +216,7 @@ export default function AdminPage() {
       )}
 
       {tab === 'routes' && <OfficialRouteTab />}
+      {tab === 'events' && <SeasonalEventTab />}
     </div>
   )
 }
@@ -229,7 +234,7 @@ function TabButton({ active, onClick, children }: {
         border: 'none', cursor: 'pointer', fontFamily: 'inherit',
         background: active ? 'var(--accent)' : 'var(--surface2)',
         color: active ? '#fff' : 'var(--text)',
-        fontWeight: 700, fontSize: '13px',
+        fontWeight: 700, fontSize: '13px', whiteSpace: 'nowrap', flexShrink: 0,
       }}
     >
       {children}

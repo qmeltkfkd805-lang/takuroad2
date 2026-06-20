@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { ROUTES } from '@/lib/constants/routes'
 import { getMyPassport, OtakuPassport } from '@/services/passportService'
@@ -94,6 +95,16 @@ export default function ProfilePage() {
               {profile.role === 'admin' ? '관리자' : profile.role === 'manager' ? '매니저' : '일반 회원'}
             </div>
           </div>
+          {profile.role === 'admin' && (
+            <Link
+              href="/admin"
+              style={{
+                fontSize: '12px', color: 'var(--accent)', background: 'var(--accent-l)',
+                border: '1px solid var(--accent)', borderRadius: '8px',
+                padding: '6px 10px', cursor: 'pointer', textDecoration: 'none', fontWeight: 700,
+              }}
+            >⚙️ 관리자</Link>
+          )}
           <button
             onClick={async () => { await signOut(); router.push('/') }}
             style={{
