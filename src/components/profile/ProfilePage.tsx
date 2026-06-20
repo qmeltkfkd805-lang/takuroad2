@@ -10,8 +10,9 @@ import MyReviewsTab from './MyReviewsTab'
 import MyShopsTab from './MyShopsTab'
 import VerifyStatusTab from './VerifyStatusTab'
 import AccountSettingsTab from './AccountSettingsTab'
+import BadgesTab from './BadgesTab'
 
-type Tab = 'saved' | 'routes' | 'reviews' | 'comments' | 'shops' | 'verify' | 'settings'
+type Tab = 'saved' | 'routes' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'settings'
 
 const TABS: { key: Tab; label: string; icon: string }[] = [
   { key: 'saved',    label: '저장한 샵',    icon: '🔖' },
@@ -20,6 +21,7 @@ const TABS: { key: Tab; label: string; icon: string }[] = [
   { key: 'comments', label: '내 댓글',      icon: '💬' },
   { key: 'shops',    label: '내 샵',        icon: '🏪' },
   { key: 'verify',   label: '인증 현황',    icon: '✅' },
+  { key: 'badges',   label: '배지',         icon: '🏅' },
   { key: 'settings', label: '설정',         icon: '⚙️' },
 ]
 
@@ -45,7 +47,6 @@ export default function ProfilePage() {
   return (
     <div style={{ maxWidth: '680px', margin: '0 auto', minHeight: '100dvh', background: 'var(--surface)' }}>
 
-      {/* 헤더 */}
       <div style={{
         position: 'sticky', top: 0, zIndex: 50,
         background: 'var(--surface)', borderBottom: '1px solid var(--border)',
@@ -84,7 +85,6 @@ export default function ProfilePage() {
           >로그아웃</button>
         </div>
 
-        {/* 탭 */}
         <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '2px' }}>
           {TABS.map(t => (
             <button
@@ -104,7 +104,6 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* 탭 콘텐츠 */}
       <div>
         {tab === 'saved' && <SavedShopsTab userId={user.id} />}
         {tab === 'routes' && <MyRoutesTab userId={user.id} />}
@@ -112,6 +111,7 @@ export default function ProfilePage() {
         {tab === 'comments' && <EmptyTab text="댓글 기능은 곧 추가될 예정이에요" />}
         {tab === 'shops' && <MyShopsTab userId={user.id} />}
         {tab === 'verify' && <VerifyStatusTab userId={user.id} />}
+        {tab === 'badges' && <BadgesTab userId={user.id} />}
         {tab === 'settings' && <AccountSettingsTab />}
       </div>
     </div>

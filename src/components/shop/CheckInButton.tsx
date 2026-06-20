@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { useCurrentLocation, formatDistance } from '@/hooks/useCurrentLocation'
+import { useCurrentLocation } from '@/hooks/useCurrentLocation'
 import { createCheckIn, getMyCheckInStatus, getShopCheckInCount } from '@/services/checkInService'
+import { createClient } from '@/lib/supabase/client'
 
 interface Props {
   shopId: string
@@ -20,6 +21,7 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
   const [checkInCount, setCheckInCount] = useState(0)
   const [submitting, setSubmitting] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
+  const [newBadge, setNewBadge] = useState<{ name: string; rarity: string } | null>(null)
 
   useEffect(() => {
     if (user) {
@@ -29,10 +31,6 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
   }, [user, shopId])
 
   if (!shopLat || !shopLng) return null
-
-  const distance = location ? Math.round(
-    Math.sqrt((location.lat - shopLat) ** 2 + (location.lng - shopLng) ** 2) * 111000
-  ) : null
 
   async function handleCheckIn() {
     if (!user) return
@@ -53,6 +51,20 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
       setCheckInCount(c => c + 1)
       setToast('체크인 완료!')
       setTimeout(() => setToast(null), 2500)
+
+      if (result.newTierIds && result.newTierIds.length > 0) {
+        const supabase = createClient()
+        const { data } = await supabase
+          .from('badge_tiers')
+          .select('name, rarity')
+          .eq('id', result.newTierIds[0])
+          .maybeSingle()
+        if (data) {
+          setTimeout(() => {
+            setNewBadge({ name: data.name, rarity: data.rarity })
+          }, 600)
+        }
+      }
     } else {
       setToast(result.error ?? '체크인에 실패했어요')
       setTimeout(() => setToast(null), 2500)
@@ -81,9 +93,7 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
             ? '위치 확인 중...'
             : submitting
               ? '체크인 중...'
-              : !location
-                ? '📍 체크인하기'
-                : '📍 체크인하기'}
+              : '📍 체크인하기'}
       </button>
 
       {checkInCount > 0 && (
@@ -98,7 +108,6 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
         </p>
       )}
 
-      {/* 토스트 */}
       {toast && (
         <div style={{
           position: 'fixed', bottom: '90px', left: '50%', transform: 'translateX(-50%)',
@@ -109,6 +118,28 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
           whiteSpace: 'nowrap',
         }}>
           {toast}
+        </div>
+      )}
+
+      {newBadge && (
+        <div
+          onClick={() => setNewBadge(null)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 1000,
+            background: 'rgba(0,0,0,.6)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer',
+          }}
+        >
+          <div style={{
+            background: 'var(--surface)', borderRadius: '20px',
+            padding: '32px 28px', textAlign: 'center', maxWidth: '300px',
+          }}>
+            <div style={{ fontSize: '48px', marginBottom: '12px' }}>🎉</div>
+            <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '8px' }}>새 배지 획득!</p>
+            <div style={{ fontSize: '36px', marginBottom: '8px' }}>🏅</div>
+            <p style={{ fontSize: '16px', fontWeight: 900 }}>{newBadge.name}</p>
+          </div>
         </div>
       )}
     </div>
