@@ -4,6 +4,10 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { ROUTES } from '@/lib/constants/routes'
+import { getMyPassport, OtakuPassport } from '@/services/passportService'
+import PassportCard from '@/components/passport/PassportCard'
+import ActivityFeed from '@/components/passport/ActivityFeed'
+import TitleBadgeSelector from '@/components/passport/TitleBadgeSelector'
 import SavedShopsTab from './SavedShopsTab'
 import MyRoutesTab from './MyRoutesTab'
 import MyReviewsTab from './MyReviewsTab'
@@ -13,9 +17,10 @@ import AccountSettingsTab from './AccountSettingsTab'
 import BadgesTab from './BadgesTab'
 import CollectionTab from './CollectionTab'
 
-type Tab = 'saved' | 'routes' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
+type Tab = 'passport' | 'saved' | 'routes' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
 
 const TABS: { key: Tab; label: string; icon: string }[] = [
+  { key: 'passport',   label: '여권',         icon: '🎌' },
   { key: 'saved',      label: '저장한 샵',    icon: '🔖' },
   { key: 'routes',     label: '내 루트',      icon: '🗺️' },
   { key: 'reviews',    label: '내 후기',      icon: '✍️' },
@@ -30,13 +35,25 @@ const TABS: { key: Tab; label: string; icon: string }[] = [
 export default function ProfilePage() {
   const router = useRouter()
   const { user, profile, loading, signOut } = useAuth()
-  const [tab, setTab] = useState<Tab>('saved')
+  const [tab, setTab] = useState<Tab>('passport')
+  const [passport, setPassport] = useState<OtakuPassport | null>(null)
+  const [showTitleSelector, setShowTitleSelector] = useState(false)
 
   useEffect(() => {
     if (!loading && !user) {
       router.push(ROUTES.login)
     }
   }, [loading, user, router])
+
+  useEffect(() => {
+    if (user) loadPassport()
+  }, [user])
+
+  async function loadPassport() {
+    if (!user) return
+    const data = await getMyPassport(user.id)
+    setPassport(data)
+  }
 
   if (loading || !user || !profile) {
     return (
@@ -107,6 +124,20 @@ export default function ProfilePage() {
       </div>
 
       <div>
+        {tab === 'passport' && (
+          passport ? (
+            <>
+              <PassportCard
+                passport={passport}
+                isOwner
+                onChangeTitleClick={() => setShowTitleSelector(true)}
+              />
+              <ActivityFeed activities={passport.recentActivities} />
+            </>
+          ) : (
+            <div style={{ padding: '60px', textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
+          )
+        )}
         {tab === 'saved' && <SavedShopsTab userId={user.id} />}
         {tab === 'routes' && <MyRoutesTab userId={user.id} />}
         {tab === 'reviews' && <MyReviewsTab userId={user.id} />}
@@ -117,6 +148,14 @@ export default function ProfilePage() {
         {tab === 'collection' && <CollectionTab userId={user.id} />}
         {tab === 'settings' && <AccountSettingsTab />}
       </div>
+
+      {showTitleSelector && (
+        <TitleBadgeSelector
+          userId={user.id}
+          onClose={() => setShowTitleSelector(false)}
+          onSelected={loadPassport}
+        />
+      )}
     </div>
   )
 }
