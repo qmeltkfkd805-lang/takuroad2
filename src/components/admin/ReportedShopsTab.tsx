@@ -11,7 +11,7 @@ import { ROUTES } from '@/lib/constants/routes'
 export default function ReportedShopsTab() {
   const { user } = useAuth()
   const [reportedShops, setReportedShops] = useState<any[]>([])
-  const [selectedShopId, setSelectedShopId] = useState<string | null>(null)
+  const [selectedShop, setSelectedShop] = useState<any | null>(null)
   const [suggestions, setSuggestions] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -25,31 +25,45 @@ export default function ReportedShopsTab() {
     setLoading(false)
   }
 
-  async function openShopDetail(shopId: string) {
-    setSelectedShopId(shopId)
-    const data = await getShopSuggestions(shopId)
+  async function openShopDetail(shop: any) {
+    setSelectedShop(shop)
+    const data = await getShopSuggestions(shop.id)
     setSuggestions(data)
   }
 
   async function handleResolve(suggestionId: string, status: 'approved' | 'rejected') {
-    if (!user) return
+    if (!user || !selectedShop) return
     await resolveSuggestion(suggestionId, status, user.id)
-    if (selectedShopId) {
-      const data = await getShopSuggestions(selectedShopId)
-      setSuggestions(data)
-    }
+    const data = await getShopSuggestions(selectedShop.id)
+    setSuggestions(data)
     loadReported()
   }
 
   if (loading) return <div style={{ padding: '40px', textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
 
-  if (selectedShopId) {
+  if (selectedShop) {
     return (
       <div>
-        <button
-          onClick={() => setSelectedShopId(null)}
-          style={{ padding: '16px', background: 'none', border: 'none', fontSize: '14px', cursor: 'pointer' }}
-        >← 목록으로</button>
+        <div style={{
+          padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          borderBottom: '1px solid var(--border)',
+        }}>
+          <button
+            onClick={() => setSelectedShop(null)}
+            style={{ background: 'none', border: 'none', fontSize: '14px', cursor: 'pointer' }}
+          >← 목록으로</button>
+          <Link
+            href={ROUTES.shopEdit(selectedShop.slug)}
+            target="_blank"
+            style={{
+              padding: '8px 14px', borderRadius: '8px',
+              background: 'var(--accent)', color: '#fff',
+              fontWeight: 700, fontSize: '13px', textDecoration: 'none',
+            }}
+          >
+            ✏️ {selectedShop.name} 수정하기
+          </Link>
+        </div>
 
         {suggestions.length === 0 ? (
           <p style={{ padding: '40px', textAlign: 'center', color: 'var(--muted)' }}>신고 내역이 없어요</p>
@@ -108,7 +122,7 @@ export default function ReportedShopsTab() {
         reportedShops.map(({ shop, count }) => (
           <div
             key={shop.id}
-            onClick={() => openShopDetail(shop.id)}
+            onClick={() => openShopDetail(shop)}
             style={{
               padding: '16px', borderBottom: '1px solid var(--border)', cursor: 'pointer',
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',

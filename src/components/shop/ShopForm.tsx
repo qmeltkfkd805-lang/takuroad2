@@ -9,6 +9,7 @@ import { createShop, updateShop } from '@/services/shopService'
 import { Shop, ShopFormData } from '@/types/shop'
 import { generateSlug } from '@/lib/utils/shop'
 import ShopEnrichmentSection from './ShopEnrichmentSection'
+import ShopEventManager from './ShopEventManager'
 
 interface Props {
   mode: 'create' | 'edit'
@@ -308,6 +309,11 @@ export default function ShopForm({ mode, shop }: Props) {
           <>
             <div style={{ height: '1px', background: 'var(--border)', margin: '8px 0' }} />
             <ShopEnrichmentSection shopId={enrichmentShopId} />
+
+            <div style={{ height: '1px', background: 'var(--border)', margin: '8px 0' }} />
+            <h3 style={{ fontSize: '14px', fontWeight: 900 }}>🎉 이벤트 / 공지</h3>
+            <ShopEventManager shopId={enrichmentShopId} />
+            
             {createdShopId && createdShopSlug && (
               <button
   onClick={() => router.push('/profile?tab=shops')}

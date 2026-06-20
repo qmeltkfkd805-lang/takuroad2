@@ -13,6 +13,7 @@ import VerifyRequestButton from './VerifyRequestButton'
 import CheckInButton from './CheckInButton'
 import ReviewSection from './ReviewSection'
 import ReportIssueButton from './ReportIssueButton'
+import ShopEventList from './ShopEventList'
 
 interface Props {
   shop: Shop
@@ -173,6 +174,8 @@ export default function ShopDetailPage({ shop }: Props) {
           </div>
         )}
 
+<ShopEventList shopId={shop.id} />
+
         {/* 체크인 버튼 */}
         <CheckInButton
           shopId={shop.id}
@@ -311,7 +314,7 @@ export default function ShopDetailPage({ shop }: Props) {
 <div style={{ marginTop: '24px', textAlign: 'center' }}>
           <ReportIssueButton shopId={shop.id} />
         </div>
-        
+
       </div>
     </div>
   )

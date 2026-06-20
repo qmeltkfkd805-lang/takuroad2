@@ -45,11 +45,16 @@ export async function getMostReportedShops(limit = 20) {
 // 특정 샵의 신고/제보 내역
 export async function getShopSuggestions(shopId: string) {
   const supabase = createClient()
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('shop_suggestions')
-    .select('id, suggestion_type, payload, status, created_at, profiles ( nickname )')
+    .select('id, suggestion_type, payload, status, created_at, profiles!shop_suggestions_user_id_fkey ( nickname )')
     .eq('shop_id', shopId)
     .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('getShopSuggestions error:', JSON.stringify(error))
+    return []
+  }
   return data ?? []
 }
 
