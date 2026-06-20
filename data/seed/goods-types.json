@@ -1,0 +1,20 @@
+[
+  { "name": "아크릴", "slug": "acrylic", "icon": "🎴", "isCollectible": true },
+  { "name": "캔뱃지", "slug": "can-badge", "icon": "📍", "isCollectible": true },
+  { "name": "피규어", "slug": "figure", "icon": "🗿", "isCollectible": true },
+  { "name": "넨도로이드", "slug": "nendoroid", "icon": "🧸", "isCollectible": true },
+  { "name": "인형", "slug": "plushie", "icon": "🧸", "isCollectible": true },
+  { "name": "슬리브", "slug": "sleeve", "icon": "🃏", "isCollectible": true },
+  { "name": "카드", "slug": "card", "icon": "🃏", "isCollectible": true },
+  { "name": "포스터", "slug": "poster", "icon": "🖼️", "isCollectible": false },
+  { "name": "이치방쿠지", "slug": "ichiban-kuji", "icon": "🎰", "isCollectible": true },
+  { "name": "가챠", "slug": "gacha", "icon": "🎰", "isCollectible": true },
+  { "name": "TCG", "slug": "tcg", "icon": "🃏", "isCollectible": true },
+  { "name": "동인지", "slug": "doujinshi", "icon": "📖", "isCollectible": false },
+  { "name": "프라모델", "slug": "plamodel", "icon": "🔧", "isCollectible": true },
+  { "name": "코스프레", "slug": "cosplay", "icon": "👗", "isCollectible": false },
+  { "name": "음반", "slug": "music", "icon": "💿", "isCollectible": false },
+  { "name": "CD", "slug": "cd", "icon": "💿", "isCollectible": false },
+  { "name": "BD", "slug": "bluray", "icon": "📀", "isCollectible": false },
+  { "name": "게임", "slug": "game", "icon": "🎮", "isCollectible": false }
+]

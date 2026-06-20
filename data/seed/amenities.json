@@ -1,0 +1,19 @@
+[
+  { "category": "service", "name": "택배 가능", "slug": "delivery", "icon": "📦" },
+  { "category": "service", "name": "예약 가능", "slug": "reservation", "icon": "📅" },
+  { "category": "service", "name": "교환 가능", "slug": "exchange", "icon": "🔄" },
+  { "category": "service", "name": "택스프리", "slug": "tax-free", "icon": "🧾" },
+  { "category": "facility", "name": "와이파이", "slug": "wifi", "icon": "📶" },
+  { "category": "facility", "name": "화장실", "slug": "restroom", "icon": "🚻" },
+  { "category": "facility", "name": "엘리베이터", "slug": "elevator", "icon": "🛗" },
+  { "category": "facility", "name": "포토존", "slug": "photo-zone", "icon": "📸" },
+  { "category": "payment", "name": "카드", "slug": "card", "icon": "💳" },
+  { "category": "payment", "name": "삼성페이", "slug": "samsung-pay", "icon": "📱" },
+  { "category": "payment", "name": "애플페이", "slug": "apple-pay", "icon": "📱" },
+  { "category": "payment", "name": "제로페이", "slug": "zero-pay", "icon": "📱" },
+  { "category": "sales_style", "name": "새상품 위주", "slug": "new-items", "icon": "✨" },
+  { "category": "sales_style", "name": "중고 위주", "slug": "used-items", "icon": "♻️" },
+  { "category": "sales_style", "name": "정가 판매", "slug": "fixed-price", "icon": "🏷️" },
+  { "category": "sales_style", "name": "프리미엄 붙음", "slug": "premium-price", "icon": "💎" },
+  { "category": "sales_style", "name": "할인 자주 함", "slug": "frequent-discount", "icon": "🎁" }
+]

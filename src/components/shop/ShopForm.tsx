@@ -8,6 +8,7 @@ import { ROUTES } from '@/lib/constants/routes'
 import { createShop, updateShop } from '@/services/shopService'
 import { Shop, ShopFormData } from '@/types/shop'
 import { generateSlug } from '@/lib/utils/shop'
+import ShopEnrichmentSection from './ShopEnrichmentSection'
 
 interface Props {
   mode: 'create' | 'edit'
@@ -27,6 +28,8 @@ export default function ShopForm({ mode, shop }: Props) {
   const [form, setForm] = useState<ShopFormData>(EMPTY_FORM)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+
+  const isCreateMode = mode === 'create'
 
   useEffect(() => {
     if (!user) router.push(ROUTES.login)
@@ -89,7 +92,7 @@ export default function ShopForm({ mode, shop }: Props) {
         setSubmitting(false)
         return
       }
-      router.push(ROUTES.shop(result.slug))
+      router.push(`${ROUTES.shopEdit(result.slug)}?welcome=1`)
     } else if (shop) {
       const ok = await updateShop(shop.id, form, user.id)
       if (!ok) {
@@ -112,7 +115,7 @@ export default function ShopForm({ mode, shop }: Props) {
           background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer',
         }}>←</button>
         <h1 style={{ fontSize: '16px', fontWeight: 900 }}>
-          {mode === 'create' ? '샵 등록' : '샵 수정'}
+          {mode === 'create' ? '샵 등록 (1분이면 끝나요)' : '샵 수정'}
         </h1>
       </div>
 
@@ -194,67 +197,71 @@ export default function ShopForm({ mode, shop }: Props) {
           />
         </Field>
 
-        <Field label="주차">
-          <div style={{ display: 'flex', gap: '8px' }}>
-            {[
-              { label: '모름', value: null },
-              { label: '가능', value: true },
-              { label: '불가', value: false },
-            ].map(opt => (
-              <button
-                key={String(opt.value)}
-                onClick={() => set('parking', opt.value)}
-                style={{
-                  padding: '8px 16px', borderRadius: '8px', cursor: 'pointer',
-                  border: `1.5px solid ${form.parking === opt.value ? 'var(--accent)' : 'var(--border)'}`,
-                  background: form.parking === opt.value ? 'var(--accent-l)' : 'var(--surface)',
-                  color: form.parking === opt.value ? 'var(--accent)' : 'var(--text)',
-                  fontWeight: 700, fontSize: '13px', fontFamily: 'inherit',
-                }}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
-          {form.parking !== null && (
-            <input
-              type="text"
-              value={form.parking_note}
-              onChange={e => set('parking_note', e.target.value)}
-              placeholder="주차 관련 메모 (예: 건물 내 2시간 무료)"
-              style={{ ...inputStyle, marginTop: '8px' }}
-            />
-          )}
-        </Field>
+        {!isCreateMode && (
+          <>
+            <Field label="주차">
+              <div style={{ display: 'flex', gap: '8px' }}>
+                {[
+                  { label: '모름', value: null },
+                  { label: '가능', value: true },
+                  { label: '불가', value: false },
+                ].map(opt => (
+                  <button
+                    key={String(opt.value)}
+                    onClick={() => set('parking', opt.value)}
+                    style={{
+                      padding: '8px 16px', borderRadius: '8px', cursor: 'pointer',
+                      border: `1.5px solid ${form.parking === opt.value ? 'var(--accent)' : 'var(--border)'}`,
+                      background: form.parking === opt.value ? 'var(--accent-l)' : 'var(--surface)',
+                      color: form.parking === opt.value ? 'var(--accent)' : 'var(--text)',
+                      fontWeight: 700, fontSize: '13px', fontFamily: 'inherit',
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+              {form.parking !== null && (
+                <input
+                  type="text"
+                  value={form.parking_note}
+                  onChange={e => set('parking_note', e.target.value)}
+                  placeholder="주차 관련 메모 (예: 건물 내 2시간 무료)"
+                  style={{ ...inputStyle, marginTop: '8px' }}
+                />
+              )}
+            </Field>
 
-        <Field label="팝업 기간" hint="팝업스토어인 경우에만 입력해주세요">
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            <input
-              type="date"
-              value={form.start_date}
-              onChange={e => set('start_date', e.target.value)}
-              style={{ ...inputStyle, flex: 1 }}
-            />
-            <span style={{ color: 'var(--muted)' }}>~</span>
-            <input
-              type="date"
-              value={form.end_date}
-              onChange={e => set('end_date', e.target.value)}
-              style={{ ...inputStyle, flex: 1 }}
-            />
-          </div>
-        </Field>
+            <Field label="팝업 기간" hint="팝업스토어인 경우에만 입력해주세요">
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <input
+                  type="date"
+                  value={form.start_date}
+                  onChange={e => set('start_date', e.target.value)}
+                  style={{ ...inputStyle, flex: 1 }}
+                />
+                <span style={{ color: 'var(--muted)' }}>~</span>
+                <input
+                  type="date"
+                  value={form.end_date}
+                  onChange={e => set('end_date', e.target.value)}
+                  style={{ ...inputStyle, flex: 1 }}
+                />
+              </div>
+            </Field>
 
-        {(form.start_date || form.end_date) && (
-          <Field label="팝업 이벤트 내용">
-            <textarea
-              value={form.event_info}
-              onChange={e => set('event_info', e.target.value)}
-              placeholder="이벤트 내용을 입력해주세요"
-              rows={3}
-              style={{ ...inputStyle, resize: 'vertical' }}
-            />
-          </Field>
+            {(form.start_date || form.end_date) && (
+              <Field label="팝업 이벤트 내용">
+                <textarea
+                  value={form.event_info}
+                  onChange={e => set('event_info', e.target.value)}
+                  placeholder="이벤트 내용을 입력해주세요"
+                  rows={3}
+                  style={{ ...inputStyle, resize: 'vertical' }}
+                />
+              </Field>
+            )}
+          </>
         )}
 
         {error && (
@@ -279,13 +286,20 @@ export default function ShopForm({ mode, shop }: Props) {
             fontFamily: 'inherit',
           }}
         >
-          {submitting ? '처리 중...' : mode === 'create' ? '등록 신청' : '수정 완료'}
+          {submitting ? '처리 중...' : mode === 'create' ? '등록 완료' : '수정 완료'}
         </button>
 
         {mode === 'create' && (
           <p style={{ fontSize: '12px', color: 'var(--muted)', textAlign: 'center', marginTop: '-12px' }}>
-            등록 후 관리자 승인 후 지도에 표시돼요.
+            등록 후 관리자 승인 후 지도에 표시돼요. 영업시간, 작품, 굿즈 정보는 등록 후 천천히 추가할 수 있어요.
           </p>
+        )}
+
+        {mode === 'edit' && shop && (
+          <>
+            <div style={{ height: '1px', background: 'var(--border)', margin: '8px 0' }} />
+            <ShopEnrichmentSection shopId={shop.id} />
+          </>
         )}
       </div>
     </div>
