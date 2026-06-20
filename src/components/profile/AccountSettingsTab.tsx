@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { updateNickname, deleteAccount } from '@/services/shopService'
 
@@ -49,6 +50,20 @@ export default function AccountSettingsTab() {
 
   return (
     <div style={{ padding: '20px 16px' }}>
+
+      {/* 내 활동 (레벨/EXP) */}
+      <Link
+        href="/profile/activity"
+        style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '14px 16px', borderRadius: '10px',
+          background: 'var(--surface2)', textDecoration: 'none', color: 'var(--text)',
+          marginBottom: '32px',
+        }}
+      >
+        <span style={{ fontSize: '14px', fontWeight: 700 }}>📊 내 활동 (레벨 · 경험치)</span>
+        <span style={{ color: 'var(--muted)' }}>›</span>
+      </Link>
 
       {/* 닉네임 변경 */}
       <div style={{ marginBottom: '32px' }}>
@@ -105,16 +120,13 @@ export default function AccountSettingsTab() {
         {success && <p style={{ fontSize: '12px', color: 'var(--green)', marginTop: '6px' }}>{success}</p>}
       </div>
 
-      {/* 이메일 (읽기 전용) */}
       <div style={{ marginBottom: '32px' }}>
         <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '10px' }}>이메일</h3>
         <p style={{ fontSize: '14px', color: 'var(--muted)' }}>{user?.email}</p>
       </div>
 
-      {/* 구분선 */}
       <div style={{ height: '1px', background: 'var(--border)', margin: '0 0 32px' }} />
 
-      {/* 계정 탈퇴 */}
       <div>
         <h3 style={{ fontSize: '14px', fontWeight: 900, color: 'var(--red)', marginBottom: '10px' }}>계정 탈퇴</h3>
         <p style={{ fontSize: '12px', color: 'var(--muted)', lineHeight: 1.6, marginBottom: '14px' }}>
