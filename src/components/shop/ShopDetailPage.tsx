@@ -296,7 +296,7 @@ export default function ShopDetailPage({ shop }: Props) {
             <p style={{
               fontSize: '14px', lineHeight: 1.8, color: 'var(--text)',
               background: 'var(--surface2)', borderRadius: '10px', padding: '14px',
-              marginBottom: '24px',
+              marginBottom: '24px', whiteSpace: 'pre-wrap',
             }}>
               {shop.description}
             </p>
