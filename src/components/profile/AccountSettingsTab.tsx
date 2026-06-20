@@ -17,6 +17,8 @@ export default function AccountSettingsTab() {
   const [deleting, setDeleting] = useState(false)
   const [confirmText, setConfirmText] = useState('')
 
+  const currentYear = new Date().getFullYear()
+
   async function handleSaveNickname() {
     if (!user) return
     const trimmed = nickname.trim()
@@ -51,9 +53,21 @@ export default function AccountSettingsTab() {
   return (
     <div style={{ padding: '20px 16px' }}>
 
-      {/* 내 활동 (레벨/EXP) */}
       <Link
         href="/profile/activity"
+        style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '14px 16px', borderRadius: '10px',
+          background: 'var(--surface2)', textDecoration: 'none', color: 'var(--text)',
+          marginBottom: '10px',
+        }}
+      >
+        <span style={{ fontSize: '14px', fontWeight: 700 }}>📊 내 활동 (레벨 · 경험치)</span>
+        <span style={{ color: 'var(--muted)' }}>›</span>
+      </Link>
+
+      <Link
+        href={`/profile/report/${currentYear}`}
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '14px 16px', borderRadius: '10px',
@@ -61,11 +75,10 @@ export default function AccountSettingsTab() {
           marginBottom: '32px',
         }}
       >
-        <span style={{ fontSize: '14px', fontWeight: 700 }}>📊 내 활동 (레벨 · 경험치)</span>
+        <span style={{ fontSize: '14px', fontWeight: 700 }}>📔 {currentYear}년 타쿠로드 리포트</span>
         <span style={{ color: 'var(--muted)' }}>›</span>
       </Link>
 
-      {/* 닉네임 변경 */}
       <div style={{ marginBottom: '32px' }}>
         <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '10px' }}>닉네임</h3>
         {editing ? (

@@ -22,7 +22,7 @@ import CollectionTab from './CollectionTab'
 type Tab = 'passport' | 'chronicle' | 'saved' | 'routes' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
 
 const TABS: { key: Tab; label: string; icon: string }[] = [
-  { key: 'passport',   label: '여권',         icon: '🎌' },
+  { key: 'passport',   label: '여권',         icon: '📔' },
   { key: 'chronicle',  label: '연대기',       icon: '📖' },
   { key: 'saved',      label: '저장한 샵',    icon: '🔖' },
   { key: 'routes',     label: '내 루트',      icon: '🗺️' },
