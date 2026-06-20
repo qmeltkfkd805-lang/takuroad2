@@ -10,6 +10,7 @@ import { ROUTES } from '@/lib/constants/routes'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useSaved } from '@/hooks/useSaved'
 import VerifyRequestButton from './VerifyRequestButton'
+import CheckInButton from './CheckInButton'
 import ReviewSection from './ReviewSection'
 
 interface Props {
@@ -171,6 +172,15 @@ export default function ShopDetailPage({ shop }: Props) {
           </div>
         )}
 
+        {/* 체크인 버튼 */}
+        <CheckInButton
+          shopId={shop.id}
+          shopName={shop.name}
+          shopLat={shop.lat}
+          shopLng={shop.lng}
+          accentColor={color}
+        />
+
         <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
           <button
             onClick={() => router.push(`/?shop=${shop.slug}`)}
@@ -218,7 +228,7 @@ export default function ShopDetailPage({ shop }: Props) {
 
           {shop.addr && (
             
-              <a href={`https://map.kakao.com/link/search/${encodeURIComponent(shop.name)}`}
+             <a href={`https://map.kakao.com/link/search/${encodeURIComponent(shop.name)}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{
