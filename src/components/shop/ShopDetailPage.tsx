@@ -12,6 +12,7 @@ import { useSaved } from '@/hooks/useSaved'
 import VerifyRequestButton from './VerifyRequestButton'
 import CheckInButton from './CheckInButton'
 import ReviewSection from './ReviewSection'
+import ReportIssueButton from './ReportIssueButton'
 
 interface Props {
   shop: Shop
@@ -307,6 +308,10 @@ export default function ShopDetailPage({ shop }: Props) {
 
         <ReviewSection shopId={shop.id} shopName={shop.name} accentColor={color} />
 
+<div style={{ marginTop: '24px', textAlign: 'center' }}>
+          <ReportIssueButton shopId={shop.id} />
+        </div>
+        
       </div>
     </div>
   )

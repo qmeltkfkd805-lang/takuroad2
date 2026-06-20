@@ -183,7 +183,7 @@ export async function createShop(
       event_info:   data.event_info || null,
       added_by:     userId,
       owner_id:     userId,
-      status:       'pending',
+      status:       'active',
     } as any)
     .select('slug, id')
     .single()

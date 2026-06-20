@@ -13,8 +13,9 @@ import Link from 'next/link'
 import { ROUTES } from '@/lib/constants/routes'
 import OfficialRouteTab from './OfficialRouteTab'
 import SeasonalEventTab from './SeasonalEventTab'
+import ReportedShopsTab from './ReportedShopsTab'
 
-type Tab = 'shops' | 'verify' | 'routes' | 'events'
+type Tab = 'shops' | 'verify' | 'routes' | 'events' | 'reported'
 
 export default function AdminPage() {
   const router = useRouter()
@@ -95,6 +96,9 @@ export default function AdminPage() {
           </TabButton>
           <TabButton active={tab === 'verify'} onClick={() => setTab('verify')}>
             인증 심사 {verifyRequests.length > 0 && `(${verifyRequests.length})`}
+          </TabButton>
+          <TabButton active={tab === 'reported'} onClick={() => setTab('reported')}>
+            ⚠️ 신고된 샵
           </TabButton>
           <TabButton active={tab === 'routes'} onClick={() => setTab('routes')}>
             공식 루트
@@ -215,6 +219,7 @@ export default function AdminPage() {
         </div>
       )}
 
+      {tab === 'reported' && <ReportedShopsTab />}
       {tab === 'routes' && <OfficialRouteTab />}
       {tab === 'events' && <SeasonalEventTab />}
     </div>

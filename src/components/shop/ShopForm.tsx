@@ -139,18 +139,11 @@ export default function ShopForm({ mode, shop }: Props) {
               />
             </Field>
 
-            <Field label="슬러그 *" hint="URL에 사용되는 영문 주소예요 (예: animate-hongdae)">
-              <input
-                type="text"
-                value={form.slug}
-                onChange={e => set('slug', e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
-                placeholder="animate-hongdae"
-                style={inputStyle}
-              />
-              <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '4px' }}>
-                → /shop/{form.slug || '...'}
-              </div>
-            </Field>
+            {form.slug && (
+  <p style={{ fontSize: '12px', color: 'var(--muted)' }}>
+    🔗 페이지 주소: /shop/{form.slug}
+  </p>
+)}
 
             <Field label="카테고리 *" hint="이 가게의 주요 성격을 하나만 선택해주세요">
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '10px' }}>

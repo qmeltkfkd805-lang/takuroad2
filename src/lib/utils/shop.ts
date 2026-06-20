@@ -1,19 +1,22 @@
 /**
  * 한글/영문 샵 이름 → URL slug 변환
  * 예: "애니메이트 홍대" → "animate-hongdae"
- *
- * 주의: 한글 → 로마자 변환은 클라이언트에서 직접 입력받거나
- * 등록 시 영문명을 별도 입력받는 방식을 권장.
- * 여기서는 기본 정제 로직만 제공.
+ * 한글만 입력된 경우 랜덤 코드로 대체 (예: "shop-a3f9k2")
  */
 export function generateSlug(text: string): string {
-  return text
+  const slug = text
     .toLowerCase()
     .trim()
-    .replace(/[^\w\s가-힣-]/g, '')  // 특수문자 제거
+    .replace(/[가-힣]/g, '')         // 한글 제거
+    .replace(/[^\w\s-]/g, '')        // 특수문자 제거
     .replace(/\s+/g, '-')            // 공백 → 하이픈
     .replace(/-+/g, '-')             // 연속 하이픈 정리
     .replace(/^-|-$/g, '')           // 앞뒤 하이픈 제거
+
+  if (!slug) {
+    return `shop-${Math.random().toString(36).slice(2, 8)}`
+  }
+  return slug
 }
 
 /**

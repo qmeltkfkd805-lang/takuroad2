@@ -29,7 +29,7 @@ const TABS: { key: Tab; label: string; icon: string }[] = [
   { key: 'routes',     label: '내 루트',      icon: '🗺️' },
   { key: 'reviews',    label: '내 후기',      icon: '✍️' },
   { key: 'comments',   label: '내 댓글',      icon: '💬' },
-  { key: 'shops',      label: '내 샵',        icon: '🏪' },
+  { key: 'shops',      label: '등록한 샵',        icon: '🏪' },
   { key: 'verify',     label: '인증 현황',    icon: '✅' },
   { key: 'badges',     label: '배지',         icon: '🏅' },
   { key: 'collection', label: '컬렉션',       icon: '📍' },
