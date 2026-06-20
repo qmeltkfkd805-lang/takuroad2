@@ -1,15 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import {
   getAllShopEvents, createShopEvent, deactivateShopEvent,
-  pinShopEvent, deleteShopEvent, ShopEventType,
+  pinShopEvent, deleteShopEvent, uploadEventImage, ShopEventType,
   EVENT_TYPE_ICON, EVENT_TYPE_LABEL,
 } from '@/services/shopEventService'
 
 interface Props {
   shopId: string
+  shopSlug: string
 }
 
 const EVENT_TYPES: ShopEventType[] = [
@@ -17,8 +18,9 @@ const EVENT_TYPES: ShopEventType[] = [
   'sold_out', 'discount', 'reservation', 'exchange_meet', 'fan_meet',
 ]
 
-export default function ShopEventManager({ shopId }: Props) {
+export default function ShopEventManager({ shopId, shopSlug }: Props) {
   const { user } = useAuth()
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const [events, setEvents] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -27,6 +29,8 @@ export default function ShopEventManager({ shopId }: Props) {
   const [description, setDescription] = useState('')
   const [startsAt, setStartsAt] = useState('')
   const [endsAt, setEndsAt] = useState('')
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
@@ -39,18 +43,40 @@ export default function ShopEventManager({ shopId }: Props) {
     setLoading(false)
   }
 
+  function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setImageFile(file)
+    setImagePreview(URL.createObjectURL(file))
+  }
+
+  function removeImage() {
+    setImageFile(null)
+    setImagePreview(null)
+    if (fileInputRef.current) fileInputRef.current.value = ''
+  }
+
   async function handleCreate() {
     if (!user || !title.trim()) return
     setSubmitting(true)
+
+    let imageUrl: string | undefined
+    if (imageFile) {
+      const url = await uploadEventImage(imageFile, shopSlug)
+      if (url) imageUrl = url
+    }
+
     const ok = await createShopEvent({
       shopId, type, title,
       description: description || undefined,
+      imageUrl,
       startsAt: startsAt || null,
       endsAt: endsAt || null,
       userId: user.id,
     })
     if (ok) {
       setTitle(''); setDescription(''); setStartsAt(''); setEndsAt(''); setType('notice')
+      removeImage()
       setShowForm(false)
       loadEvents()
     }
@@ -127,6 +153,45 @@ export default function ShopEventManager({ shopId }: Props) {
             rows={2}
             style={{ ...inputStyle, resize: 'vertical' }}
           />
+
+          {imagePreview ? (
+            <div style={{ position: 'relative', marginBottom: '10px', display: 'inline-block' }}>
+              <img
+                src={imagePreview}
+                alt=""
+                style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '10px' }}
+              />
+              <button
+                onClick={removeImage}
+                style={{
+                  position: 'absolute', top: '-6px', right: '-6px',
+                  width: '22px', height: '22px', borderRadius: '50%',
+                  background: 'var(--red)', color: '#fff', border: 'none',
+                  cursor: 'pointer', fontSize: '12px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}
+              >✕</button>
+            </div>
+          ) : (
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              style={{
+                padding: '8px 12px', borderRadius: '8px', marginBottom: '10px',
+                border: '1.5px dashed var(--border)', background: 'var(--surface)',
+                fontSize: '12px', color: 'var(--muted)', cursor: 'pointer', fontFamily: 'inherit',
+              }}
+            >
+              📷 사진 추가 (선택)
+            </button>
+          )}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageSelect}
+            style={{ display: 'none' }}
+          />
+
           <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
             <div style={{ flex: 1 }}>
               <label style={{ fontSize: '11px', color: 'var(--muted)' }}>시작일 (선택)</label>
@@ -165,6 +230,13 @@ export default function ShopEventManager({ shopId }: Props) {
               background: event.is_active && !isExpired ? 'var(--surface)' : 'var(--surface2)',
               opacity: event.is_active && !isExpired ? 1 : 0.6,
             }}>
+              {event.image_url && (
+                <img
+                  src={event.image_url}
+                  alt=""
+                  style={{ width: '100%', maxHeight: '200px', objectFit: 'contain', borderRadius: '8px', marginBottom: '8px', background: 'var(--surface2)' }}
+                />
+              )}
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                 <span style={{ fontWeight: 700, fontSize: '13px' }}>
                   {EVENT_TYPE_ICON[event.type as ShopEventType]} {event.title}

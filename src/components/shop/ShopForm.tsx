@@ -312,8 +312,7 @@ export default function ShopForm({ mode, shop }: Props) {
 
             <div style={{ height: '1px', background: 'var(--border)', margin: '8px 0' }} />
             <h3 style={{ fontSize: '14px', fontWeight: 900 }}>🎉 이벤트 / 공지</h3>
-            <ShopEventManager shopId={enrichmentShopId} />
-            
+            <ShopEventManager shopId={enrichmentShopId} shopSlug={mode === 'edit' ? shop!.slug : createdShopSlug!} />
             {createdShopId && createdShopSlug && (
               <button
   onClick={() => router.push('/profile?tab=shops')}

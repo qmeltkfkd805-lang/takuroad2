@@ -108,3 +108,18 @@ export async function deleteShopEvent(eventId: string): Promise<boolean> {
     .eq('id', eventId)
   return !error
 }
+
+export async function uploadEventImage(file: File, shopSlug: string): Promise<string | null> {
+  const supabase = createClient()
+  const ext = file.name.split('.').pop()
+  const path = `${shopSlug}/events/${Date.now()}.${ext}`
+
+  const { error } = await supabase.storage
+    .from('shop-images')
+    .upload(path, file)
+
+  if (error) return null
+
+  const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
+  return data.publicUrl
+}
