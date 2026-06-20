@@ -4,35 +4,62 @@ import { useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { searchShops } from '@/services/shopService'
+import { globalSearch, logSearchClick, GlobalSearchResult } from '@/services/globalSearchService'
+import { getOrCreateAnonymousId } from '@/lib/utils/anonymousId'
+import { useAuth } from '@/components/layout/AuthProvider'
 import { Shop } from '@/types/shop'
 import { ROUTES } from '@/lib/constants/routes'
 import ShopCard from '@/components/shop/ShopCard'
 import { useDebounce } from '@/hooks/useDebounce'
 
+const AVAILABILITY_LABEL: Record<string, string> = {
+  unknown: '확인 안 됨', not_sold: '판매 안 함', sold_out: '품절',
+  few: '소량', normal: '보통', many: '많음',
+}
+
 export default function SearchPage() {
   const router = useRouter()
+  const { user } = useAuth()
   const searchParams = useSearchParams()
   const initialQuery = searchParams.get('q') ?? ''
 
   const [query, setQuery] = useState(initialQuery)
-  const [results, setResults] = useState<Shop[]>([])
+  const [shopResults, setShopResults] = useState<Shop[]>([])
+  const [globalResults, setGlobalResults] = useState<GlobalSearchResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [searched, setSearched] = useState(false)
   const debouncedQuery = useDebounce(query, 300)
 
   useEffect(() => {
     if (!debouncedQuery.trim()) {
-      setResults([])
+      setShopResults([])
+      setGlobalResults(null)
       setSearched(false)
       return
     }
     setLoading(true)
-    searchShops(debouncedQuery).then(data => {
-      setResults(data)
+    Promise.all([
+      searchShops(debouncedQuery),
+      globalSearch(debouncedQuery, user?.id ?? null, getOrCreateAnonymousId()),
+    ]).then(([shops, global]) => {
+      setShopResults(shops)
+      setGlobalResults(global)
       setLoading(false)
       setSearched(true)
     })
-  }, [debouncedQuery])
+  }, [debouncedQuery, user])
+
+  function handleProductClick(shopId: string, shopSlug: string) {
+    logSearchClick(debouncedQuery, 'shop', shopId)
+    router.push(`/shop/${shopSlug}`)
+  }
+
+  function handleShopClick(shopId: string) {
+    logSearchClick(debouncedQuery, 'shop', shopId)
+  }
+
+  const hasGoodsResults = (globalResults?.products.length ?? 0) > 0
+  const noResultsAtAll = searched && shopResults.length === 0 && !hasGoodsResults
 
   return (
     <div style={{ maxWidth: '680px', margin: '0 auto', minHeight: '100dvh', background: 'var(--surface)' }}>
@@ -52,7 +79,7 @@ export default function SearchPage() {
           type="text"
           value={query}
           onChange={e => setQuery(e.target.value)}
-          placeholder="샵 이름, 지역, 카테고리 검색..."
+          placeholder="샵, 작품, 캐릭터, 굿즈 검색..."
           autoFocus
           style={{
             flex: 1, padding: '10px 14px',
@@ -70,7 +97,6 @@ export default function SearchPage() {
         )}
       </div>
 
-      {/* 결과 */}
       <div>
         {loading && (
           <div style={{ padding: '40px', textAlign: 'center', color: 'var(--muted)', fontSize: '14px' }}>
@@ -78,7 +104,7 @@ export default function SearchPage() {
           </div>
         )}
 
-        {!loading && searched && results.length === 0 && (
+        {!loading && noResultsAtAll && (
           <div style={{ padding: '80px 20px', textAlign: 'center' }}>
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔍</div>
             <p style={{ fontWeight: 900, fontSize: '16px', marginBottom: '8px' }}>
@@ -97,16 +123,59 @@ export default function SearchPage() {
           </div>
         )}
 
-        {!loading && results.length > 0 && (
+        {/* 굿즈 검색 결과 — 먼저 보여줌 (타쿠로드 핵심 차별점) */}
+        {!loading && hasGoodsResults && (
           <>
             <div style={{
-              padding: '10px 16px', fontSize: '13px', color: 'var(--muted)',
-              borderBottom: '1px solid var(--border)',
+              padding: '10px 16px', fontSize: '13px', color: 'var(--muted)', fontWeight: 700,
+              borderBottom: '1px solid var(--border)', background: 'var(--surface2)',
             }}>
-              검색 결과 {results.length}개
+              🛍️ 굿즈 검색 결과 {globalResults!.products.length}개
             </div>
-            {results.map(shop => (
-              <Link key={shop.id} href={ROUTES.shop(shop.slug)} style={{ textDecoration: 'none', color: 'inherit' }}>
+            {globalResults!.products.map((p, i) => (
+              <div
+                key={i}
+                onClick={() => handleProductClick(p.shopId, p.shopSlug)}
+                style={{
+                  padding: '14px 16px', borderBottom: '1px solid var(--border)', cursor: 'pointer',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                  <span style={{ fontWeight: 700, fontSize: '14px' }}>
+                    {p.tagName} {p.characterName ? `· ${p.characterName}` : ''} · {p.goodsTypeName}
+                  </span>
+                  <span style={{
+                    fontSize: '12px', fontWeight: 700,
+                    color: p.availability === 'many' ? 'var(--green)' : p.availability === 'sold_out' ? 'var(--red)' : 'var(--muted)',
+                  }}>
+                    {AVAILABILITY_LABEL[p.availability]}
+                  </span>
+                </div>
+                <div style={{ fontSize: '13px', color: 'var(--muted)' }}>
+                  📍 {p.shopName}
+                  {p.confirmCount > 0 && <span> · 👥 {p.confirmCount}명 확인</span>}
+                </div>
+              </div>
+            ))}
+          </>
+        )}
+
+        {/* 샵 검색 결과 */}
+        {!loading && shopResults.length > 0 && (
+          <>
+            <div style={{
+              padding: '10px 16px', fontSize: '13px', color: 'var(--muted)', fontWeight: 700,
+              borderBottom: '1px solid var(--border)', background: 'var(--surface2)',
+            }}>
+              🏪 샵 검색 결과 {shopResults.length}개
+            </div>
+            {shopResults.map(shop => (
+              <Link
+                key={shop.id}
+                href={ROUTES.shop(shop.slug)}
+                onClick={() => handleShopClick(shop.id)}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
                 <ShopCard shop={shop} isActive={false} onClick={() => {}} />
               </Link>
             ))}
@@ -117,7 +186,10 @@ export default function SearchPage() {
           <div style={{ padding: '60px 20px', textAlign: 'center' }}>
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔍</div>
             <p style={{ color: 'var(--muted)', fontSize: '14px' }}>
-              샵 이름, 지역, 카테고리로 검색해보세요
+              샵, 작품, 캐릭터, 굿즈로 검색해보세요
+            </p>
+            <p style={{ color: 'var(--muted)', fontSize: '12px', marginTop: '8px' }}>
+              예: &quot;블루아카이브&quot;, &quot;아루 아크릴&quot;
             </p>
           </div>
         )}
