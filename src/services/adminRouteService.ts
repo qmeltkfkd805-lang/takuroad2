@@ -1,18 +1,21 @@
 import { createClient } from '@/lib/supabase/client'
 
-// 공식 루트 후보 (좋아요/완료 인원 순)
 export async function getOfficialRouteCandidates() {
   const supabase = createClient()
 
-  const { data: routes } = await supabase
+  const { data: routes, error } = await supabase
     .from('routes')
     .select(`
-      id, title, description, likes, is_official,
-      profiles ( nickname ),
+      id, title, description, likes, is_official, user_id,
+      profiles!routes_user_id_fkey ( nickname ),
       route_shops ( id )
     `)
     .eq('is_shared', true)
-    .order('likes', { ascending: false })
+
+  if (error) {
+    console.error('getOfficialRouteCandidates error:', JSON.stringify(error))
+    return []
+  }
 
   if (!routes) return []
 
@@ -26,25 +29,33 @@ export async function getOfficialRouteCandidates() {
     })
   )
 
-  return withCompletions
+  // 좋아요 + 완료 인원을 합친 점수로 내림차순 정렬
+  return withCompletions.sort((a, b) => {
+    const scoreA = a.likes + a.completionCount
+    const scoreB = b.likes + b.completionCount
+    return scoreB - scoreA
+  })
 }
 
-// 현재 공식 루트 목록
 export async function getOfficialRoutes() {
   const supabase = createClient()
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('routes')
     .select(`
-      id, title, official_difficulty, approved_at,
-      profiles ( nickname ),
+      id, title, official_difficulty, approved_at, user_id,
+      profiles!routes_user_id_fkey ( nickname ),
       route_shops ( id )
     `)
     .eq('is_official', true)
     .order('approved_at', { ascending: false })
+
+  if (error) {
+    console.error('getOfficialRoutes error:', JSON.stringify(error))
+    return []
+  }
   return data ?? []
 }
 
-// 공식 루트 승인
 export async function approveOfficialRoute(routeId: string, difficulty: number, adminId: string): Promise<boolean> {
   const supabase = createClient()
   const { error } = await supabase
@@ -56,10 +67,13 @@ export async function approveOfficialRoute(routeId: string, difficulty: number, 
       approved_at: new Date().toISOString(),
     } as any)
     .eq('id', routeId)
+
+  if (error) {
+    console.error('approveOfficialRoute error:', JSON.stringify(error))
+  }
   return !error
 }
 
-// 공식 루트 해제
 export async function revokeOfficialRoute(routeId: string): Promise<boolean> {
   const supabase = createClient()
   const { error } = await supabase

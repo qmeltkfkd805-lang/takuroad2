@@ -21,11 +21,12 @@ export default function OfficialRouteTab() {
     loadData()
   }, [])
 
-  async function loadData() {
+async function loadData() {
     const [cand, official] = await Promise.all([
       getOfficialRouteCandidates(),
       getOfficialRoutes(),
     ])
+    console.log('candidates raw:', cand)
     setCandidates(cand.filter((c: any) => !c.is_official))
     setOfficialRoutes(official)
     setLoading(false)

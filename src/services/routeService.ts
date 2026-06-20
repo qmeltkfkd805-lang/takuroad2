@@ -98,7 +98,7 @@ export async function getRouteByShareToken(token: string) {
       id, title, description, cover_image_url,
       total_distance_m, total_duration_min,
       is_shared, user_id, created_at,
-      profiles ( nickname ),
+      profiles!routes_user_id_fkey ( nickname ),
       route_shops (
         id, sort_order, distance_from_prev_m, duration_from_prev_min,
         shops ( id, slug, name, addr, lat, lng,
@@ -110,7 +110,10 @@ export async function getRouteByShareToken(token: string) {
     .eq('share_token', token)
     .maybeSingle()
 
-  if (error || !data) return null
+  if (error) {
+    console.error('getRouteByShareToken error:', JSON.stringify(error))
+    return null
+  }
   return data
 }
 
@@ -134,4 +137,72 @@ export async function toggleRouteShare(routeId: string, userId: string, isShared
     .eq('id', routeId)
     .eq('user_id', userId)
   return !error
+}
+
+// 공개된 루트 전체 목록 (좋아요순, 지역/태그 필터 가능)
+export async function getPublicRoutes(filters?: { region?: string; tag?: string }) {
+  const supabase = createClient()
+
+  let query = supabase
+    .from('routes')
+    .select(`
+      id, title, description, likes, is_official, official_difficulty, created_at, share_token,
+      total_distance_m, total_duration_min,
+      profiles!routes_user_id_fkey ( nickname ),
+      route_shops (
+        id, sort_order,
+        shops ( id, name, region, shop_tags ( tags ( name ) ) )
+      )
+    `)
+    .eq('is_shared', true)
+    .order('likes', { ascending: false })
+
+  const { data, error } = await query
+  if (error) {
+    console.error('getPublicRoutes error:', JSON.stringify(error))
+    return []
+  }
+
+  let routes = data ?? []
+
+  // 지역 필터 (루트에 포함된 샵 중 하나라도 해당 지역이면 포함)
+  if (filters?.region) {
+    routes = routes.filter((r: any) =>
+      r.route_shops?.some((rs: any) => rs.shops?.region === filters.region)
+    )
+  }
+
+  // 태그(작품) 필터
+  if (filters?.tag) {
+    routes = routes.filter((r: any) =>
+      r.route_shops?.some((rs: any) =>
+        rs.shops?.shop_tags?.some((st: any) => st.tags?.name === filters.tag)
+      )
+    )
+  }
+
+  return routes
+}
+
+// 필터용 — 전체 지역 목록
+export async function getAllRegions() {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('shops')
+    .select('region')
+    .eq('status', 'active')
+    .not('region', 'is', null)
+
+  const regions = new Set((data ?? []).map((d: any) => d.region))
+  return Array.from(regions).sort()
+}
+
+// 필터용 — 전체 작품(태그) 목록
+export async function getAllSeriesTags() {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('tags')
+    .select('name')
+    .order('name')
+  return (data ?? []).map((d: any) => d.name)
 }
