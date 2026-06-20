@@ -11,18 +11,20 @@ import MyShopsTab from './MyShopsTab'
 import VerifyStatusTab from './VerifyStatusTab'
 import AccountSettingsTab from './AccountSettingsTab'
 import BadgesTab from './BadgesTab'
+import CollectionTab from './CollectionTab'
 
-type Tab = 'saved' | 'routes' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'settings'
+type Tab = 'saved' | 'routes' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
 
 const TABS: { key: Tab; label: string; icon: string }[] = [
-  { key: 'saved',    label: '저장한 샵',    icon: '🔖' },
-  { key: 'routes',   label: '내 루트',      icon: '🗺️' },
-  { key: 'reviews',  label: '내 후기',      icon: '✍️' },
-  { key: 'comments', label: '내 댓글',      icon: '💬' },
-  { key: 'shops',    label: '내 샵',        icon: '🏪' },
-  { key: 'verify',   label: '인증 현황',    icon: '✅' },
-  { key: 'badges',   label: '배지',         icon: '🏅' },
-  { key: 'settings', label: '설정',         icon: '⚙️' },
+  { key: 'saved',      label: '저장한 샵',    icon: '🔖' },
+  { key: 'routes',     label: '내 루트',      icon: '🗺️' },
+  { key: 'reviews',    label: '내 후기',      icon: '✍️' },
+  { key: 'comments',   label: '내 댓글',      icon: '💬' },
+  { key: 'shops',      label: '내 샵',        icon: '🏪' },
+  { key: 'verify',     label: '인증 현황',    icon: '✅' },
+  { key: 'badges',     label: '배지',         icon: '🏅' },
+  { key: 'collection', label: '컬렉션',       icon: '📍' },
+  { key: 'settings',   label: '설정',         icon: '⚙️' },
 ]
 
 export default function ProfilePage() {
@@ -112,6 +114,7 @@ export default function ProfilePage() {
         {tab === 'shops' && <MyShopsTab userId={user.id} />}
         {tab === 'verify' && <VerifyStatusTab userId={user.id} />}
         {tab === 'badges' && <BadgesTab userId={user.id} />}
+        {tab === 'collection' && <CollectionTab userId={user.id} />}
         {tab === 'settings' && <AccountSettingsTab />}
       </div>
     </div>
