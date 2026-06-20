@@ -12,6 +12,7 @@ export interface CheckInResult {
   error?: string
   expEarned?: number
   newTierIds?: string[]
+  completedRouteIds?: string[]
 }
 
 export async function logActivity(
@@ -88,7 +89,11 @@ export async function createCheckIn(
 
   const newTierIds = await evaluateBadgeTiersForUser(userId)
 
-  return { success: true, expEarned: CHECK_IN_EXP, newTierIds }
+  // 루트 진행률 갱신
+  const { recordRouteProgressOnCheckIn } = await import('./routeProgressService')
+  const completedRouteIds = await recordRouteProgressOnCheckIn(userId, shopId)
+
+  return { success: true, expEarned: CHECK_IN_EXP, newTierIds, completedRouteIds }
 }
 
 export async function getMyCheckIns(userId: string) {

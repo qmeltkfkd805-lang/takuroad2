@@ -11,8 +11,9 @@ import {
 import { Shop } from '@/types/shop'
 import Link from 'next/link'
 import { ROUTES } from '@/lib/constants/routes'
+import OfficialRouteTab from './OfficialRouteTab'
 
-type Tab = 'shops' | 'verify'
+type Tab = 'shops' | 'verify' | 'routes'
 
 export default function AdminPage() {
   const router = useRouter()
@@ -80,7 +81,6 @@ export default function AdminPage() {
   return (
     <div style={{ maxWidth: '680px', margin: '0 auto', minHeight: '100dvh', background: 'var(--surface)' }}>
 
-      {/* 헤더 */}
       <div style={{
         position: 'sticky', top: 0, zIndex: 50,
         background: 'var(--surface)', borderBottom: '1px solid var(--border)',
@@ -88,7 +88,6 @@ export default function AdminPage() {
       }}>
         <h1 style={{ fontSize: '18px', fontWeight: 900, marginBottom: '12px' }}>관리자 페이지</h1>
 
-        {/* 탭 */}
         <div style={{ display: 'flex', gap: '8px' }}>
           <TabButton active={tab === 'shops'} onClick={() => setTab('shops')}>
             샵 승인 {pendingShops.length > 0 && `(${pendingShops.length})`}
@@ -96,10 +95,12 @@ export default function AdminPage() {
           <TabButton active={tab === 'verify'} onClick={() => setTab('verify')}>
             인증 심사 {verifyRequests.length > 0 && `(${verifyRequests.length})`}
           </TabButton>
+          <TabButton active={tab === 'routes'} onClick={() => setTab('routes')}>
+            공식 루트
+          </TabButton>
         </div>
       </div>
 
-      {/* 샵 승인 탭 */}
       {tab === 'shops' && (
         <div>
           {pendingShops.length === 0 ? (
@@ -146,7 +147,6 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* 인증 심사 탭 */}
       {tab === 'verify' && (
         <div>
           {verifyRequests.length === 0 ? (
@@ -210,6 +210,8 @@ export default function AdminPage() {
           )}
         </div>
       )}
+
+      {tab === 'routes' && <OfficialRouteTab />}
     </div>
   )
 }
