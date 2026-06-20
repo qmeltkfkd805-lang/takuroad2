@@ -8,6 +8,7 @@ import { ROUTES } from '@/lib/constants/routes'
 import { createShop, updateShop } from '@/services/shopService'
 import { Shop, ShopFormData } from '@/types/shop'
 import { generateSlug } from '@/lib/utils/shop'
+import { geocodeAddress } from '@/lib/utils/geocode'
 import ShopEnrichmentSection from './ShopEnrichmentSection'
 import ShopEventManager from './ShopEventManager'
 
@@ -77,19 +78,28 @@ export default function ShopForm({ mode, shop }: Props) {
     setSubmitting(true)
     setError('')
 
+    // 주소가 있고 좌표가 없으면 자동으로 좌표 찾기
+    let finalForm = form
+    if (form.addr.trim() && !form.lat) {
+      const coords = await geocodeAddress(form.addr)
+      if (coords) {
+        finalForm = { ...form, lat: coords.lat, lng: coords.lng }
+        setForm(finalForm)
+      }
+    }
+
     if (mode === 'create') {
-      const result = await createShop(form, user.id)
+      const result = await createShop(finalForm, user.id)
       if (!result) {
         setError('등록에 실패했어요. 슬러그가 중복되었을 수 있어요.')
         setSubmitting(false)
         return
       }
-      // 등록 성공 → 같은 화면에서 이어서 작품/굿즈 입력 가능하게
       setCreatedShopId(result.id)
       setCreatedShopSlug(result.slug)
       setSubmitting(false)
     } else if (shop) {
-      const ok = await updateShop(shop.id, form, user.id)
+      const ok = await updateShop(shop.id, finalForm, user.id)
       if (!ok) {
         setError('수정에 실패했어요.')
         setSubmitting(false)
@@ -99,7 +109,6 @@ export default function ShopForm({ mode, shop }: Props) {
     }
   }
 
-  // 등록 완료 후 표시할 shopId (등록 직후는 createdShopId, 수정 모드면 기존 shop.id)
   const enrichmentShopId = mode === 'edit' ? shop?.id : createdShopId
 
   return (
@@ -119,7 +128,6 @@ export default function ShopForm({ mode, shop }: Props) {
 
       <div style={{ padding: '20px 16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-        {/* 등록 완료 후에는 기본정보 폼을 숨기고 안내 + 작품/굿즈 입력만 보여줌 */}
         {createdShopId ? (
           <div style={{
             padding: '14px', borderRadius: '10px',
@@ -140,11 +148,20 @@ export default function ShopForm({ mode, shop }: Props) {
               />
             </Field>
 
-            {form.slug && (
-  <p style={{ fontSize: '12px', color: 'var(--muted)' }}>
-    🔗 페이지 주소: /shop/{form.slug}
-  </p>
-)}
+            <Field label="슬러그 *" hint="URL에 사용되는 영문 주소예요. 자동으로 채워지지만 직접 수정할 수 있어요 (예: animate-hongdae)">
+  <input
+    type="text"
+    value={form.slug}
+    onChange={e => set('slug', e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+    placeholder="animate-hongdae"
+    style={inputStyle}
+  />
+  {form.slug && (
+    <p style={{ fontSize: '12px', color: 'var(--muted)' }}>
+      🔗 페이지 주소: /shop/{form.slug}
+    </p>
+  )}
+</Field>
 
             <Field label="카테고리 *" hint="이 가게의 주요 성격을 하나만 선택해주세요">
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '10px' }}>
@@ -178,11 +195,11 @@ export default function ShopForm({ mode, shop }: Props) {
               </div>
             </Field>
 
-            <Field label="주소">
+            <Field label="주소" hint="주소를 입력하면 지도 좌표가 자동으로 설정돼요">
               <input
                 type="text"
                 value={form.addr}
-                onChange={e => set('addr', e.target.value)}
+                onChange={e => { set('addr', e.target.value); set('lat', null); set('lng', null) }}
                 placeholder="예: 서울 마포구 와우산로 21"
                 style={inputStyle}
               />
@@ -304,7 +321,6 @@ export default function ShopForm({ mode, shop }: Props) {
           </>
         )}
 
-        {/* 취급 분야 / 작품 / 굿즈 — 등록 직후 또는 수정 모드에서 항상 표시 */}
         {enrichmentShopId && (
           <>
             <div style={{ height: '1px', background: 'var(--border)', margin: '8px 0' }} />
@@ -313,9 +329,10 @@ export default function ShopForm({ mode, shop }: Props) {
             <div style={{ height: '1px', background: 'var(--border)', margin: '8px 0' }} />
             <h3 style={{ fontSize: '14px', fontWeight: 900 }}>🎉 이벤트 / 공지</h3>
             <ShopEventManager shopId={enrichmentShopId} shopSlug={mode === 'edit' ? shop!.slug : createdShopSlug!} />
+
             {createdShopId && createdShopSlug && (
               <button
-  onClick={() => router.push('/profile?tab=shops')}
+                onClick={() => router.push('/profile?tab=shops')}
                 style={{
                   width: '100%', padding: '12px', borderRadius: '10px',
                   border: '1px solid var(--border)', background: 'var(--surface)',

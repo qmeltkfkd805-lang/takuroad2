@@ -9,6 +9,7 @@ interface KakaoMapProps {
   activeShopId: string | null
   onSelectShop: (shop: Shop) => void
   onMapClick: () => void
+  onSelectGroup: (shops: Shop[]) => void
 }
 
 export default function KakaoMap({
@@ -16,21 +17,20 @@ export default function KakaoMap({
   activeShopId,
   onSelectShop,
   onMapClick,
+  onSelectGroup,
 }: KakaoMapProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const { isLoaded, renderMarkers, onMapClick: registerClick } = useMap(containerRef)
 
-  // 지도 클릭 이벤트 등록
   useEffect(() => {
     if (!isLoaded) return
     registerClick(onMapClick)
   }, [isLoaded, registerClick, onMapClick])
 
-  // 마커 렌더링
   useEffect(() => {
     if (!isLoaded) return
-    renderMarkers(shops, activeShopId, onSelectShop)
-  }, [isLoaded, shops, activeShopId, renderMarkers, onSelectShop])
+    renderMarkers(shops, activeShopId, onSelectShop, onSelectGroup)
+  }, [isLoaded, shops, activeShopId, renderMarkers, onSelectShop, onSelectGroup])
 
   return (
     <div

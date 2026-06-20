@@ -1,17 +1,20 @@
+import * as hangulRomanization from 'hangul-romanization'
+
 /**
  * 한글/영문 샵 이름 → URL slug 변환
- * 예: "애니메이트 홍대" → "animate-hongdae"
- * 한글만 입력된 경우 랜덤 코드로 대체 (예: "shop-a3f9k2")
+ * 예: "애니메이트 홍대" → "aenimeiteu-hongdae"
+ * 한글이 포함되어 있으면 자동으로 로마자 변환
  */
 export function generateSlug(text: string): string {
-  const slug = text
+ const romanized = /[가-힣]/.test(text) ? hangulRomanization.convert(text) : text
+
+  const slug = romanized
     .toLowerCase()
     .trim()
-    .replace(/[가-힣]/g, '')         // 한글 제거
-    .replace(/[^\w\s-]/g, '')        // 특수문자 제거
-    .replace(/\s+/g, '-')            // 공백 → 하이픈
-    .replace(/-+/g, '-')             // 연속 하이픈 정리
-    .replace(/^-|-$/g, '')           // 앞뒤 하이픈 제거
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
 
   if (!slug) {
     return `shop-${Math.random().toString(36).slice(2, 8)}`

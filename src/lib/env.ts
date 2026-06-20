@@ -10,3 +10,4 @@ export const env = {
     url: process.env.NEXT_PUBLIC_APP_URL ?? 'https://takuroad.jonjonnni.com',
   },
 } as const
+

@@ -28,11 +28,17 @@ export default function MapPage() {
 
   const { requestLocation } = useCurrentLocation()
   const [listOpen, setListOpen] = useState(false)
+  const [groupShops, setGroupShops] = useState<Shop[] | null>(null)
 
   const handleSelectShop = useCallback((shop: Shop) => {
     setSelectedShop(shop)
     setListOpen(false)
+    setGroupShops(null)
   }, [setSelectedShop])
+
+  const handleSelectGroup = useCallback((shops: Shop[]) => {
+    setGroupShops(shops)
+  }, [])
 
   const handleMapClick = useCallback(() => {
     setSelectedShop(null)
@@ -41,7 +47,6 @@ export default function MapPage() {
   return (
     <div style={{ position: 'fixed', inset: 0, background: 'var(--bg)' }}>
 
-      {/* 상단 헤더 바 */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, zIndex: 150,
         background: 'var(--surface)',
@@ -83,7 +88,6 @@ export default function MapPage() {
           목록
         </button>
 
-        {/* 알림 벨 */}
         {user && (
           <Link href="/notifications" style={{
             position: 'relative', width: '32px', height: '32px',
@@ -126,7 +130,6 @@ export default function MapPage() {
         )}
       </div>
 
-      {/* 카테고리 필터 */}
       <div style={{
         position: 'absolute', top: '56px', left: 0, right: 0, zIndex: 140,
         background: 'var(--surface)',
@@ -135,17 +138,16 @@ export default function MapPage() {
         <CategoryFilter selected={selectedCat} onChange={setSelectedCat} />
       </div>
 
-      {/* 지도 */}
       <div style={{ position: 'absolute', inset: 0, paddingTop: '108px' }}>
         <KakaoMap
           shops={mapShops}
           activeShopId={selectedShop?.id ?? null}
           onSelectShop={handleSelectShop}
           onMapClick={handleMapClick}
+          onSelectGroup={handleSelectGroup}
         />
       </div>
 
-      {/* 샵 목록 패널 */}
       <ShopListPanel
         shops={filtered}
         loading={loading}
@@ -155,7 +157,6 @@ export default function MapPage() {
         onSelectShop={handleSelectShop}
       />
 
-      {/* 지도 우측 버튼들 */}
       <div style={{
         position: 'absolute', right: '12px', bottom: '100px', zIndex: 130,
         display: 'flex', flexDirection: 'column', gap: '8px',
@@ -191,6 +192,49 @@ export default function MapPage() {
       >
         {selectedShop && (
           <ShopDetail shop={selectedShop} onClose={() => setSelectedShop(null)} />
+        )}
+      </BottomSheet>
+
+      {/* 같은 위치 샵 목록 바텀시트 */}
+      <BottomSheet
+        isOpen={!!groupShops}
+        onClose={() => setGroupShops(null)}
+      >
+        {groupShops && (
+          <div style={{ padding: '16px' }}>
+            <h3 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '14px' }}>
+              📍 이 위치의 샵 {groupShops.length}곳
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {groupShops.map(shop => (
+                <div
+                  key={shop.id}
+                  onClick={() => handleSelectShop(shop)}
+                  style={{
+                    padding: '12px 14px', borderRadius: '12px',
+                    border: '1px solid var(--border)', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', gap: '10px',
+                  }}
+                >
+                  <div style={{
+                    width: '40px', height: '40px', borderRadius: '10px', overflow: 'hidden',
+                    background: 'var(--surface2)', flexShrink: 0,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px',
+                  }}>
+                    {shop.images?.[0] ? (
+                      <img src={shop.images[0]} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : '🏪'}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontWeight: 700, fontSize: '14px' }}>{shop.name}</div>
+                    <div style={{ fontSize: '12px', color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {shop.cats.join(', ')}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </BottomSheet>
     </div>
