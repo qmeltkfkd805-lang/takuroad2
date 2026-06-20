@@ -43,7 +43,8 @@ export async function createCheckIn(
   shopLng: number,
   shopName: string,
   userLat: number,
-  userLng: number
+  userLng: number,
+  shopSlug?: string
 ): Promise<CheckInResult> {
   const supabase = createClient()
 
@@ -84,12 +85,19 @@ export async function createCheckIn(
   }
 
   await addExp(userId, CHECK_IN_EXP, 'check_in', 'shop', shopId)
-  await logActivity(userId, 'check_in', `${shopName} 체크인`, `/shop/${shopId}`)
+
+  // slug가 없으면 직접 조회해서 link 정확하게 생성
+  let slug = shopSlug
+  if (!slug) {
+    const { data: shopData } = await supabase.from('shops').select('slug').eq('id', shopId).maybeSingle()
+    slug = shopData?.slug
+  }
+  await logActivity(userId, 'check_in', `${shopName} 체크인`, slug ? `/shop/${slug}` : undefined)
+
   await (supabase as any).rpc('increment_visit_count', { p_shop_id: shopId })
 
   const newTierIds = await evaluateBadgeTiersForUser(userId)
 
-  // 루트 진행률 갱신
   const { recordRouteProgressOnCheckIn } = await import('./routeProgressService')
   const completedRouteIds = await recordRouteProgressOnCheckIn(userId, shopId)
 

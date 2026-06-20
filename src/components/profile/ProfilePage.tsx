@@ -9,6 +9,7 @@ import { getMyPassport, OtakuPassport } from '@/services/passportService'
 import PassportCard from '@/components/passport/PassportCard'
 import ActivityFeed from '@/components/passport/ActivityFeed'
 import TitleBadgeSelector from '@/components/passport/TitleBadgeSelector'
+import ChronicleTimeline from '@/components/passport/ChronicleTimeline'
 import SavedShopsTab from './SavedShopsTab'
 import MyRoutesTab from './MyRoutesTab'
 import MyReviewsTab from './MyReviewsTab'
@@ -18,10 +19,11 @@ import AccountSettingsTab from './AccountSettingsTab'
 import BadgesTab from './BadgesTab'
 import CollectionTab from './CollectionTab'
 
-type Tab = 'passport' | 'saved' | 'routes' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
+type Tab = 'passport' | 'chronicle' | 'saved' | 'routes' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
 
 const TABS: { key: Tab; label: string; icon: string }[] = [
   { key: 'passport',   label: '여권',         icon: '🎌' },
+  { key: 'chronicle',  label: '연대기',       icon: '📖' },
   { key: 'saved',      label: '저장한 샵',    icon: '🔖' },
   { key: 'routes',     label: '내 루트',      icon: '🗺️' },
   { key: 'reviews',    label: '내 후기',      icon: '✍️' },
@@ -149,6 +151,7 @@ export default function ProfilePage() {
             <div style={{ padding: '60px', textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
           )
         )}
+        {tab === 'chronicle' && <ChronicleTimeline userId={user.id} />}
         {tab === 'saved' && <SavedShopsTab userId={user.id} />}
         {tab === 'routes' && <MyRoutesTab userId={user.id} />}
         {tab === 'reviews' && <MyReviewsTab userId={user.id} />}
