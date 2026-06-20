@@ -17,8 +17,6 @@ export default function BadgesTab({ userId }: { userId: string }) {
     })
   }, [userId])
 
-  if (loading) return <LoadingState />
-
   if (selectedGroup) {
     return (
       <BadgeSeriesList
@@ -30,17 +28,19 @@ export default function BadgesTab({ userId }: { userId: string }) {
     )
   }
 
+  if (loading) return <LoadingState />
+
   return (
     <div style={{ padding: '16px' }}>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
         {groups.map(group => (
-          <div
+          <button
             key={group.id}
             onClick={() => setSelectedGroup(group.slug)}
             style={{
               border: '1.5px solid var(--border)', borderRadius: '14px',
               padding: '20px 16px', textAlign: 'center', cursor: 'pointer',
-              background: 'var(--surface2)',
+              background: 'var(--surface2)', fontFamily: 'inherit',
             }}
           >
             <div style={{ fontSize: '32px', marginBottom: '8px' }}>{group.icon}</div>
@@ -48,7 +48,7 @@ export default function BadgesTab({ userId }: { userId: string }) {
             <div style={{ fontSize: '12px', color: 'var(--muted)' }}>
               {group.owned} / {group.total}
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </div>

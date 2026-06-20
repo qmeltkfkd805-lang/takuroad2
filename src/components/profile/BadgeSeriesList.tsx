@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { getBadgesInGroup } from '@/services/badgeService'
 import { LoadingState } from './SavedShopsTab'
 import BadgeTierDetail from './BadgeTierDetail'
@@ -12,10 +12,25 @@ interface Props {
   onBack: () => void
 }
 
+function BadgeIcon({ iconUrl }: { iconUrl: string | null }) {
+  if (!iconUrl) return <span style={{ fontSize: 40 }}>🏅</span>
+  if (iconUrl.startsWith('http')) {
+    return (
+      <img
+        src={iconUrl}
+        alt=""
+        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+      />
+    )
+  }
+  return <span style={{ fontSize: 40 }}>{iconUrl}</span>
+}
+
 export default function BadgeSeriesList({ groupSlug, groupName, userId, onBack }: Props) {
   const [badges, setBadges] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedBadge, setSelectedBadge] = useState<string | null>(null)
+  const [query, setQuery] = useState('')
 
   useEffect(() => {
     getBadgesInGroup(groupSlug, userId).then(data => {
@@ -23,6 +38,15 @@ export default function BadgeSeriesList({ groupSlug, groupName, userId, onBack }
       setLoading(false)
     })
   }, [groupSlug, userId])
+
+  const sortedBadges = useMemo(() => {
+    return [...badges].sort((a, b) => a.name.localeCompare(b.name, 'ko'))
+  }, [badges])
+
+  const filteredBadges = useMemo(() => {
+    if (!query.trim()) return sortedBadges
+    return sortedBadges.filter(b => b.name.toLowerCase().includes(query.toLowerCase()))
+  }, [sortedBadges, query])
 
   if (selectedBadge) {
     return (
@@ -38,7 +62,7 @@ export default function BadgeSeriesList({ groupSlug, groupName, userId, onBack }
 
   return (
     <div style={{ padding: '16px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
         <button
           onClick={onBack}
           style={{ background: 'none', border: 'none', fontSize: '18px', cursor: 'pointer' }}
@@ -46,24 +70,68 @@ export default function BadgeSeriesList({ groupSlug, groupName, userId, onBack }
         <h2 style={{ fontSize: '16px', fontWeight: 900 }}>{groupName}</h2>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-        {badges.map(badge => (
+      {badges.length > 5 && (
+        <div style={{ position: 'relative', marginBottom: '14px' }}>
+          <input
+            type="text"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder={`${groupName} 검색...`}
+            style={{
+              width: '100%', padding: '10px 36px 10px 14px',
+              border: '1.5px solid var(--border)', borderRadius: '10px',
+              fontSize: '14px', fontFamily: 'inherit',
+              background: 'var(--surface2)', color: 'var(--text)',
+              outline: 'none', boxSizing: 'border-box',
+            }}
+          />
+          {query ? (
+            <button
+              onClick={() => setQuery('')}
+              style={{
+                position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
+                background: 'none', border: 'none', fontSize: '14px', color: 'var(--muted)', cursor: 'pointer',
+              }}
+            >✕</button>
+          ) : (
+            <span style={{
+              position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
+              fontSize: '14px', color: 'var(--muted)', pointerEvents: 'none',
+            }}>🔍</span>
+          )}
+        </div>
+      )}
+
+      {query && (
+        <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '10px' }}>
+          {filteredBadges.length}개 검색됨
+        </p>
+      )}
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+        {filteredBadges.map(badge => (
           <div
             key={badge.id}
             onClick={() => setSelectedBadge(badge.slug)}
             style={{
               border: `2px solid ${badge.owned ? 'var(--accent)' : 'var(--border)'}`,
-              borderRadius: '12px', padding: '14px 8px', textAlign: 'center',
+              borderRadius: '12px', padding: '14px 12px', textAlign: 'center',
               cursor: 'pointer',
               background: badge.owned ? 'var(--accent-l)' : 'var(--surface2)',
               opacity: badge.owned ? 1 : 0.7,
             }}
           >
-            <div style={{ fontSize: '24px', marginBottom: '4px' }}>
+            <div style={{ fontSize: '16px', marginBottom: '6px' }}>
               {badge.owned ? '☑' : '□'}
             </div>
-            <div style={{ fontSize: '20px', marginBottom: '4px' }}>{badge.iconUrl}</div>
-            <div style={{ fontSize: '11px', fontWeight: 700 }}>{badge.name}</div>
+            <div style={{
+              width: '100%', height: '70px',
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+              marginBottom: '8px',
+            }}>
+              <BadgeIcon iconUrl={badge.iconUrl} />
+            </div>
+            <div style={{ fontSize: '12px', fontWeight: 700 }}>{badge.name}</div>
           </div>
         ))}
       </div>
@@ -71,6 +139,12 @@ export default function BadgeSeriesList({ groupSlug, groupName, userId, onBack }
       {badges.length === 0 && (
         <p style={{ textAlign: 'center', color: 'var(--muted)', fontSize: '13px', padding: '40px 0' }}>
           아직 등록된 배지가 없어요
+        </p>
+      )}
+
+      {badges.length > 0 && filteredBadges.length === 0 && (
+        <p style={{ textAlign: 'center', color: 'var(--muted)', fontSize: '13px', padding: '40px 0' }}>
+          &quot;{query}&quot;에 해당하는 작품이 없어요
         </p>
       )}
     </div>

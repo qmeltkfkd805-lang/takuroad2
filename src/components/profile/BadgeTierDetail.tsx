@@ -11,6 +11,20 @@ interface Props {
   onBack: () => void
 }
 
+function BadgeIcon({ iconUrl, size = 40 }: { iconUrl: string | null; size?: number }) {
+  if (!iconUrl) return <span style={{ fontSize: size }}>🏅</span>
+  if (iconUrl.startsWith('http')) {
+    return (
+      <img
+        src={iconUrl}
+        alt=""
+        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+      />
+    )
+  }
+  return <span style={{ fontSize: size }}>{iconUrl}</span>
+}
+
 export default function BadgeTierDetail({ badgeSlug, userId, onBack }: Props) {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
@@ -35,13 +49,21 @@ export default function BadgeTierDetail({ badgeSlug, userId, onBack }: Props) {
 
   return (
     <div style={{ padding: '16px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
         <button
           onClick={onBack}
           style={{ background: 'none', border: 'none', fontSize: '18px', cursor: 'pointer' }}
         >←</button>
-        <span style={{ fontSize: '24px' }}>{data.badge.iconUrl}</span>
         <h2 style={{ fontSize: '18px', fontWeight: 900 }}>{data.badge.name}</h2>
+      </div>
+
+      <div style={{
+        width: '100%', height: '100px',
+        display: 'flex', justifyContent: 'center', alignItems: 'center',
+        marginBottom: '20px', background: 'var(--surface2)', borderRadius: '14px',
+        padding: '12px',
+      }}>
+        <BadgeIcon iconUrl={data.badge.iconUrl} size={48} />
       </div>
 
       {data.tiers.map((tier: any) => (
@@ -67,7 +89,6 @@ export default function BadgeTierDetail({ badgeSlug, userId, onBack }: Props) {
             <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '10px' }}>{tier.description}</p>
           )}
 
-          {/* 진행률 바 (단일 조건) */}
           {!tier.earned && tier.progress && (
             <div>
               <div style={{
@@ -109,7 +130,6 @@ export default function BadgeTierDetail({ badgeSlug, userId, onBack }: Props) {
         </div>
       ))}
 
-      {/* 미방문 샵 목록 */}
       {showUnvisited && (
         <div
           onClick={() => setShowUnvisited(false)}
