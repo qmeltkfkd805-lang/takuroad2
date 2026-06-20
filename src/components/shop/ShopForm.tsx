@@ -163,37 +163,42 @@ export default function ShopForm({ mode, shop }: Props) {
   )}
 </Field>
 
-            <Field label="카테고리 *" hint="이 가게의 주요 성격을 하나만 선택해주세요">
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '10px' }}>
-                {CATEGORIES.map(cat => {
-                  const selected = form.cats.includes(cat.name)
-                  return (
-                    <button
-                      key={cat.slug}
-                      onClick={() => setForm(prev => ({ ...prev, cats: [cat.name] }))}
-                      style={{
-                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
-                        padding: '16px 10px', borderRadius: '14px', cursor: 'pointer',
-                        border: `2px solid ${selected ? cat.color : 'var(--border)'}`,
-                        background: selected ? cat.bgColor : 'var(--surface)',
-                        fontFamily: 'inherit', textAlign: 'center',
-                      }}
-                    >
-                      <div style={{
-                        width: '40px', height: '40px', borderRadius: '50%',
-                        background: cat.color, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '20px',
-                      }}>
-                        {cat.icon}
-                      </div>
-                      <span style={{ fontSize: '13px', fontWeight: 900, color: selected ? cat.color : 'var(--text)' }}>
-                        {cat.name}
-                      </span>
-                    </button>
-                  )
-                })}
-              </div>
-            </Field>
+            <Field label="카테고리 *" hint="이 가게의 성격을 선택해주세요 (복수 선택 가능)">
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '10px' }}>
+    {CATEGORIES.map(cat => {
+      const selected = form.cats.includes(cat.name)
+      return (
+        <button
+          key={cat.slug}
+          onClick={() => setForm(prev => ({
+            ...prev,
+            cats: selected
+              ? prev.cats.filter(c => c !== cat.name)
+              : [...prev.cats, cat.name],
+          }))}
+          style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+            padding: '16px 10px', borderRadius: '14px', cursor: 'pointer',
+            border: `2px solid ${selected ? cat.color : 'var(--border)'}`,
+            background: selected ? cat.bgColor : 'var(--surface)',
+            fontFamily: 'inherit', textAlign: 'center',
+          }}
+        >
+          <div style={{
+            width: '40px', height: '40px', borderRadius: '50%',
+            background: cat.color, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '20px',
+          }}>
+            {cat.icon}
+          </div>
+          <span style={{ fontSize: '13px', fontWeight: 900, color: selected ? cat.color : 'var(--text)' }}>
+            {cat.name}
+          </span>
+        </button>
+      )
+    })}
+  </div>
+</Field>
 
             <Field label="주소" hint="주소를 입력하면 지도 좌표가 자동으로 설정돼요">
               <input
