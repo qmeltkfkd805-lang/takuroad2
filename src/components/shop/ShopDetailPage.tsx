@@ -14,6 +14,7 @@ import CheckInButton from './CheckInButton'
 import ReviewSection from './ReviewSection'
 import ReportIssueButton from './ReportIssueButton'
 import ShopEventList from './ShopEventList'
+import ShopHistoryPanel from './ShopHistoryPanel'
 
 interface Props {
   shop: Shop
@@ -323,6 +324,10 @@ export default function ShopDetailPage({ shop }: Props) {
 
 <div style={{ marginTop: '24px', textAlign: 'center' }}>
           <ReportIssueButton shopId={shop.id} />
+          <div style={{ marginTop: '32px' }}>
+          <h2 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '12px' }}>🕐 변경 이력</h2>
+          <ShopHistoryPanel shopId={shop.id} />
+        </div>
         </div>
 
       </div>

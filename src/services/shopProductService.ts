@@ -97,10 +97,9 @@ export async function upsertShopProduct(params: {
 }): Promise<boolean> {
   const supabase = createClient()
 
-  // 기존 레코드 찾기 (variant_slug는 null일 수 있어서 직접 조건 처리)
   let query = supabase
     .from('shop_products')
-    .select('id')
+    .select('id, availability')
     .eq('shop_id', params.shopId)
     .eq('tag_id', params.tagId)
     .eq('goods_type_id', params.goodsTypeId)
@@ -127,16 +126,40 @@ export async function upsertShopProduct(params: {
     last_confirmed_at: new Date().toISOString(),
   }
 
+  const { logChange } = await import('./shopChangeLogService')
+
   if (existing) {
     const { error } = await supabase
       .from('shop_products')
       .update(payload as any)
       .eq('id', existing.id)
+
+    if (!error && existing.availability !== params.availability) {
+      await logChange({
+        shopId: params.shopId, targetTable: 'shop_products', targetId: existing.id,
+        fieldName: 'availability',
+        oldValue: existing.availability, newValue: params.availability,
+        changeSource: params.source === 'owner' ? 'owner' : params.source === 'admin' ? 'admin' : 'user_suggestion',
+        changedBy: params.userId,
+      })
+    }
     return !error
   } else {
-    const { error } = await supabase
+    const { data: created, error } = await supabase
       .from('shop_products')
       .insert(payload as any)
+      .select('id')
+      .single()
+
+    if (!error && created) {
+      await logChange({
+        shopId: params.shopId, targetTable: 'shop_products', targetId: created.id,
+        fieldName: 'availability',
+        oldValue: null, newValue: params.availability,
+        changeSource: params.source === 'owner' ? 'owner' : params.source === 'admin' ? 'admin' : 'user_suggestion',
+        changedBy: params.userId,
+      })
+    }
     return !error
   }
 }

@@ -3,10 +3,11 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { CATEGORIES } from '@/lib/constants/categories'
+import { CATEGORIES, WEEKDAYS, WEEKDAY_LABEL } from '@/lib/constants/categories'
 import { ROUTES } from '@/lib/constants/routes'
 import { createShop, updateShop } from '@/services/shopService'
 import { Shop, ShopFormData } from '@/types/shop'
+import { BusinessHours } from '@/types/database'
 import { generateSlug } from '@/lib/utils/shop'
 import { geocodeAddress } from '@/lib/utils/geocode'
 import ShopEnrichmentSection from './ShopEnrichmentSection'
@@ -78,7 +79,6 @@ export default function ShopForm({ mode, shop }: Props) {
     setSubmitting(true)
     setError('')
 
-    // 주소가 있고 좌표가 없으면 자동으로 좌표 찾기
     let finalForm = form
     if (form.addr.trim() && !form.lat) {
       const coords = await geocodeAddress(form.addr)
@@ -149,56 +149,56 @@ export default function ShopForm({ mode, shop }: Props) {
             </Field>
 
             <Field label="슬러그 *" hint="URL에 사용되는 영문 주소예요. 자동으로 채워지지만 직접 수정할 수 있어요 (예: animate-hongdae)">
-  <input
-    type="text"
-    value={form.slug}
-    onChange={e => set('slug', e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
-    placeholder="animate-hongdae"
-    style={inputStyle}
-  />
-  {form.slug && (
-    <p style={{ fontSize: '12px', color: 'var(--muted)' }}>
-      🔗 페이지 주소: /shop/{form.slug}
-    </p>
-  )}
-</Field>
+              <input
+                type="text"
+                value={form.slug}
+                onChange={e => set('slug', e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                placeholder="animate-hongdae"
+                style={inputStyle}
+              />
+              {form.slug && (
+                <p style={{ fontSize: '12px', color: 'var(--muted)' }}>
+                  🔗 페이지 주소: /shop/{form.slug}
+                </p>
+              )}
+            </Field>
 
             <Field label="카테고리 *" hint="이 가게의 성격을 선택해주세요 (복수 선택 가능)">
-  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '10px' }}>
-    {CATEGORIES.map(cat => {
-      const selected = form.cats.includes(cat.name)
-      return (
-        <button
-          key={cat.slug}
-          onClick={() => setForm(prev => ({
-            ...prev,
-            cats: selected
-              ? prev.cats.filter(c => c !== cat.name)
-              : [...prev.cats, cat.name],
-          }))}
-          style={{
-            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
-            padding: '16px 10px', borderRadius: '14px', cursor: 'pointer',
-            border: `2px solid ${selected ? cat.color : 'var(--border)'}`,
-            background: selected ? cat.bgColor : 'var(--surface)',
-            fontFamily: 'inherit', textAlign: 'center',
-          }}
-        >
-          <div style={{
-            width: '40px', height: '40px', borderRadius: '50%',
-            background: cat.color, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '20px',
-          }}>
-            {cat.icon}
-          </div>
-          <span style={{ fontSize: '13px', fontWeight: 900, color: selected ? cat.color : 'var(--text)' }}>
-            {cat.name}
-          </span>
-        </button>
-      )
-    })}
-  </div>
-</Field>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '10px' }}>
+                {CATEGORIES.map(cat => {
+                  const selected = form.cats.includes(cat.name)
+                  return (
+                    <button
+                      key={cat.slug}
+                      onClick={() => setForm(prev => ({
+                        ...prev,
+                        cats: selected
+                          ? prev.cats.filter(c => c !== cat.name)
+                          : [...prev.cats, cat.name],
+                      }))}
+                      style={{
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+                        padding: '16px 10px', borderRadius: '14px', cursor: 'pointer',
+                        border: `2px solid ${selected ? cat.color : 'var(--border)'}`,
+                        background: selected ? cat.bgColor : 'var(--surface)',
+                        fontFamily: 'inherit', textAlign: 'center',
+                      }}
+                    >
+                      <div style={{
+                        width: '40px', height: '40px', borderRadius: '50%',
+                        background: cat.color, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: '20px',
+                      }}>
+                        {cat.icon}
+                      </div>
+                      <span style={{ fontSize: '13px', fontWeight: 900, color: selected ? cat.color : 'var(--text)' }}>
+                        {cat.name}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            </Field>
 
             <Field label="주소" hint="주소를 입력하면 지도 좌표가 자동으로 설정돼요">
               <input
@@ -208,6 +208,68 @@ export default function ShopForm({ mode, shop }: Props) {
                 placeholder="예: 서울 마포구 와우산로 21"
                 style={inputStyle}
               />
+            </Field>
+
+            <Field label="영업시간" hint="요일별로 입력해주세요. 비워두면 정보 없음으로 표시돼요">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {WEEKDAYS.map(day => {
+                  const dayHours = form.hours?.[day]
+                  const isOpen = !!dayHours
+
+                  return (
+                    <div key={day} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <button
+                        onClick={() => {
+                          const newHours: BusinessHours = { ...(form.hours ?? {}) }
+                          if (isOpen) {
+                            newHours[day] = null
+                          } else {
+                            newHours[day] = { open: '10:00', close: '20:00' }
+                          }
+                          set('hours', newHours)
+                        }}
+                        style={{
+                          width: '32px', flexShrink: 0, padding: '6px 0', borderRadius: '6px',
+                          border: `1.5px solid ${isOpen ? 'var(--accent)' : 'var(--border)'}`,
+                          background: isOpen ? 'var(--accent-l)' : 'var(--surface)',
+                          color: isOpen ? 'var(--accent)' : 'var(--muted)',
+                          fontWeight: 700, fontSize: '12px', cursor: 'pointer', fontFamily: 'inherit',
+                        }}
+                      >
+                        {WEEKDAY_LABEL[day]}
+                      </button>
+
+                      {isOpen ? (
+                        <>
+                          <input
+                            type="time"
+                            value={dayHours.open}
+                            onChange={e => {
+                              const newHours: BusinessHours = { ...(form.hours ?? {}) }
+                              newHours[day] = { ...dayHours, open: e.target.value }
+                              set('hours', newHours)
+                            }}
+                            style={{ ...inputStyle, padding: '6px 8px', fontSize: '13px' }}
+                          />
+                          <span style={{ color: 'var(--muted)' }}>~</span>
+                          <input
+                            type="time"
+                            value={dayHours.close}
+                            onChange={e => {
+                              const newHours: BusinessHours = { ...(form.hours ?? {}) }
+                              newHours[day] = { ...dayHours, close: e.target.value }
+                              set('hours', newHours)
+                            }}
+                            style={{ ...inputStyle, padding: '6px 8px', fontSize: '13px' }}
+                          />
+                        </>
+                      ) : (
+                        <span style={{ fontSize: '13px', color: 'var(--muted)' }}>휴무</span>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
             </Field>
 
             <Field label="소개">

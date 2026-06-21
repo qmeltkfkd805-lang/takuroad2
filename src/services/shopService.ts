@@ -213,6 +213,13 @@ export async function updateShop(
 ): Promise<boolean> {
   const supabase = createClient()
 
+  // 변경 전 값 가져오기 (로그용)
+  const { data: before } = await supabase
+    .from('shops')
+    .select('name, description, addr, lat, lng, hours, parking, parking_note, shop_link, start_date, end_date, event_info')
+    .eq('id', shopId)
+    .maybeSingle()
+
   const { error } = await supabase
     .from('shops')
     .update({
@@ -228,11 +235,33 @@ export async function updateShop(
       start_date:   data.start_date || null,
       end_date:     data.end_date || null,
       event_info:   data.event_info || null,
+      info_last_confirmed_at: new Date().toISOString(),
+      info_confirmed_by_type: 'owner',
     } as any)
     .eq('id', shopId)
     .eq('owner_id', userId)
 
   if (error) return false
+
+  // 변경 이력 기록 (필드별로 실제 변경된 것만)
+  if (before) {
+    const { logChange } = await import('./shopChangeLogService')
+    const fields: Record<string, any> = {
+      name: data.name, description: data.description, addr: data.addr,
+      hours: data.hours, parking: data.parking, parking_note: data.parking_note,
+      shop_link: data.shop_link,
+    }
+    for (const [field, newVal] of Object.entries(fields)) {
+      const oldVal = (before as any)[field]
+      if (JSON.stringify(oldVal ?? null) !== JSON.stringify(newVal ?? null)) {
+        await logChange({
+          shopId, targetTable: 'shops', fieldName: field,
+          oldValue: oldVal, newValue: newVal,
+          changeSource: 'owner', changedBy: userId, reason: 'owner_update',
+        })
+      }
+    }
+  }
 
   await supabase.from('shop_categories').delete().eq('shop_id', shopId)
 
