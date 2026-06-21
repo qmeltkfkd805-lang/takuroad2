@@ -119,7 +119,7 @@ export async function searchShops(query: string): Promise<Shop[]> {
       shop_images ( image_url, is_cover, sort_order ),
       shop_categories ( categories ( name, slug, color, icon, bg_color ) )
     `)
-    .eq('status', 'active')
+    .in('status', ['active', 'temporary_closed', 'closed'])
     .ilike('name', `%${query}%`)
     .limit(20)
 

@@ -120,6 +120,16 @@ export default function ShopDetailPage({ shop }: Props) {
       <div style={{ padding: '20px 16px' }}>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+          {(shop.status === 'temporary_closed' || shop.status === 'closed') && (
+  <div style={{
+    padding: '12px 14px', borderRadius: '10px', marginBottom: '16px',
+    background: shop.status === 'closed' ? 'var(--surface2)' : '#fef3c7',
+    color: shop.status === 'closed' ? 'var(--muted)' : '#92400e',
+    fontWeight: 700, fontSize: '13px', textAlign: 'center',
+  }}>
+    {shop.status === 'closed' ? '⚫ 폐점한 샵이에요' : '🟡 현재 임시 휴업 중이에요'}
+  </div>
+)}
           <h1 style={{ fontSize: '22px', fontWeight: 900, lineHeight: 1.3 }}>{shop.name}</h1>
           {shop.is_verified && (
             <span style={{

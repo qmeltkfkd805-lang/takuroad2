@@ -27,7 +27,7 @@ async function getShopBySlugServer(slug: string) {
       shop_categories ( categories ( name, slug, color, icon, bg_color ) )
     `)
     .eq('slug', slug)
-    .eq('status', 'active')
+    .in('status', ['active', 'temporary_closed', 'closed'])
     .maybeSingle()
 
   if (!data) return null

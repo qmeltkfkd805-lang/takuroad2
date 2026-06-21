@@ -1,4 +1,4 @@
-'use client'
+'ussearchshopse client'
 
 import { Shop } from '@/types/shop'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
@@ -67,6 +67,21 @@ export default function ShopCard({ shop, isActive, onClick }: ShopCardProps) {
           </span>
           {shop.is_verified && (
             <span style={{ fontSize: '12px', color: 'var(--cyan)' }}>✓</span>
+          )}
+          {shop.is_verified && (
+            <span style={{ fontSize: '12px', color: 'var(--cyan)' }}>✓</span>
+          )}
+          {shop.status === 'temporary_closed' && (
+            <span style={{
+              fontSize: '10px', fontWeight: 700, color: '#92400e',
+              background: '#fef3c7', borderRadius: '6px', padding: '1px 6px',
+            }}>휴업중</span>
+          )}
+          {shop.status === 'closed' && (
+            <span style={{
+              fontSize: '10px', fontWeight: 700, color: 'var(--muted)',
+              background: 'var(--surface2)', borderRadius: '6px', padding: '1px 6px',
+            }}>폐점</span>
           )}
         </div>
 
