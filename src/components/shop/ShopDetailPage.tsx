@@ -15,6 +15,8 @@ import ReviewSection from './ReviewSection'
 import ReportIssueButton from './ReportIssueButton'
 import ShopEventList from './ShopEventList'
 import ShopHistoryPanel from './ShopHistoryPanel'
+import ConfirmInfoButton from './ConfirmInfoButton'
+import ShopProductAccordion from './ShopProductAccordion'
 
 interface Props {
   shop: Shop
@@ -184,7 +186,9 @@ export default function ShopDetailPage({ shop }: Props) {
             )}
           </div>
         )}
-
+        
+<ShopProductAccordion shopId={shop.id} />
+        <ShopEventList shopId={shop.id} />
 <ShopEventList shopId={shop.id} />
 
         {/* 체크인 버튼 */}
@@ -280,6 +284,14 @@ export default function ShopDetailPage({ shop }: Props) {
                     <span style={{ color: h.isOpen ? 'var(--text)' : 'var(--muted)' }}>{h.hours}</span>
                   </div>
                 ))}
+                <div style={{ marginTop: '8px' }}>
+  <ConfirmInfoButton
+    shopId={shop.id}
+    targetTable="shops"
+    targetField="hours"
+    targetId={shop.id}
+  />
+</div>
               </div>
             </InfoRow>
           )}
