@@ -73,12 +73,20 @@ export async function rollbackChange(logId: string, adminId: string): Promise<bo
   if (!log) return false
 
   const targetId = log.target_id ?? log.shop_id
-  const { error: applyError } = await supabase
-    .from(log.target_table)
-    .update({ [log.field_name]: log.old_value } as any)
-    .eq('id', targetId)
 
-  if (applyError) return false
+  // 서버 API 경유 (RLS 우회 안전장치)
+  const response = await fetch('/api/admin/shop-field', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      table: log.target_table,
+      id: targetId,
+      field: log.field_name,
+      value: log.old_value,
+    }),
+  })
+
+  if (!response.ok) return false
 
   await supabase
     .from('shop_change_logs')

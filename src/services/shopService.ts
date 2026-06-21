@@ -251,9 +251,14 @@ export async function updateShop(
       hours: data.hours, parking: data.parking, parking_note: data.parking_note,
       shop_link: data.shop_link,
     }
+    function normalize(v: any) {
+      if (v === '' || v === undefined) return null
+      return v
+    }
+
     for (const [field, newVal] of Object.entries(fields)) {
       const oldVal = (before as any)[field]
-      if (JSON.stringify(oldVal ?? null) !== JSON.stringify(newVal ?? null)) {
+      if (JSON.stringify(normalize(oldVal)) !== JSON.stringify(normalize(newVal))) {
         await logChange({
           shopId, targetTable: 'shops', fieldName: field,
           oldValue: oldVal, newValue: newVal,
