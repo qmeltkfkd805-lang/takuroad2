@@ -17,6 +17,7 @@ import ShopEventList from './ShopEventList'
 import ShopHistoryPanel from './ShopHistoryPanel'
 import ConfirmInfoButton from './ConfirmInfoButton'
 import ShopProductAccordion from './ShopProductAccordion'
+import ShopAmenityBadges from './ShopAmenityBadges'
 
 interface Props {
   shop: Shop
@@ -186,9 +187,10 @@ export default function ShopDetailPage({ shop }: Props) {
             )}
           </div>
         )}
-        
+
 <ShopProductAccordion shopId={shop.id} />
         <ShopEventList shopId={shop.id} />
+        <ShopAmenityBadges shopId={shop.id} />
 <ShopEventList shopId={shop.id} />
 
         {/* 체크인 버튼 */}
