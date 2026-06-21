@@ -4,9 +4,16 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/components/layout/AuthProvider'
 import {
-  getMostReportedShops, getShopSuggestions, resolveSuggestion,
+  getMostReportedShops, getShopSuggestions, resolveSuggestion, changeShopStatus,
 } from '@/services/shopReportService'
 import { ROUTES } from '@/lib/constants/routes'
+
+const STATUS_OPTIONS = [
+  { value: 'active', label: '정상 운영', color: 'var(--green)' },
+  { value: 'temporary_closed', label: '임시 휴업', color: '#eab308' },
+  { value: 'closed', label: '폐점', color: 'var(--muted)' },
+  { value: 'deleted', label: '삭제 (중복/허위)', color: 'var(--red)' },
+]
 
 export default function ReportedShopsTab() {
   const { user } = useAuth()
@@ -14,6 +21,7 @@ export default function ReportedShopsTab() {
   const [selectedShop, setSelectedShop] = useState<any | null>(null)
   const [suggestions, setSuggestions] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [showStatusMenu, setShowStatusMenu] = useState(false)
 
   useEffect(() => {
     loadReported()
@@ -39,6 +47,23 @@ export default function ReportedShopsTab() {
     loadReported()
   }
 
+  async function handleChangeStatus(status: 'active' | 'temporary_closed' | 'closed' | 'deleted') {
+    if (!user || !selectedShop) return
+
+    let reason: string | undefined
+    if (status === 'deleted') {
+      reason = prompt('삭제 이유를 입력해주세요 (예: 중복 등록)') ?? undefined
+      if (!confirm('정말 삭제 처리할까요? 이 작업은 신중하게 진행해주세요.')) return
+    }
+
+    const ok = await changeShopStatus(selectedShop.id, status, user.id, reason)
+    if (ok) {
+      setShowStatusMenu(false)
+      loadReported()
+      alert('샵 상태가 변경됐어요')
+    }
+  }
+
   if (loading) return <div style={{ padding: '40px', textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
 
   if (selectedShop) {
@@ -46,24 +71,55 @@ export default function ReportedShopsTab() {
       <div>
         <div style={{
           padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          borderBottom: '1px solid var(--border)',
+          borderBottom: '1px solid var(--border)', flexWrap: 'wrap', gap: '8px',
         }}>
           <button
-            onClick={() => setSelectedShop(null)}
+            onClick={() => { setSelectedShop(null); setShowStatusMenu(false) }}
             style={{ background: 'none', border: 'none', fontSize: '14px', cursor: 'pointer' }}
           >← 목록으로</button>
-          <Link
-            href={ROUTES.shopEdit(selectedShop.slug)}
-            target="_blank"
-            style={{
-              padding: '8px 14px', borderRadius: '8px',
-              background: 'var(--accent)', color: '#fff',
-              fontWeight: 700, fontSize: '13px', textDecoration: 'none',
-            }}
-          >
-            ✏️ {selectedShop.name} 수정하기
-          </Link>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <Link
+              href={ROUTES.shopEdit(selectedShop.slug)}
+              target="_blank"
+              style={{
+                padding: '8px 14px', borderRadius: '8px',
+                background: 'var(--accent)', color: '#fff',
+                fontWeight: 700, fontSize: '13px', textDecoration: 'none',
+              }}
+            >
+              ✏️ 수정하기
+            </Link>
+            <button
+              onClick={() => setShowStatusMenu(v => !v)}
+              style={{
+                padding: '8px 14px', borderRadius: '8px',
+                border: '1px solid var(--border)', background: 'var(--surface)',
+                fontWeight: 700, fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
+              }}
+            >
+              ⚙️ 상태 변경
+            </button>
+          </div>
         </div>
+
+        {showStatusMenu && (
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border)', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            {STATUS_OPTIONS.map(opt => (
+              <button
+                key={opt.value}
+                onClick={() => handleChangeStatus(opt.value as any)}
+                style={{
+                  padding: '8px 14px', borderRadius: '8px',
+                  border: `1.5px solid ${opt.color}`, background: 'var(--surface)',
+                  color: opt.color, fontWeight: 700, fontSize: '12px',
+                  cursor: 'pointer', fontFamily: 'inherit',
+                }}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         {suggestions.length === 0 ? (
           <p style={{ padding: '40px', textAlign: 'center', color: 'var(--muted)' }}>신고 내역이 없어요</p>

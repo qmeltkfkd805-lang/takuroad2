@@ -66,3 +66,22 @@ export async function resolveSuggestion(suggestionId: string, status: 'approved'
     .eq('id', suggestionId)
   return !error
 }
+
+// 샵 상태 변경 (운영자 전용) — 서버 API 경유 (RLS 우회 안전장치)
+export async function changeShopStatus(
+  shopId: string,
+  status: 'active' | 'temporary_closed' | 'closed' | 'deleted',
+  adminId: string,
+  reason?: string
+): Promise<boolean> {
+  try {
+    const response = await fetch('/api/admin/shop-status', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ shopId, status, reason }),
+    })
+    return response.ok
+  } catch {
+    return false
+  }
+}
