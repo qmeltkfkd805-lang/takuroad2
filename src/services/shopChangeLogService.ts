@@ -57,7 +57,32 @@ export async function getShopHistory(shopId: string, filterTable?: string, limit
     console.error('getShopHistory error:', JSON.stringify(error))
     return []
   }
-  return data ?? []
+
+  if (!data) return []
+
+  const productTargetIds = [...new Set(
+    data.filter(log => log.target_table === 'shop_products' && log.target_id).map(log => log.target_id)
+  )]
+
+  let productLabels = new Map<string, string>()
+  if (productTargetIds.length > 0) {
+    const { data: products } = await supabase
+      .from('shop_products')
+      .select('id, tags ( name ), characters ( name ), goods_types ( name )')
+      .in('id', productTargetIds)
+
+    productLabels = new Map(
+      (products ?? []).map((p: any) => [
+        p.id,
+        [p.tags?.name, p.characters?.name, p.goods_types?.name].filter(Boolean).join('\n'),
+      ])
+    )
+  }
+
+  return data.map(log => ({
+    ...log,
+    productLabel: log.target_table === 'shop_products' ? productLabels.get(log.target_id) : undefined,
+  }))
 }
 
 // 되돌리기
@@ -74,7 +99,6 @@ export async function rollbackChange(logId: string, adminId: string): Promise<bo
 
   const targetId = log.target_id ?? log.shop_id
 
-  // 서버 API 경유 (RLS 우회 안전장치)
   const response = await fetch('/api/admin/shop-field', {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },

@@ -26,6 +26,31 @@ const TABLE_FILTERS = [
   { value: 'shop_images', label: '사진' },
 ]
 
+const AVAILABILITY_LABEL: Record<string, string> = {
+  unknown: '확인 안 됨', not_sold: '판매 안 함', sold_out: '품절',
+  few: '소량', normal: '보통', many: '많음',
+}
+
+function formatValue(val: any, fieldName?: string): string {
+  if (val === null || val === undefined) return '(없음)'
+  if (typeof val === 'boolean') return val ? '가능' : '불가'
+
+  if (fieldName === 'hours' && typeof val === 'object') {
+    const dayLabel: Record<string, string> = { mon: '월', tue: '화', wed: '수', thu: '목', fri: '금', sat: '토', sun: '일' }
+    const lines = Object.entries(val)
+      .filter(([, v]) => v)
+      .map(([day, v]: [string, any]) => `${dayLabel[day] ?? day} ${v.open}~${v.close}`)
+    return lines.length > 0 ? lines.join('\n') : '(없음)'
+  }
+
+  if (fieldName === 'availability' && typeof val === 'string') {
+    return AVAILABILITY_LABEL[val] ?? val
+  }
+
+  if (typeof val === 'object') return JSON.stringify(val)
+  return String(val)
+}
+
 export default function ShopHistoryPanel({ shopId }: Props) {
   const { profile } = useAuth()
   const isAdmin = profile?.role === 'admin'
@@ -60,13 +85,6 @@ export default function ShopHistoryPanel({ shopId }: Props) {
     setRollingBack(null)
   }
 
-  function formatValue(val: any): string {
-    if (val === null || val === undefined) return '(없음)'
-    if (typeof val === 'object') return JSON.stringify(val)
-    if (typeof val === 'boolean') return val ? '가능' : '불가'
-    return String(val)
-  }
-
   function toggleExpand(key: string) {
     setExpandedKeys(prev => {
       const next = new Set(prev)
@@ -76,7 +94,6 @@ export default function ShopHistoryPanel({ shopId }: Props) {
     })
   }
 
-  // target_table + target_id + field_name 기준으로 그룹핑, 그룹 안에서는 최신순
   const groups = new Map<string, any[]>()
   for (const log of logs) {
     const key = `${log.target_table}:${log.target_id ?? 'shop'}:${log.field_name}`
@@ -121,7 +138,6 @@ export default function ShopHistoryPanel({ shopId }: Props) {
                 isAdmin={isAdmin}
                 rollingBack={rollingBack}
                 onRollback={handleRollback}
-                formatValue={formatValue}
               />
               {olderLogs.length > 0 && (
                 <button
@@ -142,7 +158,6 @@ export default function ShopHistoryPanel({ shopId }: Props) {
                   isAdmin={isAdmin}
                   rollingBack={rollingBack}
                   onRollback={handleRollback}
-                  formatValue={formatValue}
                   dimmed
                 />
               ))}
@@ -154,12 +169,11 @@ export default function ShopHistoryPanel({ shopId }: Props) {
   )
 }
 
-function LogItem({ log, isAdmin, rollingBack, onRollback, formatValue, dimmed }: {
+function LogItem({ log, isAdmin, rollingBack, onRollback, dimmed }: {
   log: any
   isAdmin: boolean
   rollingBack: string | null
   onRollback: (id: string) => void
-  formatValue: (v: any) => string
   dimmed?: boolean
 }) {
   return (
@@ -175,8 +189,17 @@ function LogItem({ log, isAdmin, rollingBack, onRollback, formatValue, dimmed }:
           {new Date(log.created_at).toLocaleDateString('ko-KR')}
         </span>
       </div>
-      <div style={{ fontSize: '13px', color: 'var(--text)', marginBottom: '4px' }}>
-        {formatValue(log.old_value)} → <strong>{formatValue(log.new_value)}</strong>
+
+      {log.productLabel && (
+        <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--accent)', marginBottom: '4px', whiteSpace: 'pre-wrap' }}>
+          {log.productLabel}
+        </div>
+      )}
+
+      <div style={{ fontSize: '13px', color: 'var(--text)', marginBottom: '4px', whiteSpace: 'pre-wrap' }}>
+        {formatValue(log.old_value, log.field_name)}
+        {' → '}
+        <strong>{formatValue(log.new_value, log.field_name)}</strong>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ fontSize: '11px', color: 'var(--muted)' }}>
