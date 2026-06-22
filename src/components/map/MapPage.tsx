@@ -109,6 +109,14 @@ export default function MapPage() {
           목록
         </button>
 
+<Link href={ROUTES.routes} style={{
+          width: '32px', height: '32px',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '18px', flexShrink: 0,
+        }}>
+          🗺️
+        </Link>
+
         {user && (
           <Link href="/notifications" style={{
             position: 'relative', width: '32px', height: '32px',
