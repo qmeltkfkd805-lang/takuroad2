@@ -28,6 +28,7 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
   const [tagSearch, setTagSearch] = useState('')
   const [goodsTagSearch, setGoodsTagSearch] = useState('')
   const [openTagId, setOpenTagId] = useState<string | null>(null)
+  const [openGoodsKey, setOpenGoodsKey] = useState<string | null>(null)
 
   useEffect(() => {
     loadAll()
@@ -60,7 +61,6 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
   async function saveTags() {
     setSavingTags(true)
 
-    // 기존에 저장됐던 작품 목록과 비교해서, 빠진 작품의 굿즈 데이터는 비활성화
     const previousTagIds = (await getShopTags(shopId)).map((t: any) => t.id)
     const currentTagIds = myTags.map(t => t.id)
     const removedTagIds = previousTagIds.filter(id => !currentTagIds.includes(id))
@@ -87,17 +87,16 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
     setSavingCategories(false)
   }
 
-  async function cycleAvailability(tagId: string, goodsTypeId: string, current: Availability) {
+  async function setAvailability(tagId: string, goodsTypeId: string, value: Availability) {
     if (!user) return
-    const idx = AVAILABILITY_ORDER.indexOf(current)
-    const next = AVAILABILITY_ORDER[(idx + 1) % AVAILABILITY_ORDER.length]
     await upsertShopProduct({
       shopId, tagId, goodsTypeId,
-      availability: next,
+      availability: value,
       source: 'owner',
       confirmedByType: 'owner',
       userId: user.id,
     })
+    setOpenGoodsKey(null)
     await loadAll()
   }
 
@@ -247,15 +246,8 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
       {/* 2단계: 작품별 굿즈 상세 (아코디언, 평소엔 접힌 상태) */}
       <div>
         <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '6px' }}>🛍️ 작품별 취급 굿즈</h3>
-        <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '6px' }}>
-          선택사항이에요. 작품을 눌러서 펼친 다음 입력해주세요.
-        </p>
-        <p style={{
-          fontSize: '12px', color: 'var(--accent)', marginBottom: '14px',
-          background: 'var(--accent-l)', borderRadius: '8px', padding: '8px 10px',
-        }}>
-          💡 칸을 누를 때마다 순서대로 바뀌어요<br />
-          <strong>확인안됨 → 판매안함 → 품절 → 소량 → 보통 → 많음</strong>
+        <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '14px' }}>
+          선택사항이에요. 작품을 눌러서 펼친 다음, 굿즈 칸을 눌러 재고 상태를 선택해주세요.
         </p>
 
         {myTags.length === 0 ? (
@@ -311,26 +303,57 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
                           const existing = series?.goodsList.find((g: any) => g.goodsTypeId === gt.id)
                           const availability: Availability = existing?.availability ?? 'unknown'
                           const isSet = availability !== 'unknown'
+                          const goodsKey = `${tag.id}-${gt.id}`
+                          const isGoodsOpen = openGoodsKey === goodsKey
+
                           return (
-                            <button
-                              key={gt.id}
-                              onClick={() => cycleAvailability(tag.id, gt.id, availability)}
-                              style={{
-                                padding: '8px 6px', borderRadius: '8px', textAlign: 'center',
-                                border: `1.5px solid ${isSet ? 'var(--accent)' : 'var(--border)'}`,
-                                background: isSet ? 'var(--accent-l)' : 'var(--surface)',
-                                cursor: 'pointer', fontFamily: 'inherit',
-                              }}
-                            >
-                              <div style={{ fontSize: '16px' }}>{gt.icon}</div>
-                              <div style={{ fontSize: '10px', fontWeight: 700, marginTop: '2px' }}>{gt.name}</div>
-                              <div style={{
-                                fontSize: '9px', fontWeight: 700, marginTop: '2px',
-                                color: isSet ? 'var(--accent)' : 'var(--muted)',
-                              }}>
-                                {AVAILABILITY_LABEL[availability]}
-                              </div>
-                            </button>
+                            <div key={gt.id} style={{ position: 'relative' }}>
+                              <button
+                                onClick={() => setOpenGoodsKey(isGoodsOpen ? null : goodsKey)}
+                                style={{
+                                  width: '100%', padding: '8px 6px', borderRadius: '8px', textAlign: 'center',
+                                  border: `1.5px solid ${isSet ? 'var(--accent)' : 'var(--border)'}`,
+                                  background: isSet ? 'var(--accent-l)' : 'var(--surface)',
+                                  cursor: 'pointer', fontFamily: 'inherit',
+                                }}
+                              >
+                                <div style={{ fontSize: '16px' }}>{gt.icon}</div>
+                                <div style={{ fontSize: '10px', fontWeight: 700, marginTop: '2px' }}>{gt.name}</div>
+                                <div style={{
+                                  fontSize: '9px', fontWeight: 700, marginTop: '2px',
+                                  color: isSet ? 'var(--accent)' : 'var(--muted)',
+                                }}>
+                                  {AVAILABILITY_LABEL[availability]}
+                                </div>
+                              </button>
+
+                              {isGoodsOpen && (
+                                <div style={{
+                                  position: 'absolute', top: '100%', left: 0, zIndex: 20,
+                                  marginTop: '4px', background: 'var(--surface)',
+                                  border: '1px solid var(--border)', borderRadius: '8px',
+                                  boxShadow: '0 4px 12px rgba(0,0,0,.15)', overflow: 'hidden',
+                                  minWidth: '110px',
+                                }}>
+                                  {AVAILABILITY_ORDER.map(opt => (
+                                    <button
+                                      key={opt}
+                                      onClick={() => setAvailability(tag.id, gt.id, opt)}
+                                      style={{
+                                        display: 'block', width: '100%', padding: '8px 12px',
+                                        textAlign: 'left', border: 'none',
+                                        background: opt === availability ? 'var(--accent-l)' : 'var(--surface)',
+                                        color: opt === availability ? 'var(--accent)' : 'var(--text)',
+                                        fontWeight: opt === availability ? 700 : 400,
+                                        fontSize: '12px', cursor: 'pointer', fontFamily: 'inherit',
+                                      }}
+                                    >
+                                      {AVAILABILITY_LABEL[opt]}
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
                           )
                         })}
                       </div>
