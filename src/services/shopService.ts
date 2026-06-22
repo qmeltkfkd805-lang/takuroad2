@@ -34,6 +34,7 @@ export function toShop(raw: any): Shop {
     parking:        raw.parking,
     parking_note:   raw.parking_note,
     shop_link:      raw.shop_link,
+    floor_info:     raw.floor_info,
     start_date:     raw.start_date,
     end_date:       raw.end_date,
     event_info:     raw.event_info,
@@ -178,6 +179,7 @@ export async function createShop(
       parking:      data.parking,
       parking_note: data.parking_note || null,
       shop_link:    data.shop_link || null,
+      floor_info:   data.floor_info || null,
       start_date:   data.start_date || null,
       end_date:     data.end_date || null,
       event_info:   data.event_info || null,
@@ -232,6 +234,7 @@ export async function updateShop(
       parking:      data.parking,
       parking_note: data.parking_note || null,
       shop_link:    data.shop_link || null,
+      floor_info:   data.floor_info || null,
       start_date:   data.start_date || null,
       end_date:     data.end_date || null,
       event_info:   data.event_info || null,
@@ -249,7 +252,7 @@ export async function updateShop(
     const fields: Record<string, any> = {
       name: data.name, description: data.description, addr: data.addr,
       hours: data.hours, parking: data.parking, parking_note: data.parking_note,
-      shop_link: data.shop_link,
+      shop_link: data.shop_link, floor_info: data.floor_info,
     }
     function normalize(v: any) {
       if (v === '' || v === undefined) return null

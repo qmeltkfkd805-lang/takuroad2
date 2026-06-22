@@ -21,3 +21,39 @@ export async function geocodeAddress(address: string): Promise<{ lat: number; ln
     return null
   }
 }
+
+// 장소명으로 검색 (예: "수원 스타필드") → 후보 목록 반환
+export interface PlaceSearchResult {
+  name: string
+  address: string
+  roadAddress: string
+  lat: number
+  lng: number
+}
+
+export async function searchPlace(query: string): Promise<PlaceSearchResult[]> {
+  if (!query.trim()) return []
+
+  try {
+    const response = await fetch(
+      `https://dapi.kakao.com/v2/local/search/keyword.json?query=${encodeURIComponent(query)}&size=5`,
+      {
+        headers: {
+          Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_KEY}`,
+        },
+      }
+    )
+    const data = await response.json()
+    if (!data.documents) return []
+
+    return data.documents.map((doc: any) => ({
+      name: doc.place_name,
+      address: doc.address_name,
+      roadAddress: doc.road_address_name || doc.address_name,
+      lat: parseFloat(doc.y),
+      lng: parseFloat(doc.x),
+    }))
+  } catch {
+    return []
+  }
+}

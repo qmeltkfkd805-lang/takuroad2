@@ -15,6 +15,7 @@ import ShopEventManager from './ShopEventManager'
 import ShopAmenitySection from './ShopAmenitySection'
 import ShopHighlightManager from './ShopHighlightManager'
 import CompletenessIndicator from './CompletenessIndicator'
+import { searchPlace, PlaceSearchResult } from '@/lib/utils/geocode'
 
 interface Props {
   mode: 'create' | 'edit'
@@ -25,7 +26,7 @@ const EMPTY_FORM: ShopFormData = {
   name: '', slug: '', description: '', addr: '',
   lat: null, lng: null, cats: [],
   hours: null, parking: null, parking_note: '',
-  shop_link: '', start_date: '', end_date: '', event_info: '',
+  shop_link: '', floor_info: '', start_date: '', end_date: '', event_info: '',
 }
 
 export default function ShopForm({ mode, shop }: Props) {
@@ -34,6 +35,8 @@ export default function ShopForm({ mode, shop }: Props) {
   const [form, setForm] = useState<ShopFormData>(EMPTY_FORM)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const [placeResults, setPlaceResults] = useState<PlaceSearchResult[]>([])
+  const [searchingPlace, setSearchingPlace] = useState(false)
   const [createdShopId, setCreatedShopId] = useState<string | null>(null)
   const [createdShopSlug, setCreatedShopSlug] = useState<string | null>(null)
 
@@ -55,6 +58,7 @@ export default function ShopForm({ mode, shop }: Props) {
         parking: shop.parking,
         parking_note: shop.parking_note ?? '',
         shop_link: shop.shop_link ?? '',
+        floor_info: shop.floor_info ?? '',
         start_date: shop.start_date ?? '',
         end_date: shop.end_date ?? '',
         event_info: shop.event_info ?? '',
@@ -71,6 +75,21 @@ export default function ShopForm({ mode, shop }: Props) {
     if (mode === 'create') {
       set('slug', generateSlug(name))
     }
+  }
+
+  async function handlePlaceSearch() {
+    if (!form.addr.trim()) return
+    setSearchingPlace(true)
+    const results = await searchPlace(form.addr)
+    setPlaceResults(results)
+    setSearchingPlace(false)
+  }
+
+  function selectPlace(place: PlaceSearchResult) {
+    set('addr', place.roadAddress)
+    set('lat', place.lat)
+    set('lng', place.lng)
+    setPlaceResults([])
   }
 
   async function handleSubmit() {
@@ -207,15 +226,65 @@ export default function ShopForm({ mode, shop }: Props) {
               </div>
             </Field>
 
-            <Field label="주소" hint="주소를 입력하면 지도 좌표가 자동으로 설정돼요">
-              <input
-                type="text"
-                value={form.addr}
-                onChange={e => { set('addr', e.target.value); set('lat', null); set('lng', null) }}
-                placeholder="예: 서울 마포구 와우산로 21"
-                style={inputStyle}
-              />
-            </Field>
+            <Field label="주소" hint="장소명(예: 수원 스타필드)이나 주소를 입력하고 검색해주세요">
+  <div style={{ display: 'flex', gap: '6px' }}>
+    <input
+      type="text"
+      value={form.addr}
+      onChange={e => { set('addr', e.target.value); set('lat', null); set('lng', null) }}
+      onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handlePlaceSearch() } }}
+      placeholder="예: 수원 스타필드, 서울 마포구 와우산로 21"
+      style={{ ...inputStyle, flex: 1 }}
+    />
+    <button
+      onClick={handlePlaceSearch}
+      disabled={searchingPlace || !form.addr.trim()}
+      style={{
+        padding: '0 16px', borderRadius: '10px', border: 'none',
+        background: 'var(--accent)', color: '#fff', fontWeight: 700,
+        fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0,
+      }}
+    >
+      {searchingPlace ? '검색중' : '검색'}
+    </button>
+  </div>
+
+  {placeResults.length > 0 && (
+    <div style={{
+      marginTop: '8px', border: '1px solid var(--border)', borderRadius: '10px', overflow: 'hidden',
+    }}>
+      {placeResults.map((place, i) => (
+        <div
+          key={i}
+          onClick={() => selectPlace(place)}
+          style={{
+            padding: '10px 12px', cursor: 'pointer',
+            borderBottom: i < placeResults.length - 1 ? '1px solid var(--border)' : 'none',
+          }}
+        >
+          <div style={{ fontSize: '13px', fontWeight: 700 }}>{place.name}</div>
+          <div style={{ fontSize: '12px', color: 'var(--muted)' }}>{place.roadAddress}</div>
+        </div>
+      ))}
+    </div>
+  )}
+
+  {form.lat && form.addr && (
+    <p style={{ fontSize: '12px', color: 'var(--green)', marginTop: '4px' }}>
+      ✓ 위치가 설정됐어요
+    </p>
+  )}
+</Field>
+
+<Field label="상세 위치" hint="건물 내 층수 등 자세한 위치를 입력해주세요">
+  <input
+    type="text"
+    value={form.floor_info}
+    onChange={e => set('floor_info', e.target.value)}
+    placeholder="예: 5층, 지하 1층 B구역"
+    style={inputStyle}
+  />
+</Field>
 
             <Field label="영업시간" hint="요일별로 입력해주세요. 비워두면 정보 없음으로 표시돼요">
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>

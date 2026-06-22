@@ -268,10 +268,15 @@ export default function ShopDetailPage({ shop }: Props) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
 
           {shop.addr && (
-            <InfoRow icon="📍" label="주소">
-              {shop.addr}
-            </InfoRow>
-          )}
+  <InfoRow icon="📍" label="주소">
+    {shop.addr}
+    {shop.floor_info && (
+      <span style={{ color: 'var(--accent)', fontWeight: 700, marginLeft: '6px' }}>
+        ({shop.floor_info})
+      </span>
+    )}
+  </InfoRow>
+)}
 
           {shop.hours && (
             <InfoRow icon="🕐" label="영업시간">
