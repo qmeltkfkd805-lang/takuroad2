@@ -16,6 +16,7 @@ import ShopAmenitySection from './ShopAmenitySection'
 import ShopHighlightManager from './ShopHighlightManager'
 import CompletenessIndicator from './CompletenessIndicator'
 import { searchPlace, PlaceSearchResult } from '@/lib/utils/geocode'
+import ShopMainImageUploader from './ShopMainImageUploader'
 
 interface Props {
   mode: 'create' | 'edit'
@@ -151,7 +152,14 @@ export default function ShopForm({ mode, shop }: Props) {
       <div style={{ padding: '20px 16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
         {mode === 'edit' && shop && (
-          <CompletenessIndicator shopId={shop.id} />
+          <>
+            <CompletenessIndicator shopId={shop.id} />
+            <ShopMainImageUploader
+              shopSlug={shop.slug}
+              shopId={shop.id}
+              currentImageUrl={shop.images[0] ?? null}
+            />
+          </>
         )}
 
         {createdShopId ? (

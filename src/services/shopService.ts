@@ -591,3 +591,32 @@ export async function deleteAccount(userId: string): Promise<boolean> {
   await supabase.auth.signOut()
   return true
 }
+
+export async function uploadShopMainImage(file: File, shopSlug: string): Promise<string | null> {
+  const supabase = createClient()
+  const ext = file.name.split('.').pop()
+  const path = `${shopSlug}/main/${Date.now()}.${ext}`
+
+  const { error } = await supabase.storage
+    .from('shop-images')
+    .upload(path, file)
+
+  if (error) return null
+
+  const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
+  return data.publicUrl
+}
+
+export async function setShopMainImage(shopId: string, imageUrl: string): Promise<boolean> {
+  const supabase = createClient()
+
+  // 기존 대표사진(is_cover=true)을 전부 삭제
+  await supabase.from('shop_images').delete().eq('shop_id', shopId).eq('is_cover', true)
+
+  // 새 이미지를 대표사진으로 추가
+  const { error } = await supabase
+    .from('shop_images')
+    .insert({ shop_id: shopId, image_url: imageUrl, is_cover: true, sort_order: 0 } as any)
+
+  return !error
+}
