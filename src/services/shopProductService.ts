@@ -220,3 +220,14 @@ export async function updateShopGoodsCategories(shopId: string, goodsTypeIds: st
     .insert(goodsTypeIds.map(id => ({ shop_id: shopId, goods_type_id: id })) as any)
   return !error
 }
+
+// 특정 작품의 모든 굿즈를 비활성화 (취급 작품에서 제외할 때 사용)
+export async function deactivateProductsByTag(shopId: string, tagId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase
+    .from('shop_products')
+    .update({ is_active: false, deactivated_at: new Date().toISOString() } as any)
+    .eq('shop_id', shopId)
+    .eq('tag_id', tagId)
+  return !error
+}

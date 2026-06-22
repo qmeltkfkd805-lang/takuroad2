@@ -20,9 +20,13 @@ export default function ShopProductAccordion({ shopId }: Props) {
 
   useEffect(() => {
     getShopProductsBySeries(shopId).then(data => {
-      setSeries(data)
+      // 모든 굿즈가 "확인 안 됨"인 작품은 제외
+      const filtered = data.filter((s: any) =>
+        s.goodsList.some((g: any) => g.availability !== 'unknown')
+      )
+      setSeries(filtered)
       setLoading(false)
-      if (data.length > 0) setOpenTag(data[0].tagId)
+      if (filtered.length > 0) setOpenTag(filtered[0].tagId)
     })
   }, [shopId])
 
@@ -48,7 +52,7 @@ export default function ShopProductAccordion({ shopId }: Props) {
 
             {isOpen && (
               <div style={{ padding: '12px 14px' }}>
-                {s.goodsList.map((g: any) => (
+                {s.goodsList.filter((g: any) => g.availability !== 'unknown').map((g: any) => (
                   <div key={g.id} style={{ padding: '8px 0', borderBottom: '1px solid var(--border)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
                       <span style={{ fontSize: '13px', fontWeight: 700 }}>

@@ -5,7 +5,7 @@ import { getAllTags } from '@/services/shopService'
 import {
   getShopTags, updateShopTags, getShopProductsBySeries,
   upsertShopProduct, getAllGoodsTypes, Availability, AVAILABILITY_LABEL,
-  getShopGoodsCategories, updateShopGoodsCategories,
+  getShopGoodsCategories, updateShopGoodsCategories, deactivateProductsByTag,
 } from '@/services/shopProductService'
 import { useAuth } from '@/components/layout/AuthProvider'
 
@@ -59,7 +59,18 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
 
   async function saveTags() {
     setSavingTags(true)
-    await updateShopTags(shopId, myTags.map(t => t.id))
+
+    // 기존에 저장됐던 작품 목록과 비교해서, 빠진 작품의 굿즈 데이터는 비활성화
+    const previousTagIds = (await getShopTags(shopId)).map((t: any) => t.id)
+    const currentTagIds = myTags.map(t => t.id)
+    const removedTagIds = previousTagIds.filter(id => !currentTagIds.includes(id))
+
+    await updateShopTags(shopId, currentTagIds)
+
+    for (const removedTagId of removedTagIds) {
+      await deactivateProductsByTag(shopId, removedTagId)
+    }
+
     await loadAll()
     setSavingTags(false)
   }
