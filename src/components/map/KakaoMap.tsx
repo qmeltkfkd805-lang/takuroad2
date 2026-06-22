@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, forwardRef, useImperativeHandle } from 'react'
 import { Shop } from '@/types/shop'
 import { useMap } from '@/hooks/useMap'
 
@@ -12,15 +12,23 @@ interface KakaoMapProps {
   onSelectGroup: (shops: Shop[]) => void
 }
 
-export default function KakaoMap({
+export interface KakaoMapRef {
+  moveCenter: (lat: number, lng: number, level?: number) => void
+}
+
+const KakaoMap = forwardRef<KakaoMapRef, KakaoMapProps>(function KakaoMap({
   shops,
   activeShopId,
   onSelectShop,
   onMapClick,
   onSelectGroup,
-}: KakaoMapProps) {
+}, ref) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const { isLoaded, renderMarkers, onMapClick: registerClick } = useMap(containerRef)
+  const { isLoaded, renderMarkers, onMapClick: registerClick, moveCenter } = useMap(containerRef)
+
+  useImperativeHandle(ref, () => ({
+    moveCenter,
+  }), [moveCenter])
 
   useEffect(() => {
     if (!isLoaded) return
@@ -38,4 +46,6 @@ export default function KakaoMap({
       style={{ width: '100%', height: '100%' }}
     />
   )
-}
+})
+
+export default KakaoMap

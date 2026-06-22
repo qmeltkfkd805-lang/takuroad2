@@ -47,7 +47,7 @@ export function useCurrentLocation() {
         setError('위치 정보를 가져올 수 없어요.')
         setLoading(false)
       },
-      { timeout: 10000 }
+      { timeout: 10000, enableHighAccuracy: true, maximumAge: 0 }
     )
   }, [])
 

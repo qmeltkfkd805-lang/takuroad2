@@ -3,7 +3,7 @@ import { calcDistance } from '@/hooks/useCurrentLocation'
 import { addExp } from './expService'
 import { evaluateBadgeTiersForUser } from './badgeService'
 
-const CHECK_IN_MAX_DISTANCE_M = 100
+const CHECK_IN_MAX_DISTANCE_M = 100000 // ⚠️ 테스트 전용 임시값 — 운영 전 100으로 반드시 되돌릴 것!
 const RECHECK_IN_COOLDOWN_MIN = 30
 const CHECK_IN_EXP = 5
 

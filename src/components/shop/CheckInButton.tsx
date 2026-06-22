@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useCurrentLocation } from '@/hooks/useCurrentLocation'
 import { createCheckIn, getMyCheckInStatus, getShopCheckInCount } from '@/services/checkInService'
+import { collectTagsFromCheckIn } from '@/services/tagCollectionService'
 import { createClient } from '@/lib/supabase/client'
 
 interface Props {
@@ -22,6 +23,7 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
   const [submitting, setSubmitting] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
   const [newBadge, setNewBadge] = useState<{ name: string; rarity: string } | null>(null)
+  const [newTags, setNewTags] = useState<string[] | null>(null)
 
   useEffect(() => {
     if (user) {
@@ -51,6 +53,12 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
       setCheckInCount(c => c + 1)
       setToast('체크인 완료!')
       setTimeout(() => setToast(null), 2500)
+
+      // 이 샵의 취급 작품을 컬렉션에 자동 획득
+      const { newlyCollected } = await collectTagsFromCheckIn(user.id, shopId)
+      if (newlyCollected.length > 0) {
+        setTimeout(() => setNewTags(newlyCollected), 600)
+      }
 
       if (result.newTierIds && result.newTierIds.length > 0) {
         const supabase = createClient()
@@ -139,6 +147,38 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
             <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '8px' }}>새 배지 획득!</p>
             <div style={{ fontSize: '36px', marginBottom: '8px' }}>🏅</div>
             <p style={{ fontSize: '16px', fontWeight: 900 }}>{newBadge.name}</p>
+          </div>
+        </div>
+      )}
+
+      {newTags && newTags.length > 0 && (
+        <div
+          onClick={() => setNewTags(null)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 1000,
+            background: 'rgba(0,0,0,.6)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer',
+          }}
+        >
+          <div style={{
+            background: 'var(--surface)', borderRadius: '20px',
+            padding: '32px 28px', textAlign: 'center', maxWidth: '320px',
+          }}>
+            <div style={{ fontSize: '48px', marginBottom: '12px' }}>📚</div>
+            <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '12px' }}>
+              새 작품 컬렉션 획득!
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {newTags.map(name => (
+                <p key={name} style={{
+                  fontSize: '15px', fontWeight: 900, padding: '8px 16px',
+                  borderRadius: '10px', background: 'var(--accent-l)', color: 'var(--accent)',
+                }}>
+                  ✔ {name}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
       )}

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { getRegionCollections, getUnvisitedShopsForRegion, getOfficialLists, getMyProgress } from '@/services/pilgrimageService'
 import { LoadingState } from './SavedShopsTab'
+import TagCollectionSection from './TagCollectionSection'
 
 export default function CollectionTab({ userId }: { userId: string }) {
   const [regions, setRegions] = useState<any[]>([])
@@ -65,6 +66,7 @@ export default function CollectionTab({ userId }: { userId: string }) {
           </div>
         </div>
       ))}
+<TagCollectionSection userId={userId} />
 
       {/* 지역별 컬렉션 */}
       <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '12px' }}>📍 지역 컬렉션</h3>

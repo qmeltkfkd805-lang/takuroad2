@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useCallback, useRef, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useShops } from '@/hooks/useShops'
 import { useCurrentLocation } from '@/hooks/useCurrentLocation'
 import { useNotifications } from '@/hooks/useNotifications'
 import { useAuth } from '@/components/layout/AuthProvider'
-import KakaoMap from './KakaoMap'
+import KakaoMap, { KakaoMapRef } from './KakaoMap'
 import CategoryFilter from './CategoryFilter'
 import ShopListPanel from '@/components/shop/ShopListPanel'
 import ShopDetail from '@/components/shop/ShopDetail'
@@ -17,6 +17,7 @@ import { ROUTES } from '@/lib/constants/routes'
 
 export default function MapPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { user, profile } = useAuth()
   const { unreadCount } = useNotifications()
   const {
@@ -26,9 +27,10 @@ export default function MapPage() {
     selectedShop, setSelectedShop,
   } = useShops()
 
-  const { requestLocation } = useCurrentLocation()
+  const { location, requestLocation } = useCurrentLocation()
   const [listOpen, setListOpen] = useState(false)
   const [groupShops, setGroupShops] = useState<Shop[] | null>(null)
+  const mapRef = useRef<KakaoMapRef>(null)
 
   const handleSelectShop = useCallback((shop: Shop) => {
     setSelectedShop(shop)
@@ -43,6 +45,25 @@ export default function MapPage() {
   const handleMapClick = useCallback(() => {
     setSelectedShop(null)
   }, [setSelectedShop])
+
+  // 현재 위치를 받아오면 지도 이동
+  useEffect(() => {
+    if (location) {
+      mapRef.current?.moveCenter(location.lat, location.lng, 4)
+    }
+  }, [location])
+
+  // URL의 ?shop=slug 파라미터로 특정 샵 위치로 이동
+  useEffect(() => {
+    const shopSlug = searchParams.get('shop')
+    if (!shopSlug || mapShops.length === 0) return
+
+    const target = mapShops.find(s => s.slug === shopSlug)
+    if (target && target.lat && target.lng) {
+      mapRef.current?.moveCenter(target.lat, target.lng, 3)
+      setSelectedShop(target)
+    }
+  }, [searchParams, mapShops, setSelectedShop])
 
   return (
     <div style={{ position: 'fixed', inset: 0, background: 'var(--bg)' }}>
@@ -140,6 +161,7 @@ export default function MapPage() {
 
       <div style={{ position: 'absolute', inset: 0, paddingTop: '108px' }}>
         <KakaoMap
+          ref={mapRef}
           shops={mapShops}
           activeShopId={selectedShop?.id ?? null}
           onSelectShop={handleSelectShop}
