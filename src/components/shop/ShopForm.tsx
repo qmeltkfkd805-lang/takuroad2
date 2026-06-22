@@ -13,6 +13,8 @@ import { geocodeAddress } from '@/lib/utils/geocode'
 import ShopEnrichmentSection from './ShopEnrichmentSection'
 import ShopEventManager from './ShopEventManager'
 import ShopAmenitySection from './ShopAmenitySection'
+import ShopHighlightManager from './ShopHighlightManager'
+import CompletenessIndicator from './CompletenessIndicator'
 
 interface Props {
   mode: 'create' | 'edit'
@@ -128,6 +130,10 @@ export default function ShopForm({ mode, shop }: Props) {
       </div>
 
       <div style={{ padding: '20px 16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+        {mode === 'edit' && shop && (
+          <CompletenessIndicator shopId={shop.id} />
+        )}
 
         {createdShopId ? (
           <div style={{
@@ -401,6 +407,10 @@ export default function ShopForm({ mode, shop }: Props) {
             <div style={{ height: '1px', background: 'var(--border)', margin: '8px 0' }} />
             <h3 style={{ fontSize: '14px', fontWeight: 900 }}>🚗 편의시설 / 서비스</h3>
             <ShopAmenitySection shopId={enrichmentShopId} />
+
+            <div style={{ height: '1px', background: 'var(--border)', margin: '8px 0' }} />
+            <h3 style={{ fontSize: '14px', fontWeight: 900 }}>🌟 추천 코너</h3>
+            <ShopHighlightManager shopId={enrichmentShopId} shopSlug={mode === 'edit' ? shop!.slug : createdShopSlug!} />
             
             {createdShopId && createdShopSlug && (
               <button

@@ -14,13 +14,14 @@ import { ROUTES } from '@/lib/constants/routes'
 import OfficialRouteTab from './OfficialRouteTab'
 import SeasonalEventTab from './SeasonalEventTab'
 import ReportedShopsTab from './ReportedShopsTab'
+import AdminDashboardPage from './AdminDashboardPage'
 
-type Tab = 'shops' | 'verify' | 'routes' | 'events' | 'reported'
+type Tab = 'dashboard' | 'shops' | 'verify' | 'routes' | 'events' | 'reported'
 
 export default function AdminPage() {
   const router = useRouter()
   const { user, profile, loading: authLoading } = useAuth()
-  const [tab, setTab] = useState<Tab>('shops')
+  const [tab, setTab] = useState<Tab>('dashboard')
   const [pendingShops, setPendingShops] = useState<Shop[]>([])
   const [verifyRequests, setVerifyRequests] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -91,6 +92,9 @@ export default function AdminPage() {
         <h1 style={{ fontSize: '18px', fontWeight: 900, marginBottom: '12px' }}>관리자 페이지</h1>
 
         <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '2px' }}>
+          <TabButton active={tab === 'dashboard'} onClick={() => setTab('dashboard')}>
+            🏠 대시보드
+          </TabButton>
           <TabButton active={tab === 'shops'} onClick={() => setTab('shops')}>
             샵 승인 {pendingShops.length > 0 && `(${pendingShops.length})`}
           </TabButton>
@@ -108,7 +112,8 @@ export default function AdminPage() {
           </TabButton>
         </div>
       </div>
-
+{tab === 'dashboard' && <AdminDashboardPage onNavigate={(t) => setTab(t as Tab)} />}
+  
       {tab === 'shops' && (
         <div>
           {pendingShops.length === 0 ? (
