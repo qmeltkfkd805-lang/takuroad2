@@ -167,7 +167,11 @@ export async function upsertShopProduct(params: {
 // 전체 굿즈 타입 목록 (입력 폼용)
 export async function getAllGoodsTypes() {
   const supabase = createClient()
-  const { data } = await supabase.from('goods_types').select('*').order('sort_order')
+  const { data } = await supabase
+    .from('goods_types')
+    .select('*')
+    .eq('is_active', true)
+    .order('sort_order')
   return data ?? []
 }
 
