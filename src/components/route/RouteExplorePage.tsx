@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { getPublicRoutes, getAllRegions, getAllSeriesTags } from '@/services/routeService'
 import { formatDistance } from '@/hooks/useCurrentLocation'
+import { useDebounce } from '@/hooks/useDebounce'
 
 type FilterType = 'all' | 'region' | 'series'
 
@@ -15,6 +16,8 @@ export default function RouteExplorePage() {
   const [loading, setLoading] = useState(true)
   const [filterType, setFilterType] = useState<FilterType>('all')
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null)
+  const [search, setSearch] = useState('')
+  const debouncedSearch = useDebounce(search, 300)
 
   useEffect(() => {
     Promise.all([
@@ -24,12 +27,15 @@ export default function RouteExplorePage() {
       setRegions(r)
       setSeriesTags(s)
     })
-    loadRoutes()
   }, [])
+
+  useEffect(() => {
+    loadRoutes()
+  }, [debouncedSearch])
 
   async function loadRoutes(filters?: { region?: string; tag?: string }) {
     setLoading(true)
-    const data = await getPublicRoutes(filters)
+    const data = await getPublicRoutes({ ...filters, search: debouncedSearch || undefined })
     setRoutes(data)
     setLoading(false)
   }
@@ -69,6 +75,21 @@ export default function RouteExplorePage() {
           >←</button>
           <h1 style={{ fontSize: '16px', fontWeight: 900 }}>루트 둘러보기</h1>
         </div>
+
+        {/* 검색창 */}
+        <input
+          type="text"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder="루트 제목, 내용, 작품, 글쓴이로 검색..."
+          style={{
+            width: '100%', padding: '10px 14px', marginBottom: '12px',
+            border: '1.5px solid var(--border)', borderRadius: '10px',
+            fontSize: '14px', fontFamily: 'inherit',
+            background: 'var(--surface2)', color: 'var(--text)',
+            outline: 'none', boxSizing: 'border-box',
+          }}
+        />
 
         {/* 필터 타입 선택 */}
         <div style={{ display: 'flex', gap: '6px', marginBottom: filterType !== 'all' ? '10px' : 0 }}>

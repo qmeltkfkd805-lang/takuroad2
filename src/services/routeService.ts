@@ -140,7 +140,7 @@ export async function toggleRouteShare(routeId: string, userId: string, isShared
 }
 
 // 공개된 루트 전체 목록 (좋아요순, 지역/태그 필터 가능)
-export async function getPublicRoutes(filters?: { region?: string; tag?: string }) {
+export async function getPublicRoutes(filters?: { region?: string; tag?: string; search?: string }) {
   const supabase = createClient()
 
   let query = supabase
@@ -165,20 +165,34 @@ export async function getPublicRoutes(filters?: { region?: string; tag?: string 
 
   let routes = data ?? []
 
-  // 지역 필터 (루트에 포함된 샵 중 하나라도 해당 지역이면 포함)
   if (filters?.region) {
     routes = routes.filter((r: any) =>
       r.route_shops?.some((rs: any) => rs.shops?.region === filters.region)
     )
   }
 
-  // 태그(작품) 필터
   if (filters?.tag) {
     routes = routes.filter((r: any) =>
       r.route_shops?.some((rs: any) =>
         rs.shops?.shop_tags?.some((st: any) => st.tags?.name === filters.tag)
       )
     )
+  }
+
+  if (filters?.search) {
+    const keyword = filters.search.toLowerCase()
+    routes = routes.filter((r: any) => {
+      const titleMatch = r.title?.toLowerCase().includes(keyword)
+      const descMatch = r.description?.toLowerCase().includes(keyword)
+      const authorMatch = r.profiles?.nickname?.toLowerCase().includes(keyword)
+      const tagMatch = r.route_shops?.some((rs: any) =>
+        rs.shops?.shop_tags?.some((st: any) => st.tags?.name?.toLowerCase().includes(keyword))
+      )
+      const shopNameMatch = r.route_shops?.some((rs: any) =>
+        rs.shops?.name?.toLowerCase().includes(keyword)
+      )
+      return titleMatch || descMatch || authorMatch || tagMatch || shopNameMatch
+    })
   }
 
   return routes
