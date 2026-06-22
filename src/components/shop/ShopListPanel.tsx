@@ -23,7 +23,7 @@ export default function ShopListPanel({
   return (
     <div style={{
       position: 'absolute',
-      left: 0, top: 0, bottom: 0,
+      left: 0, top: '108px', bottom: 0,
       width: isOpen ? '320px' : '0',
       background: 'var(--surface)',
       boxShadow: isOpen ? 'var(--sh-md)' : 'none',
