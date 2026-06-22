@@ -25,6 +25,9 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
   const [loading, setLoading] = useState(true)
   const [savingTags, setSavingTags] = useState(false)
   const [savingCategories, setSavingCategories] = useState(false)
+  const [tagSearch, setTagSearch] = useState('')
+  const [goodsTagSearch, setGoodsTagSearch] = useState('')
+  const [openTagId, setOpenTagId] = useState<string | null>(null)
 
   useEffect(() => {
     loadAll()
@@ -91,6 +94,14 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
     return <div style={{ padding: '20px', textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
   }
 
+  const filteredTags = allTags.filter(tag =>
+    tag.name.toLowerCase().includes(tagSearch.toLowerCase())
+  )
+
+  const filteredMyTags = myTags.filter(tag =>
+    tag.name.toLowerCase().includes(goodsTagSearch.toLowerCase())
+  )
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
@@ -142,28 +153,71 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
       <div>
         <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '6px' }}>🎮 취급 작품</h3>
         <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '10px' }}>
-          이 샵에서 다루는 작품을 선택해주세요 (10초면 끝나요)
+          이 샵에서 다루는 작품을 선택해주세요
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '12px' }}>
-          {allTags.map(tag => {
-            const selected = myTags.some(t => t.id === tag.id)
-            return (
-              <button
+
+        {myTags.length > 0 && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '10px' }}>
+            {myTags.map(tag => (
+              <span
                 key={tag.id}
                 onClick={() => toggleTag(tag)}
                 style={{
-                  padding: '6px 12px', borderRadius: '20px', cursor: 'pointer',
-                  border: `1.5px solid ${selected ? 'var(--accent)' : 'var(--border)'}`,
-                  background: selected ? 'var(--accent-l)' : 'var(--surface)',
-                  color: selected ? 'var(--accent)' : 'var(--text)',
-                  fontSize: '13px', fontWeight: 700, fontFamily: 'inherit',
+                  display: 'inline-flex', alignItems: 'center', gap: '4px',
+                  padding: '6px 10px', borderRadius: '16px', cursor: 'pointer',
+                  border: '1.5px solid var(--accent)', background: 'var(--accent-l)',
+                  color: 'var(--accent)', fontSize: '12px', fontWeight: 700,
                 }}
               >
-                {tag.name}
-              </button>
-            )
-          })}
+                {tag.name} ✕
+              </span>
+            ))}
+          </div>
+        )}
+
+        <input
+          type="text"
+          value={tagSearch}
+          onChange={e => setTagSearch(e.target.value)}
+          placeholder="작품 이름으로 검색 (예: 원피스, 산리오)"
+          style={{
+            width: '100%', padding: '9px 12px', marginBottom: '10px',
+            border: '1.5px solid var(--border)', borderRadius: '8px',
+            fontSize: '13px', fontFamily: 'inherit',
+            background: 'var(--surface)', color: 'var(--text)',
+            outline: 'none', boxSizing: 'border-box',
+          }}
+        />
+
+        <div style={{
+          display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '12px',
+          maxHeight: '240px', overflowY: 'auto', padding: '2px',
+        }}>
+          {filteredTags.length === 0 ? (
+            <p style={{ fontSize: '12px', color: 'var(--muted)', padding: '10px 0' }}>검색 결과가 없어요</p>
+          ) : (
+            filteredTags.map(tag => {
+              const selected = myTags.some(t => t.id === tag.id)
+              if (selected) return null
+              return (
+                <button
+                  key={tag.id}
+                  onClick={() => toggleTag(tag)}
+                  style={{
+                    padding: '6px 12px', borderRadius: '20px', cursor: 'pointer',
+                    border: '1.5px solid var(--border)',
+                    background: 'var(--surface)',
+                    color: 'var(--text)',
+                    fontSize: '13px', fontWeight: 700, fontFamily: 'inherit',
+                  }}
+                >
+                  {tag.name}
+                </button>
+              )
+            })
+          )}
         </div>
+
         <button
           onClick={saveTags}
           disabled={savingTags}
@@ -179,11 +233,11 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
 
       <div style={{ height: '1px', background: 'var(--border)' }} />
 
-      {/* 2단계: 작품별 굿즈 상세 (선택, 천천히) */}
+      {/* 2단계: 작품별 굿즈 상세 (아코디언, 평소엔 접힌 상태) */}
       <div>
         <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '6px' }}>🛍️ 작품별 취급 굿즈</h3>
         <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '6px' }}>
-          선택사항이에요. 천천히 추가해도 괜찮아요.
+          선택사항이에요. 작품을 눌러서 펼친 다음 입력해주세요.
         </p>
         <p style={{
           fontSize: '12px', color: 'var(--accent)', marginBottom: '14px',
@@ -196,42 +250,85 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
         {myTags.length === 0 ? (
           <p style={{ fontSize: '13px', color: 'var(--muted)' }}>먼저 위에서 취급 작품을 선택하고 저장해주세요</p>
         ) : (
-          myTags.map(tag => {
-            const series = products.find(p => p.tagId === tag.id)
-            return (
-              <div key={tag.id} style={{ marginBottom: '16px' }}>
-                <div style={{ fontWeight: 700, fontSize: '13px', marginBottom: '8px' }}>{tag.name}</div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(90px, 1fr))', gap: '6px' }}>
-                  {allGoodsTypes.map((gt: any) => {
-                    const existing = series?.goodsList.find((g: any) => g.goodsTypeId === gt.id)
-                    const availability: Availability = existing?.availability ?? 'unknown'
-                    const isSet = availability !== 'unknown'
-                    return (
-                      <button
-                        key={gt.id}
-                        onClick={() => cycleAvailability(tag.id, gt.id, availability)}
-                        style={{
-                          padding: '8px 6px', borderRadius: '8px', textAlign: 'center',
-                          border: `1.5px solid ${isSet ? 'var(--accent)' : 'var(--border)'}`,
-                          background: isSet ? 'var(--accent-l)' : 'var(--surface)',
-                          cursor: 'pointer', fontFamily: 'inherit',
-                        }}
-                      >
-                        <div style={{ fontSize: '16px' }}>{gt.icon}</div>
-                        <div style={{ fontSize: '10px', fontWeight: 700, marginTop: '2px' }}>{gt.name}</div>
-                        <div style={{
-                          fontSize: '9px', fontWeight: 700, marginTop: '2px',
-                          color: isSet ? 'var(--accent)' : 'var(--muted)',
-                        }}>
-                          {AVAILABILITY_LABEL[availability]}
-                        </div>
-                      </button>
-                    )
-                  })}
+          <>
+            {myTags.length > 5 && (
+              <input
+                type="text"
+                value={goodsTagSearch}
+                onChange={e => setGoodsTagSearch(e.target.value)}
+                placeholder="작품 검색..."
+                style={{
+                  width: '100%', padding: '9px 12px', marginBottom: '10px',
+                  border: '1.5px solid var(--border)', borderRadius: '8px',
+                  fontSize: '13px', fontFamily: 'inherit',
+                  background: 'var(--surface)', color: 'var(--text)',
+                  outline: 'none', boxSizing: 'border-box',
+                }}
+              />
+            )}
+
+            {filteredMyTags.map(tag => {
+              const series = products.find(p => p.tagId === tag.id)
+              const isOpen = openTagId === tag.id
+              const filledCount = series?.goodsList.filter((g: any) => g.availability !== 'unknown').length ?? 0
+
+              return (
+                <div key={tag.id} style={{ marginBottom: '8px', border: '1px solid var(--border)', borderRadius: '10px', overflow: 'hidden' }}>
+                  <button
+                    onClick={() => setOpenTagId(isOpen ? null : tag.id)}
+                    style={{
+                      width: '100%', padding: '12px 14px', display: 'flex',
+                      justifyContent: 'space-between', alignItems: 'center',
+                      background: 'var(--surface2)', border: 'none', cursor: 'pointer', fontFamily: 'inherit',
+                    }}
+                  >
+                    <span style={{ fontWeight: 700, fontSize: '13px' }}>
+                      {tag.name}
+                      {filledCount > 0 && (
+                        <span style={{ color: 'var(--accent)', fontWeight: 700, marginLeft: '6px' }}>
+                          ({filledCount}개 입력됨)
+                        </span>
+                      )}
+                    </span>
+                    <span style={{ fontSize: '12px', color: 'var(--muted)' }}>{isOpen ? '▲' : '▼'}</span>
+                  </button>
+
+                  {isOpen && (
+                    <div style={{ padding: '12px' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(90px, 1fr))', gap: '6px' }}>
+                        {allGoodsTypes.map((gt: any) => {
+                          const existing = series?.goodsList.find((g: any) => g.goodsTypeId === gt.id)
+                          const availability: Availability = existing?.availability ?? 'unknown'
+                          const isSet = availability !== 'unknown'
+                          return (
+                            <button
+                              key={gt.id}
+                              onClick={() => cycleAvailability(tag.id, gt.id, availability)}
+                              style={{
+                                padding: '8px 6px', borderRadius: '8px', textAlign: 'center',
+                                border: `1.5px solid ${isSet ? 'var(--accent)' : 'var(--border)'}`,
+                                background: isSet ? 'var(--accent-l)' : 'var(--surface)',
+                                cursor: 'pointer', fontFamily: 'inherit',
+                              }}
+                            >
+                              <div style={{ fontSize: '16px' }}>{gt.icon}</div>
+                              <div style={{ fontSize: '10px', fontWeight: 700, marginTop: '2px' }}>{gt.name}</div>
+                              <div style={{
+                                fontSize: '9px', fontWeight: 700, marginTop: '2px',
+                                color: isSet ? 'var(--accent)' : 'var(--muted)',
+                              }}>
+                                {AVAILABILITY_LABEL[availability]}
+                              </div>
+                            </button>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
-            )
-          })
+              )
+            })}
+          </>
         )}
       </div>
     </div>
