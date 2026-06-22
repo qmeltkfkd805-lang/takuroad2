@@ -66,3 +66,36 @@ export async function getMyTagCollections(userId: string) {
     visitCount: collectedMap.get(tag.id)?.visit_count ?? 0,
   }))
 }
+
+// 수동으로 작품 하나를 컬렉션에 추가 (사용자가 직접 선택)
+export async function addTagToCollection(userId: string, tagId: string, shopId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase
+    .from('user_tag_collections')
+    .upsert(
+      { user_id: userId, tag_id: tagId, first_shop_id: shopId },
+      { onConflict: 'user_id,tag_id' }
+    )
+  return !error
+}
+
+// 컬렉션에서 제거 (잘못 눌렀을 때 취소용)
+export async function removeTagFromCollection(userId: string, tagId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase
+    .from('user_tag_collections')
+    .delete()
+    .eq('user_id', userId)
+    .eq('tag_id', tagId)
+  return !error
+}
+
+// 내가 이미 컬렉션에 가진 작품 id 목록
+export async function getMyCollectedTagIds(userId: string): Promise<string[]> {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('user_tag_collections')
+    .select('tag_id')
+    .eq('user_id', userId)
+  return (data ?? []).map((d: any) => d.tag_id)
+}
