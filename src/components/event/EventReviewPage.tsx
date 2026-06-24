@@ -1,45 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useAuth } from '@/components/layout/AuthProvider'
 import WorkEventList from '@/components/work/WorkEventList'
 import { WorkEvent } from '@/services/eventService'
+import { getPendingSubmissions, PendingSubmission } from '@/services/eventSubmissionService'
 
 const TYPE_LABEL: Record<string, string> = {
   popup: '🎪 팝업스토어', collab_cafe: '☕ 콜라보 카페', exhibition: '🖼️ 전시',
 }
-
-interface Submission {
-  id: string
-  title: string
-  tagName: string
-  tagId: string
-  type: string
-  placeName: string
-  placeDetail: string | null
-  startDate: string | null
-  endDate: string | null
-  sourceUrl: string
-  description: string | null
-  submittedBy: string
-  createdAt: string
-}
-
-const SAMPLE: Submission[] = [
-  {
-    id: 's1', title: '블루아카이브 × 애니메이트 콜라보 카페', tagName: '블루 아카이브', tagId: 't1',
-    type: 'collab_cafe', placeName: '애니메이트 홍대', placeDetail: '3층',
-    startDate: '2026-07-01', endDate: '2026-07-31',
-    sourceUrl: 'https://x.com/example/status/123', description: '캐릭터별 음료 + 특전 코스터 증정',
-    submittedBy: '덕질러123', createdAt: '2026-06-24T09:00:00Z',
-  },
-  {
-    id: 's2', title: '원피스 팝업스토어 ', tagName: '원피스', tagId: 't2',
-    type: 'popup', placeName: '더현대서울', placeDetail: '5층',
-    startDate: '2026-06-28', endDate: '2026-07-14',
-    sourceUrl: 'https://example.com/onepiece-popup', description: null,
-    submittedBy: '루피팬', createdAt: '2026-06-24T10:30:00Z',
-  },
-]
 
 function fmtPeriod(s: string | null, e: string | null): string {
   if (!s && !e) return '기간 미정'
@@ -49,10 +18,25 @@ function fmtPeriod(s: string | null, e: string | null): string {
 }
 
 export default function EventReviewPage() {
-  const [queue, setQueue] = useState<Submission[]>(SAMPLE)
+  const { user, isAdmin, loading: authLoading } = useAuth()
+  const [queue, setQueue] = useState<PendingSubmission[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (authLoading) return
+    if (!isAdmin) { setLoading(false); return }
+    getPendingSubmissions().then(setQueue).finally(() => setLoading(false))
+  }, [authLoading, isAdmin])
 
   function removeFromQueue(id: string) {
     setQueue(q => q.filter(x => x.id !== id))
+  }
+
+  if (authLoading || loading) {
+    return <Centered>불러오는 중...</Centered>
+  }
+  if (!isAdmin) {
+    return <Centered>관리자만 접근할 수 있어요.</Centered>
   }
 
   return (
@@ -81,31 +65,28 @@ export default function EventReviewPage() {
 }
 
 // 제보 한 건 = Event 생성 에디터
-function ReviewCard({ submission, onDone }: { submission: Submission; onDone: () => void }) {
+function ReviewCard({ submission, onDone }: { submission: PendingSubmission; onDone: () => void }) {
+  const snap = submission.placeSnapshot ?? {}
+  const snapName = snap.name ?? '(장소 정보 없음)'
+  const snapAddr = snap.roadAddress ?? snap.address ?? ''
+
   // 제보 값으로 시작하되, 관리자가 수정 가능
   const [title, setTitle] = useState(submission.title.trim())
   const [type, setType] = useState(submission.type)
-  const [placeName, setPlaceName] = useState(submission.placeName)
   const [placeDetail, setPlaceDetail] = useState(submission.placeDetail ?? '')
   const [startDate, setStartDate] = useState(submission.startDate ?? '')
   const [endDate, setEndDate] = useState(submission.endDate ?? '')
   const [description, setDescription] = useState(submission.description ?? '')
 
-  // 미리보기 — 수정한 값이 실시간 반영
+  // 미리보기 — 수정한 값 실시간 반영
   const preview: WorkEvent = {
     id: submission.id, tagId: submission.tagId, type, shopId: null,
     title, createdAt: submission.createdAt,
   }
 
   function approve() {
-    const event = {
-      tag_id: submission.tagId, type, title,
-      place: placeName, place_detail: placeDetail || null,
-      start_date: startDate || null, end_date: endDate || null,
-      description: description || null,
-    }
-    console.log('[승인] Event 생성:', event)
-    alert(`승인됨: "${title}" → Event 생성 (아직 저장 안 됨)`)
+    console.log('[승인 예정]', { tag_id: submission.tagId, type, title, snapshot: snap })
+    alert(`승인됨: "${title}" (Event 생성/장소 연결은 다음 단계)`)
     onDone()
   }
   function reject() {
@@ -117,11 +98,11 @@ function ReviewCard({ submission, onDone }: { submission: Submission; onDone: ()
 
   return (
     <div style={{ border: '1px solid var(--border)', borderRadius: 'var(--r)', background: 'var(--surface)', overflow: 'hidden' }}>
-      {/* 메타: 제보자 + 출처 */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '12px 16px', background: 'var(--surface2)', borderBottom: '1px solid var(--border)' }}>
-       <span style={{ fontSize: '12px', color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-          제보 <b style={{ color: 'var(--text)' }}>{submission.submittedBy}</b>
+      {/* 메타: 제보자 + 작품 + 출처 */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px',
+        padding: '12px 16px', background: 'var(--surface2)', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
+        <span style={{ fontSize: '12px', color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          제보 <b style={{ color: 'var(--text)' }}>{submission.submitterName}</b>
           <a href={`/work/${submission.tagId}`} target="_blank" rel="noopener noreferrer"
             style={{ color: 'var(--purple)', fontWeight: 700, textDecoration: 'none' }}>
             🎮 {submission.tagName} ↗
@@ -154,9 +135,18 @@ function ReviewCard({ submission, onDone }: { submission: Submission; onDone: ()
           </div>
         </EditField>
 
-        <EditField label="장소">
-          <input value={placeName} onChange={e => setPlaceName(e.target.value)} style={inputStyle} />
+        {/* 장소 — 제보자가 고른 카카오 장소(주장). 검수 때 shop으로 정리 (다음 단계) */}
+        <EditField label="장소 (제보자가 선택)">
+          <div style={{ padding: '10px 12px', borderRadius: 'var(--r-sm)',
+            border: '1px dashed var(--border)', background: 'var(--surface2)' }}>
+            <div style={{ fontSize: '14px', fontWeight: 700 }}>📍 {snapName}</div>
+            {snapAddr && <div style={{ fontSize: '12px', color: 'var(--muted)' }}>{snapAddr}</div>}
+            <div style={{ fontSize: '11px', color: 'var(--accent)', marginTop: '4px' }}>
+              ⚠ 아직 샵으로 연결되지 않음 (승인 시 연결/생성 — 다음 단계)
+            </div>
+          </div>
         </EditField>
+
         <EditField label="상세 위치">
           <input value={placeDetail} onChange={e => setPlaceDetail(e.target.value)}
             placeholder="예: 5층" style={inputStyle} />
@@ -176,7 +166,7 @@ function ReviewCard({ submission, onDone }: { submission: Submission; onDone: ()
         </EditField>
       </div>
 
-      {/* 미리보기 — 작품 홈 + 샵 상세 */}
+      {/* 미리보기 */}
       <div style={{ padding: '14px 16px', background: 'var(--surface2)', borderTop: '1px solid var(--border)' }}>
         <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--muted)', marginBottom: '8px' }}>
           👁️ 승인 후 — 작품 홈 「새로운 소식」
@@ -184,9 +174,8 @@ function ReviewCard({ submission, onDone }: { submission: Submission; onDone: ()
         <WorkEventList events={[preview]} />
 
         <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--muted)', margin: '14px 0 8px' }}>
-          👁️ 승인 후 — {placeName} 「진행 중인 이벤트」
+          👁️ 승인 후 — {snapName} 「진행 중인 이벤트」
         </div>
-        {/* 샵 상세용 표시는 아직 정식 컴포넌트 없음 → 미리보기 스케치 (나중에 ShopEventList로 승격) */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 14px',
           borderRadius: 'var(--r-sm)', border: '1px solid var(--border)', background: 'var(--surface)' }}>
           <span style={{ fontSize: '20px' }}>{TYPE_LABEL[type]?.split(' ')[0] ?? '✨'}</span>
@@ -211,7 +200,7 @@ function ReviewCard({ submission, onDone }: { submission: Submission; onDone: ()
           style={{ flex: 2, padding: '12px', borderRadius: 'var(--r-sm)', border: 'none',
             background: 'var(--green)', color: '#fff', fontSize: '14px', fontWeight: 700,
             cursor: 'pointer', fontFamily: 'inherit' }}>
-          수정 내용으로 승인 → Event 생성
+          수정 내용으로 승인
         </button>
       </div>
     </div>
@@ -224,6 +213,15 @@ function EditField({ label, children }: { label: string; children: React.ReactNo
       <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: 'var(--muted)', marginBottom: '5px' }}>
         {label}
       </label>
+      {children}
+    </div>
+  )
+}
+
+function Centered({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ minHeight: '100dvh', background: 'var(--bg)', display: 'flex',
+      alignItems: 'center', justifyContent: 'center', color: 'var(--muted)', fontSize: '14px' }}>
       {children}
     </div>
   )
