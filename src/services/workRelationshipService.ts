@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/client'
 import {
   WorkRelationship, FavoriteTier, RelationshipState,
 } from '@/types/work-relationship'
+
 // 이 작품의 현재 관계 강도(최애/좋아하는 작품/없음) 하나만 조회
 export async function getAffinity(userId: string, tagId: string): Promise<FavoriteTier | null> {
   const supabase = createClient()
@@ -12,6 +13,18 @@ export async function getAffinity(userId: string, tagId: string): Promise<Favori
     .eq('tag_id', tagId)
     .maybeSingle()
   return (data as any)?.tier ?? null
+}
+
+// 이 작품의 현재 관계 상태(볼예정/보는중/완료/보류/없음) 하나만 조회
+export async function getRelationshipState(userId: string, tagId: string): Promise<RelationshipState | null> {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('user_library')
+    .select('status')
+    .eq('user_id', userId)
+    .eq('tag_id', tagId)
+    .maybeSingle()
+  return (data as any)?.status ?? null
 }
 
 // "내 작품" — 세 축(favorite/library/collections)을 tag_id로 합쳐

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import WorkAffinityButton from './WorkAffinityButton'
+import WorkStateButton from './WorkStateButton'
 import { AVAILABILITY_LABEL, Availability } from '@/services/shopProductService'
 
 const AVAILABILITY_COLOR: Record<Availability, string> = {
@@ -42,7 +43,12 @@ export default function WorkHomePage({ tag, goods, shops, routes }: WorkHomeProp
         <h1 style={{ fontSize: '22px', fontWeight: 900, color: 'var(--text)', margin: '0 0 14px' }}>
           {tag.name}
         </h1>
-        <WorkAffinityButton tagId={tag.id} />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+          <div style={{ flex: 1 }}>
+            <WorkAffinityButton tagId={tag.id} />
+          </div>
+          <WorkStateButton tagId={tag.id} />
+        </div>
       </div>
 
       {/* 🛍️ 판매 중인 굿즈 */}
