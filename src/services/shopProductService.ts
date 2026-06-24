@@ -235,3 +235,32 @@ export async function deactivateProductsByTag(shopId: string, tagId: string): Pr
     .eq('tag_id', tagId)
   return !error
 }
+
+// 이 작품(tag)의 판매 중인 굿즈 — 재고순. 작품 홈 "판매 중인 굿즈" 섹션용.
+export async function getProductsByTag(tagId: string) {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('shop_products')
+    .select(`
+      id, availability,
+      shops ( name, slug ),
+      characters ( name ),
+      goods_types ( name, icon )
+    `)
+    .eq('tag_id', tagId)
+
+  return (data ?? [])
+    .map((p: any) => ({
+      id: p.id,
+      availability: p.availability as Availability,
+      shopName: p.shops?.name ?? '',
+      shopSlug: p.shops?.slug ?? '',
+      character: p.characters?.name ?? null,
+      goodsType: p.goods_types?.name ?? '굿즈',
+      goodsIcon: p.goods_types?.icon ?? '🛍️',
+    }))
+    // 확인 안 됨/판매 안 함은 "판매 중인 굿즈"가 아니므로 제외
+    .filter(p => p.availability !== 'unknown' && p.availability !== 'not_sold')
+    // 재고 많은 것부터 (AVAILABILITY_SCORE 재사용)
+    .sort((a, b) => AVAILABILITY_SCORE[b.availability] - AVAILABILITY_SCORE[a.availability])
+}

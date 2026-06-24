@@ -3,13 +3,20 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import WorkAffinityButton from './WorkAffinityButton'
+import { AVAILABILITY_LABEL, Availability } from '@/services/shopProductService'
+
+const AVAILABILITY_COLOR: Record<Availability, string> = {
+  unknown: 'var(--muted)', not_sold: 'var(--muted)', sold_out: 'var(--red)',
+  few: '#eab308', normal: 'var(--accent)', many: 'var(--green)',
+}
 
 interface WorkHomeProps {
   tag: { id: string; name: string; slug: string }
+  goods: any[]
   shops: any[]
 }
 
-export default function WorkHomePage({ tag, shops }: WorkHomeProps) {
+export default function WorkHomePage({ tag, goods, shops }: WorkHomeProps) {
   const router = useRouter()
 
   return (
@@ -34,22 +41,54 @@ export default function WorkHomePage({ tag, shops }: WorkHomeProps) {
         <h1 style={{ fontSize: '22px', fontWeight: 900, color: 'var(--text)', margin: '0 0 14px' }}>
           {tag.name}
         </h1>
-        {/* 작품 만나는 화면 → 관계 시작 버튼 */}
         <WorkAffinityButton tagId={tag.id} />
       </div>
 
-      {/* 관련 굿즈샵 */}
+      {/* 🛍️ 판매 중인 굿즈 */}
+      <div style={{ padding: '16px 16px 0' }}>
+        <h2 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text)', margin: '0 0 12px' }}>
+          🛍️ 판매 중인 굿즈 {goods.length > 0 && `${goods.length}개`}
+        </h2>
+        {goods.length === 0 ? (
+          <EmptyBox text="아직 등록된 굿즈가 없어요" />
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {goods.map(g => (
+              <div key={g.id} style={{
+                padding: '12px 14px', borderRadius: 'var(--r-sm)',
+                border: '1px solid var(--border)', background: 'var(--surface)',
+                display: 'flex', alignItems: 'center', gap: '10px',
+              }}>
+                <span style={{ fontSize: '20px' }}>{g.goodsIcon}</span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text)' }}>
+                    {g.character ? `${g.character} ` : ''}{g.goodsType}
+                  </div>
+                  <Link href={`/shop/${g.shopSlug}`} style={{
+                    fontSize: '12px', color: 'var(--muted)', textDecoration: 'none',
+                  }}>
+                    📍 {g.shopName}
+                  </Link>
+                </div>
+                <span style={{
+                  fontSize: '12px', fontWeight: 700,
+                  color: AVAILABILITY_COLOR[g.availability as Availability],
+                }}>
+                  {AVAILABILITY_LABEL[g.availability as Availability]}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* 📍 관련 굿즈샵 */}
       <div style={{ padding: '16px' }}>
         <h2 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text)', margin: '0 0 12px' }}>
           📍 관련 굿즈샵 {shops.length > 0 && `${shops.length}곳`}
         </h2>
         {shops.length === 0 ? (
-          <div style={{
-            padding: '24px', textAlign: 'center', color: 'var(--muted)', fontSize: '13px',
-            background: 'var(--surface2)', borderRadius: 'var(--r-sm)',
-          }}>
-            아직 등록된 샵이 없어요
-          </div>
+          <EmptyBox text="아직 등록된 샵이 없어요" />
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {shops.map(shop => (
@@ -69,6 +108,17 @@ export default function WorkHomePage({ tag, shops }: WorkHomeProps) {
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+function EmptyBox({ text }: { text: string }) {
+  return (
+    <div style={{
+      padding: '24px', textAlign: 'center', color: 'var(--muted)', fontSize: '13px',
+      background: 'var(--surface2)', borderRadius: 'var(--r-sm)',
+    }}>
+      {text}
     </div>
   )
 }
