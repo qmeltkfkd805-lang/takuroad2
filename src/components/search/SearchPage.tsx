@@ -10,6 +10,7 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { Shop } from '@/types/shop'
 import { ROUTES } from '@/lib/constants/routes'
 import ShopCard from '@/components/shop/ShopCard'
+import WorkTagBadges from '@/components/work/WorkTagBadges'
 import { useDebounce } from '@/hooks/useDebounce'
 
 const AVAILABILITY_LABEL: Record<string, string> = {
@@ -59,7 +60,8 @@ export default function SearchPage() {
   }
 
   const hasGoodsResults = (globalResults?.products.length ?? 0) > 0
-  const noResultsAtAll = searched && shopResults.length === 0 && !hasGoodsResults
+  const hasTagResults = (globalResults?.tags.length ?? 0) > 0
+  const noResultsAtAll = searched && shopResults.length === 0 && !hasGoodsResults && !hasTagResults
 
   return (
     <div style={{ maxWidth: '680px', margin: '0 auto', minHeight: '100dvh', background: 'var(--surface)' }}>
@@ -160,6 +162,21 @@ export default function SearchPage() {
           </>
         )}
 
+{/* 작품 검색 결과 */}
+        {!loading && hasTagResults && (
+          <>
+            <div style={{
+              padding: '10px 16px', fontSize: '13px', color: 'var(--muted)', fontWeight: 700,
+              borderBottom: '1px solid var(--border)', background: 'var(--surface2)',
+            }}>
+              🎮 작품 검색 결과 {globalResults!.tags.length}개
+            </div>
+            <div style={{ padding: '14px 16px' }}>
+              <WorkTagBadges works={globalResults!.tags} />
+            </div>
+          </>
+        )}
+        
         {/* 샵 검색 결과 */}
         {!loading && shopResults.length > 0 && (
           <>
