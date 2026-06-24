@@ -28,9 +28,10 @@ function workColor(seed: string) {
 interface HomeFeedProps {
   popularShops: any[]
   routes: any[]
+  activeWorks: any[]
 }
 
-export default function HomeFeed({ popularShops, routes }: HomeFeedProps) {
+export default function HomeFeed({ popularShops, routes, activeWorks }: HomeFeedProps) {
   const { user, profile } = useAuth()
   const [rels, setRels] = useState<WorkRelationship[]>([])
   const [loading, setLoading] = useState(true)
@@ -40,11 +41,18 @@ export default function HomeFeed({ popularShops, routes }: HomeFeedProps) {
     getMyWorkRelationships(user.id).then(setRels).finally(() => setLoading(false))
   }, [user])
 
+  // 최애 먼저, 그다음 좋아하는 작품 (관계 있는 것만)
   const myWorks = rels
     .filter(r => r.affinity)
     .sort((a, b) => (a.affinity === 'favorite' ? 0 : 1) - (b.affinity === 'favorite' ? 0 : 1))
 
-    const heroPick = pickHeroRelationship(rels)
+  // 활발한 작품에 ❤️/⭐ 붙이기용
+  const myAffinity = new Map(
+    rels.filter(r => r.affinity).map(r => [r.work.id, r.affinity!])
+  )
+
+  // Hero — 오늘 가장 중요한 관계
+  const heroPick = pickHeroRelationship(rels)
   const [heroCounts, setHeroCounts] = useState<{ goods: number; shops: number } | null>(null)
 
   useEffect(() => {
@@ -96,7 +104,7 @@ export default function HomeFeed({ popularShops, routes }: HomeFeedProps) {
         </Link>
       </div>
 
-{/* 🌟 Hero — 오늘 가장 중요한 관계 */}
+      {/* 🌟 Hero — 오늘 가장 중요한 관계 */}
       {!loading && heroPick && heroCounts && (
         <HeroSlot
           reason={heroPick.reason}
@@ -145,6 +153,35 @@ export default function HomeFeed({ popularShops, routes }: HomeFeedProps) {
         )}
       </section>
 
+      {/* 🔥 이번 주 가장 활발한 작품 */}
+      {activeWorks.length > 0 && (
+        <section style={{ padding: '12px 16px' }}>
+          <SectionTitle inset>🔥 이번 주 가장 활발한 작품</SectionTitle>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {activeWorks.map((w, i) => {
+              const aff = myAffinity.get(w.id)
+              const icon = aff ? AFFINITY_LABEL[aff].icon : null
+              return (
+                <Link key={w.id} href={`/work/${w.slug}`} style={{
+                  display: 'flex', alignItems: 'center', gap: '12px',
+                  padding: '12px 14px', borderRadius: 'var(--r-sm)',
+                  border: '1px solid var(--border)', background: 'var(--surface)',
+                  textDecoration: 'none', color: 'var(--text)',
+                }}>
+                  <span style={{ fontSize: '14px', fontWeight: 900, color: 'var(--muted)', width: '18px' }}>
+                    {i + 1}
+                  </span>
+                  <span style={{ flex: 1, fontSize: '14px', fontWeight: 700 }}>
+                    {icon ? `${icon} ` : ''}{w.name}
+                  </span>
+                  <span style={{ fontSize: '16px', color: 'var(--muted)' }}>→</span>
+                </Link>
+              )
+            })}
+          </div>
+        </section>
+      )}
+
       {/* 🏪 많이 찾는 굿즈샵 */}
       {popularShops.length > 0 && (
         <section style={{ padding: '12px 16px' }}>
@@ -161,7 +198,7 @@ export default function HomeFeed({ popularShops, routes }: HomeFeedProps) {
 
       {/* 🧭 추천 루트 */}
       {routes.length > 0 && (
-        <section style={{ padding: '12px 16px' }}>
+        <section style={{ padding: '12px 16px 32px' }}>
           <SectionTitle inset>🧭 추천 루트</SectionTitle>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {routes.map(r => (

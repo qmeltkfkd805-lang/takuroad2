@@ -295,7 +295,8 @@ export async function getShopsByTag(tagSlug: string): Promise<Shop[]> {
   const { data, error } = await supabase
     .from('shop_tags')
     .select(`
-      shops (
+      tags!inner ( slug ),
+      shops!inner (
         id, slug, name, description,
         addr, country, region, city, district,
         lat, lng, google_place_id,
