@@ -1,8 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/components/layout/AuthProvider'
 import { getAllTagsForSelect } from '@/services/routeService'
 import { searchPlace, PlaceSearchResult } from '@/lib/utils/geocode'
+import { createEventSubmission } from '@/services/eventSubmissionService'
 
 const EVENT_TYPES = [
   { value: 'popup', label: '🎪 팝업스토어' },
@@ -16,6 +19,9 @@ interface Props {
 }
 
 export default function EventSubmitPage({ initialTagId, initialShopId }: Props) {
+  const router = useRouter()
+  const { user } = useAuth()
+
   const [title, setTitle] = useState('')
   const [tagId, setTagId] = useState(initialTagId ?? '')
   const [tagName, setTagName] = useState('')
@@ -25,6 +31,7 @@ export default function EventSubmitPage({ initialTagId, initialShopId }: Props) 
   const [sourceUrl, setSourceUrl] = useState('')
   const [description, setDescription] = useState('')
   const [placeDetail, setPlaceDetail] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
   // 작품: 전체 불러와 입력값으로 필터
   const [allTags, setAllTags] = useState<{ id: string; name: string; slug: string }[]>([])
@@ -47,19 +54,30 @@ export default function EventSubmitPage({ initialTagId, initialShopId }: Props) 
     setSearching(false)
   }
 
-  const canSubmit = title && tagId && type && place && sourceUrl
+  const canSubmit = title && tagId && type && place && sourceUrl && !submitting
 
-  function handleSubmit() {
-    const submission = {
-      title, tag_id: tagId, type,
-      place: place
-        ? { name: place.name, address: place.roadAddress, lat: place.lat, lng: place.lng, detail: placeDetail || null }
-        : null,
-      start_date: startDate || null, end_date: endDate || null,
-      source_url: sourceUrl, description: description || null,
+  async function handleSubmit() {
+    if (!user) { router.push('/login'); return }
+    setSubmitting(true)
+    const ok = await createEventSubmission({
+      tagId,
+      type,
+      title: title.trim(),
+      placeSnapshot: place,
+      placeDetail: placeDetail || null,
+      startDate: startDate || null,
+      endDate: endDate || null,
+      sourceUrl: sourceUrl.trim(),
+      description: description || null,
+    }, user.id)
+    setSubmitting(false)
+
+    if (ok) {
+      alert('제보가 접수되었어요! 검수 후 등록됩니다. 감사합니다 🙏')
+      router.push('/')
+    } else {
+      alert('제보 저장에 실패했어요. 잠시 후 다시 시도해주세요.')
     }
-    console.log('[이벤트 제보]', submission)
-    alert('제보 내용이 콘솔에 출력되었어요 (아직 저장은 안 됨)')
   }
 
   return (
@@ -181,7 +199,7 @@ export default function EventSubmitPage({ initialTagId, initialShopId }: Props) 
           color: '#fff', fontSize: '15px', fontWeight: 700, marginTop: '12px',
           cursor: canSubmit ? 'pointer' : 'not-allowed', fontFamily: 'inherit',
         }}>
-        제보하기
+        {submitting ? '제보 중...' : '제보하기'}
       </button>
     </div>
   )
