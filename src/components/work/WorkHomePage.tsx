@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import WorkAffinityButton from './WorkAffinityButton'
 import WorkStateButton from './WorkStateButton'
+import WorkEventList from './WorkEventList'
+import { WorkEvent } from '@/services/eventService'
 import { AVAILABILITY_LABEL, Availability } from '@/services/shopProductService'
 
 const AVAILABILITY_COLOR: Record<Availability, string> = {
@@ -16,9 +18,10 @@ interface WorkHomeProps {
   goods: any[]
   shops: any[]
   routes: any[]
+  events: WorkEvent[]
 }
 
-export default function WorkHomePage({ tag, goods, shops, routes }: WorkHomeProps) {
+export default function WorkHomePage({ tag, goods, shops, routes, events }: WorkHomeProps) {
   const router = useRouter()
 
   return (
@@ -50,6 +53,16 @@ export default function WorkHomePage({ tag, goods, shops, routes }: WorkHomeProp
           <WorkStateButton tagId={tag.id} />
         </div>
       </div>
+
+      {/* 🆕 새로운 소식 */}
+      {events.length > 0 && (
+        <div style={{ padding: '16px 16px 0' }}>
+          <h2 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text)', margin: '0 0 12px' }}>
+            🆕 새로운 소식
+          </h2>
+          <WorkEventList events={events} />
+        </div>
+      )}
 
       {/* 🛍️ 판매 중인 굿즈 */}
       <div style={{ padding: '16px 16px 0' }}>
@@ -116,10 +129,10 @@ export default function WorkHomePage({ tag, goods, shops, routes }: WorkHomeProp
         )}
       </div>
 
-      {/* 🗺️ 추천 루트 */}
+      {/* 🧭 추천 루트 */}
       <div style={{ padding: '16px' }}>
         <h2 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text)', margin: '0 0 12px' }}>
-          🗺️ 추천 루트 {routes.length > 0 && `${routes.length}개`}
+          🧭 추천 루트 {routes.length > 0 && `${routes.length}개`}
         </h2>
         {routes.length === 0 ? (
           <EmptyBox text="아직 추천 루트가 없어요" />
