@@ -41,9 +41,27 @@ export default function MyWorksPage() {
 
   useEffect(() => {
     if (!user) { setLoading(false); return }
-    getMyWorkRelationships(user.id)
-      .then(setRels)
-      .finally(() => setLoading(false))
+
+    // 데이터를 다시 불러오는 함수
+    const load = () => {
+      getMyWorkRelationships(user.id)
+        .then(setRels)
+        .finally(() => setLoading(false))
+    }
+
+    load() // 처음 진입 시 1회
+
+    // 화면이 다시 보이게 될 때마다 다시 불러오기 (뒤로가기·탭 복귀 등)
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') load()
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    window.addEventListener('focus', load)
+
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible)
+      window.removeEventListener('focus', load)
+    }
   }, [user])
 
   const favorites = rels.filter(r => r.affinity === 'favorite')
