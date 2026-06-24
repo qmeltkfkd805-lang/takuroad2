@@ -13,7 +13,7 @@ const TYPE_ICON: Record<string, string> = {
   shop_registered: '🏪',
   shop_verified: '✅',
   title_set: '👑',
-  route_created: '🗺️',
+  route_created: '🧭',
   official_route: '🌟',
 }
 

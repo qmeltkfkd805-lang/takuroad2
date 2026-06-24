@@ -26,7 +26,7 @@ const TABS: { key: Tab; label: string; icon: string }[] = [
   { key: 'passport',   label: '여권',         icon: '📔' },
   { key: 'chronicle',  label: '연대기',       icon: '📖' },
   { key: 'saved',      label: '저장한 샵',    icon: '🔖' },
-  { key: 'routes',     label: '내 루트',      icon: '🗺️' },
+  { key: 'routes',     label: '내 루트',      icon: '🧭' },
   { key: 'reviews',    label: '내 후기',      icon: '✍️' },
   { key: 'comments',   label: '내 댓글',      icon: '💬' },
   { key: 'shops',      label: '등록한 샵',        icon: '🏪' },

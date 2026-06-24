@@ -31,7 +31,7 @@ interface HomeFeedProps {
 }
 
 export default function HomeFeed({ popularShops, routes }: HomeFeedProps) {
-  const { user } = useAuth()
+  const { user, profile } = useAuth()
   const [rels, setRels] = useState<WorkRelationship[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -56,14 +56,44 @@ export default function HomeFeed({ popularShops, routes }: HomeFeedProps) {
 
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--bg)' }}>
-      {/* 헤더 */}
+      {/* 헤더 + 네비게이션 */}
       <div style={{
-        padding: '18px 16px 14px', background: 'var(--surface)',
+        padding: '12px 16px', background: 'var(--surface)',
         borderBottom: '1px solid var(--border)',
+        position: 'sticky', top: 0, zIndex: 20,
       }}>
-        <h1 style={{ fontSize: '20px', fontWeight: 900, color: 'var(--accent)', margin: 0 }}>
-          TAKUROAD
-        </h1>
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px',
+        }}>
+          <h1 style={{ fontSize: '20px', fontWeight: 900, color: 'var(--accent)', margin: 0 }}>
+            TAKUROAD
+          </h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <Link href="/map" style={{ fontSize: '20px', textDecoration: 'none' }}>🗺️</Link>
+            <Link href="/notifications" style={{ fontSize: '20px', textDecoration: 'none' }}>🔔</Link>
+            {user ? (
+              <Link href={ROUTES.profile} style={{
+                width: '30px', height: '30px', borderRadius: '50%', background: 'var(--accent)',
+                color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '13px', fontWeight: 700, textDecoration: 'none',
+              }}>
+                {profile?.nickname?.[0] ?? '?'}
+              </Link>
+            ) : (
+              <Link href={ROUTES.login} style={{
+                fontSize: '13px', fontWeight: 700, color: 'var(--text)', textDecoration: 'none',
+              }}>
+                로그인
+              </Link>
+            )}
+          </div>
+        </div>
+        <Link href="/search" style={{
+          display: 'block', padding: '10px 14px', borderRadius: 'var(--r-sm)',
+          background: 'var(--surface2)', color: 'var(--muted)', fontSize: '14px', textDecoration: 'none',
+        }}>
+          🔍 작품, 샵, 지역 검색...
+        </Link>
       </div>
 
 {/* 🌟 Hero — 오늘 가장 중요한 관계 */}
@@ -75,7 +105,7 @@ export default function HomeFeed({ popularShops, routes }: HomeFeedProps) {
           shopCount={heroCounts.shops}
         />
       )}
-      
+
       {/* ❤️ 내 작품 */}
       <section style={{ padding: '20px 0 8px' }}>
         <SectionTitle>❤️ 내 작품</SectionTitle>
@@ -129,10 +159,10 @@ export default function HomeFeed({ popularShops, routes }: HomeFeedProps) {
         </section>
       )}
 
-      {/* 🗺️ 추천 루트 */}
+      {/* 🧭 추천 루트 */}
       {routes.length > 0 && (
         <section style={{ padding: '12px 16px' }}>
-          <SectionTitle inset>🗺️ 추천 루트</SectionTitle>
+          <SectionTitle inset>🧭 추천 루트</SectionTitle>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {routes.map(r => (
               <Link key={r.id} href={`/route/${r.share_token}`} style={{
@@ -152,18 +182,6 @@ export default function HomeFeed({ popularShops, routes }: HomeFeedProps) {
           </div>
         </section>
       )}
-
-      {/* 🗾 지도 */}
-      <section style={{ padding: '12px 16px 32px' }}>
-        <SectionTitle inset>🗾 지도</SectionTitle>
-        <Link href="/" style={{
-          display: 'block', padding: '20px', borderRadius: 'var(--r-sm)',
-          background: 'var(--surface2)', textAlign: 'center',
-          textDecoration: 'none', color: 'var(--text)', fontSize: '14px', fontWeight: 700,
-        }}>
-          🗾 지도에서 굿즈샵 둘러보기 →
-        </Link>
-      </section>
     </div>
   )
 }

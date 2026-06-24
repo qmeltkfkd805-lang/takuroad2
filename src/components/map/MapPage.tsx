@@ -118,7 +118,7 @@ export default function MapPage() {
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: '18px', flexShrink: 0,
         }}>
-          🗺️
+          🧭
         </Link>
 
         {user && (
