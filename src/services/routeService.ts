@@ -220,3 +220,13 @@ export async function getAllSeriesTags() {
     .order('name')
   return (data ?? []).map((d: any) => d.name)
 }
+
+// 작품 선택용 — id까지 함께. (getAllSeriesTags는 이름만 줘서 제보엔 부족)
+export async function getAllTagsForSelect(): Promise<{ id: string; name: string; slug: string }[]> {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('tags')
+    .select('id, name, slug')
+    .order('name')
+  return (data ?? []) as any
+}
