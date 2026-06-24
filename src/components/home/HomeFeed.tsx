@@ -6,6 +6,8 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import { WorkRelationship } from '@/types/work-relationship'
 import { AFFINITY_LABEL } from '@/lib/constants/workRelationship'
+import ShopCard from '@/components/shop/ShopCard'
+import { ROUTES } from '@/lib/constants/routes'
 
 const PALETTE = [
   { bg: '#EEEDFE', fg: '#3C3489' }, { bg: '#E1F5EE', fg: '#0F6E56' },
@@ -19,7 +21,12 @@ function workColor(seed: string) {
   return PALETTE[h % PALETTE.length]
 }
 
-export default function HomeFeed() {
+interface HomeFeedProps {
+  popularShops: any[]
+  routes: any[]
+}
+
+export default function HomeFeed({ popularShops, routes }: HomeFeedProps) {
   const { user } = useAuth()
   const [rels, setRels] = useState<WorkRelationship[]>([])
   const [loading, setLoading] = useState(true)
@@ -29,10 +36,9 @@ export default function HomeFeed() {
     getMyWorkRelationships(user.id).then(setRels).finally(() => setLoading(false))
   }, [user])
 
-  // 최애 먼저, 그다음 좋아하는 작품 (관계 있는 것만, 가로 스크롤)
   const myWorks = rels
     .filter(r => r.affinity)
-    .sort((a, b) => (a.affinity === 'favorite' ? -1 : 1) - (b.affinity === 'favorite' ? -1 : 1))
+    .sort((a, b) => (a.affinity === 'favorite' ? 0 : 1) - (b.affinity === 'favorite' ? 0 : 1))
 
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--bg)' }}>
@@ -47,33 +53,20 @@ export default function HomeFeed() {
       </div>
 
       {/* ❤️ 내 작품 */}
-      <div style={{ padding: '20px 0 8px' }}>
-        <h2 style={{
-          fontSize: '16px', fontWeight: 700, color: 'var(--text)',
-          margin: '0 0 12px', padding: '0 16px',
-        }}>
-          ❤️ 내 작품
-        </h2>
-
+      <section style={{ padding: '20px 0 8px' }}>
+        <SectionTitle>❤️ 내 작품</SectionTitle>
         {loading ? (
-          <div style={{ padding: '20px 16px', color: 'var(--muted)', fontSize: '14px' }}>
-            불러오는 중...
-          </div>
+          <Muted>불러오는 중...</Muted>
         ) : !user ? (
           <PromptBox text="로그인하면 좋아하는 작품을 모아볼 수 있어요" href="/login" cta="로그인" />
         ) : myWorks.length === 0 ? (
           <PromptBox text="아직 좋아하는 작품이 없어요" href="/search" cta="작품 찾아보기" />
         ) : (
-          <div style={{
-            display: 'flex', gap: '10px', overflowX: 'auto',
-            padding: '0 16px 4px', scrollbarWidth: 'none',
-          }}>
+          <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', padding: '0 16px 4px' }}>
             {myWorks.map(r => {
               const color = workColor(r.work.id)
               return (
-                <Link key={r.work.id} href={`/work/${r.work.slug}`} style={{
-                  flexShrink: 0, width: '92px', textDecoration: 'none',
-                }}>
+                <Link key={r.work.id} href={`/work/${r.work.slug}`} style={{ flexShrink: 0, width: '92px', textDecoration: 'none' }}>
                   <div style={{
                     position: 'relative', width: '92px', height: '92px',
                     borderRadius: 'var(--r-sm)', background: color.bg,
@@ -81,9 +74,7 @@ export default function HomeFeed() {
                     fontSize: '26px', fontWeight: 700, color: color.fg,
                   }}>
                     {r.work.name.slice(0, 2)}
-                    <span style={{
-                      position: 'absolute', top: '4px', left: '4px', fontSize: '14px',
-                    }}>
+                    <span style={{ position: 'absolute', top: '4px', left: '4px', fontSize: '14px' }}>
                       {AFFINITY_LABEL[r.affinity!].icon}
                     </span>
                   </div>
@@ -98,24 +89,83 @@ export default function HomeFeed() {
             })}
           </div>
         )}
-      </div>
+      </section>
 
-      {/* 아래로 다른 섹션(활발한 작품/새로운 소식/굿즈샵/루트/지도)은 데이터 준비되면 추가 */}
+      {/* 🏪 많이 찾는 굿즈샵 */}
+      {popularShops.length > 0 && (
+        <section style={{ padding: '12px 16px' }}>
+          <SectionTitle inset>🏪 많이 찾는 굿즈샵</SectionTitle>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {popularShops.map(shop => (
+              <Link key={shop.id} href={ROUTES.shop(shop.slug)} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <ShopCard shop={shop} isActive={false} onClick={() => {}} />
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 🗺️ 추천 루트 */}
+      {routes.length > 0 && (
+        <section style={{ padding: '12px 16px' }}>
+          <SectionTitle inset>🗺️ 추천 루트</SectionTitle>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {routes.map(r => (
+              <Link key={r.id} href={`/route/${r.share_token}`} style={{
+                padding: '12px 14px', borderRadius: 'var(--r-sm)',
+                border: '1px solid var(--border)', background: 'var(--surface)',
+                textDecoration: 'none', color: 'var(--text)', display: 'block',
+              }}>
+                <div style={{ fontSize: '14px', fontWeight: 700 }}>
+                  {r.is_official ? '⭐ ' : ''}{r.title}
+                </div>
+                <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '2px' }}>
+                  샵 {r.route_shops?.length ?? 0}곳
+                  {r.profiles?.nickname ? ` · ${r.profiles.nickname}` : ''}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 🗾 지도 */}
+      <section style={{ padding: '12px 16px 32px' }}>
+        <SectionTitle inset>🗾 지도</SectionTitle>
+        <Link href="/" style={{
+          display: 'block', padding: '20px', borderRadius: 'var(--r-sm)',
+          background: 'var(--surface2)', textAlign: 'center',
+          textDecoration: 'none', color: 'var(--text)', fontSize: '14px', fontWeight: 700,
+        }}>
+          🗾 지도에서 굿즈샵 둘러보기 →
+        </Link>
+      </section>
     </div>
   )
 }
 
+function SectionTitle({ children, inset }: { children: React.ReactNode; inset?: boolean }) {
+  return (
+    <h2 style={{
+      fontSize: '16px', fontWeight: 700, color: 'var(--text)',
+      margin: '0 0 12px', padding: inset ? 0 : '0 16px',
+    }}>
+      {children}
+    </h2>
+  )
+}
+
+function Muted({ children }: { children: React.ReactNode }) {
+  return <div style={{ padding: '20px 16px', color: 'var(--muted)', fontSize: '14px' }}>{children}</div>
+}
+
 function PromptBox({ text, href, cta }: { text: string; href: string; cta: string }) {
   return (
-    <div style={{
-      margin: '0 16px', padding: '20px', borderRadius: 'var(--r-sm)',
-      background: 'var(--surface2)', textAlign: 'center',
-    }}>
+    <div style={{ margin: '0 16px', padding: '20px', borderRadius: 'var(--r-sm)', background: 'var(--surface2)', textAlign: 'center' }}>
       <p style={{ fontSize: '13px', color: 'var(--muted)', margin: '0 0 12px' }}>{text}</p>
       <Link href={href} style={{
         display: 'inline-block', padding: '9px 20px', borderRadius: 'var(--r-sm)',
-        background: 'var(--accent)', color: '#fff', fontSize: '13px', fontWeight: 700,
-        textDecoration: 'none',
+        background: 'var(--accent)', color: '#fff', fontSize: '13px', fontWeight: 700, textDecoration: 'none',
       }}>
         {cta}
       </Link>
