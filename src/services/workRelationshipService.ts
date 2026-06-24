@@ -1,0 +1,88 @@
+import { createClient } from '@/lib/supabase/client'
+import {
+  WorkRelationship, FavoriteTier, RelationshipState,
+} from '@/types/work-relationship'
+
+// "내 작품" — 세 축(favorite/library/collections)을 tag_id로 합쳐
+// WorkRelationship[] 로 반환. 어느 한 축이라도 있는 작품의 합집합.
+export async function getMyWorkRelationships(userId: string): Promise<WorkRelationship[]> {
+  const supabase = createClient()
+
+  const [{ data: favs }, { data: lib }, { data: cols }] = await Promise.all([
+    supabase.from('user_favorite_tags').select('tag_id, tier').eq('user_id', userId),
+    supabase.from('user_library').select('tag_id, status').eq('user_id', userId),
+    supabase.from('user_tag_collections').select('tag_id, visit_count, created_at').eq('user_id', userId),
+  ])
+
+  const map = new Map<string, {
+    affinity: FavoriteTier | null
+    state: RelationshipState | null
+    activity: { visitCount: number; collectedAt: string } | null
+  }>()
+  const ensure = (tagId: string) => {
+    if (!map.has(tagId)) map.set(tagId, { affinity: null, state: null, activity: null })
+    return map.get(tagId)!
+  }
+
+  for (const f of favs ?? []) ensure((f as any).tag_id).affinity = (f as any).tier
+  for (const l of lib ?? [])  ensure((l as any).tag_id).state    = (l as any).status
+  for (const c of cols ?? []) ensure((c as any).tag_id).activity = {
+    visitCount: (c as any).visit_count ?? 0,
+    collectedAt: (c as any).created_at,
+  }
+
+  if (map.size === 0) return []
+
+  const tagIds = [...map.keys()]
+  const { data: tags } = await supabase
+    .from('tags').select('id, name, slug').in('id', tagIds)
+
+  const tagMap = new Map((tags ?? []).map((t: any) => [t.id, t]))
+
+  const result: WorkRelationship[] = []
+  for (const [tagId, axes] of map) {
+    const tag = tagMap.get(tagId)
+    if (!tag) continue
+    result.push({
+      work: { id: tag.id, name: tag.name, slug: tag.slug },
+      affinity: axes.affinity,
+      state: axes.state,
+      activity: axes.activity,
+    })
+  }
+  return result
+}
+
+// 관계 강도(Affinity) 설정/해제 — user_favorite_tags
+export async function setAffinity(userId: string, tagId: string, tier: FavoriteTier): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase
+    .from('user_favorite_tags')
+    .upsert({ user_id: userId, tag_id: tagId, tier }, { onConflict: 'user_id,tag_id' })
+  return !error
+}
+
+export async function clearAffinity(userId: string, tagId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase
+    .from('user_favorite_tags').delete()
+    .eq('user_id', userId).eq('tag_id', tagId)
+  return !error
+}
+
+// 관계 상태(State) 설정/해제 — user_library
+export async function setRelationshipState(userId: string, tagId: string, status: RelationshipState): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase
+    .from('user_library')
+    .upsert({ user_id: userId, tag_id: tagId, status }, { onConflict: 'user_id,tag_id' })
+  return !error
+}
+
+export async function clearRelationshipState(userId: string, tagId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase
+    .from('user_library').delete()
+    .eq('user_id', userId).eq('tag_id', tagId)
+  return !error
+}

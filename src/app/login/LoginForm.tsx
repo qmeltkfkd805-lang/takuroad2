@@ -13,10 +13,12 @@ export default function LoginForm() {
   async function loginWithGoogle() {
     setLoading(true)
     const supabase = createClient()
+    const redirectUrl = `${location.origin}/auth/callback?redirect=${redirect}`
+    alert('redirectTo 값: ' + redirectUrl)
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${location.origin}/auth/callback?redirect=${redirect}`,
+        redirectTo: redirectUrl,
       },
     })
   }

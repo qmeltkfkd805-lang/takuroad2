@@ -36,6 +36,9 @@ export default function MapPage() {
     setSelectedShop(shop)
     setListOpen(false)
     setGroupShops(null)
+    if (shop.lat && shop.lng) {
+      mapRef.current?.moveCenter(shop.lat, shop.lng, 3)
+    }
   }, [setSelectedShop])
 
   const handleSelectGroup = useCallback((shops: Shop[]) => {
@@ -44,6 +47,7 @@ export default function MapPage() {
 
   const handleMapClick = useCallback(() => {
     setSelectedShop(null)
+    setListOpen(false)
   }, [setSelectedShop])
 
   // 현재 위치를 받아오면 지도 이동
@@ -164,7 +168,10 @@ export default function MapPage() {
         background: 'var(--surface)',
         borderBottom: '1px solid var(--border)',
       }}>
-        <CategoryFilter selected={selectedCat} onChange={setSelectedCat} />
+        <CategoryFilter
+          selected={selectedCat}
+          onChange={cat => { setSelectedCat(cat); setListOpen(true) }}
+        />
       </div>
 
       <div style={{ position: 'absolute', inset: 0, paddingTop: '108px' }}>
