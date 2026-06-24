@@ -8,6 +8,7 @@ export const CATEGORIES = [
   { name: '게임샵',      slug: 'game',        icon: '🎮', color: '#7c3aed', bgColor: 'rgba(124,58,237,.12)' },
   { name: '온라인샵',    slug: 'online',      icon: '🛒', color: '#16a34a', bgColor: 'rgba(22,163,74,.12)' },
   { name: '가챠/쿠지',   slug: 'kuji',        icon: '🎰', color: '#e03535', bgColor: 'rgba(224,53,53,.12)' },
+  { name: '전시',        slug: 'exhibition',  icon: '🖼️', color: '#4f46e5', bgColor: 'rgba(79,70,229,.12)' },
 ] as const
 
 export type CategorySlug = typeof CATEGORIES[number]['slug']
