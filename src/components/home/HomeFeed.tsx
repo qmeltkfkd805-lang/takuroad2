@@ -6,6 +6,10 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import { WorkRelationship } from '@/types/work-relationship'
 import { AFFINITY_LABEL } from '@/lib/constants/workRelationship'
+import { pickHeroRelationship } from '@/lib/home/pickHeroRelationship'
+import HeroSlot from './HeroSlot'
+import { getProductsByTag } from '@/services/shopProductService'
+import { getShopsByTag } from '@/services/shopService'
 import ShopCard from '@/components/shop/ShopCard'
 import { ROUTES } from '@/lib/constants/routes'
 
@@ -40,6 +44,16 @@ export default function HomeFeed({ popularShops, routes }: HomeFeedProps) {
     .filter(r => r.affinity)
     .sort((a, b) => (a.affinity === 'favorite' ? 0 : 1) - (b.affinity === 'favorite' ? 0 : 1))
 
+    const heroPick = pickHeroRelationship(rels)
+  const [heroCounts, setHeroCounts] = useState<{ goods: number; shops: number } | null>(null)
+
+  useEffect(() => {
+    if (!heroPick) { setHeroCounts(null); return }
+    const { slug, id } = heroPick.relationship.work
+    Promise.all([getProductsByTag(id), getShopsByTag(slug)])
+      .then(([goods, shops]) => setHeroCounts({ goods: goods.length, shops: shops.length }))
+  }, [heroPick?.relationship.work.id])
+
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--bg)' }}>
       {/* 헤더 */}
@@ -52,6 +66,16 @@ export default function HomeFeed({ popularShops, routes }: HomeFeedProps) {
         </h1>
       </div>
 
+{/* 🌟 Hero — 오늘 가장 중요한 관계 */}
+      {!loading && heroPick && heroCounts && (
+        <HeroSlot
+          reason={heroPick.reason}
+          work={heroPick.relationship.work}
+          goodsCount={heroCounts.goods}
+          shopCount={heroCounts.shops}
+        />
+      )}
+      
       {/* ❤️ 내 작품 */}
       <section style={{ padding: '20px 0 8px' }}>
         <SectionTitle>❤️ 내 작품</SectionTitle>
