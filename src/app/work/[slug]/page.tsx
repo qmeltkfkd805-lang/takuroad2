@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { getTagBySlug, getShopsByTag } from '@/services/shopService'
 import { getProductsByTag } from '@/services/shopProductService'
+import { getPublicRoutes } from '@/services/routeService'
 import WorkHomePage from '@/components/work/WorkHomePage'
 
 interface Props {
@@ -12,10 +13,11 @@ export default async function WorkSlugPage({ params }: Props) {
   const tag = await getTagBySlug(slug)
   if (!tag) notFound()
 
-  const [goods, shops] = await Promise.all([
+  const [goods, shops, routes] = await Promise.all([
     getProductsByTag(tag.id),
     getShopsByTag(slug),
+    getPublicRoutes({ tag: tag.name }),
   ])
 
-  return <WorkHomePage tag={tag} goods={goods} shops={shops} />
+  return <WorkHomePage tag={tag} goods={goods} shops={shops} routes={routes} />
 }
