@@ -93,3 +93,56 @@ export async function getPendingSubmissions(): Promise<PendingSubmission[]> {
     createdAt: r.created_at,
   }))
 }
+
+export interface ApproveInput {
+  submissionId: string
+  tagId: string
+  shopId: string          // 검수 화면에서 준비된 shop_id (전제)
+  type: string
+  title: string
+  startDate: string | null
+  endDate: string | null
+}
+
+// 제보 승인 = 준비된 shop_id로 Event 생성 + 제보 마감.
+// (shop 준비는 검수 화면의 책임 — 이 함수는 shop_id가 있다고 전제)
+export async function approveSubmission(input: ApproveInput, reviewerId: string): Promise<boolean> {
+  const supabase = createClient()
+
+  // ③ Event 생성 (검수자가 수정한 값으로)
+  const { data: event, error: eventErr } = await supabase
+    .from('events')
+    .insert({
+      tag_id: input.tagId,
+      type: input.type,
+      shop_id: input.shopId,
+      title: input.title,
+      start_date: input.startDate,
+      end_date: input.endDate,
+    } as any)
+    .select('id')
+    .single()
+
+  if (eventErr || !event) {
+    console.error('[승인 실패 - Event 생성]', eventErr?.message, eventErr?.code)
+    return false
+  }
+
+  // ④ 제보 마감
+  const { error: subErr } = await supabase
+    .from('event_submissions')
+    .update({
+      status: 'approved',
+      event_id: event.id,
+      reviewed_by: reviewerId,
+      reviewed_at: new Date().toISOString(),
+    } as any)
+    .eq('id', input.submissionId)
+
+  if (subErr) {
+    console.error('[승인 실패 - 제보 마감]', subErr.message, subErr.code)
+    return false
+  }
+  return true
+}
+
