@@ -114,8 +114,10 @@ function ReviewCard({ submission, reviewerId, onDone }: {
   const [description, setDescription] = useState(submission.description ?? '')
 
   // 샵 연결 — 승인의 전제. shopId가 채워져야 승인 가능.
-  const [shopId, setShopId] = useState<string | null>(null)
-  const [shopSlug, setShopSlug] = useState<string | null>(null)
+  // 샵 상세에서 제보한 경우 이미 shop_id가 있음 → 그대로 시작(생성 단계 건너뜀).
+  const prelinked = submission.shopId != null
+  const [shopId, setShopId] = useState<string | null>(submission.shopId ?? null)
+  const [shopSlug, setShopSlug] = useState<string | null>(submission.shopSlug ?? null)
   const [shopName, setShopName] = useState((snap.name ?? '').trim())
   const [shopCats, setShopCats] = useState<string[]>([])
   const [creatingShop, setCreatingShop] = useState(false)
@@ -219,7 +221,7 @@ function ReviewCard({ submission, reviewerId, onDone }: {
             <div style={{ padding: '12px 14px', borderRadius: 'var(--r-sm)',
               border: '1px solid var(--green)', background: 'rgba(5,150,105,.10)' }}>
               <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--green)' }}>
-                ✓ 새 Shop 생성됨 — {shopName}
+                {prelinked ? '✓ 이미 연결된 샵' : '✓ 새 Shop 생성됨'} — {prelinked ? (submission.shopName ?? '샵') : shopName}
               </div>
               <a href={`/shop/${shopSlug}`} target="_blank" rel="noopener noreferrer"
                 style={{ fontSize: '12px', color: 'var(--green)', textDecoration: 'underline' }}>

@@ -5,6 +5,7 @@ export interface NewSubmission {
   type: string
   title: string
   placeSnapshot: any
+  shopId: string | null      // 샵 상세에서 진입 시 이미 알고 있는 샵 (작품 홈 진입은 null)
   placeDetail: string | null
   startDate: string | null
   endDate: string | null
@@ -19,6 +20,7 @@ export async function createEventSubmission(s: NewSubmission, userId: string): P
     type: s.type,
     title: s.title,
     place_snapshot: s.placeSnapshot,
+    shop_id: s.shopId,
     place_detail: s.placeDetail,
     start_date: s.startDate,
     end_date: s.endDate,
@@ -39,6 +41,9 @@ export interface PendingSubmission {
   type: string
   title: string
   placeSnapshot: any        // 카카오 원본 (이름/주소/좌표)
+  shopId: string | null     // 제보 시 이미 연결된 샵 (샵 상세 진입). null이면 검수 때 샵 마련
+  shopName: string | null   // 위 shopId의 샵 이름 (표시용)
+  shopSlug: string | null   // 위 shopId의 샵 slug (링크용)
   placeDetail: string | null
   startDate: string | null
   endDate: string | null
@@ -53,7 +58,7 @@ export async function getPendingSubmissions(): Promise<PendingSubmission[]> {
   const supabase = createClient()
   const { data, error } = await supabase
     .from('event_submissions')
-    .select('id, tag_id, type, title, place_snapshot, place_detail, start_date, end_date, source_url, description, created_at, submitted_by')
+    .select('id, tag_id, type, title, place_snapshot, shop_id, place_detail, start_date, end_date, source_url, description, created_at, submitted_by')
     .eq('status', 'pending')
     .order('created_at', { ascending: false })
 
@@ -64,18 +69,23 @@ export async function getPendingSubmissions(): Promise<PendingSubmission[]> {
   const rows = data ?? []
   if (rows.length === 0) return []
 
-  // 작품 이름 + 제보자 이름을 따로 모아서 붙임 (조인 모호성 회피)
+  // 작품 이름 + 제보자 이름 + (있으면) 연결된 샵을 따로 모아서 붙임 (조인 모호성 회피)
   const tagIds = [...new Set(rows.map((r: any) => r.tag_id).filter(Boolean))]
   const userIds = [...new Set(rows.map((r: any) => r.submitted_by).filter(Boolean))]
+  const shopIds = [...new Set(rows.map((r: any) => r.shop_id).filter(Boolean))]
 
-  const [{ data: tags }, { data: profiles }] = await Promise.all([
+  const [{ data: tags }, { data: profiles }, { data: shops }] = await Promise.all([
     supabase.from('tags').select('id, name').in('id', tagIds),
     userIds.length
       ? supabase.from('profiles').select('id, nickname').in('id', userIds)
       : Promise.resolve({ data: [] as any[] }),
+    shopIds.length
+      ? supabase.from('shops').select('id, name, slug').in('id', shopIds)
+      : Promise.resolve({ data: [] as any[] }),
   ])
   const tagMap = new Map((tags ?? []).map((t: any) => [t.id, t.name]))
   const userMap = new Map((profiles ?? []).map((p: any) => [p.id, p.nickname]))
+  const shopMap = new Map((shops ?? []).map((s: any) => [s.id, s]))
 
   return rows.map((r: any) => ({
     id: r.id,
@@ -84,6 +94,9 @@ export async function getPendingSubmissions(): Promise<PendingSubmission[]> {
     type: r.type,
     title: r.title,
     placeSnapshot: r.place_snapshot,
+    shopId: r.shop_id ?? null,
+    shopName: r.shop_id ? (shopMap.get(r.shop_id)?.name ?? null) : null,
+    shopSlug: r.shop_id ? (shopMap.get(r.shop_id)?.slug ?? null) : null,
     placeDetail: r.place_detail,
     startDate: r.start_date,
     endDate: r.end_date,

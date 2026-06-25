@@ -189,10 +189,25 @@ export default function ShopDetailPage({ shop }: Props) {
             )}
           </div>
         )}
+        
 <ShopHighlights shopId={shop.id} />
         <ShopTagBadges shopId={shop.id} />
         <ShopProductAccordion shopId={shop.id} />
         <ShopEventList shopId={shop.id} />
+
+        {/* + 이 샵 이벤트 제보 진입 (shop slug 넘김 → 장소 고정) */}
+        <button
+          onClick={() => router.push(`/event/submit?shop=${shop.slug}`)}
+          style={{
+            width: '100%', padding: '13px', marginTop: '4px',
+            borderRadius: 'var(--r-sm)', border: '1.5px dashed var(--accent)',
+            background: 'var(--surface)', color: 'var(--accent)',
+            fontSize: '14px', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+          }}
+        >
+          + 이 샵 이벤트 제보하기
+        </button>
+        
         <ShopAmenityBadges shopId={shop.id} />
 
         {/* 체크인 버튼 */}

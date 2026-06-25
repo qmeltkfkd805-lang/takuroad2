@@ -6,6 +6,8 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { getAllTagsForSelect } from '@/services/routeService'
 import { searchPlace, PlaceSearchResult } from '@/lib/utils/geocode'
 import { createEventSubmission } from '@/services/eventSubmissionService'
+import { getShopBySlug } from '@/services/shopService'
+import { Shop } from '@/types/shop'
 
 const EVENT_TYPES = [
   { value: 'popup', label: '🎪 팝업스토어' },
@@ -15,10 +17,10 @@ const EVENT_TYPES = [
 
 interface Props {
   initialTagId?: string
-  initialShopId?: string
+  initialShopSlug?: string   // 샵 상세에서 진입 시 그 샵의 slug. 장소가 이 샵으로 고정됨
 }
 
-export default function EventSubmitPage({ initialTagId, initialShopId }: Props) {
+export default function EventSubmitPage({ initialTagId, initialShopSlug }: Props) {
   const router = useRouter()
   const { user } = useAuth()
 
@@ -57,6 +59,26 @@ export default function EventSubmitPage({ initialTagId, initialShopId }: Props) 
   const [searching, setSearching] = useState(false)
   const [place, setPlace] = useState<PlaceSearchResult | null>(null)
 
+  // 샵 상세에서 진입(initialShopSlug): 그 샵을 불러와 장소를 고정. shop_id를 제보에 실어보냄.
+  const [lockedShop, setLockedShop] = useState<Shop | null>(null)
+  const shopInited = useRef(false)
+  useEffect(() => {
+    if (shopInited.current || !initialShopSlug) return
+    shopInited.current = true
+    getShopBySlug(initialShopSlug).then(shop => {
+      if (!shop) return
+      setLockedShop(shop)
+      // 장소를 이 샵으로 고정 (placeSnapshot 증거로도 저장됨)
+      setPlace({
+        name: shop.name,
+        address: shop.addr ?? '',
+        roadAddress: shop.addr ?? '',
+        lat: shop.lat ?? 0,
+        lng: shop.lng ?? 0,
+      })
+    })
+  }, [initialShopSlug])
+
   async function handlePlaceSearch() {
     if (!placeQuery.trim()) return
     setSearching(true)
@@ -74,6 +96,7 @@ export default function EventSubmitPage({ initialTagId, initialShopId }: Props) 
       type,
       title: title.trim(),
       placeSnapshot: place,
+      shopId: lockedShop?.id ?? null,
       placeDetail: placeDetail || null,
       startDate: startDate || null,
       endDate: endDate || null,
@@ -147,9 +170,18 @@ export default function EventSubmitPage({ initialTagId, initialShopId }: Props) 
         </div>
       </Field>
 
-      {/* 장소 — 카카오 지도 검색 (샵 등록과 동일) */}
+      {/* 장소 — 카카오 지도 검색 (샵 등록과 동일). 단, 샵 상세 진입 시엔 그 샵으로 고정. */}
       <Field label="장소 *">
-        {place ? (
+        {lockedShop ? (
+          <div style={{ padding: '11px 14px', borderRadius: 'var(--r-sm)',
+            background: 'var(--surface2)', border: '1px solid var(--accent)' }}>
+            <div style={{ fontSize: '14px', fontWeight: 700 }}>📍 {lockedShop.name}</div>
+            {lockedShop.addr && <div style={{ fontSize: '12px', color: 'var(--muted)' }}>{lockedShop.addr}</div>}
+            <div style={{ fontSize: '11px', color: 'var(--accent)', fontWeight: 700, marginTop: '4px' }}>
+              이 샵으로 제보 중
+            </div>
+          </div>
+        ) : place ? (
           <Selected icon="📍" label={`${place.name} · ${place.roadAddress}`}
             onClear={() => { setPlace(null); setPlaceQuery(''); setPlaceResults([]) }} />
         ) : (
