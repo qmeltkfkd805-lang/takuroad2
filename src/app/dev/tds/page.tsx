@@ -1,10 +1,11 @@
 ﻿'use client'
 import { Shop } from '@/types/shop'
-import { Button, Card, Chip, Badge, SectionHeader, Icon, IconBox, StatusBadge, ShopCard, WorkCard, EventCard } from '@/components/tds'
+import { Button, Card, Chip, Badge, SectionHeader, Icon, IconBox, StatusBadge, ShopCard, WorkCard, EventCard, CollectionCard } from '@/components/tds'
 import type { WorkCardData } from '@/components/tds/WorkCard'
 import type { EventCardData } from '@/components/tds/EventCard'
+import type { CollectionCardData } from '@/components/tds/CollectionCard'
 
-const ICONS = ['shop','event','collection','route','checkin','work','heart','fire','star','map','search','chevron-right','goods','cafe','news','exhibition','activity']
+const ICONS = ['shop','event','collection','route','checkin','work','heart','fire','star','map','search','chevron-right','goods','cafe','news','exhibition','activity','box','clock','people','gift','bell']
 
 const mock = (p: Partial<Shop>): Shop => ({
   id: '', slug: '', name: '', description: null, addr: null, country: 'KR',
@@ -38,6 +39,13 @@ const events: EventCardData[] = [
   { id:'e5', type:'exhibition',  title:'산리오 캐릭터 대전 특별전',       workName:'산리오',       place:'코엑스',     startDate:'2026-07-02', endDate:'2026-07-20' },
 ]
 
+const collections: CollectionCardData[] = [
+  { id:'c1', kind:'pilgrimage', title:'하이큐!! 성지순례',     visited:7,  total:12 },
+  { id:'c2', kind:'region',     title:'성수동 정복',          visited:11, total:12 },
+  { id:'c3', kind:'pilgrimage', title:'주술회전 성지순례',     visited:8,  total:8, justCompleted:true },
+  { id:'c4', kind:'pilgrimage', title:'블루아카이브 성지순례', visited:0,  total:10 },
+]
+
 export default function TdsShowcasePage() {
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--bg)', padding: '32px 20px' }}>
@@ -48,6 +56,12 @@ export default function TdsShowcasePage() {
         <Block label="EventCard (핵심 카드)">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(206px,1fr))', gap: 14 }}>
             {events.map((e) => <EventCard key={e.id} event={e} now={EVENT_NOW} onClick={() => {}} />)}
+          </div>
+        </Block>
+
+        <Block label="CollectionCard (진행도 · 도장)">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(240px,1fr))', gap: 14 }}>
+            {collections.map((c) => <CollectionCard key={c.id} collection={c} onClick={() => {}} />)}
           </div>
         </Block>
 
