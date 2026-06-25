@@ -108,11 +108,13 @@ export async function getShopBySlug(slug: string): Promise<Shop | null> {
 }
 
 export async function searchShops(query: string): Promise<Shop[]> {
-  if (!query.trim()) return []
+  // 입력어를 띄어쓰기로 쪼개, 각 단어가 (순서·띄어쓰기 무관) 이름에 모두 포함되면 매칭
+  const tokens = query.trim().split(/\s+/).filter(Boolean)
+  if (tokens.length === 0) return []
 
   const supabase = createClient()
 
-  const { data, error } = await supabase
+  let q = supabase
     .from('shops')
     .select(`
       id, slug, name, addr, lat, lng,
@@ -121,8 +123,13 @@ export async function searchShops(query: string): Promise<Shop[]> {
       shop_categories ( categories ( name, slug, color, icon, bg_color ) )
     `)
     .in('status', ['active', 'temporary_closed', 'closed'])
-    .ilike('name', `%${query}%`)
-    .limit(20)
+
+  // 여러 ilike를 걸면 AND로 묶임 → 모든 단어가 들어있는 샵만
+  for (const token of tokens) {
+    q = q.ilike('name', `%${token}%`)
+  }
+
+  const { data, error } = await q.limit(20)
 
   if (error) return []
   return (data ?? []).map(toShop)

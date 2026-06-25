@@ -5,7 +5,8 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import WorkEventList from '@/components/work/WorkEventList'
 import { WorkEvent } from '@/services/eventService'
 import { getPendingSubmissions, PendingSubmission, approveSubmission, rejectSubmission } from '@/services/eventSubmissionService'
-import { createShop } from '@/services/shopService'
+import { createShop, searchShops } from '@/services/shopService'
+import { Shop } from '@/types/shop'
 import { generateSlug } from '@/lib/utils/shop'
 import { CATEGORIES } from '@/lib/constants/categories'
 
@@ -122,6 +123,30 @@ function ReviewCard({ submission, reviewerId, onDone }: {
   const [shopCats, setShopCats] = useState<string[]>([])
   const [creatingShop, setCreatingShop] = useState(false)
 
+  // 연결 방식: 샵상세 제보(prelinked) / 기존샵 매칭(matched) / 새로 생성(created)
+  const [linkKind, setLinkKind] = useState<'prelinked' | 'matched' | 'created' | null>(prelinked ? 'prelinked' : null)
+  const [matchedName, setMatchedName] = useState<string | null>(null)
+
+  // 기존 샵 찾기(중복 방지) — 제보 장소 이름으로 검색
+  const [shopQuery, setShopQuery] = useState((snap.name ?? '').trim())
+  const [shopResults, setShopResults] = useState<Shop[]>([])
+  const [searchingShops, setSearchingShops] = useState(false)
+  const [shopSearched, setShopSearched] = useState(false)
+
+  // 진입 시 1회 자동 검색 (샵상세 제보가 아닐 때만)
+  useEffect(() => {
+    if (prelinked) return
+    const q = (snap.name ?? '').trim()
+    if (!q) { setShopSearched(true); return }
+    setSearchingShops(true)
+    searchShops(q).then(rows => {
+      setShopResults(rows)
+      setSearchingShops(false)
+      setShopSearched(true)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const [approving, setApproving] = useState(false)
   const [rejecting, setRejecting] = useState(false)
   const [err, setErr] = useState('')
@@ -145,6 +170,32 @@ function ReviewCard({ submission, reviewerId, onDone }: {
     if (!res) { setErr('샵 생성에 실패했어요. 이름/슬러그가 중복됐을 수 있어요.'); return }
     setShopId(res.id)
     setShopSlug(res.slug)
+    setLinkKind('created')
+  }
+
+  async function handleShopSearch() {
+    const q = shopQuery.trim()
+    if (!q) return
+    setSearchingShops(true)
+    const rows = await searchShops(q)
+    setShopResults(rows)
+    setSearchingShops(false)
+    setShopSearched(true)
+  }
+
+  function matchExistingShop(shop: Shop) {
+    setShopId(shop.id)
+    setShopSlug(shop.slug)
+    setMatchedName(shop.name)
+    setLinkKind('matched')
+    setErr('')
+  }
+
+  function unlinkShop() {
+    setShopId(null)
+    setShopSlug(null)
+    setMatchedName(null)
+    setLinkKind(null)
   }
 
   async function approve() {
@@ -221,12 +272,22 @@ function ReviewCard({ submission, reviewerId, onDone }: {
             <div style={{ padding: '12px 14px', borderRadius: 'var(--r-sm)',
               border: '1px solid var(--green)', background: 'rgba(5,150,105,.10)' }}>
               <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--green)' }}>
-                {prelinked ? '✓ 이미 연결된 샵' : '✓ 새 Shop 생성됨'} — {prelinked ? (submission.shopName ?? '샵') : shopName}
+                {linkKind === 'prelinked' ? '✓ 이미 연결된 샵' : linkKind === 'matched' ? '✓ 기존 샵에 연결됨' : '✓ 새 Shop 생성됨'}
+                {' — '}
+                {linkKind === 'prelinked' ? (submission.shopName ?? '샵') : linkKind === 'matched' ? (matchedName ?? '샵') : shopName}
               </div>
               <a href={`/shop/${shopSlug}`} target="_blank" rel="noopener noreferrer"
                 style={{ fontSize: '12px', color: 'var(--green)', textDecoration: 'underline' }}>
                 샵 페이지에서 사진·설명·영업시간 보완하기 ↗
               </a>
+              {linkKind !== 'prelinked' && (
+                <button onClick={unlinkShop}
+                  style={{ display: 'block', marginTop: '8px', background: 'none', border: 'none',
+                    color: 'var(--muted)', fontSize: '12px', textDecoration: 'underline',
+                    cursor: 'pointer', padding: 0, fontFamily: 'inherit' }}>
+                  연결 변경
+                </button>
+              )}
             </div>
           ) : (
             // 연결 전 — 새 Shop 생성 패널
@@ -236,6 +297,50 @@ function ReviewCard({ submission, reviewerId, onDone }: {
                 <div style={{ fontSize: '13px', fontWeight: 700 }}>📍 제보된 장소: {snapName}</div>
                 {snapAddr && <div style={{ fontSize: '12px', color: 'var(--muted)' }}>{snapAddr}</div>}
               </div>
+
+              {/* 1. 기존 샵에 연결 (중복 방지) */}
+              <div>
+                <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: 'var(--muted)', marginBottom: '4px' }}>
+                  이미 등록된 샵인가요? (중복 방지)
+                </label>
+                <div style={{ display: 'flex', gap: '6px' }}>
+                  <input value={shopQuery} onChange={e => setShopQuery(e.target.value)}
+                    onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleShopSearch() } }}
+                    placeholder="샵 이름으로 검색" style={{ ...inputStyle, flex: 1 }} />
+                  <button onClick={handleShopSearch} disabled={searchingShops}
+                    style={{ padding: '0 14px', borderRadius: 'var(--r-sm)', border: '1px solid var(--border)',
+                      background: 'var(--surface)', color: 'var(--text)', fontSize: '12px', fontWeight: 700,
+                      cursor: searchingShops ? 'not-allowed' : 'pointer', fontFamily: 'inherit', flexShrink: 0 }}>
+                    {searchingShops ? '검색중' : '검색'}
+                  </button>
+                </div>
+
+                {shopResults.length > 0 ? (
+                  <div style={{ marginTop: '6px', border: '1px solid var(--border)', borderRadius: 'var(--r-sm)', overflow: 'hidden' }}>
+                    {shopResults.map(sp => (
+                      <div key={sp.id} onClick={() => matchExistingShop(sp)}
+                        style={{ padding: '10px 12px', cursor: 'pointer', borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+                        <div style={{ fontSize: '13px', fontWeight: 700 }}>📍 {sp.name}</div>
+                        {sp.addr && <div style={{ fontSize: '11px', color: 'var(--muted)' }}>{sp.addr}</div>}
+                      </div>
+                    ))}
+                  </div>
+                ) : shopSearched && !searchingShops ? (
+                  <div style={{ marginTop: '6px', fontSize: '12px', color: 'var(--muted)' }}>
+                    일치하는 기존 샵이 없어요 — 아래에서 새로 만들면 됩니다
+                  </div>
+                ) : null}
+              </div>
+
+              {/* 구분선 */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--muted)', fontSize: '11px', fontWeight: 700 }}>
+                <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
+                또는
+                <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
+              </div>
+
+              {/* 2. 새 Shop으로 만들기 */}
+              <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--accent)' }}>🆕 새 Shop으로 만들기</div>
 
               <div>
                 <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: 'var(--muted)', marginBottom: '4px' }}>
