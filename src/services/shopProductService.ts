@@ -160,12 +160,27 @@ export async function upsertShopProduct(params: {
         changedBy: params.userId,
       })
 
-      // 작품에 "새 굿즈 등록" 사건(Event) 남기기 — 새 굿즈일 때만
+      // 작품에 "새 굿즈 등록" 사건(Event) 남기기 — 새 굿즈일 때만.
+      // 어떤 굿즈인지 보이도록 종류/캐릭터 이름으로 title 구성.
+      const { data: gtype } = await supabase
+        .from('goods_types').select('name').eq('id', params.goodsTypeId).maybeSingle()
+      let charName: string | null = null
+      if (params.characterId) {
+        const { data: ch } = await supabase
+          .from('characters').select('name').eq('id', params.characterId).maybeSingle()
+        charName = ch?.name ?? null
+      }
+      const charPart = charName ? `${charName} ` : ''
+      const variantPart = params.variantName ? ` (${params.variantName})` : ''
+      const goodsTitle = gtype?.name
+        ? `새 굿즈 · ${charPart}${gtype.name}${variantPart}`
+        : '새 굿즈가 등록되었어요'
+
       await supabase.from('events').insert({
         tag_id: params.tagId,
         type: 'goods_added',
         shop_id: params.shopId,
-        title: '새 굿즈가 등록되었어요',
+        title: goodsTitle,
       } as any)
     }
     return !error

@@ -8,34 +8,54 @@ export interface WorkEvent {
   shopId: string | null
   title: string | null
   createdAt: string
+  // 상세(모달)용 — 일부 호출처(검수 미리보기 등)는 안 채움
+  startDate?: string | null
+  endDate?: string | null
+  shopName?: string | null
+  shopSlug?: string | null
 }
 
 // 작품 이벤트 type별 아이콘/라벨 (작품 홈·샵 상세 공용)
 export const WORK_EVENT_ICON: Record<string, string> = {
-  goods_added: '🆕', popup: '🎪', collab_cafe: '☕', exhibition: '🖼️',
+  goods_added: '🛍️', popup: '🎪', collab_cafe: '☕', exhibition: '🖼️',
 }
 export const WORK_EVENT_LABEL: Record<string, string> = {
   goods_added: '새 굿즈', popup: '팝업스토어', collab_cafe: '콜라보 카페', exhibition: '전시',
 }
 
 // 한 작품의 최근 Event들 (작품 홈 "새로운 소식"용). 최신순.
+// 모달 상세를 위해 기간 + 연결된 샵 이름/slug도 같이 붙여 옴.
 export async function getEventsByTag(tagId: string, limit = 20): Promise<WorkEvent[]> {
   const supabase = createClient()
   const { data, error } = await supabase
     .from('events')
-    .select('id, tag_id, type, shop_id, title, created_at')
+    .select('id, tag_id, type, shop_id, title, created_at, start_date, end_date')
     .eq('tag_id', tagId)
     .order('created_at', { ascending: false })
     .limit(limit)
 
   if (error) return []
-  return (data ?? []).map((e: any) => ({
+  const rows = data ?? []
+
+  // 샵 이름/슬러그 붙이기 (모달의 "어디서" + 샵 링크용)
+  const shopIds = [...new Set(rows.map((e: any) => e.shop_id).filter(Boolean))]
+  let shopMap = new Map<string, any>()
+  if (shopIds.length) {
+    const { data: shops } = await supabase.from('shops').select('id, name, slug').in('id', shopIds)
+    shopMap = new Map((shops ?? []).map((s: any) => [s.id, s]))
+  }
+
+  return rows.map((e: any) => ({
     id: e.id,
     tagId: e.tag_id,
     type: e.type,
     shopId: e.shop_id,
     title: e.title,
     createdAt: e.created_at,
+    startDate: e.start_date,
+    endDate: e.end_date,
+    shopName: e.shop_id ? (shopMap.get(e.shop_id)?.name ?? null) : null,
+    shopSlug: e.shop_id ? (shopMap.get(e.shop_id)?.slug ?? null) : null,
   }))
 }
 
