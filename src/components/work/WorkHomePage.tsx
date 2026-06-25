@@ -64,6 +64,18 @@ export default function WorkHomePage({ tag, goods, shops, routes, events }: Work
         </div>
       )}
 
+      {/* + 이벤트 제보 진입 (tag_id 미리 채움) */}
+      <div style={{ padding: '16px 16px 0' }}>
+        <Link href={`/event/submit?tag=${tag.id}`} style={{
+          display: 'block', textAlign: 'center', padding: '13px',
+          borderRadius: 'var(--r-sm)', border: '1.5px dashed var(--accent)',
+          background: 'var(--surface)', color: 'var(--accent)',
+          fontSize: '14px', fontWeight: 700, textDecoration: 'none',
+        }}>
+          + 이 작품 이벤트 제보하기
+        </Link>
+      </div>
+
       {/* 🛍️ 판매 중인 굿즈 */}
       <div style={{ padding: '16px 16px 0' }}>
         <h2 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text)', margin: '0 0 12px' }}>

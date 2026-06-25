@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getAllTagsForSelect } from '@/services/routeService'
@@ -36,6 +36,16 @@ export default function EventSubmitPage({ initialTagId, initialShopId }: Props) 
   // 작품: 전체 불러와 입력값으로 필터
   const [allTags, setAllTags] = useState<{ id: string; name: string; slug: string }[]>([])
   useEffect(() => { getAllTagsForSelect().then(setAllTags) }, [])
+ 
+  // initialTagId로 진입한 경우: 작품 목록 로드되면 이름 채워 "선택됨"으로 표시 (1회만)
+  const tagInited = useRef(false)
+  useEffect(() => {
+    if (tagInited.current) return
+    if (initialTagId && allTags.length) {
+      const t = allTags.find(t => t.id === initialTagId)
+      if (t) { setTagName(t.name); tagInited.current = true }
+    }
+  }, [initialTagId, allTags])
   const [tagQuery, setTagQuery] = useState('')
   const tagResults = tagQuery.trim()
     ? allTags.filter(t => t.name.toLowerCase().includes(tagQuery.toLowerCase())).slice(0, 20)
