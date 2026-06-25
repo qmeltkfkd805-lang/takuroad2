@@ -27,6 +27,11 @@ function parseSearchTerms(query: string): string[] {
   return query.trim().split(/\s+/).filter(Boolean)
 }
 
+// 공백 제거 + 소문자 (띄어쓰기 무시 비교용)
+function stripSpaces(s: string): string {
+  return (s ?? '').toLowerCase().replace(/\s+/g, '')
+}
+
 export async function globalSearch(query: string, userId?: string | null, anonymousId?: string): Promise<GlobalSearchResult> {
   const supabase = createClient()
   const terms = parseSearchTerms(query)
@@ -43,12 +48,14 @@ export async function globalSearch(query: string, userId?: string | null, anonym
     .ilike('name', `%${query.trim()}%`)
     .limit(10)
 
-  // 2. 작품(tags) 매칭
-  const { data: tagsData } = await supabase
+  // 2. 작품(tags) 매칭 — 띄어쓰기 무시 (공백 떼고 첫 단어 포함). "가정교사히트맨리본"도 "가정교사 히트맨 리본" 매칭
+  const term0 = stripSpaces(terms[0])
+  const { data: allTagsData } = await supabase
     .from('tags')
     .select('id, name, slug')
-    .ilike('name', `%${terms[0]}%`)
-    .limit(5)
+  const tagsData = (allTagsData ?? [])
+    .filter((t: any) => stripSpaces(t.name).includes(term0))
+    .slice(0, 5)
 
   // 3. 캐릭터 매칭
   const { data: charactersData } = await supabase
@@ -57,12 +64,13 @@ export async function globalSearch(query: string, userId?: string | null, anonym
     .ilike('name', `%${terms[0]}%`)
     .limit(5)
 
-  // 4. 굿즈타입 매칭
-  const { data: goodsTypesData } = await supabase
+  // 4. 굿즈타입 매칭 — 띄어쓰기 무시 (예: "아크릴스탠드" → "아크릴 스탠드")
+  const { data: allGoodsTypesData } = await supabase
     .from('goods_types')
     .select('id, name')
-    .ilike('name', `%${terms[0]}%`)
-    .limit(5)
+  const goodsTypesData = (allGoodsTypesData ?? [])
+    .filter((g: any) => stripSpaces(g.name).includes(term0))
+    .slice(0, 5)
 
   // 5. shop_products에서 매칭되는 굿즈 찾기
   let products: any[] = []
@@ -99,11 +107,11 @@ export async function globalSearch(query: string, userId?: string | null, anonym
 
     // 복합 검색(2개 이상 단어)이면, 두 번째 단어도 매칭되는 것만 필터링
     if (terms.length > 1) {
-      const secondTerm = terms[1].toLowerCase()
+      const secondTerm = stripSpaces(terms[1])
       products = products.filter((p: any) =>
-        p.tags?.name?.toLowerCase().includes(secondTerm) ||
-        p.characters?.name?.toLowerCase().includes(secondTerm) ||
-        p.goods_types?.name?.toLowerCase().includes(secondTerm)
+        stripSpaces(p.tags?.name ?? '').includes(secondTerm) ||
+        stripSpaces(p.characters?.name ?? '').includes(secondTerm) ||
+        stripSpaces(p.goods_types?.name ?? '').includes(secondTerm)
       )
     }
   }
