@@ -1,7 +1,8 @@
 ﻿'use client'
 import { Shop } from '@/types/shop'
-import { Button, Card, Chip, Badge, SectionHeader, Icon, IconBox, StatusBadge, ShopCard, WorkCard } from '@/components/tds'
+import { Button, Card, Chip, Badge, SectionHeader, Icon, IconBox, StatusBadge, ShopCard, WorkCard, EventCard } from '@/components/tds'
 import type { WorkCardData } from '@/components/tds/WorkCard'
+import type { EventCardData } from '@/components/tds/EventCard'
 
 const ICONS = ['shop','event','collection','route','checkin','work','heart','fire','star','map','search','chevron-right','goods','cafe','news','exhibition','activity']
 
@@ -28,12 +29,27 @@ const works: WorkCardData[] = [
   { id:'4', name:'체인소 맨', affinity:'interest', state:'planned', activities:[], recentlyActive:false },
 ]
 
+const EVENT_NOW = new Date('2026-06-25T15:00')
+const events: EventCardData[] = [
+  { id:'e1', type:'exhibition',  title:'주술회전 0 극장판 전시회',       workName:'주술회전',     place:'더현대 서울', startDate:'2026-06-10', endDate:'2026-06-25' },
+  { id:'e2', type:'popup',       title:'하이큐!! 페스타 팝업스토어',      workName:'하이큐!!',     place:'홍대 AK&',   startDate:'2026-06-10', endDate:'2026-06-27' },
+  { id:'e3', type:'collab_cafe', title:'블루아카이브 × 애니메이트 카페',  workName:'블루아카이브', place:'성수',       startDate:'2026-06-10', endDate:'2026-07-15' },
+  { id:'e4', type:'popup',       title:'체인소 맨 시즌2 기념 팝업',       workName:'체인소 맨',    place:'강남',       startDate:'2026-06-25', endDate:'2026-07-10' },
+  { id:'e5', type:'exhibition',  title:'산리오 캐릭터 대전 특별전',       workName:'산리오',       place:'코엑스',     startDate:'2026-07-02', endDate:'2026-07-20' },
+]
+
 export default function TdsShowcasePage() {
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--bg)', padding: '32px 20px' }}>
       <div style={{ maxWidth: 720, margin: '0 auto' }}>
         <h1 style={{ fontSize: 28, fontWeight: 800, margin: 0 }}>TAKUROAD Design System</h1>
         <p style={{ color: 'var(--muted)', fontSize: 14, margin: '4px 0 32px' }}>TDS 쇼케이스</p>
+
+        <Block label="EventCard (핵심 카드)">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(206px,1fr))', gap: 14 }}>
+            {events.map((e) => <EventCard key={e.id} event={e} now={EVENT_NOW} onClick={() => {}} />)}
+          </div>
+        </Block>
 
         <Block label="WorkCard">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(200px,1fr))', gap: 14 }}>
