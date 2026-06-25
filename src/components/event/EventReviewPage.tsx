@@ -4,7 +4,10 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import WorkEventList from '@/components/work/WorkEventList'
 import { WorkEvent } from '@/services/eventService'
-import { getPendingSubmissions, PendingSubmission } from '@/services/eventSubmissionService'
+import { getPendingSubmissions, PendingSubmission, approveSubmission, rejectSubmission } from '@/services/eventSubmissionService'
+import { createShop } from '@/services/shopService'
+import { generateSlug } from '@/lib/utils/shop'
+import { CATEGORIES } from '@/lib/constants/categories'
 
 const TYPE_LABEL: Record<string, string> = {
   popup: '🎪 팝업스토어', collab_cafe: '☕ 콜라보 카페', exhibition: '🖼️ 전시',
@@ -15,6 +18,34 @@ function fmtPeriod(s: string | null, e: string | null): string {
   const f = (d: string) => d.replace(/-/g, '.').slice(2)
   if (s && e) return `${f(s)} ~ ${f(e)}`
   return f((s ?? e)!)
+}
+
+// 제보된 카카오 장소(snapshot)로 새 Shop 생성.
+// snapshot에 없는 값은 cats(검수자가 선택)뿐 — 나머지(사진·설명·영업시간)는 샵 페이지에서 보완.
+// createShop은 slug 중복 시 null을 반환하므로, 1회 한정으로 접미사를 붙여 재시도한다.
+async function createShopFromSnapshot(
+  snap: any,
+  name: string,
+  cats: string[],
+  userId: string
+): Promise<{ id: string; slug: string } | null> {
+  const base = generateSlug(name)
+  const data = {
+    name: name.trim(),
+    addr: snap?.roadAddress ?? snap?.address ?? null,
+    lat: snap?.lat ?? null,
+    lng: snap?.lng ?? null,
+    cats,
+    hours: null,
+    parking: null,
+  }
+
+  let res = await createShop({ ...data, slug: base }, userId)
+  if (!res) {
+    // 슬러그 중복 가능성 → 짧은 접미사로 한 번 재시도
+    res = await createShop({ ...data, slug: `${base}-${Math.random().toString(36).slice(2, 6)}` }, userId)
+  }
+  return res
 }
 
 export default function EventReviewPage() {
@@ -35,7 +66,7 @@ export default function EventReviewPage() {
   if (authLoading || loading) {
     return <Centered>불러오는 중...</Centered>
   }
-  if (!isAdmin) {
+  if (!isAdmin || !user) {
     return <Centered>관리자만 접근할 수 있어요.</Centered>
   }
 
@@ -56,7 +87,7 @@ export default function EventReviewPage() {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {queue.map(s => (
-            <ReviewCard key={s.id} submission={s} onDone={() => removeFromQueue(s.id)} />
+            <ReviewCard key={s.id} submission={s} reviewerId={user.id} onDone={() => removeFromQueue(s.id)} />
           ))}
         </div>
       )}
@@ -65,7 +96,11 @@ export default function EventReviewPage() {
 }
 
 // 제보 한 건 = Event 생성 에디터
-function ReviewCard({ submission, onDone }: { submission: PendingSubmission; onDone: () => void }) {
+function ReviewCard({ submission, reviewerId, onDone }: {
+  submission: PendingSubmission
+  reviewerId: string
+  onDone: () => void
+}) {
   const snap = submission.placeSnapshot ?? {}
   const snapName = snap.name ?? '(장소 정보 없음)'
   const snapAddr = snap.roadAddress ?? snap.address ?? ''
@@ -78,21 +113,63 @@ function ReviewCard({ submission, onDone }: { submission: PendingSubmission; onD
   const [endDate, setEndDate] = useState(submission.endDate ?? '')
   const [description, setDescription] = useState(submission.description ?? '')
 
+  // 샵 연결 — 승인의 전제. shopId가 채워져야 승인 가능.
+  const [shopId, setShopId] = useState<string | null>(null)
+  const [shopSlug, setShopSlug] = useState<string | null>(null)
+  const [shopName, setShopName] = useState((snap.name ?? '').trim())
+  const [shopCats, setShopCats] = useState<string[]>([])
+  const [creatingShop, setCreatingShop] = useState(false)
+
+  const [approving, setApproving] = useState(false)
+  const [rejecting, setRejecting] = useState(false)
+  const [err, setErr] = useState('')
+
   // 미리보기 — 수정한 값 실시간 반영
   const preview: WorkEvent = {
-    id: submission.id, tagId: submission.tagId, type, shopId: null,
+    id: submission.id, tagId: submission.tagId, type, shopId,
     title, createdAt: submission.createdAt,
   }
 
-  function approve() {
-    console.log('[승인 예정]', { tag_id: submission.tagId, type, title, snapshot: snap })
-    alert(`승인됨: "${title}" (Event 생성/장소 연결은 다음 단계)`)
+  function toggleCat(name: string) {
+    setShopCats(prev => prev.includes(name) ? prev.filter(c => c !== name) : [...prev, name])
+  }
+
+  async function handleCreateShop() {
+    if (!shopName.trim()) { setErr('샵 이름을 입력하세요'); return }
+    if (shopCats.length === 0) { setErr('카테고리를 1개 이상 선택하세요'); return }
+    setErr(''); setCreatingShop(true)
+    const res = await createShopFromSnapshot(snap, shopName, shopCats, reviewerId)
+    setCreatingShop(false)
+    if (!res) { setErr('샵 생성에 실패했어요. 이름/슬러그가 중복됐을 수 있어요.'); return }
+    setShopId(res.id)
+    setShopSlug(res.slug)
+  }
+
+  async function approve() {
+    if (!shopId) { setErr('먼저 장소를 샵으로 연결하세요'); return }
+    if (!title.trim()) { setErr('이벤트명을 입력하세요'); return }
+    setErr(''); setApproving(true)
+    const ok = await approveSubmission({
+      submissionId: submission.id,
+      tagId: submission.tagId,
+      shopId,
+      type,
+      title: title.trim(),
+      startDate: startDate || null,
+      endDate: endDate || null,
+    }, reviewerId)
+    setApproving(false)
+    if (!ok) { setErr('승인에 실패했어요. 잠시 후 다시 시도해주세요.'); return }
     onDone()
   }
-  function reject() {
-    const reason = prompt('반려 사유를 입력하세요')
-    if (reason === null) return
-    console.log('[반려]', submission.id, reason)
+
+  async function reject() {
+    const input = prompt('반려 사유 (선택 — 제보자에게 전달)')
+    if (input === null) return   // 취소
+    setErr(''); setRejecting(true)
+    const ok = await rejectSubmission(submission.id, input.trim() || null, reviewerId)
+    setRejecting(false)
+    if (!ok) { setErr('반려에 실패했어요. 잠시 후 다시 시도해주세요.'); return }
     onDone()
   }
 
@@ -135,16 +212,65 @@ function ReviewCard({ submission, onDone }: { submission: PendingSubmission; onD
           </div>
         </EditField>
 
-        {/* 장소 — 제보자가 고른 카카오 장소(주장). 검수 때 shop으로 정리 (다음 단계) */}
-        <EditField label="장소 (제보자가 선택)">
-          <div style={{ padding: '10px 12px', borderRadius: 'var(--r-sm)',
-            border: '1px dashed var(--border)', background: 'var(--surface2)' }}>
-            <div style={{ fontSize: '14px', fontWeight: 700 }}>📍 {snapName}</div>
-            {snapAddr && <div style={{ fontSize: '12px', color: 'var(--muted)' }}>{snapAddr}</div>}
-            <div style={{ fontSize: '11px', color: 'var(--accent)', marginTop: '4px' }}>
-              ⚠ 아직 샵으로 연결되지 않음 (승인 시 연결/생성 — 다음 단계)
+        {/* 장소 → 샵 연결: 승인의 전제. 제보된 카카오 장소로 새 Shop 생성해 shop_id 확보. */}
+        <EditField label="장소 → 샵 연결">
+          {shopId ? (
+            // 연결됨
+            <div style={{ padding: '12px 14px', borderRadius: 'var(--r-sm)',
+              border: '1px solid var(--green)', background: 'rgba(5,150,105,.10)' }}>
+              <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--green)' }}>
+                ✓ 새 Shop 생성됨 — {shopName}
+              </div>
+              <a href={`/shop/${shopSlug}`} target="_blank" rel="noopener noreferrer"
+                style={{ fontSize: '12px', color: 'var(--green)', textDecoration: 'underline' }}>
+                샵 페이지에서 사진·설명·영업시간 보완하기 ↗
+              </a>
             </div>
-          </div>
+          ) : (
+            // 연결 전 — 새 Shop 생성 패널
+            <div style={{ padding: '12px', borderRadius: 'var(--r-sm)',
+              border: '1px dashed var(--border)', background: 'var(--surface2)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div>
+                <div style={{ fontSize: '13px', fontWeight: 700 }}>📍 제보된 장소: {snapName}</div>
+                {snapAddr && <div style={{ fontSize: '12px', color: 'var(--muted)' }}>{snapAddr}</div>}
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: 'var(--muted)', marginBottom: '4px' }}>
+                  샵 이름 (필요하면 다듬기)
+                </label>
+                <input value={shopName} onChange={e => setShopName(e.target.value)} style={inputStyle} />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: 'var(--muted)', marginBottom: '4px' }}>
+                  카테고리 * (1개 이상)
+                </label>
+                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                  {CATEGORIES.map(cat => {
+                    const selected = shopCats.includes(cat.name)
+                    return (
+                      <button key={cat.slug} onClick={() => toggleCat(cat.name)}
+                        style={{ padding: '6px 10px', borderRadius: 'var(--r-sm)', cursor: 'pointer',
+                          border: `1.5px solid ${selected ? cat.color : 'var(--border)'}`,
+                          background: selected ? cat.bgColor : 'var(--surface)',
+                          color: selected ? cat.color : 'var(--text)',
+                          fontSize: '12px', fontWeight: 700, fontFamily: 'inherit' }}>
+                        {cat.icon} {cat.name}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              <button onClick={handleCreateShop} disabled={creatingShop}
+                style={{ padding: '10px', borderRadius: 'var(--r-sm)', border: 'none',
+                  background: creatingShop ? 'var(--border)' : 'var(--accent)', color: '#fff',
+                  fontSize: '13px', fontWeight: 700, cursor: creatingShop ? 'not-allowed' : 'pointer', fontFamily: 'inherit' }}>
+                {creatingShop ? '생성 중...' : '📍 이 장소로 새 Shop 생성'}
+              </button>
+            </div>
+          )}
         </EditField>
 
         <EditField label="상세 위치">
@@ -188,20 +314,37 @@ function ReviewCard({ submission, onDone }: { submission: PendingSubmission; onD
         </div>
       </div>
 
+      {/* 에러 */}
+      {err && (
+        <div style={{ padding: '10px 16px', background: 'var(--red-l)', color: 'var(--red)',
+          fontSize: '13px', fontWeight: 700, borderTop: '1px solid var(--border)' }}>
+          {err}
+        </div>
+      )}
+
       {/* 승인 / 반려 */}
-      <div style={{ display: 'flex', gap: '8px', padding: '14px 16px', borderTop: '1px solid var(--border)' }}>
-        <button onClick={reject}
-          style={{ flex: 1, padding: '12px', borderRadius: 'var(--r-sm)',
-            border: '1.5px solid var(--border)', background: 'var(--surface)',
-            color: 'var(--red)', fontSize: '14px', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
-          반려
-        </button>
-        <button onClick={approve}
-          style={{ flex: 2, padding: '12px', borderRadius: 'var(--r-sm)', border: 'none',
-            background: 'var(--green)', color: '#fff', fontSize: '14px', fontWeight: 700,
-            cursor: 'pointer', fontFamily: 'inherit' }}>
-          수정 내용으로 승인
-        </button>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', padding: '14px 16px', borderTop: '1px solid var(--border)' }}>
+        {!shopId && (
+          <p style={{ fontSize: '11px', color: 'var(--muted)', margin: 0, textAlign: 'center' }}>
+            장소를 샵으로 연결하면 승인할 수 있어요
+          </p>
+        )}
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button onClick={reject} disabled={approving || rejecting}
+            style={{ flex: 1, padding: '12px', borderRadius: 'var(--r-sm)',
+              border: '1.5px solid var(--border)', background: 'var(--surface)',
+              color: 'var(--red)', fontSize: '14px', fontWeight: 700,
+              cursor: (approving || rejecting) ? 'not-allowed' : 'pointer', fontFamily: 'inherit' }}>
+            {rejecting ? '반려 중...' : '반려'}
+          </button>
+          <button onClick={approve} disabled={!shopId || approving || rejecting}
+            style={{ flex: 2, padding: '12px', borderRadius: 'var(--r-sm)', border: 'none',
+              background: (!shopId || approving || rejecting) ? 'var(--border)' : 'var(--green)', color: '#fff',
+              fontSize: '14px', fontWeight: 700,
+              cursor: (!shopId || approving || rejecting) ? 'not-allowed' : 'pointer', fontFamily: 'inherit' }}>
+            {approving ? '승인 중...' : '수정 내용으로 승인'}
+          </button>
+        </div>
       </div>
     </div>
   )

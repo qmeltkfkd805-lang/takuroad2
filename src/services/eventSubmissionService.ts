@@ -146,3 +146,27 @@ export async function approveSubmission(input: ApproveInput, reviewerId: string)
   return true
 }
 
+// 제보 반려 = Event 생성 없이 제보만 마감(사유 기록, 사유는 선택).
+export async function rejectSubmission(
+  submissionId: string,
+  reason: string | null,
+  reviewerId: string
+): Promise<boolean> {
+  const supabase = createClient()
+
+  const { error } = await supabase
+    .from('event_submissions')
+    .update({
+      status: 'rejected',
+      reject_reason: reason,
+      reviewed_by: reviewerId,
+      reviewed_at: new Date().toISOString(),
+    } as any)
+    .eq('id', submissionId)
+
+  if (error) {
+    console.error('[반려 실패]', error.message, error.code)
+    return false
+  }
+  return true
+}
