@@ -22,11 +22,22 @@ interface ChipProps {
 export function Chip({ children, tone = 'coral', onClick, style }: ChipProps) {
   const c = tones[tone]
   return (
-    <span onClick={onClick} style={{
-      display: 'inline-flex', alignItems: 'center', background: c.bg, color: c.fg,
-      fontSize: 13, fontWeight: 500, fontFamily: 'inherit', padding: '7px 14px', borderRadius: 9999,
-      cursor: onClick ? 'pointer' : 'default', ...style,
-    }}>
+    <span
+      onClick={onClick}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        background: c.bg,
+        color: c.fg,
+        fontSize: 13,
+        fontWeight: 500,
+        fontFamily: 'inherit',
+        padding: '4px 14px',
+        borderRadius: 9999,
+        cursor: onClick ? 'pointer' : 'default',
+        ...style,
+      }}
+    >
       {children}
     </span>
   )
