@@ -1,12 +1,13 @@
 ﻿'use client'
 import { Shop } from '@/types/shop'
-import { Button, Card, Chip, Badge, SectionHeader, Icon, IconBox, StatusBadge, ShopCard, WorkCard, EventCard, CollectionCard, RouteCard } from '@/components/tds'
+import { Button, Card, Chip, Badge, SectionHeader, Icon, IconBox, StatusBadge, ShopCard, WorkCard, EventCard, CollectionCard, RouteCard, Taku } from '@/components/tds'
 import type { WorkCardData } from '@/components/tds/WorkCard'
 import type { EventCardData } from '@/components/tds/EventCard'
 import type { CollectionCardData } from '@/components/tds/CollectionCard'
 import type { RouteCardData } from '@/components/tds/RouteCard'
 
 const ICONS = ['shop','event','collection','route','checkin','work','heart','fire','star','map','search','chevron-right','goods','cafe','news','exhibition','activity','box','clock','people','gift','bell']
+const TAKU_POSES = ['default','hi','checkin','map','shopping','gacha','camera','cafe','walk','run','sit','side','back','pay','ui','settings'] as const
 
 const mock = (p: Partial<Shop>): Shop => ({
   id: '', slug: '', name: '', description: null, addr: null, country: 'KR',
@@ -59,6 +60,17 @@ export default function TdsShowcasePage() {
       <div style={{ maxWidth: 720, margin: '0 auto' }}>
         <h1 style={{ fontSize: 28, fontWeight: 800, margin: 0 }}>TAKUROAD Design System</h1>
         <p style={{ color: 'var(--muted)', fontSize: 14, margin: '4px 0 32px' }}>TDS 쇼케이스</p>
+
+        <Block label="TAKU 마스코트 (16종)">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(110px,1fr))', gap: 10 }}>
+            {TAKU_POSES.map((p) => (
+              <div key={p} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '12px 8px 8px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ height: 96, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}><Taku pose={p} size={88} /></div>
+                <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 6 }}>{p}</div>
+              </div>
+            ))}
+          </div>
+        </Block>
 
         <Block label="EventCard (핵심 카드)">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(206px,1fr))', gap: 14 }}>
