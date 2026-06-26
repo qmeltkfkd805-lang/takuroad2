@@ -1,6 +1,7 @@
 ﻿'use client'
+import { useState } from 'react'
 import { Shop } from '@/types/shop'
-import { Button, Card, Chip, Badge, SectionHeader, Icon, IconBox, StatusBadge, ShopCard, WorkCard, EventCard, CollectionCard, RouteCard, Taku, EmptyState } from '@/components/tds'
+import { Button, Card, Chip, Badge, SectionHeader, Icon, IconBox, StatusBadge, ShopCard, WorkCard, EventCard, CollectionCard, RouteCard, Taku, EmptyState, CelebrationModal } from '@/components/tds'
 import type { WorkCardData } from '@/components/tds/WorkCard'
 import type { EventCardData } from '@/components/tds/EventCard'
 import type { CollectionCardData } from '@/components/tds/CollectionCard'
@@ -55,6 +56,7 @@ const routes: RouteCardData[] = [
 ]
 
 export default function TdsShowcasePage() {
+  const [celeb, setCeleb] = useState<null | 'checkin' | 'collection' | 'route'>(null)
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--bg)', padding: '32px 20px' }}>
       <div style={{ maxWidth: 720, margin: '0 auto' }}>
@@ -88,6 +90,25 @@ export default function TdsShowcasePage() {
             </div>
           </div>
         </Block>
+
+        <Block label="CelebrationModal (도장 연출)">
+          <Row>
+            <Button variant="primary" onClick={() => setCeleb('collection')}>컬렉션 달성</Button>
+            <Button variant="secondary" onClick={() => setCeleb('route')}>루트 완주</Button>
+            <Button variant="outline" onClick={() => setCeleb('checkin')}>체크인</Button>
+          </Row>
+          <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 6 }}>버튼을 누르면 모달이 떠요. 딤 클릭/ESC/버튼으로 닫힘.</p>
+        </Block>
+
+        {celeb === 'collection' && (
+          <CelebrationModal open variant="collection" title="주술회전 성지순례" description="8곳 전부 방문" subDescription="2026.07.15" stampKind="pilgrimage" canMakeMemorial onMakeMemorial={async () => { await new Promise(r => setTimeout(r, 600)) }} onClose={() => setCeleb(null)} />
+        )}
+        {celeb === 'route' && (
+          <CelebrationModal open variant="route" title="홍대 굿즈샵 한바퀴" description="5곳 전부 완주" subDescription="2026.07.15" stampKind="route" canMakeMemorial onMakeMemorial={async () => { await new Promise(r => setTimeout(r, 600)) }} onClose={() => setCeleb(null)} />
+        )}
+        {celeb === 'checkin' && (
+          <CelebrationModal open variant="checkin" title="애니메이트 홍대점" description="체크인 완료" onClose={() => setCeleb(null)} />
+        )}
 
         <Block label="EventCard (핵심 카드)">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(206px,1fr))', gap: 14 }}>
@@ -181,3 +202,6 @@ function Block({ label, children }: { label: string; children: React.ReactNode }
 function Row({ children }: { children: React.ReactNode }) {
   return <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center', marginBottom: 10 }}>{children}</div>
 }
+
+
+
