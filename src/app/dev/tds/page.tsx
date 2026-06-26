@@ -1,6 +1,6 @@
 ﻿'use client'
 import { Shop } from '@/types/shop'
-import { Button, Card, Chip, Badge, SectionHeader, Icon, IconBox, StatusBadge, ShopCard, WorkCard, EventCard, CollectionCard, RouteCard, Taku } from '@/components/tds'
+import { Button, Card, Chip, Badge, SectionHeader, Icon, IconBox, StatusBadge, ShopCard, WorkCard, EventCard, CollectionCard, RouteCard, Taku, EmptyState } from '@/components/tds'
 import type { WorkCardData } from '@/components/tds/WorkCard'
 import type { EventCardData } from '@/components/tds/EventCard'
 import type { CollectionCardData } from '@/components/tds/CollectionCard'
@@ -69,6 +69,23 @@ export default function TdsShowcasePage() {
                 <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 6 }}>{p}</div>
               </div>
             ))}
+          </div>
+        </Block>
+
+        <Block label="EmptyState (TAKU)">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(260px,1fr))', gap: 14 }}>
+            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 18 }}>
+              <EmptyState pose="sit" title="조건에 맞는 샵이 없어요" description="필터를 바꿔서 다시 찾아볼까요?" />
+            </div>
+            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 18 }}>
+              <EmptyState pose="default" title="저장한 샵이 없어요" description="마음에 드는 샵을 저장해보세요" action={{ label: '샵 둘러보기', onClick: () => {} }} />
+            </div>
+            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 18 }}>
+              <EmptyState pose="hi" title="타쿠로드에 오신 걸 환영해요" description="좋아하는 작품부터 찾아볼까요?" action={{ label: '작품 찾기', onClick: () => {} }} />
+            </div>
+            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 18 }}>
+              <EmptyState pose="map" title="페이지를 찾을 수 없어요" description="길을 잃었나 봐요. 홈으로 돌아갈까요?" action={{ label: '홈으로', onClick: () => {} }} secondaryAction={{ label: '뒤로', onClick: () => {} }} />
+            </div>
           </div>
         </Block>
 
