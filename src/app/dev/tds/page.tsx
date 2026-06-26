@@ -1,9 +1,10 @@
 ﻿'use client'
 import { Shop } from '@/types/shop'
-import { Button, Card, Chip, Badge, SectionHeader, Icon, IconBox, StatusBadge, ShopCard, WorkCard, EventCard, CollectionCard } from '@/components/tds'
+import { Button, Card, Chip, Badge, SectionHeader, Icon, IconBox, StatusBadge, ShopCard, WorkCard, EventCard, CollectionCard, RouteCard } from '@/components/tds'
 import type { WorkCardData } from '@/components/tds/WorkCard'
 import type { EventCardData } from '@/components/tds/EventCard'
 import type { CollectionCardData } from '@/components/tds/CollectionCard'
+import type { RouteCardData } from '@/components/tds/RouteCard'
 
 const ICONS = ['shop','event','collection','route','checkin','work','heart','fire','star','map','search','chevron-right','goods','cafe','news','exhibition','activity','box','clock','people','gift','bell']
 
@@ -46,6 +47,12 @@ const collections: CollectionCardData[] = [
   { id:'c4', kind:'pilgrimage', title:'블루아카이브 성지순례', visited:0,  total:10 },
 ]
 
+const routes: RouteCardData[] = [
+  { id:'r1', title:'홍대 굿즈샵 한바퀴', summary:'굿즈샵 3곳 · 카페 2곳', shopCount:5, distanceM:2400, durationMin:45 },
+  { id:'r2', title:'성수동 카페 투어',   summary:'카페 위주 · 굿즈샵 1곳', shopCount:5, distanceM:1800, durationMin:28, visited:3 },
+  { id:'r3', title:'강남 피규어 성지',   summary:'굿즈샵 4곳 · 중고샵 2곳', shopCount:6, distanceM:3100, durationMin:42, visited:6, completedAt:'2026.07.15' },
+]
+
 export default function TdsShowcasePage() {
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--bg)', padding: '32px 20px' }}>
@@ -56,6 +63,12 @@ export default function TdsShowcasePage() {
         <Block label="EventCard (핵심 카드)">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(206px,1fr))', gap: 14 }}>
             {events.map((e) => <EventCard key={e.id} event={e} now={EVENT_NOW} onClick={() => {}} />)}
+          </div>
+        </Block>
+
+        <Block label="RouteCard (코스 · 완주 도장)">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(248px,1fr))', gap: 14 }}>
+            {routes.map((r) => <RouteCard key={r.id} route={r} onStart={() => {}} onClick={() => {}} />)}
           </div>
         </Block>
 
