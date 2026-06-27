@@ -1,6 +1,8 @@
 ﻿import { MemorialKind, MemorialTemplate } from '../types'
-import { routeComplete } from './routeComplete'
+import { route } from './route'
+import { collection } from './collection'
 
 export const TEMPLATES: Partial<Record<MemorialKind, MemorialTemplate>> = {
-  'route-complete': routeComplete,
+  route,
+  collection,
 }

@@ -1,17 +1,19 @@
 ﻿'use client'
-import { MemorialData, MemorialAssets, MEMORIAL_W, MEMORIAL_H } from './types'
+import { MemorialData, MemorialAssets, MEMORIAL_W, MEMORIAL_H, resolveStamp } from './types'
 import { TEMPLATES } from './templates'
 import { loadImage, loadImagesOptional, ensureFont } from './canvasHelpers'
 
 const KIND_SUFFIX: Record<string, string> = {
-  'route-complete': '완주기념',
-  'collection-complete': '컬렉션기념',
-  'first-checkin': '첫방문기념',
+  route: '완주기념',
+  collection: '컬렉션기념',
+  checkin: '첫방문기념',
+  event: '이벤트기념',
+  anniversary: '기념일',
   'year-report': '연말기념',
 }
 
 function memorialFilename(data: MemorialData): string {
-  const clean = data.routeName.replace(/\s+/g, '')
+  const clean = data.title.replace(/\s+/g, '')
   const suffix = KIND_SUFFIX[data.kind] ?? '기념'
   return `TAKUROAD_${clean}_${suffix}.png`
 }
@@ -28,7 +30,6 @@ export interface Memorial {
 
 function makeMemorial(blob: Blob, dataUrl: string, filename: string): Memorial {
   const file = () => new File([blob], filename, { type: 'image/png' })
-
   const download = () => {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -36,30 +37,23 @@ function makeMemorial(blob: Blob, dataUrl: string, filename: string): Memorial {
     document.body.appendChild(a); a.click(); document.body.removeChild(a)
     URL.revokeObjectURL(url)
   }
-
   const canShare = () => {
     const nav = navigator as any
     return !!nav.share && (!nav.canShare || nav.canShare({ files: [file()] }))
   }
-
   const share = async (): Promise<boolean> => {
     const nav = navigator as any
     if (!nav.share) return false
-    try {
-      await nav.share({ files: [file()], title: 'TAKUROAD', text: '타쿠로드 완주 기념 티켓' })
-      return true
-    } catch { return false }
+    try { await nav.share({ files: [file()], title: 'TAKUROAD', text: '타쿠로드 기념 티켓' }); return true }
+    catch { return false }
   }
-
   const copyToClipboard = async (): Promise<boolean> => {
     try {
       const cb = navigator.clipboard as any
       if (!cb?.write || typeof ClipboardItem === 'undefined') return false
-      await cb.write([new ClipboardItem({ 'image/png': blob })])
-      return true
+      await cb.write([new ClipboardItem({ 'image/png': blob })]); return true
     } catch { return false }
   }
-
   return { blob, dataUrl, filename, download, share, copyToClipboard, canShare }
 }
 
@@ -80,10 +74,11 @@ export async function renderMemorial(canvas: HTMLCanvasElement, data: MemorialDa
 }
 
 async function loadAssets(data: MemorialData): Promise<MemorialAssets> {
+  const stampName = resolveStamp(data)
   const logo = await loadImage('/brand/takuroad-logo.png')
   const optional = await loadImagesOptional({
-    stamp: data.stampKind ? `/stamps/${data.stampKind}.png` : undefined,
-    taku: data.takuPose ? `/taku/taku-${data.takuPose}.png` : undefined,
+    stamp: `/stamps/${stampName}.png`,
+    taku: '/taku/taku-stamp-drag.png',
     iconMap: '/icons/map.png',
     iconShop: '/icons/shop.png',
     iconClock: '/icons/clock.png',
@@ -97,7 +92,6 @@ async function loadAssets(data: MemorialData): Promise<MemorialAssets> {
 export async function generateMemorial(data: MemorialData, scale = 1): Promise<Memorial> {
   const canvas = document.createElement('canvas')
   await renderMemorial(canvas, data, scale)
-
   const blob = await new Promise<Blob>((resolve, reject) => {
     canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('Blob 생성 실패'))), 'image/png')
   })

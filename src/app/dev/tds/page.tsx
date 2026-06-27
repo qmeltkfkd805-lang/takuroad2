@@ -103,10 +103,10 @@ export default function TdsShowcasePage() {
         </Block>
 
         {celeb === 'collection' && (
-          <CelebrationModal open variant="collection" title="주술회전 성지순례" description="8곳 전부 방문" subDescription="2026.07.15" stampKind="pilgrimage" canMakeMemorial onMakeMemorial={async () => { await new Promise(r => setTimeout(r, 600)) }} onClose={() => setCeleb(null)} />
+          <CelebrationModal open variant="collection" title="주술회전 성지순례" description="8곳 전부 방문" subDescription="2026.07.15" stampKind="pilgrimage" canMakeMemorial onMakeMemorial={async () => { await generateAndDownloadMemorial({ kind: 'collection', rallyNo: '000042', title: '주술회전 성지순례', collectionType: 'pilgrimage', shopCount: 8, date: '2026.07.15' }) }} onClose={() => setCeleb(null)} />
         )}
         {celeb === 'route' && (
-          <CelebrationModal open variant="route" title="홍대 굿즈샵 한바퀴" description="5곳 전부 완주" subDescription="2026.07.15" stampKind="route" canMakeMemorial onMakeMemorial={async () => { await generateAndDownloadMemorial({ kind: 'route-complete', rallyNo: '000128', routeName: '홍대 굿즈샵 한바퀴', area: '홍대', type: 'goods-shop-tour', walkTime: 42, shopCount: 5, date: '2026.07.15', stampKind: 'route', takuPose: 'stamp-drag' }) }} onClose={() => setCeleb(null)} />
+          <CelebrationModal open variant="route" title="홍대 굿즈샵 한바퀴" description="5곳 전부 완주" subDescription="2026.07.15" stampKind="route" canMakeMemorial onMakeMemorial={async () => { await generateAndDownloadMemorial({ kind: 'route', rallyNo: '000128', title: '홍대 굿즈샵 한바퀴', area: '홍대', routeType: 'goods-shop-tour', walkTime: 42, shopCount: 5, date: '2026.07.15' }) }} onClose={() => setCeleb(null)} />
         )}
         {celeb === 'checkin' && (
           <CelebrationModal open variant="checkin" title="애니메이트 홍대점" description="체크인 완료" onClose={() => setCeleb(null)} />
@@ -204,6 +204,8 @@ function Block({ label, children }: { label: string; children: React.ReactNode }
 function Row({ children }: { children: React.ReactNode }) {
   return <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center', marginBottom: 10 }}>{children}</div>
 }
+
+
 
 
 

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -20,6 +20,7 @@ import ShopProductAccordion from './ShopProductAccordion'
 import ShopAmenityBadges from './ShopAmenityBadges'
 import ShopHighlights from './ShopHighlights'
 import ShopTagBadges from './ShopTagBadges'
+import ShopGallery from './ShopGallery'
 
 interface Props {
   shop: Shop
@@ -29,7 +30,6 @@ export default function ShopDetailPage({ shop }: Props) {
   const router = useRouter()
   const { user } = useAuth()
   const { isSaved, toggleSave } = useSaved()
-  const [imgIdx, setImgIdx] = useState(0)
 
   const catInfo = CATEGORY_NAME_MAP[shop.cat]
   const color = catInfo?.color ?? '#e8006f'
@@ -40,108 +40,37 @@ export default function ShopDetailPage({ shop }: Props) {
 
   return (
     <div style={{ maxWidth: '680px', margin: '0 auto', background: 'var(--surface)', minHeight: '100dvh' }}>
-
-      <div style={{
-        position: 'sticky', top: 0, zIndex: 50,
-        background: 'var(--surface)',
-        borderBottom: '1px solid var(--border)',
-        padding: '12px 16px',
-        display: 'flex', alignItems: 'center', gap: '12px',
-      }}>
-        <button
-          onClick={() => router.back()}
-          style={{ background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', padding: '0 4px' }}
-        >
-          ←
-        </button>
-        <span style={{ fontWeight: 900, fontSize: '16px', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {shop.name}
-        </span>
-        {canEdit && (
-          <Link
-            href={ROUTES.shopEdit(shop.slug)}
-            style={{
-              fontSize: '13px', color: 'var(--muted)',
-              padding: '6px 12px', border: '1px solid var(--border)',
-              borderRadius: '8px',
-            }}
-          >
-            수정
-          </Link>
-        )}
-      </div>
-
-      {shop.images.length > 0 ? (
-        <div style={{ position: 'relative', height: '260px', background: 'var(--surface2)', overflow: 'hidden' }}>
-          <img
-            src={shop.images[imgIdx]}
-            alt={shop.name}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
-          {shop.images.length > 1 && (
-            <>
-              <div style={{
-                position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)',
-                display: 'flex', gap: '5px',
-              }}>
-                {shop.images.map((_, i) => (
-                  <div
-                    key={i}
-                    onClick={() => setImgIdx(i)}
-                    style={{
-                      width: i === imgIdx ? '18px' : '6px', height: '6px',
-                      borderRadius: '3px',
-                      background: i === imgIdx ? '#fff' : 'rgba(255,255,255,.5)',
-                      cursor: 'pointer', transition: 'all .2s',
-                    }}
-                  />
-                ))}
-              </div>
-              {imgIdx > 0 && (
-                <button onClick={() => setImgIdx(i => i - 1)} style={{
-                  position: 'absolute', left: '8px', top: '50%', transform: 'translateY(-50%)',
-                  background: 'rgba(0,0,0,.4)', border: 'none', color: '#fff',
-                  width: '32px', height: '32px', borderRadius: '50%', cursor: 'pointer', fontSize: '14px',
-                }}>‹</button>
-              )}
-              {imgIdx < shop.images.length - 1 && (
-                <button onClick={() => setImgIdx(i => i + 1)} style={{
-                  position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)',
-                  background: 'rgba(0,0,0,.4)', border: 'none', color: '#fff',
-                  width: '32px', height: '32px', borderRadius: '50%', cursor: 'pointer', fontSize: '14px',
-                }}>›</button>
-              )}
-            </>
-          )}
-        </div>
-      ) : (
-        <div style={{
-          height: '160px', background: catInfo?.bgColor ?? 'var(--surface2)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '64px',
-        }}>
-          {catInfo?.icon ?? '🏪'}
-        </div>
-      )}
+      <ShopGallery
+        images={shop.images}
+        shopName={shop.name}
+        onBack={() => router.back()}
+        isSaved={isSaved(shop.id)}
+        onToggleSave={() => { toggleSave(shop.id) }}
+        onShare={() => { if (navigator.share) { navigator.share({ title: shop.name, url: window.location.href }) } else { navigator.clipboard?.writeText(window.location.href) } }}
+        fallbackIcon={catInfo?.icon ?? '🏪'}
+        fallbackBg={catInfo?.bgColor ?? 'var(--surface2)'}
+      />
 
       <div style={{ padding: '20px 16px' }}>
 
+        {(shop.status === 'temporary_closed' || shop.status === 'closed') && (
+          <div style={{
+            padding: '12px 14px', borderRadius: '10px', marginBottom: '16px',
+            background: shop.status === 'closed' ? 'var(--surface2)' : '#fef3c7',
+            color: shop.status === 'closed' ? 'var(--muted)' : '#92400e',
+            fontWeight: 700, fontSize: '13px', textAlign: 'center',
+          }}>
+            {shop.status === 'closed' ? '폐점한 곳이에요' : '현재 임시 휴업 중이에요'}
+          </div>
+        )}
+
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-          {(shop.status === 'temporary_closed' || shop.status === 'closed') && (
-  <div style={{
-    padding: '12px 14px', borderRadius: '10px', marginBottom: '16px',
-    background: shop.status === 'closed' ? 'var(--surface2)' : '#fef3c7',
-    color: shop.status === 'closed' ? 'var(--muted)' : '#92400e',
-    fontWeight: 700, fontSize: '13px', textAlign: 'center',
-  }}>
-    {shop.status === 'closed' ? '⚫ 폐점한 샵이에요' : '🟡 현재 임시 휴업 중이에요'}
-  </div>
-)}
           <h1 style={{ fontSize: '22px', fontWeight: 900, lineHeight: 1.3 }}>{shop.name}</h1>
           {shop.is_verified && (
             <span style={{
               fontSize: '12px', color: 'var(--cyan)', fontWeight: 700,
               border: '1px solid var(--cyan)', borderRadius: '6px', padding: '2px 6px',
-            }}>✓ 인증</span>
+            }}>인증</span>
           )}
         </div>
 
@@ -176,7 +105,7 @@ export default function ShopDetailPage({ shop }: Props) {
             background: 'var(--surface2)', marginBottom: '16px',
             fontSize: '13px', fontWeight: 700,
           }}>
-            {popupStatus.emoji} 팝업 {popupStatus.label}
+            팝업 {popupStatus.label}
             {shop.start_date && shop.end_date && (
               <span style={{ color: 'var(--muted)', fontWeight: 400, marginLeft: '8px' }}>
                 {shop.start_date} ~ {shop.end_date}
@@ -189,13 +118,12 @@ export default function ShopDetailPage({ shop }: Props) {
             )}
           </div>
         )}
-        
-<ShopHighlights shopId={shop.id} />
+
+        <ShopHighlights shopId={shop.id} />
         <ShopTagBadges shopId={shop.id} />
         <ShopProductAccordion shopId={shop.id} />
         <ShopEventList shopId={shop.id} />
 
-        {/* + 이 샵 이벤트 제보 진입 (shop slug 넘김 → 장소 고정) */}
         <button
           onClick={() => router.push(`/event/submit?shop=${shop.slug}`)}
           style={{
@@ -205,12 +133,11 @@ export default function ShopDetailPage({ shop }: Props) {
             fontSize: '14px', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
           }}
         >
-          + 이 샵 이벤트 제보하기
+          + 이벤트 제보하기
         </button>
-        
+
         <ShopAmenityBadges shopId={shop.id} />
 
-        {/* 체크인 버튼 */}
         <CheckInButton
           shopId={shop.id}
           shopName={shop.name}
@@ -228,15 +155,12 @@ export default function ShopDetailPage({ shop }: Props) {
               fontWeight: 700, fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit',
             }}
           >
-            🗺️ 지도에서 보기
+            지도에서 보기
           </button>
 
           <button
             onClick={async () => {
-              if (!user) {
-                router.push(ROUTES.login)
-                return
-              }
+              if (!user) { router.push(ROUTES.login); return }
               await toggleSave(shop.id)
             }}
             style={{
@@ -248,31 +172,18 @@ export default function ShopDetailPage({ shop }: Props) {
               cursor: 'pointer', fontFamily: 'inherit',
             }}
           >
-            {isSaved(shop.id) ? '🔖 찜함' : '🏷️ 찜하기'}
+            {isSaved(shop.id) ? '찜함' : '찜하기'}
           </button>
 
-          {shop.shop_link && (
-            
-              <a href={shop.shop_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                padding: '11px 16px', borderRadius: '10px',
-                border: '1.5px solid var(--border)', fontWeight: 700,
-                fontSize: '14px', color: 'var(--text)',
-              }}
-            >🔗</a>
-          )}
-
           {shop.addr && (
-            
-             <a href={`https://map.kakao.com/link/search/${encodeURIComponent(shop.name)}`}
+            <a href={`https://map.kakao.com/link/search/${encodeURIComponent(shop.name)}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{
                 padding: '11px 16px', borderRadius: '10px',
                 border: '1.5px solid var(--border)', fontWeight: 700,
-                fontSize: '14px', color: 'var(--text)',
+                fontSize: '14px', color: 'var(--text)', textDecoration: 'none',
+                display: 'inline-flex', alignItems: 'center',
               }}
             >길찾기</a>
           )}
@@ -283,15 +194,15 @@ export default function ShopDetailPage({ shop }: Props) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
 
           {shop.addr && (
-  <InfoRow icon="📍" label="주소">
-    {shop.addr}
-    {shop.floor_info && (
-      <span style={{ color: 'var(--accent)', fontWeight: 700, marginLeft: '6px' }}>
-        ({shop.floor_info})
-      </span>
-    )}
-  </InfoRow>
-)}
+            <InfoRow icon="📍" label="주소">
+              {shop.addr}
+              {shop.floor_info && (
+                <span style={{ color: 'var(--accent)', fontWeight: 700, marginLeft: '6px' }}>
+                  ({shop.floor_info})
+                </span>
+              )}
+            </InfoRow>
+          )}
 
           {shop.hours && (
             <InfoRow icon="🕐" label="영업시간">
@@ -309,13 +220,13 @@ export default function ShopDetailPage({ shop }: Props) {
                   </div>
                 ))}
                 <div style={{ marginTop: '8px' }}>
-  <ConfirmInfoButton
-    shopId={shop.id}
-    targetTable="shops"
-    targetField="hours"
-    targetId={shop.id}
-  />
-</div>
+                  <ConfirmInfoButton
+                    shopId={shop.id}
+                    targetTable="shops"
+                    targetField="hours"
+                    targetId={shop.id}
+                  />
+                </div>
               </div>
             </InfoRow>
           )}
@@ -358,12 +269,12 @@ export default function ShopDetailPage({ shop }: Props) {
 
         <ReviewSection shopId={shop.id} shopName={shop.name} accentColor={color} />
 
-<div style={{ marginTop: '24px', textAlign: 'center' }}>
+        <div style={{ marginTop: '24px', textAlign: 'center' }}>
           <ReportIssueButton shopId={shop.id} />
           <div style={{ marginTop: '32px' }}>
-          <h2 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '12px' }}>🕐 변경 이력</h2>
-          <ShopHistoryPanel shopId={shop.id} />
-        </div>
+            <h2 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '12px' }}>변경 이력</h2>
+            <ShopHistoryPanel shopId={shop.id} />
+          </div>
         </div>
 
       </div>

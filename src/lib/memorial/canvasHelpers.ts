@@ -155,3 +155,57 @@ export async function ensureFont(family: string, url: string): Promise<void> {
     loadedFonts.add(family)
   } catch { /* 실패해도 기본폰트로 진행 */ }
 }
+
+export function drawStampbookPaper(ctx, w, h, base, seed = 21) {
+  ctx.fillStyle = base
+  ctx.fillRect(0, 0, w, h)
+  const id = ctx.getImageData(0, 0, w, h); const px = id.data
+  let s = seed
+  const rnd = () => { s = (s * 9301 + 49297) % 233280; return s / 233280 }
+  for (let i = 0; i < px.length; i += 4) {
+    const n = (rnd() - 0.5) * 9
+    px[i] += n; px[i + 1] += n; px[i + 2] += n
+  }
+  ctx.putImageData(id, 0, 0)
+  ctx.save()
+  for (let k = 0; k < 14; k++) {
+    const cx = rnd() * w, cy = rnd() * h, r = 120 + rnd() * 200
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r)
+    g.addColorStop(0, 'rgba(80,60,30,0.05)')
+    g.addColorStop(1, 'rgba(80,60,30,0)')
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill()
+  }
+  ctx.restore()
+}
+
+export function drawStampTinted(ctx, stamp, cx, cy, size, rotateDeg, inkHex, opacity = 0.9) {
+  const off = document.createElement('canvas')
+  off.width = stamp.width; off.height = stamp.height
+  const octx = off.getContext('2d')
+  if (!octx) return
+  octx.drawImage(stamp, 0, 0)
+  const id = octx.getImageData(0, 0, off.width, off.height)
+  const px = id.data
+  const ink = hexToRgb(inkHex)
+  for (let i = 0; i < px.length; i += 4) {
+    const a = px[i + 3]
+    if (a === 0) continue
+    const lum = (px[i] + px[i + 1] + px[i + 2]) / 3 / 255
+    px[i] = ink.r * (0.5 + 0.5 * lum)
+    px[i + 1] = ink.g * (0.5 + 0.5 * lum)
+    px[i + 2] = ink.b * (0.5 + 0.5 * lum)
+  }
+  octx.putImageData(id, 0, 0)
+  ctx.save()
+  ctx.globalCompositeOperation = "multiply"
+  ctx.globalAlpha = opacity
+  ctx.translate(cx, cy)
+  ctx.rotate((rotateDeg * Math.PI) / 180)
+  ctx.drawImage(off, -size / 2, -size / 2, size, size)
+  ctx.restore()
+}
+
+function hexToRgb(hex) {
+  const h = hex.replace("#", "")
+  return { r: parseInt(h.slice(0, 2), 16), g: parseInt(h.slice(2, 4), 16), b: parseInt(h.slice(4, 6), 16) }
+}
