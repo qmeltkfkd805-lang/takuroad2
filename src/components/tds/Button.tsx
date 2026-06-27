@@ -10,6 +10,8 @@ interface ButtonProps {
   size?: Size
   fullWidth?: boolean
   disabled?: boolean
+  active?: boolean
+  activeColor?: string
   leftIcon?: ReactNode
   onClick?: () => void
   type?: 'button' | 'submit'
@@ -22,7 +24,7 @@ const sizeStyle: Record<Size, CSSProperties> = {
 }
 
 export function Button({
-  children, variant = 'primary', size = 'md', fullWidth, disabled, leftIcon, onClick, type = 'button', style,
+  children, variant = 'primary', size = 'md', fullWidth, disabled, active, activeColor, leftIcon, onClick, type = 'button', style,
 }: ButtonProps) {
   const [pressed, setPressed] = useState(false)
   const variants: Record<Variant, CSSProperties> = {
@@ -30,11 +32,14 @@ export function Button({
     secondary: { background: 'var(--secondary)', color: '#7A5A00', border: 'none' },
     outline: { background: 'var(--surface)', color: 'var(--accent)', border: '1.5px solid var(--border)' },
     ghost: { background: 'transparent', color: 'var(--muted)', border: 'none' },
-    // 보조 액션 (길찾기/저장 등) — 아웃라인 + 중립 글자색. 서비스 전반의 "secondary action".
     action: { background: 'var(--surface)', color: 'var(--text)', border: '1.5px solid var(--border)' },
-    // 생성 유도 (제보하기/추가하기 등) — 점선 + 코랄. 서비스 전반의 "create/suggest action".
     dashed: { background: 'var(--surface)', color: 'var(--accent)', border: '1.5px dashed var(--accent)' },
   }
+  // active(토글 선택) 상태 — activeColor로 테두리·글자·배경을 한번에 (shorthand border 사용해 충돌 방지)
+  const ac = activeColor ?? 'var(--accent)'
+  const activeStyle: CSSProperties = active
+    ? { border: `1.5px solid ${ac}`, color: ac, background: `${ac}15` }
+    : {}
   const base: CSSProperties = {
     display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
     fontWeight: 700, fontFamily: 'inherit', cursor: disabled ? 'not-allowed' : 'pointer',
@@ -43,6 +48,7 @@ export function Button({
     transition: 'transform .12s ease, box-shadow .12s ease',
     ...sizeStyle[size],
     ...(disabled ? { background: '#F1EFEA', color: '#B8B2A8', border: 'none', boxShadow: 'none' } : variants[variant]),
+    ...activeStyle,
     ...style,
   }
   return (

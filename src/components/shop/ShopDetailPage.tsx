@@ -116,11 +116,12 @@ export default function ShopDetailPage({ shop }: Props) {
             <Button
               variant="action"
               fullWidth
+              active={isSaved(shop.id)}
+              activeColor={color}
               onClick={async () => {
                 if (!user) { router.push(ROUTES.login); return }
                 await toggleSave(shop.id)
               }}
-              style={isSaved(shop.id) ? { borderColor: color, color, background: `${color}15` } : undefined}
               leftIcon={<svg width="17" height="17" viewBox="0 0 24 24" fill={isSaved(shop.id) ? color : 'none'} stroke={isSaved(shop.id) ? color : 'currentColor'} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" /></svg>}
             >
               {isSaved(shop.id) ? '저장됨' : '저장'}
@@ -251,6 +252,7 @@ function InfoRow({ icon, label, children }: {
     </div>
   )
 }
+
 
 
 
