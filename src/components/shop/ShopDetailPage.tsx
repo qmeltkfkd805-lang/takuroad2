@@ -21,6 +21,7 @@ import ShopAmenityBadges from './ShopAmenityBadges'
 import ShopHighlights from './ShopHighlights'
 import ShopTagBadges from './ShopTagBadges'
 import ShopGallery from './ShopGallery'
+import ShopHeader from './ShopHeader'
 
 interface Props {
   shop: Shop
@@ -64,40 +65,15 @@ export default function ShopDetailPage({ shop }: Props) {
           </div>
         )}
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-          <h1 style={{ fontSize: '22px', fontWeight: 900, lineHeight: 1.3 }}>{shop.name}</h1>
-          {shop.is_verified && (
-            <span style={{
-              fontSize: '12px', color: 'var(--cyan)', fontWeight: 700,
-              border: '1px solid var(--cyan)', borderRadius: '6px', padding: '2px 6px',
-            }}>인증</span>
-          )}
-        </div>
-
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '12px' }}>
-          {shop.cats.map(cat => {
-            const ci = CATEGORY_NAME_MAP[cat]
-            return (
-              <span key={cat} style={{
-                fontSize: '12px', padding: '4px 10px', borderRadius: '12px',
-                background: ci?.bgColor ?? 'var(--surface2)',
-                color: ci?.color ?? color,
-                border: `1px solid ${(ci?.color ?? color)}40`,
-                fontWeight: 700,
-              }}>{cat}</span>
-            )
-          })}
-        </div>
-
-        {shop.rating_count > 0 && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '16px' }}>
-            <span style={{ color: '#f59e0b', fontSize: '16px' }}>
-              {'★'.repeat(Math.round(shop.rating_avg))}{'☆'.repeat(5 - Math.round(shop.rating_avg))}
-            </span>
-            <span style={{ fontWeight: 900, fontSize: '15px' }}>{shop.rating_avg.toFixed(1)}</span>
-            <span style={{ color: 'var(--muted)', fontSize: '13px' }}>({shop.rating_count}개 리뷰)</span>
-          </div>
-        )}
+        <ShopHeader
+          name={shop.name}
+          isVerified={shop.is_verified}
+          cats={shop.cats}
+          ratingAvg={shop.rating_avg}
+          ratingCount={shop.rating_count}
+          todayStatus={todayStatus}
+          color={color}
+        />
 
         {popupStatus.status && (
           <div style={{
@@ -146,47 +122,40 @@ export default function ShopDetailPage({ shop }: Props) {
           accentColor={color}
         />
 
-        <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
-          <button
-            onClick={() => router.push(`/?shop=${shop.slug}`)}
-            style={{
-              flex: 1, padding: '11px', borderRadius: '10px',
-              background: color, color: '#fff', border: 'none',
-              fontWeight: 700, fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit',
-            }}
-          >
-            지도에서 보기
-          </button>
-
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+          {shop.addr && (
+            <a href={`https://map.kakao.com/link/search/${encodeURIComponent(shop.name)}`}
+              target="_blank" rel="noopener noreferrer"
+              style={{
+                flex: 1, padding: '13px', borderRadius: '12px',
+                border: '1.5px solid var(--border)', fontWeight: 700,
+                fontSize: '14px', color: 'var(--text)', textDecoration: 'none',
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+                background: 'var(--surface)',
+              }}
+            >
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11a3 3 0 1 0 6 0 3 3 0 0 0-6 0z" /><path d="M17.7 16.7 12 22l-5.7-5.3a8 8 0 1 1 11.4 0z" /></svg>
+              길찾기
+            </a>
+          )}
           <button
             onClick={async () => {
               if (!user) { router.push(ROUTES.login); return }
               await toggleSave(shop.id)
             }}
             style={{
-              padding: '11px 16px', borderRadius: '10px',
+              flex: 1, padding: '13px', borderRadius: '12px',
               border: `1.5px solid ${isSaved(shop.id) ? color : 'var(--border)'}`,
               background: isSaved(shop.id) ? `${color}15` : 'var(--surface)',
               fontWeight: 700, fontSize: '14px',
               color: isSaved(shop.id) ? color : 'var(--text)',
               cursor: 'pointer', fontFamily: 'inherit',
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
             }}
           >
-            {isSaved(shop.id) ? '찜함' : '찜하기'}
+            <svg width="17" height="17" viewBox="0 0 24 24" fill={isSaved(shop.id) ? color : 'none'} stroke={isSaved(shop.id) ? color : 'currentColor'} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" /></svg>
+            {isSaved(shop.id) ? '저장됨' : '저장'}
           </button>
-
-          {shop.addr && (
-            <a href={`https://map.kakao.com/link/search/${encodeURIComponent(shop.name)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                padding: '11px 16px', borderRadius: '10px',
-                border: '1.5px solid var(--border)', fontWeight: 700,
-                fontSize: '14px', color: 'var(--text)', textDecoration: 'none',
-                display: 'inline-flex', alignItems: 'center',
-              }}
-            >길찾기</a>
-          )}
         </div>
 
         <div style={{ height: '1px', background: 'var(--border)', margin: '0 0 20px' }} />
@@ -297,3 +266,6 @@ function InfoRow({ icon, label, children }: {
     </div>
   )
 }
+
+
+
