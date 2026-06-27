@@ -1,20 +1,12 @@
 ﻿'use client'
 import { useState, useEffect } from 'react'
-import { getShopProductsBySeries, AVAILABILITY_LABEL, Availability } from '@/services/shopProductService'
+import { getShopProductsBySeries } from '@/services/shopProductService'
 import ConfirmInfoButton from './ConfirmInfoButton'
+import { StockBadge } from './StockBadge'
 import { SectionHeader } from '@/components/tds/SectionHeader'
 
 interface Props {
   shopId: string
-}
-
-const AVAILABILITY_COLOR: Record<Availability, string> = {
-  unknown: 'var(--muted)', not_sold: 'var(--muted)', sold_out: 'var(--red)',
-  few: '#eab308', normal: 'var(--accent)', many: 'var(--green)',
-}
-const AVAILABILITY_BG: Record<Availability, string> = {
-  unknown: 'var(--surface2)', not_sold: 'var(--surface2)', sold_out: '#FFEAE8',
-  few: '#FFF3D6', normal: '#FFEDE6', many: '#E1F7F2',
 }
 
 export default function ShopProductAccordion({ shopId }: Props) {
@@ -62,14 +54,7 @@ export default function ShopProductAccordion({ shopId }: Props) {
                         {g.characterName ? `${g.characterName} ` : ''}{g.goodsTypeIcon} {g.goodsTypeName}
                         {g.variantName ? ` (${g.variantName})` : ''}
                       </span>
-                      <span style={{
-                        fontSize: '12px', fontWeight: 800, flexShrink: 0,
-                        color: AVAILABILITY_COLOR[g.availability as Availability],
-                        background: AVAILABILITY_BG[g.availability as Availability],
-                        padding: '3px 9px', borderRadius: '999px',
-                      }}>
-                        {AVAILABILITY_LABEL[g.availability as Availability]}
-                      </span>
+                      <StockBadge availability={g.availability} />
                     </div>
                     <div style={{ marginTop: '4px' }}>
                       <ConfirmInfoButton
@@ -89,6 +74,3 @@ export default function ShopProductAccordion({ shopId }: Props) {
     </div>
   )
 }
-
-
-

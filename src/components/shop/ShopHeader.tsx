@@ -1,6 +1,6 @@
 ﻿'use client'
 import { useState } from 'react'
-import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
+import { CategoryChip } from './CategoryChip'
 
 interface TodayStatus {
   isOpen: boolean
@@ -67,17 +67,9 @@ export default function ShopHeader({
 
       {cats.length > 0 && (
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-          {cats.map((cat) => {
-            const ci = CATEGORY_NAME_MAP[cat]
-            const c = ci?.color ?? color
-            return (
-              <span key={cat} style={{
-                fontSize: 13, padding: '5px 12px', borderRadius: 999,
-                background: ci?.bgColor ?? 'var(--surface2)', color: c,
-                border: `1px solid ${c}33`, fontWeight: 700,
-              }}>{cat}</span>
-            )
-          })}
+          {cats.map((cat) => (
+            <CategoryChip key={cat} cat={cat} fallbackColor={color} />
+          ))}
         </div>
       )}
 
@@ -138,5 +130,6 @@ export default function ShopHeader({
     </div>
   )
 }
+
 
 
