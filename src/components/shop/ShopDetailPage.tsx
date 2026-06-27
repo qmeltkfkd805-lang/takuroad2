@@ -49,7 +49,7 @@ export default function ShopDetailPage({ shop }: Props) {
         fallbackBg={catInfo?.bgColor ?? 'var(--surface2)'}
       />
 
-      <div style={{ padding: '20px 16px' }}>
+      <div style={{ padding: '20px 16px', position: 'relative', marginTop: '-20px', background: 'var(--surface)', borderRadius: '24px 24px 0 0' }}>
 
         {(shop.status === 'temporary_closed' || shop.status === 'closed') && (
           <div style={{
@@ -252,6 +252,7 @@ function InfoRow({ icon, label, children }: {
     </div>
   )
 }
+
 
 
 

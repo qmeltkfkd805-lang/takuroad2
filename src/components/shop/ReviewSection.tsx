@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -7,6 +7,7 @@ import { getComments, createComment, deleteComment, ReviewComment } from '@/serv
 import { Review } from '@/types/review'
 import Link from 'next/link'
 import { ROUTES } from '@/lib/constants/routes'
+import { Button } from '@/components/tds/Button'
 
 interface Props {
   shopId: string
@@ -30,8 +31,6 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
     getReviews(shopId).then(data => {
       setReviews(data)
       setLoading(false)
-
-      // URL hash로 특정 리뷰 위치로 스크롤
       const hash = window.location.hash
       if (hash.startsWith('#review-')) {
         setTimeout(() => {
@@ -61,7 +60,6 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
   async function handleSubmit() {
     if (!user || !profile) return
     if (!content.trim()) return
-
     setSubmitting(true)
     const newReview = await createReview(shopId, user.id, { stars, content, images: [] })
     if (newReview) {
@@ -88,6 +86,12 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
     setReviews(prev => prev.filter(r => r.id !== reviewId))
   }
 
+  const pencilIcon = (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+    </svg>
+  )
+
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
@@ -95,18 +99,15 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
           리뷰 {reviews.length > 0 && <span style={{ color: 'var(--muted)', fontWeight: 400 }}>({reviews.length})</span>}
         </h2>
         {user ? (
-          <button
+          <Button
+            variant={showForm ? 'action' : 'primary'}
+            size="md"
             onClick={() => setShowForm(v => !v)}
-            style={{
-              padding: '7px 14px', borderRadius: '8px',
-              background: showForm ? 'var(--surface2)' : accentColor,
-              color: showForm ? 'var(--text)' : '#fff',
-              border: 'none', fontWeight: 700, fontSize: '13px',
-              cursor: 'pointer', fontFamily: 'inherit',
-            }}
+            style={{ padding: '8px 16px', fontSize: 13, borderRadius: 12 }}
+            leftIcon={showForm ? undefined : pencilIcon}
           >
-            {showForm ? '취소' : '리뷰 쓰기'}
-          </button>
+            {showForm ? '취소' : '리뷰 작성'}
+          </Button>
         ) : (
           <Link href={ROUTES.login} style={{
             padding: '7px 14px', borderRadius: '8px',
@@ -130,7 +131,7 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
                 onClick={() => setStars(s)}
                 style={{
                   background: 'none', border: 'none', cursor: 'pointer',
-                  fontSize: '24px', padding: '0',
+                  fontSize: '24px', padding: '0', lineHeight: 1,
                   color: s <= stars ? '#f59e0b' : 'var(--border)',
                 }}
               >★</button>
@@ -143,7 +144,7 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
           <textarea
             value={content}
             onChange={e => setContent(e.target.value)}
-            placeholder={`${shopName} 어땠나요? 솔직한 후기를 남겨주세요.`}
+            placeholder={`${shopName} 어떠셨어요? 솔직한 후기를 남겨주세요`}
             rows={4}
             style={{
               width: '100%', padding: '12px',
@@ -158,11 +159,7 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
             <div style={{ display: 'flex', gap: '8px', marginTop: '10px', flexWrap: 'wrap' }}>
               {previews.map((url, i) => (
                 <div key={i} style={{ position: 'relative' }}>
-                  <img
-                    src={url}
-                    alt=""
-                    style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px' }}
-                  />
+                  <img src={url} alt="" style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px' }} />
                   <button
                     onClick={() => removeImage(i)}
                     style={{
@@ -200,18 +197,15 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
               style={{ display: 'none' }}
             />
 
-            <button
+            <Button
+              variant="primary"
+              size="md"
               onClick={handleSubmit}
               disabled={submitting || !content.trim()}
-              style={{
-                padding: '10px 20px', borderRadius: '8px',
-                background: submitting || !content.trim() ? 'var(--border)' : accentColor,
-                color: '#fff', border: 'none',
-                fontWeight: 700, fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit',
-              }}
+              style={{ padding: '10px 20px', fontSize: 14, borderRadius: 12 }}
             >
               {submitting ? '등록 중...' : '등록'}
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -255,11 +249,9 @@ function ReviewItem({ review, currentUserId, onDelete, accentColor }: {
   const [commentText, setCommentText] = useState('')
   const [submittingComment, setSubmittingComment] = useState(false)
   const [highlighted, setHighlighted] = useState(false)
-  const date = new Date(review.created_at).toLocaleDateString('ko-KR', {
-    year: 'numeric', month: 'long', day: 'numeric',
-  })
+  const d = new Date(review.created_at)
+  const date = `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
 
-  // hash로 들어온 리뷰면 자동으로 댓글 펼치고 강조 표시
   useEffect(() => {
     const hash = window.location.hash
     if (hash === `#review-${review.id}`) {
@@ -385,7 +377,10 @@ function ReviewItem({ review, currentUserId, onDelete, accentColor }: {
           fontWeight: 700,
         }}
       >
-        💬 댓글 {showComments ? '숨기기' : '보기'} {comments.length > 0 && `(${comments.length})`}
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', lineHeight: 1 }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block', flexShrink: 0, position: 'relative', top: '1.5px' }}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
+          댓글 {showComments ? '숨기기' : '보기'} {comments.length > 0 && `(${comments.length})`}
+        </span>
       </button>
 
       {showComments && (
@@ -527,3 +522,8 @@ function ReviewItem({ review, currentUserId, onDelete, accentColor }: {
     </div>
   )
 }
+
+
+
+
+
