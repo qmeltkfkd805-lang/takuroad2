@@ -19,6 +19,7 @@ import ShopHighlights from './ShopHighlights'
 import ShopTagBadges from './ShopTagBadges'
 import ShopGallery from './ShopGallery'
 import ShopHeader from './ShopHeader'
+import { Button } from '@/components/tds/Button'
 
 interface Props {
   shop: Shop
@@ -170,18 +171,14 @@ export default function ShopDetailPage({ shop }: Props) {
         )}
 
         <ShopEventList shopId={shop.id} />
-
-        <button
+        <Button
+          variant="dashed"
+          fullWidth
           onClick={() => router.push(`/event/submit?shop=${shop.slug}`)}
-          style={{
-            width: '100%', padding: '13px', marginTop: '4px', marginBottom: '24px',
-            borderRadius: 'var(--r-sm)', border: '1.5px dashed var(--accent)',
-            background: 'var(--surface)', color: 'var(--accent)',
-            fontSize: '14px', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
-          }}
+          style={{ marginTop: '4px', marginBottom: '24px' }}
         >
           + 이벤트 제보하기
-        </button>
+        </Button>
 
         {/* === 취급 작품 / 굿즈 === */}
         <ShopHighlights shopId={shop.id} />
@@ -265,6 +262,7 @@ function InfoRow({ icon, label, children }: {
     </div>
   )
 }
+
 
 
 

@@ -1,7 +1,7 @@
 ﻿'use client'
 import { CSSProperties, ReactNode, useState } from 'react'
 
-type Variant = 'primary' | 'secondary' | 'outline' | 'ghost'
+type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'action' | 'dashed'
 type Size = 'md' | 'lg'
 
 interface ButtonProps {
@@ -30,6 +30,10 @@ export function Button({
     secondary: { background: 'var(--secondary)', color: '#7A5A00', border: 'none' },
     outline: { background: 'var(--surface)', color: 'var(--accent)', border: '1.5px solid var(--border)' },
     ghost: { background: 'transparent', color: 'var(--muted)', border: 'none' },
+    // 보조 액션 (길찾기/저장 등) — 아웃라인 + 중립 글자색. 서비스 전반의 "secondary action".
+    action: { background: 'var(--surface)', color: 'var(--text)', border: '1.5px solid var(--border)' },
+    // 생성 유도 (제보하기/추가하기 등) — 점선 + 코랄. 서비스 전반의 "create/suggest action".
+    dashed: { background: 'var(--surface)', color: 'var(--accent)', border: '1.5px dashed var(--accent)' },
   }
   const base: CSSProperties = {
     display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,

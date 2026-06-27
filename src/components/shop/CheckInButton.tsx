@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -7,6 +7,7 @@ import { createCheckIn, getMyCheckInStatus, getShopCheckInCount } from '@/servic
 import { getShopTags } from '@/services/shopProductService'
 import { addTagToCollection, getMyCollectedTagIds } from '@/services/tagCollectionService'
 import { createClient } from '@/lib/supabase/client'
+import { Button } from '@/components/tds/Button'
 
 interface Props {
   shopId: string
@@ -56,7 +57,6 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
       setToast('체크인 완료!')
       setTimeout(() => setToast(null), 2500)
 
-      // 이 샵의 취급 작품 중, 아직 컬렉션에 없는 것만 고르게 보여주기
       const [shopTags, myCollected] = await Promise.all([
         getShopTags(shopId),
         getMyCollectedTagIds(user.id),
@@ -106,35 +106,28 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
     setPickedTagIds([])
   }
 
+  const checkinIcon = (
+    <img src="/icons/checkin.png" alt="" width={19} height={19} style={{ filter: 'brightness(0) invert(1)', display: 'block', position: 'relative', top: '1px' }} />
+  )
+
   return (
     <div style={{ marginBottom: '20px', position: 'relative' }}>
-      <button
+      <Button
+        variant="primary"
+        size="lg"
+        fullWidth
         onClick={handleCheckIn}
         disabled={submitting || checkedInToday || locating}
-        style={{
-          width: '100%', padding: '12px', borderRadius: '12px',
-          border: 'none',
-          background: checkedInToday ? 'var(--surface2)' : accentColor,
-          color: checkedInToday ? 'var(--muted)' : '#fff',
-          fontWeight: 900, fontSize: '15px',
-          cursor: checkedInToday ? 'default' : 'pointer',
-          fontFamily: 'inherit',
-        }}
+        leftIcon={!checkedInToday && !locating && !submitting ? checkinIcon : undefined}
       >
         {checkedInToday
-          ? '✓ 오늘 체크인 완료'
+          ? '오늘 체크인 완료'
           : locating
             ? '위치 확인 중...'
             : submitting
               ? '체크인 중...'
-              : '📍 체크인하기'}
-      </button>
-
-      {checkInCount > 0 && (
-        <p style={{ fontSize: '12px', color: 'var(--muted)', textAlign: 'center', marginTop: '6px' }}>
-          {checkInCount}명이 다녀갔어요
-        </p>
-      )}
+              : '체크인하기'}
+      </Button>
 
       {locError && (
         <p style={{ fontSize: '12px', color: 'var(--red)', textAlign: 'center', marginTop: '6px' }}>
@@ -189,9 +182,9 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
             background: 'var(--surface)', borderRadius: '20px 20px 0 0',
             width: '100%', maxWidth: '680px', padding: '24px 20px',
           }}>
-            <div style={{ fontSize: '36px', textAlign: 'center', marginBottom: '8px' }}>🎴</div>
+            <div style={{ fontSize: '36px', textAlign: 'center', marginBottom: '8px' }}>📖</div>
             <h3 style={{ fontSize: '16px', fontWeight: 900, textAlign: 'center', marginBottom: '6px' }}>
-              이 샵에서 관심 있는 작품이 있나요?
+              이 곳에서 관심 있는 작품이 있나요?
             </h3>
             <p style={{ fontSize: '13px', color: 'var(--muted)', textAlign: 'center', marginBottom: '18px' }}>
               선택한 작품은 내 컬렉션에 기록돼요
@@ -212,7 +205,7 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
                       fontSize: '14px', fontWeight: 700, fontFamily: 'inherit',
                     }}
                   >
-                    {isPicked && '✔ '}{tag.name}
+                    {isPicked && '✓ '}{tag.name}
                   </button>
                 )
               })}
@@ -248,3 +241,6 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
     </div>
   )
 }
+
+
+
