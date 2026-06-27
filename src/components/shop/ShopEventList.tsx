@@ -1,5 +1,4 @@
-'use client'
-
+﻿'use client'
 import { useState, useEffect } from 'react'
 import { getActiveShopEvents, EVENT_TYPE_ICON, ShopEventType } from '@/services/shopEventService'
 import { getEventsByShop, WORK_EVENT_ICON } from '@/services/eventService'
@@ -8,7 +7,6 @@ interface Props {
   shopId: string
 }
 
-// 두 소스(샵 소식 shop_events + 작품 이벤트 events)를 하나로 정규화한 타임라인 항목
 interface TimelineItem {
   id: string
   source: 'shop' | 'work'
@@ -18,7 +16,7 @@ interface TimelineItem {
   imageUrl: string | null
   dateText: string | null
   isPinned: boolean
-  sortKey: string        // 정렬용 (최신 우선)
+  sortKey: string
 }
 
 function fmtDate(s: string | null): string {
@@ -38,14 +36,13 @@ export default function ShopEventList({ shopId }: Props) {
 
   useEffect(() => {
     Promise.all([
-      getActiveShopEvents(shopId),   // 샵 자체 소식 (휴무/재입고/공지 등)
-      getEventsByShop(shopId),       // 이 샵의 작품 이벤트 (팝업/콜라보/전시)
+      getActiveShopEvents(shopId),
+      getEventsByShop(shopId),
     ]).then(([shopEvents, workEvents]) => {
-      // 샵 소식 → 타임라인 항목
       const shopItems: TimelineItem[] = shopEvents.map((e: any) => ({
         id: `shop-${e.id}`,
         source: 'shop',
-        icon: EVENT_TYPE_ICON[e.type as ShopEventType] ?? '🎉',
+        icon: EVENT_TYPE_ICON[e.type as ShopEventType] ?? '📌',
         title: e.title,
         description: e.description ?? null,
         imageUrl: e.image_url ?? null,
@@ -54,11 +51,10 @@ export default function ShopEventList({ shopId }: Props) {
         sortKey: (e.starts_at ?? e.created_at ?? '').slice(0, 10),
       }))
 
-      // 작품 이벤트 → 타임라인 항목 (description/image 없음 — 우리 events엔 미저장)
       const workItems: TimelineItem[] = workEvents.map(e => ({
         id: `work-${e.id}`,
         source: 'work',
-        icon: WORK_EVENT_ICON[e.type] ?? '✨',
+        icon: WORK_EVENT_ICON[e.type] ?? '🎯',
         title: e.title ?? '',
         description: null,
         imageUrl: null,
@@ -67,7 +63,6 @@ export default function ShopEventList({ shopId }: Props) {
         sortKey: (e.startDate ?? e.createdAt ?? '').slice(0, 10),
       }))
 
-      // 합치고 정렬: 고정(샵 소식만) 먼저, 그다음 날짜 최신순
       const merged = [...shopItems, ...workItems].sort((a, b) => {
         if (a.isPinned !== b.isPinned) return a.isPinned ? -1 : 1
         return b.sortKey.localeCompare(a.sortKey)
@@ -82,35 +77,48 @@ export default function ShopEventList({ shopId }: Props) {
 
   return (
     <div style={{ marginBottom: '24px' }}>
-      <h2 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '12px' }}>🎉 진행중인 소식</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <h2 style={{ fontSize: '16px', fontWeight: 900, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '7px' }}>
+        <span style={{ fontSize: '18px' }}>🎉</span>진행중인 소식
+      </h2>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         {items.map(item => (
           <div
             key={item.id}
             onClick={() => setSelected(item)}
             style={{
-              padding: '14px', borderRadius: '12px', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '12px',
+              padding: '14px', borderRadius: '14px', cursor: 'pointer',
               border: item.isPinned ? '1.5px solid var(--accent)' : '1px solid var(--border)',
-              background: item.isPinned ? 'var(--accent-l)' : 'var(--surface2)',
+              background: item.isPinned ? '#FFEDE6' : 'var(--surface)',
+              transition: 'transform .1s',
             }}
+            onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(.99)')}
+            onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-              <span style={{ fontSize: '16px' }}>{item.icon}</span>
-              <span style={{ fontWeight: 700, fontSize: '14px' }}>{item.title}</span>
-              {item.isPinned && <span style={{ fontSize: '11px' }}>📌</span>}
-              {item.imageUrl && <span style={{ fontSize: '12px', marginLeft: 'auto' }}>📷</span>}
+            <div style={{
+              width: '44px', height: '44px', borderRadius: '12px', flexShrink: 0,
+              background: item.isPinned ? '#fff' : 'var(--surface2)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px',
+            }}>
+              {item.icon}
             </div>
-            {item.description && (
-              <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '6px' }}>{item.description}</p>
-            )}
-            {item.dateText && (
-              <p style={{ fontSize: '11px', color: 'var(--muted)' }}>{item.dateText}</p>
-            )}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '3px' }}>
+                <span style={{ fontWeight: 800, fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.title}</span>
+                {item.isPinned && (
+                  <span style={{ fontSize: '10px', fontWeight: 800, color: 'var(--accent)', background: '#fff', border: '1px solid var(--accent)', borderRadius: '6px', padding: '1px 5px', flexShrink: 0 }}>고정</span>
+                )}
+              </div>
+              {item.dateText && (
+                <p style={{ fontSize: '12px', color: 'var(--muted)', margin: 0 }}>{item.dateText}</p>
+              )}
+            </div>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M9 18l6-6-6-6" /></svg>
           </div>
         ))}
       </div>
 
-      {/* 상세 모달 */}
       {selected && (
         <div
           onClick={() => setSelected(null)}
@@ -129,13 +137,13 @@ export default function ShopEventList({ shopId }: Props) {
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ fontSize: '18px' }}>{selected.icon}</span>
-                <span style={{ fontWeight: 900, fontSize: '16px' }}>{selected.title}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '22px' }}>{selected.icon}</span>
+                <span style={{ fontWeight: 900, fontSize: '17px' }}>{selected.title}</span>
               </div>
               <button
                 onClick={() => setSelected(null)}
-                style={{ background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', color: 'var(--muted)' }}
+                style={{ background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', color: 'var(--muted)', lineHeight: 1 }}
               >✕</button>
             </div>
 
@@ -151,7 +159,7 @@ export default function ShopEventList({ shopId }: Props) {
             )}
 
             {selected.description && (
-              <p style={{ fontSize: '14px', lineHeight: 1.7, color: 'var(--text)', marginBottom: '12px' }}>
+              <p style={{ fontSize: '14px', lineHeight: 1.7, color: 'var(--text)', marginBottom: '12px', whiteSpace: 'pre-wrap' }}>
                 {selected.description}
               </p>
             )}
