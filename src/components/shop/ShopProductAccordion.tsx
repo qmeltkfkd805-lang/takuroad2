@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { getShopProductsBySeries, AVAILABILITY_LABEL, Availability } from '@/services/shopProductService'
 import ConfirmInfoButton from './ConfirmInfoButton'
+import { SectionHeader } from '@/components/tds/SectionHeader'
 
 interface Props {
   shopId: string
@@ -33,9 +34,7 @@ export default function ShopProductAccordion({ shopId }: Props) {
   if (loading || series.length === 0) return null
   return (
     <div style={{ marginBottom: '24px' }}>
-      <h2 style={{ fontSize: '16px', fontWeight: 900, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '7px' }}>
-        <span style={{ fontSize: '18px' }}>🛍️</span>작품별 취급 굿즈
-      </h2>
+      <SectionHeader title="작품별 취급 굿즈" tone="mint" icon={<span style={{ fontSize: 18 }}>🛍️</span>} />
       {series.map(s => {
         const isOpen = openTag === s.tagId
         return (
@@ -90,3 +89,4 @@ export default function ShopProductAccordion({ shopId }: Props) {
     </div>
   )
 }
+

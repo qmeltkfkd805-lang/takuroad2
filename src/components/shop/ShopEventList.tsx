@@ -1,6 +1,7 @@
 ﻿'use client'
 import { useState, useEffect } from 'react'
 import { getActiveShopEvents, EVENT_TYPE_ICON, ShopEventType } from '@/services/shopEventService'
+import { SectionHeader } from '@/components/tds/SectionHeader'
 import { getEventsByShop, WORK_EVENT_ICON } from '@/services/eventService'
 
 interface Props {
@@ -77,9 +78,7 @@ export default function ShopEventList({ shopId }: Props) {
 
   return (
     <div style={{ marginBottom: '24px' }}>
-      <h2 style={{ fontSize: '16px', fontWeight: 900, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '7px' }}>
-        <span style={{ fontSize: '18px' }}>🎉</span>진행중인 소식
-      </h2>
+      <SectionHeader title="진행중인 소식" tone="coral" icon={<span style={{ fontSize: 18 }}>🎉</span>} />
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         {items.map(item => (
           <div
@@ -173,3 +172,4 @@ export default function ShopEventList({ shopId }: Props) {
     </div>
   )
 }
+

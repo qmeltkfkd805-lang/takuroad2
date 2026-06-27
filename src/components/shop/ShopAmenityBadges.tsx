@@ -1,6 +1,7 @@
 ﻿'use client'
 import { useState, useEffect } from 'react'
 import { getShopAmenities, CATEGORY_LABEL } from '@/services/shopAmenityService'
+import { SectionHeader } from '@/components/tds/SectionHeader'
 
 interface Props {
   shopId: string
@@ -21,9 +22,7 @@ export default function ShopAmenityBadges({ shopId }: Props) {
   if (loading || !hasAny) return null
   return (
     <div style={{ marginBottom: '24px' }}>
-      <h2 style={{ fontSize: '16px', fontWeight: 900, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '7px' }}>
-        <span style={{ fontSize: '18px' }}>🚗</span>편의시설 / 서비스
-      </h2>
+      <SectionHeader title="편의시설 / 서비스" tone="gray" icon={<span style={{ fontSize: 18 }}>🚗</span>} />
       <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
         {CATEGORY_ORDER.map(category => {
           const items = grouped[category]
@@ -52,3 +51,4 @@ export default function ShopAmenityBadges({ shopId }: Props) {
     </div>
   )
 }
+
