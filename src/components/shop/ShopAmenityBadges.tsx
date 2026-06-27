@@ -22,7 +22,7 @@ export default function ShopAmenityBadges({ shopId }: Props) {
   if (loading || !hasAny) return null
   return (
     <div style={{ marginBottom: '24px' }}>
-      <SectionHeader title="편의시설 / 서비스" tone="gray" icon={<span style={{ fontSize: 18 }}>🚗</span>} />
+      <SectionHeader title="편의시설 / 서비스" tone="gray" icon={<img src="/icons/service.png" alt="" width={22} height={22} />} />
       <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
         {CATEGORY_ORDER.map(category => {
           const items = grouped[category]
@@ -51,4 +51,6 @@ export default function ShopAmenityBadges({ shopId }: Props) {
     </div>
   )
 }
+
+
 

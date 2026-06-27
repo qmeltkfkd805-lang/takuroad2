@@ -34,7 +34,7 @@ export default function ShopProductAccordion({ shopId }: Props) {
   if (loading || series.length === 0) return null
   return (
     <div style={{ marginBottom: '24px' }}>
-      <SectionHeader title="작품별 취급 굿즈" tone="mint" icon={<span style={{ fontSize: 18 }}>🛍️</span>} />
+      <SectionHeader title="작품별 취급 굿즈" tone="mint" icon={<img src="/icons/goods.png" alt="" width={22} height={22} />} />
       {series.map(s => {
         const isOpen = openTag === s.tagId
         return (
@@ -89,4 +89,6 @@ export default function ShopProductAccordion({ shopId }: Props) {
     </div>
   )
 }
+
+
 

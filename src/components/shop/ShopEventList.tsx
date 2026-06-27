@@ -78,7 +78,7 @@ export default function ShopEventList({ shopId }: Props) {
 
   return (
     <div style={{ marginBottom: '24px' }}>
-      <SectionHeader title="진행중인 소식" tone="coral" icon={<span style={{ fontSize: 18 }}>🎉</span>} />
+      <SectionHeader title="진행중인 소식" tone="coral" icon={<img src="/icons/event.png" alt="" width={22} height={22} />} />
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         {items.map(item => (
           <div
@@ -172,4 +172,6 @@ export default function ShopEventList({ shopId }: Props) {
     </div>
   )
 }
+
+
 

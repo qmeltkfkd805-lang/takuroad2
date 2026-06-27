@@ -16,9 +16,11 @@ export default function ShopTagBadges({ shopId }: { shopId: string }) {
   if (loading || tags.length === 0) return null
   return (
     <div style={{ marginBottom: '24px' }}>
-      <SectionHeader title="취급 작품" tone="lavender" icon={<span style={{ fontSize: 18 }}>🎮</span>} />
+      <SectionHeader title="취급 작품" tone="lavender" icon={<img src="/icons/work.png" alt="" width={22} height={22} />} />
       <WorkTagBadges works={tags} />
     </div>
   )
 }
+
+
 
