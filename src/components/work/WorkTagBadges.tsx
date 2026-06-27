@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -11,8 +11,6 @@ import { AFFINITY_LABEL } from '@/lib/constants/workRelationship'
 
 interface Work { id: string; name: string; slug: string }
 
-// 작품을 만나는 모든 화면(샵 상세/검색/…)에서 재사용하는 "관계가 표현된 작품 뱃지".
-// 부모는 works만 전달. affinity는 한 번에 batch 조회(N+1 회피).
 export default function WorkTagBadges({ works }: { works: Work[] }) {
   const { user } = useAuth()
   const router = useRouter()
@@ -42,31 +40,44 @@ export default function WorkTagBadges({ works }: { works: Work[] }) {
   }
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '7px' }}>
       {works.map(work => {
         const aff = affinities[work.id]
         const icon = aff ? AFFINITY_LABEL[aff].icon : null
         const isOpen = openId === work.id
+        const isFav = aff === 'favorite'
+        const isInterest = aff === 'interest'
         return (
           <div key={work.id} style={{ position: 'relative' }}>
             <button
               onClick={() => setOpenId(isOpen ? null : work.id)}
               style={{
-                padding: '6px 12px', borderRadius: '16px',
-                border: aff ? '1.5px solid var(--accent)' : '1.5px solid transparent',
-                background: 'var(--surface2)', fontSize: '13px', fontWeight: 700,
-                color: 'var(--text)', cursor: 'pointer', fontFamily: 'inherit',
+                padding: '7px 14px', borderRadius: '999px',
+                border: isFav ? '1.5px solid #FF6B6B'
+                  : isInterest ? '1.5px solid var(--accent)'
+                  : '1.5px solid var(--border)',
+                background: isFav ? '#FFECEC'
+                  : isInterest ? '#FFEDE6'
+                  : 'var(--surface)',
+                fontSize: '13px', fontWeight: 700,
+                color: isFav ? '#D63A3A' : isInterest ? '#A23E18' : 'var(--text)',
+                cursor: 'pointer', fontFamily: 'inherit',
+                display: 'inline-flex', alignItems: 'center', gap: '4px',
+                transition: 'transform .1s',
               }}
+              onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(.96)')}
+              onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
             >
               {icon ? `${icon} ` : ''}{work.name}
             </button>
 
             {isOpen && (
               <div style={{
-                position: 'absolute', top: '38px', left: 0, zIndex: 50,
+                position: 'absolute', top: '40px', left: 0, zIndex: 50,
                 background: 'var(--surface)', border: '1px solid var(--border)',
                 borderRadius: 'var(--r-sm)', boxShadow: 'var(--sh-md)',
-                overflow: 'hidden', minWidth: '150px',
+                overflow: 'hidden', minWidth: '160px',
               }}>
                 <MenuItem
                   label={`${AFFINITY_LABEL.favorite.icon} ${AFFINITY_LABEL.favorite.label}`}
@@ -79,7 +90,7 @@ export default function WorkTagBadges({ works }: { works: Work[] }) {
                   onClick={() => choose(work, 'interest')}
                 />
                 <MenuItem
-                  label="→ 작품 홈으로 이동"
+                  label="작품 페이지로 이동"
                   active={false}
                   onClick={() => choose(work, 'home')}
                 />

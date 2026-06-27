@@ -234,13 +234,6 @@ export default function ShopDetailPage({ shop }: Props) {
             </InfoRow>
           )}
 
-          {shop.parking !== null && (
-            <InfoRow icon="🅿️" label="주차">
-              {shop.parking ? '가능' : '불가'}
-              {shop.parking_note && <span style={{ color: 'var(--muted)', marginLeft: '6px' }}>{shop.parking_note}</span>}
-            </InfoRow>
-          )}
-
           {shop.shop_link && (
             <InfoRow icon="🔗" label="링크">
               <a href={shop.shop_link} target="_blank" rel="noopener noreferrer"
@@ -303,6 +296,7 @@ function InfoRow({ icon, label, children }: {
     </div>
   )
 }
+
 
 
 
