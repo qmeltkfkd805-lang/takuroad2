@@ -9,6 +9,36 @@ interface Props {
 
 const CATEGORY_ORDER = ['service', 'facility', 'payment', 'sales_style']
 
+// 편의시설 name → 아이콘 파일명. 없으면 기존 이모지 사용.
+const AMENITY_ICON: Record<string, string> = {
+  '택배': 'parcel',
+  '예약': 'calendar',
+  '교환': 'exchange',
+  '택스프리': 'receipt',
+  '와이파이': 'wifi',
+  '화장실': 'restroom',
+  '엘리베이터': 'elevator',
+  '포토존': 'photo',
+  '카드': 'card',
+  '삼성페이': 'samsungpay',
+  '애플페이': 'applepay',
+  '계좌이체': 'cash',
+  '새상품': 'new',
+  '중고': 'secondhand',
+  '정가': 'price',
+  '프리미엄': 'premium',
+  '할인': 'fire',
+}
+
+function iconFor(name: string): string | null {
+  // 정확히 일치하거나, name이 키를 포함하면 매칭 (예: "새상품 위주" → "새상품")
+  if (AMENITY_ICON[name]) return AMENITY_ICON[name]
+  for (const key in AMENITY_ICON) {
+    if (name.includes(key)) return AMENITY_ICON[key]
+  }
+  return null
+}
+
 export default function ShopAmenityBadges({ shopId }: Props) {
   const [grouped, setGrouped] = useState<Record<string, any[]>>({})
   const [loading, setLoading] = useState(true)
@@ -33,16 +63,22 @@ export default function ShopAmenityBadges({ shopId }: Props) {
                 {CATEGORY_LABEL[category]}
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '7px' }}>
-                {items.map(item => (
-                  <span key={item.id} style={{
-                    display: 'inline-flex', alignItems: 'center', gap: '5px',
-                    padding: '7px 13px', borderRadius: '999px',
-                    background: 'var(--surface2)', fontSize: '13px', fontWeight: 700,
-                    color: 'var(--text)',
-                  }}>
-                    {item.icon} {item.name}
-                  </span>
-                ))}
+                {items.map(item => {
+                  const iconName = iconFor(item.name)
+                  return (
+                    <span key={item.id} style={{
+                      display: 'inline-flex', alignItems: 'center', gap: '6px',
+                      padding: '7px 13px', borderRadius: '999px',
+                      background: 'var(--surface2)', fontSize: '13px', fontWeight: 700,
+                      color: 'var(--text)',
+                    }}>
+                      {iconName
+                        ? <img src={`/icons/${iconName}.png`} alt="" width={16} height={16} style={{ display: 'block' }} />
+                        : (item.icon && <span>{item.icon}</span>)}
+                      {item.name}
+                    </span>
+                  )
+                })}
               </div>
             </div>
           )
@@ -51,6 +87,4 @@ export default function ShopAmenityBadges({ shopId }: Props) {
     </div>
   )
 }
-
-
 
