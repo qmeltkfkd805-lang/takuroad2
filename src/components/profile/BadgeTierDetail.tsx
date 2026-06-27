@@ -81,7 +81,7 @@ export default function BadgeTierDetail({ badgeSlug, userId, onBack }: Props) {
               fontSize: '10px', fontWeight: 700, color: RARITY_COLOR[tier.rarity as keyof typeof RARITY_COLOR],
               border: `1px solid ${RARITY_COLOR[tier.rarity as keyof typeof RARITY_COLOR]}`, borderRadius: '6px', padding: '1px 6px',
             }}>
-              {RARITY_LABEL[tier.rarity]}
+              {RARITY_LABEL[tier.rarity as keyof typeof RARITY_LABEL]}
             </span>
           </div>
 
