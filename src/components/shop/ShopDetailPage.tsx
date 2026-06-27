@@ -1,7 +1,5 @@
 ﻿'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Shop } from '@/types/shop'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
@@ -37,7 +35,6 @@ export default function ShopDetailPage({ shop }: Props) {
   const todayStatus = getTodayStatus(shop.hours)
   const popupStatus = getPopupStatus(shop.start_date, shop.end_date)
   const hoursFormatted = formatBusinessHours(shop.hours)
-  const canEdit = user && (user.id === shop.owner_id || user.id === shop.added_by)
 
   return (
     <div style={{ maxWidth: '680px', margin: '0 auto', background: 'var(--surface)', minHeight: '100dvh' }}>
@@ -65,6 +62,7 @@ export default function ShopDetailPage({ shop }: Props) {
           </div>
         )}
 
+        {/* === Header === */}
         <ShopHeader
           name={shop.name}
           isVerified={shop.is_verified}
@@ -75,6 +73,82 @@ export default function ShopDetailPage({ shop }: Props) {
           color={color}
         />
 
+        {/* === 빠른 정보 (층 / 주차) === */}
+        {(shop.floor_info || shop.parking !== null) && (
+          <div style={{
+            display: 'flex', flexWrap: 'wrap', gap: '8px 16px', marginTop: '14px',
+            fontSize: '13px', fontWeight: 700, color: 'var(--text)',
+          }}>
+            {shop.floor_info && (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                <span style={{ fontSize: '15px' }}>📍</span>{shop.floor_info}
+              </span>
+            )}
+            {shop.parking !== null && (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                <span style={{ fontSize: '15px' }}>🅿️</span>
+                <span style={{ color: shop.parking ? 'var(--text)' : 'var(--muted)' }}>
+                  {shop.parking ? '주차 가능' : '주차 불가'}
+                </span>
+                {shop.parking && shop.parking_note && (
+                  <span style={{ color: 'var(--muted)', fontWeight: 400 }}>· {shop.parking_note}</span>
+                )}
+              </span>
+            )}
+          </div>
+        )}
+        {/* === ActionBar (체크인 + 길찾기 + 저장) === */}
+        <div style={{ marginTop: '20px' }}>
+
+
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '8px' }}>
+            {shop.addr && (
+              <a href={`https://map.kakao.com/link/search/${encodeURIComponent(shop.name)}`}
+                target="_blank" rel="noopener noreferrer"
+                style={{
+                  flex: 1, padding: '13px', borderRadius: '12px',
+                  border: '1.5px solid var(--border)', fontWeight: 700,
+                  fontSize: '14px', color: 'var(--text)', textDecoration: 'none',
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+                  background: 'var(--surface)',
+                }}
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11a3 3 0 1 0 6 0 3 3 0 0 0-6 0z" /><path d="M17.7 16.7 12 22l-5.7-5.3a8 8 0 1 1 11.4 0z" /></svg>
+                길찾기
+              </a>
+            )}
+            <button
+              onClick={async () => {
+                if (!user) { router.push(ROUTES.login); return }
+                await toggleSave(shop.id)
+              }}
+              style={{
+                flex: 1, padding: '13px', borderRadius: '12px',
+                border: `1.5px solid ${isSaved(shop.id) ? color : 'var(--border)'}`,
+                background: isSaved(shop.id) ? `${color}15` : 'var(--surface)',
+                fontWeight: 700, fontSize: '14px',
+                color: isSaved(shop.id) ? color : 'var(--text)',
+                cursor: 'pointer', fontFamily: 'inherit',
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+              }}
+            >
+              <svg width="17" height="17" viewBox="0 0 24 24" fill={isSaved(shop.id) ? color : 'none'} stroke={isSaved(shop.id) ? color : 'currentColor'} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" /></svg>
+              {isSaved(shop.id) ? '저장됨' : '저장'}
+            </button>
+          </div>
+
+          <CheckInButton
+            shopId={shop.id}
+            shopName={shop.name}
+            shopLat={shop.lat}
+            shopLng={shop.lng}
+            accentColor={color}
+          />
+        </div>
+
+        <div style={{ height: '1px', background: 'var(--border)', margin: '24px 0' }} />
+
+        {/* === 오늘의 이벤트 / 소식 === */}
         {popupStatus.status && (
           <div style={{
             padding: '10px 14px', borderRadius: '10px',
@@ -95,15 +169,12 @@ export default function ShopDetailPage({ shop }: Props) {
           </div>
         )}
 
-        <ShopHighlights shopId={shop.id} />
-        <ShopTagBadges shopId={shop.id} />
-        <ShopProductAccordion shopId={shop.id} />
         <ShopEventList shopId={shop.id} />
 
         <button
           onClick={() => router.push(`/event/submit?shop=${shop.slug}`)}
           style={{
-            width: '100%', padding: '13px', marginTop: '4px',
+            width: '100%', padding: '13px', marginTop: '4px', marginBottom: '24px',
             borderRadius: 'var(--r-sm)', border: '1.5px dashed var(--accent)',
             background: 'var(--surface)', color: 'var(--accent)',
             fontSize: '14px', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
@@ -112,54 +183,17 @@ export default function ShopDetailPage({ shop }: Props) {
           + 이벤트 제보하기
         </button>
 
+        {/* === 취급 작품 / 굿즈 === */}
+        <ShopHighlights shopId={shop.id} />
+        <ShopTagBadges shopId={shop.id} />
+        <ShopProductAccordion shopId={shop.id} />
+
+        {/* === 편의시설 === */}
         <ShopAmenityBadges shopId={shop.id} />
 
-        <CheckInButton
-          shopId={shop.id}
-          shopName={shop.name}
-          shopLat={shop.lat}
-          shopLng={shop.lng}
-          accentColor={color}
-        />
+        <div style={{ height: '1px', background: 'var(--border)', margin: '24px 0 20px' }} />
 
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-          {shop.addr && (
-            <a href={`https://map.kakao.com/link/search/${encodeURIComponent(shop.name)}`}
-              target="_blank" rel="noopener noreferrer"
-              style={{
-                flex: 1, padding: '13px', borderRadius: '12px',
-                border: '1.5px solid var(--border)', fontWeight: 700,
-                fontSize: '14px', color: 'var(--text)', textDecoration: 'none',
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-                background: 'var(--surface)',
-              }}
-            >
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11a3 3 0 1 0 6 0 3 3 0 0 0-6 0z" /><path d="M17.7 16.7 12 22l-5.7-5.3a8 8 0 1 1 11.4 0z" /></svg>
-              길찾기
-            </a>
-          )}
-          <button
-            onClick={async () => {
-              if (!user) { router.push(ROUTES.login); return }
-              await toggleSave(shop.id)
-            }}
-            style={{
-              flex: 1, padding: '13px', borderRadius: '12px',
-              border: `1.5px solid ${isSaved(shop.id) ? color : 'var(--border)'}`,
-              background: isSaved(shop.id) ? `${color}15` : 'var(--surface)',
-              fontWeight: 700, fontSize: '14px',
-              color: isSaved(shop.id) ? color : 'var(--text)',
-              cursor: 'pointer', fontFamily: 'inherit',
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-            }}
-          >
-            <svg width="17" height="17" viewBox="0 0 24 24" fill={isSaved(shop.id) ? color : 'none'} stroke={isSaved(shop.id) ? color : 'currentColor'} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" /></svg>
-            {isSaved(shop.id) ? '저장됨' : '저장'}
-          </button>
-        </div>
-
-        <div style={{ height: '1px', background: 'var(--border)', margin: '0 0 20px' }} />
-
+        {/* === 상세 정보 === */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
 
           {shop.addr && (
@@ -217,6 +251,7 @@ export default function ShopDetailPage({ shop }: Props) {
           )}
         </div>
 
+        {/* === 소개 === */}
         {shop.description && (
           <>
             <h2 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '10px' }}>소개</h2>
@@ -232,12 +267,14 @@ export default function ShopDetailPage({ shop }: Props) {
 
         <div style={{ height: '1px', background: 'var(--border)', margin: '0 0 24px' }} />
 
+        {/* === 리뷰 === */}
         {!shop.is_claimed && (
           <VerifyRequestButton shopId={shop.id} shopName={shop.name} accentColor={color} />
         )}
 
         <ReviewSection shopId={shop.id} shopName={shop.name} accentColor={color} />
 
+        {/* === 변경 이력 === */}
         <div style={{ marginTop: '24px', textAlign: 'center' }}>
           <ReportIssueButton shopId={shop.id} />
           <div style={{ marginTop: '32px' }}>
@@ -266,6 +303,8 @@ function InfoRow({ icon, label, children }: {
     </div>
   )
 }
+
+
 
 
 
