@@ -1,8 +1,9 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { requestShopVerify, getMyVerifyRequest } from '@/services/shopService'
+import { Button } from '@/components/tds/Button'
 
 interface Props {
   shopId: string
@@ -68,10 +69,10 @@ export default function VerifyRequestButton({ shopId, shopName, accentColor }: P
 
   if (myRequest) {
     const statusInfo = {
-      pending:  { label: '인증 심사중', color: 'var(--yellow)', icon: '⏳' },
-      approved: { label: '인증 완료', color: 'var(--green)', icon: '✅' },
-      rejected: { label: '인증 거절됨', color: 'var(--red)', icon: '❌' },
-    }[myRequest.status] ?? { label: '알 수 없음', color: 'var(--muted)', icon: '❔' }
+      pending:  { label: '인증 심사 중', color: 'var(--yellow)', icon: '⏳' },
+      approved: { label: '인증 완료', color: 'var(--green)', icon: '✓' },
+      rejected: { label: '인증 거절됨', color: 'var(--red)', icon: '✕' },
+    }[myRequest.status] ?? { label: '상태 없음', color: 'var(--muted)', icon: '·' }
 
     return (
       <div style={{
@@ -96,17 +97,14 @@ export default function VerifyRequestButton({ shopId, shopName, accentColor }: P
   return (
     <div style={{ marginBottom: '20px' }}>
       {!showForm ? (
-        <button
+        <Button
+          variant="dashed"
+          fullWidth
           onClick={() => setShowForm(true)}
-          style={{
-            width: '100%', padding: '11px', borderRadius: '10px',
-            border: `1.5px solid ${accentColor}`, background: 'var(--surface)',
-            color: accentColor, fontWeight: 700, fontSize: '14px',
-            cursor: 'pointer', fontFamily: 'inherit',
-          }}
+          leftIcon={<img src="/icons/shop.png" alt="" width={18} height={18} style={{ filter: 'brightness(0) saturate(100%) invert(45%) sepia(67%) saturate(1450%) hue-rotate(330deg) brightness(95%) contrast(98%)' }} />}
         >
-          🏪 이 샵의 사장님이신가요? 인증 신청하기
-        </button>
+          이 샵의 사장님이신가요? 인증 신청하기
+        </Button>
       ) : (
         <div style={{
           padding: '16px', borderRadius: '12px',
@@ -116,7 +114,7 @@ export default function VerifyRequestButton({ shopId, shopName, accentColor }: P
             {shopName} 사장님 인증 신청
           </p>
           <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '10px' }}>
-            사업자등록증, 매장 사진 등 인증 가능한 정보를 입력해주세요. 운영자 검토 후 승인돼요.
+            사업자등록증, 매장 사진 등 인증 가능한 정보를 입력해주세요. 운영진이 검토 후 승인해요.
           </p>
 
           <textarea
@@ -134,7 +132,6 @@ export default function VerifyRequestButton({ shopId, shopName, accentColor }: P
             }}
           />
 
-          {/* 파일 첨부 */}
           {!file ? (
             <button
               onClick={() => fileInputRef.current?.click()}
@@ -177,28 +174,22 @@ export default function VerifyRequestButton({ shopId, shopName, accentColor }: P
           />
 
           <div style={{ display: 'flex', gap: '8px' }}>
-            <button
-              onClick={() => setShowForm(false)}
-              style={{
-                flex: 1, padding: '10px', borderRadius: '8px',
-                border: '1.5px solid var(--border)', background: 'var(--surface)',
-                fontSize: '13px', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
-              }}
-            >취소</button>
-            <button
+            <Button variant="action" fullWidth onClick={() => setShowForm(false)}>
+              취소
+            </Button>
+            <Button
+              variant="primary"
+              fullWidth
               onClick={handleSubmit}
               disabled={submitting || !note.trim()}
-              style={{
-                flex: 1, padding: '10px', borderRadius: '8px',
-                border: 'none',
-                background: submitting || !note.trim() ? 'var(--border)' : accentColor,
-                color: '#fff', fontSize: '13px', fontWeight: 700,
-                cursor: 'pointer', fontFamily: 'inherit',
-              }}
-            >{submitting ? '신청 중...' : '신청하기'}</button>
+            >
+              {submitting ? '신청 중...' : '신청하기'}
+            </Button>
           </div>
         </div>
       )}
     </div>
   )
 }
+
+

@@ -107,7 +107,10 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
   }
 
   const checkinIcon = (
-    <img src="/icons/checkin.png" alt="" width={19} height={19} style={{ filter: 'brightness(0) invert(1)', display: 'block', position: 'relative', top: '1px' }} />
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block', position: 'relative', top: '1px' }}>
+      <path d="M12 21c4-4.5 7-7.8 7-11a7 7 0 1 0-14 0c0 3.2 3 6.5 7 11z" />
+      <path d="M9 9.8l2 2 3.5-3.5" />
+    </svg>
   )
 
   return (
@@ -241,6 +244,7 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
     </div>
   )
 }
+
 
 
 

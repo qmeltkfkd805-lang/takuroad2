@@ -82,12 +82,12 @@ export default function ShopDetailPage({ shop }: Props) {
           }}>
             {shop.floor_info && (
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-                <span style={{ fontSize: '15px' }}>📍</span>{shop.floor_info}
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11a3 3 0 1 0 6 0 3 3 0 0 0-6 0z" /><path d="M17.7 16.7 12 22l-5.7-5.3a8 8 0 1 1 11.4 0z" /></svg>{shop.floor_info}
               </span>
             )}
             {shop.parking !== null && (
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-                <span style={{ fontSize: '15px' }}>🅿️</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="4" /><path d="M9 17V7h3.5a2.5 2.5 0 0 1 0 5H9" /></svg>
                 <span style={{ color: shop.parking ? 'var(--text)' : 'var(--muted)' }}>
                   {shop.parking ? '주차 가능' : '주차 불가'}
                 </span>
@@ -184,7 +184,7 @@ export default function ShopDetailPage({ shop }: Props) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
 
           {shop.addr && (
-            <InfoRow icon="📍" label="주소">
+            <InfoRow icon={<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11a3 3 0 1 0 6 0 3 3 0 0 0-6 0z" /><path d="M17.7 16.7 12 22l-5.7-5.3a8 8 0 1 1 11.4 0z" /></svg>} label="주소">
               {shop.addr}
               {shop.floor_info && (
                 <span style={{ color: 'var(--accent)', fontWeight: 700, marginLeft: '6px' }}>
@@ -195,7 +195,7 @@ export default function ShopDetailPage({ shop }: Props) {
           )}
 
           {shop.shop_link && (
-            <InfoRow icon="🔗" label="링크">
+            <InfoRow icon={<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 15l6-6" /><path d="M11 6l1-1a4 4 0 0 1 6 6l-1 1" /><path d="M13 18l-1 1a4 4 0 0 1-6-6l1-1" /></svg>} label="링크">
               <a href={shop.shop_link} target="_blank" rel="noopener noreferrer"
                 style={{ color: color, wordBreak: 'break-all' }}>
                 {shop.shop_link}
@@ -238,13 +238,13 @@ export default function ShopDetailPage({ shop }: Props) {
 }
 
 function InfoRow({ icon, label, children }: {
-  icon: string
+  icon: React.ReactNode
   label: string
   children: React.ReactNode
 }) {
   return (
     <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-      <span style={{ fontSize: '16px', flexShrink: 0, marginTop: '1px' }}>{icon}</span>
+      <span style={{ flexShrink: 0, marginTop: '1px', display: 'flex' }}>{icon}</span>
       <div style={{ flex: 1 }}>
         <div style={{ fontSize: '11px', color: 'var(--muted)', fontWeight: 700, marginBottom: '2px' }}>{label}</div>
         <div style={{ fontSize: '14px', lineHeight: 1.6 }}>{children}</div>
@@ -252,6 +252,13 @@ function InfoRow({ icon, label, children }: {
     </div>
   )
 }
+
+
+
+
+
+
+
 
 
 
