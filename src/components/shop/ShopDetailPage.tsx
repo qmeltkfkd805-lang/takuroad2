@@ -12,7 +12,6 @@ import CheckInButton from './CheckInButton'
 import ReviewSection from './ReviewSection'
 import ReportIssueButton from './ReportIssueButton'
 import ShopEventList from './ShopEventList'
-import ShopHistoryPanel from './ShopHistoryPanel'
 import ConfirmInfoButton from './ConfirmInfoButton'
 import ShopProductAccordion from './ShopProductAccordion'
 import ShopAmenityBadges from './ShopAmenityBadges'
@@ -70,6 +69,7 @@ export default function ShopDetailPage({ shop }: Props) {
           ratingAvg={shop.rating_avg}
           ratingCount={shop.rating_count}
           todayStatus={todayStatus}
+          hoursFormatted={hoursFormatted}
           color={color}
         />
 
@@ -207,33 +207,6 @@ export default function ShopDetailPage({ shop }: Props) {
             </InfoRow>
           )}
 
-          {shop.hours && (
-            <InfoRow icon="🕐" label="영업시간">
-              <span style={{ color: todayStatus.isOpen ? 'var(--green)' : 'var(--red)', fontWeight: 700 }}>
-                {todayStatus.label}
-              </span>
-              {todayStatus.todayHours && (
-                <span style={{ color: 'var(--muted)', marginLeft: '8px' }}>{todayStatus.todayHours}</span>
-              )}
-              <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                {hoursFormatted.map(h => (
-                  <div key={h.day} style={{ display: 'flex', gap: '12px', fontSize: '12px' }}>
-                    <span style={{ width: '20px', color: 'var(--muted)', fontWeight: 700 }}>{h.label}</span>
-                    <span style={{ color: h.isOpen ? 'var(--text)' : 'var(--muted)' }}>{h.hours}</span>
-                  </div>
-                ))}
-                <div style={{ marginTop: '8px' }}>
-                  <ConfirmInfoButton
-                    shopId={shop.id}
-                    targetTable="shops"
-                    targetField="hours"
-                    targetId={shop.id}
-                  />
-                </div>
-              </div>
-            </InfoRow>
-          )}
-
           {shop.shop_link && (
             <InfoRow icon="🔗" label="링크">
               <a href={shop.shop_link} target="_blank" rel="noopener noreferrer"
@@ -267,13 +240,9 @@ export default function ShopDetailPage({ shop }: Props) {
 
         <ReviewSection shopId={shop.id} shopName={shop.name} accentColor={color} />
 
-        {/* === 변경 이력 === */}
+        {/* === 정보 신고 === */}
         <div style={{ marginTop: '24px', textAlign: 'center' }}>
           <ReportIssueButton shopId={shop.id} />
-          <div style={{ marginTop: '32px' }}>
-            <h2 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '12px' }}>변경 이력</h2>
-            <ShopHistoryPanel shopId={shop.id} />
-          </div>
         </div>
 
       </div>
@@ -296,6 +265,8 @@ function InfoRow({ icon, label, children }: {
     </div>
   )
 }
+
+
 
 
 

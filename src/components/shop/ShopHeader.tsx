@@ -1,10 +1,18 @@
 ﻿'use client'
+import { useState } from 'react'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 
 interface TodayStatus {
   isOpen: boolean
   label: string
   todayHours?: string | null
+}
+
+interface HourRow {
+  day: string
+  label: string
+  hours: string
+  isOpen: boolean
 }
 
 interface ShopHeaderProps {
@@ -14,12 +22,21 @@ interface ShopHeaderProps {
   ratingAvg: number
   ratingCount: number
   todayStatus: TodayStatus
+  hoursFormatted: HourRow[]
   color: string
 }
 
 export default function ShopHeader({
-  name, isVerified, cats, ratingAvg, ratingCount, todayStatus, color,
+  name, isVerified, cats, ratingAvg, ratingCount, todayStatus, hoursFormatted, color,
 }: ShopHeaderProps) {
+  const [hoursOpen, setHoursOpen] = useState(false)
+
+  // 연중무휴 판단: 7일 모두 영업 + 시간 동일
+  const allOpen = hoursFormatted.length === 7 && hoursFormatted.every(h => h.isOpen)
+  const sameHours = allOpen && hoursFormatted.every(h => h.hours === hoursFormatted[0].hours)
+  const isAlwaysOpen = sameHours
+  const hasHours = hoursFormatted.length > 0
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
@@ -64,25 +81,62 @@ export default function ShopHeader({
         </div>
       )}
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-        <span style={{
-          display: 'inline-flex', alignItems: 'center', gap: 5,
-          fontSize: 13, fontWeight: 800, padding: '5px 11px', borderRadius: 999,
-          background: todayStatus.isOpen ? '#E1F7F2' : '#FFEAE8',
-          color: todayStatus.isOpen ? '#0E7A63' : '#C0392B',
-        }}>
+      {/* 영업 상태 + 시간 + 아코디언 (카드) */}
+      <div style={{ border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden' }}>
+        <button
+          onClick={() => hasHours && setHoursOpen(o => !o)}
+          style={{
+            width: '100%', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap',
+            background: hoursOpen ? 'var(--surface2)' : 'var(--surface)', border: 'none',
+            padding: '13px 14px', margin: 0,
+            cursor: hasHours ? 'pointer' : 'default', fontFamily: 'inherit', textAlign: 'left',
+          }}
+        >
           <span style={{
-            width: 7, height: 7, borderRadius: '50%',
-            background: todayStatus.isOpen ? '#1FAE8C' : '#E05A4D',
-          }} />
-          {todayStatus.label}
-        </span>
-        {todayStatus.todayHours && (
-          <span style={{ fontSize: 14, color: 'var(--text)', fontWeight: 600 }}>
-            {todayStatus.todayHours}
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+            fontSize: 13, fontWeight: 800, padding: '5px 11px', borderRadius: 999,
+            background: todayStatus.isOpen ? '#E1F7F2' : '#FFEAE8',
+            color: todayStatus.isOpen ? '#0E7A63' : '#C0392B',
+          }}>
+            <span style={{
+              width: 7, height: 7, borderRadius: '50%',
+              background: todayStatus.isOpen ? '#1FAE8C' : '#E05A4D',
+            }} />
+            {todayStatus.label}
           </span>
+          {todayStatus.todayHours && (
+            <span style={{ fontSize: 14, color: 'var(--text)', fontWeight: 600 }}>
+              {todayStatus.todayHours}
+            </span>
+          )}
+          {isAlwaysOpen && (
+            <span style={{ fontSize: 13, color: 'var(--muted)', fontWeight: 600 }}>· 연중무휴</span>
+          )}
+          {hasHours && (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"
+              style={{ marginLeft: 'auto', flexShrink: 0, transform: hoursOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform .2s' }}>
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          )}
+        </button>
+
+        {/* 요일별 시간표 (펼침) */}
+        {hoursOpen && hasHours && (
+          <div style={{
+            padding: '12px 14px', borderTop: '1px solid var(--border)',
+            background: 'var(--surface)', display: 'flex', flexDirection: 'column', gap: 5,
+          }}>
+            {hoursFormatted.map(h => (
+              <div key={h.day} style={{ display: 'flex', gap: 14, fontSize: 13 }}>
+                <span style={{ width: 22, color: 'var(--muted)', fontWeight: 700 }}>{h.label}</span>
+                <span style={{ color: h.isOpen ? 'var(--text)' : 'var(--muted)', fontWeight: h.isOpen ? 600 : 400 }}>{h.hours}</span>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>
   )
 }
+
+
