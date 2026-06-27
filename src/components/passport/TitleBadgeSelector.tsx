@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { getMyAvailableTitles, setTitleBadge, clearTitleBadge } from '@/services/passportService'
@@ -69,12 +69,12 @@ export default function TitleBadgeSelector({ userId, onClose, onSelected }: Prop
                 style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                   width: '100%', padding: '12px 14px', marginBottom: '8px',
-                  borderRadius: '10px', border: `1.5px solid ${RARITY_COLOR[tier.rarity] ?? 'var(--border)'}`,
+                  borderRadius: '10px', border: `1.5px solid ${RARITY_COLOR[tier.rarity as keyof typeof RARITY_COLOR] ?? 'var(--border)'}`,
                   background: 'var(--surface2)', cursor: 'pointer', fontFamily: 'inherit',
                 }}
               >
                 <span style={{ fontWeight: 700, fontSize: '14px' }}>{tier.name}</span>
-                <span style={{ fontSize: '11px', color: RARITY_COLOR[tier.rarity] }}>{tier.rarity}</span>
+                <span style={{ fontSize: '11px', color: RARITY_COLOR[tier.rarity as keyof typeof RARITY_COLOR] }}>{tier.rarity}</span>
               </button>
             ))}
             <button
