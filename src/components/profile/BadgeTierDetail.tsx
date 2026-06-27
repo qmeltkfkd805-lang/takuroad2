@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -68,9 +68,9 @@ export default function BadgeTierDetail({ badgeSlug, userId, onBack }: Props) {
 
       {data.tiers.map((tier: any) => (
         <div key={tier.id} style={{
-          border: `1.5px solid ${tier.earned ? RARITY_COLOR[tier.rarity] : 'var(--border)'}`,
+          border: `1.5px solid ${tier.earned ? RARITY_COLOR[tier.rarity as keyof typeof RARITY_COLOR] : 'var(--border)'}`,
           borderRadius: '14px', padding: '16px', marginBottom: '12px',
-          background: tier.earned ? `${RARITY_COLOR[tier.rarity]}10` : 'var(--surface2)',
+          background: tier.earned ? `${RARITY_COLOR[tier.rarity as keyof typeof RARITY_COLOR]}10` : 'var(--surface2)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
             <span style={{ fontSize: '18px' }}>{tier.earned ? '☑' : '□'}</span>
@@ -78,8 +78,8 @@ export default function BadgeTierDetail({ badgeSlug, userId, onBack }: Props) {
               {tier.isHidden && !tier.earned ? '???' : tier.name}
             </span>
             <span style={{
-              fontSize: '10px', fontWeight: 700, color: RARITY_COLOR[tier.rarity],
-              border: `1px solid ${RARITY_COLOR[tier.rarity]}`, borderRadius: '6px', padding: '1px 6px',
+              fontSize: '10px', fontWeight: 700, color: RARITY_COLOR[tier.rarity as keyof typeof RARITY_COLOR],
+              border: `1px solid ${RARITY_COLOR[tier.rarity as keyof typeof RARITY_COLOR]}`, borderRadius: '6px', padding: '1px 6px',
             }}>
               {RARITY_LABEL[tier.rarity]}
             </span>
@@ -97,7 +97,7 @@ export default function BadgeTierDetail({ badgeSlug, userId, onBack }: Props) {
               }}>
                 <div style={{
                   height: '100%', width: `${tier.progress.percent}%`,
-                  background: RARITY_COLOR[tier.rarity], borderRadius: '4px',
+                  background: RARITY_COLOR[tier.rarity as keyof typeof RARITY_COLOR], borderRadius: '4px',
                   transition: 'width .3s',
                 }} />
               </div>
