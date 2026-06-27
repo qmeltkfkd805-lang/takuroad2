@@ -104,38 +104,27 @@ export default function ShopDetailPage({ shop }: Props) {
 
           <div style={{ display: 'flex', gap: '10px', marginBottom: '8px' }}>
             {shop.addr && (
-              <a href={`https://map.kakao.com/link/search/${encodeURIComponent(shop.name)}`}
-                target="_blank" rel="noopener noreferrer"
-                style={{
-                  flex: 1, padding: '13px', borderRadius: '12px',
-                  border: '1.5px solid var(--border)', fontWeight: 700,
-                  fontSize: '14px', color: 'var(--text)', textDecoration: 'none',
-                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-                  background: 'var(--surface)',
-                }}
+              <Button
+                variant="action"
+                fullWidth
+                onClick={() => window.open(`https://map.kakao.com/link/search/${encodeURIComponent(shop.name)}`, '_blank', 'noopener')}
+                leftIcon={<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11a3 3 0 1 0 6 0 3 3 0 0 0-6 0z" /><path d="M17.7 16.7 12 22l-5.7-5.3a8 8 0 1 1 11.4 0z" /></svg>}
               >
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11a3 3 0 1 0 6 0 3 3 0 0 0-6 0z" /><path d="M17.7 16.7 12 22l-5.7-5.3a8 8 0 1 1 11.4 0z" /></svg>
                 길찾기
-              </a>
+              </Button>
             )}
-            <button
+            <Button
+              variant="action"
+              fullWidth
               onClick={async () => {
                 if (!user) { router.push(ROUTES.login); return }
                 await toggleSave(shop.id)
               }}
-              style={{
-                flex: 1, padding: '13px', borderRadius: '12px',
-                border: `1.5px solid ${isSaved(shop.id) ? color : 'var(--border)'}`,
-                background: isSaved(shop.id) ? `${color}15` : 'var(--surface)',
-                fontWeight: 700, fontSize: '14px',
-                color: isSaved(shop.id) ? color : 'var(--text)',
-                cursor: 'pointer', fontFamily: 'inherit',
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-              }}
+              style={isSaved(shop.id) ? { borderColor: color, color, background: `${color}15` } : undefined}
+              leftIcon={<svg width="17" height="17" viewBox="0 0 24 24" fill={isSaved(shop.id) ? color : 'none'} stroke={isSaved(shop.id) ? color : 'currentColor'} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" /></svg>}
             >
-              <svg width="17" height="17" viewBox="0 0 24 24" fill={isSaved(shop.id) ? color : 'none'} stroke={isSaved(shop.id) ? color : 'currentColor'} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" /></svg>
               {isSaved(shop.id) ? '저장됨' : '저장'}
-            </button>
+            </Button>
           </div>
 
           <CheckInButton
