@@ -55,7 +55,7 @@ export const collection: MemorialTemplate = (ctx, data, assets) => {
   centerText(ctx, 'takuroad.kr', W / 2, L.urlY, `700 24px ${BASE}`, INKBLACK)
 }
 
-function vignette(ctx) {
+function vignette(ctx: CanvasRenderingContext2D) {
   ctx.save()
   const g = ctx.createRadialGradient(W / 2, H / 2, H * 0.35, W / 2, H / 2, H * 0.62)
   g.addColorStop(0, 'rgba(60,45,20,0)')
@@ -64,11 +64,11 @@ function vignette(ctx) {
   ctx.restore()
 }
 
-function hline(ctx, x1, x2, y) {
+function hline(ctx: CanvasRenderingContext2D, x1: number, x2: number, y: number) {
   ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2, y); ctx.stroke()
 }
 
-function centerText(ctx, text, cx, y, font, color, maxW) {
+function centerText(ctx: CanvasRenderingContext2D, text: string, cx: number, y: number, font: string, color: string, maxW?: number) {
   ctx.save(); ctx.font = font; ctx.fillStyle = color; ctx.textAlign = 'center'; ctx.textBaseline = 'top'
   if (maxW) {
     let px = parseInt(font.match(/(\d+)px/)?.[1] ?? '40', 10)

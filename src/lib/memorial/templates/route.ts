@@ -92,7 +92,7 @@ export const route: MemorialTemplate = (ctx, data, assets) => {
   centerText(ctx, 'takuroad.kr', W / 2, L.urlY, `700 26px ${BASE}`, INKBLACK)
 }
 
-function drawInfoRow(ctx, data, assets) {
+function drawInfoRow(ctx: CanvasRenderingContext2D, data: Parameters<MemorialTemplate>[1], assets: Parameters<MemorialTemplate>[2]) {
   const items = []
   if (data.area && assets.iconMap) items.push({ icon: assets.iconMap, text: data.area })
   if (data.routeType && assets.iconShop) items.push({ icon: assets.iconShop, text: ROUTE_TYPE_LABEL[data.routeType] })
@@ -113,7 +113,7 @@ function drawInfoRow(ctx, data, assets) {
   })
 }
 
-function centerText(ctx, text, cx, y, font, color, maxW) {
+function centerText(ctx: CanvasRenderingContext2D, text: string, cx: number, y: number, font: string, color: string, maxW?: number) {
   ctx.save(); ctx.font = font; ctx.fillStyle = color; ctx.textAlign = 'center'; ctx.textBaseline = 'top'
   if (maxW) {
     let px = parseInt(font.match(/(\d+)px/)?.[1] ?? '40', 10)
@@ -122,6 +122,6 @@ function centerText(ctx, text, cx, y, font, color, maxW) {
   ctx.fillText(text, cx, y); ctx.restore()
 }
 
-function straight(ctx, x1, y1, x2, y2) {
+function straight(ctx: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number) {
   ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke()
 }

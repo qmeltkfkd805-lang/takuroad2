@@ -156,7 +156,7 @@ export async function ensureFont(family: string, url: string): Promise<void> {
   } catch { /* 실패해도 기본폰트로 진행 */ }
 }
 
-export function drawStampbookPaper(ctx, w, h, base, seed = 21) {
+export function drawStampbookPaper(ctx: CanvasRenderingContext2D, w: number, h: number, base: string, seed = 21) {
   ctx.fillStyle = base
   ctx.fillRect(0, 0, w, h)
   const id = ctx.getImageData(0, 0, w, h); const px = id.data
@@ -178,7 +178,7 @@ export function drawStampbookPaper(ctx, w, h, base, seed = 21) {
   ctx.restore()
 }
 
-export function drawStampTinted(ctx, stamp, cx, cy, size, rotateDeg, inkHex, opacity = 0.9) {
+export function drawStampTinted(ctx: CanvasRenderingContext2D, stamp: HTMLImageElement, cx: number, cy: number, size: number, rotateDeg: number, inkHex: string, opacity = 0.9) {
   const off = document.createElement('canvas')
   off.width = stamp.width; off.height = stamp.height
   const octx = off.getContext('2d')
@@ -205,7 +205,7 @@ export function drawStampTinted(ctx, stamp, cx, cy, size, rotateDeg, inkHex, opa
   ctx.restore()
 }
 
-function hexToRgb(hex) {
+function hexToRgb(hex: string) {
   const h = hex.replace("#", "")
   return { r: parseInt(h.slice(0, 2), 16), g: parseInt(h.slice(2, 4), 16), b: parseInt(h.slice(4, 6), 16) }
 }
