@@ -1,0 +1,33 @@
+﻿/* AppShell — 모바일 우선. 기본 단일 컬럼(사이드바 숨김), 1024px↑에서 펼침 */
+.shell { display: block; min-height: 100dvh; background: var(--bg); }
+.sidebar { display: none; }
+.right { display: flex; flex-direction: column; min-height: 100dvh; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center;
+  height: 52px; padding: 0 16px;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.topbarStub { font-size: 12px; color: var(--muted); font-weight: 700; }
+.main { flex: 1; min-width: 0; }
+
+@media (min-width: 1024px) {
+  .shell { display: grid; grid-template-columns: 240px 1fr; }
+  .sidebar {
+    display: flex; flex-direction: column; gap: 6px;
+    position: sticky; top: 0; height: 100dvh; overflow-y: auto;
+    padding: 18px 14px;
+    background: var(--surface); border-right: 1px solid var(--border);
+  }
+  .logo { font-size: 20px; font-weight: 900; color: var(--accent); padding: 4px 10px 14px; }
+  .nav { display: flex; flex-direction: column; gap: 2px; }
+  .navItem {
+    display: block; padding: 11px 12px; border-radius: var(--r-sm);
+    font-size: 14px; font-weight: 700; color: var(--text); text-decoration: none;
+  }
+  .navItem:hover { background: var(--surface2); }
+  .navActive { background: var(--accent-l); color: var(--accent); }
+  .navDisabled { color: var(--muted); opacity: .5; cursor: default; }
+  .stub { margin-top: auto; padding: 8px 12px; font-size: 11px; color: var(--muted); }
+}
