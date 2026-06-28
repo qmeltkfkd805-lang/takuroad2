@@ -67,7 +67,7 @@ export function CollectionCard({ collection, onClick, style }: CollectionCardPro
       </div>
 
       <div style={{ height: 9, borderRadius: 9999, background: complete ? '#FBE9B8' : '#F1EFEA', overflow: 'hidden', marginBottom: 9 }}>
-        <div style={{ width: `${pct}%`, height: '100%', borderRadius: 9999, background: complete ? 'linear-gradient(90deg,#F5B100,#FFD166)' : '#FF8B66', transition: 'width .3s' }} />
+        <div style={{ width: `${pct}%`, height: '100%', borderRadius: 9999, background: complete ? 'linear-gradient(90deg,#F5B100,#FFD166)' : 'var(--accent)', transition: 'width .3s' }} />
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5 }}>

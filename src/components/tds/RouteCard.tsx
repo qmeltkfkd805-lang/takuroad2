@@ -20,7 +20,7 @@ const fmtDist = (m?: number | null) => {
   return m >= 1000 ? `${(m / 1000).toFixed(1)}km` : `${m}m`
 }
 
-const LINE_CORAL = '#FF8B66'
+const LINE_CORAL = 'var(--accent)'
 const LINE_DASH = '#FFC9B3'
 const GOLD = '#F5B100'
 

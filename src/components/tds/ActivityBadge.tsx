@@ -28,7 +28,7 @@ const META: Record<ActivityKind, { icon: string | null; tone: Tone; text: string
   quiet:      { icon: null,         tone: 'faint',  text: '오늘은 조용해요' },
 }
 
-const TONE_COLOR: Record<Tone, string> = { accent: '#FF8B66', muted: '#9B968D', faint: '#B0ABA2' }
+const TONE_COLOR: Record<Tone, string> = { accent: 'var(--accent)', muted: '#9B968D', faint: '#B0ABA2' }
 
 interface ActivityBadgeProps {
   kind: ActivityKind

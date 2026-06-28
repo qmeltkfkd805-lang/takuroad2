@@ -54,7 +54,7 @@ export function WorkCard({ work, onClick, style }: WorkCardProps) {
         {work.affinity && (
           <span style={{ position: 'absolute', bottom: 10, left: 10, width: 32, height: 32, borderRadius: 9999, background: 'rgba(255,255,255,.95)', boxShadow: '0 1px 3px rgba(0,0,0,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {work.affinity === 'favorite' ? (
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="#FF8B66" stroke="#FF8B66" strokeWidth="2" strokeLinejoin="round"><path d="M12 20C5 15 3.5 10.5 5.5 7.8 7.1 5.9 10.2 6.1 12 8.4 13.8 6.1 16.9 5.9 18.5 7.8 20.5 10.5 19 15 12 20Z" /></svg>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="#FF6B6B" stroke="#FF6B6B" strokeWidth="2" strokeLinejoin="round"><path d="M12 20C5 15 3.5 10.5 5.5 7.8 7.1 5.9 10.2 6.1 12 8.4 13.8 6.1 16.9 5.9 18.5 7.8 20.5 10.5 19 15 12 20Z" /></svg>
             ) : (
               <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD166" stroke="#E9B72E" strokeWidth="1.5" strokeLinejoin="round"><path d="M12 4.5 14.2 9l5 .7-3.6 3.5.9 5-4.5-2.4L7.4 18l.9-5L4.7 9.7l5-.7z" /></svg>
             )}
