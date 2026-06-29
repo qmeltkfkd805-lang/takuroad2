@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/client'
+﻿import { createClient } from '@/lib/supabase/client'
 import {
   WorkRelationship, FavoriteTier, RelationshipState,
 } from '@/types/work-relationship'
@@ -79,7 +79,7 @@ export async function getMyWorkRelationships(userId: string): Promise<WorkRelati
 
   const tagIds = [...map.keys()]
   const { data: tags } = await supabase
-    .from('tags').select('id, name, slug').in('id', tagIds)
+    .from('tags').select('id, name, slug, cover_url').in('id', tagIds)
 
   const tagMap = new Map((tags ?? []).map((t: any) => [t.id, t]))
 
@@ -88,7 +88,7 @@ export async function getMyWorkRelationships(userId: string): Promise<WorkRelati
     const tag = tagMap.get(tagId)
     if (!tag) continue
     result.push({
-      work: { id: tag.id, name: tag.name, slug: tag.slug },
+      work: { id: tag.id, name: tag.name, slug: tag.slug, coverUrl: tag.cover_url ?? null },
       affinity: axes.affinity,
       state: axes.state,
       activity: axes.activity,

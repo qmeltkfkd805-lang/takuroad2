@@ -2,7 +2,7 @@
 .rail { display: flex; flex-direction: column; gap: 14px; padding: 16px; }
 
 @media (min-width: 1024px) {
-  .homeLayout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; align-items: start; gap: 24px; max-width: 1320px; }
+  .homeLayout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; align-items: start; gap: 40px; max-width: 1480px; }
   .rail { position: sticky; top: 76px; padding: 20px 20px 20px 0; }
 }
 

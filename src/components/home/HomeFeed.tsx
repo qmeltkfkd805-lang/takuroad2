@@ -16,6 +16,8 @@ import { getEventsByTag } from '@/services/eventService'
 import { pickWorkNews } from '@/lib/home/pickWorkNews'
 import { FeedItem } from '@/lib/feed/types'
 import HomeFeedCard from './HomeFeedCard'
+import { SectionHeader, Icon } from '@/components/tds'
+import styles from './HomeFeed.module.css'
 
 const PALETTE = [
   { bg: '#EEEDFE', fg: '#3C3489' }, { bg: '#E1F5EE', fg: '#0F6E56' },
@@ -76,7 +78,11 @@ export default function HomeFeed({ popularShops, routes, activeWorks }: HomeFeed
           .then(events => pickWorkNews(r.work, events, r.affinity))
           .catch(() => pickWorkNews(r.work, [], r.affinity))
       )
-    ).then(setNewsItems)
+    ).then(items => {
+      // 새 소식 있는 작품(none 아님)을 앞으로 정렬
+      const sorted = [...items].sort((a, b) => (a.kind === 'none' ? 1 : 0) - (b.kind === 'none' ? 1 : 0))
+      setNewsItems(sorted)
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myWorks.map(r => r.work.id).join(',')])
 
@@ -84,7 +90,7 @@ export default function HomeFeed({ popularShops, routes, activeWorks }: HomeFeed
     <div>
       {/* ❤️ 내 작품 */}
       <section style={{ padding: '20px 0 8px' }}>
-        <SectionTitle>❤️ 내 작품</SectionTitle>
+        <SectionHeader title="내 최애 작품" tone="coral" icon={<Icon name="heart" size={20} />} actionLabel="전체 보기" onAction={() => { window.location.href = "/my-works" }} />
         {loading ? (
           <Muted>불러오는 중...</Muted>
         ) : !user ? (
@@ -92,8 +98,8 @@ export default function HomeFeed({ popularShops, routes, activeWorks }: HomeFeed
         ) : myWorks.length === 0 ? (
           <PromptBox text="아직 좋아하는 작품이 없어요" href="/search" cta="작품 찾아보기" />
         ) : (
-          <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', padding: '0 16px 4px' }}>
-            {newsItems.map((item, i) => (
+          <div className={styles.feedGrid}>
+            {newsItems.slice(0, 5).map((item, i) => (
               <HomeFeedCard key={item.contextLabel ?? i} item={item} />
             ))}
           </div>

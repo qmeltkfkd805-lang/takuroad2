@@ -16,5 +16,6 @@ export interface FeedItem {
   tone: FeedTone
   href?: string
   contextLabel?: string
+  imageUrl?: string | null   // 작품 커버(있으면 카드 상단에 표시)
   contextAffinity?: 'favorite' | 'interest'  // 카드가 SVG로 그림
 }

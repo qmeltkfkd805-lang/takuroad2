@@ -14,7 +14,7 @@ const NONE: FeedItem = {
 }
 
 export function pickWorkNews(
-  work: { name: string; slug: string },
+  work: { name: string; slug: string; coverUrl?: string | null },
   events: WorkEvent[],
   affinity?: 'favorite' | 'interest' | null
 ): FeedItem {
@@ -27,6 +27,7 @@ export function pickWorkNews(
   // 작품 맥락 붙이기 (어떤 작품의 소식인지)
   return {
     ...picked,
+    imageUrl: work.coverUrl ?? null,
     contextLabel: work.name,
     contextAffinity: affinity ?? undefined,
   }

@@ -1,0 +1,16 @@
+﻿/* 내 작품 카드 — 넓으면 5개 균등, 좁으면 가로 스크롤 (카드 최소폭 유지해 글자 안 깨짐) */
+.feedGrid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(160px, 1fr);
+  gap: 12px;
+  padding: 0 16px 8px;
+  overflow-x: auto;
+}
+/* 넓은 화면(데스크탑): 5개가 꽉 차면 스크롤 없음 */
+@media (min-width: 1180px) {
+  .feedGrid {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
