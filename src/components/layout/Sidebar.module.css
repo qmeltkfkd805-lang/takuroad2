@@ -18,10 +18,15 @@
 .icon { display: inline-flex; }
 .icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
-.lv { margin-top: auto; margin-bottom: 4px; background: var(--surface2); border-radius: var(--r); padding: 13px 14px; }
-.lvTop { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-.lvBadge { font-size: 13px; font-weight: 900; color: #fff; background: var(--accent); padding: 3px 9px; border-radius: var(--r-full); }
+.lv { display: flex; align-items: flex-start; gap: 11px; margin: 0 4px 4px; padding: 12px; background: #E8F4FF; border-radius: var(--r); }
+.lvTop { display: flex; align-items: baseline; gap: 7px; margin-bottom: 7px; }
+.lvLevel { font-size: 15px; font-weight: 900; color: var(--text); }
 .lvTitle { font-size: 13px; font-weight: 700; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .bar { height: 7px; border-radius: var(--r-full); background: var(--border); overflow: hidden; }
 .barFill { height: 100%; background: var(--accent); border-radius: var(--r-full); transition: width .3s; }
 .lvExp { font-size: 11px; color: var(--muted); font-weight: 700; margin-top: 7px; text-align: right; }
+
+.divider { height: 1px; background: var(--border); margin: 16px 4px; }
+.lvIconBox { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.lvIcon { width: 38px; height: 38px; object-fit: contain; margin-top: 5px; }
+.lvBody { flex: 1; min-width: 0; }

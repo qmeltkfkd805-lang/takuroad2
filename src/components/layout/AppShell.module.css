@@ -1,20 +1,32 @@
-﻿.shell { display: block; min-height: 100dvh; background: var(--bg); }
-.sidebar { display: none; }
-.right { display: flex; flex-direction: column; min-height: 100dvh; }
+﻿.shell { display: flex; flex-direction: column; min-height: 100dvh; background: var(--bg); }
 
-.topbar {
+/* 헤더 (가로 전체) */
+.header {
   position: sticky; top: 0; z-index: 30;
-  display: flex; align-items: center;
+  display: flex; align-items: center; gap: 12px;
   height: 60px; padding: 0 20px;
   background: var(--surface); border-bottom: 1px solid var(--border);
 }
-.main { flex: 1; min-width: 0; padding-bottom: calc(58px + env(safe-area-inset-bottom)); }
+.logo { display: none; align-items: center; gap: 8px; text-decoration: none; flex-shrink: 0; }
+.logo img { height: 26px; width: auto; display: block; }
+.logoText { font-size: 19px; font-weight: 900; color: var(--accent); letter-spacing: -0.3px; }
+.headerBar { flex: 1; min-width: 0; }
+
+/* 본문 */
+.body { flex: 1; min-width: 0; }
+.main { min-width: 0; padding-bottom: calc(58px + env(safe-area-inset-bottom)); }
+.sidebar { display: none; }
 
 @media (min-width: 1024px) {
-  .shell { display: grid; grid-template-columns: 264px 1fr; }
+  .logo { display: flex; width: 244px; }
+  .logoText {
+    font-family: 'Gaegu', sans-serif; font-size: 25px; font-weight: 700;
+    letter-spacing: 0.5px; -webkit-text-stroke: 2px var(--accent);
+  }
+  .body { display: grid; grid-template-columns: 264px 1fr; }
   .main { padding-bottom: 0; }
   .sidebar {
-    display: block; position: sticky; top: 12px; height: calc(100dvh - 24px); overflow-y: auto;
+    display: block; position: sticky; top: 72px; height: calc(100dvh - 84px); overflow-y: auto;
     margin: 12px 0 12px 12px;
     background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
   }

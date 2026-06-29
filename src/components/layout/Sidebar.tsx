@@ -33,11 +33,6 @@ export default function Sidebar() {
 
   return (
     <div className={styles.root}>
-      <Link href="/" className={styles.logo}>
-        <img src="/brand/takuroad-logo.png" alt="TAKUROAD" />
-        <span className={styles.logoText}>TAKUROAD</span>
-      </Link>
-
       <nav className={styles.nav}>
         {NAV.map(item => {
           if (!item.href) {
@@ -56,27 +51,31 @@ export default function Sidebar() {
         })}
       </nav>
 
+      {user && info && <div className={styles.divider} />}
       {user && info && <LvCard info={info} />}
     </div>
   )
 }
-
 function LvCard({ info }: { info: LevelInfo }) {
   const floor = info.currentLevelExp
   const ceil = info.nextLevelThreshold
   const earned = info.totalExp - floor
   const span = ceil != null ? ceil - floor : 0
   const pct = span > 0 ? Math.min(100, Math.round((earned / span) * 100)) : 100
-
   return (
     <div className={styles.lv}>
-      <div className={styles.lvTop}>
-        <span className={styles.lvBadge}>Lv.{info.level}</span>
-        <span className={styles.lvTitle}>{info.title}</span>
-      </div>
-      <div className={styles.bar}><div className={styles.barFill} style={{ width: pct + '%' }} /></div>
-      <div className={styles.lvExp}>
-        {ceil != null ? earned.toLocaleString() + ' / ' + span.toLocaleString() + ' EXP' : '최고 등급'}
+      <span className={styles.lvIconBox}>
+        <img src="/icons/lv.png" alt="" className={styles.lvIcon} />
+      </span>
+      <div className={styles.lvBody}>
+        <div className={styles.lvTop}>
+          <span className={styles.lvLevel}>Lv.{info.level}</span>
+          <span className={styles.lvTitle}>{info.title}</span>
+        </div>
+        <div className={styles.bar}><div className={styles.barFill} style={{ width: pct + '%' }} /></div>
+        <div className={styles.lvExp}>
+          {ceil != null ? earned.toLocaleString() + ' / ' + span.toLocaleString() + ' EXP' : '최고 등급'}
+        </div>
       </div>
     </div>
   )
