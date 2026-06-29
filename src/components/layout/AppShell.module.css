@@ -8,10 +8,11 @@
   height: 60px; padding: 0 20px;
   background: var(--surface); border-bottom: 1px solid var(--border);
 }
-.main { flex: 1; min-width: 0; }
+.main { flex: 1; min-width: 0; padding-bottom: calc(58px + env(safe-area-inset-bottom)); }
 
 @media (min-width: 1024px) {
   .shell { display: grid; grid-template-columns: 240px 1fr; }
+  .main { padding-bottom: 0; }
   .sidebar {
     display: block; position: sticky; top: 0; height: 100dvh; overflow-y: auto;
     background: var(--surface); border-right: 1px solid var(--border);
