@@ -168,7 +168,7 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
                     distanceM: r.total_distance_m,
                     durationMin: r.total_duration_min,
                   }}
-                  onClick={() => { window.location.href = /route/ }}
+                  onClick={() => { window.location.href = `/route/${r.id}` }}
                 />
               </div>
             ))}
