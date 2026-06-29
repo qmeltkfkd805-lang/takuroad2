@@ -11,10 +11,11 @@
 .main { flex: 1; min-width: 0; padding-bottom: calc(58px + env(safe-area-inset-bottom)); }
 
 @media (min-width: 1024px) {
-  .shell { display: grid; grid-template-columns: 240px 1fr; }
+  .shell { display: grid; grid-template-columns: 264px 1fr; }
   .main { padding-bottom: 0; }
   .sidebar {
-    display: block; position: sticky; top: 0; height: 100dvh; overflow-y: auto;
-    background: var(--surface); border-right: 1px solid var(--border);
+    display: block; position: sticky; top: 12px; height: calc(100dvh - 24px); overflow-y: auto;
+    margin: 12px 0 12px 12px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
   }
 }
