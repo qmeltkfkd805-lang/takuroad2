@@ -64,16 +64,6 @@ export default function HomeFeed({ popularShops, routes, activeWorks }: HomeFeed
 
   return (
     <div>
-      {/* 🌟 Hero — 오늘 가장 중요한 관계 */}
-      {!loading && heroPick && heroCounts && (
-        <HeroSlot
-          reason={heroPick.reason}
-          work={heroPick.relationship.work}
-          goodsCount={heroCounts.goods}
-          shopCount={heroCounts.shops}
-        />
-      )}
-
       {/* ❤️ 내 작품 */}
       <section style={{ padding: '20px 0 8px' }}>
         <SectionTitle>❤️ 내 작품</SectionTitle>
