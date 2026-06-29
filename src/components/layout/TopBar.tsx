@@ -1,31 +1,32 @@
 ﻿'use client'
-
 import { useState, useEffect, FormEvent } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getUnreadCount } from '@/services/notificationService'
 import { getMyLevelInfo } from '@/services/expService'
+import TrendingTicker from './TrendingTicker'
+import type { ActiveWork } from '@/services/activeWorksService'
 import styles from './TopBar.module.css'
 
-export default function TopBar() {
+export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveWork[] }) {
   const router = useRouter()
   const { user, profile } = useAuth()
   const [q, setQ] = useState('')
   const [unread, setUnread] = useState(0)
   const [level, setLevel] = useState<number | null>(null)
-
   useEffect(() => {
     if (!user) { setUnread(0); setLevel(null); return }
     getUnreadCount(user.id).then(setUnread).catch(() => {})
     getMyLevelInfo(user.id).then(i => setLevel(i.level)).catch(() => {})
   }, [user])
-
   function onSearch(e: FormEvent) {
     e.preventDefault()
     const term = q.trim()
     if (term) router.push('/search?q=' + encodeURIComponent(term))
   }
+
+  const trendingItems = trendingWorks.map(w => ({ id: w.id, name: w.name, href: `/work/${w.slug}` }))
 
   return (
     <div className={styles.bar}>
@@ -33,7 +34,7 @@ export default function TopBar() {
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
         <input value={q} onChange={e => setQ(e.target.value)} placeholder="작품, 샵, 지역, 이벤트 검색" />
       </form>
-
+      <TrendingTicker items={trendingItems} />
       <div className={styles.right}>
         {user ? (
           <>

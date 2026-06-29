@@ -18,6 +18,7 @@ import { FeedItem } from '@/lib/feed/types'
 import HomeFeedCard from './HomeFeedCard'
 import { SectionHeader, Icon } from '@/components/tds'
 import styles from './HomeFeed.module.css'
+import RankList from './RankList'
 
 const PALETTE = [
   { bg: '#EEEDFE', fg: '#3C3489' }, { bg: '#E1F5EE', fg: '#0F6E56' },
@@ -107,33 +108,6 @@ export default function HomeFeed({ popularShops, routes, activeWorks }: HomeFeed
       </section>
 
       {/* 🔥 이번 주 가장 활발한 작품 */}
-      {activeWorks.length > 0 && (
-        <section style={{ padding: '12px 16px' }}>
-          <SectionTitle inset>🔥 이번 주 가장 활발한 작품</SectionTitle>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {activeWorks.map((w, i) => {
-              const aff = myAffinity.get(w.id)
-              const icon = aff ? AFFINITY_LABEL[aff].icon : null
-              return (
-                <Link key={w.id} href={`/work/${w.slug}`} style={{
-                  display: 'flex', alignItems: 'center', gap: '12px',
-                  padding: '12px 14px', borderRadius: 'var(--r-sm)',
-                  border: '1px solid var(--border)', background: 'var(--surface)',
-                  textDecoration: 'none', color: 'var(--text)',
-                }}>
-                  <span style={{ fontSize: '14px', fontWeight: 900, color: 'var(--muted)', width: '18px' }}>
-                    {i + 1}
-                  </span>
-                  <span style={{ flex: 1, fontSize: '14px', fontWeight: 700 }}>
-                    {icon ? `${icon} ` : ''}{w.name}
-                  </span>
-                  <span style={{ fontSize: '16px', color: 'var(--muted)' }}>→</span>
-                </Link>
-              )
-            })}
-          </div>
-        </section>
-      )}
 
       {/* 🏪 많이 찾는 굿즈샵 */}
       {popularShops.length > 0 && (

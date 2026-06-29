@@ -1,0 +1,42 @@
+﻿.wrap { position: relative; flex-shrink: 0; }
+
+.ticker {
+  display: flex; align-items: center; gap: 7px;
+  height: 38px; padding: 0 6px;
+  background: none; border: none; cursor: pointer; max-width: 230px;
+}
+.fire { width: 17px; height: 17px; flex-shrink: 0; }
+.rank, .rankTop { font-size: 13px; font-weight: 900; flex-shrink: 0; }
+.rank { color: var(--muted); }
+.rankTop { color: var(--accent); }
+.name {
+  font-size: 13px; font-weight: 700; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0;
+}
+.caret, .caretOpen {
+  width: 15px; height: 15px; fill: none; stroke: var(--muted); stroke-width: 2.4;
+  stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; transition: transform .15s;
+}
+.caretOpen { transform: rotate(180deg); }
+
+/* 펼침 패널 */
+.panel {
+  position: absolute; top: calc(100% + 6px); left: 0;
+  width: 260px; max-height: 380px; overflow-y: auto;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
+  box-shadow: 0 8px 24px rgba(0,0,0,.1); padding: 8px; z-index: 50;
+}
+.panelHead { font-size: 12px; font-weight: 800; color: var(--muted); padding: 6px 8px 8px; }
+.row {
+  display: flex; align-items: center; gap: 11px;
+  padding: 8px; border-radius: var(--r-sm);
+  text-decoration: none; color: var(--text); transition: background .12s;
+}
+.row:hover { background: var(--accent-l); }
+.rowRank, .rowRankTop {
+  flex-shrink: 0; width: 18px; text-align: center;
+  font-size: 14px; font-weight: 900; font-variant-numeric: tabular-nums;
+}
+.rowRank { color: var(--muted); }
+.rowRankTop { color: var(--accent); }
+.rowName { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

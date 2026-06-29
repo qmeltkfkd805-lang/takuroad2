@@ -11,7 +11,7 @@ export default async function HomePage() {
   const [allShops, routes, activeWorks, banners] = await Promise.all([
     getShops(),
     getPublicRoutes(),
-    getActiveWorks(6),
+    getActiveWorks(10),
     getActiveBanners(),
   ])
 
