@@ -43,7 +43,7 @@ export default function HomeFeedCard({ item }: { item: FeedItem }) {
         </div>
       </div>
 
-      {item.href && <div className={styles.cta} style={{ color: tone.fg }}>지금 보기 →</div>}
+      {item.href && <div className={styles.cta} style={{ color: tone.fg }}>확인하기 →</div>}
     </div>
   )
 

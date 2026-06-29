@@ -12,6 +12,10 @@ import { getProductsByTag } from '@/services/shopProductService'
 import { getShopsByTag } from '@/services/shopService'
 import ShopCard from '@/components/shop/ShopCard'
 import { ROUTES } from '@/lib/constants/routes'
+import { getEventsByTag } from '@/services/eventService'
+import { pickWorkNews } from '@/lib/home/pickWorkNews'
+import { FeedItem } from '@/lib/feed/types'
+import HomeFeedCard from './HomeFeedCard'
 
 const PALETTE = [
   { bg: '#EEEDFE', fg: '#3C3489' }, { bg: '#E1F5EE', fg: '#0F6E56' },
@@ -62,6 +66,20 @@ export default function HomeFeed({ popularShops, routes, activeWorks }: HomeFeed
       .then(([goods, shops]) => setHeroCounts({ goods: goods.length, shops: shops.length }))
   }, [heroPick?.relationship.work.id])
 
+  // 내 작품들의 새 소식 (작품별 이벤트 → pickWorkNews → FeedItem)
+  const [newsItems, setNewsItems] = useState<FeedItem[]>([])
+  useEffect(() => {
+    if (myWorks.length === 0) { setNewsItems([]); return }
+    Promise.all(
+      myWorks.map(r =>
+        getEventsByTag(r.work.id)
+          .then(events => pickWorkNews(r.work, events, r.affinity))
+          .catch(() => pickWorkNews(r.work, [], r.affinity))
+      )
+    ).then(setNewsItems)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [myWorks.map(r => r.work.id).join(',')])
+
   return (
     <div>
       {/* ❤️ 내 작품 */}
@@ -74,31 +92,10 @@ export default function HomeFeed({ popularShops, routes, activeWorks }: HomeFeed
         ) : myWorks.length === 0 ? (
           <PromptBox text="아직 좋아하는 작품이 없어요" href="/search" cta="작품 찾아보기" />
         ) : (
-          <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', padding: '0 16px 4px' }}>
-            {myWorks.map(r => {
-              const color = workColor(r.work.id)
-              return (
-                <Link key={r.work.id} href={`/work/${r.work.slug}`} style={{ flexShrink: 0, width: '92px', textDecoration: 'none' }}>
-                  <div style={{
-                    position: 'relative', width: '92px', height: '92px',
-                    borderRadius: 'var(--r-sm)', background: color.bg,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '26px', fontWeight: 700, color: color.fg,
-                  }}>
-                    {r.work.name.slice(0, 2)}
-                    <span style={{ position: 'absolute', top: '4px', left: '4px', fontSize: '14px' }}>
-                      {AFFINITY_LABEL[r.affinity!].icon}
-                    </span>
-                  </div>
-                  <div style={{
-                    marginTop: '6px', fontSize: '12px', fontWeight: 700, color: 'var(--text)',
-                    whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-                  }}>
-                    {r.work.name}
-                  </div>
-                </Link>
-              )
-            })}
+          <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', padding: '0 16px 4px' }}>
+            {newsItems.map((item, i) => (
+              <HomeFeedCard key={item.contextLabel ?? i} item={item} />
+            ))}
           </div>
         )}
       </section>
