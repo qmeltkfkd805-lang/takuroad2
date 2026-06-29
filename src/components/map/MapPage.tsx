@@ -86,20 +86,6 @@ export default function MapPage() {
               onChange={cat => { setSelectedCat(cat); setListOpen(true) }}
             />
           </div>
-          <button
-            onClick={() => setListOpen(v => !v)}
-            style={{
-              flexShrink: 0, margin: '0 12px',
-              padding: '6px 14px', borderRadius: '20px',
-              border: `1.5px solid ${listOpen ? 'var(--accent)' : 'var(--border)'}`,
-              background: listOpen ? 'var(--accent)' : 'var(--surface)',
-              color: listOpen ? '#fff' : 'var(--text)',
-              fontWeight: 700, fontSize: '12px', cursor: 'pointer',
-              fontFamily: 'inherit', whiteSpace: 'nowrap',
-            }}
-          >
-            ☰ 목록
-          </button>
         </div>
 
         {/* 지도 — 필터 높이(52px)만 비우고 컬럼 가득 */}
