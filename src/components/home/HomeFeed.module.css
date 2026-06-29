@@ -14,3 +14,8 @@
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
+
+
+/* 추천 이벤트 가로행 */
+.eventRow { display: flex; gap: 12px; overflow-x: auto; padding: 0 16px 8px; }
+.eventItem { flex-shrink: 0; width: 260px; }

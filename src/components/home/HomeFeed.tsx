@@ -19,6 +19,7 @@ import HomeFeedCard from './HomeFeedCard'
 import { SectionHeader, Icon } from '@/components/tds'
 import styles from './HomeFeed.module.css'
 import RankList from './RankList'
+import { EventCard } from '@/components/tds'
 
 const PALETTE = [
   { bg: '#EEEDFE', fg: '#3C3489' }, { bg: '#E1F5EE', fg: '#0F6E56' },
@@ -35,10 +36,11 @@ function workColor(seed: string) {
 interface HomeFeedProps {
   popularShops: any[]
   routes: any[]
+  events: any[]
   activeWorks: any[]
 }
 
-export default function HomeFeed({ popularShops, routes, activeWorks }: HomeFeedProps) {
+export default function HomeFeed({ popularShops, routes, activeWorks, events }: HomeFeedProps) {
   const { user } = useAuth()
   const [rels, setRels] = useState<WorkRelationship[]>([])
   const [loading, setLoading] = useState(true)
@@ -52,6 +54,8 @@ export default function HomeFeed({ popularShops, routes, activeWorks }: HomeFeed
   const myWorks = rels
     .filter(r => r.affinity)
     .sort((a, b) => (a.affinity === 'favorite' ? 0 : 1) - (b.affinity === 'favorite' ? 0 : 1))
+  // 추천 이벤트 — EventCard가 아는 type(팝업/카페/전시)만
+  const eventCards = (events ?? []).filter((ev: any) => ['popup', 'collab_cafe', 'exhibition'].includes(ev.type))
 
   // 활발한 작품에 ❤️/⭐ 붙이기용
   const myAffinity = new Map(
@@ -110,6 +114,31 @@ export default function HomeFeed({ popularShops, routes, activeWorks }: HomeFeed
       {/* 🔥 이번 주 가장 활발한 작품 */}
 
       {/* 🏪 많이 찾는 굿즈샵 */}
+      {eventCards.length > 0 && (
+        <section style={{ padding: '12px 16px' }}>
+          <SectionHeader title="지금 가볼 만한 이벤트" tone="lavender" icon={<Icon name="event" size={20} />} />
+          <div className={styles.eventRow}>
+            {eventCards.map((ev: any) => (
+              <div key={ev.id} className={styles.eventItem}>
+                <EventCard
+                  event={{
+                    id: ev.id,
+                    title: ev.title ?? '이벤트',
+                    type: ev.type,
+                    workName: ev.workName,
+                    place: ev.shopName,
+                    startDate: ev.startDate,
+                    endDate: ev.endDate,
+                    coverUrl: null,
+                  }}
+                  now={new Date()}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {popularShops.length > 0 && (
         <section style={{ padding: '12px 16px' }}>
           <SectionTitle inset>🏪 많이 찾는 굿즈샵</SectionTitle>

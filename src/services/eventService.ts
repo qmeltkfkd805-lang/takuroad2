@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/client'
+﻿import { createClient } from '@/lib/supabase/client'
 
 // 작품(tag)에 일어난 사건. type별로 표시만 다르게.
 export interface WorkEvent {
@@ -91,5 +91,54 @@ export async function getEventsByShop(shopId: string): Promise<ShopWorkEvent[]> 
     startDate: e.start_date,
     endDate: e.end_date,
     createdAt: e.created_at,
+  }))
+}
+
+// 진행중·다가오는 이벤트 (홈 "추천 이벤트"용).
+// end_date 없거나 오늘 이후. 작품명/샵명 붙여서 EventCard 형태로.
+export interface ActiveEvent {
+  id: string
+  title: string | null
+  type: string
+  workName: string | null
+  shopName: string | null
+  startDate: string | null
+  endDate: string | null
+}
+
+export async function getActiveEvents(limit = 8): Promise<ActiveEvent[]> {
+  const supabase = createClient()
+  const today = new Date().toISOString().slice(0, 10)
+  const { data, error } = await supabase
+    .from('events')
+    .select('id, tag_id, type, shop_id, title, start_date, end_date')
+    .or(`end_date.is.null,end_date.gte.${today}`)
+    .order('start_date', { ascending: true })
+    .limit(limit)
+  if (error) return []
+  const rows = data ?? []
+
+  // 작품명(tag) + 샵명 붙이기
+  const tagIds = [...new Set(rows.map((e: any) => e.tag_id).filter(Boolean))]
+  const shopIds = [...new Set(rows.map((e: any) => e.shop_id).filter(Boolean))]
+  let tagMap = new Map<string, any>()
+  let shopMap = new Map<string, any>()
+  if (tagIds.length) {
+    const { data: tags } = await supabase.from('tags').select('id, name').in('id', tagIds)
+    tagMap = new Map((tags ?? []).map((t: any) => [t.id, t]))
+  }
+  if (shopIds.length) {
+    const { data: shops } = await supabase.from('shops').select('id, name').in('id', shopIds)
+    shopMap = new Map((shops ?? []).map((s: any) => [s.id, s]))
+  }
+
+  return rows.map((e: any) => ({
+    id: e.id,
+    title: e.title,
+    type: e.type,
+    workName: e.tag_id ? (tagMap.get(e.tag_id)?.name ?? null) : null,
+    shopName: e.shop_id ? (shopMap.get(e.shop_id)?.name ?? null) : null,
+    startDate: e.start_date,
+    endDate: e.end_date,
   }))
 }
