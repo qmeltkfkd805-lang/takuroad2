@@ -1,0 +1,32 @@
+﻿.homeLayout { max-width: 1180px; margin: 0 auto; }
+.rail { display: flex; flex-direction: column; gap: 14px; padding: 16px; }
+
+@media (min-width: 1024px) {
+  .homeLayout { display: grid; grid-template-columns: minmax(0,1fr) 340px; align-items: start; gap: 4px; }
+  .rail { position: sticky; top: 76px; padding: 20px 20px 20px 0; }
+}
+
+.widget { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; }
+.widgetHead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.widgetTitle { font-size: 14px; font-weight: 800; color: var(--text); }
+.widgetMore { font-size: 12px; font-weight: 700; color: var(--muted); text-decoration: none; }
+.widgetEmpty { font-size: 13px; color: var(--muted); padding: 6px 0; }
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+.statTile { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 6px 2px; }
+.statIconBox { width: 48px; height: 48px; border-radius: 13px; display: flex; align-items: center; justify-content: center; }
+.statIcon { width: 26px; height: 26px; -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center; }
+.statNum { font-size: 17px; font-weight: 900; color: var(--text); }
+.statLabel { font-size: 10px; font-weight: 700; color: var(--muted); text-align: center; line-height: 1.2; }
+
+.checkRow { display: flex; align-items: center; gap: 10px; padding: 8px 0; text-decoration: none; }
+.checkRow + .checkRow { border-top: 1px solid var(--border); }
+.checkIcon { width: 34px; height: 34px; border-radius: var(--r-sm); background: var(--accent-l); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.checkIcon img { width: 20px; height: 20px; }
+.checkBody { min-width: 0; flex: 1; display: flex; flex-direction: column; }
+.checkName { font-size: 13px; font-weight: 700; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.checkMeta { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+.mapPlaceholder { height: 150px; border-radius: var(--r-sm); background: var(--surface2); border: 1px dashed var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: var(--muted); }
+.mapSoon { font-size: 13px; font-weight: 800; }
+.mapSub { font-size: 11px; }

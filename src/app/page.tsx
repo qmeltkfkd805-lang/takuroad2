@@ -1,7 +1,9 @@
-import { getShops } from '@/services/shopService'
+﻿import { getShops } from '@/services/shopService'
 import { getPublicRoutes } from '@/services/routeService'
 import { getActiveWorks } from '@/services/activeWorksService'
 import HomeFeed from '@/components/home/HomeFeed'
+import HomeRail from '@/components/home/HomeRail'
+import styles from '@/components/home/rail.module.css'
 
 export default async function HomePage() {
   const [allShops, routes, activeWorks] = await Promise.all([
@@ -15,10 +17,9 @@ export default async function HomePage() {
     .slice(0, 6)
 
   return (
-    <HomeFeed
-      popularShops={popularShops}
-      routes={(routes ?? []).slice(0, 5)}
-      activeWorks={activeWorks}
-    />
+    <div className={styles.homeLayout}>
+      <HomeFeed popularShops={popularShops} routes={(routes ?? []).slice(0, 5)} activeWorks={activeWorks} />
+      <HomeRail />
+    </div>
   )
 }

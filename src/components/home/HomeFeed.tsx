@@ -63,7 +63,7 @@ export default function HomeFeed({ popularShops, routes, activeWorks }: HomeFeed
   }, [heroPick?.relationship.work.id])
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto' }}>
+    <div>
       {/* 🌟 Hero — 오늘 가장 중요한 관계 */}
       {!loading && heroPick && heroCounts && (
         <HeroSlot
