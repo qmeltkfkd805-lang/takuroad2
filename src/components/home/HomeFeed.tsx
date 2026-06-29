@@ -19,7 +19,7 @@ import HomeFeedCard from './HomeFeedCard'
 import { SectionHeader, Icon } from '@/components/tds'
 import styles from './HomeFeed.module.css'
 import RankList from './RankList'
-import { EventCard } from '@/components/tds'
+import { EventCard, RouteCard } from '@/components/tds'
 
 const PALETTE = [
   { bg: '#EEEDFE', fg: '#3C3489' }, { bg: '#E1F5EE', fg: '#0F6E56' },
@@ -94,8 +94,8 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
   return (
     <div>
       {/* ❤️ 내 작품 */}
-      <section style={{ padding: '20px 0 8px' }}>
-        <SectionHeader title="내 최애 작품" tone="coral" icon={<Icon name="heart" size={20} />} actionLabel="전체 보기" onAction={() => { window.location.href = "/my-works" }} />
+      <section className={styles.sectionCard}>
+        <SectionHeader title="내 최애 작품" plainIcon icon={<Icon name="colorheart" size={28} />} actionLabel="전체 보기" onAction={() => { window.location.href = "/my-works" }} />
         {loading ? (
           <Muted>불러오는 중...</Muted>
         ) : !user ? (
@@ -115,8 +115,8 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
 
       {/* 🏪 많이 찾는 굿즈샵 */}
       {eventCards.length > 0 && (
-        <section style={{ padding: '12px 16px' }}>
-          <SectionHeader title="지금 가볼 만한 이벤트" tone="lavender" icon={<Icon name="event" size={20} />} />
+        <section className={styles.sectionCard}>
+          <SectionHeader title="지금 가볼 만한 이벤트" plainIcon icon={<Icon name="colorevent" size={28} />} />
           <div className={styles.eventRow}>
             {eventCards.map((ev: any) => (
               <div key={ev.id} className={styles.eventItem}>
@@ -140,8 +140,8 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
       )}
 
       {popularShops.length > 0 && (
-        <section style={{ padding: '12px 16px' }}>
-          <SectionTitle inset>🏪 많이 찾는 굿즈샵</SectionTitle>
+        <section className={styles.sectionCard}>
+          <SectionHeader title="지금 많이 찾는 샵" plainIcon icon={<Icon name="colorshop" size={28} />} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {popularShops.map(shop => (
               <Link key={shop.id} href={ROUTES.shop(shop.slug)} style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -154,23 +154,23 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
 
       {/* 🧭 추천 루트 */}
       {routes.length > 0 && (
-        <section style={{ padding: '12px 16px 32px' }}>
-          <SectionTitle inset>🧭 추천 루트</SectionTitle>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {routes.map(r => (
-              <Link key={r.id} href={`/route/${r.share_token}`} style={{
-                padding: '12px 14px', borderRadius: 'var(--r-sm)',
-                border: '1px solid var(--border)', background: 'var(--surface)',
-                textDecoration: 'none', color: 'var(--text)', display: 'block',
-              }}>
-                <div style={{ fontSize: '14px', fontWeight: 700 }}>
-                  {r.is_official ? '⭐ ' : ''}{r.title}
-                </div>
-                <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '2px' }}>
-                  샵 {r.route_shops?.length ?? 0}곳
-                  {r.profiles?.nickname ? ` · ${r.profiles.nickname}` : ''}
-                </div>
-              </Link>
+        <section className={styles.sectionCard}>
+          <SectionHeader title="추천 루트" plainIcon icon={<Icon name="colorroute" size={28} />} />
+          <div className={styles.eventRow}>
+            {routes.map((r: any) => (
+              <div key={r.id} className={styles.eventItem}>
+                <RouteCard
+                  route={{
+                    id: r.id,
+                    title: r.title,
+                    summary: r.description,
+                    shopCount: r.route_shops?.length ?? 0,
+                    distanceM: r.total_distance_m,
+                    durationMin: r.total_duration_min,
+                  }}
+                  onClick={() => { window.location.href = /route/ }}
+                />
+              </div>
             ))}
           </div>
         </section>

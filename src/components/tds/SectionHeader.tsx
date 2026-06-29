@@ -18,17 +18,22 @@ interface SectionHeaderProps {
   tone?: Tone
   actionLabel?: string
   onAction?: () => void
+  plainIcon?: boolean
   style?: CSSProperties
 }
 
-export function SectionHeader({ title, icon, tone = 'coral', actionLabel, onAction, style }: SectionHeaderProps) {
+export function SectionHeader({ title, icon, tone = 'coral', actionLabel, onAction, plainIcon, style }: SectionHeaderProps) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, ...style }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
         {icon != null && (
-          <span style={{ width: 34, height: 34, borderRadius: 11, background: toneBg[tone], display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            {icon}
-          </span>
+          plainIcon ? (
+            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{icon}</span>
+          ) : (
+            <span style={{ width: 34, height: 34, borderRadius: 11, background: toneBg[tone], display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              {icon}
+            </span>
+          )
         )}
         <span style={{ fontSize: 19, fontWeight: 700, color: 'var(--text)' }}>{title}</span>
       </div>

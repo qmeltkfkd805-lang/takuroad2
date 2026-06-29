@@ -19,3 +19,6 @@
 /* 추천 이벤트 가로행 */
 .eventRow { display: flex; gap: 12px; overflow-x: auto; padding: 0 16px 8px; }
 .eventItem { flex-shrink: 0; width: 260px; }
+
+/* 섹션 카드 박스 */
+.sectionCard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 18px 18px 16px; margin-bottom: 16px; }
