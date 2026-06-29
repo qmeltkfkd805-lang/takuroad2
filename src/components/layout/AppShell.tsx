@@ -14,7 +14,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() ?? '/'
   const bare = NO_SHELL.some(p => pathname === p || pathname.startsWith(p + '/'))
 
-  // 인기 작품 (검색창 옆 롤링용) — 셸이 데이터 준비, TopBar는 그리기만
   const [trending, setTrending] = useState<ActiveWork[]>([])
   useEffect(() => {
     getActiveWorks(10).then(setTrending).catch(() => setTrending([]))
