@@ -8,7 +8,7 @@
 .link:hover .card { border-color: var(--accent); transform: translateY(-2px); }
 
 .head { min-height: 18px; }
-.context { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--muted); }
+.context { display: inline-flex; align-items: center; gap: 3px; font-size: 13px; font-weight: 700; color: var(--muted); }
 .aff { width: 22px; height: 22px; flex-shrink: 0; }
 
 .body { display: flex; align-items: center; gap: 12px; }
