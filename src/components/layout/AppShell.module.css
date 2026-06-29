@@ -5,10 +5,9 @@
 .topbar {
   position: sticky; top: 0; z-index: 30;
   display: flex; align-items: center;
-  height: 52px; padding: 0 16px;
+  height: 60px; padding: 0 20px;
   background: var(--surface); border-bottom: 1px solid var(--border);
 }
-.topbarStub { font-size: 12px; color: var(--muted); font-weight: 700; }
 .main { flex: 1; min-width: 0; }
 
 @media (min-width: 1024px) {

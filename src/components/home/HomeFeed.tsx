@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -32,7 +32,7 @@ interface HomeFeedProps {
 }
 
 export default function HomeFeed({ popularShops, routes, activeWorks }: HomeFeedProps) {
-  const { user, profile } = useAuth()
+  const { user } = useAuth()
   const [rels, setRels] = useState<WorkRelationship[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -63,47 +63,7 @@ export default function HomeFeed({ popularShops, routes, activeWorks }: HomeFeed
   }, [heroPick?.relationship.work.id])
 
   return (
-    <div style={{ minHeight: '100dvh', background: 'var(--bg)' }}>
-      {/* 헤더 + 네비게이션 */}
-      <div style={{
-        padding: '12px 16px', background: 'var(--surface)',
-        borderBottom: '1px solid var(--border)',
-        position: 'sticky', top: 0, zIndex: 20,
-      }}>
-        <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px',
-        }}>
-          <h1 style={{ fontSize: '20px', fontWeight: 900, color: 'var(--accent)', margin: 0 }}>
-            TAKUROAD
-          </h1>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            <Link href="/map" style={{ fontSize: '20px', textDecoration: 'none' }}>🗺️</Link>
-            <Link href="/notifications" style={{ fontSize: '20px', textDecoration: 'none' }}>🔔</Link>
-            {user ? (
-              <Link href={ROUTES.profile} style={{
-                width: '30px', height: '30px', borderRadius: '50%', background: 'var(--accent)',
-                color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '13px', fontWeight: 700, textDecoration: 'none',
-              }}>
-                {profile?.nickname?.[0] ?? '?'}
-              </Link>
-            ) : (
-              <Link href={ROUTES.login} style={{
-                fontSize: '13px', fontWeight: 700, color: 'var(--text)', textDecoration: 'none',
-              }}>
-                로그인
-              </Link>
-            )}
-          </div>
-        </div>
-        <Link href="/search" style={{
-          display: 'block', padding: '10px 14px', borderRadius: 'var(--r-sm)',
-          background: 'var(--surface2)', color: 'var(--muted)', fontSize: '14px', textDecoration: 'none',
-        }}>
-          🔍 작품, 샵, 지역 검색...
-        </Link>
-      </div>
-
+    <div style={{ maxWidth: 720, margin: '0 auto' }}>
       {/* 🌟 Hero — 오늘 가장 중요한 관계 */}
       {!loading && heroPick && heroCounts && (
         <HeroSlot

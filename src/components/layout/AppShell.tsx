@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import styles from './AppShell.module.css'
 import Sidebar from './Sidebar'
+import TopBar from './TopBar'
 
 const NO_SHELL = ['/login', '/admin', '/dev', '/test']
 
@@ -15,9 +16,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <div className={styles.shell}>
       <aside className={styles.sidebar}><Sidebar /></aside>
       <div className={styles.right}>
-        <header className={styles.topbar}>
-          <span className={styles.topbarStub}>TopBar · Step 2</span>
-        </header>
+        <header className={styles.topbar}><TopBar /></header>
         <main className={styles.main}>{children}</main>
       </div>
     </div>
