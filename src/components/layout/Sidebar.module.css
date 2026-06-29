@@ -1,0 +1,27 @@
+﻿.root { display: flex; flex-direction: column; height: 100%; padding: 16px 12px; }
+
+.logo { display: flex; align-items: center; gap: 8px; padding: 6px 10px 16px; text-decoration: none; }
+.logo img { height: 26px; width: auto; display: block; }
+.logoText { font-family: 'Gaegu', sans-serif; font-size: 25px; font-weight: 700; color: var(--accent); letter-spacing: 0.5px; }
+
+.nav { display: flex; flex-direction: column; gap: 2px; }
+.navItem {
+  display: flex; align-items: center; gap: 11px;
+  padding: 10px 12px; border-radius: var(--r-sm);
+  font-size: 14px; font-weight: 700; color: var(--text);
+  text-decoration: none; transition: background .15s;
+}
+.navItem:hover { background: var(--surface2); }
+.active { background: var(--accent-l); color: var(--accent); }
+.disabled { color: var(--muted); opacity: .45; cursor: default; }
+.disabled:hover { background: none; }
+.icon { display: inline-flex; }
+.icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.lv { margin-top: auto; margin-bottom: 4px; background: var(--surface2); border-radius: var(--r); padding: 13px 14px; }
+.lvTop { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.lvBadge { font-size: 13px; font-weight: 900; color: #fff; background: var(--accent); padding: 3px 9px; border-radius: var(--r-full); }
+.lvTitle { font-size: 13px; font-weight: 700; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar { height: 7px; border-radius: var(--r-full); background: var(--border); overflow: hidden; }
+.barFill { height: 100%; background: var(--accent); border-radius: var(--r-full); transition: width .3s; }
+.lvExp { font-size: 11px; color: var(--muted); font-weight: 700; margin-top: 7px; text-align: right; }

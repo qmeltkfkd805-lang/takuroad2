@@ -1,10 +1,12 @@
-import { createClient } from '@/lib/supabase/client'
+﻿import { createClient } from '@/lib/supabase/client'
 
 export interface LevelInfo {
   level: number
   title: string
   totalExp: number
   nextLevelExp: number | null
+  currentLevelExp: number
+  nextLevelThreshold: number | null
 }
 
 // EXP 지급 (모든 EXP 발생은 이 함수를 통해서만)
@@ -72,7 +74,7 @@ export async function getMyLevelInfo(userId: string): Promise<LevelInfo> {
 
   const { data: currentTier } = await supabase
     .from('level_thresholds')
-    .select('title')
+    .select('title, min_exp')
     .lte('level', level)
     .order('level', { ascending: false })
     .limit(1)
@@ -91,6 +93,8 @@ export async function getMyLevelInfo(userId: string): Promise<LevelInfo> {
     title: currentTier?.title ?? '애니 입문자',
     totalExp,
     nextLevelExp: nextTier ? nextTier.min_exp - totalExp : null,
+    currentLevelExp: currentTier?.min_exp ?? 0,
+    nextLevelThreshold: nextTier?.min_exp ?? null,
   }
 }
 
