@@ -8,7 +8,7 @@
   background: var(--surface); border-bottom: 1px solid var(--border);
 }
 .logo { display: none; align-items: center; gap: 8px; text-decoration: none; flex-shrink: 0; }
-.logo img { height: 26px; width: auto; display: block; }
+.logo img { height: 34px; width: auto; display: block; }
 .logoText { font-size: 19px; font-weight: 900; color: var(--accent); letter-spacing: -0.3px; }
 .headerBar { flex: 1; min-width: 0; }
 
@@ -21,7 +21,7 @@
   .logo { display: flex; width: 244px; }
   .logoText {
     font-family: 'Gaegu', sans-serif; font-size: 25px; font-weight: 700;
-    letter-spacing: 0.5px; -webkit-text-stroke: 2px var(--accent);
+    letter-spacing: 0.5px; -webkit-text-stroke: 1px var(--accent);
   }
   .body { display: grid; grid-template-columns: 264px 1fr; }
   .main { padding-bottom: 0; }
