@@ -7,7 +7,6 @@ import { useCurrentLocation } from '@/hooks/useCurrentLocation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import KakaoMap, { KakaoMapRef } from './KakaoMap'
 import CategoryFilter from './CategoryFilter'
-import ShopListPanel from '@/components/shop/ShopListPanel'
 import ShopDetail from '@/components/shop/ShopDetail'
 import BottomSheet from '@/components/bottom-sheet/BottomSheet'
 import { Shop } from '@/types/shop'
@@ -27,13 +26,12 @@ export default function MapPage() {
   } = useShops()
 
   const { location, requestLocation } = useCurrentLocation()
-  const [listOpen, setListOpen] = useState(false)
   const [groupShops, setGroupShops] = useState<Shop[] | null>(null)
   const mapRef = useRef<KakaoMapRef>(null)
 
   const handleSelectShop = useCallback((shop: Shop) => {
     setSelectedShop(shop)
-    setListOpen(false)
+
     setGroupShops(null)
     if (shop.lat && shop.lng) {
       mapRef.current?.moveCenter(shop.lat, shop.lng, 3)
@@ -46,7 +44,7 @@ export default function MapPage() {
 
   const handleMapClick = useCallback(() => {
     setSelectedShop(null)
-    setListOpen(false)
+
   }, [setSelectedShop])
 
   // 현재 위치를 받아오면 지도 이동
@@ -83,7 +81,7 @@ export default function MapPage() {
           <div style={{ flex: 1, minWidth: 0 }}>
             <CategoryFilter
               selected={selectedCat}
-              onChange={cat => { setSelectedCat(cat); setListOpen(true) }}
+              onChange={setSelectedCat}
             />
           </div>
         </div>
@@ -99,15 +97,6 @@ export default function MapPage() {
             onSelectGroup={handleSelectGroup}
           />
         </div>
-
-        <ShopListPanel
-          shops={filtered}
-          loading={loading}
-          activeShopId={selectedShop?.id ?? null}
-          isOpen={listOpen}
-          onToggle={() => setListOpen(false)}
-          onSelectShop={handleSelectShop}
-        />
 
         <div style={{
           position: 'absolute', right: '12px', bottom: '100px', zIndex: 130,
