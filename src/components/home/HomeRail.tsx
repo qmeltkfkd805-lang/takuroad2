@@ -5,13 +5,20 @@ import RecentCheckinsWidget from './RecentCheckinsWidget'
 import MiniMapWidget from './MiniMapWidget'
 import styles from './rail.module.css'
 import { Shop } from '@/types/shop'
+import { HotMapData } from '@/lib/home/hotMap'
 
-export default function HomeRail({ shops = [] }: { shops?: Shop[] }) {
+interface Props {
+  shops?: Shop[]
+  hotMap: HotMapData
+  eventCount?: number
+}
+
+export default function HomeRail({ shops = [], hotMap, eventCount = 0 }: Props) {
   return (
     <aside className={styles.rail}>
       <CollectionStatsWidget />
       <RecentCheckinsWidget />
-      <MiniMapWidget shops={shops} />
+      <MiniMapWidget shops={shops} hotMap={hotMap} eventCount={eventCount} />
     </aside>
   )
 }

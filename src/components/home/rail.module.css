@@ -35,3 +35,11 @@
 .miniMap { display: block; position: relative; height: 170px; border-radius: var(--r-sm); overflow: hidden; border: 1px solid var(--border); }
 .miniMapInner { position: absolute; inset: 0; z-index: 1; display: block; }
 .miniMapOverlay { position: absolute; inset: 0; z-index: 2; cursor: pointer; }
+
+/* 미니맵 HOT 배지 + 하단 정보 */
+.hotBadge { position: absolute; top: 8px; left: 8px; z-index: 3; display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,.95); border-radius: 9999px; padding: 4px 10px; box-shadow: 0 1px 6px rgba(0,0,0,.12); font-size: 11px; pointer-events: none; }
+.hotBadge b { color: var(--accent); font-weight: 800; }
+.hotBadge span { color: var(--text); font-weight: 700; }
+.miniInfo { display: flex; align-items: center; gap: 7px; margin-top: 10px; font-size: 12px; color: var(--muted); }
+.miniInfo b { color: var(--text); font-weight: 800; }
+.miniInfo .dot { color: var(--border); }
