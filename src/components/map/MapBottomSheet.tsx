@@ -1,6 +1,6 @@
 ﻿'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Shop } from '@/types/shop'
 import { ShopCard } from '@/components/tds'
 import ShopRow from '@/components/shop/ShopCard'
@@ -14,8 +14,9 @@ interface MapBottomSheetProps {
   onSelectShop: (shop: Shop) => void
 }
 
-export default function MapBottomSheet({ shops, onSelectShop }: MapBottomSheetProps) {
+export default function MapBottomSheet({ shops, onSelectShop, onStateChange }: MapBottomSheetProps) {
   const [state, setState] = useState<SheetState>('peek')
+  useEffect(() => { onStateChange?.(state) }, [state, onStateChange])
   const startY = useRef<number | null>(null)
   const movedRef = useRef(0)
 
