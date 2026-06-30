@@ -1,0 +1,22 @@
+﻿/* 필터 버튼 — 넓은 화면: 아이콘+글자+화살표 / 좁은 화면(680px 이하): 동그란 아이콘만 */
+.filterBtn {
+  display: flex; align-items: center; gap: 5px; flex-shrink: 0;
+  margin: 0 12px 0 4px; padding: 6px 13px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 12px; font-weight: 700;
+  cursor: pointer; white-space: nowrap; font-family: inherit;
+}
+.filterLabel, .filterChevron { display: inline-flex; }
+
+@media (max-width: 900px) {
+  .filterBtn {
+    width: 34px; height: 34px;
+    padding: 0; margin: 0 10px 0 4px;
+    border-radius: 50%;
+    justify-content: center;
+  }
+  .filterLabel, .filterChevron { display: none; }
+}

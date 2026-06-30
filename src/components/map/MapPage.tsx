@@ -75,9 +75,9 @@ export default function MapPage() {
 
         {/* 카테고리 필터 + 목록 토글 (TopBar 바로 아래) */}
         <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, zIndex: 140,
-          background: 'var(--surface)',
-          borderBottom: '1px solid var(--border)',
+          position: 'absolute', top: 10, left: 10, right: 10, zIndex: 140,
+          background: 'var(--surface)', borderRadius: 16,
+          boxShadow: '0 2px 12px rgba(0,0,0,.12)',
           display: 'flex', alignItems: 'center',
         }}>
           <div style={{ flex: 1, minWidth: 0 }}>
@@ -89,7 +89,7 @@ export default function MapPage() {
         </div>
 
         {/* 지도 — 필터 높이(52px)만 비우고 컬럼 가득 */}
-        <div style={{ position: 'absolute', inset: 0, paddingTop: '52px' }}>
+        <div style={{ position: 'absolute', inset: 0 }}>
           <KakaoMap
             ref={mapRef}
             shops={mapShops}
