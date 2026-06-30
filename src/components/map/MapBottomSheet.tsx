@@ -12,6 +12,7 @@ const ORDER: SheetState[] = ['closed', 'peek', 'expanded']
 interface MapBottomSheetProps {
   shops: Shop[]
   onSelectShop: (shop: Shop) => void
+  onStateChange?: (state: SheetState) => void
 }
 
 export default function MapBottomSheet({ shops, onSelectShop, onStateChange }: MapBottomSheetProps) {
