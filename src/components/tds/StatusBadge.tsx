@@ -26,10 +26,14 @@ export function StatusBadge({ shop, showDetail = true, now, style }: StatusBadge
   if (s.kind === 'unknown') return null
   const color = COLOR[s.kind]
   return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 13, ...style }}>
+    <span style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 13, minWidth: 0, ...style }}>
       <span style={{ width: 7, height: 7, borderRadius: 9999, background: color, flexShrink: 0 }} />
-      <span style={{ color, fontWeight: 700 }}>{s.label}</span>
-      {showDetail && s.detail && <span style={{ color: 'var(--muted)' }}>· {s.detail}</span>}
+      <span style={{ color, fontWeight: 700, flexShrink: 0, whiteSpace: 'nowrap' }}>{s.label}</span>
+      {showDetail && s.detail && (
+        <span style={{ color: 'var(--muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }}>
+          · {s.detail}
+        </span>
+      )}
     </span>
   )
 }

@@ -13,6 +13,7 @@ import { Shop } from '@/types/shop'
 import Link from 'next/link'
 import { ROUTES } from '@/lib/constants/routes'
 import styles from './MapPage.module.css'
+import fab from './MapFab.module.css'
 import MapBottomSheet from './MapBottomSheet'
 
 export default function MapPage() {
@@ -117,38 +118,34 @@ export default function MapPage() {
             onClick={requestLocation}
             title="현재 위치"
             aria-label="현재 위치"
-            style={{
-              width: '44px', height: '44px', borderRadius: '50%',
-              background: 'var(--surface)', border: '1px solid var(--border)',
-              boxShadow: '0 2px 10px rgba(0,0,0,.18)', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0,
-            }}
+            className={`${fab.fab} ${fab.locFab}`}
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#338bff" strokeWidth="2" strokeLinecap="round">
-              <circle cx="12" cy="12" r="7" />
-              <circle cx="12" cy="12" r="2.2" fill="#338bff" stroke="none" />
-              <line x1="12" y1="1.5" x2="12" y2="4.5" />
-              <line x1="12" y1="19.5" x2="12" y2="22.5" />
-              <line x1="1.5" y1="12" x2="4.5" y2="12" />
-              <line x1="19.5" y1="12" x2="22.5" y2="12" />
-            </svg>
+            <span className={fab.icon}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#338bff" strokeWidth="2" strokeLinecap="round">
+                <circle cx="12" cy="12" r="7" />
+                <circle cx="12" cy="12" r="2.2" fill="#338bff" stroke="none" />
+                <line x1="12" y1="1.5" x2="12" y2="4.5" />
+                <line x1="12" y1="19.5" x2="12" y2="22.5" />
+                <line x1="1.5" y1="12" x2="4.5" y2="12" />
+                <line x1="19.5" y1="12" x2="22.5" y2="12" />
+              </svg>
+            </span>
+            <span className={fab.label}>현재 위치</span>
           </button>
           {user && (
             <Link
               href={ROUTES.shopNew}
               title="샵 등록"
               aria-label="샵 등록"
-              style={{
-                width: '44px', height: '44px', borderRadius: '50%',
-                background: 'var(--accent)',
-                boxShadow: '0 2px 12px rgba(255,86,146,.4)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}
+              className={`${fab.fab} ${fab.shopFab}`}
             >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round">
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
+              <span className={fab.icon}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </span>
+              <span className={fab.label}>샵 등록</span>
             </Link>
           )}
         </div>
