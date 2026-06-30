@@ -28,6 +28,7 @@ export default function MapPage() {
   const { location, requestLocation } = useCurrentLocation()
   const [groupShops, setGroupShops] = useState<Shop[] | null>(null)
   const mapRef = useRef<KakaoMapRef>(null)
+  const [locToast, setLocToast] = useState(false)
 
   const handleSelectShop = useCallback((shop: Shop) => {
     setSelectedShop(shop)
@@ -51,6 +52,9 @@ export default function MapPage() {
   useEffect(() => {
     if (location) {
       mapRef.current?.moveCenter(location.lat, location.lng, 4)
+      setLocToast(true)
+      const t = setTimeout(() => setLocToast(false), 5000)
+      return () => clearTimeout(t)
     }
   }, [location])
 
@@ -92,6 +96,7 @@ export default function MapPage() {
             ref={mapRef}
             shops={mapShops}
             activeShopId={selectedShop?.id ?? null}
+            myLocation={location}
             onSelectShop={handleSelectShop}
             onMapClick={handleMapClick}
             onSelectGroup={handleSelectGroup}
@@ -126,6 +131,18 @@ export default function MapPage() {
           )}
         </div>
 
+        {locToast && (
+          <div style={{
+            position: 'absolute', left: '50%', bottom: '16px', transform: 'translateX(-50%)',
+            zIndex: 150, maxWidth: '88%',
+            background: 'rgba(32,32,45,.92)', color: '#fff',
+            padding: '10px 16px', borderRadius: '12px',
+            fontSize: '12.5px', fontWeight: 600, lineHeight: 1.45,
+            boxShadow: '0 4px 16px rgba(0,0,0,.25)', textAlign: 'center',
+          }}>
+            PC에서는 IP 기반으로 위치를 찾기 때문에<br />실제 위치와 다를 수 있어요
+          </div>
+        )}
         <MapBottomSheet shops={filtered} onSelectShop={handleSelectShop} />
 
         {/* 샵 상세 바텀시트 */}

@@ -16,6 +16,7 @@ interface MarkerRef {
 export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
   const mapRef = useRef<any>(null)
   const markersRef = useRef<MarkerRef[]>([])
+  const myLocRef = useRef<any>(null)
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     initMap()
   }, [containerRef])
 
-  // 단일 샵 마커 — 카테고리 컬러 물방울 핀 + 안쪽 아이콘
+  // 단일 샵 마커 — 카테고리 컬러 물방울 핀 + 흰색 solid 아이콘
   const addMarker = useCallback((
     shop: Shop,
     onClick: (shop: Shop) => void,
@@ -108,6 +109,34 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     markersRef.current = []
   }, [])
 
+  // 현재 위치 — 파란 점 + 퍼지는 원
+  const setMyLocation = useCallback((lat: number, lng: number) => {
+    if (!mapRef.current) return
+    if (myLocRef.current) myLocRef.current.setMap(null)
+
+    const el = document.createElement('div')
+    el.style.cssText = 'position:relative;width:22px;height:22px'
+    el.innerHTML = `
+      <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;background:rgba(51,139,255,.25);animation:myloc-pulse 2s ease-out infinite"></span>
+      <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:#338bff;border:2px solid #fff;box-shadow:0 0 3px rgba(0,0,0,.3)"></span>
+    `
+    if (!document.getElementById('myloc-style')) {
+      const st = document.createElement('style')
+      st.id = 'myloc-style'
+      st.textContent = '@keyframes myloc-pulse{0%{transform:translate(-50%,-50%) scale(1);opacity:.7}100%{transform:translate(-50%,-50%) scale(2.6);opacity:0}}'
+      document.head.appendChild(st)
+    }
+
+    const overlay = new window.kakao.maps.CustomOverlay({
+      position: new window.kakao.maps.LatLng(lat, lng),
+      content: el,
+      yAnchor: 0.5,
+      xAnchor: 0.5,
+    })
+    overlay.setMap(mapRef.current)
+    myLocRef.current = overlay
+  }, [])
+
   const moveCenter = useCallback((lat: number, lng: number, level = 4) => {
     if (!mapRef.current) return
     mapRef.current.setCenter(new window.kakao.maps.LatLng(lat, lng))
@@ -145,5 +174,5 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     })
   }, [clearMarkers, addMarker, addGroupMarker])
 
-  return { isLoaded, moveCenter, onMapClick, renderMarkers, clearMarkers }
+  return { isLoaded, moveCenter, onMapClick, renderMarkers, clearMarkers, setMyLocation }
 }
