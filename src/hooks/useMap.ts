@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useRef, useCallback, RefObject } from 'react'
 import { Shop } from '@/types/shop'
@@ -40,7 +40,7 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     initMap()
   }, [containerRef])
 
-  // 단일 샵 마커
+  // 단일 샵 마커 — 카테고리 컬러 물방울 핀 + 안쪽 아이콘
   const addMarker = useCallback((
     shop: Shop,
     onClick: (shop: Shop) => void,
@@ -48,40 +48,20 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
   ) => {
     if (!mapRef.current) return
 
-    const catInfo = CATEGORY_NAME_MAP[shop.cat] ?? { color: '#e8006f' }
+    const catName = (shop as any).cat ?? (shop.cats && shop.cats[0])
+    const catInfo: any = CATEGORY_NAME_MAP[catName] ?? { color: '#e8006f', slug: 'goods' }
     const color = catInfo.color ?? '#e8006f'
+    const iconName = `solid-${catInfo.slug ?? 'goods'}`
 
     const el = document.createElement('div')
-    el.style.cssText = 'cursor:pointer;display:flex;flex-direction:column;align-items:center'
-
-    const bubble = document.createElement('div')
-    const shortName = shop.name
-      .replace(/\s*(홍대점|잠실점|부산점|강남점|신촌점|수원점|코엑스점|용산점|성수점).*$/, '')
-      .trim() || shop.name.split(' ')[0]
-    bubble.textContent = shortName
-    bubble.style.cssText = [
-      `background:${isActive ? '#fff' : color}`,
-      `color:${isActive ? color : '#fff'}`,
-      `border:2px solid ${color}`,
-      'padding:4px 10px',
-      'border-radius:20px',
-      'font-size:12px',
-      'font-weight:700',
-      'white-space:nowrap',
-      'box-shadow:0 2px 8px rgba(0,0,0,.15)',
-    ].join(';')
-
-    const tail = document.createElement('div')
-    tail.style.cssText = [
-      'width:0;height:0',
-      'border-left:5px solid transparent',
-      'border-right:5px solid transparent',
-      `border-top:6px solid ${color}`,
-      'margin:0 auto',
-    ].join(';')
-
-    el.appendChild(bubble)
-    el.appendChild(tail)
+    el.style.cssText = 'cursor:pointer;position:relative;width:28px;height:36px'
+    el.innerHTML = `
+      <svg width="28" height="36" viewBox="0 0 28 36" style="display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))">
+        <path d="M14 0C6.3 0 0 6.3 0 14c0 9.5 14 22 14 22s14-12.5 14-22C28 6.3 21.7 0 14 0z"
+          fill="${isActive ? '#fff' : color}" stroke="${isActive ? color : '#fff'}" stroke-width="2"/>
+      </svg>
+      <span style="position:absolute;left:50%;top:14px;transform:translate(-50%,-50%);width:14px;height:14px;background-color:${isActive ? color : '#fff'};-webkit-mask:url(/icons/${iconName}.png) center/contain no-repeat;mask:url(/icons/${iconName}.png) center/contain no-repeat"></span>
+    `
     el.addEventListener('click', () => onClick(shop))
 
     const overlay = new window.kakao.maps.CustomOverlay({
@@ -93,43 +73,25 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     markersRef.current.push({ overlay, id: shop.id })
   }, [])
 
-  // 같은 위치 여러 샵 → 숫자 뱃지 마커
+  // 같은 위치 여러 샵 — 컬러 물방울 핀 + 숫자
   const addGroupMarker = useCallback((
     shops: Shop[],
     onClick: (shops: Shop[]) => void
   ) => {
     if (!mapRef.current) return
     const first = shops[0]
-    const color = CATEGORY_NAME_MAP[first.cat]?.color ?? '#e8006f'
+    const catName = (first as any).cat ?? (first.cats && first.cats[0])
+    const color = CATEGORY_NAME_MAP[catName]?.color ?? '#e8006f'
 
     const el = document.createElement('div')
-    el.style.cssText = 'cursor:pointer;display:flex;flex-direction:column;align-items:center'
-
-    const bubble = document.createElement('div')
-    bubble.textContent = `📍 ${shops.length}곳`
-    bubble.style.cssText = [
-      `background:${color}`,
-      'color:#fff',
-      `border:2px solid ${color}`,
-      'padding:5px 12px',
-      'border-radius:20px',
-      'font-size:13px',
-      'font-weight:900',
-      'white-space:nowrap',
-      'box-shadow:0 2px 8px rgba(0,0,0,.2)',
-    ].join(';')
-
-    const tail = document.createElement('div')
-    tail.style.cssText = [
-      'width:0;height:0',
-      'border-left:6px solid transparent',
-      'border-right:6px solid transparent',
-      `border-top:7px solid ${color}`,
-      'margin:0 auto',
-    ].join(';')
-
-    el.appendChild(bubble)
-    el.appendChild(tail)
+    el.style.cssText = 'cursor:pointer;position:relative;width:30px;height:38px'
+    el.innerHTML = `
+      <svg width="30" height="38" viewBox="0 0 30 38" style="display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))">
+        <path d="M15 0C6.7 0 0 6.7 0 15c0 10 15 23 15 23s15-13 15-23C30 6.7 23.3 0 15 0z"
+          fill="${color}" stroke="#fff" stroke-width="2"/>
+      </svg>
+      <span style="position:absolute;left:50%;top:15px;transform:translate(-50%,-50%);color:#fff;font-size:12px;font-weight:900;white-space:nowrap">${shops.length}</span>
+    `
     el.addEventListener('click', () => onClick(shops))
 
     const overlay = new window.kakao.maps.CustomOverlay({
@@ -157,7 +119,7 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     window.kakao.maps.event.addListener(mapRef.current, 'click', cb)
   }, [])
 
-  // 같은 위치(소수 셋째자리 반올림 기준) 샵들을 그룹핑해서 렌더링
+  // 같은 위치(소수점 반올림 기준) 샵들을 묶어 마커 렌더
   const renderMarkers = useCallback((
     shops: Shop[],
     activeId: string | null,
