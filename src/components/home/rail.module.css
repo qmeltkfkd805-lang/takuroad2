@@ -30,3 +30,8 @@
 .mapPlaceholder { height: 150px; border-radius: var(--r-sm); background: var(--surface2); border: 1px dashed var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: var(--muted); }
 .mapSoon { font-size: 13px; font-weight: 800; }
 .mapSub { font-size: 11px; }
+
+/* 미니맵 (홈 RightRail) */
+.miniMap { display: block; position: relative; height: 170px; border-radius: var(--r-sm); overflow: hidden; border: 1px solid var(--border); }
+.miniMapInner { position: absolute; inset: 0; z-index: 1; display: block; }
+.miniMapOverlay { position: absolute; inset: 0; z-index: 2; cursor: pointer; }

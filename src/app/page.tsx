@@ -24,7 +24,7 @@ export default async function HomePage() {
         <HeroCarousel banners={banners} />
         <HomeFeed popularShops={popularShops} routes={(routes ?? []).slice(0, 5)} activeWorks={activeWorks} events={events} />
       </div>
-      <HomeRail />
+      <HomeRail shops={allShops} />
     </div>
   )
 }
