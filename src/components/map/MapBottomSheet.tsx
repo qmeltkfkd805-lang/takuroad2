@@ -19,6 +19,10 @@ export default function MapBottomSheet({ shops, onSelectShop }: MapBottomSheetPr
   const startY = useRef<number | null>(null)
   const movedRef = useRef(0)
 
+  // 가로 카드 영역 마우스 드래그 스크롤
+  const rowRef = useRef<HTMLDivElement>(null)
+  const hDrag = useRef({ down: false, startX: 0, startScroll: 0, moved: false })
+
   const step = (dir: 1 | -1) => {
     setState(prev => {
       const i = ORDER.indexOf(prev)
@@ -27,7 +31,7 @@ export default function MapBottomSheet({ shops, onSelectShop }: MapBottomSheetPr
     })
   }
 
-  // 드래그 시작/이동/끝 — 위로 올리면 한 단계 위, 내리면 한 단계 아래
+  // 시트 위아래 터치 드래그
   const onTouchStart = (e: React.TouchEvent) => {
     startY.current = e.touches[0].clientY
     movedRef.current = 0
@@ -38,11 +42,30 @@ export default function MapBottomSheet({ shops, onSelectShop }: MapBottomSheetPr
   }
   const onTouchEnd = () => {
     const dy = movedRef.current
-    const THRESHOLD = 40 // 이 이상 움직여야 단계 전환
-    if (dy < -THRESHOLD) step(1)       // 위로 드래그 → 펼침 쪽
-    else if (dy > THRESHOLD) step(-1)  // 아래로 드래그 → 접힘 쪽
+    const THRESHOLD = 40
+    if (dy < -THRESHOLD) step(1)
+    else if (dy > THRESHOLD) step(-1)
     startY.current = null
     movedRef.current = 0
+  }
+
+  // 가로 카드 마우스 드래그
+  const onRowMouseDown = (e: React.MouseEvent) => {
+    const el = rowRef.current
+    if (!el) return
+    e.preventDefault()
+    hDrag.current = { down: true, startX: e.pageX, startScroll: el.scrollLeft, moved: false }
+  }
+  const onRowMouseMove = (e: React.MouseEvent) => {
+    const el = rowRef.current
+    if (!el || !hDrag.current.down) return
+    const dx = e.pageX - hDrag.current.startX
+    if (Math.abs(dx) > 4) hDrag.current.moved = true
+    el.scrollLeft = hDrag.current.startScroll - dx
+  }
+  const endRowDrag = () => { hDrag.current.down = false }
+  const onRowClickCapture = (e: React.MouseEvent) => {
+    if (hDrag.current.moved) { e.preventDefault(); e.stopPropagation() }
   }
 
   // 닫힘: 작은 핸들만
@@ -65,7 +88,6 @@ export default function MapBottomSheet({ shops, onSelectShop }: MapBottomSheetPr
 
   return (
     <div className={expanded ? styles.sheetExpanded : styles.sheet}>
-      {/* 핸들+헤더를 잡고 드래그 / 핸들 클릭은 한 단계 내림 */}
       <div
         className={styles.dragZone}
         onTouchStart={onTouchStart}
@@ -93,7 +115,15 @@ export default function MapBottomSheet({ shops, onSelectShop }: MapBottomSheetPr
           ))}
         </div>
       ) : (
-        <div className={styles.row}>
+        <div
+          ref={rowRef}
+          className={styles.row}
+          onMouseDown={onRowMouseDown}
+          onMouseMove={onRowMouseMove}
+          onMouseUp={endRowDrag}
+          onMouseLeave={endRowDrag}
+          onClickCapture={onRowClickCapture}
+        >
           {shops.map(shop => (
             <div key={shop.id} className={styles.cardWrap}>
               <ShopCard shop={shop} meta="distance" onClick={onSelectShop} />

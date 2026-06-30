@@ -51,6 +51,7 @@
 }
 .row::-webkit-scrollbar { display: none; }
 .cardWrap { width: 200px; height: 280px; flex-shrink: 0; }
+.row img { pointer-events: none; -webkit-user-drag: none; user-select: none; }
 .cardWrap > * { height: 100%; }
 
 /* 펼침: 세로 목록 */
