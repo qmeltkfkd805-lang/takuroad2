@@ -1,10 +1,11 @@
 ﻿'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import WorkAffinityButton from './WorkAffinityButton'
 import WorkStateButton from './WorkStateButton'
+import WorkFeedBanner from './WorkFeedBanner'
 import { SectionHeader, EventCard, ShopCard, RouteCard, Icon } from '@/components/tds'
 import HomeFeedCard from '@/components/home/HomeFeedCard'
 import type { FeedItem } from '@/lib/feed/types'
@@ -54,10 +55,12 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
   const now = new Date()
 
   const [activeId, setActiveId] = useState('feed')
+  const clickLockRef = useRef(false)
   useEffect(() => {
     const els = TABS.map(t => document.getElementById(t.id)).filter(Boolean) as HTMLElement[]
     if (!els.length) return
     const obs = new IntersectionObserver((entries) => {
+      if (clickLockRef.current) return
       const vis = entries.filter(e => e.isIntersecting)
         .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
       if (vis[0]) setActiveId((vis[0].target as HTMLElement).id)
@@ -71,7 +74,9 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
   const scrollTo = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault()
     setActiveId(id)
+    clickLockRef.current = true
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    setTimeout(() => { clickLockRef.current = false }, 700)
   }
 
   const share = async () => {
@@ -123,7 +128,7 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
         {TABS.map(t => (
           <a key={t.id} href={`#${t.id}`} className={`${styles.tab} ${activeId === t.id ? styles.tabActive : ''}`} onClick={scrollTo(t.id)}>
             <TabIcon id={t.id} />
-            <span>{t.label}</span>
+            <span style={{ marginLeft: 7 }}>{t.label}</span>
           </a>
         ))}
       </nav>
@@ -134,11 +139,24 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
           {/* 1) Feed */}
           <section id="feed" className={styles.section}>
             <SectionHeader title="새 소식 (Feed)" icon={<Icon name="colorfire" size={24} />} plainIcon />
-            {feed.length > 0 ? (
-              <div className={styles.rowScroll}>
-                {feed.map((item, i) => (<div key={i} className={styles.rowItem}><HomeFeedCard item={item} /></div>))}
-              </div>
-            ) : <Empty text="아직 새 소식이 없어요" />}
+            {feed.length > 0 ? (() => {
+              // 팝업/콜라보카페/전시 같은 이벤트성 소식이 있으면 맨 위 전체폭 배너로
+              const fi = feed.findIndex(x => x.kind === 'popup' || x.kind === 'event')
+              const hero = fi >= 0 ? feed[fi] : null
+              const rest = hero ? feed.filter((_, i) => i !== fi) : feed
+              return (
+                <>
+                  {hero && (
+                    <div className={styles.feedBanner}>
+                      <WorkFeedBanner item={hero} />
+                    </div>
+                  )}
+                  <div className={styles.feedGrid}>
+                    {rest.map((item, i) => (<div key={i}><HomeFeedCard item={item} /></div>))}
+                  </div>
+                </>
+              )
+            })() : <Empty text="아직 새 소식이 없어요" />}
           </section>
 
           {/* 2) 이벤트 */}
@@ -231,7 +249,7 @@ function TabIcon({ id }: { id: string }) {
   if (id === 'goods') return <svg {...p}><path d="M4.5 8h15l-1.2 11.5a1.5 1.5 0 0 1-1.5 1.3H7.2a1.5 1.5 0 0 1-1.5-1.3z" /><path d="M8.5 8a3.5 3.5 0 0 1 7 0" /></svg>
   if (id === 'shops') return <svg {...p}><path d="M4 9.5l1.6-5h12.8L20 9.5" /><path d="M5.5 9.5V20h13V9.5" /><path d="M10 20v-5.5h4V20" /><path d="M4 9.5a2.4 2.4 0 0 0 4.7 0 2.4 2.4 0 0 0 4.6 0 2.4 2.4 0 0 0 4.7 0" /></svg>
   if (id === 'routes') return <svg {...p}><path d="M12 21c-4.6-5.6-6.8-9.6-6.8-12.8a6.8 6.8 0 0 1 13.6 0c0 3.2-2.2 7.2-6.8 12.8z" /><circle cx="12" cy="8.4" r="2.5" /></svg>
-  return <svg {...p}><path d="M20.5 11.4a7.7 7.7 0 0 1-11.1 6.9L4.5 20l1.4-4.7a7.7 7.7 0 1 1 14.6-3.9z" /><circle cx="8.6" cy="11.5" r="1.05" fill="currentColor" stroke="none" /><circle cx="12" cy="11.5" r="1.05" fill="currentColor" stroke="none" /><circle cx="15.4" cy="11.5" r="1.05" fill="currentColor" stroke="none" /></svg>
+  return <svg {...p}><path d="M4 5h16a1.5 1.5 0 0 1 1.5 1.5v9A1.5 1.5 0 0 1 20 17h-8l-4.5 3.5V17H4a1.5 1.5 0 0 1-1.5-1.5v-9A1.5 1.5 0 0 1 4 5z" /><circle cx="8.5" cy="11" r="1.05" fill="currentColor" stroke="none" /><circle cx="12" cy="11" r="1.05" fill="currentColor" stroke="none" /><circle cx="15.5" cy="11" r="1.05" fill="currentColor" stroke="none" /></svg>
 }
 
 function SectionIcon({ kind }: { kind: string }) {

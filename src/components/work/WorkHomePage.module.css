@@ -137,3 +137,86 @@
 /* 최애 카운트 (0이면 컴포넌트에서 안 그림) */
 .favCount { display: flex; align-items: center; gap: 7px; margin-top: 14px; font-size: 13px; color: #fff; }
 .favCount b { font-weight: 800; }
+
+/* === 본문 시안형: 섹션 카드박스 + 그리드로 폭 꽉 채우기 === */
+.layout { max-width: 1400px; }
+@media (min-width: 1024px) {
+  .layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; padding: 20px; }
+}
+
+/* 각 섹션을 흰 카드 박스로 */
+.section {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+  padding: 20px 22px; margin-bottom: 20px; scroll-margin-top: 120px;
+}
+
+/* 가로스크롤 → 폭 꽉 채우는 그리드 */
+.rowScroll {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px; overflow: visible;
+}
+.rowItem { width: auto; }
+.report { width: auto; min-height: 150px; }
+
+/* === 탭: 시안처럼 넓게 균등 분배 === */
+.tabs { justify-content: space-between; gap: 0; padding: 0 8%; }
+.tab { flex: 1; justify-content: center; gap: 9px !important; padding: 15px 8px; }
+@media (max-width: 900px) {
+  .tabs { justify-content: flex-start; padding: 0 8px; }
+  .tab { flex: 0 0 auto; }
+}
+
+/* === 본문 더 꽉 채우기: 광고칸 좁히고 카드 작게 === */
+@media (min-width: 1024px) {
+  .layout { grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; padding: 20px 24px; }
+}
+.rowScroll { grid-template-columns: repeat(auto-fill, minmax(178px, 1fr)); gap: 14px; }
+
+/* === 활성 밑줄을 아이콘+글자 길이만큼만 === */
+.tab { position: relative; }
+.tabActive { border-bottom-color: transparent !important; }
+.tabActive::after {
+  content: ''; position: absolute; left: 50%; transform: translateX(-50%);
+  bottom: 0; height: 2px; background: var(--accent);
+  width: calc(100% - 16px);
+}
+
+/* === 활성 밑줄: 아이콘+글자 감싼 영역(tabInner)만큼만 === */
+.tabActive { border-bottom-color: transparent !important; }
+.tabActive::after { display: none !important; }
+.tab { position: relative; }
+.tabInner { display: inline-flex; align-items: center; position: relative; padding-bottom: 4px; }
+.tabActive .tabInner::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0;
+  height: 2px; background: var(--accent); border-radius: 2px;
+}
+
+/* 밑줄 원복: 탭 전체 폭 밑줄로 */
+.tabActive { border-bottom-color: var(--accent) !important; }
+.tabActive::after { display: none !important; }
+.tabInner::after { display: none !important; }
+.tabActive .tabInner::after { display: none !important; }
+
+/* === 레이아웃: 가운데 정렬 제거, 본문 왼쪽부터 넓게 === */
+.layout { max-width: none !important; margin: 0 !important; }
+@media (min-width: 1024px) {
+  .layout { grid-template-columns: minmax(0, 1fr) 300px !important; gap: 24px; padding: 20px 28px !important; }
+}
+
+/* === Feed: 첫 소식 크게(featured) + 나머지 그리드 === */
+.feedGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+.feedFeatured { grid-column: span 2; }
+@media (max-width: 620px) { .feedFeatured { grid-column: span 1; } }
+
+/* Feed 이벤트성 소식 배너 (전체 폭, 있을 때만) */
+.feedBanner { margin-bottom: 14px; }
+.feedBanner > * { width: 100%; }
+
+/* Feed 배너: 너무 커지지 않게 높이 제한 */
+.feedBanner :global(img) { max-height: 200px; }
+.feedBanner > * { max-width: 520px; }
+
+/* 가로형 배너: 아까 max-width/height 제한 해제, 폭 꽉 쓰게 */
+.feedBanner { margin-bottom: 16px; }
+.feedBanner > * { max-width: none !important; width: 100%; display: block; }
+.feedBanner :global(img) { max-height: none !important; }
