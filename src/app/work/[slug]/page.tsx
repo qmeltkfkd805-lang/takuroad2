@@ -1,8 +1,9 @@
-import { notFound } from 'next/navigation'
+﻿import { notFound } from 'next/navigation'
 import { getTagBySlug, getShopsByTag } from '@/services/shopService'
 import { getProductsByTag } from '@/services/shopProductService'
 import { getPublicRoutes } from '@/services/routeService'
 import { getEventsByTag } from '@/services/eventService'
+import { buildWorkFeed } from '@/lib/work/buildWorkFeed'
 import WorkHomePage from '@/components/work/WorkHomePage'
 
 interface Props {
@@ -21,5 +22,21 @@ export default async function WorkSlugPage({ params }: Props) {
     getEventsByTag(tag.id),
   ])
 
-  return <WorkHomePage tag={tag} goods={goods} shops={shops} routes={routes} events={events} />
+  // 새 소식(Feed) = 이벤트 + 새 입점 샵 최신순
+  const feed = buildWorkFeed(events, shops)
+
+  // 커뮤니티는 아직 미구현 — 빈 배열(연결 지점). 만드는 날 getPostsByTag(tag.id)로 교체
+  const communityPosts: any[] = []
+
+  return (
+    <WorkHomePage
+      tag={tag}
+      feed={feed}
+      events={events}
+      shops={shops}
+      goods={goods}
+      routes={routes}
+      communityPosts={communityPosts}
+    />
+  )
 }

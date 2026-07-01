@@ -1,0 +1,79 @@
+﻿.page { background: var(--bg); min-height: 100%; }
+
+/* Hero */
+.hero {
+  position: relative; padding: 16px 16px 20px; color: #fff;
+  background: linear-gradient(135deg, var(--accent), #D63D78);
+  background-size: cover; background-position: center; overflow: hidden;
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.48));
+}
+.heroTop { position: relative; z-index: 1; display: flex; justify-content: space-between; margin-bottom: 10px; }
+.iconBtn {
+  width: 34px; height: 34px; border-radius: 9999px; border: none; cursor: pointer;
+  background: rgba(255,255,255,.22); color: #fff; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.heroInner { position: relative; z-index: 1; display: flex; gap: 14px; align-items: flex-end; }
+.poster {
+  width: 84px; height: 116px; border-radius: 12px; flex-shrink: 0; overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,.3); background: rgba(255,255,255,.2);
+  display: flex; align-items: center; justify-content: center;
+}
+.poster img { width: 100%; height: 100%; object-fit: cover; }
+.heroText { flex: 1; min-width: 0; }
+.heroTitle { font-size: 24px; font-weight: 900; margin: 0; line-height: 1.15; }
+.heroEn { font-size: 13px; opacity: .85; margin-top: 3px; font-weight: 600; }
+.heroChips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.heroChip { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 9999px; background: rgba(255,255,255,.22); color: #fff; }
+.heroActions { display: flex; gap: 8px; margin-top: 14px; align-items: center; }
+.heroActions > :first-child { flex: 1; }
+
+/* Tabs */
+.tabs {
+  position: sticky; top: 60px; z-index: 20; display: flex; gap: 2px; overflow-x: auto;
+  background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 8px; scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  flex-shrink: 0; padding: 13px 12px; font-size: 13px; font-weight: 700; color: var(--muted);
+  text-decoration: none; white-space: nowrap; cursor: pointer; font-family: inherit;
+  background: none; border: none; border-bottom: 2px solid transparent;
+}
+.tab:hover { color: var(--text); }
+
+/* Sections */
+.body { padding-bottom: 40px; }
+.section { padding: 18px 16px 4px; scroll-margin-top: 112px; }
+.rowScroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; align-items: stretch; }
+.rowScroll::-webkit-scrollbar { display: none; }
+.rowItem { width: 200px; flex-shrink: 0; }
+.list { display: flex; flex-direction: column; gap: 8px; }
+
+/* 굿즈 카드 (가격/이미지 없음 — 실제 필드만) */
+.goodsCard {
+  width: 150px; flex-shrink: 0; padding: 12px; border-radius: var(--r-sm);
+  border: 1px solid var(--border); background: var(--surface); text-decoration: none;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.goodsIcon { font-size: 26px; }
+.goodsName { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; }
+.goodsShop { font-size: 11px; color: var(--muted); }
+.goodsAvail { font-size: 11px; font-weight: 700; margin-top: 2px; }
+
+/* Empty */
+.empty { padding: 28px 16px; text-align: center; color: var(--muted); font-size: 13px; background: var(--surface2); border-radius: var(--r-sm); border: 1px dashed var(--border); }
+.emptyStrong { font-weight: 700; color: var(--text); margin-bottom: 4px; }
+
+/* 이벤트 제보 */
+.report {
+  display: flex; align-items: center; justify-content: center; width: 150px; flex-shrink: 0;
+  border-radius: var(--r-sm); border: 1.5px dashed var(--accent); background: var(--surface);
+  color: var(--accent); font-size: 13px; font-weight: 700; text-decoration: none; text-align: center; padding: 12px;
+}
+
+/* 커뮤니티 type 칩 */
+.typeChips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.typeChip { font-size: 12px; font-weight: 700; color: var(--muted); background: var(--surface2); border-radius: 9999px; padding: 4px 10px; }
