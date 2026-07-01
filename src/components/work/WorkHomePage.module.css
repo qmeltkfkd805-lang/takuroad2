@@ -77,3 +77,63 @@
 /* 커뮤니티 type 칩 */
 .typeChips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
 .typeChip { font-size: 12px; font-weight: 700; color: var(--muted); background: var(--surface2); border-radius: 9999px; padding: 4px 10px; }
+
+/* 탭: 아이콘+글자 세로, 현재 섹션 핑크 */
+.tab { flex-direction: column; gap: 3px; align-items: center; padding: 9px 16px; }
+.tab svg { display: block; }
+.tabActive { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* 데스크톱 레이아웃: 본문 + 우측 광고칸 */
+.layout { max-width: 1200px; margin: 0 auto; }
+.main { min-width: 0; padding-bottom: 40px; }
+.adCol { display: none; }
+@media (min-width: 1024px) {
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; padding: 0 20px; }
+  .adCol { display: block; padding-top: 18px; }
+  .section { padding-left: 0; padding-right: 0; }
+}
+.aboutCard { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+.aboutTitle { font-size: 13px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.aboutText { font-size: 13px; color: var(--muted); line-height: 1.6; white-space: pre-wrap; margin: 0; }
+.adSlot { position: sticky; top: 130px; min-height: 600px; background: var(--surface2); border: 1px dashed var(--border); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 12px; }
+
+/* 탭 가로형(아이콘 옆 글자) override */
+.tab { flex-direction: row; gap: 6px; align-items: center; padding: 13px 14px; }
+
+/* === 탭 최종 정리 (가로형·간격·진한 색·큰 아이콘) === */
+.tab { flex-direction: row !important; gap: 8px; align-items: center; padding: 13px 16px; color: #8A857C; }
+.tab svg { display: inline-block; width: 22px; height: 22px; }
+.tabActive { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* === 탭 최종 (시안처럼 넓게 퍼뜨리고 아이콘·글씨 간격) === */
+.tabs { justify-content: center; gap: 8px; padding: 0 16px; }
+.tab { flex-direction: row !important; gap: 10px !important; align-items: center; padding: 14px 22px; font-size: 14px; }
+.tab svg { display: inline-block; width: 22px; height: 22px; }
+@media (max-width: 900px) {
+  .tabs { justify-content: flex-start; }
+  .tab { padding: 13px 16px; }
+}
+
+/* === Hero 시안형 (크고 꽉 차게, 버튼 안 늘어나게) === */
+.hero { padding: 28px 32px 30px; min-height: 300px; display: flex; align-items: flex-end; }
+.heroInner { gap: 20px; align-items: flex-end; width: 100%; }
+.poster { width: 150px; height: 210px; border-radius: 16px; }
+.heroText { max-width: 560px; }
+.heroTitle { font-size: 34px; }
+.heroEn { font-size: 15px; margin-top: 4px; letter-spacing: .5px; }
+.heroChips { margin-top: 12px; }
+.heroChip { font-size: 12px; padding: 5px 12px; }
+.heroActions { gap: 10px; margin-top: 18px; }
+.heroActions > :first-child { flex: 0 1 auto; }
+.heroActions button { min-width: 96px; }
+
+@media (max-width: 720px) {
+  .hero { padding: 18px 16px 20px; min-height: 0; }
+  .poster { width: 96px; height: 132px; }
+  .heroTitle { font-size: 24px; }
+  .heroText { max-width: none; }
+}
+
+/* 최애 카운트 (0이면 컴포넌트에서 안 그림) */
+.favCount { display: flex; align-items: center; gap: 7px; margin-top: 14px; font-size: 13px; color: #fff; }
+.favCount b { font-weight: 800; }

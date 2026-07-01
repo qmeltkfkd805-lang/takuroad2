@@ -96,7 +96,7 @@ export default function WorkStateButton({ tagId }: { tagId: string }) {
         onClick={(e) => { e.stopPropagation(); openMenu() }}
         style={{
           display: 'flex', alignItems: 'center', gap: 6,
-          padding: '10px 12px', borderRadius: 'var(--r-sm)',
+          padding: '10px 16px', borderRadius: '9999px',
           border: `1.5px solid ${state ? STATE_COLOR[state] : 'var(--border)'}`,
           background: 'var(--surface)',
           color: state ? STATE_COLOR[state] : 'var(--muted)',

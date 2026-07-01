@@ -130,3 +130,9 @@ export async function clearRelationshipState(userId: string, tagId: string): Pro
     .eq('user_id', userId).eq('tag_id', tagId)
   return !error
 }
+// 이 작품을 '최애'로 등록한 사람 수 (작품홈·인기·랭킹·추천에서 재사용)
+export async function getFavoriteCount(tagId: string): Promise<number> {
+  const supabase = createClient()
+  const { data } = await supabase.rpc('get_favorite_count', { p_tag_id: tagId })
+  return (data as number) ?? 0
+}
