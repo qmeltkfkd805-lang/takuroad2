@@ -4,7 +4,7 @@
 .hero {
   position: relative; padding: 16px 16px 20px; color: #fff;
   background: linear-gradient(135deg, var(--accent), #D63D78);
-  background-size: cover; background-position: center; overflow: hidden;
+  background-size: cover; background-position: center;
 }
 .hero::after {
   content: ''; position: absolute; inset: 0; pointer-events: none;
