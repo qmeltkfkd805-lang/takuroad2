@@ -7,13 +7,7 @@
   padding: 0 16px 8px;
   overflow-x: auto;
 }
-/* 넓은 화면(데스크탑): 5개가 꽉 차면 스크롤 없음 */
-@media (min-width: 1180px) {
-  .feedGrid {
-    grid-auto-flow: row;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-}
+/* 항상 가로 스크롤 (카드 최소폭 160px 유지 → 좁아도 글자 안 깨짐) */
 
 
 /* 추천 이벤트 가로행 */
