@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { Shop } from '@/types/shop'
 import { HotMapData } from '@/lib/home/hotMap'
 import KakaoMap, { KakaoMapRef } from '@/components/map/KakaoMap'
+import { CATEGORIES } from '@/lib/constants/categories'
+import { getShopStatus } from '@/lib/utils/shopStatus'
 import styles from './rail.module.css'
 
 const noop = () => {}
@@ -15,11 +17,18 @@ interface Props {
   eventCount: number
 }
 
-export default function MiniMapWidget({ shops, hotMap, eventCount }: Props) {
-  const { center, hotRegions, hotShopCount, shopCount } = hotMap
+// 미니맵 아래 대표 샵: 운영중 + 방문수 높은 순 1개 (실데이터)
+function pickFeatured(shops: Shop[]): Shop | null {
+  const active = shops.filter((s) => s.status === 'active')
+  const pool = active.length ? active : shops
+  if (!pool.length) return null
+  return [...pool].sort((a, b) => (b.visit_count ?? 0) - (a.visit_count ?? 0))[0]
+}
+
+export default function MiniMapWidget({ shops, hotMap }: Props) {
+  const { center, hotRegions } = hotMap
   const mapRef = useRef<KakaoMapRef>(null)
 
-  // 지도가 로드된 뒤 핫 지역 중심으로 이동 (몇 초간 재시도 — 로드 타이밍 대응)
   useEffect(() => {
     if (!center) return
     let n = 0
@@ -30,11 +39,15 @@ export default function MiniMapWidget({ shops, hotMap, eventCount }: Props) {
     return () => clearInterval(id)
   }, [center])
 
+  const featured = pickFeatured(shops)
+  const status = featured ? getShopStatus(featured) : null
+  const isOpen = status?.kind === 'open' || status?.kind === 'closing_soon'
+
   return (
     <div className={styles.widget}>
       <div className={styles.widgetHead}>
-        <span className={styles.widgetTitle}>탐험 지도</span>
-        <Link href="/map" className={styles.widgetMore}>지도 보기</Link>
+        <span className={styles.widgetTitle}>덕질 지도</span>
+        <Link href="/map" className={styles.widgetMore}>전체 지도 보기</Link>
       </div>
 
       <Link href="/map" className={styles.miniMap} aria-label="지도 보기">
@@ -58,13 +71,33 @@ export default function MiniMapWidget({ shops, hotMap, eventCount }: Props) {
         )}
       </Link>
 
-      <div className={styles.miniInfo}>
-        <span><b>{hotShopCount}</b> HOT 샵</span>
-        <span className={styles.dot}>·</span>
-        <span><b>{eventCount}</b> 이벤트</span>
-        <span className={styles.dot}>·</span>
-        <span><b>{shopCount}</b> 전체 샵</span>
+      <div className={styles.mapChips}>
+        <Link href="/map" className={styles.mapChip}>전체</Link>
+        {CATEGORIES.map((c) => (
+          <Link key={c.slug} href={`/map?cat=${encodeURIComponent(c.name)}`} className={styles.mapChip}>
+            {c.name}
+          </Link>
+        ))}
       </div>
+
+      {featured && (
+        <Link href={`/shop/${featured.slug}`} className={styles.mapShopCard}>
+          <span className={styles.mapShopThumb}>
+            {featured.images?.[0] ? <img src={featured.images[0]} alt="" /> : <span>🏪</span>}
+          </span>
+          <span className={styles.mapShopBody}>
+            <span className={styles.mapShopName}>{featured.name}</span>
+            <span className={styles.mapShopMeta}>
+              {status && status.label && (
+                <span className={isOpen ? styles.openNow : styles.closedNow}>{status.label}</span>
+              )}
+              {featured.rating_count > 0 && (
+                <span className={styles.mapShopRating}>★ {featured.rating_avg.toFixed(1)} ({featured.rating_count})</span>
+              )}
+            </span>
+          </span>
+        </Link>
+      )}
     </div>
   )
 }

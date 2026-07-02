@@ -16,9 +16,9 @@ interface Props {
 export default function HomeRail({ shops = [], hotMap, eventCount = 0 }: Props) {
   return (
     <aside className={styles.rail}>
+      <MiniMapWidget shops={shops} hotMap={hotMap} eventCount={eventCount} />
       <CollectionStatsWidget />
       <RecentCheckinsWidget />
-      <MiniMapWidget shops={shops} hotMap={hotMap} eventCount={eventCount} />
     </aside>
   )
 }

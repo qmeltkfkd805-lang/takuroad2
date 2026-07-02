@@ -72,6 +72,12 @@ export default function MapPage() {
     }
   }, [searchParams, mapShops, setSelectedShop])
 
+  // URL의 ?cat=이름 파라미터로 카테고리 선택 (덕질 지도 칩에서 진입)
+  useEffect(() => {
+    const cat = searchParams.get('cat')
+    if (cat) setSelectedCat(cat)
+  }, [searchParams, setSelectedCat])
+
   return (
     <div className={styles.layout}>
       {/* 지도 컬럼 (absolute 자식들의 기준점) */}
@@ -227,3 +233,4 @@ export default function MapPage() {
     </div>
   )
 }
+
