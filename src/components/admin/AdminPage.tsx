@@ -18,8 +18,9 @@ import AdminDashboardPage from './AdminDashboardPage'
 import WorkAdminTab from './WorkAdminTab'
 import BannerAdminTab from './BannerAdminTab'
 import MemberAdminTab from './MemberAdminTab'
+import ShopAdminTab from './ShopAdminTab'
 
-type Tab = 'dashboard' | 'shops' | 'works' | 'banners' | 'members' | 'verify' | 'routes' | 'events' | 'reported'
+type Tab = 'dashboard' | 'shops' | 'shopmanage' | 'works' | 'banners' | 'members' | 'verify' | 'routes' | 'events' | 'reported'
 
 export default function AdminPage() {
   const router = useRouter()
@@ -35,7 +36,6 @@ export default function AdminPage() {
       router.push(ROUTES.home)
       return
     }
-    // 최초 진입 때만 로드. 포커스 복귀 등으로 auth가 갱신돼도 화면을 다시 그리지 않음
     if (!ready) loadData()
   }, [user, profile, authLoading, ready])
 
@@ -100,6 +100,9 @@ export default function AdminPage() {
           </TabButton>
           <TabButton active={tab === 'shops'} onClick={() => setTab('shops')}>
             샵 승인 {pendingShops.length > 0 && `(${pendingShops.length})`}
+          </TabButton>
+          <TabButton active={tab === 'shopmanage'} onClick={() => setTab('shopmanage')}>
+            🏪 샵 관리
           </TabButton>
           <TabButton active={tab === 'works'} onClick={() => setTab('works')}>
             🎬 작품 메타
@@ -236,6 +239,7 @@ export default function AdminPage() {
         </div>
       )}
 
+      {tab === 'shopmanage' && <ShopAdminTab />}
       {tab === 'works' && <WorkAdminTab />}
       {tab === 'banners' && <BannerAdminTab />}
       {tab === 'members' && <MemberAdminTab />}

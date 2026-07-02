@@ -35,7 +35,7 @@ export default function AdminDashboardPage({ onNavigate }: { onNavigate: (tab: s
       <SectionTitle>📊 전체 현황</SectionTitle>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 24 }}>
         <StatCard label="작품" value={stats.works} onClick={() => onNavigate('works')} />
-        <StatCard label="샵" value={stats.shops} />
+        <StatCard label="샵" value={stats.shops} onClick={() => onNavigate('shopmanage')} />
         <StatCard label="이벤트" value={stats.events} onClick={() => onNavigate('events')} />
         <StatCard label="배너" value={stats.banners} onClick={() => onNavigate('banners')} />
         <StatCard label="회원" value={stats.members} onClick={() => onNavigate('members')} />
@@ -145,6 +145,7 @@ function TodoRow({ icon, label, count, onClick }: { icon: string; label: string;
     </div>
   )
 }
+
 
 
 
