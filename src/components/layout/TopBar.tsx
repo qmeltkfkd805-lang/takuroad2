@@ -34,7 +34,6 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
         <input value={q} onChange={e => setQ(e.target.value)} placeholder="작품, 샵, 지역, 이벤트 검색" />
       </form>
-      <TrendingTicker items={trendingItems} />
       <div className={styles.right}>
         {user ? (
           <>
@@ -59,3 +58,6 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
     </div>
   )
 }
+
+
+
