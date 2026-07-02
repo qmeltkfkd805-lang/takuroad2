@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -14,7 +14,6 @@ export default function LoginForm() {
     setLoading(true)
     const supabase = createClient()
     const redirectUrl = `${location.origin}/auth/callback?redirect=${redirect}`
-    alert('redirectTo 값: ' + redirectUrl)
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -51,8 +50,7 @@ export default function LoginForm() {
           TAKUROAD
         </div>
         <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '32px' }}>
-          덕후의 성지순례 지도
-        </p>
+          ?뺥썑???깆??쒕? 吏??        </p>
 
         <button
           onClick={loginWithGoogle}
@@ -80,11 +78,11 @@ export default function LoginForm() {
             <path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18z"/>
             <path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/>
           </svg>
-          {loading ? '로그인 중...' : 'Google로 계속하기'}
+          {loading ? '濡쒓렇??以?..' : 'Google濡?怨꾩냽?섍린'}
         </button>
 
         <p style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '20px', lineHeight: 1.6 }}>
-          로그인하면 샵 등록, 리뷰 작성,<br />찜 기능을 이용할 수 있어요.
+          濡쒓렇?명븯硫????깅줉, 由щ럭 ?묒꽦,<br />李?湲곕뒫???댁슜?????덉뼱??
         </p>
 
         <button
@@ -99,9 +97,10 @@ export default function LoginForm() {
             textDecoration: 'underline',
           }}
         >
-          로그인 없이 둘러보기
+          濡쒓렇???놁씠 ?섎윭蹂닿린
         </button>
       </div>
     </div>
   )
 }
+
