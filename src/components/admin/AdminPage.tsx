@@ -19,6 +19,7 @@ import WorkAdminTab from './WorkAdminTab'
 import BannerAdminTab from './BannerAdminTab'
 import MemberAdminTab from './MemberAdminTab'
 import ShopAdminTab from './ShopAdminTab'
+import styles from './admin.module.css'
 
 type Tab = 'dashboard' | 'shops' | 'shopmanage' | 'works' | 'banners' | 'members' | 'verify' | 'routes' | 'events' | 'reported'
 
@@ -85,16 +86,13 @@ export default function AdminPage() {
   }
 
   return (
-    <div style={{ maxWidth: '680px', margin: '0 auto', minHeight: '100dvh', background: 'var(--surface)' }}>
+    <div className={styles.layout}>
 
-      <div style={{
-        position: 'sticky', top: 0, zIndex: 50,
-        background: 'var(--surface)', borderBottom: '1px solid var(--border)',
-        padding: '14px 16px',
-      }}>
-        <h1 style={{ fontSize: '18px', fontWeight: 900, marginBottom: '12px' }}>관리자 페이지</h1>
+      <div className={styles.tabBar}>
+        <div className={styles.sideTitle}>관리자</div>
+        <h1 className={styles.title}>관리자 페이지</h1>
 
-        <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '2px' }}>
+        <div className={styles.tabs}>
           <TabButton active={tab === 'dashboard'} onClick={() => setTab('dashboard')}>
             🏠 대시보드
           </TabButton>
@@ -127,7 +125,9 @@ export default function AdminPage() {
           </TabButton>
         </div>
       </div>
-{tab === 'dashboard' && <AdminDashboardPage onNavigate={(t) => setTab(t as Tab)} />}
+
+      <div className={styles.content}>
+      {tab === 'dashboard' && <AdminDashboardPage onNavigate={(t) => setTab(t as Tab)} />}
   
       {tab === 'shops' && (
         <div>
@@ -246,6 +246,7 @@ export default function AdminPage() {
       {tab === 'reported' && <ReportedShopsTab />}
       {tab === 'routes' && <OfficialRouteTab />}
       {tab === 'events' && <SeasonalEventTab />}
+      </div>
     </div>
   )
 }
@@ -258,13 +259,7 @@ function TabButton({ active, onClick, children }: {
   return (
     <button
       onClick={onClick}
-      style={{
-        padding: '8px 14px', borderRadius: '8px',
-        border: 'none', cursor: 'pointer', fontFamily: 'inherit',
-        background: active ? 'var(--accent)' : 'var(--surface2)',
-        color: active ? '#fff' : 'var(--text)',
-        fontWeight: 700, fontSize: '13px', whiteSpace: 'nowrap', flexShrink: 0,
-      }}
+      className={active ? styles.tab + ' ' + styles.tabActive : styles.tab}
     >
       {children}
     </button>

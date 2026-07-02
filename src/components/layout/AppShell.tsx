@@ -26,7 +26,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <header className={styles.header}>
         <Link href="/" className={styles.logo}>
           <img src="/brand/takuroad-logo.png" alt="TAKUROAD" />
-          <span className={styles.logoText}>TAKUROAD</span>
         </Link>
         <div className={styles.headerBar}><TopBar trendingWorks={trending} /></div>
       </header>
@@ -38,3 +37,5 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     </div>
   )
 }
+
+
