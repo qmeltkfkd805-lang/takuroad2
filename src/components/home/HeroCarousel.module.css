@@ -1,4 +1,4 @@
-﻿.wrap { position: relative; padding: 16px; }
+﻿.wrap { position: relative; padding: 16px 0; }
 .viewport { overflow: hidden; border-radius: var(--r); cursor: grab; user-select: none; }
 .viewport:active { cursor: grabbing; }
 .track { display: flex; }
@@ -51,6 +51,7 @@
   .ctaPrimary, .ctaSecondary { padding: 11px 18px; font-size: 14px; }
   .ctaSolo { padding: 13px 26px; font-size: 15px; }
 }
+
 
 
 
