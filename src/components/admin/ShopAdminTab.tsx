@@ -5,7 +5,7 @@ import { getShops } from '@/services/shopService'
 import { getAdminStats, AdminStats } from '@/services/adminDashboardService'
 import { Shop } from '@/types/shop'
 import { SHOP_STATUS_LABEL } from '@/lib/constants/categories'
-import { quickCompleteness } from '@/lib/shop/quickCompleteness'
+import { quickCompleteness, shopRegion } from '@/lib/shop/quickCompleteness'
 
 const STATUS_TONE: Record<string, string> = {
   active: 'var(--green)', temporary_closed: 'var(--yellow)', closed: 'var(--red)', hidden: 'var(--muted)', pending: 'var(--muted)',
@@ -92,7 +92,7 @@ export default function ShopAdminTab() {
                 <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2, display: 'flex', alignItems: 'center', gap: 6 }}>
                   <span style={{ color: STATUS_TONE[s.status] ?? 'var(--muted)', fontWeight: 700 }}>● {SHOP_STATUS_LABEL[s.status] ?? s.status}</span>
                   <span>·</span>
-                  <span>{s.region ?? '지역 미정'}</span>
+                  <span>{shopRegion(s)}</span>
                   <span>·</span>
                   <span style={{ color: pct(cp.percent), fontWeight: 800 }}>{cp.percent}%</span>
                 </div>
@@ -131,3 +131,4 @@ function MiniStat({ label, value, tone }: { label: string; value: number; tone?:
     </div>
   )
 }
+
