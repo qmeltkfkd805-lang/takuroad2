@@ -33,6 +33,7 @@ export default function MiniMapWidget({ shops, hotMap }: Props) {
     if (!center) return
     let n = 0
     const id = setInterval(() => {
+      mapRef.current?.relayout()
       mapRef.current?.moveCenter(center.lat, center.lng, 6)
       if (++n >= 12) clearInterval(id)
     }, 250)
@@ -101,3 +102,4 @@ export default function MiniMapWidget({ shops, hotMap }: Props) {
     </div>
   )
 }
+

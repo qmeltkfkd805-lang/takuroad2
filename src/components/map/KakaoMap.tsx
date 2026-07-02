@@ -1,4 +1,5 @@
 ﻿'use client'
+
 import { useRef, useEffect, forwardRef, useImperativeHandle } from 'react'
 import { Shop } from '@/types/shop'
 import { useMap } from '@/hooks/useMap'
@@ -14,6 +15,7 @@ interface KakaoMapProps {
 
 export interface KakaoMapRef {
   moveCenter: (lat: number, lng: number, level?: number) => void
+  relayout: () => void
 }
 
 const KakaoMap = forwardRef<KakaoMapRef, KakaoMapProps>(function KakaoMap({
@@ -25,11 +27,12 @@ const KakaoMap = forwardRef<KakaoMapRef, KakaoMapProps>(function KakaoMap({
   onSelectGroup,
 }, ref) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const { isLoaded, renderMarkers, onMapClick: registerClick, moveCenter, setMyLocation } = useMap(containerRef)
+  const { isLoaded, renderMarkers, onMapClick: registerClick, moveCenter, setMyLocation, relayout } = useMap(containerRef)
 
   useImperativeHandle(ref, () => ({
     moveCenter,
-  }), [moveCenter])
+    relayout,
+  }), [moveCenter, relayout])
 
   useEffect(() => {
     if (!isLoaded) return
@@ -41,7 +44,6 @@ const KakaoMap = forwardRef<KakaoMapRef, KakaoMapProps>(function KakaoMap({
     renderMarkers(shops, activeShopId, onSelectShop, onSelectGroup)
   }, [isLoaded, shops, activeShopId, renderMarkers, onSelectShop, onSelectGroup])
 
-  // 현재 위치가 생기면 파란 점 마커 표시
   useEffect(() => {
     if (!isLoaded || !myLocation) return
     setMyLocation(myLocation.lat, myLocation.lng)
@@ -54,4 +56,5 @@ const KakaoMap = forwardRef<KakaoMapRef, KakaoMapProps>(function KakaoMap({
     />
   )
 })
+
 export default KakaoMap

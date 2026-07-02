@@ -174,5 +174,13 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     })
   }, [clearMarkers, addMarker, addGroupMarker])
 
-  return { isLoaded, moveCenter, onMapClick, renderMarkers, clearMarkers, setMyLocation }
+  const relayout = useCallback(() => {
+    if (!mapRef.current) return
+    const c = mapRef.current.getCenter()
+    mapRef.current.relayout()
+    mapRef.current.setCenter(c)
+  }, [])
+
+  return { isLoaded, moveCenter, onMapClick, renderMarkers, clearMarkers, setMyLocation, relayout }
 }
+
