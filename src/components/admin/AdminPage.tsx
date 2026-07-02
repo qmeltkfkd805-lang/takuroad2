@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -15,8 +15,11 @@ import OfficialRouteTab from './OfficialRouteTab'
 import SeasonalEventTab from './SeasonalEventTab'
 import ReportedShopsTab from './ReportedShopsTab'
 import AdminDashboardPage from './AdminDashboardPage'
+import WorkAdminTab from './WorkAdminTab'
+import BannerAdminTab from './BannerAdminTab'
+import MemberAdminTab from './MemberAdminTab'
 
-type Tab = 'dashboard' | 'shops' | 'verify' | 'routes' | 'events' | 'reported'
+type Tab = 'dashboard' | 'shops' | 'works' | 'banners' | 'members' | 'verify' | 'routes' | 'events' | 'reported'
 
 export default function AdminPage() {
   const router = useRouter()
@@ -24,7 +27,7 @@ export default function AdminPage() {
   const [tab, setTab] = useState<Tab>('dashboard')
   const [pendingShops, setPendingShops] = useState<Shop[]>([])
   const [verifyRequests, setVerifyRequests] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
     if (authLoading) return
@@ -32,18 +35,18 @@ export default function AdminPage() {
       router.push(ROUTES.home)
       return
     }
-    loadData()
-  }, [user, profile, authLoading])
+    // 최초 진입 때만 로드. 포커스 복귀 등으로 auth가 갱신돼도 화면을 다시 그리지 않음
+    if (!ready) loadData()
+  }, [user, profile, authLoading, ready])
 
   async function loadData() {
-    setLoading(true)
     const [shops, requests] = await Promise.all([
       getPendingShops(),
       getPendingVerifyRequests(),
     ])
     setPendingShops(shops)
     setVerifyRequests(requests)
-    setLoading(false)
+    setReady(true)
   }
 
   async function handleApproveShop(shopId: string) {
@@ -73,7 +76,7 @@ export default function AdminPage() {
     if (url) window.open(url, '_blank')
   }
 
-  if (authLoading || loading) {
+  if (!ready) {
     return (
       <div style={{ padding: '60px', textAlign: 'center', color: 'var(--muted)' }}>
         불러오는 중...
@@ -97,6 +100,15 @@ export default function AdminPage() {
           </TabButton>
           <TabButton active={tab === 'shops'} onClick={() => setTab('shops')}>
             샵 승인 {pendingShops.length > 0 && `(${pendingShops.length})`}
+          </TabButton>
+          <TabButton active={tab === 'works'} onClick={() => setTab('works')}>
+            🎬 작품 메타
+          </TabButton>
+          <TabButton active={tab === 'banners'} onClick={() => setTab('banners')}>
+            🖼️ 배너
+          </TabButton>
+          <TabButton active={tab === 'members'} onClick={() => setTab('members')}>
+            👥 회원
           </TabButton>
           <TabButton active={tab === 'verify'} onClick={() => setTab('verify')}>
             인증 심사 {verifyRequests.length > 0 && `(${verifyRequests.length})`}
@@ -224,6 +236,9 @@ export default function AdminPage() {
         </div>
       )}
 
+      {tab === 'works' && <WorkAdminTab />}
+      {tab === 'banners' && <BannerAdminTab />}
+      {tab === 'members' && <MemberAdminTab />}
       {tab === 'reported' && <ReportedShopsTab />}
       {tab === 'routes' && <OfficialRouteTab />}
       {tab === 'events' && <SeasonalEventTab />}

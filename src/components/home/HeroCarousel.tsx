@@ -18,11 +18,8 @@ export default function HeroCarousel({ banners }: { banners: FeaturedBanner[] })
   const count = banners.length
   const multi = count > 1
 
-  const go = useCallback((next: number) => {
-    setIdx((next + count) % count)
-  }, [count])
+  const go = useCallback((next: number) => { setIdx((next + count) % count) }, [count])
 
-  // 자동 넘김 (idx가 바뀔 때마다 타이머 리셋 = 사용자 조작 후 리셋 효과)
   useEffect(() => {
     if (!multi || paused) return
     const t = setTimeout(() => setIdx(i => (i + 1) % count), AUTO_MS)
@@ -31,16 +28,8 @@ export default function HeroCarousel({ banners }: { banners: FeaturedBanner[] })
 
   if (count === 0) return null
 
-  // 드래그 핸들러 (모바일 스와이프)
-  function onDown(clientX: number) {
-    dragging.current = true
-    dragX.current = clientX
-    setPaused(true)
-  }
-  function onMove(clientX: number) {
-    if (!dragging.current) return
-    setDragOffset(clientX - dragX.current)
-  }
+  function onDown(clientX: number) { dragging.current = true; dragX.current = clientX; setPaused(true) }
+  function onMove(clientX: number) { if (!dragging.current) return; setDragOffset(clientX - dragX.current) }
   function onUp() {
     if (!dragging.current) return
     dragging.current = false
@@ -70,9 +59,7 @@ export default function HeroCarousel({ banners }: { banners: FeaturedBanner[] })
             transition: dragging.current ? 'none' : 'transform .4s ease',
           }}
         >
-          {banners.map(b => (
-            <BannerSlide key={b.id} banner={b} />
-          ))}
+          {banners.map(b => (<BannerSlide key={b.id} banner={b} />))}
         </div>
       </div>
 
@@ -86,12 +73,7 @@ export default function HeroCarousel({ banners }: { banners: FeaturedBanner[] })
           </button>
           <div className={styles.dots}>
             {banners.map((_, i) => (
-              <button
-                key={i}
-                className={i === idx ? styles.dot + ' ' + styles.dotActive : styles.dot}
-                onClick={() => go(i)}
-                aria-label={`${i + 1}번째 배너`}
-              />
+              <button key={i} className={i === idx ? styles.dot + ' ' + styles.dotActive : styles.dot} onClick={() => go(i)} aria-label={`${i + 1}번째 배너`} />
             ))}
           </div>
         </>
@@ -101,27 +83,38 @@ export default function HeroCarousel({ banners }: { banners: FeaturedBanner[] })
 }
 
 function BannerSlide({ banner }: { banner: FeaturedBanner }) {
-  const inner = (
+  const buttons = [
+    { label: banner.cta_label, href: banner.cta_href },
+    { label: banner.cta_label2, href: banner.cta_href2 },
+  ].filter((b) => !!(b.label && b.label.trim()))
+  const solo = buttons.length === 1
+
+  return (
     <div className={styles.slide} style={{ background: banner.bg_color, color: banner.text_color }}>
+      {banner.image_url && (
+        <div className={styles.bgImage}>
+          <img src={banner.image_url} alt="" draggable={false} />
+          <div className={styles.scrim} />
+        </div>
+      )}
       <div className={styles.text}>
         <h2 className={styles.title} style={{ color: banner.text_color }}>{banner.title}</h2>
         {banner.subtitle && <p className={styles.subtitle} style={{ color: banner.text_color }}>{banner.subtitle}</p>}
-        {banner.cta_label && (
-          <span className={styles.cta} style={{ color: banner.bg_color, background: banner.text_color }}>
-            {banner.cta_label}
-          </span>
+        {buttons.length > 0 && (
+          <div className={styles.ctaRow}>
+            {buttons.map((b, i) => (
+              <Link
+                key={i}
+                href={b.href || '#'}
+                className={(i === 0 ? styles.ctaPrimary : styles.ctaSecondary) + (solo ? ' ' + styles.ctaSolo : '')}
+                draggable={false}
+              >
+                {b.label}
+              </Link>
+            ))}
+          </div>
         )}
       </div>
-      {banner.image_url && (
-        <div className={styles.image}>
-          <img src={banner.image_url} alt="" draggable={false} />
-        </div>
-      )}
     </div>
   )
-
-  if (banner.cta_href) {
-    return <Link href={banner.cta_href} className={styles.slideLink} draggable={false}>{inner}</Link>
-  }
-  return inner
 }
