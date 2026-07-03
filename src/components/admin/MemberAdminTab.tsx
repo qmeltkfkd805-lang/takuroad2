@@ -1,8 +1,11 @@
 ﻿'use client'
 import { useState, useEffect, useCallback } from 'react'
-import { getAdminMembers, AdminMember } from '@/services/adminMemberService'
+import { getAdminMembers, AdminMember, getMemberDetail, MemberDetail } from '@/services/adminMemberService'
+import { adminUpsert } from '@/services/adminUpsertService'
 
 const PAGE_SIZE = 20
+const ROLE_LABEL: Record<string, string> = { user: '일반회원', owner: '사장님', admin: '관리자' }
+const ROLE_OPTIONS = [{ v: 'user', l: '일반회원' }, { v: 'owner', l: '사장님' }, { v: 'admin', l: '관리자' }]
 
 export default function MemberAdminTab() {
   const [members, setMembers] = useState<AdminMember[]>([])
@@ -11,6 +14,7 @@ export default function MemberAdminTab() {
   const [query, setQuery] = useState('')
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
 
   const load = useCallback(async (s: string, p: number) => {
     setLoading(true)
@@ -23,8 +27,9 @@ export default function MemberAdminTab() {
   useEffect(() => { load(search, page) }, [search, page, load])
 
   function submitSearch() { setPage(0); setSearch(query.trim()) }
-
   const maxPage = Math.max(0, Math.ceil(total / PAGE_SIZE) - 1)
+
+  if (selectedId) return <MemberDetailView id={selectedId} onBack={() => setSelectedId(null)} />
 
   return (
     <div style={{ padding: 16 }}>
@@ -51,18 +56,19 @@ export default function MemberAdminTab() {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {members.map((m) => (
-            <div key={m.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 4px', borderBottom: '1px solid var(--border)' }}>
+            <button key={m.id} onClick={() => setSelectedId(m.id)} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 4px', borderTop: 'none', borderLeft: 'none', borderRight: 'none', borderBottom: '1px solid var(--border)', background: 'none', cursor: 'pointer', textAlign: 'left', fontFamily: 'inherit', width: '100%' }}>
               <div style={{ width: 40, height: 40, borderRadius: 9999, flexShrink: 0, overflow: 'hidden', background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>
                 {m.avatar_url ? <img src={m.avatar_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : '👤'}
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text)', display: 'flex', alignItems: 'center', gap: 6 }}>
                   {m.nickname || '(닉네임 없음)'}
-                  {m.role === 'admin' && <span style={{ fontSize: 10, fontWeight: 800, color: '#fff', background: 'var(--accent)', padding: '2px 6px', borderRadius: 6 }}>관리자</span>}
+                  {m.role !== 'user' && <span style={{ fontSize: 10, fontWeight: 800, color: '#fff', background: m.role === 'admin' ? 'var(--accent)' : 'var(--secondary)', padding: '2px 6px', borderRadius: 6 }}>{ROLE_LABEL[m.role] ?? m.role}</span>}
                 </div>
                 <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>가입 {new Date(m.created_at).toLocaleDateString('ko-KR')}</div>
               </div>
-            </div>
+              <span style={{ fontSize: 12, color: 'var(--muted)', flexShrink: 0 }}>보기 ›</span>
+            </button>
           ))}
         </div>
       )}
@@ -78,6 +84,107 @@ export default function MemberAdminTab() {
   )
 }
 
+function MemberDetailView({ id, onBack }: { id: string; onBack: () => void }) {
+  const [d, setD] = useState<MemberDetail | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [role, setRole] = useState('user')
+  const [note, setNote] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [msg, setMsg] = useState<string | null>(null)
+
+  useEffect(() => {
+    getMemberDetail(id).then((m) => {
+      setD(m)
+      if (m) { setRole(m.role); setNote(m.admin_note ?? '') }
+      setLoading(false)
+    })
+  }, [id])
+
+  async function save() {
+    setSaving(true); setMsg(null)
+    const res = await adminUpsert({ table: 'profiles', id, fields: { role, admin_note: note.trim() || null }, action: 'update' })
+    setSaving(false)
+    setMsg(res.ok ? '저장됐어요' : (res.error ?? '저장 실패'))
+  }
+
+  if (loading) return <div style={{ padding: 40, textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
+  if (!d) return <div style={{ padding: 16 }}><button onClick={onBack} style={backBtn}>← 목록</button><p style={{ marginTop: 20, color: 'var(--muted)' }}>회원 정보를 불러올 수 없어요</p></div>
+
+  const acts = [
+    { label: '체크인', v: d.checkins }, { label: '최애', v: d.favorites }, { label: '후기', v: d.reviews },
+    { label: '저장 샵', v: d.saved_shops }, { label: '만든 루트', v: d.routes }, { label: '완주 루트', v: d.route_completions },
+  ]
+
+  return (
+    <div style={{ padding: 16 }}>
+      <button onClick={onBack} style={backBtn}>← 목록</button>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, margin: '16px 0' }}>
+        <div style={{ width: 60, height: 60, borderRadius: 9999, overflow: 'hidden', background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>
+          {d.avatar_url ? <img src={d.avatar_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : '👤'}
+        </div>
+        <div>
+          <div style={{ fontSize: 20, fontWeight: 900 }}>{d.nickname || '(닉네임 없음)'}</div>
+          <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Lv.{d.level} · EXP {d.total_exp.toLocaleString()}</div>
+        </div>
+      </div>
+
+      <Card title="기본 정보">
+        <Row k="UID" v={d.id} mono />
+        <Row k="가입일" v={new Date(d.created_at).toLocaleString('ko-KR')} />
+        <Row k="등급" v={ROLE_LABEL[d.role] ?? d.role} />
+      </Card>
+
+      <Card title="활동">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+          {acts.map((a) => (
+            <div key={a.label} style={{ border: '1px solid var(--border)', borderRadius: 10, padding: '12px 6px', textAlign: 'center' }}>
+              <div style={{ fontSize: 20, fontWeight: 900 }}>{a.v.toLocaleString()}</div>
+              <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>{a.label}</div>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      <Card title="권한">
+        <select value={role} onChange={(e) => setRole(e.target.value)} style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: '1px solid var(--border)', fontFamily: 'inherit', fontSize: 14, background: 'var(--surface)', color: 'var(--text)' }}>
+          {ROLE_OPTIONS.map((o) => <option key={o.v} value={o.v}>{o.l}</option>)}
+        </select>
+      </Card>
+
+      <Card title="운영 메모">
+        <textarea value={note} onChange={(e) => setNote(e.target.value)} placeholder="예: 오프라인 행사 제보를 자주 해주는 회원 / 사장님 인증 완료 / 도배 주의"
+          style={{ width: '100%', minHeight: 90, padding: '10px 12px', borderRadius: 10, border: '1px solid var(--border)', fontFamily: 'inherit', fontSize: 14, background: 'var(--surface)', color: 'var(--text)', resize: 'vertical' }} />
+      </Card>
+
+      <button onClick={save} disabled={saving} style={{ width: '100%', padding: 12, borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit', marginTop: 4 }}>
+        {saving ? '저장 중...' : '권한 · 메모 저장'}
+      </button>
+      {msg && <p style={{ fontSize: 13, textAlign: 'center', marginTop: 10, color: msg === '저장됐어요' ? 'var(--green)' : 'var(--red)' }}>{msg}</p>}
+
+      <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 20, lineHeight: 1.6 }}>제재·정지, 계정 상태, 베타테스터, 선물 지급, 신고 내역은 준비 중이에요.</p>
+    </div>
+  )
+}
+
+const backBtn: React.CSSProperties = { background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, padding: 0 }
+
+function Card({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--muted)', marginBottom: 8 }}>{title}</div>
+      {children}
+    </div>
+  )
+}
+function Row({ k, v, mono }: { k: string; v: string; mono?: boolean }) {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, padding: '8px 0', borderBottom: '1px solid var(--border)', fontSize: 13 }}>
+      <span style={{ color: 'var(--muted)', flexShrink: 0 }}>{k}</span>
+      <span style={{ fontWeight: 600, textAlign: 'right', wordBreak: 'break-all', fontFamily: mono ? 'monospace' : 'inherit', fontSize: mono ? 11 : 13 }}>{v}</span>
+    </div>
+  )
+}
 function PageBtn({ children, onClick, disabled }: { children: React.ReactNode; onClick: () => void; disabled?: boolean }) {
   return (
     <button onClick={onClick} disabled={disabled} style={{

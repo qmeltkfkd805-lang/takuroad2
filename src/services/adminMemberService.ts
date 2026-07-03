@@ -36,3 +36,16 @@ export async function getAdminMembers(search: string, limit: number, offset: num
   }))
   return { members, total }
 }
+
+export interface MemberDetail {
+  id: string; nickname: string; avatar_url: string | null; role: string; created_at: string; admin_note: string | null
+  checkins: number; favorites: number; reviews: number; saved_shops: number; routes: number; route_completions: number
+  total_exp: number; level: number
+}
+
+export async function getMemberDetail(uid: string): Promise<MemberDetail | null> {
+  const supabase = createClient()
+  const { data, error } = await supabase.rpc('get_member_detail', { uid })
+  if (error || !data) { console.error('[회원 상세] rpc:', error); return null }
+  return data as MemberDetail
+}
