@@ -33,10 +33,12 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (authLoading) return
-    if (!user || profile?.role !== 'admin') {
-      router.push(ROUTES.home)
-      return
-    }
+    // 로그인 안 됨 → 홈
+    if (!user) { router.push(ROUTES.home); return }
+    // user는 있는데 profile이 아직 안 옴 → 기다림 (홈으로 튕기지 않음)
+    if (!profile) return
+    // profile까지 왔는데 관리자 아님 → 홈
+    if (profile.role !== 'admin') { router.push(ROUTES.home); return }
     if (!ready) loadData()
   }, [user, profile, authLoading, ready])
 
@@ -274,3 +276,4 @@ function EmptyState({ text }: { text: string }) {
     </div>
   )
 }
+

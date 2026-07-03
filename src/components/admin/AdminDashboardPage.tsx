@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { getAdminTodoSummary, getAdminStats, getTopShops, AdminStats, TopShop } from '@/services/adminDashboardService'
 import { getActiveWorks, ActiveWork } from '@/services/activeWorksService'
 import { ROUTES } from '@/lib/constants/routes'
+import TrafficSection from './TrafficSection'
 
 const rankRow: CSSProperties = {
   display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -32,6 +33,8 @@ export default function AdminDashboardPage({ onNavigate }: { onNavigate: (tab: s
 
   return (
     <div style={{ padding: 16 }}>
+      <SectionTitle>📈 트래픽</SectionTitle>
+      <TrafficSection />
       <SectionTitle>📊 전체 현황</SectionTitle>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 24 }}>
         <StatCard label="작품" value={stats.works} onClick={() => onNavigate('works')} />
@@ -145,6 +148,8 @@ function TodoRow({ icon, label, count, onClick }: { icon: string; label: string;
     </div>
   )
 }
+
+
 
 
 

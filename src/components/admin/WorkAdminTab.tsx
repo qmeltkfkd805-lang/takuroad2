@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo, useRef, CSSProperties, ReactNode, RefObje
 import Link from 'next/link'
 import { getAllTagsFull, uploadWorkImage, AdminTag } from '@/services/workAdminService'
 import { adminUpsert } from '@/services/adminUpsertService'
+import WorkHubPanel from './WorkHubPanel'
 import { Button } from '@/components/tds/Button'
 
 const IP_TYPES = [
@@ -144,6 +145,7 @@ function WorkEditForm({ tag, onBack, onSaved }: { tag: AdminTag; onBack: () => v
         </div>
       </div>
 
+      {tag.id ? <WorkHubPanel tag={tag} /> : null}
       <Field label="작품명 (한글)"><Input value={form.name} onChange={(v) => set('name', v)} /></Field>
       <Field label="영문명"><Input value={form.english_name} onChange={(v) => set('english_name', v)} /></Field>
       <Field label="slug (URL — 바꾸면 기존 링크가 깨질 수 있어요)"><Input value={form.slug} onChange={(v) => set('slug', v)} /></Field>
@@ -193,5 +195,6 @@ function ImageField({ label, value, onChange, onPick, uploading, inputRef, onFil
     </div>
   )
 }
+
 
 

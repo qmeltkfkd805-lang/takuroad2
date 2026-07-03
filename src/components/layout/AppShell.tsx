@@ -7,12 +7,16 @@ import TopBar from './TopBar'
 import BottomNav from './BottomNav'
 import Link from 'next/link'
 import { getActiveWorks, ActiveWork } from '@/services/activeWorksService'
+import { useAuth } from '@/components/layout/AuthProvider'
+import { logVisit } from '@/services/trafficService'
 
 const NO_SHELL = ['/login', '/admin', '/dev', '/test']
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() ?? '/'
   const bare = NO_SHELL.some(p => pathname === p || pathname.startsWith(p + '/'))
+  const { user } = useAuth()
+  useEffect(() => { if (!bare) logVisit(pathname, user?.id ?? null) }, [pathname, bare, user])
 
   const [trending, setTrending] = useState<ActiveWork[]>([])
   useEffect(() => {
@@ -37,5 +41,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     </div>
   )
 }
+
 
 
