@@ -7,6 +7,7 @@ import { getPublicRoutes } from '@/services/routeService'
 import type { GlobalSearchResult } from '@/services/globalSearchService'
 import { Shop } from '@/types/shop'
 import { Icon } from '@/components/tds/Icon'
+import { WorkIcon } from '@/components/tds/WorkIcon'
 
 const AVAILABILITY_LABEL: Record<string, string> = {
   unknown: '확인 안 됨', not_sold: '판매 안 함', sold_out: '품절', few: '소량', normal: '보통', many: '많음',
@@ -179,15 +180,7 @@ function Empty({ text }: { text: string }) {
   return <div style={{ padding: '14px 16px 4px', fontSize: 13, color: 'var(--muted)' }}>{text}</div>
 }
 
-// 작품(북마크) SVG 아이콘 — 라인 아웃라인 + 연한 채움 (컬러 아이콘 톤 통일)
-function WorkIcon({ size = 20 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={{ display: 'block', flexShrink: 0 }}>
-      <path d="M6.5 3.75h11a1.75 1.75 0 0 1 1.75 1.75v14.4a.9.9 0 0 1-1.4.75L12 16.7l-5.85 3.95a.9.9 0 0 1-1.4-.75V5.5A1.75 1.75 0 0 1 6.5 3.75Z" fill="#FF8FB1" stroke="#4A4A55" strokeWidth="1.6" strokeLinejoin="round"/>
-      <path d="M9 8.5h6M9 11.5h4" stroke="#4A4A55" strokeWidth="1.5" strokeLinecap="round"/>
-    </svg>
-  )
-}
+
 
 
 

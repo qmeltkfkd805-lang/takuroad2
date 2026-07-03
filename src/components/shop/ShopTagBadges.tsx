@@ -1,4 +1,5 @@
 ﻿'use client'
+import { WorkIcon } from '@/components/tds/WorkIcon'
 import { useState, useEffect } from 'react'
 import { getShopTags } from '@/services/shopProductService'
 import WorkTagBadges from '@/components/work/WorkTagBadges'
@@ -16,11 +17,14 @@ export default function ShopTagBadges({ shopId }: { shopId: string }) {
   if (loading || tags.length === 0) return null
   return (
     <div style={{ marginBottom: '24px' }}>
-      <SectionHeader title="취급 작품" tone="lavender" icon={<img src="/icons/work.png" alt="" width={22} height={22} />} />
+      <SectionHeader title="취급 작품" tone="lavender" icon={<WorkIcon size={22} />} />
       <WorkTagBadges works={tags} />
     </div>
   )
 }
+
+
+
 
 
 

@@ -1,4 +1,5 @@
 ﻿'use client'
+import { WorkIcon } from './WorkIcon'
 import { CSSProperties } from 'react'
 import { Icon } from './Icon'
 import { LibraryStateChip, LibraryState } from './LibraryStateChip'
@@ -49,7 +50,7 @@ export function WorkCard({ work, onClick, style }: WorkCardProps) {
         {cover ? (
           <img src={cover} alt={work.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         ) : (
-          <Icon name="work" size={44} style={{ opacity: 0.4 }} />
+          <WorkIcon size={44} style={{ opacity: 0.4 }} />
         )}
         {work.affinity && (
           <span style={{ position: 'absolute', bottom: 10, left: 10, width: 32, height: 32, borderRadius: 9999, background: 'rgba(255,255,255,.95)', boxShadow: '0 1px 3px rgba(0,0,0,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -82,3 +83,6 @@ export function WorkCard({ work, onClick, style }: WorkCardProps) {
     </div>
   )
 }
+
+
+
