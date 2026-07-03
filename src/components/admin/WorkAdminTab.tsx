@@ -38,6 +38,8 @@ function toForm(t: AdminTag): FormState {
 
 const inputStyle: CSSProperties = { width: '100%', padding: '10px 12px', borderRadius: 10, border: '1px solid var(--border)', fontFamily: 'inherit', fontSize: 14, background: 'var(--surface)', color: 'var(--text)' }
 
+const BLANK_TAG = { id: '', name: '', slug: '', english_name: '', ip_type: '', release_year: null, genres: [], description: '', cover_url: '', banner_image: '' } as unknown as AdminTag
+
 export default function WorkAdminTab() {
   const [tags, setTags] = useState<AdminTag[]>([])
   const [loading, setLoading] = useState(true)
@@ -53,7 +55,7 @@ export default function WorkAdminTab() {
   }, [tags, query])
 
   function onSaved(updated: AdminTag) {
-    setTags((prev) => prev.map((t) => (t.id === updated.id ? updated : t)))
+    setTags((prev) => prev.some((t) => t.id === updated.id) ? prev.map((t) => (t.id === updated.id ? updated : t)) : [updated, ...prev])
     setSelected(updated)
   }
 
@@ -62,6 +64,7 @@ export default function WorkAdminTab() {
 
   return (
     <div style={{ padding: 16 }}>
+      <button onClick={() => setSelected(BLANK_TAG)} style={{ width: '100%', padding: '11px', borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit', marginBottom: 10 }}>+ 새 작품 추가</button>
       <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="작품 이름 / 영문명 / slug 검색"
         style={{ width: '100%', padding: '11px 14px', borderRadius: 10, border: '1px solid var(--border)', fontFamily: 'inherit', fontSize: 14, marginBottom: 14, background: 'var(--surface)', color: 'var(--text)' }} />
       <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 10 }}>전체 {tags.length}개 · 표시 {filtered.length}개 · 숫자는 채워진 메타데이터 (최대 7)</p>
@@ -115,7 +118,9 @@ function WorkEditForm({ tag, onBack, onSaved }: { tag: AdminTag; onBack: () => v
       ip_type: form.ip_type || null, release_year: yearNum, genres,
       description: form.description.trim() || null, cover_url: form.cover_url.trim() || null, banner_image: form.banner_image.trim() || null,
     }
-    const res = await adminUpsert({ table: 'tags', id: tag.id, fields, action: 'update' })
+    const creating = !tag.id
+    if (creating && (!fields.name || !fields.slug)) { setSaving(false); setMsg({ type: 'err', text: '이름과 slug(URL)는 필수예요' }); return }
+    const res = await adminUpsert({ table: 'tags', id: tag.id, fields, action: creating ? 'insert' : 'update' })
     setSaving(false)
     if (!res.ok) { setMsg({ type: 'err', text: res.error ?? '저장 실패' }); return }
     setMsg({ type: 'ok', text: '저장됐어요' })
@@ -188,4 +193,5 @@ function ImageField({ label, value, onChange, onPick, uploading, inputRef, onFil
     </div>
   )
 }
+
 
