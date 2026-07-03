@@ -1,6 +1,6 @@
 ﻿// 관리자 전용 쓰기 헬퍼. /api/admin/upsert 를 호출해서 Service Role로 안전하게 쓴다.
 export interface AdminUpsertArgs {
-  table: 'tags' | 'featured_banners'
+  table: 'tags' | 'featured_banners' | 'profiles'
   id?: string
   fields?: Record<string, any>
   action?: 'update' | 'insert' | 'delete'
@@ -22,3 +22,4 @@ export async function adminUpsert(
     return { ok: false, error: e.message ?? '네트워크 오류' }
   }
 }
+
