@@ -8,6 +8,7 @@ import {
   approveOfficialRoute,
   revokeOfficialRoute,
 } from '@/services/adminRouteService'
+import RouteBuilder from './RouteBuilder'
 
 export default function OfficialRouteTab() {
   const { user } = useAuth()
@@ -16,17 +17,17 @@ export default function OfficialRouteTab() {
   const [loading, setLoading] = useState(true)
   const [approvingId, setApprovingId] = useState<string | null>(null)
   const [difficulty, setDifficulty] = useState(1)
+  const [building, setBuilding] = useState(false)
 
   useEffect(() => {
     loadData()
   }, [])
 
-async function loadData() {
+  async function loadData() {
     const [cand, official] = await Promise.all([
       getOfficialRouteCandidates(),
       getOfficialRoutes(),
     ])
-    console.log('candidates raw:', cand)
     setCandidates(cand.filter((c: any) => !c.is_official))
     setOfficialRoutes(official)
     setLoading(false)
@@ -52,6 +53,21 @@ async function loadData() {
 
   return (
     <div>
+      <div style={{ padding: 16 }}>
+        {building ? (
+          <RouteBuilder onDone={() => { setBuilding(false); loadData() }} onCancel={() => setBuilding(false)} />
+        ) : (
+          <button
+            onClick={() => setBuilding(true)}
+            style={{
+              width: '100%', padding: 12, borderRadius: 10, border: 'none',
+              background: 'var(--accent)', color: '#fff', fontWeight: 800,
+              fontSize: 14, cursor: 'pointer', fontFamily: 'inherit',
+            }}
+          >+ 새 공식 루트 만들기</button>
+        )}
+      </div>
+
       <h3 style={{ fontSize: '14px', fontWeight: 900, padding: '16px 16px 0' }}>
         공식 루트 후보 (좋아요/완료순)
       </h3>
