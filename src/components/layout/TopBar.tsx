@@ -62,7 +62,7 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
       try { setResults(await globalSearch(term, user?.id ?? null)) }
       catch { setResults(EMPTY) }
       finally { setSearching(false) }
-    }, 250)
+    }, 150)
     return () => clearTimeout(t)
   }, [q, user])
 
@@ -139,4 +139,5 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
     </div>
   )
 }
+
 
