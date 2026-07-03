@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
@@ -12,6 +12,7 @@ import { ROUTES } from '@/lib/constants/routes'
 import ShopCard from '@/components/shop/ShopCard'
 import WorkTagBadges from '@/components/work/WorkTagBadges'
 import { useDebounce } from '@/hooks/useDebounce'
+import SearchWorkHub from './SearchWorkHub'
 
 const AVAILABILITY_LABEL: Record<string, string> = {
   unknown: '확인 안 됨', not_sold: '판매 안 함', sold_out: '품절',
@@ -30,6 +31,11 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false)
   const [searched, setSearched] = useState(false)
   const debouncedQuery = useDebounce(query, 300)
+
+  // 헤더 검색창에서 /search?q= 로 올 때 결과가 따라오도록 URL과 동기화
+  useEffect(() => {
+    setQuery(searchParams.get('q') ?? '')
+  }, [searchParams])
 
   useEffect(() => {
     if (!debouncedQuery.trim()) {
@@ -62,48 +68,31 @@ export default function SearchPage() {
   const hasGoodsResults = (globalResults?.products.length ?? 0) > 0
   const hasTagResults = (globalResults?.tags.length ?? 0) > 0
   const noResultsAtAll = searched && shopResults.length === 0 && !hasGoodsResults && !hasTagResults
+  const matchedTag = (!loading && globalResults && globalResults.tags.length > 0) ? globalResults.tags[0] : null
 
   return (
-    <div style={{ maxWidth: '680px', margin: '0 auto', minHeight: '100dvh', background: 'var(--surface)' }}>
+    <div style={{ width: '100%', minHeight: '100dvh', background: 'var(--surface)' }}>
 
-      {/* 헤더 */}
-      <div style={{
-        position: 'sticky', top: 0, zIndex: 50,
-        background: 'var(--surface)', borderBottom: '1px solid var(--border)',
-        padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '10px',
-      }}>
-        <button
-          onClick={() => router.back()}
-          style={{ background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer' }}
-        >←</button>
-
-        <input
-          type="text"
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-          placeholder="샵, 작품, 캐릭터, 굿즈 검색..."
-          autoFocus
-          style={{
-            flex: 1, padding: '10px 14px',
-            border: '1.5px solid var(--border)', borderRadius: '10px',
-            fontSize: '15px', fontFamily: 'inherit',
-            background: 'var(--surface2)', color: 'var(--text)',
-            outline: 'none',
-          }}
-        />
-        {query && (
-          <button
-            onClick={() => setQuery('')}
-            style={{ background: 'none', border: 'none', fontSize: '18px', cursor: 'pointer', color: 'var(--muted)' }}
-          >✕</button>
-        )}
-      </div>
+      {query.trim() && (
+        <div style={{ padding: '20px 16px 10px' }}>
+          <h1 style={{ fontSize: '22px', fontWeight: 900, margin: 0 }}>'{query.trim()}' 검색 결과</h1>
+          {globalResults && (
+            <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '6px' }}>
+              작품 {globalResults.tags.length} · 샵 {shopResults.length} · 굿즈 {globalResults.products.length}
+            </p>
+          )}
+        </div>
+      )}
 
       <div>
         {loading && (
           <div style={{ padding: '40px', textAlign: 'center', color: 'var(--muted)', fontSize: '14px' }}>
             검색 중...
           </div>
+        )}
+
+        {matchedTag && globalResults && (
+          <SearchWorkHub tag={matchedTag} products={globalResults.products} />
         )}
 
         {!loading && noResultsAtAll && (
@@ -125,8 +114,7 @@ export default function SearchPage() {
           </div>
         )}
 
-        {/* 굿즈 검색 결과 — 먼저 보여줌 (타쿠로드 핵심 차별점) */}
-        {!loading && hasGoodsResults && (
+        {!loading && !matchedTag && hasGoodsResults && (
           <>
             <div style={{
               padding: '10px 16px', fontSize: '13px', color: 'var(--muted)', fontWeight: 700,
@@ -162,8 +150,7 @@ export default function SearchPage() {
           </>
         )}
 
-{/* 작품 검색 결과 */}
-        {!loading && hasTagResults && (
+        {!loading && !matchedTag && hasTagResults && (
           <>
             <div style={{
               padding: '10px 16px', fontSize: '13px', color: 'var(--muted)', fontWeight: 700,
@@ -176,9 +163,8 @@ export default function SearchPage() {
             </div>
           </>
         )}
-        
-        {/* 샵 검색 결과 */}
-        {!loading && shopResults.length > 0 && (
+
+        {!loading && !matchedTag && shopResults.length > 0 && (
           <>
             <div style={{
               padding: '10px 16px', fontSize: '13px', color: 'var(--muted)', fontWeight: 700,
