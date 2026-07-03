@@ -18,6 +18,7 @@ export default function OfficialRouteTab() {
   const [approvingId, setApprovingId] = useState<string | null>(null)
   const [difficulty, setDifficulty] = useState(1)
   const [building, setBuilding] = useState(false)
+  const [editId, setEditId] = useState<string | null>(null)
 
   useEffect(() => {
     loadData()
@@ -49,16 +50,30 @@ export default function OfficialRouteTab() {
     loadData()
   }
 
+  function openEdit(routeId: string) {
+    setEditId(routeId)
+    setBuilding(true)
+  }
+
+  function closeBuilder() {
+    setBuilding(false)
+    setEditId(null)
+  }
+
   if (loading) return <div style={{ padding: '40px', textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
 
   return (
     <div>
       <div style={{ padding: 16 }}>
         {building ? (
-          <RouteBuilder onDone={() => { setBuilding(false); loadData() }} onCancel={() => setBuilding(false)} />
+          <RouteBuilder
+            editRouteId={editId}
+            onDone={() => { closeBuilder(); loadData() }}
+            onCancel={closeBuilder}
+          />
         ) : (
           <button
-            onClick={() => setBuilding(true)}
+            onClick={() => { setEditId(null); setBuilding(true) }}
             style={{
               width: '100%', padding: 12, borderRadius: 10, border: 'none',
               background: 'var(--accent)', color: '#fff', fontWeight: 800,
@@ -153,13 +168,22 @@ export default function OfficialRouteTab() {
             <div style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '8px' }}>
               승인일 {new Date(route.approved_at).toLocaleDateString('ko-KR')}
             </div>
-            <button
-              onClick={() => handleRevoke(route.id)}
-              style={{
-                fontSize: '12px', color: 'var(--red)', background: 'none',
-                border: '1px solid var(--red)', borderRadius: '6px', padding: '5px 10px', cursor: 'pointer',
-              }}
-            >공식 해제</button>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button
+                onClick={() => openEdit(route.id)}
+                style={{
+                  fontSize: '12px', color: 'var(--accent)', background: 'none',
+                  border: '1px solid var(--accent)', borderRadius: '6px', padding: '5px 10px', cursor: 'pointer', fontFamily: 'inherit', fontWeight: 700,
+                }}
+              >수정</button>
+              <button
+                onClick={() => handleRevoke(route.id)}
+                style={{
+                  fontSize: '12px', color: 'var(--red)', background: 'none',
+                  border: '1px solid var(--red)', borderRadius: '6px', padding: '5px 10px', cursor: 'pointer', fontFamily: 'inherit',
+                }}
+              >공식 해제</button>
+            </div>
           </div>
         ))
       )}

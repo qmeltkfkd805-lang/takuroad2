@@ -230,3 +230,50 @@ export async function getAllTagsForSelect(): Promise<{ id: string; name: string;
     .order('name')
   return (data ?? []) as any
 }
+export async function getRouteForEdit(routeId: string) {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('routes')
+    .select(`id, title, description, official_difficulty,
+      route_shops ( sort_order, shops ( id, name, lat, lng, addr, region ) )`)
+    .eq('id', routeId)
+    .maybeSingle()
+  if (error || !data) { console.error('[route edit load]', error); return null }
+  return data as any
+}
+
+export async function updateRoute(routeId: string, title: string, description: string, difficulty: number, shops: RouteShopInput[]): Promise<boolean> {
+  const supabase = createClient()
+  let totalDistance = 0, totalDuration = 0
+  const rows = shops.map((shop, i) => {
+    let d: number | null = null, dur: number | null = null
+    if (i > 0) {
+      const prev = shops[i - 1]
+      d = Math.round(calcDistance(prev.lat, prev.lng, shop.lat, shop.lng))
+      dur = estimateWalkMinutes(d)
+      totalDistance += d; totalDuration += dur
+    }
+    return { route_id: routeId, shop_id: shop.shopId, sort_order: i, distance_from_prev_m: d, duration_from_prev_min: dur }
+  })
+  const { error: upErr } = await supabase.from('routes').update({
+    title, description: description || null, official_difficulty: difficulty,
+    total_distance_m: totalDistance, total_duration_min: totalDuration,
+  } as any).eq('id', routeId)
+  if (upErr) { console.error('[route update]', upErr); return false }
+  await supabase.from('route_shops').delete().eq('route_id', routeId)
+  const { error: insErr } = await supabase.from('route_shops').insert(rows as any)
+  if (insErr) { console.error('[route shops update]', insErr); return false }
+  return true
+}
+
+export async function getRouteStats(routeId: string) {
+  const supabase = createClient()
+  const { data } = await supabase.from('routes').select('likes, share_token, cover_image_url').eq('id', routeId).maybeSingle()
+  const { count } = await supabase.from('route_completions').select('id', { count: 'exact', head: true }).eq('route_id', routeId)
+  return {
+    likes: (data as any)?.likes ?? 0,
+    shareToken: (data as any)?.share_token ?? null,
+    cover: (data as any)?.cover_image_url ?? null,
+    completions: count ?? 0,
+  }
+}
