@@ -37,10 +37,12 @@ export async function getAdminMembers(search: string, limit: number, offset: num
   return { members, total }
 }
 
+export interface MemberActivity { type: string; created_at: string }
 export interface MemberDetail {
   id: string; nickname: string; avatar_url: string | null; role: string; created_at: string; admin_note: string | null
+  status: string; suspended_until: string | null; is_beta: boolean
   checkins: number; favorites: number; reviews: number; saved_shops: number; routes: number; route_completions: number
-  total_exp: number; level: number
+  total_exp: number; level: number; recent_activity: MemberActivity[]
 }
 
 export async function getMemberDetail(uid: string): Promise<MemberDetail | null> {
@@ -48,4 +50,11 @@ export async function getMemberDetail(uid: string): Promise<MemberDetail | null>
   const { data, error } = await supabase.rpc('get_member_detail', { uid })
   if (error || !data) { console.error('[회원 상세] rpc:', error); return null }
   return data as MemberDetail
+}
+
+export async function grantExp(uid: string, amount: number, reason: string): Promise<{ total_exp: number; level: number } | null> {
+  const supabase = createClient()
+  const { data, error } = await supabase.rpc('admin_grant_exp', { uid, amount, reason })
+  if (error || !data) { console.error('[EXP 지급] rpc:', error); return null }
+  return data as { total_exp: number; level: number }
 }
