@@ -80,6 +80,8 @@ export default function RouteExplorePage() {
   const [search, setSearch] = useState('')
   const [themeFilter, setThemeFilter] = useState<string | null>(null)
   const [diffFilter, setDiffFilter] = useState<number | null>(null)
+  const [tagFilter, setTagFilter] = useState<string | null>(null)
+  const [regionFilter, setRegionFilter] = useState<string | null>(null)
   const [showFilter, setShowFilter] = useState(false)
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
 
@@ -114,6 +116,8 @@ export default function RouteExplorePage() {
   let shown = q ? tabRoutes.filter((r) => (r.title ?? '').toLowerCase().includes(q)) : tabRoutes
   if (themeFilter) shown = shown.filter((r) => (r.themes ?? []).includes(themeFilter))
   if (diffFilter) shown = shown.filter((r) => r.official_difficulty === diffFilter)
+  if (tagFilter) shown = shown.filter((r) => r.primary_tag?.name === tagFilter)
+  if (regionFilter) shown = shown.filter((r) => rtRegions(r).includes(regionFilter))
 
   function go(r: any) { const t = r.share_token ?? r.shareToken; if (t) router.push(`/route/${t}`) }
   async function onSave(e: React.MouseEvent, r: any) {
@@ -171,7 +175,7 @@ export default function RouteExplorePage() {
           ))}
         </div>
 
-        {tab === 'all' && !q && !themeFilter && !diffFilter && hero && (
+        {tab === 'all' && !q && !themeFilter && !diffFilter && !tagFilter && !regionFilter && hero && (
           <div style={{ borderRadius: 16, overflow: 'hidden', marginBottom: 22 }}>
             <div style={{ backgroundImage: hero.cover_image_url ? `linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,.15)), url(${hero.cover_image_url})` : 'linear-gradient(135deg, var(--accent), #ff8fb1)', backgroundSize: 'cover', backgroundPosition: 'center', padding: '30px 24px', color: '#fff' }}>
               <span style={{ background: 'rgba(0,0,0,.2)', fontSize: 12, fontWeight: 800, padding: '3px 10px', borderRadius: 9999 }}>공식 추천</span>
@@ -191,16 +195,22 @@ export default function RouteExplorePage() {
           </div>
         )}
 
-        {tab === 'all' && !q && !themeFilter && !diffFilter ? (
+        {(tagFilter || regionFilter) && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 13, color: 'var(--muted)' }}>{tagFilter ? '작품' : '지역'}</span>
+            <button onClick={() => { setTagFilter(null); setRegionFilter(null) }} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 9999, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>{tagFilter ?? regionFilter}<XIcon size={13} color="#fff" /></button>
+          </div>
+        )}
+        {tab === 'all' && !q && !themeFilter && !diffFilter && !tagFilter && !regionFilter ? (
           <>
             {byTag.length > 0 && (
               <Section title="작품별 루트">
-                {byTag.map(([t, n]) => <MiniCard key={t} label={t} sub={`루트 ${n}개`} onClick={() => setTab('all')} />)}
+                {byTag.map(([t, n]) => <MiniCard key={t} label={t} sub={`루트 ${n}개`} onClick={() => { setTagFilter(t); setRegionFilter(null); setThemeFilter(null); setDiffFilter(null); setTab('all') }} />)}
               </Section>
             )}
             {byRegion.length > 0 && (
               <Section title="지역별 루트">
-                {byRegion.map(([r, n]) => <MiniCard key={r} icon={<PinIcon size={13} color="var(--accent)" />} label={r} sub={`루트 ${n}개`} onClick={() => setTab('all')} />)}
+                {byRegion.map(([r, n]) => <MiniCard key={r} icon={<PinIcon size={13} color="var(--accent)" />} label={r} sub={`루트 ${n}개`} onClick={() => { setRegionFilter(r); setTagFilter(null); setThemeFilter(null); setDiffFilter(null); setTab('all') }} />)}
               </Section>
             )}
           </>
