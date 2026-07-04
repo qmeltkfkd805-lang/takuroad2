@@ -324,3 +324,47 @@ export async function getRouteMeta(routeId: string) {
 
 
 
+
+// 루트 저장 토글 (저장돼있으면 해제, 아니면 저장) → 저장상태 반환
+export async function toggleRouteSave(routeId: string, userId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { data: existing } = await supabase
+    .from('route_saves')
+    .select('id')
+    .eq('route_id', routeId)
+    .eq('user_id', userId)
+    .maybeSingle()
+  if (existing) {
+    await supabase.from('route_saves').delete().eq('id', (existing as any).id)
+    return false
+  } else {
+    await supabase.from('route_saves').insert({ route_id: routeId, user_id: userId } as any)
+    return true
+  }
+}
+
+// 내가 저장한 루트 id 목록 (저장 여부 체크용)
+export async function getMySavedRouteIds(userId: string): Promise<string[]> {
+  const supabase = createClient()
+  const { data } = await supabase.from('route_saves').select('route_id').eq('user_id', userId)
+  return (data ?? []).map((r: any) => r.route_id)
+}
+
+// 마이페이지 - 저장한 루트 전체
+export async function getSavedRoutes(userId: string) {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('route_saves')
+    .select(`
+      route_id, created_at,
+      routes (
+        id, title, description, cover_image_url, likes,
+        total_distance_m, total_duration_min, official_difficulty,
+        is_shared, share_token,
+        route_shops ( id )
+      )
+    `)
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+  return (data ?? []).map((r: any) => r.routes).filter(Boolean)
+}

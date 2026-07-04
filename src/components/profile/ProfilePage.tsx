@@ -12,6 +12,7 @@ import TitleBadgeSelector from '@/components/passport/TitleBadgeSelector'
 import ChronicleTimeline from '@/components/passport/ChronicleTimeline'
 import SavedShopsTab from './SavedShopsTab'
 import MyRoutesTab from './MyRoutesTab'
+import SavedRoutesTab from './SavedRoutesTab'
 import MyReviewsTab from './MyReviewsTab'
 import MyShopsTab from './MyShopsTab'
 import VerifyStatusTab from './VerifyStatusTab'
@@ -20,19 +21,20 @@ import BadgesTab from './BadgesTab'
 import CollectionTab from './CollectionTab'
 import { useSearchParams } from 'next/navigation'
 
-type Tab = 'passport' | 'chronicle' | 'saved' | 'routes' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
+type Tab = 'passport' | 'chronicle' | 'saved' | 'routes' | 'savedroutes' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
 
 const TABS: { key: Tab; label: string; icon: string }[] = [
   { key: 'passport',   label: '여권',         icon: '📔' },
-  { key: 'chronicle',  label: '연대기',       icon: '📖' },
+  { key: 'chronicle',  label: '연대기',       icon: '📰' },
   { key: 'saved',      label: '저장한 샵',    icon: '🔖' },
   { key: 'routes',     label: '내 루트',      icon: '🧭' },
-  { key: 'reviews',    label: '내 후기',      icon: '✍️' },
+  { key: 'savedroutes', label: '저장한 루트',  icon: '❤️' },
+  { key: 'reviews',    label: '내 후기',      icon: '⭐' },
   { key: 'comments',   label: '내 댓글',      icon: '💬' },
-  { key: 'shops',      label: '등록한 샵',        icon: '🏪' },
-  { key: 'verify',     label: '인증 현황',    icon: '✅' },
-  { key: 'badges',     label: '배지',         icon: '🏅' },
-  { key: 'collection', label: '컬렉션',       icon: '📍' },
+  { key: 'shops',      label: '등록한 샵',    icon: '🏪' },
+  { key: 'verify',     label: '인증 현황',    icon: '🛡' },
+  { key: 'badges',     label: '배지',         icon: '🏆' },
+  { key: 'collection', label: '컬렉션',       icon: '📦' },
   { key: 'settings',   label: '설정',         icon: '⚙️' },
 ]
 
@@ -40,7 +42,7 @@ export default function ProfilePage() {
   const router = useRouter()
   const { user, profile, loading, signOut } = useAuth()
   const initialTab = (useSearchParams().get('tab') as Tab) ?? 'passport'
-const [tab, setTab] = useState<Tab>(initialTab)
+  const [tab, setTab] = useState<Tab>(initialTab)
   const [passport, setPassport] = useState<OtakuPassport | null>(null)
   const [showTitleSelector, setShowTitleSelector] = useState(false)
 
@@ -156,6 +158,7 @@ const [tab, setTab] = useState<Tab>(initialTab)
         {tab === 'chronicle' && <ChronicleTimeline userId={user.id} />}
         {tab === 'saved' && <SavedShopsTab userId={user.id} />}
         {tab === 'routes' && <MyRoutesTab userId={user.id} />}
+        {tab === 'savedroutes' && <SavedRoutesTab userId={user.id} />}
         {tab === 'reviews' && <MyReviewsTab userId={user.id} />}
         {tab === 'comments' && <EmptyTab text="댓글 기능은 곧 추가될 예정이에요" />}
         {tab === 'shops' && <MyShopsTab userId={user.id} />}
@@ -179,7 +182,7 @@ const [tab, setTab] = useState<Tab>(initialTab)
 function EmptyTab({ text }: { text: string }) {
   return (
     <div style={{ padding: '60px 20px', textAlign: 'center' }}>
-      <div style={{ fontSize: '40px', marginBottom: '12px' }}>🚧</div>
+      <div style={{ fontSize: '40px', marginBottom: '12px' }}>📭</div>
       <p style={{ color: 'var(--muted)', fontSize: '14px' }}>{text}</p>
     </div>
   )

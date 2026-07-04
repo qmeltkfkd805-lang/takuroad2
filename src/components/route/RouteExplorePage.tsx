@@ -2,7 +2,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { getPublicRoutes, getMyRoutes, getMyRouteProgress } from '@/services/routeService'
+import { getPublicRoutes, getMyRoutes, getMyRouteProgress, toggleRouteSave, getMySavedRouteIds } from '@/services/routeService'
 import { formatDistance } from '@/hooks/useCurrentLocation'
 
 type Tab = 'all' | 'official' | 'popular' | 'recent' | 'mine'
@@ -10,7 +10,6 @@ const TABS: { v: Tab; l: string }[] = [
   { v: 'all', l: '전체 루트' }, { v: 'official', l: '공식 루트' }, { v: 'popular', l: '인기 루트' }, { v: 'recent', l: '신규 루트' }, { v: 'mine', l: '내 루트' },
 ]
 const DIFF: Record<number, { l: string; c: string }> = { 1: { l: '가볍게', c: '#22c55e' }, 2: { l: '반나절', c: '#eab308' }, 3: { l: '하루', c: '#ef4444' } }
-const SEASONS = [{ e: '🌸', l: '봄' }, { e: '🏖', l: '여름' }, { e: '🍁', l: '가을' }, { e: '❄️', l: '겨울' }]
 const THEME_ICONS: Record<string, string> = { '카페': '☕', '굿즈': '🛍️', '가챠': '🎲', '사진명소': '📸', '가족': '👪', '커플': '💕', '혼자': '🧍', '도보30분': '🚶', '반나절': '⏳', '실내': '🏠', '비오는날': '🌧️' }
 
 const rtTags = (r: any): string[] => Array.from(new Set((r.route_shops ?? []).flatMap((rs: any) => (rs.shops?.shop_tags ?? []).map((st: any) => st.tags?.name).filter(Boolean))))
@@ -26,6 +25,8 @@ export default function RouteExplorePage() {
   const [tab, setTab] = useState<Tab>('all')
   const [search, setSearch] = useState('')
   const [themeFilter, setThemeFilter] = useState<string | null>(null)
+  const [diffFilter, setDiffFilter] = useState<number | null>(null)
+  const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     getPublicRoutes().then((d) => { setRoutes(d); setLoading(false) }).catch(() => setLoading(false))
@@ -34,6 +35,7 @@ export default function RouteExplorePage() {
     if (!user) return
     getMyRoutes(user.id).then(setMine).catch(() => {})
     getMyRouteProgress(user.id).then(setProgress).catch(() => {})
+    getMySavedRouteIds(user.id).then((ids) => setSavedIds(new Set(ids))).catch(() => {})
   }, [user])
 
   const popular = useMemo(() => [...routes].sort((a, b) => (b.likes ?? 0) - (a.likes ?? 0)), [routes])
@@ -61,8 +63,18 @@ export default function RouteExplorePage() {
   const tabRoutes = tab === 'official' ? official : tab === 'popular' ? popular : tab === 'recent' ? recent : tab === 'mine' ? mine : routes
   let shown = q ? tabRoutes.filter((r) => (r.title ?? '').toLowerCase().includes(q)) : tabRoutes
   if (themeFilter) shown = shown.filter((r) => (r.themes ?? []).includes(themeFilter))
+  if (diffFilter) shown = shown.filter((r) => r.official_difficulty === diffFilter)
 
   function go(r: any) { const t = r.share_token ?? r.shareToken; if (t) router.push(`/route/${t}`) }
+  async function onSave(e: React.MouseEvent, r: any) {
+    e.stopPropagation()
+    if (!user) { router.push('/login'); return }
+    const wasSaved = savedIds.has(r.id)
+    setSavedIds((prev) => { const n = new Set(prev); wasSaved ? n.delete(r.id) : n.add(r.id); return n })
+    await toggleRouteSave(r.id, user.id).catch(() => {
+      setSavedIds((prev) => { const n = new Set(prev); wasSaved ? n.add(r.id) : n.delete(r.id); return n })
+    })
+  }
 
   if (loading) return <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>루트 불러오는 중...</div>
 
@@ -81,6 +93,18 @@ export default function RouteExplorePage() {
           ))}
         </div>
 
+        <div style={{ display: 'flex', gap: 6, marginBottom: 14, flexWrap: 'wrap' }}>
+          <span style={{ fontSize: 13, color: 'var(--muted)', alignSelf: 'center', marginRight: 2 }}>난이도</span>
+          {[1, 2, 3].map((v) => {
+            const d = DIFF[v]
+            const on = diffFilter === v
+            return (
+              <button key={v} onClick={() => setDiffFilter(on ? null : v)} style={{ padding: '6px 13px', borderRadius: 9999, border: `1px solid ${on ? d.c : 'var(--border)'}`, background: on ? d.c : 'var(--surface)', color: on ? '#fff' : 'var(--text)', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>
+                {d.l}
+              </button>
+            )
+          })}
+        </div>
         {themeFilter && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
             <span style={{ fontSize: 13, color: 'var(--muted)' }}>테마 필터:</span>
@@ -89,8 +113,8 @@ export default function RouteExplorePage() {
             </button>
           </div>
         )}
-        {tab === 'all' && !themeFilter && hero && (
-          <button onClick={() => go(hero)} style={{ display: 'block', width: '100%', textAlign: 'left', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: 0, borderRadius: 16, overflow: 'hidden', marginBottom: 22 }}>
+        {tab === 'all' && !themeFilter && !diffFilter && hero && (
+          <div style={{ borderRadius: 16, overflow: 'hidden', marginBottom: 22 }}>
             <div style={{ backgroundImage: hero.cover_image_url ? `linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,.15)), url(${hero.cover_image_url})` : 'linear-gradient(135deg, var(--accent), #ff8fb1)', backgroundSize: 'cover', backgroundPosition: 'center', padding: '30px 24px', color: '#fff' }}>
               <span style={{ background: 'rgba(0,0,0,.2)', fontSize: 12, fontWeight: 800, padding: '3px 10px', borderRadius: 9999 }}>공식 추천</span>
               <div style={{ fontSize: 26, fontWeight: 900, margin: '12px 0 6px' }}>{hero.title}</div>
@@ -101,12 +125,15 @@ export default function RouteExplorePage() {
                 {hero.total_duration_min ? <span>⏱ {hero.total_duration_min}분</span> : null}
                 <span>❤️ {hero.likes ?? 0}</span>
               </div>
-              <span style={{ marginTop: 16, display: 'inline-block', background: '#fff', color: 'var(--accent)', fontWeight: 800, fontSize: 14, padding: '9px 20px', borderRadius: 9999 }}>루트 보기 →</span>
+              <div style={{ display: 'flex', gap: 10, marginTop: 18 }}>
+                <button onClick={() => go(hero)} style={{ background: '#fff', color: 'var(--accent)', fontWeight: 800, fontSize: 14, padding: '11px 22px', borderRadius: 9999, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>🚶 루트 보기</button>
+                <button onClick={(e) => onSave(e, hero)} style={{ background: savedIds.has(hero.id) ? 'var(--accent)' : 'rgba(255,255,255,.2)', color: '#fff', fontWeight: 800, fontSize: 14, padding: '11px 20px', borderRadius: 9999, border: '1px solid rgba(255,255,255,.5)', cursor: 'pointer', fontFamily: 'inherit' }}>{savedIds.has(hero.id) ? '❤️ 저장됨' : '🤍 저장하기'}</button>
+              </div>
             </div>
-          </button>
+          </div>
         )}
 
-        {tab === 'all' && !themeFilter ? (
+        {tab === 'all' && !themeFilter && !diffFilter ? (
           <>
             {byTheme.length > 0 && (
               <div style={{ marginBottom: 22 }}>
@@ -130,7 +157,6 @@ export default function RouteExplorePage() {
                 {byRegion.map(([r, n]) => <MiniCard key={r} label={`📍 ${r}`} sub={`루트 ${n}개`} onClick={() => setTab('all')} />)}
               </Section>
             )}
-            <p style={{ fontSize: 12, color: 'var(--muted)', textAlign: 'center', marginTop: 8 }}>시즌 추천 · 추천 테마 루트는 준비 중이에요.</p>
           </>
         ) : (
           <>
@@ -140,7 +166,7 @@ export default function RouteExplorePage() {
               <EmptyBox text="루트가 없어요" />
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
-                {shown.map((r) => <Card key={r.id} r={r} onGo={go} />)}
+                {shown.map((r) => <Card key={r.id} r={r} onGo={go} saved={savedIds.has(r.id)} onSave={onSave} />)}
               </div>
             )}
           </>
@@ -162,19 +188,7 @@ export default function RouteExplorePage() {
           {popular.length === 0 && <p style={{ fontSize: 13, color: 'var(--muted)', padding: '10px 0' }}>아직 루트가 없어요</p>}
         </Panel>
 
-        <Panel title="시즌 추천 루트">
-          <div style={{ display: 'flex', gap: 8, justifyContent: 'space-around', opacity: 0.5 }}>
-            {SEASONS.map((s) => (
-              <div key={s.l} style={{ textAlign: 'center' }}>
-                <div style={{ width: 48, height: 48, borderRadius: 9999, background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>{s.e}</div>
-                <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>{s.l}</div>
-              </div>
-            ))}
-          </div>
-          <p style={{ fontSize: 11, color: 'var(--muted)', textAlign: 'center', marginTop: 10 }}>준비 중</p>
-        </Panel>
-
-        {user && progress.length > 0 && (
+                {user && progress.length > 0 && (
           <Panel title="내 루트 진행 현황">
             {progress.map((p) => (
               <button key={p.id} onClick={() => p.shareToken && router.push(`/route/${p.shareToken}`)} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: '8px 0', cursor: 'pointer', fontFamily: 'inherit' }}>
@@ -214,12 +228,13 @@ function MiniCard({ label, sub, onClick }: { label: string; sub: string; onClick
     </button>
   )
 }
-function Card({ r, onGo }: { r: any; onGo: (r: any) => void }) {
+function Card({ r, onGo, saved, onSave }: { r: any; onGo: (r: any) => void; saved: boolean; onSave: (e: React.MouseEvent, r: any) => void }) {
   const d = r.official_difficulty ? DIFF[r.official_difficulty] : null
   return (
     <button onClick={() => onGo(r)} style={{ display: 'block', width: '100%', textAlign: 'left', border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden', cursor: 'pointer', fontFamily: 'inherit', background: 'var(--surface)', padding: 0 }}>
-      <div style={{ height: 90, backgroundImage: r.cover_image_url ? `url(${r.cover_image_url})` : 'linear-gradient(135deg, var(--accent), #ff8fb1)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', alignItems: 'flex-end', padding: 10 }}>
+      <div style={{ height: 90, backgroundImage: r.cover_image_url ? `url(${r.cover_image_url})` : 'linear-gradient(135deg, var(--accent), #ff8fb1)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', alignItems: 'flex-end', padding: 10, position: 'relative' }}>
         {d && <span style={{ background: 'rgba(255,255,255,.9)', color: d.c, fontSize: 11, fontWeight: 800, padding: '2px 8px', borderRadius: 9999 }}>{d.l}</span>}
+        <span onClick={(e) => onSave(e, r)} style={{ position: 'absolute', top: 8, right: 8, width: 30, height: 30, borderRadius: 9999, background: 'rgba(0,0,0,.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, cursor: 'pointer' }}>{saved ? '❤️' : '🤍'}</span>
       </div>
       <div style={{ padding: '10px 12px 12px' }}>
         <div style={{ fontSize: 14, fontWeight: 800, marginBottom: 6, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.title}</div>
