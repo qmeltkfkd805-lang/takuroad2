@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo, CSSProperties, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getPublicRoutes, getMyRoutes, getMyRouteProgress, toggleRouteSave, getMySavedRouteIds } from '@/services/routeService'
+import { shopRegion } from '@/lib/shop/quickCompleteness'
 import { formatDistance } from '@/hooks/useCurrentLocation'
 
 /* ---- 아이콘 헬퍼 (상세페이지와 동일) ---- */
@@ -66,7 +67,7 @@ function ThemeIcon({ name, size = 15, color = 'currentColor' }: { name: string; 
 }
 
 const rtTags = (r: any): string[] => Array.from(new Set((r.route_shops ?? []).flatMap((rs: any) => (rs.shops?.shop_tags ?? []).map((st: any) => st.tags?.name).filter(Boolean))))
-const rtRegions = (r: any): string[] => Array.from(new Set((r.route_shops ?? []).map((rs: any) => rs.shops?.region).filter(Boolean)))
+const rtRegions = (r: any): string[] => Array.from(new Set((r.route_shops ?? []).map((rs: any) => rs.shops ? shopRegion(rs.shops) : null).filter((x: any) => x && x !== '지역 미정')))
 
 export default function RouteExplorePage() {
   const router = useRouter()
@@ -79,6 +80,7 @@ export default function RouteExplorePage() {
   const [search, setSearch] = useState('')
   const [themeFilter, setThemeFilter] = useState<string | null>(null)
   const [diffFilter, setDiffFilter] = useState<number | null>(null)
+  const [showFilter, setShowFilter] = useState(false)
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
 
   useEffect(() => {
@@ -105,11 +107,6 @@ export default function RouteExplorePage() {
     const m = new Map<string, number>()
     routes.forEach((r) => rtRegions(r).forEach((x) => m.set(x, (m.get(x) ?? 0) + 1)))
     return Array.from(m.entries()).sort((a, b) => b[1] - a[1]).slice(0, 12)
-  }, [routes])
-  const byTheme = useMemo(() => {
-    const m = new Map<string, number>()
-    routes.forEach((r) => (r.themes ?? []).forEach((t: string) => m.set(t, (m.get(t) ?? 0) + 1)))
-    return Array.from(m.entries()).sort((a, b) => b[1] - a[1])
   }, [routes])
 
   const q = search.trim().toLowerCase()
@@ -140,33 +137,41 @@ export default function RouteExplorePage() {
           <button onClick={() => router.push('/route/new')} style={{ padding: '9px 16px', borderRadius: 9999, border: '1px solid var(--accent)', background: 'var(--surface)', color: 'var(--accent)', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>+ 루트 만들기</button>
         </div>
 
+        <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+          <div style={{ flex: 1, position: 'relative' }}>
+            <span style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', display: 'flex', color: 'var(--muted)' }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3-3" /></svg></span>
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="루트 이름 검색" style={{ width: '100%', boxSizing: 'border-box', padding: '11px 14px 11px 38px', borderRadius: 9999, border: '1px solid var(--border)', fontFamily: 'inherit', fontSize: 14, background: 'var(--surface)', color: 'var(--text)' }} />
+          </div>
+          <button onClick={() => setShowFilter((v) => !v)} style={{ flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 6, padding: '0 16px', borderRadius: 9999, border: `1px solid ${(diffFilter || themeFilter) ? 'var(--accent)' : 'var(--border)'}`, background: (diffFilter || themeFilter) ? 'var(--accent)' : 'var(--surface)', color: (diffFilter || themeFilter) ? '#fff' : 'var(--text)', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M3 5h18M6 12h12M10 19h4" /></svg>필터{(diffFilter || themeFilter) ? ` ${(diffFilter ? 1 : 0) + (themeFilter ? 1 : 0)}` : ''}
+          </button>
+        </div>
+        {showFilter && (
+          <div style={{ border: '1px solid var(--border)', borderRadius: 14, padding: 16, marginBottom: 14, background: 'var(--surface)' }}>
+            <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--muted)', marginBottom: 8 }}>난이도</div>
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 16 }}>
+              {[1, 2, 3].map((v) => { const d = DIFF[v]; const on = diffFilter === v; return (
+                <button key={v} onClick={() => setDiffFilter(on ? null : v)} style={{ padding: '7px 14px', borderRadius: 9999, border: `1px solid ${on ? d.c : 'var(--border)'}`, background: on ? d.c : 'var(--surface)', color: on ? '#fff' : 'var(--text)', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>{d.l}</button>
+              )})}
+            </div>
+            <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--muted)', marginBottom: 8 }}>추천 테마</div>
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+              {['카페', '굿즈', '사진명소', '가족', '커플', '혼자', '실내', '비오는날'].map((th) => { const on = themeFilter === th; return (
+                <button key={th} onClick={() => setThemeFilter(on ? null : th)} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '7px 13px', borderRadius: 9999, border: `1px solid ${on ? 'var(--accent)' : 'var(--border)'}`, background: on ? 'var(--accent)' : 'var(--surface)', color: on ? '#fff' : 'var(--text)', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}><ThemeIcon name={th} size={14} color={on ? '#fff' : 'currentColor'} />{th}</button>
+              )})}
+            </div>
+            {(diffFilter || themeFilter) && (
+              <button onClick={() => { setDiffFilter(null); setThemeFilter(null) }} style={{ marginTop: 14, background: 'none', border: 'none', color: 'var(--muted)', fontSize: 13, cursor: 'pointer', fontFamily: 'inherit', textDecoration: 'underline' }}>필터 초기화</button>
+            )}
+          </div>
+        )}
         <div style={{ display: 'flex', gap: 6, overflowX: 'auto', marginBottom: 16 }}>
           {TABS.map((t) => (
             <button key={t.v} onClick={() => setTab(t.v)} style={{ flexShrink: 0, padding: '8px 14px', borderRadius: 9999, border: 'none', background: tab === t.v ? 'var(--accent)' : 'var(--surface2)', color: tab === t.v ? '#fff' : 'var(--text)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>{t.l}</button>
           ))}
         </div>
 
-        <div style={{ display: 'flex', gap: 6, marginBottom: 14, flexWrap: 'wrap' }}>
-          <span style={{ fontSize: 13, color: 'var(--muted)', alignSelf: 'center', marginRight: 2 }}>난이도</span>
-          {[1, 2, 3].map((v) => {
-            const d = DIFF[v]
-            const on = diffFilter === v
-            return (
-              <button key={v} onClick={() => setDiffFilter(on ? null : v)} style={{ padding: '6px 13px', borderRadius: 9999, border: `1px solid ${on ? d.c : 'var(--border)'}`, background: on ? d.c : 'var(--surface)', color: on ? '#fff' : 'var(--text)', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>
-                {d.l}
-              </button>
-            )
-          })}
-        </div>
-        {themeFilter && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-            <span style={{ fontSize: 13, color: 'var(--muted)' }}>테마 필터:</span>
-            <button onClick={() => setThemeFilter(null)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 9999, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>
-              <ThemeIcon name={themeFilter} size={14} color="#fff" />{themeFilter}<XIcon size={13} color="#fff" />
-            </button>
-          </div>
-        )}
-        {tab === 'all' && !themeFilter && !diffFilter && hero && (
+        {tab === 'all' && !q && !themeFilter && !diffFilter && hero && (
           <div style={{ borderRadius: 16, overflow: 'hidden', marginBottom: 22 }}>
             <div style={{ backgroundImage: hero.cover_image_url ? `linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,.15)), url(${hero.cover_image_url})` : 'linear-gradient(135deg, var(--accent), #ff8fb1)', backgroundSize: 'cover', backgroundPosition: 'center', padding: '30px 24px', color: '#fff' }}>
               <span style={{ background: 'rgba(0,0,0,.2)', fontSize: 12, fontWeight: 800, padding: '3px 10px', borderRadius: 9999 }}>공식 추천</span>
@@ -175,7 +180,7 @@ export default function RouteExplorePage() {
               <div style={{ display: 'flex', gap: 18, fontSize: 14, fontWeight: 700, alignItems: 'center' }}>
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}><MaskIcon name="shop" size={15} color="#fff" />{hero.route_shops?.length ?? 0}곳</span>
                 {hero.total_distance_m ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}><MaskIcon name="route" size={15} color="#fff" />{formatDistance(hero.total_distance_m)}</span> : null}
-                {hero.total_duration_min ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}><MaskIcon name="clock" size={15} color="#fff" />{hero.total_duration_min}분</span> : null}
+                {hero.official_difficulty ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}><MaskIcon name="clock" size={15} color="#fff" />{DIFF[hero.official_difficulty]?.l ?? ''}</span> : null}
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}><HeartIcon size={15} filled color="#fff" />{hero.likes ?? 0}</span>
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 18 }}>
@@ -186,23 +191,8 @@ export default function RouteExplorePage() {
           </div>
         )}
 
-        {tab === 'all' && !themeFilter && !diffFilter ? (
+        {tab === 'all' && !q && !themeFilter && !diffFilter ? (
           <>
-            {byTheme.length > 0 && (
-              <div style={{ marginBottom: 22 }}>
-                <h2 style={{ fontSize: 16, fontWeight: 900, margin: '0 0 10px' }}>추천 테마</h2>
-                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                  {byTheme.map(([t, n]) => {
-                    const on = themeFilter === t
-                    return (
-                      <button key={t} onClick={() => { setThemeFilter(t); setTab('all') }} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 15px', borderRadius: 9999, border: `1px solid ${on ? 'var(--accent)' : 'var(--border)'}`, background: on ? 'var(--accent)' : 'var(--surface)', color: on ? '#fff' : 'var(--text)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>
-                        <ThemeIcon name={t} size={15} />{t}<span style={{ opacity: 0.6, fontSize: 12 }}>{n}</span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
             {byTag.length > 0 && (
               <Section title="작품별 루트">
                 {byTag.map(([t, n]) => <MiniCard key={t} label={t} sub={`루트 ${n}개`} onClick={() => setTab('all')} />)}
@@ -232,15 +222,21 @@ export default function RouteExplorePage() {
       {/* 오른쪽 사이드 */}
       <aside style={{ flex: '1 1 300px', maxWidth: 360, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <Panel title="오늘의 인기 루트">
-          {popular.slice(0, 5).map((r, i) => (
-            <button key={r.id} onClick={() => go(r)} style={{ display: 'flex', gap: 10, alignItems: 'center', width: '100%', textAlign: 'left', background: 'none', border: 'none', borderBottom: '1px solid var(--border)', padding: '10px 0', cursor: 'pointer', fontFamily: 'inherit' }}>
-              <span style={{ width: 22, height: 22, borderRadius: 6, background: i < 3 ? 'var(--accent)' : 'var(--surface2)', color: i < 3 ? '#fff' : 'var(--muted)', fontWeight: 800, fontSize: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{i + 1}</span>
+          {popular.slice(0, 5).map((r, i) => {
+            const dl = r.official_difficulty ? DIFF[r.official_difficulty] : null
+            return (
+            <button key={r.id} onClick={() => go(r)} style={{ display: 'flex', gap: 12, alignItems: 'center', width: '100%', textAlign: 'left', background: 'none', border: 'none', borderBottom: '1px solid var(--border)', padding: '12px 0', cursor: 'pointer', fontFamily: 'inherit' }}>
+              <div style={{ position: 'relative', width: 56, height: 56, borderRadius: 12, flexShrink: 0, overflow: 'hidden', backgroundImage: r.cover_image_url ? `url(${r.cover_image_url})` : 'linear-gradient(135deg, var(--accent), #ff9bb6)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                <span style={{ position: 'absolute', top: 0, left: 0, width: 20, height: 20, borderRadius: '0 0 8px 0', background: i < 3 ? 'var(--accent)' : 'rgba(0,0,0,0.55)', color: '#fff', fontWeight: 800, fontSize: 11, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{i + 1}</span>
+              </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.title}</div>
-                <div style={{ fontSize: 11, color: 'var(--muted)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>{r.route_shops?.length ?? 0}곳 · {r.total_duration_min ?? 0}분 · <HeartIcon size={11} filled color="var(--accent)" />{r.likes ?? 0}</div>
+                <div style={{ fontSize: 13.5, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.title}</div>
+                <div style={{ fontSize: 11.5, color: 'var(--muted)', marginTop: 3 }}>{r.route_shops?.length ?? 0}곳{r.total_distance_m ? ` · ${formatDistance(r.total_distance_m)}` : ''}{dl ? ` · ` : ''}{dl ? <span style={{ color: dl.c, fontWeight: 700 }}>{dl.l}</span> : null}</div>
+                <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2, display: 'inline-flex', alignItems: 'center', gap: 3 }}><HeartIcon size={11} filled color="var(--accent)" />{r.likes ?? 0}</div>
               </div>
             </button>
-          ))}
+            )
+          })}
           {popular.length === 0 && <p style={{ fontSize: 13, color: 'var(--muted)', padding: '10px 0' }}>아직 루트가 없어요</p>}
         </Panel>
 
@@ -298,7 +294,7 @@ function Card({ r, onGo, saved, onSave }: { r: any; onGo: (r: any) => void; save
         <div style={{ fontSize: 14, fontWeight: 800, marginBottom: 6, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.title}</div>
         <div style={{ fontSize: 12, color: 'var(--muted)', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><MaskIcon name="shop" size={13} />{r.route_shops?.length ?? 0}곳</span>
-          {r.total_duration_min ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><MaskIcon name="clock" size={13} />{r.total_duration_min}분</span> : null}
+          {r.official_difficulty ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><MaskIcon name="clock" size={13} />{DIFF[r.official_difficulty]?.l ?? ''}</span> : null}
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><HeartIcon size={13} filled color="var(--accent)" />{r.likes ?? 0}</span>
         </div>
       </div>
