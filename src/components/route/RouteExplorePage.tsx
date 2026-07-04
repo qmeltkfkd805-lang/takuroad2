@@ -135,9 +135,12 @@ export default function RouteExplorePage() {
     e.stopPropagation()
     if (!user) { router.push('/login'); return }
     const wasSaved = savedIds.has(r.id)
+    const d = wasSaved ? -1 : 1
     setSavedIds((prev) => { const n = new Set(prev); wasSaved ? n.delete(r.id) : n.add(r.id); return n })
+    setRoutes((prev) => prev.map((x) => x.id === r.id ? { ...x, likes: Math.max(0, (x.likes ?? 0) + d) } : x))
     await toggleRouteSave(r.id, user.id).catch(() => {
       setSavedIds((prev) => { const n = new Set(prev); wasSaved ? n.add(r.id) : n.delete(r.id); return n })
+      setRoutes((prev) => prev.map((x) => x.id === r.id ? { ...x, likes: Math.max(0, (x.likes ?? 0) - d) } : x))
     })
   }
 

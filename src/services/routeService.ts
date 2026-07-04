@@ -337,9 +337,11 @@ export async function toggleRouteSave(routeId: string, userId: string): Promise<
     .maybeSingle()
   if (existing) {
     await supabase.from('route_saves').delete().eq('id', (existing as any).id)
+    await supabase.rpc('increment_route_likes', { rid: routeId, delta: -1 })
     return false
   } else {
     await supabase.from('route_saves').insert({ route_id: routeId, user_id: userId } as any)
+    await supabase.rpc('increment_route_likes', { rid: routeId, delta: 1 })
     return true
   }
 }
