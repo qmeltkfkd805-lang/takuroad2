@@ -86,9 +86,9 @@ export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRo
 
   async function onPickFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
-    if (!file) return
+    if (!file || !user) return
     setUploading(true)
-    const url = await uploadRouteCover(file, editRouteId ?? 'new')
+    const url = await uploadRouteCover(file, user.id, editRouteId ?? 'new')
     setUploading(false)
     if (url) setCoverUrl(url); else setMsg('이미지 업로드 실패')
     if (fileRef.current) fileRef.current.value = ''

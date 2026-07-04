@@ -89,7 +89,7 @@ export default function RouteBuilder() {
 
   async function onPickFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
-    if (!file) return
+    if (!file || !user) return
     setUploading(true)
     const url = await uploadRouteCover(file, user.id, editRouteId ?? 'new')
     setUploading(false)

@@ -44,7 +44,7 @@ export default function RouteDetailGate({ route }: { route: any }) {
             {isOfficial ? '⭐ 공식 루트' : shared ? '🟢 공개됨' : '🟡 작성중 (나만 보임)'}
           </span>
           {!isOfficial && (
-            <button onClick={togglePublish} disabled={busy} style={{ padding: '8px 16px', borderRadius: 9999, border: 'none', background: shared ? 'var(--surface)' : 'var(--accent)', color: shared ? 'var(--text)' : '#fff', border: shared ? '1px solid var(--border)' : 'none', fontWeight: 800, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }as React.CSSProperties}>
+            <button onClick={togglePublish} disabled={busy} style={{ padding: '8px 16px', borderRadius: 9999, background: shared ? 'var(--surface)' : 'var(--accent)', color: shared ? 'var(--text)' : '#fff', border: shared ? '1px solid var(--border)' : 'none', fontWeight: 800, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }as React.CSSProperties}>
               {busy ? '처리 중...' : shared ? '비공개로 전환' : '공개하기'}
             </button>
           )}

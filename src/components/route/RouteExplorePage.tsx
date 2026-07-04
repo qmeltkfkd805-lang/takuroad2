@@ -11,6 +11,7 @@ const TABS: { v: Tab; l: string }[] = [
 ]
 const DIFF: Record<number, { l: string; c: string }> = { 1: { l: '입문', c: '#22c55e' }, 2: { l: '하루', c: '#eab308' }, 3: { l: '빡셈', c: '#ef4444' } }
 const SEASONS = [{ e: '🌸', l: '봄' }, { e: '🏖', l: '여름' }, { e: '🍁', l: '가을' }, { e: '❄️', l: '겨울' }]
+const THEME_ICONS: Record<string, string> = { '카페': '☕', '굿즈': '🛍️', '가챠': '🎲', '사진명소': '📸', '가족': '👪', '커플': '💕', '혼자': '🧍', '도보30분': '🚶', '반나절': '⏳', '실내': '🏠', '비오는날': '🌧️' }
 
 const rtTags = (r: any): string[] => Array.from(new Set((r.route_shops ?? []).flatMap((rs: any) => (rs.shops?.shop_tags ?? []).map((st: any) => st.tags?.name).filter(Boolean))))
 const rtRegions = (r: any): string[] => Array.from(new Set((r.route_shops ?? []).map((rs: any) => rs.shops?.region).filter(Boolean)))
@@ -24,6 +25,7 @@ export default function RouteExplorePage() {
   const [loading, setLoading] = useState(true)
   const [tab, setTab] = useState<Tab>('all')
   const [search, setSearch] = useState('')
+  const [themeFilter, setThemeFilter] = useState<string | null>(null)
 
   useEffect(() => {
     getPublicRoutes().then((d) => { setRoutes(d); setLoading(false) }).catch(() => setLoading(false))
@@ -49,10 +51,16 @@ export default function RouteExplorePage() {
     routes.forEach((r) => rtRegions(r).forEach((x) => m.set(x, (m.get(x) ?? 0) + 1)))
     return Array.from(m.entries()).sort((a, b) => b[1] - a[1]).slice(0, 12)
   }, [routes])
+  const byTheme = useMemo(() => {
+    const m = new Map<string, number>()
+    routes.forEach((r) => (r.themes ?? []).forEach((t: string) => m.set(t, (m.get(t) ?? 0) + 1)))
+    return Array.from(m.entries()).sort((a, b) => b[1] - a[1])
+  }, [routes])
 
   const q = search.trim().toLowerCase()
   const tabRoutes = tab === 'official' ? official : tab === 'popular' ? popular : tab === 'recent' ? recent : tab === 'mine' ? mine : routes
-  const shown = q ? tabRoutes.filter((r) => (r.title ?? '').toLowerCase().includes(q)) : tabRoutes
+  let shown = q ? tabRoutes.filter((r) => (r.title ?? '').toLowerCase().includes(q)) : tabRoutes
+  if (themeFilter) shown = shown.filter((r) => (r.themes ?? []).includes(themeFilter))
 
   function go(r: any) { const t = r.share_token ?? r.shareToken; if (t) router.push(`/route/${t}`) }
 
@@ -73,7 +81,15 @@ export default function RouteExplorePage() {
           ))}
         </div>
 
-        {tab === 'all' && hero && (
+        {themeFilter && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+            <span style={{ fontSize: 13, color: 'var(--muted)' }}>테마 필터:</span>
+            <button onClick={() => setThemeFilter(null)} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 9999, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>
+              {THEME_ICONS[themeFilter] ?? '🏷'} {themeFilter} ✕
+            </button>
+          </div>
+        )}
+        {tab === 'all' && !themeFilter && hero && (
           <button onClick={() => go(hero)} style={{ display: 'block', width: '100%', textAlign: 'left', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: 0, borderRadius: 16, overflow: 'hidden', marginBottom: 22 }}>
             <div style={{ backgroundImage: hero.cover_image_url ? `linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,.15)), url(${hero.cover_image_url})` : 'linear-gradient(135deg, var(--accent), #ff8fb1)', backgroundSize: 'cover', backgroundPosition: 'center', padding: '30px 24px', color: '#fff' }}>
               <span style={{ background: 'rgba(0,0,0,.2)', fontSize: 12, fontWeight: 800, padding: '3px 10px', borderRadius: 9999 }}>공식 추천</span>
@@ -90,8 +106,20 @@ export default function RouteExplorePage() {
           </button>
         )}
 
-        {tab === 'all' ? (
+        {tab === 'all' && !themeFilter ? (
           <>
+            {byTheme.length > 0 && (
+              <div style={{ marginBottom: 22 }}>
+                <h2 style={{ fontSize: 16, fontWeight: 900, margin: '0 0 10px' }}>추천 테마</h2>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  {byTheme.map(([t, n]) => (
+                    <button key={t} onClick={() => { setThemeFilter(t); setTab('all') }} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 15px', borderRadius: 9999, border: `1px solid ${themeFilter === t ? 'var(--accent)' : 'var(--border)'}`, background: themeFilter === t ? 'var(--accent)' : 'var(--surface)', color: themeFilter === t ? '#fff' : 'var(--text)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>
+                      <span>{THEME_ICONS[t] ?? '🏷'}</span>{t}<span style={{ opacity: 0.6, fontSize: 12 }}>{n}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             {byTag.length > 0 && (
               <Section title="작품별 루트">
                 {byTag.map(([t, n]) => <MiniCard key={t} label={t} sub={`루트 ${n}개`} onClick={() => setTab('all')} />)}
