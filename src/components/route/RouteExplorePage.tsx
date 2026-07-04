@@ -1,16 +1,69 @@
 'use client'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, CSSProperties, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getPublicRoutes, getMyRoutes, getMyRouteProgress, toggleRouteSave, getMySavedRouteIds } from '@/services/routeService'
 import { formatDistance } from '@/hooks/useCurrentLocation'
+
+/* ---- 아이콘 헬퍼 (상세페이지와 동일) ---- */
+function MaskIcon({ name, size = 16, color = 'currentColor', style }: { name: string; size?: number; color?: string; style?: CSSProperties }) {
+  return (
+    <span aria-hidden style={{
+      width: size, height: size, display: 'inline-block', flexShrink: 0, verticalAlign: '-2px',
+      backgroundColor: color,
+      WebkitMaskImage: `url(/icons/${name}.png)`, maskImage: `url(/icons/${name}.png)`,
+      WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat',
+      WebkitMaskSize: 'contain', maskSize: 'contain',
+      WebkitMaskPosition: 'center', maskPosition: 'center',
+      ...style,
+    }} />
+  )
+}
+function ColorIcon({ name, size = 16, style }: { name: string; size?: number; style?: CSSProperties }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={`/icons/${name}.png`} width={size} height={size} alt="" aria-hidden style={{ display: 'inline-block', objectFit: 'contain', flexShrink: 0, verticalAlign: '-3px', ...style }} />
+  )
+}
+function Svg({ size = 16, color = 'currentColor', style, children }: { size?: number; color?: string; style?: CSSProperties; children: ReactNode }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2}
+      strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ flexShrink: 0, verticalAlign: '-3px', ...style }}>
+      {children}
+    </svg>
+  )
+}
+const PinIcon = (p: { size?: number; color?: string; style?: CSSProperties }) => <Svg {...p}><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" /><circle cx="12" cy="10" r="2.5" /></Svg>
+const XIcon = (p: { size?: number; color?: string; style?: CSSProperties }) => <Svg {...p}><path d="M6 6l12 12M18 6L6 18" /></Svg>
+function HeartIcon({ size = 16, color = 'currentColor', filled = false, style }: { size?: number; color?: string; filled?: boolean; style?: CSSProperties }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={filled ? color : 'none'} stroke={color} strokeWidth={2}
+      strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ flexShrink: 0, verticalAlign: '-2px', ...style }}>
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.5 4.04 3 5.5l7 7Z" />
+    </svg>
+  )
+}
 
 type Tab = 'all' | 'official' | 'popular' | 'recent' | 'mine'
 const TABS: { v: Tab; l: string }[] = [
   { v: 'all', l: '전체 루트' }, { v: 'official', l: '공식 루트' }, { v: 'popular', l: '인기 루트' }, { v: 'recent', l: '신규 루트' }, { v: 'mine', l: '내 루트' },
 ]
 const DIFF: Record<number, { l: string; c: string }> = { 1: { l: '가볍게', c: '#22c55e' }, 2: { l: '반나절', c: '#eab308' }, 3: { l: '하루', c: '#ef4444' } }
-const THEME_ICONS: Record<string, string> = { '카페': '☕', '굿즈': '🛍️', '가챠': '🎲', '사진명소': '📸', '가족': '👪', '커플': '💕', '혼자': '🧍', '도보30분': '🚶', '반나절': '⏳', '실내': '🏠', '비오는날': '🌧️' }
+// PNG 아이콘이 있는 테마만 매핑, 없는 건 ThemeIcon에서 SVG로
+const THEME_PNG: Record<string, string> = { '카페': 'cafe', '굿즈': 'goods', '가챠': 'gacha', '사진명소': 'photo', '도보30분': 'route', '반나절': 'clock' }
+function ThemeIcon({ name, size = 15, color = 'currentColor' }: { name: string; size?: number; color?: string }) {
+  const png = THEME_PNG[name]
+  if (png) return <MaskIcon name={png} size={size} color={color} />
+  const sp = { size, color }
+  switch (name) {
+    case '가족': return <Svg {...sp}><circle cx="8.5" cy="8" r="2.6" /><circle cx="16" cy="9" r="2" /><path d="M4 20c0-2.8 2-5 4.5-5s4.5 2.2 4.5 5" /><path d="M12.5 20c.1-2.3 1.7-4 3.5-4s3.4 1.7 3.5 4" /></Svg>
+    case '커플': return <MaskIcon name="heart" size={size} color={color} />
+    case '혼자': return <Svg {...sp}><circle cx="12" cy="7.5" r="3.2" /><path d="M5.5 20c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5" /></Svg>
+    case '실내': return <Svg {...sp}><path d="M4 11 12 4l8 7" /><path d="M6 10v10h12V10" /></Svg>
+    case '비오는날': return <Svg {...sp}><path d="M7.5 16a4 4 0 0 1 .4-8 5 5 0 0 1 9.4 1.4A3.6 3.6 0 0 1 17 16Z" /><path d="M8 19l-1 2.5M12 19l-1 2.5M16 19l-1 2.5" /></Svg>
+    default: return <Svg {...sp}><path d="M4 4h9l7 7-9 9-7-7Z" /><circle cx="8" cy="8" r="1.3" /></Svg>
+  }
+}
 
 const rtTags = (r: any): string[] => Array.from(new Set((r.route_shops ?? []).flatMap((rs: any) => (rs.shops?.shop_tags ?? []).map((st: any) => st.tags?.name).filter(Boolean))))
 const rtRegions = (r: any): string[] => Array.from(new Set((r.route_shops ?? []).map((rs: any) => rs.shops?.region).filter(Boolean)))
@@ -83,7 +136,7 @@ export default function RouteExplorePage() {
       {/* 메인 */}
       <div style={{ flex: '1 1 520px', minWidth: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-          <h1 style={{ fontSize: 22, fontWeight: 900, margin: 0 }}>🗺️ 루트</h1>
+          <h1 style={{ fontSize: 22, fontWeight: 900, margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}><ColorIcon name="colormap" size={26} />루트</h1>
           <button onClick={() => router.push('/route/new')} style={{ padding: '9px 16px', borderRadius: 9999, border: '1px solid var(--accent)', background: 'var(--surface)', color: 'var(--accent)', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>+ 루트 만들기</button>
         </div>
 
@@ -108,8 +161,8 @@ export default function RouteExplorePage() {
         {themeFilter && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
             <span style={{ fontSize: 13, color: 'var(--muted)' }}>테마 필터:</span>
-            <button onClick={() => setThemeFilter(null)} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 9999, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>
-              {THEME_ICONS[themeFilter] ?? '🏷'} {themeFilter} ✕
+            <button onClick={() => setThemeFilter(null)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 9999, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>
+              <ThemeIcon name={themeFilter} size={14} color="#fff" />{themeFilter}<XIcon size={13} color="#fff" />
             </button>
           </div>
         )}
@@ -119,15 +172,15 @@ export default function RouteExplorePage() {
               <span style={{ background: 'rgba(0,0,0,.2)', fontSize: 12, fontWeight: 800, padding: '3px 10px', borderRadius: 9999 }}>공식 추천</span>
               <div style={{ fontSize: 26, fontWeight: 900, margin: '12px 0 6px' }}>{hero.title}</div>
               {hero.description && <div style={{ fontSize: 14, opacity: 0.9, marginBottom: 14 }}>{hero.description}</div>}
-              <div style={{ display: 'flex', gap: 18, fontSize: 14, fontWeight: 700 }}>
-                <span>🏪 {hero.route_shops?.length ?? 0}곳</span>
-                {hero.total_distance_m ? <span>🚶 {formatDistance(hero.total_distance_m)}</span> : null}
-                {hero.total_duration_min ? <span>⏱ {hero.total_duration_min}분</span> : null}
-                <span>❤️ {hero.likes ?? 0}</span>
+              <div style={{ display: 'flex', gap: 18, fontSize: 14, fontWeight: 700, alignItems: 'center' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}><MaskIcon name="shop" size={15} color="#fff" />{hero.route_shops?.length ?? 0}곳</span>
+                {hero.total_distance_m ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}><MaskIcon name="route" size={15} color="#fff" />{formatDistance(hero.total_distance_m)}</span> : null}
+                {hero.total_duration_min ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}><MaskIcon name="clock" size={15} color="#fff" />{hero.total_duration_min}분</span> : null}
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}><HeartIcon size={15} filled color="#fff" />{hero.likes ?? 0}</span>
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 18 }}>
-                <button onClick={() => go(hero)} style={{ background: '#fff', color: 'var(--accent)', fontWeight: 800, fontSize: 14, padding: '11px 22px', borderRadius: 9999, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>🚶 루트 보기</button>
-                <button onClick={(e) => onSave(e, hero)} style={{ background: savedIds.has(hero.id) ? 'var(--accent)' : 'rgba(255,255,255,.2)', color: '#fff', fontWeight: 800, fontSize: 14, padding: '11px 20px', borderRadius: 9999, border: '1px solid rgba(255,255,255,.5)', cursor: 'pointer', fontFamily: 'inherit' }}>{savedIds.has(hero.id) ? '❤️ 저장됨' : '🤍 저장하기'}</button>
+                <button onClick={() => go(hero)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#fff', color: 'var(--accent)', fontWeight: 800, fontSize: 14, padding: '11px 22px', borderRadius: 9999, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}><PinIcon size={16} color="var(--accent)" />루트 보기</button>
+                <button onClick={(e) => onSave(e, hero)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: savedIds.has(hero.id) ? 'var(--accent)' : 'rgba(255,255,255,.2)', color: '#fff', fontWeight: 800, fontSize: 14, padding: '11px 20px', borderRadius: 9999, border: '1px solid rgba(255,255,255,.5)', cursor: 'pointer', fontFamily: 'inherit' }}><HeartIcon size={16} filled={savedIds.has(hero.id)} color="#fff" />{savedIds.has(hero.id) ? '저장됨' : '저장하기'}</button>
               </div>
             </div>
           </div>
@@ -139,11 +192,14 @@ export default function RouteExplorePage() {
               <div style={{ marginBottom: 22 }}>
                 <h2 style={{ fontSize: 16, fontWeight: 900, margin: '0 0 10px' }}>추천 테마</h2>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                  {byTheme.map(([t, n]) => (
-                    <button key={t} onClick={() => { setThemeFilter(t); setTab('all') }} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 15px', borderRadius: 9999, border: `1px solid ${themeFilter === t ? 'var(--accent)' : 'var(--border)'}`, background: themeFilter === t ? 'var(--accent)' : 'var(--surface)', color: themeFilter === t ? '#fff' : 'var(--text)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>
-                      <span>{THEME_ICONS[t] ?? '🏷'}</span>{t}<span style={{ opacity: 0.6, fontSize: 12 }}>{n}</span>
-                    </button>
-                  ))}
+                  {byTheme.map(([t, n]) => {
+                    const on = themeFilter === t
+                    return (
+                      <button key={t} onClick={() => { setThemeFilter(t); setTab('all') }} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 15px', borderRadius: 9999, border: `1px solid ${on ? 'var(--accent)' : 'var(--border)'}`, background: on ? 'var(--accent)' : 'var(--surface)', color: on ? '#fff' : 'var(--text)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>
+                        <ThemeIcon name={t} size={15} />{t}<span style={{ opacity: 0.6, fontSize: 12 }}>{n}</span>
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
             )}
@@ -154,7 +210,7 @@ export default function RouteExplorePage() {
             )}
             {byRegion.length > 0 && (
               <Section title="지역별 루트">
-                {byRegion.map(([r, n]) => <MiniCard key={r} label={`📍 ${r}`} sub={`루트 ${n}개`} onClick={() => setTab('all')} />)}
+                {byRegion.map(([r, n]) => <MiniCard key={r} icon={<PinIcon size={13} color="var(--accent)" />} label={r} sub={`루트 ${n}개`} onClick={() => setTab('all')} />)}
               </Section>
             )}
           </>
@@ -181,14 +237,14 @@ export default function RouteExplorePage() {
               <span style={{ width: 22, height: 22, borderRadius: 6, background: i < 3 ? 'var(--accent)' : 'var(--surface2)', color: i < 3 ? '#fff' : 'var(--muted)', fontWeight: 800, fontSize: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{i + 1}</span>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.title}</div>
-                <div style={{ fontSize: 11, color: 'var(--muted)' }}>{r.route_shops?.length ?? 0}곳 · {r.total_duration_min ?? 0}분 · ❤️ {r.likes ?? 0}</div>
+                <div style={{ fontSize: 11, color: 'var(--muted)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>{r.route_shops?.length ?? 0}곳 · {r.total_duration_min ?? 0}분 · <HeartIcon size={11} filled color="var(--accent)" />{r.likes ?? 0}</div>
               </div>
             </button>
           ))}
           {popular.length === 0 && <p style={{ fontSize: 13, color: 'var(--muted)', padding: '10px 0' }}>아직 루트가 없어요</p>}
         </Panel>
 
-                {user && progress.length > 0 && (
+        {user && progress.length > 0 && (
           <Panel title="내 루트 진행 현황">
             {progress.map((p) => (
               <button key={p.id} onClick={() => p.shareToken && router.push(`/route/${p.shareToken}`)} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: '8px 0', cursor: 'pointer', fontFamily: 'inherit' }}>
@@ -217,12 +273,14 @@ function Section({ title, children }: { title: string; children: React.ReactNode
     </div>
   )
 }
-function MiniCard({ label, sub, onClick }: { label: string; sub: string; onClick: () => void }) {
+function MiniCard({ label, sub, onClick, icon }: { label: string; sub: string; onClick: () => void; icon?: ReactNode }) {
   return (
     <button onClick={onClick} style={{ flexShrink: 0, width: 130, border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', cursor: 'pointer', fontFamily: 'inherit', background: 'var(--surface)', padding: 0, textAlign: 'left' }}>
       <div style={{ height: 80, background: 'linear-gradient(135deg, var(--accent), #ff8fb1)' }} />
       <div style={{ padding: '8px 10px 10px' }}>
-        <div style={{ fontSize: 13, fontWeight: 800, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{label}</div>
+        <div style={{ fontSize: 13, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 5 }}>
+          {icon}<span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{label}</span>
+        </div>
         <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>{sub}</div>
       </div>
     </button>
@@ -234,14 +292,14 @@ function Card({ r, onGo, saved, onSave }: { r: any; onGo: (r: any) => void; save
     <button onClick={() => onGo(r)} style={{ display: 'block', width: '100%', textAlign: 'left', border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden', cursor: 'pointer', fontFamily: 'inherit', background: 'var(--surface)', padding: 0 }}>
       <div style={{ height: 90, backgroundImage: r.cover_image_url ? `url(${r.cover_image_url})` : 'linear-gradient(135deg, var(--accent), #ff8fb1)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', alignItems: 'flex-end', padding: 10, position: 'relative' }}>
         {d && <span style={{ background: 'rgba(255,255,255,.9)', color: d.c, fontSize: 11, fontWeight: 800, padding: '2px 8px', borderRadius: 9999 }}>{d.l}</span>}
-        <span onClick={(e) => onSave(e, r)} style={{ position: 'absolute', top: 8, right: 8, width: 30, height: 30, borderRadius: 9999, background: 'rgba(0,0,0,.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, cursor: 'pointer' }}>{saved ? '❤️' : '🤍'}</span>
+        <span onClick={(e) => onSave(e, r)} style={{ position: 'absolute', top: 8, right: 8, width: 30, height: 30, borderRadius: 9999, background: 'rgba(0,0,0,.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}><HeartIcon size={16} filled={saved} color={saved ? 'var(--accent)' : '#fff'} /></span>
       </div>
       <div style={{ padding: '10px 12px 12px' }}>
         <div style={{ fontSize: 14, fontWeight: 800, marginBottom: 6, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.title}</div>
         <div style={{ fontSize: 12, color: 'var(--muted)', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          <span>🏪 {r.route_shops?.length ?? 0}곳</span>
-          {r.total_duration_min ? <span>⏱ {r.total_duration_min}분</span> : null}
-          <span>❤️ {r.likes ?? 0}</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><MaskIcon name="shop" size={13} />{r.route_shops?.length ?? 0}곳</span>
+          {r.total_duration_min ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><MaskIcon name="clock" size={13} />{r.total_duration_min}분</span> : null}
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><HeartIcon size={13} filled color="var(--accent)" />{r.likes ?? 0}</span>
         </div>
       </div>
     </button>
@@ -256,5 +314,5 @@ function Panel({ title, children }: { title: string; children: React.ReactNode }
   )
 }
 function EmptyBox({ text }: { text: string }) {
-  return <div style={{ padding: '50px 20px', textAlign: 'center', color: 'var(--muted)', fontSize: 14 }}><div style={{ fontSize: 36, marginBottom: 10 }}>🗺️</div>{text}</div>
+  return <div style={{ padding: '50px 20px', textAlign: 'center', color: 'var(--muted)', fontSize: 14 }}><div style={{ marginBottom: 10, display: 'flex', justifyContent: 'center' }}><ColorIcon name="colormap" size={44} /></div>{text}</div>
 }

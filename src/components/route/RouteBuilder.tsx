@@ -11,8 +11,31 @@ import { Shop } from '@/types/shop'
 import RouteMiniMap from '@/components/admin/RouteMiniMap'
 
 const DIFF = [{ v: 1, l: '가볍게' }, { v: 2, l: '반나절' }, { v: 3, l: '하루' }]
-const SEASONS = ['봄', '여름', '가을', '겨울']
-const THEMES = ['카페', '굿즈', '사진명소', '가족', '커플', '혼자', '도보30분', '반나절', '실내', '비오는날']
+const THEMES = ['카페', '굿즈', '사진명소', '가족', '커플', '혼자', '실내', '비오는날']
+
+/* ---- 아이콘 헬퍼 ---- */
+function MaskIcon({ name, size = 16, color = 'currentColor', style }: { name: string; size?: number; color?: string; style?: React.CSSProperties }) {
+  return (
+    <span aria-hidden style={{ width: size, height: size, display: 'inline-block', flexShrink: 0, verticalAlign: '-2px', backgroundColor: color, WebkitMaskImage: `url(/icons/${name}.png)`, maskImage: `url(/icons/${name}.png)`, WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat', WebkitMaskSize: 'contain', maskSize: 'contain', WebkitMaskPosition: 'center', maskPosition: 'center', ...style }} />
+  )
+}
+function ThemeSvg({ size = 14, color = 'currentColor', children }: { size?: number; color?: string; children: React.ReactNode }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ flexShrink: 0, verticalAlign: '-2px' }}>{children}</svg>
+}
+const THEME_PNG: Record<string, string> = { '카페': 'cafe', '굿즈': 'goods', '가챠': 'gacha', '사진명소': 'photo', '도보30분': 'route', '반나절': 'clock' }
+function ThemeIcon({ name, size = 14, color = 'currentColor' }: { name: string; size?: number; color?: string }) {
+  const png = THEME_PNG[name]
+  if (png) return <MaskIcon name={png} size={size} color={color} />
+  const sp = { size, color }
+  switch (name) {
+    case '가족': return <ThemeSvg {...sp}><circle cx="8.5" cy="8" r="2.6" /><circle cx="16" cy="9" r="2" /><path d="M4 20c0-2.8 2-5 4.5-5s4.5 2.2 4.5 5" /><path d="M12.5 20c.1-2.3 1.7-4 3.5-4s3.4 1.7 3.5 4" /></ThemeSvg>
+    case '커플': return <MaskIcon name="heart" size={size} color={color} />
+    case '혼자': return <ThemeSvg {...sp}><circle cx="12" cy="7.5" r="3.2" /><path d="M5.5 20c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5" /></ThemeSvg>
+    case '실내': return <ThemeSvg {...sp}><path d="M4 11 12 4l8 7" /><path d="M6 10v10h12V10" /></ThemeSvg>
+    case '비오는날': return <ThemeSvg {...sp}><path d="M7.5 16a4 4 0 0 1 .4-8 5 5 0 0 1 9.4 1.4A3.6 3.6 0 0 1 17 16Z" /><path d="M8 19l-1 2.5M12 19l-1 2.5M16 19l-1 2.5" /></ThemeSvg>
+    default: return <ThemeSvg {...sp}><path d="M4 4h9l7 7-9 9-7-7Z" /><circle cx="8" cy="8" r="1.3" /></ThemeSvg>
+  }
+}
 type SourceMode = 'work' | 'region' | 'saved'
 
 export default function RouteBuilder() {
@@ -36,9 +59,9 @@ export default function RouteBuilder() {
   const [desc, setDesc] = useState('')
   const [difficulty, setDifficulty] = useState(1)
   const [coverUrl, setCoverUrl] = useState('')
-  const [season, setSeason] = useState('')
   const [themes, setThemes] = useState<string[]>([])
   const [target, setTarget] = useState('')
+  const [tips, setTips] = useState('')
   const [uploading, setUploading] = useState(false)
   const [primaryTagId, setPrimaryTagId] = useState<string | null>(null)
   const fileRef = useRef<HTMLInputElement | null>(null)
@@ -59,7 +82,7 @@ export default function RouteBuilder() {
       setLoadingEdit(false)
     })
     getRouteStats(editRouteId).then(setStats).catch(() => {})
-    getRouteMeta(editRouteId).then((m) => { setCoverUrl(m.cover ?? ''); setSeason(m.season ?? ''); setThemes(m.themes ?? []); setTarget(m.target ?? ''); setPrimaryTagId((m as any).primaryTag ?? null) }).catch(() => {})
+    getRouteMeta(editRouteId).then((m) => { setCoverUrl(m.cover ?? ''); setThemes(m.themes ?? []); setTarget((m as any).target ? String((m as any).target).split('\n').map((l: string) => '- ' + l).join('\n') : ''); setTips((m as any).tips ? String((m as any).tips).split('\n').map((l: string) => '- ' + l).join('\n') : ''); setPrimaryTagId((m as any).primaryTag ?? null) }).catch(() => {})
   }, [editRouteId])
 
   function switchMode(m: SourceMode) {
@@ -135,7 +158,7 @@ export default function RouteBuilder() {
     if (added.length < 2) { setMsg('샵을 2개 이상 담아주세요'); return }
     setSaving(true); setMsg(null)
     const shopInput = added.map((s) => ({ shopId: s.id, lat: s.lat as number, lng: s.lng as number }))
-    const meta = { cover_image_url: coverUrl || null, season: season || null, themes, target_audience: target || null, primary_tag_id: primaryTagId }
+    const meta = { cover_image_url: coverUrl || null, themes, target_audience: (target.split('\n').map((l) => l.replace(/^\s*[-•*]\s*/, '').trim()).filter(Boolean).join('\n')) || null, tips: (tips.split('\n').map((l) => l.replace(/^\s*[-•*]\s*/, '').trim()).filter(Boolean).join('\n')) || null, primary_tag_id: primaryTagId }
     const res = await createRoute(user.id, title.trim(), desc.trim(), shopInput, difficulty)
     if (!res) { setSaving(false); setMsg('루트 생성 실패'); return }
     await updateRouteMeta(res.id, meta)
@@ -181,7 +204,7 @@ export default function RouteBuilder() {
       <Label>샵 불러오기 방식</Label>
       <div style={{ display: 'flex', gap: 6, marginBottom: 14 }}>
         <button onClick={() => switchMode('work')} style={modeBtn(sourceMode === 'work')}>작품별</button>
-        <button onClick={() => switchMode('region')} style={modeBtn(sourceMode === 'region')}>저역별</button>
+        <button onClick={() => switchMode('region')} style={modeBtn(sourceMode === 'region')}>지역별</button>
         <button onClick={() => switchMode('saved')} style={modeBtn(sourceMode === 'saved')}>저장한 샵</button>
       </div>
 
@@ -275,22 +298,19 @@ export default function RouteBuilder() {
         <input ref={fileRef} type="file" accept="image/*" onChange={onPickFile} style={{ display: 'none' }} />
       </div>
 
-      <Label>시즌 추천 (선택)</Label>
-      <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
-        {SEASONS.map((s) => (
-          <button key={s} onClick={() => setSeason(season === s ? '' : s)} style={chip(season === s)}>{s}</button>
-        ))}
-      </div>
 
       <Label>테마 (여러 개 선택 가능)</Label>
       <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
         {THEMES.map((t) => (
-          <button key={t} onClick={() => toggleTheme(t)} style={chip(themes.includes(t))}>{t}</button>
+          <button key={t} onClick={() => toggleTheme(t)} style={{ ...chip(themes.includes(t)), display: 'inline-flex', alignItems: 'center', gap: 5 }}><ThemeIcon name={t} size={14} color={themes.includes(t) ? '#fff' : 'currentColor'} />{t}</button>
         ))}
       </div>
 
-      <Label>추천 대상 (선택)</Label>
-      <input value={target} onChange={(e) => setTarget(e.target.value)} placeholder="예: 입문자, 커플, 사진 좋아하는 사람" style={{ ...inp, marginBottom: 12 }} />
+      <Label>이런 분들에게 추천해요 (선택)</Label>
+      <textarea value={target} onChange={(e) => setTarget(e.target.value)} placeholder={'- 원피스를 좋아하는 분\n- 사진 찍기 좋아하는 분'} style={{ ...inp, minHeight: 72, marginBottom: 12, resize: 'vertical', lineHeight: 1.6 }} />
+
+      <Label>루트 TIP (선택)</Label>
+      <textarea value={tips} onChange={(e) => setTips(e.target.value)} placeholder={'- 사람이 많으니 미리 가 있는 걸 추천드려요\n- 예: 카페는 웨이팅이 길 수 있어요'} style={{ ...inp, minHeight: 72, marginBottom: 12, resize: 'vertical', lineHeight: 1.6 }} />
 
       <Label>난이도</Label>
       <div style={{ display: 'flex', gap: 6, marginBottom: 16 }}>

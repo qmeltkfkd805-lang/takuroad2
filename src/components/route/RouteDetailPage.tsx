@@ -127,6 +127,7 @@ export default function RouteDetailPage({ route }: Props) {
   const diff = resolveDifficulty(route)
   const spotCount = sortedShops.length
   const likes = route.likes ?? 0
+  const tipLines: string[] = route.tips ? String(route.tips).split('\n').map((l: string) => l.replace(/^\s*[-•*]\s*/, '').trim()).filter(Boolean) : []
   const heroIcon = 'rgba(255,255,255,.9)'
 
   // 저장 여부 초기 로드
@@ -514,8 +515,19 @@ export default function RouteDetailPage({ route }: Props) {
           )}
 
           <div className={styles.sideCard}>
-            <h4 className={styles.sideCardTitle}><BulbIcon size={16} color="var(--accent)" />루트 TIP</h4>
-            <Placeholder icon={<BulbIcon size={22} color="var(--muted)" />} text="루트 팁" />
+            <h4 className={styles.sideCardTitle}><BulbIcon size={20} color="var(--accent)" />루트 TIP</h4>
+            {tipLines.length > 0 ? (
+              <div className={styles.audienceList}>
+                {tipLines.map((line, i) => (
+                  <div key={i} className={styles.audienceItem}>
+                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent)', marginTop: 7, flexShrink: 0 }} />
+                    <span>{line}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <Placeholder icon={<BulbIcon size={22} color="var(--muted)" />} text="루트 팁" />
+            )}
           </div>
 
           <div className={styles.sideCard}>

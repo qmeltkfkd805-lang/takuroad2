@@ -304,7 +304,7 @@ export async function uploadRouteCover(file: File, userId: string, routeKey: str
   return data.publicUrl
 }
 
-export async function updateRouteMeta(routeId: string, meta: { cover_image_url?: string | null; season?: string | null; themes?: string[]; target_audience?: string | null; primary_tag_id?: string | null }): Promise<boolean> {
+export async function updateRouteMeta(routeId: string, meta: { cover_image_url?: string | null; season?: string | null; themes?: string[]; target_audience?: string | null; primary_tag_id?: string | null; tips?: string | null }): Promise<boolean> {
   const supabase = createClient()
   const { error } = await supabase.from('routes').update(meta as any).eq('id', routeId)
   if (error) { console.error('[route meta]', error); return false }
@@ -313,12 +313,13 @@ export async function updateRouteMeta(routeId: string, meta: { cover_image_url?:
 
 export async function getRouteMeta(routeId: string) {
   const supabase = createClient()
-  const { data } = await supabase.from('routes').select('cover_image_url, season, themes, target_audience, primary_tag_id').eq('id', routeId).maybeSingle()
+  const { data } = await supabase.from('routes').select('cover_image_url, season, themes, target_audience, primary_tag_id, tips').eq('id', routeId).maybeSingle()
   return {
     cover: (data as any)?.cover_image_url ?? null,
     season: (data as any)?.season ?? null,
     themes: ((data as any)?.themes ?? []) as string[],
     target: (data as any)?.target_audience ?? null,
+    tips: (data as any)?.tips ?? null,
   }
 }
 
