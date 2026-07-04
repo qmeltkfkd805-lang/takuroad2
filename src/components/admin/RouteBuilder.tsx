@@ -9,7 +9,7 @@ import { shopRegion } from '@/lib/shop/quickCompleteness'
 import { Shop } from '@/types/shop'
 import RouteMiniMap from './RouteMiniMap'
 
-const DIFF = [{ v: 1, l: '쉬움' }, { v: 2, l: '보통' }, { v: 3, l: '오래걸림' }]
+const DIFF = [{ v: 1, l: '가볍게' }, { v: 2, l: '반나절' }, { v: 3, l: '하루' }]
 const SEASONS = ['봄', '여름', '가을', '겨울']
 const THEMES = ['카페', '굿즈', '사진명소', '가족', '커플', '혼자', '도보30분', '반나절', '실내', '비오는날']
 type SourceMode = 'work' | 'region' | 'saved'

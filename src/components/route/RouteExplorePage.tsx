@@ -9,7 +9,7 @@ type Tab = 'all' | 'official' | 'popular' | 'recent' | 'mine'
 const TABS: { v: Tab; l: string }[] = [
   { v: 'all', l: '전체 루트' }, { v: 'official', l: '공식 루트' }, { v: 'popular', l: '인기 루트' }, { v: 'recent', l: '신규 루트' }, { v: 'mine', l: '내 루트' },
 ]
-const DIFF: Record<number, { l: string; c: string }> = { 1: { l: '입문', c: '#22c55e' }, 2: { l: '하루', c: '#eab308' }, 3: { l: '빡셈', c: '#ef4444' } }
+const DIFF: Record<number, { l: string; c: string }> = { 1: { l: '가볍게', c: '#22c55e' }, 2: { l: '반나절', c: '#eab308' }, 3: { l: '하루', c: '#ef4444' } }
 const SEASONS = [{ e: '🌸', l: '봄' }, { e: '🏖', l: '여름' }, { e: '🍁', l: '가을' }, { e: '❄️', l: '겨울' }]
 const THEME_ICONS: Record<string, string> = { '카페': '☕', '굿즈': '🛍️', '가챠': '🎲', '사진명소': '📸', '가족': '👪', '커플': '💕', '혼자': '🧍', '도보30분': '🚶', '반나절': '⏳', '실내': '🏠', '비오는날': '🌧️' }
 

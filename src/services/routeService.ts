@@ -17,7 +17,8 @@ export async function createRoute(
   userId: string,
   title: string,
   description: string,
-  shops: RouteShopInput[]
+  shops: RouteShopInput[],
+  difficulty: number = 1
 ): Promise<{ id: string; shareToken: string } | null> {
   const supabase = createClient()
 
@@ -51,6 +52,7 @@ export async function createRoute(
       user_id: userId,
       title,
       description: description || null,
+      official_difficulty: difficulty,
       total_distance_m: totalDistance,
       total_duration_min: totalDuration,
     } as any)
@@ -79,7 +81,7 @@ export async function getMyRoutes(userId: string) {
     .select(`
       id, title, description, cover_image_url,
       total_distance_m, total_duration_min,
-      is_shared, share_token, created_at,
+      is_shared, is_official, share_token, created_at,
       route_shops ( id, shop_id, sort_order, shops ( name, slug ) )
     `)
     .eq('user_id', userId)

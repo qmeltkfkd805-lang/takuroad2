@@ -110,11 +110,14 @@ export default function MyRoutesTab({ userId }: { userId: string }) {
             border: '1.5px solid var(--border)', borderRadius: '12px',
             padding: '14px', marginBottom: '12px', position: 'relative',
           }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-              <h3 style={{ fontSize: '15px', fontWeight: 900 }}>{route.title}</h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', minWidth: 0 }}>
+                <h3 style={{ fontSize: '15px', fontWeight: 900 }}>{route.title}</h3>
+                <StatusBadge official={route.is_official} shared={route.is_shared} />
+              </div>
               <button
                 onClick={() => handleDelete(route.id)}
-                style={{ background: 'none', border: 'none', fontSize: '12px', color: 'var(--muted)', cursor: 'pointer' }}
+                style={{ background: 'none', border: 'none', fontSize: '12px', color: 'var(--muted)', cursor: 'pointer', flexShrink: 0 }}
               >삭제</button>
             </div>
 
@@ -142,13 +145,19 @@ export default function MyRoutesTab({ userId }: { userId: string }) {
             </div>
 
             {/* 안내 문구 */}
-            {!route.is_shared && (
+            {!route.is_official && !route.is_shared && (
               <p style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '8px' }}>
                 💡 비공개 상태예요. 공유하려면 먼저 &quot;공개하기&quot;를 눌러주세요.
               </p>
             )}
+            {route.is_official && (
+              <p style={{ fontSize: '11px', color: '#f59e0b', marginBottom: '8px', fontWeight: 700 }}>
+                ⭐ 공식 루트로 선정됐어요. 항상 공개 상태로 유지돼요.
+              </p>
+            )}
 
             <div style={{ display: 'flex', gap: '8px', marginBottom: shareMenuId === route.id ? '10px' : 0 }}>
+              {!route.is_official && (
               <button
                 onClick={() => handleToggleShare(route.id, route.is_shared)}
                 style={{
@@ -161,6 +170,7 @@ export default function MyRoutesTab({ userId }: { userId: string }) {
               >
                 {route.is_shared ? '✓ 공개중 (누르면 비공개)' : '공개하기'}
               </button>
+              )}
               {route.is_shared && (
                 <button
                   onClick={() => setShareMenuId(shareMenuId === route.id ? null : route.id)}
@@ -192,6 +202,19 @@ export default function MyRoutesTab({ userId }: { userId: string }) {
         ))
       )}
     </div>
+  )
+}
+
+function StatusBadge({ official, shared }: { official?: boolean; shared?: boolean }) {
+  const cfg = official
+    ? { bg: '#fef3c7', color: '#f59e0b', label: '⭐ 공식' }
+    : shared
+    ? { bg: '#dcfce7', color: '#16a34a', label: '🟢 공개' }
+    : { bg: '#fef9c3', color: '#ca8a04', label: '🟡 작성중' }
+  return (
+    <span style={{ fontSize: '11px', fontWeight: 800, padding: '2px 8px', borderRadius: 9999, background: cfg.bg, color: cfg.color, flexShrink: 0 }}>
+      {cfg.label}
+    </span>
   )
 }
 
