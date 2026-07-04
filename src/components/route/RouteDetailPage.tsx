@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { formatDistance } from '@/hooks/useCurrentLocation'
 import { getRouteDifficulty } from '@/lib/utils/routeDifficulty'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { toggleRouteSave, getMySavedRouteIds } from '@/services/routeService'
+import { toggleRouteSave, getMySavedRouteIds, toggleRouteShare } from '@/services/routeService'
 import { useRouter } from 'next/navigation'
 import styles from './RouteDetailPage.module.css'
 
@@ -57,9 +57,14 @@ export default function RouteDetailPage({ route }: Props) {
   const [expanded, setExpanded] = useState(false)
   const [saved, setSaved] = useState(false)
   const [savingBusy, setSavingBusy] = useState(false)
+  const [shared, setShared] = useState(!!route.is_shared)
+  const [publishBusy, setPublishBusy] = useState(false)
+  const [publishOpen, setPublishOpen] = useState(false)
   const [showRouteMapMenu, setShowRouteMapMenu] = useState(false)
   const [showShareMenu, setShowShareMenu] = useState(false)
   const [showMapMenu, setShowMapMenu] = useState<any>(null)
+
+  const isAuthor = !!user && user.id === route.user_id
 
   const sortedShops = (route.route_shops ?? [])
     .slice()
@@ -97,6 +102,16 @@ export default function RouteDetailPage({ route }: Props) {
     } finally {
       setSavingBusy(false)
     }
+  }
+
+  async function handleTogglePublish() {
+    if (!user || publishBusy) return
+    setPublishBusy(true)
+    const next = !shared
+    const ok = await toggleRouteShare(route.id, user.id, next)
+    setPublishBusy(false)
+    if (ok) setShared(next)
+    setPublishOpen(false)
   }
 
   // ---- 지도 앱 길찾기 (기존 로직 흡수) ----
@@ -269,7 +284,39 @@ export default function RouteDetailPage({ route }: Props) {
         >
           <div className={styles.heroOverlay} />
           <div className={styles.heroInner}>
-            {route.is_official && <span className={styles.officialBadge}>⭐ 공식 루트</span>}
+            {route.is_official ? (
+              <span className={styles.officialBadge}>⭐ 공식 루트</span>
+            ) : isAuthor ? (
+              <div className={styles.publishWrap}>
+                <button
+                  type="button"
+                  className={`${styles.statusBadge} ${shared ? styles.statusPublic : styles.statusDraft}`}
+                  onClick={() => setPublishOpen(v => !v)}
+                  aria-expanded={publishOpen}
+                >
+                  {shared ? '🟢 공개됨' : '🟡 작성중'}
+                  <span className={styles.badgeCaret}>{publishOpen ? '▲' : '▼'}</span>
+                </button>
+                {publishOpen && (
+                  <>
+                    <div className={styles.publishBackdrop} onClick={() => setPublishOpen(false)} />
+                    <div className={styles.publishMenu}>
+                      <div className={styles.publishHint}>
+                        {shared ? '지금 공개 상태예요. 누구나 볼 수 있어요.' : '지금은 나만 볼 수 있어요.'}
+                      </div>
+                      <button
+                        type="button"
+                        className={styles.publishAction}
+                        onClick={handleTogglePublish}
+                        disabled={publishBusy}
+                      >
+                        {publishBusy ? '처리 중…' : shared ? '🔒 비공개로 전환' : '🟢 공개하기'}
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : null}
             <h1 className={styles.heroTitle}>{route.title}</h1>
             {route.description && <p className={styles.heroDesc}>{route.description}</p>}
             <div className={styles.heroStats}>
@@ -294,7 +341,6 @@ export default function RouteDetailPage({ route }: Props) {
         </div>
 
         <aside className={styles.summaryCard}>
-          <h3 className={styles.summaryTitle}>루트 요약</h3>
           <div className={styles.summaryMap}>
             {shopsWithCoords.length > 0
               ? <RouteMap shops={shopsWithCoords} />
@@ -303,29 +349,32 @@ export default function RouteDetailPage({ route }: Props) {
                   <div className={styles.placeholderText}>지도 정보가 없어요</div>
                 </div>}
           </div>
-          <div className={styles.summaryRows}>
-            <div className={styles.summaryRow}>
-              <span className={styles.summaryRowLabel}>🚶 총 거리</span>
-              <span className={styles.summaryRowValue}>{formatDistance(route.total_distance_m)}</span>
-            </div>
-            <div className={styles.summaryRow}>
-              <span className={styles.summaryRowLabel}>⏱ 예상 시간</span>
-              <span className={styles.summaryRowValue}>{formatDuration(route.total_duration_min)}</span>
-            </div>
-            <div className={styles.summaryRow}>
-              <span className={styles.summaryRowLabel}>📍 스팟</span>
-              <span className={styles.summaryRowValue}>{spotCount}곳</span>
-            </div>
-            {diff && (
+          <div className={styles.summaryRight}>
+            <h3 className={styles.summaryTitle}>루트 요약</h3>
+            <div className={styles.summaryRows}>
               <div className={styles.summaryRow}>
-                <span className={styles.summaryRowLabel}>{diff.icon} 난이도</span>
-                <span className={styles.summaryRowValue} style={{ color: diff.color }}>{diff.label}</span>
+                <span className={styles.summaryRowLabel}>🚶 총 거리</span>
+                <span className={styles.summaryRowValue}>{formatDistance(route.total_distance_m)}</span>
               </div>
-            )}
+              <div className={styles.summaryRow}>
+                <span className={styles.summaryRowLabel}>⏱ 예상 시간</span>
+                <span className={styles.summaryRowValue}>{formatDuration(route.total_duration_min)}</span>
+              </div>
+              <div className={styles.summaryRow}>
+                <span className={styles.summaryRowLabel}>📍 스팟</span>
+                <span className={styles.summaryRowValue}>{spotCount}곳</span>
+              </div>
+              {diff && (
+                <div className={styles.summaryRow}>
+                  <span className={styles.summaryRowLabel}>{diff.icon} 난이도</span>
+                  <span className={styles.summaryRowValue} style={{ color: diff.color }}>{diff.label}</span>
+                </div>
+              )}
+            </div>
+            <button className={styles.summaryBtn} onClick={() => setShowRouteMapMenu(true)}>
+              🗺️ 지도로 전체 보기
+            </button>
           </div>
-          <button className={styles.summaryBtn} onClick={() => setShowRouteMapMenu(true)}>
-            🗺️ 지도로 전체 보기
-          </button>
         </aside>
       </div>
 

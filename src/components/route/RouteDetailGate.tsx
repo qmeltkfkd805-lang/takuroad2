@@ -1,18 +1,14 @@
 'use client'
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { toggleRouteShare } from '@/services/routeService'
 import RouteDetailPage from './RouteDetailPage'
 
 export default function RouteDetailGate({ route }: { route: any }) {
   const router = useRouter()
   const { user, loading } = useAuth()
-  const [shared, setShared] = useState(!!route.is_shared)
-  const [busy, setBusy] = useState(false)
 
   const isAuthor = !!user && user.id === route.user_id
-  const isOfficial = !!route.is_official
+  const shared = !!route.is_shared
 
   // 비공개 루트인데 작성자도 아니면 접근 차단
   if (!shared && !isAuthor) {
@@ -27,30 +23,5 @@ export default function RouteDetailGate({ route }: { route: any }) {
     )
   }
 
-  async function togglePublish() {
-    if (!user || busy) return
-    setBusy(true)
-    const next = !shared
-    const ok = await toggleRouteShare(route.id, user.id, next)
-    setBusy(false)
-    if (ok) setShared(next)
-  }
-
-  return (
-    <div>
-      {isAuthor && (
-        <div style={{ maxWidth: 680, margin: '0 auto', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, background: 'var(--surface2)', borderBottom: '1px solid var(--border)' }}>
-          <span style={{ fontSize: 13, fontWeight: 800, color: isOfficial ? '#f59e0b' : shared ? 'var(--green)' : 'var(--muted)' }}>
-            {isOfficial ? '⭐ 공식 루트' : shared ? '🟢 공개됨' : '🟡 작성중 (나만 보임)'}
-          </span>
-          {!isOfficial && (
-            <button onClick={togglePublish} disabled={busy} style={{ padding: '8px 16px', borderRadius: 9999, background: shared ? 'var(--surface)' : 'var(--accent)', color: shared ? 'var(--text)' : '#fff', border: shared ? '1px solid var(--border)' : 'none', fontWeight: 800, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }as React.CSSProperties}>
-              {busy ? '처리 중...' : shared ? '비공개로 전환' : '공개하기'}
-            </button>
-          )}
-        </div>
-      )}
-      <RouteDetailPage route={route} />
-    </div>
-  )
+  return <RouteDetailPage route={route} />
 }
