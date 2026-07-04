@@ -7,6 +7,7 @@ import { formatDistance } from '@/hooks/useCurrentLocation'
 import { getRouteDifficulty } from '@/lib/utils/routeDifficulty'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { toggleRouteSave, getMySavedRouteIds, toggleRouteShare } from '@/services/routeService'
+import { recordRouteStart, hasStartedRoute, getRouteTips, addRouteTip, deleteRouteTip, RouteTip } from '@/services/routeTipService'
 import { useRouter } from 'next/navigation'
 import styles from './RouteDetailPage.module.css'
 
@@ -111,7 +112,6 @@ export default function RouteDetailPage({ route }: Props) {
   const [publishBusy, setPublishBusy] = useState(false)
   const [publishOpen, setPublishOpen] = useState(false)
   const [showRouteMapMenu, setShowRouteMapMenu] = useState(false)
-  const [showShareMenu, setShowShareMenu] = useState(false)
   const [showMapMenu, setShowMapMenu] = useState<any>(null)
 
   const isAuthor = !!user && user.id === route.user_id
@@ -128,6 +128,30 @@ export default function RouteDetailPage({ route }: Props) {
   const spotCount = sortedShops.length
   const likes = route.likes ?? 0
   const tipLines: string[] = route.tips ? String(route.tips).split('\n').map((l: string) => l.replace(/^\s*[-•*]\s*/, '').trim()).filter(Boolean) : []
+
+  const [routeTips, setRouteTips] = useState<RouteTip[]>([])
+  const [started, setStarted] = useState(false)
+  const [tipInput, setTipInput] = useState('')
+  const [tipBusy, setTipBusy] = useState(false)
+
+  useEffect(() => {
+    let alive = true
+    getRouteTips(route.id).then((t) => { if (alive) setRouteTips(t) }).catch(() => {})
+    if (user) hasStartedRoute(route.id, user.id).then((s) => { if (alive) setStarted(s) }).catch(() => {})
+    return () => { alive = false }
+  }, [route.id, user])
+
+  async function submitTip() {
+    if (!user || !tipInput.trim() || tipBusy) return
+    setTipBusy(true)
+    const ok = await addRouteTip(route.id, user.id, tipInput)
+    if (ok) { setTipInput(''); const t = await getRouteTips(route.id); setRouteTips(t) }
+    setTipBusy(false)
+  }
+  async function removeTip(id: string) {
+    const ok = await deleteRouteTip(id)
+    if (ok) setRouteTips((prev) => prev.filter((t) => t.id !== id))
+  }
   const heroIcon = 'rgba(255,255,255,.9)'
 
   // 저장 여부 초기 로드
@@ -203,26 +227,19 @@ export default function RouteDetailPage({ route }: Props) {
   function currentUrl() {
     return typeof window !== 'undefined' ? window.location.href : ''
   }
-  async function shareNative() {
+  async function doShare() {
     const url = currentUrl()
-    if (navigator.share) {
+    if (typeof navigator !== 'undefined' && (navigator as any).share) {
       try { await navigator.share({ title: route.title, url }) } catch {}
+      return
     }
-    setShowShareMenu(false)
-  }
-  function shareX() {
-    const url = currentUrl()
-    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(route.title)}&url=${encodeURIComponent(url)}`, '_blank')
-    setShowShareMenu(false)
-  }
-  async function copyLink() {
+    // 기기 공유 미지원(주로 데스크톱) → 링크 복사로 대체
     try {
-      await navigator.clipboard.writeText(currentUrl())
+      await navigator.clipboard.writeText(url)
       alert('링크를 복사했어요')
     } catch {
       alert('링크 복사에 실패했어요')
     }
-    setShowShareMenu(false)
   }
 
   const shownSpots = expanded ? sortedShops : sortedShops.slice(0, VISIBLE_SPOTS)
@@ -383,7 +400,7 @@ export default function RouteDetailPage({ route }: Props) {
               {diff && <span className={styles.heroStat}><MaskIcon name="fire" size={14} color={heroIcon} />난이도 <b>{diff.label}</b></span>}
             </div>
             <div className={styles.heroButtons}>
-              <button className={styles.btnPrimary} onClick={() => setShowRouteMapMenu(true)}>
+              <button className={styles.btnPrimary} onClick={() => { setShowRouteMapMenu(true); if (user) { recordRouteStart(route.id, user.id); setStarted(true) } }}>
                 <PinIcon size={16} color="#fff" />루트 시작하기
               </button>
               <button
@@ -450,7 +467,7 @@ export default function RouteDetailPage({ route }: Props) {
           ))}
         </div>
         <div className={styles.tabActions}>
-          <button className={styles.iconBtn} onClick={() => setShowShareMenu(true)}><ShareIcon size={15} color="currentColor" />공유하기</button>
+          <button className={styles.iconBtn} onClick={doShare}><ShareIcon size={15} color="currentColor" />공유하기</button>
         </div>
       </div>
 
@@ -516,17 +533,50 @@ export default function RouteDetailPage({ route }: Props) {
 
           <div className={styles.sideCard}>
             <h4 className={styles.sideCardTitle}><BulbIcon size={20} color="var(--accent)" />루트 TIP</h4>
-            {tipLines.length > 0 ? (
-              <div className={styles.audienceList}>
-                {tipLines.map((line, i) => (
-                  <div key={i} className={styles.audienceItem}>
-                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent)', marginTop: 7, flexShrink: 0 }} />
-                    <span>{line}</span>
-                  </div>
-                ))}
+            {tipLines.length === 0 && routeTips.length === 0 ? (
+              <div style={{ padding: '14px 4px', color: 'var(--muted)', fontSize: 13, lineHeight: 1.6 }}>
+                아직 팁이 없어요.<br />방문하고 꿀팁이 있다면 알려주세요!
               </div>
             ) : (
-              <Placeholder icon={<BulbIcon size={22} color="var(--muted)" />} text="루트 팁" />
+              <>
+                {tipLines.length > 0 && (
+                  <div className={styles.audienceList}>
+                    {tipLines.map((line, i) => (
+                      <div key={`a${i}`} className={styles.audienceItem}>
+                        <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent)', marginTop: 7, flexShrink: 0 }} />
+                        <span>{line}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {routeTips.length > 0 && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: tipLines.length > 0 ? 12 : 0, maxHeight: routeTips.length > 3 ? 246 : undefined, overflowY: routeTips.length > 3 ? 'auto' : undefined, paddingRight: routeTips.length > 3 ? 4 : 0 }}>
+                    {routeTips.map((tp) => (
+                      <div key={tp.id} style={{ background: 'var(--surface2)', borderRadius: 10, padding: '10px 12px' }}>
+                        <div style={{ fontSize: 13, color: 'var(--text)', lineHeight: 1.5, whiteSpace: 'pre-wrap' }}>{tp.content}</div>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 6 }}>
+                          <span style={{ fontSize: 11, color: 'var(--muted)' }}>{tp.nickname ?? '익명'}</span>
+                          {user && tp.user_id === user.id && (
+                            <button onClick={() => removeTip(tp.id)} style={{ background: 'none', border: 'none', color: 'var(--muted)', fontSize: 11, cursor: 'pointer', fontFamily: 'inherit', textDecoration: 'underline' }}>삭제</button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+
+            {started ? (
+              <div style={{ marginTop: 12 }}>
+                <textarea value={tipInput} onChange={(e) => setTipInput(e.target.value)} placeholder="이 루트 다녀온 꿀팁을 남겨주세요" rows={2}
+                  style={{ width: '100%', boxSizing: 'border-box', padding: '9px 11px', borderRadius: 10, border: '1px solid var(--border)', fontFamily: 'inherit', fontSize: 13, background: 'var(--surface)', color: 'var(--text)', resize: 'vertical' }} />
+                <button onClick={submitTip} disabled={tipBusy || !tipInput.trim()} style={{ width: '100%', marginTop: 6, padding: '9px', borderRadius: 10, border: 'none', background: tipInput.trim() ? 'var(--accent)' : 'var(--border)', color: '#fff', fontWeight: 800, fontSize: 13, cursor: tipInput.trim() ? 'pointer' : 'default', fontFamily: 'inherit' }}>{tipBusy ? '등록 중…' : '팁 등록'}</button>
+              </div>
+            ) : (
+              <div style={{ marginTop: 12, fontSize: 12, color: 'var(--muted)', textAlign: 'center', lineHeight: 1.5 }}>
+                {user ? '루트를 시작하면 팁을 남길 수 있어요' : '로그인하고 루트를 시작하면 팁을 남길 수 있어요'}
+              </div>
             )}
           </div>
 
@@ -576,21 +626,6 @@ export default function RouteDetailPage({ route }: Props) {
         </div>
       )}
 
-      {/* 공유 시트 */}
-      {showShareMenu && (
-        <div className={styles.sheetBackdrop} onClick={() => setShowShareMenu(false)}>
-          <div className={styles.sheet} onClick={e => e.stopPropagation()}>
-            <h3 className={styles.sheetTitle}>루트 공유하기</h3>
-            <div className={styles.sheetRow}>
-              {typeof navigator !== 'undefined' && (navigator as any).share && (
-                <button className={`${styles.sheetBtn} ${styles.sheetGoogle}`} onClick={shareNative}>공유</button>
-              )}
-              <button className={`${styles.sheetBtn} ${styles.sheetX}`} onClick={shareX}>X (트위터)</button>
-              <button className={`${styles.sheetBtn} ${styles.sheetCopy}`} onClick={copyLink}>링크 복사</button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
