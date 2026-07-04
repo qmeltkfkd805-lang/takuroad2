@@ -45,7 +45,7 @@ export default function OfficialRouteTab() {
   }
 
   async function handleRevoke(routeId: string) {
-    if (!confirm('공식 루트를 해제할까요?')) return
+    if (!confirm('추천을 해제할까요?')) return
     await revokeOfficialRoute(routeId)
     loadData()
   }
@@ -79,12 +79,12 @@ export default function OfficialRouteTab() {
               background: 'var(--accent)', color: '#fff', fontWeight: 800,
               fontSize: 14, cursor: 'pointer', fontFamily: 'inherit',
             }}
-          >+ 새 공식 루트 만들기</button>
+          >+ 새 추천 루트 만들기</button>
         )}
       </div>
 
       <h3 style={{ fontSize: '14px', fontWeight: 900, padding: '16px 16px 0' }}>
-        공식 루트 후보 (좋아요/완료순)
+        추천 루트 후보 (좋아요/완료순)
       </h3>
       {candidates.length === 0 ? (
         <p style={{ padding: '40px 16px', textAlign: 'center', color: 'var(--muted)', fontSize: '13px' }}>
@@ -143,18 +143,18 @@ export default function OfficialRouteTab() {
                   border: 'none', background: 'var(--accent)', color: '#fff',
                   fontWeight: 700, fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
                 }}
-              >공식 루트로 승인</button>
+              >추천으로 지정</button>
             )}
           </div>
         ))
       )}
 
       <h3 style={{ fontSize: '14px', fontWeight: 900, padding: '20px 16px 0' }}>
-        현재 공식 루트
+        현재 추천 루트
       </h3>
       {officialRoutes.length === 0 ? (
         <p style={{ padding: '40px 16px', textAlign: 'center', color: 'var(--muted)', fontSize: '13px' }}>
-          아직 공식 루트가 없어요
+          아직 추천 루트가 없어요
         </p>
       ) : (
         officialRoutes.map(route => (
@@ -182,7 +182,7 @@ export default function OfficialRouteTab() {
                   fontSize: '12px', color: 'var(--red)', background: 'none',
                   border: '1px solid var(--red)', borderRadius: '6px', padding: '5px 10px', cursor: 'pointer', fontFamily: 'inherit',
                 }}
-              >공식 해제</button>
+              >추천 해제</button>
             </div>
           </div>
         ))

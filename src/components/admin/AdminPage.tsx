@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -120,7 +120,7 @@ export default function AdminPage() {
             ⚠️ 신고된 샵
           </TabButton>
           <TabButton active={tab === 'routes'} onClick={() => setTab('routes')}>
-            공식 루트
+            추천 루트
           </TabButton>
           <TabButton active={tab === 'events'} onClick={() => setTab('events')}>
             시즌 이벤트

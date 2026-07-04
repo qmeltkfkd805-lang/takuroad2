@@ -152,7 +152,7 @@ export default function MyRoutesTab({ userId }: { userId: string }) {
             )}
             {route.is_official && (
               <p style={{ fontSize: '11px', color: '#f59e0b', marginBottom: '8px', fontWeight: 700 }}>
-                ⭐ 공식 루트로 선정됐어요. 항상 공개 상태로 유지돼요.
+                ⭐ 추천 루트로 선정됐어요. 항상 공개 상태로 유지돼요.
               </p>
             )}
 
@@ -207,7 +207,7 @@ export default function MyRoutesTab({ userId }: { userId: string }) {
 
 function StatusBadge({ official, shared }: { official?: boolean; shared?: boolean }) {
   const cfg = official
-    ? { bg: '#fef3c7', color: '#f59e0b', label: '⭐ 공식' }
+    ? { bg: '#fef3c7', color: '#f59e0b', label: '⭐ 추천' }
     : shared
     ? { bg: '#dcfce7', color: '#16a34a', label: '🟢 공개' }
     : { bg: '#fef9c3', color: '#ca8a04', label: '🟡 작성중' }

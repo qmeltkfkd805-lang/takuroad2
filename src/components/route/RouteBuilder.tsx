@@ -14,7 +14,7 @@ const DIFF = [
   { v: 2, l: '반나절', c: '#835700' },
   { v: 3, l: '하루 코스', c: '#A23E18' },
 ]
-const THEMES = ['카페', '굿즈', '사진명소', '가족', '커플', '혼자', '실내', '비오는날']
+const THEMES = ['카페', '굿즈', '사진명소', '가족', '커플', '혼자', '실내', '비오는날', '친구', '가챠', '쿠지', '전시', '게임', '만화카페']
 const STEPS = [
   { n: 1, label: '샵 불러오기' },
   { n: 2, label: '코스 담기' },
@@ -31,18 +31,9 @@ function Svg({ size = 16, color = 'currentColor', fill = 'none', style, children
   return <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ flexShrink: 0, verticalAlign: '-2px', ...style }}>{children}</svg>
 }
 const THEME_PNG: Record<string, string> = { '카페': 'cafe', '굿즈': 'goods', '가챠': 'gacha', '사진명소': 'photo', '도보30분': 'route', '반나절': 'clock' }
-function ThemeIcon({ name, size = 14, color = 'currentColor' }: { name: string; size?: number; color?: string }) {
-  const png = THEME_PNG[name]
-  if (png) return <MaskIcon name={png} size={size} color={color} />
+function ThemeIcon({ size = 14, color = 'currentColor' }: { name?: string; size?: number; color?: string }) {
   const sp = { size, color }
-  switch (name) {
-    case '가족': return <Svg {...sp}><circle cx="8.5" cy="8" r="2.6" /><circle cx="16" cy="9" r="2" /><path d="M4 20c0-2.8 2-5 4.5-5s4.5 2.2 4.5 5" /><path d="M12.5 20c.1-2.3 1.7-4 3.5-4s3.4 1.7 3.5 4" /></Svg>
-    case '커플': return <MaskIcon name="heart" size={size} color={color} />
-    case '혼자': return <Svg {...sp}><circle cx="12" cy="7.5" r="3.2" /><path d="M5.5 20c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5" /></Svg>
-    case '실내': return <Svg {...sp}><path d="M4 11 12 4l8 7" /><path d="M6 10v10h12V10" /></Svg>
-    case '비오는날': return <Svg {...sp}><path d="M7.5 16a4 4 0 0 1 .4-8 5 5 0 0 1 9.4 1.4A3.6 3.6 0 0 1 17 16Z" /><path d="M8 19l-1 2.5M12 19l-1 2.5M16 19l-1 2.5" /></Svg>
-    default: return <Svg {...sp}><path d="M4 4h9l7 7-9 9-7-7Z" /><circle cx="8" cy="8" r="1.3" /></Svg>
-  }
+  return <Svg {...sp}><path d="M4 4h9l7 7-9 9-7-7Z" /><circle cx="8" cy="8" r="1.3" /></Svg>
 }
 function DiffIcon({ v, color }: { v: number; color: string }) {
   if (v === 1) return <Svg color={color}><path d="M12 20V9" /><path d="M12 9c0-3 2-5 5-5 0 3-2 5-5 5Z" /><path d="M12 12c0-2.5-1.8-4.5-4.5-4.5 0 2.7 2 4.5 4.5 4.5Z" /></Svg>

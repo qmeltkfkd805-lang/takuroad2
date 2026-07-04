@@ -47,23 +47,14 @@ function HeartIcon({ size = 16, color = 'currentColor', filled = false, style }:
 
 type Tab = 'all' | 'official' | 'popular' | 'recent' | 'mine'
 const TABS: { v: Tab; l: string }[] = [
-  { v: 'all', l: '전체 루트' }, { v: 'official', l: '공식 루트' }, { v: 'popular', l: '인기 루트' }, { v: 'recent', l: '신규 루트' }, { v: 'mine', l: '내 루트' },
+  { v: 'all', l: '전체 루트' }, { v: 'official', l: '추천' }, { v: 'popular', l: '인기 루트' }, { v: 'recent', l: '신규 루트' }, { v: 'mine', l: '내 루트' },
 ]
 const DIFF: Record<number, { l: string; c: string }> = { 1: { l: '가볍게', c: '#22c55e' }, 2: { l: '반나절', c: '#eab308' }, 3: { l: '하루', c: '#ef4444' } }
 // PNG 아이콘이 있는 테마만 매핑, 없는 건 ThemeIcon에서 SVG로
 const THEME_PNG: Record<string, string> = { '카페': 'cafe', '굿즈': 'goods', '가챠': 'gacha', '사진명소': 'photo', '도보30분': 'route', '반나절': 'clock' }
-function ThemeIcon({ name, size = 15, color = 'currentColor' }: { name: string; size?: number; color?: string }) {
-  const png = THEME_PNG[name]
-  if (png) return <MaskIcon name={png} size={size} color={color} />
+function ThemeIcon({ size = 15, color = 'currentColor' }: { name?: string; size?: number; color?: string }) {
   const sp = { size, color }
-  switch (name) {
-    case '가족': return <Svg {...sp}><circle cx="8.5" cy="8" r="2.6" /><circle cx="16" cy="9" r="2" /><path d="M4 20c0-2.8 2-5 4.5-5s4.5 2.2 4.5 5" /><path d="M12.5 20c.1-2.3 1.7-4 3.5-4s3.4 1.7 3.5 4" /></Svg>
-    case '커플': return <MaskIcon name="heart" size={size} color={color} />
-    case '혼자': return <Svg {...sp}><circle cx="12" cy="7.5" r="3.2" /><path d="M5.5 20c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5" /></Svg>
-    case '실내': return <Svg {...sp}><path d="M4 11 12 4l8 7" /><path d="M6 10v10h12V10" /></Svg>
-    case '비오는날': return <Svg {...sp}><path d="M7.5 16a4 4 0 0 1 .4-8 5 5 0 0 1 9.4 1.4A3.6 3.6 0 0 1 17 16Z" /><path d="M8 19l-1 2.5M12 19l-1 2.5M16 19l-1 2.5" /></Svg>
-    default: return <Svg {...sp}><path d="M4 4h9l7 7-9 9-7-7Z" /><circle cx="8" cy="8" r="1.3" /></Svg>
-  }
+  return <Svg {...sp}><path d="M4 4h9l7 7-9 9-7-7Z" /><circle cx="8" cy="8" r="1.3" /></Svg>
 }
 
 const rtTags = (r: any): string[] => Array.from(new Set((r.route_shops ?? []).flatMap((rs: any) => (rs.shops?.shop_tags ?? []).map((st: any) => st.tags?.name).filter(Boolean))))
@@ -102,7 +93,23 @@ export default function RouteExplorePage() {
   const popular = useMemo(() => [...routes].sort((a, b) => (b.likes ?? 0) - (a.likes ?? 0)), [routes])
   const recent = useMemo(() => [...routes].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()), [routes])
   const official = useMemo(() => routes.filter((r) => r.is_official), [routes])
-  const hero = popular[0]
+  const heroList = useMemo(() => {
+    const recent2 = [...official].sort((a, b) => new Date(b.created_at ?? 0).getTime() - new Date(a.created_at ?? 0).getTime()).slice(0, 2)
+    const seen = new Set(recent2.map((r) => r.id))
+    const top3 = popular.filter((r) => !seen.has(r.id)).slice(0, 3)
+    top3.forEach((r) => seen.add(r.id))
+    let list = [...recent2, ...top3]
+    if (list.length < 5) list = [...list, ...popular.filter((r) => !seen.has(r.id)).slice(0, 5 - list.length)]
+    return list.slice(0, 5)
+  }, [official, popular])
+  const [heroIdx, setHeroIdx] = useState(0)
+  useEffect(() => { setHeroIdx(0) }, [heroList.length])
+  useEffect(() => {
+    if (heroList.length <= 1) return
+    const id = setInterval(() => setHeroIdx((i) => (i + 1) % heroList.length), 5000)
+    return () => clearInterval(id)
+  }, [heroList.length])
+  const hero = heroList[heroIdx] ?? heroList[0]
 
   const byTag = useMemo(() => {
     const m = new Map<string, number>()
@@ -164,7 +171,7 @@ export default function RouteExplorePage() {
             </div>
             <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--muted)', marginBottom: 8 }}>추천 테마</div>
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-              {['카페', '굿즈', '사진명소', '가족', '커플', '혼자', '실내', '비오는날'].map((th) => { const on = themeFilter === th; return (
+              {['카페', '굿즈', '사진명소', '가족', '커플', '혼자', '실내', '비오는날', '친구', '가챠', '쿠지', '전시', '게임', '만화카페'].map((th) => { const on = themeFilter === th; return (
                 <button key={th} onClick={() => setThemeFilter(on ? null : th)} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '7px 13px', borderRadius: 9999, border: `1px solid ${on ? 'var(--accent)' : 'var(--border)'}`, background: on ? 'var(--accent)' : 'var(--surface)', color: on ? '#fff' : 'var(--text)', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}><ThemeIcon name={th} size={14} color={on ? '#fff' : 'currentColor'} />{th}</button>
               )})}
             </div>
@@ -182,7 +189,7 @@ export default function RouteExplorePage() {
         {tab === 'all' && !q && !themeFilter && !diffFilter && !tagFilter && !regionFilter && hero && (
           <div style={{ borderRadius: 16, overflow: 'hidden', marginBottom: 22 }}>
             <div style={{ backgroundImage: hero.cover_image_url ? `linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,.15)), url(${hero.cover_image_url})` : 'linear-gradient(135deg, var(--accent), #ff8fb1)', backgroundSize: 'cover', backgroundPosition: 'center', padding: '30px 24px', color: '#fff' }}>
-              <span style={{ background: 'rgba(0,0,0,.2)', fontSize: 12, fontWeight: 800, padding: '3px 10px', borderRadius: 9999 }}>공식 추천</span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: 'rgba(0,0,0,.2)', fontSize: 12, fontWeight: 800, padding: '3px 10px', borderRadius: 9999 }}><svg width="13" height="13" viewBox="0 0 24 24" fill="#FFD23F" stroke="#FFD23F" strokeWidth="1"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>추천</span>
               <div style={{ fontSize: 26, fontWeight: 900, margin: '12px 0 6px' }}>{hero.title}</div>
               {hero.description && <div style={{ fontSize: 14, opacity: 0.9, marginBottom: 14 }}>{hero.description}</div>}
               <div style={{ display: 'flex', gap: 18, fontSize: 14, fontWeight: 700, alignItems: 'center' }}>
@@ -195,6 +202,13 @@ export default function RouteExplorePage() {
                 <button onClick={() => go(hero)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#fff', color: 'var(--accent)', fontWeight: 800, fontSize: 14, padding: '11px 22px', borderRadius: 9999, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}><PinIcon size={16} color="var(--accent)" />루트 보기</button>
                 <button onClick={(e) => onSave(e, hero)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: savedIds.has(hero.id) ? 'var(--accent)' : 'rgba(255,255,255,.2)', color: '#fff', fontWeight: 800, fontSize: 14, padding: '11px 20px', borderRadius: 9999, border: '1px solid rgba(255,255,255,.5)', cursor: 'pointer', fontFamily: 'inherit' }}><HeartIcon size={16} filled={savedIds.has(hero.id)} color="#fff" />{savedIds.has(hero.id) ? '저장됨' : '저장하기'}</button>
               </div>
+              {heroList.length > 1 && (
+                <div style={{ display: 'flex', gap: 7, marginTop: 18 }}>
+                  {heroList.map((_: any, i: number) => (
+                    <button key={i} onClick={() => setHeroIdx(i)} aria-label={`${i + 1}번째 추천`} style={{ width: i === heroIdx ? 22 : 8, height: 8, borderRadius: 9999, border: 'none', background: i === heroIdx ? '#fff' : 'rgba(255,255,255,.5)', cursor: 'pointer', transition: 'width .2s', padding: 0 }} />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}

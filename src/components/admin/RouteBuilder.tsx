@@ -176,7 +176,7 @@ export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRo
   return (
     <div style={{ border: '1px solid var(--accent)', borderRadius: 14, padding: 16, marginBottom: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-        <h3 style={{ fontSize: 16, fontWeight: 900, margin: 0 }}>{editing ? '루트 수정' : '새 공식 루트 만들기'}</h3>
+        <h3 style={{ fontSize: 16, fontWeight: 900, margin: 0 }}>{editing ? '루트 수정' : '새 추천 루트 만들기'}</h3>
         <button onClick={onCancel} style={{ background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer', fontSize: 14, fontFamily: 'inherit' }}>취소 ✕</button>
       </div>
 
@@ -321,7 +321,7 @@ export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRo
       </div>
 
       <button onClick={save} disabled={saving} style={{ width: '100%', padding: 13, borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: 'pointer', fontFamily: 'inherit' }}>
-        {saving ? '저장 중...' : editing ? '수정 저장 (거리·시간 재계산)' : '공식 루트로 저장 (거리·시간 자동계산)'}
+        {saving ? '저장 중...' : editing ? '수정 저장 (거리·시간 재계산)' : '추천 루트로 저장 (거리·시간 자동계산)'}
       </button>
       {msg && <p style={{ fontSize: 13, textAlign: 'center', marginTop: 10, color: 'var(--red)' }}>{msg}</p>}
     </div>
