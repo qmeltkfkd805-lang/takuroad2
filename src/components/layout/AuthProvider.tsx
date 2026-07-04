@@ -29,29 +29,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const supabase = createClient()
 
   async function loadProfile(userId: string) {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', userId)
       .maybeSingle()
-    setProfile(data)
+    if (error) console.error('[AuthProvider] 프로필 읽기 실패:', error)
+    setProfile(data ?? null)
   }
 
   useEffect(() => {
-    // 초기 세션 확인
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    let active = true
+
+    // 초기 세션 확인 (콜백 밖이라 await 안전)
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
+      if (!active) return
       setUser(user)
-      if (user) loadProfile(user.id)
-      setLoading(false)
+      if (user) await loadProfile(user.id)
+      if (active) setLoading(false)
     })
 
     // 세션 변경 구독
+    // ⚠️ onAuthStateChange 콜백 "안에서" supabase 쿼리를 await 하면
+    //    클라이언트가 멈추는(deadlock) 알려진 이슈가 있어 → 콜백은 동기로 두고
+    //    프로필 조회는 setTimeout(0)으로 콜백 밖으로 빼서 실행한다.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_, session) => {
+      (_event, session) => {
         const currentUser = session?.user ?? null
         setUser(currentUser)
         if (currentUser) {
-          await loadProfile(currentUser.id)
+          setTimeout(() => { if (active) loadProfile(currentUser.id) }, 0)
         } else {
           setProfile(null)
         }
@@ -59,7 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     )
 
-    return () => subscription.unsubscribe()
+    return () => { active = false; subscription.unsubscribe() }
   }, [])
 
   async function signOut() {
