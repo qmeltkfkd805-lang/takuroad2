@@ -47,8 +47,8 @@ function TierButton({ active, icon, label, onClick }: { active: boolean; icon: R
     <button
       onClick={onClick}
       style={{
-        flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-        padding: '10px 12px', borderRadius: '9999px',
+        flexShrink: 0, whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+        padding: '10px 18px', borderRadius: '9999px',
         border: `1.5px solid ${active ? 'var(--accent)' : 'var(--border)'}`,
         background: active ? 'var(--accent)' : 'var(--surface)',
         color: active ? '#fff' : 'var(--text)',
