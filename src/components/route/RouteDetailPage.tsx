@@ -53,6 +53,7 @@ const GlobeIcon = (p: { size?: number; color?: string; style?: CSSProperties }) 
 const CheckIcon = (p: { size?: number; color?: string; style?: CSSProperties }) => <Svg {...p}><path d="m5 12 5 5L20 6" /></Svg>
 const ChevIcon = (p: { size?: number; color?: string; style?: CSSProperties }) => <Svg {...p}><path d="m6 9 6 6 6-6" /></Svg>
 const PinIcon = (p: { size?: number; color?: string; style?: CSSProperties }) => <Svg {...p}><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" /><circle cx="12" cy="10" r="2.5" /></Svg>
+const PencilIcon = (p: { size?: number; color?: string; style?: CSSProperties }) => <Svg {...p}><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" /></Svg>
 function ColorIcon({ name, size = 16, style }: { name: string; size?: number; style?: CSSProperties }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
@@ -410,6 +411,9 @@ export default function RouteDetailPage({ route }: Props) {
               >
                 <HeartIcon size={16} filled={saved} color={saved ? 'var(--accent)' : 'var(--text)'} />{saved ? '저장됨' : '저장하기'}
               </button>
+              {isAuthor && !route.is_official && (
+                <Link href={`/route/${route.share_token}/edit`} className={styles.btnGhost} style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 7 }}><PencilIcon size={16} color="var(--text)" />수정</Link>
+              )}
             </div>
           </div>
         </div>

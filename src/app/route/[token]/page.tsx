@@ -11,7 +11,7 @@ const SELECT = `
   id, title, description, cover_image_url, is_official,
   likes, official_difficulty, target_audience, tips,
   total_distance_m, total_duration_min,
-  is_shared, user_id, created_at,
+  is_shared, user_id, created_at, share_token,
   profiles!routes_user_id_fkey ( nickname ),
   route_shops (
     id, sort_order, distance_from_prev_m, duration_from_prev_min,

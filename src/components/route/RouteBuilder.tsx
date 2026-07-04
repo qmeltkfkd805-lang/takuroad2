@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getAllTagsFull, AdminTag } from '@/services/workAdminService'
 import { getShopsByTag, getShops, getSavedShops } from '@/services/shopService'
-import { createRoute, uploadRouteCover, updateRouteMeta } from '@/services/routeService'
+import { createRoute, uploadRouteCover, updateRouteMeta, updateRoute, getRouteForEdit, getRouteMeta, deleteRoute, toggleRouteShare } from '@/services/routeService'
 import { useRouter } from 'next/navigation'
 import { shopRegion } from '@/lib/shop/quickCompleteness'
 import { Shop } from '@/types/shop'
@@ -55,7 +55,7 @@ const BulbIcon = (p: { size?: number; color?: string }) => <Svg {...p}><path d="
 
 type SourceMode = 'work' | 'region' | 'saved'
 
-export default function RouteBuilder() {
+export default function RouteBuilder({ mode = 'create', editRouteId = null, editToken = null, ownerId = null, initialShared = false, lastEdited = null }: { mode?: 'create' | 'edit'; editRouteId?: string | null; editToken?: string | null; ownerId?: string | null; initialShared?: boolean; lastEdited?: string | null } = {}) {
   const router = useRouter()
   const { user } = useAuth()
 
@@ -82,9 +82,36 @@ export default function RouteBuilder() {
   const fileRef = useRef<HTMLInputElement | null>(null)
 
   const [saving, setSaving] = useState(false)
+  const editing = mode === 'edit'
+  const [shared, setShared] = useState(initialShared)
+  const [loadingEdit, setLoadingEdit] = useState(mode === 'edit')
+  const [shareBusy, setShareBusy] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
 
   useEffect(() => { getAllTagsFull().then(setTags).catch(() => {}) }, [])
+
+  // 편집 모드: 기존 데이터 불러오기
+  useEffect(() => {
+    if (mode !== 'edit' || !editRouteId) return
+    let alive = true
+    getRouteForEdit(editRouteId).then((r: any) => {
+      if (!alive) return
+      if (r) {
+        setTitle(r.title ?? ''); setDesc(r.description ?? ''); setDifficulty(r.official_difficulty ?? 1)
+        const shops = (r.route_shops ?? []).slice().sort((a: any, b: any) => a.sort_order - b.sort_order).map((rs: any) => rs.shops).filter((s: any) => s && s.lat != null && s.lng != null)
+        setAdded(shops as Shop[])
+      }
+      setLoadingEdit(false)
+    }).catch(() => setLoadingEdit(false))
+    getRouteMeta(editRouteId).then((m: any) => {
+      if (!alive) return
+      setCoverUrl(m.cover ?? ''); setThemes(m.themes ?? [])
+      setTarget(m.target ? String(m.target).split('\n').map((l: string) => '- ' + l).join('\n') : '')
+      setTips(m.tips ? String(m.tips).split('\n').map((l: string) => '- ' + l).join('\n') : '')
+      setPrimaryTagId(m.primaryTag ?? null)
+    }).catch(() => {})
+    return () => { alive = false }
+  }, [mode, editRouteId])
 
   function switchMode(m: SourceMode) {
     if (m === sourceMode) return
@@ -179,6 +206,14 @@ export default function RouteBuilder() {
       tips: (tips.split('\n').map((l) => l.replace(/^\s*[-•*]\s*/, '').trim()).filter(Boolean).join('\n')) || null,
       primary_tag_id: primaryTagId,
     }
+    if (editing && editRouteId) {
+      const ok = await updateRoute(editRouteId, title.trim(), desc.trim(), difficulty, shopInput)
+      if (!ok) { setSaving(false); setMsg('수정 저장 실패'); return }
+      await updateRouteMeta(editRouteId, meta)
+      setSaving(false)
+      router.push(`/route/${editToken}`)
+      return
+    }
     const res = await createRoute(user.id, title.trim(), desc.trim(), shopInput, difficulty)
     if (!res) { setSaving(false); setMsg('루트 생성 실패'); return }
     await updateRouteMeta(res.id, meta)
@@ -186,7 +221,25 @@ export default function RouteBuilder() {
     router.push(`/route/${res.shareToken}`)
   }
 
+  async function toggleShared() {
+    if (!user || !editRouteId || shareBusy) return
+    setShareBusy(true)
+    const next = !shared
+    const ok = await toggleRouteShare(editRouteId, user.id, next)
+    setShareBusy(false)
+    if (ok) setShared(next)
+  }
+  async function doDelete() {
+    if (!user || !editRouteId) return
+    if (!confirm('이 루트를 삭제할까요? 되돌릴 수 없어요.')) return
+    const ok = await deleteRoute(editRouteId, user.id)
+    if (ok) router.push('/routes')
+    else setMsg('삭제 실패')
+  }
+
   if (!user) return <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>로그인하면 루트를 만들 수 있어요.</div>
+  if (editing && loadingEdit) return <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>루트 불러오는 중...</div>
+  if (editing && ownerId && user.id !== ownerId) return <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>이 루트를 수정할 권한이 없어요.</div>
 
   const searchPlaceholder = sourceMode === 'saved' ? '저장한 샵에서 검색 (이름·지역)' : '지역·이름 검색 (예: 홍대, 강남)'
   const diffMeta = DIFF.find((d) => d.v === difficulty)!
@@ -221,7 +274,7 @@ export default function RouteBuilder() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <button onClick={() => router.push('/routes')} style={iconBtn} aria-label="뒤로"><Svg><path d="m15 18-6-6 6-6" /></Svg></button>
-          <h1 style={{ fontSize: 26, fontWeight: 900, margin: 0 }}>루트 만들기</h1>
+          <div><h1 style={{ fontSize: 26, fontWeight: 900, margin: 0 }}>{editing ? '루트 수정' : '루트 만들기'}</h1>{editing && lastEdited && <div style={{ fontSize: 12.5, color: 'var(--muted)', marginTop: 2 }}>마지막 수정: {new Date(lastEdited).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</div>}</div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <button onClick={() => router.push('/routes')} style={ghostBtn}>나가기</button>
@@ -413,7 +466,19 @@ export default function RouteBuilder() {
                 <ReviewRow label="테마" value={themes.length ? themes.join(', ') : '(없음)'} ok={themes.length > 0} />
                 <ReviewRow label="대표 이미지" value={coverUrl ? '있음' : '없음'} ok={!!coverUrl} />
               </div>
-              <button onClick={save} disabled={saving} style={{ width: '100%', padding: 16, borderRadius: 12, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 16, cursor: saving ? 'default' : 'pointer', fontFamily: 'inherit' }}>{saving ? '저장 중...' : '루트 저장하기'}</button>
+              <button onClick={save} disabled={saving} style={{ width: '100%', padding: 16, borderRadius: 12, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 16, cursor: saving ? 'default' : 'pointer', fontFamily: 'inherit' }}>{saving ? '저장 중...' : (editing ? '변경사항 저장' : '루트 저장하기')}</button>
+              {editing && (
+                <>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginTop: 14, padding: '12px 14px', background: 'var(--surface2)', borderRadius: 12 }}>
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 800 }}>공개 설정</div>
+                      <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>{shared ? '누구나 볼 수 있어요' : '나만 볼 수 있어요 (작성중)'}</div>
+                    </div>
+                    <button onClick={toggleShared} disabled={shareBusy} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 9999, border: 'none', background: shared ? 'var(--green)' : 'var(--yellow)', color: '#fff', fontWeight: 800, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>{shareBusy ? '처리 중…' : (shared ? '공개' : '작성중')}</button>
+                  </div>
+                  <button onClick={doDelete} style={{ width: '100%', marginTop: 12, padding: 13, borderRadius: 12, border: '1px solid var(--red)', background: 'var(--surface)', color: 'var(--red)', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}><Svg size={15} color="var(--red)"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6" /></Svg>루트 삭제</button>
+                </>
+              )}
             </>
           )}
 
