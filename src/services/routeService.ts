@@ -148,9 +148,10 @@ export async function getPublicRoutes(filters?: { region?: string; tag?: string;
   let query = supabase
     .from('routes')
     .select(`
-      id, title, description, likes, is_official, official_difficulty, created_at, share_token,
+      id, title, description, tips, likes, is_official, official_difficulty, created_at, share_token,
       total_distance_m, total_duration_min, primary_tag_id, cover_image_url, themes,
       primary_tag:tags!primary_tag_id ( name ),
+      route_tips(count),
       profiles!routes_user_id_fkey ( nickname ),
       route_shops (
         id, sort_order,

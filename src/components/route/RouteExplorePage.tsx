@@ -90,7 +90,13 @@ export default function RouteExplorePage() {
     getSavedRoutes(user.id).then(setSavedRoutes).catch(() => {})
   }, [user])
 
-  const popular = useMemo(() => [...routes].sort((a, b) => (b.likes ?? 0) - (a.likes ?? 0)), [routes])
+  const infoScore = (r: any): number => {
+    const spots = (r.route_shops ?? []).length                                   // 코스 정보
+    const authorTips = r.tips ? String(r.tips).split('\n').map((s: string) => s.trim()).filter(Boolean).length : 0  // 이용 팁
+    const reviews = r.route_tips?.[0]?.count ?? 0                                 // 리뷰(방문자 TIP)
+    return spots + authorTips + reviews
+  }
+  const popular = useMemo(() => [...routes].sort((a, b) => ((b.likes ?? 0) - (a.likes ?? 0)) || (infoScore(b) - infoScore(a)) || ((b.route_shops?.length ?? 0) - (a.route_shops?.length ?? 0))), [routes])
   const recent = useMemo(() => [...routes].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()), [routes])
   const official = useMemo(() => routes.filter((r) => r.is_official), [routes])
   const heroList = useMemo(() => {
