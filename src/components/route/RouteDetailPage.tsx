@@ -1,8 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import { formatDistance } from '@/hooks/useCurrentLocation'
+import { getRouteDifficulty } from '@/lib/utils/routeDifficulty'
+import { useAuth } from '@/components/layout/AuthProvider'
+import { toggleRouteSave, getMySavedRouteIds } from '@/services/routeService'
+import { useRouter } from 'next/navigation'
+import styles from './RouteDetailPage.module.css'
 
 const RouteMap = dynamic(() => import('./RouteMap'), { ssr: false })
 
@@ -10,17 +16,90 @@ interface Props {
   route: any
 }
 
+type TabKey = 'intro' | 'spots' | 'course' | 'tips' | 'reviews' | 'related'
+
+const TABS: { key: TabKey; label: string; ready: boolean }[] = [
+  { key: 'intro', label: '루트 소개', ready: true },
+  { key: 'spots', label: '스팟', ready: true },
+  { key: 'course', label: '코스 정보', ready: false },
+  { key: 'tips', label: '이용 팁', ready: false },
+  { key: 'reviews', label: '리뷰', ready: false },
+  { key: 'related', label: '관련 루트', ready: false },
+]
+
+const VISIBLE_SPOTS = 4
+
+function formatDuration(min: number | null | undefined): string {
+  if (min == null) return '-'
+  const h = Math.floor(min / 60)
+  const m = min % 60
+  if (h && m) return `약 ${h}시간 ${m}분`
+  if (h) return `약 ${h}시간`
+  return `약 ${m}분`
+}
+
+function resolveDifficulty(route: any): { label: string; color: string; icon: string } | null {
+  const n = route.official_difficulty
+  if (n === 1) return { label: '가볍게', color: '#0E7A63', icon: '🌤️' }
+  if (n === 2) return { label: '반나절', color: '#835700', icon: '☀️' }
+  if (n === 3) return { label: '하루코스', color: '#A23E18', icon: '🔥' }
+  const d = getRouteDifficulty(route.total_duration_min)
+  if (!d) return null
+  const icon = d.level === 'light' ? '🌤️' : d.level === 'half' ? '☀️' : '🔥'
+  return { label: d.label, color: d.color, icon }
+}
+
 export default function RouteDetailPage({ route }: Props) {
-  const [showMapMenu, setShowMapMenu] = useState<any>(null)
+  const router = useRouter()
+  const { user } = useAuth()
+
+  const [tab, setTab] = useState<TabKey>('intro')
+  const [expanded, setExpanded] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [savingBusy, setSavingBusy] = useState(false)
   const [showRouteMapMenu, setShowRouteMapMenu] = useState(false)
+  const [showShareMenu, setShowShareMenu] = useState(false)
+  const [showMapMenu, setShowMapMenu] = useState<any>(null)
 
   const sortedShops = (route.route_shops ?? [])
+    .slice()
     .sort((a: any, b: any) => a.sort_order - b.sort_order)
 
   const shopsWithCoords = sortedShops
     .map((rs: any) => rs.shops)
     .filter((s: any) => s && s.lat && s.lng)
 
+  const diff = resolveDifficulty(route)
+  const spotCount = sortedShops.length
+  const likes = route.likes ?? 0
+
+  // 저장 여부 초기 로드
+  useEffect(() => {
+    if (!user) { setSaved(false); return }
+    let alive = true
+    getMySavedRouteIds(user.id)
+      .then(ids => { if (alive) setSaved(ids.includes(route.id)) })
+      .catch(() => {})
+    return () => { alive = false }
+  }, [user, route.id])
+
+  async function handleSave() {
+    if (!user) { router.push('/login'); return }
+    if (savingBusy) return
+    setSavingBusy(true)
+    // 낙관적 토글
+    setSaved(prev => !prev)
+    try {
+      const next = await toggleRouteSave(route.id, user.id)
+      setSaved(next)
+    } catch {
+      setSaved(prev => !prev) // 롤백
+    } finally {
+      setSavingBusy(false)
+    }
+  }
+
+  // ---- 지도 앱 길찾기 (기존 로직 흡수) ----
   function openRouteInKakao() {
     if (shopsWithCoords.length === 0) return
     const first = shopsWithCoords[0]
@@ -35,11 +114,9 @@ export default function RouteDetailPage({ route }: Props) {
     const origin = shopsWithCoords[0]
     const destination = shopsWithCoords[shopsWithCoords.length - 1]
     const waypoints = shopsWithCoords.slice(1, -1)
-
     let url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin.name)}&destination=${encodeURIComponent(destination.name)}&travelmode=walking`
     if (waypoints.length > 0) {
-      const wpStr = waypoints.map((w: any) => encodeURIComponent(w.name)).join('|')
-      url += `&waypoints=${wpStr}`
+      url += `&waypoints=${waypoints.map((w: any) => encodeURIComponent(w.name)).join('|')}`
     }
     window.open(url, '_blank')
     setShowRouteMapMenu(false)
@@ -56,261 +133,347 @@ export default function RouteDetailPage({ route }: Props) {
     setShowMapMenu(null)
   }
 
-  return (
-    <div style={{ maxWidth: '680px', margin: '0 auto', minHeight: '100dvh', background: 'var(--surface)' }}>
+  // ---- 공유 ----
+  function currentUrl() {
+    return typeof window !== 'undefined' ? window.location.href : ''
+  }
+  async function shareNative() {
+    const url = currentUrl()
+    if (navigator.share) {
+      try { await navigator.share({ title: route.title, url }) } catch {}
+    }
+    setShowShareMenu(false)
+  }
+  function shareX() {
+    const url = currentUrl()
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(route.title)}&url=${encodeURIComponent(url)}`, '_blank')
+    setShowShareMenu(false)
+  }
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(currentUrl())
+      alert('링크를 복사했어요')
+    } catch {
+      alert('링크 복사에 실패했어요')
+    }
+    setShowShareMenu(false)
+  }
 
-      <div style={{ padding: '16px', borderBottom: '1px solid var(--border)' }}>
-        <div style={{
-          fontFamily: "'Cute Font', cursive",
-          fontSize: '20px', color: 'var(--accent)', letterSpacing: '2px', marginBottom: '8px',
-        }}>
-          TAKUROAD
-        </div>
-        <h1 style={{ fontSize: '20px', fontWeight: 900, marginBottom: '6px' }}>{route.title}</h1>
-        {route.description && (
-          <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '8px' }}>{route.description}</p>
-        )}
-        <p style={{ fontSize: '12px', color: 'var(--muted)' }}>
-          {route.profiles?.nickname ?? '익명'}님의 루트
-        </p>
-      </div>
+  const shownSpots = expanded ? sortedShops : sortedShops.slice(0, VISIBLE_SPOTS)
 
-      <div style={{
-        display: 'flex', gap: '20px', padding: '14px 16px',
-        background: 'var(--surface2)', borderBottom: '1px solid var(--border)',
-      }}>
-        <div>
-          <div style={{ fontSize: '11px', color: 'var(--muted)' }}>경유지</div>
-          <div style={{ fontSize: '16px', fontWeight: 900 }}>{sortedShops.length}곳</div>
-        </div>
-        <div>
-          <div style={{ fontSize: '11px', color: 'var(--muted)' }}>총 거리</div>
-          <div style={{ fontSize: '16px', fontWeight: 900 }}>{formatDistance(route.total_distance_m)}</div>
-        </div>
-        <div>
-          <div style={{ fontSize: '11px', color: 'var(--muted)' }}>예상 시간</div>
-          <div style={{ fontSize: '16px', fontWeight: 900 }}>도보 {route.total_duration_min}분</div>
-        </div>
-      </div>
-
-      <div style={{ padding: '14px 16px', borderBottom: '1px solid var(--border)' }}>
-        <button
-          onClick={() => setShowRouteMapMenu(true)}
-          style={{
-            width: '100%', padding: '12px', borderRadius: '12px',
-            background: 'var(--accent)', color: '#fff', border: 'none',
-            fontWeight: 900, fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit',
-          }}
-        >
-          🗺️ 지도 앱으로 길찾기
-        </button>
-      </div>
-
-      <div style={{ height: '320px', borderBottom: '1px solid var(--border)' }}>
-        <RouteMap shops={shopsWithCoords} />
-      </div>
-
-      <div style={{ padding: '16px' }}>
-        {sortedShops.map((rs: any, i: number) => {
-          const shop = rs.shops
-          if (!shop) return null
-          const catInfo = shop.shop_categories?.[0]?.categories
-          return (
-            <div key={rs.id}>
-              <div style={{
-                display: 'flex', alignItems: 'center', gap: '12px',
-                padding: '12px', background: 'var(--surface2)', borderRadius: '12px',
-              }}>
-                <div style={{
-                  width: '30px', height: '30px', borderRadius: '50%',
-                  background: 'var(--accent)', color: '#fff',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: '13px', fontWeight: 900, flexShrink: 0,
-                }}>{i + 1}</div>
-                
-                  <a href={`/shop/${shop.slug}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ textDecoration: 'none', color: 'inherit', flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: '12px' }}
-                >
-                  <div style={{
-                    width: '44px', height: '44px', borderRadius: '10px', overflow: 'hidden',
-                    background: catInfo?.bg_color ?? 'var(--surface)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '18px', flexShrink: 0,
-                  }}>
-                    {shop.shop_images?.[0]?.image_url ? (
-                      <img src={shop.shop_images[0].image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    ) : (
-                      catInfo?.icon ?? '🏪'
-                    )}
+  // ---- 스팟 타임라인 (재사용: intro 탭 하단 + spots 탭) ----
+  function SpotTimeline() {
+    return (
+      <div className={styles.section}>
+        <h3 className={styles.sectionTitle}>코스 스팟</h3>
+        <div className={styles.spotList}>
+          {shownSpots.map((rs: any, i: number) => {
+            const shop = rs.shops
+            if (!shop) return null
+            const cats = shop.shop_categories ?? []
+            const isLast = i === shownSpots.length - 1
+            const walkMin = rs.duration_from_prev_min
+            const walkM = rs.distance_from_prev_m
+            return (
+              <div key={rs.id} className={styles.spotRow}>
+                <div className={styles.spotRail}>
+                  <div className={styles.spotNum}>{i + 1}</div>
+                  <div className={styles.spotRailInfo}>
+                    {i === 0
+                      ? '출발'
+                      : (walkMin != null || walkM != null) && (
+                          <>
+                            {walkMin != null && <>도보 {walkMin}분<br /></>}
+                            {walkM != null && formatDistance(walkM)}
+                          </>
+                        )}
                   </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontWeight: 700, fontSize: '14px' }}>{shop.name}</div>
-                    <div style={{ fontSize: '12px', color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{shop.addr}</div>
-                  </div>
-                </a>
-                {shop.lat && shop.lng && (
-                  <button
-                    onClick={() => setShowMapMenu(shop)}
-                    style={{
-                      flexShrink: 0, padding: '6px 10px', borderRadius: '8px',
-                      border: '1px solid var(--border)', background: 'var(--surface)',
-                      fontSize: '12px', cursor: 'pointer', fontFamily: 'inherit',
-                    }}
-                  >
-                    🗺️
-                  </button>
-                )}
-              </div>
-              {i < sortedShops.length - 1 && (
-                <div style={{
-                  textAlign: 'center', fontSize: '12px', color: 'var(--muted)',
-                  padding: '8px 0',
-                }}>
-                  ↓ 도보 {sortedShops[i + 1].duration_from_prev_min ?? '?'}분
-                  {sortedShops[i + 1].distance_from_prev_m != null &&
-                    ` (${formatDistance(sortedShops[i + 1].distance_from_prev_m)})`}
+                  {!isLast && <div className={styles.spotRailLine} />}
                 </div>
-              )}
+
+                <div className={styles.spotCard}>
+                  <div className={styles.spotThumb}>
+                    {shop.shop_images?.[0]?.image_url
+                      ? <img src={shop.shop_images[0].image_url} alt="" />
+                      : (cats[0]?.categories?.icon ?? '🏪')}
+                  </div>
+                  <div className={styles.spotBody}>
+                    <Link href={`/shop/${shop.slug}`} target="_blank" className={styles.spotName}>
+                      {shop.name}
+                    </Link>
+                    {cats.length > 0 && (
+                      <div className={styles.spotTags}>
+                        {cats.map((c: any, ci: number) => {
+                          const cat = c.categories
+                          if (!cat) return null
+                          const color = cat.color ?? 'var(--muted)'
+                          return (
+                            <span
+                              key={ci}
+                              className={styles.spotTag}
+                              style={{ color, background: `${color}1a` }}
+                            >
+                              {cat.icon ? `${cat.icon} ` : ''}{cat.name}
+                            </span>
+                          )
+                        })}
+                      </div>
+                    )}
+                    {shop.addr && <div className={styles.spotAddr}>{shop.addr}</div>}
+                  </div>
+                  {shop.lat && shop.lng && (
+                    <button className={styles.spotMapBtn} onClick={() => setShowMapMenu(shop)} aria-label="지도 앱으로 열기">
+                      🗺️
+                    </button>
+                  )}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+        {sortedShops.length > VISIBLE_SPOTS && (
+          <button className={styles.expandBtn} onClick={() => setExpanded(v => !v)}>
+            {expanded ? '접기 ▲' : `전체 ${spotCount}개 스팟 보기 ▼`}
+          </button>
+        )}
+      </div>
+    )
+  }
+
+  function Placeholder({ icon, text }: { icon: string; text: string }) {
+    return (
+      <div className={styles.placeholder}>
+        <div className={styles.placeholderIcon}>{icon}</div>
+        <div className={styles.placeholderText}>{text}</div>
+        <div className={styles.placeholderSub}>준비 중이에요</div>
+      </div>
+    )
+  }
+
+  return (
+    <div className={styles.page}>
+      {/* 브레드크럼 */}
+      <nav className={styles.breadcrumb}>
+        <Link href="/">홈</Link>
+        <span className={styles.crumbSep}>›</span>
+        <Link href="/routes">루트</Link>
+        <span className={styles.crumbSep}>›</span>
+        <span className={styles.crumbCurrent}>{route.title}</span>
+      </nav>
+
+      {/* 상단: 히어로 + 요약 */}
+      <div className={styles.topGrid}>
+        <div
+          className={styles.hero}
+          style={route.cover_image_url ? { backgroundImage: `url(${route.cover_image_url})` } : undefined}
+        >
+          <div className={styles.heroOverlay} />
+          <div className={styles.heroInner}>
+            {route.is_official && <span className={styles.officialBadge}>⭐ 공식 루트</span>}
+            <h1 className={styles.heroTitle}>{route.title}</h1>
+            {route.description && <p className={styles.heroDesc}>{route.description}</p>}
+            <div className={styles.heroStats}>
+              <span className={styles.heroStat}><span className={styles.heroStatIcon}>📍</span>스팟 <b>{spotCount}곳</b></span>
+              <span className={styles.heroStat}><span className={styles.heroStatIcon}>🚶</span>총 거리 <b>{formatDistance(route.total_distance_m)}</b></span>
+              <span className={styles.heroStat}><span className={styles.heroStatIcon}>⏱</span>예상 시간 <b>{formatDuration(route.total_duration_min)}</b></span>
+              {diff && <span className={styles.heroStat}><span className={styles.heroStatIcon}>{diff.icon}</span>난이도 <b>{diff.label}</b></span>}
             </div>
-          )
-        })}
+            <div className={styles.heroButtons}>
+              <button className={styles.btnPrimary} onClick={() => setShowRouteMapMenu(true)}>
+                🚶 루트 시작하기
+              </button>
+              <button
+                className={`${styles.btnGhost} ${saved ? styles.btnGhostActive : ''}`}
+                onClick={handleSave}
+                disabled={savingBusy}
+              >
+                {saved ? '❤️ 저장됨' : '🤍 저장하기'}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <aside className={styles.summaryCard}>
+          <h3 className={styles.summaryTitle}>루트 요약</h3>
+          <div className={styles.summaryMap}>
+            {shopsWithCoords.length > 0
+              ? <RouteMap shops={shopsWithCoords} />
+              : <div className={styles.placeholder} style={{ height: '100%', border: 'none', borderRadius: 0 }}>
+                  <div className={styles.placeholderIcon}>🗺️</div>
+                  <div className={styles.placeholderText}>지도 정보가 없어요</div>
+                </div>}
+          </div>
+          <div className={styles.summaryRows}>
+            <div className={styles.summaryRow}>
+              <span className={styles.summaryRowLabel}>🚶 총 거리</span>
+              <span className={styles.summaryRowValue}>{formatDistance(route.total_distance_m)}</span>
+            </div>
+            <div className={styles.summaryRow}>
+              <span className={styles.summaryRowLabel}>⏱ 예상 시간</span>
+              <span className={styles.summaryRowValue}>{formatDuration(route.total_duration_min)}</span>
+            </div>
+            <div className={styles.summaryRow}>
+              <span className={styles.summaryRowLabel}>📍 스팟</span>
+              <span className={styles.summaryRowValue}>{spotCount}곳</span>
+            </div>
+            {diff && (
+              <div className={styles.summaryRow}>
+                <span className={styles.summaryRowLabel}>{diff.icon} 난이도</span>
+                <span className={styles.summaryRowValue} style={{ color: diff.color }}>{diff.label}</span>
+              </div>
+            )}
+          </div>
+          <button className={styles.summaryBtn} onClick={() => setShowRouteMapMenu(true)}>
+            🗺️ 지도로 전체 보기
+          </button>
+        </aside>
       </div>
 
+      {/* 탭 바 */}
+      <div className={styles.tabBar}>
+        <div className={styles.tabs}>
+          {TABS.map(t => (
+            <button
+              key={t.key}
+              className={`${styles.tab} ${tab === t.key ? styles.tabActive : ''}`}
+              onClick={() => setTab(t.key)}
+            >
+              {t.label}
+              {t.key === 'spots' && <span className={styles.tabCount}>{spotCount}</span>}
+            </button>
+          ))}
+        </div>
+        <div className={styles.tabActions}>
+          <button className={styles.iconBtn} onClick={() => setShowShareMenu(true)}>📤 공유하기</button>
+        </div>
+      </div>
+
+      {/* 본문 2단 */}
+      <div className={styles.contentGrid}>
+        <div className={styles.mainCol}>
+          {tab === 'intro' && (
+            <>
+              <div className={styles.section}>
+                <h3 className={styles.sectionTitle}>루트 소개</h3>
+                {route.description && <p className={styles.introText}>{route.description}</p>}
+                <div className={styles.statBox}>
+                  <div className={styles.statBoxItem}>
+                    <span className={styles.statBoxLabel}>🚶 총 거리</span>
+                    <span className={styles.statBoxValue}>{formatDistance(route.total_distance_m)}</span>
+                  </div>
+                  <div className={styles.statBoxItem}>
+                    <span className={styles.statBoxLabel}>⏱ 예상 시간</span>
+                    <span className={styles.statBoxValue}>{formatDuration(route.total_duration_min)}</span>
+                  </div>
+                  <div className={styles.statBoxItem}>
+                    <span className={styles.statBoxLabel}>📍 스팟</span>
+                    <span className={styles.statBoxValue}>{spotCount}곳</span>
+                  </div>
+                  {diff && (
+                    <div className={styles.statBoxItem}>
+                      <span className={styles.statBoxLabel}>{diff.icon} 난이도</span>
+                      <span className={styles.statBoxValue} style={{ color: diff.color }}>{diff.label}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <SpotTimeline />
+            </>
+          )}
+
+          {tab === 'spots' && <SpotTimeline />}
+          {tab === 'course' && <Placeholder icon="🧭" text="코스 정보" />}
+          {tab === 'tips' && <Placeholder icon="💡" text="이용 팁" />}
+          {tab === 'reviews' && <Placeholder icon="⭐" text="리뷰" />}
+          {tab === 'related' && <Placeholder icon="🔗" text="관련 루트" />}
+        </div>
+
+        {/* 사이드 */}
+        <div className={styles.sideCol}>
+          {route.target_audience && (
+            <div className={styles.sideCard}>
+              <h4 className={styles.sideCardTitle}>🎯 이런 분들께 추천해요</h4>
+              <div className={styles.audienceList}>
+                {String(route.target_audience)
+                  .split(/[\n·•]/)
+                  .map((s: string) => s.trim())
+                  .filter(Boolean)
+                  .map((line: string, i: number) => (
+                    <div key={i} className={styles.audienceItem}>
+                      <span className={styles.audienceCheck}>✓</span>
+                      <span>{line}</span>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
+
+          <div className={styles.sideCard}>
+            <h4 className={styles.sideCardTitle}>💡 루트 TIP</h4>
+            <Placeholder icon="💡" text="루트 팁" />
+          </div>
+
+          <div className={styles.sideCard}>
+            <h4 className={styles.sideCardTitle}>🧡 함께 보면 좋은 루트</h4>
+            <Placeholder icon="🔗" text="추천 루트" />
+          </div>
+
+          <div className={styles.sideCard}>
+            <h4 className={styles.sideCardTitle}>👥 최근 다녀간 사람들</h4>
+            <div className={styles.likeCard}>
+              <span style={{ fontSize: 13, color: 'var(--muted)' }}>
+                {likes > 0 ? `${likes}명이 이 루트를 좋아해요` : '아직 좋아요가 없어요'}
+              </span>
+              <span className={styles.likeCount}>
+                <span className={styles.likeCountBig}>❤️</span>{likes}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 전체 루트 길찾기 시트 */}
       {showRouteMapMenu && (
-        <RouteMapAppMenu
-          onClose={() => setShowRouteMapMenu(false)}
-          onKakao={openRouteInKakao}
-          onGoogle={openRouteInGoogle}
-        />
+        <div className={styles.sheetBackdrop} onClick={() => setShowRouteMapMenu(false)}>
+          <div className={styles.sheet} onClick={e => e.stopPropagation()}>
+            <h3 className={styles.sheetTitle}>지도 앱으로 길찾기</h3>
+            <div className={styles.sheetRow}>
+              <button className={`${styles.sheetBtn} ${styles.sheetKakao}`} onClick={openRouteInKakao}>카카오맵</button>
+              <button className={`${styles.sheetBtn} ${styles.sheetGoogle}`} onClick={openRouteInGoogle}>구글맵</button>
+            </div>
+          </div>
+        </div>
       )}
 
+      {/* 단일 샵 시트 */}
       {showMapMenu && (
-        <SingleShopMapMenu
-          onClose={() => setShowMapMenu(null)}
-          onKakao={() => openSingleShop(showMapMenu, 'kakao')}
-          onNaver={() => openSingleShop(showMapMenu, 'naver')}
-          onGoogle={() => openSingleShop(showMapMenu, 'google')}
-          title={showMapMenu.name}
-        />
+        <div className={styles.sheetBackdrop} onClick={() => setShowMapMenu(null)}>
+          <div className={styles.sheet} onClick={e => e.stopPropagation()}>
+            <h3 className={styles.sheetTitle}>{showMapMenu.name}</h3>
+            <div className={styles.sheetRow}>
+              <button className={`${styles.sheetBtn} ${styles.sheetKakao}`} onClick={() => openSingleShop(showMapMenu, 'kakao')}>카카오맵</button>
+              <button className={`${styles.sheetBtn} ${styles.sheetNaver}`} onClick={() => openSingleShop(showMapMenu, 'naver')}>네이버맵</button>
+              <button className={`${styles.sheetBtn} ${styles.sheetGoogle}`} onClick={() => openSingleShop(showMapMenu, 'google')}>구글맵</button>
+            </div>
+          </div>
+        </div>
       )}
-    </div>
-  )
-}
 
-// 전체 루트 길찾기 메뉴 (카카오맵, 구글맵만)
-function RouteMapAppMenu({ onClose, onKakao, onGoogle }: {
-  onClose: () => void
-  onKakao: () => void
-  onGoogle: () => void
-}) {
-  return (
-    <div
-      onClick={onClose}
-      style={{
-        position: 'fixed', inset: 0, zIndex: 999,
-        background: 'rgba(0,0,0,.5)',
-        display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-      }}
-    >
-      <div
-        onClick={e => e.stopPropagation()}
-        style={{
-          background: 'var(--surface)', borderRadius: '20px 20px 0 0',
-          width: '100%', maxWidth: '680px', padding: '20px',
-        }}
-      >
-        <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '16px', textAlign: 'center' }}>
-          전체 루트 길찾기
-        </h3>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button
-            onClick={onKakao}
-            style={{
-              flex: 1, padding: '14px', borderRadius: '12px',
-              background: '#FEE500', border: 'none', color: '#191919',
-              fontWeight: 700, fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
-            }}
-          >
-            카카오맵
-          </button>
-          <button
-            onClick={onGoogle}
-            style={{
-              flex: 1, padding: '14px', borderRadius: '12px',
-              background: 'var(--surface2)', border: '1px solid var(--border)',
-              fontWeight: 700, fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
-            }}
-          >
-            구글맵
-          </button>
+      {/* 공유 시트 */}
+      {showShareMenu && (
+        <div className={styles.sheetBackdrop} onClick={() => setShowShareMenu(false)}>
+          <div className={styles.sheet} onClick={e => e.stopPropagation()}>
+            <h3 className={styles.sheetTitle}>루트 공유하기</h3>
+            <div className={styles.sheetRow}>
+              {typeof navigator !== 'undefined' && (navigator as any).share && (
+                <button className={`${styles.sheetBtn} ${styles.sheetGoogle}`} onClick={shareNative}>공유</button>
+              )}
+              <button className={`${styles.sheetBtn} ${styles.sheetX}`} onClick={shareX}>X (트위터)</button>
+              <button className={`${styles.sheetBtn} ${styles.sheetCopy}`} onClick={copyLink}>링크 복사</button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  )
-}
-
-// 단일 샵 메뉴 (카카오맵, 네이버맵, 구글맵)
-function SingleShopMapMenu({ onClose, onKakao, onNaver, onGoogle, title }: {
-  onClose: () => void
-  onKakao: () => void
-  onNaver: () => void
-  onGoogle: () => void
-  title: string
-}) {
-  return (
-    <div
-      onClick={onClose}
-      style={{
-        position: 'fixed', inset: 0, zIndex: 999,
-        background: 'rgba(0,0,0,.5)',
-        display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-      }}
-    >
-      <div
-        onClick={e => e.stopPropagation()}
-        style={{
-          background: 'var(--surface)', borderRadius: '20px 20px 0 0',
-          width: '100%', maxWidth: '680px', padding: '20px',
-        }}
-      >
-        <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '16px', textAlign: 'center' }}>
-          {title}
-        </h3>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button
-            onClick={onKakao}
-            style={{
-              flex: 1, padding: '14px', borderRadius: '12px',
-              background: '#FEE500', border: 'none', color: '#191919',
-              fontWeight: 700, fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
-            }}
-          >
-            카카오맵
-          </button>
-          <button
-            onClick={onNaver}
-            style={{
-              flex: 1, padding: '14px', borderRadius: '12px',
-              background: '#03C75A', border: 'none', color: '#fff',
-              fontWeight: 700, fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
-            }}
-          >
-            네이버맵
-          </button>
-          <button
-            onClick={onGoogle}
-            style={{
-              flex: 1, padding: '14px', borderRadius: '12px',
-              background: 'var(--surface2)', border: '1px solid var(--border)',
-              fontWeight: 700, fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
-            }}
-          >
-            구글맵
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   )
 }
