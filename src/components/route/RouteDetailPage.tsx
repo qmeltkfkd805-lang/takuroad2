@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, CSSProperties, ReactNode } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { formatDistance } from '@/hooks/useCurrentLocation'
@@ -14,6 +14,57 @@ const RouteMap = dynamic(() => import('./RouteMap'), { ssr: false })
 
 interface Props {
   route: any
+}
+
+/* ---- 아이콘 (프로젝트 공용 /icons/*.png 을 mask로 색칠) ---- */
+function MaskIcon({ name, size = 16, color = 'currentColor', style }: { name: string; size?: number; color?: string; style?: CSSProperties }) {
+  return (
+    <span
+      aria-hidden
+      style={{
+        width: size, height: size, display: 'inline-block', flexShrink: 0, verticalAlign: '-2px',
+        backgroundColor: color,
+        WebkitMaskImage: `url(/icons/${name}.png)`,
+        maskImage: `url(/icons/${name}.png)`,
+        WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat',
+        WebkitMaskSize: 'contain', maskSize: 'contain',
+        WebkitMaskPosition: 'center', maskPosition: 'center',
+        ...style,
+      }}
+    />
+  )
+}
+
+/* ---- 세트에 없는 아이콘은 인라인 SVG ---- */
+function Svg({ size = 16, color = 'currentColor', style, children }: { size?: number; color?: string; style?: CSSProperties; children: ReactNode }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2}
+      strokeLinecap="round" strokeLinejoin="round" aria-hidden
+      style={{ flexShrink: 0, verticalAlign: '-3px', ...style }}>
+      {children}
+    </svg>
+  )
+}
+const ShareIcon = (p: { size?: number; color?: string; style?: CSSProperties }) => <Svg {...p}><circle cx="6" cy="12" r="2.4" /><circle cx="18" cy="6" r="2.4" /><circle cx="18" cy="18" r="2.4" /><path d="m8.2 10.9 7.6-3.5" /><path d="m8.2 13.1 7.6 3.5" /></Svg>
+const BulbIcon = (p: { size?: number; color?: string; style?: CSSProperties }) => <Svg {...p}><path d="M9 18h6" /><path d="M10 21h4" /><path d="M8.5 14a5 5 0 1 1 7 0c-.6.6-1 1.3-1 2.2h-5c0-.9-.4-1.6-1-2.2Z" /></Svg>
+const LockIcon = (p: { size?: number; color?: string; style?: CSSProperties }) => <Svg {...p}><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></Svg>
+const GlobeIcon = (p: { size?: number; color?: string; style?: CSSProperties }) => <Svg {...p}><circle cx="12" cy="12" r="9" /><path d="M3 12h18" /><path d="M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18" /></Svg>
+const CheckIcon = (p: { size?: number; color?: string; style?: CSSProperties }) => <Svg {...p}><path d="m5 12 5 5L20 6" /></Svg>
+const ChevIcon = (p: { size?: number; color?: string; style?: CSSProperties }) => <Svg {...p}><path d="m6 9 6 6 6-6" /></Svg>
+const PinIcon = (p: { size?: number; color?: string; style?: CSSProperties }) => <Svg {...p}><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" /><circle cx="12" cy="10" r="2.5" /></Svg>
+function ColorIcon({ name, size = 16, style }: { name: string; size?: number; style?: CSSProperties }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={`/icons/${name}.png`} width={size} height={size} alt="" aria-hidden style={{ display: 'inline-block', objectFit: 'contain', flexShrink: 0, verticalAlign: '-3px', ...style }} />
+  )
+}
+function HeartIcon({ size = 16, color = 'currentColor', filled = false, style }: { size?: number; color?: string; filled?: boolean; style?: CSSProperties }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={filled ? color : 'none'} stroke={color} strokeWidth={2}
+      strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ flexShrink: 0, verticalAlign: '-3px', ...style }}>
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.5 4.04 3 5.5l7 7Z" />
+    </svg>
+  )
 }
 
 type TabKey = 'intro' | 'spots' | 'course' | 'tips' | 'reviews' | 'related'
@@ -38,15 +89,14 @@ function formatDuration(min: number | null | undefined): string {
   return `약 ${m}분`
 }
 
-function resolveDifficulty(route: any): { label: string; color: string; icon: string } | null {
+function resolveDifficulty(route: any): { label: string; color: string } | null {
   const n = route.official_difficulty
-  if (n === 1) return { label: '가볍게', color: '#0E7A63', icon: '🌤️' }
-  if (n === 2) return { label: '반나절', color: '#835700', icon: '☀️' }
-  if (n === 3) return { label: '하루코스', color: '#A23E18', icon: '🔥' }
+  if (n === 1) return { label: '가볍게', color: '#0E7A63' }
+  if (n === 2) return { label: '반나절', color: '#835700' }
+  if (n === 3) return { label: '하루코스', color: '#A23E18' }
   const d = getRouteDifficulty(route.total_duration_min)
   if (!d) return null
-  const icon = d.level === 'light' ? '🌤️' : d.level === 'half' ? '☀️' : '🔥'
-  return { label: d.label, color: d.color, icon }
+  return { label: d.label, color: d.color }
 }
 
 export default function RouteDetailPage({ route }: Props) {
@@ -77,6 +127,7 @@ export default function RouteDetailPage({ route }: Props) {
   const diff = resolveDifficulty(route)
   const spotCount = sortedShops.length
   const likes = route.likes ?? 0
+  const heroIcon = 'rgba(255,255,255,.9)'
 
   // 저장 여부 초기 로드
   useEffect(() => {
@@ -92,13 +143,12 @@ export default function RouteDetailPage({ route }: Props) {
     if (!user) { router.push('/login'); return }
     if (savingBusy) return
     setSavingBusy(true)
-    // 낙관적 토글
     setSaved(prev => !prev)
     try {
       const next = await toggleRouteSave(route.id, user.id)
       setSaved(next)
     } catch {
-      setSaved(prev => !prev) // 롤백
+      setSaved(prev => !prev)
     } finally {
       setSavingBusy(false)
     }
@@ -114,7 +164,7 @@ export default function RouteDetailPage({ route }: Props) {
     setPublishOpen(false)
   }
 
-  // ---- 지도 앱 길찾기 (기존 로직 흡수) ----
+  // ---- 지도 앱 길찾기 ----
   function openRouteInKakao() {
     if (shopsWithCoords.length === 0) return
     const first = shopsWithCoords[0]
@@ -176,7 +226,7 @@ export default function RouteDetailPage({ route }: Props) {
 
   const shownSpots = expanded ? sortedShops : sortedShops.slice(0, VISIBLE_SPOTS)
 
-  // ---- 스팟 타임라인 (재사용: intro 탭 하단 + spots 탭) ----
+  // ---- 스팟 타임라인 ----
   function SpotTimeline() {
     return (
       <div className={styles.section}>
@@ -210,7 +260,7 @@ export default function RouteDetailPage({ route }: Props) {
                   <div className={styles.spotThumb}>
                     {shop.shop_images?.[0]?.image_url
                       ? <img src={shop.shop_images[0].image_url} alt="" />
-                      : (cats[0]?.categories?.icon ?? '🏪')}
+                      : <MaskIcon name="shop" size={28} color="var(--muted)" />}
                   </div>
                   <div className={styles.spotBody}>
                     <Link href={`/shop/${shop.slug}`} target="_blank" className={styles.spotName}>
@@ -228,7 +278,7 @@ export default function RouteDetailPage({ route }: Props) {
                               className={styles.spotTag}
                               style={{ color, background: `${color}1a` }}
                             >
-                              {cat.icon ? `${cat.icon} ` : ''}{cat.name}
+                              {cat.name}
                             </span>
                           )
                         })}
@@ -238,7 +288,7 @@ export default function RouteDetailPage({ route }: Props) {
                   </div>
                   {shop.lat && shop.lng && (
                     <button className={styles.spotMapBtn} onClick={() => setShowMapMenu(shop)} aria-label="지도 앱으로 열기">
-                      🗺️
+                      <ColorIcon name="colormap" size={18} />
                     </button>
                   )}
                 </div>
@@ -248,17 +298,18 @@ export default function RouteDetailPage({ route }: Props) {
         </div>
         {sortedShops.length > VISIBLE_SPOTS && (
           <button className={styles.expandBtn} onClick={() => setExpanded(v => !v)}>
-            {expanded ? '접기 ▲' : `전체 ${spotCount}개 스팟 보기 ▼`}
+            {expanded ? '접기' : `전체 ${spotCount}개 스팟 보기`}
+            <ChevIcon size={15} color="currentColor" style={{ transform: expanded ? 'rotate(180deg)' : 'none' }} />
           </button>
         )}
       </div>
     )
   }
 
-  function Placeholder({ icon, text }: { icon: string; text: string }) {
+  function Placeholder({ icon, text }: { icon: ReactNode; text: string }) {
     return (
       <div className={styles.placeholder}>
-        <div className={styles.placeholderIcon}>{icon}</div>
+        <span className={styles.placeholderIcon}>{icon}</span>
         <div className={styles.placeholderText}>{text}</div>
         <div className={styles.placeholderSub}>준비 중이에요</div>
       </div>
@@ -285,7 +336,7 @@ export default function RouteDetailPage({ route }: Props) {
           <div className={styles.heroOverlay} />
           <div className={styles.heroInner}>
             {route.is_official ? (
-              <span className={styles.officialBadge}>⭐ 공식 루트</span>
+              <span className={styles.officialBadge}><MaskIcon name="star" size={13} color="#fff" />공식 루트</span>
             ) : isAuthor ? (
               <div className={styles.publishWrap}>
                 <button
@@ -294,8 +345,8 @@ export default function RouteDetailPage({ route }: Props) {
                   onClick={() => setPublishOpen(v => !v)}
                   aria-expanded={publishOpen}
                 >
-                  {shared ? '🟢 공개됨' : '🟡 작성중'}
-                  <span className={styles.badgeCaret}>{publishOpen ? '▲' : '▼'}</span>
+                  {shared ? '공개됨' : '작성중'}
+                  <ChevIcon size={12} color="currentColor" style={{ transform: publishOpen ? 'rotate(180deg)' : 'none', transition: 'transform .15s' }} />
                 </button>
                 {publishOpen && (
                   <>
@@ -309,8 +360,13 @@ export default function RouteDetailPage({ route }: Props) {
                         className={styles.publishAction}
                         onClick={handleTogglePublish}
                         disabled={publishBusy}
+                        style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
                       >
-                        {publishBusy ? '처리 중…' : shared ? '🔒 비공개로 전환' : '🟢 공개하기'}
+                        {publishBusy
+                          ? '처리 중…'
+                          : shared
+                            ? <><LockIcon size={14} color="currentColor" />비공개로 전환</>
+                            : <><GlobeIcon size={14} color="currentColor" />공개하기</>}
                       </button>
                     </div>
                   </>
@@ -320,21 +376,21 @@ export default function RouteDetailPage({ route }: Props) {
             <h1 className={styles.heroTitle}>{route.title}</h1>
             {route.description && <p className={styles.heroDesc}>{route.description}</p>}
             <div className={styles.heroStats}>
-              <span className={styles.heroStat}><span className={styles.heroStatIcon}>📍</span>스팟 <b>{spotCount}곳</b></span>
-              <span className={styles.heroStat}><span className={styles.heroStatIcon}>🚶</span>총 거리 <b>{formatDistance(route.total_distance_m)}</b></span>
-              <span className={styles.heroStat}><span className={styles.heroStatIcon}>⏱</span>예상 시간 <b>{formatDuration(route.total_duration_min)}</b></span>
-              {diff && <span className={styles.heroStat}><span className={styles.heroStatIcon}>{diff.icon}</span>난이도 <b>{diff.label}</b></span>}
+              <span className={styles.heroStat}><MaskIcon name="shop" size={14} color={heroIcon} />스팟 <b>{spotCount}곳</b></span>
+              <span className={styles.heroStat}><MaskIcon name="route" size={14} color={heroIcon} />총 거리 <b>{formatDistance(route.total_distance_m)}</b></span>
+              <span className={styles.heroStat}><MaskIcon name="clock" size={14} color={heroIcon} />예상 시간 <b>{formatDuration(route.total_duration_min)}</b></span>
+              {diff && <span className={styles.heroStat}><MaskIcon name="fire" size={14} color={heroIcon} />난이도 <b>{diff.label}</b></span>}
             </div>
             <div className={styles.heroButtons}>
               <button className={styles.btnPrimary} onClick={() => setShowRouteMapMenu(true)}>
-                🚶 루트 시작하기
+                <PinIcon size={16} color="#fff" />루트 시작하기
               </button>
               <button
                 className={`${styles.btnGhost} ${saved ? styles.btnGhostActive : ''}`}
                 onClick={handleSave}
                 disabled={savingBusy}
               >
-                {saved ? '❤️ 저장됨' : '🤍 저장하기'}
+                <HeartIcon size={16} filled={saved} color={saved ? 'var(--accent)' : 'var(--text)'} />{saved ? '저장됨' : '저장하기'}
               </button>
             </div>
           </div>
@@ -345,7 +401,7 @@ export default function RouteDetailPage({ route }: Props) {
             {shopsWithCoords.length > 0
               ? <RouteMap shops={shopsWithCoords} />
               : <div className={styles.placeholder} style={{ height: '100%', border: 'none', borderRadius: 0 }}>
-                  <div className={styles.placeholderIcon}>🗺️</div>
+                  <span className={styles.placeholderIcon}><ColorIcon name="colormap" size={26} /></span>
                   <div className={styles.placeholderText}>지도 정보가 없어요</div>
                 </div>}
           </div>
@@ -353,26 +409,26 @@ export default function RouteDetailPage({ route }: Props) {
             <h3 className={styles.summaryTitle}>루트 요약</h3>
             <div className={styles.summaryRows}>
               <div className={styles.summaryRow}>
-                <span className={styles.summaryRowLabel}>🚶 총 거리</span>
+                <span className={styles.summaryRowLabel}><MaskIcon name="route" size={15} />총 거리</span>
                 <span className={styles.summaryRowValue}>{formatDistance(route.total_distance_m)}</span>
               </div>
               <div className={styles.summaryRow}>
-                <span className={styles.summaryRowLabel}>⏱ 예상 시간</span>
+                <span className={styles.summaryRowLabel}><MaskIcon name="clock" size={15} />예상 시간</span>
                 <span className={styles.summaryRowValue}>{formatDuration(route.total_duration_min)}</span>
               </div>
               <div className={styles.summaryRow}>
-                <span className={styles.summaryRowLabel}>📍 스팟</span>
+                <span className={styles.summaryRowLabel}><MaskIcon name="shop" size={15} />스팟</span>
                 <span className={styles.summaryRowValue}>{spotCount}곳</span>
               </div>
               {diff && (
                 <div className={styles.summaryRow}>
-                  <span className={styles.summaryRowLabel}>{diff.icon} 난이도</span>
+                  <span className={styles.summaryRowLabel}><MaskIcon name="fire" size={15} color={diff.color} />난이도</span>
                   <span className={styles.summaryRowValue} style={{ color: diff.color }}>{diff.label}</span>
                 </div>
               )}
             </div>
             <button className={styles.summaryBtn} onClick={() => setShowRouteMapMenu(true)}>
-              🗺️ 지도로 전체 보기
+              <ColorIcon name="colormap" size={18} />지도로 전체 보기
             </button>
           </div>
         </aside>
@@ -393,7 +449,7 @@ export default function RouteDetailPage({ route }: Props) {
           ))}
         </div>
         <div className={styles.tabActions}>
-          <button className={styles.iconBtn} onClick={() => setShowShareMenu(true)}>📤 공유하기</button>
+          <button className={styles.iconBtn} onClick={() => setShowShareMenu(true)}><ShareIcon size={15} color="currentColor" />공유하기</button>
         </div>
       </div>
 
@@ -407,20 +463,20 @@ export default function RouteDetailPage({ route }: Props) {
                 {route.description && <p className={styles.introText}>{route.description}</p>}
                 <div className={styles.statBox}>
                   <div className={styles.statBoxItem}>
-                    <span className={styles.statBoxLabel}>🚶 총 거리</span>
+                    <span className={styles.statBoxLabel}><MaskIcon name="route" size={14} />총 거리</span>
                     <span className={styles.statBoxValue}>{formatDistance(route.total_distance_m)}</span>
                   </div>
                   <div className={styles.statBoxItem}>
-                    <span className={styles.statBoxLabel}>⏱ 예상 시간</span>
+                    <span className={styles.statBoxLabel}><MaskIcon name="clock" size={14} />예상 시간</span>
                     <span className={styles.statBoxValue}>{formatDuration(route.total_duration_min)}</span>
                   </div>
                   <div className={styles.statBoxItem}>
-                    <span className={styles.statBoxLabel}>📍 스팟</span>
+                    <span className={styles.statBoxLabel}><MaskIcon name="shop" size={14} />스팟</span>
                     <span className={styles.statBoxValue}>{spotCount}곳</span>
                   </div>
                   {diff && (
                     <div className={styles.statBoxItem}>
-                      <span className={styles.statBoxLabel}>{diff.icon} 난이도</span>
+                      <span className={styles.statBoxLabel}><MaskIcon name="fire" size={14} color={diff.color} />난이도</span>
                       <span className={styles.statBoxValue} style={{ color: diff.color }}>{diff.label}</span>
                     </div>
                   )}
@@ -431,17 +487,17 @@ export default function RouteDetailPage({ route }: Props) {
           )}
 
           {tab === 'spots' && <SpotTimeline />}
-          {tab === 'course' && <Placeholder icon="🧭" text="코스 정보" />}
-          {tab === 'tips' && <Placeholder icon="💡" text="이용 팁" />}
-          {tab === 'reviews' && <Placeholder icon="⭐" text="리뷰" />}
-          {tab === 'related' && <Placeholder icon="🔗" text="관련 루트" />}
+          {tab === 'course' && <Placeholder icon={<ColorIcon name="colormap" size={26} />} text="코스 정보" />}
+          {tab === 'tips' && <Placeholder icon={<BulbIcon size={22} color="var(--muted)" />} text="이용 팁" />}
+          {tab === 'reviews' && <Placeholder icon={<MaskIcon name="star" size={22} color="var(--muted)" />} text="리뷰" />}
+          {tab === 'related' && <Placeholder icon={<MaskIcon name="route" size={22} color="var(--muted)" />} text="관련 루트" />}
         </div>
 
         {/* 사이드 */}
         <div className={styles.sideCol}>
           {route.target_audience && (
             <div className={styles.sideCard}>
-              <h4 className={styles.sideCardTitle}>🎯 이런 분들께 추천해요</h4>
+              <h4 className={styles.sideCardTitle}><MaskIcon name="people" size={16} color="var(--accent)" />이런 분들께 추천해요</h4>
               <div className={styles.audienceList}>
                 {String(route.target_audience)
                   .split(/[\n·•]/)
@@ -449,7 +505,7 @@ export default function RouteDetailPage({ route }: Props) {
                   .filter(Boolean)
                   .map((line: string, i: number) => (
                     <div key={i} className={styles.audienceItem}>
-                      <span className={styles.audienceCheck}>✓</span>
+                      <span className={styles.audienceCheck}><CheckIcon size={14} color="var(--accent)" /></span>
                       <span>{line}</span>
                     </div>
                   ))}
@@ -458,23 +514,23 @@ export default function RouteDetailPage({ route }: Props) {
           )}
 
           <div className={styles.sideCard}>
-            <h4 className={styles.sideCardTitle}>💡 루트 TIP</h4>
-            <Placeholder icon="💡" text="루트 팁" />
+            <h4 className={styles.sideCardTitle}><BulbIcon size={16} color="var(--accent)" />루트 TIP</h4>
+            <Placeholder icon={<BulbIcon size={22} color="var(--muted)" />} text="루트 팁" />
           </div>
 
           <div className={styles.sideCard}>
-            <h4 className={styles.sideCardTitle}>🧡 함께 보면 좋은 루트</h4>
-            <Placeholder icon="🔗" text="추천 루트" />
+            <h4 className={styles.sideCardTitle}><MaskIcon name="route" size={16} color="var(--accent)" />함께 보면 좋은 루트</h4>
+            <Placeholder icon={<MaskIcon name="route" size={22} color="var(--muted)" />} text="추천 루트" />
           </div>
 
           <div className={styles.sideCard}>
-            <h4 className={styles.sideCardTitle}>👥 최근 다녀간 사람들</h4>
+            <h4 className={styles.sideCardTitle}><MaskIcon name="people" size={16} color="var(--accent)" />최근 다녀간 사람들</h4>
             <div className={styles.likeCard}>
               <span style={{ fontSize: 13, color: 'var(--muted)' }}>
                 {likes > 0 ? `${likes}명이 이 루트를 좋아해요` : '아직 좋아요가 없어요'}
               </span>
               <span className={styles.likeCount}>
-                <span className={styles.likeCountBig}>❤️</span>{likes}
+                <HeartIcon size={18} filled color="var(--accent)" />{likes}
               </span>
             </div>
           </div>
