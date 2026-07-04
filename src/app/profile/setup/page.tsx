@@ -54,7 +54,7 @@ export default function ProfileSetupPage() {
       return
     }
 
-    router.push('/')
+    window.location.href = '/'
   }
 
   return (
