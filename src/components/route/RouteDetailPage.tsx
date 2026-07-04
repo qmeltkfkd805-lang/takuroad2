@@ -9,6 +9,7 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { toggleRouteSave, getMySavedRouteIds, toggleRouteShare } from '@/services/routeService'
 import { recordRouteStart, hasStartedRoute, getRouteTips, addRouteTip, deleteRouteTip, RouteTip } from '@/services/routeTipService'
 import { getRelatedRoutes, RelatedRoute } from '@/services/routeRelatedService'
+import { getVisitedShopIds, setShopVisited } from '@/services/routeVisitService'
 import { useRouter } from 'next/navigation'
 import styles from './RouteDetailPage.module.css'
 
@@ -136,6 +137,22 @@ export default function RouteDetailPage({ route }: Props) {
   const [tipInput, setTipInput] = useState('')
   const [tipBusy, setTipBusy] = useState(false)
   const [related, setRelated] = useState<RelatedRoute[]>([])
+  const [visitedIds, setVisitedIds] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    if (!user) { setVisitedIds(new Set()); return }
+    let alive = true
+    getVisitedShopIds(route.id, user.id).then((ids) => { if (alive) setVisitedIds(new Set(ids)) }).catch(() => {})
+    return () => { alive = false }
+  }, [route.id, user])
+
+  async function toggleVisited(shopId: string) {
+    if (!user) { router.push('/login'); return }
+    const has = visitedIds.has(shopId)
+    setVisitedIds((prev) => { const n = new Set(prev); has ? n.delete(shopId) : n.add(shopId); return n })
+    const ok = await setShopVisited(route.id, shopId, user.id, !has)
+    if (!ok) setVisitedIds((prev) => { const n = new Set(prev); has ? n.add(shopId) : n.delete(shopId); return n })
+  }
 
   useEffect(() => {
     const regions = Array.from(new Set(((route.route_shops ?? []) as any[]).map((rs) => rs.shops?.region).filter(Boolean)))
@@ -320,6 +337,9 @@ export default function RouteDetailPage({ route }: Props) {
                       <ColorIcon name="colormap" size={18} />
                     </button>
                   )}
+                  <button onClick={() => toggleVisited(shop.id)} aria-label="방문 체크" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, flexShrink: 0, padding: '6px 10px', borderRadius: 9999, border: `1px solid ${visitedIds.has(shop.id) ? 'var(--green)' : 'var(--border)'}`, background: visitedIds.has(shop.id) ? 'var(--green)' : 'var(--surface)', color: visitedIds.has(shop.id) ? '#fff' : 'var(--muted)', fontWeight: 700, fontSize: 12, cursor: 'pointer', fontFamily: 'inherit', marginLeft: 6 }}>
+                    <CheckIcon size={13} color={visitedIds.has(shop.id) ? '#fff' : 'var(--muted)'} />{visitedIds.has(shop.id) ? '방문함' : '방문'}
+                  </button>
                 </div>
               </div>
             )

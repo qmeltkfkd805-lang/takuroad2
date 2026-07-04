@@ -13,6 +13,7 @@ import ChronicleTimeline from '@/components/passport/ChronicleTimeline'
 import SavedShopsTab from './SavedShopsTab'
 import MyRoutesTab from './MyRoutesTab'
 import SavedRoutesTab from './SavedRoutesTab'
+import CompletedRoutesTab from './CompletedRoutesTab'
 import MyReviewsTab from './MyReviewsTab'
 import MyShopsTab from './MyShopsTab'
 import VerifyStatusTab from './VerifyStatusTab'
@@ -21,7 +22,7 @@ import BadgesTab from './BadgesTab'
 import CollectionTab from './CollectionTab'
 import { useSearchParams } from 'next/navigation'
 
-type Tab = 'passport' | 'chronicle' | 'saved' | 'routes' | 'savedroutes' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
+type Tab = 'passport' | 'chronicle' | 'saved' | 'routes' | 'savedroutes' | 'completed' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
 
 const TABS: { key: Tab; label: string; icon: string }[] = [
   { key: 'passport',   label: '여권',         icon: '📔' },
@@ -29,6 +30,7 @@ const TABS: { key: Tab; label: string; icon: string }[] = [
   { key: 'saved',      label: '저장한 샵',    icon: '🔖' },
   { key: 'routes',     label: '내 루트',      icon: '🧭' },
   { key: 'savedroutes', label: '저장한 루트',  icon: '❤️' },
+  { key: 'completed',  label: '완료한 루트',  icon: '🏁' },
   { key: 'reviews',    label: '내 후기',      icon: '⭐' },
   { key: 'comments',   label: '내 댓글',      icon: '💬' },
   { key: 'shops',      label: '등록한 샵',    icon: '🏪' },
@@ -159,6 +161,7 @@ export default function ProfilePage() {
         {tab === 'saved' && <SavedShopsTab userId={user.id} />}
         {tab === 'routes' && <MyRoutesTab userId={user.id} />}
         {tab === 'savedroutes' && <SavedRoutesTab userId={user.id} />}
+        {tab === 'completed' && <CompletedRoutesTab userId={user.id} />}
         {tab === 'reviews' && <MyReviewsTab userId={user.id} />}
         {tab === 'comments' && <EmptyTab text="댓글 기능은 곧 추가될 예정이에요" />}
         {tab === 'shops' && <MyShopsTab userId={user.id} />}

@@ -2,7 +2,7 @@
 import { useState, useEffect, useMemo, CSSProperties, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { getPublicRoutes, getMyRoutes, getMyRouteProgress, toggleRouteSave, getMySavedRouteIds } from '@/services/routeService'
+import { getPublicRoutes, getMyRoutes, getMyRouteProgress, toggleRouteSave, getMySavedRouteIds, getSavedRoutes } from '@/services/routeService'
 import { shopRegion } from '@/lib/shop/quickCompleteness'
 import { formatDistance } from '@/hooks/useCurrentLocation'
 
@@ -82,8 +82,11 @@ export default function RouteExplorePage() {
   const [diffFilter, setDiffFilter] = useState<number | null>(null)
   const [tagFilter, setTagFilter] = useState<string | null>(null)
   const [regionFilter, setRegionFilter] = useState<string | null>(null)
+  const [showAllTags, setShowAllTags] = useState(false)
+  const [showAllRegions, setShowAllRegions] = useState(false)
   const [showFilter, setShowFilter] = useState(false)
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
+  const [savedRoutes, setSavedRoutes] = useState<any[]>([])
 
   useEffect(() => {
     getPublicRoutes().then((d) => { setRoutes(d); setLoading(false) }).catch(() => setLoading(false))
@@ -93,6 +96,7 @@ export default function RouteExplorePage() {
     getMyRoutes(user.id).then(setMine).catch(() => {})
     getMyRouteProgress(user.id).then(setProgress).catch(() => {})
     getMySavedRouteIds(user.id).then((ids) => setSavedIds(new Set(ids))).catch(() => {})
+    getSavedRoutes(user.id).then(setSavedRoutes).catch(() => {})
   }, [user])
 
   const popular = useMemo(() => [...routes].sort((a, b) => (b.likes ?? 0) - (a.likes ?? 0)), [routes])
@@ -103,12 +107,12 @@ export default function RouteExplorePage() {
   const byTag = useMemo(() => {
     const m = new Map<string, number>()
     routes.forEach((r) => { const name = r.primary_tag?.name; if (name) m.set(name, (m.get(name) ?? 0) + 1) })
-    return Array.from(m.entries()).sort((a, b) => b[1] - a[1]).slice(0, 12)
+    return Array.from(m.entries()).sort((a, b) => b[1] - a[1])
   }, [routes])
   const byRegion = useMemo(() => {
     const m = new Map<string, number>()
     routes.forEach((r) => rtRegions(r).forEach((x) => m.set(x, (m.get(x) ?? 0) + 1)))
-    return Array.from(m.entries()).sort((a, b) => b[1] - a[1]).slice(0, 12)
+    return Array.from(m.entries()).sort((a, b) => b[1] - a[1])
   }, [routes])
 
   const q = search.trim().toLowerCase()
@@ -204,13 +208,13 @@ export default function RouteExplorePage() {
         {tab === 'all' && !q && !themeFilter && !diffFilter && !tagFilter && !regionFilter ? (
           <>
             {byTag.length > 0 && (
-              <Section title="작품별 루트">
-                {byTag.map(([t, n]) => <MiniCard key={t} label={t} sub={`루트 ${n}개`} onClick={() => { setTagFilter(t); setRegionFilter(null); setThemeFilter(null); setDiffFilter(null); setTab('all') }} />)}
+              <Section title="작품별 루트" onMore={byTag.length > 6 ? () => setShowAllTags((v) => !v) : undefined} moreLabel={showAllTags ? '접기' : '전체 보기'}>
+                {(showAllTags ? byTag : byTag.slice(0, 6)).map(([t, n]) => <MiniCard key={t} label={t} sub={`루트 ${n}개`} onClick={() => { setTagFilter(t); setRegionFilter(null); setThemeFilter(null); setDiffFilter(null); setTab('all') }} />)}
               </Section>
             )}
             {byRegion.length > 0 && (
-              <Section title="지역별 루트">
-                {byRegion.map(([r, n]) => <MiniCard key={r} icon={<PinIcon size={13} color="var(--accent)" />} label={r} sub={`루트 ${n}개`} onClick={() => { setRegionFilter(r); setTagFilter(null); setThemeFilter(null); setDiffFilter(null); setTab('all') }} />)}
+              <Section title="지역별 루트" onMore={byRegion.length > 6 ? () => setShowAllRegions((v) => !v) : undefined} moreLabel={showAllRegions ? '접기' : '전체 보기'}>
+                {(showAllRegions ? byRegion : byRegion.slice(0, 6)).map(([r, n]) => <MiniCard key={r} icon={<PinIcon size={13} color="var(--accent)" />} label={r} sub={`루트 ${n}개`} onClick={() => { setRegionFilter(r); setTagFilter(null); setThemeFilter(null); setDiffFilter(null); setTab('all') }} />)}
               </Section>
             )}
           </>
@@ -250,20 +254,30 @@ export default function RouteExplorePage() {
           {popular.length === 0 && <p style={{ fontSize: 13, color: 'var(--muted)', padding: '10px 0' }}>아직 루트가 없어요</p>}
         </Panel>
 
-        {user && progress.length > 0 && (
+        {user && (
           <Panel title="내 루트 진행 현황">
-            {progress.map((p) => (
-              <button key={p.id} onClick={() => p.shareToken && router.push(`/route/${p.shareToken}`)} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: '8px 0', cursor: 'pointer', fontFamily: 'inherit' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, fontWeight: 700, marginBottom: 5 }}>
-                  <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.title}</span>
-                  <span style={{ color: 'var(--accent)', flexShrink: 0, marginLeft: 8 }}>{p.pct}%</span>
-                </div>
-                <div style={{ height: 6, borderRadius: 9999, background: 'var(--surface2)', overflow: 'hidden' }}>
-                  <div style={{ width: `${p.pct}%`, height: '100%', background: 'var(--accent)' }} />
-                </div>
-                <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 3 }}>{p.visited}/{p.total}곳</div>
-              </button>
-            ))}
+            {progress.length > 0 ? (
+              progress.map((p) => (
+                <button key={p.id} onClick={() => p.shareToken && router.push(`/route/${p.shareToken}`)} style={{ display: 'flex', gap: 10, alignItems: 'center', width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: '10px 0', cursor: 'pointer', fontFamily: 'inherit' }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 10, flexShrink: 0, backgroundImage: p.cover ? `url(${p.cover})` : 'linear-gradient(135deg, var(--accent), #ff9bb6)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginBottom: 6 }}>{p.title}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontSize: 12, fontWeight: 800, color: 'var(--accent)', flexShrink: 0 }}>{p.visited}/{p.total}</span>
+                      <div style={{ flex: 1, height: 6, borderRadius: 9999, background: 'var(--surface2)', overflow: 'hidden' }}>
+                        <div style={{ width: `${p.pct}%`, height: '100%', background: 'var(--accent)' }} />
+                      </div>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--muted)', flexShrink: 0 }}>{p.pct}%</span>
+                    </div>
+                  </div>
+                </button>
+              ))
+            ) : (
+              <>
+                <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.6, margin: '2px 0 12px' }}>현재 진행 중인 루트가 없습니다.<br />마음에 드는 루트를 저장해보세요!</p>
+              </>
+            )}
+            <button onClick={() => router.push('/profile?tab=savedroutes')} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', marginTop: 14, padding: '11px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 800, fontSize: 13.5, cursor: 'pointer', fontFamily: 'inherit' }}>저장한 루트 보러가기<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></button>
           </Panel>
         )}
       </aside>
@@ -271,11 +285,16 @@ export default function RouteExplorePage() {
   )
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, children, onMore, moreLabel }: { title: string; children: React.ReactNode; onMore?: () => void; moreLabel?: string }) {
   return (
     <div style={{ marginBottom: 22 }}>
-      <h2 style={{ fontSize: 16, fontWeight: 900, margin: '0 0 10px' }}>{title}</h2>
-      <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 4 }}>{children}</div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '0 0 10px' }}>
+        <h2 style={{ fontSize: 16, fontWeight: 900, margin: 0 }}>{title}</h2>
+        {onMore && (
+          <button onClick={onMore} style={{ display: 'inline-flex', alignItems: 'center', gap: 3, background: 'none', border: 'none', color: 'var(--muted)', fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>{moreLabel ?? '전체 보기'}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="m9 18 6-6-6-6" /></svg></button>
+        )}
+      </div>
+      <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 4, flexWrap: onMore && (moreLabel === '접기') ? 'wrap' : 'nowrap' }}>{children}</div>
     </div>
   )
 }

@@ -286,11 +286,11 @@ export async function getMyRouteProgress(userId: string) {
   const { data: prog } = await supabase.from('route_progress').select('route_id, shop_id').eq('user_id', userId)
   if (!prog || prog.length === 0) return []
   const routeIds = Array.from(new Set(prog.map((p: any) => p.route_id)))
-  const { data: routes } = await supabase.from('routes').select('id, title, share_token, route_shops(id)').in('id', routeIds)
+  const { data: routes } = await supabase.from('routes').select('id, title, share_token, cover_image_url, route_shops(id)').in('id', routeIds)
   return (routes ?? []).map((r: any) => {
     const total = r.route_shops?.length ?? 0
     const visited = prog.filter((p: any) => p.route_id === r.id).length
-    return { id: r.id, title: r.title, shareToken: r.share_token, total, visited, pct: total ? Math.round((visited / total) * 100) : 0 }
+    return { id: r.id, title: r.title, shareToken: r.share_token, cover: r.cover_image_url ?? null, total, visited, pct: total ? Math.round((visited / total) * 100) : 0 }
   }).filter((r: any) => r.visited > 0 && r.visited < r.total)
 }
 
