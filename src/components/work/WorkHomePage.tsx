@@ -50,6 +50,15 @@ const TABS = [
   { id: 'community', label: '커뮤니티' },
 ]
 
+function shade(hex: string, p: number): string {
+  const h = (hex || '').replace('#', '')
+  if (h.length !== 6) return hex
+  const n = parseInt(h, 16)
+  let r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255
+  r = Math.round(r * (1 - p)); g = Math.round(g * (1 - p)); b = Math.round(b * (1 - p))
+  return '#' + [r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('')
+}
+
 export default function WorkHomePage({ tag, feed, events, shops, goods, routes, communityPosts, favoriteCount }: Props) {
   const router = useRouter()
   const now = new Date()
@@ -91,34 +100,32 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
   if (tag.ip_type) chips.push(tag.ip_type)
   if (tag.release_year) chips.push(`${tag.release_year}~`)
   if (tag.genres) chips.push(...tag.genres)
+  const accent = (tag as any).accent_color || '#FF5692'
 
   return (
     <div className={styles.page}>
       {/* Hero */}
-      <section className={styles.hero} style={tag.banner_image ? { backgroundImage: `url(${tag.banner_image})` } : undefined}>
-
-        <div className={styles.heroInner}>
-          <div className={styles.poster}>
-            {tag.cover_url ? <img src={tag.cover_url} alt={tag.name} /> : <span style={{ fontSize: 26 }}>🎬</span>}
+      <section style={{ background: `linear-gradient(135deg, ${accent}, ${shade(accent, 0.42)})` }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 22px', display: 'flex', gap: 22, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div style={{ width: 108, height: 144, borderRadius: 14, flexShrink: 0, background: tag.cover_url ? `url(${tag.cover_url}) center/cover` : 'rgba(255,255,255,.16)', border: '1px solid rgba(255,255,255,.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+            {!tag.cover_url && <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.85)" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-5-5L5 21" /></svg>}
           </div>
-          <div className={styles.heroText}>
-            <h1 className={styles.heroTitle}>{tag.name}</h1>
-            {tag.english_name && <div className={styles.heroEn}>{tag.english_name}</div>}
+          <div style={{ flex: 1, minWidth: 240, color: '#fff' }}>
+            <h1 style={{ fontSize: 30, fontWeight: 900, margin: '0 0 6px' }}>{tag.name}</h1>
+            {tag.english_name && <div style={{ fontSize: 15, opacity: 0.85, marginBottom: 12 }}>{tag.english_name}</div>}
             {chips.length > 0 && (
-              <div className={styles.heroChips}>
-                {chips.map((c, i) => <span key={i} className={styles.heroChip}>{c}</span>)}
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 16 }}>
+                {chips.map((c, i) => <span key={i} style={{ fontSize: 12.5, fontWeight: 700, background: 'rgba(255,255,255,.22)', color: '#fff', padding: '4px 12px', borderRadius: 9999 }}>{c}</span>)}
               </div>
             )}
-            <div className={styles.heroActions}>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               <WorkAffinityButton tagId={tag.id} />
               <WorkStateButton tagId={tag.id} />
             </div>
-            {favoriteCount > 0 && (
-              <div className={styles.favCount}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff" stroke="none"><circle cx="9" cy="8" r="3.2" /><path d="M3.5 19a5.5 5.5 0 0 1 11 0z" /><circle cx="16.6" cy="8.6" r="2.5" opacity=".85" /><path d="M14.5 19a5 5 0 0 1 7-4.4A5 5 0 0 1 21.5 19z" opacity=".85" /></svg>
-                <span><b>{favoriteCount.toLocaleString()}</b>명이 최애로 등록했어요</span>
-              </div>
-            )}
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, marginTop: 14, color: '#fff', opacity: 0.92 }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff" stroke="none"><circle cx="9" cy="8" r="3.2" /><path d="M3.5 19a5.5 5.5 0 0 1 11 0z" /><circle cx="16.6" cy="8.6" r="2.5" opacity=".85" /><path d="M14.5 19a5 5 0 0 1 7-4.4A5 5 0 0 1 21.5 19z" opacity=".85" /></svg>
+              <span><b>{favoriteCount.toLocaleString()}</b>명이 최애로 등록했어요</span>
+            </div>
           </div>
         </div>
       </section>

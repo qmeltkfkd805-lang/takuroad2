@@ -108,8 +108,14 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
               </button>
             ))}
 
-            <button type="button" className={styles.dropAll} onClick={goAll}>
-              🔍 '{term}' 전체 검색
+            {term && (
+              <button type="button" className={styles.dropAll} onClick={goAll}>
+                🔍 '{term}' 전체 검색
+              </button>
+            )}
+            <button type="button" className={styles.dropItem} onClick={() => go('/work/new')} style={{ color: 'var(--accent)', fontWeight: 800 }}>
+              <WorkIcon size={18} />
+              <span className={styles.dropText}>찾는 작품이 없나요? 직접 작품 등록하기</span>
             </button>
           </div>
         )}

@@ -1,5 +1,6 @@
 ﻿'use client'
 import { useState, useEffect, useMemo, useRef, CSSProperties, ReactNode, RefObject } from 'react'
+import WorkRegister from '@/components/work/WorkRegister'
 import Link from 'next/link'
 import { getAllTagsFull, uploadWorkImage, AdminTag } from '@/services/workAdminService'
 import { adminUpsert } from '@/services/adminUpsertService'
@@ -61,7 +62,12 @@ export default function WorkAdminTab() {
   }
 
   if (loading) return <div style={{ padding: 40, textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
-  if (selected) return <WorkEditForm tag={selected} onBack={() => setSelected(null)} onSaved={onSaved} />
+  if (selected) return (
+    <div>
+      <button onClick={() => setSelected(null)} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, padding: '4px 0 12px' }}>← 목록으로</button>
+      <WorkRegister mode={selected.id ? 'edit' : 'create'} editId={selected.id || null} />
+    </div>
+  )
 
   return (
     <div style={{ padding: 16 }}>
