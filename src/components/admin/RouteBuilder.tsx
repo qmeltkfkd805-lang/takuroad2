@@ -1,15 +1,17 @@
 'use client'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getAllTagsFull, AdminTag } from '@/services/workAdminService'
 import { getShopsByTag, getShops, getSavedShops } from '@/services/shopService'
-import { createRoute, getRouteForEdit, updateRoute, getRouteStats } from '@/services/routeService'
+import { createRoute, getRouteForEdit, updateRoute, getRouteStats, uploadRouteCover, updateRouteMeta, getRouteMeta } from '@/services/routeService'
 import { approveOfficialRoute } from '@/services/adminRouteService'
 import { shopRegion } from '@/lib/shop/quickCompleteness'
 import { Shop } from '@/types/shop'
 import RouteMiniMap from './RouteMiniMap'
 
 const DIFF = [{ v: 1, l: '쉬움' }, { v: 2, l: '보통' }, { v: 3, l: '오래걸림' }]
+const SEASONS = ['봄', '여름', '가을', '겨울']
+const THEMES = ['카페', '굿즈', '사진명소', '가족', '커플', '혼자', '도보30분', '반나절', '실내', '비오는날']
 type SourceMode = 'work' | 'region' | 'saved'
 
 export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRouteId?: string | null; onDone: () => void; onCancel: () => void }) {
@@ -30,6 +32,14 @@ export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRo
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
   const [difficulty, setDifficulty] = useState(1)
+  const [coverUrl, setCoverUrl] = useState('')
+  const [season, setSeason] = useState('')
+  const [themes, setThemes] = useState<string[]>([])
+  const [target, setTarget] = useState('')
+  const [uploading, setUploading] = useState(false)
+  const [primaryTagId, setPrimaryTagId] = useState<string | null>(null)
+  const fileRef = useRef<HTMLInputElement | null>(null)
+
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
 
@@ -46,6 +56,7 @@ export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRo
       setLoadingEdit(false)
     })
     getRouteStats(editRouteId).then(setStats).catch(() => {})
+    getRouteMeta(editRouteId).then((m) => { setCoverUrl(m.cover ?? ''); setSeason(m.season ?? ''); setThemes(m.themes ?? []); setTarget(m.target ?? ''); setPrimaryTagId((m as any).primaryTag ?? null) }).catch(() => {})
   }, [editRouteId])
 
   function switchMode(m: SourceMode) {
@@ -67,19 +78,27 @@ export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRo
   async function pickTag(t: AdminTag) {
     setSelectedTag(t); setTagQuery(''); setQuery(''); setLoadingShops(true)
     if (!title) setTitle(`${t.name} 코스`)
+    setPrimaryTagId(t.id)
     const shops = await getShopsByTag(t.slug).catch(() => [])
     setCandidates(shops.filter((s) => s.lat != null && s.lng != null))
     setLoadingShops(false)
   }
 
+  async function onPickFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploading(true)
+    const url = await uploadRouteCover(file, editRouteId ?? 'new')
+    setUploading(false)
+    if (url) setCoverUrl(url); else setMsg('이미지 업로드 실패')
+    if (fileRef.current) fileRef.current.value = ''
+  }
+  function toggleTheme(t: string) { setThemes((a) => a.includes(t) ? a.filter((x) => x !== t) : [...a, t]) }
+
   const q = query.trim().toLowerCase()
   const filtered = useMemo(() => {
     if (!q) return candidates
-    return candidates.filter((s) =>
-      (s.name ?? '').toLowerCase().includes(q) ||
-      (s.addr ?? '').toLowerCase().includes(q) ||
-      shopRegion(s).toLowerCase().includes(q)
-    )
+    return candidates.filter((s) => (s.name ?? '').toLowerCase().includes(q) || (s.addr ?? '').toLowerCase().includes(q) || shopRegion(s).toLowerCase().includes(q))
   }, [candidates, q])
   const addedIds = useMemo(() => new Set(added.map((s) => s.id)), [added])
 
@@ -89,8 +108,8 @@ export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRo
   function move(i: number, dir: -1 | 1) {
     setAdded((a) => { const j = i + dir; if (j < 0 || j >= a.length) return a; const c = [...a]; [c[i], c[j]] = [c[j], c[i]]; return c })
   }
-  function moveTo(target: number) {
-    setAdded((a) => { if (dragIndex == null || dragIndex === target) return a; const c = [...a]; const [m] = c.splice(dragIndex, 1); c.splice(target, 0, m); return c })
+  function moveTo(target2: number) {
+    setAdded((a) => { if (dragIndex == null || dragIndex === target2) return a; const c = [...a]; const [m] = c.splice(dragIndex, 1); c.splice(target2, 0, m); return c })
     setDragIndex(null)
   }
 
@@ -102,7 +121,7 @@ export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRo
     { label: '루트 이름', ok: !!title.trim() },
     { label: '설명', ok: !!desc.trim() },
     { label: '샵 2곳 이상', ok: added.length >= 2 },
-    { label: '썸네일', ok: !!stats?.cover },
+    { label: '대표 이미지', ok: !!coverUrl },
   ]
   const donePct = Math.round((checks.filter((c) => c.ok).length / checks.length) * 100)
   const pctColor = donePct >= 75 ? 'var(--green)' : donePct >= 50 ? 'var(--secondary)' : 'var(--red)'
@@ -113,14 +132,17 @@ export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRo
     if (added.length < 2) { setMsg('샵을 2개 이상 담아주세요'); return }
     setSaving(true); setMsg(null)
     const shopInput = added.map((s) => ({ shopId: s.id, lat: s.lat as number, lng: s.lng as number }))
+    const meta = { cover_image_url: coverUrl || null, season: season || null, themes, target_audience: target || null, primary_tag_id: primaryTagId }
     if (editing && editRouteId) {
       const ok = await updateRoute(editRouteId, title.trim(), desc.trim(), difficulty, shopInput)
+      if (ok) await updateRouteMeta(editRouteId, meta)
       setSaving(false); if (ok) onDone(); else setMsg('수정 저장 실패')
     } else {
       const res = await createRoute(user.id, title.trim(), desc.trim(), shopInput)
       if (!res) { setSaving(false); setMsg('루트 생성 실패'); return }
-      const ok = await approveOfficialRoute(res.id, difficulty, user.id)
-      setSaving(false); if (ok) onDone(); else setMsg('공식 등록 실패 (루트는 생성됨)')
+      await approveOfficialRoute(res.id, difficulty, user.id)
+      await updateRouteMeta(res.id, meta)
+      setSaving(false); onDone()
     }
   }
 
@@ -154,7 +176,7 @@ export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRo
           {stats?.shareToken && (
             <a href={`/route/${stats.shareToken}`} target="_blank" rel="noreferrer" style={{ display: 'inline-block', padding: '8px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>🌐 사이트에서 보기</a>
           )}
-          <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 10 }}>조회수·북마크, 추천/계절 노출 설정은 준비 중이에요.</p>
+          <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 10 }}>평점·리뷰, 인기 순위는 사용자 데이터가 쌓이면 표시돼요.</p>
         </div>
       )}
 
@@ -241,6 +263,37 @@ export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRo
       <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="예: 홍대 원피스 굿즈 투어" style={{ ...inp, marginBottom: 10 }} />
       <Label>설명</Label>
       <textarea value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="루트 소개 (선택)" style={{ ...inp, minHeight: 60, marginBottom: 10, resize: 'vertical' }} />
+
+      <Label>대표 이미지</Label>
+      <div style={{ marginBottom: 12 }}>
+        <div style={{ height: 140, borderRadius: 12, overflow: 'hidden', border: '1px solid var(--border)', background: coverUrl ? 'transparent' : 'linear-gradient(135deg, var(--accent), #ff8fb1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 8 }}>
+          {coverUrl ? <img src={coverUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span style={{ color: '#fff', fontWeight: 800 }}>대표 이미지 없음</span>}
+        </div>
+        <div style={{ display: 'flex', gap: 6 }}>
+          <input value={coverUrl} onChange={(e) => setCoverUrl(e.target.value)} placeholder="이미지 URL 또는 업로드" style={{ ...inp, flex: 1 }} />
+          <button onClick={() => fileRef.current?.click()} disabled={uploading} style={{ ...miniBtn, padding: '0 14px' }}>{uploading ? '업로드 중...' : '업로드'}</button>
+          {coverUrl && <button onClick={() => setCoverUrl('')} style={{ ...miniBtn, color: 'var(--red)' }}>제거</button>}
+        </div>
+        <input ref={fileRef} type="file" accept="image/*" onChange={onPickFile} style={{ display: 'none' }} />
+      </div>
+
+      <Label>시즌 추천 (선택)</Label>
+      <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
+        {SEASONS.map((s) => (
+          <button key={s} onClick={() => setSeason(season === s ? '' : s)} style={chip(season === s)}>{s}</button>
+        ))}
+      </div>
+
+      <Label>테마 (여러 개 선택 가능)</Label>
+      <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
+        {THEMES.map((t) => (
+          <button key={t} onClick={() => toggleTheme(t)} style={chip(themes.includes(t))}>{t}</button>
+        ))}
+      </div>
+
+      <Label>추천 대상 (선택)</Label>
+      <input value={target} onChange={(e) => setTarget(e.target.value)} placeholder="예: 입문자, 커플, 사진 좋아하는 사람" style={{ ...inp, marginBottom: 12 }} />
+
       <Label>난이도</Label>
       <div style={{ display: 'flex', gap: 6, marginBottom: 16 }}>
         {DIFF.map((d) => (
@@ -260,6 +313,9 @@ const inp: React.CSSProperties = { width: '100%', padding: '10px 12px', borderRa
 const miniBtn: React.CSSProperties = { padding: '6px 10px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, fontSize: 12, cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0 }
 function modeBtn(active: boolean): React.CSSProperties {
   return { flex: 1, padding: '9px', borderRadius: 10, border: `1px solid ${active ? 'var(--accent)' : 'var(--border)'}`, background: active ? 'var(--accent)' : 'var(--surface)', color: active ? '#fff' : 'var(--text)', fontWeight: 800, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }
+}
+function chip(active: boolean): React.CSSProperties {
+  return { padding: '7px 13px', borderRadius: 9999, border: `1px solid ${active ? 'var(--accent)' : 'var(--border)'}`, background: active ? 'var(--accent)' : 'var(--surface)', color: active ? '#fff' : 'var(--text)', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }
 }
 function Label({ children }: { children: React.ReactNode }) { return <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--muted)', marginBottom: 6 }}>{children}</div> }
 function Stat({ label, v }: { label: string; v: number }) {

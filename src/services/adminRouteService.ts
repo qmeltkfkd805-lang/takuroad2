@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/client'
+﻿import { createClient } from '@/lib/supabase/client'
 
 export async function getOfficialRouteCandidates() {
   const supabase = createClient()
@@ -29,7 +29,7 @@ export async function getOfficialRouteCandidates() {
     })
   )
 
-  // 좋아요 + 완료 인원을 합친 점수로 내림차순 정렬
+  // 醫뗭븘??+ ?꾨즺 ?몄썝???⑹튇 ?먯닔濡??대┝李⑥닚 ?뺣젹
   return withCompletions.sort((a, b) => {
     const scoreA = a.likes + a.completionCount
     const scoreB = b.likes + b.completionCount
@@ -62,6 +62,7 @@ export async function approveOfficialRoute(routeId: string, difficulty: number, 
     .from('routes')
     .update({
       is_official: true,
+      is_shared: true,
       official_difficulty: difficulty,
       approved_by: adminId,
       approved_at: new Date().toISOString(),
@@ -82,3 +83,4 @@ export async function revokeOfficialRoute(routeId: string): Promise<boolean> {
     .eq('id', routeId)
   return !error
 }
+

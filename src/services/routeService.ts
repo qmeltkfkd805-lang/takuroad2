@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/client'
 import { calcDistance } from '@/hooks/useCurrentLocation'
 
-// 두 좌표 간 도보 시간 추정 (평균 4km/h)
+// ??醫뚰몴 媛??꾨낫 ?쒓컙 異붿젙 (?됯퇏 4km/h)
 function estimateWalkMinutes(meters: number): number {
   return Math.max(1, Math.round((meters / 1000) * 15))
 }
@@ -12,7 +12,7 @@ interface RouteShopInput {
   lng: number
 }
 
-// 루트 생성 (샵 순서 + 거리/시간 계산 포함)
+// 猷⑦듃 ?앹꽦 (???쒖꽌 + 嫄곕━/?쒓컙 怨꾩궛 ?ы븿)
 export async function createRoute(
   userId: string,
   title: string,
@@ -21,7 +21,7 @@ export async function createRoute(
 ): Promise<{ id: string; shareToken: string } | null> {
   const supabase = createClient()
 
-  // 거리/시간 계산
+  // 嫄곕━/?쒓컙 怨꾩궛
   let totalDistance = 0
   let totalDuration = 0
   const routeShopsData = shops.map((shop, i) => {
@@ -44,7 +44,7 @@ export async function createRoute(
     }
   })
 
-  // 루트 생성
+  // 猷⑦듃 ?앹꽦
   const { data: route, error } = await supabase
     .from('routes')
     .insert({
@@ -59,7 +59,7 @@ export async function createRoute(
 
   if (error || !route) return null
 
-  // 샵 연결
+  // ???곌껐
   const { error: shopsError } = await supabase
     .from('route_shops')
     .insert(
@@ -71,7 +71,7 @@ export async function createRoute(
   return { id: route.id, shareToken: route.share_token }
 }
 
-// 내 루트 목록
+// ??猷⑦듃 紐⑸줉
 export async function getMyRoutes(userId: string) {
   const supabase = createClient()
   const { data, error } = await supabase
@@ -89,7 +89,7 @@ export async function getMyRoutes(userId: string) {
   return data ?? []
 }
 
-// 루트 상세 (공유 토큰으로 조회 — 로그인 불필요)
+// 猷⑦듃 ?곸꽭 (怨듭쑀 ?좏겙?쇰줈 議고쉶 ??濡쒓렇??遺덊븘??
 export async function getRouteByShareToken(token: string) {
   const supabase = createClient()
   const { data, error } = await supabase
@@ -117,7 +117,7 @@ export async function getRouteByShareToken(token: string) {
   return data
 }
 
-// 루트 삭제
+// 猷⑦듃 ??젣
 export async function deleteRoute(routeId: string, userId: string): Promise<boolean> {
   const supabase = createClient()
   const { error } = await supabase
@@ -128,7 +128,7 @@ export async function deleteRoute(routeId: string, userId: string): Promise<bool
   return !error
 }
 
-// 루트 공유 설정 토글
+// 猷⑦듃 怨듭쑀 ?ㅼ젙 ?좉?
 export async function toggleRouteShare(routeId: string, userId: string, isShared: boolean): Promise<boolean> {
   const supabase = createClient()
   const { error } = await supabase
@@ -139,7 +139,7 @@ export async function toggleRouteShare(routeId: string, userId: string, isShared
   return !error
 }
 
-// 공개된 루트 전체 목록 (좋아요순, 지역/태그 필터 가능)
+// 怨듦컻??猷⑦듃 ?꾩껜 紐⑸줉 (醫뗭븘?붿닚, 吏???쒓렇 ?꾪꽣 媛??
 export async function getPublicRoutes(filters?: { region?: string; tag?: string; search?: string }) {
   const supabase = createClient()
 
@@ -147,7 +147,8 @@ export async function getPublicRoutes(filters?: { region?: string; tag?: string;
     .from('routes')
     .select(`
       id, title, description, likes, is_official, official_difficulty, created_at, share_token,
-      total_distance_m, total_duration_min,
+      total_distance_m, total_duration_min, primary_tag_id, cover_image_url,
+      primary_tag:tags!primary_tag_id ( name ),
       profiles!routes_user_id_fkey ( nickname ),
       route_shops (
         id, sort_order,
@@ -198,7 +199,7 @@ export async function getPublicRoutes(filters?: { region?: string; tag?: string;
   return routes
 }
 
-// 필터용 — 전체 지역 목록
+// ?꾪꽣?????꾩껜 吏??紐⑸줉
 export async function getAllRegions() {
   const supabase = createClient()
   const { data } = await supabase
@@ -211,7 +212,7 @@ export async function getAllRegions() {
   return Array.from(regions).sort()
 }
 
-// 필터용 — 전체 작품(태그) 목록
+// ?꾪꽣?????꾩껜 ?묓뭹(?쒓렇) 紐⑸줉
 export async function getAllSeriesTags() {
   const supabase = createClient()
   const { data } = await supabase
@@ -221,7 +222,7 @@ export async function getAllSeriesTags() {
   return (data ?? []).map((d: any) => d.name)
 }
 
-// 작품 선택용 — id까지 함께. (getAllSeriesTags는 이름만 줘서 제보엔 부족)
+// ?묓뭹 ?좏깮????id源뚯? ?④퍡. (getAllSeriesTags???대쫫留?以섏꽌 ?쒕낫??遺議?
 export async function getAllTagsForSelect(): Promise<{ id: string; name: string; slug: string }[]> {
   const supabase = createClient()
   const { data } = await supabase
@@ -277,3 +278,47 @@ export async function getRouteStats(routeId: string) {
     completions: count ?? 0,
   }
 }
+
+export async function getMyRouteProgress(userId: string) {
+  const supabase = createClient()
+  const { data: prog } = await supabase.from('route_progress').select('route_id, shop_id').eq('user_id', userId)
+  if (!prog || prog.length === 0) return []
+  const routeIds = Array.from(new Set(prog.map((p: any) => p.route_id)))
+  const { data: routes } = await supabase.from('routes').select('id, title, share_token, route_shops(id)').in('id', routeIds)
+  return (routes ?? []).map((r: any) => {
+    const total = r.route_shops?.length ?? 0
+    const visited = prog.filter((p: any) => p.route_id === r.id).length
+    return { id: r.id, title: r.title, shareToken: r.share_token, total, visited, pct: total ? Math.round((visited / total) * 100) : 0 }
+  }).filter((r: any) => r.visited > 0 && r.visited < r.total)
+}
+
+export async function uploadRouteCover(file: File, userId: string, routeKey: string): Promise<string | null> {
+  const supabase = createClient()
+  const ext = file.name.split('.').pop()
+  const path = `routes/${userId}/${routeKey}/${Date.now()}.${ext}`
+  const { error } = await supabase.storage.from('shop-images').upload(path, file)
+  if (error) { console.error('[route cover upload]', error); return null }
+  const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
+  return data.publicUrl
+}
+
+export async function updateRouteMeta(routeId: string, meta: { cover_image_url?: string | null; season?: string | null; themes?: string[]; target_audience?: string | null; primary_tag_id?: string | null }): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase.from('routes').update(meta as any).eq('id', routeId)
+  if (error) { console.error('[route meta]', error); return false }
+  return true
+}
+
+export async function getRouteMeta(routeId: string) {
+  const supabase = createClient()
+  const { data } = await supabase.from('routes').select('cover_image_url, season, themes, target_audience, primary_tag_id').eq('id', routeId).maybeSingle()
+  return {
+    cover: (data as any)?.cover_image_url ?? null,
+    season: (data as any)?.season ?? null,
+    themes: ((data as any)?.themes ?? []) as string[],
+    target: (data as any)?.target_audience ?? null,
+  }
+}
+
+
+
