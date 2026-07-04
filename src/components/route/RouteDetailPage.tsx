@@ -8,6 +8,7 @@ import { getRouteDifficulty } from '@/lib/utils/routeDifficulty'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { toggleRouteSave, getMySavedRouteIds, toggleRouteShare } from '@/services/routeService'
 import { recordRouteStart, hasStartedRoute, getRouteTips, addRouteTip, deleteRouteTip, RouteTip } from '@/services/routeTipService'
+import { getRelatedRoutes, RelatedRoute } from '@/services/routeRelatedService'
 import { useRouter } from 'next/navigation'
 import styles from './RouteDetailPage.module.css'
 
@@ -134,6 +135,15 @@ export default function RouteDetailPage({ route }: Props) {
   const [started, setStarted] = useState(false)
   const [tipInput, setTipInput] = useState('')
   const [tipBusy, setTipBusy] = useState(false)
+  const [related, setRelated] = useState<RelatedRoute[]>([])
+
+  useEffect(() => {
+    const regions = Array.from(new Set(((route.route_shops ?? []) as any[]).map((rs) => rs.shops?.region).filter(Boolean)))
+    let alive = true
+    getRelatedRoutes(route.id, (route as any).primary_tag_id ?? null, regions, 4)
+      .then((r) => { if (alive) setRelated(r) }).catch(() => {})
+    return () => { alive = false }
+  }, [route.id])
 
   useEffect(() => {
     let alive = true
@@ -586,7 +596,22 @@ export default function RouteDetailPage({ route }: Props) {
 
           <div className={styles.sideCard}>
             <h4 className={styles.sideCardTitle}><MaskIcon name="route" size={16} color="var(--accent)" />함께 보면 좋은 루트</h4>
-            <Placeholder icon={<MaskIcon name="route" size={22} color="var(--muted)" />} text="추천 루트" />
+            {related.length === 0 ? (
+              <Placeholder icon={<MaskIcon name="route" size={22} color="var(--muted)" />} text="추천 루트" />
+            ) : (
+              <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 4, scrollSnapType: 'x mandatory' }}>
+                {related.map((r) => (
+                  <Link key={r.id} href={`/route/${r.share_token}`} style={{ flex: '0 0 auto', width: 168, textDecoration: 'none', scrollSnapAlign: 'start' }}>
+                    <div style={{ position: 'relative', width: '100%', height: 108, borderRadius: 14, overflow: 'hidden', background: r.cover_image_url ? `url(${r.cover_image_url}) center/cover` : 'linear-gradient(135deg, var(--accent), #ff9bb6)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 8 }}>
+                      {!r.cover_image_url && <MaskIcon name="route" size={26} color="rgba(255,255,255,0.85)" />}
+                      <span style={{ position: 'absolute', top: 8, left: 8, fontSize: 10, fontWeight: 800, color: '#fff', background: 'rgba(0,0,0,0.55)', padding: '3px 7px', borderRadius: 9999 }}>{r.reason}</span>
+                    </div>
+                    <div style={{ fontSize: 13.5, fontWeight: 800, color: 'var(--text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.title}</div>
+                    <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 3 }}>스팟 {r.shop_count}곳{r.distance_m != null ? ` · ${(r.distance_m / 1000).toFixed(1)}km` : ''}</div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className={styles.sideCard}>
