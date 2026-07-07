@@ -209,10 +209,10 @@ export async function getComments(postId: string, userId?: string | null): Promi
     liked = new Set((ls ?? []).map((l: any) => l.comment_id))
   }
   const map = new Map<string, PostComment>()
-  for (const r of rows) map.set(r.id, {
+  for (const r of rows) { const pf: any = Array.isArray(r.profiles) ? r.profiles[0] : r.profiles; map.set(r.id, {
     id: r.id, content: r.content, createdAt: r.created_at,
     parentId: r.parent_id ?? null, likeCount: r.like_count ?? 0, likedByMe: liked.has(r.id),
-    author: r.profiles ? { id: r.profiles.id, nickname: r.profiles.nickname, avatarUrl: r.profiles.avatar_url ?? null } : null,
+    author: pf ? { id: pf.id, nickname: pf.nickname, avatarUrl: pf.avatar_url ?? null } : null,
     replies: [],
   })
   const roots: PostComment[] = []
