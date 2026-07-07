@@ -557,8 +557,8 @@ function PollModal({ onClose, onConfirm }: { onClose: () => void; onConfirm: (po
   const [options, setOptions] = useState(['', '', ''])
   const [multi, setMulti] = useState(false)
   const [anon, setAnon] = useState(true)
-  const [viewMode, setViewMode] = useState('after')
-  const [sortMode, setSortMode] = useState('number')
+  const [viewMode, setViewMode] = useState<'after' | 'always' | 'ended'>('after')
+  const [sortMode, setSortMode] = useState<'number' | 'votes'>('number')
   const [endMode, setEndMode] = useState<'date' | 'count' | 'none'>('none')
   const [endValue, setEndValue] = useState('')
 
