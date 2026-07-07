@@ -18,7 +18,7 @@ type Scope = 'all' | 'popular' | 'mine'
 type View = 'list' | 'grid'
 type Sel = Board | 'all'
 type Tag = { id: string; name: string; slug: string }
-const PAGE_SIZE = 12
+const PAGE_SIZE = 20
 
 function timeAgo(iso: string): string {
   const d = (Date.now() - new Date(iso).getTime()) / 1000
