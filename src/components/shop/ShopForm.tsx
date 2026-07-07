@@ -65,7 +65,7 @@ export default function ShopForm({ mode, shop }: Props) {
         floor_info: shop.floor_info ?? '',
         start_date: shop.start_date ?? '',
         end_date: shop.end_date ?? '',
-        event_info: shop.event_info ?? '',
+        event_info: shop.event_info ?? '', sns_links: shop.sns_links ?? [], phone: shop.phone ?? '',
       })
     }
   }, [mode, shop])
