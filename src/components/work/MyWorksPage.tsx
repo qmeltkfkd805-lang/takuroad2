@@ -1,238 +1,182 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { getMyWorkRelationships } from '@/services/workRelationshipService'
-import { WorkRelationship } from '@/types/work-relationship'
-import { AFFINITY_LABEL, STATE_LABEL } from '@/lib/constants/workRelationship'
-import { ROUTES } from '@/lib/constants/routes'
+import { getAllTags } from '@/services/shopService'
+import { getAffinitiesForTags } from '@/services/workRelationshipService'
+import { WorkCard, WorkCardData } from '@/components/tds/WorkCard'
 
-// ============================================================
-// "내 작품" 화면 (B안)
-//   1) ❤️ 최애      — 가장 먼저, 별도 고정 영역
-//   2) ⭐ 좋아하는 작품 — 그 아래 그리드
-//   3) 함께한 작품   — affinity 없이 state/activity만 있는 작품 (합집합 보존)
-// WorkRelationship 하나만 소비. 세 테이블의 존재를 화면은 모른다.
-// ============================================================
+// 작품 홈 — 등록된 작품을 카드로 쭉.
+//   ❤️ 최애 작품을 제일 위에, 그 아래로 나머지 등록 작품 전체를 이어서.
 
-// 커버 이미지가 없으므로 작품명 기반으로 안정적인 색을 고른다.
-// (ipType 색이 코드에서 읽히게 되면 이 자리를 ipType 색으로 교체)
-const PALETTE = [
-  { bg: '#EEEDFE', fg: '#3C3489' },
-  { bg: '#E1F5EE', fg: '#0F6E56' },
-  { bg: '#FAECE7', fg: '#993C1D' },
-  { bg: '#E6F1FB', fg: '#185FA5' },
-  { bg: '#FBEAF0', fg: '#993556' },
-  { bg: '#FAEEDA', fg: '#854F0B' },
-  { bg: '#EAF3DE', fg: '#3B6D11' },
-  { bg: '#FCEBEB', fg: '#A32D2D' },
-]
-function workColor(seed: string) {
-  let h = 0
-  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0
-  return PALETTE[h % PALETTE.length]
+type Work = { id: string; name: string; slug: string; cover_url?: string | null; banner_image?: string | null; english_name?: string | null; ip_type?: string | null; release_year?: number | null; genres?: any; description?: string | null }
+
+function completeness(w: Work): number {
+  let n = 0
+  if (w.cover_url) n++
+  if (w.banner_image) n++
+  if (w.english_name) n++
+  if (w.ip_type) n++
+  if (w.release_year) n++
+  if (w.description) n++
+  if (w.genres && (Array.isArray(w.genres) ? w.genres.length > 0 : true)) n++
+  return n
 }
 
 export default function MyWorksPage() {
   const { user } = useAuth()
-  const [rels, setRels] = useState<WorkRelationship[]>([])
+  const router = useRouter()
+  const [works, setWorks] = useState<Work[]>([])
+  const [affMap, setAffMap] = useState<Record<string, 'favorite' | 'interest'>>({})
   const [loading, setLoading] = useState(true)
+  const favRowRef = useRef<HTMLDivElement>(null)
+  const [favOverflow, setFavOverflow] = useState(false)
+  const scrollFav = (dir: number) => favRowRef.current?.scrollBy({ left: dir * 480, behavior: 'smooth' })
 
   useEffect(() => {
-    if (!user) { setLoading(false); return }
-
-    // 데이터를 다시 불러오는 함수
-    const load = () => {
-      getMyWorkRelationships(user.id)
-        .then(setRels)
-        .finally(() => setLoading(false))
-    }
-
-    load() // 처음 진입 시 1회
-
-    // 화면이 다시 보이게 될 때마다 다시 불러오기 (뒤로가기·탭 복귀 등)
-    const onVisible = () => {
-      if (document.visibilityState === 'visible') load()
-    }
-    document.addEventListener('visibilitychange', onVisible)
-    window.addEventListener('focus', load)
-
-    return () => {
-      document.removeEventListener('visibilitychange', onVisible)
-      window.removeEventListener('focus', load)
-    }
+    setLoading(true)
+    getAllTags()
+      .then(async (all: any[]) => {
+        setWorks([...(all as Work[])].sort((a, b) => {
+          const d = completeness(b) - completeness(a)
+          return d !== 0 ? d : a.name.localeCompare(b.name, 'ko')
+        }))
+        if (user && all.length) {
+          const m = await getAffinitiesForTags(user.id, all.map(w => w.id))
+          setAffMap(m as Record<string, 'favorite' | 'interest'>)
+        } else {
+          setAffMap({})
+        }
+      })
+      .catch(() => setWorks([]))
+      .finally(() => setLoading(false))
   }, [user])
 
-  const favorites = rels.filter(r => r.affinity === 'favorite')
-  const likes     = rels.filter(r => r.affinity === 'interest')
-  const others    = rels.filter(r => !r.affinity)
+  const favoritesCount = works.filter(w => affMap[w.id] === 'favorite').length
+  useEffect(() => {
+    const el = favRowRef.current
+    if (!el) return
+    const check = () => setFavOverflow(el.scrollWidth > el.clientWidth + 4)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [favoritesCount])
+
+  const toCard = (w: Work): WorkCardData => ({
+    id: w.id,
+    name: w.name,
+    coverUrl: w.cover_url ?? null,
+    affinity: affMap[w.id] ?? null,
+  })
+
+  const favorites = works.filter(w => affMap[w.id] === 'favorite')
+  const others = works.filter(w => affMap[w.id] !== 'favorite')
+
+  const go = (wc: WorkCardData) => {
+    const w = works.find(x => x.id === wc.id)
+    if (w) router.push(`/work/${encodeURIComponent(w.slug || w.id)}`)
+  }
 
   return (
-    <div style={{ minHeight: '100dvh', background: 'var(--bg)' }}>
-      {/* 헤더 */}
-      <div style={{
-        position: 'sticky', top: 0, zIndex: 10,
-        background: 'var(--surface)', borderBottom: '1px solid var(--border)',
-        padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      }}>
-        <span style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text)' }}>
-          내 작품 {rels.length > 0 && (
-            <span style={{ color: 'var(--accent)' }}>{rels.length}</span>
-          )}
-        </span>
-        <Link href={ROUTES.home} style={{ fontSize: '18px', color: 'var(--muted)' }}>🔍</Link>
+    <div style={{ padding: '28px 32px 72px' }}>
+      <style>{`.taku-noscroll::-webkit-scrollbar{display:none}.taku-noscroll{scrollbar-width:none;-ms-overflow-style:none}`}</style>
+      <div style={{ marginBottom: 24 }}>
+        <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 6 }}>작품</h1>
+        <p style={{ fontSize: 14.5, color: 'var(--muted)' }}>최애 작품을 제일 위에서 바로 만나보세요.</p>
       </div>
 
       {loading ? (
-        <div style={{ padding: '40px', textAlign: 'center', color: 'var(--muted)', fontSize: '14px' }}>
-          불러오는 중...
-        </div>
-      ) : rels.length === 0 ? (
-        <EmptyState />
+        <p style={{ color: 'var(--muted)', fontSize: 14 }}>불러오는 중…</p>
+      ) : works.length === 0 ? (
+        <EmptyBox
+          title="아직 등록된 작품이 없어요"
+          desc="첫 작품을 등록해보세요."
+          action={<Link href="/work/new" style={primaryBtn}>작품 등록하기</Link>}
+        />
       ) : (
-        <div style={{ padding: '16px' }}>
-          {/* 1) ❤️ 최애 — 가장 먼저, 특별한 공간 */}
-          <Section title={`${AFFINITY_LABEL.favorite.icon} ${AFFINITY_LABEL.favorite.label}`}>
-            {favorites.length === 0 ? (
-              <EmptyHint text="아직 최애가 없어요. 작품을 ❤️ 최애로 등록해보세요." />
-            ) : (
-              <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '4px' }}>
-                {favorites.map(r => <WorkCard key={r.work.id} rel={r} size="large" />)}
+        <>
+          {favorites.length > 0 && (
+            <section style={{ marginBottom: 36 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 16 }}>
+                <h2 style={{ fontSize: 18, fontWeight: 900, display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#FF6B6B" stroke="#FF6B6B" strokeWidth="2" strokeLinejoin="round"><path d="M12 20C5 15 3.5 10.5 5.5 7.8 7.1 5.9 10.2 6.1 12 8.4 13.8 6.1 16.9 5.9 18.5 7.8 20.5 10.5 19 15 12 20Z" /></svg>
+                  최애 작품
+                </h2>
+                {favOverflow && (
+                  <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+                    <button onClick={() => scrollFav(-1)} aria-label="이전" style={arrowBtn()}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+                    </button>
+                    <button onClick={() => scrollFav(1)} aria-label="다음" style={arrowBtn()}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+                    </button>
+                  </div>
+                )}
               </div>
-            )}
+              <div ref={favRowRef} className="taku-noscroll" style={{ display: 'flex', gap: 20, overflowX: 'auto', scrollBehavior: 'smooth' }}>
+                {favorites.map(w => (
+                  <div key={w.id} style={{ flex: '0 0 240px' }}>
+                    <WorkCard work={toCard(w)} onClick={go} />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          <Section title="등록 작품">
+            <Grid>
+              {others.map(w => (
+                <WorkCard key={w.id} work={toCard(w)} onClick={go} />
+              ))}
+            </Grid>
           </Section>
-
-          {/* 2) ⭐ 좋아하는 작품 — 그리드 */}
-          {likes.length > 0 && (
-            <Section title={`${AFFINITY_LABEL.interest.icon} ${AFFINITY_LABEL.interest.label}`}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-                {likes.map(r => <WorkCard key={r.work.id} rel={r} size="grid" />)}
-              </div>
-            </Section>
-          )}
-
-          {/* 3) 함께한 작품 — affinity 없이 방문/상태만 있는 작품 (합집합 보존) */}
-          {others.length > 0 && (
-            <Section title="함께한 작품">
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-                {others.map(r => <WorkCard key={r.work.id} rel={r} size="grid" />)}
-              </div>
-            </Section>
-          )}
-        </div>
+        </>
       )}
     </div>
   )
 }
 
-// ── 섹션 래퍼 ──────────────────────────────────────────────
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, icon, children }: { title: string; icon?: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <h2 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text)', margin: '0 0 12px' }}>
-        {title}
+    <section style={{ marginBottom: 36 }}>
+      <h2 style={{ fontSize: 18, fontWeight: 900, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+        {icon}{title}
       </h2>
+      {children}
+    </section>
+  )
+}
+
+function Grid({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 20 }}>
       {children}
     </div>
   )
 }
 
-function EmptyHint({ text }: { text: string }) {
+function EmptyBox({ title, desc, action }: { title: string; desc: string; action: React.ReactNode }) {
   return (
-    <div style={{
-      padding: '16px', borderRadius: 'var(--r-sm)', background: 'var(--surface2)',
-      fontSize: '13px', color: 'var(--muted)', textAlign: 'center',
-    }}>
-      {text}
+    <div style={{ border: '1px dashed var(--border)', borderRadius: 18, padding: '48px 24px', textAlign: 'center', background: 'var(--surface)' }}>
+      <div style={{ fontSize: 17, fontWeight: 800, marginBottom: 8 }}>{title}</div>
+      <p style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 20 }}>{desc}</p>
+      {action}
     </div>
   )
 }
 
-// ── 작품 카드 ──────────────────────────────────────────────
-// 관계가 한눈에: 색 블록(작품) + 이름 + 상태 뱃지(보조) + 방문 기록(보조)
-function WorkCard({ rel, size }: { rel: WorkRelationship; size: 'large' | 'grid' }) {
-  const { work, state, activity } = rel
-  const color = workColor(work.id)
-  const isLarge = size === 'large'
-  const block = isLarge ? 96 : undefined
-
-  return (
-    <Link
-      href={`/work/${work.slug}`}
-      style={{
-        flexShrink: 0,
-        width: isLarge ? '110px' : 'auto',
-        textDecoration: 'none',
-      }}
-    >
-      {/* 커버 자리 — 이니셜 + 안정적인 색 */}
-      <div style={{
-        position: 'relative',
-        width: isLarge ? '110px' : '100%',
-        height: block, aspectRatio: isLarge ? undefined : '1',
-        borderRadius: 'var(--r-sm)', background: color.bg,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: isLarge ? '30px' : '22px', fontWeight: 700, color: color.fg,
-        overflow: 'hidden',
-      }}>
-        {work.name.slice(0, 2)}
-
-        {/* 상태 뱃지 — 보조 정보, 좌상단에 작게 */}
-        {state && (
-          <span style={{
-            position: 'absolute', top: '5px', left: '5px',
-            background: 'rgba(255,255,255,.9)', borderRadius: '6px',
-            padding: '1px 6px', fontSize: '11px', fontWeight: 700, color: 'var(--text)',
-          }}>
-            {STATE_LABEL[state].icon} {STATE_LABEL[state].label}
-          </span>
-        )}
-      </div>
-
-      {/* 작품명 */}
-      <div style={{
-        marginTop: '6px', fontSize: '12px', fontWeight: 700, color: 'var(--text)',
-        whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-      }}>
-        {work.name}
-      </div>
-
-      {/* 방문 기록 — 보조 정보 */}
-      {activity && activity.visitCount > 0 && (
-        <div style={{ fontSize: '11px', color: 'var(--muted)' }}>
-          방문 {activity.visitCount}회
-        </div>
-      )}
-    </Link>
-  )
+function arrowBtn(): React.CSSProperties {
+  return {
+    flexShrink: 0, width: 34, height: 34, borderRadius: 9999, border: '1px solid var(--border)',
+    background: 'var(--surface)', boxShadow: '0 2px 8px rgba(0,0,0,.1)', cursor: 'pointer',
+    display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text)',
+  }
 }
 
-// ── 빈 상태 (신규 사용자) ──────────────────────────────────
-function EmptyState() {
-  return (
-    <div style={{ padding: '40px 28px', textAlign: 'center' }}>
-      <div style={{
-        width: '72px', height: '72px', margin: '0 auto 16px', borderRadius: '50%',
-        background: 'var(--accent-l)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: '34px',
-      }}>
-        ❤️
-      </div>
-      <p style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text)', margin: '0 0 8px' }}>
-        좋아하는 작품을 모아보세요
-      </p>
-      <p style={{ fontSize: '13px', color: 'var(--muted)', margin: '0 0 20px', lineHeight: 1.6 }}>
-        작품을 ❤️ 최애로 등록하거나 굿즈샵에 체크인하면<br />
-        여기에 나만의 작품 컬렉션이 쌓여요
-      </p>
-      <Link href={ROUTES.home} style={{
-        display: 'inline-block', padding: '11px 24px', borderRadius: 'var(--r-sm)',
-        background: 'var(--accent)', color: '#fff', fontSize: '14px', fontWeight: 700,
-        textDecoration: 'none',
-      }}>
-        작품 둘러보기
-      </Link>
-    </div>
-  )
+const primaryBtn: React.CSSProperties = {
+  display: 'inline-block', padding: '12px 22px', borderRadius: 12,
+  background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14.5,
+  textDecoration: 'none',
 }

@@ -96,7 +96,7 @@ export default function ShopHighlightManager({ shopId, shopSlug }: Props) {
                 background: 'var(--red)', color: '#fff', border: 'none',
                 cursor: 'pointer', fontSize: '11px',
               }}
-            >✕</button>
+            ><Svg size={13}><path d="M18 6 6 18M6 6l12 12" /></Svg></button>
           </div>
         ) : (
           <button
@@ -107,7 +107,7 @@ export default function ShopHighlightManager({ shopId, shopSlug }: Props) {
               fontSize: '12px', color: 'var(--muted)', cursor: 'pointer', fontFamily: 'inherit',
             }}
           >
-            📷 사진 추가
+            <Svg size={14}><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" /><circle cx="12" cy="13" r="4" /></Svg> 사진 추가
           </button>
         )}
         <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageSelect} style={{ display: 'none' }} />
@@ -142,4 +142,9 @@ export default function ShopHighlightManager({ shopId, shopSlug }: Props) {
       ))}
     </div>
   )
+}
+
+
+function Svg({ size = 14, color = 'currentColor', fill = 'none', children }: { size?: number; color?: string; fill?: string; children: React.ReactNode }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: '-2px', flexShrink: 0 }} aria-hidden>{children}</svg>
 }

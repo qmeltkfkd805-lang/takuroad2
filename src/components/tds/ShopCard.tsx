@@ -63,7 +63,7 @@ export function ShopCard({ shop, meta = 'region', badge, onClick, onToggleSave, 
           style={{ position: 'absolute', top: 9, right: 9, width: 30, height: 30, borderRadius: 9999, background: 'rgba(255,255,255,.92)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}
           aria-label="저장"
         >
-          <Icon name="heart" size={16} />
+          <svg width={16} height={16} viewBox="0 0 24 24" fill={(shop as any).isSaved ? 'var(--accent)' : 'none'} stroke={(shop as any).isSaved ? 'var(--accent)' : '#9B968D'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" /></svg>
         </button>
       </div>
 

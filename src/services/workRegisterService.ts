@@ -3,6 +3,7 @@ export { uploadWorkImage } from '@/services/workAdminService'
 
 export interface NewWork {
   name: string
+  slug?: string
   english_name?: string
   ip_type: string
   original_type?: string
@@ -22,13 +23,19 @@ export interface NewWork {
 
 function slugify(name: string, eng?: string): string {
   const base = eng && eng.trim() ? eng : name
-  const s = base.toLowerCase().trim().replace(/[^a-z0-9가-힣]+/g, '-').replace(/^-+|-+$/g, '')
+  const s = base.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
   return s ? `${s}-${Date.now().toString(36).slice(-4)}` : `work-${Date.now().toString(36)}`
+}
+
+// 사용자가 직접 입력한 slug 정리 (한글/특수문자 제거, 소문자)
+function cleanSlug(s: string): string {
+  return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
 }
 
 export async function createWork(userId: string, w: NewWork): Promise<{ slug: string } | null> {
   const supabase = createClient()
-  const slug = slugify(w.name, w.english_name)
+  const custom = w.slug?.trim() ? cleanSlug(w.slug) : ''
+  const slug = custom || slugify(w.name, w.english_name)
   const { error } = await supabase.from('tags').insert({
     name: w.name.trim(),
     english_name: w.english_name?.trim() || null,
@@ -74,8 +81,10 @@ export async function getWorkForEdit(id: string) {
 
 export async function updateWork(id: string, w: NewWork): Promise<boolean> {
   const supabase = createClient()
+  const custom = w.slug?.trim() ? cleanSlug(w.slug) : ''
   const { error } = await supabase.from('tags').update({
     name: w.name.trim(),
+    slug: custom || slugify(w.name, w.english_name),
     english_name: w.english_name?.trim() || null,
     ip_type: w.ip_type || null,
     description: w.description?.trim() || null,

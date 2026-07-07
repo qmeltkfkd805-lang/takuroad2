@@ -17,6 +17,8 @@ import ShopHighlightManager from './ShopHighlightManager'
 import CompletenessIndicator from './CompletenessIndicator'
 import { searchPlace, PlaceSearchResult } from '@/lib/utils/geocode'
 import ShopMainImageUploader from './ShopMainImageUploader'
+import ShopFormWizard from './ShopFormWizard'
+import { useIsDesktop } from '@/hooks/useIsDesktop'
 
 interface Props {
   mode: 'create' | 'edit'
@@ -34,6 +36,7 @@ export default function ShopForm({ mode, shop }: Props) {
   const router = useRouter()
   const { user } = useAuth()
   const [form, setForm] = useState<ShopFormData>(EMPTY_FORM)
+  const isDesktop = useIsDesktop()
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [placeResults, setPlaceResults] = useState<PlaceSearchResult[]>([])
@@ -133,6 +136,8 @@ export default function ShopForm({ mode, shop }: Props) {
   }
 
   const enrichmentShopId = mode === 'edit' ? shop?.id : createdShopId
+
+  if (isDesktop) return <ShopFormWizard mode={mode} shop={shop} />
 
   return (
     <div style={{ maxWidth: '600px', margin: '0 auto', padding: '0 0 80px' }}>

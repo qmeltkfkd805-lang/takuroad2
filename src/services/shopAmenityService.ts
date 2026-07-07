@@ -2,13 +2,14 @@ import { createClient } from '@/lib/supabase/client'
 
 export interface ShopAmenity {
   id: string
-  category: 'service' | 'facility' | 'payment' | 'sales_style'
+  category: 'service' | 'facility' | 'payment' | 'sales_style' | 'highlight'
   name: string
   slug: string
   icon: string | null
 }
 
 export const CATEGORY_LABEL: Record<string, string> = {
+  highlight: '샵 특징',
   service: '서비스',
   facility: '편의시설',
   payment: '결제수단',

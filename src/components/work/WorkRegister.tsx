@@ -33,6 +33,7 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
   const [step, setStep] = useState(1)
   const [name, setName] = useState('')
   const [eng, setEng] = useState('')
+  const [slug, setSlug] = useState('')
   const [aliases, setAliases] = useState<string[]>([])
   const [aliasInput, setAliasInput] = useState('')
   const [ipType, setIpType] = useState('')
@@ -140,7 +141,7 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
     getWorkForEdit(editId).then((w: any) => {
       if (!alive) return
       if (w) {
-        setName(w.name ?? ''); setEng(w.english_name ?? ''); setAliases(w.aliases ?? [])
+        setName(w.name ?? ''); setEng(w.english_name ?? ''); setSlug(w.slug ?? ''); setAliases(w.aliases ?? [])
         setIpType(w.ip_type ?? ''); setOriginal(w.original_type ?? ''); setStatus(w.status ?? '')
         setCover(w.cover_url ?? ''); setBanner(w.banner_image ?? ''); setAccent(w.accent_color ?? '#FF5692')
         setDesc(w.description ?? ''); setGenres(w.genres ?? []); setKeywords(w.keywords ?? [])
@@ -157,7 +158,7 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
     if (iss) { setMsg(iss); return }
     setSaving(true); setMsg(null)
     const payload = {
-      name, english_name: eng, aliases, ip_type: ipType, original_type: original, status,
+      name, slug, english_name: eng, aliases, ip_type: ipType, original_type: original, status,
       cover_url: cover, banner_image: banner, accent_color: accent, description: desc,
       genres, keywords, homepage_url: homepage, twitter_url: twitter, youtube_url: youtube, official_url: official,
     }
@@ -210,6 +211,8 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
               <input value={name} onChange={(e) => setName(e.target.value)} maxLength={50} placeholder="예: 원피스, 귀멸의 칼날, 스파이 패밀리 등" style={inp} />
               <Label>작품명 (영문)</Label>
               <input value={eng} onChange={(e) => setEng(e.target.value)} maxLength={100} placeholder="예: One Piece, Demon Slayer (선택)" style={inp} />
+              <Label>URL 주소 (slug)</Label>
+              <input value={slug} onChange={(e) => setSlug(e.target.value)} maxLength={80} placeholder="영문·숫자만 (예: one-piece). 비우면 자동 생성" style={inp} />
               <Label>작품 줄임말 (선택)</Label>
               <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
                 <input value={aliasInput} onChange={(e) => setAliasInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addAlias() } }} placeholder="줄임말 입력 후 Enter (예: 가히리, 귀칼)" style={{ ...inp, flex: 1, marginBottom: 0 }} />

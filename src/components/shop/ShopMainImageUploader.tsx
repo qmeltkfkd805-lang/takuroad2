@@ -59,7 +59,7 @@ export default function ShopMainImageUploader({ shopSlug, shopId, currentImageUr
 
   return (
     <div>
-      <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '6px' }}>🖼️ 대표 사진</h3>
+      <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}><Svg size={15} color="var(--accent)"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-5-5L5 21" /></Svg>대표 사진</h3>
       <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '10px' }}>
         샵 목록과 상세 페이지 맨 위에 보이는 사진이에요
       </p>
@@ -78,7 +78,7 @@ export default function ShopMainImageUploader({ shopSlug, shopId, currentImageUr
             {savedImageUrl ? (
               <img src={savedImageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             ) : (
-              <span style={{ fontSize: '13px', color: 'var(--muted)' }}>📷 클릭해서 사진 추가</span>
+              <span style={{ fontSize: '13px', color: 'var(--muted)' }}><Svg size={14}><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" /><circle cx="12" cy="13" r="4" /></Svg> 클릭해서 사진 추가</span>
             )}
           </div>
 
@@ -174,4 +174,9 @@ export default function ShopMainImageUploader({ shopSlug, shopId, currentImageUr
       />
     </div>
   )
+}
+
+
+function Svg({ size = 14, color = 'currentColor', fill = 'none', children }: { size?: number; color?: string; fill?: string; children: React.ReactNode }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: '-2px', flexShrink: 0 }} aria-hidden>{children}</svg>
 }

@@ -19,6 +19,8 @@ import ShopHighlights from './ShopHighlights'
 import ShopTagBadges from './ShopTagBadges'
 import ShopGallery from './ShopGallery'
 import ShopHeader from './ShopHeader'
+import ShopDetailPageDesktop from './ShopDetailPageDesktop'
+import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { Button } from '@/components/tds/Button'
 
 interface Props {
@@ -29,12 +31,15 @@ export default function ShopDetailPage({ shop }: Props) {
   const router = useRouter()
   const { user } = useAuth()
   const { isSaved, toggleSave } = useSaved()
+  const isDesktop = useIsDesktop()
 
   const catInfo = CATEGORY_NAME_MAP[shop.cat]
   const color = catInfo?.color ?? '#e8006f'
   const todayStatus = getTodayStatus(shop.hours)
   const popupStatus = getPopupStatus(shop.start_date, shop.end_date)
   const hoursFormatted = formatBusinessHours(shop.hours)
+
+  if (isDesktop) return <ShopDetailPageDesktop shop={shop} />
 
   return (
     <div style={{ maxWidth: '680px', margin: '0 auto', background: 'var(--surface)', minHeight: '100dvh' }}>

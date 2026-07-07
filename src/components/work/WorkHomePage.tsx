@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import WorkAffinityButton from './WorkAffinityButton'
 import WorkStateButton from './WorkStateButton'
+import FanGallery from '@/components/work/FanGallery'
 import WorkFeedBanner from './WorkFeedBanner'
 import { SectionHeader, EventCard, ShopCard, RouteCard, Icon } from '@/components/tds'
 import HomeFeedCard from '@/components/home/HomeFeedCard'
@@ -143,6 +144,11 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
       {/* 본문 + 우측 광고칸 */}
       <div className={styles.layout}>
         <div className={styles.main}>
+          {/* 팬 갤러리 */}
+          <section id="fanart" className={styles.section}>
+            <FanGallery tagId={tag.id} workName={tag.name} />
+          </section>
+
           {/* 1) Feed */}
           <section id="feed" className={styles.section}>
             <SectionHeader title="새 소식 (Feed)" icon={<Icon name="colorfire" size={24} />} plainIcon />

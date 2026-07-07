@@ -8,6 +8,9 @@ import { useRouter } from 'next/navigation'
 
 interface Props {
   shopId: string
+  label?: string
+  variant?: 'default' | 'dashed'
+  accentColor?: string
 }
 
 const REASONS = [
@@ -22,7 +25,7 @@ const REASONS = [
   '기타',
 ]
 
-export default function ReportIssueButton({ shopId }: Props) {
+export default function ReportIssueButton({ shopId, label = '정보가 달라요', variant = 'default', accentColor = 'var(--accent)' }: Props) {
   const router = useRouter()
   const { user } = useAuth()
   const [showModal, setShowModal] = useState(false)
@@ -63,16 +66,33 @@ export default function ReportIssueButton({ shopId }: Props) {
 
   return (
     <>
-      <button
-        onClick={handleOpen}
-        style={{
-          fontSize: '12px', color: 'var(--muted)', background: 'none',
-          border: '1px solid var(--border)', borderRadius: '8px',
-          padding: '6px 12px', cursor: 'pointer', fontFamily: 'inherit',
-        }}
-      >
-        ⚠️ 정보가 달라요
-      </button>
+      {variant === 'dashed' ? (
+        <button
+          onClick={handleOpen}
+          style={{
+            width: '100%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+            padding: '12px', borderRadius: '12px', border: `1.5px dashed ${accentColor}`,
+            background: 'transparent', color: accentColor, fontWeight: 800, fontSize: '14px',
+            cursor: 'pointer', fontFamily: 'inherit',
+          }}
+        >
+          {label}
+        </button>
+      ) : (
+        <button
+          onClick={handleOpen}
+          style={{
+            fontSize: '12px', color: 'var(--muted)', background: 'none',
+            border: '1px solid var(--border)', borderRadius: '8px',
+            padding: '6px 12px', cursor: 'pointer', fontFamily: 'inherit',
+          }}
+        >
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" /><path d="M12 9v4M12 17h.01" /></svg>
+            {label}
+          </span>
+        </button>
+      )}
 
       {showModal && (
         <div

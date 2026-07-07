@@ -15,6 +15,26 @@ export interface NewSubmission {
 
 export async function createEventSubmission(s: NewSubmission, userId: string): Promise<boolean> {
   const supabase = createClient()
+
+  // 검수 없이 바로 등록: shop_id가 있으면 events를 즉시 생성
+  let eventId: string | null = null
+  if (s.shopId) {
+    const { data: ev, error: evErr } = await supabase
+      .from('events')
+      .insert({
+        tag_id: s.tagId,
+        type: s.type,
+        shop_id: s.shopId,
+        title: s.title,
+        start_date: s.startDate,
+        end_date: s.endDate,
+      } as any)
+      .select('id')
+      .single()
+    if (evErr) console.error('[이벤트 즉시 생성 실패 - 제보만 저장됨]', evErr.message, evErr.code)
+    else eventId = ev?.id ?? null
+  }
+
   const { error } = await supabase.from('event_submissions').insert({
     tag_id: s.tagId,
     type: s.type,
@@ -27,6 +47,9 @@ export async function createEventSubmission(s: NewSubmission, userId: string): P
     source_url: s.sourceUrl,
     description: s.description,
     submitted_by: userId,
+    status: eventId ? 'approved' : 'pending',
+    event_id: eventId,
+    reviewed_at: eventId ? new Date().toISOString() : null,
   } as any)
 
   if (error) { console.error('[제보 저장 실패]', error); return false }

@@ -34,6 +34,8 @@ export function toShop(raw: any): Shop {
     parking:        raw.parking,
     parking_note:   raw.parking_note,
     shop_link:      raw.shop_link,
+    sns_links:      raw.sns_links ?? [],
+    phone:          raw.phone ?? null,
     floor_info:     raw.floor_info,
     start_date:     raw.start_date,
     end_date:       raw.end_date,
@@ -61,7 +63,7 @@ export async function getShops(): Promise<Shop[]> {
       id, slug, name, description,
       addr, country, region, city, district,
       lat, lng, google_place_id,
-      hours, parking, parking_note, shop_link,
+      hours, parking, parking_note, shop_link, sns_links, phone,
       start_date, end_date, event_info,
       rating_avg, rating_count, visit_count, bookmark_count,
       is_verified, is_claimed, status,
@@ -90,7 +92,7 @@ export async function getShopBySlug(slug: string): Promise<Shop | null> {
       id, slug, name, description,
       addr, country, region, city, district,
       lat, lng, google_place_id,
-      hours, parking, parking_note, shop_link,
+      hours, parking, parking_note, shop_link, sns_links, phone,
       start_date, end_date, event_info,
       rating_avg, rating_count, visit_count, bookmark_count,
       is_verified, is_claimed, status,
@@ -186,6 +188,8 @@ export async function createShop(
       parking:      data.parking,
       parking_note: data.parking_note || null,
       shop_link:    data.shop_link || null,
+      sns_links:    data.sns_links ?? [],
+      phone:        data.phone || null,
       floor_info:   data.floor_info || null,
       start_date:   data.start_date || null,
       end_date:     data.end_date || null,
@@ -225,11 +229,14 @@ export async function updateShop(
   // 변경 전 값 가져오기 (로그용)
   const { data: before } = await supabase
     .from('shops')
-    .select('name, description, addr, lat, lng, hours, parking, parking_note, shop_link, start_date, end_date, event_info')
+    .select('name, description, addr, lat, lng, hours, parking, parking_note, shop_link, sns_links, phone, start_date, end_date, event_info')
     .eq('id', shopId)
     .maybeSingle()
 
-  const { error } = await supabase
+  const { data: prof } = await supabase.from('profiles').select('role').eq('id', userId).maybeSingle()
+  const isAdmin = (prof as any)?.role === 'admin'
+
+  let updateQuery = supabase
     .from('shops')
     .update({
       name:         data.name,
@@ -241,15 +248,18 @@ export async function updateShop(
       parking:      data.parking,
       parking_note: data.parking_note || null,
       shop_link:    data.shop_link || null,
+      sns_links:    data.sns_links ?? [],
+      phone:        data.phone || null,
       floor_info:   data.floor_info || null,
       start_date:   data.start_date || null,
       end_date:     data.end_date || null,
       event_info:   data.event_info || null,
       info_last_confirmed_at: new Date().toISOString(),
-      info_confirmed_by_type: 'owner',
+      info_confirmed_by_type: isAdmin ? 'admin' : 'owner',
     } as any)
     .eq('id', shopId)
-    .eq('owner_id', userId)
+  if (!isAdmin) updateQuery = updateQuery.eq('owner_id', userId)
+  const { error } = await updateQuery
 
   if (error) return false
 
@@ -307,7 +317,7 @@ export async function getShopsByTag(tagSlug: string): Promise<Shop[]> {
         id, slug, name, description,
         addr, country, region, city, district,
         lat, lng, google_place_id,
-        hours, parking, parking_note, shop_link,
+        hours, parking, parking_note, shop_link, sns_links, phone,
         start_date, end_date, event_info,
         rating_avg, rating_count, visit_count, bookmark_count,
         is_verified, is_claimed, status,
@@ -340,7 +350,7 @@ export async function getAllTags() {
   const supabase = createClient()
   const { data } = await supabase
     .from('tags')
-    .select('id, name, slug, created_at')
+    .select('id, name, slug, cover_url, banner_image, english_name, ip_type, release_year, genres, description, created_at')
     .order('name')
   return data ?? []
 }
@@ -402,7 +412,7 @@ export async function getPendingShops(): Promise<Shop[]> {
       id, slug, name, description,
       addr, country, region, city, district,
       lat, lng, google_place_id,
-      hours, parking, parking_note, shop_link,
+      hours, parking, parking_note, shop_link, sns_links, phone,
       start_date, end_date, event_info,
       rating_avg, rating_count, visit_count, bookmark_count,
       is_verified, is_claimed, status,
@@ -500,7 +510,7 @@ export async function getMyShops(userId: string): Promise<Shop[]> {
       id, slug, name, description,
       addr, country, region, city, district,
       lat, lng, google_place_id,
-      hours, parking, parking_note, shop_link,
+      hours, parking, parking_note, shop_link, sns_links, phone,
       start_date, end_date, event_info,
       rating_avg, rating_count, visit_count, bookmark_count,
       is_verified, is_claimed, status,
@@ -526,7 +536,7 @@ export async function getSavedShops(userId: string): Promise<Shop[]> {
         id, slug, name, description,
         addr, country, region, city, district,
         lat, lng, google_place_id,
-        hours, parking, parking_note, shop_link,
+        hours, parking, parking_note, shop_link, sns_links, phone,
         start_date, end_date, event_info,
         rating_avg, rating_count, visit_count, bookmark_count,
         is_verified, is_claimed, status,
@@ -583,6 +593,17 @@ export async function updateNickname(userId: string, nickname: string): Promise<
 }
 
 // 계정 탈퇴 (soft delete 방식 — profiles는 유지, 관련 데이터 정리)
+export async function deleteShop(shopId: string, userId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { data: prof } = await supabase.from('profiles').select('role').eq('id', userId).maybeSingle()
+  const isAdmin = (prof as any)?.role === 'admin'
+  let q = supabase.from('shops').delete().eq('id', shopId)
+  if (!isAdmin) q = q.eq('owner_id', userId)
+  const { error } = await q
+  if (error) { console.error('[샵 삭제 실패]', error.message, error.code); return false }
+  return true
+}
+
 export async function deleteAccount(userId: string): Promise<boolean> {
   const supabase = createClient()
 

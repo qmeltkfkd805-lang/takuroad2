@@ -117,7 +117,7 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
 
       {/* 취급 분야 (작품 무관, 칩 형태 간단 선택) */}
       <div>
-        <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '6px' }}>📦 취급 분야</h3>
+        <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}><Svg size={15} color="var(--accent)"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" /><circle cx="7.5" cy="7.5" r=".8" fill="var(--accent)" /></Svg>취급 분야</h3>
         <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '10px' }}>
           이 가게에서 주로 취급하는 분야를 선택해주세요 (복수 선택 가능)
         </p>
@@ -137,9 +137,9 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
                   fontSize: '13px', fontWeight: 700, fontFamily: 'inherit',
                 }}
               >
-                <span>{gt.icon}</span>
+                <Svg size={13}><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" /><circle cx="7.5" cy="7.5" r=".8" fill="currentColor" /></Svg>
                 <span>{gt.name}</span>
-                {selected && <span style={{ fontSize: '12px' }}>✓</span>}
+                {selected && <Svg size={13} color="var(--accent)"><path d="m5 12 5 5L20 6" /></Svg>}
               </button>
             )
           })}
@@ -161,7 +161,7 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
 
       {/* 1단계: 취급 작품 (가벼운 입력) */}
       <div>
-        <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '6px' }}>🎮 취급 작품</h3>
+        <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}><Svg size={15} color="var(--accent)"><rect x="2" y="3" width="20" height="18" rx="2" /><path d="M7 3v18M17 3v18M2 8h5M2 16h5M17 8h5M17 16h5" /></Svg>취급 작품</h3>
         <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '10px' }}>
           이 샵에서 다루는 작품을 선택해주세요
         </p>
@@ -179,7 +179,7 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
                   color: 'var(--accent)', fontSize: '12px', fontWeight: 700,
                 }}
               >
-                {tag.name} ✕
+                {tag.name} <Svg size={12}><path d="M18 6 6 18M6 6l12 12" /></Svg>
               </span>
             ))}
           </div>
@@ -245,7 +245,7 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
 
       {/* 2단계: 작품별 굿즈 상세 (아코디언, 평소엔 접힌 상태) */}
       <div>
-        <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '6px' }}>🛍️ 작품별 취급 굿즈</h3>
+        <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}><Svg size={15} color="var(--accent)"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></Svg>작품별 취급 굿즈</h3>
         <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '14px' }}>
           선택사항이에요. 작품을 눌러서 펼친 다음, 굿즈 칸을 눌러 재고 상태를 선택해주세요.
         </p>
@@ -293,7 +293,7 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
                         </span>
                       )}
                     </span>
-                    <span style={{ fontSize: '12px', color: 'var(--muted)' }}>{isOpen ? '▲' : '▼'}</span>
+                    <span style={{ display: 'inline-flex', color: 'var(--muted)' }}>{isOpen ? <Svg size={13}><path d="m18 15-6-6-6 6" /></Svg> : <Svg size={13}><path d="m6 9 6 6 6-6" /></Svg>}</span>
                   </button>
 
                   {isOpen && (
@@ -367,4 +367,9 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
       </div>
     </div>
   )
+}
+
+
+function Svg({ size = 14, color = 'currentColor', fill = 'none', children }: { size?: number; color?: string; fill?: string; children: React.ReactNode }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: '-2px', flexShrink: 0 }} aria-hidden>{children}</svg>
 }

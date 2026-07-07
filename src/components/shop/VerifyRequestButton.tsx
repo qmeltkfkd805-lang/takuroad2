@@ -97,14 +97,18 @@ export default function VerifyRequestButton({ shopId, shopName, accentColor }: P
   return (
     <div style={{ marginBottom: '20px' }}>
       {!showForm ? (
-        <Button
-          variant="dashed"
-          fullWidth
+        <button
           onClick={() => setShowForm(true)}
-          leftIcon={<img src="/icons/shop.png" alt="" width={18} height={18} style={{ filter: 'brightness(0) saturate(100%) invert(45%) sepia(67%) saturate(1450%) hue-rotate(330deg) brightness(95%) contrast(98%)' }} />}
+          style={{
+            width: '100%', padding: '12px', borderRadius: '12px',
+            border: '1.5px dashed var(--border)', background: 'transparent', cursor: 'pointer',
+            fontFamily: 'inherit', fontSize: '13.5px', fontWeight: 700, color: accentColor,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+          }}
         >
+          <span aria-hidden style={{ width: 16, height: 16, display: 'inline-block', flexShrink: 0, backgroundColor: accentColor, WebkitMaskImage: 'url(/icons/shop.png)', maskImage: 'url(/icons/shop.png)', WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat', WebkitMaskSize: 'contain', maskSize: 'contain', WebkitMaskPosition: 'center', maskPosition: 'center' }} />
           이 샵의 사장님이신가요? 인증 신청하기
-        </Button>
+        </button>
       ) : (
         <div style={{
           padding: '16px', borderRadius: '12px',

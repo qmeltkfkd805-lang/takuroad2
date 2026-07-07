@@ -2,6 +2,10 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { Shop } from '@/types/shop'
+import { useSaved } from '@/hooks/useSaved'
+import { useAuth } from '@/components/layout/AuthProvider'
+import { useRouter } from 'next/navigation'
+import { ROUTES } from '@/lib/constants/routes'
 import { ShopCard } from '@/components/tds'
 import ShopRow from '@/components/shop/ShopCard'
 import styles from './MapBottomSheet.module.css'
@@ -16,6 +20,9 @@ interface MapBottomSheetProps {
 }
 
 export default function MapBottomSheet({ shops, onSelectShop, onStateChange }: MapBottomSheetProps) {
+  const { isSaved, toggleSave } = useSaved()
+  const { user } = useAuth()
+  const router = useRouter()
   const [state, setState] = useState<SheetState>('peek')
   useEffect(() => { onStateChange?.(state) }, [state, onStateChange])
   const startY = useRef<number | null>(null)
@@ -128,7 +135,7 @@ export default function MapBottomSheet({ shops, onSelectShop, onStateChange }: M
         >
           {shops.map(shop => (
             <div key={shop.id} className={styles.cardWrap}>
-              <ShopCard shop={shop} meta="distance" onClick={onSelectShop} />
+              <ShopCard shop={{ ...shop, isSaved: isSaved(shop.id) } as Shop} meta="distance" onClick={onSelectShop} onToggleSave={(sh) => { if (!user) { router.push(ROUTES.login); return } toggleSave(sh.id) }} />
             </div>
           ))}
         </div>

@@ -7,7 +7,7 @@ interface Props {
   shopId: string
 }
 
-const CATEGORY_ORDER = ['service', 'facility', 'payment', 'sales_style']
+const CATEGORY_ORDER = ['service', 'facility', 'payment']
 
 // 편의시설 name → 아이콘 파일명. 없으면 기존 이모지 사용.
 const AMENITY_ICON: Record<string, string> = {
@@ -30,7 +30,7 @@ const AMENITY_ICON: Record<string, string> = {
   '할인': 'fire',
 }
 
-function iconFor(name: string): string | null {
+export function iconFor(name: string): string | null {
   // 정확히 일치하거나, name이 키를 포함하면 매칭 (예: "새상품 위주" → "새상품")
   if (AMENITY_ICON[name]) return AMENITY_ICON[name]
   for (const key in AMENITY_ICON) {
@@ -74,7 +74,7 @@ export default function ShopAmenityBadges({ shopId }: Props) {
                     }}>
                       {iconName
                         ? <img src={`/icons/${iconName}.png`} alt="" width={16} height={16} style={{ display: 'block' }} />
-                        : (item.icon && <span>{item.icon}</span>)}
+                        : null}
                       {item.name}
                     </span>
                   )

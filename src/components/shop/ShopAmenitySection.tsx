@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import { getAllAmenities, getShopAmenityIds, updateShopAmenities, CATEGORY_LABEL } from '@/services/shopAmenityService'
+import { iconFor } from './ShopAmenityBadges'
 
 interface Props {
   shopId: string
 }
 
-const CATEGORY_ORDER = ['service', 'facility', 'payment', 'sales_style']
+const CATEGORY_ORDER = ['highlight', 'service', 'facility', 'payment']
 
 export default function ShopAmenitySection({ shopId }: Props) {
   const [grouped, setGrouped] = useState<Record<string, any[]>>({})
@@ -59,6 +60,7 @@ export default function ShopAmenitySection({ shopId }: Props) {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
               {items.map(item => {
                 const selected = selectedIds.includes(item.id)
+                const iconName = iconFor(item.name)
                 return (
                   <button
                     key={item.id}
@@ -72,7 +74,7 @@ export default function ShopAmenitySection({ shopId }: Props) {
                       fontSize: '13px', fontWeight: 700, fontFamily: 'inherit',
                     }}
                   >
-                    {item.icon && <span>{item.icon}</span>}
+                    {iconName && <img src={`/icons/${iconName}.png`} alt="" width={15} height={15} style={{ display: 'block' }} />}
                     <span>{item.name}</span>
                   </button>
                 )

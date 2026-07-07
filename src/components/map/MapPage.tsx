@@ -1,13 +1,13 @@
 ﻿'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { useShops } from '@/hooks/useShops'
 import { useCurrentLocation } from '@/hooks/useCurrentLocation'
 import { useAuth } from '@/components/layout/AuthProvider'
+import { useSaved } from '@/hooks/useSaved'
 import KakaoMap, { KakaoMapRef } from './KakaoMap'
 import CategoryFilter from './CategoryFilter'
-import ShopDetail from '@/components/shop/ShopDetail'
 import BottomSheet from '@/components/bottom-sheet/BottomSheet'
 import { Shop } from '@/types/shop'
 import Link from 'next/link'
@@ -15,10 +15,13 @@ import { ROUTES } from '@/lib/constants/routes'
 import styles from './MapPage.module.css'
 import fab from './MapFab.module.css'
 import MapBottomSheet from './MapBottomSheet'
+import ShopFloatingCard from './ShopFloatingCard'
 
 export default function MapPage() {
   const searchParams = useSearchParams()
   const { user } = useAuth()
+  const router = useRouter()
+  const { isSaved, toggleSave } = useSaved()
   const {
     filtered, mapShops, loading,
     selectedCat, setSelectedCat,
@@ -113,7 +116,7 @@ export default function MapPage() {
 
         <div style={{
           position: 'absolute', right: '16px', zIndex: 130,
-          bottom: sheetState === 'peek' ? '380px' : '24px',
+          bottom: selectedShop ? '110px' : sheetState === 'peek' ? '380px' : '24px',
           opacity: sheetState === 'expanded' ? 0 : 1,
           pointerEvents: sheetState === 'expanded' ? 'none' : 'auto',
           transition: 'bottom .28s cubic-bezier(.32,.72,0,1), opacity .2s ease',
@@ -168,17 +171,14 @@ export default function MapPage() {
             PC에서는 IP 기반으로 위치를 찾기 때문에<br />실제 위치와 다를 수 있어요
           </div>
         )}
-        <MapBottomSheet shops={filtered} onSelectShop={handleSelectShop} onStateChange={setSheetState} />
+        {!selectedShop && (
+          <MapBottomSheet shops={filtered} onSelectShop={handleSelectShop} onStateChange={setSheetState} />
+        )}
 
-        {/* 샵 상세 바텀시트 */}
-        <BottomSheet
-          isOpen={!!selectedShop}
-          onClose={() => setSelectedShop(null)}
-        >
-          {selectedShop && (
-            <ShopDetail shop={selectedShop} onClose={() => setSelectedShop(null)} />
-          )}
-        </BottomSheet>
+        {/* 샵 상세 — 지도 위 작은 플로팅 카드 */}
+        {selectedShop && (
+          <ShopFloatingCard shop={{ ...selectedShop, isSaved: isSaved(selectedShop.id) } as Shop} onClose={() => setSelectedShop(null)} onToggleSave={(sh) => { if (!user) { router.push(ROUTES.login); return } toggleSave(sh.id) }} />
+        )}
 
         {/* 같은 위치 샵 목록 바텀시트 */}
         <BottomSheet
@@ -233,4 +233,3 @@ export default function MapPage() {
     </div>
   )
 }
-

@@ -29,6 +29,8 @@ export interface Shop {
   parking: boolean | null
   parking_note: string | null
   shop_link: string | null
+  sns_links: string[]
+  phone: string | null
   floor_info: string | null
 
   start_date: string | null
@@ -67,6 +69,8 @@ export interface ShopFormData {
   parking: boolean | null
   parking_note: string
   shop_link: string
+  sns_links: string[]
+  phone: string
   floor_info: string
   start_date: string
   end_date: string

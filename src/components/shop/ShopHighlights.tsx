@@ -31,7 +31,7 @@ export default function ShopHighlights({ shopId }: Props) {
 
   return (
     <div style={{ marginBottom: '24px' }}>
-      <h2 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '12px' }}>🌟 이 샵 가면 꼭 보세요</h2>
+      <h2 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}><Svg size={17} color="var(--accent)" fill="var(--accent)"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9z" /></Svg>이 샵 가면 꼭 보세요</h2>
       <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '4px' }}>
         {highlights.map((h, i) => (
           <div
@@ -46,7 +46,7 @@ export default function ShopHighlights({ shopId }: Props) {
             }}>
               {h.image_url ? (
                 <img src={h.image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              ) : '⭐'}
+              ) : <Svg size={22} color="var(--accent)" fill="var(--accent)"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9z" /></Svg>}
             </div>
             <p style={{ fontSize: '12px', fontWeight: 700, textAlign: 'center', lineHeight: 1.3 }}>{h.title}</p>
           </div>
@@ -112,7 +112,7 @@ export default function ShopHighlights({ shopId }: Props) {
               color: '#fff', fontSize: '20px', cursor: 'pointer',
               width: '36px', height: '36px', borderRadius: '50%',
             }}
-          >✕</button>
+          ><Svg size={13} color="#fff"><path d="M18 6 6 18M6 6l12 12" /></Svg></button>
           {highlights.length > 1 && (
             <div style={{
               position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
@@ -136,4 +136,9 @@ export default function ShopHighlights({ shopId }: Props) {
       )}
     </div>
   )
+}
+
+
+function Svg({ size = 14, color = 'currentColor', fill = 'none', children }: { size?: number; color?: string; fill?: string; children: React.ReactNode }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: '-2px', flexShrink: 0 }} aria-hidden>{children}</svg>
 }
