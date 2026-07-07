@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { CSSProperties } from 'react'
 import { Shop } from '@/types/shop'
 import { formatDistance } from '@/hooks/useCurrentLocation'
@@ -49,7 +49,7 @@ export function ShopCard({ shop, meta = 'region', badge, onClick, onToggleSave, 
         ...style,
       }}
     >
-      <div style={{ position: 'relative', height: 120, background: '#FBF6EE', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ position: 'relative', height: 120, background: '#F7F7F8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {cover ? (
           <img src={cover} alt={shop.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         ) : (

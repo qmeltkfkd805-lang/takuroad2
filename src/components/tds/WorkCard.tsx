@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { WorkIcon } from './WorkIcon'
 import { CSSProperties } from 'react'
 import { Icon } from './Icon'
@@ -46,7 +46,7 @@ export function WorkCard({ work, onClick, style }: WorkCardProps) {
         ...style,
       }}
     >
-      <div style={{ position: 'relative', height: 180, background: '#FBF6EE', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ position: 'relative', height: 180, background: '#F7F7F8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {cover ? (
           <img src={cover} alt={work.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         ) : (

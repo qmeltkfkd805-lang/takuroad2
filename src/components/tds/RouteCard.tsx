@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { CSSProperties } from 'react'
 import { getRouteDifficulty, difficultyDotColor } from '@/lib/utils/routeDifficulty'
 
@@ -47,7 +47,7 @@ export function RouteCard({ route, onStart, onClick, style }: RouteCardProps) {
       onClick={() => onClick?.(route)}
       style={{
         position: 'relative',
-        background: complete ? 'linear-gradient(135deg,#FFF9EC,#FFFDF6)' : 'var(--surface)',
+        background: complete ? 'linear-gradient(135deg,#FFF9EC,#FFFFFF)' : 'var(--surface)',
         border: complete ? '1.5px solid #F5D88A' : '1px solid var(--border)',
         borderRadius: 18,
         overflow: 'hidden',
@@ -56,7 +56,7 @@ export function RouteCard({ route, onStart, onClick, style }: RouteCardProps) {
         ...style,
       }}
     >
-      <div style={{ position: 'relative', height: 88, background: complete ? 'linear-gradient(135deg,#FFF4D6,#FFFDF6)' : 'linear-gradient(135deg,#FFF3EE,#FFFDF6)', display: 'flex', alignItems: 'center', padding: '0 22px' }}>
+      <div style={{ position: 'relative', height: 88, background: complete ? 'linear-gradient(135deg,#FFF4D6,#FFFFFF)' : 'linear-gradient(135deg,#FFF3EE,#FFFFFF)', display: 'flex', alignItems: 'center', padding: '0 22px' }}>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
           {complete ? (
             <div style={{ position: 'absolute', left: 7, right: 7, top: '50%', height: 0, borderTop: `3px solid ${GOLD}`, transform: 'translateY(-50%)' }} />

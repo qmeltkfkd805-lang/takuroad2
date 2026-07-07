@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { CSSProperties } from 'react'
 import { Icon } from './Icon'
 import { EventStatusBadge } from './EventStatusBadge'
@@ -50,7 +50,7 @@ export function EventCard({ event, now, onClick, style }: EventCardProps) {
         ...style,
       }}
     >
-      <div style={{ position: 'relative', height: 128, background: cover ? '#FBF6EE' : t.grad, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ position: 'relative', height: 128, background: cover ? '#F7F7F8' : t.grad, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {cover ? (
           <img src={cover} alt={event.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         ) : (

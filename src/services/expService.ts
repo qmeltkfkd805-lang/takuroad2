@@ -3,10 +3,24 @@
 export interface LevelInfo {
   level: number
   title: string
+  icon: string
   totalExp: number
   nextLevelExp: number | null
   currentLevelExp: number
   nextLevelThreshold: number | null
+}
+
+// 레벨 티어별 칭호 + 아이콘 (10레벨 단위)
+const LEVEL_TIERS: { min: number; title: string }[] = [
+  { min: 100, title: '십타쿠' }, { min: 90, title: '구타쿠' }, { min: 80, title: '팔타쿠' },
+  { min: 70, title: '칠타쿠' }, { min: 60, title: '육타쿠' }, { min: 50, title: '오타쿠' },
+  { min: 40, title: '사타쿠' }, { min: 30, title: '삼타쿠' }, { min: 20, title: '이타쿠' },
+  { min: 10, title: '일타쿠' },
+]
+export function levelTier(level: number): { title: string; icon: string } {
+  const t = LEVEL_TIERS.find(x => level >= x.min)
+  if (!t) return { title: '입문 타쿠', icon: '/icons/level/10lv.png' }
+  return { title: t.title, icon: `/icons/level/${t.min}lv.png` }
 }
 
 // EXP 지급 (모든 EXP 발생은 이 함수를 통해서만)
@@ -90,7 +104,8 @@ export async function getMyLevelInfo(userId: string): Promise<LevelInfo> {
 
   return {
     level,
-    title: currentTier?.title ?? '애니 입문자',
+    title: levelTier(level).title,
+    icon: levelTier(level).icon,
     totalExp,
     nextLevelExp: nextTier ? nextTier.min_exp - totalExp : null,
     currentLevelExp: currentTier?.min_exp ?? 0,

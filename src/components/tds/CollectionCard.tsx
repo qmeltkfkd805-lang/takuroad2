@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { CSSProperties } from 'react'
 import { Icon } from './Icon'
 
@@ -40,7 +40,7 @@ export function CollectionCard({ collection, onClick, style }: CollectionCardPro
       onClick={() => onClick?.(collection)}
       style={{
         position: 'relative',
-        background: complete ? 'linear-gradient(135deg,#FFF9EC,#FFFDF6)' : 'var(--surface)',
+        background: complete ? 'linear-gradient(135deg,#FFF9EC,#FFFFFF)' : 'var(--surface)',
         border: complete ? '1.5px solid #F5D88A' : '1px solid var(--border)',
         borderRadius: 18,
         padding: '16px 17px',

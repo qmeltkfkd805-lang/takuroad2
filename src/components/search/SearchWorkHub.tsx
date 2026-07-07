@@ -8,6 +8,7 @@ import type { GlobalSearchResult } from '@/services/globalSearchService'
 import { Shop } from '@/types/shop'
 import { Icon } from '@/components/tds/Icon'
 import { WorkIcon } from '@/components/tds/WorkIcon'
+import WorkCommunityPreview from '@/components/community/WorkCommunityPreview'
 
 const AVAILABILITY_LABEL: Record<string, string> = {
   unknown: '확인 안 됨', not_sold: '판매 안 함', sold_out: '품절', few: '소량', normal: '보통', many: '많음',
@@ -144,7 +145,7 @@ export default function SearchWorkHub({ tag, products }: Props) {
           )}
 
           <SecHead id="hub-community" icon="news" title="커뮤니티" />
-          <Empty text="커뮤니티는 곧 열려요" />
+          <WorkCommunityPreview tagId={tag.id} workName={tag.name} />
         </>
       )}
     </div>

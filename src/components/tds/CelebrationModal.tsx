@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { CSSProperties, useEffect, useState } from 'react'
 import { Taku, TakuPose } from './Taku'
 
@@ -49,7 +49,7 @@ export function CelebrationModal({
   if (!open) return null
 
   const cardBg: CSSProperties = gold
-    ? { background: 'linear-gradient(135deg,#FFF9EC,#FFFDF6)', border: '1.5px solid #F5D88A' }
+    ? { background: 'linear-gradient(135deg,#FFF9EC,#FFFFFF)', border: '1.5px solid #F5D88A' }
     : { background: 'var(--surface)', border: '1px solid var(--border)' }
 
   const handleMake = async () => {

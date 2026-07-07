@@ -14,6 +14,7 @@ import { ROUTES } from '@/lib/constants/routes'
 import OfficialRouteTab from './OfficialRouteTab'
 import SeasonalEventTab from './SeasonalEventTab'
 import ReportedShopsTab from './ReportedShopsTab'
+import PostReportsTab from './PostReportsTab'
 import AdminDashboardPage from './AdminDashboardPage'
 import WorkAdminTab from './WorkAdminTab'
 import BannerAdminTab from './BannerAdminTab'
@@ -21,7 +22,7 @@ import MemberAdminTab from './MemberAdminTab'
 import ShopAdminTab from './ShopAdminTab'
 import styles from './admin.module.css'
 
-type Tab = 'dashboard' | 'shops' | 'shopmanage' | 'works' | 'banners' | 'members' | 'verify' | 'routes' | 'events' | 'reported'
+type Tab = 'dashboard' | 'shops' | 'shopmanage' | 'works' | 'banners' | 'members' | 'verify' | 'routes' | 'events' | 'reported' | 'postreports'
 
 export default function AdminPage() {
   const router = useRouter()
@@ -118,6 +119,9 @@ export default function AdminPage() {
           </TabButton>
           <TabButton active={tab === 'reported'} onClick={() => setTab('reported')}>
             ⚠️ 신고된 샵
+          </TabButton>
+          <TabButton active={tab === 'postreports'} onClick={() => setTab('postreports')}>
+            🎨 게시글 신고
           </TabButton>
           <TabButton active={tab === 'routes'} onClick={() => setTab('routes')}>
             추천 루트
@@ -246,6 +250,7 @@ export default function AdminPage() {
       {tab === 'banners' && <BannerAdminTab />}
       {tab === 'members' && <MemberAdminTab />}
       {tab === 'reported' && <ReportedShopsTab />}
+      {tab === 'postreports' && <PostReportsTab />}
       {tab === 'routes' && <OfficialRouteTab />}
       {tab === 'events' && <SeasonalEventTab />}
       </div>

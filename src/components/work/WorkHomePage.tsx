@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import WorkAffinityButton from './WorkAffinityButton'
 import WorkStateButton from './WorkStateButton'
-import FanGallery from '@/components/work/FanGallery'
+import WorkCommunityTabs from '@/components/community/WorkCommunityTabs'
+import WorkCommunityPreview from '@/components/community/WorkCommunityPreview'
 import WorkFeedBanner from './WorkFeedBanner'
 import { SectionHeader, EventCard, ShopCard, RouteCard, Icon } from '@/components/tds'
 import HomeFeedCard from '@/components/home/HomeFeedCard'
@@ -48,6 +49,7 @@ const TABS = [
   { id: 'goods', label: '굿즈' },
   { id: 'shops', label: '샵' },
   { id: 'routes', label: '루트' },
+  { id: 'fanart', label: '창작' },
   { id: 'community', label: '커뮤니티' },
 ]
 
@@ -144,11 +146,6 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
       {/* 본문 + 우측 광고칸 */}
       <div className={styles.layout}>
         <div className={styles.main}>
-          {/* 팬 갤러리 */}
-          <section id="fanart" className={styles.section}>
-            <FanGallery tagId={tag.id} workName={tag.name} />
-          </section>
-
           {/* 1) Feed */}
           <section id="feed" className={styles.section}>
             <SectionHeader title="새 소식 (Feed)" icon={<Icon name="colorfire" size={24} />} plainIcon />
@@ -229,13 +226,19 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
             ) : <Empty text="아직 추천 루트가 없어요" />}
           </section>
 
+          {/* 창작 (팬아트/팬창작/굿즈자랑) */}
+          <section id="fanart" className={styles.section}>
+            <SectionHeader title="창작" icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E8006F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="13.5" cy="6.8" r="1.25" fill="#E8006F" stroke="none" /><circle cx="17" cy="10.5" r="1.25" fill="#E8006F" stroke="none" /><circle cx="8" cy="7.5" r="1.25" fill="#E8006F" stroke="none" /><circle cx="6.6" cy="12" r="1.25" fill="#E8006F" stroke="none" /><path d="M12 3a9 9 0 0 0 0 18c1 0 1.8-.8 1.8-1.8 0-.5-.2-.9-.5-1.2-.3-.4-.5-.8-.5-1.2 0-1 .8-1.8 1.8-1.8H16a5 5 0 0 0 5-5c0-4.4-4-8-9-8z" /></svg>} plainIcon />
+            <WorkCommunityTabs tagId={tag.id} workName={tag.name} />
+          </section>
+
           {/* 6) 커뮤니티 */}
           <section id="community" className={styles.section}>
             <SectionHeader title="커뮤니티" icon={<span style={{ width: 22, height: 22, display: "inline-block", backgroundColor: "#3B9BE8", WebkitMaskImage: "url(/icons/news.png)", maskImage: "url(/icons/news.png)", WebkitMaskRepeat: "no-repeat", maskRepeat: "no-repeat", WebkitMaskSize: "contain", maskSize: "contain", WebkitMaskPosition: "center", maskPosition: "center" }} />} plainIcon />
             <div className={styles.typeChips}>
               {['자유', '질문', '후기', '교환', '공동구매', '동행', '굿즈자랑'].map(t => (<span key={t} className={styles.typeChip}>#{t}</span>))}
             </div>
-            {communityPosts.length > 0 ? <div className={styles.list} /> : <Empty strong="커뮤니티가 곧 열려요" text="이 작품 팬들과 후기·교환·동행을 나눠보세요" />}
+            <WorkCommunityPreview tagId={tag.id} workName={tag.name} />
           </section>
         </div>
 
@@ -262,6 +265,7 @@ function TabIcon({ id }: { id: string }) {
   if (id === 'goods') return <svg {...p}><path d="M4.5 8h15l-1.2 11.5a1.5 1.5 0 0 1-1.5 1.3H7.2a1.5 1.5 0 0 1-1.5-1.3z" /><path d="M8.5 8a3.5 3.5 0 0 1 7 0" /></svg>
   if (id === 'shops') return <svg {...p}><path d="M4 9.5l1.6-5h12.8L20 9.5" /><path d="M5.5 9.5V20h13V9.5" /><path d="M10 20v-5.5h4V20" /><path d="M4 9.5a2.4 2.4 0 0 0 4.7 0 2.4 2.4 0 0 0 4.6 0 2.4 2.4 0 0 0 4.7 0" /></svg>
   if (id === 'routes') return <svg {...p}><path d="M12 21c-4.6-5.6-6.8-9.6-6.8-12.8a6.8 6.8 0 0 1 13.6 0c0 3.2-2.2 7.2-6.8 12.8z" /><circle cx="12" cy="8.4" r="2.5" /></svg>
+  if (id === 'fanart') return <svg {...p}><circle cx="13.5" cy="6.8" r="1.2" fill="currentColor" stroke="none" /><circle cx="17" cy="10.5" r="1.2" fill="currentColor" stroke="none" /><circle cx="8" cy="7.5" r="1.2" fill="currentColor" stroke="none" /><circle cx="6.6" cy="12" r="1.2" fill="currentColor" stroke="none" /><path d="M12 3a9 9 0 0 0 0 18c1 0 1.8-.8 1.8-1.8 0-.5-.2-.9-.5-1.2-.3-.4-.5-.8-.5-1.2 0-1 .8-1.8 1.8-1.8H16a5 5 0 0 0 5-5c0-4.4-4-8-9-8z" /></svg>
   return <svg {...p}><path d="M4 5h16a1.5 1.5 0 0 1 1.5 1.5v9A1.5 1.5 0 0 1 20 17h-8l-4.5 3.5V17H4a1.5 1.5 0 0 1-1.5-1.5v-9A1.5 1.5 0 0 1 4 5z" /><circle cx="8.5" cy="11" r="1.05" fill="currentColor" stroke="none" /><circle cx="12" cy="11" r="1.05" fill="currentColor" stroke="none" /><circle cx="15.5" cy="11" r="1.05" fill="currentColor" stroke="none" /></svg>
 }
 

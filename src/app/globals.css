@@ -1,4 +1,4 @@
-﻿@font-face {
+@font-face {
   font-family: 'Gaegu';
   src: url('/fonts/Gaegu-Bold.ttf') format('truetype');
   font-weight: 700;
@@ -8,10 +8,10 @@
 @import "tailwindcss";
 
 :root {
-  --bg:        #FFFDF6;
+  --bg:        #FFFFFF;
   --surface:   #FFFFFF;
-  --surface2:  #FBF6EE;
-  --border:    #ECEBE1;
+  --surface2:  #F7F7F8;
+  --border:    #EAEAED;
   --text:      #20202D;
   --muted:     #7A7A7A;
   --accent:    #FF5692;
