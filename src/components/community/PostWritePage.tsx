@@ -612,14 +612,14 @@ function PollModal({ onClose, onConfirm }: { onClose: () => void; onConfirm: (po
         </label>
 
         <Row label="투표 현황 보기">
-          <select value={viewMode} onChange={e => { const v = e.target.value; setViewMode(v); if (v === 'ended' && endMode === 'none') setEndMode('date') }} style={pollSelect}>
+          <select value={viewMode} onChange={e => { const v = e.target.value as 'after' | 'always' | 'ended'; setViewMode(v); if (v === 'ended' && endMode === 'none') setEndMode('date') }} style={pollSelect}>
             <option value="after">투표 참여 후 보기</option>
             <option value="always">언제나 보기</option>
             <option value="ended">투표 종료 후 보기</option>
           </select>
         </Row>
         <Row label="투표 항목 정렬">
-          <select value={sortMode} onChange={e => setSortMode(e.target.value)} style={pollSelect}>
+          <select value={sortMode} onChange={e => setSortMode(e.target.value as 'number' | 'votes')} style={pollSelect}>
             <option value="number">항목 번호 순</option>
             <option value="votes">최다 득표 순</option>
           </select>
