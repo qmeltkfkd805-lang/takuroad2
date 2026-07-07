@@ -215,6 +215,7 @@ export async function getComments(postId: string, userId?: string | null): Promi
     author: pf ? { id: pf.id, nickname: pf.nickname, avatarUrl: pf.avatar_url ?? null } : null,
     replies: [],
   })
+  }
   const roots: PostComment[] = []
   for (const r of rows) {
     const c = map.get(r.id)!
