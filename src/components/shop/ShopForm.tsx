@@ -29,7 +29,7 @@ const EMPTY_FORM: ShopFormData = {
   name: '', slug: '', description: '', addr: '',
   lat: null, lng: null, cats: [],
   hours: null, parking: null, parking_note: '',
-  shop_link: '', floor_info: '', start_date: '', end_date: '', event_info: '',
+  shop_link: '', floor_info: '', start_date: '', end_date: '', event_info: '', sns_links: [], phone: '',
 }
 
 export default function ShopForm({ mode, shop }: Props) {
