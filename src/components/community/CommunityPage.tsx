@@ -81,7 +81,7 @@ export default function CommunityPage() {
 
   useEffect(() => {
     getPopularPosts(5).then(setPopular).catch(() => {})
-    getTrendingTags(12).then(setTags).catch(() => {})
+    getTrendingTags(10).then(setTags).catch(() => {})
     getCommunityStats().then(setStats).catch(() => {})
     getAllTagsForSelect().then((t) => setAllTags(t as Tag[])).catch(() => {})
     getWorkSearchCounts().then(setSearchCounts).catch(() => {})
@@ -269,7 +269,7 @@ export default function CommunityPage() {
         <aside className="taku-comm-side" style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
           <SideCard title="인기 게시글">
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {popular.map((p, i) => (
+              {popular.slice(0, 5).map((p, i) => (
                 <div key={p.id} onClick={() => openPost(p)} style={{ display: 'flex', gap: 10, cursor: 'pointer', alignItems: 'center' }}>
                   <span style={{ width: 22, textAlign: 'center', fontWeight: 900, fontSize: 14, color: i < 3 ? 'var(--accent)' : 'var(--muted)', flexShrink: 0 }}>{i + 1}</span>
                   <div style={{ flex: 1, minWidth: 0 }}>

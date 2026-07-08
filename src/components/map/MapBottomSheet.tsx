@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useRef, useEffect } from 'react'
 import { Shop } from '@/types/shop'
@@ -108,12 +108,7 @@ export default function MapBottomSheet({ shops, onSelectShop, onStateChange }: M
           <div className={styles.title}>
             주변 샵 <strong>{shops.length}</strong>개
           </div>
-          <button
-            className={styles.listBtn}
-            onClick={() => setState(expanded ? 'peek' : 'expanded')}
-          >
-            {expanded ? '접기' : '목록 보기'}
-          </button>
+          <div className={styles.headBtns}><button className={styles.routeBtn} onClick={() => router.push(ROUTES.routes)}>루트 보기</button><button className={styles.listBtn} onClick={() => setState(expanded ? 'peek' : 'expanded')}>{expanded ? '접기' : '목록 보기'}</button></div>
         </div>
       </div>
 

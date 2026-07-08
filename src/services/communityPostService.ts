@@ -408,7 +408,7 @@ export async function getCommunityStats(): Promise<CommunityStats> {
 }
 
 // ── 실시간 인기 태그 (최근 글에서 많이 태그된 작품) ──
-export async function getTrendingTags(limit = 12): Promise<TrendingTag[]> {
+export async function getTrendingTags(limit = 10): Promise<TrendingTag[]> {
   const supabase = createClient()
   const { data } = await supabase
     .from('community_posts').select('tag_id, tags ( id, name, slug )')

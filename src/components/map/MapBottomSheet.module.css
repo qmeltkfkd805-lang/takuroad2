@@ -1,4 +1,4 @@
-﻿/* 지도 하단 시트 */
+/* 지도 하단 시트 */
 .sheet {
   position: absolute;
   left: 0; right: 0; bottom: 0;
@@ -79,3 +79,14 @@
   width: 32px; height: 4px;
   background: var(--muted); border-radius: 2px;
 }
+
+.headBtns {
+  display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+}
+.routeBtn {
+  flex-shrink: 0;
+  font-size: 12px; font-weight: 700; color: var(--text);
+  background: var(--surface2, #F5F5F7); border: 1px solid var(--border);
+  border-radius: 9999px; padding: 6px 13px; cursor: pointer; font-family: inherit;
+}
+.routeBtn:hover { background: var(--accent-l); color: var(--accent); border-color: transparent; }

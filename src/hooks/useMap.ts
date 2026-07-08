@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect, useRef, useCallback, RefObject } from 'react'
 import { Shop } from '@/types/shop'
@@ -41,7 +41,7 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     initMap()
   }, [containerRef])
 
-  // 단일 샵 마커 — 카테고리 컬러 물방울 핀 + 흰색 solid 아이콘
+  // 단일 샵 마커 — 카테고리 컬러 물방울 핀 (작게, 아이콘 없음)
   const addMarker = useCallback((
     shop: Shop,
     onClick: (shop: Shop) => void,
@@ -52,16 +52,14 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     const catName = (shop as any).cat ?? (shop.cats && shop.cats[0])
     const catInfo: any = CATEGORY_NAME_MAP[catName] ?? { color: '#e8006f', slug: 'goods' }
     const color = catInfo.color ?? '#e8006f'
-    const iconName = `solid-${catInfo.slug ?? 'goods'}`
 
     const el = document.createElement('div')
-    el.style.cssText = 'cursor:pointer;position:relative;width:28px;height:36px'
+    el.style.cssText = `cursor:pointer;position:relative;width:16px;height:21px${isActive ? ';transform:scale(1.25);transform-origin:bottom center;z-index:2' : ''}`
     el.innerHTML = `
-      <svg width="28" height="36" viewBox="0 0 28 36" style="display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))">
+      <svg width="16" height="21" viewBox="0 0 28 36" style="display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))">
         <path d="M14 0C6.3 0 0 6.3 0 14c0 9.5 14 22 14 22s14-12.5 14-22C28 6.3 21.7 0 14 0z"
-          fill="${isActive ? '#fff' : color}" stroke="${isActive ? color : '#fff'}" stroke-width="2"/>
+          fill="${color}"/><circle cx="14" cy="14" r="5" fill="#fff"/>
       </svg>
-      <span style="position:absolute;left:50%;top:14px;transform:translate(-50%,-50%);width:14px;height:14px;background-color:${isActive ? color : '#fff'};-webkit-mask:url(/icons/${iconName}.png) center/contain no-repeat;mask:url(/icons/${iconName}.png) center/contain no-repeat"></span>
     `
     el.addEventListener('click', () => onClick(shop))
 
@@ -85,13 +83,13 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     const color = CATEGORY_NAME_MAP[catName]?.color ?? '#e8006f'
 
     const el = document.createElement('div')
-    el.style.cssText = 'cursor:pointer;position:relative;width:30px;height:38px'
+    el.style.cssText = 'cursor:pointer;position:relative;width:24px;height:30px'
     el.innerHTML = `
-      <svg width="30" height="38" viewBox="0 0 30 38" style="display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))">
+      <svg width="24" height="30" viewBox="0 0 30 38" style="display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))">
         <path d="M15 0C6.7 0 0 6.7 0 15c0 10 15 23 15 23s15-13 15-23C30 6.7 23.3 0 15 0z"
-          fill="${color}" stroke="#fff" stroke-width="2"/>
+          fill="${color}"/><circle cx="15" cy="15" r="7" fill="#fff"/>
       </svg>
-      <span style="position:absolute;left:50%;top:15px;transform:translate(-50%,-50%);color:#fff;font-size:12px;font-weight:900;white-space:nowrap">${shops.length}</span>
+      <span style="position:absolute;left:50%;top:12px;transform:translate(-50%,-50%);color:${color};font-size:10px;font-weight:900;line-height:1;white-space:nowrap">${shops.length}</span>
     `
     el.addEventListener('click', () => onClick(shops))
 
