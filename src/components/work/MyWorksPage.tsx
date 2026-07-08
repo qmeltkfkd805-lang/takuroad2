@@ -9,7 +9,7 @@ import { getAffinitiesForTags } from '@/services/workRelationshipService'
 import { WorkCard, WorkCardData } from '@/components/tds/WorkCard'
 
 // 작품 홈 — 등록된 작품을 카드로 쭉.
-//   ❤️ 최애 작품을 제일 위에, 그 아래로 나머지 등록 작품 전체를 이어서.
+//   최애 작품 → 관심 작품 → 나머지 등록 작품 순서.
 
 type Work = { id: string; name: string; slug: string; cover_url?: string | null; banner_image?: string | null; english_name?: string | null; ip_type?: string | null; release_year?: number | null; genres?: any; description?: string | null }
 
@@ -72,7 +72,9 @@ export default function MyWorksPage() {
   })
 
   const favorites = works.filter(w => affMap[w.id] === 'favorite')
-  const others = works.filter(w => affMap[w.id] !== 'favorite')
+  const interests = works.filter(w => affMap[w.id] === 'interest')
+  // 최애도 관심도 아닌 나머지
+  const others = works.filter(w => !affMap[w.id])
 
   const go = (wc: WorkCardData) => {
     const w = works.find(x => x.id === wc.id)
@@ -123,6 +125,19 @@ export default function MyWorksPage() {
                 ))}
               </div>
             </section>
+          )}
+
+          {interests.length > 0 && (
+            <Section
+              title="관심 작품"
+              icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="#F5B100" stroke="none"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 17.8 6.8 19.2l1-5.8L3.5 9.2l5.9-.9z" /></svg>}
+            >
+              <Grid>
+                {interests.map(w => (
+                  <WorkCard key={w.id} work={toCard(w)} onClick={go} />
+                ))}
+              </Grid>
+            </Section>
           )}
 
           <Section title="등록 작품">

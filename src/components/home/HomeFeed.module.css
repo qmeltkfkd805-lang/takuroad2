@@ -16,3 +16,34 @@
 
 /* 섹션 카드 박스 */
 .sectionCard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 18px 18px 16px; margin-bottom: 16px; }
+
+/* 많이 찾는 샵 — 지도 바텀시트와 같은 가로 줄 */
+.shopRow {
+  display: flex; gap: 12px;
+  overflow-x: auto;
+  padding: 2px 16px 8px;
+  align-items: stretch;
+  scrollbar-width: none;
+}
+.shopRow::-webkit-scrollbar { display: none; }
+.shopItem { width: 200px; height: 280px; flex-shrink: 0; }
+
+/* no-scrollbar-rows : 가로 줄 스크롤바 숨김 + 드래그 커서 */
+.feedGrid, .eventRow, .shopRow {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+  user-select: none;
+}
+.feedGrid::-webkit-scrollbar,
+.eventRow::-webkit-scrollbar,
+.shopRow::-webkit-scrollbar { display: none; }
+
+.feedGrid:active, .eventRow:active, .shopRow:active { cursor: grabbing; }
+
+/* 드래그 중 이미지가 딸려 나가지 않게 */
+.feedGrid img, .eventRow img, .shopRow img {
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}

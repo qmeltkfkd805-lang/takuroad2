@@ -10,7 +10,11 @@ import { pickHeroRelationship } from '@/lib/home/pickHeroRelationship'
 import HeroSlot from './HeroSlot'
 import { getProductsByTag } from '@/services/shopProductService'
 import { getShopsByTag } from '@/services/shopService'
-import ShopCard from '@/components/shop/ShopCard'
+import { ShopCard } from '@/components/tds'
+import { useSaved } from '@/hooks/useSaved'
+import { useDragScroll } from '@/hooks/useDragScroll'
+import { useRouter } from 'next/navigation'
+import type { Shop } from '@/types/shop'
 import { ROUTES } from '@/lib/constants/routes'
 import { getEventsByTag } from '@/services/eventService'
 import { pickWorkNews } from '@/lib/home/pickWorkNews'
@@ -42,6 +46,14 @@ interface HomeFeedProps {
 
 export default function HomeFeed({ popularShops, routes, activeWorks, events }: HomeFeedProps) {
   const { user } = useAuth()
+  const router = useRouter()
+  const { isSaved, toggleSave } = useSaved()
+
+  // 가로 줄 4개 — 마우스로 밀어서 스크롤
+  const worksDrag = useDragScroll()
+  const eventsDrag = useDragScroll()
+  const shopsDrag = useDragScroll()
+  const routesDrag = useDragScroll()
   const [rels, setRels] = useState<WorkRelationship[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -54,8 +66,9 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
   const myWorks = rels
     .filter(r => r.affinity)
     .sort((a, b) => (a.affinity === 'favorite' ? 0 : 1) - (b.affinity === 'favorite' ? 0 : 1))
-  // 추천 이벤트 — EventCard가 아는 type(팝업/카페/전시)만
-  const eventCards = (events ?? []).filter((ev: any) => ['popup', 'collab_cafe', 'exhibition'].includes(ev.type))
+  // 추천 이벤트 — EventCard가 아는 type만 (모르는 type이 오면 TYPE_META 조회에서 터진다)
+  const eventCards = (events ?? []).filter((ev: any) =>
+    ['popup', 'collab_cafe', 'exhibition', 'official_event'].includes(ev.type))
 
   // 활발한 작품에 ❤️/⭐ 붙이기용
   const myAffinity = new Map(
@@ -103,7 +116,7 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
         ) : myWorks.length === 0 ? (
           <PromptBox text="아직 좋아하는 작품이 없어요" href="/search" cta="작품 찾아보기" />
         ) : (
-          <div className={styles.feedGrid}>
+          <div className={styles.feedGrid} {...worksDrag}>
             {newsItems.slice(0, 5).map((item, i) => (
               <HomeFeedCard key={item.contextLabel ?? i} item={item} />
             ))}
@@ -116,8 +129,14 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
       {/* 🏪 많이 찾는 굿즈샵 */}
       {eventCards.length > 0 && (
         <section className={styles.sectionCard}>
-          <SectionHeader title="지금 가볼 만한 이벤트" plainIcon icon={<Icon name="colorevent" size={28} />} />
-          <div className={styles.eventRow}>
+          <SectionHeader
+            title="지금 가볼 만한 이벤트"
+            plainIcon
+            icon={<Icon name="colorevent" size={28} />}
+            actionLabel="전체 보기"
+            onAction={() => { window.location.href = '/events' }}
+          />
+          <div className={styles.eventRow} {...eventsDrag}>
             {eventCards.map((ev: any) => (
               <div key={ev.id} className={styles.eventItem}>
                 <EventCard
@@ -126,12 +145,13 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
                     title: ev.title ?? '이벤트',
                     type: ev.type,
                     workName: ev.workName,
-                    place: ev.shopName,
+                    place: ev.placeName ?? ev.shopName,
                     startDate: ev.startDate,
                     endDate: ev.endDate,
-                    coverUrl: null,
+                    coverUrl: ev.coverUrl ?? null,
                   }}
                   now={new Date()}
+                  onClick={() => { window.location.href = `/event/${ev.id}` }}
                 />
               </div>
             ))}
@@ -142,11 +162,19 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
       {popularShops.length > 0 && (
         <section className={styles.sectionCard}>
           <SectionHeader title="지금 많이 찾는 샵" plainIcon icon={<Icon name="colorshop" size={28} />} />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {/* 지도 바텀시트와 같은 가로 줄 (200x280 카드) */}
+          <div className={styles.shopRow} {...shopsDrag}>
             {popularShops.map(shop => (
-              <Link key={shop.id} href={ROUTES.shop(shop.slug)} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <ShopCard shop={shop} isActive={false} onClick={() => {}} />
-              </Link>
+              <div key={shop.id} className={styles.shopItem}>
+                <ShopCard
+                  shop={{ ...shop, isSaved: isSaved(shop.id) } as Shop}
+                  onClick={(sh) => router.push(ROUTES.shop(sh.slug))}
+                  onToggleSave={(sh) => {
+                    if (!user) { router.push(ROUTES.login); return }
+                    toggleSave(sh.id)
+                  }}
+                />
+              </div>
             ))}
           </div>
         </section>
@@ -155,8 +183,14 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
       {/* 🧭 추천 루트 */}
       {routes.length > 0 && (
         <section className={styles.sectionCard}>
-          <SectionHeader title="추천 루트" plainIcon icon={<Icon name="colorroute" size={28} />} />
-          <div className={styles.eventRow}>
+          <SectionHeader
+            title="추천 루트"
+            plainIcon
+            icon={<Icon name="colorroute" size={28} />}
+            actionLabel="전체 보기"
+            onAction={() => { window.location.href = ROUTES.routes }}
+          />
+          <div className={styles.eventRow} {...routesDrag}>
             {routes.map((r: any) => (
               <div key={r.id} className={styles.eventItem}>
                 <RouteCard

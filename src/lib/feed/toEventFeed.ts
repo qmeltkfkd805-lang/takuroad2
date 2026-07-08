@@ -33,6 +33,7 @@ export function toEventFeed(event: WorkEvent): FeedItem {
     subtitle: sub,
     icon: map.icon,
     tone: map.tone,
-    href: event.shopSlug ? `/shop/${event.shopSlug}` : undefined,
+    // 이벤트에는 이제 자기 상세 페이지가 있다 (예전엔 샵으로 보냈다)
+    href: `/event/${event.id}`,
   }
 }
