@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
@@ -12,10 +12,21 @@ import BottomSheet from '@/components/bottom-sheet/BottomSheet'
 import { Shop } from '@/types/shop'
 import Link from 'next/link'
 import { ROUTES } from '@/lib/constants/routes'
+import { shopRegion, shopDistrict } from '@/lib/utils/region'
 import styles from './MapPage.module.css'
 import fab from './MapFab.module.css'
 import MapBottomSheet from './MapBottomSheet'
 import ShopFloatingCard from './ShopFloatingCard'
+
+// 샵들이 퍼져 있는 정도에 맞춰 카카오 지도 레벨을 고름 (작을수록 확대)
+function levelForSpan(span: number) {
+  if (span < 0.01) return 4
+  if (span < 0.03) return 5
+  if (span < 0.06) return 6
+  if (span < 0.12) return 7
+  if (span < 0.25) return 8
+  return 9
+}
 
 export default function MapPage() {
   const searchParams = useSearchParams()
@@ -23,9 +34,10 @@ export default function MapPage() {
   const router = useRouter()
   const { isSaved, toggleSave } = useSaved()
   const {
-    filtered, mapShops, loading,
+    shops, filtered, mapShops, loading, regions, districtsByRegion,
     selectedCat, setSelectedCat,
     selectedRegion, setSelectedRegion,
+    selectedDistrict, setSelectedDistrict,
     selectedShop, setSelectedShop,
   } = useShops()
 
@@ -52,6 +64,49 @@ export default function MapPage() {
     setSelectedShop(null)
 
   }, [setSelectedShop])
+
+  // 주어진 샵들이 다 보이는 위치·줌으로 지도 이동
+  const fitToShops = useCallback((pts: Shop[]) => {
+    if (pts.length === 0) return
+    const lats = pts.map(s => s.lat as number)
+    const lngs = pts.map(s => s.lng as number)
+    const minLat = Math.min(...lats), maxLat = Math.max(...lats)
+    const minLng = Math.min(...lngs), maxLng = Math.max(...lngs)
+    const span = Math.max(maxLat - minLat, maxLng - minLng)
+    mapRef.current?.moveCenter(
+      (minLat + maxLat) / 2,
+      (minLng + maxLng) / 2,
+      pts.length === 1 ? 4 : levelForSpan(span),
+    )
+  }, [])
+
+  const onMap = useCallback(
+    (s: Shop) => !!s.lat && !!s.lng && !s.cats.includes('온라인샵'),
+    [],
+  )
+
+  // 시/도 선택 → 그 시/도 전체가 보이게 이동 (구 선택은 초기화)
+  const handleSelectRegion = useCallback((region: string) => {
+    setSelectedRegion(region)
+    setSelectedDistrict('전체')
+    setSelectedShop(null)
+    setGroupShops(null)
+    if (region === '전체') return
+    fitToShops(shops.filter(s => onMap(s) && shopRegion(s) === region))
+  }, [shops, onMap, fitToShops, setSelectedRegion, setSelectedDistrict, setSelectedShop])
+
+  // 구/군 선택 → 그 구만 확대
+  const handleSelectDistrict = useCallback((district: string) => {
+    setSelectedDistrict(district)
+    setSelectedShop(null)
+    setGroupShops(null)
+    const pts = shops.filter(s =>
+      onMap(s) &&
+      shopRegion(s) === selectedRegion &&
+      (district === '전체' || shopDistrict(s) === district),
+    )
+    fitToShops(pts)
+  }, [shops, selectedRegion, onMap, fitToShops, setSelectedDistrict, setSelectedShop])
 
   // 현재 위치를 받아오면 지도 이동
   useEffect(() => {
@@ -86,7 +141,7 @@ export default function MapPage() {
       {/* 지도 컬럼 (absolute 자식들의 기준점) */}
       <div className={styles.mapCol}>
 
-        {/* 카테고리 필터 + 목록 토글 (TopBar 바로 아래) */}
+        {/* 카테고리 필터 + 지역 필터 (TopBar 바로 아래) */}
         <div style={{
           position: 'absolute', top: 10, left: 10, right: 10, zIndex: 140,
           background: 'var(--surface)', borderRadius: 16,
@@ -97,6 +152,12 @@ export default function MapPage() {
             <CategoryFilter
               selected={selectedCat}
               onChange={setSelectedCat}
+              regions={regions}
+              districtsByRegion={districtsByRegion}
+              selectedRegion={selectedRegion}
+              selectedDistrict={selectedDistrict}
+              onChangeRegion={handleSelectRegion}
+              onChangeDistrict={handleSelectDistrict}
             />
           </div>
         </div>
