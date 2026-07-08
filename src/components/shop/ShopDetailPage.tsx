@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useRouter } from 'next/navigation'
 import { Shop } from '@/types/shop'
@@ -169,10 +169,10 @@ export default function ShopDetailPage({ shop }: Props) {
         <Button
           variant="dashed"
           fullWidth
-          onClick={() => router.push(`/event/submit?shop=${shop.slug}`)}
+          onClick={() => router.push(`/event/new?shop=${shop.slug}`)}
           style={{ marginTop: '4px', marginBottom: '24px' }}
         >
-          + 이벤트 제보하기
+          + 이벤트 등록하기
         </Button>
 
         {/* === 취급 작품 / 굿즈 === */}

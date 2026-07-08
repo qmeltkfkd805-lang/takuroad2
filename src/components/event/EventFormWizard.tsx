@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getAllTagsForSelect } from '@/services/routeService'
 import { getActiveWorks } from '@/services/activeWorksService'
@@ -12,6 +12,7 @@ import {
   EventFormData, EMPTY_EVENT_FORM,
   createEventDraft, updateEventDraft, saveEventExtra, searchShopsByName, loadEventForm, uploadEventCover,
 } from '@/services/eventCreateService'
+import { getShopBySlug } from '@/services/shopService'
 import { EventHomeType } from '@/services/eventHomeService'
 import { TYPE_LABEL } from './EventFilterBar'
 import { EventIcon, EventIconName } from './EventIcon'
@@ -42,7 +43,8 @@ type ShopHit = { id: string; name: string; addr: string | null }
 
 export default function EventFormWizard({ editId }: { editId?: string }) {
   const router = useRouter()
-  const { user, isAdmin, loading: authLoading } = useAuth()
+  const params = useSearchParams()
+  const { user, loading: authLoading } = useAuth()
   const isEdit = !!editId
 
   const [form, setForm] = useState<EventFormData>(EMPTY_EVENT_FORM)
@@ -81,13 +83,40 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
     if (!authLoading && !user) router.push(`/login?redirect=${isEdit ? `/event/${editId}/edit` : '/event/new'}`)
   }, [authLoading, user, router, isEdit, editId])
 
+  // 등록 모드 — 작품 홈(?tag=)이나 샵 상세(?shop=)에서 넘어왔으면 미리 채운다
+  useEffect(() => {
+    if (isEdit) return
+
+    const tagId = params?.get('tag')
+    if (tagId) setForm(f => ({ ...f, tagId }))
+
+    const shopSlug = params?.get('shop')
+    if (!shopSlug) return
+    getShopBySlug(shopSlug)
+      .then(shop => {
+        if (!shop) return
+        setForm(f => ({
+          ...f,
+          shopId: shop.id,
+          placeName: shop.name,
+          placeAddr: shop.addr ?? '',
+          placeLat: shop.lat != null ? Number(shop.lat) : null,
+          placeLng: shop.lng != null ? Number(shop.lng) : null,
+        }))
+        setShopPicked({ id: shop.id, name: shop.name, addr: shop.addr ?? null })
+      })
+      .catch(() => {})
+    // 최초 1회만
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEdit])
+
   // 수정 모드 — 기존 값을 채우고, 작성자/관리자가 아니면 되돌려보낸다
   useEffect(() => {
     if (!isEdit || !editId || !user) return
     loadEventForm(editId)
       .then(res => {
         if (!res) { router.push('/events'); return }
-        if (res.createdBy !== user.id && !isAdmin) { router.push(`/event/${editId}`); return }
+        // 위키 방식 — 로그인한 사람은 누구나 고칠 수 있다 (삭제만 작성자)
         setForm(res.form)
         if (res.form.shopId) {
           setShopPicked({ id: res.form.shopId, name: res.form.placeName, addr: res.form.placeAddr || null })
@@ -95,7 +124,7 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
         setLoadingEvent(false)
       })
       .catch(() => router.push('/events'))
-  }, [isEdit, editId, user, isAdmin, router])
+  }, [isEdit, editId, user, router])
 
   // 샵 검색 (디바운스)
   useEffect(() => {

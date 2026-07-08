@@ -115,7 +115,7 @@ export async function getActiveEvents(limit = 8): Promise<ActiveEvent[]> {
   const today = new Date().toISOString().slice(0, 10)
   const { data, error } = await supabase
     .from('events')
-    .select('id, tag_id, type, shop_id, title, start_date, end_date, cover_url')
+    .select('id, tag_id, type, shop_id, title, start_date, end_date, cover_url, place_name')
     .or(`end_date.is.null,end_date.gte.${today}`)
     .order('start_date', { ascending: true })
     .limit(limit)
@@ -136,21 +136,6 @@ export async function getActiveEvents(limit = 8): Promise<ActiveEvent[]> {
     shopMap = new Map((shops ?? []).map((s: any) => [s.id, s]))
   }
 
-  // 샵이 없는 이벤트는 제보(event_submissions)에 장소명이 남아 있다
-  const noShopIds = rows.filter((e: any) => !e.shop_id).map((e: any) => e.id)
-  const placeMap = new Map<string, string>()
-  if (noShopIds.length) {
-    const { data: subs } = await supabase
-      .from('event_submissions')
-      .select('event_id, place_snapshot')
-      .in('event_id', noShopIds)
-    for (const s of (subs ?? []) as any[]) {
-      // 옛 문자열과 카카오 객체가 섞여 있다
-      const snap = s.place_snapshot
-      const name = typeof snap === 'string' ? snap : snap?.name
-      if (name) placeMap.set(s.event_id, name)
-    }
-  }
 
   return rows.map((e: any) => ({
     id: e.id,
@@ -158,7 +143,7 @@ export async function getActiveEvents(limit = 8): Promise<ActiveEvent[]> {
     type: e.type,
     workName: e.tag_id ? (tagMap.get(e.tag_id)?.name ?? null) : null,
     shopName: e.shop_id ? (shopMap.get(e.shop_id)?.name ?? null) : null,
-    placeName: (e.shop_id ? shopMap.get(e.shop_id)?.name : null) ?? placeMap.get(e.id) ?? null,
+    placeName: (e.shop_id ? shopMap.get(e.shop_id)?.name : null) ?? e.place_name ?? null,
     startDate: e.start_date,
     endDate: e.end_date,
     // 이벤트 포스터 우선, 없으면 작품 커버 (이벤트 홈과 같은 규칙)

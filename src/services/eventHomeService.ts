@@ -33,35 +33,23 @@ async function hydrate(rows: any[]): Promise<EventHomeItem[]> {
 
   const tagIds = [...new Set(rows.map(r => r.tag_id).filter(Boolean))]
   const shopIds = [...new Set(rows.map(r => r.shop_id).filter(Boolean))]
-  // 샵이 없는 이벤트는 제보(event_submissions)에 장소명이 남아 있다
-  const noShopIds = rows.filter(r => !r.shop_id).map(r => r.id)
 
-  const [tagRes, shopRes, subRes] = await Promise.all([
+  const [tagRes, shopRes] = await Promise.all([
     tagIds.length
       ? supabase.from('tags').select('id, name, slug, cover_url').in('id', tagIds)
       : Promise.resolve({ data: [] as any[] }),
     shopIds.length
       ? supabase.from('shops').select('id, name, slug, addr, region').in('id', shopIds)
       : Promise.resolve({ data: [] as any[] }),
-    noShopIds.length
-      ? supabase.from('event_submissions').select('event_id, place_snapshot').in('event_id', noShopIds)
-      : Promise.resolve({ data: [] as any[] }),
   ])
 
-  for (const [label, res] of [['작품', tagRes], ['샵', shopRes], ['장소', subRes]] as const) {
+  for (const [label, res] of [['작품', tagRes], ['샵', shopRes]] as const) {
     if ((res as any).error) console.error(`[이벤트 홈] ${label} 조회 실패:`, (res as any).error.message)
   }
 
   const tagMap = new Map((tagRes.data ?? []).map((t: any) => [t.id, t]))
   const shopMap = new Map((shopRes.data ?? []).map((s: any) => [s.id, s]))
 
-  // place_snapshot은 옛 문자열과 카카오 객체가 섞여 있다
-  const placeMap = new Map<string, string>()
-  for (const s of (subRes.data ?? []) as any[]) {
-    const snap = s.place_snapshot
-    const name = typeof snap === 'string' ? snap : snap?.name
-    if (name) placeMap.set(s.event_id, name)
-  }
 
   return rows.map(r => {
     const tag = r.tag_id ? tagMap.get(r.tag_id) : null
@@ -76,7 +64,7 @@ async function hydrate(rows: any[]): Promise<EventHomeItem[]> {
       coverUrl: resolveEventCover({ eventCoverUrl: r.cover_url ?? null, workCoverUrl: tag?.cover_url ?? null }),
       shopName: shop?.name ?? null,
       shopSlug: shop?.slug ?? null,
-      placeName: shop?.name ?? placeMap.get(r.id) ?? null,
+      placeName: shop?.name ?? r.place_name ?? null,
       region: shop ? shopRegion({ region: shop.region ?? null, addr: shop.addr ?? null }) : null,
       startDate: r.start_date ?? null,
       endDate: r.end_date ?? null,
@@ -89,7 +77,7 @@ export async function getEventHomeItems(): Promise<EventHomeItem[]> {
   const supabase = createClient()
   const { data, error } = await supabase
     .from('events')
-    .select('id, tag_id, type, shop_id, title, start_date, end_date, cover_url')
+    .select('id, tag_id, type, shop_id, title, start_date, end_date, cover_url, place_name')
     .in('type', HOME_TYPES)
     .or(`end_date.is.null,end_date.gte.${today()}`)
     .order('start_date', { ascending: true })
@@ -103,7 +91,7 @@ export async function getPastEventItems(limit = 12): Promise<EventHomeItem[]> {
   const supabase = createClient()
   const { data, error } = await supabase
     .from('events')
-    .select('id, tag_id, type, shop_id, title, start_date, end_date, cover_url')
+    .select('id, tag_id, type, shop_id, title, start_date, end_date, cover_url, place_name')
     .in('type', HOME_TYPES)
     .lt('end_date', today())
     .order('end_date', { ascending: false })

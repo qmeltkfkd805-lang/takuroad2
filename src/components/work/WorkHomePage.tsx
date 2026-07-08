@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
@@ -178,7 +178,7 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
                   <EventCard event={{ id: e.id, title: e.title, type: e.type, workName: tag.name, place: e.shopName, startDate: e.startDate, endDate: e.endDate, coverUrl: null }} now={now} onClick={() => e.shopSlug && router.push(`/shop/${e.shopSlug}`)} />
                 </div>
               ))}
-              <Link href={`/event/submit?tag=${tag.id}`} className={styles.report}>+ 이벤트 제보하기</Link>
+              <Link href={`/event/new?tag=${tag.id}`} className={styles.report}>+ 이벤트 등록하기</Link>
             </div>
           </section>
 

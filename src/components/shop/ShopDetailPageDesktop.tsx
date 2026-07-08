@@ -432,8 +432,8 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                     )}
                   </>
                 )}
-                <button onClick={() => router.push(`/event/submit?shop=${shop.slug}`)} style={dashedBtn}>
-                  <Ico name="plus" size={15} /> 이벤트 제보하기
+                <button onClick={() => router.push(`/event/new?shop=${shop.slug}`)} style={dashedBtn}>
+                  <Ico name="plus" size={15} /> 이벤트 등록하기
                 </button>
 
                 {selectedEvent && (

@@ -27,7 +27,6 @@ export interface EventDetail {
     shopLink: string | null
   } | null
 
-  /** events에 없는 정보 — 승인된 제보(event_submissions)에서 되짚어 온다 */
   description: string | null
   sourceUrls: string[]
   /** 예매·예약 페이지 */
@@ -49,6 +48,9 @@ export interface EventDetail {
   parkingNote: string | null
   /** 이 이벤트를 올린 사람. 제보 없이 만들어진 이벤트는 null */
   createdBy: string | null
+  /** 마지막으로 고친 사람 (위키라서 표시한다) */
+  updatedByName: string | null
+  updatedAt: string | null
 }
 
 export interface RelatedEvent {
@@ -66,14 +68,14 @@ export async function getEventDetail(eventId: string): Promise<EventDetail | nul
 
   const { data: ev, error } = await supabase
     .from('events')
-    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, entry_info, hours_info, hours, cover_url, parking, parking_note, created_by')
+    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, entry_info, hours_info, hours, cover_url, parking, parking_note, description, place_name, place_addr, place_lat, place_lng, place_detail, source_urls, ticket_urls, created_by, updated_by, updated_at')
     .eq('id', eventId)
     .maybeSingle()
 
   if (error || !ev) return null
   const e = ev as any
 
-  const [tagRes, shopRes, subRes] = await Promise.all([
+  const [tagRes, shopRes, editorRes] = await Promise.all([
     e.tag_id
       ? supabase.from('tags').select('id, name, slug, cover_url').eq('id', e.tag_id).maybeSingle()
       : Promise.resolve({ data: null }),
@@ -82,17 +84,14 @@ export async function getEventDetail(eventId: string): Promise<EventDetail | nul
           .select('id, name, slug, addr, lat, lng, rating_avg, rating_count, sns_links, shop_link')
           .eq('id', e.shop_id).maybeSingle()
       : Promise.resolve({ data: null }),
-    supabase
-      .from('event_submissions')
-      .select('description, source_url, source_urls, ticket_urls, place_detail, place_snapshot')
-      .eq('event_id', eventId)
-      .limit(1)
-      .maybeSingle(),
+    e.updated_by
+      ? supabase.from('profiles').select('nickname').eq('id', e.updated_by).maybeSingle()
+      : Promise.resolve({ data: null }),
   ])
 
   const tag: any = tagRes.data
   const shop: any = shopRes.data
-  const sub: any = subRes.data
+  const editor: any = editorRes.data
 
   return {
     id: e.id,
@@ -116,31 +115,22 @@ export async function getEventDetail(eventId: string): Promise<EventDetail | nul
       snsLinks: Array.isArray(shop.sns_links) ? shop.sns_links : [],
       shopLink: shop.shop_link ?? null,
     } : null,
-    description: sub?.description ?? null,
-    // 옛 이벤트는 source_url 하나, 새 이벤트는 source_urls 배열 — 둘 다 받는다
-    sourceUrls: Array.isArray(sub?.source_urls) && sub.source_urls.length > 0
-      ? (sub.source_urls as string[])
-      : (sub?.source_url ? [sub.source_url] : []),
-    ticketUrls: Array.isArray(sub?.ticket_urls) ? (sub.ticket_urls as string[]) : [],
-    placeDetail: sub?.place_detail ?? null,
-    // place_snapshot은 옛 문자열과 카카오 객체가 섞여 있다 — 둘 다 받는다
-    ...(() => {
-      const snap: any = sub?.place_snapshot ?? null
-      if (!snap) return { placeSnapshot: null, placeAddr: null, placeLat: null, placeLng: null }
-      if (typeof snap === 'string') return { placeSnapshot: snap, placeAddr: null, placeLat: null, placeLng: null }
-      return {
-        placeSnapshot: snap.name ?? null,
-        placeAddr: snap.roadAddress ?? snap.address ?? null,
-        placeLat: snap.lat != null ? Number(snap.lat) : null,
-        placeLng: snap.lng != null ? Number(snap.lng) : null,
-      }
-    })(),
+    description: e.description ?? null,
+    sourceUrls: Array.isArray(e.source_urls) ? (e.source_urls as string[]) : [],
+    ticketUrls: Array.isArray(e.ticket_urls) ? (e.ticket_urls as string[]) : [],
+    placeDetail: e.place_detail ?? null,
+    placeSnapshot: e.place_name ?? null,
+    placeAddr: e.place_addr ?? null,
+    placeLat: e.place_lat != null ? Number(e.place_lat) : null,
+    placeLng: e.place_lng != null ? Number(e.place_lng) : null,
     entryInfo: e.entry_info ?? null,
     hours: (e.hours ?? null) as BusinessHours | null,
     hoursInfo: e.hours_info ?? null,
     parking: e.parking ?? null,
     parkingNote: e.parking_note ?? null,
     createdBy: e.created_by ?? null,
+    updatedByName: editor?.nickname ?? null,
+    updatedAt: e.updated_at ?? null,
   }
 }
 

@@ -2,11 +2,9 @@ import { createClient } from '@/lib/supabase/client'
 import { EventHomeType } from '@/services/eventHomeService'
 import { BusinessHours } from '@/types/database'
 import { getEventDetail } from '@/services/eventDetailService'
-import { EventHours } from '@/lib/event/eventHours'
 
-// 위저드가 다루는 전체 폼. 저장될 때 세 테이블로 갈라진다.
-//   events            : tagId, type, title, startDate, endDate, shopId, hoursInfo, entryInfo
-//   event_submissions : description, sourceUrl, placeDetail, placeSnapshot
+// 위저드가 다루는 전체 폼. 전부 events 한 테이블에 저장된다.
+//   전부 events 컬럼. (예전엔 소개·장소·링크가 event_submissions에 있었다)
 //   event_goods       : 굿즈 (별도 서비스)
 export interface EventFormData {
   tagId: string | null
@@ -32,16 +30,13 @@ export interface EventFormData {
   parking: boolean | null
   parkingNote: string
 
-  /** 요일별 운영시간 (샵과 같은 모양) */
-  hours: EventHours | null
-  /** 표로 표현 안 되는 추가 안내 (예: 라스트 오더 21:00) */
   /** 요일별 운영시간 (샵과 같은 JSON) */
   hours: BusinessHours | null
-  /** 추가 안내 — 라스트 오더 등 */
+  /** 추가 안내 — 라스트 오더, 마지막 입장 등 */
   hoursInfo: string
   entryInfo: string
   description: string
-  /** 공식 사이트·SNS. 첫 링크는 하위호환용으로 source_url에도 저장된다 */
+  /** 공식 사이트·SNS */
   sourceUrls: string[]
   /** 예매·예약 페이지 */
   ticketUrls: string[]
@@ -112,52 +107,35 @@ export async function updateEventDraft(eventId: string, form: EventFormData): Pr
 }
 
 /**
- * events에 없는 정보(소개·출처·층수·장소명)를 event_submissions에 저장.
+ * 4~5단계에서 모인 소개·장소·링크를 events에 저장.
  * 이미 있으면 갱신, 없으면 새로 만든다.
  * 나중에 이 컬럼들이 events로 옮겨가면 이 함수만 지우면 된다.
  */
 export async function saveEventExtra(eventId: string, form: EventFormData, userId: string): Promise<{ ok: boolean; message?: string }> {
   const supabase = createClient()
 
-  const payload = {
-    tag_id: form.tagId,
-    type: form.type,
-    title: form.title.trim(),
-    shop_id: form.shopId,
-    // 카카오 원본 모양 그대로 저장 (기존 제보 폼과 같은 형태)
-    place_snapshot: form.shopId || !form.placeName.trim() ? null : {
-      name: form.placeName.trim(),
-      address: form.placeAddr || null,
-      roadAddress: form.placeAddr || null,
-      lat: form.placeLat,
-      lng: form.placeLng,
-    },
-    place_detail: nn(form.placeDetail),
-    start_date: nn(form.startDate),
-    end_date: nn(form.endDate),
-    // 빈 칸은 버리고, 첫 링크만 옛 컬럼에 남긴다
-    source_url: cleanLinks(form.sourceUrls)[0] ?? null,
-    source_urls: cleanLinks(form.sourceUrls),
-    ticket_urls: cleanLinks(form.ticketUrls),
-    description: nn(form.description),
-    submitted_by: userId,
-    status: 'approved',
-    event_id: eventId,
-    reviewed_at: new Date().toISOString(),
+  const { error } = await supabase
+    .from('events')
+    .update({
+      description: nn(form.description),
+      place_detail: nn(form.placeDetail),
+      // 샵에 연결됐으면 샵이 장소다 — 중복 저장하지 않는다
+      place_name: form.shopId ? null : nn(form.placeName),
+      place_addr: form.shopId ? null : nn(form.placeAddr),
+      place_lat: form.shopId ? null : form.placeLat,
+      place_lng: form.shopId ? null : form.placeLng,
+      source_urls: cleanLinks(form.sourceUrls),
+      ticket_urls: cleanLinks(form.ticketUrls),
+      // 누가 마지막으로 고쳤는지 — 위키라서 남겨둔다
+      updated_by: userId,
+      updated_at: new Date().toISOString(),
+    } as any)
+    .eq('id', eventId)
+
+  if (error) {
+    console.error('[이벤트 저장 실패]', error.message)
+    return { ok: false, message: error.message }
   }
-
-  const { data: existing } = await supabase
-    .from('event_submissions')
-    .select('id')
-    .eq('event_id', eventId)
-    .limit(1)
-    .maybeSingle()
-
-  const { error } = existing
-    ? await supabase.from('event_submissions').update(payload as any).eq('id', (existing as any).id)
-    : await supabase.from('event_submissions').insert(payload as any)
-
-  if (error) return { ok: false, message: error.message }
   return { ok: true }
 }
 

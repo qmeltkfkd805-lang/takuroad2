@@ -116,8 +116,9 @@ export default function EventDetailPage() {
   }, [eventId])
 
   const isOwner = !!user && !!event?.createdBy && user.id === event.createdBy
-  const canEdit = isOwner || isAdmin        // 수정은 작성자 + 관리자
-  const canDelete = isOwner                 // 삭제는 글쓴 사람만
+  // 위키 방식 — 수정은 로그인한 누구나, 삭제만 글쓴 사람 (굿즈와 같은 규칙)
+  const canEdit = !!user
+  const canDelete = isOwner || isAdmin
 
   const remove = async () => {
     if (!event) return
@@ -475,6 +476,15 @@ export default function EventDetailPage() {
                 ))}
               </div>
             </section>
+          )}
+
+          {/* 위키라서 마지막으로 고친 사람을 남긴다 */}
+          {event.updatedByName && (
+            <p className={styles.editedBy}>
+              마지막 수정: <strong>{event.updatedByName}</strong>
+              {event.updatedAt && ` · ${fmtFull(event.updatedAt.slice(0, 10))}`}
+              <span className={styles.editedHint}>누구나 잘못된 정보를 고칠 수 있어요</span>
+            </p>
           )}
         </div>
 
