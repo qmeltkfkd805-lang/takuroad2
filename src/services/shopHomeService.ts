@@ -172,8 +172,8 @@ export function regionGroups(items: ShopHomeItem[], groupCount = 5, topN = 3): R
   const map = new Map<string, ShopHomeItem[]>()
 
   for (const s of items) {
-    const region = shopRegion({ region: s.region, addr: s.addr })
-    const district = shopDistrict({ district: s.district, addr: s.addr })
+    const region = shopRegion(s)
+    const district = shopDistrict(s)
     if (!region || !district) continue   // 온라인샵 등은 지역 줄에서 제외
     const key = `${region} ${district}`
     const list = map.get(key) ?? []

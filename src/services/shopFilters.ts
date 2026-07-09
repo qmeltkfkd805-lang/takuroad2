@@ -59,8 +59,8 @@ export function applyShopFilters(
 ): ShopHomeItem[] {
   const rows = items.filter(s => {
     // 위치
-    if (f.region && shopRegion({ region: s.region, addr: s.addr }) !== f.region) return false
-    if (f.district && shopDistrict({ district: s.district, addr: s.addr }) !== f.district) return false
+    if (f.region && shopRegion(s) !== f.region) return false
+    if (f.district && shopDistrict(s) !== f.district) return false
 
     // 취급 작품 — 고른 작품을 전부 다뤄야 함 (AND)
     if (f.workSlugs.length) {

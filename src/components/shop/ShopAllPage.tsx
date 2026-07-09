@@ -60,8 +60,8 @@ export default function ShopAllPage() {
   const districtsByRegion = useMemo(() => {
     const map: Record<string, Set<string>> = {}
     for (const s of items) {
-      const r = shopRegion({ region: s.region, addr: s.addr })
-      const d = shopDistrict({ district: s.district, addr: s.addr })
+      const r = shopRegion(s)
+      const d = shopDistrict(s)
       if (!r || !d) continue
       ;(map[r] ??= new Set()).add(d)
     }

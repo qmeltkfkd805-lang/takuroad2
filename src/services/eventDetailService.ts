@@ -34,6 +34,7 @@ export interface EventDetail {
   placeDetail: string | null
   /** 샵으로 연결되지 않은 이벤트의 장소 (이름·주소·좌표) */
   placeSnapshot: string | null
+  placeId: string | null
   placeAddr: string | null
   placeLat: number | null
   placeLng: number | null
@@ -68,7 +69,7 @@ export async function getEventDetail(eventId: string): Promise<EventDetail | nul
 
   const { data: ev, error } = await supabase
     .from('events')
-    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, entry_info, hours_info, hours, cover_url, parking, parking_note, description, place_name, place_addr, place_lat, place_lng, place_detail, source_urls, ticket_urls, created_by, updated_by, updated_at')
+    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, entry_info, hours_info, hours, cover_url, parking, parking_note, description, place_name, place_addr, place_lat, place_lng, place_detail, place_id, source_urls, ticket_urls, created_by, updated_by, updated_at')
     .eq('id', eventId)
     .maybeSingle()
 
@@ -120,6 +121,7 @@ export async function getEventDetail(eventId: string): Promise<EventDetail | nul
     ticketUrls: Array.isArray(e.ticket_urls) ? (e.ticket_urls as string[]) : [],
     placeDetail: e.place_detail ?? null,
     placeSnapshot: e.place_name ?? null,
+    placeId: e.place_id ?? null,
     placeAddr: e.place_addr ?? null,
     placeLat: e.place_lat != null ? Number(e.place_lat) : null,
     placeLng: e.place_lng != null ? Number(e.place_lng) : null,

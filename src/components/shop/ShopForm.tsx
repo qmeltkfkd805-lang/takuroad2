@@ -30,6 +30,7 @@ const EMPTY_FORM: ShopFormData = {
   lat: null, lng: null, cats: [],
   hours: null, parking: null, parking_note: '',
   shop_link: '', floor_info: '', start_date: '', end_date: '', event_info: '', sns_links: [], phone: '',
+  place_id: null, place_name: null, floor: '', unit: '',
 }
 
 export default function ShopForm({ mode, shop }: Props) {
@@ -66,6 +67,7 @@ export default function ShopForm({ mode, shop }: Props) {
         start_date: shop.start_date ?? '',
         end_date: shop.end_date ?? '',
         event_info: shop.event_info ?? '', sns_links: shop.sns_links ?? [], phone: shop.phone ?? '',
+        place_id: shop.place_id ?? null, place_name: shop.place_name ?? null, floor: shop.floor ?? '', unit: shop.unit ?? '',
       })
     }
   }, [mode, shop])

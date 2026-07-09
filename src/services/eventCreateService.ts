@@ -22,6 +22,7 @@ export interface EventFormData {
   /** 샵을 못 찾았을 때 — 카카오 장소 검색 결과 */
   placeName: string
   placeAddr: string
+  placeId: string | null   // place_address_map으로 자동 연결된 장소
   placeLat: number | null
   placeLng: number | null
   /** 층수·매장 위치 */
@@ -45,7 +46,7 @@ export interface EventFormData {
 export const EMPTY_EVENT_FORM: EventFormData = {
   tagId: null, type: 'popup', title: '', coverUrl: null, startDate: '', endDate: '',
   reserveStart: '', reserveEnd: '',
-  shopId: null, placeName: '', placeAddr: '', placeLat: null, placeLng: null, placeDetail: '',
+  shopId: null, placeId: null, placeName: '', placeAddr: '', placeLat: null, placeLng: null, placeDetail: '',
   parking: null, parkingNote: '',
   hours: null, hoursInfo: '', entryInfo: '', description: '', sourceUrls: [''], ticketUrls: [''],
 }
@@ -120,6 +121,7 @@ export async function saveEventExtra(eventId: string, form: EventFormData, userI
       description: nn(form.description),
       place_detail: nn(form.placeDetail),
       // 샵에 연결됐으면 샵이 장소다 — 중복 저장하지 않는다
+      place_id: form.placeId,
       place_name: form.shopId ? null : nn(form.placeName),
       place_addr: form.shopId ? null : nn(form.placeAddr),
       place_lat: form.shopId ? null : form.placeLat,
@@ -175,6 +177,7 @@ export async function loadEventForm(eventId: string): Promise<{ form: EventFormD
       reserveEnd: ev.reserveEnd ?? '',
 
       shopId: ev.shop?.id ?? null,
+      placeId: ev.placeId ?? null,
       placeName: ev.shop?.name ?? ev.placeSnapshot ?? '',
       placeAddr: ev.shop?.addr ?? ev.placeAddr ?? '',
       placeLat: ev.shop?.lat ?? ev.placeLat,

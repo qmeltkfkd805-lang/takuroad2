@@ -9,8 +9,8 @@ import styles from './ShopHomeCard.module.css'
 export const compact = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(1)}k` : String(n))
 
 export const placeLabel = (s: ShopHomeItem) => {
-  const region = shopRegion({ region: s.region, addr: s.addr })
-  const district = shopDistrict({ district: s.district, addr: s.addr })
+  const region = shopRegion(s)
+  const district = shopDistrict(s)
   return [region, district].filter(Boolean).join(' ') || '지역 미등록'
 }
 

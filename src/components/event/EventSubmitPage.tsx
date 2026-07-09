@@ -75,6 +75,9 @@ export default function EventSubmitPage({ initialTagId, initialShopSlug }: Props
         roadAddress: shop.addr ?? '',
         lat: shop.lat ?? 0,
         lng: shop.lng ?? 0,
+        kakaoPlaceId: null,
+        categoryName: null,
+        categoryGroupCode: null,
       })
     })
   }, [initialShopSlug])

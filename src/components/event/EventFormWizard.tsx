@@ -6,6 +6,7 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { getAllTagsForSelect } from '@/services/routeService'
 import { getActiveWorks } from '@/services/activeWorksService'
 import { searchPlace, PlaceSearchResult } from '@/lib/utils/geocode'
+import { findPlaceByAddr } from '@/services/placeService'
 import { getEventStatus } from '@/lib/utils/eventStatus'
 import { daysUntil } from '@/lib/event/rankEvents'
 import {
@@ -212,21 +213,26 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
   const clearShop = () => {
     setShopPicked(null)
     set('shopId', null)
+    set('placeId', null)
     set('placeName', '')
     set('placeAddr', '')
     set('placeLat', null)
     set('placeLng', null)
   }
 
-  const pickPlace = (p: PlaceSearchResult) => {
+  const pickPlace = async (p: PlaceSearchResult) => {
     set('placeName', p.name)
     set('placeAddr', p.roadAddress || p.address)
     set('placeLat', p.lat)
     set('placeLng', p.lng)
     setPlaceHits([])
     setPlaceQuery('')
+    // 이 주소가 학습된 장소면 자동 연결 (지도 그룹핀·place 상세에 묶임)
+    const matched = await findPlaceByAddr(p.roadAddress || p.address)
+    set('placeId', matched ? matched.id : null)
   }
   const clearPlace = () => {
+    set('placeId', null)
     set('placeName', '')
     set('placeAddr', '')
     set('placeLat', null)
