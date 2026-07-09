@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Shop } from '@/types/shop'
 import { toShop } from '@/services/shopService'
 import { shopRegion, shopDistrict } from '@/lib/utils/region'
+import { resolveEventCover } from '@/lib/event/eventCover'
 
 /**
  * 샵 홈은 "발견", 지도는 "내 주변".
@@ -19,6 +20,8 @@ export interface ShopHomeItem extends Shop {
   hasEvent: boolean
   eventTitle: string | null
   eventEnd: string | null
+  /** 진행 중 이벤트의 포스터 (없으면 작품 커버). 카드 이미지로 쓴다 */
+  eventCover: string | null
 }
 
 /**
@@ -61,7 +64,7 @@ export async function getShopHomeItems(): Promise<ShopHomeItem[]> {
     supabase.from('shop_products').select('shop_id, goods_types ( slug )'),
     supabase
       .from('events')
-      .select('shop_id, title, end_date')
+      .select('shop_id, title, end_date, cover_url, tag_id')
       .not('shop_id', 'is', null)
       .lte('start_date', today)
       .or(`end_date.is.null,end_date.gte.${today}`),
@@ -94,9 +97,22 @@ export async function getShopHomeItems(): Promise<ShopHomeItem[]> {
     goodsMap.set(r.shop_id, set)
   }
 
-  const evMap = new Map<string, { title: string; end: string | null }>()
+  // 이벤트 포스터가 없으면 작품 커버로 대체 — tags.cover_url을 미리 모은다
+  const evTagIds = [...new Set((evRes.data ?? []).map((e: any) => e.tag_id).filter(Boolean))]
+  const tagCoverMap = new Map<string, string | null>()
+  if (evTagIds.length) {
+    const { data: evTags } = await supabase.from('tags').select('id, cover_url').in('id', evTagIds)
+    for (const tg of (evTags ?? []) as any[]) tagCoverMap.set(tg.id, tg.cover_url ?? null)
+  }
+
+  const evMap = new Map<string, { title: string; end: string | null; cover: string | null }>()
   for (const e of (evRes.data ?? []) as any[]) {
-    if (!evMap.has(e.shop_id)) evMap.set(e.shop_id, { title: e.title ?? '이벤트 진행 중', end: e.end_date ?? null })
+    if (evMap.has(e.shop_id)) continue
+    const cover = resolveEventCover({
+      eventCoverUrl: e.cover_url ?? null,
+      workCoverUrl: e.tag_id ? (tagCoverMap.get(e.tag_id) ?? null) : null,
+    })
+    evMap.set(e.shop_id, { title: e.title ?? '이벤트 진행 중', end: e.end_date ?? null, cover })
   }
 
   return (shopRes.data ?? []).map((raw: any) => {
@@ -109,6 +125,7 @@ export async function getShopHomeItems(): Promise<ShopHomeItem[]> {
       hasEvent: !!ev,
       eventTitle: ev?.title ?? null,
       eventEnd: ev?.end ?? null,
+      eventCover: ev?.cover ?? null,
     } as ShopHomeItem
   })
 }

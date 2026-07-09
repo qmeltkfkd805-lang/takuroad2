@@ -18,6 +18,11 @@ import fab from './MapFab.module.css'
 import MapBottomSheet from './MapBottomSheet'
 import ShopFloatingCard from './ShopFloatingCard'
 
+// Place 소속 샵은 place 좌표로 접어서 표시한다 (저장 좌표 lat/lng 은 안 건드림)
+const dispLat = (s: any) => s.displayLat ?? s.lat
+const dispLng = (s: any) => s.displayLng ?? s.lng
+
+
 // 샵들이 퍼져 있는 정도에 맞춰 카카오 지도 레벨을 고름 (작을수록 확대)
 function levelForSpan(span: number) {
   if (span < 0.01) return 4
@@ -51,8 +56,9 @@ export default function MapPage() {
     setSelectedShop(shop)
 
     setGroupShops(null)
-    if (shop.lat && shop.lng) {
-      mapRef.current?.moveCenter(shop.lat, shop.lng, 3)
+    const la = dispLat(shop), ln = dispLng(shop)
+    if (la && ln) {
+      mapRef.current?.moveCenter(la, ln, 3)
     }
   }, [setSelectedShop])
 
@@ -68,8 +74,8 @@ export default function MapPage() {
   // 주어진 샵들이 다 보이는 위치·줌으로 지도 이동
   const fitToShops = useCallback((pts: Shop[]) => {
     if (pts.length === 0) return
-    const lats = pts.map(s => s.lat as number)
-    const lngs = pts.map(s => s.lng as number)
+    const lats = pts.map(s => dispLat(s) as number)
+    const lngs = pts.map(s => dispLng(s) as number)
     const minLat = Math.min(...lats), maxLat = Math.max(...lats)
     const minLng = Math.min(...lngs), maxLng = Math.max(...lngs)
     const span = Math.max(maxLat - minLat, maxLng - minLng)
@@ -81,7 +87,7 @@ export default function MapPage() {
   }, [])
 
   const onMap = useCallback(
-    (s: Shop) => !!s.lat && !!s.lng && !s.cats.includes('온라인샵'),
+    (s: Shop) => !!dispLat(s) && !!dispLng(s) && !s.cats.includes('온라인샵'),
     [],
   )
 
@@ -124,8 +130,9 @@ export default function MapPage() {
     if (!shopSlug || mapShops.length === 0) return
 
     const target = mapShops.find(s => s.slug === shopSlug)
-    if (target && target.lat && target.lng) {
-      mapRef.current?.moveCenter(target.lat, target.lng, 3)
+    const tla = target ? dispLat(target) : null, tln = target ? dispLng(target) : null
+    if (target && tla && tln) {
+      mapRef.current?.moveCenter(tla, tln, 3)
       setSelectedShop(target)
     }
   }, [searchParams, mapShops, setSelectedShop])

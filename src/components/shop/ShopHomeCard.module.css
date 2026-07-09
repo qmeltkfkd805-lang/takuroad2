@@ -10,8 +10,10 @@
 }
 .card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.07); }
 
-.thumb { position: relative; aspect-ratio: 4 / 3; background: var(--surface2); }
+.thumb { position: relative; aspect-ratio: 4 / 3; background: var(--surface2); overflow: hidden; }
 .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* 이벤트 포스터는 위쪽(제목·캐릭터)이 중요 → 아래를 자른다 */
+.thumbContain img { object-position: center top; }
 .noImage {
   width: 100%; height: 100%;
   display: flex; align-items: center; justify-content: center;

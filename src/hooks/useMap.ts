@@ -1,8 +1,13 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useRef, useCallback, RefObject } from 'react'
 import { Shop } from '@/types/shop'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
+
+// Place 소속 샵은 place 좌표로 접어서 표시한다 (저장 좌표 lat/lng 은 안 건드림)
+const dispLat = (s: any) => s.displayLat ?? s.lat ?? 0
+const dispLng = (s: any) => s.displayLng ?? s.lng ?? 0
+
 
 declare global {
   interface Window { kakao: any }
@@ -41,7 +46,7 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     initMap()
   }, [containerRef])
 
-  // 단일 샵 마커 — 카테고리 컬러 물방울 핀 (작게, 아이콘 없음)
+  // 단일 샵 마커 — 카테고리 컬러 물방울 핀 + 흰색 solid 아이콘
   const addMarker = useCallback((
     shop: Shop,
     onClick: (shop: Shop) => void,
@@ -54,17 +59,18 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     const color = catInfo.color ?? '#e8006f'
 
     const el = document.createElement('div')
-    el.style.cssText = `cursor:pointer;position:relative;width:16px;height:21px${isActive ? ';transform:scale(1.25);transform-origin:bottom center;z-index:2' : ''}`
+    el.style.cssText = 'cursor:pointer;position:relative;width:16px;height:21px'
+    // 카테고리 색 물방울 + 안에 작은 흰 동그라미만 (아이콘·테두리 없음)
     el.innerHTML = `
-      <svg width="16" height="21" viewBox="0 0 28 36" style="display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))">
-        <path d="M14 0C6.3 0 0 6.3 0 14c0 9.5 14 22 14 22s14-12.5 14-22C28 6.3 21.7 0 14 0z"
-          fill="${color}"/><circle cx="14" cy="14" r="5" fill="#fff"/>
+      <svg width="16" height="21" viewBox="0 0 28 36" style="display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));transform:${isActive ? 'scale(1.25)' : 'scale(1)'};transform-origin:center bottom">
+        <path d="M14 0C6.3 0 0 6.3 0 14c0 9.5 14 22 14 22s14-12.5 14-22C28 6.3 21.7 0 14 0z" fill="${color}"/>
+        <circle cx="14" cy="14" r="5" fill="#fff"/>
       </svg>
     `
     el.addEventListener('click', () => onClick(shop))
 
     const overlay = new window.kakao.maps.CustomOverlay({
-      position: new window.kakao.maps.LatLng(shop.lat ?? 0, shop.lng ?? 0),
+      position: new window.kakao.maps.LatLng(dispLat(shop), dispLng(shop)),
       content: el,
       yAnchor: 1,
     })
@@ -84,17 +90,18 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
 
     const el = document.createElement('div')
     el.style.cssText = 'cursor:pointer;position:relative;width:24px;height:30px'
+    // 카테고리 색 물방울 + 흰 동그라미 안에 카테고리 색 숫자
     el.innerHTML = `
-      <svg width="24" height="30" viewBox="0 0 30 38" style="display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))">
-        <path d="M15 0C6.7 0 0 6.7 0 15c0 10 15 23 15 23s15-13 15-23C30 6.7 23.3 0 15 0z"
-          fill="${color}"/><circle cx="15" cy="15" r="7" fill="#fff"/>
+      <svg width="24" height="30" viewBox="0 0 28 36" style="display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))">
+        <path d="M14 0C6.3 0 0 6.3 0 14c0 9.5 14 22 14 22s14-12.5 14-22C28 6.3 21.7 0 14 0z" fill="${color}"/>
+        <circle cx="14" cy="14" r="7" fill="#fff"/>
+        <text x="14" y="14" text-anchor="middle" dominant-baseline="central" font-size="9" font-weight="900" fill="${color}">${shops.length}</text>
       </svg>
-      <span style="position:absolute;left:50%;top:12px;transform:translate(-50%,-50%);color:${color};font-size:10px;font-weight:900;line-height:1;white-space:nowrap">${shops.length}</span>
     `
     el.addEventListener('click', () => onClick(shops))
 
     const overlay = new window.kakao.maps.CustomOverlay({
-      position: new window.kakao.maps.LatLng(first.lat ?? 0, first.lng ?? 0),
+      position: new window.kakao.maps.LatLng(dispLat(first), dispLng(first)),
       content: el,
       yAnchor: 1,
     })
@@ -156,8 +163,9 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     clearMarkers()
     const posMap: Record<string, Shop[]> = {}
     shops.forEach(s => {
-      if (!s.lat || !s.lng) return
-      const key = `${Math.round(s.lat * 1000)},${Math.round(s.lng * 1000)}`
+      const la = dispLat(s), ln = dispLng(s)
+      if (!la || !ln) return
+      const key = `${Math.round(la * 1000)},${Math.round(ln * 1000)}`
       if (!posMap[key]) posMap[key] = []
       posMap[key].push(s)
     })

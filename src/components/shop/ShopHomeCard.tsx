@@ -18,11 +18,15 @@ export const placeLabel = (s: ShopHomeItem) => {
 
 export default function ShopHomeCard({ shop, rank }: { shop: ShopHomeItem; rank?: number }) {
   const router = useRouter()
-  const cover = shop.images[0] ?? null
+  // 샵 사진이 우선. 없으면 진행 중 이벤트 포스터로 채운다.
+  const shopPhoto = shop.images[0] ?? null
+  const cover = shopPhoto ?? shop.eventCover ?? null
+  // 이벤트 포스터는 세로형이 많아 4:3에서 잘린다 → 안 자르고 통째로(contain)
+  const isPoster = !shopPhoto && !!shop.eventCover
 
   return (
     <article className={styles.card} onClick={() => router.push(ROUTES.shop(shop.slug))}>
-      <div className={styles.thumb}>
+      <div className={`${styles.thumb} ${isPoster ? styles.thumbContain : ''}`}>
         {cover ? <img src={cover} alt="" /> : <div className={styles.noImage}>사진 준비 중</div>}
         {rank != null && (
           <span className={rank <= 3 ? styles.rankHot : styles.rank}>
@@ -58,16 +62,18 @@ export default function ShopHomeCard({ shop, rank }: { shop: ShopHomeItem; rank?
 /* ───────── 작은 카드 : 새로 등록 / 이벤트 있는 샵 ───────── */
 
 export function ShopMiniCard({
-  shop, badge, badgeTone = 'new', sub,
+  shop, badge, badgeTone = 'new', sub, image,
 }: {
   shop: ShopHomeItem
   badge: string
   badgeTone?: 'new' | 'event'
   /** 두 번째 줄 — 지역이거나 이벤트 제목 */
   sub: string
+  /** 카드 이미지 강제 지정 — 이벤트 줄은 샵 사진 대신 이벤트 포스터를 넣는다 */
+  image?: string | null
 }) {
   const router = useRouter()
-  const cover = shop.images[0] ?? null
+  const cover = image ?? shop.images[0] ?? shop.eventCover ?? null
 
   return (
     <article className={styles.mini} onClick={() => router.push(ROUTES.shop(shop.slug))}>

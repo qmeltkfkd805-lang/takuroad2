@@ -71,7 +71,13 @@ export default function ShopHomePage() {
           </section>
 
           {/* 카테고리 바로가기 */}
-          <h2 className={styles.blockTitle}>카테고리 바로가기</h2>
+          <div className={styles.catHead}>
+            <h2 className={styles.blockTitle}>카테고리 바로가기</h2>
+            <button className={styles.catFilterLink} onClick={() => go('/shops/all?filter=1')}>
+              <EventIcon name="tag" size={14} color="var(--accent)" />
+              필터로 찾기
+            </button>
+          </div>
           <div className={styles.catGrid}>
             {CATEGORIES.slice(0, 7).map(c => (
               <button key={c.slug} className={styles.catTile} onClick={() => go(`/shops/all?cat=${c.slug}`)}>
@@ -81,9 +87,11 @@ export default function ShopHomePage() {
                 <span className={styles.catName}>{c.name}</span>
               </button>
             ))}
-            <button className={styles.catTile} onClick={() => go('/shops/all')}>
-              <span className={styles.catIcon} style={{ background: 'var(--surface2)' }}>···</span>
-              <span className={styles.catName}>전체</span>
+            <button className={styles.catTile} onClick={() => go('/shops/all?filter=1')}>
+              <span className={styles.catIcon} style={{ background: 'var(--accent-l)' }}>
+                <EventIcon name="tag" size={20} color="var(--accent)" />
+              </span>
+              <span className={styles.catName}>필터</span>
             </button>
           </div>
 
@@ -157,7 +165,7 @@ export default function ShopHomePage() {
                 <div className={styles.miniRow} {...eventDrag}>
                   {events.map(s => (
                     <div key={s.id} className={styles.miniItem}>
-                      <ShopMiniCard shop={s} badge="이벤트" badgeTone="event" sub={s.eventTitle ?? '이벤트 진행 중'} />
+                      <ShopMiniCard shop={s} badge="이벤트" badgeTone="event" sub={s.eventTitle ?? '이벤트 진행 중'} image={s.eventCover} />
                     </div>
                   ))}
                 </div>

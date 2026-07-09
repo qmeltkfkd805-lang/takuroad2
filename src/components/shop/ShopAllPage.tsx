@@ -26,7 +26,7 @@ export default function ShopAllPage() {
   const [goodsTypes, setGoodsTypes] = useState<GoodsType[]>([])
   const [userCtx, setUserCtx] = useState<UserContext>({ favoriteTagIds: new Set(), libraryTagIds: new Set(), savedShopIds: new Set() })
   const [loading, setLoading] = useState(true)
-  const [filterOpen, setFilterOpen] = useState(false)
+  const [filterOpen, setFilterOpen] = useState(params?.get('filter') === '1')
 
   // URL → 필터
   const [filters, setFilters] = useState<ShopFilters>(() => paramsToFilters(new URLSearchParams(params?.toString() ?? '')))

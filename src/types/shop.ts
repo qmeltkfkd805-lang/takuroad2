@@ -18,6 +18,16 @@ export interface Shop {
   lng: number | null
   google_place_id: string | null
 
+  // ── Place 연결 (2026-07 Place 리팩터링) ──
+  // lat/lng 은 "저장 좌표"(실제 매장 위치). 절대 안 건드린다.
+  // 지도는 아래 display 좌표를 쓴다: place 소속이면 place 좌표로 접힌다.
+  place_id: string | null
+  floor: string | null        // "3F"
+  unit: string | null         // "305호"
+  place_name: string | null   // 소속 장소 이름 (표시용)
+  displayLat: number | null   // place_id 있으면 place 좌표, 없으면 shop 좌표
+  displayLng: number | null
+
   // shop_categories JOIN → 첫 번째가 대표 카테고리 (마커 색상용)
   cat: string
   cats: string[]

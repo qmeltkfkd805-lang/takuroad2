@@ -28,7 +28,15 @@
 }
 
 /* ── 카테고리 ── */
-.blockTitle { margin: 0 0 -8px; font-size: 17px; font-weight: 800; }
+.catHead { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: -6px; }
+.blockTitle { margin: 0; font-size: 17px; font-weight: 800; }
+.catFilterLink {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 7px 13px; border-radius: 9999px;
+  border: 1px solid var(--border); background: var(--surface);
+  font-family: inherit; font-size: 12.5px; font-weight: 700; color: var(--text); cursor: pointer;
+}
+.catFilterLink:hover { border-color: var(--accent); color: var(--accent); }
 .catGrid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
 .catTile {
   display: flex; flex-direction: column; align-items: center; gap: 7px;
