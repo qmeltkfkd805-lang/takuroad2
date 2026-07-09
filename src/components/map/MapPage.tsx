@@ -258,6 +258,31 @@ export default function MapPage() {
               <h3 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '14px' }}>
                 📍 이 위치의 샵 {groupShops.length}곳
               </h3>
+              {(() => {
+                // 이 그룹이 전부 같은 장소(place) 소속이면 장소 상세로 가는 배너를 띄운다
+                const pid = groupShops[0]?.place_id
+                const pslug = groupShops[0]?.place_slug
+                const pname = groupShops[0]?.place_name
+                const allSamePlace = !!pid && groupShops.every(s => s.place_id === pid)
+                if (!allSamePlace || !pslug) return null
+                return (
+                  <a
+                    href={`/place/${pslug}`}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '10px',
+                      padding: '12px 14px', marginBottom: '12px', borderRadius: '12px',
+                      background: 'var(--accent-l)', textDecoration: 'none',
+                    }}
+                  >
+                    <span style={{ fontSize: '18px' }}>🏬</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontWeight: 800, fontSize: '14px', color: 'var(--accent)' }}>{pname} 전체 보기</div>
+                      <div style={{ fontSize: '12px', color: 'var(--muted)' }}>입점 샵과 이벤트를 한눈에</div>
+                    </div>
+                    <span style={{ color: 'var(--accent)', fontSize: '18px' }}>›</span>
+                  </a>
+                )
+              })()}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {groupShops.map(shop => (
                   <div

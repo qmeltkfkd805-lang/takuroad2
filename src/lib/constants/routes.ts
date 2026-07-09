@@ -4,6 +4,7 @@ export const ROUTES = {
   shop:        (slug: string) => `/shop/${slug}`,
   shopNew:     '/shop/new',
   shopEdit:    (slug: string) => `/shop/${slug}/edit`,
+  place:       (slug: string) => `/place/${slug}`,
   tag:         (slug: string) => `/tag/${slug}`,
   routes:      '/routes',
   region:      (city: string) => `/region/${city}`,
