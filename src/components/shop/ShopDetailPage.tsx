@@ -188,6 +188,24 @@ export default function ShopDetailPage({ shop }: Props) {
         {/* === 상세 정보 === */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
 
+          {shop.place_slug && shop.place_name && (
+            <a
+              href={`/place/${shop.place_slug}`}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '8px',
+                padding: '11px 13px', borderRadius: '12px',
+                background: 'var(--accent-l)', textDecoration: 'none',
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11a3 3 0 1 0 6 0 3 3 0 0 0-6 0z" /><path d="M17.7 16.7 12 22l-5.7-5.3a8 8 0 1 1 11.4 0z" /></svg>
+              <span style={{ flex: 1, minWidth: 0 }}>
+                <span style={{ display: 'block', fontSize: '13.5px', fontWeight: 800, color: 'var(--accent)' }}>{shop.place_name}</span>
+                <span style={{ display: 'block', fontSize: '11.5px', color: 'var(--muted)' }}>이 장소의 다른 샵·이벤트 보기</span>
+              </span>
+              <span style={{ color: 'var(--accent)', fontSize: '16px' }}>›</span>
+            </a>
+          )}
+
           {shop.addr && (
             <InfoRow icon={<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11a3 3 0 1 0 6 0 3 3 0 0 0-6 0z" /><path d="M17.7 16.7 12 22l-5.7-5.3a8 8 0 1 1 11.4 0z" /></svg>} label="주소">
               {shop.addr}

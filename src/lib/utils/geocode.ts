@@ -29,6 +29,10 @@ export interface PlaceSearchResult {
   roadAddress: string
   lat: number
   lng: number
+  // 카카오 장소 식별 — Place 자동 연결/생성의 기준
+  kakaoPlaceId: string | null
+  categoryName: string | null       // 카카오 원본 카테고리 (예: "가정,생활 > 백화점")
+  categoryGroupCode: string | null  // MT1, CT1, AT4 ...
 }
 
 export async function searchPlace(query: string): Promise<PlaceSearchResult[]> {
@@ -52,6 +56,9 @@ export async function searchPlace(query: string): Promise<PlaceSearchResult[]> {
       roadAddress: doc.road_address_name || doc.address_name,
       lat: parseFloat(doc.y),
       lng: parseFloat(doc.x),
+      kakaoPlaceId: doc.id ?? null,
+      categoryName: doc.category_name ?? null,
+      categoryGroupCode: doc.category_group_code ?? null,
     }))
   } catch {
     return []

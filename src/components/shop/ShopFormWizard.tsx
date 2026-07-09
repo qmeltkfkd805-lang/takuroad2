@@ -10,6 +10,8 @@ import { Shop, ShopFormData } from '@/types/shop'
 import { BusinessHours } from '@/types/database'
 import { generateSlug } from '@/lib/utils/shop'
 import { geocodeAddress, searchPlace, PlaceSearchResult } from '@/lib/utils/geocode'
+import { findPlaceByAddr } from '@/services/placeService'
+import AdminPlaceLink from './AdminPlaceLink'
 import { getTodayStatus } from '@/lib/utils/date'
 import ShopEnrichmentSection from './ShopEnrichmentSection'
 import ShopAmenitySection from './ShopAmenitySection'
@@ -44,11 +46,12 @@ const EMPTY_FORM: ShopFormData = {
   lat: null, lng: null, cats: [],
   hours: null, parking: null, parking_note: '',
   shop_link: '', sns_links: [], phone: '', floor_info: '', start_date: '', end_date: '', event_info: '',
+  place_id: null, place_name: null, floor: '', unit: '',
 }
 
 export default function ShopFormWizard({ mode, shop }: Props) {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user, isAdmin } = useAuth()
 
   const [form, setForm] = useState<ShopFormData>(EMPTY_FORM)
   const [step, setStep] = useState(1)
@@ -73,6 +76,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
         parking: shop.parking, parking_note: shop.parking_note ?? '',
         shop_link: shop.shop_link ?? '', sns_links: (shop as any).sns_links?.length ? (shop as any).sns_links : (shop.shop_link ? [shop.shop_link] : []), phone: shop.phone ?? '', floor_info: shop.floor_info ?? '',
         start_date: shop.start_date ?? '', end_date: shop.end_date ?? '', event_info: shop.event_info ?? '',
+        place_id: shop.place_id ?? null, place_name: shop.place_name ?? null, floor: shop.floor ?? '', unit: shop.unit ?? '',
       })
       const initLinks = (shop as any).sns_links?.length ? (shop as any).sns_links : (shop.shop_link ? [shop.shop_link] : [])
       setLinks(initLinks.length ? initLinks : [''])
@@ -96,8 +100,24 @@ export default function ShopFormWizard({ mode, shop }: Props) {
     setPlaceResults(await searchPlace(form.addr))
     setSearchingPlace(false)
   }
-  function selectPlace(place: PlaceSearchResult) {
-    set('addr', place.roadAddress); set('lat', place.lat); set('lng', place.lng); setPlaceResults([])
+  const [placeLinking, setPlaceLinking] = useState(false)
+
+  async function selectPlace(place: PlaceSearchResult) {
+    set('addr', place.roadAddress)
+    set('lat', place.lat)
+    set('lng', place.lng)
+    setPlaceResults([])
+
+    // 이 주소가 학습된 장소(place_address_map)에 있으면 자동 연결.
+    // 없으면 독립 매장 — place는 관리자가 샵 편집에서 지정할 때만 생긴다.
+    setPlaceLinking(true)
+    const matched = await findPlaceByAddr(place.roadAddress || place.address)
+    setPlaceLinking(false)
+    if (matched) {
+      setForm(prev => ({ ...prev, place_id: matched.id, place_name: matched.name }))
+    } else {
+      setForm(prev => ({ ...prev, place_id: null, place_name: null }))
+    }
   }
   // 첫 링크만 DB(shop_link)에 저장됨. 여러 개 저장하려면 sns_links 컬럼 필요.
   function updateLinks(next: string[]) {
@@ -276,6 +296,21 @@ export default function ShopFormWizard({ mode, shop }: Props) {
                 </div>
               )}
               {form.lat && form.addr && <p style={{ fontSize: 12, color: 'var(--green)', marginTop: 4 }}><Svg size={12}><path d="m5 12 5 5L20 6" /></Svg> 위치가 설정됐어요</p>}
+              {placeLinking && <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>장소 연결 중…</p>}
+              {form.place_name && !placeLinking && (
+                <p style={{ fontSize: 12, color: 'var(--accent)', marginTop: 4, fontWeight: 700 }}>
+                  <Svg size={12}><path d="M9 11a3 3 0 1 0 6 0 3 3 0 0 0-6 0z" /><path d="M17.7 16.7 12 22l-5.7-5.3a8 8 0 1 1 11.4 0z" /></Svg> {form.place_name}에 연결돼요 · 이 장소의 다른 샵·이벤트와 함께 묶여요
+                </p>
+              )}
+
+              {/* 관리자 학습: 이 주소 = 이 장소 매핑 (편집 모드 + 관리자) */}
+              {mode === 'edit' && isAdmin && form.addr && (
+                <AdminPlaceLink
+                  shopAddr={form.addr}
+                  currentPlaceName={form.place_name}
+                  onLinked={p => setForm(prev => ({ ...prev, place_id: p.id, place_name: p.name }))}
+                />
+              )}
             </Field>
 
             <Field label="상세 위치" hint="건물 내 층수 등">

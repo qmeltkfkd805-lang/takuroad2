@@ -86,6 +86,11 @@ export interface ShopFormData {
   start_date: string
   end_date: string
   event_info: string
+  // Place 연결 (등록 위저드 STEP 0)
+  place_id: string | null
+  place_name: string | null   // 표시용 (저장 안 됨, UI 편의)
+  floor: string
+  unit: string
 }
 
 // 지도 마커용 최소 타입 (전체 Shop보다 가볍게)

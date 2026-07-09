@@ -347,6 +347,13 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                         </span>
                       : <span style={{ color: 'var(--muted)' }}>정보 없음</span>} />
                     <InfoItem label="주소" value={shop.addr ? `${shop.addr}${shop.floor_info ? ` (${shop.floor_info})` : ''}` : <span style={{ color: 'var(--muted)' }}>정보 없음</span>} />
+                    {shop.place_slug && shop.place_name && (
+                      <InfoItem label="장소" value={
+                        <a href={`/place/${shop.place_slug}`} style={{ color: 'var(--accent)', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                          <Ico name="pin" size={13} /> {shop.place_name} ›
+                        </a>
+                      } />
+                    )}
                     <InfoItem label="주차" value={shop.parking === null
                       ? <span style={{ color: 'var(--muted)' }}>정보 없음</span>
                       : shop.parking
