@@ -1,0 +1,39 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 22px;
+}
+
+.head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; }
+.area { display: flex; align-items: center; gap: 6px; }
+.pin { font-size: 15px; }
+.area h3 { margin: 0; font-size: 18px; font-weight: 900; }
+.date { font-size: 12.5px; color: var(--muted); font-weight: 600; }
+
+.body { display: flex; flex-direction: column; gap: 14px; }
+
+.placeGroup { }
+.placeName {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 13.5px; font-weight: 800; color: var(--text);
+  margin-bottom: 8px;
+}
+
+.items, .itemsNested { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.itemsNested { padding-left: 18px; border-left: 2px solid var(--border); margin-left: 4px; }
+
+.item {
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer; padding: 4px 0;
+}
+.item:hover .name { color: var(--accent); }
+.icon { font-size: 14px; flex-shrink: 0; }
+.name { font-size: 14px; font-weight: 600; }
+.label { font-size: 11.5px; color: var(--muted); }
+
+.foot {
+  margin-top: 16px; padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 12.5px; color: var(--muted); font-weight: 600;
+}

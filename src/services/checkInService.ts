@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
 import { recordShopVisitActivity } from './activityService'
+import { geekAreaFromAddr } from '@/lib/utils/geekArea'
 import { addExp } from './expService'
 import { evaluateBadgeTiersForUser } from './badgeService'
 
@@ -83,17 +84,21 @@ export async function createCheckIn(
 
   await addExp(userId, CHECK_IN_EXP, 'check_in', 'shop', shopId)
 
-  // 샵 정보 조회 (slug = 링크용, region = Activity 스냅샷용)
+  // 샵 정보 조회 (slug = 링크용, addr → 덕질 지역 = Activity 스냅샷용)
   let slug = shopSlug
-  let shopRegion: string | null = null
+  let geekArea: string | null = null
+  let placeName: string | null = null
   const { data: shopData } = await supabase
     .from('shops')
-    .select('slug, region')
+    .select('slug, region, addr, places ( name, slug )')
     .eq('id', shopId)
     .maybeSingle()
   if (shopData) {
-    slug = slug ?? (shopData as any).slug
-    shopRegion = (shopData as any).region ?? null
+    const sd = shopData as any
+    slug = slug ?? sd.slug
+    // ⭐ 덕질 지역 — "마포구"가 아니라 "홍대". DB region이 비어도 주소에서 뽑는다
+    geekArea = sd.region?.trim() || geekAreaFromAddr(sd.addr)
+    placeName = sd.places?.name ?? null   // 소속 장소(스타필드 등) — Story에서 한 번 더 묶임
   }
 
   // ⭐ Activity 시스템 — 스냅샷 방식으로 방문 기록.
@@ -102,7 +107,8 @@ export async function createCheckIn(
     userId,
     shopId,
     shopName,
-    region: shopRegion,
+    region: geekArea,      // 덕질 지역 (홍대·수원…)
+    placeName,             // 소속 장소 (스타필드 수원…) — Story 내 그룹핑용
   })
 
   await (supabase as any).rpc('increment_visit_count', { p_shop_id: shopId })

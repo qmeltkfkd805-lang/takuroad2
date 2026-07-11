@@ -165,3 +165,11 @@
 
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 @media (prefers-reduced-motion: reduce) { .bar span { transition: none; } .recentSkel { animation: none; } }
+
+/* 덕질 연대기 Story 리스트 (컬렉션 홈 — 최근 몇 개만) */
+.storyList { display: flex; flex-direction: column; gap: 14px; }
+.storySkel {
+  height: 150px; border-radius: 16px;
+  background: linear-gradient(90deg, var(--surface2), #EFEFEF, var(--surface2));
+  background-size: 200% 100%; animation: shimmer 1.4s infinite;
+}

@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getCollectionHome, CollectionHome } from '@/services/collectionService'
+import { getMyStories, Story } from '@/services/storyBuilder'
+import StoryCard from './StoryCard'
 import { ROUTES } from '@/lib/constants/routes'
 import styles from './CollectionHomePage.module.css'
 
@@ -17,10 +19,13 @@ export default function CollectionHomePage() {
   const [data, setData] = useState<CollectionHome | null>(null)
   const [loading, setLoading] = useState(true)
   const [souvenirTab, setSouvenirTab] = useState('전체')
+  const [stories, setStories] = useState<Story[]>([])
 
   useEffect(() => {
     if (!user) { setLoading(false); return }
     getCollectionHome(user.id).then(setData).catch(() => {}).finally(() => setLoading(false))
+    // 최근 Story 3개 — 컬렉션 홈은 대시보드, 전체는 /chronicle
+    getMyStories(user.id, 3).then(setStories).catch(() => {})
   }, [user])
 
   if (!user) {
@@ -68,28 +73,27 @@ export default function CollectionHomePage() {
         </div>
       </section>
 
-      {/* 최근 방문 샵 */}
+      {/* 나의 덕질 연대기 — 최근 Story (전체는 /chronicle) */}
       <section className={styles.recentBlock}>
         <div className={styles.blockHead}>
-          <h3>내가 최근에 방문한 샵</h3>
-          <button className={styles.chev} onClick={() => router.push('/shops/all')}>›</button>
+          <h3>나의 덕질 연대기</h3>
+          <button className={styles.moreLink} onClick={() => router.push('/chronicle')}>
+            연대기 전체 보기 ›
+          </button>
         </div>
         {loading ? (
-          <div className={styles.recentRow}>{Array.from({ length: 5 }).map((_, i) => <div key={i} className={styles.recentSkel} />)}</div>
-        ) : recent.length === 0 ? (
-          <Empty text="아직 방문한 샵이 없어요. 샵 상세에서 ‘방문했어요’를 누르면 여기에 쌓여요." cta="지도에서 찾기" onClick={() => router.push('/map')} />
+          <div className={styles.storyList}>
+            {Array.from({ length: 2 }).map((_, i) => <div key={i} className={styles.storySkel} />)}
+          </div>
+        ) : stories.length === 0 ? (
+          <Empty
+            text="아직 기록이 없어요. 다녀온 굿즈샵에서 ‘방문했어요’를 누르면, 지역별로 묶여 하나의 이야기가 됩니다."
+            cta="지도에서 샵 찾기"
+            onClick={() => router.push('/map')}
+          />
         ) : (
-          <div className={styles.recentRow}>
-            {recent.map(v => (
-              <div key={v.shopId} className={styles.recentCard} onClick={() => v.slug && router.push(ROUTES.shop(v.slug))}>
-                <div className={styles.recentThumb}>
-                  {v.cover ? <img src={v.cover} alt="" /> : <span className={styles.recentThumbEmpty} />}
-                  <span className={styles.recentCheck}>✓</span>
-                </div>
-                <div className={styles.recentName}>{v.name}</div>
-                <div className={styles.recentMeta}>{v.region ?? ''} · {v.visitedAt.slice(0, 10)}</div>
-              </div>
-            ))}
+          <div className={styles.storyList}>
+            {stories.map(s => <StoryCard key={s.key} story={s} />)}
           </div>
         )}
       </section>

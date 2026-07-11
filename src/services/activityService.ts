@@ -23,6 +23,7 @@ export type ActivityType =
 // 각 타입별 snapshot 형태 (그때의 표시 정보)
 export interface ActivitySnapshot {
   shop_name?: string
+  place_name?: string     // 소속 장소 (스타필드 수원 등) — Story 내 그룹핑용
   event_name?: string
   cafe_name?: string
   route_name?: string
@@ -93,6 +94,7 @@ export async function recordShopVisitActivity(params: {
   shopId: string
   shopName: string
   region?: string | null
+  placeName?: string | null
   workId?: string | null
   workName?: string | null
   occurredAt?: string
@@ -102,6 +104,7 @@ export async function recordShopVisitActivity(params: {
     type: 'shop_visit',
     snapshot: {
       shop_name: params.shopName,
+      place_name: params.placeName ?? undefined,
       region: params.region ?? undefined,
       work_name: params.workName ?? undefined,
     },
