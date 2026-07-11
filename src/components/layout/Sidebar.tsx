@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
+import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import { getMyLevelInfo, LevelInfo } from '@/services/expService'
 import styles from './Sidebar.module.css'
 
@@ -23,7 +24,7 @@ const NAV: NavItem[] = [
 
 export default function Sidebar() {
   const pathname = usePathname() ?? '/'
-  const { user } = useAuth()
+  const { user, profile } = useAuth()
   const [info, setInfo] = useState<LevelInfo | null>(null)
 
   useEffect(() => {
@@ -51,11 +52,26 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {user && info && <div className={styles.divider} />}
+      {user && <div className={styles.divider} />}
+      {user && <MeCard userId={user.id} src={profile?.avatar_url} name={profile?.nickname} />}
       {user && info && <LvCard info={info} />}
     </div>
   )
 }
+/* 내 얼굴 — 착용한 프레임·효과·칭호가 여기 보인다.
+   ⭐ LvCard의 등급 아이콘 자리를 뺏지 않는다. 그건 레벨 시스템의 얼굴이다. */
+function MeCard({ userId, src, name }: { userId: string; src?: string | null; name?: string | null }) {
+  return (
+    <Link href="/cosmetic" className={styles.me}>
+      <UserAvatar userId={userId} src={src} name={name} size={40} />
+      <span className={styles.meBody}>
+        <span className={styles.meNick}>{name ?? '사용자'}</span>
+        <UserTitle userId={userId} />
+      </span>
+    </Link>
+  )
+}
+
 function LvCard({ info }: { info: LevelInfo }) {
   const floor = info.currentLevelExp
   const ceil = info.nextLevelThreshold

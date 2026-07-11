@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { ROUTES } from '@/lib/constants/routes'
+import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import { getAllTagsForSelect } from '@/services/routeService'
 import {
   getPosts, getNotices, getPopularPosts, getCommunityStats, getTrendingTags, getWorkSearchCounts,
@@ -246,7 +247,11 @@ export default function CommunityPage() {
                       </span>
                     )}
                   </div>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, minWidth: 0 }}>
+                  <UserAvatar userId={p.author?.id} src={p.author?.avatarUrl} name={p.author?.nickname} size={18} showEffect={false} />
                   <span style={{ color: 'var(--muted)', fontSize: 12.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.author?.nickname ?? '익명'}</span>
+                  <UserTitle userId={p.author?.id} />
+                </span>
                   <span style={{ textAlign: 'right', color: 'var(--muted)', fontSize: 12 }}>{timeAgo(p.createdAt)}</span>
                   <span style={{ textAlign: 'center', color: '#FF4D6D', fontWeight: 700, fontSize: 12.5 }}>♥ {p.likeCount}</span>
                   <span style={{ textAlign: 'center', color: 'var(--muted)', fontSize: 12.5 }}>{p.viewCount}</span>

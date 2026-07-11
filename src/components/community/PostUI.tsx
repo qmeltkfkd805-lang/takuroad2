@@ -1,9 +1,10 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { ROUTES } from '@/lib/constants/routes'
+import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import {
   togglePostLike, incrementPostView, getComments, addComment, deleteComment, toggleCommentLike,
   reportPost, hidePost, deletePost, setPostVisibility,
@@ -33,7 +34,11 @@ export function PostCard({ post, onOpen, showBoard }: { post: CommunityPost; onO
         </div>
         {post.title && <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{post.flair && <span style={flairBadge}>{post.flair}</span>}{post.isSpoiler && <span style={{ display: 'inline-block', fontSize: 10, fontWeight: 800, color: '#fff', background: '#e04343', padding: '1px 6px', borderRadius: 5, marginRight: 5, verticalAlign: 'middle' }}>스포</span>}{post.title}</div>}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 12, color: 'var(--muted)' }}>
-          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{post.author?.nickname ?? '익명'}</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, minWidth: 0 }}>
+            <UserAvatar userId={post.author?.id} src={post.author?.avatarUrl} name={post.author?.nickname} size={18} showEffect={false} />
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{post.author?.nickname ?? '익명'}</span>
+            <UserTitle userId={post.author?.id} />
+          </span>
           <span style={{ display: 'inline-flex', gap: 8, flexShrink: 0 }}>
             <span>♥ {post.likeCount}</span>
             <span>💬 {post.commentCount}</span>
@@ -168,7 +173,12 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
             )}
           </div>
           {post.title && <h3 style={{ fontSize: 19, fontWeight: 800, margin: '0 0 8px' }}>{post.flair && <span style={{ ...flairBadge, fontSize: 13 }}>{post.flair}</span>}{post.title}</h3>}
-          <div style={{ fontSize: 12.5, color: 'var(--muted)', paddingBottom: 14, marginBottom: 16, borderBottom: '1px solid var(--border)' }}>{post.author?.nickname ?? '익명'} · 조회 {post.viewCount}</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: 'var(--muted)', paddingBottom: 14, marginBottom: 16, borderBottom: '1px solid var(--border)' }}>
+            <UserAvatar userId={post.author?.id} src={post.author?.avatarUrl} name={post.author?.nickname} size={30} />
+            <span style={{ fontWeight: 700, color: 'var(--text)' }}>{post.author?.nickname ?? '익명'}</span>
+            <UserTitle userId={post.author?.id} />
+            <span>· 조회 {post.viewCount}</span>
+          </div>
           {post.content && (isHtml
             ? <div className="taku-post-body" style={{ fontSize: 14.5, lineHeight: 1.65, margin: '0 0 16px', wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
             : <p style={{ fontSize: 14.5, lineHeight: 1.65, whiteSpace: 'pre-wrap', margin: '0 0 16px' }}>{post.content}</p>)}
@@ -379,7 +389,11 @@ function CommentRow({ c, isReply, user, isAdmin, onLike, onReply, onDelete }: {
     <div style={{ display: 'flex', gap: 10, marginLeft: isReply ? 28 : 0 }}>
       {isReply && <span style={{ color: 'var(--muted)', flexShrink: 0, fontSize: 13, marginTop: 1 }}>↳</span>}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 3 }}>{c.author?.nickname ?? '익명'}</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
+          <UserAvatar userId={c.author?.id} src={c.author?.avatarUrl} name={c.author?.nickname} size={22} showEffect={false} />
+          <span style={{ fontSize: 12.5, fontWeight: 700 }}>{c.author?.nickname ?? '익명'}</span>
+          <UserTitle userId={c.author?.id} />
+        </div>
         <div style={{ fontSize: 13.5, lineHeight: 1.5, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{c.content}</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 5 }}>
           <span style={{ fontSize: 11.5, color: 'var(--muted)' }}>{fmtDateTime(c.createdAt)}</span>

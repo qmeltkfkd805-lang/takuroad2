@@ -1,0 +1,59 @@
+﻿.avatar {
+  position: relative; display: inline-flex; flex-shrink: 0;
+  align-items: center; justify-content: center;
+  border-radius: 50%; overflow: hidden;
+  background: var(--surface2); color: var(--muted);
+  transition: box-shadow .25s ease;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.initial { font-weight: 900; }
+
+.title {
+  display: inline-block;
+  padding: 2px 8px; border-radius: 9999px;
+  background: var(--accent-l); color: var(--accent);
+  font-size: 10.5px; font-weight: 800; white-space: nowrap;
+}
+.titleMd { padding: 4px 11px; font-size: 12px; }
+
+.line { display: inline-flex; align-items: center; gap: 9px; min-width: 0; }
+.lineBody { display: inline-flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: wrap; }
+.nick { font-size: 13.5px; font-weight: 800; }
+
+/* 효과 — 아바타 위에 얹힌다. globals가 아니라 여기서만 (다른 곳에 새지 않게) */
+.fxSparkle::after, .fxStar::after, .fxSakura::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: 50%;
+}
+.fxSparkle::after {
+  background-image: radial-gradient(circle, #fff 1.2px, transparent 1.4px);
+  background-size: 22px 22px;
+  animation: cTwinkle 2.4s ease-in-out infinite;
+}
+.fxStar::after {
+  background-image: radial-gradient(circle, #FFF3C4 1.5px, transparent 1.8px);
+  background-size: 26px 26px;
+  animation: cDrift 7s linear infinite;
+}
+.fxSakura::after {
+  background-image: radial-gradient(circle, #FFB3CC 2.4px, transparent 2.8px);
+  background-size: 30px 30px;
+  animation: cFall 6s linear infinite;
+}
+.fxAura {
+  box-shadow: 0 0 0 3px rgba(255,86,146,.28), 0 0 20px rgba(255,86,146,.4);
+  animation: cPulse 2.6s ease-in-out infinite;
+}
+.fxNeon {
+  box-shadow: 0 0 8px #FF3DCB, 0 0 20px rgba(255,61,203,.55);
+  animation: cFlicker 3.2s ease-in-out infinite;
+}
+
+@keyframes cTwinkle { 0%,100% { opacity: .35 } 50% { opacity: 1 } }
+@keyframes cDrift   { from { background-position: 0 0 } to { background-position: 26px 26px } }
+@keyframes cFall    { from { background-position: 0 -30px } to { background-position: 12px 30px } }
+@keyframes cPulse   { 0%,100% { box-shadow: 0 0 0 3px rgba(255,86,146,.22), 0 0 14px rgba(255,86,146,.3) } 50% { box-shadow: 0 0 0 5px rgba(255,86,146,.34), 0 0 28px rgba(255,86,146,.55) } }
+@keyframes cFlicker { 0%,100% { opacity: 1 } 47% { opacity: .82 } 50% { opacity: .6 } 53% { opacity: .92 } }
+
+@media (prefers-reduced-motion: reduce) {
+  .fxSparkle::after, .fxStar::after, .fxSakura::after, .fxAura, .fxNeon { animation: none; }
+}

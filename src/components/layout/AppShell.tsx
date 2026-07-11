@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import styles from './AppShell.module.css'
@@ -8,6 +8,7 @@ import BottomNav from './BottomNav'
 import Link from 'next/link'
 import { getActiveWorks, ActiveWork } from '@/services/activeWorksService'
 import { useAuth } from '@/components/layout/AuthProvider'
+import { CosmeticProvider } from '@/components/cosmetic/CosmeticProvider'
 import { logVisit } from '@/services/trafficService'
 
 const NO_SHELL = ['/login', '/admin', '/dev', '/test']
@@ -23,9 +24,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     getActiveWorks(10).then(setTrending).catch(() => setTrending([]))
   }, [])
 
-  if (bare) return <>{children}</>
+  if (bare) return <CosmeticProvider>{children}</CosmeticProvider>
 
   return (
+    <CosmeticProvider>
     <div className={styles.shell}>
       <header className={styles.header}>
         <Link href="/" className={styles.logo}>
@@ -39,8 +41,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       </div>
       <BottomNav />
     </div>
+    </CosmeticProvider>
   )
 }
-
-
-

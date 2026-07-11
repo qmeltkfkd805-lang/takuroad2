@@ -8,6 +8,7 @@ import { Review } from '@/types/review'
 import Link from 'next/link'
 import { ROUTES } from '@/lib/constants/routes'
 import { Button } from '@/components/tds/Button'
+import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 
 interface Props {
   shopId: string
@@ -312,21 +313,16 @@ function ReviewItem({ review, currentUserId, onDelete, accentColor }: {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-        <div style={{
-          width: '32px', height: '32px', borderRadius: '50%',
-          background: 'var(--surface2)', overflow: 'hidden',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '13px', fontWeight: 700, color: 'var(--muted)', flexShrink: 0,
-        }}>
-          {review.author?.avatar_url ? (
-            <img src={review.author.avatar_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          ) : (
-            review.author?.nickname?.[0] ?? '?'
-          )}
-        </div>
+        <UserAvatar
+          userId={review.author?.id}
+          src={review.author?.avatar_url}
+          name={review.author?.nickname}
+          size={32}
+        />
         <div style={{ flex: 1 }}>
-          <div style={{ fontWeight: 700, fontSize: '13px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: '13px' }}>
             {review.author?.nickname ?? '익명'}
+            <UserTitle userId={review.author?.id} />
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span style={{ color: '#f59e0b', fontSize: '12px' }}>
@@ -392,21 +388,19 @@ function ReviewItem({ review, currentUserId, onDelete, accentColor }: {
               display: 'flex', gap: '8px', padding: '8px 0',
               borderTop: '1px solid var(--border)',
             }}>
-              <div style={{
-                width: '24px', height: '24px', borderRadius: '50%',
-                background: 'var(--surface2)', overflow: 'hidden',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '10px', fontWeight: 700, color: 'var(--muted)', flexShrink: 0,
-              }}>
-                {c.author?.avatar_url ? (
-                  <img src={c.author.avatar_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                ) : (
-                  c.author?.nickname?.[0] ?? '?'
-                )}
-              </div>
+              <UserAvatar
+                userId={c.author?.id}
+                src={c.author?.avatar_url}
+                name={c.author?.nickname}
+                size={24}
+                showEffect={false}
+              />
               <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '12px', fontWeight: 700 }}>{c.author?.nickname ?? '익명'}</span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                    <span style={{ fontSize: '12px', fontWeight: 700 }}>{c.author?.nickname ?? '익명'}</span>
+                    <UserTitle userId={c.author?.id} />
+                  </span>
                   {currentUserId === c.user_id && (
                     <button
                       onClick={() => handleCommentDelete(c.id)}

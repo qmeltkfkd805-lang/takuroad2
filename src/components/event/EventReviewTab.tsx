@@ -1,4 +1,5 @@
 'use client'
+import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -120,10 +121,15 @@ export default function EventReviewTab({ eventId, onCountChange }: { eventId: st
           {reviews.map(r => (
             <div key={r.id} style={{ padding: '16px 0', borderTop: '1px solid var(--border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                <div style={{ width: 30, height: 30, borderRadius: 9999, overflow: 'hidden', background: 'var(--surface2)', flexShrink: 0 }}>
-                  {r.author?.avatarUrl && <img src={r.author.avatarUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
-                </div>
+                <UserAvatar
+                  userId={r.author?.id}
+                  src={r.author?.avatarUrl}
+                  name={r.author?.nickname}
+                  size={30}
+                  showEffect={false}
+                />
                 <span style={{ fontSize: 13, fontWeight: 700 }}>{r.author?.nickname ?? '알 수 없음'}</span>
+                <UserTitle userId={r.author?.id} />
                 <span style={{ display: 'inline-flex', gap: 1, color: '#FFB020' }}>
                   {Array.from({ length: r.stars }).map((_, i) => <EventIcon key={i} name="starFill" size={14} />)}
                 </span>

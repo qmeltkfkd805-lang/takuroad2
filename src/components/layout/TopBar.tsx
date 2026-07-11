@@ -1,8 +1,9 @@
-﻿'use client'
+'use client'
 import { useState, useEffect, useRef, useMemo, FormEvent } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
+import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import { getUnreadCount } from '@/services/notificationService'
 import { getMyLevelInfo } from '@/services/expService'
 import { globalSearch, GlobalSearchResult } from '@/services/globalSearchService'
@@ -130,10 +131,16 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
             </Link>
             <Link href="/profile" className={styles.user}>
               <span className={styles.avatar}>
-                {profile?.avatar_url ? <img src={profile.avatar_url} alt="" /> : (profile?.nickname?.[0] ?? '?')}
+                <UserAvatar
+                  userId={user?.id}
+                  src={profile?.avatar_url}
+                  name={profile?.nickname}
+                  size={30}
+                />
               </span>
               <span className={styles.userMeta}>
                 <span className={styles.userName}>{profile?.nickname ?? '사용자'}</span>
+                <UserTitle userId={user?.id} />
                 {level != null && <span className={styles.userLv}>Lv.{level}</span>}
               </span>
             </Link>

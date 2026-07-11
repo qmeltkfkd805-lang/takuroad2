@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -7,6 +7,7 @@ import { getMyStories, Story, StoryItem } from '@/services/storyBuilder'
 import { AXIS_KEYS, AXIS_LABEL, AXIS_ICON, AxisKey } from '@/lib/work/workProgress'
 import { ROUTES } from '@/lib/constants/routes'
 import StoryCard from './StoryCard'
+import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import { Icon, LineIcon } from '@/components/tds'
 import { MaskIcon } from './MaskIcon'
 import styles from './ChroniclePage.module.css'
@@ -65,8 +66,18 @@ function storyAxes(story: Story): Set<AxisKey> {
   return set
 }
 
+/** 헤더 요약 한 칸 */
+function Sum({ icon, n, unit }: { icon: string; n: number; unit: string }) {
+  return (
+    <span className={styles.sum}>
+      <Icon name={icon} size={18} />
+      <b>{n}</b>{unit}
+    </span>
+  )
+}
+
 export default function ChroniclePage() {
-  const { user } = useAuth()
+  const { user, profile } = useAuth()
   const router = useRouter()
 
   const [stories, setStories] = useState<Story[]>([])
@@ -104,6 +115,37 @@ export default function ChroniclePage() {
     document.addEventListener('mousedown', onDown)
     return () => document.removeEventListener('mousedown', onDown)
   }, [panelOpen])
+
+  /* 연대기 헤더 요약 — 새 쿼리를 안 판다. 이미 가져온 stories를 센다.
+     ⭐ 연대기는 SNS 피드가 아니라 '내 일기장'이다.
+        그래서 얼굴은 헤더에 한 번만. 카드마다 반복되면 정보가 아니라 노이즈다.
+        (남의 연대기를 볼 수 있게 되면 그때 카드에 상대 얼굴을 넣는다) */
+  const overview = useMemo(() => {
+    const areas = new Set<string>()
+    const shops = new Set<string>()
+    const events = new Set<string>()
+    const routes = new Set<string>()
+    let total = 0
+    let first = ''
+
+    for (const s of stories) {
+      areas.add(s.area)
+      if (!first || s.date < first) first = s.date
+      for (const p of s.places) {
+        for (const it of p.items) {
+          total++
+          if (it.type === 'shop_visit' && it.refId) shops.add(it.refId)
+          else if (it.type === 'event_visit' && it.refId) events.add(it.refId)
+          else if (it.type === 'route_completed' && it.refId) routes.add(it.refId)
+        }
+      }
+    }
+    return {
+      areas: areas.size, shops: shops.size, events: events.size, routes: routes.size,
+      total,
+      since: first ? first.slice(0, 4) + '.' + first.slice(5, 7) : null,
+    }
+  }, [stories])
 
   // 기록이 있는 연도 (최신순)
   const years = useMemo(
@@ -179,11 +221,35 @@ export default function ChroniclePage() {
     <div className={styles.page}>
       <header className={styles.head}>
         <div className={styles.headLeft}>
-          <h1>
-            나의 덕질 연대기
-            <Icon name="colorstar" size={22} />
-          </h1>
-          <p>내가 언제, 어디를 다녀왔는지 — 시간의 흐름을 따라 내 덕질을 기록해요.</p>
+          <div className={styles.me}>
+            <UserAvatar userId={user.id} src={profile?.avatar_url} name={profile?.nickname} size={56} />
+            <div className={styles.meBody}>
+              <h1>
+                나의 덕질 연대기
+                <Icon name="colorstar" size={22} />
+              </h1>
+              <div className={styles.meLine}>
+                <span className={styles.meNick}>{profile?.nickname ?? '나'}</span>
+                <UserTitle userId={user.id} />
+              </div>
+              {overview.total > 0 ? (
+                <p className={styles.meSince}>
+                  {overview.since} ~ 현재 · 총 <b>{overview.total}</b>개의 덕질 기록
+                </p>
+              ) : (
+                <p className={styles.meSince}>시간이 지날수록 쌓이는 나만의 기록</p>
+              )}
+            </div>
+          </div>
+
+          {overview.total > 0 && (
+            <div className={styles.overview}>
+              <Sum icon="colorpin"   n={overview.areas}  unit="개 지역" />
+              <Sum icon="colorshop"  n={overview.shops}  unit="개 샵" />
+              <Sum icon="colorevent" n={overview.events} unit="개 이벤트" />
+              <Sum icon="colorroute" n={overview.routes} unit="개 루트" />
+            </div>
+          )}
         </div>
 
         {stories.length > 0 && (

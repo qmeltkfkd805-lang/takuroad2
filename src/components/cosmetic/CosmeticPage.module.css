@@ -1,0 +1,176 @@
+﻿.page { width: 100%; max-width: 1180px; margin: 0 auto; padding: 28px 32px 80px; }
+.center { text-align: center; padding: 90px 20px; color: var(--muted); }
+
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 22px; }
+.head h1 { display: flex; align-items: center; gap: 7px; margin: 0 0 8px; font-size: 28px; font-weight: 900; }
+.head p { margin: 0; font-size: 14.5px; color: var(--muted); }
+.total {
+  flex-shrink: 0; padding: 9px 16px; border-radius: 9999px;
+  background: var(--surface); border: 1px solid var(--border);
+  font-size: 13px; font-weight: 700; color: var(--muted);
+}
+.total b { color: var(--accent); font-weight: 900; font-size: 15px; }
+
+.layout { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 20px; align-items: start; }
+
+/* ═══ 지금 내 프로필 — 고르는 즉시 바뀐다 ═══ */
+.previewCol { position: sticky; top: 24px; }
+.card {
+  position: relative; overflow: hidden;
+  padding: 28px 22px 22px; border-radius: 22px;
+  border: 1px solid var(--border);
+  background: linear-gradient(135deg, #FFF0F5, #FFF9EC);
+  text-align: center;
+  transition: background .3s ease;
+}
+
+.avatarWrap { display: flex; justify-content: center; margin-bottom: 14px; }
+.avatar {
+  width: 96px; height: 96px; border-radius: 50%;
+  overflow: hidden; background: var(--surface2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px; font-weight: 900; color: var(--muted);
+  transition: box-shadow .25s ease, border-color .25s ease;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.nick { font-size: 19px; font-weight: 900; margin-bottom: 6px; }
+.title {
+  display: inline-block; margin-bottom: 18px;
+  padding: 5px 14px; border-radius: 9999px;
+  background: rgba(255,255,255,.75); border: 1px solid rgba(255,86,146,.3);
+  font-size: 12.5px; font-weight: 800; color: var(--accent);
+}
+
+.wornList {
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px dashed rgba(0,0,0,.12);
+  display: flex; flex-direction: column; gap: 7px;
+}
+.wornRow { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.wornLabel { font-size: 12px; font-weight: 700; opacity: .65; }
+.wornOn { font-size: 12.5px; font-weight: 800; }
+.wornOff { font-size: 12.5px; font-weight: 600; opacity: .4; }
+
+/* ═══ 고르는 곳 ═══ */
+.tabs { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 16px; }
+.tab {
+  padding: 9px 16px; border-radius: 9999px;
+  border: 1px solid var(--border); background: var(--surface);
+  font-family: inherit; font-size: 13.5px; font-weight: 700; color: var(--text);
+  cursor: pointer;
+}
+.tab em { font-style: normal; font-size: 11.5px; font-weight: 700; color: var(--muted); margin-left: 4px; }
+.tab:hover { border-color: var(--accent); }
+.tabOn { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tabOn em { color: rgba(255,255,255,.8); }
+
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(146px, 1fr)); gap: 14px;
+}
+
+.tile {
+  padding: 12px; border-radius: 16px;
+  border: 1px solid var(--border); background: var(--surface);
+  font-family: inherit; text-align: center; cursor: pointer;
+  transition: transform .14s ease, border-color .14s ease;
+}
+.tile:hover { transform: translateY(-3px); border-color: var(--accent); }
+.tileOn { border-color: var(--accent); border-width: 2px; box-shadow: 0 6px 18px rgba(255,86,146,.18); }
+.tileLock { opacity: .55; }
+.tileLock:hover { opacity: .8; transform: none; }
+
+.thumb {
+  position: relative;
+  height: 84px; border-radius: 12px; margin-bottom: 10px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface2);
+  overflow: hidden;
+}
+.thumbTitle { font-size: 13px; font-weight: 900; color: var(--accent); }
+.thumbFx { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); }
+
+.lock, .check {
+  position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%);
+  padding: 3px 10px; border-radius: 9999px;
+  font-size: 10.5px; font-weight: 800; white-space: nowrap;
+}
+.lock  { background: rgba(0,0,0,.55); color: #fff; }
+.check { background: var(--accent); color: #fff; }
+
+.tileName { font-size: 13px; font-weight: 800; margin-bottom: 4px; }
+.rarity {
+  display: inline-block; padding: 2px 9px; border-radius: 9999px;
+  font-size: 10.5px; font-weight: 800;
+}
+.r_common    { background: var(--surface2); color: var(--muted); }
+.r_rare      { background: #EAF2FF; color: #3D7FE0; }
+.r_epic      { background: #F5EDFF; color: #8B4FD9; }
+.r_legendary { background: #FFF6E3; color: #D9930F; }
+
+.cond { margin-top: 6px; font-size: 10.5px; color: var(--muted); font-weight: 700; line-height: 1.4; }
+
+.skel {
+  height: 150px; border-radius: 16px;
+  background: linear-gradient(90deg, var(--surface2), #EFEFEF, var(--surface2));
+  background-size: 200% 100%; animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+.toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 60;
+  padding: 12px 22px; border-radius: 12px;
+  background: #20202D; color: #fff;
+  font-size: 13px; font-weight: 700;
+  box-shadow: 0 8px 22px rgba(0,0,0,.22);
+}
+
+/* ═══ 프로필 효과 — 애니메이션 ═══ */
+.fxSparkle::after, .fxStar::after, .fxSakura::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-repeat: repeat;
+}
+.fxSparkle::after {
+  background-image:
+    radial-gradient(circle, #fff 1.4px, transparent 1.6px),
+    radial-gradient(circle, #FFE9A8 1px, transparent 1.2px);
+  background-size: 46px 46px, 72px 72px;
+  animation: twinkle 2.4s ease-in-out infinite;
+}
+.fxStar::after {
+  background-image: radial-gradient(circle, #FFF3C4 1.8px, transparent 2px);
+  background-size: 58px 58px;
+  animation: drift 7s linear infinite;
+}
+.fxSakura::after {
+  background-image: radial-gradient(circle, #FFB3CC 3px, transparent 3.4px);
+  background-size: 66px 66px;
+  animation: fall 6s linear infinite;
+}
+.fxAura {
+  box-shadow: 0 0 0 3px rgba(255,86,146,.28), 0 0 26px rgba(255,86,146,.42);
+  animation: pulse 2.6s ease-in-out infinite;
+}
+.fxNeon {
+  box-shadow: 0 0 10px #FF3DCB, 0 0 26px rgba(255,61,203,.55);
+  animation: flicker 3.2s ease-in-out infinite;
+}
+
+@keyframes twinkle { 0%,100% { opacity: .35 } 50% { opacity: 1 } }
+@keyframes drift   { from { background-position: 0 0 } to { background-position: 58px 58px } }
+@keyframes fall    { from { background-position: 0 -66px } to { background-position: 26px 66px } }
+@keyframes pulse   { 0%,100% { box-shadow: 0 0 0 3px rgba(255,86,146,.22), 0 0 18px rgba(255,86,146,.3) } 50% { box-shadow: 0 0 0 5px rgba(255,86,146,.34), 0 0 34px rgba(255,86,146,.55) } }
+@keyframes flicker { 0%,100% { opacity: 1 } 47% { opacity: .82 } 50% { opacity: .55 } 53% { opacity: .9 } }
+
+@media (prefers-reduced-motion: reduce) {
+  .skel, .fxSparkle::after, .fxStar::after, .fxSakura::after, .fxAura, .fxNeon { animation: none; }
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .previewCol { position: static; }
+}
+@media (max-width: 720px) {
+  .page { padding: 22px 16px 70px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+}
