@@ -1,0 +1,149 @@
+﻿.page { width: 100%; max-width: 980px; margin: 0 auto; padding: 28px 32px 80px; }
+
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+.head h1 { display: flex; align-items: center; gap: 7px; margin: 0 0 8px; font-size: 28px; font-weight: 900; }
+.head p { margin: 0; font-size: 14.5px; color: var(--muted); }
+.ghost {
+  padding: 10px 18px; border: 1px solid var(--border); border-radius: 9999px;
+  background: var(--surface); color: var(--text);
+  font-family: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; white-space: nowrap;
+}
+.ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+/* 전체 진행 */
+.total { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
+.totalBar { flex: 1; height: 10px; border-radius: 9999px; background: var(--surface2); overflow: hidden; }
+.totalBar > span {
+  display: block; height: 100%; border-radius: 9999px;
+  background: linear-gradient(90deg, #FF8FB3, #FF5692);
+  transition: width .8s cubic-bezier(.2,.8,.2,1);
+}
+.totalNum { flex-shrink: 0; font-size: 13px; font-weight: 700; color: var(--muted); }
+.totalNum b { color: var(--accent); font-weight: 900; font-size: 15px; }
+
+.list { display: flex; flex-direction: column; gap: 16px; }
+
+/* 시리즈 카드 */
+.card {
+  padding: 20px 24px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+}
+.cardDone { opacity: .62; }
+.cardDone:hover { opacity: 1; }
+
+.cardHead { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.icon {
+  width: 48px; height: 48px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 14px; background: var(--accent-l);
+}
+.icon img { width: 30px; height: 30px; object-fit: contain; }
+.headBody { flex: 1; min-width: 0; }
+.name { font-size: 17px; font-weight: 900; margin-bottom: 2px; }
+.sub { font-size: 13px; color: var(--muted); font-weight: 600; }
+.sub b { color: var(--accent); font-weight: 800; }
+.count { flex-shrink: 0; font-size: 20px; font-weight: 900; color: var(--accent); }
+.count em { font-style: normal; font-size: 13px; font-weight: 700; color: var(--muted); }
+
+.bar { height: 8px; border-radius: 9999px; background: var(--surface2); overflow: hidden; margin-bottom: 18px; }
+.bar > span {
+  display: block; height: 100%; border-radius: 9999px;
+  background: linear-gradient(90deg, #FF8FB3, #FF5692);
+  transition: width .7s cubic-bezier(.2,.8,.2,1);
+}
+
+/* 계단 */
+.steps {
+  list-style: none; margin: 0 0 16px; padding: 0;
+  display: flex; align-items: stretch; gap: 0;
+}
+.stepWrap { display: flex; align-items: center; flex: 1; min-width: 0; }
+
+/* 계단 사이 연결선 — 딴 단계까지만 핑크로 이어진다 */
+.link { flex-shrink: 0; width: 14px; height: 3px; background: var(--border); border-radius: 9999px; }
+.linkOn { background: var(--accent); }
+
+.step {
+  flex: 1; min-width: 0; text-align: center;
+  padding: 14px 8px; border-radius: 14px;
+  border: 1px solid var(--border); background: var(--surface2);
+}
+.stepTarget { font-size: 22px; font-weight: 900; line-height: 1; margin-bottom: 5px; }
+.stepName {
+  font-size: 12px; font-weight: 800; margin-bottom: 3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.stepState { font-size: 10.5px; font-weight: 700; color: var(--muted); }
+
+/* 이미 딴 것 — 조용히 뒤로 */
+.stepDone { background: var(--surface); border-color: var(--accent); }
+.stepDone .stepTarget { color: var(--accent); }
+.stepDone .stepState { color: var(--accent); }
+
+/* 지금 도전 중 — 여기만 빛난다 */
+.stepNow {
+  background: linear-gradient(135deg, #FFF0F5, #FFF9EC);
+  border-color: var(--accent); border-width: 2px;
+  box-shadow: 0 6px 18px rgba(255, 86, 146, .18);
+  transform: translateY(-2px);
+}
+.stepNow .stepTarget { color: var(--accent); font-size: 25px; }
+.stepNow .stepState { color: var(--accent); font-weight: 800; }
+
+/* 아직 안 열린 것 */
+.stepLock { opacity: .5; }
+.stepLock .stepTarget { color: var(--muted); }
+
+/* 등급 — 테두리로만 (요란하지 않게) */
+.r_rare.stepDone      { border-color: #7FB2FF; }
+.r_rare.stepDone .stepTarget, .r_rare.stepDone .stepState { color: #3D7FE0; }
+.r_epic.stepDone      { border-color: #C79BFF; }
+.r_epic.stepDone .stepTarget, .r_epic.stepDone .stepState { color: #8B4FD9; }
+.r_legendary.stepDone { border-color: #FFC55C; }
+.r_legendary.stepDone .stepTarget, .r_legendary.stepDone .stepState { color: #D9930F; }
+
+.btn {
+  width: 100%; padding: 12px; border: 1px solid var(--accent); border-radius: 9999px;
+  background: var(--surface); color: var(--accent);
+  font-family: inherit; font-size: 13.5px; font-weight: 800; cursor: pointer;
+}
+.btn:hover { background: var(--accent); color: #fff; }
+
+.doneHead { margin: 34px 0 16px; font-size: 15px; font-weight: 900; color: var(--muted); }
+
+.empty { text-align: center; padding: 70px 20px; }
+.empty h2 { margin: 16px 0 8px; font-size: 20px; font-weight: 900; }
+.empty p { margin: 0; font-size: 14px; color: var(--muted); }
+
+.signin { text-align: center; padding: 90px 20px; }
+.signin h1 { font-size: 26px; font-weight: 900; margin: 0 0 12px; }
+.signin p { font-size: 14.5px; color: var(--muted); margin: 0 0 24px; }
+.signin button {
+  padding: 12px 26px; border-radius: 9999px; border: none;
+  background: var(--accent); color: #fff;
+  font-family: inherit; font-size: 14.5px; font-weight: 700; cursor: pointer;
+}
+
+.skel {
+  height: 210px; border-radius: 20px;
+  background: linear-gradient(90deg, var(--surface2), #EFEFEF, var(--surface2));
+  background-size: 200% 100%; animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .skel { animation: none; }
+  .bar > span, .totalBar > span { transition: none; }
+  .stepNow { transform: none; }
+}
+
+@media (max-width: 720px) {
+  .page { padding: 22px 16px 70px; }
+  .card { padding: 18px 16px; }
+  .steps { flex-direction: column; gap: 8px; }
+  .stepWrap { flex-direction: column; width: 100%; }
+  .link { width: 3px; height: 12px; }
+  .step { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; }
+  .stepTarget { margin-bottom: 0; min-width: 42px; }
+  .stepState { margin-left: auto; }
+  .stepNow { transform: none; }
+}

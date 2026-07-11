@@ -13,14 +13,13 @@
 .ghost:hover, .ghostSm:hover { border-color: var(--accent); color: var(--accent); }
 
 /* 통계 4칸 */
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
 .stat {
   display: flex; align-items: center; gap: 14px;
   padding: 18px 20px; background: var(--surface);
   border: 1px solid var(--border); border-radius: 16px;
 }
 .statIcon { display: flex; flex-shrink: 0; }
-.statBody { min-width: 0; }
 .statLabel { font-size: 12.5px; font-weight: 700; color: var(--muted); margin-bottom: 2px; }
 .statValue { font-size: 24px; font-weight: 900; line-height: 1.2; }
 .statValue em { font-style: normal; font-size: 13px; font-weight: 700; color: var(--muted); margin-left: 2px; }
@@ -29,12 +28,103 @@
 .zero { margin-left: 3px; }
 
 /* 섹션 */
-.block {
+.block, .blockSm {
   padding: 22px 24px; margin-bottom: 20px;
   background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
 }
+.blockSm { padding: 18px 24px; }
 .blockHead { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
 .blockHead h2 { margin: 0; font-size: 17px; font-weight: 900; }
+
+/* ═══ 지금 도전 중 — 화면의 주인공 ═══ */
+.challengeGrid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 16px; }
+
+.hero {
+  padding: 22px 24px; border-radius: 18px;
+  background: linear-gradient(135deg, #FFF0F5 0%, #FFF9EC 100%);
+  border: 1px solid rgba(255, 86, 146, .22);
+}
+.heroTop { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.heroSeries { font-size: 19px; font-weight: 900; }
+.heroStep {
+  padding: 4px 10px; border-radius: 9999px;
+  background: var(--surface); border: 1px solid var(--border);
+  font-size: 11px; font-weight: 800; color: var(--muted);
+}
+
+.heroNum { display: flex; align-items: baseline; gap: 5px; margin-bottom: 10px; }
+.heroNum strong { font-size: 42px; font-weight: 900; color: var(--accent); line-height: 1; }
+.heroNum span { font-size: 17px; font-weight: 800; color: var(--muted); }
+
+.heroBar { height: 12px; border-radius: 9999px; background: rgba(0,0,0,.07); overflow: hidden; margin-bottom: 14px; }
+.heroBar > span {
+  display: block; height: 100%; border-radius: 9999px;
+  background: linear-gradient(90deg, #FF8FB3, #FF5692);
+  transition: width .7s cubic-bezier(.2,.8,.2,1);
+}
+
+/* "이벤트 1개만 더 참여하면" — 여기가 이 카드의 심장 */
+.heroLine { margin: 0 0 12px; font-size: 15px; color: var(--text); font-weight: 600; }
+.heroLine b { color: var(--accent); font-weight: 900; }
+
+.reward {
+  display: flex; align-items: center; gap: 7px;
+  padding: 11px 14px; margin-bottom: 16px;
+  border-radius: 12px; background: var(--surface);
+  border: 1px dashed rgba(255, 86, 146, .35);
+  font-size: 13.5px; color: var(--muted);
+}
+.reward b { color: var(--text); font-weight: 800; }
+
+.heroBtn {
+  width: 100%; padding: 14px; border: none; border-radius: 9999px;
+  background: var(--accent); color: #fff;
+  font-family: inherit; font-size: 14.5px; font-weight: 800; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 86, 146, .3);
+}
+.heroBtn:hover { transform: translateY(-1px); }
+
+/* 옆의 작은 도전 2개 */
+.subs { display: flex; flex-direction: column; gap: 12px; }
+.sub {
+  flex: 1; padding: 16px 18px;
+  border: 1px solid var(--border); border-radius: 16px;
+  background: var(--surface); cursor: pointer;
+  display: flex; flex-direction: column; justify-content: center;
+  transition: border-color .14s ease, transform .14s ease;
+}
+.sub:hover { border-color: var(--accent); transform: translateY(-2px); }
+.subHead { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.subName { font-size: 14.5px; font-weight: 800; }
+.subNum { font-size: 15px; font-weight: 900; color: var(--accent); }
+.subNum em { font-style: normal; font-size: 12px; font-weight: 700; color: var(--muted); }
+.subBar { height: 6px; border-radius: 9999px; background: var(--surface2); overflow: hidden; margin-bottom: 8px; }
+.subBar > span {
+  display: block; height: 100%; border-radius: 9999px;
+  background: linear-gradient(90deg, #FFB3CC, #FF5692);
+  transition: width .7s cubic-bezier(.2,.8,.2,1);
+}
+.subCta { font-size: 12px; font-weight: 700; color: var(--muted); }
+.sub:hover .subCta { color: var(--accent); }
+
+.heroSkel {
+  height: 260px; border-radius: 18px;
+  background: linear-gradient(90deg, var(--surface2), #EFEFEF, var(--surface2));
+  background-size: 200% 100%; animation: shimmer 1.4s infinite;
+}
+
+/* ═══ 최근 해금한 배지 — 결과는 작게 ═══ */
+.badgeRow { display: flex; flex-wrap: wrap; gap: 9px; }
+.badgeChip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 14px 8px 10px; border-radius: 9999px;
+  background: var(--surface2); border: 1px solid var(--border);
+  font-size: 12.5px; font-weight: 800;
+}
+.badgeChip img { width: 22px; height: 22px; object-fit: contain; }
+.r_rare      { border-color: #7FB2FF; background: #F0F6FF; }
+.r_epic      { border-color: #C79BFF; background: #F7F0FF; }
+.r_legendary { border-color: #FFC55C; background: #FFF7E8; }
 
 /* 가로 카드 줄 */
 .row { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
@@ -48,23 +138,19 @@
   transition: transform .14s ease, border-color .14s ease;
 }
 .card:hover { transform: translateY(-3px); border-color: var(--accent); }
-
 .visual { position: relative; aspect-ratio: 16 / 11; background: var(--surface2); }
 .visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .dateBadge {
   position: absolute; top: 10px; left: 10px; z-index: 2;
   padding: 5px 11px; border-radius: 9999px;
-  background: var(--accent); color: #fff;
-  font-size: 11.5px; font-weight: 800;
+  background: var(--accent); color: #fff; font-size: 11.5px; font-weight: 800;
 }
-/* Place 이미지가 없을 때 — 지역명 + 그라디언트 */
 .fallback {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
   background: linear-gradient(135deg, #FFE3EE, #FFF3D6);
 }
 .fallback span { font-size: 17px; font-weight: 900; color: #C2416C; text-align: center; padding: 0 12px; }
-
 .cardBody { padding: 12px 14px 14px; }
 .cardArea { display: flex; align-items: center; gap: 5px; font-size: 14.5px; font-weight: 800; margin-bottom: 5px; }
 .cardSpots {
@@ -74,9 +160,8 @@
 }
 .pct { margin-top: 8px; font-size: 12px; font-weight: 800; color: var(--accent); }
 
-/* 진행바 (공용) */
 .bar { height: 6px; margin-top: 6px; border-radius: 9999px; background: var(--surface2); overflow: hidden; }
-.bar span {
+.bar > span {
   display: block; height: 100%; border-radius: 9999px;
   background: linear-gradient(90deg, #FF8FB3, #FF5692);
   transition: width .6s cubic-bezier(.2,.8,.2,1);
@@ -98,48 +183,24 @@
   font-size: 16px; font-weight: 900; color: var(--muted);
 }
 .workCover img { width: 100%; height: 100%; object-fit: cover; }
-.workHead { min-width: 0; }
 .workName { font-size: 14.5px; font-weight: 900; margin-bottom: 3px; }
 .workLabel { font-size: 11px; font-weight: 700; color: var(--muted); }
 .workPct { font-size: 26px; font-weight: 900; color: var(--accent); line-height: 1.1; }
 .workPct em { font-style: normal; font-size: 14px; margin-left: 1px; }
-
 .workAxes { display: flex; flex-wrap: wrap; gap: 5px; margin: 12px 0 10px; }
 .axisChip {
   padding: 4px 9px; border-radius: 9999px;
   background: var(--surface2); color: var(--muted);
   font-size: 11px; font-weight: 700;
 }
-
 .workNext { margin-bottom: 8px; }
 .nextLabel {
   display: inline-block; margin-bottom: 4px;
   padding: 3px 8px; border-radius: 9999px;
-  background: var(--accent); color: #fff;
-  font-size: 10.5px; font-weight: 800;
+  background: var(--accent); color: #fff; font-size: 10.5px; font-weight: 800;
 }
 .nextText { display: block; font-size: 12.5px; color: var(--muted); line-height: 1.5; }
 .nextText b { color: var(--accent); font-weight: 800; }
-
-/* 배지 */
-.badges { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; }
-.badges::-webkit-scrollbar { display: none; }
-.badge {
-  flex: 0 0 132px; width: 132px; text-align: center;
-  padding: 14px 8px; border-right: 1px solid var(--border);
-}
-.badge:last-of-type { border-right: none; }
-.badgeIcon { height: 54px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
-.badgeIcon img { height: 54px; width: auto; object-fit: contain; }
-.badgeName { font-size: 12.5px; font-weight: 800; margin-bottom: 3px; }
-.badgeCond { font-size: 11px; color: var(--muted); line-height: 1.4; }
-.badgeMore {
-  flex: 0 0 120px; width: 120px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-  border-radius: 14px; background: var(--accent-l); cursor: pointer;
-}
-.badgeMore strong { font-size: 20px; font-weight: 900; color: var(--accent); }
-.badgeMore span { font-size: 11.5px; font-weight: 700; color: var(--accent); }
 
 /* CTA */
 .cta {
@@ -177,24 +238,29 @@
   font-family: inherit; font-size: 14.5px; font-weight: 700; cursor: pointer;
 }
 
-/* 스켈레톤 */
-.skelCard, .skelBadge {
+.skelCard {
   flex: 0 0 232px; height: 240px; border-radius: 16px;
   background: linear-gradient(90deg, var(--surface2), #EFEFEF, var(--surface2));
   background-size: 200% 100%; animation: shimmer 1.4s infinite;
 }
-.skelBadge { flex-basis: 132px; height: 110px; }
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 @media (prefers-reduced-motion: reduce) {
-  .skelCard, .skelBadge { animation: none; }
-  .bar span { transition: none; }
+  .skelCard, .heroSkel { animation: none; }
+  .bar > span, .heroBar > span, .subBar > span { transition: none; }
 }
 
+@media (max-width: 980px) {
+  .challengeGrid { grid-template-columns: minmax(0, 1fr); }
+  .subs { flex-direction: row; }
+  .sub { flex: 1; }
+}
 @media (max-width: 900px) {
   .stats { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 720px) {
   .page { padding: 22px 16px 70px; }
-  .block { padding: 18px 16px; }
+  .block, .blockSm { padding: 18px 16px; }
+  .subs { flex-direction: column; }
   .cta { flex-direction: column; text-align: center; }
+  .heroNum strong { font-size: 36px; }
 }

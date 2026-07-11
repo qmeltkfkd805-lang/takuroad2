@@ -4,15 +4,22 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getCollectionHome, CollectionHome, StoryCardSummary, WorkCollection } from '@/services/collectionService'
+import { Challenge, EarnedBadge } from '@/services/growthService'
 import { AXIS_KEYS, AXIS_LABEL, AXIS_VERB } from '@/lib/work/workProgress'
 import { Icon, Taku } from '@/components/tds'
 import { MaskIcon } from './MaskIcon'
 import { ROUTES } from '@/lib/constants/routes'
 import styles from './CollectionHomePage.module.css'
 
-/* 나의 덕질 컬렉션
-   ⭐ 카드의 얼굴 = Place 대표 이미지. "어느 샵에 갔는가"가 아니라 "어디서 덕질했는가"
-   ⭐ 진행률·다음목표는 정책(workProgress)이 계산해서 준 걸 그리기만 한다 */
+/* 나의 덕질 컬렉션 — 회고 페이지가 아니라 "다음 행동을 만드는 대시보드"
+
+   ⭐⭐ 순서가 곧 철학이다.
+      통계 → [지금 도전 중] → 최근 기록 → 작품 탐험 → 최근 해금 배지
+      들어왔을 때 가장 먼저 드는 생각이 "다음엔 뭘 하면 되지?"여야 한다.
+      타쿠로드의 핵심은 사용자를 다시 밖으로 내보내는 것.
+
+   ⭐ 그렇다고 업적 페이지처럼 보이면 안 된다.
+      도전은 여기서 1~3개만 요약하고, 전체 배틀패스는 /growth로 뺀다. */
 
 const WD = ['일', '월', '화', '수', '목', '금', '토']
 function fmtDate(d: string) {
@@ -44,9 +51,13 @@ export default function CollectionHomePage() {
   }
 
   const s = data?.summary
+  const challenges = data?.challenges ?? []
   const stories = data?.stories ?? []
   const works = data?.works ?? []
   const badges = data?.badges ?? []
+
+  const hero = challenges[0]
+  const subs = challenges.slice(1, 3)
 
   return (
     <div className={styles.page}>
@@ -58,13 +69,43 @@ export default function CollectionHomePage() {
         <button className={styles.ghost} onClick={() => router.push('/chronicle')}>연대기 전체 보기 ›</button>
       </header>
 
-      {/* 통계 4칸 — 실제로 기록된 것만 */}
       <div className={styles.stats}>
         <Stat icon="colorpin"   label="방문한 지역"   value={s?.areas.total}  unit="개" plus={s?.areas.thisMonth} loading={loading} />
         <Stat icon="colorshop"  label="방문한 샵"     value={s?.shops.total}  unit="곳" plus={s?.shops.thisMonth} loading={loading} />
         <Stat icon="colorevent" label="참여한 이벤트" value={s?.events.total} unit="개" plus={s?.events.thisMonth} loading={loading} />
         <Stat icon="colorroute" label="완주한 루트"   value={s?.routes.total} unit="개" plus={s?.routes.thisMonth} loading={loading} />
       </div>
+
+      {/* ⭐ 주인공 — 지금 도전 중 */}
+      <section className={styles.block}>
+        <div className={styles.blockHead}>
+          <h2>지금 도전 중</h2>
+          {challenges.length > 0 && (
+            <button className={styles.ghostSm} onClick={() => router.push('/growth')}>전체 보기 ›</button>
+          )}
+        </div>
+
+        {loading ? (
+          <div className={styles.heroSkel} />
+        ) : !hero ? (
+          <Empty
+            text="모든 도전을 완료했어요. 새 목표가 곧 열려요."
+            action="지도에서 샵 찾기"
+            onAction={() => router.push('/map')}
+          />
+        ) : (
+          <div className={styles.challengeGrid}>
+            <HeroChallenge c={hero} onGo={() => router.push(hero.ctaHref)} />
+            {subs.length > 0 && (
+              <div className={styles.subs}>
+                {subs.map(c => (
+                  <SubChallenge key={c.tierId} c={c} onClick={() => router.push(c.ctaHref)} />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </section>
 
       {/* 최근의 덕질 기록 */}
       <section className={styles.block}>
@@ -82,7 +123,7 @@ export default function CollectionHomePage() {
         )}
       </section>
 
-      {/* 좋아하는 작품 탐험 현황 */}
+      {/* 작품 탐험 현황 */}
       <section className={styles.block}>
         <div className={styles.blockHead}>
           <h2>좋아하는 작품 탐험 현황</h2>
@@ -98,39 +139,19 @@ export default function CollectionHomePage() {
         )}
       </section>
 
-      {/* 획득한 배지 */}
-      <section className={styles.block}>
-        <div className={styles.blockHead}>
-          <h2>획득한 배지</h2>
-          <button className={styles.ghostSm} onClick={() => router.push('/profile')}>전체 보기 ›</button>
-        </div>
-        {loading ? <div className={styles.row}>{[0,1,2].map(i => <div key={i} className={styles.skelBadge} />)}</div>
-         : badges.length === 0 ? (
-          <Empty text="기록을 쌓으면 배지가 하나씩 열려요." />
-        ) : (
-          <div className={styles.badges}>
-            {badges.map(b => (
-              <div key={b.id} className={styles.badge}>
-                <div className={styles.badgeIcon}>
-                  {b.iconUrl
-                    ? <img src={b.iconUrl} alt="" />
-                    : <MaskIcon name="star" size={34} color="var(--accent)" />}
-                </div>
-                <div className={styles.badgeName}>{b.name}</div>
-                {b.condition && <div className={styles.badgeCond}>{b.condition}</div>}
-              </div>
-            ))}
-            {(data?.badgeMore ?? 0) > 0 && (
-              <div className={styles.badgeMore} onClick={() => router.push('/profile')}>
-                <strong>+{data?.badgeMore}</strong>
-                <span>더 많은 배지</span>
-              </div>
-            )}
+      {/* 최근 해금한 배지 — 결과는 작게 */}
+      {badges.length > 0 && (
+        <section className={styles.blockSm}>
+          <div className={styles.blockHead}>
+            <h2>최근 해금한 배지</h2>
+            <button className={styles.ghostSm} onClick={() => router.push('/growth')}>전체 보기 ›</button>
           </div>
-        )}
-      </section>
+          <div className={styles.badgeRow}>
+            {badges.map(b => <BadgeChip key={b.id} b={b} />)}
+          </div>
+        </section>
+      )}
 
-      {/* CTA */}
       <section className={styles.cta}>
         <Taku pose="walk" size={104} />
         <div className={styles.ctaBody}>
@@ -143,7 +164,65 @@ export default function CollectionHomePage() {
   )
 }
 
-/* ── 조각들 ─────────────────────────────────────── */
+/* ── 지금 도전 중 ─────────────────────────────── */
+
+function HeroChallenge({ c, onGo }: { c: Challenge; onGo: () => void }) {
+  const remain = Math.max(0, c.target - c.done)
+  return (
+    <article className={styles.hero}>
+      <div className={styles.heroTop}>
+        <span className={styles.heroSeries}>{c.badgeName}</span>
+        <span className={styles.heroStep}>
+          {c.earnedCount} / {c.totalTiers} 단계
+        </span>
+      </div>
+
+      <div className={styles.heroNum}>
+        <strong>{c.done}</strong>
+        <span>/ {c.target}</span>
+      </div>
+
+      <div className={styles.heroBar}><span style={{ width: `${c.pct}%` }} /></div>
+
+      <p className={styles.heroLine}>
+        <b>{c.verb} {remain}회</b>만 더 하면
+      </p>
+
+      <div className={styles.reward}>
+        <Icon name="colorstar" size={17} />
+        <span><b>{c.rewardName}</b> 해금</span>
+      </div>
+
+      <button className={styles.heroBtn} onClick={onGo}>{c.ctaLabel} ›</button>
+    </article>
+  )
+}
+
+function SubChallenge({ c, onClick }: { c: Challenge; onClick: () => void }) {
+  return (
+    <article className={styles.sub} onClick={onClick}>
+      <div className={styles.subHead}>
+        <span className={styles.subName}>{c.badgeName}</span>
+        <span className={styles.subNum}>{c.done}<em>/{c.target}</em></span>
+      </div>
+      <div className={styles.subBar}><span style={{ width: `${c.pct}%` }} /></div>
+      <div className={styles.subCta}>{c.ctaLabel} ›</div>
+    </article>
+  )
+}
+
+function BadgeChip({ b }: { b: EarnedBadge }) {
+  return (
+    <div className={`${styles.badgeChip} ${styles['r_' + (b.rarity ?? 'common')]}`}>
+      {b.icon
+        ? <img src={b.icon} alt="" />
+        : <MaskIcon name="star" size={20} color="var(--accent)" />}
+      <span>{b.name}</span>
+    </div>
+  )
+}
+
+/* ── 나머지 조각들 ────────────────────────────── */
 
 function Stat({ icon, label, value, unit, plus, loading }: {
   icon: string; label: string; value?: number; unit: string; plus?: number; loading: boolean
@@ -153,9 +232,7 @@ function Stat({ icon, label, value, unit, plus, loading }: {
       <div className={styles.statIcon}><Icon name={icon} size={30} /></div>
       <div className={styles.statBody}>
         <div className={styles.statLabel}>{label}</div>
-        <div className={styles.statValue}>
-          {loading ? '—' : (value ?? 0)}<em>{unit}</em>
-        </div>
+        <div className={styles.statValue}>{loading ? '—' : (value ?? 0)}<em>{unit}</em></div>
         <div className={styles.statSub}>
           이번 달 {typeof plus === 'number' && plus > 0
             ? <span className={styles.plus}>+{plus}</span>
@@ -166,7 +243,6 @@ function Stat({ icon, label, value, unit, plus, loading }: {
   )
 }
 
-/* Story 타일 — 얼굴은 Place 이미지, 없으면 지역명 그라디언트 */
 function StoryTile({ s, onClick }: { s: StoryCardSummary; onClick: () => void }) {
   return (
     <article className={styles.card} onClick={onClick}>
@@ -195,7 +271,6 @@ function StoryTile({ s, onClick }: { s: StoryCardSummary; onClick: () => void })
   )
 }
 
-/* 작품 타일 — 종합 탐험도 + 다음 목표 (정책이 준 값) */
 function WorkTile({ w, onClick }: { w: WorkCollection; onClick: () => void }) {
   return (
     <article className={styles.workCard} onClick={onClick}>
@@ -209,7 +284,6 @@ function WorkTile({ w, onClick }: { w: WorkCollection; onClick: () => void }) {
           <div className={styles.workPct}>{w.overall}<em>%</em></div>
         </div>
       </div>
-
       <div className={styles.workAxes}>
         {AXIS_KEYS.filter(k => w.axes[k].total > 0).map(k => (
           <span key={k} className={styles.axisChip}>
@@ -217,7 +291,6 @@ function WorkTile({ w, onClick }: { w: WorkCollection; onClick: () => void }) {
           </span>
         ))}
       </div>
-
       {w.next && (
         <div className={styles.workNext}>
           <span className={styles.nextLabel}>다음 목표</span>

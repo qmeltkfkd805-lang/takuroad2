@@ -1,7 +1,8 @@
-﻿import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 import { AxisKey, AxisProgress, NextGoal, getWorkProgress } from '@/lib/work/workProgress'
 import { getMyStories } from '@/services/storyBuilder'
 import { geekAreaFromAddr } from '@/lib/utils/geekArea'
+import { getGrowthChallenges, getRecentBadges, Challenge, EarnedBadge } from '@/services/growthService'
 
 /* 컬렉션 홈 — "나의 덕질 컬렉션"
    ⭐ 진행률은 계산하지 않는다. 정책(lib/work/workProgress)에 물어본다.
@@ -40,19 +41,13 @@ export interface WorkCollection {
   next: NextGoal | null
 }
 
-export interface EarnedBadge {
-  id: string
-  name: string
-  condition: string | null
-  iconUrl: string | null
-}
-
 export interface CollectionHome {
   summary: CollectionSummary
+  /** ⭐ 화면의 주인공 — '다음엔 뭘 하면 되지?' */
+  challenges: Challenge[]
   stories: StoryCardSummary[]
   works: WorkCollection[]
   badges: EarnedBadge[]
-  badgeMore: number
 }
 
 function monthStartISO(): string {
@@ -61,20 +56,20 @@ function monthStartISO(): string {
 }
 
 const STORY_LIMIT = 6
-const BADGE_LIMIT = 5
 const SPOT_LIMIT = 2
 
 export async function getCollectionHome(userId: string): Promise<CollectionHome> {
   const supabase = createClient()
   const from = monthStartISO()
 
-  const [checkRes, evRes, rcRes, favRes, badgeRes, stories] = await Promise.all([
+  const [checkRes, evRes, rcRes, favRes, badges, stories, challenges] = await Promise.all([
     supabase.from('check_ins').select('shop_id, created_at, shops ( addr, region )').eq('user_id', userId),
     supabase.from('event_visits').select('event_id, created_at').eq('user_id', userId),
     supabase.from('route_completions').select('route_id').eq('user_id', userId),
     supabase.from('user_favorite_tags').select('tag_id, tier').eq('user_id', userId).in('tier', ['favorite', 'interest']),
-    supabase.from('user_badge_tiers').select('badge_tier_id, earned_at, badge_tiers ( * )').eq('user_id', userId).order('earned_at', { ascending: false }),
+    getRecentBadges(userId, 6),
     getMyStories(userId, STORY_LIMIT),
+    getGrowthChallenges(userId),
   ])
 
   // 방문한 샵 / 덕질 지역 (shops.region이 비어도 주소에서 뽑는다)
@@ -166,18 +161,6 @@ export async function getCollectionHome(userId: string): Promise<CollectionHome>
       pct: s.highlight?.overall ?? 0,
     }
   })
-
-  // 획득한 배지
-  const badgeRows = (badgeRes.data ?? []) as any[]
-  const badges: EarnedBadge[] = badgeRows.slice(0, BADGE_LIMIT).map(r => {
-    const t: any = r.badge_tiers ?? {}
-    return {
-      id: r.badge_tier_id,
-      name: t.name ?? '배지',
-      condition: t.condition_text ?? t.description ?? null,
-      iconUrl: t.icon_url ?? null,
-    }
-  })
-
-  return { summary, stories: storyCards, works, badges, badgeMore: Math.max(0, badgeRows.length - BADGE_LIMIT) }
+  // ⭐ 도전은 진행률 높은 순 — '조금만 더 하면 되는 것'이 위로
+  return { summary, challenges, stories: storyCards, works, badges }
 }

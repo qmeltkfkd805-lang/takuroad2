@@ -102,6 +102,9 @@ export interface Challenge {
   /** 이 시리즈에서 이미 딴 단계 수 */
   earnedCount: number
   totalTiers: number
+  /** ⭐ 다음 행동 — 타쿠로드의 핵심은 사용자를 다시 밖으로 내보내는 것 */
+  ctaLabel: string
+  ctaHref: string
 }
 
 const VERB: Record<string, string> = {
@@ -113,6 +116,21 @@ const VERB: Record<string, string> = {
   route_created: '루트 제작',
   shop_register: '샵 등록',
   event_submit: '제보 채택',
+}
+
+/**
+ * 다음 행동 — 목표를 보여주고 끝나면 안 된다.
+ * 바로 나갈 문을 같이 열어준다.
+ */
+const CTA: Record<string, { label: string; href: string }> = {
+  review:          { label: '다녀온 샵에 리뷰 쓰기', href: '/collection' },
+  photo_upload:    { label: '사진 남길 샵 찾기',     href: '/map' },
+  shop_visit:      { label: '지도에서 샵 찾기',       href: '/map' },
+  event_visit:     { label: '이벤트 보러가기',        href: '/events' },
+  route_completed: { label: '루트 둘러보기',          href: '/routes' },
+  route_created:   { label: '내 루트 만들기',         href: '/routes' },
+  shop_register:   { label: '새 샵 등록하기',         href: '/shop/new' },
+  event_submit:    { label: '이벤트 제보하기',        href: '/events' },
 }
 
 /**
@@ -179,9 +197,142 @@ export async function getGrowthChallenges(userId: string): Promise<Challenge[]> 
       rewardName: current.name ?? '배지',
       earnedCount,
       totalTiers: sorted.length,
+      ctaLabel: CTA[target.activity_type]?.label ?? '둘러보기',
+      ctaHref: CTA[target.activity_type]?.href ?? '/map',
     })
   }
 
   // 가장 가까운 목표가 위로 — "조금만 더 하면 된다"를 먼저 보여준다
   return out.sort((a, b) => b.pct - a.pct)
+}
+
+/* ────────────────────────────────────────────────
+   최근 해금한 배지 — 결과는 작게. 주인공은 "다음 목표"
+   ──────────────────────────────────────────────── */
+
+export interface EarnedBadge {
+  id: string
+  name: string
+  icon: string | null
+  rarity: string | null
+  earnedAt: string
+}
+
+export async function getRecentBadges(userId: string, limit = 6): Promise<EarnedBadge[]> {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('user_badge_tiers')
+    .select('badge_tier_id, earned_at, badge_tiers ( name, rarity, badges ( icon_url ) )')
+    .eq('user_id', userId)
+    .order('earned_at', { ascending: false })
+    .limit(limit)
+
+  return ((data ?? []) as any[]).map(r => ({
+    id: r.badge_tier_id,
+    name: r.badge_tiers?.name ?? '배지',
+    icon: r.badge_tiers?.badges?.icon_url ?? null,
+    rarity: r.badge_tiers?.rarity ?? null,
+    earnedAt: r.earned_at,
+  }))
+}
+/* ────────────────────────────────────────────────
+   배틀패스 — 시리즈별 전체 계단
+
+   ⭐ 컬렉션 홈이 "다음 한 걸음"이라면, 여기는 "길 전체"다.
+      Lv1을 땄으면 Lv2가 열리고, Lv2를 땄으면 Lv3가 열린다.
+   ──────────────────────────────────────────────── */
+
+export interface GrowthStep {
+  tierId: string
+  name: string
+  rarity: string | null
+  target: number
+  earned: boolean
+  /** 지금 도전 중인 단계인가 (아직 못 딴 가장 낮은 것) */
+  current: boolean
+}
+
+export interface GrowthSeries {
+  badgeId: string
+  badgeName: string
+  icon: string | null
+  verb: string
+  /** 지금까지 한 횟수 (시리즈 전체가 같은 activity_type을 본다) */
+  done: number
+  steps: GrowthStep[]
+  earnedCount: number
+  ctaLabel: string
+  ctaHref: string
+  /** 이 시리즈를 다 깼나 */
+  complete: boolean
+}
+
+export async function getGrowthSeries(userId: string): Promise<GrowthSeries[]> {
+  const supabase = createClient()
+
+  const [tierRes, earnedRes] = await Promise.all([
+    supabase
+      .from('badge_tiers')
+      .select('*, badges ( id, name, icon_url, sort_order )')
+      .eq('condition_type', 'activity_count')
+      .eq('is_active', true)
+      .order('sort_order'),
+    supabase
+      .from('user_badge_tiers')
+      .select('badge_tier_id')
+      .eq('user_id', userId),
+  ])
+
+  const tiers = (tierRes.data ?? []) as any[]
+  const earned = new Set((earnedRes.data ?? []).map((e: any) => e.badge_tier_id))
+
+  const byBadge = new Map<string, any[]>()
+  for (const t of tiers) {
+    const list = byBadge.get(t.badge_id) ?? []
+    list.push(t)
+    byBadge.set(t.badge_id, list)
+  }
+
+  const out: GrowthSeries[] = []
+
+  for (const [badgeId, list] of byBadge) {
+    const sorted = [...list].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+    const first = (sorted[0]?.condition_target ?? {}) as ActivityCountTarget
+
+    // 시리즈 안의 계단은 전부 같은 activity_type을 본다 → 한 번만 센다
+    const done = await countActivity(userId, first)
+
+    const currentId = sorted.find(t => !earned.has(t.id))?.id ?? null
+
+    const steps: GrowthStep[] = sorted.map(t => {
+      const tg = (t.condition_target ?? {}) as ActivityCountTarget
+      return {
+        tierId: t.id,
+        name: t.name ?? '',
+        rarity: t.rarity ?? null,
+        target: tg.count ?? 1,
+        earned: earned.has(t.id),
+        current: t.id === currentId,
+      }
+    })
+
+    out.push({
+      badgeId,
+      badgeName: sorted[0]?.badges?.name ?? '도전',
+      icon: sorted[0]?.badges?.icon_url ?? null,
+      verb: VERB[first.activity_type] ?? '활동',
+      done,
+      steps,
+      earnedCount: steps.filter(s => s.earned).length,
+      ctaLabel: CTA[first.activity_type]?.label ?? '둘러보기',
+      ctaHref: CTA[first.activity_type]?.href ?? '/map',
+      complete: currentId === null,
+    })
+  }
+
+  // 진행 중인 것 먼저, 다 깬 건 아래로
+  return out.sort((a, b) => {
+    if (a.complete !== b.complete) return a.complete ? 1 : -1
+    return b.earnedCount - a.earnedCount
+  })
 }
