@@ -32,7 +32,7 @@ interface ShopCardProps {
 export function ShopCard({ shop, meta = 'region', badge, onClick, onToggleSave, style }: ShopCardProps) {
   const region = shop.district ?? shop.city ?? shop.region ?? ''
   const showDistance = meta === 'distance' && shop.distance != null
-  const cover = shop.images?.[0]
+  const cover = shop.eventCover ?? shop.images?.[0]   // 이벤트 중이면 포스터 우선
   const b = badge ? BADGE_STYLE[badge] : null
 
   return (
@@ -57,6 +57,9 @@ export function ShopCard({ shop, meta = 'region', badge, onClick, onToggleSave, 
         )}
         {b && (
           <span style={{ position: 'absolute', top: 10, left: 10, background: b.bg, color: b.fg, fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 6 }}>{b.label}</span>
+        )}
+        {shop.hasEvent && !b && (
+          <span style={{ position: 'absolute', top: 10, left: 10, background: 'var(--accent)', color: '#fff', fontSize: 10, fontWeight: 800, padding: '2px 7px', borderRadius: 6 }}>이벤트</span>
         )}
         <button
           onClick={(e) => { e.stopPropagation(); onToggleSave?.(shop) }}

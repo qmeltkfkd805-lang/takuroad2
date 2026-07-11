@@ -29,6 +29,11 @@ export interface Shop {
   displayLat: number | null   // place_id 있으면 place 좌표, 없으면 shop 좌표
   displayLng: number | null
 
+  // 진행 중 이벤트 (있으면 카드 이미지로 포스터를 쓴다)
+  hasEvent: boolean
+  eventTitle: string | null
+  eventCover: string | null
+
   // shop_categories JOIN → 첫 번째가 대표 카테고리 (마커 색상용)
   cat: string
   cats: string[]

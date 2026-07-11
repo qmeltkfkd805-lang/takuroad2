@@ -17,9 +17,10 @@ interface MapBottomSheetProps {
   shops: Shop[]
   onSelectShop: (shop: Shop) => void
   onStateChange?: (state: SheetState) => void
+  onListClick?: () => void   // '전체보기' → 필터 걸린 /shops/all
 }
 
-export default function MapBottomSheet({ shops, onSelectShop, onStateChange }: MapBottomSheetProps) {
+export default function MapBottomSheet({ shops, onSelectShop, onStateChange, onListClick }: MapBottomSheetProps) {
   const { isSaved, toggleSave } = useSaved()
   const { user } = useAuth()
   const router = useRouter()
@@ -108,7 +109,7 @@ export default function MapBottomSheet({ shops, onSelectShop, onStateChange }: M
           <div className={styles.title}>
             주변 샵 <strong>{shops.length}</strong>개
           </div>
-          <div className={styles.headBtns}><button className={styles.routeBtn} onClick={() => router.push(ROUTES.routes)}>루트 보기</button><button className={styles.listBtn} onClick={() => setState(expanded ? 'peek' : 'expanded')}>{expanded ? '접기' : '목록 보기'}</button></div>
+          <div className={styles.headBtns}><button className={styles.routeBtn} onClick={() => router.push(ROUTES.routes)}>루트 보기</button>{expanded && onListClick && <button className={styles.listBtn} onClick={onListClick}>전체보기 →</button>}<button className={styles.listBtn} onClick={() => setState(expanded ? 'peek' : 'expanded')}>{expanded ? '접기' : '목록 보기'}</button></div>
         </div>
       </div>
 

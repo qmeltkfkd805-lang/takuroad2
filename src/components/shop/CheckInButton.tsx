@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { useCurrentLocation } from '@/hooks/useCurrentLocation'
 import { createCheckIn, getMyCheckInStatus, getShopCheckInCount } from '@/services/checkInService'
 import { getShopTags } from '@/services/shopProductService'
 import { addTagToCollection, getMyCollectedTagIds } from '@/services/tagCollectionService'
@@ -19,7 +18,6 @@ interface Props {
 
 export default function CheckInButton({ shopId, shopName, shopLat, shopLng, accentColor }: Props) {
   const { user } = useAuth()
-  const { location, loading: locating, error: locError, requestLocation } = useCurrentLocation()
   const [checkedInToday, setCheckedInToday] = useState(false)
   const [checkInCount, setCheckInCount] = useState(0)
   const [submitting, setSubmitting] = useState(false)
@@ -35,26 +33,19 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
     getShopCheckInCount(shopId).then(setCheckInCount)
   }, [user, shopId])
 
-  if (!shopLat || !shopLng) return null
-
   async function handleCheckIn() {
     if (!user) return
 
-    if (!location) {
-      requestLocation()
-      return
-    }
-
     setSubmitting(true)
+    // 방문 기록 — GPS 없이, 갔다 와서 눌러도 된다
     const result = await createCheckIn(
-      user.id, shopId, shopLat!, shopLng!, shopName,
-      location.lat, location.lng
+      user.id, shopId, shopLat ?? 0, shopLng ?? 0, shopName
     )
 
     if (result.success) {
       setCheckedInToday(true)
       setCheckInCount(c => c + 1)
-      setToast('체크인 완료!')
+      setToast('방문 기록 완료!')
       setTimeout(() => setToast(null), 2500)
 
       const [shopTags, myCollected] = await Promise.all([
@@ -80,7 +71,7 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
         }
       }
     } else {
-      setToast(result.error ?? '체크인에 실패했어요')
+      setToast(result.error ?? '방문 기록에 실패했어요')
       setTimeout(() => setToast(null), 2500)
     }
     setSubmitting(false)
@@ -120,23 +111,15 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
         size="lg"
         fullWidth
         onClick={handleCheckIn}
-        disabled={submitting || checkedInToday || locating}
-        leftIcon={!checkedInToday && !locating && !submitting ? checkinIcon : undefined}
+        disabled={submitting || checkedInToday}
+        leftIcon={!checkedInToday && !submitting ? checkinIcon : undefined}
       >
         {checkedInToday
-          ? '오늘 체크인 완료'
-          : locating
-            ? '위치 확인 중...'
-            : submitting
-              ? '체크인 중...'
-              : '체크인하기'}
+          ? '방문한 곳이에요'
+          : submitting
+            ? '기록 중...'
+            : '방문했어요'}
       </Button>
-
-      {locError && (
-        <p style={{ fontSize: '12px', color: 'var(--red)', textAlign: 'center', marginTop: '6px' }}>
-          {locError}
-        </p>
-      )}
 
       {toast && (
         <div style={{

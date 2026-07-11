@@ -1,4 +1,5 @@
 ﻿import { createClient } from '@/lib/supabase/client'
+import { resolveEventCover } from '@/lib/event/eventCover'
 import { Shop } from '@/types/shop'
 
 export function toShop(raw: any): Shop {
@@ -35,6 +36,9 @@ export function toShop(raw: any): Shop {
     place_slug:     raw.places?.slug ?? null,
     displayLat:     raw.places?.lat ?? raw.lat,   // place 있으면 place 좌표
     displayLng:     raw.places?.lng ?? raw.lng,
+    hasEvent:       false,       // getShops 후처리에서 채움
+    eventTitle:     null,
+    eventCover:     null,
     cat:            cats[0] ?? '기타',
     cats:           cats,
     images,
@@ -90,7 +94,8 @@ export async function getShops(): Promise<Shop[]> {
     return []
   }
 
-  return (data ?? []).map(toShop)
+  const shops = (data ?? []).map(toShop)
+  return attachEvents(supabase, shops)
 }
 
 export async function getShopBySlug(slug: string): Promise<Shop | null> {
@@ -322,6 +327,48 @@ export async function updateShop(
   }
 
   return true
+}
+
+// 진행 중 이벤트의 포스터를 각 샵에 붙인다 (지도·바텀시트 카드 이미지용)
+async function attachEvents(supabase: any, shops: Shop[]): Promise<Shop[]> {
+  if (shops.length === 0) return shops
+  const today = new Date().toISOString().slice(0, 10)
+  const ids = shops.map(s => s.id)
+
+  const { data: evs } = await supabase
+    .from('events')
+    .select('shop_id, title, cover_url, tag_id, start_date, end_date')
+    .in('shop_id', ids)
+    .lte('start_date', today)
+    .or(`end_date.is.null,end_date.gte.${today}`)
+
+  if (!evs || evs.length === 0) return shops
+
+  // 작품 커버 폴백용 tags
+  const tagIds = [...new Set(evs.map((e: any) => e.tag_id).filter(Boolean))]
+  const tagCover = new Map<string, string | null>()
+  if (tagIds.length) {
+    const { data: tags } = await supabase.from('tags').select('id, cover_url').in('id', tagIds)
+    for (const tg of (tags ?? []) as any[]) tagCover.set(tg.id, tg.cover_url ?? null)
+  }
+
+  // 샵별 첫 이벤트만
+  const byShop = new Map<string, any>()
+  for (const e of evs as any[]) if (!byShop.has(e.shop_id)) byShop.set(e.shop_id, e)
+
+  return shops.map(s => {
+    const e = byShop.get(s.id)
+    if (!e) return s
+    return {
+      ...s,
+      hasEvent: true,
+      eventTitle: e.title ?? null,
+      eventCover: resolveEventCover({
+        eventCoverUrl: e.cover_url ?? null,
+        workCoverUrl: e.tag_id ? (tagCover.get(e.tag_id) ?? null) : null,
+      }),
+    }
+  })
 }
 
 export async function getShopsByTag(tagSlug: string): Promise<Shop[]> {

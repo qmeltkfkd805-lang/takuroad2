@@ -15,6 +15,7 @@ import { ROUTES } from '@/lib/constants/routes'
 import { shopRegion, shopDistrict } from '@/lib/utils/region'
 import styles from './MapPage.module.css'
 import fab from './MapFab.module.css'
+import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import MapBottomSheet from './MapBottomSheet'
 import ShopFloatingCard from './ShopFloatingCard'
 
@@ -61,6 +62,22 @@ export default function MapPage() {
       mapRef.current?.moveCenter(la, ln, 3)
     }
   }, [setSelectedShop])
+
+  // 바텀시트 '목록 보기' → 지도에 걸린 필터(지역·구·카테고리)를 들고 전체보기로
+  const goToFilteredList = useCallback(() => {
+    const params = new URLSearchParams()
+    if (selectedRegion && selectedRegion !== '전체') {
+      params.set('region', selectedDistrict && selectedDistrict !== '전체'
+        ? `${selectedRegion} ${selectedDistrict}`
+        : selectedRegion)
+    }
+    if (selectedCat && selectedCat !== '전체') {
+      const slug = CATEGORY_NAME_MAP[selectedCat]?.slug
+      if (slug) params.set('cat', slug)
+    }
+    const qs = params.toString()
+    router.push(qs ? `/shops/all?${qs}` : '/shops/all')
+  }, [selectedRegion, selectedDistrict, selectedCat, router])
 
   const handleSelectGroup = useCallback((shops: Shop[]) => {
     setGroupShops(shops)
@@ -240,7 +257,7 @@ export default function MapPage() {
           </div>
         )}
         {!selectedShop && (
-          <MapBottomSheet shops={filtered} onSelectShop={handleSelectShop} onStateChange={setSheetState} />
+          <MapBottomSheet shops={filtered} onSelectShop={handleSelectShop} onStateChange={setSheetState} onListClick={goToFilteredList} />
         )}
 
         {/* 샵 상세 — 지도 위 작은 플로팅 카드 */}

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { checkWorkMilestone } from './activityService'
 
 // 체크인 시 호출 — 그 샵의 취급 작품을 컬렉션에 자동 추가 (이미 있으면 visit_count만 증가)
 export async function collectTagsFromCheckIn(userId: string, shopId: string): Promise<{ newlyCollected: string[] }> {
@@ -76,7 +77,17 @@ export async function addTagToCollection(userId: string, tagId: string, shopId: 
       { user_id: userId, tag_id: tagId, first_shop_id: shopId },
       { onConflict: 'user_id,tag_id' }
     )
-  return !error
+  if (error) return false
+
+  // ⭐ Activity — 이 작품 진행률이 마일스톤(25/50/75/100%)을 새로 넘었으면 기록
+  // (실패해도 컬렉션 추가 자체는 성공으로 둔다)
+  try {
+    await checkWorkMilestone(userId, tagId)
+  } catch (e) {
+    console.error('checkWorkMilestone error:', e)
+  }
+
+  return true
 }
 
 // 컬렉션에서 제거 (잘못 눌렀을 때 취소용)

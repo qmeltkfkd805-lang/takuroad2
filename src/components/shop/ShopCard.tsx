@@ -42,9 +42,9 @@ export default function ShopCard({ shop, isActive, onClick }: ShopCardProps) {
         justifyContent: 'center',
         fontSize: '22px',
       }}>
-        {shop.images[0] ? (
+        {(shop.eventCover ?? shop.images[0]) ? (
           <img
-            src={shop.images[0]}
+            src={shop.eventCover ?? shop.images[0]}
             alt={shop.name}
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />

@@ -25,6 +25,7 @@ import ShopAmenityBadges from './ShopAmenityBadges'
 import ReviewSection from './ReviewSection'
 import VerifyRequestButton from './VerifyRequestButton'
 import ReportIssueButton from './ReportIssueButton'
+import CheckInButton from './CheckInButton'
 
 interface Props {
   shop: Shop
@@ -275,6 +276,17 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
             <div style={{ display: 'flex', gap: 10, margin: '16px 0 8px' }}>
               <QuickBtn onClick={handleSave} active={saved} activeColor={color} icon={<Ico name="bookmark" filled={saved} />} label="저장" />
               <QuickBtn onClick={handleShare} icon={<Ico name="share" />} label="공유" />
+            </div>
+
+            {/* 방문했어요 — 방문 기록(Activity) 생성 */}
+            <div style={{ margin: '4px 0 16px' }}>
+              <CheckInButton
+                shopId={shop.id}
+                shopName={shop.name}
+                shopLat={shop.lat}
+                shopLng={shop.lng}
+                accentColor={color}
+              />
             </div>
 
             {/* 탭 바 (클릭 시 내용 전환) */}

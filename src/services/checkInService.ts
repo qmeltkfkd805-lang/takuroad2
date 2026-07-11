@@ -1,10 +1,8 @@
 import { createClient } from '@/lib/supabase/client'
-import { calcDistance } from '@/hooks/useCurrentLocation'
+import { recordShopVisitActivity } from './activityService'
 import { addExp } from './expService'
 import { evaluateBadgeTiersForUser } from './badgeService'
 
-const CHECK_IN_MAX_DISTANCE_M = 100 // ⚠️ 테스트 전용 임시값 — 운영 전 100으로 반드시 되돌릴 것!
-const RECHECK_IN_COOLDOWN_MIN = 30
 const CHECK_IN_EXP = 5
 
 export interface CheckInResult {
@@ -42,28 +40,26 @@ export async function createCheckIn(
   shopLat: number,
   shopLng: number,
   shopName: string,
-  userLat: number,
-  userLng: number,
+  userLat?: number | null,
+  userLng?: number | null,
   shopSlug?: string
 ): Promise<CheckInResult> {
   const supabase = createClient()
 
-  const distance = Math.round(calcDistance(userLat, userLng, shopLat, shopLng))
-  if (distance > CHECK_IN_MAX_DISTANCE_M) {
-    return { success: false, error: `샵과 거리가 너무 멀어요 (${distance}m)` }
-  }
+  // 방문 기록 방식 — GPS 검증 없음. 갔다 와서 눌러도 됨.
+  // 좌표가 넘어오면 참고로 저장하지만, 없어도 정상 기록.
+  const hasCoords = typeof userLat === 'number' && typeof userLng === 'number'
 
-  const cooldownTime = new Date(Date.now() - RECHECK_IN_COOLDOWN_MIN * 60 * 1000).toISOString()
-  const { data: recent } = await supabase
+  // 중복 방지: 같은 샵을 이미 방문 기록했으면 막지 않고 조용히 성공 처리
+  const { data: existing } = await supabase
     .from('check_ins')
     .select('id')
     .eq('user_id', userId)
     .eq('shop_id', shopId)
-    .gte('created_at', cooldownTime)
     .maybeSingle()
 
-  if (recent) {
-    return { success: false, error: '잠시 후 다시 시도해주세요' }
+  if (existing) {
+    return { success: true, expEarned: 0 }   // 이미 방문한 곳 — 재기록 안 함
   }
 
   const { error } = await supabase
@@ -71,28 +67,43 @@ export async function createCheckIn(
     .insert({
       user_id: userId,
       shop_id: shopId,
-      lat: userLat,
-      lng: userLng,
-      distance_m: distance,
+      lat: hasCoords ? userLat : null,
+      lng: hasCoords ? userLng : null,
+      distance_m: null,
       exp_earned: CHECK_IN_EXP,
+      check_in_date: new Date().toISOString().slice(0, 10),   // 방문 기록일
     } as any)
 
   if (error) {
     if (error.code === '23505') {
-      return { success: false, error: '오늘 이미 체크인했어요' }
+      return { success: true, expEarned: 0 }   // 이미 방문
     }
-    return { success: false, error: '체크인에 실패했어요' }
+    return { success: false, error: '방문 기록에 실패했어요' }
   }
 
   await addExp(userId, CHECK_IN_EXP, 'check_in', 'shop', shopId)
 
-  // slug가 없으면 직접 조회해서 link 정확하게 생성
+  // 샵 정보 조회 (slug = 링크용, region = Activity 스냅샷용)
   let slug = shopSlug
-  if (!slug) {
-    const { data: shopData } = await supabase.from('shops').select('slug').eq('id', shopId).maybeSingle()
-    slug = shopData?.slug
+  let shopRegion: string | null = null
+  const { data: shopData } = await supabase
+    .from('shops')
+    .select('slug, region')
+    .eq('id', shopId)
+    .maybeSingle()
+  if (shopData) {
+    slug = slug ?? (shopData as any).slug
+    shopRegion = (shopData as any).region ?? null
   }
-  await logActivity(userId, 'check_in', `${shopName} 체크인`, slug ? `/shop/${slug}` : undefined)
+
+  // ⭐ Activity 시스템 — 스냅샷 방식으로 방문 기록.
+  // snapshot에 "그때의 샵 이름"을 박아둔다 (나중에 샵 이름이 바뀌어도 연대기는 그때 이름 그대로)
+  await recordShopVisitActivity({
+    userId,
+    shopId,
+    shopName,
+    region: shopRegion,
+  })
 
   await (supabase as any).rpc('increment_visit_count', { p_shop_id: shopId })
 
@@ -116,15 +127,14 @@ export async function getMyCheckIns(userId: string) {
 
 export async function getMyCheckInStatus(userId: string, shopId: string) {
   const supabase = createClient()
-  const today = new Date().toISOString().slice(0, 10)
+  // 방문 기록 방식: 하루 단위가 아니라 "한 번이라도 방문했나"
   const { data } = await supabase
     .from('check_ins')
-    .select('id, created_at')
+    .select('id')
     .eq('user_id', userId)
     .eq('shop_id', shopId)
-    .gte('created_at', `${today}T00:00:00`)
     .maybeSingle()
-  return { checkedInToday: !!data }
+  return { checkedInToday: !!data }   // 필드명은 호환 유지 (= 이미 방문함)
 }
 
 export async function getShopCheckInCount(shopId: string): Promise<number> {
