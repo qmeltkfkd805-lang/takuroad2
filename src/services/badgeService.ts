@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { countActivity } from './growthService'
 
 export type BadgeRarity = 'common' | 'rare' | 'epic' | 'legendary'
 
@@ -271,12 +272,23 @@ export async function evaluateBadgeTiersForUser(userId: string): Promise<string[
       if (tier.available_until && now > new Date(tier.available_until)) continue
     }
 
-    const qualifies = await checkTierCondition(userId, tier, existingIds)
-    if (qualifies) {
-      const { error } = await supabase
-        .from('user_badge_tiers')
-        .insert({ user_id: userId, badge_tier_id: tier.id } as any)
-      if (!error) newlyEarned.push(tier.id)
+    // ⚠️ 배지 하나가 터져도 나머지 평가는 계속돼야 한다.
+    //    (옛 조건 하나가 에러를 던지면 뒤의 성장 배지가 전부 안 돌던 버그)
+    try {
+      const qualifies = await checkTierCondition(userId, tier, existingIds)
+      if (qualifies) {
+        const { error } = await supabase
+          .from('user_badge_tiers')
+          .insert({ user_id: userId, badge_tier_id: tier.id } as any)
+        if (error) {
+          console.error('[배지 지급 실패]', tier.name, error.message)
+        } else {
+          newlyEarned.push(tier.id)
+          console.log('[배지 획득]', tier.name)
+        }
+      }
+    } catch (e) {
+      console.error('[배지 판정 실패]', tier.name, tier.condition_type, e)
     }
   }
 
@@ -286,6 +298,13 @@ export async function evaluateBadgeTiersForUser(userId: string): Promise<string[
 async function checkTierCondition(userId: string, tier: any, earnedTierIds: Set<string>): Promise<boolean> {
   const type = tier.condition_type
   const target = tier.condition_target
+  // ⭐ 성장 시스템 — 조건 타입은 영원히 이거 하나.
+  //    새 활동이 생겨도 activity_type 값만 늘어난다.
+  if (type === 'activity_count') {
+    const done = await countActivity(userId, target)
+    const need = target?.count ?? 1
+    return done >= need
+  }
 
   if (type === 'tag_visit_percent') {
     const p = await getTagVisitProgress(userId, target.tag, target.percent)

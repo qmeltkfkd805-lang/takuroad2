@@ -1,4 +1,4 @@
-﻿import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 
 /* ============================================================
    Activity 시스템 — 타쿠로드의 덕질 기록 원장
@@ -82,7 +82,17 @@ export async function createActivity(input: CreateActivityInput): Promise<void> 
       title: buildLegacyTitle(input.type, input.snapshot),
     } as any)
 
-  if (error) console.error('createActivity error:', error)
+  if (error) {
+    console.error('createActivity error:', error)
+    return
+  }
+
+  // ⭐⭐ 모든 기록이 여기를 지나간다 → 배지 평가도 여기서 한 번만.
+  //    새 활동이 생겨도 평가 호출을 따로 붙일 필요가 없다.
+  //    사용자를 기다리게 하지 않는다 (실패해도 기록은 이미 남았다)
+  import('./badgeService')
+    .then(m => m.evaluateBadgeTiersForUser(input.userId))
+    .catch(e => console.error('[배지 평가 실패]', e))
 }
 
 const EVENT_TYPE_WORD: Record<ActivityEventType, string> = {
