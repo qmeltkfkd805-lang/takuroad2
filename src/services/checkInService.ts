@@ -107,6 +107,7 @@ export async function createCheckIn(
     userId,
     shopId,
     shopName,
+    shopSlug: slug ?? null,
     region: geekArea,      // 덕질 지역 (홍대·수원…)
     placeName,             // 소속 장소 (스타필드 수원…) — Story 내 그룹핑용
   })

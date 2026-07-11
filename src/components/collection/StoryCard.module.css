@@ -37,3 +37,41 @@
   border-top: 1px solid var(--border);
   font-size: 12.5px; color: var(--muted); font-weight: 600;
 }
+
+/* ✨ 이번 기록 — 하이라이트 (지역은 무대, 작품은 주인공) */
+.highlight {
+  margin-top: 18px; padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.hlLabel { font-size: 11.5px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.hlMain { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.hlName { font-size: 16px; font-weight: 900; }
+.hlSub { font-size: 12.5px; color: var(--muted); }
+
+.bar { height: 7px; border-radius: 9999px; background: var(--surface2); overflow: hidden; }
+.bar span {
+  display: block; height: 100%; border-radius: 9999px;
+  background: linear-gradient(90deg, #FF8FB3, #FF5692);
+  transition: width .6s cubic-bezier(.2,.8,.2,1);
+}
+.hlPct { font-size: 12px; font-weight: 700; color: var(--accent); margin-top: 6px; }
+.hlCount { color: var(--muted); font-weight: 600; margin-left: 4px; }
+
+/* 다음 목표 — 기록이 다음 행동을 만든다 */
+.next {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 14px; padding: 11px 13px;
+  background: var(--surface2); border-radius: 11px;
+  cursor: pointer;
+}
+.next:hover { background: #FFF0F5; }
+.nextLabel {
+  font-size: 10.5px; font-weight: 800; color: #fff;
+  background: var(--accent); padding: 3px 8px; border-radius: 9999px;
+  flex-shrink: 0;
+}
+.nextText { font-size: 13px; color: var(--text); flex: 1; }
+.nextText b { font-weight: 800; }
+.nextArrow { color: var(--muted); font-size: 17px; }
+
+@media (prefers-reduced-motion: reduce) { .bar span { transition: none; } }
