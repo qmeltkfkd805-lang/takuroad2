@@ -6,6 +6,8 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { getCollectionHome, CollectionHome } from '@/services/collectionService'
 import { getMyStories, Story } from '@/services/storyBuilder'
 import StoryCard from './StoryCard'
+import { AXIS_KEYS, AXIS_LABEL, AXIS_VERB } from '@/lib/work/workProgress'
+import { Icon } from '@/components/tds'
 import { ROUTES } from '@/lib/constants/routes'
 import styles from './CollectionHomePage.module.css'
 
@@ -42,7 +44,7 @@ export default function CollectionHomePage() {
 
   const s = data?.summary
   const works = data?.works ?? []
-  const nearComplete = works.filter(w => w.pct > 0 && w.pct < 100).slice(0, 3)
+  const nearComplete = works.filter(w => w.overall > 0 && w.overall < 100).slice(0, 3)
   const routes = data?.routesInProgress ?? []
   const recent = data?.recentVisits ?? []
 
@@ -113,10 +115,10 @@ export default function CollectionHomePage() {
                       <div className={styles.progIcon} />
                       <div className={styles.progBody}>
                         <div className={styles.progName}>{w.name}</div>
-                        <div className={styles.progNum}>{w.collected} / {w.total}</div>
+                        <div className={styles.progNum}>{AXIS_KEYS.filter(k => w.axes[k].total > 0).map(k => `${AXIS_LABEL[k]} ${w.axes[k].done}/${w.axes[k].total}`).join(' · ')}</div>
                         <div className={styles.bar}><span style={{ width: `${w.pct}%` }} /></div>
                       </div>
-                      <div className={styles.progPct}>{w.pct}%</div>
+                      <div className={styles.progPct}>{w.overall}%</div>
                     </li>
                   ))}
                 </ul>
@@ -183,16 +185,16 @@ export default function CollectionHomePage() {
         <aside className={styles.rail}>
           {/* 다음 목표 추천 */}
           <section className={styles.block}>
-            <div className={styles.blockHead}><h3>🔥 다음 목표 추천</h3><button className={styles.moreLink}>전체 보기 ›</button></div>
+            <div className={styles.blockHead}><h3><Icon name="colorfire" size={18} /> 다음 목표 추천</h3><button className={styles.moreLink}>전체 보기 ›</button></div>
             {nearComplete.length > 0 ? nearComplete.map(w => (
               <div key={w.id} className={styles.goalRow}>
                 <div className={styles.goalIcon} />
                 <div className={styles.goalBody}>
                   <div className={styles.goalTitle}>{w.name} 컬렉션</div>
-                  <div className={styles.goalSub}>{w.total - w.collected}곳만 더 방문하면 완성!</div>
+                  <div className={styles.goalSub}>{w.next ? `${w.next.name} ${AXIS_VERB[w.next.axis]} 시 ${w.next.after}` : ''}</div>
                   <div className={styles.bar}><span style={{ width: `${w.pct}%` }} /></div>
                 </div>
-                <button className={styles.goalBtn} onClick={() => w.slug && router.push(`/shops/all?works=${w.slug}`)}>추천 샵 보기</button>
+                <button className={styles.goalBtn} onClick={() => w.next?.href && router.push(w.next.href)}>보러 가기</button>
               </div>
             )) : <p className={styles.railEmpty}>방문을 쌓으면 “거의 다 모은” 작품을 콕 집어 알려드릴게요.</p>}
           </section>
