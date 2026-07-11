@@ -1,94 +1,183 @@
 ﻿import { createClient } from '@/lib/supabase/client'
-import { getMyTagCollections, getMyCollectedTagIds } from '@/services/tagCollectionService'
-import { getMyRouteProgress } from '@/services/routeService'
 import { AxisKey, AxisProgress, NextGoal, getWorkProgress } from '@/lib/work/workProgress'
+import { getMyStories } from '@/services/storyBuilder'
+import { geekAreaFromAddr } from '@/lib/utils/geekArea'
 
-/* 컬렉션 홈 — 실제 데이터만 집계. 없는 항목(기념품·지역률·추천)은 페이지에서 목업.
+/* 컬렉션 홈 — "나의 덕질 컬렉션"
+   ⭐ 진행률은 계산하지 않는다. 정책(lib/work/workProgress)에 물어본다.
+   ⭐ 카드의 얼굴 = Place 대표 이미지.
+      컬렉션은 "어느 샵에 갔는가"가 아니라 "그날 어디서 덕질했는가"의 기록이므로,
+      샵 사진이 아니라 장소(스타필드·코엑스·DDP…)의 얼굴을 쓴다.
+      카드 안에는 실제 방문한 샵 목록이 따라온다. Place 이미지가 없으면 지역명+그라디언트로 폴백. */
 
-   ⭐ 작품 진행률을 여기서 계산하지 않는다. 정책(lib/work/workProgress)에 물어본다.
-      그래야 연대기 Story 하이라이트와 같은 숫자가 나온다.
-      (전에는 여기서 "샵만" 따로 세서 화면마다 다른 %를 말했다) */
+export interface CountStat { total: number; thisMonth: number }
+
+export interface CollectionSummary {
+  areas: CountStat
+  shops: CountStat
+  events: CountStat
+  routes: CountStat
+}
+
+export interface StoryCardSummary {
+  key: string
+  area: string           // 덕질 지역 (수원·홍대)
+  date: string
+  placeName: string | null   // 대표 장소 (스타필드 수원)
+  imageUrl: string | null    // 그 Place의 cover_image
+  spots: string[]            // 실제 방문한 샵·이벤트 이름
+  moreCount: number          // spots에서 잘린 나머지 수
+  pct: number                // 대표 작품 종합 탐험도
+}
 
 export interface WorkCollection {
   id: string
   name: string
   slug: string
-  /** 종합 탐험도 — 0인 축 제외 + 가중치 재정규화 */
+  coverUrl: string | null
   overall: number
-  /** 축별 진행률 (샵·이벤트·카페·루트) */
   axes: Record<AxisKey, AxisProgress>
-  /** 가장 가까운 미완료 축에서 고른 다음 목표 */
   next: NextGoal | null
 }
 
-export interface RouteProgress {
+export interface EarnedBadge {
   id: string
-  title: string
-  shareToken: string | null
-  cover: string | null
-  visited: number
-  total: number
-  pct: number
-}
-
-export interface CollectionSummary {
-  collectedWorks: number
-  totalWorks: number
-  visitedShops: number
-  savedShops: number
-  activeRoutes: number
+  name: string
+  condition: string | null
+  iconUrl: string | null
 }
 
 export interface CollectionHome {
   summary: CollectionSummary
+  stories: StoryCardSummary[]
   works: WorkCollection[]
-  routesInProgress: RouteProgress[]
+  badges: EarnedBadge[]
+  badgeMore: number
 }
 
-/** 로그인 유저의 컬렉션 홈 데이터 (실데이터만) */
+function monthStartISO(): string {
+  const d = new Date()
+  return new Date(d.getFullYear(), d.getMonth(), 1).toISOString()
+}
+
+const STORY_LIMIT = 6
+const BADGE_LIMIT = 5
+const SPOT_LIMIT = 2
+
 export async function getCollectionHome(userId: string): Promise<CollectionHome> {
   const supabase = createClient()
+  const from = monthStartISO()
 
-  const [tagCols, collectedIds, routeProg, savedRes, checkInRes] = await Promise.all([
-    getMyTagCollections(userId),
-    getMyCollectedTagIds(userId),
-    getMyRouteProgress(userId),
-    supabase.from('saved_shops').select('shop_id', { count: 'exact', head: true }).eq('user_id', userId),
-    // 방문한 샵 = check_ins. (전에는 user_tag_collections로 셌는데, 그건 방문 후
-    //  작품 선택 모달을 건너뛰면 안 잡힌다 — "방문했어요"를 눌렀는데 0곳이 되는 버그)
-    supabase.from('check_ins').select('shop_id').eq('user_id', userId),
+  const [checkRes, evRes, rcRes, favRes, badgeRes, stories] = await Promise.all([
+    supabase.from('check_ins').select('shop_id, created_at, shops ( addr, region )').eq('user_id', userId),
+    supabase.from('event_visits').select('event_id, created_at').eq('user_id', userId),
+    supabase.from('route_completions').select('route_id').eq('user_id', userId),
+    supabase.from('user_favorite_tags').select('tag_id, tier').eq('user_id', userId).in('tier', ['favorite', 'interest']),
+    supabase.from('user_badge_tiers').select('badge_tier_id, earned_at, badge_tiers ( * )').eq('user_id', userId).order('earned_at', { ascending: false }),
+    getMyStories(userId, STORY_LIMIT),
   ])
 
-  const visitedShopSet = new Set((checkInRes.data ?? []).map((r: any) => r.shop_id).filter(Boolean))
-
-  // ⭐ 4축 진행률 — 정책 한 곳에서 배치로 계산
-  const progress = await getWorkProgress(userId, collectedIds)
-  const metaById = new Map(tagCols.map((t: any) => [t.id, { name: t.name, slug: t.slug }]))
-
-  const works: WorkCollection[] = collectedIds
-    .map(tid => {
-      const p = progress.get(tid)
-      const meta = metaById.get(tid)
-      if (!p) return null
-      return {
-        id: tid,
-        name: meta?.name ?? '작품',
-        slug: meta?.slug ?? '',
-        overall: p.overall,
-        axes: p.axes,
-        next: p.next,
-      }
-    })
-    .filter((w): w is WorkCollection => w !== null)
-    .sort((a, b) => b.overall - a.overall)
-
-  const summary: CollectionSummary = {
-    collectedWorks: collectedIds.length,
-    totalWorks: tagCols.length,
-    visitedShops: visitedShopSet.size,
-    savedShops: savedRes.count ?? 0,
-    activeRoutes: routeProg.length,
+  // 방문한 샵 / 덕질 지역 (shops.region이 비어도 주소에서 뽑는다)
+  const rows = (checkRes.data ?? []) as any[]
+  const shops = new Set<string>(), shopsM = new Set<string>()
+  const areas = new Set<string>(), areasM = new Set<string>()
+  for (const r of rows) {
+    if (!r.shop_id) continue
+    const isMonth = (r.created_at ?? '') >= from
+    shops.add(r.shop_id)
+    if (isMonth) shopsM.add(r.shop_id)
+    const area = r.shops?.region?.trim() || geekAreaFromAddr(r.shops?.addr ?? null)
+    if (area) { areas.add(area); if (isMonth) areasM.add(area) }
   }
 
-  return { summary, works, routesInProgress: routeProg as RouteProgress[] }
+  const evRows = (evRes.data ?? []) as any[]
+  const rcRows = (rcRes.data ?? []) as any[]
+
+  // route_completions엔 시각 컬럼이 없다 → "이번 달"은 Activity에서 센다
+  const { data: routeActs } = await supabase
+    .from('activity_logs').select('id')
+    .eq('user_id', userId).eq('type', 'route_completed').gte('created_at', from)
+
+  const summary: CollectionSummary = {
+    areas:  { total: areas.size, thisMonth: areasM.size },
+    shops:  { total: shops.size, thisMonth: shopsM.size },
+    events: { total: evRows.length, thisMonth: evRows.filter(r => (r.created_at ?? '') >= from).length },
+    routes: { total: rcRows.length, thisMonth: (routeActs ?? []).length },
+  }
+
+  // 좋아하는 작품(최애·관심)의 탐험 현황
+  const favIds = ((favRes.data ?? []) as any[]).map(r => r.tag_id)
+  let works: WorkCollection[] = []
+  if (favIds.length > 0) {
+    const [progress, tagRes] = await Promise.all([
+      getWorkProgress(userId, favIds),
+      supabase.from('tags').select('id, name, slug, cover_url').in('id', favIds),
+    ])
+    const metaById = new Map(((tagRes.data ?? []) as any[]).map(t => [t.id, t]))
+    works = favIds
+      .map(id => {
+        const p = progress.get(id)
+        const m: any = metaById.get(id)
+        if (!p || !m) return null
+        return {
+          id, name: m.name, slug: m.slug, coverUrl: m.cover_url ?? null,
+          overall: p.overall, axes: p.axes, next: p.next,
+        } as WorkCollection
+      })
+      .filter((w): w is WorkCollection => w !== null)
+      .sort((a, b) => b.overall - a.overall)
+  }
+
+  // ⭐ Story 카드의 얼굴 = 대표 Place의 cover_image
+  //    Story의 샵들이 어느 Place에 속하는지로 대표 Place를 정한다 (가장 많은 샵이 속한 곳)
+  const allShopIds = [...new Set(stories.flatMap(s => s.shopIds))]
+  const placeByShop = new Map<string, { name: string; cover: string | null }>()
+  if (allShopIds.length > 0) {
+    const { data: shopRows } = await supabase
+      .from('shops')
+      .select('id, places ( name, cover_image )')
+      .in('id', allShopIds)
+    for (const s of (shopRows ?? []) as any[]) {
+      if (s.places?.name) placeByShop.set(s.id, { name: s.places.name, cover: s.places.cover_image ?? null })
+    }
+  }
+
+  const storyCards: StoryCardSummary[] = stories.map(s => {
+    // 대표 Place — 이 Story에서 가장 많은 샵이 속한 곳
+    const count = new Map<string, { n: number; cover: string | null }>()
+    for (const id of s.shopIds) {
+      const p = placeByShop.get(id)
+      if (!p) continue
+      const cur = count.get(p.name) ?? { n: 0, cover: p.cover }
+      cur.n++
+      count.set(p.name, cur)
+    }
+    const top = [...count.entries()].sort((a, b) => b[1].n - a[1].n)[0]
+
+    const names = s.places.flatMap(p => p.items.map(i => i.name))
+    return {
+      key: s.key,
+      area: s.area,
+      date: s.date,
+      placeName: top?.[0] ?? null,
+      imageUrl: top?.[1].cover ?? null,
+      spots: names.slice(0, SPOT_LIMIT),
+      moreCount: Math.max(0, names.length - SPOT_LIMIT),
+      pct: s.highlight?.overall ?? 0,
+    }
+  })
+
+  // 획득한 배지
+  const badgeRows = (badgeRes.data ?? []) as any[]
+  const badges: EarnedBadge[] = badgeRows.slice(0, BADGE_LIMIT).map(r => {
+    const t: any = r.badge_tiers ?? {}
+    return {
+      id: r.badge_tier_id,
+      name: t.name ?? '배지',
+      condition: t.condition_text ?? t.description ?? null,
+      iconUrl: t.icon_url ?? null,
+    }
+  })
+
+  return { summary, stories: storyCards, works, badges, badgeMore: Math.max(0, badgeRows.length - BADGE_LIMIT) }
 }
