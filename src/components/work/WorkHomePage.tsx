@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
@@ -8,6 +8,7 @@ import WorkStateButton from './WorkStateButton'
 import WorkCommunityTabs from '@/components/community/WorkCommunityTabs'
 import WorkCommunityPreview from '@/components/community/WorkCommunityPreview'
 import WorkFeedBanner from './WorkFeedBanner'
+import WorkExploration from './WorkExploration'
 import { SectionHeader, EventCard, ShopCard, RouteCard, Icon } from '@/components/tds'
 import HomeFeedCard from '@/components/home/HomeFeedCard'
 import type { FeedItem } from '@/lib/feed/types'
@@ -132,6 +133,9 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
           </div>
         </div>
       </section>
+
+      {/* 나의 탐험도 — 이 작품을 얼마나 팠나 (정책 workProgress에 물어봄) */}
+      <WorkExploration tagId={tag.id} />
 
       {/* Tabs */}
       <nav className={styles.tabs}>
