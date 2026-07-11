@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { recordRouteCreatedActivity } from '@/services/activityService'
 import { calcDistance } from '@/hooks/useCurrentLocation'
 
 // ??醫뚰몴 媛??꾨낫 ?쒓컙 異붿젙 (?됯퇏 4km/h)
@@ -69,6 +70,18 @@ export async function createRoute(
     )
 
   if (shopsError) return null
+
+  // 성장 Activity — 내가 만든 덕질 코스
+  try {
+    await recordRouteCreatedActivity({
+      userId,
+      routeId: route.id,
+      routeName: title,
+      routeToken: route.share_token,
+    })
+  } catch (e) {
+    console.error('[루트 제작 Activity 실패]', e)
+  }
 
   return { id: route.id, shareToken: route.share_token }
 }

@@ -1,4 +1,6 @@
-﻿import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/client'
+import { recordShopRegisterActivity } from '@/services/activityService'
+import { geekAreaFromAddr } from '@/lib/utils/geekArea'
 import { resolveEventCover } from '@/lib/event/eventCover'
 import { Shop } from '@/types/shop'
 
@@ -234,6 +236,20 @@ export async function createShop(
         .from('shop_categories')
         .insert(cats.map((c: any) => ({ shop_id: shop.id, category_id: c.id })) as any)
     }
+  }
+
+  // 성장 Activity — 샵 등록.
+  // 카운터는 나중에 '아직 살아있는(active) 샵'만 세므로, 쓰레기 샵을 지우면 카운트도 빠진다
+  try {
+    await recordShopRegisterActivity({
+      userId,
+      shopId: shop.id,
+      shopName: (data as any)?.name ?? '샵',
+      shopSlug: shop.slug,
+      region: ((data as any)?.region?.trim() || geekAreaFromAddr((data as any)?.addr ?? null)) ?? null,
+    })
+  } catch (e) {
+    console.error('[샵 등록 Activity 실패]', e)
   }
 
   return { slug: shop.slug, id: shop.id }

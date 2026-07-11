@@ -1,50 +1,59 @@
-import { createClient } from '@/lib/supabase/client'
+﻿import { createClient } from '@/lib/supabase/client'
 
 /* ============================================================
-   Activity 시스템 — 타쿠로드의 덕질 연대기 기반
-   activity_logs 테이블을 스냅샷 방식으로 진화시킨 것.
+   Activity 시스템 — 타쿠로드의 덕질 기록 원장
 
    ⭐⭐ 이 파일은 "모든 기록이 흘러들어오는 파이프라인"이다.
-   각 서비스(checkInService·eventVisitService·routeProgressService…)는
-   activity_logs에 직접 insert 하지 않는다. 반드시 여기를 거친다.
-   그래야 snapshot 구조나 Story Builder 규칙이 바뀌어도 한 곳만 고치면 된다.
+   각 서비스는 activity_logs에 직접 insert 하지 않는다. 반드시 여기를 거친다.
+
+   ⭐⭐ activity_logs = 덕질 기록의 원장. 댓글·좋아요는 안 들어온다(커뮤니티 활동).
+      기준: "내가 덕질한 흔적인가?"
+
+   ⭐⭐ "Activity에 기록한다"와 "업적 조건으로 쓴다"는 분리한다.
+      원장은 다 담고, 성장 시스템(badge_tiers)이 그중 골라 쓴다.
+      루트 제작을 배지로 안 만들면 그냥 배지 행을 안 만들면 된다 —
+      활동은 이미 쌓여 있으니 나중에 행 하나 추가하면 그때부터 소급 계산된다.
 
    원칙:
-   - snapshot = 그때의 표시 정보 (불변). 원본 이름이 나중에 바뀌어도 보존
+   - snapshot = 그때의 표시 정보 (불변). 원본 이름이 바뀌어도 보존
    - occurred_at = 실제 일어난 시각 (created_at과 별개)
    - work_id = 작품별 집계용 (nullable)
-   - title(Legacy) = 옛 데이터 fallback 전용. 새 Activity는 snapshot 사용
+   - title(Legacy) = 옛 데이터 fallback 전용
    - 삭제하지 않음 (리뷰 지워도 "리뷰 20개 달성"은 남음)
    ============================================================ */
 
 export type ActivityType =
+  // ── 다녀온 기록 (연대기에 뜬다 = storyBuilder의 STORY_TYPES) ──
   | 'shop_visit'
   | 'event_visit'          // 팝업·콜라보카페·전시·행사 전부 이 하나
-  | 'route_completed'      // ⚠️ 'route_complete'가 아님 — 옛 완주 기록이 이 이름으로 이미 쌓여 있다
+  | 'route_completed'      // 'route_complete'가 아님 — 옛 완주 기록이 이 이름으로 쌓여 있다
+  // ── 남긴 기록 (7-1, 성장 시스템용 — 연대기엔 안 뜬다) ──
+  | 'review'               // 샵 리뷰 + 이벤트 후기. ref = 리뷰 "대상"(샵/이벤트)
+  | 'photo_upload'         // 리뷰에 사진 첨부
+  | 'shop_register'        // 샵 등록 (현재는 등록 즉시 — 승인 시스템 생기면 그때로)
+  | 'event_submit'         // 이벤트 제보 (승인될 때 — 채택돼야 성취다)
+  | 'route_created'        // 내가 만든 덕질 코스
+  // ── 시스템이 만드는 것 ──
   | 'work_progress'
   | 'achievement_unlock'
 
-/**
- * 이벤트 종류 — Activity Type이 아니라 snapshot의 값이다.
- * 아이콘·문구는 Story Builder / UI가 이걸 보고 결정한다.
- * (새 이벤트 종류가 생겨도 Activity Type은 안 늘어난다)
- */
 export type ActivityEventType = 'popup' | 'collab_cafe' | 'exhibition' | 'official_event'
 
-// 각 타입별 snapshot 형태 (그때의 표시 정보)
 export interface ActivitySnapshot {
   shop_name?: string
-  shop_slug?: string           // 그때의 slug — 연대기에서 샵으로 이동할 때
-  place_name?: string          // 소속 장소 (스타필드 수원 등) — Story 내 그룹핑용
+  shop_slug?: string
+  place_name?: string
   event_name?: string
-  event_type?: ActivityEventType   // popup · collab_cafe · exhibition · official_event
+  event_type?: ActivityEventType
   route_name?: string
-  route_token?: string         // ⚠️ 루트 상세는 /route/[token] — id가 아니라 share_token
+  route_token?: string         // 루트 상세는 /route/[token] — id 아님
   work_name?: string
   achievement_name?: string
   reward_name?: string
   pct?: number
-  region?: string              // 덕질 지역 (홍대·수원…) — Story 묶는 기준
+  region?: string
+  review_id?: string           // 리뷰 본문 id (ref_id는 "리뷰 대상"이라 따로 둔다)
+  photo_count?: number
 }
 
 export interface CreateActivityInput {
@@ -54,13 +63,10 @@ export interface CreateActivityInput {
   refType?: 'shop' | 'event' | 'route' | 'work' | 'achievement'
   refId?: string
   workId?: string | null
-  occurredAt?: string   // 없으면 now
+  occurredAt?: string
 }
 
-/**
- * 스냅샷 기반 Activity 생성 — 새 Activity 시스템의 유일한 진입점.
- * 실패해도 원래 동작을 막지 않도록 조용히 처리(로그만).
- */
+/** 스냅샷 기반 Activity 생성 — 유일한 진입점. 실패해도 원래 동작을 막지 않는다. */
 export async function createActivity(input: CreateActivityInput): Promise<void> {
   const supabase = createClient()
   const { error } = await supabase
@@ -73,17 +79,12 @@ export async function createActivity(input: CreateActivityInput): Promise<void> 
       related_id: input.refId ?? null,
       work_id: input.workId ?? null,
       occurred_at: input.occurredAt ?? new Date().toISOString(),
-      // title은 Legacy. 새 Activity는 안 채움(snapshot이 대신).
-      // 단, 구버전 피드/크로니클이 title을 직접 읽으므로 최소 호환 문자열만 넣음.
       title: buildLegacyTitle(input.type, input.snapshot),
     } as any)
 
-  if (error) {
-    console.error('createActivity error:', error)
-  }
+  if (error) console.error('createActivity error:', error)
 }
 
-/** 이벤트 종류별 표시 라벨 — Legacy title 조립용 (UI는 각자 알아서) */
 const EVENT_TYPE_WORD: Record<ActivityEventType, string> = {
   popup: '팝업',
   collab_cafe: '콜라보 카페',
@@ -91,27 +92,31 @@ const EVENT_TYPE_WORD: Record<ActivityEventType, string> = {
   official_event: '행사',
 }
 
-/**
- * Legacy 호환용 title 생성.
- * 기존 chronicleService·ActivityFeed가 title을 직접 읽으므로,
- * snapshot 기반 UI로 완전히 옮기기 전까지 최소한의 문자열을 채워둔다.
- * (새 타임라인은 이 title이 아니라 type+snapshot으로 문구를 조립한다)
- */
+/** Legacy 호환용 title — 옛 화면(마이페이지 활동 피드)이 title을 직접 읽는다 */
 function buildLegacyTitle(type: ActivityType, s: ActivitySnapshot): string {
   switch (type) {
-    case 'shop_visit':   return `${s.shop_name ?? '샵'} 방문`
+    case 'shop_visit': return (s.shop_name ?? '샵') + ' 방문'
     case 'event_visit': {
       const word = s.event_type ? EVENT_TYPE_WORD[s.event_type] : '이벤트'
-      return `${s.event_name ?? word} 참여`
+      return (s.event_name ?? word) + ' 참여'
     }
-    case 'route_completed': return `${s.route_name ?? '루트'} 완주`
-    case 'work_progress':   return `${s.work_name ?? '작품'} ${s.pct ?? 0}% 달성`
-    case 'achievement_unlock': return `${s.achievement_name ?? '업적'} 달성`
+    case 'route_completed': return (s.route_name ?? '루트') + ' 완주'
+    case 'review':          return (s.shop_name ?? s.event_name ?? '') + ' 리뷰 작성'
+    case 'photo_upload':    return '사진 ' + (s.photo_count ?? 1) + '장 등록'
+    case 'shop_register':   return (s.shop_name ?? '샵') + ' 등록'
+    case 'event_submit':    return (s.event_name ?? '이벤트') + ' 제보 채택'
+    case 'route_created':   return (s.route_name ?? '루트') + ' 제작'
+    case 'work_progress':   return (s.work_name ?? '작품') + ' ' + (s.pct ?? 0) + '% 달성'
+    case 'achievement_unlock': return (s.achievement_name ?? '업적') + ' 달성'
     default: return '활동'
   }
 }
 
-/** 샵 방문 Activity — checkInService에서 호출 */
+/* ────────────────────────────────────────────────
+   다녀온 기록 (연대기에 뜬다)
+   ──────────────────────────────────────────────── */
+
+/** 샵 방문 — checkInService에서 호출 */
 export async function recordShopVisitActivity(params: {
   userId: string
   shopId: string
@@ -141,11 +146,8 @@ export async function recordShopVisitActivity(params: {
 }
 
 /**
- * 이벤트 참여 Activity — eventVisitService에서 호출.
- * 콜라보 카페도 여기로 온다 (구분은 snapshot.event_type).
- *
+ * 이벤트 참여 — eventVisitService에서 호출. 콜라보 카페도 여기로 온다.
  * ⭐ occurredAt은 "기록한 날"이 아니라 "다녀온 날"이다.
- *    작년 팝업을 오늘 기록해도 연대기에는 작년 그 자리에 꽂혀야 한다.
  */
 export async function recordEventVisitActivity(params: {
   userId: string
@@ -176,15 +178,9 @@ export async function recordEventVisitActivity(params: {
 }
 
 /**
- * 루트 완주 Activity — routeProgressService에서 호출.
- *
- * ⚠️ 타입 이름은 'route_completed' 그대로 둔다.
- *    옛 완주 기록이 이 이름으로 이미 쌓여 있어서, 바꾸면 과거가 끊긴다.
- *    ("깨지지 않게 진화한다" — 이름은 유지하고 안을 채운다)
- *
- * ⭐ region = 루트 샵들의 대표 덕질지역.
- *    그래야 그날 그 지역 Story 안에 완주가 함께 들어간다.
- *    (루트만 따로 떨어지면 그날의 기록이 끊긴다)
+ * 루트 완주 — routeProgressService에서 호출.
+ * ⚠️ 타입 이름 'route_completed' 유지 (옛 기록이 이 이름으로 쌓여 있다)
+ * ⭐ region = 루트 샵들의 대표 덕질지역 → 그날 그 지역 Story에 합류
  */
 export async function recordRouteCompleteActivity(params: {
   userId: string
@@ -212,7 +208,161 @@ export async function recordRouteCompleteActivity(params: {
   })
 }
 
-/** 작품 진행률 마일스톤 Activity — 방문 후 진행률이 25/50/75/100 넘으면 */
+/* ────────────────────────────────────────────────
+   남긴 기록 (7-1 — 성장 시스템용, 연대기엔 안 뜬다)
+
+   ⭐⭐ ref_id는 "리뷰 id"가 아니라 "리뷰 대상(샵·이벤트)"이다.
+      성장 카운터가 distinct ref_id로 세면
+      같은 샵에 리뷰 10개 써도 1개 → 어뷰징이 원천 차단된다.
+      "리뷰 20개"의 진짜 의미 = "서로 다른 20곳에 리뷰"
+   ──────────────────────────────────────────────── */
+
+/** 리뷰 작성 — 샵 리뷰(reviewService) / 이벤트 후기(eventReviewService) 공용 */
+export async function recordReviewActivity(params: {
+  userId: string
+  targetType: 'shop' | 'event'
+  targetId: string
+  targetName: string
+  targetSlug?: string | null
+  reviewId?: string | null
+  eventType?: ActivityEventType
+  region?: string | null
+  workId?: string | null
+  workName?: string | null
+}): Promise<void> {
+  const isShop = params.targetType === 'shop'
+  await createActivity({
+    userId: params.userId,
+    type: 'review',
+    snapshot: {
+      shop_name: isShop ? params.targetName : undefined,
+      shop_slug: isShop ? (params.targetSlug ?? undefined) : undefined,
+      event_name: isShop ? undefined : params.targetName,
+      event_type: isShop ? undefined : params.eventType,
+      review_id: params.reviewId ?? undefined,
+      region: params.region ?? undefined,
+      work_name: params.workName ?? undefined,
+    },
+    refType: params.targetType,
+    refId: params.targetId,
+    workId: params.workId ?? null,
+  })
+}
+
+/** 사진 등록 — 리뷰에 사진을 붙였을 때. ref = 사진이 붙은 대상(샵) */
+export async function recordPhotoActivity(params: {
+  userId: string
+  shopId: string
+  shopName?: string | null
+  shopSlug?: string | null
+  reviewId?: string | null
+  count: number
+  region?: string | null
+}): Promise<void> {
+  if (params.count <= 0) return
+  await createActivity({
+    userId: params.userId,
+    type: 'photo_upload',
+    snapshot: {
+      shop_name: params.shopName ?? undefined,
+      shop_slug: params.shopSlug ?? undefined,
+      review_id: params.reviewId ?? undefined,
+      photo_count: params.count,
+      region: params.region ?? undefined,
+    },
+    refType: 'shop',
+    refId: params.shopId,
+  })
+}
+
+/**
+ * 샵 등록 — shopService.createShop에서 호출.
+ * ⚠️ 지금은 등록 즉시 active라 "승인 시점"이 없다. 그래서 등록 시 기록한다.
+ *    대신 성장 카운터는 "아직 살아있는(active) 샵"만 센다 →
+ *    관리자가 중복·쓰레기 샵을 지우면 카운트도 빠져 어뷰징의 대가가 사라진다.
+ *    나중에 검수 시스템이 생기면 승인 시점으로 옮긴다.
+ */
+export async function recordShopRegisterActivity(params: {
+  userId: string
+  shopId: string
+  shopName: string
+  shopSlug?: string | null
+  region?: string | null
+  placeName?: string | null
+}): Promise<void> {
+  await createActivity({
+    userId: params.userId,
+    type: 'shop_register',
+    snapshot: {
+      shop_name: params.shopName,
+      shop_slug: params.shopSlug ?? undefined,
+      place_name: params.placeName ?? undefined,
+      region: params.region ?? undefined,
+    },
+    refType: 'shop',
+    refId: params.shopId,
+  })
+}
+
+/**
+ * 이벤트 제보 채택 — eventSubmissionService.approveSubmission에서 호출.
+ * ⭐ userId = 검수자가 아니라 "제보한 사람". 성취는 제보자의 것이다.
+ * ⭐ 승인될 때만 기록 = 채택돼야 성취다 (제출은 그냥 클릭)
+ */
+export async function recordEventSubmitActivity(params: {
+  userId: string
+  eventId: string
+  eventName: string
+  eventType?: ActivityEventType
+  region?: string | null
+  workId?: string | null
+  workName?: string | null
+}): Promise<void> {
+  await createActivity({
+    userId: params.userId,
+    type: 'event_submit',
+    snapshot: {
+      event_name: params.eventName,
+      event_type: params.eventType,
+      region: params.region ?? undefined,
+      work_name: params.workName ?? undefined,
+    },
+    refType: 'event',
+    refId: params.eventId,
+    workId: params.workId ?? null,
+  })
+}
+
+/** 루트 제작 — routeService.createRoute에서 호출. "내가 만든 덕질 코스" */
+export async function recordRouteCreatedActivity(params: {
+  userId: string
+  routeId: string
+  routeName: string
+  routeToken?: string | null
+  region?: string | null
+  workId?: string | null
+  workName?: string | null
+}): Promise<void> {
+  await createActivity({
+    userId: params.userId,
+    type: 'route_created',
+    snapshot: {
+      route_name: params.routeName,
+      route_token: params.routeToken ?? undefined,
+      region: params.region ?? undefined,
+      work_name: params.workName ?? undefined,
+    },
+    refType: 'route',
+    refId: params.routeId,
+    workId: params.workId ?? null,
+  })
+}
+
+/* ────────────────────────────────────────────────
+   시스템이 만드는 것
+   ──────────────────────────────────────────────── */
+
+/** 작품 진행률 마일스톤 Activity */
 export async function recordWorkMilestoneActivity(params: {
   userId: string
   workId: string
@@ -231,29 +381,19 @@ export async function recordWorkMilestoneActivity(params: {
 
 const MILESTONES = [25, 50, 75, 100]
 
-/**
- * 진행률이 마일스톤을 "넘었는지" 판정.
- * 이전 진행률(before)과 현재(after)를 받아, 그 사이에 낀 마일스톤을 반환.
- * 예: before 40, after 55 → [50]. before 0, after 100 → [25,50,75,100]
- */
+/** 진행률이 마일스톤을 "넘었는지" 판정 */
 export function crossedMilestones(before: number, after: number): number[] {
   return MILESTONES.filter(m => before < m && after >= m)
 }
 
-
 /**
  * 작품 진행률 마일스톤 체크 & Activity 생성.
- * 방문/작품선택 직후 호출 — 진행률이 25/50/75/100을 새로 넘었으면 Activity 생성.
- *
- * 중복 방지: 같은 작품의 같은 마일스톤은 한 번만 기록.
- * (이미 그 pct의 work_progress Activity가 있으면 skip)
- *
- * ⚠️ 지금은 "샵" 기준으로만 센다. 이벤트·루트까지 넣는 4축 확장은 6-5.
+ * 중복 방지: 같은 작품의 같은 마일스톤은 한 번만.
+ * ⚠️ 지금은 "샵" 기준으로만 센다.
  */
 export async function checkWorkMilestone(userId: string, workId: string): Promise<void> {
   const supabase = createClient()
 
-  // 1) 이 작품을 취급하는 전체 샵
   const { data: tagShops } = await supabase
     .from('shop_tags')
     .select('shop_id')
@@ -263,7 +403,6 @@ export async function checkWorkMilestone(userId: string, workId: string): Promis
   const total = totalShopIds.size
   if (total === 0) return
 
-  // 2) 그중 내가 방문한 샵
   const { data: visits } = await supabase
     .from('check_ins')
     .select('shop_id')
@@ -272,12 +411,10 @@ export async function checkWorkMilestone(userId: string, workId: string): Promis
   const visited = (visits ?? []).filter((v: any) => totalShopIds.has(v.shop_id)).length
   const pct = Math.round((visited / total) * 100)
 
-  // 3) 넘어선 마일스톤 중 가장 높은 것
   const reached = MILESTONES.filter(m => pct >= m)
   if (reached.length === 0) return
   const current = reached[reached.length - 1]
 
-  // 4) 이미 기록된 마일스톤인지 확인 (중복 방지)
   const { data: existing } = await supabase
     .from('activity_logs')
     .select('id, snapshot')
@@ -288,9 +425,8 @@ export async function checkWorkMilestone(userId: string, workId: string): Promis
   const recordedPcts = new Set(
     (existing ?? []).map((r: any) => r.snapshot?.pct).filter((p: any) => typeof p === 'number')
   )
-  if (recordedPcts.has(current)) return   // 이미 기록됨
+  if (recordedPcts.has(current)) return
 
-  // 5) 작품 이름 (스냅샷용 — 그때의 이름)
   const { data: tag } = await supabase
     .from('tags')
     .select('name')

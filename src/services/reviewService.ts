@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
+import { recordReviewActivity, recordPhotoActivity } from '@/services/activityService'
+import { geekAreaFromAddr } from '@/lib/utils/geekArea'
 import { Review, ReviewFormData } from '@/types/review'
 
 function toReview(raw: any): Review {
@@ -68,7 +70,41 @@ export async function createReview(
     .single()
 
   if (error || !data) return null
+
+  // 성장 Activity — 실패해도 리뷰 작성은 막지 않는다
+  try {
+    const { data: shop } = await supabase
+      .from('shops').select('name, slug, addr, region').eq('id', shopId).maybeSingle()
+    const s: any = shop ?? {}
+    await recordReviewActivity({
+      userId,
+      targetType: 'shop',
+      targetId: shopId,
+      targetName: s.name ?? '샵',
+      targetSlug: s.slug ?? null,
+      reviewId: (data as any).id,
+      region: (s.region?.trim() || geekAreaFromAddr(s.addr ?? null)) ?? null,
+    })
+  } catch (e) {
+    console.error('[리뷰 Activity 실패]', e)
+  }
+
   return toReview(data)
+}
+
+/** 리뷰에 사진을 붙였을 때 — 업로드 성공 후 컴포넌트가 호출 */
+export async function recordReviewPhotos(reviewId: string, shopId: string, userId: string, count: number) {
+  if (count <= 0) return
+  const supabase = createClient()
+  const { data: shop } = await supabase
+    .from('shops').select('name, slug, addr, region').eq('id', shopId).maybeSingle()
+  const s: any = shop ?? {}
+  await recordPhotoActivity({
+    userId, shopId, reviewId, count,
+    shopName: s.name ?? null,
+    shopSlug: s.slug ?? null,
+    region: (s.region?.trim() || geekAreaFromAddr(s.addr ?? null)) ?? null,
+  })
 }
 
 export async function updateReview(

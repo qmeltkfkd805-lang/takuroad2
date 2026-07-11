@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
 import { recordEventVisit } from './eventVisitService'
+import { recordReviewActivity } from './activityService'
 
 export interface EventReview {
   id: string
@@ -76,6 +77,19 @@ export async function createEventReview(
   //    후기 등록 자체는 이미 성공했으므로, 여기서 실패해도 사용자를 막지 않는다.
   try {
     await recordEventVisit(userId, eventId, 'review')
+
+    // 성장 Activity — 리뷰(이벤트 후기). ref = 이벤트
+    const { data: ev } = await supabase
+      .from('events').select('title, type, tag_id').eq('id', eventId).maybeSingle()
+    const e: any = ev ?? {}
+    await recordReviewActivity({
+      userId,
+      targetType: 'event',
+      targetId: eventId,
+      targetName: e.title ?? '이벤트',
+      eventType: e.type ?? undefined,
+      workId: e.tag_id ?? null,
+    })
   } catch (e) {
     console.error('후기 → 참여 기록 자동 생성 실패:', e)
   }

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { recordEventSubmitActivity } from '@/services/activityService'
 
 export interface NewSubmission {
   tagId: string
@@ -179,6 +180,26 @@ export async function approveSubmission(input: ApproveInput, reviewerId: string)
     console.error('[승인 실패 - 제보 마감]', subErr.message, subErr.code)
     return false
   }
+
+  // 성장 Activity — 제보 채택.
+  // ⭐ 성취는 검수자(reviewerId)가 아니라 '제보한 사람'의 것이다
+  try {
+    const { data: sub } = await supabase
+      .from('event_submissions').select('submitted_by').eq('id', input.submissionId).maybeSingle()
+    const submitter = (sub as any)?.submitted_by
+    if (submitter) {
+      await recordEventSubmitActivity({
+        userId: submitter,
+        eventId: event.id,
+        eventName: input.title,
+        eventType: input.type as any,
+        workId: input.tagId ?? null,
+      })
+    }
+  } catch (e) {
+    console.error('[제보 채택 Activity 실패]', e)
+  }
+
   return true
 }
 

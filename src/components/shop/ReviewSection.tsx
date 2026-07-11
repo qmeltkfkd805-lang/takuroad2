@@ -1,8 +1,8 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { getReviews, createReview, deleteReview, uploadReviewImages } from '@/services/reviewService'
+import { getReviews, createReview, deleteReview, uploadReviewImages, recordReviewPhotos } from '@/services/reviewService'
 import { getComments, createComment, deleteComment, ReviewComment } from '@/services/commentService'
 import { Review } from '@/types/review'
 import Link from 'next/link'
@@ -65,6 +65,8 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
     if (newReview) {
       if (images.length > 0) {
         await uploadReviewImages(newReview.id, images)
+        // 성장 Activity — 사진 등록. 실패해도 리뷰는 이미 올라갔다
+        recordReviewPhotos(newReview.id, shopId, user.id, images.length).catch(() => {})
         const updated = await getReviews(shopId)
         setReviews(updated)
       } else {
