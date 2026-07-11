@@ -13,6 +13,7 @@ import {
   getEventDetail, getRelatedEvents, deleteEvent,
 } from '@/services/eventDetailService'
 import EventReviewTab from './EventReviewTab'
+import EventVisitButton from './EventVisitButton'
 import EventQnaTab from './EventQnaTab'
 import EventGoodsTab from './EventGoodsTab'
 import dynamic from 'next/dynamic'
@@ -260,6 +261,7 @@ export default function EventDetailPage() {
                     {reserveOpen ? '사전예약 하기' : '예매하기'}
                   </a>
                 )}
+                <EventVisitButton eventId={event.id} eventTitle={event.title} ended={ended} />
                 <button className={styles.shareBtn} onClick={share}>
                   {copied ? '링크 복사됨' : '공유하기'}
                 </button>

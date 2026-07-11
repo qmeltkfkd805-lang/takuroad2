@@ -28,7 +28,7 @@
   cursor: pointer; padding: 4px 0;
 }
 .item:hover .name { color: var(--accent); }
-.icon { font-size: 14px; flex-shrink: 0; }
+.icon { display: inline-flex; flex-shrink: 0; }
 .name { font-size: 14px; font-weight: 600; }
 .label { font-size: 11.5px; color: var(--muted); }
 
@@ -38,13 +38,19 @@
   font-size: 12.5px; color: var(--muted); font-weight: 600;
 }
 
-/* ✨ 이번 기록 — 하이라이트 (지역은 무대, 작품은 주인공) */
+/* "이번 기록" 하이라이트 (지역은 무대, 작품은 주인공) */
 .highlight {
   margin-top: 18px; padding-top: 16px;
   border-top: 1px solid var(--border);
 }
-.hlLabel { font-size: 11.5px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
-.hlMain { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.hlLabel {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 11.5px; font-weight: 700; color: var(--muted); margin-bottom: 8px;
+}
+.hlMain {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 8px; margin-bottom: 8px; flex-wrap: wrap;
+}
 .hlName { font-size: 16px; font-weight: 900; }
 .hlSub { font-size: 12.5px; color: var(--muted); }
 
@@ -54,8 +60,36 @@
   background: linear-gradient(90deg, #FF8FB3, #FF5692);
   transition: width .6s cubic-bezier(.2,.8,.2,1);
 }
-.hlPct { font-size: 12px; font-weight: 700; color: var(--accent); margin-top: 6px; }
+/* 종합 탐험도 — 제목 옆에 붙어 "무엇의 몇 %인지"가 한눈에 */
+.hlPct { font-size: 13px; font-weight: 800; color: var(--accent); flex-shrink: 0; }
 .hlCount { color: var(--muted); font-weight: 600; margin-left: 4px; }
+
+/* 축별 진행률 — 종합만 보여주면 "왜 62%인지"를 알 수 없다.
+   샵(뼈대) · 이벤트/카페(특별한 경험) · 루트(큰 성취) */
+.axes {
+  list-style: none; margin: 12px 0 0; padding: 0;
+  display: flex; flex-direction: column; gap: 7px;
+}
+.axis { display: flex; align-items: center; gap: 8px; }
+.axisIcon { display: inline-flex; color: var(--muted); width: 16px; flex-shrink: 0; }
+.axisLabel {
+  font-size: 12px; font-weight: 700; color: var(--muted);
+  width: 44px; flex-shrink: 0;
+}
+.axisBar {
+  flex: 1; min-width: 0; height: 5px;
+  border-radius: 9999px; background: var(--surface2); overflow: hidden;
+}
+.axisBar > span {
+  display: block; height: 100%; border-radius: 9999px;
+  background: var(--accent); opacity: .55;
+  transition: width .6s cubic-bezier(.2,.8,.2,1);
+}
+.axisNum {
+  font-size: 12px; font-weight: 800; color: var(--text);
+  width: 52px; text-align: right; flex-shrink: 0;
+}
+.axisNum em { font-style: normal; font-weight: 600; color: var(--muted); }
 
 /* 다음 목표 — 기록이 다음 행동을 만든다 */
 .next {
@@ -74,4 +108,6 @@
 .nextText b { font-weight: 800; }
 .nextArrow { color: var(--muted); font-size: 17px; }
 
-@media (prefers-reduced-motion: reduce) { .bar span { transition: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .bar span, .axisBar > span { transition: none; }
+}

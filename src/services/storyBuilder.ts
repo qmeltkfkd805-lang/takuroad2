@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
 import { geekAreaFromAddr } from '@/lib/utils/geekArea'
+import { AxisProgress, NextGoal, getWorkProgress } from '@/lib/work/workProgress'
 
 /* ============================================================
    Story Builder — Activity를 "읽을 만한 이야기"로 재구성하는 계층
@@ -22,6 +23,8 @@ export interface StoryItem {
   refId: string | null
   slug: string | null          // 샵/이벤트 slug — 클릭 시 이동용
   workName?: string | null
+  /** 이벤트 종류 — 아이콘·문구를 UI가 이걸로 고른다 (Activity Type은 event_visit 하나) */
+  eventType?: string | null
   pct?: number | null
 }
 
@@ -39,14 +42,15 @@ export interface StoryPlace {
  * 그래서 대표 작품을 우선으로, 작품이 없을 때만 지역 탐험도로 폴백.
  */
 export interface StoryHighlight {
-  kind: 'work' | 'area'
-  name: string                 // 블루아카 / 수원
-  visited: number
-  total: number
-  pct: number
-  nextShopName?: string | null // 다음 목표 — 아직 안 가본 샵
-  nextPct?: number | null      // 거기 가면 몇 %
+  kind: 'work'
+  name: string                 // 블루아카 / 원피스
   slug?: string | null         // 작품 slug (링크용)
+  /** 종합 탐험도 — 0인 축 제외 + 가중치 재정규화 (정책은 lib/work/workProgress.ts) */
+  overall: number
+  /** 축별 진행률 — 종합만 보여주면 "왜 62%인지" 알 수 없다 */
+  axes: Record<'shop' | 'event' | 'cafe' | 'route', AxisProgress>
+  /** 가장 가까운 미완료 축에서 고른 다음 목표 */
+  next: NextGoal | null
 }
 
 export interface Story {
@@ -55,11 +59,33 @@ export interface Story {
   date: string                 // 2026-07-10
   places: StoryPlace[]         // Place별 그룹
   totalCount: number           // 이 Story의 활동 수
-  shopIds: string[]            // 이 Story에서 방문한 샵 (하이라이트 계산용)
+  shopIds: string[]            // 이 Story에서 방문한 샵 (대표 작품 계산용)
+  workIds: string[]            // 이 Story 활동들에 붙은 작품 (이벤트·루트도 작품을 가진다)
   highlight?: StoryHighlight | null
 }
 
-const SHOP_LIKE = new Set(['shop_visit', 'event_visit', 'cafe_visit'])
+/**
+ * Story에 묶이는 활동 종류.
+ * ⚠️ 루트는 'route_completed' (d 있음) — 옛 완주 기록이 이 이름으로 쌓여 있다.
+ * work_progress·achievement_unlock은 여기 없다 — 그건 Story 아래 "다음 목표" 영역에서 표현한다.
+ */
+const STORY_TYPES = new Set(['shop_visit', 'event_visit', 'route_completed'])
+
+/**
+ * occurred_at(UTC ISO) → 사용자의 "그날" (YYYY-MM-DD).
+ *
+ * ⚠️ 예전엔 ISO 문자열을 그냥 slice(0,10) 했는데, 그러면 UTC 날짜가 나온다.
+ *    한국에서 새벽 1시에 방문 기록을 누르면 UTC로는 전날이라 Story가 어제로 묶였다.
+ *    브라우저의 로컬 시간대로 변환해서 날짜를 뽑는다.
+ */
+function localDay(iso: string | null | undefined): string {
+  if (!iso) return ''
+  const d = new Date(iso)
+  if (isNaN(d.getTime())) return ''
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${d.getFullYear()}-${m}-${day}`
+}
 
 /**
  * 내 Activity들을 Story로 묶는다.
@@ -79,8 +105,8 @@ export async function getMyStories(userId: string, limit = 20): Promise<Story[]>
 
   // 덕질 지역이 snapshot에 없는 옛 Activity는 샵 주소로 폴백 조회
   const needAddr = (acts as any[])
-    .filter(a => SHOP_LIKE.has(a.type) && a.related_id &&
-                 (!a.snapshot?.region || !a.snapshot?.shop_slug))   // 지역 또는 slug가 없으면 조회
+    .filter(a => a.related_type === 'shop' && a.related_id &&      // ⚠️ 샵일 때만 (이벤트/루트 id로 shops를 뒤지면 안 됨)
+                 (!a.snapshot?.region || !a.snapshot?.shop_slug))  // 지역 또는 slug가 없으면 조회
     .map(a => a.related_id)
 
   const addrByShop = new Map<string, { area: string | null; placeName: string | null; slug: string | null }>()
@@ -104,33 +130,37 @@ export async function getMyStories(userId: string, limit = 20): Promise<Story[]>
 
   for (const a of acts as any[]) {
     const snap = a.snapshot ?? {}
-    const when = (a.occurred_at ?? a.created_at ?? '').slice(0, 10)
+    const when = localDay(a.occurred_at ?? a.created_at)   // 사용자의 로컬 날짜 기준
     if (!when) continue
 
     // 덕질 지역 — snapshot 우선(그때의 지역), 없으면 현재 샵 주소로 폴백
-    const fallback = a.related_id ? addrByShop.get(a.related_id) : undefined
+    const fallback = a.related_type === 'shop' && a.related_id ? addrByShop.get(a.related_id) : undefined
     const area = snap.region ?? fallback?.area ?? null
 
     // 지역을 모르는 활동(작품 진행률·업적 등)은 Story에 안 묶는다
     // (그건 Story 아래 "현재/다음목표" 영역에서 따로 표현)
-    if (!area || !SHOP_LIKE.has(a.type)) continue
+    if (!area || !STORY_TYPES.has(a.type)) continue
 
     const key = `${when}|${area}`
     if (!map.has(key)) {
-      map.set(key, { key, area, date: when, places: [], totalCount: 0, shopIds: [] })
+      map.set(key, { key, area, date: when, places: [], totalCount: 0, shopIds: [], workIds: [] })
     }
     const story = map.get(key)!
     if (a.related_type === 'shop' && a.related_id) story.shopIds.push(a.related_id)
+    if (a.work_id) story.workIds.push(a.work_id)   // 이벤트·루트도 작품을 데려온다
 
     const placeName = snap.place_name ?? fallback?.placeName ?? null
     const item: StoryItem = {
       id: a.id,
       type: a.type,
-      name: snap.shop_name ?? snap.event_name ?? snap.cafe_name ?? a.title ?? '방문',
+      // 그때의 이름 (snapshot). 옛 데이터는 title로 폴백
+      name: snap.shop_name ?? snap.event_name ?? snap.route_name ?? snap.cafe_name ?? a.title ?? '방문',
       refType: a.related_type ?? null,
       refId: a.related_id ?? null,
-      slug: snap.shop_slug ?? fallback?.slug ?? null,
+      // 링크용 — 샵은 slug, 루트는 share_token (루트 상세가 /route/[token]이라서)
+      slug: snap.shop_slug ?? snap.route_token ?? fallback?.slug ?? null,
       workName: snap.work_name ?? null,
+      eventType: snap.event_type ?? null,
     }
 
     // Place별 그룹 (Place 없으면 독립샵 = placeName null 그룹)
@@ -162,107 +192,88 @@ export async function getMyStories(userId: string, limit = 20): Promise<Story[]>
 }
 
 /**
- * Story 하이라이트 계산 — 대표 작품 우선, 없으면 지역.
+ * Story 하이라이트 계산 — 대표 작품 우선.
  *
- * 1) Story에서 방문한 샵들이 취급하는 작품 중 가장 많이 등장한 것 = 대표 작품
- * 2) 그 작품의 전체 샵 vs 내가 방문한 샵 = 진행률
- * 3) 아직 안 가본 샵 하나 = 다음 목표
- * 4) 작품이 하나도 없으면 지역 탐험도로 폴백
+ * ⭐ 지역은 무대, 작품은 주인공, 샵은 조연.
+ * 아무도 "수원을 모으려고" 오지 않는다. "블루아카를 좋아해서" 온다.
+ *
+ * 1) Story의 활동들이 데려온 작품 중 가장 많이 등장한 것 = 대표 작품
+ *    (샵은 shop_tags로, 이벤트·루트는 activity의 work_id로)
+ * 2) 그 작품의 4축 진행률 = lib/work/workProgress.ts (정책은 한 곳)
+ * 3) 다음 목표 = 가장 가까운 미완료 축에서 하나
+ *
+ * ⚠️ 진행률은 여기서 계산하지 않는다. 정책 모듈에 물어본다.
  */
 async function attachHighlights(supabase: any, userId: string, stories: Story[]): Promise<void> {
   if (stories.length === 0) return
 
   const allShopIds = [...new Set(stories.flatMap(s => s.shopIds))]
-  if (allShopIds.length === 0) return
 
-  // 내가 방문한 모든 샵 (진행률 계산의 기준)
-  const { data: myVisits } = await supabase
-    .from('check_ins')
-    .select('shop_id')
-    .eq('user_id', userId)
-  const visitedSet = new Set((myVisits ?? []).map((v: any) => v.shop_id))
-
-  // Story 샵들이 취급하는 작품
-  const { data: storyTags } = await supabase
-    .from('shop_tags')
-    .select('shop_id, tag_id, tags ( id, name, slug )')
-    .in('shop_id', allShopIds)
-
-  // 작품별 전체 샵 (진행률의 분모)
-  const tagIds = [...new Set((storyTags ?? []).map((r: any) => r.tag_id))]
-  const shopsByTag = new Map<string, Set<string>>()
-  if (tagIds.length > 0) {
-    const { data: allTagShops } = await supabase
+  // 샵이 취급하는 작품 (샵 → 작품들)
+  const tagsByShop = new Map<string, { id: string; name: string; slug: string }[]>()
+  if (allShopIds.length > 0) {
+    const { data: storyTags } = await supabase
       .from('shop_tags')
-      .select('tag_id, shop_id')
-      .in('tag_id', tagIds)
-    for (const r of (allTagShops ?? []) as any[]) {
-      if (!shopsByTag.has(r.tag_id)) shopsByTag.set(r.tag_id, new Set())
-      shopsByTag.get(r.tag_id)!.add(r.shop_id)
+      .select('shop_id, tag_id, tags ( id, name, slug )')
+      .in('shop_id', allShopIds)
+
+    for (const r of (storyTags ?? []) as any[]) {
+      if (!r.tags) continue
+      if (!tagsByShop.has(r.shop_id)) tagsByShop.set(r.shop_id, [])
+      tagsByShop.get(r.shop_id)!.push({ id: r.tags.id, name: r.tags.name, slug: r.tags.slug })
     }
   }
 
-  // 샵 이름 (다음 목표 표시용)
-  const nextShopIds = [...new Set([...shopsByTag.values()].flatMap(s => [...s]))]
-    .filter(id => !visitedSet.has(id))
-  const shopNames = new Map<string, string>()
-  if (nextShopIds.length > 0) {
-    const { data: shops } = await supabase
-      .from('shops')
-      .select('id, name')
-      .in('id', nextShopIds.slice(0, 200))
-      .eq('status', 'active')
-    for (const s of (shops ?? []) as any[]) shopNames.set(s.id, s.name)
+  // 이벤트·루트가 데려온 작품의 이름 (샵을 안 거치므로 따로 조회)
+  const bareWorkIds = [...new Set(stories.flatMap(s => s.workIds))]
+  const workMeta = new Map<string, { id: string; name: string; slug: string }>()
+  if (bareWorkIds.length > 0) {
+    const { data: tags } = await supabase
+      .from('tags')
+      .select('id, name, slug')
+      .in('id', bareWorkIds)
+    for (const t of (tags ?? []) as any[]) workMeta.set(t.id, t)
+  }
+  for (const list of tagsByShop.values()) {
+    for (const t of list) if (!workMeta.has(t.id)) workMeta.set(t.id, t)
   }
 
-  // 샵 → 작품들
-  const tagsByShop = new Map<string, { id: string; name: string; slug: string }[]>()
-  for (const r of (storyTags ?? []) as any[]) {
-    if (!r.tags) continue
-    if (!tagsByShop.has(r.shop_id)) tagsByShop.set(r.shop_id, [])
-    tagsByShop.get(r.shop_id)!.push({ id: r.tags.id, name: r.tags.name, slug: r.tags.slug })
-  }
-
+  // 1) Story별 대표 작품
+  const topByStory = new Map<string, string>()
   for (const story of stories) {
-    // 이 Story에서 가장 많이 등장한 작품 = 대표 (주인공)
-    const count = new Map<string, { meta: any; n: number }>()
+    const count = new Map<string, number>()
     for (const shopId of story.shopIds) {
       for (const tag of tagsByShop.get(shopId) ?? []) {
-        const cur = count.get(tag.id) ?? { meta: tag, n: 0 }
-        cur.n++
-        count.set(tag.id, cur)
+        count.set(tag.id, (count.get(tag.id) ?? 0) + 1)
       }
     }
-
-    if (count.size > 0) {
-      // 대표 작품 — 최다 등장 (동점이면 진행률 낮은 쪽이 "다음 목표"로 더 유의미)
-      const top = [...count.entries()].sort((a, b) => b[1].n - a[1].n)[0]
-      const [tagId, { meta }] = top
-
-      const allShops = shopsByTag.get(tagId) ?? new Set()
-      const total = allShops.size
-      const visited = [...allShops].filter(id => visitedSet.has(id)).length
-      const pct = total ? Math.round((visited / total) * 100) : 0
-
-      // 다음 목표 — 아직 안 가본 샵 하나
-      const notYet = [...allShops].filter(id => !visitedSet.has(id) && shopNames.has(id))
-      const nextId = notYet[0] ?? null
-      const nextPct = total && nextId ? Math.round(((visited + 1) / total) * 100) : null
-
-      story.highlight = {
-        kind: 'work',
-        name: meta.name,
-        slug: meta.slug,
-        visited,
-        total,
-        pct,
-        nextShopName: nextId ? shopNames.get(nextId) ?? null : null,
-        nextPct,
-      }
-      continue
+    for (const wid of story.workIds) {
+      count.set(wid, (count.get(wid) ?? 0) + 1)   // 이벤트·루트가 데려온 작품
     }
+    if (count.size === 0) { story.highlight = null; continue }
+    const top = [...count.entries()].sort((a, b) => b[1] - a[1])[0][0]
+    topByStory.set(story.key, top)
+  }
 
-    // 작품이 없으면 지역 탐험도로 폴백 (무대만 남은 Story)
-    story.highlight = null
+  // 2) 대표 작품들의 4축 진행률을 한 번에 (정책 모듈)
+  const progress = await getWorkProgress(userId, [...new Set([...topByStory.values()])])
+
+  // 3) 붙이기
+  for (const story of stories) {
+    const workId = topByStory.get(story.key)
+    if (!workId) { story.highlight = null; continue }
+
+    const p = progress.get(workId)
+    const meta = workMeta.get(workId)
+    if (!p || !meta) { story.highlight = null; continue }
+
+    story.highlight = {
+      kind: 'work',
+      name: meta.name,
+      slug: meta.slug ?? null,
+      overall: p.overall,
+      axes: p.axes,
+      next: p.next,
+    }
   }
 }

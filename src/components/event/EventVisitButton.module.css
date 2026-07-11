@@ -1,0 +1,78 @@
+/* 이벤트 "다녀왔어요" — 히어로 액션 줄에 shareBtn 옆으로 들어간다 */
+
+.wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 9999px;
+  background: var(--accent);
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  box-shadow: 0 4px 14px rgba(255, 86, 146, .28);
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(255, 86, 146, .34);
+}
+
+.btn:disabled { cursor: default; }
+
+/* 이미 다녀온 이벤트 — 강조를 거두고 "기록됨" 상태로 */
+.done {
+  background: var(--accent-l);
+  color: var(--accent);
+  box-shadow: none;
+}
+.done:hover { transform: none; box-shadow: none; }
+
+.count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* 종료된 이벤트 안내 — 막는 문구가 아니라 초대하는 문구 */
+.endedHint {
+  flex-basis: 100%;
+  margin: 2px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.toast {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  z-index: 20;
+  padding: 9px 16px;
+  border-radius: 12px;
+  background: var(--text);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .2);
+  animation: rise .18s ease;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

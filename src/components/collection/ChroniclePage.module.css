@@ -1,25 +1,155 @@
-.page { width: 100%; max-width: 900px; margin: 0 auto; padding: 28px 32px 80px; }
+.page { width: 100%; max-width: 980px; margin: 0 auto; padding: 28px 32px 80px; }
 
-.topbar { margin-bottom: 32px; }
-.topbar h1 { margin: 0 0 8px; font-size: 28px; font-weight: 900; }
-.topbar p { margin: 0; font-size: 14.5px; color: var(--muted); line-height: 1.6; }
-
-.timeline { display: flex; flex-direction: column; gap: 40px; }
-
-.yearBlock { }
-.yearMark {
-  display: flex; align-items: baseline; gap: 12px;
-  margin-bottom: 18px; padding-bottom: 12px;
-  border-bottom: 2px solid var(--border);
+/* ── 헤더 ─────────────────────────────────────────── */
+.head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap; margin-bottom: 22px;
 }
-.year { font-size: 24px; font-weight: 900; color: var(--accent); }
-.yearCount { font-size: 13px; color: var(--muted); font-weight: 600; }
+.headLeft h1 {
+  margin: 0 0 8px; font-size: 28px; font-weight: 900;
+  display: flex; align-items: center; gap: 6px;
+}
 
-.stories { display: flex; flex-direction: column; gap: 16px; }
+.headLeft p { margin: 0; font-size: 14.5px; color: var(--muted); line-height: 1.6; }
+
+.controls { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+/* 연도 드롭다운 */
+.selectWrap { position: relative; }
+.select {
+  appearance: none; -webkit-appearance: none;
+  padding: 9px 34px 9px 16px;
+  border: 1px solid var(--accent); border-radius: 9999px;
+  background: var(--surface); color: var(--accent);
+  font-family: inherit; font-size: 13.5px; font-weight: 800;
+  cursor: pointer;
+}
+.caret {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--accent); pointer-events: none;
+}
+
+/* 전체 필터 */
+.filterWrap { position: relative; }
+.filterBtn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 14px;
+  border: 1px solid var(--border); border-radius: 9999px;
+  background: var(--surface); color: var(--text);
+  font-family: inherit; font-size: 13.5px; font-weight: 700;
+  cursor: pointer;
+}
+.filterBtn:hover { border-color: var(--accent); }
+.filterOn { border-color: var(--accent); color: var(--accent); background: var(--accent-l); }
+.filterIcon { display: inline-flex; }
+.btnCaret { color: var(--muted); }
+.filterOn .btnCaret { color: var(--accent); }
+.badge {
+  min-width: 17px; height: 17px; padding: 0 4px;
+  border-radius: 9999px; background: var(--accent); color: #fff;
+  font-size: 10.5px; font-weight: 800; line-height: 17px; text-align: center;
+}
+
+.panel {
+  position: absolute; top: calc(100% + 8px); right: 0; z-index: 30;
+  width: 280px; padding: 16px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; box-shadow: 0 12px 30px rgba(0,0,0,.10);
+}
+.panelSec + .panelSec { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.panelLabel { font-size: 11.5px; font-weight: 800; color: var(--muted); margin-bottom: 9px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 11px; border-radius: 9999px;
+  border: 1px solid var(--border); background: var(--surface);
+  font-family: inherit; font-size: 12.5px; font-weight: 700; color: var(--text);
+  cursor: pointer;
+}
+.chip:hover { border-color: var(--accent); }
+.chipOn { background: var(--accent); border-color: var(--accent); color: #fff; }
+.reset {
+  width: 100%; margin-top: 14px; padding: 9px;
+  border: none; border-radius: 10px; background: var(--surface2);
+  font-family: inherit; font-size: 12.5px; font-weight: 700; color: var(--muted);
+  cursor: pointer;
+}
+.reset:hover { color: var(--accent); }
+
+/* ── 월 선택 ──────────────────────────────────────── */
+.monthBar {
+  display: flex; align-items: center; gap: 18px;
+  margin-bottom: 28px; padding-bottom: 4px;
+}
+.yearBig { font-size: 22px; font-weight: 900; color: var(--accent); flex-shrink: 0; }
+.months {
+  display: flex; align-items: center; gap: 2px;
+  flex: 1; min-width: 0;
+  overflow-x: auto; scrollbar-width: none;
+}
+.months::-webkit-scrollbar { display: none; }
+.month {
+  padding: 8px 14px; border-radius: 9999px;
+  border: 1px solid transparent; background: transparent;
+  font-family: inherit; font-size: 14px; font-weight: 700; color: var(--text);
+  cursor: pointer; white-space: nowrap;
+}
+.month:hover:not(:disabled) { color: var(--accent); }
+.monthOn { border-color: var(--accent); color: var(--accent); font-weight: 800; }
+/* 기록이 없는 달 — 숨기지 않고 흐리게 (그 달이 비어 있다는 것도 정보다) */
+.monthOff { color: var(--border); cursor: default; }
+
+/* ── 타임라인 레일 ────────────────────────────────── */
+/* 날짜(알약) | 세로선+점 | Story 카드 */
+.timeline { display: flex; flex-direction: column; gap: 20px; }
+
+.row {
+  display: grid;
+  grid-template-columns: 76px 28px minmax(0, 1fr);
+  align-items: start;
+}
+
+.dateBox {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  margin-top: 14px; padding: 9px 6px;
+  border: 1px solid var(--border); border-radius: 14px;
+  background: var(--surface);
+}
+.md { font-size: 15px; font-weight: 900; color: var(--accent); }
+.wd { font-size: 11px; font-weight: 600; color: var(--muted); }
+
+/* 세로선 — 마지막 줄은 카드 위쪽에서 끊는다(선이 허공에 매달리지 않게) */
+.rail { position: relative; align-self: stretch; }
+.rail::before {
+  content: ''; position: absolute; left: 50%; transform: translateX(-50%);
+  top: 0; bottom: -20px; width: 2px; background: var(--border);
+}
+.row:last-child .rail::before { bottom: auto; height: 34px; }
+
+.dot {
+  position: absolute; left: 50%; top: 26px; transform: translateX(-50%);
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--bg);
+}
+
+.rowBody { min-width: 0; }
+.footNote {
+  margin: 32px 0 0; text-align: center;
+  font-size: 13px; color: var(--muted); font-weight: 600;
+}
+
+.noResult { text-align: center; padding: 60px 20px; }
+.noResult p { margin: 0 0 16px; font-size: 14.5px; color: var(--muted); }
+.noResult button {
+  padding: 10px 22px; border-radius: 9999px; border: 1px solid var(--accent);
+  background: var(--surface); color: var(--accent);
+  font-family: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer;
+}
 
 /* 빈 상태 — 초대장처럼 */
 .empty { text-align: center; padding: 70px 24px; }
-.emptyIcon { font-size: 44px; margin-bottom: 16px; }
+.emptyIcon { display: flex; justify-content: center; margin-bottom: 16px; }
 .empty h2 { margin: 0 0 12px; font-size: 20px; font-weight: 800; }
 .empty p { margin: 0 0 24px; font-size: 14px; color: var(--muted); line-height: 1.8; }
 .empty b { color: var(--text); }
@@ -41,3 +171,14 @@
 }
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 @media (prefers-reduced-motion: reduce) { .skelCard { animation: none; } }
+
+@media (max-width: 720px) {
+  .page { padding: 22px 16px 70px; }
+  /* 좁은 화면에선 레일을 접는다 — 날짜는 카드 우측 상단에 이미 있다 */
+  .row { grid-template-columns: minmax(0, 1fr); }
+  .dateBox, .rail { display: none; }
+  .head { flex-direction: column; }
+  .controls { width: 100%; }
+  .monthBar { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .months { width: 100%; }
+}

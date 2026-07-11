@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { recordEventVisit } from './eventVisitService'
 
 export interface EventReview {
   id: string
@@ -68,6 +69,17 @@ export async function createEventReview(
     if (error.code === '23505') return { ok: false, message: '이미 이 이벤트에 후기를 남기셨어요.' }
     return { ok: false, message: '후기 등록에 실패했어요.' }
   }
+
+  // ⭐ 후기를 썼다 = 실제로 다녀왔다.
+  //    버튼을 한 번 더 누르게 하지 않고 참여 기록을 자동 생성한다.
+  //    recordEventVisit이 기존 기록을 먼저 확인하므로 중복은 생기지 않는다.
+  //    후기 등록 자체는 이미 성공했으므로, 여기서 실패해도 사용자를 막지 않는다.
+  try {
+    await recordEventVisit(userId, eventId, 'review')
+  } catch (e) {
+    console.error('후기 → 참여 기록 자동 생성 실패:', e)
+  }
+
   return { ok: true }
 }
 
