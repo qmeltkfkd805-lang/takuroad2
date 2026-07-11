@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { createClient as createServerClient } from '@/lib/supabase/server'
 
@@ -6,6 +6,7 @@ const ALLOWED: Record<string, string[]> = {
   profiles: ['role', 'admin_note', 'status', 'suspended_until', 'is_beta'],
   tags: ['name', 'english_name', 'slug', 'ip_type', 'release_year', 'genres', 'description', 'cover_url', 'banner_image'],
   featured_banners: ['title', 'subtitle', 'image_url', 'cta_label', 'cta_href', 'cta_label2', 'cta_href2', 'bg_color', 'text_color', 'sort_order', 'is_active'],
+  places: ['name', 'cover_image', 'place_type', 'addr'],
 }
 
 export async function POST(request: NextRequest) {

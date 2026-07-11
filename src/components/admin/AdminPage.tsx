@@ -20,9 +20,10 @@ import WorkAdminTab from './WorkAdminTab'
 import BannerAdminTab from './BannerAdminTab'
 import MemberAdminTab from './MemberAdminTab'
 import ShopAdminTab from './ShopAdminTab'
+import PlaceAdminTab from './PlaceAdminTab'
 import styles from './admin.module.css'
 
-type Tab = 'dashboard' | 'shops' | 'shopmanage' | 'works' | 'banners' | 'members' | 'verify' | 'routes' | 'events' | 'reported' | 'postreports'
+type Tab = 'dashboard' | 'shops' | 'shopmanage' | 'works' | 'banners' | 'members' | 'verify' | 'routes' | 'events' | 'reported' | 'postreports' | 'places'
 
 export default function AdminPage() {
   const router = useRouter()
@@ -107,6 +108,9 @@ export default function AdminPage() {
           </TabButton>
           <TabButton active={tab === 'works'} onClick={() => setTab('works')}>
             🎬 작품 메타
+          </TabButton>
+          <TabButton active={tab === 'places'} onClick={() => setTab('places')}>
+            장소(Place)
           </TabButton>
           <TabButton active={tab === 'banners'} onClick={() => setTab('banners')}>
             🖼️ 배너
@@ -247,6 +251,7 @@ export default function AdminPage() {
 
       {tab === 'shopmanage' && <ShopAdminTab />}
       {tab === 'works' && <WorkAdminTab />}
+      {tab === 'places' && <PlaceAdminTab />}
       {tab === 'banners' && <BannerAdminTab />}
       {tab === 'members' && <MemberAdminTab />}
       {tab === 'reported' && <ReportedShopsTab />}
