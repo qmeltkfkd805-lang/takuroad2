@@ -191,3 +191,92 @@ export async function getWornBatch(userIds: string[]): Promise<Map<string, WornS
   }
   return out
 }
+
+/* ────────────────────────────────────────────────
+   대표 배지 (showcase) — 최대 3개 진열
+
+   ⭐ 칭호(cosmetic title)와 대표 배지는 다른 것이다.
+      칭호   = 내가 고른 이름       "덕질 장인"
+      대표배지 = 내가 자랑할 성취     "리뷰 마스터 Lv3"
+
+   ⭐ 그래도 설정 화면은 하나다. /cosmetic에서 다 바꾼다.
+      역할은 나누되 입구는 하나 — 사용자가 두 군데를 찾아다니면 안 된다.
+
+   ⭐ 새 테이블·새 컬럼 없음. equipped jsonb의 showcase 배열에 담는다.
+      (옛 profiles.selected_title_id는 여기로 이사했다. 컬럼은 코드 정리 후 삭제)
+   ──────────────────────────────────────────────── */
+
+export const SHOWCASE_MAX = 3
+
+export interface ShowcaseBadge {
+  tierId: string
+  name: string
+  rarity: string
+  icon: string | null
+  badgeName: string
+  earnedAt: string
+}
+
+/** 내가 딴 배지 전부 (대표 배지로 고를 수 있는 후보) */
+export async function getMyBadges(userId: string): Promise<ShowcaseBadge[]> {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('user_badge_tiers')
+    .select('badge_tier_id, earned_at, badge_tiers ( name, rarity, badges ( name, icon_url ) )')
+    .eq('user_id', userId)
+    .order('earned_at', { ascending: false })
+
+  return ((data ?? []) as any[]).map(r => ({
+    tierId: r.badge_tier_id,
+    name: r.badge_tiers?.name ?? '배지',
+    rarity: r.badge_tiers?.rarity ?? 'common',
+    icon: r.badge_tiers?.badges?.icon_url ?? null,
+    badgeName: r.badge_tiers?.badges?.name ?? '',
+    earnedAt: r.earned_at,
+  }))
+}
+
+/** 지금 진열 중인 대표 배지 id들 */
+export async function getShowcase(userId: string): Promise<string[]> {
+  const eq = await getEquipped(userId)
+  const raw = (eq as any).showcase
+  return Array.isArray(raw) ? raw.filter(Boolean).slice(0, SHOWCASE_MAX) : []
+}
+
+/** 대표 배지 토글 — 이미 있으면 빼고, 없으면 넣는다 (최대 3개) */
+export async function toggleShowcase(
+  userId: string,
+  tierId: string,
+): Promise<{ ok: boolean; showcase: string[]; message?: string }> {
+  const supabase = createClient()
+  const cur = await getShowcase(userId)
+
+  let next: string[]
+  if (cur.includes(tierId)) {
+    next = cur.filter(id => id !== tierId)
+  } else {
+    if (cur.length >= SHOWCASE_MAX) {
+      return { ok: false, showcase: cur, message: '대표 배지는 최대 ' + SHOWCASE_MAX + '개까지예요.' }
+    }
+    next = [...cur, tierId]
+  }
+
+  const eq = await getEquipped(userId)
+  const merged: any = { ...eq, showcase: next }
+
+  const { error } = await supabase.from('profiles').update({ equipped: merged } as any).eq('id', userId)
+  if (error) {
+    console.error('[대표 배지 저장 실패]', error.message)
+    return { ok: false, showcase: cur, message: '저장에 실패했어요.' }
+  }
+  return { ok: true, showcase: next }
+}
+
+/** 남의 프로필에서도 쓴다 — 대표 배지 상세 */
+export async function getShowcaseBadges(userId: string): Promise<ShowcaseBadge[]> {
+  const ids = await getShowcase(userId)
+  if (ids.length === 0) return []
+  const all = await getMyBadges(userId)
+  // 진열 순서 유지
+  return ids.map(id => all.find(b => b.tierId === id)).filter(Boolean) as ShowcaseBadge[]
+}

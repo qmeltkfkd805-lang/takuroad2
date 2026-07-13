@@ -2,18 +2,24 @@
 
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { getMyCosmetics, getEquipped, equipCosmetic, Cosmetic, Equipped } from '@/services/cosmeticService'
+import {
+  getMyCosmetics, getEquipped, equipCosmetic, Cosmetic, Equipped,
+  getMyBadges, getShowcase, toggleShowcase, ShowcaseBadge, SHOWCASE_MAX,
+} from '@/services/cosmeticService'
 import { FRAME_STYLE, BG_STYLE, THEME_STYLE, FX_CLASS, RARITY_LABEL, previewStyle } from '@/lib/cosmetics/style'
 import { Icon } from '@/components/tds'
+import { MaskIcon } from '@/components/collection/MaskIcon'
 import styles from './CosmeticPage.module.css'
 
 /* 프로필 꾸미기
 
-   ⭐ 왼쪽에 "지금 내 프로필"이 실시간으로 바뀐다.
-      고르는 즉시 보여야 꾸미는 재미가 생긴다. 저장 버튼을 누르고 나서 확인하면 늦다.
+   ⭐ 왼쪽 프로필이 고르는 즉시 바뀐다. 저장 버튼 누르고 확인하면 늦다.
+   ⭐ 못 얻은 것도 보여준다 (흐리게 + "○○ 달성"). 숨기면 목표가 안 생긴다.
 
-   ⭐ 못 얻은 것도 보여준다. 단, 흐리게 + "무엇을 하면 열리는지"와 함께.
-      숨기면 목표가 안 생긴다. */
+   ⭐⭐ 역할은 나누되 입구는 하나.
+      칭호(cosmetic title)  = 내가 고른 이름     "덕질 장인"
+      대표 배지(showcase)    = 내가 자랑할 성취   "리뷰 마스터 Lv3"
+      둘은 다른 것이지만, 설정 화면이 두 개가 되면 안 된다. */
 
 const TABS: { type: string; label: string }[] = [
   { type: 'frame',      label: '프레임' },
@@ -21,20 +27,28 @@ const TABS: { type: string; label: string }[] = [
   { type: 'title',      label: '칭호' },
   { type: 'effect',     label: '효과' },
   { type: 'theme',      label: '테마' },
+  { type: 'showcase',   label: '대표 배지' },
 ]
 
 export default function CosmeticPage() {
   const { user, profile } = useAuth()
   const [items, setItems] = useState<Cosmetic[]>([])
   const [equipped, setEquipped] = useState<Equipped>({})
+  const [badges, setBadges] = useState<ShowcaseBadge[]>([])
+  const [showcase, setShowcase] = useState<string[]>([])
   const [tab, setTab] = useState('frame')
   const [loading, setLoading] = useState(true)
   const [msg, setMsg] = useState<string | null>(null)
 
   useEffect(() => {
     if (!user) { setLoading(false); return }
-    Promise.all([getMyCosmetics(user.id), getEquipped(user.id)])
-      .then(([c, e]) => { setItems(c); setEquipped(e) })
+    Promise.all([
+      getMyCosmetics(user.id),
+      getEquipped(user.id),
+      getMyBadges(user.id),
+      getShowcase(user.id),
+    ])
+      .then(([c, e, b, s]) => { setItems(c); setEquipped(e); setBadges(b); setShowcase(s) })
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [user])
@@ -53,13 +67,12 @@ export default function CosmeticPage() {
   async function pick(c: Cosmetic) {
     if (!user) return
     if (!c.unlocked) {
-      toast(c.fromBadge ? `${c.fromBadge}를 달성하면 열려요` : '아직 해금하지 않았어요')
+      toast(c.fromBadge ? c.fromBadge + '를 달성하면 열려요' : '아직 해금하지 않았어요')
       return
     }
     const isOn = equipped[c.type] === c.id
     const next = isOn ? null : c.id
 
-    // 먼저 화면을 바꾸고(즉시 반응), 저장은 뒤따른다
     setEquipped(prev => {
       const n = { ...prev }
       if (next) n[c.type] = next; else delete n[c.type]
@@ -69,14 +82,26 @@ export default function CosmeticPage() {
     const res = await equipCosmetic(user.id, c.type, next)
     if (!res.ok) {
       toast(res.message ?? '실패했어요')
-      setEquipped(await getEquipped(user.id))   // 되돌린다
+      setEquipped(await getEquipped(user.id))
     }
   }
 
-  if (!user) return <div className={styles.page}><p className={styles.center}>로그인이 필요해요.</p></div>
+  async function pickBadge(b: ShowcaseBadge) {
+    if (!user) return
+    const res = await toggleShowcase(user.id, b.tierId)
+    setShowcase(res.showcase)
+    if (!res.ok && res.message) toast(res.message)
+  }
+
+  if (!user) {
+    return <div className={styles.page}><p className={styles.center}>로그인이 필요해요.</p></div>
+  }
 
   const list = items.filter(c => c.type === tab)
   const unlockedCount = items.filter(c => c.unlocked).length
+  const shownBadges = showcase
+    .map(id => badges.find(b => b.tierId === id))
+    .filter(Boolean) as ShowcaseBadge[]
 
   return (
     <div className={styles.page}>
@@ -94,7 +119,7 @@ export default function CosmeticPage() {
         {/* 지금 내 프로필 — 고르는 즉시 바뀐다 */}
         <aside className={styles.previewCol}>
           <div
-            className={`${styles.card} ${worn.effect ? styles[FX_CLASS[worn.effect.slug]] ?? '' : ''}`}
+            className={[styles.card, worn.effect ? (styles[FX_CLASS[worn.effect.slug]] ?? '') : ''].join(' ')}
             style={{
               ...(worn.theme ? THEME_STYLE[worn.theme.slug] : {}),
               ...(worn.background ? BG_STYLE[worn.background.slug] : {}),
@@ -114,8 +139,21 @@ export default function CosmeticPage() {
             <div className={styles.nick}>{profile?.nickname ?? '나'}</div>
             {worn.title && <div className={styles.title}>{worn.title.name}</div>}
 
+            {shownBadges.length > 0 && (
+              <div className={styles.showRow}>
+                {shownBadges.map(b => (
+                  <span key={b.tierId} className={[styles.showChip, styles['r_' + b.rarity]].join(' ')}>
+                    {b.icon
+                      ? <img src={b.icon} alt="" />
+                      : <MaskIcon name="star" size={12} color="var(--accent)" />}
+                    {b.name}
+                  </span>
+                ))}
+              </div>
+            )}
+
             <div className={styles.wornList}>
-              {TABS.map(t => {
+              {TABS.filter(t => t.type !== 'showcase').map(t => {
                 const w = worn[t.type as keyof typeof worn]
                 return (
                   <div key={t.type} className={styles.wornRow}>
@@ -134,15 +172,18 @@ export default function CosmeticPage() {
         <section className={styles.pickCol}>
           <nav className={styles.tabs}>
             {TABS.map(t => {
-              const n = items.filter(c => c.type === t.type)
-              const got = n.filter(c => c.unlocked).length
+              const isShow = t.type === 'showcase'
+              const total = isShow ? SHOWCASE_MAX : items.filter(c => c.type === t.type).length
+              const got = isShow
+                ? showcase.length
+                : items.filter(c => c.type === t.type && c.unlocked).length
               return (
                 <button
                   key={t.type}
-                  className={`${styles.tab} ${tab === t.type ? styles.tabOn : ''}`}
+                  className={[styles.tab, tab === t.type ? styles.tabOn : ''].join(' ')}
                   onClick={() => setTab(t.type)}
                 >
-                  {t.label} <em>{got}/{n.length}</em>
+                  {t.label} <em>{got}/{total}</em>
                 </button>
               )
             })}
@@ -150,17 +191,33 @@ export default function CosmeticPage() {
 
           {loading ? (
             <div className={styles.grid}>
-              {[0,1,2,3,4,5].map(i => <div key={i} className={styles.skel} />)}
+              {[0, 1, 2, 3, 4, 5].map(i => <div key={i} className={styles.skel} />)}
             </div>
+          ) : tab === 'showcase' ? (
+            badges.length === 0 ? (
+              <p className={styles.center}>아직 딴 배지가 없어요. 도전을 시작해보세요.</p>
+            ) : (
+              <>
+                <p className={styles.hint}>
+                  프로필에 자랑할 배지를 최대 <b>{SHOWCASE_MAX}개</b>까지 골라요.
+                </p>
+                <div className={styles.grid}>
+                  {badges.map(b => (
+                    <BadgeTile
+                      key={b.tierId}
+                      b={b}
+                      on={showcase.includes(b.tierId)}
+                      order={showcase.indexOf(b.tierId)}
+                      onClick={() => pickBadge(b)}
+                    />
+                  ))}
+                </div>
+              </>
+            )
           ) : (
             <div className={styles.grid}>
               {list.map(c => (
-                <Tile
-                  key={c.id}
-                  c={c}
-                  on={equipped[c.type] === c.id}
-                  onClick={() => pick(c)}
-                />
+                <Tile key={c.id} c={c} on={equipped[c.type] === c.id} onClick={() => pick(c)} />
               ))}
             </div>
           )}
@@ -175,22 +232,49 @@ export default function CosmeticPage() {
 function Tile({ c, on, onClick }: { c: Cosmetic; on: boolean; onClick: () => void }) {
   return (
     <button
-      className={`${styles.tile} ${on ? styles.tileOn : ''} ${c.unlocked ? '' : styles.tileLock}`}
+      className={[styles.tile, on ? styles.tileOn : '', c.unlocked ? '' : styles.tileLock].join(' ')}
       onClick={onClick}
     >
       <div className={styles.thumb} style={previewStyle(c.type, c.slug)}>
-        {c.type === 'title'  && <span className={styles.thumbTitle}>{c.name}</span>}
-        {c.type === 'effect' && <span className={`${styles.thumbFx} ${styles[FX_CLASS[c.slug]] ?? ''}`} />}
+        {c.type === 'title' && <span className={styles.thumbTitle}>{c.name}</span>}
+        {c.type === 'effect' && (
+          <span className={[styles.thumbFx, styles[FX_CLASS[c.slug]] ?? ''].join(' ')} />
+        )}
         {!c.unlocked && <span className={styles.lock}>잠김</span>}
         {on && <span className={styles.check}>착용 중</span>}
       </div>
 
       <div className={styles.tileName}>{c.name}</div>
-      <div className={`${styles.rarity} ${styles['r_' + c.rarity]}`}>{RARITY_LABEL[c.rarity] ?? c.rarity}</div>
+      <div className={[styles.rarity, styles['r_' + c.rarity]].join(' ')}>
+        {RARITY_LABEL[c.rarity] ?? c.rarity}
+      </div>
 
       {!c.unlocked && c.fromBadge && (
         <div className={styles.cond}>{c.fromBadge} 달성</div>
       )}
+    </button>
+  )
+}
+
+/** 대표 배지 타일 — 고르면 진열 순서가 붙는다 */
+function BadgeTile({ b, on, order, onClick }: {
+  b: ShowcaseBadge; on: boolean; order: number; onClick: () => void
+}) {
+  return (
+    <button
+      className={[styles.tile, on ? styles.tileOn : ''].join(' ')}
+      onClick={onClick}
+    >
+      <div className={[styles.thumb, styles['bg_' + b.rarity] ?? ''].join(' ')}>
+        {b.icon
+          ? <img src={b.icon} alt="" className={styles.badgeImg} />
+          : <MaskIcon name="star" size={30} color="var(--accent)" />}
+        {on && <span className={styles.check}>{order + 1}번째</span>}
+      </div>
+      <div className={styles.tileName}>{b.name}</div>
+      <div className={[styles.rarity, styles['r_' + b.rarity]].join(' ')}>
+        {RARITY_LABEL[b.rarity] ?? b.rarity}
+      </div>
     </button>
   )
 }

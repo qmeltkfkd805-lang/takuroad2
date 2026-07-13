@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -46,7 +46,6 @@ export default function ProfilePage() {
   const initialTab = (useSearchParams().get('tab') as Tab) ?? 'passport'
   const [tab, setTab] = useState<Tab>(initialTab)
   const [passport, setPassport] = useState<OtakuPassport | null>(null)
-  const [showTitleSelector, setShowTitleSelector] = useState(false)
 
   useEffect(() => {
     if (!loading && !user) {
@@ -149,7 +148,7 @@ export default function ProfilePage() {
               <PassportCard
                 passport={passport}
                 isOwner
-                onChangeTitleClick={() => setShowTitleSelector(true)}
+                onCustomizeClick={() => router.push('/cosmetic')}
               />
               <ActivityFeed activities={passport.recentActivities} />
             </>
@@ -171,13 +170,6 @@ export default function ProfilePage() {
         {tab === 'settings' && <AccountSettingsTab />}
       </div>
 
-      {showTitleSelector && (
-        <TitleBadgeSelector
-          userId={user.id}
-          onClose={() => setShowTitleSelector(false)}
-          onSelected={loadPassport}
-        />
-      )}
     </div>
   )
 }

@@ -1,104 +1,98 @@
-'use client'
+﻿'use client'
 
 import { OtakuPassport } from '@/services/passportService'
 import { RARITY_COLOR } from '@/services/badgeService'
+import { useWorn } from '@/components/cosmetic/CosmeticProvider'
+import { UserAvatar } from '@/components/cosmetic/UserFace'
+import { BG_STYLE, THEME_STYLE } from '@/lib/cosmetics/style'
+import styles from './PassportCard.module.css'
+
+/* 오타쿠 여권 — 프로필의 얼굴
+
+   ⭐ 여권 세계관(No. · Issued · tagline)은 SDS 자산이라 그대로 둔다.
+   ⭐ 대신 코스메틱을 입힌다 — 배경/테마가 카드 자체를 바꾸고,
+      프레임·효과가 아바타에, 칭호와 대표 배지가 이름 아래 붙는다.
+      밤하늘 배경을 끼면 여권이 밤하늘이 된다. 그게 꾸미는 재미의 완성이다.
+
+   ⭐⭐ 칭호(equipped.title)와 대표 배지(equipped.showcase)는 다른 것이다.
+      칭호   = 내가 고른 이름     "덕질 장인"
+      대표배지 = 내가 자랑할 성취   "리뷰 마스터 Lv3"
+      옛 명패(selected_title_id)와 옛 대표배지(is_featured)는 여기로 통합됐다.
+      설정은 /cosmetic 한 곳에서만 한다. */
 
 interface Props {
   passport: OtakuPassport
   isOwner?: boolean
-  onChangeTitleClick?: () => void
+  onCustomizeClick?: () => void
 }
 
-export default function PassportCard({ passport, isOwner, onChangeTitleClick }: Props) {
+export default function PassportCard({ passport, isOwner, onCustomizeClick }: Props) {
+  const worn = useWorn(passport.userId)
+
   const issuedDate = new Date(passport.issuedAt).toLocaleDateString('ko-KR', {
     year: 'numeric', month: '2-digit', day: '2-digit',
-  }).replace(/\. /g, '.').replace('.', '.')
+  }).replace(/\. /g, '.').replace(/\.$/, '')
+
+  const skin = {
+    ...(worn.theme ? THEME_STYLE[worn.theme.slug] : {}),
+    ...(worn.background ? BG_STYLE[worn.background.slug] : {}),
+  }
+  const dressed = Boolean(worn.theme || worn.background)
 
   return (
-    <div style={{
-      background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-      border: '1.5px solid var(--border)', borderRadius: '20px',
-      padding: '24px 20px', margin: '16px',
-    }}>
+    <div className={[styles.card, dressed ? styles.dressed : ''].join(' ')} style={skin}>
       {/* 여권 헤더 */}
-      <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-        <div style={{ fontSize: '13px', fontWeight: 900, color: 'var(--muted)', letterSpacing: '1px' }}>
-          TAKUROAD PASSPORT
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginTop: '6px', fontSize: '11px', color: 'var(--muted)' }}>
+      <div className={styles.head}>
+        <div className={styles.brand}>TAKUROAD PASSPORT</div>
+        <div className={styles.meta}>
           <span>No. {passport.passportNumber}</span>
           <span>Issued {issuedDate}</span>
         </div>
       </div>
 
-      {/* 자동 소개 문구 */}
-      <p style={{
-        textAlign: 'center', fontSize: '13px', color: 'var(--accent)',
-        fontWeight: 700, marginBottom: '16px', fontStyle: 'italic',
-      }}>
-        &quot;{passport.tagline}&quot;
-      </p>
+      <p className={styles.tagline}>&quot;{passport.tagline}&quot;</p>
 
-      {/* 닉네임 + 명패 */}
-      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '8px' }}>
-          <div style={{
-            width: '48px', height: '48px', borderRadius: '50%',
-            background: 'var(--accent)', color: '#fff',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '18px', fontWeight: 900, overflow: 'hidden',
-          }}>
-            {passport.avatarUrl ? (
-              <img src={passport.avatarUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            ) : (
-              passport.nickname[0]
-            )}
-          </div>
-          <span style={{ fontSize: '18px', fontWeight: 900 }}>{passport.nickname}</span>
-        </div>
+      {/* 얼굴 — 프레임 + 효과 */}
+      <div className={styles.face}>
+        <UserAvatar
+          userId={passport.userId}
+          src={passport.avatarUrl}
+          name={passport.nickname}
+          size={88}
+        />
+        <div className={styles.nick}>{passport.nickname}</div>
 
-        {passport.titleBadgeName ? (
-          <div
-            onClick={isOwner ? onChangeTitleClick : undefined}
-            style={{
-              display: 'inline-block', fontSize: '15px', fontWeight: 900,
-              color: 'var(--accent)', cursor: isOwner ? 'pointer' : 'default',
-            }}
-          >
-            【 {passport.titleBadgeName} 】
+        {worn.title && <div className={styles.title}>{worn.title.name}</div>}
+
+        {/* 대표 배지 — 최대 3개 진열 */}
+        {passport.featuredBadges.length > 0 ? (
+          <div className={styles.showRow}>
+            {passport.featuredBadges.map((b, i) => (
+              <span
+                key={i}
+                className={styles.showChip}
+                style={{ borderColor: RARITY_COLOR[b.rarity as keyof typeof RARITY_COLOR] ?? 'var(--border)' }}
+              >
+                {b.iconUrl && <img src={b.iconUrl} alt="" />}
+                {b.name}
+              </span>
+            ))}
           </div>
         ) : isOwner ? (
-          <button
-            onClick={onChangeTitleClick}
-            style={{
-              fontSize: '12px', color: 'var(--muted)', background: 'none',
-              border: '1px dashed var(--border)', borderRadius: '8px',
-              padding: '6px 14px', cursor: 'pointer',
-            }}
-          >
-            명패 설정하기
+          <button className={styles.setBtn} onClick={onCustomizeClick}>
+            프로필 꾸미기 ›
           </button>
         ) : null}
+
+        {isOwner && passport.featuredBadges.length > 0 && (
+          <button className={styles.editBtn} onClick={onCustomizeClick}>
+            꾸미기 변경
+          </button>
+        )}
       </div>
 
-      {/* 덕질 DNA */}
-      {passport.topVisitedSeries.length > 0 && (
-        <div style={{
-          display: 'flex', justifyContent: 'center', gap: '16px',
-          padding: '12px', background: 'var(--surface2)', borderRadius: '12px',
-          marginBottom: '16px',
-        }}>
-          {passport.topVisitedSeries[0] && (
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '10px', color: 'var(--muted)' }}>🎮 작품</div>
-              <div style={{ fontSize: '13px', fontWeight: 700 }}>{passport.topVisitedSeries[0].name}</div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* 기록 도장들 */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px', marginBottom: '16px' }}>
+      {/* 기록 도장 */}
+      <div className={styles.stats}>
         <StatBox label="방문" value={passport.visitedShopCount} />
         <StatBox label="순례" value={passport.pilgrimageCount} />
         <StatBox label="배지" value={passport.totalBadgeCount} />
@@ -107,62 +101,32 @@ export default function PassportCard({ passport, isOwner, onChangeTitleClick }: 
 
       {/* 첫 성지 / 최근 성지 */}
       {(passport.firstShop || passport.latestShop) && (
-        <div style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '16px' }}>
+        <div className={styles.shrine}>
           {passport.firstShop && (
-            <div style={{ marginBottom: '4px' }}>
-              🏁 첫 성지: <strong style={{ color: 'var(--text)' }}>{passport.firstShop.name}</strong>
+            <div>
+              첫 성지 · <strong>{passport.firstShop.name}</strong>
               {' '}({new Date(passport.firstShop.date).toLocaleDateString('ko-KR')})
             </div>
           )}
           {passport.latestShop && (
             <div>
-              📍 최근 성지: <strong style={{ color: 'var(--text)' }}>{passport.latestShop.name}</strong>
+              최근 성지 · <strong>{passport.latestShop.name}</strong>
               {' '}({new Date(passport.latestShop.date).toLocaleDateString('ko-KR')})
             </div>
           )}
         </div>
       )}
 
-      {/* 가장 많이 찾은 작품 Top 3 */}
+      {/* 가장 많이 찾은 작품 */}
       {passport.topVisitedSeries.length > 0 && (
-        <div style={{ marginBottom: '8px' }}>
-          <div style={{ fontSize: '12px', fontWeight: 900, color: 'var(--muted)', marginBottom: '8px' }}>
-            가장 많이 찾은 작품
-          </div>
+        <div className={styles.series}>
+          <div className={styles.seriesHead}>가장 많이 찾은 작품</div>
           {passport.topVisitedSeries.map((s, i) => (
-            <div key={s.name} style={{
-              display: 'flex', justifyContent: 'space-between',
-              fontSize: '13px', padding: '4px 0',
-            }}>
+            <div key={s.name} className={styles.seriesRow}>
               <span>{i + 1}. {s.name}</span>
-              <span style={{ color: 'var(--muted)' }}>{s.count}곳</span>
+              <span className={styles.seriesCount}>{s.count}곳</span>
             </div>
           ))}
-        </div>
-      )}
-
-      {/* 대표 배지 */}
-      {passport.featuredBadges.length > 0 && (
-        <div>
-          <div style={{ fontSize: '12px', fontWeight: 900, color: 'var(--muted)', marginBottom: '8px' }}>
-            대표 배지
-          </div>
-          <div style={{ display: 'flex', gap: '8px' }}>
-            {passport.featuredBadges.map((b, i) => (
-              <div key={i} style={{
-                width: '44px', height: '44px', borderRadius: '10px',
-                border: `2px solid ${RARITY_COLOR[b.rarity as keyof typeof RARITY_COLOR] ?? 'var(--border)'}`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                background: 'var(--surface)', overflow: 'hidden',
-              }}>
-                {b.iconUrl?.startsWith('http') ? (
-                  <img src={b.iconUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-                ) : (
-                  <span style={{ fontSize: '20px' }}>🏅</span>
-                )}
-              </div>
-            ))}
-          </div>
         </div>
       )}
     </div>
@@ -171,9 +135,9 @@ export default function PassportCard({ passport, isOwner, onChangeTitleClick }: 
 
 function StatBox({ label, value }: { label: string; value: number }) {
   return (
-    <div style={{ textAlign: 'center', padding: '10px 4px', background: 'var(--surface2)', borderRadius: '10px' }}>
-      <div style={{ fontSize: '18px', fontWeight: 900, color: 'var(--accent)' }}>{value}</div>
-      <div style={{ fontSize: '10px', color: 'var(--muted)' }}>{label}</div>
+    <div className={styles.stat}>
+      <div className={styles.statValue}>{value}</div>
+      <div className={styles.statLabel}>{label}</div>
     </div>
   )
 }

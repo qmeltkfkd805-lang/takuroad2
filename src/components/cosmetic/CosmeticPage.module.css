@@ -174,3 +174,34 @@
   .page { padding: 22px 16px 70px; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
 }
+
+/* ═══ 대표 배지 (showcase) ═══ */
+.hint {
+  margin: 0 0 14px; padding: 10px 14px;
+  border-radius: 10px; background: var(--surface2);
+  font-size: 12.5px; color: var(--muted); font-weight: 600;
+}
+.hint b { color: var(--accent); font-weight: 900; }
+
+/* 왼쪽 프로필 카드 안 — 진열된 배지 */
+.showRow {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 5px;
+  margin-bottom: 4px;
+}
+.showChip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 9px 4px 6px; border-radius: 9999px;
+  background: rgba(255,255,255,.8); border: 1px solid var(--border);
+  font-size: 10.5px; font-weight: 800; color: var(--text);
+  white-space: nowrap;
+}
+.showChip img { width: 14px; height: 14px; object-fit: contain; }
+
+/* 고르는 타일 안 배지 아이콘 */
+.badgeImg { width: 44px; height: 44px; object-fit: contain; }
+
+/* 배지 등급별 썸네일 배경 */
+.bg_common    { background: var(--surface2); }
+.bg_rare      { background: linear-gradient(135deg, #EAF2FF, #F4F8FF); }
+.bg_epic      { background: linear-gradient(135deg, #F5EDFF, #FAF5FF); }
+.bg_legendary { background: linear-gradient(135deg, #FFF6E3, #FFFBF0); }

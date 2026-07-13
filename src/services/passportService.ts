@@ -1,8 +1,9 @@
-import { createClient } from '@/lib/supabase/client'
+﻿import { createClient } from '@/lib/supabase/client'
 import { getFirstAndLatestCheckIn, getMyCheckIns } from './checkInService'
 import { getRegionCollections } from './pilgrimageService'
 
 export interface OtakuPassport {
+  userId: string
   nickname: string
   avatarUrl: string | null
   passportNumber: string | null
@@ -110,17 +111,30 @@ export async function getMyPassport(userId: string): Promise<OtakuPassport | nul
     .eq('is_deleted', false)
 
   // 대표 배지 3개
-  const { data: featured } = await supabase
-    .from('user_badge_tiers')
-    .select('badge_tiers ( name, rarity, badge_id, badges ( icon_url ) )')
-    .eq('user_id', userId)
-    .eq('is_featured', true)
+  /* 대표 배지 — user_badge_tiers.is_featured가 아니라 equipped.showcase를 읽는다.
+     ⭐ 같은 걸 두 군데 저장하면 프로필과 여권이 서로 달라진다.
+        착용 정보는 equipped 한 곳에 모은다. 순서도 배열이라 지켜진다. */
+  const showcaseIds: string[] = Array.isArray((profile as any).equipped?.showcase)
+    ? (profile as any).equipped.showcase.slice(0, 3)
+    : []
 
-  const featuredBadges = (featured ?? []).map((f: any) => ({
-    name: f.badge_tiers?.name ?? '',
-    rarity: f.badge_tiers?.rarity ?? 'common',
-    iconUrl: f.badge_tiers?.badges?.icon_url ?? null,
-  }))
+  let featuredBadges: { name: string; rarity: string; iconUrl: string | null }[] = []
+  if (showcaseIds.length > 0) {
+    const { data: tiers } = await supabase
+      .from('badge_tiers')
+      .select('id, name, rarity, badges ( icon_url )')
+      .in('id', showcaseIds)
+
+    const byId = new Map(((tiers ?? []) as any[]).map(t => [t.id, t]))
+    featuredBadges = showcaseIds
+      .map(id => byId.get(id))
+      .filter(Boolean)
+      .map((t: any) => ({
+        name: t.name ?? '배지',
+        rarity: t.rarity ?? 'common',
+        iconUrl: t.badges?.icon_url ?? null,
+      }))
+  }
 
   // 가장 많이 방문한 작품
   const topSeries = await getTopVisitedSeries(userId, 3)
@@ -129,16 +143,11 @@ export async function getMyPassport(userId: string): Promise<OtakuPassport | nul
   const regions = await getRegionCollections(userId)
   const topRegion = regions[0]?.region ?? null
 
-  // 명패 이름 (선택된 badge_tier)
-  let titleBadgeName: string | null = null
-  if (profile.selected_title_id) {
-    const { data: titleTier } = await supabase
-      .from('badge_tiers')
-      .select('name')
-      .eq('id', profile.selected_title_id)
-      .maybeSingle()
-    titleBadgeName = titleTier?.name ?? null
-  }
+  /* 명패(옛 칭호)는 코스메틱 title로 통합됐다.
+     칭호     = 내가 고른 이름   (profiles.equipped.title)
+     대표 배지 = 내가 자랑할 성취 (profiles.equipped.showcase)
+     둘 다 /cosmetic 한 화면에서 관리한다. tagline 호환을 위해 변수만 남긴다. */
+  const titleBadgeName: string | null = null
 
   // 첫 성지 / 최근 성지
   const { first, latest } = await getFirstAndLatestCheckIn(userId)
@@ -159,6 +168,7 @@ export async function getMyPassport(userId: string): Promise<OtakuPassport | nul
     passportNumber: profile.passport_number,
     issuedAt: profile.created_at,
     tagline,
+    userId,
     titleBadgeName,
     visitedShopCount,
     pilgrimageCount: pilgrimageCount ?? 0,

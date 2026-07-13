@@ -1,0 +1,90 @@
+﻿.card {
+  margin: 16px; padding: 24px 20px;
+  border: 1.5px solid var(--border); border-radius: 20px;
+  background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+  transition: background .3s ease;
+}
+/* 배경/테마를 착용하면 안쪽 박스들이 반투명 흰색으로 — 어떤 배경에서도 읽힌다 */
+.dressed .stats > div,
+.dressed .series,
+.dressed .shrine { background: rgba(255,255,255,.72); }
+.dressed .brand,
+.dressed .meta,
+.dressed .seriesCount { opacity: .85; }
+
+.head { text-align: center; margin-bottom: 16px; }
+.brand { font-size: 13px; font-weight: 900; color: var(--muted); letter-spacing: 1px; }
+.meta {
+  display: flex; justify-content: center; gap: 16px;
+  margin-top: 6px; font-size: 11px; color: var(--muted);
+}
+
+.tagline {
+  text-align: center; margin: 0 0 18px;
+  font-size: 13px; font-weight: 700; font-style: italic; color: var(--accent);
+}
+
+/* 얼굴 */
+.face { text-align: center; margin-bottom: 20px; }
+.nick { margin-top: 10px; font-size: 19px; font-weight: 900; }
+.title {
+  display: inline-block; margin-top: 6px;
+  padding: 5px 14px; border-radius: 9999px;
+  background: rgba(255,255,255,.8); border: 1px solid rgba(255,86,146,.32);
+  font-size: 12.5px; font-weight: 800; color: var(--accent);
+}
+
+.showRow {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+  margin-top: 10px;
+}
+.showChip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 11px 5px 8px; border-radius: 9999px;
+  background: rgba(255,255,255,.85); border: 1.5px solid var(--border);
+  font-size: 11px; font-weight: 800; color: var(--text);
+  white-space: nowrap;
+}
+.showChip img { width: 15px; height: 15px; object-fit: contain; }
+
+.setBtn {
+  margin-top: 10px; padding: 7px 16px;
+  border: 1px dashed var(--border); border-radius: 9999px;
+  background: rgba(255,255,255,.7); color: var(--muted);
+  font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
+}
+.setBtn:hover { border-color: var(--accent); color: var(--accent); }
+
+.editBtn {
+  display: block; margin: 10px auto 0; padding: 4px 12px;
+  border: none; border-radius: 9999px;
+  background: transparent; color: var(--muted);
+  font-family: inherit; font-size: 11px; font-weight: 700; cursor: pointer;
+}
+.editBtn:hover { color: var(--accent); }
+
+/* 기록 도장 */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+.stat {
+  text-align: center; padding: 10px 4px;
+  background: var(--surface2); border-radius: 10px;
+}
+.statValue { font-size: 18px; font-weight: 900; color: var(--accent); }
+.statLabel { font-size: 10px; color: var(--muted); }
+
+/* 성지 */
+.shrine {
+  margin-bottom: 16px; padding: 12px 14px;
+  border-radius: 12px; background: var(--surface2);
+  font-size: 12px; color: var(--muted); line-height: 1.8;
+}
+.shrine strong { color: var(--text); font-weight: 800; }
+
+/* 작품 */
+.series { padding: 12px 14px; border-radius: 12px; background: var(--surface2); }
+.seriesHead { font-size: 12px; font-weight: 900; color: var(--muted); margin-bottom: 8px; }
+.seriesRow {
+  display: flex; justify-content: space-between;
+  font-size: 13px; padding: 4px 0; font-weight: 600;
+}
+.seriesCount { color: var(--muted); font-weight: 700; }
