@@ -1,119 +1,201 @@
-﻿.page { width: 100%; max-width: 980px; margin: 0 auto; padding: 28px 32px 80px; }
+﻿.page { width: 100%; max-width: 1280px; margin: 0 auto; padding: 28px 32px 80px; }
 
-.head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 22px; }
 .head h1 { display: flex; align-items: center; gap: 7px; margin: 0 0 8px; font-size: 28px; font-weight: 900; }
 .head p { margin: 0; font-size: 14.5px; color: var(--muted); }
-.ghost {
-  padding: 10px 18px; border: 1px solid var(--border); border-radius: 9999px;
-  background: var(--surface); color: var(--text);
-  font-family: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; white-space: nowrap;
+.total {
+  flex-shrink: 0; padding: 9px 16px; border-radius: 9999px;
+  background: var(--surface); border: 1px solid var(--border);
+  font-size: 13px; font-weight: 700; color: var(--muted); white-space: nowrap;
 }
-.ghost:hover { border-color: var(--accent); color: var(--accent); }
+.total b { color: var(--accent); font-weight: 900; font-size: 15px; }
 
-/* 전체 진행 */
-.total { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
-.totalBar { flex: 1; height: 10px; border-radius: 9999px; background: var(--surface2); overflow: hidden; }
-.totalBar > span {
-  display: block; height: 100%; border-radius: 9999px;
-  background: linear-gradient(90deg, #FF8FB3, #FF5692);
-  transition: width .8s cubic-bezier(.2,.8,.2,1);
-}
-.totalNum { flex-shrink: 0; font-size: 13px; font-weight: 700; color: var(--muted); }
-.totalNum b { color: var(--accent); font-weight: 900; font-size: 15px; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 18px; align-items: start; }
+.main { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.side { display: flex; flex-direction: column; gap: 18px; position: sticky; top: 24px; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
 
-.list { display: flex; flex-direction: column; gap: 16px; }
-
-/* 시리즈 카드 */
-.card {
-  padding: 20px 24px;
+.block {
+  padding: 20px 22px;
   background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
 }
-.cardDone { opacity: .62; }
-.cardDone:hover { opacity: 1; }
-
-.cardHead { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
-.icon {
-  width: 48px; height: 48px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 14px; background: var(--accent-l);
+.blockHead { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.blockHead h2 { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 16.5px; font-weight: 900; }
+.ghostSm {
+  padding: 6px 12px; border: none; border-radius: 9999px;
+  background: transparent; color: var(--muted);
+  font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;
 }
-.icon img { width: 30px; height: 30px; object-fit: contain; }
-.headBody { flex: 1; min-width: 0; }
-.name { font-size: 17px; font-weight: 900; margin-bottom: 2px; }
-.sub { font-size: 13px; color: var(--muted); font-weight: 600; }
-.sub b { color: var(--accent); font-weight: 800; }
-.count { flex-shrink: 0; font-size: 20px; font-weight: 900; color: var(--accent); }
-.count em { font-style: normal; font-size: 13px; font-weight: 700; color: var(--muted); }
+.ghostSm:hover { color: var(--accent); }
+.dim { margin: 0; padding: 20px 0; text-align: center; font-size: 13px; color: var(--muted); }
 
-.bar { height: 8px; border-radius: 9999px; background: var(--surface2); overflow: hidden; margin-bottom: 18px; }
-.bar > span {
+/* ═══ 지금 도전 중 — 3칸 ═══ */
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.card {
+  padding: 16px 16px 14px; border-radius: 16px;
+  border: 1px solid var(--border); background: var(--surface2);
+  cursor: pointer; transition: transform .14s ease, border-color .14s ease;
+}
+.card:hover { transform: translateY(-3px); border-color: var(--accent); }
+
+.cardTop { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+.cardIcon {
+  width: 38px; height: 38px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 11px; background: var(--surface);
+}
+.cardIcon img { width: 24px; height: 24px; object-fit: contain; }
+.cardName { font-size: 14px; font-weight: 900; min-width: 0; }
+
+.cardNum { display: flex; align-items: baseline; gap: 4px; margin-bottom: 8px; }
+.cardNum strong { font-size: 28px; font-weight: 900; color: var(--accent); line-height: 1; }
+.cardNum span { font-size: 13px; font-weight: 800; color: var(--muted); }
+
+.cardBar { height: 8px; border-radius: 9999px; background: rgba(0,0,0,.06); overflow: hidden; margin-bottom: 10px; }
+.cardBar > span {
   display: block; height: 100%; border-radius: 9999px;
   background: linear-gradient(90deg, #FF8FB3, #FF5692);
   transition: width .7s cubic-bezier(.2,.8,.2,1);
 }
+.cardLine { margin: 0 0 12px; font-size: 12.5px; color: var(--muted); font-weight: 600; }
+.cardLine b { color: var(--accent); font-weight: 900; }
 
-/* 계단 */
-.steps {
-  list-style: none; margin: 0 0 16px; padding: 0;
-  display: flex; align-items: stretch; gap: 0;
+.cardReward {
+  padding-top: 10px; border-top: 1px dashed var(--border);
 }
-.stepWrap { display: flex; align-items: center; flex: 1; min-width: 0; }
+.cardRewardLabel { display: block; font-size: 10.5px; font-weight: 800; color: var(--muted); margin-bottom: 3px; }
+.cardRewardName { font-size: 12.5px; font-weight: 800; }
 
-/* 계단 사이 연결선 — 딴 단계까지만 핑크로 이어진다 */
-.link { flex-shrink: 0; width: 14px; height: 3px; background: var(--border); border-radius: 9999px; }
-.linkOn { background: var(--accent); }
-
-.step {
-  flex: 1; min-width: 0; text-align: center;
-  padding: 14px 8px; border-radius: 14px;
-  border: 1px solid var(--border); background: var(--surface2);
+/* ═══ 최근 해금 ═══ */
+.badgeRow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.badge {
+  padding: 12px 6px; border-radius: 14px; text-align: center;
+  background: var(--surface2); border: 1px solid var(--border);
 }
-.stepTarget { font-size: 22px; font-weight: 900; line-height: 1; margin-bottom: 5px; }
-.stepName {
-  font-size: 12px; font-weight: 800; margin-bottom: 3px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+.badgeIcon {
+  width: 40px; height: 40px; margin: 0 auto 7px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; background: var(--surface);
 }
-.stepState { font-size: 10.5px; font-weight: 700; color: var(--muted); }
-
-/* 이미 딴 것 — 조용히 뒤로 */
-.stepDone { background: var(--surface); border-color: var(--accent); }
-.stepDone .stepTarget { color: var(--accent); }
-.stepDone .stepState { color: var(--accent); }
-
-/* 지금 도전 중 — 여기만 빛난다 */
-.stepNow {
-  background: linear-gradient(135deg, #FFF0F5, #FFF9EC);
-  border-color: var(--accent); border-width: 2px;
-  box-shadow: 0 6px 18px rgba(255, 86, 146, .18);
-  transform: translateY(-2px);
+.badgeIcon img { width: 26px; height: 26px; object-fit: contain; }
+.badgeName {
+  font-size: 11px; font-weight: 800; line-height: 1.3; margin-bottom: 3px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.stepNow .stepTarget { color: var(--accent); font-size: 25px; }
-.stepNow .stepState { color: var(--accent); font-weight: 800; }
+.badgeDate { font-size: 9.5px; color: var(--muted); font-weight: 700; }
+.r_rare      { border-color: #7FB2FF; }
+.r_epic      { border-color: #C79BFF; }
+.r_legendary { border-color: #FFC55C; }
 
-/* 아직 안 열린 것 */
-.stepLock { opacity: .5; }
-.stepLock .stepTarget { color: var(--muted); }
+/* ═══ 이번 보상 미리보기 — 뭘 주는지 크게 ═══ */
+.preview { display: flex; gap: 14px; align-items: center; }
+.previewBox {
+  position: relative; overflow: hidden; flex-shrink: 0;
+  width: 104px; height: 104px; border-radius: 14px;
+  background: var(--surface2);
+  display: flex; align-items: center; justify-content: center;
+  animation: shine 2.8s ease-in-out infinite;
+}
+.previewFace {
+  width: 56%; height: 56%; border-radius: 50%;
+  background: linear-gradient(135deg, #FFE3EE, #FFD9C7);
+}
+.previewTitle { font-size: 12.5px; font-weight: 900; color: var(--accent); padding: 0 6px; text-align: center; }
+.previewFx { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); }
 
-/* 등급 — 테두리로만 (요란하지 않게) */
-.r_rare.stepDone      { border-color: #7FB2FF; }
-.r_rare.stepDone .stepTarget, .r_rare.stepDone .stepState { color: #3D7FE0; }
-.r_epic.stepDone      { border-color: #C79BFF; }
-.r_epic.stepDone .stepTarget, .r_epic.stepDone .stepState { color: #8B4FD9; }
-.r_legendary.stepDone { border-color: #FFC55C; }
-.r_legendary.stepDone .stepTarget, .r_legendary.stepDone .stepState { color: #D9930F; }
+.previewBody { flex: 1; min-width: 0; }
+.previewType { font-size: 11px; font-weight: 800; color: var(--muted); margin-bottom: 2px; }
+.previewName { font-size: 16px; font-weight: 900; margin-bottom: 6px; }
+.previewCond { margin: 0 0 9px; font-size: 12px; color: var(--muted); font-weight: 600; line-height: 1.5; }
+.previewCond b { color: var(--accent); font-weight: 800; }
+.previewBar { height: 6px; border-radius: 9999px; background: var(--surface2); overflow: hidden; }
+.previewBar > span {
+  display: block; height: 100%; border-radius: 9999px;
+  background: linear-gradient(90deg, #FF8FB3, #FF5692);
+}
 
-.btn {
-  width: 100%; padding: 12px; border: 1px solid var(--accent); border-radius: 9999px;
-  background: var(--surface); color: var(--accent);
+/* ═══ 업적 카테고리 ═══ */
+.catRow { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 10px; }
+.cat {
+  padding: 13px 14px; border-radius: 14px;
+  background: var(--surface2); border: 1px solid var(--border);
+}
+.cat > .catBar { margin-top: 9px; }
+.catIcon {
+  width: 32px; height: 32px; margin-bottom: 8px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 9px; background: var(--surface);
+}
+.catIcon img { width: 20px; height: 20px; object-fit: contain; }
+.catBody { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.catName { font-size: 13px; font-weight: 900; }
+.catNum { font-size: 12px; font-weight: 800; color: var(--accent); }
+.catBar { height: 5px; border-radius: 9999px; background: rgba(0,0,0,.06); overflow: hidden; }
+.catBar > span {
+  display: block; height: 100%; border-radius: 9999px;
+  background: linear-gradient(90deg, #FFB3CC, #FF5692);
+}
+
+/* ═══ 오늘의 추천 도전 ═══ */
+.rec {
+  position: relative; overflow: hidden;
+  padding: 20px 20px 18px; border-radius: 20px;
+  background: linear-gradient(160deg, #FFF0F5, #FFF9EC);
+  border: 1px solid rgba(255,86,146,.22);
+  text-align: center;
+}
+.recHead { font-size: 13px; font-weight: 900; color: var(--accent); margin-bottom: 12px; }
+.recLine { margin: 0 0 3px; font-size: 13px; color: var(--muted); font-weight: 600; }
+.recLine b { color: var(--accent); font-weight: 900; }
+.recGoal { margin: 0 0 6px; font-size: 16px; font-weight: 900; }
+.recTaku { display: flex; justify-content: center; margin-bottom: 12px; }
+.recBtn {
+  width: 100%; padding: 12px; border: none; border-radius: 9999px;
+  background: var(--accent); color: #fff;
   font-family: inherit; font-size: 13.5px; font-weight: 800; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255,86,146,.3);
 }
-.btn:hover { background: var(--accent); color: #fff; }
+.recBtn:hover { transform: translateY(-1px); }
 
-.doneHead { margin: 34px 0 16px; font-size: 15px; font-weight: 900; color: var(--muted); }
+/* ═══ 꾸미기 보상 ═══ */
+.cosList { display: flex; flex-direction: column; gap: 3px; }
+.cosRow {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 10px 8px; border: none; border-radius: 10px;
+  background: transparent; font-family: inherit; cursor: pointer;
+  text-align: left;
+}
+.cosRow:hover { background: var(--surface2); }
+.cosName { flex-shrink: 0; width: 78px; font-size: 12.5px; font-weight: 800; }
+.cosBar { flex: 1; height: 6px; border-radius: 9999px; background: var(--surface2); overflow: hidden; }
+.cosBar > span {
+  display: block; height: 100%; border-radius: 9999px;
+  background: linear-gradient(90deg, #FFB3CC, #FF5692);
+}
+.cosNum { flex-shrink: 0; font-size: 11.5px; font-weight: 700; color: var(--muted); }
+.cosNum b { font-size: 13px; font-weight: 900; color: var(--text); }
 
-.empty { text-align: center; padding: 70px 20px; }
-.empty h2 { margin: 16px 0 8px; font-size: 20px; font-weight: 900; }
-.empty p { margin: 0; font-size: 14px; color: var(--muted); }
+/* 효과 애니메이션 (미리보기) */
+.fxSparkle::after, .fxStar::after, .fxSakura::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+}
+.fxSparkle::after {
+  background-image: radial-gradient(circle, #fff 1.4px, transparent 1.6px);
+  background-size: 26px 26px; animation: gTwinkle 2.4s ease-in-out infinite;
+}
+.fxStar::after {
+  background-image: radial-gradient(circle, #FFF3C4 1.8px, transparent 2.2px);
+  background-size: 32px 32px; animation: gDrift 7s linear infinite;
+}
+.fxSakura::after {
+  background-image: radial-gradient(circle, #FFB3CC 2.6px, transparent 3px);
+  background-size: 34px 34px; animation: gFall 6s linear infinite;
+}
+.fxAura { box-shadow: inset 0 0 24px rgba(255,86,146,.5); }
+.fxNeon { box-shadow: inset 0 0 22px rgba(255,61,203,.6); }
+
+.empty { text-align: center; padding: 30px 20px; }
+.empty p { margin: 12px 0 0; font-size: 13.5px; color: var(--muted); }
 
 .signin { text-align: center; padding: 90px 20px; }
 .signin h1 { font-size: 26px; font-weight: 900; margin: 0 0 12px; }
@@ -124,26 +206,40 @@
   font-family: inherit; font-size: 14.5px; font-weight: 700; cursor: pointer;
 }
 
-.skel {
-  height: 210px; border-radius: 20px;
+.skelCard, .skelBadge, .skelPreview, .skelCat, .skelRow {
+  border-radius: 14px;
   background: linear-gradient(90deg, var(--surface2), #EFEFEF, var(--surface2));
   background-size: 200% 100%; animation: shimmer 1.4s infinite;
 }
-@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+.skelCard { height: 178px; }
+.skelBadge { height: 96px; }
+.skelPreview { height: 104px; }
+.skelCat { height: 82px; }
+.skelRow { height: 32px; }
+
+@keyframes shimmer { 0% { background-position: 200% 0 } 100% { background-position: -200% 0 } }
+@keyframes shine { 0%,100% { box-shadow: 0 0 0 rgba(255,86,146,0) } 50% { box-shadow: 0 0 22px rgba(255,86,146,.3) } }
+@keyframes gTwinkle { 0%,100% { opacity: .35 } 50% { opacity: 1 } }
+@keyframes gDrift { from { background-position: 0 0 } to { background-position: 32px 32px } }
+@keyframes gFall { from { background-position: 0 -34px } to { background-position: 14px 34px } }
+
 @media (prefers-reduced-motion: reduce) {
-  .skel { animation: none; }
-  .bar > span, .totalBar > span { transition: none; }
-  .stepNow { transform: none; }
+  .skelCard, .skelBadge, .skelPreview, .skelCat, .skelRow,
+  .previewBox, .fxSparkle::after, .fxStar::after, .fxSakura::after { animation: none; }
+  .cardBar > span, .catBar > span, .cosBar > span { transition: none; }
 }
 
+@media (max-width: 1080px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .side { position: static; }
+}
+@media (max-width: 860px) {
+  .cards { grid-template-columns: minmax(0, 1fr); }
+  .two { grid-template-columns: minmax(0, 1fr); }
+  .badgeRow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 720px) {
   .page { padding: 22px 16px 70px; }
-  .card { padding: 18px 16px; }
-  .steps { flex-direction: column; gap: 8px; }
-  .stepWrap { flex-direction: column; width: 100%; }
-  .link { width: 3px; height: 12px; }
-  .step { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; }
-  .stepTarget { margin-bottom: 0; min-width: 42px; }
-  .stepState { margin-left: auto; }
-  .stepNow { transform: none; }
+  .block { padding: 18px 16px; }
+  .preview { flex-direction: column; text-align: center; }
 }

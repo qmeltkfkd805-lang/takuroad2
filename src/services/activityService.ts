@@ -92,6 +92,13 @@ export async function createActivity(input: CreateActivityInput): Promise<void> 
   //    사용자를 기다리게 하지 않는다 (실패해도 기록은 이미 남았다)
   import('./badgeService')
     .then(m => m.evaluateBadgeTiersForUser(input.userId))
+    .then(async newTiers => {
+      // ⭐ 딴 순간이 가장 기분 좋은 순간이다. 그냥 흘려보내지 않는다.
+      if (newTiers && newTiers.length > 0) {
+        const { announceUnlock } = await import('./unlockService')
+        announceUnlock(newTiers)
+      }
+    })
     .catch(e => console.error('[배지 평가 실패]', e))
 }
 
