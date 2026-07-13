@@ -144,12 +144,19 @@ export async function getCosmeticById(id: string): Promise<Cosmetic | null> {
       한 명씩 물어보면 쿼리가 20번 날아간다. 모아서 한 번만 묻는다.
    ──────────────────────────────────────────────── */
 
+export interface WornItem {
+  slug: string
+  name: string
+  /** 이미지가 있으면 CSS보다 이게 우선한다 */
+  assetUrl?: string | null
+}
+
 export interface WornSet {
-  frame?: { slug: string; name: string }
-  background?: { slug: string; name: string }
-  title?: { slug: string; name: string }
-  effect?: { slug: string; name: string }
-  theme?: { slug: string; name: string }
+  frame?: WornItem
+  background?: WornItem
+  title?: WornItem
+  effect?: WornItem
+  theme?: WornItem
 }
 
 export async function getWornBatch(userIds: string[]): Promise<Map<string, WornSet>> {
@@ -177,7 +184,7 @@ export async function getWornBatch(userIds: string[]): Promise<Map<string, WornS
   }
 
   const { data: cos } = await supabase
-    .from('cosmetics').select('id, type, slug, name').in('id', [...cosIds])
+    .from('cosmetics').select('id, type, slug, name, asset_url').in('id', [...cosIds])
 
   const byId = new Map(((cos ?? []) as any[]).map(c => [c.id, c]))
 
@@ -185,7 +192,7 @@ export async function getWornBatch(userIds: string[]): Promise<Map<string, WornS
     const worn: WornSet = {}
     for (const [type, id] of Object.entries((p.equipped ?? {}) as Record<string, string>)) {
       const c: any = byId.get(id)
-      if (c) (worn as any)[type] = { slug: c.slug, name: c.name }
+      if (c) (worn as any)[type] = { slug: c.slug, name: c.name, assetUrl: c.asset_url ?? null }
     }
     out.set(p.id, worn)
   }

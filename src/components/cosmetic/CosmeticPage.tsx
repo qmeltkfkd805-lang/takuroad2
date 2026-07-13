@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -6,7 +6,7 @@ import {
   getMyCosmetics, getEquipped, equipCosmetic, Cosmetic, Equipped,
   getMyBadges, getShowcase, toggleShowcase, ShowcaseBadge, SHOWCASE_MAX,
 } from '@/services/cosmeticService'
-import { FRAME_STYLE, BG_STYLE, THEME_STYLE, FX_CLASS, RARITY_LABEL, previewStyle } from '@/lib/cosmetics/style'
+import { FRAME_STYLE, FX_CLASS, RARITY_LABEL, previewStyle, bgStyle, themeStyle } from '@/lib/cosmetics/style'
 import { Icon } from '@/components/tds'
 import { MaskIcon } from '@/components/collection/MaskIcon'
 import styles from './CosmeticPage.module.css'
@@ -37,6 +37,13 @@ export default function CosmeticPage() {
   const [badges, setBadges] = useState<ShowcaseBadge[]>([])
   const [showcase, setShowcase] = useState<string[]>([])
   const [tab, setTab] = useState('frame')
+  /* 필터 — 아이템이 많아지면 '내가 뭘 갖고 있지?'를 찾기가 어려워진다.
+     보유 상태 × 등급, 두 축이면 충분하다. */
+  const [owned, setOwned] = useState<'all' | 'mine'>('all')
+  const [rarity, setRarity] = useState<'all' | 'common' | 'rare' | 'epic' | 'legendary'>('all')
+  /* 접힌 등급 — 기본은 다 펼침. 사용자가 접은 것만 기억한다. */
+  const [folded, setFolded] = useState<Set<string>>(new Set())
+  const [filterOpen, setFilterOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   const [msg, setMsg] = useState<string | null>(null)
 
@@ -97,7 +104,10 @@ export default function CosmeticPage() {
     return <div className={styles.page}><p className={styles.center}>로그인이 필요해요.</p></div>
   }
 
-  const list = items.filter(c => c.type === tab)
+  const list = items
+    .filter(c => c.type === tab)
+    .filter(c => owned === 'all' || c.unlocked)
+    .filter(c => rarity === 'all' || c.rarity === rarity)
   const unlockedCount = items.filter(c => c.unlocked).length
   const shownBadges = showcase
     .map(id => badges.find(b => b.tierId === id))
@@ -121,8 +131,8 @@ export default function CosmeticPage() {
           <div
             className={[styles.card, worn.effect ? (styles[FX_CLASS[worn.effect.slug]] ?? '') : ''].join(' ')}
             style={{
-              ...(worn.theme ? THEME_STYLE[worn.theme.slug] : {}),
-              ...(worn.background ? BG_STYLE[worn.background.slug] : {}),
+              ...themeStyle(worn.theme?.slug, Boolean(worn.background?.assetUrl)),
+              ...bgStyle(worn.background?.slug, worn.background?.assetUrl),
             }}
           >
             <div className={styles.avatarWrap}>
@@ -189,6 +199,72 @@ export default function CosmeticPage() {
             })}
           </nav>
 
+          {tab !== 'showcase' && (
+            <div className={styles.filterBox}>
+              <button className={styles.filterHead} onClick={() => setFilterOpen(v => !v)}>
+                <span className={styles.filterTitle}>필터</span>
+                {!filterOpen && (owned !== 'all' || rarity !== 'all') && (
+                  <span className={styles.filterSum}>
+                    {owned === 'mine' ? '보유 중' : null}
+                    {owned === 'mine' && rarity !== 'all' ? ' · ' : null}
+                    {rarity !== 'all' ? RARITY_LABEL[rarity] : null}
+                  </span>
+                )}
+                <span className={[styles.caret, filterOpen ? '' : styles.caretFolded].join(' ')}>
+                  <svg viewBox='0 0 24 24' width='14' height='14' fill='none'
+                       stroke='currentColor' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
+                    <polyline points='6 9 12 15 18 9' />
+                  </svg>
+                </span>
+              </button>
+
+            {filterOpen && (
+            <div className={styles.filters}>
+              <div className={styles.filterRow}>
+                <button
+                  className={[styles.chip, owned === 'all' ? styles.chipOn : ''].join(' ')}
+                  onClick={() => setOwned('all')}
+                >전체 보기</button>
+                <button
+                  className={[styles.chip, owned === 'mine' ? styles.chipOn : ''].join(' ')}
+                  onClick={() => setOwned('mine')}
+                >보유 중</button>
+              </div>
+
+              <div className={styles.filterRow}>
+                {([
+                  ['all', '전체 등급'],
+                  ['common', '일반'],
+                  ['rare', '레어'],
+                  ['epic', '에픽'],
+                  ['legendary', '전설'],
+                ] as const).map(([key, label]) => {
+                  const n = items.filter(c =>
+                    c.type === tab &&
+                    (key === 'all' || c.rarity === key) &&
+                    (owned === 'all' || c.unlocked)
+                  ).length
+                  if (n === 0 && key !== 'all') return null
+                  return (
+                    <button
+                      key={key}
+                      className={[
+                        styles.chip,
+                        styles['c_' + key],
+                        rarity === key ? styles.chipOn : '',
+                      ].join(' ')}
+                      onClick={() => setRarity(key)}
+                    >
+                      {label} <em>{n}</em>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+            )}
+            </div>
+          )}
+
           {loading ? (
             <div className={styles.grid}>
               {[0, 1, 2, 3, 4, 5].map(i => <div key={i} className={styles.skel} />)}
@@ -215,11 +291,53 @@ export default function CosmeticPage() {
               </>
             )
           ) : (
-            <div className={styles.grid}>
-              {list.map(c => (
-                <Tile key={c.id} c={c} on={equipped[c.type] === c.id} onClick={() => pick(c)} />
-              ))}
-            </div>
+            /* ⭐ 등급별로 나눈다 — 올라갈수록 좋아진다는 게 보여야 모으고 싶어진다.
+               한 덩어리로 쏟아지면 그 위계가 안 느껴진다. */
+            list.length === 0 ? (
+              <p className={styles.center}>
+                {owned === 'mine' ? '아직 해금한 게 없어요. 도전을 시작해보세요.' : '해당하는 아이템이 없어요.'}
+              </p>
+            ) : (
+            <>
+              {(['common', 'rare', 'epic', 'legendary'] as const).map(rar => {
+                const group = list.filter(c => c.rarity === rar)
+                if (group.length === 0) return null
+                const got = group.filter(c => c.unlocked).length
+                const isFolded = folded.has(rar)
+                return (
+                  <div key={rar} className={styles.rarGroup}>
+                    <button
+                      className={styles.rarHead}
+                      onClick={() => setFolded(prev => {
+                        const n = new Set(prev)
+                        if (n.has(rar)) n.delete(rar); else n.add(rar)
+                        return n
+                      })}
+                    >
+                      <span className={[styles.rarBadge, styles['r_' + rar]].join(' ')}>
+                        {RARITY_LABEL[rar]}
+                      </span>
+                      <span className={styles.rarCount}>{got} / {group.length}</span>
+                      <span className={[styles.caret, isFolded ? styles.caretFolded : ''].join(' ')}>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+                             stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                      </span>
+                    </button>
+
+                    {!isFolded && (
+                      <div className={styles.grid}>
+                        {group.map(c => (
+                          <Tile key={c.id} c={c} on={equipped[c.type] === c.id} onClick={() => pick(c)} />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </>
+            )
           )}
         </section>
       </div>
@@ -235,7 +353,10 @@ function Tile({ c, on, onClick }: { c: Cosmetic; on: boolean; onClick: () => voi
       className={[styles.tile, on ? styles.tileOn : '', c.unlocked ? '' : styles.tileLock].join(' ')}
       onClick={onClick}
     >
-      <div className={styles.thumb} style={previewStyle(c.type, c.slug)}>
+      <div
+        className={styles.thumb}
+        style={c.type === 'background' ? bgStyle(c.slug, c.assetUrl) : previewStyle(c.type, c.slug)}
+      >
         {c.type === 'title' && <span className={styles.thumbTitle}>{c.name}</span>}
         {c.type === 'effect' && (
           <span className={[styles.thumbFx, styles[FX_CLASS[c.slug]] ?? ''].join(' ')} />

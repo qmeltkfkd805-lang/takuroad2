@@ -205,3 +205,83 @@
 .bg_rare      { background: linear-gradient(135deg, #EAF2FF, #F4F8FF); }
 .bg_epic      { background: linear-gradient(135deg, #F5EDFF, #FAF5FF); }
 .bg_legendary { background: linear-gradient(135deg, #FFF6E3, #FFFBF0); }
+
+/* 등급 그룹 */
+.rarGroup { margin-bottom: 22px; }
+.rarHead {
+  display: flex; align-items: center; gap: 9px;
+  margin-bottom: 10px;
+}
+.rarBadge {
+  padding: 4px 12px; border-radius: 9999px;
+  font-size: 11.5px; font-weight: 900;
+}
+.rarCount { font-size: 12px; font-weight: 700; color: var(--muted); }
+
+/* ═══ 필터 ═══ */
+.filters {
+  display: flex; flex-direction: column; gap: 8px;
+  margin-bottom: 18px;
+}
+.filterRow { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.chip {
+  padding: 7px 14px; border-radius: 9999px;
+  border: 1px solid var(--border); background: var(--surface);
+  font-family: inherit; font-size: 12.5px; font-weight: 700; color: var(--muted);
+  cursor: pointer; white-space: nowrap;
+  transition: border-color .12s ease, background .12s ease, color .12s ease;
+}
+.chip em {
+  font-style: normal; margin-left: 4px;
+  font-size: 11px; font-weight: 800; opacity: .65;
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+
+.chipOn {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
+.chipOn:hover { color: #fff; }
+.chipOn em { opacity: .85; }
+
+/* 등급 칩 — 선택 안 됐을 때 등급 색을 살짝 머금는다 */
+.c_common:not(.chipOn)    { }
+.c_rare:not(.chipOn)      { border-color: #B7D3FF; color: #3D7FE0; }
+.c_epic:not(.chipOn)      { border-color: #D8BEFF; color: #8B4FD9; }
+.c_legendary:not(.chipOn) { border-color: #FFDE9E; color: #D9930F; }
+
+/* 선택되면 그 등급 색으로 채워진다 */
+.c_rare.chipOn      { background: #3D7FE0; border-color: #3D7FE0; }
+.c_epic.chipOn      { background: #8B4FD9; border-color: #8B4FD9; }
+.c_legendary.chipOn { background: #D9930F; border-color: #D9930F; }
+
+/* ═══ 필터 아코디언 ═══ */
+.filterBox {
+  border: 1px solid var(--border); border-radius: 14px;
+  background: var(--surface); margin-bottom: 18px; overflow: hidden;
+}
+.filterHead {
+  display: flex; align-items: center; gap: 9px; width: 100%;
+  padding: 12px 15px; border: none; background: transparent;
+  font-family: inherit; cursor: pointer; text-align: left;
+}
+.filterHead:hover { background: var(--surface2); }
+.filterTitle { font-size: 13px; font-weight: 800; }
+.filterSum {
+  padding: 3px 10px; border-radius: 9999px;
+  background: var(--accent-l); color: var(--accent);
+  font-size: 11px; font-weight: 800;
+}
+.filterBox .filters { padding: 0 15px 14px; margin-bottom: 0; }
+
+/* 등급 그룹 헤더 (아코디언) */
+.rarHead {
+  display: flex; align-items: center; gap: 9px; width: 100%;
+  padding: 6px 0; border: none; background: transparent;
+  font-family: inherit; cursor: pointer;
+}
+.caret {
+  display: inline-flex; margin-left: auto; color: var(--muted);
+  transition: transform .18s ease;
+}
+.caretFolded { transform: rotate(-90deg); }

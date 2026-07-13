@@ -33,15 +33,26 @@ export const FRAME_STYLE: Record<string, CSSProperties> = {
 }
 
 /** 프로필 배경 */
+/** 프로필 배경 — 색과 분위기만.
+    ⭐ 별·벚꽃·반짝임 같은 '움직이는 것'은 효과(effect)의 몫이다.
+       배경에 점을 넣으면 효과와 겹쳐 역할이 흐려진다. 배경은 깔끔한 그라디언트로. */
 export const BG_STYLE: Record<string, CSSProperties> = {
-  'bg-sakura': { background: 'linear-gradient(135deg,#FFE3EE 0%,#FFF3F7 55%,#FFF9EC 100%)' },
-  'bg-night':  { background: 'linear-gradient(160deg,#1B2140 0%,#39406B 70%,#5A5F8F 100%)', color: '#fff' },
-  'bg-star':   { background: 'radial-gradient(circle at 20% 30%, #fff 1px, transparent 1px), radial-gradient(circle at 70% 60%, #fff 1.5px, transparent 1.5px), linear-gradient(160deg,#232A52,#4A4F86)', backgroundSize: '90px 90px, 130px 130px, cover', color: '#fff' },
-  'bg-city':   { background: 'linear-gradient(180deg,#2B1B44 0%,#6B3B6E 60%,#E08BA0 100%)', color: '#fff' },
-  'bg-shelf':  { background: 'repeating-linear-gradient(90deg,#C7996B 0 12px,#A87A50 12px 15px,#DCB98C 15px 26px,#B98A5E 26px 30px)' },
-  'bg-cafe':   { background: 'linear-gradient(135deg,#F2E3D0,#D9B892 70%,#B08C63)' },
-  'bg-film':   { background: 'repeating-linear-gradient(0deg,#1C1C22 0 14px,#2A2A33 14px 18px)', color: '#fff' },
-  'bg-coral':  { background: 'linear-gradient(135deg,#FF8FB3,#FFB877,#FFE3A3)' },
+  'bg-sakura': { background: 'linear-gradient(160deg,#FFE9F1 0%,#FFF4F7 48%,#FFF8EC 100%)' },
+  'bg-night':  { background: 'linear-gradient(180deg,#1E2A4E 0%,#3E4C7E 30%,#7C6E9C 55%,#C98BA0 78%,#F5C79B 100%)', color: '#fff' },
+  'bg-star':   { background: 'linear-gradient(180deg,#141A33 0%,#2A3358 45%,#4A4F86 100%)', color: '#fff' },
+  'bg-city':   { background: 'linear-gradient(180deg,#2B1B44 0%,#6B3B6E 58%,#E08BA0 100%)', color: '#fff' },
+  'bg-shelf':  { background: 'linear-gradient(160deg,#E8D3B6 0%,#C7996B 55%,#A87A50 100%)' },
+  'bg-cafe':   { background: 'linear-gradient(160deg,#F4E7D6 0%,#D9B892 60%,#B08C63 100%)' },
+  'bg-film':   { background: 'linear-gradient(180deg,#2A2732 0%,#4A4438 45%,#1C1B22 100%)', color: '#fff' },
+  'bg-coral':  { background: 'linear-gradient(160deg,#FF8FB3 0%,#FFB877 55%,#FFE3A3 100%)' },
+
+  /* 일반 등급 — 색깔만. 이미지가 있는 건 레어 이상이다. */
+  'bg-cream':    { background: 'linear-gradient(160deg,#FFF9EC,#FBF6EE)' },
+  'bg-sky':      { background: 'linear-gradient(160deg,#E3F1FF,#F2F8FF)' },
+  'bg-mint':     { background: 'linear-gradient(160deg,#E1F7F2,#F1FBF9)' },
+  'bg-lavender': { background: 'linear-gradient(160deg,#F0ECFF,#F8F6FF)' },
+  'bg-peach':    { background: 'linear-gradient(160deg,#FFE9E0,#FFF6F1)' },
+  'bg-ink':      { background: 'linear-gradient(160deg,#2A2A33,#4A4A57)', color: '#fff' },
 }
 
 /** 프로필 효과 — 애니메이션. globals.css에 keyframes가 있어야 한다 */
@@ -70,4 +81,34 @@ export function previewStyle(type: string, slug: string): CSSProperties {
 
 export const RARITY_LABEL: Record<string, string> = {
   common: '일반', rare: '레어', epic: '에픽', legendary: '전설',
+}
+
+/* ────────────────────────────────────────────────
+   이미지가 있으면 CSS보다 이게 우선한다.
+
+   ⭐ 설계할 때 한 약속이다 — "가짜 이미지를 넣느니 진짜 CSS가 낫다.
+      나중에 asset_url이 채워지면 그게 우선한다."
+      이제 이미지가 생겼으니 약속을 지킨다.
+   ──────────────────────────────────────────────── */
+
+/** 배경 — 이미지가 있으면 이미지, 없으면 CSS 그라디언트 */
+export function bgStyle(slug?: string, assetUrl?: string | null): CSSProperties {
+  if (assetUrl) {
+    return {
+      backgroundImage: 'url(' + assetUrl + ')',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      color: '#fff',
+    }
+  }
+  return slug ? (BG_STYLE[slug] ?? {}) : {}
+}
+
+/** 테마 — 배경 이미지가 있으면 테마 배경은 양보한다(겹치면 안 보임) */
+export function themeStyle(slug?: string, hasBgImage = false): CSSProperties {
+  if (!slug) return {}
+  const s = THEME_STYLE[slug] ?? {}
+  if (!hasBgImage) return s
+  const { background, ...rest } = s as any   // 강조색만 남긴다
+  return rest
 }

@@ -1,10 +1,10 @@
-﻿'use client'
+'use client'
 
 import { OtakuPassport } from '@/services/passportService'
 import { RARITY_COLOR } from '@/services/badgeService'
 import { useWorn } from '@/components/cosmetic/CosmeticProvider'
 import { UserAvatar } from '@/components/cosmetic/UserFace'
-import { BG_STYLE, THEME_STYLE } from '@/lib/cosmetics/style'
+import { bgStyle, themeStyle } from '@/lib/cosmetics/style'
 import styles from './PassportCard.module.css'
 
 /* 오타쿠 여권 — 프로필의 얼굴
@@ -33,9 +33,10 @@ export default function PassportCard({ passport, isOwner, onCustomizeClick }: Pr
     year: 'numeric', month: '2-digit', day: '2-digit',
   }).replace(/\. /g, '.').replace(/\.$/, '')
 
+  const hasImage = Boolean(worn.background?.assetUrl)
   const skin = {
-    ...(worn.theme ? THEME_STYLE[worn.theme.slug] : {}),
-    ...(worn.background ? BG_STYLE[worn.background.slug] : {}),
+    ...themeStyle(worn.theme?.slug, hasImage),
+    ...bgStyle(worn.background?.slug, worn.background?.assetUrl),
   }
   const dressed = Boolean(worn.theme || worn.background)
 
