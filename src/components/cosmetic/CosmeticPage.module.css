@@ -1,4 +1,4 @@
-﻿.page { width: 100%; max-width: 1180px; margin: 0 auto; padding: 28px 32px 80px; }
+.page { width: 100%; max-width: 1180px; margin: 0 auto; padding: 28px 32px 80px; }
 .center { text-align: center; padding: 90px 20px; color: var(--muted); }
 
 .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 22px; }
@@ -66,11 +66,11 @@
 .tabOn em { color: rgba(255,255,255,.8); }
 
 .grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(146px, 1fr)); gap: 14px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 10px;
 }
 
 .tile {
-  padding: 12px; border-radius: 16px;
+  padding: 8px 8px 9px; border-radius: 13px;
   border: 1px solid var(--border); background: var(--surface);
   font-family: inherit; text-align: center; cursor: pointer;
   transition: transform .14s ease, border-color .14s ease;
@@ -82,7 +82,7 @@
 
 .thumb {
   position: relative;
-  height: 84px; border-radius: 12px; margin-bottom: 10px;
+  height: 52px; border-radius: 10px; margin-bottom: 7px;
   display: flex; align-items: center; justify-content: center;
   background: var(--surface2);
   overflow: hidden;
@@ -98,10 +98,10 @@
 .lock  { background: rgba(0,0,0,.55); color: #fff; }
 .check { background: var(--accent); color: #fff; }
 
-.tileName { font-size: 13px; font-weight: 800; margin-bottom: 4px; }
+.tileName { font-size: 12px; font-weight: 800; margin-bottom: 3px; }
 .rarity {
-  display: inline-block; padding: 2px 9px; border-radius: 9999px;
-  font-size: 10.5px; font-weight: 800;
+  display: inline-block; padding: 1px 8px; border-radius: 9999px;
+  font-size: 10px; font-weight: 800;
 }
 .r_common    { background: var(--surface2); color: var(--muted); }
 .r_rare      { background: #EAF2FF; color: #3D7FE0; }
@@ -285,3 +285,8 @@
   transition: transform .18s ease;
 }
 .caretFolded { transform: rotate(-90deg); }
+
+/* 효과 썸네일 — 어두운 무대. 반짝임·벚꽃은 밝은 배경에선 안 보인다 */
+.thumbStage {
+  background: linear-gradient(160deg, #241C2E, #3A2B47) !important;
+}

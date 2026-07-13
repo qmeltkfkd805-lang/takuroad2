@@ -1,7 +1,7 @@
 ﻿'use client'
 
 import { useWorn } from './CosmeticProvider'
-import { FRAME_STYLE, FX_CLASS } from '@/lib/cosmetics/style'
+import { FRAME_STYLE, fxClass } from '@/lib/cosmetics/style'
 import styles from './UserFace.module.css'
 
 /* 사람의 "얼굴" — 아바타(프레임·효과) + 칭호
@@ -25,7 +25,7 @@ interface AvatarProps {
 export function UserAvatar({ userId, src, name, size = 40, showEffect = true, className }: AvatarProps) {
   const worn = useWorn(userId)
   const frame = worn.frame ? FRAME_STYLE[worn.frame.slug] : undefined
-  const fx = showEffect && worn.effect ? (FX_CLASS[worn.effect.slug] ?? '') : ''
+  const fx = showEffect ? fxClass(worn.effect?.slug) : ''
 
   return (
     <span

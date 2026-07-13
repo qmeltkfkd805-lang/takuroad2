@@ -1,4 +1,4 @@
-﻿import { CSSProperties } from 'react'
+import { CSSProperties } from 'react'
 
 /* 코스메틱을 실제로 "보이게" 만드는 곳.
 
@@ -111,4 +111,24 @@ export function themeStyle(slug?: string, hasBgImage = false): CSSProperties {
   if (!hasBgImage) return s
   const { background, ...rest } = s as any   // 강조색만 남긴다
   return rest
+}
+
+/* 효과 클래스 — globals.css의 전역 클래스를 가리킨다.
+   ⭐ CSS 모듈로 쪼개면 네 화면에 같은 CSS를 복사하게 되고 결국 서로 달라진다.
+      효과는 앱 어디서든 같은 모습이어야 하니 한 곳에서만 정의한다. */
+const FX_GLOBAL: Record<string, string> = {
+  'fx-sparkle': 'tkfx-sparkle',
+  'fx-sakura':  'tkfx-sakura',
+  'fx-star':    'tkfx-star',
+  'fx-aura':    'tkfx-aura',
+  'fx-neon':    'tkfx-neon',
+  'fx-holo':    'tkfx-holo',
+  'fx-grain':   'tkfx-grain',
+}
+
+/** 효과를 입힐 때 쓴다 — 베이스(.tkfx) + 종류 */
+export function fxClass(slug?: string): string {
+  if (!slug) return ''
+  const c = FX_GLOBAL[slug]
+  return c ? 'tkfx ' + c : ''
 }

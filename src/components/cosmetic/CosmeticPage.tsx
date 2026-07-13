@@ -6,7 +6,7 @@ import {
   getMyCosmetics, getEquipped, equipCosmetic, Cosmetic, Equipped,
   getMyBadges, getShowcase, toggleShowcase, ShowcaseBadge, SHOWCASE_MAX,
 } from '@/services/cosmeticService'
-import { FRAME_STYLE, FX_CLASS, RARITY_LABEL, previewStyle, bgStyle, themeStyle } from '@/lib/cosmetics/style'
+import { FRAME_STYLE, RARITY_LABEL, previewStyle, bgStyle, themeStyle, fxClass } from '@/lib/cosmetics/style'
 import { Icon } from '@/components/tds'
 import { MaskIcon } from '@/components/collection/MaskIcon'
 import styles from './CosmeticPage.module.css'
@@ -129,7 +129,7 @@ export default function CosmeticPage() {
         {/* 지금 내 프로필 — 고르는 즉시 바뀐다 */}
         <aside className={styles.previewCol}>
           <div
-            className={[styles.card, worn.effect ? (styles[FX_CLASS[worn.effect.slug]] ?? '') : ''].join(' ')}
+            className={[styles.card, fxClass(worn.effect?.slug)].join(' ')}
             style={{
               ...themeStyle(worn.theme?.slug, Boolean(worn.background?.assetUrl)),
               ...bgStyle(worn.background?.slug, worn.background?.assetUrl),
@@ -354,18 +354,20 @@ function Tile({ c, on, onClick }: { c: Cosmetic; on: boolean; onClick: () => voi
       onClick={onClick}
     >
       <div
-        className={styles.thumb}
+        className={[
+          styles.thumb,
+          c.type === 'effect' ? styles.thumbStage : '',
+          c.type === 'effect' ? fxClass(c.slug) : '',
+        ].join(' ')}
         style={c.type === 'background' ? bgStyle(c.slug, c.assetUrl) : previewStyle(c.type, c.slug)}
       >
         {c.type === 'title' && <span className={styles.thumbTitle}>{c.name}</span>}
-        {c.type === 'effect' && (
-          <span className={[styles.thumbFx, styles[FX_CLASS[c.slug]] ?? ''].join(' ')} />
-        )}
+        {/* 효과는 썸네일 전체가 무대다. 안에 원을 두면 효과가 그 안에 갇혀 안 보인다. */}
         {!c.unlocked && <span className={styles.lock}>잠김</span>}
-        {on && <span className={styles.check}>착용 중</span>}
       </div>
 
-      <div className={styles.tileName}>{c.name}</div>
+      {/* 칭호는 미리보기가 곧 이름이다 — 아래에 또 쓰면 같은 말이 두 번 나온다 */}
+      {c.type !== 'title' && <div className={styles.tileName}>{c.name}</div>}
       <div className={[styles.rarity, styles['r_' + c.rarity]].join(' ')}>
         {RARITY_LABEL[c.rarity] ?? c.rarity}
       </div>

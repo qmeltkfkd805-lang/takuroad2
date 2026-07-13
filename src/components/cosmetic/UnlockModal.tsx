@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { UNLOCK_EVENT, UnlockPayload, UnlockedTier, loadUnlock } from '@/services/unlockService'
 import { equipCosmetic } from '@/services/cosmeticService'
-import { previewStyle, FX_CLASS, RARITY_LABEL } from '@/lib/cosmetics/style'
+import { previewStyle, RARITY_LABEL, fxClass } from '@/lib/cosmetics/style'
 import { Icon, Taku } from '@/components/tds'
 import { AXIS_VERB } from '@/lib/work/workProgress'
 import styles from './UnlockModal.module.css'
@@ -136,7 +136,7 @@ export default function UnlockModal() {
 
 function RewardCard({ t, big }: { t: UnlockedTier; big: boolean }) {
   const c = t.cosmetic!
-  const fx = c.type === 'effect' ? (FX_CLASS[c.slug] ?? '') : ''
+  const fx = c.type === 'effect' ? fxClass(c.slug) : ''
 
   return (
     <div className={`${styles.reward} ${big ? styles.rewardBig : ''}`}>

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getGrowthCenter, GrowthCenter, CosmeticProgress, CategoryProgress } from '@/services/growthCenterService'
 import { Challenge, EarnedBadge } from '@/services/growthService'
-import { previewStyle, FX_CLASS, RARITY_LABEL } from '@/lib/cosmetics/style'
+import { previewStyle, RARITY_LABEL, fxClass } from '@/lib/cosmetics/style'
 import { Icon, Taku } from '@/components/tds'
 import { MaskIcon } from '@/components/collection/MaskIcon'
 import { ROUTES } from '@/lib/constants/routes'
@@ -118,7 +118,7 @@ export default function GrowthPage() {
               ) : (
                 <div className={styles.preview}>
                   <div
-                    className={`${styles.previewBox} ${d.nextReward.cosmetic.type === 'effect' ? (styles[FX_CLASS[d.nextReward.cosmetic.slug]] ?? '') : ''}`}
+                    className={[styles.previewBox, d.nextReward.cosmetic.type === 'effect' ? fxClass(d.nextReward.cosmetic.slug) : ''].join(' ')}
                     style={previewStyle(d.nextReward.cosmetic.type, d.nextReward.cosmetic.slug)}
                   >
                     {d.nextReward.cosmetic.type === 'title' && (

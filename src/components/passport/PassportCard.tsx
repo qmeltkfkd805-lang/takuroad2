@@ -4,7 +4,7 @@ import { OtakuPassport } from '@/services/passportService'
 import { RARITY_COLOR } from '@/services/badgeService'
 import { useWorn } from '@/components/cosmetic/CosmeticProvider'
 import { UserAvatar } from '@/components/cosmetic/UserFace'
-import { bgStyle, themeStyle } from '@/lib/cosmetics/style'
+import { bgStyle, themeStyle, fxClass } from '@/lib/cosmetics/style'
 import styles from './PassportCard.module.css'
 
 /* 오타쿠 여권 — 프로필의 얼굴
@@ -41,7 +41,10 @@ export default function PassportCard({ passport, isOwner, onCustomizeClick }: Pr
   const dressed = Boolean(worn.theme || worn.background)
 
   return (
-    <div className={[styles.card, dressed ? styles.dressed : ''].join(' ')} style={skin}>
+    <div
+      className={[styles.card, dressed ? styles.dressed : '', fxClass(worn.effect?.slug)].join(' ')}
+      style={skin}
+    >
       {/* 여권 헤더 */}
       <div className={styles.head}>
         <div className={styles.brand}>TAKUROAD PASSPORT</div>
