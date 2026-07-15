@@ -32,7 +32,8 @@ export type ActivityType =
   | 'photo_upload'         // 리뷰에 사진 첨부
   | 'shop_register'        // 샵 등록 (현재는 등록 즉시 — 승인 시스템 생기면 그때로)
   | 'event_submit'         // 이벤트 제보 (승인될 때 — 채택돼야 성취다)
-  | 'route_created'        // 내가 만든 덕질 코스
+  | 'route_created'
+  | 'work_register'        // 작품(IP) 등록 — ref_id = tag id        // 내가 만든 덕질 코스
   // ── 시스템이 만드는 것 ──
   | 'work_progress'
   | 'achievement_unlock'
@@ -54,6 +55,10 @@ export interface ActivitySnapshot {
   region?: string
   review_id?: string           // 리뷰 본문 id (ref_id는 "리뷰 대상"이라 따로 둔다)
   photo_count?: number
+
+  /* 작품 등록 */
+  work_slug?: string
+  ip_type?: string | null
 }
 
 export interface CreateActivityInput {

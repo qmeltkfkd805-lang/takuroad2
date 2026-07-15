@@ -21,9 +21,21 @@ import { createClient } from '@/lib/supabase/client'
    ============================================================ */
 
 export interface ActivityCountTarget {
+  /** 라벨·CTA용 키. 그룹이면 'contribution' 같은 이름을 쓴다 */
   activity_type: string
+  /**
+   * ⭐ 그룹 조건 — 여러 활동을 하나의 성장 축으로 합산한다.
+   *
+   * '기여'는 하나의 행동이 아니다. 샵을 등록하든 루트를 만들든 제보를 하든,
+   * 사용자에겐 '내가 타쿠로드를 풍성하게 만들었다'는 하나의 경험이다.
+   * 따로 세면 '샵 6, 루트 7, 제보 2'로 흩어지고, 합치면 '기여 15회'가 된다.
+   * 흩어진 숫자는 성취가 아니라 통계다.
+   *
+   * 없으면 activity_type 하나만 센다.
+   */
+  activity_types?: string[]
   count: number
-  distinct?: 'ref_id'
+  distinct?: 'ref_id' | 'region'
   where?: {
     region?: string
     work_id?: string
@@ -41,11 +53,13 @@ export interface ActivityCountTarget {
 export async function countActivity(userId: string, target: ActivityCountTarget): Promise<number> {
   const supabase = createClient()
 
+  const types = target.activity_types ?? [target.activity_type]
+
   let q = supabase
     .from('activity_logs')
-    .select('related_id, snapshot, work_id')
+    .select('related_id, snapshot, work_id, type')
     .eq('user_id', userId)
-    .eq('type', target.activity_type)
+    .in('type', types)
 
   // work_id는 컬럼이라 DB에서 거른다
   if (target.where?.work_id) q = q.eq('work_id', target.where.work_id)
@@ -67,17 +81,32 @@ export async function countActivity(userId: string, target: ActivityCountTarget)
   }
 
   // 샵 등록 — 살아있는 샵만
-  if (target.activity_type === 'shop_register' && rows.length > 0) {
-    const ids = [...new Set(rows.map(r => r.related_id).filter(Boolean))]
-    const { data: alive } = await supabase
-      .from('shops').select('id').in('id', ids).eq('status', 'active')
-    const aliveSet = new Set((alive ?? []).map((s: any) => s.id))
-    rows = rows.filter(r => aliveSet.has(r.related_id))
+  /* ⚠️ 샵 등록만 예외 — 살아있는(active) 샵만 센다.
+     승인 개념이 없어서, 관리자가 쓰레기 샵을 지우면 카운트도 빠져야
+     어뷰징의 대가가 사라진다. 그룹 안에 섞여 있어도 이 규칙은 지킨다. */
+  if (types.includes('shop_register') && rows.length > 0) {
+    const regRows = rows.filter(r => (r as any).type === 'shop_register')
+    if (regRows.length > 0) {
+      const ids = [...new Set(regRows.map(r => r.related_id).filter(Boolean))]
+      const { data: alive } = await supabase
+        .from('shops').select('id').in('id', ids).eq('status', 'active')
+      const aliveSet = new Set((alive ?? []).map((s: any) => s.id))
+      rows = rows.filter(r => (r as any).type !== 'shop_register' || aliveSet.has(r.related_id))
+    }
   }
 
   if (target.distinct === 'ref_id') {
     return new Set(rows.map(r => r.related_id).filter(Boolean)).size
   }
+
+  /* ⭐ 지역 배지용 — '서로 다른 지역 N곳'을 센다.
+     같은 지역을 100번 가도 1이다. 넓이가 곧 성취다. */
+  if (target.distinct === 'region') {
+    return new Set(
+      rows.map(r => (r.snapshot as any)?.region).filter(Boolean)
+    ).size
+  }
+
   return rows.length
 }
 
@@ -116,6 +145,8 @@ const VERB: Record<string, string> = {
   route_created: '루트 제작',
   shop_register: '샵 등록',
   event_submit: '제보 채택',
+  work_register: '작품 등록',
+  contribution: '기여',       // 샵 등록 + 제보 + 루트 제작
 }
 
 /**
@@ -148,7 +179,7 @@ export async function getGrowthChallenges(userId: string): Promise<Challenge[]> 
   const [tierRes, earnedRes] = await Promise.all([
     supabase
       .from('badge_tiers')
-      .select('*, badges ( id, name, icon_url )')
+      .select('*, badges ( id, name, icon_url )')  // t.icon_url = 단계 아이콘 (select * 에 포함)
       .eq('condition_type', 'activity_count')
       .eq('is_active', true)
       .order('sort_order'),
@@ -188,7 +219,10 @@ export async function getGrowthChallenges(userId: string): Promise<Challenge[]> 
       badgeName: current.badges?.name ?? '도전',
       tierId: current.id,
       tierName: current.name ?? '',
-      tierIcon: current.badges?.icon_url ?? null,
+      /* ⭐ 단계 아이콘이 먼저다 — 같은 시리즈라도 Lv1과 Lv4는 다르게 생겼다.
+         그게 '성장'을 눈으로 보여주는 유일한 방법이다.
+         (없으면 시리즈 대표 아이콘으로 떨어진다) */
+      tierIcon: current.icon_url ?? current.badges?.icon_url ?? null,
       rarity: current.rarity ?? null,
       verb: VERB[target.activity_type] ?? '활동',
       done: Math.min(done, need),
@@ -222,7 +256,7 @@ export async function getRecentBadges(userId: string, limit = 6): Promise<Earned
   const supabase = createClient()
   const { data } = await supabase
     .from('user_badge_tiers')
-    .select('badge_tier_id, earned_at, badge_tiers ( name, rarity, badges ( icon_url ) )')
+    .select('badge_tier_id, earned_at, badge_tiers ( name, rarity, icon_url, badges ( icon_url ) )')
     .eq('user_id', userId)
     .order('earned_at', { ascending: false })
     .limit(limit)
@@ -319,7 +353,8 @@ export async function getGrowthSeries(userId: string): Promise<GrowthSeries[]> {
     out.push({
       badgeId,
       badgeName: sorted[0]?.badges?.name ?? '도전',
-      icon: sorted[0]?.badges?.icon_url ?? null,
+      /* 시리즈 대표 = 지금 도전 중인 단계의 아이콘 (다 깼으면 마지막 단계) */
+    icon: sorted[0]?.icon_url ?? sorted[0]?.badges?.icon_url ?? null,
       verb: VERB[first.activity_type] ?? '활동',
       done,
       steps,

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getGrowthCenter, GrowthCenter, CosmeticProgress, CategoryProgress } from '@/services/growthCenterService'
 import { Challenge, EarnedBadge } from '@/services/growthService'
-import { previewStyle, RARITY_LABEL, fxClass } from '@/lib/cosmetics/style'
+import { RARITY_LABEL, fxClass, bgStyle, FRAME_STYLE } from '@/lib/cosmetics/style'
 import { Icon, Taku } from '@/components/tds'
 import { MaskIcon } from '@/components/collection/MaskIcon'
 import { ROUTES } from '@/lib/constants/routes'
@@ -118,14 +118,22 @@ export default function GrowthPage() {
               ) : (
                 <div className={styles.preview}>
                   <div
-                    className={[styles.previewBox, d.nextReward.cosmetic.type === 'effect' ? fxClass(d.nextReward.cosmetic.slug) : ''].join(' ')}
-                    style={previewStyle(d.nextReward.cosmetic.type, d.nextReward.cosmetic.slug)}
+                    className={[
+                      styles.previewBox,
+                      d.nextReward.cosmetic.type === 'effect'
+                        ? 'tkfx-preview ' + fxClass(d.nextReward.cosmetic.slug) + ' ' + styles.previewDark
+                        : '',
+                    ].join(' ')}
+                    style={d.nextReward.cosmetic.type === 'background'
+                      ? bgStyle(d.nextReward.cosmetic.slug, (d.nextReward.cosmetic as any).assetUrl)
+                      : undefined}
                   >
                     {d.nextReward.cosmetic.type === 'title' && (
                       <span className={styles.previewTitle}>{d.nextReward.cosmetic.name}</span>
                     )}
-                    {d.nextReward.cosmetic.type === 'frame' && <span className={styles.previewFace} />}
-                    {d.nextReward.cosmetic.type === 'effect' && <span className={styles.previewFx} />}
+                    {d.nextReward.cosmetic.type === 'frame' && (
+                      <span className={styles.previewFace} style={FRAME_STYLE[d.nextReward.cosmetic.slug]} />
+                    )}
                   </div>
                   <div className={styles.previewBody}>
                     <div className={styles.previewType}>{TYPE_LABEL[d.nextReward.cosmetic.type]}</div>

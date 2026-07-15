@@ -36,7 +36,7 @@ export async function createWork(userId: string, w: NewWork): Promise<{ slug: st
   const supabase = createClient()
   const custom = w.slug?.trim() ? cleanSlug(w.slug) : ''
   const slug = custom || slugify(w.name, w.english_name)
-  const { error } = await supabase.from('tags').insert({
+  const { data, error } = await supabase.from('tags').insert({
     name: w.name.trim(),
     english_name: w.english_name?.trim() || null,
     slug,
@@ -55,8 +55,24 @@ export async function createWork(userId: string, w: NewWork): Promise<{ slug: st
     youtube_url: w.youtube_url || null,
     official_url: w.official_url || null,
     created_by: userId,
-  } as any)
+  } as any).select('id').single()
   if (error) { console.error('[createWork]', error); return null }
+
+  /* ⭐ 작품 등록도 덕질 기여다 — activity_logs에 남긴다.
+     ref_id = tag id. distinct로 세면 '서로 다른 작품 N개'가 된다.
+     (샵 등록처럼 승인 개념이 없어 등록 즉시 기록한다) */
+  try {
+    const { createActivity } = await import('./activityService')
+    await createActivity({
+      userId,
+      type: 'work_register',
+      refType: 'work',
+      refId: (data as any)?.id ?? undefined,
+      workId: (data as any)?.id ?? null,
+      snapshot: { work_name: w.name.trim(), work_slug: slug, ip_type: w.ip_type ?? null },
+    })
+  } catch (e) { console.error('[작품 등록 활동 기록 실패]', e) }
+
   return { slug }
 }
 

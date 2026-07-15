@@ -290,3 +290,12 @@
 .thumbStage {
   background: linear-gradient(160deg, #241C2E, #3A2B47) !important;
 }
+
+/* 프레임 썸네일 — 진짜 아바타 원. 네모에 원형 테두리를 붙이면 안 보인다 */
+.thumbAvatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: #EFEFF2;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 900; color: #A0A0AA;
+  flex: none;
+}

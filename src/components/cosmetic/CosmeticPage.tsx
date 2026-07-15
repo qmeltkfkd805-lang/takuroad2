@@ -6,7 +6,7 @@ import {
   getMyCosmetics, getEquipped, equipCosmetic, Cosmetic, Equipped,
   getMyBadges, getShowcase, toggleShowcase, ShowcaseBadge, SHOWCASE_MAX,
 } from '@/services/cosmeticService'
-import { FRAME_STYLE, RARITY_LABEL, previewStyle, bgStyle, themeStyle, fxClass } from '@/lib/cosmetics/style'
+import { FRAME_STYLE, RARITY_LABEL, previewStyle, bgStyle, fxClass } from '@/lib/cosmetics/style'
 import { Icon } from '@/components/tds'
 import { MaskIcon } from '@/components/collection/MaskIcon'
 import styles from './CosmeticPage.module.css'
@@ -26,7 +26,6 @@ const TABS: { type: string; label: string }[] = [
   { type: 'background', label: '배경' },
   { type: 'title',      label: '칭호' },
   { type: 'effect',     label: '효과' },
-  { type: 'theme',      label: '테마' },
   { type: 'showcase',   label: '대표 배지' },
 ]
 
@@ -68,7 +67,6 @@ export default function CosmeticPage() {
     background: byId(equipped.background),
     title: byId(equipped.title),
     effect: byId(equipped.effect),
-    theme: byId(equipped.theme),
   }
 
   async function pick(c: Cosmetic) {
@@ -130,10 +128,7 @@ export default function CosmeticPage() {
         <aside className={styles.previewCol}>
           <div
             className={[styles.card, fxClass(worn.effect?.slug)].join(' ')}
-            style={{
-              ...themeStyle(worn.theme?.slug, Boolean(worn.background?.assetUrl)),
-              ...bgStyle(worn.background?.slug, worn.background?.assetUrl),
-            }}
+            style={bgStyle(worn.background?.slug, worn.background?.assetUrl)}
           >
             <div className={styles.avatarWrap}>
               <div
@@ -358,11 +353,27 @@ function Tile({ c, on, onClick }: { c: Cosmetic; on: boolean; onClick: () => voi
           styles.thumb,
           c.type === 'effect' ? styles.thumbStage : '',
           c.type === 'effect' ? fxClass(c.slug) : '',
+          /* ⭐ 썸네일은 세기를 올린다 — 고르는 화면에서 안 보이면 고를 수가 없다.
+             프로필에선 은은한 게 맞고, 여기선 알아볼 수 있어야 한다. 같은 효과, 다른 세기. */
+          c.type === 'effect' ? 'tkfx-preview' : '',
         ].join(' ')}
-        style={c.type === 'background' ? bgStyle(c.slug, c.assetUrl) : previewStyle(c.type, c.slug)}
+        style={c.type === 'background' ? bgStyle(c.slug, c.assetUrl) : undefined}
       >
+        {/* ⭐⭐ 미리보기가 곧 결과여야 한다.
+            previewStyle은 프레임 스타일을 '네모 썸네일'에 붙여서 원형 테두리가 안 보였고,
+            배경은 이미지를 무시했고, 효과·칭호는 아무것도 안 그렸다.
+            미리보기가 거짓말을 하면 고를 수가 없다. 그래서 진짜를 그린다. */}
+
+        {/* 프레임 — 진짜 아바타 원에 씌운다 */}
+        {c.type === 'frame' && (
+          <span className={styles.thumbAvatar} style={FRAME_STYLE[c.slug]}>존</span>
+        )}
+
+        {/* 칭호 — 진짜 칭호 알약 */}
         {c.type === 'title' && <span className={styles.thumbTitle}>{c.name}</span>}
-        {/* 효과는 썸네일 전체가 무대다. 안에 원을 두면 효과가 그 안에 갇혀 안 보인다. */}
+
+        {/* 효과는 썸네일 전체가 무대다 (thumbStage + tkfx). 안에 원을 두면 효과가 갇힌다 */}
+
         {!c.unlocked && <span className={styles.lock}>잠김</span>}
       </div>
 

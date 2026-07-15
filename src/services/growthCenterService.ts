@@ -1,4 +1,4 @@
-﻿import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 import { Challenge, GrowthSeries, getGrowthChallenges, getGrowthSeries, getRecentBadges, EarnedBadge } from '@/services/growthService'
 import { Cosmetic, getMyCosmetics } from '@/services/cosmeticService'
 
@@ -63,10 +63,15 @@ export async function getGrowthCenter(userId: string): Promise<GrowthCenter> {
     getRecentBadges(userId, 8),
     getMyCosmetics(userId),
     // 카테고리(그룹)별 배지 단계 수
+    /* ⭐ 카테고리는 '그룹'이 아니라 growth 그룹 안의 '배지'다.
+       탐험·이벤트·루트… 8개 시리즈가 카테고리다.
+       그룹으로 가져오면 작품·카테고리 배지까지 섞인다. */
     supabase
-      .from('badge_groups')
-      .select('slug, name, icon, sort_order, badges ( id, badge_tiers ( id ) )')
+      .from('badges')
+      .select('slug, name, icon_url, sort_order, badge_tiers!inner ( id ), badge_groups!inner ( slug )')
+      .eq('badge_groups.slug', 'growth')
       .eq('is_active', true)
+      .eq('badge_tiers.is_active', true)
       .order('sort_order'),
   ])
 
@@ -109,15 +114,14 @@ export async function getGrowthCenter(userId: string): Promise<GrowthCenter> {
     .eq('user_id', userId)
   const earned = new Set((earnedRows ?? []).map((e: any) => e.badge_tier_id))
 
+  /* 카테고리 = growth 그룹 안의 배지(탐험·이벤트…). 각 배지가 badge_tiers를 직접 가진다 */
   const categories: CategoryProgress[] = ((catRes.data ?? []) as any[])
-    .map(g => {
-      const tierIds: string[] = (g.badges ?? []).flatMap((b: any) =>
-        (b.badge_tiers ?? []).map((t: any) => t.id),
-      )
+    .map(b => {
+      const tierIds: string[] = (b.badge_tiers ?? []).map((t: any) => t.id)
       return {
-        slug: g.slug,
-        name: g.name,
-        icon: g.icon ?? null,
+        slug: b.slug,
+        name: b.name,
+        icon: b.icon_url ?? null,
         got: tierIds.filter(id => earned.has(id)).length,
         total: tierIds.length,
       }

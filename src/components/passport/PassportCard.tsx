@@ -4,7 +4,7 @@ import { OtakuPassport } from '@/services/passportService'
 import { RARITY_COLOR } from '@/services/badgeService'
 import { useWorn } from '@/components/cosmetic/CosmeticProvider'
 import { UserAvatar } from '@/components/cosmetic/UserFace'
-import { bgStyle, themeStyle, fxClass } from '@/lib/cosmetics/style'
+import { bgStyle, fxClass } from '@/lib/cosmetics/style'
 import styles from './PassportCard.module.css'
 
 /* 오타쿠 여권 — 프로필의 얼굴
@@ -33,12 +33,10 @@ export default function PassportCard({ passport, isOwner, onCustomizeClick }: Pr
     year: 'numeric', month: '2-digit', day: '2-digit',
   }).replace(/\. /g, '.').replace(/\.$/, '')
 
-  const hasImage = Boolean(worn.background?.assetUrl)
-  const skin = {
-    ...themeStyle(worn.theme?.slug, hasImage),
-    ...bgStyle(worn.background?.slug, worn.background?.assetUrl),
-  }
-  const dressed = Boolean(worn.theme || worn.background)
+  /* ⭐ 테마는 없앴다 — 아무것도 안 바꾸는 코스메틱은 보상이 아니라 노이즈다.
+     배경이 프로필 카드를 책임진다. 역할이 하나로 정리됐다. */
+  const skin = bgStyle(worn.background?.slug, worn.background?.assetUrl)
+  const dressed = Boolean(worn.background)
 
   return (
     <div

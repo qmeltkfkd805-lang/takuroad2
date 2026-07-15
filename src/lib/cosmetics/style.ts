@@ -121,7 +121,7 @@ const FX_GLOBAL: Record<string, string> = {
   'fx-sakura':  'tkfx-sakura',
   'fx-star':    'tkfx-star',
   'fx-aura':    'tkfx-aura',
-  'fx-neon':    'tkfx-neon',
+  'fx-aurora':  'tkfx-aurora',
   'fx-holo':    'tkfx-holo',
   'fx-grain':   'tkfx-grain',
 }

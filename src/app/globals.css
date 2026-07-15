@@ -1,4 +1,4 @@
-﻿@font-face {
+@font-face {
   font-family: 'Gaegu';
   src: url('/fonts/Gaegu-Bold.ttf') format('truetype');
   font-weight: 700;
@@ -67,17 +67,30 @@ button { font-family: inherit; }
       그래서 좌표를 하나하나 어긋나게 박고, 두 겹을 다른 속도로 흘린다.
    ═══════════════════════════════════════════════ */
 
+
+/* ═══════════════════════════════════════════════
+   프로필 효과 — 전역, 한 곳에서만 정의한다
+
+   ⭐ 효과를 가르는 축은 "색"이 아니라 "무엇이 움직이는가"다.
+      입자    — 반짝이 · 별 · 벚꽃
+      빛 번짐 — 오라
+      면 흐름 — 오로라
+      표면반사 — 홀로그램  (전설)
+      질감    — 필름 그레인 (전설)
+
+   ⭐ z-index는 0. 1이면 카드 안 텍스트 위에 떠서 흐려진다.
+   ⭐ --fx-strength — 프로필은 은은하게(1), 썸네일은 알아보게(4).
+      같은 효과, 다른 세기. 한 값으로 두 자리를 맞추면 반드시 한쪽이 틀린다.
+   ═══════════════════════════════════════════════ */
+
 .tkfx { position: relative; }
 .tkfx::before,
 .tkfx::after {
   content: ''; position: absolute; inset: -10%;
-  pointer-events: none;
-  /* ⭐ 0이어야 한다. 1이면 카드 안의 텍스트·아바타 위에 떠서 흐리게 만든다.
-     (특히 overlay/plus-lighter 블렌드가 그렇다) */
-  z-index: 0;
+  pointer-events: none; z-index: 0;
 }
 
-/* ── 반짝이 — 크기도 밝기도 제각각, 두 겹이 엇갈려 깜빡인다 ── */
+/* ── 반짝이 (레어) ── */
 .tkfx-sparkle::before {
   background-image:
     radial-gradient(circle at 12% 18%, #fff 1.6px, transparent 2px),
@@ -97,7 +110,7 @@ button { font-family: inherit; }
   animation: tkTwinkleB 3.9s ease-in-out infinite;
 }
 
-/* ── 별 — 흐르되 두 겹이 다른 속도로 (원근감) ── */
+/* ── 별 (레어) — 두 겹이 다른 속도로 흘러 원근감이 생긴다 ── */
 .tkfx-star::before {
   background-image:
     radial-gradient(circle at 17% 23%, #FFF3C4 2.1px, transparent 2.6px),
@@ -114,13 +127,13 @@ button { font-family: inherit; }
   animation: tkDriftFast 9s linear infinite;
 }
 
-/* ── 벚꽃 — 꽃잎이 흔들리며 떨어진다 (직선 낙하는 기계다) ── */
+/* ── 벚꽃 (에픽) — 흔들리며 떨어진다. 직선 낙하는 기계다 ── */
 .tkfx-sakura::before {
   background-image:
-    radial-gradient(ellipse 9px 6px   at 15% 10%, #FFB3CC, transparent),
-    radial-gradient(ellipse 7px 4.5px at 62% 24%, #FFC9DB, transparent),
+    radial-gradient(ellipse 9px 6px    at 15% 10%, #FFB3CC, transparent),
+    radial-gradient(ellipse 7px 4.5px  at 62% 24%, #FFC9DB, transparent),
     radial-gradient(ellipse 10px 6.5px at 38% 56%, #FFA8C5, transparent),
-    radial-gradient(ellipse 8px 5px   at 85% 72%, #FFD3E0, transparent);
+    radial-gradient(ellipse 8px 5px    at 85% 72%, #FFD3E0, transparent);
   animation: tkFallSway 7.5s ease-in-out infinite;
 }
 .tkfx-sakura::after {
@@ -131,80 +144,55 @@ button { font-family: inherit; }
   animation: tkFallSwayB 10.5s ease-in-out infinite;
 }
 
-/* ── 오라 — 숨쉬듯 (박자가 딱 맞으면 기계다) ── */
-/* 오라 — 단순한 게 나았다. 한 겹으로 은은하게 */
+/* ── 오라 (에픽) ── */
 .tkfx-aura::before {
   inset: 0;
   box-shadow: inset 0 0 30px rgba(255,86,146,.5);
   animation: tkBreathe 2.6s ease-in-out infinite;
 }
 
-/* ── 네온 — 불규칙하게 깜빡인다 (형광등처럼) ── */
-.tkfx-neon::before {
-  inset: 0;
-  box-shadow: inset 0 0 28px rgba(255,61,203,.55);
-  animation: tkFlicker 5.1s linear infinite;
+/* ── 오로라 (에픽) — 면이 흐른다 ── */
+.tkfx-aurora::before {
+  inset: -20%;
+  background: linear-gradient(100deg,
+    transparent 8%,
+    rgba(167,243,208,.5) 26%,
+    rgba(196,181,253,.55) 46%,
+    rgba(254,215,170,.45) 66%,
+    rgba(186,230,253,.4) 82%,
+    transparent 94%);
+  background-size: 230% 100%;
+  filter: blur(16px);
+  mix-blend-mode: plus-lighter;
+  opacity: .55;
+  animation: tkAurora 11s ease-in-out infinite;
 }
-.tkfx-neon::after {
-  inset: 0;
-  box-shadow: inset 0 0 12px rgba(120,220,255,.4);
-  animation: tkFlicker 3.4s linear infinite reverse;
-}
-
-@keyframes tkTwinkleA { 0%,100% { opacity: .3 } 40% { opacity: 1 } 60% { opacity: .55 } }
-@keyframes tkTwinkleB { 0%,100% { opacity: .75 } 30% { opacity: .25 } 70% { opacity: 1 } }
-@keyframes tkDriftSlow { from { transform: translate3d(0,0,0) } to { transform: translate3d(14px, 22px, 0) } }
-@keyframes tkDriftFast { from { transform: translate3d(0,0,0) } to { transform: translate3d(-22px, 30px, 0) } }
-@keyframes tkFallSway {
-  0%   { transform: translate3d(0,-12%,0) rotate(0deg);    opacity: 0 }
-  12%  { opacity: .9 }
-  50%  { transform: translate3d(9px, 45%, 0) rotate(140deg) }
-  88%  { opacity: .8 }
-  100% { transform: translate3d(-6px, 105%, 0) rotate(310deg); opacity: 0 }
-}
-@keyframes tkFallSwayB {
-  0%   { transform: translate3d(0,-18%,0) rotate(40deg);  opacity: 0 }
-  15%  { opacity: .75 }
-  55%  { transform: translate3d(-12px, 50%, 0) rotate(-90deg) }
-  85%  { opacity: .6 }
-  100% { transform: translate3d(7px, 112%, 0) rotate(-260deg); opacity: 0 }
-}
-@keyframes tkBreathe { 0%,100% { opacity: .45 } 50% { opacity: 1 } }
-@keyframes tkFlicker {
-  0%   { opacity: 1 }
-  6%   { opacity: .35 }
-  9%   { opacity: 1 }
-  38%  { opacity: .9 }
-  42%  { opacity: .28 }
-  46%  { opacity: 1 }
-  73%  { opacity: .55 }
-  100% { opacity: 1 }
+.tkfx-aurora::after {
+  inset: -20%;
+  background: linear-gradient(80deg,
+    transparent 18%,
+    rgba(221,214,254,.4) 40%,
+    rgba(167,243,208,.35) 62%,
+    transparent 84%);
+  background-size: 200% 100%;
+  filter: blur(22px);
+  mix-blend-mode: plus-lighter;
+  opacity: .45;
+  animation: tkAuroraB 16s ease-in-out infinite;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .tkfx::before, .tkfx::after { animation: none !important; }
-}
+/* ── 홀로그램 (전설) — 빛 띠 하나가 스쳐 지나간다
 
-/* ═══════════════════════════════════════════════
-   전설 효과 — 강도가 아니라 종류가 다르다
-
-   ⭐ 전설을 "더 화려한 에픽"으로 만들면 실패한다.
-      입자를 더 뿌리는 게 아니라, 아예 다른 것이 움직여야 한다.
-
-   홀로그램 = 표면 반사   (빛이 스쳐 지나감)
-   필름 그레인 = 질감     (움직이는 것이 없다. 화면 자체가 물질이 된다)
-
-   둘 다 타쿠로드가 아니면 못 만든다 — 포토카드와 필름. 덕질과 기록.
-   ═══════════════════════════════════════════════ */
-
-/* ── 홀로그램 — 포토카드 홀로박
-   6.5초에 한 번, 1초 동안만 사선 빛이 지나간다.
-   ⭐ 계속 번쩍이면 싸구려가 된다. 대기 시간이 이 효과의 절반이다.
-   ⭐ plus-lighter를 쓴다 — screen은 밝은 배경에서 카드를 허옇게 날린다. */
-/* ── 홀로그램 — 계속 은은하게 도는 무지개
-   ⭐ '가끔 번쩍'은 싸구려 느낌이 났다. 진짜 홀로박은 카드를 천천히 기울일 때
-      색이 끊임없이 흐른다. 그 감각을 그대로 옮긴다.
-   ⭐ 두 겹이 다른 속도로 돌아 색이 서로 간섭한다 — 그게 '홀로'다. */
+   ⭐⭐ 흰 배경 위에 "밝은 무지개"는 물리적으로 안 보인다.
+      화면은 이미 최대 밝기라 더 밝아질 수 없기 때문이다.
+      그래서 blend를 안 쓴다(normal). 띠가 배경과 무관하게 그대로 보인다.
+   ⭐ 띠 양옆에 옅은 그림자를 둬 밝은 배경에서도 윤곽이 생긴다.
+      진짜 홀로그램 카드도 빛 띠 옆이 살짝 어둡다.
+   ⭐ 7초 중 6초는 아무것도 없다. 대기가 이 효과의 절반이다. */
+/* ── 홀로그램 (전설) — 계속 은은하게 도는 무지개
+   ⭐ 여러 번 돌아왔다. "가끔 스치는 띠"는 불투명하게 만들면 막대기가 되고,
+      투명하게 만들면 안 보인다. 둘 사이에 답이 없었다.
+      color-dodge로 면 전체가 은은히 도는 쪽이 실제로 예뻤다. 그걸로 확정. */
 .tkfx-holo::before {
   inset: 0;
   background: linear-gradient(115deg,
@@ -221,7 +209,6 @@ button { font-family: inherit; }
   opacity: .5;
   animation: tkHoloFlow 9s ease-in-out infinite;
 }
-/* 광택 — 반대 방향으로 더 느리게. 두 겹이 어긋나며 색이 살아 움직인다 */
 .tkfx-holo::after {
   inset: 0;
   background: linear-gradient(72deg,
@@ -234,6 +221,57 @@ button { font-family: inherit; }
   opacity: .7;
   animation: tkHoloGloss 13s ease-in-out infinite;
 }
+
+/* ── 필름 그레인 (전설) — 화면이 물질이 된다 ── */
+.tkfx-grain::before {
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  opacity: calc(.08 * var(--fx-strength, 1));
+  animation: tkGrain .55s steps(5) infinite;
+}
+.tkfx-grain::after {
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.42' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='90' height='90' filter='url(%23m)'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+  opacity: calc(.09 * var(--fx-strength, 1));
+  animation: tkGrainB .75s steps(4) infinite;
+}
+
+/* ── 썸네일 — 뭔지 한눈에 알아볼 수 있어야 한다 ── */
+.tkfx-preview { --fx-strength: 3.5; }
+.tkfx-preview.tkfx-holo::before { animation-duration: 4s; }
+.tkfx-preview.tkfx-holo::after  { animation-duration: 6s; }
+
+@keyframes tkTwinkleA { 0%,100% { opacity: .3 } 40% { opacity: 1 } 60% { opacity: .55 } }
+@keyframes tkTwinkleB { 0%,100% { opacity: .75 } 30% { opacity: .25 } 70% { opacity: 1 } }
+@keyframes tkDriftSlow { from { transform: translate3d(0,0,0) } to { transform: translate3d(14px, 22px, 0) } }
+@keyframes tkDriftFast { from { transform: translate3d(0,0,0) } to { transform: translate3d(-22px, 30px, 0) } }
+@keyframes tkFallSway {
+  0%   { transform: translate3d(0,-12%,0) rotate(0deg); opacity: 0 }
+  12%  { opacity: .9 }
+  50%  { transform: translate3d(9px, 45%, 0) rotate(140deg) }
+  88%  { opacity: .8 }
+  100% { transform: translate3d(-6px, 105%, 0) rotate(310deg); opacity: 0 }
+}
+@keyframes tkFallSwayB {
+  0%   { transform: translate3d(0,-18%,0) rotate(40deg); opacity: 0 }
+  15%  { opacity: .75 }
+  55%  { transform: translate3d(-12px, 50%, 0) rotate(-90deg) }
+  85%  { opacity: .6 }
+  100% { transform: translate3d(7px, 112%, 0) rotate(-260deg); opacity: 0 }
+}
+@keyframes tkBreathe { 0%,100% { opacity: .45 } 50% { opacity: 1 } }
+@keyframes tkAurora {
+  0%   { background-position: 0% 0;   transform: skewY(-5deg) translateY(-5%) }
+  50%  { background-position: 100% 0; transform: skewY(3deg)  translateY(5%) }
+  100% { background-position: 0% 0;   transform: skewY(-5deg) translateY(-5%) }
+}
+@keyframes tkAuroraB {
+  0%   { background-position: 100% 0; transform: skewY(4deg)  translateY(4%) }
+  50%  { background-position: 0% 0;   transform: skewY(-6deg) translateY(-6%) }
+  100% { background-position: 100% 0; transform: skewY(4deg)  translateY(4%) }
+}
 @keyframes tkHoloFlow {
   0%   { background-position: 0% 50% }
   50%  { background-position: 100% 50% }
@@ -244,29 +282,6 @@ button { font-family: inherit; }
   50%  { background-position: 0% 100% }
   100% { background-position: 100% 0% }
 }
-
-/* ── 필름 그레인 — 화면이 물질이 된다
-   ⭐ opacity .07을 넘기면 "질감"이 아니라 "더러움"이 된다. 이 숫자가 전부다.
-   ⭐ steps()로 위치가 툭툭 튄다 — 부드럽게 흐르면 노이즈가 아니라 안개가 된다. */
-.tkfx-grain::before {
-  /* 카드 밖으로 삐져나갈 이유가 없다 — 페인트 면적을 줄인다 */
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
-  mix-blend-mode: overlay;
-  opacity: .07;
-  animation: tkGrain .55s steps(5) infinite;
-}
-/* 세로 스크래치 — 9초에 한 번, 잠깐만 */
-.tkfx-grain::after {
-  inset: 0;
-  background-image:
-    linear-gradient(90deg, transparent 0 21%, rgba(255,255,255,.5) 21% 21.4%, transparent 21.4%),
-    linear-gradient(90deg, transparent 0 63%, rgba(0,0,0,.28) 63% 63.3%, transparent 63.3%),
-    linear-gradient(90deg, transparent 0 84%, rgba(255,255,255,.32) 84% 84.3%, transparent 84.3%);
-  mix-blend-mode: soft-light;
-  opacity: 0;
-  animation: tkScratch 9s linear infinite;
-}
 @keyframes tkGrain {
   0%   { transform: translate(0, 0) }
   20%  { transform: translate(-2%, 2%) }
@@ -275,11 +290,14 @@ button { font-family: inherit; }
   80%  { transform: translate(2%, 1%) }
   100% { transform: translate(0, 0) }
 }
-@keyframes tkScratch {
-  0%, 88%  { opacity: 0 }
-  90%      { opacity: .8 }
-  92%      { opacity: .2 }
-  94%      { opacity: .7 }
-  97%      { opacity: 0 }
-  100%     { opacity: 0 }
+@keyframes tkGrainB {
+  0%   { transform: translate(0, 0) }
+  25%  { transform: translate(3%, -2%) }
+  50%  { transform: translate(-2%, 3%) }
+  75%  { transform: translate(1%, 2%) }
+  100% { transform: translate(0, 0) }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tkfx::before, .tkfx::after { animation: none !important; }
 }
