@@ -229,7 +229,7 @@ export async function getMyBadges(userId: string): Promise<ShowcaseBadge[]> {
   const supabase = createClient()
   const { data } = await supabase
     .from('user_badge_tiers')
-    .select('badge_tier_id, earned_at, badge_tiers ( name, rarity, badges ( name, icon_url ) )')
+    .select('badge_tier_id, earned_at, badge_tiers ( name, rarity, icon_url, badges ( name, icon_url ) )')
     .eq('user_id', userId)
     .order('earned_at', { ascending: false })
 
@@ -237,7 +237,7 @@ export async function getMyBadges(userId: string): Promise<ShowcaseBadge[]> {
     tierId: r.badge_tier_id,
     name: r.badge_tiers?.name ?? '배지',
     rarity: r.badge_tiers?.rarity ?? 'common',
-    icon: r.badge_tiers?.badges?.icon_url ?? null,
+    icon: r.badge_tiers?.icon_url ?? r.badge_tiers?.badges?.icon_url ?? null,
     badgeName: r.badge_tiers?.badges?.name ?? '',
     earnedAt: r.earned_at,
   }))

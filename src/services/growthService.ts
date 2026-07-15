@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import type { Database } from '@/types/database'
 
 /* ============================================================
    성장 시스템 — activity_logs를 세서 "다음 목표"를 만든다
@@ -50,8 +52,8 @@ export interface ActivityCountTarget {
  *    샵 등록은 승인 개념이 없어서, 관리자가 쓰레기 샵을 지우면
  *    카운트도 같이 빠져야 어뷰징의 대가가 사라진다.
  */
-export async function countActivity(userId: string, target: ActivityCountTarget): Promise<number> {
-  const supabase = createClient()
+export async function countActivity(userId: string, target: ActivityCountTarget, client?: SupabaseClient<Database>): Promise<number> {
+  const supabase = client ?? createClient()
 
   const types = target.activity_types ?? [target.activity_type]
 
@@ -173,8 +175,8 @@ const CTA: Record<string, { label: string; href: string }> = {
  *
  * ⭐ 이미 다 깬 시리즈는 안 보여준다. 할 일이 없는 카드는 자리만 차지한다.
  */
-export async function getGrowthChallenges(userId: string): Promise<Challenge[]> {
-  const supabase = createClient()
+export async function getGrowthChallenges(userId: string, client?: SupabaseClient<Database>): Promise<Challenge[]> {
+  const supabase = client ?? createClient()
 
   const [tierRes, earnedRes] = await Promise.all([
     supabase
@@ -252,8 +254,8 @@ export interface EarnedBadge {
   earnedAt: string
 }
 
-export async function getRecentBadges(userId: string, limit = 6): Promise<EarnedBadge[]> {
-  const supabase = createClient()
+export async function getRecentBadges(userId: string, limit = 6, client?: SupabaseClient<Database>): Promise<EarnedBadge[]> {
+  const supabase = client ?? createClient()
   const { data } = await supabase
     .from('user_badge_tiers')
     .select('badge_tier_id, earned_at, badge_tiers ( name, rarity, icon_url, badges ( icon_url ) )')
@@ -264,7 +266,7 @@ export async function getRecentBadges(userId: string, limit = 6): Promise<Earned
   return ((data ?? []) as any[]).map(r => ({
     id: r.badge_tier_id,
     name: r.badge_tiers?.name ?? '배지',
-    icon: r.badge_tiers?.badges?.icon_url ?? null,
+    icon: r.badge_tiers?.icon_url ?? r.badge_tiers?.badges?.icon_url ?? null,
     rarity: r.badge_tiers?.rarity ?? null,
     earnedAt: r.earned_at,
   }))
@@ -301,8 +303,8 @@ export interface GrowthSeries {
   complete: boolean
 }
 
-export async function getGrowthSeries(userId: string): Promise<GrowthSeries[]> {
-  const supabase = createClient()
+export async function getGrowthSeries(userId: string, client?: SupabaseClient<Database>): Promise<GrowthSeries[]> {
+  const supabase = client ?? createClient()
 
   const [tierRes, earnedRes] = await Promise.all([
     supabase
@@ -354,7 +356,7 @@ export async function getGrowthSeries(userId: string): Promise<GrowthSeries[]> {
       badgeId,
       badgeName: sorted[0]?.badges?.name ?? '도전',
       /* 시리즈 대표 = 지금 도전 중인 단계의 아이콘 (다 깼으면 마지막 단계) */
-    icon: sorted[0]?.icon_url ?? sorted[0]?.badges?.icon_url ?? null,
+    icon: sorted[sorted.length - 1]?.icon_url ?? sorted[sorted.length - 1]?.badges?.icon_url ?? null,
       verb: VERB[first.activity_type] ?? '활동',
       done,
       steps,

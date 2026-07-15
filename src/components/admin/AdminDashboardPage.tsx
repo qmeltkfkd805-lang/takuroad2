@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect, CSSProperties, ReactNode } from 'react'
 import Link from 'next/link'
@@ -6,6 +6,7 @@ import { getAdminTodoSummary, getAdminStats, getTopShops, AdminStats, TopShop } 
 import { getActiveWorks, ActiveWork } from '@/services/activeWorksService'
 import { ROUTES } from '@/lib/constants/routes'
 import TrafficSection from './TrafficSection'
+import BadgeReevalButton from './BadgeReevalButton'
 
 const rankRow: CSSProperties = {
   display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -33,6 +34,7 @@ export default function AdminDashboardPage({ onNavigate }: { onNavigate: (tab: s
 
   return (
     <div style={{ padding: 16 }}>
+      <BadgeReevalButton />
       <SectionTitle>📈 트래픽</SectionTitle>
       <TrafficSection />
       <SectionTitle>📊 전체 현황</SectionTitle>

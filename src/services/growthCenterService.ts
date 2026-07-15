@@ -39,6 +39,8 @@ export interface GrowthCenter {
   cosmetics: CosmeticProgress[]
   /** 업적 카테고리 */
   categories: CategoryProgress[]
+  /** 성장 시리즈 전체 (complete=true면 마스터) */
+  series: GrowthSeries[]
   /** 전체 해금 단계 */
   totalEarned: number
   totalSteps: number
@@ -131,5 +133,5 @@ export async function getGrowthCenter(userId: string): Promise<GrowthCenter> {
   const totalEarned = series.reduce((a, s) => a + s.earnedCount, 0)
   const totalSteps = series.reduce((a, s) => a + s.steps.length, 0)
 
-  return { challenges, recent, nextReward, cosmetics, categories, totalEarned, totalSteps }
+  return { challenges, series, recent, nextReward, cosmetics, categories, totalEarned, totalSteps }
 }

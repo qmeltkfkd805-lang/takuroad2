@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import type { Database } from '@/types/database'
 import { countActivity } from './growthService'
 
 export type BadgeRarity = 'common' | 'rare' | 'epic' | 'legendary'
@@ -170,8 +172,8 @@ export async function getBadgeTiers(badgeSlug: string, userId: string | null) {
 }
 
 // 태그 기반 방문 진행률 (성지순례)
-async function getTagVisitProgress(userId: string, tag: string, targetPercent: number) {
-  const supabase = createClient()
+async function getTagVisitProgress(userId: string, tag: string, targetPercent: number, client?: SupabaseClient<Database>) {
+  const supabase = client ?? createClient()
 
   const { data: tagRow } = await supabase.from('tags').select('id').eq('name', tag).maybeSingle()
   if (!tagRow) return { visited: 0, total: 0, percent: 0 }
@@ -196,8 +198,8 @@ async function getTagVisitProgress(userId: string, tag: string, targetPercent: n
   return { visited, total, percent }
 }
 
-async function getRegionVisitProgress(userId: string, region: string, count: number) {
-  const supabase = createClient()
+async function getRegionVisitProgress(userId: string, region: string, count: number, client?: SupabaseClient<Database>) {
+  const supabase = client ?? createClient()
   const { data } = await supabase
     .from('check_ins')
     .select('shop_id, shops!inner(region)')
@@ -207,8 +209,8 @@ async function getRegionVisitProgress(userId: string, region: string, count: num
   return { visited, total: count, percent: Math.min(100, Math.round((visited / count) * 100)) }
 }
 
-async function getCategoryVisitProgress(userId: string, category: string, count: number) {
-  const supabase = createClient()
+async function getCategoryVisitProgress(userId: string, category: string, count: number, client?: SupabaseClient<Database>) {
+  const supabase = client ?? createClient()
   const { data } = await supabase
     .from('check_ins')
     .select('shop_id, shops!inner(shop_categories!inner(categories!inner(name)))')
@@ -244,8 +246,8 @@ export async function getUnvisitedShopsForTag(userId: string, tag: string) {
 }
 
 // 자동 배지 평가 (체크인 후 호출)
-export async function evaluateBadgeTiersForUser(userId: string): Promise<string[]> {
-  const supabase = createClient()
+export async function evaluateBadgeTiersForUser(userId: string, client?: SupabaseClient<Database>): Promise<string[]> {
+  const supabase = client ?? createClient()
   const newlyEarned: string[] = []
 
   const { data: tiers } = await supabase
@@ -275,7 +277,7 @@ export async function evaluateBadgeTiersForUser(userId: string): Promise<string[
     // ⚠️ 배지 하나가 터져도 나머지 평가는 계속돼야 한다.
     //    (옛 조건 하나가 에러를 던지면 뒤의 성장 배지가 전부 안 돌던 버그)
     try {
-      const qualifies = await checkTierCondition(userId, tier, existingIds)
+      const qualifies = await checkTierCondition(userId, tier, existingIds, supabase)
       if (qualifies) {
         const { error } = await supabase
           .from('user_badge_tiers')
@@ -295,34 +297,33 @@ export async function evaluateBadgeTiersForUser(userId: string): Promise<string[
   return newlyEarned
 }
 
-async function checkTierCondition(userId: string, tier: any, earnedTierIds: Set<string>): Promise<boolean> {
+async function checkTierCondition(userId: string, tier: any, earnedTierIds: Set<string>, supabase: SupabaseClient<Database>): Promise<boolean> {
   const type = tier.condition_type
   const target = tier.condition_target
   // ⭐ 성장 시스템 — 조건 타입은 영원히 이거 하나.
   //    새 활동이 생겨도 activity_type 값만 늘어난다.
   if (type === 'activity_count') {
-    const done = await countActivity(userId, target)
+    const done = await countActivity(userId, target, supabase)
     const need = target?.count ?? 1
     return done >= need
   }
 
   if (type === 'tag_visit_percent') {
-    const p = await getTagVisitProgress(userId, target.tag, target.percent)
+    const p = await getTagVisitProgress(userId, target.tag, target.percent, supabase)
     return p.percent >= target.percent
   }
 
   if (type === 'region_visit_count') {
-    const p = await getRegionVisitProgress(userId, target.region, target.count)
+    const p = await getRegionVisitProgress(userId, target.region, target.count, supabase)
     return p.visited >= target.count
   }
 
   if (type === 'category_visit_count') {
-    const p = await getCategoryVisitProgress(userId, target.category, target.count)
+    const p = await getCategoryVisitProgress(userId, target.category, target.count, supabase)
     return p.visited >= target.count
   }
 
   if (type === 'requires_combo') {
-    const supabase = createClient()
     for (const req of target.requires) {
       if (req.type === 'tier_complete') {
         const { data: siblingTier } = await supabase

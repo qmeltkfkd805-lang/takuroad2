@@ -1,10 +1,10 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { getGrowthCenter, GrowthCenter, CosmeticProgress, CategoryProgress } from '@/services/growthCenterService'
-import { Challenge, EarnedBadge } from '@/services/growthService'
+import { getGrowthCenter, GrowthCenter, CosmeticProgress } from '@/services/growthCenterService'
+import { Challenge, EarnedBadge, GrowthSeries } from '@/services/growthService'
 import { RARITY_LABEL, fxClass, bgStyle, FRAME_STYLE } from '@/lib/cosmetics/style'
 import { Icon, Taku } from '@/components/tds'
 import { MaskIcon } from '@/components/collection/MaskIcon'
@@ -48,6 +48,7 @@ export default function GrowthPage() {
   }
 
   const challenges = d?.challenges ?? []
+  const masters = (d?.series ?? []).filter(s => s.complete)
   const top = challenges[0]
 
   return (
@@ -67,6 +68,16 @@ export default function GrowthPage() {
       <div className={styles.layout}>
         {/* ═══ 왼쪽 — 도전 ═══ */}
         <div className={styles.main}>
+          {masters.length > 0 && (
+            <section className={styles.block}>
+              <div className={styles.blockHead}>
+                <h2><Icon name="colorstar" size={17} /> 마스터</h2>
+              </div>
+              <div className={styles.masterGrid}>
+                {masters.map(m => <MasterCard key={m.badgeId} m={m} />)}
+              </div>
+            </section>
+          )}
           <section className={styles.block}>
             <div className={styles.blockHead}>
               <h2><Icon name="colorstar" size={17} /> 지금 도전 중</h2>
@@ -159,7 +170,7 @@ export default function GrowthPage() {
               <div className={styles.catRow}>{[0,1,2,3].map(i => <div key={i} className={styles.skelCat} />)}</div>
             ) : (
               <div className={styles.catRow}>
-                {(d?.categories ?? []).map(c => <CatTile key={c.slug} c={c} />)}
+                {(d?.series ?? []).map(s => <CatTile key={s.badgeId} s={s} />)}
               </div>
             )}
           </section>
@@ -204,6 +215,23 @@ export default function GrowthPage() {
 
 /* ── 조각들 ─────────────────────────────── */
 
+function MasterCard({ m }: { m: GrowthSeries }) {
+  const finalName = m.steps[m.steps.length - 1]?.name ?? m.badgeName
+  return (
+    <article className={styles.masterCard}>
+      <div className={styles.masterTop}>
+        <div className={styles.masterIcon}>
+          {m.icon ? <img src={m.icon} alt="" /> : <MaskIcon name="star" size={24} color="var(--accent)" />}
+        </div>
+        <div className={styles.masterName}>{finalName}</div>
+      </div>
+      <div className={styles.masterNum}>
+        <strong>{m.done}</strong><span>{m.verb}</span>
+      </div>
+    </article>
+  )
+}
+
 function ChallengeCard({ c, onGo }: { c: Challenge; onGo: () => void }) {
   const remain = Math.max(0, c.target - c.done)
   return (
@@ -244,16 +272,19 @@ function BadgeTile({ b }: { b: EarnedBadge }) {
   )
 }
 
-function CatTile({ c }: { c: CategoryProgress }) {
-  const pct = c.total ? Math.round((c.got / c.total) * 100) : 0
+function CatTile({ s }: { s: GrowthSeries }) {
+  const cur = s.steps.find(st => st.current)
+  const target = cur?.target ?? 0
+  const level = s.complete ? s.steps.length : s.earnedCount + 1
+  const pct = s.complete ? 100 : (target ? Math.min(100, Math.round((s.done / target) * 100)) : 0)
   return (
     <div className={styles.cat}>
       <div className={styles.catIcon}>
-        {c.icon ? <img src={c.icon} alt="" /> : <MaskIcon name="star" size={20} color="var(--accent)" />}
+        {s.icon ? <img src={s.icon} alt="" /> : <MaskIcon name="star" size={20} color="var(--accent)" />}
       </div>
       <div className={styles.catBody}>
-        <div className={styles.catName}>{c.name}</div>
-        <div className={styles.catNum}>{c.got} / {c.total}</div>
+        <div className={styles.catName}>{s.badgeName} Lv.{level}</div>
+        <div className={styles.catNum}>{s.complete ? '완료' : s.done + '/' + target}</div>
       </div>
       <div className={styles.catBar}><span style={{ width: `${pct}%` }} /></div>
     </div>

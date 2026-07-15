@@ -1,4 +1,4 @@
-﻿import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 import { getFirstAndLatestCheckIn, getMyCheckIns } from './checkInService'
 import { getRegionCollections } from './pilgrimageService'
 
@@ -122,7 +122,7 @@ export async function getMyPassport(userId: string): Promise<OtakuPassport | nul
   if (showcaseIds.length > 0) {
     const { data: tiers } = await supabase
       .from('badge_tiers')
-      .select('id, name, rarity, badges ( icon_url )')
+      .select('id, name, rarity, icon_url, badges ( icon_url )')
       .in('id', showcaseIds)
 
     const byId = new Map(((tiers ?? []) as any[]).map(t => [t.id, t]))
@@ -132,7 +132,7 @@ export async function getMyPassport(userId: string): Promise<OtakuPassport | nul
       .map((t: any) => ({
         name: t.name ?? '배지',
         rarity: t.rarity ?? 'common',
-        iconUrl: t.badges?.icon_url ?? null,
+        iconUrl: t.icon_url ?? t.badges?.icon_url ?? null,
       }))
   }
 

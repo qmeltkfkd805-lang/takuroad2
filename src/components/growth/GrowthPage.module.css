@@ -42,9 +42,9 @@
 .cardIcon {
   width: 38px; height: 38px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 11px; background: var(--surface);
+
 }
-.cardIcon img { width: 24px; height: 24px; object-fit: contain; }
+.cardIcon img { width: 38px; height: 38px; object-fit: contain; }
 .cardName { font-size: 14px; font-weight: 900; min-width: 0; }
 
 .cardNum { display: flex; align-items: baseline; gap: 4px; margin-bottom: 8px; }
@@ -124,9 +124,9 @@
 .catIcon {
   width: 32px; height: 32px; margin-bottom: 8px;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 9px; background: var(--surface);
+
 }
-.catIcon img { width: 20px; height: 20px; object-fit: contain; }
+.catIcon img { width: 32px; height: 32px; object-fit: contain; }
 .catBody { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
 .catName { font-size: 13px; font-weight: 900; }
 .catNum { font-size: 12px; font-weight: 800; color: var(--accent); }
@@ -249,4 +249,34 @@
 .previewBox.previewDark {
   background: linear-gradient(160deg, #241C2E, #3A2B47) !important;
   background-image: linear-gradient(160deg, #241C2E, #3A2B47) !important;
+}
+
+/* ── 마스터 (Lv4 달성) — 끝이 아니라 시작. 숫자가 주인공 ── */
+.masterGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.masterCard {
+  position: relative; display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 20px;
+  background: linear-gradient(160deg, rgba(245,177,0,.10), rgba(255,86,146,.06));
+  border: 1px solid rgba(245,177,0,.38); border-radius: 18px; overflow: hidden;
+}
+.masterTag {
+  position: static; align-self: flex-end;
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 3px 9px; border-radius: 9999px;
+  background: rgba(245,177,0,.18); color: #B77E00;
+  font-size: 11px; font-weight: 900;
+}
+.masterTop { display: flex; align-items: center; gap: 10px; }
+.masterIcon { width: 38px; height: 38px; flex-shrink: 0; }
+.masterIcon img { width: 100%; height: 100%; object-fit: contain; }
+.masterName { font-size: 15px; font-weight: 900; line-height: 1.25; }
+.masterNum { display: flex; align-items: baseline; gap: 7px; }
+.masterNum strong {
+  font-size: 46px; font-weight: 900; line-height: .9;
+  background: linear-gradient(92deg, #FFB020, #FF5692);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.masterNum span { font-size: 13.5px; font-weight: 800; color: var(--muted); }
+
+@media (max-width: 720px) {
+  .masterGrid { grid-template-columns: 1fr; }
 }
