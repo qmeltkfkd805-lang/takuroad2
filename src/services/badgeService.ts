@@ -374,6 +374,32 @@ async function checkTierCondition(userId: string, tier: any, earnedTierIds: Set<
     return n >= (target?.count ?? 1)
   }
 
+  if (type === 'all_masters') {
+    const { data: growthBadges } = await supabase
+      .from('badges')
+      .select('id, badge_groups!inner(slug)')
+      .eq('badge_groups.slug', 'growth')
+      .eq('is_active', true)
+    const badgeIds = (growthBadges ?? []).map((b: any) => b.id)
+    if (badgeIds.length === 0) return false
+    const { data: gTiers } = await supabase
+      .from('badge_tiers')
+      .select('id, badge_id, sort_order')
+      .in('badge_id', badgeIds)
+      .eq('is_active', true)
+      .eq('award_type', 'automatic')
+    const topByBadge = new Map<string, { id: string; sort: number }>()
+    for (const t of (gTiers ?? []) as any[]) {
+      const cur = topByBadge.get(t.badge_id)
+      if (!cur || (t.sort_order ?? 0) > cur.sort) topByBadge.set(t.badge_id, { id: t.id, sort: t.sort_order ?? 0 })
+    }
+    if (topByBadge.size === 0) return false
+    for (const v of topByBadge.values()) {
+      if (!earnedTierIds.has(v.id)) return false
+    }
+    return true
+  }
+
   if (type === 'tag_visit_percent') {
     const p = await getTagVisitProgress(userId, target.tag, target.percent, supabase)
     return p.percent >= target.percent
