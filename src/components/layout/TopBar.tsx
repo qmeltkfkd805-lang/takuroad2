@@ -51,7 +51,11 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
 
   useEffect(() => {
     if (!user) { setUnread(0); setLevel(null); return }
-    getUnreadCount(user.id).then(setUnread).catch(() => {})
+    const _tick = () => getUnreadCount(user.id).then(setUnread).catch(() => {})
+    _tick()
+    const _iv = setInterval(_tick, 45000)
+    window.addEventListener('focus', _tick)
+    window.addEventListener('noti-read', _tick)
     getMyLevelInfo(user.id).then(i => setLevel(i.level)).catch(() => {})
   }, [user])
 

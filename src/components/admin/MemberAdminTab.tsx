@@ -1,7 +1,8 @@
-﻿'use client'
+'use client'
 import { useState, useEffect, useCallback } from 'react'
 import { getAdminMembers, AdminMember, getMemberDetail, MemberDetail, grantExp } from '@/services/adminMemberService'
 import { adminUpsert } from '@/services/adminUpsertService'
+import { createClient } from '@/lib/supabase/client'
 
 const PAGE_SIZE = 20
 const ROLE_LABEL: Record<string, string> = { user: '일반회원', owner: '사장님', admin: '관리자' }
@@ -88,6 +89,10 @@ function MemberDetailView({ id, onBack }: { id: string; onBack: () => void }) {
   const [msg, setMsg] = useState<string | null>(null)
   const [expAmt, setExpAmt] = useState('')
   const [expReason, setExpReason] = useState('')
+  const [manualBadges, setManualBadges] = useState<{ id: string; name: string }[]>([])
+  const [grantTierId, setGrantTierId] = useState('')
+  const [grantBusy, setGrantBusy] = useState(false)
+  const [grantMsg, setGrantMsg] = useState<string | null>(null)
 
   const refresh = useCallback(() => {
     getMemberDetail(id).then((m) => {
@@ -97,6 +102,25 @@ function MemberDetailView({ id, onBack }: { id: string; onBack: () => void }) {
     })
   }, [id])
   useEffect(() => { refresh() }, [refresh])
+  useEffect(() => {
+    const sb = createClient()
+    ;(async () => {
+      const { data } = await sb.from('badge_tiers').select('id, name').eq('award_type', 'manual').eq('is_active', true).order('sort_order')
+      const list = (data ?? []).map((b: any) => ({ id: b.id, name: b.name }))
+      setManualBadges(list)
+      if (list.length > 0) setGrantTierId(list[0].id)
+    })()
+  }, [])
+  async function grantBadge() {
+    if (!grantTierId) return
+    setGrantBusy(true); setGrantMsg(null)
+    try {
+      const res = await fetch('/api/admin/grant-badge', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId: id, tierId: grantTierId }) })
+      const j = await res.json()
+      setGrantMsg(res.ok ? '지급 완료' : ('실패: ' + (j.error ?? res.status)))
+    } catch (e: any) { setGrantMsg('오류: ' + (e?.message ?? '알 수 없음')) }
+    finally { setGrantBusy(false) }
+  }
 
   async function saveRoleNote() {
     setSaving(true); setMsg(null)
@@ -198,6 +222,22 @@ function MemberDetailView({ id, onBack }: { id: string; onBack: () => void }) {
       <button onClick={saveRoleNote} disabled={saving} style={{ width: '100%', padding: 12, borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit', marginBottom: 20 }}>
         {saving ? '저장 중...' : '권한 · 메모 저장'}
       </button>
+
+      <Card title="배지 지급">
+        {manualBadges.length === 0 ? (
+          <div style={{ fontSize: 13, color: 'var(--muted)' }}>수동 지급 배지가 없어요</div>
+        ) : (
+          <div style={{ display: 'flex', gap: 8 }}>
+            <select value={grantTierId} onChange={(e) => setGrantTierId(e.target.value)} style={selectStyle}>
+              {manualBadges.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
+            </select>
+            <button onClick={grantBadge} disabled={grantBusy} style={{ padding: '10px 16px', borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
+              {grantBusy ? '지급 중...' : '지급'}
+            </button>
+          </div>
+        )}
+        {grantMsg && <div style={{ marginTop: 8, fontSize: 13, color: 'var(--text)' }}>{grantMsg}</div>}
+      </Card>
 
       <Card title="제재">
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>

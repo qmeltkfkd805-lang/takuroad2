@@ -7,6 +7,7 @@ import { getNotifications, markAsRead, markAllAsRead, Notification } from '@/ser
 import { ROUTES } from '@/lib/constants/routes'
 
 const TYPE_ICON: Record<string, string> = {
+  badge: '🏅',
   review_comment: '💬',
   verify_approved: '✅',
   verify_rejected: '❌',
@@ -36,6 +37,7 @@ export default function NotificationsPage() {
     if (!noti.is_read) {
       await markAsRead(noti.id)
       setNotifications(prev => prev.map(n => n.id === noti.id ? { ...n, is_read: true } : n))
+      window.dispatchEvent(new Event('noti-read'))
     }
     if (noti.link) router.push(noti.link)
   }
@@ -44,6 +46,7 @@ export default function NotificationsPage() {
     if (!user) return
     await markAllAsRead(user.id)
     setNotifications(prev => prev.map(n => ({ ...n, is_read: true })))
+    window.dispatchEvent(new Event('noti-read'))
   }
 
   if (loading || authLoading) {
