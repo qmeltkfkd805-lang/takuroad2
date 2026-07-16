@@ -178,13 +178,13 @@ export async function getWornBatch(userIds: string[]): Promise<Map<string, WornS
     }
   }
 
-  if (cosIds.size === 0) {
+  if ([...cosIds].filter(Boolean).length === 0) {
     for (const p of rows) out.set(p.id, {})
     return out
   }
 
   const { data: cos } = await supabase
-    .from('cosmetics').select('id, type, slug, name, asset_url').in('id', [...cosIds])
+    .from('cosmetics').select('id, type, slug, name, asset_url').in('id', [...cosIds].filter(Boolean))
 
   const byId = new Map(((cos ?? []) as any[]).map(c => [c.id, c]))
 

@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 import styles from './AppShell.module.css'
 import Sidebar from './Sidebar'
@@ -18,7 +18,22 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() ?? '/'
   const bare = NO_SHELL.some(p => pathname === p || pathname.startsWith(p + '/'))
   const { user } = useAuth()
-  useEffect(() => { if (!bare) logVisit(pathname, user?.id ?? null) }, [pathname, bare, user])
+  const evalOnceRef = useRef(false)
+  useEffect(() => {
+    if (bare) return
+    logVisit(pathname, user?.id ?? null).catch(() => {}).then(() => {
+      if (!user || evalOnceRef.current) return
+      evalOnceRef.current = true
+      ;(async () => {
+        const [{ evaluateBadgeTiersForUser }, { announceUnlock }] = await Promise.all([
+          import('@/services/badgeService'),
+          import('@/services/unlockService'),
+        ])
+        const newTiers = await evaluateBadgeTiersForUser(user.id)
+        if (newTiers.length > 0) announceUnlock(newTiers)
+      })()
+    })
+  }, [pathname, bare, user])
 
   const [trending, setTrending] = useState<ActiveWork[]>([])
   useEffect(() => {

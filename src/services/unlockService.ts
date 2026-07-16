@@ -1,4 +1,4 @@
-﻿import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 import { Cosmetic, getCosmeticById } from '@/services/cosmeticService'
 import { Challenge, getGrowthChallenges } from '@/services/growthService'
 
@@ -21,6 +21,7 @@ export interface UnlockedTier {
   tierName: string
   badgeName: string
   rarity: string
+  iconUrl: string | null
   cosmetic: Cosmetic | null
 }
 
@@ -42,7 +43,7 @@ export async function loadUnlock(userId: string, tierIds: string[]): Promise<Unl
 
   const { data } = await supabase
     .from('badge_tiers')
-    .select('id, name, rarity, reward_cosmetic_id, badges ( name )')
+    .select('id, name, rarity, icon_url, reward_cosmetic_id, badges ( name, icon_url )')
     .in('id', tierIds)
 
   const rows = (data ?? []) as any[]
@@ -53,6 +54,7 @@ export async function loadUnlock(userId: string, tierIds: string[]): Promise<Unl
       tierName: r.name ?? '',
       badgeName: r.badges?.name ?? '',
       rarity: r.rarity ?? 'common',
+      iconUrl: r.icon_url ?? r.badges?.icon_url ?? null,
       cosmetic: r.reward_cosmetic_id ? await getCosmeticById(r.reward_cosmetic_id) : null,
     })),
   )

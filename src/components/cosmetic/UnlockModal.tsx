@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -94,7 +94,14 @@ export default function UnlockModal() {
             </div>
           </div>
         ) : (
-          <div className={styles.noReward}>배지를 획득했어요.</div>
+          <div className={styles.rewards}>
+            <div className={styles.solo}>
+              {data.tiers[0].iconUrl
+                ? <img src={data.tiers[0].iconUrl} alt="" width={120} height={120} />
+                : <Icon name="colorstar" size={72} />}
+            </div>
+            <div className={styles.noReward}>{data.tiers[0].tierName} 배지를 획득했어요</div>
+          </div>
         )}
 
         {/* 3. 바로 착용 */}

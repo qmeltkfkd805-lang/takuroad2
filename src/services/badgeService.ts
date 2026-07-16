@@ -172,6 +172,33 @@ export async function getBadgeTiers(badgeSlug: string, userId: string | null) {
 }
 
 // 태그 기반 방문 진행률 (성지순례)
+async function getMaxCheckInStreak(userId: string, supabase: SupabaseClient<Database>): Promise<number> {
+  const { data } = await supabase.from('visit_logs').select('created_at').eq('user_id', userId).order('created_at', { ascending: false }).limit(3000)
+  if (!data || data.length === 0) return 0
+  const days = new Set<string>()
+  for (const r of data as any[]) {
+    const kst = new Date(new Date(r.created_at).getTime() + 9 * 3600 * 1000)
+    days.add(kst.toISOString().slice(0, 10))
+  }
+  const sorted = [...days].sort()
+  let max = 1, cur = 1
+  for (let i = 1; i < sorted.length; i++) {
+    const diff = (new Date(sorted[i]).getTime() - new Date(sorted[i - 1]).getTime()) / 86400000
+    if (diff === 1) { cur++; if (cur > max) max = cur } else { cur = 1 }
+  }
+  return max
+}
+
+async function getPostCount(userId: string, supabase: SupabaseClient<Database>): Promise<number> {
+  const { count } = await supabase.from('community_posts').select('id', { count: 'exact', head: true }).eq('author_id', userId)
+  return count ?? 0
+}
+
+async function getCommentCount(userId: string, supabase: SupabaseClient<Database>): Promise<number> {
+  const { count } = await supabase.from('post_comments').select('id', { count: 'exact', head: true }).eq('author_id', userId)
+  return count ?? 0
+}
+
 async function getTagVisitProgress(userId: string, tag: string, targetPercent: number, client?: SupabaseClient<Database>) {
   const supabase = client ?? createClient()
 
@@ -306,6 +333,21 @@ async function checkTierCondition(userId: string, tier: any, earnedTierIds: Set<
     const done = await countActivity(userId, target, supabase)
     const need = target?.count ?? 1
     return done >= need
+  }
+
+  if (type === 'consecutive_days') {
+    const streak = await getMaxCheckInStreak(userId, supabase)
+    return streak >= (target?.count ?? 1)
+  }
+
+  if (type === 'comment_count') {
+    const c = await getCommentCount(userId, supabase)
+    return c >= (target?.count ?? 1)
+  }
+
+  if (type === 'community_starter') {
+    const [posts, comments] = await Promise.all([getPostCount(userId, supabase), getCommentCount(userId, supabase)])
+    return posts >= 1 && comments >= 1
   }
 
   if (type === 'tag_visit_percent') {
