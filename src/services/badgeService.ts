@@ -199,6 +199,25 @@ async function getCommentCount(userId: string, supabase: SupabaseClient<Database
   return count ?? 0
 }
 
+async function getLikesReceived(userId: string, supabase: SupabaseClient<Database>): Promise<number> {
+  const [{ data: posts }, { data: comments }] = await Promise.all([
+    supabase.from('community_posts').select('id').eq('author_id', userId),
+    supabase.from('post_comments').select('id').eq('author_id', userId),
+  ])
+  const postIds = (posts ?? []).map((p: any) => p.id)
+  const commentIds = (comments ?? []).map((c: any) => c.id)
+  let total = 0
+  if (postIds.length > 0) {
+    const { count } = await supabase.from('post_likes').select('post_id', { count: 'exact', head: true }).in('post_id', postIds)
+    total += count ?? 0
+  }
+  if (commentIds.length > 0) {
+    const { count } = await supabase.from('comment_likes').select('comment_id', { count: 'exact', head: true }).in('comment_id', commentIds)
+    total += count ?? 0
+  }
+  return total
+}
+
 async function getTagVisitProgress(userId: string, tag: string, targetPercent: number, client?: SupabaseClient<Database>) {
   const supabase = client ?? createClient()
 
@@ -348,6 +367,11 @@ async function checkTierCondition(userId: string, tier: any, earnedTierIds: Set<
   if (type === 'community_starter') {
     const [posts, comments] = await Promise.all([getPostCount(userId, supabase), getCommentCount(userId, supabase)])
     return posts >= 1 && comments >= 1
+  }
+
+  if (type === 'likes_received') {
+    const n = await getLikesReceived(userId, supabase)
+    return n >= (target?.count ?? 1)
   }
 
   if (type === 'tag_visit_percent') {
