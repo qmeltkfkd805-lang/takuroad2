@@ -278,7 +278,7 @@ function CatTile({ s }: { s: GrowthSeries }) {
   const level = s.complete ? s.steps.length : s.earnedCount + 1
   const pct = s.complete ? 100 : (target ? Math.min(100, Math.round((s.done / target) * 100)) : 0)
   return (
-    <div className={styles.cat}>
+    <div className={styles.cat} title={s.hint}>
       <div className={styles.catIcon}>
         {s.icon ? <img src={s.icon} alt="" /> : <MaskIcon name="star" size={20} color="var(--accent)" />}
       </div>

@@ -301,6 +301,7 @@ export interface GrowthSeries {
   ctaHref: string
   /** 이 시리즈를 다 깼나 */
   complete: boolean
+  hint: string
 }
 
 const VERB_BY_TYPE: Record<string, string> = {
@@ -352,6 +353,22 @@ async function likesReceivedCount(userId: string, supabase: SupabaseClient<Datab
     total += count ?? 0
   }
   return total
+}
+
+const HINT: Record<string, string> = {
+  shop_visit: '샵을 방문하면 올라가요',
+  event_visit: '이벤트에 참여하면 올라가요',
+  route_completed: '루트를 완주하면 올라가요',
+  review: '후기를 쓰면 올라가요',
+  photo_upload: '사진을 올리면 올라가요',
+  work_register: '작품을 등록하면 올라가요',
+  contribution: '샵 등록·제보·루트 제작을 하면 올라가요',
+}
+const HINT_BY_TYPE: Record<string, string> = {
+  consecutive_days: '매일 접속하면 올라가요',
+  likes_received: '글·댓글에 좋아요를 받으면 올라가요',
+  comment_count: '댓글을 쓰면 올라가요',
+  community_starter: '글과 댓글을 쓰면 올라가요',
 }
 
 export async function getGrowthSeries(userId: string, client?: SupabaseClient<Database>): Promise<GrowthSeries[]> {
@@ -418,6 +435,7 @@ export async function getGrowthSeries(userId: string, client?: SupabaseClient<Da
       ctaLabel: CTA[first.activity_type]?.label ?? CTA_BY_TYPE[ctype]?.label ?? '둘러보기',
       ctaHref: CTA[first.activity_type]?.href ?? CTA_BY_TYPE[ctype]?.href ?? '/map',
       complete: currentId === null,
+      hint: HINT[first.activity_type] ?? HINT_BY_TYPE[ctype] ?? '활동하면 레벨이 올라가요',
     })
   }
 
