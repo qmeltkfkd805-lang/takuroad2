@@ -117,6 +117,7 @@
 /* ═══ 업적 카테고리 ═══ */
 .catRow { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 10px; }
 .cat {
+  position: relative;
   padding: 13px 14px; border-radius: 14px;
   background: var(--surface2); border: 1px solid var(--border);
 }
@@ -279,4 +280,19 @@
 
 @media (max-width: 720px) {
   .masterGrid { grid-template-columns: 1fr; }
+}
+.catTip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 12px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  z-index: 10;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
 }

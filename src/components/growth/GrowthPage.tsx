@@ -273,12 +273,14 @@ function BadgeTile({ b }: { b: EarnedBadge }) {
 }
 
 function CatTile({ s }: { s: GrowthSeries }) {
+  const [hover, setHover] = useState(false)
   const cur = s.steps.find(st => st.current)
   const target = cur?.target ?? 0
   const level = s.complete ? s.steps.length : s.earnedCount + 1
   const pct = s.complete ? 100 : (target ? Math.min(100, Math.round((s.done / target) * 100)) : 0)
   return (
-    <div className={styles.cat} title={s.hint}>
+    <div className={styles.cat} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+      {hover && s.hint && <div className={styles.catTip}>{s.hint}</div>}
       <div className={styles.catIcon}>
         {s.icon ? <img src={s.icon} alt="" /> : <MaskIcon name="star" size={20} color="var(--accent)" />}
       </div>
