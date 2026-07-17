@@ -191,7 +191,7 @@ export async function getGrowthChallenges(userId: string, client?: SupabaseClien
       .eq('user_id', userId),
   ])
 
-  const tiers = (tierRes.data ?? []) as any[]
+  const tiers = ((tierRes.data ?? []) as any[]).filter(t => t.badges?.badge_groups?.slug === 'growth')
   const earned = new Set((earnedRes.data ?? []).map((e: any) => e.badge_tier_id))
 
   // 시리즈(badge)별로 묶는다
@@ -303,14 +303,64 @@ export interface GrowthSeries {
   complete: boolean
 }
 
+const VERB_BY_TYPE: Record<string, string> = {
+  consecutive_days: '출석', likes_received: '좋아요', comment_count: '댓글', community_starter: '커뮤니티',
+}
+const CTA_BY_TYPE: Record<string, { label: string; href: string }> = {
+  consecutive_days: { label: '출석하기', href: '/home' },
+  likes_received: { label: '커뮤니티 가기', href: '/community' },
+  comment_count: { label: '댓글 쓰기', href: '/community' },
+  community_starter: { label: '글 쓰기', href: '/community/write' },
+}
+
+async function visitStreak(userId: string, supabase: SupabaseClient<Database>): Promise<number> {
+  const { data } = await supabase.from('visit_logs').select('created_at').eq('user_id', userId).order('created_at', { ascending: false }).limit(3000)
+  if (!data || data.length === 0) return 0
+  const days = new Set<string>()
+  for (const r of data as any[]) {
+    const kst = new Date(new Date(r.created_at).getTime() + 9 * 3600 * 1000)
+    days.add(kst.toISOString().slice(0, 10))
+  }
+  const sorted = [...days].sort()
+  let max = 1, cur = 1
+  for (let i = 1; i < sorted.length; i++) {
+    const diff = (new Date(sorted[i]).getTime() - new Date(sorted[i - 1]).getTime()) / 86400000
+    if (diff === 1) { cur++; if (cur > max) max = cur } else { cur = 1 }
+  }
+  return max
+}
+
+async function myCommentCount(userId: string, supabase: SupabaseClient<Database>): Promise<number> {
+  const { count } = await supabase.from('post_comments').select('id', { count: 'exact', head: true }).eq('author_id', userId)
+  return count ?? 0
+}
+
+async function likesReceivedCount(userId: string, supabase: SupabaseClient<Database>): Promise<number> {
+  const [{ data: posts }, { data: comments }] = await Promise.all([
+    supabase.from('community_posts').select('id').eq('author_id', userId),
+    supabase.from('post_comments').select('id').eq('author_id', userId),
+  ])
+  const postIds = (posts ?? []).map((p: any) => p.id)
+  const commentIds = (comments ?? []).map((c: any) => c.id)
+  let total = 0
+  if (postIds.length > 0) {
+    const { count } = await supabase.from('post_likes').select('post_id', { count: 'exact', head: true }).in('post_id', postIds)
+    total += count ?? 0
+  }
+  if (commentIds.length > 0) {
+    const { count } = await supabase.from('comment_likes').select('comment_id', { count: 'exact', head: true }).in('comment_id', commentIds)
+    total += count ?? 0
+  }
+  return total
+}
+
 export async function getGrowthSeries(userId: string, client?: SupabaseClient<Database>): Promise<GrowthSeries[]> {
   const supabase = client ?? createClient()
 
   const [tierRes, earnedRes] = await Promise.all([
     supabase
       .from('badge_tiers')
-      .select('*, badges ( id, name, icon_url, sort_order )')
-      .eq('condition_type', 'activity_count')
+      .select('*, badges ( id, name, icon_url, sort_order, badge_groups ( slug ) )')
       .eq('is_active', true)
       .order('sort_order'),
     supabase
@@ -319,7 +369,7 @@ export async function getGrowthSeries(userId: string, client?: SupabaseClient<Da
       .eq('user_id', userId),
   ])
 
-  const tiers = (tierRes.data ?? []) as any[]
+  const tiers = ((tierRes.data ?? []) as any[]).filter(t => t.badges?.badge_groups?.slug === 'growth')
   const earned = new Set((earnedRes.data ?? []).map((e: any) => e.badge_tier_id))
 
   const byBadge = new Map<string, any[]>()
@@ -335,8 +385,12 @@ export async function getGrowthSeries(userId: string, client?: SupabaseClient<Da
     const sorted = [...list].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
     const first = (sorted[0]?.condition_target ?? {}) as ActivityCountTarget
 
-    // 시리즈 안의 계단은 전부 같은 activity_type을 본다 → 한 번만 센다
-    const done = await countActivity(userId, first)
+    const ctype = sorted[0]?.condition_type as string
+    let done: number
+    if (ctype === 'consecutive_days') done = await visitStreak(userId, supabase)
+    else if (ctype === 'likes_received') done = await likesReceivedCount(userId, supabase)
+    else if (ctype === 'comment_count' || ctype === 'community_starter') done = await myCommentCount(userId, supabase)
+    else done = await countActivity(userId, first)
 
     const currentId = sorted.find(t => !earned.has(t.id))?.id ?? null
 
@@ -357,12 +411,12 @@ export async function getGrowthSeries(userId: string, client?: SupabaseClient<Da
       badgeName: sorted[0]?.badges?.name ?? '도전',
       /* 시리즈 대표 = 지금 도전 중인 단계의 아이콘 (다 깼으면 마지막 단계) */
     icon: sorted[sorted.length - 1]?.icon_url ?? sorted[sorted.length - 1]?.badges?.icon_url ?? null,
-      verb: VERB[first.activity_type] ?? '활동',
+      verb: VERB[first.activity_type] ?? VERB_BY_TYPE[ctype] ?? '활동',
       done,
       steps,
       earnedCount: steps.filter(s => s.earned).length,
-      ctaLabel: CTA[first.activity_type]?.label ?? '둘러보기',
-      ctaHref: CTA[first.activity_type]?.href ?? '/map',
+      ctaLabel: CTA[first.activity_type]?.label ?? CTA_BY_TYPE[ctype]?.label ?? '둘러보기',
+      ctaHref: CTA[first.activity_type]?.href ?? CTA_BY_TYPE[ctype]?.href ?? '/map',
       complete: currentId === null,
     })
   }
