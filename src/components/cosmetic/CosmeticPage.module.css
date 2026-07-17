@@ -299,3 +299,5 @@
   font-size: 14px; font-weight: 900; color: #A0A0AA;
   flex: none;
 }
+
+.tileLocked { filter: grayscale(1); opacity: .42; cursor: default; }

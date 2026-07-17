@@ -244,7 +244,7 @@ export async function getMyAvailableTitles(userId: string) {
   const supabase = createClient()
   const { data } = await supabase
     .from('user_badge_tiers')
-    .select('badge_tier_id, badge_tiers ( id, name, rarity )')
+    .select('badge_tier_id, badge_tiers ( id, name, rarity, is_active )')
     .eq('user_id', userId)
-  return (data ?? []).map((d: any) => d.badge_tiers).filter(Boolean)
+  return (data ?? []).map((d: any) => d.badge_tiers).filter((b: any) => b && b.is_active !== false)
 }

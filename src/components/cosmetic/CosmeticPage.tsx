@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import {
   getMyCosmetics, getEquipped, equipCosmetic, Cosmetic, Equipped,
-  getMyBadges, getShowcase, toggleShowcase, ShowcaseBadge, SHOWCASE_MAX,
+  getMyBadges, getAllBadges, getShowcase, toggleShowcase, ShowcaseBadge, SHOWCASE_MAX,
 } from '@/services/cosmeticService'
 import { FRAME_STYLE, RARITY_LABEL, previewStyle, bgStyle, fxClass } from '@/lib/cosmetics/style'
 import { Icon } from '@/components/tds'
@@ -51,7 +51,7 @@ export default function CosmeticPage() {
     Promise.all([
       getMyCosmetics(user.id),
       getEquipped(user.id),
-      getMyBadges(user.id),
+      getAllBadges(user.id),
       getShowcase(user.id),
     ])
       .then(([c, e, b, s]) => { setItems(c); setEquipped(e); setBadges(b); setShowcase(s) })
@@ -178,7 +178,7 @@ export default function CosmeticPage() {
           <nav className={styles.tabs}>
             {TABS.map(t => {
               const isShow = t.type === 'showcase'
-              const total = isShow ? SHOWCASE_MAX : items.filter(c => c.type === t.type).length
+              const total = isShow ? badges.length : items.filter(c => c.type === t.type).length
               const got = isShow
                 ? showcase.length
                 : items.filter(c => c.type === t.type && c.unlocked).length
@@ -272,17 +272,24 @@ export default function CosmeticPage() {
                 <p className={styles.hint}>
                   프로필에 자랑할 배지를 최대 <b>{SHOWCASE_MAX}개</b>까지 골라요.
                 </p>
-                <div className={styles.grid}>
-                  {badges.map(b => (
-                    <BadgeTile
-                      key={b.tierId}
-                      b={b}
-                      on={showcase.includes(b.tierId)}
-                      order={showcase.indexOf(b.tierId)}
-                      onClick={() => pickBadge(b)}
-                    />
-                  ))}
-                </div>
+                                {(['common', 'rare', 'epic', 'legendary'] as const).map(rar => {
+                  const group = badges.filter(b => b.rarity === rar)
+                  if (group.length === 0) return null
+                  const got = group.filter(b => b.earned).length
+                  return (
+                    <div key={rar} className={styles.rarGroup}>
+                      <div className={styles.rarHead}>
+                        <span className={[styles.rarBadge, styles['r_' + rar]].join(' ')}>{RARITY_LABEL[rar]}</span>
+                        <span className={styles.rarCount}>{got} / {group.length}</span>
+                      </div>
+                      <div className={styles.grid}>
+                        {group.map(b => (
+                          <BadgeTile key={b.tierId} b={b} on={showcase.includes(b.tierId)} order={showcase.indexOf(b.tierId)} onClick={() => pickBadge(b)} />
+                        ))}
+                      </div>
+                    </div>
+                  )
+                })}
               </>
             )
           ) : (
@@ -396,8 +403,9 @@ function BadgeTile({ b, on, order, onClick }: {
 }) {
   return (
     <button
-      className={[styles.tile, on ? styles.tileOn : ''].join(' ')}
-      onClick={onClick}
+      className={[styles.tile, on ? styles.tileOn : '', !b.earned ? styles.tileLocked : ''].join(' ')}
+      onClick={b.earned ? onClick : undefined}
+      disabled={!b.earned}
     >
       <div className={[styles.thumb, styles['bg_' + b.rarity] ?? ''].join(' ')}>
         {b.icon

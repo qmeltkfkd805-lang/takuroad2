@@ -258,12 +258,12 @@ export async function getRecentBadges(userId: string, limit = 6, client?: Supaba
   const supabase = client ?? createClient()
   const { data } = await supabase
     .from('user_badge_tiers')
-    .select('badge_tier_id, earned_at, badge_tiers ( name, rarity, icon_url, badges ( icon_url ) )')
+    .select('badge_tier_id, earned_at, badge_tiers ( name, rarity, icon_url, is_active, badges ( icon_url ) )')
     .eq('user_id', userId)
     .order('earned_at', { ascending: false })
     .limit(limit)
 
-  return ((data ?? []) as any[]).map(r => ({
+  return ((data ?? []) as any[]).filter(r => r.badge_tiers?.is_active !== false).map(r => ({
     id: r.badge_tier_id,
     name: r.badge_tiers?.name ?? '배지',
     icon: r.badge_tiers?.icon_url ?? r.badge_tiers?.badges?.icon_url ?? null,

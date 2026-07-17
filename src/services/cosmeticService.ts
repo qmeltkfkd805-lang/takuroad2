@@ -173,8 +173,8 @@ export async function getWornBatch(userIds: string[]): Promise<Map<string, WornS
 
   const cosIds = new Set<string>()
   for (const p of rows) {
-    for (const v of Object.values((p.equipped ?? {}) as Record<string, string>)) {
-      if (v) cosIds.add(v)
+    for (const v of Object.values((p.equipped ?? {}) as Record<string, unknown>)) {
+      if (typeof v === 'string' && v) cosIds.add(v)
     }
   }
 
@@ -221,6 +221,7 @@ export interface ShowcaseBadge {
   rarity: string
   icon: string | null
   badgeName: string
+  earned?: boolean
   earnedAt: string
 }
 
@@ -229,11 +230,11 @@ export async function getMyBadges(userId: string): Promise<ShowcaseBadge[]> {
   const supabase = createClient()
   const { data } = await supabase
     .from('user_badge_tiers')
-    .select('badge_tier_id, earned_at, badge_tiers ( name, rarity, icon_url, badges ( name, icon_url ) )')
+    .select('badge_tier_id, earned_at, badge_tiers ( name, rarity, icon_url, is_active, badges ( name, icon_url ) )')
     .eq('user_id', userId)
     .order('earned_at', { ascending: false })
 
-  return ((data ?? []) as any[]).map(r => ({
+  return ((data ?? []) as any[]).filter(r => r.badge_tiers?.is_active !== false).map(r => ({
     tierId: r.badge_tier_id,
     name: r.badge_tiers?.name ?? '배지',
     rarity: r.badge_tiers?.rarity ?? 'common',
@@ -280,6 +281,26 @@ export async function toggleShowcase(
 }
 
 /** 남의 프로필에서도 쓴다 — 대표 배지 상세 */
+export async function getAllBadges(userId: string): Promise<ShowcaseBadge[]> {
+  const supabase = createClient()
+  const [tiersRes, earnedRes] = await Promise.all([
+    supabase.from('badge_tiers').select('id, name, rarity, icon_url, sort_order, badges ( name, icon_url, sort_order )').eq('is_active', true),
+    supabase.from('user_badge_tiers').select('badge_tier_id, earned_at').eq('user_id', userId),
+  ])
+  const earnedMap = new Map(((earnedRes.data ?? []) as any[]).map(e => [e.badge_tier_id, e.earned_at]))
+  return ((tiersRes.data ?? []) as any[])
+    .map(t => ({
+      tierId: t.id,
+      name: t.name ?? '배지',
+      rarity: t.rarity ?? 'common',
+      icon: t.icon_url ?? t.badges?.icon_url ?? null,
+      badgeName: t.badges?.name ?? '',
+      earned: earnedMap.has(t.id),
+      earnedAt: (earnedMap.get(t.id) as string) ?? '',
+    }))
+    .sort((a, b) => (b.earned ? 1 : 0) - (a.earned ? 1 : 0))
+}
+
 export async function getShowcaseBadges(userId: string): Promise<ShowcaseBadge[]> {
   const ids = await getShowcase(userId)
   if (ids.length === 0) return []
