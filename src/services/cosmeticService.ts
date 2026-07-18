@@ -361,3 +361,14 @@ export async function getMyFavoriteWorks(
     cover: t.cover_url ?? null,
   }))
 }
+
+
+/** 여권 문구(tagline) 직접 저장 — equipped.tagline (빈 문자열이면 자동 생성으로 복귀) */
+export async function setTagline(userId: string, text: string): Promise<{ ok: boolean }> {
+  const supabase = createClient()
+  const eq = await getEquipped(userId)
+  const merged: any = { ...eq, tagline: text.trim() || null }
+  const { error } = await supabase.from('profiles').update({ equipped: merged } as any).eq('id', userId)
+  if (error) { console.error('[문구 저장 실패]', error.message); return { ok: false } }
+  return { ok: true }
+}

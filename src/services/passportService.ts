@@ -206,7 +206,10 @@ export async function getMyPassport(userId: string): Promise<OtakuPassport | nul
     .order('created_at', { ascending: false })
     .limit(10)
 
-  const tagline = generateTagline(topRegion, topSeries[0]?.name ?? null, titleBadgeName)
+  const customTagline = (profile as any).equipped?.tagline
+  const tagline = (typeof customTagline === 'string' && customTagline.trim())
+    ? customTagline
+    : generateTagline(topRegion, topSeries[0]?.name ?? null, titleBadgeName)
 
   return {
     nickname: profile.nickname,

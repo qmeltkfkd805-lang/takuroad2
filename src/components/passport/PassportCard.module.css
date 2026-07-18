@@ -220,3 +220,11 @@
 .avatarEdit { position: absolute; right: 0; bottom: 0; width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
 .avatarEdit:hover { filter: brightness(1.05); }
 .avatarEdit:disabled { opacity: .6; cursor: default; }
+
+
+.tagEditBtn { background: none; border: none; padding: 0 0 0 6px; color: var(--muted); cursor: pointer; vertical-align: middle; }
+.tagEditBtn:hover { color: var(--accent); }
+.tagEdit { display: flex; gap: 6px; align-items: center; justify-content: center; margin: 0 20px 18px; }
+.tagInput { flex: 1; max-width: 240px; padding: 7px 12px; border: 1px solid var(--border); border-radius: 9999px; font-family: inherit; font-size: 13px; text-align: center; background: rgba(255,255,255,.9); }
+.tagSave { padding: 7px 14px; border: none; border-radius: 9999px; background: var(--accent); color: #fff; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+.tagCancel { padding: 7px 12px; border: 1px solid var(--border); border-radius: 9999px; background: none; color: var(--muted); font-family: inherit; font-size: 12px; cursor: pointer; }
