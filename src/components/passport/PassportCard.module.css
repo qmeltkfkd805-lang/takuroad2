@@ -173,3 +173,6 @@
 .statValue { font-size: 17px !important; }
 
 .statLabel { font-size: 10px !important; }
+
+.recent { background: rgba(255,255,255,.55) !important; border-radius: 16px !important; margin: 0 4px 12px !important; padding: 14px !important; box-shadow: none !important; }
+.dressed .recent { background: rgba(255,255,255,.55) !important; }
