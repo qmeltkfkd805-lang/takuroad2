@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -20,6 +20,7 @@ import VerifyStatusTab from './VerifyStatusTab'
 import AccountSettingsTab from './AccountSettingsTab'
 import BadgesTab from './BadgesTab'
 import CollectionTab from './CollectionTab'
+import ProfileDesktop from './ProfileDesktop'
 import { useSearchParams } from 'next/navigation'
 
 type Tab = 'passport' | 'chronicle' | 'saved' | 'routes' | 'savedroutes' | 'completed' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
@@ -46,6 +47,7 @@ export default function ProfilePage() {
   const initialTab = (useSearchParams().get('tab') as Tab) ?? 'passport'
   const [tab, setTab] = useState<Tab>(initialTab)
   const [passport, setPassport] = useState<OtakuPassport | null>(null)
+  const isDesktop = useIsDesktop()
 
   useEffect(() => {
     if (!loading && !user) {
@@ -68,6 +70,12 @@ export default function ProfilePage() {
       <div style={{ padding: '60px', textAlign: 'center', color: 'var(--muted)' }}>
         불러오는 중...
       </div>
+    )
+  }
+
+  if (isDesktop) {
+    return (
+      <ProfileDesktop passport={passport} userId={user.id} />
     )
   }
 
@@ -172,6 +180,18 @@ export default function ProfilePage() {
 
     </div>
   )
+}
+
+function useIsDesktop() {
+  const [d, setD] = useState(false)
+  useEffect(() => {
+    const m = window.matchMedia('(min-width: 1024px)')
+    const on = () => setD(m.matches)
+    on()
+    m.addEventListener('change', on)
+    return () => m.removeEventListener('change', on)
+  }, [])
+  return d
 }
 
 function EmptyTab({ text }: { text: string }) {

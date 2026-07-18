@@ -1,0 +1,37 @@
+.wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 상단: 여권 | 성장센터 | 배지 */
+.top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px 360px;
+  gap: 20px;
+  align-items: stretch;
+}
+.passport { min-width: 0; }
+
+/* 하단: 후기 | 댓글 | 샵 | 인증 */
+.bottom {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* 공통 카드 */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.card > * { flex: 1; }
