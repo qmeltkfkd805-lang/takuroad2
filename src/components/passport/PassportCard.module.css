@@ -1,4 +1,4 @@
-﻿.card {
+.card {
   margin: 16px; padding: 24px 20px;
   border: 1.5px solid var(--border); border-radius: 20px;
   background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
@@ -65,10 +65,7 @@
 
 /* 기록 도장 */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
-.stat {
-  text-align: center; padding: 10px 4px;
-  background: var(--surface2); border-radius: 10px;
-}
+.stat { text-align: center; padding: 12px 4px; background: var(--surface2); border-radius: 12px; }
 .statValue { font-size: 18px; font-weight: 900; color: var(--accent); }
 .statLabel { font-size: 10px; color: var(--muted); }
 
@@ -88,3 +85,91 @@
   font-size: 13px; padding: 4px 0; font-weight: 600;
 }
 .seriesCount { color: var(--muted); font-weight: 700; }
+
+/* 시안: 흰 네모 박스 */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 4px; margin-bottom: 16px; }
+.stats > div { background: #fff; border-radius: 14px; padding: 14px 8px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.recent { background: #fff; border-radius: 16px; padding: 16px; margin: 0 4px 12px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.series { background: #fff; border-radius: 16px; padding: 16px; margin: 0 4px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.dressed .stats > div, .dressed .recent, .dressed .series { background: #fff; }
+
+/* 흰 박스 안 글자 진하게 */
+.statLabel { color: var(--text) !important; }
+.seriesHead { color: var(--text) !important; }
+.series .seriesRow span { color: var(--text) !important; }
+.seriesCount { color: var(--muted) !important; }
+.recentHead { color: var(--text) !important; }
+.recentName { font-size: 13px; font-weight: 600; text-align: left; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dressed .statLabel, .dressed .seriesHead, .dressed .seriesRow span, .dressed .recentHead, .dressed .recentName { font-size: 13px; font-weight: 600; text-align: left; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* 최근 방문 가로 5칸 */
+.recentRow { display: flex; gap: 8px; }
+.recentItem { flex: 1; min-width: 0; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 4px; }
+.recentThumb { width: 100%; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: var(--surface2); display: flex; align-items: center; justify-content: center; }
+.recentThumb img { width: 100%; height: 100%; object-fit: cover; }
+.recentNo { color: var(--muted); font-weight: 800; }
+.recentName { font-size: 13px; font-weight: 600; text-align: left; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.statTop { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 6px; }
+.statIcon { font-size: 18px; line-height: 1; }
+
+
+/* 시안 통계 최종 */
+.stats { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 0 !important; padding: 8px 4px !important; margin-bottom: 12px !important; background: #fff !important; }
+.stat { text-align: center !important; padding: 8px 4px !important; background: transparent !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; }
+.dressed .stats > div, .stats > div { background: transparent !important; box-shadow: none !important; }
+.statLabel { font-size: 11px !important; color: var(--muted) !important; margin-bottom: 6px !important; opacity: 1 !important; }
+.statTop { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 0 !important; }
+.statValue { font-size: 20px !important; font-weight: 900 !important; color: var(--text) !important; }
+
+
+/* 통계 칸 박스 제거 */
+.stats > div, .stats .stat, .dressed .stats > div { background: transparent !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; padding: 6px 4px !important; }
+
+
+/* 시안 티켓 통계 */
+.stats {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 0 !important;
+  margin: 0 4px 14px !important;
+  padding: 0 !important;
+  background: rgba(255,255,255,.55) !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+}
+.stat {
+  position: relative;
+  text-align: center !important;
+  padding: 14px 6px !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+/* 칸 사이 세로 구분선 */
+.stat + .stat::before {
+  content: '';
+  position: absolute; left: 0; top: 14px; bottom: 14px;
+  border-left: 1px dashed rgba(0,0,0,.12);
+}
+/* 티켓 홈 — 구분선 위/아래 반원 */
+.stat + .stat::after {
+  content: '';
+  position: absolute; left: -5px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--surface);
+  top: -5px;
+  box-shadow: 0 calc(100% + 5px) 0 var(--surface);
+}
+.statLabel { font-size: 11px !important; color: var(--muted) !important; text-align: center !important; margin-bottom: 6px !important; opacity: 1 !important; }
+.statTop { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; gap: 6px !important; }
+.statValue { font-size: 20px !important; font-weight: 900 !important; color: var(--text) !important; }
+.dressed .stats { background: rgba(255,255,255,.55) !important; }
+.dressed .stats > div { background: transparent !important; box-shadow: none !important; }
+
+.stat + .stat::after { display: none !important; }
+
+.statValue { font-size: 17px !important; }
+
+.statLabel { font-size: 10px !important; }

@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+import { Icon } from '@/components/tds'
 import { OtakuPassport } from '@/services/passportService'
 import { RARITY_COLOR } from '@/services/badgeService'
 import { useWorn } from '@/components/cosmetic/CosmeticProvider'
@@ -95,27 +97,25 @@ export default function PassportCard({ passport, isOwner, onCustomizeClick }: Pr
 
       {/* 기록 도장 */}
       <div className={styles.stats}>
-        <StatBox label="방문" value={passport.visitedShopCount} />
-        <StatBox label="순례" value={passport.pilgrimageCount} />
-        <StatBox label="배지" value={passport.totalBadgeCount} />
-        <StatBox label="후기" value={passport.reviewCount} />
+        <StatBox icon="colorshop" label="방문한 샵" value={passport.visitedShopCount} />
+        <StatBox icon="colorstar" label="작성한 리뷰" value={passport.reviewCount} />
+        <StatBox icon="colorcollection" label="획득 배지" value={passport.totalBadgeCount} />
+        <StatBox icon="colorroute" label="완주한 루트" value={passport.pilgrimageCount} />
       </div>
 
-      {/* 첫 성지 / 최근 성지 */}
-      {(passport.firstShop || passport.latestShop) && (
-        <div className={styles.shrine}>
-          {passport.firstShop && (
-            <div>
-              첫 성지 · <strong>{passport.firstShop.name}</strong>
-              {' '}({new Date(passport.firstShop.date).toLocaleDateString('ko-KR')})
-            </div>
-          )}
-          {passport.latestShop && (
-            <div>
-              최근 성지 · <strong>{passport.latestShop.name}</strong>
-              {' '}({new Date(passport.latestShop.date).toLocaleDateString('ko-KR')})
-            </div>
-          )}
+      {passport.recentVisits && passport.recentVisits.length > 0 && (
+        <div className={styles.recent}>
+          <div className={styles.recentHead}>최근 방문</div>
+          <div className={styles.recentRow}>
+            {passport.recentVisits.map((v, i) => (
+              <Link key={i} href={'/shop/' + v.slug} className={styles.recentItem}>
+                <div className={styles.recentThumb}>
+                  {v.image ? <img src={v.image} /> : <span className={styles.recentNo}>?</span>}
+                </div>
+                <span className={styles.recentName}>{v.name}</span>
+              </Link>
+            ))}
+          </div>
         </div>
       )}
 
@@ -135,11 +135,11 @@ export default function PassportCard({ passport, isOwner, onCustomizeClick }: Pr
   )
 }
 
-function StatBox({ label, value }: { label: string; value: number }) {
+function StatBox({ icon, label, value }: { icon: string; label: string; value: number }) {
   return (
     <div className={styles.stat}>
-      <div className={styles.statValue}>{value}</div>
       <div className={styles.statLabel}>{label}</div>
+      <div className={styles.statTop}><Icon name={icon} size={22} /><span className={styles.statValue}>{value}</span></div>
     </div>
   )
 }

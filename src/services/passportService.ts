@@ -16,6 +16,7 @@ export interface OtakuPassport {
   reviewCount: number
   featuredBadges: { name: string; rarity: string; iconUrl: string | null }[]
   topVisitedSeries: { name: string; count: number }[]
+  recentVisits: { name: string; slug: string; image: string | null; date: string }[]
   firstShop: { name: string; date: string } | null
   latestShop: { name: string; date: string } | null
   recentActivities: any[]
@@ -78,7 +79,7 @@ export async function getMyPassport(userId: string): Promise<OtakuPassport | nul
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('nickname, avatar_url, passport_number, created_at, is_profile_public, selected_title_id')
+    .select('nickname, avatar_url, passport_number, created_at, is_profile_public, selected_title_id, equipped')
     .eq('id', userId)
     .maybeSingle()
 
@@ -136,6 +137,30 @@ export async function getMyPassport(userId: string): Promise<OtakuPassport | nul
       }))
   }
 
+  // 최근 방문 샵 (이미지 포함) — 여권 카드용
+  const { data: recentCheckIns } = await supabase
+    .from('check_ins')
+    .select('shop_id, created_at, shops ( name, slug, shop_images ( image_url, is_cover ) )')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+    .limit(20)
+
+  const seenShop = new Set<string>()
+  const recentVisits: { name: string; slug: string; image: string | null; date: string }[] = []
+  for (const c of (recentCheckIns ?? []) as any[]) {
+    if (!c.shop_id || seenShop.has(c.shop_id)) continue
+    seenShop.add(c.shop_id)
+    const imgs = c.shops?.shop_images ?? []
+    const cover = imgs.find((i: any) => i.is_cover) ?? imgs[0]
+    recentVisits.push({
+      name: c.shops?.name ?? '알 수 없음',
+      slug: c.shops?.slug ?? '',
+      image: cover?.image_url ?? null,
+      date: c.created_at,
+    })
+    if (recentVisits.length >= 5) break
+  }
+
   // 가장 많이 방문한 작품
   const topSeries = await getTopVisitedSeries(userId, 3)
 
@@ -176,6 +201,7 @@ export async function getMyPassport(userId: string): Promise<OtakuPassport | nul
     reviewCount: reviewCount ?? 0,
     featuredBadges,
     topVisitedSeries: topSeries,
+    recentVisits,
     firstShop: first ? { name: (first as any).shops?.name ?? '알 수 없음', date: first.created_at } : null,
     latestShop: latest ? { name: (latest as any).shops?.name ?? '알 수 없음', date: latest.created_at } : null,
     recentActivities: activities ?? [],
