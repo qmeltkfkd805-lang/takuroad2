@@ -15,7 +15,7 @@ export interface OtakuPassport {
   totalBadgeCount: number
   reviewCount: number
   featuredBadges: { name: string; rarity: string; iconUrl: string | null }[]
-  topVisitedSeries: { name: string; count: number }[]
+  topVisitedSeries: { name: string; count: number; slug: string | null; cover: string | null }[]
   recentVisits: { name: string; slug: string; image: string | null; date: string }[]
   firstShop: { name: string; date: string } | null
   latestShop: { name: string; date: string } | null
@@ -38,18 +38,19 @@ async function getTopVisitedSeries(userId: string, limit = 3) {
 
   const { data: shopTags } = await supabase
     .from('shop_tags')
-    .select('shop_id, tags ( name )')
+    .select('shop_id, tags ( name, slug, cover_url )')
     .in('shop_id', shopIds)
 
-  const tagCount = new Map<string, number>()
+  const agg = new Map<string, { name: string; count: number; slug: string | null; cover: string | null }>()
   for (const st of shopTags ?? []) {
-    const tagName = (st as any).tags?.name
-    if (!tagName) continue
-    tagCount.set(tagName, (tagCount.get(tagName) ?? 0) + 1)
+    const tag = (st as any).tags
+    if (!tag?.name) continue
+    const cur = agg.get(tag.name)
+    if (cur) cur.count += 1
+    else agg.set(tag.name, { name: tag.name, count: 1, slug: tag.slug ?? null, cover: tag.cover_url ?? null })
   }
 
-  return Array.from(tagCount.entries())
-    .map(([name, count]) => ({ name, count }))
+  return Array.from(agg.values())
     .sort((a, b) => b.count - a.count)
     .slice(0, limit)
 }
@@ -162,7 +163,27 @@ export async function getMyPassport(userId: string): Promise<OtakuPassport | nul
   }
 
   // 가장 많이 방문한 작품
-  const topSeries = await getTopVisitedSeries(userId, 3)
+  let topSeries = await getTopVisitedSeries(userId, 3)
+
+  // 유저가 고른 대표 작품(equipped.featuredWork)이 있으면 맨 앞에
+  const featuredWorkId = (profile as any).equipped?.featuredWork
+  if (typeof featuredWorkId === 'string' && featuredWorkId) {
+    const { data: fw } = await supabase
+      .from('tags')
+      .select('name, slug, cover_url')
+      .eq('id', featuredWorkId)
+      .maybeSingle()
+    if (fw) {
+      const existing = topSeries.find(s => s.slug === (fw as any).slug)
+      const picked = {
+        name: (fw as any).name ?? '작품',
+        count: existing?.count ?? 0,
+        slug: (fw as any).slug ?? null,
+        cover: (fw as any).cover_url ?? null,
+      }
+      topSeries = [picked, ...topSeries.filter(s => s.slug !== picked.slug)]
+    }
+  }
 
   // 가장 많이 방문한 지역
   const regions = await getRegionCollections(userId)

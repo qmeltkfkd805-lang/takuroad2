@@ -308,3 +308,56 @@ export async function getShowcaseBadges(userId: string): Promise<ShowcaseBadge[]
   // 진열 순서 유지
   return ids.map(id => all.find(b => b.tierId === id)).filter(Boolean) as ShowcaseBadge[]
 }
+
+
+/* ============================================================
+   여권 대표 작품 — equipped.featuredWork (tag_id 하나)
+   최애 작품(user_favorite_tags tier=favorite) 중에서 고른다.
+   ============================================================ */
+
+/** 여권에 띄울 대표 작품 tag_id */
+export async function getFeaturedWork(userId: string): Promise<string | null> {
+  const eq = await getEquipped(userId)
+  const raw = (eq as any).featuredWork
+  return typeof raw === 'string' && raw ? raw : null
+}
+
+/** 대표 작품 설정 (null이면 해제) */
+export async function setFeaturedWork(userId: string, tagId: string | null): Promise<{ ok: boolean }> {
+  const supabase = createClient()
+  const eq = await getEquipped(userId)
+  const merged: any = { ...eq, featuredWork: tagId ?? null }
+  const { error } = await supabase.from('profiles').update({ equipped: merged } as any).eq('id', userId)
+  if (error) {
+    console.error('[대표 작품 저장 실패]', error.message)
+    return { ok: false }
+  }
+  return { ok: true }
+}
+
+/** 최애 작품 목록 (선택지용) */
+export async function getMyFavoriteWorks(
+  userId: string,
+): Promise<{ tagId: string; name: string; slug: string | null; cover: string | null }[]> {
+  const supabase = createClient()
+  const { data: favs } = await supabase
+    .from('user_favorite_tags')
+    .select('tag_id')
+    .eq('user_id', userId)
+    .eq('tier', 'favorite')
+
+  const ids = (favs ?? []).map((r: any) => r.tag_id).filter(Boolean)
+  if (ids.length === 0) return []
+
+  const { data: tags } = await supabase
+    .from('tags')
+    .select('id, name, slug, cover_url')
+    .in('id', ids)
+
+  return ((tags ?? []) as any[]).map(t => ({
+    tagId: t.id,
+    name: t.name ?? '작품',
+    slug: t.slug ?? null,
+    cover: t.cover_url ?? null,
+  }))
+}

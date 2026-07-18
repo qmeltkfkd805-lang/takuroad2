@@ -120,17 +120,45 @@ export default function PassportCard({ passport, isOwner, onCustomizeClick }: Pr
       )}
 
       {/* 가장 많이 찾은 작품 */}
-      {passport.topVisitedSeries.length > 0 && (
-        <div className={styles.series}>
-          <div className={styles.seriesHead}>가장 많이 찾은 작품</div>
-          {passport.topVisitedSeries.map((s, i) => (
-            <div key={s.name} className={styles.seriesRow}>
-              <span>{i + 1}. {s.name}</span>
-              <span className={styles.seriesCount}>{s.count}곳</span>
+      {/* 가장 좋아하는 작품 + 대표 배지 (시안 하단 2칸) */}
+      <div className={styles.favRow}>
+        {passport.topVisitedSeries.length > 0 && (
+          <div className={styles.favWork}>
+            <div className={styles.favHead}>최애 작품</div>
+            <div className={styles.favWorkBody}>
+              <div className={styles.favPoster}>
+                {passport.topVisitedSeries[0].cover
+                  ? <img src={passport.topVisitedSeries[0].cover} />
+                  : <span className={styles.favNo}>?</span>}
+              </div>
+              <div className={styles.favInfo}>
+                <div className={styles.favName}>{passport.topVisitedSeries[0].name}</div>
+                <div className={styles.favCount}>관련 샵 {passport.topVisitedSeries[0].count}곳</div>
+              </div>
             </div>
-          ))}
+          </div>
+        )}
+        <div className={styles.favBadge}>
+          <div className={styles.favHead}>대표 배지</div>
+          {passport.featuredBadges.length > 0 ? (
+            <div className={styles.favBadgeRow}>
+              {passport.featuredBadges.map((b, i) => (
+                <span
+                  key={i}
+                  className={styles.favBadgeChip}
+                  style={{ borderColor: RARITY_COLOR[b.rarity as keyof typeof RARITY_COLOR] ?? 'var(--border)' }}
+                >
+                  {b.iconUrl && <img src={b.iconUrl} />}
+                </span>
+              ))}
+            </div>
+          ) : isOwner ? (
+            <button className={styles.favEmpty} onClick={onCustomizeClick}>대표 배지를 골라주세요 ›</button>
+          ) : (
+            <div className={styles.favEmptyText}>아직 대표 배지가 없어요</div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   )
 }

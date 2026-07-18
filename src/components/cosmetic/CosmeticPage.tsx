@@ -27,6 +27,7 @@ const TABS: { type: string; label: string }[] = [
   { type: 'title',      label: '칭호' },
   { type: 'effect',     label: '효과' },
   { type: 'showcase',   label: '대표 배지' },
+  { type: 'work',       label: '대표 작품' },
 ]
 
 export default function CosmeticPage() {
@@ -35,6 +36,8 @@ export default function CosmeticPage() {
   const [equipped, setEquipped] = useState<Equipped>({})
   const [badges, setBadges] = useState<ShowcaseBadge[]>([])
   const [showcase, setShowcase] = useState<string[]>([])
+  const [favWorks, setFavWorks] = useState<{ tagId: string; name: string; slug: string | null; cover: string | null }[]>([])
+  const [featWork, setFeatWork] = useState<string | null>(null)
   const [tab, setTab] = useState('frame')
   /* 필터 — 아이템이 많아지면 '내가 뭘 갖고 있지?'를 찾기가 어려워진다.
      보유 상태 × 등급, 두 축이면 충분하다. */
@@ -53,13 +56,22 @@ export default function CosmeticPage() {
       getEquipped(user.id),
       getAllBadges(user.id),
       getShowcase(user.id),
+      getMyFavoriteWorks(user.id),
+      getFeaturedWork(user.id),
     ])
-      .then(([c, e, b, s]) => { setItems(c); setEquipped(e); setBadges(b); setShowcase(s) })
+      .then(([c, e, b, s, fw, feat]) => { setItems(c); setEquipped(e); setBadges(b); setShowcase(s); setFavWorks(fw as any); setFeatWork(feat as any) })
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [user])
 
   const toast = (m: string) => { setMsg(m); setTimeout(() => setMsg(null), 2400) }
+  async function pickWork(tagId: string) {
+    if (!user) return
+    const next = featWork === tagId ? null : tagId
+    setFeatWork(next)
+    const r = await setFeaturedWork(user.id, next)
+    if (!r.ok) { setFeatWork(featWork); toast('저장에 실패했어요.') }
+  }
 
   const byId = (id?: string) => items.find(c => c.id === id)
   const worn = {
@@ -290,6 +302,22 @@ export default function CosmeticPage() {
                     </div>
                   )
                 })}
+              </>
+            )
+          ) : tab === 'work' ? (
+            favWorks.length === 0 ? (
+              <p className={styles.center}>아직 최애 작품이 없어요. 작품을 최애로 등록해보세요.</p>
+            ) : (
+              <>
+                <p className={styles.hint}>여권에 띄울 <b>최애 작품 1개</b>를 골라요.</p>
+                <div className={styles.grid}>
+                  {favWorks.map(w => (
+                    <button key={w.tagId} className={[styles.workTile, featWork === w.tagId ? styles.workOn : ''].join(' ')} onClick={() => pickWork(w.tagId)}>
+                      <div className={styles.workPoster}>{w.cover ? <img src={w.cover} /> : <span>?</span>}</div>
+                      <span className={styles.workName}>{w.name}</span>
+                    </button>
+                  ))}
+                </div>
               </>
             )
           ) : (
