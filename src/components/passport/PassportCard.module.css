@@ -201,3 +201,22 @@
 .favHead { display: flex !important; justify-content: space-between; align-items: center; }
 .favEdit { background: none; border: none; padding: 0; font-family: inherit; font-size: 11px; font-weight: 700; color: var(--muted); cursor: pointer; white-space: nowrap; }
 .favEdit:hover { text-decoration: underline; }
+
+
+/* 최애작품·대표배지 한 칸 */
+.favRow { display: grid !important; grid-template-columns: 1fr 1fr; gap: 0 !important; margin: 0 4px 4px !important; background: rgba(255,255,255,.55); border-radius: 16px; overflow: hidden; }
+.favWork, .favBadge { background: transparent !important; border-radius: 0 !important; padding: 14px !important; }
+.favBadge { position: relative; }
+
+.favBadge::before { content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; border-left: 1px dashed rgba(0,0,0,.15); }
+
+
+/* 배지 이미지 크게 */
+.favBadgeChip { width: 48px !important; height: 48px !important; border: none !important; border-radius: 0 !important; background: transparent !important; }
+.favBadgeChip img { width: 100% !important; height: 100% !important; object-fit: contain !important; }
+
+
+.avatarWrap { position: relative; display: inline-block; }
+.avatarEdit { position: absolute; right: 0; bottom: 0; width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+.avatarEdit:hover { filter: brightness(1.05); }
+.avatarEdit:disabled { opacity: .6; cursor: default; }

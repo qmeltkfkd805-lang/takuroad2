@@ -738,3 +738,26 @@ export async function setShopMainImage(shopId: string, imageUrl: string): Promis
 
   return !error
 }
+
+
+/** 프로필 사진 업로드 → avatar_url 갱신 */
+export async function uploadAvatar(userId: string, file: File): Promise<{ ok: boolean; url?: string; error?: string }> {
+  const supabase = createClient()
+
+  const ext = file.name.split('.').pop() || 'jpg'
+  const path = `avatars/${userId}-${Date.now()}.${ext}`
+
+  const { error: upErr } = await supabase.storage.from('shop-images').upload(path, file, { upsert: true })
+  if (upErr) return { ok: false, error: '이미지 업로드에 실패했어요' }
+
+  const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
+  const url = data.publicUrl
+
+  const { error: dbErr } = await supabase
+    .from('profiles')
+    .update({ avatar_url: url } as any)
+    .eq('id', userId)
+
+  if (dbErr) return { ok: false, error: '저장에 실패했어요' }
+  return { ok: true, url }
+}
