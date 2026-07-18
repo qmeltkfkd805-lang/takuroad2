@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Icon } from '@/components/tds'
 import { OtakuPassport } from '@/services/passportService'
 import { RARITY_COLOR } from '@/services/badgeService'
@@ -29,6 +30,7 @@ interface Props {
 }
 
 export default function PassportCard({ passport, isOwner, onCustomizeClick }: Props) {
+  const router = useRouter()
   const worn = useWorn(passport.userId)
 
   const issuedDate = new Date(passport.issuedAt).toLocaleDateString('ko-KR', {
@@ -124,7 +126,7 @@ export default function PassportCard({ passport, isOwner, onCustomizeClick }: Pr
       <div className={styles.favRow}>
         {passport.topVisitedSeries.length > 0 && (
           <div className={styles.favWork}>
-            <div className={styles.favHead}>최애 작품</div>
+            <div className={styles.favHead}><span>최애 작품</span>{isOwner && <button className={styles.favEdit} onClick={() => router.push('/cosmetic?tab=work')}>변경하기 ›</button>}</div>
             <div className={styles.favWorkBody}>
               <div className={styles.favPoster}>
                 {passport.topVisitedSeries[0].cover
@@ -139,7 +141,7 @@ export default function PassportCard({ passport, isOwner, onCustomizeClick }: Pr
           </div>
         )}
         <div className={styles.favBadge}>
-          <div className={styles.favHead}>대표 배지</div>
+          <div className={styles.favHead}><span>대표 배지</span>{isOwner && <button className={styles.favEdit} onClick={() => router.push('/cosmetic?tab=showcase')}>변경하기 ›</button>}</div>
           {passport.featuredBadges.length > 0 ? (
             <div className={styles.favBadgeRow}>
               {passport.featuredBadges.map((b, i) => (

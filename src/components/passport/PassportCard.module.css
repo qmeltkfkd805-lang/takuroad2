@@ -196,3 +196,8 @@
 .favEmpty { width: 100%; padding: 12px; border: 1px dashed var(--border); border-radius: 10px; background: rgba(255,255,255,.5); color: var(--muted); font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
 .favEmpty:hover { border-color: var(--accent); color: var(--accent); }
 .favEmptyText { padding: 12px; color: var(--muted); font-size: 12px; text-align: center; }
+
+
+.favHead { display: flex !important; justify-content: space-between; align-items: center; }
+.favEdit { background: none; border: none; padding: 0; font-family: inherit; font-size: 11px; font-weight: 700; color: var(--muted); cursor: pointer; white-space: nowrap; }
+.favEdit:hover { text-decoration: underline; }

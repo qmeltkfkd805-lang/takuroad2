@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import {
   getMyCosmetics, getEquipped, equipCosmetic, Cosmetic, Equipped,
   getMyBadges, getAllBadges, getShowcase, toggleShowcase, ShowcaseBadge, SHOWCASE_MAX,
+  getFeaturedWork, setFeaturedWork, getMyFavoriteWorks,
 } from '@/services/cosmeticService'
 import { FRAME_STYLE, RARITY_LABEL, previewStyle, bgStyle, fxClass } from '@/lib/cosmetics/style'
 import { Icon } from '@/components/tds'
@@ -38,7 +40,8 @@ export default function CosmeticPage() {
   const [showcase, setShowcase] = useState<string[]>([])
   const [favWorks, setFavWorks] = useState<{ tagId: string; name: string; slug: string | null; cover: string | null }[]>([])
   const [featWork, setFeatWork] = useState<string | null>(null)
-  const [tab, setTab] = useState('frame')
+  const sp = useSearchParams()
+  const [tab, setTab] = useState(sp.get('tab') ?? 'frame')
   /* 필터 — 아이템이 많아지면 '내가 뭘 갖고 있지?'를 찾기가 어려워진다.
      보유 상태 × 등급, 두 축이면 충분하다. */
   const [owned, setOwned] = useState<'all' | 'mine'>('all')
