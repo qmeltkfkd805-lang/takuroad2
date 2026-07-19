@@ -173,7 +173,9 @@ export async function getWornBatch(userIds: string[]): Promise<Map<string, WornS
 
   const cosIds = new Set<string>()
   for (const p of rows) {
-    for (const v of Object.values((p.equipped ?? {}) as Record<string, unknown>)) {
+    const eq = (p.equipped ?? {}) as Record<string, any>
+    for (const k of ['frame', 'background', 'title', 'effect']) {
+      const v = eq[k]
       if (typeof v === 'string' && v) cosIds.add(v)
     }
   }
@@ -190,10 +192,13 @@ export async function getWornBatch(userIds: string[]): Promise<Map<string, WornS
 
   for (const p of rows) {
     const worn: WornSet = {}
-    for (const [type, id] of Object.entries((p.equipped ?? {}) as Record<string, string>)) {
-      const c: any = byId.get(id)
-      if (c) (worn as any)[type] = { slug: c.slug, name: c.name, assetUrl: c.asset_url ?? null }
-    }
+    const eq2 = (p.equipped ?? {}) as Record<string, any>
+      for (const type of ['frame', 'background', 'title', 'effect']) {
+        const id = eq2[type]
+        if (typeof id !== 'string' || !id) continue
+        const c: any = byId.get(id)
+        if (c) (worn as any)[type] = { slug: c.slug, name: c.name, assetUrl: c.asset_url ?? null }
+      }
     out.set(p.id, worn)
   }
   return out

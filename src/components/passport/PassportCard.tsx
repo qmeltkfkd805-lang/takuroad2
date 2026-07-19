@@ -30,15 +30,17 @@ interface Props {
   passport: OtakuPassport
   isOwner?: boolean
   onCustomizeClick?: () => void
+  previewWorn?: any
 }
 
-export default function PassportCard({ passport, isOwner, onCustomizeClick }: Props) {
+export default function PassportCard({ passport, isOwner, onCustomizeClick, previewWorn }: Props) {
   const router = useRouter()
   const [showEdit, setShowEdit] = useState(false)
   const [nickname, setNickname] = useState(passport.nickname)
   const [tagline, setTagline2] = useState(passport.tagline)
   const [avatarUrl, setAvatarUrl] = useState(passport.avatarUrl)
-  const worn = useWorn(passport.userId)
+  const realWorn = useWorn(passport.userId)
+  const worn = (previewWorn && (previewWorn.frame || previewWorn.background || previewWorn.title)) ? { frame: previewWorn.frame ?? realWorn.frame, background: previewWorn.background ?? realWorn.background, title: previewWorn.title ?? realWorn.title, effect: realWorn.effect } : realWorn
 
   const issuedDate = new Date(passport.issuedAt).toLocaleDateString('ko-KR', {
     year: 'numeric', month: '2-digit', day: '2-digit',
@@ -64,7 +66,7 @@ export default function PassportCard({ passport, isOwner, onCustomizeClick }: Pr
       </div>
 
       <p className={styles.tagline}>
-        &quot;{tagline}&quot;
+        &quot;{isOwner ? tagline : passport.tagline}&quot;
         {isOwner && (
           <button className={styles.tagEditBtn} onClick={() => setShowEdit(true)} aria-label='프로필 수정'>
             <svg viewBox='0 0 24 24' width='13' height='13' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'><path d='M12 20h9'/><path d='M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z'/></svg>

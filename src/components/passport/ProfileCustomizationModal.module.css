@@ -1,12 +1,12 @@
 .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 24px; }
-.modal { background: var(--surface); border-radius: 24px; width: 100%; max-width: 900px; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 16px 50px rgba(0,0,0,.3); overflow: hidden; }
+.modal { background: var(--surface); border-radius: 24px; width: 100%; max-width: 960px; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 16px 50px rgba(0,0,0,.3); overflow: hidden; }
 .head { display: flex; justify-content: space-between; align-items: flex-start; padding: 22px 26px; border-bottom: 1px solid var(--border); }
 .head h2 { font-size: 20px; font-weight: 900; margin: 0; }
 .head p { font-size: 12px; color: var(--muted); margin: 4px 0 0; }
 .headRight { display: flex; align-items: center; gap: 12px; }
 .random { padding: 8px 14px; border: 1px solid var(--border); border-radius: 9999px; background: var(--surface2); font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
 .x { background: none; border: none; font-size: 18px; color: var(--muted); cursor: pointer; }
-.body { display: grid; grid-template-columns: 320px 1fr; gap: 24px; padding: 24px 26px; overflow-y: auto; }
+.body { display: grid; grid-template-columns: 380px 1fr; gap: 24px; padding: 24px 26px; overflow-y: auto; }
 .preview { min-width: 0; }
 .panel { min-width: 0; display: flex; flex-direction: column; gap: 16px; }
 .tabs { display: flex; gap: 6px; background: var(--surface2); border-radius: 12px; padding: 4px; }
@@ -32,8 +32,40 @@
 .err { color: #e8006f; font-size: 12px; text-align: center; padding: 0 0 12px; margin: 0; }
 
 /* 글자 검정 강제 */
-.modal, .modal h2, .modal h3, .modal p, .modal span, .modal b, .modal label, .modal input { color: var(--text); }
+.panel, .panel h2, .panel h3, .panel p, .panel span, .panel b, .panel label, .panel input, .head h2 { color: var(--text); }
 .head p, .label, .wornRow span, .soon, .hintText { color: var(--muted); }
 .tabOn { color: #fff; }
 .save { color: #fff; }
 .input { color: var(--text); }
+
+
+/* 아이템 그리드 (프레임·배경·칭호 탭) */
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.item { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px; border: 2px solid var(--border); border-radius: 14px; background: var(--surface); cursor: pointer; font-family: inherit; }
+.item:hover:not(:disabled) { border-color: var(--accent); }
+.itemOn { border-color: var(--accent); background: var(--accent-l); }
+.itemLock { opacity: .55; cursor: default; }
+.itemThumb { position: relative; width: 100%; aspect-ratio: 1; border-radius: 10px; background: var(--surface2); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.titleText { font-size: 12px; font-weight: 800; color: var(--accent); text-align: center; padding: 4px; }
+.lock { position: absolute; font-size: 20px; }
+.itemName { font-size: 12px; font-weight: 700; color: var(--text); text-align: center; }
+.itemCond { font-size: 10px; color: var(--muted); text-align: center; }
+
+
+/* /cosmetic 타일 동일 복제 */
+.tile { padding: 8px 8px 9px; border-radius: 13px; border: 1px solid var(--border); background: var(--surface); font-family: inherit; text-align: center; cursor: pointer; transition: transform .14s ease, border-color .14s ease; }
+.tile:hover { transform: translateY(-3px); border-color: var(--accent); }
+.tileOn { border-color: var(--accent); border-width: 2px; box-shadow: 0 6px 18px rgba(255,86,146,.18); }
+.tileLock { opacity: .55; }
+.tileLock:hover { opacity: .8; transform: none; }
+.thumb { position: relative; height: 52px; border-radius: 10px; margin-bottom: 7px; display: flex; align-items: center; justify-content: center; background: var(--surface2); overflow: hidden; }
+.thumbAvatar { width: 40px; height: 40px; border-radius: 50%; background: #EFEFF2; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; color: #A0A0AA; }
+.thumbTitle { font-size: 13px; font-weight: 900; color: var(--accent); }
+.lock { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); padding: 1px 8px; border-radius: 9999px; font-size: 10px; font-weight: 800; background: rgba(0,0,0,.55); color: #fff; }
+.tileName { font-size: 12px; font-weight: 800; margin-bottom: 3px; }
+.rarity { display: inline-block; padding: 1px 8px; border-radius: 9999px; font-size: 10px; font-weight: 800; }
+.r_common { background: var(--surface2); color: var(--muted); }
+.r_rare { background: #EAF2FF; color: #3D7FE0; }
+.r_epic { background: #F5EDFF; color: #8B4FD9; }
+.r_legendary { background: #FFF6E3; color: #D9930F; }
+.cond { margin-top: 6px; font-size: 10.5px; color: var(--muted); font-weight: 700; line-height: 1.4; }
