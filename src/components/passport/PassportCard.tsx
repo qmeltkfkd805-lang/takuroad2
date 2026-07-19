@@ -4,7 +4,7 @@ import { useState, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Icon } from '@/components/tds'
-import ProfileEditModal from './ProfileEditModal'
+import ProfileCustomizationModal from './ProfileCustomizationModal'
 import { setTagline } from '@/services/cosmeticService'
 import { OtakuPassport } from '@/services/passportService'
 import { RARITY_COLOR } from '@/services/badgeService'
@@ -183,13 +183,11 @@ export default function PassportCard({ passport, isOwner, onCustomizeClick }: Pr
         </div>
       </div>
       {showEdit && (
-        <ProfileEditModal
+        <ProfileCustomizationModal
+          passport={passport}
           userId={passport.userId}
-          initialNickname={passport.nickname}
-          initialTagline={tagline}
-          initialAvatar={avatarUrl}
           onClose={() => setShowEdit(false)}
-          onSaved={(v) => { setNickname(v.nickname); setTagline2(v.tagline); setAvatarUrl(v.avatar) }}
+          onSaved={(v) => { setNickname(v.nickname); setTagline2(v.tagline) }}
         />
       )}
     </div>
