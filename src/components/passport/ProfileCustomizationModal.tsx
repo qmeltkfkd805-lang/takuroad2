@@ -75,14 +75,13 @@ export default function ProfileCustomizationModal({ passport, userId, onClose, o
       const r = await setTagline(userId, tagline)
       if (!r.ok) { setSaving(false); return setErr('문구 저장 실패') }
     }
-    await Promise.all([
-      equipCosmetic(userId, 'frame', picked.frame),
-      equipCosmetic(userId, 'background', picked.background),
-      equipCosmetic(userId, 'title', picked.title),
-    ])
+    await equipCosmetic(userId, 'frame', picked.frame)
+    await equipCosmetic(userId, 'background', picked.background)
+    await equipCosmetic(userId, 'title', picked.title)
     setSaving(false)
     onSaved({ nickname: nick, tagline })
     onClose()
+    window.location.reload()
   }
 
   const itemsOf = (type: Tab) => cosmetics.filter(c => c.type === type)
