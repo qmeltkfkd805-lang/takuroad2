@@ -11,6 +11,7 @@ import ActivityFeed from '@/components/passport/ActivityFeed'
 import TitleBadgeSelector from '@/components/passport/TitleBadgeSelector'
 import ChronicleTimeline from '@/components/passport/ChronicleTimeline'
 import SavedShopsTab from './SavedShopsTab'
+import VisitedShopsTab from './VisitedShopsTab'
 import MyRoutesTab from './MyRoutesTab'
 import SavedRoutesTab from './SavedRoutesTab'
 import CompletedRoutesTab from './CompletedRoutesTab'
@@ -209,20 +210,7 @@ export default function ProfilePage() {
         )}
         {tab === 'customize' && <CosmeticPage />}
         {tab === 'growth' && <GrowthPage />}
-        {tab === 'visited' && (
-          passport && passport.recentVisits && passport.recentVisits.length > 0 ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '14px', padding: '16px' }}>
-              {passport.recentVisits.map((v, i) => (
-                <Link key={i} href={'/shop/' + v.slug} style={{ textDecoration: 'none' }}>
-                  <div style={{ aspectRatio: '4/3', borderRadius: '12px', overflow: 'hidden', background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)' }}>
-                    {v.image ? <img src={v.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span>?</span>}
-                  </div>
-                  <div style={{ marginTop: '6px', fontSize: '13px', fontWeight: 700, color: 'var(--text)' }}>{v.name}</div>
-                </Link>
-              ))}
-            </div>
-          ) : <div style={{ padding: '60px', textAlign: 'center', color: 'var(--muted)' }}>아직 방문한 샵이 없어요</div>
-        )}
+        {tab === 'visited' && <VisitedShopsTab userId={user.id} />}
         {tab === 'chronicle' && <ChroniclePage />}
         {tab === 'saved' && <SavedShopsTab userId={user.id} />}
         {tab === 'routes' && <MyRoutesTab userId={user.id} />}

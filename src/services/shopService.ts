@@ -644,6 +644,38 @@ export async function getSavedShops(userId: string): Promise<Shop[]> {
     .map(toShop)
 }
 
+// 내가 방문한 샵 전체 (check_ins 기반, 최근 방문순)
+export async function getVisitedShops(userId: string): Promise<Shop[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('check_ins')
+    .select(`
+      shops (
+        id, slug, name, description,
+        addr, country, region, city, district,
+        lat, lng, google_place_id,
+        place_id, floor, unit,
+        places ( slug, name, lat, lng ),
+        hours, parking, parking_note, shop_link, sns_links, phone,
+        start_date, end_date, event_info,
+        rating_avg, rating_count, visit_count, bookmark_count,
+        is_verified, is_claimed, status,
+        added_by, owner_id, created_at, updated_at,
+        shop_images ( image_url, is_cover, sort_order ),
+        shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+      )
+    `)
+    .eq('user_id', userId)
+    .order('check_in_date', { ascending: false })
+
+  if (error) return []
+  const seen = new Set<string>()
+  return (data ?? [])
+    .map((d: any) => d.shops)
+    .filter((s: any) => s && !seen.has(s.id) && seen.add(s.id))
+    .map(toShop)
+}
+
 // 내 인증 신청 전체 현황
 export async function getMyVerifyRequests(userId: string) {
   const supabase = createClient()

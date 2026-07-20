@@ -8,6 +8,7 @@ import PassportCard from '@/components/passport/PassportCard'
 import GrowthPage from '@/components/growth/GrowthPage'
 import BadgesTab from './BadgesTab'
 import SavedShopsTab from './SavedShopsTab'
+import VisitedShopsTab from './VisitedShopsTab'
 import MyRoutesTab from './MyRoutesTab'
 import SavedRoutesTab from './SavedRoutesTab'
 import CompletedRoutesTab from './CompletedRoutesTab'
@@ -107,18 +108,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
         {sub === 'chronicle' && <ChroniclePage />}
         {sub === 'growth' && <GrowthPage />}
         {sub === 'badges' && <BadgesTab userId={userId} />}
-        {sub === 'visited' && (
-          passport && passport.recentVisits && passport.recentVisits.length > 0 ? (
-            <div className={styles.visitGrid}>
-              {passport.recentVisits.map((v, i) => (
-                <Link key={i} href={'/shop/' + v.slug} className={styles.visitCard}>
-                  <div className={styles.visitThumb}>{v.image ? <img src={v.image} /> : <span>?</span>}</div>
-                  <span className={styles.visitName}>{v.name}</span>
-                </Link>
-              ))}
-            </div>
-          ) : <div className={styles.loading}>아직 방문한 샵이 없어요</div>
-        )}
+        {sub === 'visited' && <VisitedShopsTab userId={userId} />}
         {sub === 'saved' && <SavedShopsTab userId={userId} />}
         {sub === 'routes' && <MyRoutesTab userId={userId} />}
         {sub === 'savedroutes' && <SavedRoutesTab userId={userId} />}
