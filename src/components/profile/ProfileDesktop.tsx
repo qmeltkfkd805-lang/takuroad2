@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { OtakuPassport } from '@/services/passportService'
 import PassportCard from '@/components/passport/PassportCard'
 import GrowthPage from '@/components/growth/GrowthPage'
@@ -18,7 +19,7 @@ import ChroniclePage from '@/components/collection/ChroniclePage'
 import styles from './ProfileDesktop.module.css'
 
 type Sub = 'passport' | 'customize' | 'chronicle' | 'growth' | 'badges'
-  | 'saved' | 'routes' | 'savedroutes' | 'completed'
+  | 'visited' | 'saved' | 'routes' | 'savedroutes' | 'completed'
   | 'reviews' | 'comments' | 'shops' | 'verify'
 
 type Cat = 'profile' | 'collection' | 'explore' | 'activity'
@@ -34,6 +35,7 @@ const IA: { cat: Cat; label: string; subs: { key: Sub; label: string }[] }[] = [
     { key: 'badges', label: '배지' },
   ] },
   { cat: 'explore', label: '탐험', subs: [
+    { key: 'visited', label: '최근 방문' },
     { key: 'saved', label: '저장한 샵' },
     { key: 'routes', label: '내 루트' },
     { key: 'savedroutes', label: '저장한 루트' },
@@ -105,6 +107,18 @@ export default function ProfileDesktop({ passport, userId }: Props) {
         {sub === 'chronicle' && <ChroniclePage />}
         {sub === 'growth' && <GrowthPage />}
         {sub === 'badges' && <BadgesTab userId={userId} />}
+        {sub === 'visited' && (
+          passport && passport.recentVisits && passport.recentVisits.length > 0 ? (
+            <div className={styles.visitGrid}>
+              {passport.recentVisits.map((v, i) => (
+                <Link key={i} href={'/shop/' + v.slug} className={styles.visitCard}>
+                  <div className={styles.visitThumb}>{v.image ? <img src={v.image} /> : <span>?</span>}</div>
+                  <span className={styles.visitName}>{v.name}</span>
+                </Link>
+              ))}
+            </div>
+          ) : <div className={styles.loading}>아직 방문한 샵이 없어요</div>
+        )}
         {sub === 'saved' && <SavedShopsTab userId={userId} />}
         {sub === 'routes' && <MyRoutesTab userId={userId} />}
         {sub === 'savedroutes' && <SavedRoutesTab userId={userId} />}
