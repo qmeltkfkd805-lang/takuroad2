@@ -1,5 +1,5 @@
 .wrap {
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 24px;
   display: flex;
@@ -12,7 +12,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: 20px;
-  align-items: stretch;
+  align-items: start;
 }
 .passport { min-width: 0; }
 
@@ -21,7 +21,7 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 20px;
-  align-items: stretch;
+  align-items: start;
 }
 
 /* 공통 카드 */
