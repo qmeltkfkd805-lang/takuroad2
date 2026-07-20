@@ -32,9 +32,10 @@ interface Props {
   onCustomizeClick?: () => void
   previewWorn?: any
   compact?: boolean
+  hideRecentVisits?: boolean
 }
 
-export default function PassportCard({ passport, isOwner, onCustomizeClick, previewWorn, compact }: Props) {
+export default function PassportCard({ passport, isOwner, onCustomizeClick, previewWorn, compact, hideRecentVisits }: Props) {
   const router = useRouter()
   const [showEdit, setShowEdit] = useState(false)
   const [nickname, setNickname] = useState(passport.nickname)
@@ -129,7 +130,7 @@ export default function PassportCard({ passport, isOwner, onCustomizeClick, prev
         <StatBox icon="colorroute" label="완주한 루트" value={passport.pilgrimageCount} />
       </div>
 
-      {!compact && passport.recentVisits && passport.recentVisits.length > 0 && (
+      {!compact && !hideRecentVisits && passport.recentVisits && passport.recentVisits.length > 0 && (
           <div className={styles.recent}>
             <div className={styles.recentHead}>최근 방문</div>
             <div className={styles.recentRow}>
