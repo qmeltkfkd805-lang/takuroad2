@@ -24,7 +24,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
       <div className={styles.top}>
         <div className={styles.passport}>
           {passport && (
-            <PassportCard passport={passport} isOwner onCustomizeClick={() => router.push('/cosmetic')} />
+            <PassportCard passport={passport} isOwner compact onCustomizeClick={() => router.push('/cosmetic')} />
           )}
         </div>
         <div className={styles.card}><GrowthPreview userId={userId} /></div>

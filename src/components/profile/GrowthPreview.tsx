@@ -42,18 +42,6 @@ export default function GrowthPreview({ userId }: { userId: string }) {
         </Link>
       )}
 
-      {recent.length > 0 && (
-        <div className={styles.recent}>
-          <div className={styles.recentHead}>최근 해금</div>
-          {recent.map(b => (
-            <div key={b.id} className={styles.recentRow}>
-              <div className={styles.recentIcon}>{b.icon ? <img src={b.icon} /> : null}</div>
-              <span className={styles.recentName}>{b.name}</span>
-              <span className={styles.recentDate}>{fmtDate(b.earnedAt)}</span>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   )
 }
@@ -77,7 +65,6 @@ function Row({ s }: { s: GrowthSeries }) {
         <div className={styles.bar}><span style={{ width: pct + '%' }} /></div>
       </div>
       <div className={styles.num}>{s.complete ? '완료' : s.done + '/' + target}</div>
-      {!s.complete && <img className={styles.gift} src='/icons/colorgift.png' />}
     </div>
   )
 }

@@ -31,9 +31,10 @@ interface Props {
   isOwner?: boolean
   onCustomizeClick?: () => void
   previewWorn?: any
+  compact?: boolean
 }
 
-export default function PassportCard({ passport, isOwner, onCustomizeClick, previewWorn }: Props) {
+export default function PassportCard({ passport, isOwner, onCustomizeClick, previewWorn, compact }: Props) {
   const router = useRouter()
   const [showEdit, setShowEdit] = useState(false)
   const [nickname, setNickname] = useState(passport.nickname)
@@ -128,62 +129,62 @@ export default function PassportCard({ passport, isOwner, onCustomizeClick, prev
         <StatBox icon="colorroute" label="완주한 루트" value={passport.pilgrimageCount} />
       </div>
 
-      {passport.recentVisits && passport.recentVisits.length > 0 && (
-        <div className={styles.recent}>
-          <div className={styles.recentHead}>최근 방문</div>
-          <div className={styles.recentRow}>
-            {passport.recentVisits.map((v, i) => (
-              <Link key={i} href={'/shop/' + v.slug} className={styles.recentItem}>
-                <div className={styles.recentThumb}>
-                  {v.image ? <img src={v.image} /> : <span className={styles.recentNo}>?</span>}
-                </div>
-                <span className={styles.recentName}>{v.name}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* 가장 많이 찾은 작품 */}
-      {/* 가장 좋아하는 작품 + 대표 배지 (시안 하단 2칸) */}
-      <div className={styles.favRow}>
-        {passport.topVisitedSeries.length > 0 && (
-          <div className={styles.favWork}>
-            <div className={styles.favHead}><span>최애 작품</span>{isOwner && <button className={styles.favEdit} onClick={() => router.push('/cosmetic?tab=work')}>변경하기 ›</button>}</div>
-            <div className={styles.favWorkBody}>
-              <div className={styles.favPoster}>
-                {passport.topVisitedSeries[0].cover
-                  ? <img src={passport.topVisitedSeries[0].cover} />
-                  : <span className={styles.favNo}>?</span>}
-              </div>
-              <div className={styles.favInfo}>
-                <div className={styles.favName}>{passport.topVisitedSeries[0].name}</div>
-                <div className={styles.favCount}>관련 샵 {passport.topVisitedSeries[0].count}곳</div>
-              </div>
+      {!compact && passport.recentVisits && passport.recentVisits.length > 0 && (
+          <div className={styles.recent}>
+            <div className={styles.recentHead}>최근 방문</div>
+            <div className={styles.recentRow}>
+              {passport.recentVisits.map((v, i) => (
+                <Link key={i} href={'/shop/' + v.slug} className={styles.recentItem}>
+                  <div className={styles.recentThumb}>
+                    {v.image ? <img src={v.image} /> : <span className={styles.recentNo}>?</span>}
+                  </div>
+                  <span className={styles.recentName}>{v.name}</span>
+                </Link>
+              ))}
             </div>
           </div>
         )}
-        <div className={styles.favBadge}>
-          <div className={styles.favHead}><span>대표 배지</span>{isOwner && <button className={styles.favEdit} onClick={() => router.push('/cosmetic?tab=showcase')}>변경하기 ›</button>}</div>
-          {passport.featuredBadges.length > 0 ? (
-            <div className={styles.favBadgeRow}>
-              {passport.featuredBadges.map((b, i) => (
-                <span
-                  key={i}
-                  className={styles.favBadgeChip}
-                  style={{ borderColor: RARITY_COLOR[b.rarity as keyof typeof RARITY_COLOR] ?? 'var(--border)' }}
-                >
-                  {b.iconUrl && <img src={b.iconUrl} />}
-                </span>
-              ))}
+
+      {!compact && (
+        <div className={styles.favRow}>
+          {passport.topVisitedSeries.length > 0 && (
+            <div className={styles.favWork}>
+              <div className={styles.favHead}><span>최애 작품</span>{isOwner && <button className={styles.favEdit} onClick={() => router.push('/cosmetic?tab=work')}>변경하기 ›</button>}</div>
+              <div className={styles.favWorkBody}>
+                <div className={styles.favPoster}>
+                  {passport.topVisitedSeries[0].cover
+                    ? <img src={passport.topVisitedSeries[0].cover} />
+                    : <span className={styles.favNo}>?</span>}
+                </div>
+                <div className={styles.favInfo}>
+                  <div className={styles.favName}>{passport.topVisitedSeries[0].name}</div>
+                  <div className={styles.favCount}>관련 샵 {passport.topVisitedSeries[0].count}곳</div>
+                </div>
+              </div>
             </div>
-          ) : isOwner ? (
-            <button className={styles.favEmpty} onClick={onCustomizeClick}>대표 배지를 골라주세요 ›</button>
-          ) : (
-            <div className={styles.favEmptyText}>아직 대표 배지가 없어요</div>
           )}
+          <div className={styles.favBadge}>
+            <div className={styles.favHead}><span>대표 배지</span>{isOwner && <button className={styles.favEdit} onClick={() => router.push('/cosmetic?tab=showcase')}>변경하기 ›</button>}</div>
+            {passport.featuredBadges.length > 0 ? (
+              <div className={styles.favBadgeRow}>
+                {passport.featuredBadges.map((b, i) => (
+                  <span
+                    key={i}
+                    className={styles.favBadgeChip}
+                    style={{ borderColor: RARITY_COLOR[b.rarity as keyof typeof RARITY_COLOR] ?? 'var(--border)' }}
+                  >
+                    {b.iconUrl && <img src={b.iconUrl} />}
+                  </span>
+                ))}
+              </div>
+            ) : isOwner ? (
+              <button className={styles.favEmpty} onClick={onCustomizeClick}>대표 배지를 골라주세요 ›</button>
+            ) : (
+              <div className={styles.favEmptyText}>아직 대표 배지가 없어요</div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
       {showEdit && (
         <ProfileCustomizationModal
           passport={passport}

@@ -12,7 +12,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: 20px;
-  align-items: start;
+  align-items: stretch;
 }
 .passport { min-width: 0; }
 
@@ -21,7 +21,7 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 20px;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* 공통 카드 */
