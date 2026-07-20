@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import PassportCard from './PassportCard'
 import { OtakuPassport } from '@/services/passportService'
-import { updateNickname } from '@/services/shopService'
+import { updateNickname, uploadAvatar } from '@/services/shopService'
 import { setTagline, getMyCosmetics, getEquipped, equipCosmetic, Cosmetic } from '@/services/cosmeticService'
 import { FRAME_STYLE, bgStyle, RARITY_LABEL, fxClass } from '@/lib/cosmetics/style'
 import styles from './ProfileCustomizationModal.module.css'
@@ -27,6 +27,18 @@ export default function ProfileCustomizationModal({ passport, userId, onClose, o
   const [tab, setTab] = useState<Tab>('profile')
   const [nickname, setNickname] = useState(passport.nickname)
   const [tagline, setTag] = useState(passport.tagline)
+  const [avatar, setAvatar] = useState(passport.avatarUrl)
+  const fileRef = useRef<HTMLInputElement | null>(null)
+  const [uploadingAvatar, setUploadingAvatar] = useState(false)
+  async function onPickAvatar(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploadingAvatar(true)
+    const r = await uploadAvatar(passport.userId, file)
+    setUploadingAvatar(false)
+    if (r.ok && r.url) setAvatar(r.url)
+    else alert(r.error ?? '사진 업로드에 실패했어요')
+  }
   const [saving, setSaving] = useState(false)
   const [err, setErr] = useState('')
 
@@ -55,7 +67,7 @@ export default function ProfileCustomizationModal({ passport, userId, onClose, o
     title: toWornItem(byId(picked.title)),
   }
 
-  const preview: OtakuPassport = { ...passport, nickname, tagline }
+  const preview: OtakuPassport = { ...passport, nickname, tagline, avatarUrl: avatar }
 
   function pick(type: Tab, c: Cosmetic) {
     if (!c.unlocked) return
@@ -122,6 +134,18 @@ export default function ProfileCustomizationModal({ passport, userId, onClose, o
                     <div className={styles.wornRow}><span>프레임</span><b>{byId(picked.frame)?.name ?? '기본'}</b></div>
                     <div className={styles.wornRow}><span>배경</span><b>{byId(picked.background)?.name ?? '기본'}</b></div>
                     <div className={styles.wornRow}><span>칭호</span><b>{byId(picked.title)?.name ?? '없음'}</b></div>
+                  </section>
+                  <section className={styles.card}>
+                    <h3 className={styles.cardTitle}>프로필 사진</h3>
+                    <div className={styles.avatarBox}>
+                      <div className={styles.avatarPrev}>
+                        {avatar ? <img src={avatar} /> : <span>{nickname[0]}</span>}
+                      </div>
+                      <button className={styles.avatarBtn} onClick={() => fileRef.current?.click()} disabled={uploadingAvatar}>
+                        {uploadingAvatar ? '업로드 중...' : '사진 변경'}
+                      </button>
+                      <input ref={fileRef} type='file' accept='image/*' onChange={onPickAvatar} style={{ display: 'none' }} />
+                    </div>
                   </section>
                   <section className={styles.card}>
                     <label className={styles.field}>

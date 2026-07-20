@@ -69,3 +69,10 @@
 .r_epic { background: #F5EDFF; color: #8B4FD9; }
 .r_legendary { background: #FFF6E3; color: #D9930F; }
 .cond { margin-top: 6px; font-size: 10.5px; color: var(--muted); font-weight: 700; line-height: 1.4; }
+
+
+.avatarBox { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.avatarPrev { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900; }
+.avatarPrev img { width: 100%; height: 100%; object-fit: cover; }
+.avatarBtn { padding: 8px 18px; border: 1px solid var(--border); border-radius: 9999px; background: var(--surface2); color: var(--text); font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+.avatarBtn:disabled { opacity: .6; cursor: default; }

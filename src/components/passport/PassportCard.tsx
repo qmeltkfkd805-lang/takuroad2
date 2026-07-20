@@ -79,7 +79,7 @@ export default function PassportCard({ passport, isOwner, onCustomizeClick, prev
         <div className={styles.avatarWrap}>
           <UserAvatar
             userId={passport.userId}
-            src={avatarUrl}
+            src={isOwner ? avatarUrl : passport.avatarUrl}
             name={passport.nickname}
             size={88}
           />
