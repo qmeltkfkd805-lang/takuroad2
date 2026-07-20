@@ -20,10 +20,13 @@ import VerifyStatusTab from './VerifyStatusTab'
 import AccountSettingsTab from './AccountSettingsTab'
 import BadgesTab from './BadgesTab'
 import CollectionTab from './CollectionTab'
+import ChroniclePage from '@/components/collection/ChroniclePage'
+import GrowthPage from '@/components/growth/GrowthPage'
+import CosmeticPage from '@/components/cosmetic/CosmeticPage'
 import ProfileDesktop from './ProfileDesktop'
 import { useSearchParams } from 'next/navigation'
 
-type Tab = 'passport' | 'chronicle' | 'saved' | 'routes' | 'savedroutes' | 'completed' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
+type Tab = 'passport' | 'customize' | 'chronicle' | 'growth' | 'visited' | 'saved' | 'routes' | 'savedroutes' | 'completed' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
 
 const TABS: { key: Tab; label: string; icon: string }[] = [
   { key: 'passport',   label: '여권',         icon: '📔' },
@@ -40,12 +43,37 @@ const TABS: { key: Tab; label: string; icon: string }[] = [
   { key: 'collection', label: '컬렉션',       icon: '📦' },
   { key: 'settings',   label: '설정',         icon: '⚙️' },
 ]
+const MOBILE_IA: { cat: string; label: string; subs: { key: Tab; label: string }[] }[] = [
+  { cat: 'profile', label: '프로필', subs: [
+    { key: 'passport', label: '여권' },
+    { key: 'customize', label: '프로필 꾸미기' },
+  ] },
+  { cat: 'collection', label: '컬렉션', subs: [
+    { key: 'chronicle', label: '연대기' },
+    { key: 'growth', label: '성장센터' },
+    { key: 'badges', label: '배지' },
+  ] },
+  { cat: 'explore', label: '탐험', subs: [
+    { key: 'visited', label: '최근 방문' },
+    { key: 'saved', label: '저장한 샵' },
+    { key: 'routes', label: '내 루트' },
+    { key: 'savedroutes', label: '저장한 루트' },
+    { key: 'completed', label: '완주한 루트' },
+  ] },
+  { cat: 'activity', label: '활동', subs: [
+    { key: 'reviews', label: '내 후기' },
+    { key: 'comments', label: '내 댓글' },
+    { key: 'shops', label: '등록한 샵' },
+    { key: 'verify', label: '인증 현황' },
+  ] },
+]
 
 export default function ProfilePage() {
   const router = useRouter()
   const { user, profile, loading, signOut } = useAuth()
   const initialTab = (useSearchParams().get('tab') as Tab) ?? 'passport'
   const [tab, setTab] = useState<Tab>(initialTab)
+  const [openCat, setOpenCat] = useState<string | null>('profile')
   const [passport, setPassport] = useState<OtakuPassport | null>(null)
   const isDesktop = useIsDesktop()
 
@@ -130,20 +158,37 @@ export default function ProfilePage() {
           >로그아웃</button>
         </div>
 
-        <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '2px' }}>
-          {TABS.map(t => (
+        <div style={{ display: 'flex', gap: '4px', borderBottom: '1px solid var(--border)', marginBottom: '10px' }}>
+          {MOBILE_IA.map(c => (
             <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
+              key={c.cat}
+              onClick={() => setOpenCat(c.cat)}
+              style={{
+                padding: '9px 14px', border: 'none', background: 'none', cursor: 'pointer',
+                fontFamily: 'inherit', fontSize: '14px', fontWeight: 700,
+                color: openCat === c.cat ? 'var(--accent)' : 'var(--muted)',
+                borderBottom: openCat === c.cat ? '2px solid var(--accent)' : '2px solid transparent',
+                position: 'relative', top: '1px',
+              }}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
+        <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '2px' }}>
+          {MOBILE_IA.find(c => c.cat === openCat)?.subs.map(s => (
+            <button
+              key={s.key}
+              onClick={() => { if (s.key === 'customize') { router.push('/cosmetic'); return } setTab(s.key) }}
               style={{
                 padding: '7px 12px', borderRadius: '20px',
                 border: 'none', cursor: 'pointer', fontFamily: 'inherit',
-                background: tab === t.key ? 'var(--accent)' : 'var(--surface2)',
-                color: tab === t.key ? '#fff' : 'var(--text)',
+                background: tab === s.key ? 'var(--accent)' : 'var(--surface2)',
+                color: tab === s.key ? '#fff' : 'var(--text)',
                 fontWeight: 700, fontSize: '12px', whiteSpace: 'nowrap', flexShrink: 0,
               }}
             >
-              {t.icon} {t.label}
+              {s.label}
             </button>
           ))}
         </div>
@@ -152,19 +197,33 @@ export default function ProfilePage() {
       <div>
         {tab === 'passport' && (
           passport ? (
-            <>
-              <PassportCard
-                passport={passport}
-                isOwner
-                onCustomizeClick={() => router.push('/cosmetic')}
-              />
-              <ActivityFeed activities={passport.recentActivities} />
-            </>
+            <PassportCard
+              passport={passport}
+              isOwner
+              hideRecentVisits
+              onCustomizeClick={() => { setOpenCat('profile'); setTab('customize') }}
+            />
           ) : (
             <div style={{ padding: '60px', textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
           )
         )}
-        {tab === 'chronicle' && <ChronicleTimeline userId={user.id} />}
+        {tab === 'customize' && <CosmeticPage />}
+        {tab === 'growth' && <GrowthPage />}
+        {tab === 'visited' && (
+          passport && passport.recentVisits && passport.recentVisits.length > 0 ? (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '14px', padding: '16px' }}>
+              {passport.recentVisits.map((v, i) => (
+                <Link key={i} href={'/shop/' + v.slug} style={{ textDecoration: 'none' }}>
+                  <div style={{ aspectRatio: '4/3', borderRadius: '12px', overflow: 'hidden', background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)' }}>
+                    {v.image ? <img src={v.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span>?</span>}
+                  </div>
+                  <div style={{ marginTop: '6px', fontSize: '13px', fontWeight: 700, color: 'var(--text)' }}>{v.name}</div>
+                </Link>
+              ))}
+            </div>
+          ) : <div style={{ padding: '60px', textAlign: 'center', color: 'var(--muted)' }}>아직 방문한 샵이 없어요</div>
+        )}
+        {tab === 'chronicle' && <ChroniclePage />}
         {tab === 'saved' && <SavedShopsTab userId={user.id} />}
         {tab === 'routes' && <MyRoutesTab userId={user.id} />}
         {tab === 'savedroutes' && <SavedRoutesTab userId={user.id} />}
