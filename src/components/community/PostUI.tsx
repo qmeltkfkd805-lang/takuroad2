@@ -1,7 +1,7 @@
-﻿'use client'
+'use client'
 
-import { useState, useEffect, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { ROUTES } from '@/lib/constants/routes'
 import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
@@ -56,6 +56,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
   const [post, setPost] = useState(initial)
   const [imgIdx, setImgIdx] = useState(0)
   const [comments, setComments] = useState<PostComment[]>([])
+  const highlightId = useSearchParams().get('comment')
   const [commentText, setCommentText] = useState('')
   const [replyTo, setReplyTo] = useState<string | null>(null)
   const [replyText, setReplyText] = useState('')
@@ -216,9 +217,9 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 14 }}>
               {comments.map(c => (
                 <div key={c.id} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <CommentRow c={c} user={user} isAdmin={isAdmin} onLike={likeComment} onReply={(id) => { setReplyTo(replyTo === id ? null : id); setReplyText('') }} onDelete={removeComment} />
+                  <CommentRow c={c} highlight={c.id === highlightId} user={user} isAdmin={isAdmin} onLike={likeComment} onReply={(id) => { setReplyTo(replyTo === id ? null : id); setReplyText('') }} onDelete={removeComment} />
                   {c.replies.map(r => (
-                    <CommentRow key={r.id} c={r} isReply user={user} isAdmin={isAdmin} onLike={likeComment} onDelete={removeComment} />
+                    <CommentRow key={r.id} c={r} highlight={r.id === highlightId} isReply user={user} isAdmin={isAdmin} onLike={likeComment} onDelete={removeComment} />
                   ))}
                   {replyTo === c.id && user && (
                     <div style={{ display: 'flex', gap: 8, marginLeft: 28 }}>
@@ -380,13 +381,15 @@ function fmtDateTime(iso: string): string {
   return `${d.getFullYear()}.${p(d.getMonth() + 1)}.${p(d.getDate())}. ${p(d.getHours())}:${p(d.getMinutes())}`
 }
 
-function CommentRow({ c, isReply, user, isAdmin, onLike, onReply, onDelete }: {
-  c: PostComment; isReply?: boolean; user: { id: string } | null; isAdmin: boolean;
+function CommentRow({ c, isReply, highlight, user, isAdmin, onLike, onReply, onDelete }: {
+  c: PostComment; isReply?: boolean; highlight?: boolean; user: { id: string } | null; isAdmin: boolean;
   onLike: (c: PostComment) => void; onReply?: (id: string) => void; onDelete: (id: string) => void
 }) {
   const canDelete = isAdmin || (!!user && c.author?.id === user.id)
+  const rowRef = useRef<HTMLDivElement>(null)
+  useEffect(() => { if (highlight && rowRef.current) rowRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' }) }, [highlight])
   return (
-    <div style={{ display: 'flex', gap: 10, marginLeft: isReply ? 28 : 0 }}>
+    <div ref={rowRef} style={{ display: 'flex', gap: 10, marginLeft: isReply ? 28 : 0, background: highlight ? 'var(--accent-l)' : undefined, borderRadius: highlight ? 10 : undefined, padding: highlight ? '8px' : undefined, margin: highlight ? '-8px 0' : undefined, transition: 'background .3s' }}>
       {isReply && <span style={{ color: 'var(--muted)', flexShrink: 0, fontSize: 13, marginTop: 1 }}>↳</span>}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>

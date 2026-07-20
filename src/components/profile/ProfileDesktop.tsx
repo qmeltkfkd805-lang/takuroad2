@@ -13,6 +13,8 @@ import MyRoutesTab from './MyRoutesTab'
 import SavedRoutesTab from './SavedRoutesTab'
 import CompletedRoutesTab from './CompletedRoutesTab'
 import MyReviewsTab from './MyReviewsTab'
+import MyCommentsTab from './MyCommentsTab'
+import MyPostsTab from './MyPostsTab'
 import MyShopsTab from './MyShopsTab'
 import VerifyStatusTab from './VerifyStatusTab'
 import CosmeticPage from '@/components/cosmetic/CosmeticPage'
@@ -21,7 +23,7 @@ import styles from './ProfileDesktop.module.css'
 
 type Sub = 'passport' | 'customize' | 'chronicle' | 'growth' | 'badges'
   | 'visited' | 'saved' | 'routes' | 'savedroutes' | 'completed'
-  | 'reviews' | 'comments' | 'shops' | 'verify'
+  | 'posts' | 'reviews' | 'comments' | 'shops' | 'verify'
 
 type Cat = 'profile' | 'collection' | 'explore' | 'activity'
 
@@ -43,6 +45,7 @@ const IA: { cat: Cat; label: string; subs: { key: Sub; label: string }[] }[] = [
     { key: 'completed', label: '완주한 루트' },
   ] },
   { cat: 'activity', label: '활동', subs: [
+    { key: 'posts', label: '작성 글' },
     { key: 'reviews', label: '내 후기' },
     { key: 'comments', label: '내 댓글' },
     { key: 'shops', label: '등록한 샵' },
@@ -113,8 +116,9 @@ export default function ProfileDesktop({ passport, userId }: Props) {
         {sub === 'routes' && <MyRoutesTab userId={userId} />}
         {sub === 'savedroutes' && <SavedRoutesTab userId={userId} />}
         {sub === 'completed' && <CompletedRoutesTab userId={userId} />}
+        {sub === 'posts' && <MyPostsTab userId={userId} />}
         {sub === 'reviews' && <MyReviewsTab userId={userId} />}
-        {sub === 'comments' && <div className={styles.loading}>댓글 기능은 곧 추가될 예정이에요</div>}
+        {sub === 'comments' && <MyCommentsTab userId={userId} />}
         {sub === 'shops' && <MyShopsTab userId={userId} />}
         {sub === 'verify' && <VerifyStatusTab userId={userId} />}
       </div>

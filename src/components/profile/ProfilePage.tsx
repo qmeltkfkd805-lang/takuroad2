@@ -16,6 +16,8 @@ import MyRoutesTab from './MyRoutesTab'
 import SavedRoutesTab from './SavedRoutesTab'
 import CompletedRoutesTab from './CompletedRoutesTab'
 import MyReviewsTab from './MyReviewsTab'
+import MyCommentsTab from './MyCommentsTab'
+import MyPostsTab from './MyPostsTab'
 import MyShopsTab from './MyShopsTab'
 import VerifyStatusTab from './VerifyStatusTab'
 import AccountSettingsTab from './AccountSettingsTab'
@@ -27,7 +29,7 @@ import CosmeticPage from '@/components/cosmetic/CosmeticPage'
 import ProfileDesktop from './ProfileDesktop'
 import { useSearchParams } from 'next/navigation'
 
-type Tab = 'passport' | 'customize' | 'chronicle' | 'growth' | 'visited' | 'saved' | 'routes' | 'savedroutes' | 'completed' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
+type Tab = 'passport' | 'customize' | 'chronicle' | 'growth' | 'visited' | 'saved' | 'routes' | 'savedroutes' | 'completed' | 'posts' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
 
 const TABS: { key: Tab; label: string; icon: string }[] = [
   { key: 'passport',   label: '여권',         icon: '📔' },
@@ -62,6 +64,7 @@ const MOBILE_IA: { cat: string; label: string; subs: { key: Tab; label: string }
     { key: 'completed', label: '완주한 루트' },
   ] },
   { cat: 'activity', label: '활동', subs: [
+    { key: 'posts', label: '작성 글' },
     { key: 'reviews', label: '내 후기' },
     { key: 'comments', label: '내 댓글' },
     { key: 'shops', label: '등록한 샵' },
@@ -216,8 +219,9 @@ export default function ProfilePage() {
         {tab === 'routes' && <MyRoutesTab userId={user.id} />}
         {tab === 'savedroutes' && <SavedRoutesTab userId={user.id} />}
         {tab === 'completed' && <CompletedRoutesTab userId={user.id} />}
+        {tab === 'posts' && <MyPostsTab userId={user.id} />}
         {tab === 'reviews' && <MyReviewsTab userId={user.id} />}
-        {tab === 'comments' && <EmptyTab text="댓글 기능은 곧 추가될 예정이에요" />}
+        {tab === 'comments' && <MyCommentsTab userId={user.id} />}
         {tab === 'shops' && <MyShopsTab userId={user.id} />}
         {tab === 'verify' && <VerifyStatusTab userId={user.id} />}
         {tab === 'badges' && <BadgesTab userId={user.id} />}
