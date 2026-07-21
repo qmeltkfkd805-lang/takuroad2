@@ -327,6 +327,20 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
 
             {tab === 'intro' && (
               <div>
+                {shop.temporary_holiday_end && new Date(shop.temporary_holiday_end) >= new Date(new Date().toDateString()) && (
+                  <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', background: '#fdecec', border: '1px solid #f5c2c2', borderRadius: 14, padding: '18px 20px', marginBottom: 20 }}>
+                    <span style={{ fontSize: 22, flexShrink: 0, lineHeight: 1.2 }}>📢</span>
+                    <div>
+                      <div style={{ fontSize: 15, fontWeight: 900, color: '#c0392b', marginBottom: 4 }}>임시 휴무 안내</div>
+                      {(shop.temporary_holiday_start || shop.temporary_holiday_end) && (
+                        <div style={{ fontSize: 13.5, fontWeight: 700, color: '#c0392b', marginBottom: shop.temporary_holiday_message ? 6 : 0 }}>
+                          {shop.temporary_holiday_start}{shop.temporary_holiday_end && shop.temporary_holiday_end !== shop.temporary_holiday_start ? ' ~ ' + shop.temporary_holiday_end : ''}
+                        </div>
+                      )}
+                      {shop.temporary_holiday_message && <div style={{ fontSize: 14, lineHeight: 1.7, color: 'var(--text)', whiteSpace: 'pre-wrap' }}>{shop.temporary_holiday_message}</div>}
+                    </div>
+                  </div>
+                )}
                 {/* 소개 (+ 특징 칩) */}
                 <Section title="샵 소개">
                   {shop.description
