@@ -537,7 +537,7 @@ export async function getPendingVerifyRequests() {
   const { data, error } = await supabase
     .from('shop_verify_requests')
     .select(`
-      id, shop_id, user_id, note, evidence_url, status, created_at,
+      id, shop_id, user_id, note, evidence_url, extra, status, created_at,
       shops ( id, name, slug ),
       profiles!shop_verify_requests_user_id_fkey ( id, nickname )
     `)

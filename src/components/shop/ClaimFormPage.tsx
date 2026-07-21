@@ -54,7 +54,7 @@ export default function ClaimFormPage({ slug }: { slug: string }) {
     setPreview(f.type.startsWith('image/') ? URL.createObjectURL(f) : null)
   }
 
-  const canSubmit = manager.trim() && email.trim() && phone.trim() && bizName.trim() && bizNo.trim() && agree1 && agree2
+  const canSubmit = manager.trim() && email.trim() && phone.trim() && bizName.trim() && bizNo.trim() && file && agree1 && agree2
 
   async function submit() {
     if (!user || !shop || !canSubmit || submitting) return
@@ -125,7 +125,7 @@ export default function ClaimFormPage({ slug }: { slug: string }) {
         <F label="대표자명" val={owner} on={setOwner} ph="선택" />
       </div>
 
-      <h3 className={styles.section}>증빙 자료</h3>
+      <h3 className={styles.section}>증빙 자료<em className={styles.reqMark}>*</em></h3>
       <p className={styles.hint}>사업자등록증이 가장 좋아요. 없다면 매장 명함·내부 사진 등 운영을 증명할 자료를 올려주세요.</p>
       {!file ? (
         <button className={styles.fileBtn} onClick={() => fileRef.current?.click()}>📎 사업자등록증 / 증빙 자료 첨부</button>

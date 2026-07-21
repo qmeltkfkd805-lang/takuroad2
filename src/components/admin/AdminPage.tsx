@@ -207,7 +207,33 @@ export default function AdminPage() {
                 <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '8px' }}>
                   신청자: {req.profiles?.nickname ?? '알 수 없음'}
                 </p>
-                {req.note && (
+                {req.extra && (
+                  <div style={{ marginBottom: '10px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 800, color: 'var(--muted)', margin: '0 0 8px' }}>기본 정보</div>
+                    <div style={{ background: 'var(--surface2)', borderRadius: '10px', padding: '12px 14px', marginBottom: '12px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 16px', fontSize: '13px' }}>
+                      {req.extra.manager && <div><span style={{ color: 'var(--muted)', marginRight: 6 }}>담당자</span><b>{req.extra.manager}{req.extra.position ? ' (' + req.extra.position + ')' : ''}</b></div>}
+                      {req.extra.phone && <div><span style={{ color: 'var(--muted)', marginRight: 6 }}>연락처</span><b>{req.extra.phone}</b></div>}
+                      {req.extra.email && <div style={{ gridColumn: '1 / -1' }}><span style={{ color: 'var(--muted)', marginRight: 6 }}>이메일</span><b>{req.extra.email}</b></div>}
+                    </div>
+                    <div style={{ fontSize: '12px', fontWeight: 800, color: 'var(--muted)', margin: '0 0 8px' }}>사업자 정보</div>
+                    <div style={{ background: 'var(--surface2)', borderRadius: '10px', padding: '12px 14px', marginBottom: '12px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 16px', fontSize: '13px' }}>
+                      {req.extra.bizName && <div><span style={{ color: 'var(--muted)', marginRight: 6 }}>상호</span><b>{req.extra.bizName}</b></div>}
+                      {req.extra.bizNo && <div><span style={{ color: 'var(--muted)', marginRight: 6 }}>사업자번호</span><b>{req.extra.bizNo}</b></div>}
+                      {req.extra.owner && <div><span style={{ color: 'var(--muted)', marginRight: 6 }}>대표자</span><b>{req.extra.owner}</b></div>}
+                    </div>
+                    {Array.isArray(req.extra.features) && req.extra.features.length > 0 && (
+                      <div>
+                        <div style={{ fontSize: '12px', fontWeight: 800, color: 'var(--muted)', margin: '0 0 8px' }}>관리 희망 기능</div>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                          {req.extra.features.map((f: string) => (
+                            <span key={f} style={{ fontSize: '12px', fontWeight: 600, padding: '4px 10px', borderRadius: '9999px', background: 'var(--accent-l)', color: 'var(--accent)' }}>{f}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {req.note && !req.extra && (
                   <p style={{
                     fontSize: '13px', lineHeight: 1.6, color: 'var(--text)',
                     background: 'var(--surface2)', borderRadius: '8px',
