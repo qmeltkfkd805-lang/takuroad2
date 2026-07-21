@@ -198,9 +198,12 @@ export default function AdminPage() {
             verifyRequests.map(req => (
               <div key={req.id} style={{ padding: '16px', borderBottom: '1px solid var(--border)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                  <Link href={ROUTES.shop(req.shops?.slug ?? '')} target="_blank" style={{ fontWeight: 700, fontSize: '15px' }}>
-                    {req.shops?.name ?? '알 수 없음'}
-                  </Link>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Link href={ROUTES.shop(req.shops?.slug ?? '')} target="_blank" style={{ fontWeight: 700, fontSize: '15px' }}>
+                      {req.shops?.name ?? '알 수 없음'}
+                    </Link>
+                    {req.extra?.transfer && <span style={{ fontSize: '11px', fontWeight: 800, color: '#b45309', background: '#fef3c7', padding: '2px 8px', borderRadius: '9999px' }}>인증 이전 요청</span>}
+                  </span>
                   <span style={{ fontSize: '12px', color: 'var(--muted)' }}>
                     {new Date(req.created_at).toLocaleDateString('ko-KR')}
                   </span>

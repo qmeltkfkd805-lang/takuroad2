@@ -17,6 +17,7 @@ export default function ClaimFormPage({ slug }: { slug: string }) {
   const [shop, setShop] = useState<Shop | null>(null)
   const [loading, setLoading] = useState(true)
   const [already, setAlready] = useState<{ status: string } | null>(null)
+  const [transferMode, setTransferMode] = useState(false)
 
   const [manager, setManager] = useState('')
   const [position, setPosition] = useState('')
@@ -63,6 +64,7 @@ export default function ClaimFormPage({ slug }: { slug: string }) {
     const extra = {
       manager, position, email, phone, bizName, bizNo, owner,
       features, shopName: shop.name, shopAddr: shop.addr,
+      transfer: transferMode || undefined,
     }
     const ok = await requestShopVerify(shop.id, user.id, note, file, extra)
     setSubmitting(false)
@@ -82,6 +84,19 @@ export default function ClaimFormPage({ slug }: { slug: string }) {
           <h2 className={styles.doneTitle}>인증 신청이 접수되었어요</h2>
           <p className={styles.doneDesc}>운영진이 검토 후 결과를 알려드릴게요.</p>
           <Link href="/mypage" className={styles.doneBtn}>마이페이지로</Link>
+        </div>
+      </div>
+    )
+  }
+
+  if (shop.is_claimed && shop.owner_id !== user.id && !transferMode) {
+    return (
+      <div className={styles.wrap}>
+        <div className={styles.done}>
+          <div className={styles.doneIcon} style={{ background: 'var(--yellow, #f59e0b)' }}>!</div>
+          <h2 className={styles.doneTitle}>{shop.name}</h2>
+          <p className={styles.doneDesc}>이미 인증된 매장이에요. 실제 사장님이시라면 인증 이전을 요청할 수 있어요. 운영진이 확인 후 처리해 드릴게요.</p>
+          <button className={styles.doneBtn} style={{ border: 'none', cursor: 'pointer' }} onClick={() => setTransferMode(true)}>인증 이전 요청하기</button>
         </div>
       </div>
     )
