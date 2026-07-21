@@ -8,6 +8,7 @@ export type ContactPayload = {
   email: string
   pageUrl?: string | null
   pageLabel?: string | null
+  attachmentUrls?: string[]
 }
 
 export async function createContactMessage(payload: ContactPayload): Promise<{ ok: boolean; id?: string; error?: string }> {
@@ -25,6 +26,7 @@ export async function createContactMessage(payload: ContactPayload): Promise<{ o
       user_id: user?.id ?? null,
       page_url: payload.pageUrl ?? null,
       page_label: payload.pageLabel ?? null,
+      attachment_urls: payload.attachmentUrls ?? [],
     } as any)
     .select('id')
     .single()
@@ -36,7 +38,7 @@ export async function getMyContactMessages(userId: string) {
   const supabase = createClient()
   const { data, error } = await supabase
     .from('contact_messages')
-    .select('id, type, title, content, status, created_at, answered_at, answer')
+    .select('id, type, title, content, status, created_at, answered_at, answer, attachment_urls')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
   if (error) return []
@@ -48,7 +50,7 @@ export async function getAllContactMessages(status?: string) {
   let q = supabase
     .from('contact_messages')
     .select('*')
-    .order('created_at', { ascending: false })
+    .order('created_at', { ascending: true })
   if (status && status !== 'all') q = q.eq('status', status)
   const { data, error } = await q
   if (error) return []
@@ -72,4 +74,19 @@ export async function updateContactMessage(
   const { error } = await supabase.from('contact_messages').update(upd).eq('id', id)
   if (error) return { ok: false, error: error.message }
   return { ok: true }
+}
+// ── 첨부파일 업로드 → 공개 URL 배열 ──
+export async function uploadContactFiles(files: File[]): Promise<string[]> {
+  if (!files.length) return []
+  const supabase = createClient()
+  const urls: string[] = []
+  for (const file of files) {
+    const ext = file.name.split('.').pop() || 'bin'
+    const path = `contact/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${ext}`
+    const { error } = await supabase.storage.from('contact-files').upload(path, file)
+    if (error) { console.error('[첨부 업로드 실패]', error.message); continue }
+    const { data } = supabase.storage.from('contact-files').getPublicUrl(path)
+    if (data?.publicUrl) urls.push(data.publicUrl)
+  }
+  return urls
 }

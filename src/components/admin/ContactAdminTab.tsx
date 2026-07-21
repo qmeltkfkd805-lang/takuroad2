@@ -93,6 +93,13 @@ function Detail({ m, onSaved }: { m: any; onSaved: () => void }) {
             ))}
           </div>
         )}
+        {m.attachment_urls?.length > 0 && (
+          <div className={styles.files}>
+            {m.attachment_urls.map((url: string, i: number) => (
+              <a key={i} href={url} target="_blank" rel="noreferrer" className={styles.fileLink}>📎 첨부 {i + 1}</a>
+            ))}
+          </div>
+        )}
         {m.page_url && <div className={styles.dMeta}>문의 위치: {m.page_label || m.page_url}</div>}
         <div className={styles.dMeta}>답변 이메일: {m.email}</div>
       </div>

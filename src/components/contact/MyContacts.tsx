@@ -60,6 +60,13 @@ export default function MyContacts({ refreshKey = 0 }: { refreshKey?: number }) 
                       <div className={styles.detail}>
                         <div className={styles.detailLabel}>문의 내용</div>
                         <p className={styles.detailContent}>{m.content}</p>
+                        {m.attachment_urls?.length > 0 && (
+                          <div className={styles.files}>
+                            {m.attachment_urls.map((url: string, i: number) => (
+                              <a key={i} href={url} target="_blank" rel="noreferrer" className={styles.fileLink}>📎 첨부 {i + 1}</a>
+                            ))}
+                          </div>
+                        )}
                         {m.answer
                           ? (
                             <div className={styles.answerBox}>

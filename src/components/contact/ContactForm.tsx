@@ -3,7 +3,7 @@ import { useState, useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { CONTACT_TYPES, FIELD_DEFS, FieldKey } from './contactConfig'
-import { createContactMessage } from '@/services/contactService'
+import { createContactMessage, uploadContactFiles } from '@/services/contactService'
 import styles from './ContactForm.module.css'
 
 export default function ContactForm({ onSent }: { onSent?: () => void }) {
@@ -42,9 +42,10 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
     for (const f of type.fields) {
       if (f !== 'title' && f !== 'content' && (values[f] ?? '').trim()) extra[f] = values[f]
     }
+    const attachmentUrls = files.length ? await uploadContactFiles(files) : []
     const res = await createContactMessage({
       type: typeKey, title, content, extra,
-      email: emailValue, pageUrl: fromPath, pageLabel: fromLabel,
+      email: emailValue, pageUrl: fromPath, pageLabel: fromLabel, attachmentUrls,
     })
     setSending(false)
     if (res.ok && res.id) { setSentId(res.id); onSent?.() }
