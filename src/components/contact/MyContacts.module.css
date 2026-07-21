@@ -11,3 +11,12 @@
 .pending { background: var(--surface2); color: var(--muted); }
 .processing { background: #fef3c7; color: #b45309; }
 .done { background: var(--accent-l); color: var(--accent); }
+
+.row { cursor: pointer; }
+.row:hover { background: var(--surface2); }
+.detailRow td { padding: 0; border-bottom: 1px solid var(--border); }
+.detail { padding: 16px 12px; background: var(--surface2); }
+.detailLabel { font-size: 11px; font-weight: 800; color: var(--muted); margin-bottom: 8px; }
+.detailContent { font-size: 13.5px; color: var(--text); line-height: 1.7; white-space: pre-wrap; margin: 0 0 12px; }
+.answered { font-size: 12px; color: var(--accent); font-weight: 700; margin: 0; }
+.waiting { font-size: 12px; color: var(--muted); margin: 0; }
