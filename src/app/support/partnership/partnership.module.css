@@ -1,0 +1,44 @@
+.wrap { max-width: 900px; margin: 0 auto; padding: 0 24px 100px; }
+
+/* 히어로 */
+.hero { text-align: center; padding: 72px 20px 64px; }
+.heroBadge { display: inline-block; font-size: 14px; font-weight: 800; color: var(--accent); background: var(--accent-l); padding: 8px 18px; border-radius: 9999px; margin-bottom: 24px; }
+.heroTitle { font-size: 40px; font-weight: 900; line-height: 1.25; color: var(--text); margin: 0 0 20px; }
+.heroDesc { font-size: 16px; color: var(--muted); line-height: 1.7; margin: 0 0 32px; }
+.heroCta { display: inline-block; padding: 15px 36px; background: var(--accent); color: #fff; font-size: 16px; font-weight: 800; border-radius: 9999px; text-decoration: none; transition: transform .12s; }
+.heroCta:hover { transform: translateY(-2px); }
+
+/* 섹션 공통 */
+.section { padding: 48px 0; }
+.sectionTitle { font-size: 24px; font-weight: 900; color: var(--text); text-align: center; margin: 0 0 36px; }
+
+/* 왜 제휴 — 4칸 그리드 */
+.provideGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.provideCard { text-align: center; padding: 28px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; }
+.provideIcon { font-size: 36px; display: block; margin-bottom: 14px; }
+.provideTitle { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.provideDesc { font-size: 13px; color: var(--muted); line-height: 1.6; margin: 0; }
+
+/* 제휴 종류 — 2열 카드 */
+.typeGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.typeCard { display: flex; gap: 16px; align-items: flex-start; padding: 22px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; }
+.typeIcon { font-size: 30px; flex-shrink: 0; }
+.typeTitle { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.typeDesc { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin: 0; }
+
+/* FAQ */
+.faqList { display: flex; flex-direction: column; gap: 14px; max-width: 680px; margin: 0 auto; }
+.faqItem { padding: 20px 24px; background: var(--surface2); border-radius: 14px; }
+.faqQ { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.faqA { font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0; }
+
+/* 폼 자리 (다음 단계) */
+.formSection { padding: 48px 0; scroll-margin-top: 80px; }
+.formPlaceholder { text-align: center; color: var(--muted); font-size: 14px; padding: 40px; background: var(--surface2); border-radius: 16px; }
+
+@media (max-width: 768px) {
+  .heroTitle { font-size: 30px; }
+  .provideGrid { grid-template-columns: repeat(2, 1fr); }
+  .typeGrid { grid-template-columns: 1fr; }
+  .section { padding: 36px 0; }
+}

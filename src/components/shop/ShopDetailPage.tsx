@@ -245,7 +245,7 @@ export default function ShopDetailPage({ shop }: Props) {
 
         {/* === 리뷰 === */}
         {!shop.is_claimed && (
-          <VerifyRequestButton shopId={shop.id} shopName={shop.name} accentColor={color} />
+          <VerifyRequestButton shopId={shop.id} shopName={shop.name} slug={shop.slug} accentColor={color} />
         )}
 
         <ReviewSection shopId={shop.id} shopName={shop.name} accentColor={color} />

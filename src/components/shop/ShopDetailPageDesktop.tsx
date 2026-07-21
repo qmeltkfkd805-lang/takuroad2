@@ -379,7 +379,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                       영업 중으로 표시되어 있어도 공휴일은 휴무입니다.
                     </div>
                   )}
-                  {!shop.is_claimed && <VerifyRequestButton shopId={shop.id} shopName={shop.name} accentColor={color} />}
+                  {!shop.is_claimed && <VerifyRequestButton shopId={shop.id} shopName={shop.name} slug={shop.slug} accentColor={color} />}
                   <ReportIssueButton shopId={shop.id} label="정보 수정 제안하기" variant="dashed" accentColor={color} />
                 </Section>
 

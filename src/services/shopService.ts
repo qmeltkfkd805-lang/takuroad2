@@ -442,7 +442,8 @@ export async function requestShopVerify(
   shopId: string,
   userId: string,
   note: string,
-  file: File | null
+  file: File | null,
+  extra: Record<string, any> = {}
 ): Promise<boolean> {
   const supabase = createClient()
   let evidenceUrl: string | null = null
@@ -467,6 +468,7 @@ export async function requestShopVerify(
       user_id: userId,
       note,
       evidence_url: evidenceUrl,
+      extra,
     } as any)
 
   return !error

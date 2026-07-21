@@ -1,0 +1,46 @@
+.wrap { max-width: 640px; margin: 0 auto; padding: 40px 24px 100px; }
+.msg { text-align: center; color: var(--muted); padding: 80px 0; }
+
+.shopBox { padding: 20px 24px; background: var(--accent-l); border-radius: 16px; margin-bottom: 32px; }
+.shopLabel { font-size: 12px; font-weight: 800; color: var(--accent); }
+.shopName { font-size: 20px; font-weight: 900; color: var(--text); margin: 6px 0 4px; }
+.shopAddr { font-size: 13px; color: var(--muted); }
+
+.section { font-size: 15px; font-weight: 800; color: var(--text); margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.hint { font-size: 13px; color: var(--muted); line-height: 1.6; margin: 0 0 12px; }
+
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.field { display: flex; flex-direction: column; margin-top: 14px; }
+.label { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 7px; }
+.reqMark { color: var(--accent); font-style: normal; margin-left: 3px; }
+.input { border: 1px solid var(--border); border-radius: 10px; padding: 11px 14px; font-size: 14px; font-family: inherit; background: var(--surface); color: var(--text); width: 100%; box-sizing: border-box; }
+.input:focus { outline: none; border-color: var(--accent); }
+
+.fileBtn { width: 100%; padding: 14px; border: 1.5px dashed var(--border); border-radius: 10px; background: var(--surface); color: var(--muted); font-size: 14px; cursor: pointer; font-family: inherit; }
+.fileBtn:hover { border-color: var(--accent); color: var(--accent); }
+.fileCard { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
+.thumb { width: 44px; height: 44px; object-fit: cover; border-radius: 8px; }
+.fileIcon { font-size: 28px; }
+.fileName { flex: 1; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fileDel { background: none; border: none; color: var(--red); font-size: 13px; cursor: pointer; }
+
+.checks { display: flex; flex-wrap: wrap; gap: 8px; }
+.check, .checkOn { padding: 9px 16px; border-radius: 9999px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--muted); user-select: none; }
+.checkOn { background: var(--accent-l); color: var(--accent); border-color: var(--accent); font-weight: 700; }
+
+.agrees { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
+.agree { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--muted); line-height: 1.5; cursor: pointer; }
+.agree input { margin-top: 2px; flex-shrink: 0; }
+
+.submit { margin-top: 28px; width: 100%; padding: 16px; border: none; border-radius: 12px; background: var(--accent); color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; font-family: inherit; }
+.submit:disabled { opacity: .4; cursor: not-allowed; }
+
+.done { text-align: center; padding: 60px 20px; }
+.doneIcon { width: 60px; height: 60px; border-radius: 9999px; background: var(--accent); color: #fff; font-size: 30px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+.doneTitle { font-size: 22px; font-weight: 900; color: var(--text); margin: 0 0 10px; }
+.doneDesc { font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0 0 24px; }
+.doneBtn { display: inline-block; padding: 13px 32px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 800; border-radius: 9999px; text-decoration: none; }
+
+@media (max-width: 768px) {
+  .row2 { grid-template-columns: 1fr; }
+}
