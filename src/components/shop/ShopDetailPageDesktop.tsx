@@ -221,6 +221,9 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                   </button>
                   {menuOpen && (
                     <div style={{ position: 'absolute', top: 44, right: 0, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 8px 24px rgba(0,0,0,.18)', overflow: 'hidden', minWidth: 150 }}>
+                      {!!user && shop.owner_id === user.id && shop.is_claimed && (
+                        <button onClick={() => { setMenuOpen(false); router.push('/shop/' + shop.slug + '/manage') }} style={{ ...menuItemStyle, fontWeight: 800, color: color }}>🏪 매장 관리</button>
+                      )}
                       <button onClick={() => { setMenuOpen(false); router.push(ROUTES.shopEdit(shop.slug)) }} style={menuItemStyle}>수정하기</button>
                       <button onClick={handleDelete} style={{ ...menuItemStyle, color: '#e04343', borderTop: '1px solid var(--border)' }}>샵 삭제하기</button>
                     </div>
@@ -228,7 +231,12 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                 </div>
               )}
               <div style={{ position: 'absolute', left: 24, bottom: 22, right: 24, color: '#fff' }}>
-                <h1 style={{ fontSize: 27, fontWeight: 900, lineHeight: 1.2, marginBottom: 10, textShadow: '0 2px 12px rgba(0,0,0,.4)' }}>{shop.name}</h1>
+                <h1 style={{ fontSize: 27, fontWeight: 900, lineHeight: 1.2, marginBottom: 10, textShadow: '0 2px 12px rgba(0,0,0,.4)' }}>
+                  {shop.name}
+                  {shop.is_claimed && (
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginLeft: 10, verticalAlign: 'middle', fontSize: 12, fontWeight: 800, color: '#fff', background: color, padding: '4px 10px', borderRadius: 9999, textShadow: 'none' }}>🏪 인증된 사장님</span>
+                  )}
+                </h1>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 9, flexWrap: 'wrap' }}>
                   {shop.rating_count > 0 && (
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: color, color: '#fff', fontWeight: 800, fontSize: 12.5, padding: '4px 10px', borderRadius: 9999 }}>
@@ -256,6 +264,15 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                     {holidayClosed && <span style={{ color: '#ffd0d0', fontWeight: 700 }}>· 공휴일 휴무</span>}
                     {yearRound && <span style={{ color: 'rgba(255,255,255,.9)' }}>· 연중무휴</span>}
                   </span>
+                  {shop.temporary_holiday_end && new Date(shop.temporary_holiday_end) >= new Date(new Date().toDateString()) && (
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,.18)', color: '#fff', borderRadius: 8, padding: '6px 12px', fontWeight: 800, fontSize: 12.5, alignSelf: 'flex-start', marginTop: 2, backdropFilter: 'blur(4px)' }}>
+                      <span style={{ color: '#ffb3b3' }}>📢 임시 휴무</span>
+                      <span style={{ fontWeight: 600, opacity: .95 }}>
+                        {shop.temporary_holiday_start}{shop.temporary_holiday_end && shop.temporary_holiday_end !== shop.temporary_holiday_start ? ' ~ ' + shop.temporary_holiday_end : ''}
+                        {shop.temporary_holiday_message ? ' · ' + shop.temporary_holiday_message : ''}
+                      </span>
+                    </span>
+                  )}
                   {shop.addr && (
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                       <Ico name="pin" size={14} /> {shop.addr}{shop.floor_info ? ` (${shop.floor_info})` : ''}

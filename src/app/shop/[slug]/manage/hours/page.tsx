@@ -1,7 +1,7 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { toShop } from '@/services/shopService'
-import ShopForm from '@/components/shop/ShopForm'
+import HoursManage from '@/components/shop/HoursManage'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -25,15 +25,19 @@ async function getShop(slug: string) {
     `)
     .eq('slug', slug)
     .maybeSingle()
-
   if (!data) return null
   return toShop(data)
 }
 
-export default async function ShopEditPage({ params }: Props) {
+export default async function Page({ params }: Props) {
   const { slug } = await params
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
+
   const shop = await getShop(slug)
   if (!shop) notFound()
+  if (!shop.is_claimed || shop.owner_id !== user.id) redirect(`/shop/${slug}`)
 
-  return <ShopForm mode="edit" shop={shop} />
+  return <HoursManage shop={shop} />
 }

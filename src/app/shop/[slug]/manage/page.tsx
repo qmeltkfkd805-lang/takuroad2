@@ -1,7 +1,7 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { toShop } from '@/services/shopService'
-import ShopForm from '@/components/shop/ShopForm'
+import ShopManagePage from '@/components/shop/ShopManagePage'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -25,15 +25,23 @@ async function getShop(slug: string) {
     `)
     .eq('slug', slug)
     .maybeSingle()
-
   if (!data) return null
   return toShop(data)
 }
 
-export default async function ShopEditPage({ params }: Props) {
+export default async function Page({ params }: Props) {
   const { slug } = await params
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
+
   const shop = await getShop(slug)
   if (!shop) notFound()
 
-  return <ShopForm mode="edit" shop={shop} />
+  // 권한 체크: 인증된 소유자만 (UI 숨김이 아니라 라우트에서 차단)
+  if (!shop.is_claimed || shop.owner_id !== user.id) {
+    redirect(`/shop/${slug}`)
+  }
+
+  return <ShopManagePage shop={shop} />
 }

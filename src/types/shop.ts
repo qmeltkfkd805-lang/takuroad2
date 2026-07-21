@@ -60,6 +60,9 @@ export interface Shop {
 
   is_verified: boolean
   is_claimed: boolean
+  temporary_holiday_start: string | null
+  temporary_holiday_end: string | null
+  temporary_holiday_message: string | null
   status: string
   added_by: string | null
   owner_id: string | null

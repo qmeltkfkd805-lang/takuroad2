@@ -22,6 +22,8 @@ async function getShopBySlugServer(slug: string) {
       hours, parking, parking_note, shop_link, sns_links, phone, floor_info, start_date, end_date, event_info,
       rating_avg, rating_count, visit_count, bookmark_count,
       is_verified, is_claimed, status,
+      temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
+      temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
       added_by, owner_id,
       created_at, updated_at,
       shop_images ( image_url, is_cover, sort_order ),

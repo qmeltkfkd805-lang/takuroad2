@@ -60,6 +60,9 @@ export function toShop(raw: any): Shop {
     bookmark_count: raw.bookmark_count ?? 0,
     is_verified:    raw.is_verified ?? false,
     is_claimed:     raw.is_claimed ?? false,
+    temporary_holiday_start:   raw.temporary_holiday_start ?? null,
+    temporary_holiday_end:     raw.temporary_holiday_end ?? null,
+    temporary_holiday_message: raw.temporary_holiday_message ?? null,
     status:         raw.status,
     added_by:       raw.added_by,
     owner_id:       raw.owner_id,
@@ -83,6 +86,7 @@ export async function getShops(): Promise<Shop[]> {
       start_date, end_date, event_info,
       rating_avg, rating_count, visit_count, bookmark_count,
       is_verified, is_claimed, status,
+      temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
       added_by, owner_id,
       created_at, updated_at,
       shop_images ( image_url, is_cover, sort_order ),
@@ -115,6 +119,7 @@ export async function getShopBySlug(slug: string): Promise<Shop | null> {
       start_date, end_date, event_info,
       rating_avg, rating_count, visit_count, bookmark_count,
       is_verified, is_claimed, status,
+      temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
       added_by, owner_id,
       created_at, updated_at,
       shop_images ( image_url, is_cover, sort_order ),
@@ -213,6 +218,9 @@ export async function createShop(
       start_date:   data.start_date || null,
       end_date:     data.end_date || null,
       event_info:   data.event_info || null,
+      temporary_holiday_start:   data.temporary_holiday_start ?? null,
+      temporary_holiday_end:     data.temporary_holiday_end ?? null,
+      temporary_holiday_message: data.temporary_holiday_message ?? null,
       place_id:     data.place_id || null,
       floor:        data.floor || null,
       unit:         data.unit || null,
@@ -290,6 +298,9 @@ export async function updateShop(
       start_date:   data.start_date || null,
       end_date:     data.end_date || null,
       event_info:   data.event_info || null,
+      temporary_holiday_start:   data.temporary_holiday_start ?? null,
+      temporary_holiday_end:     data.temporary_holiday_end ?? null,
+      temporary_holiday_message: data.temporary_holiday_message ?? null,
       place_id:     data.place_id ?? null,
       floor:        data.floor ?? null,
       unit:         data.unit ?? null,
@@ -327,18 +338,21 @@ export async function updateShop(
     }
   }
 
-  await supabase.from('shop_categories').delete().eq('shop_id', shopId)
+  // cats를 넘긴 경우에만 카테고리 갱신 (부분 업데이트 시 카테고리 보존)
+  if (data.cats !== undefined) {
+    await supabase.from('shop_categories').delete().eq('shop_id', shopId)
 
-  if (data.cats.length > 0) {
-    const { data: cats } = await supabase
-      .from('categories')
-      .select('id, name')
-      .in('name', data.cats)
+    if (data.cats.length > 0) {
+      const { data: cats } = await supabase
+        .from('categories')
+        .select('id, name')
+        .in('name', data.cats)
 
-    if (cats && cats.length > 0) {
-      await supabase
-        .from('shop_categories')
-        .insert(cats.map((c: any) => ({ shop_id: shopId, category_id: c.id })) as any)
+      if (cats && cats.length > 0) {
+        await supabase
+          .from('shop_categories')
+          .insert(cats.map((c: any) => ({ shop_id: shopId, category_id: c.id })) as any)
+      }
     }
   }
 
@@ -404,6 +418,7 @@ export async function getShopsByTag(tagSlug: string): Promise<Shop[]> {
         start_date, end_date, event_info,
         rating_avg, rating_count, visit_count, bookmark_count,
         is_verified, is_claimed, status,
+      temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
         added_by, owner_id, created_at, updated_at,
         shop_images ( image_url, is_cover, sort_order ),
         shop_categories ( categories ( name, slug, color, icon, bg_color ) )
@@ -503,6 +518,7 @@ export async function getPendingShops(): Promise<Shop[]> {
       start_date, end_date, event_info,
       rating_avg, rating_count, visit_count, bookmark_count,
       is_verified, is_claimed, status,
+      temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
       added_by, owner_id, created_at, updated_at,
       shop_images ( image_url, is_cover, sort_order ),
       shop_categories ( categories ( name, slug, color, icon, bg_color ) )
@@ -605,6 +621,7 @@ export async function getMyShops(userId: string): Promise<Shop[]> {
       start_date, end_date, event_info,
       rating_avg, rating_count, visit_count, bookmark_count,
       is_verified, is_claimed, status,
+      temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
       added_by, owner_id, created_at, updated_at,
       shop_images ( image_url, is_cover, sort_order ),
       shop_categories ( categories ( name, slug, color, icon, bg_color ) )
@@ -633,6 +650,7 @@ export async function getSavedShops(userId: string): Promise<Shop[]> {
         start_date, end_date, event_info,
         rating_avg, rating_count, visit_count, bookmark_count,
         is_verified, is_claimed, status,
+      temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
         added_by, owner_id, created_at, updated_at,
         shop_images ( image_url, is_cover, sort_order ),
         shop_categories ( categories ( name, slug, color, icon, bg_color ) )
@@ -664,6 +682,7 @@ export async function getVisitedShops(userId: string): Promise<Shop[]> {
         start_date, end_date, event_info,
         rating_avg, rating_count, visit_count, bookmark_count,
         is_verified, is_claimed, status,
+      temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
         added_by, owner_id, created_at, updated_at,
         shop_images ( image_url, is_cover, sort_order ),
         shop_categories ( categories ( name, slug, color, icon, bg_color ) )
@@ -796,4 +815,19 @@ export async function uploadAvatar(userId: string, file: File): Promise<{ ok: bo
 
   if (dbErr) return { ok: false, error: '저장에 실패했어요' }
   return { ok: true, url }
+}
+// ── 부분 업데이트: 넘긴 필드만 갱신 (사장님 관리 기능용 — 다른 필드 안 건드림) ──
+export async function updateShopFields(
+  shopId: string,
+  fields: Record<string, any>,
+  userId: string
+): Promise<boolean> {
+  const supabase = createClient()
+  const { data: prof } = await supabase.from('profiles').select('role').eq('id', userId).maybeSingle()
+  const isAdmin = (prof as any)?.role === 'admin'
+
+  let q = supabase.from('shops').update({ ...fields, info_last_confirmed_at: new Date().toISOString() } as any).eq('id', shopId)
+  if (!isAdmin) q = q.eq('owner_id', userId)
+  const { error } = await q
+  return !error
 }
