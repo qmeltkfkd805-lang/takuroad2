@@ -57,10 +57,10 @@ export default function Sidebar() {
         <Link href="/support/notice">공지사항</Link>
         <Link href="/support/contact">문의하기</Link>
         <Link href="/support/partnership">제휴 문의</Link>
-        <Link href="/policy/terms">이용약관</Link>
-        <Link href="/policy/privacy">개인정보처리방침</Link>
-        <Link href="/policy/copyright">저작권 안내</Link>
-        <Link href="/policy/rights">권리자 문의</Link>
+        <Link href="/policies/terms">이용약관</Link>
+        <Link href="/policies/privacy">개인정보처리방침</Link>
+        <Link href="/policies/copyright">저작권 안내</Link>
+        <Link href="/policies/rights">권리자 문의</Link>
         <span className={styles.footCopy}>© 2026 TAKUROAD</span>
       </nav>
     </div>

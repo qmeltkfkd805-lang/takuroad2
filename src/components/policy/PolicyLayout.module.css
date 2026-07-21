@@ -1,0 +1,18 @@
+.wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
+.head { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 2px solid var(--border); }
+.title { font-size: 28px; font-weight: 900; color: var(--text); margin: 0 0 10px; }
+.desc { font-size: 15px; color: var(--muted); line-height: 1.6; margin: 0; }
+.body { font-size: 14.5px; color: var(--text); line-height: 1.8; }
+.body h2 { font-size: 17px; font-weight: 800; margin: 32px 0 12px; color: var(--text); }
+.body h3 { font-size: 15px; font-weight: 700; margin: 20px 0 8px; }
+.body p { margin: 0 0 12px; }
+.body ul { margin: 0 0 16px; padding-left: 20px; }
+.body li { margin-bottom: 6px; }
+.body a { color: var(--accent); text-decoration: none; font-weight: 600; }
+.body a:hover { text-decoration: underline; }
+.body strong { font-weight: 700; }
+.updated { margin-top: 40px; font-size: 13px; color: var(--muted); }
+.foot { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+.home { font-size: 14px; color: var(--muted); text-decoration: none; font-weight: 600; }
+.home:hover { color: var(--accent); }
+.pending { padding: 20px; background: var(--surface2); border-radius: 12px; font-size: 14px; color: var(--muted); line-height: 1.7; }
