@@ -52,7 +52,6 @@ export default function Sidebar() {
       </nav>
 
       {user && <div className={styles.divider} />}
-      {user && <MeCard userId={user.id} src={profile?.avatar_url} name={profile?.nickname} />}
       {user && info && <LvCard info={info} />}
     </div>
   )
