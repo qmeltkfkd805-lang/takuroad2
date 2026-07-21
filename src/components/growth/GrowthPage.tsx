@@ -262,12 +262,11 @@ function ChallengeCard({ c, onGo }: { c: Challenge; onGo: () => void }) {
 
 function BadgeTile({ b }: { b: EarnedBadge }) {
   return (
-    <div className={`${styles.badge} ${styles['r_' + (b.rarity ?? 'common')]}`}>
+    <div className={`${styles.badge} ${styles['r_' + (b.rarity ?? 'common')]}`} title={b.earnedAt ? '획득: ' + b.earnedAt.slice(0, 10).replace(/-/g, '.') : undefined}>
       <div className={styles.badgeIcon}>
         {b.icon ? <img src={b.icon} alt="" /> : <MaskIcon name="star" size={20} color="var(--accent)" />}
       </div>
       <div className={styles.badgeName}>{b.name}</div>
-      <div className={styles.badgeDate}>{b.earnedAt.slice(0, 10).replace(/-/g, '.')}</div>
     </div>
   )
 }
