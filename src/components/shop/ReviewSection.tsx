@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getReviews, createReview, deleteReview, uploadReviewImages, recordReviewPhotos } from '@/services/reviewService'
 import { getComments, createComment, deleteComment, ReviewComment } from '@/services/commentService'
@@ -252,19 +253,23 @@ function ReviewItem({ review, currentUserId, onDelete, accentColor }: {
   const [commentText, setCommentText] = useState('')
   const [submittingComment, setSubmittingComment] = useState(false)
   const [highlighted, setHighlighted] = useState(false)
+  const sp = useSearchParams()
+  const targetReview = sp.get('review')
+  const targetComment = sp.get('comment')
   const d = new Date(review.created_at)
   const date = `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
 
   useEffect(() => {
     const hash = window.location.hash
-    if (hash === `#review-${review.id}`) {
+    if (hash === `#review-${review.id}` || targetReview === review.id) {
       loadComments()
       setShowComments(true)
       setHighlighted(true)
+      setTimeout(() => document.getElementById('review-' + review.id)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 500)
       const timer = setTimeout(() => setHighlighted(false), 2500)
       return () => clearTimeout(timer)
     }
-  }, [review.id])
+  }, [review.id, targetReview])
 
   function prev() {
     setImgIdx(i => (i !== null && i > 0 ? i - 1 : i))
@@ -273,6 +278,13 @@ function ReviewItem({ review, currentUserId, onDelete, accentColor }: {
   function next() {
     setImgIdx(i => (i !== null && i < review.images.length - 1 ? i + 1 : i))
   }
+
+  useEffect(() => {
+    if (targetComment && comments.length && comments.some(c => c.id === targetComment)) {
+      const el = document.getElementById('comment-' + targetComment)
+      el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }, [comments, targetComment])
 
   async function loadComments() {
     const data = await getComments(review.id)
@@ -308,7 +320,7 @@ function ReviewItem({ review, currentUserId, onDelete, accentColor }: {
       style={{
         padding: '14px', borderBottom: '1px solid var(--border)',
         borderRadius: '10px', margin: '0 -14px',
-        background: highlighted ? `${accentColor}12` : 'transparent',
+        background: highlighted ? 'var(--accent-l)' : 'transparent',
         transition: 'background 1s ease',
       }}
     >
@@ -384,9 +396,12 @@ function ReviewItem({ review, currentUserId, onDelete, accentColor }: {
       {showComments && (
         <div style={{ marginTop: '10px', paddingLeft: '8px' }}>
           {comments.map(c => (
-            <div key={c.id} style={{
-              display: 'flex', gap: '8px', padding: '8px 0',
+            <div key={c.id} id={'comment-' + c.id} style={{
+              display: 'flex', gap: '8px', padding: c.id === targetComment ? '8px' : '8px 0',
               borderTop: '1px solid var(--border)',
+              background: c.id === targetComment ? 'var(--accent-l)' : undefined,
+              borderRadius: c.id === targetComment ? 8 : undefined,
+              transition: 'background .3s',
             }}>
               <UserAvatar
                 userId={c.author?.id}
@@ -518,8 +533,5 @@ function ReviewItem({ review, currentUserId, onDelete, accentColor }: {
     </div>
   )
 }
-
-
-
 
 

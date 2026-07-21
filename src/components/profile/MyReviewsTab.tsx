@@ -17,6 +17,7 @@ export default function MyReviewsTab({ userId }: { userId: string }) {
       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
         <thead>
           <tr style={{ borderBottom: '2px solid var(--border)', color: 'var(--muted)', fontSize: 12, fontWeight: 700 }}>
+            <th style={{ textAlign: 'left', padding: '12px 8px', width: 70, whiteSpace: 'nowrap' }}>위치</th>
             <th style={{ textAlign: 'left', padding: '12px 8px' }}>샵</th>
             <th style={{ textAlign: 'left', padding: '12px 8px' }}>후기</th>
             <th style={{ textAlign: 'center', padding: '12px 8px', width: 70, whiteSpace: 'nowrap' }}>별점</th>
@@ -30,9 +31,10 @@ export default function MyReviewsTab({ userId }: { userId: string }) {
             reviews.map(r => (
               <tr
                 key={r.id}
-                onClick={() => router.push(ROUTES.shop(r.shops?.slug ?? ''))}
+                onClick={() => router.push(ROUTES.shop(r.shops?.slug ?? '') + '?review=' + r.id)}
                 style={{ borderBottom: '1px solid var(--border)', cursor: 'pointer' }}
               >
+                <td style={{ padding: '14px 8px', whiteSpace: 'nowrap' }}><span style={{ fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 9999, background: 'var(--surface2)', color: 'var(--muted)' }}>샵</span></td>
                 <td style={{ padding: '14px 8px', fontWeight: 700, whiteSpace: 'nowrap', maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.shops?.name ?? '삭제된 샵'}</td>
                 <td style={{ padding: '14px 8px', color: 'var(--text)', maxWidth: 280, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.content || '—'}</td>
                 <td style={{ padding: '14px 8px', textAlign: 'center', color: '#f59e0b', whiteSpace: 'nowrap' }}>★ {r.stars}</td>

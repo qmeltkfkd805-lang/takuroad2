@@ -12,7 +12,7 @@ export default function MyCommentsTab({ userId }: { userId: string }) {
     getAllMyComments(userId).then(data => { setComments(data); setLoading(false) })
   }, [userId])
   function go(c: any) {
-    if (c.kind === 'shop' && c.slug) router.push(ROUTES.shop(c.slug) + '?comment=' + c.id)
+    if (c.kind === 'shop' && c.slug) router.push(ROUTES.shop(c.slug) + '?comment=' + c.id + '&review=' + (c.reviewId ?? ''))
     else if (c.kind === 'post' && c.postId) router.push('/community/' + c.postId + '?comment=' + c.id)
   }
   if (loading) return <LoadingState />

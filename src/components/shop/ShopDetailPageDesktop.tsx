@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Shop } from '@/types/shop'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
@@ -157,6 +157,8 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
 
   // ── 탭: 페이지 전환 방식(활성 탭 내용만 렌더) ──
   const [tab, setTab] = useState<TabId>('intro')
+  const sp = useSearchParams()
+  useEffect(() => { if (sp.get('review') || sp.get('comment')) setTab('reviews') }, [sp])
 
   // ── Quick Actions ──
   const handleSave = async () => {

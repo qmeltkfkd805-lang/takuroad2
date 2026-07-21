@@ -82,7 +82,7 @@ export async function getAllMyComments(userId: string) {
   const supabase = createClient()
   const [rc, pc] = await Promise.all([
     supabase.from('review_comments')
-      .select('id, content, created_at, reviews ( shop_id, shops ( name, slug ) )')
+      .select('id, content, created_at, reviews ( id, shop_id, shops ( name, slug ) )')
       .eq('user_id', userId).eq('is_deleted', false)
       .order('created_at', { ascending: false }),
     supabase.from('post_comments')
@@ -103,7 +103,7 @@ export async function getAllMyComments(userId: string) {
   const reviewComments = (rc.data ?? []).map((c: any) => ({
     id: c.id, source: '후기', content: c.content, created_at: c.created_at,
     title: c.reviews?.shops?.name ?? '삭제된 샵',
-    slug: c.reviews?.shops?.slug ?? null, kind: 'shop' as const,
+    slug: c.reviews?.shops?.slug ?? null, reviewId: c.reviews?.id ?? null, kind: 'shop' as const,
   }))
   const postComments = (pc.data ?? []).map((c: any) => ({
     id: c.id, source: '커뮤니티', content: c.content, created_at: c.created_at,
