@@ -1,0 +1,70 @@
+.footer {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  margin-top: 40px;
+}
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 32px 32px;
+}
+
+/* 상단 그리드 — PC 4열, 모바일 세로 */
+.grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+.brandCol { display: flex; flex-direction: column; gap: 14px; }
+.logo { height: 28px; width: auto; object-fit: contain; align-self: flex-start; }
+.tagline { font-size: 13px; color: var(--muted); line-height: 1.6; margin: 0; }
+.sns { display: flex; gap: 10px; margin-top: 4px; }
+.snsBtn {
+  width: 36px; height: 36px; border-radius: 9999px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface2); color: var(--muted);
+  transition: background .15s, color .15s;
+}
+.snsBtn:hover { background: var(--accent-l); color: var(--accent); }
+
+.col { display: flex; flex-direction: column; }
+.colTitle { font-size: 13px; font-weight: 800; color: var(--text); margin: 0 0 14px; }
+.colList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.colLink { font-size: 13px; color: var(--muted); text-decoration: none; transition: color .15s; }
+.colLink:hover { color: var(--accent); }
+
+/* 저작권·면책 안내 */
+.notice {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.notice p { font-size: 12px; color: var(--muted); line-height: 1.7; margin: 0; }
+.notice .dim { color: var(--muted); opacity: .8; }
+.noticeLink { color: var(--accent); text-decoration: none; font-weight: 700; }
+.noticeLink:hover { text-decoration: underline; }
+
+/* 최하단 */
+.bottom {
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+.email { color: var(--muted); text-decoration: none; }
+.email:hover { color: var(--accent); }
+
+@media (max-width: 768px) {
+  .inner { padding: 36px 20px 28px; }
+  .grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .brandCol { grid-column: 1 / -1; }
+  .bottom { flex-direction: column; gap: 8px; align-items: flex-start; }
+}
+@media (max-width: 480px) {
+  .grid { grid-template-columns: 1fr; }
+}
