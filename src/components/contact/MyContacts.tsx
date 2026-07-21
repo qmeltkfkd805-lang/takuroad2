@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getMyContactMessages } from '@/services/contactService'
 import { CONTACT_TYPES } from './contactConfig'
@@ -47,27 +47,33 @@ export default function MyContacts({ refreshKey = 0 }: { refreshKey?: number }) 
             const st = STATUS[m.status] ?? STATUS.pending
             const open = openId === m.id
             return (
-              <>
-                <tr key={m.id} className={styles.row} onClick={() => setOpenId(open ? null : m.id)}>
+              <Fragment key={m.id}>
+                <tr className={styles.row} onClick={() => setOpenId(open ? null : m.id)}>
                   <td className={styles.type}>{typeLabel(m.type)}</td>
                   <td className={styles.subject}>{m.title}</td>
                   <td><span className={styles.badge + ' ' + styles[st.cls]}>{st.label}</span></td>
                   <td className={styles.date}>{new Date(m.created_at).toLocaleDateString('ko-KR')}</td>
                 </tr>
                 {open && (
-                  <tr key={m.id + '-d'} className={styles.detailRow}>
+                  <tr className={styles.detailRow}>
                     <td colSpan={4}>
                       <div className={styles.detail}>
                         <div className={styles.detailLabel}>문의 내용</div>
                         <p className={styles.detailContent}>{m.content}</p>
-                        {m.answered_at
-                          ? <p className={styles.answered}>답변 완료 · {new Date(m.answered_at).toLocaleDateString('ko-KR')}</p>
+                        {m.answer
+                          ? (
+                            <div className={styles.answerBox}>
+                              <div className={styles.answerLabel}>답변</div>
+                              <p className={styles.answerText}>{m.answer}</p>
+                              {m.answered_at && <span className={styles.answered}>답변 완료 · {new Date(m.answered_at).toLocaleDateString('ko-KR')}</span>}
+                            </div>
+                          )
                           : <p className={styles.waiting}>아직 답변 대기 중이에요. 평균 1~3일 안에 답변 드릴게요.</p>}
                       </div>
                     </td>
                   </tr>
                 )}
-              </>
+              </Fragment>
             )
           })}
         </tbody>
