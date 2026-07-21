@@ -203,7 +203,7 @@ export default function CosmeticPage() {
                   className={[styles.tab, tab === t.type ? styles.tabOn : ''].join(' ')}
                   onClick={() => setTab(t.type)}
                 >
-                  {t.label} <em>{got}/{total}</em>
+                  {t.label} {t.type !== 'work' && <em>{got}/{total}</em>}
                 </button>
               )
             })}

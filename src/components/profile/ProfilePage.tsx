@@ -65,8 +65,8 @@ const MOBILE_IA: { cat: string; label: string; subs: { key: Tab; label: string }
   ] },
   { cat: 'activity', label: '활동', subs: [
     { key: 'posts', label: '작성 글' },
-    { key: 'reviews', label: '내 후기' },
     { key: 'comments', label: '내 댓글' },
+    { key: 'reviews', label: '내 후기' },
     { key: 'shops', label: '등록한 샵' },
     { key: 'verify', label: '인증 현황' },
   ] },
