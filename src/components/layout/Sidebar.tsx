@@ -19,7 +19,6 @@ const NAV: NavItem[] = [
   { label: '루트', href: '/routes', icon: (<svg viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M7.6 16.4 16.4 7.6"/></svg>) },
   { label: '컬렉션', href: '/collection', icon: (<svg viewBox="0 0 24 24"><path d="M12 4l2.3 5.3 5.7.5-4.3 3.8 1.3 5.6L12 16.9 7 19.2l1.3-5.6L4 9.6l5.7-.5z"/></svg>) },
   { label: '커뮤니티', href: '/community', icon: (<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><path d="M16 5.5a3 3 0 0 1 0 5M20.5 20a5.5 5.5 0 0 0-4-5.3"/></svg>) },
-  { label: '마이페이지', href: '/profile', icon: (<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>) },
 ]
 
 export default function Sidebar() {
