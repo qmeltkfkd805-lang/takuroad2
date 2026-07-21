@@ -11,6 +11,7 @@ import {
 interface Props {
   shopId: string
   shopSlug: string
+  hideForm?: boolean
 }
 
 const EVENT_TYPES: ShopEventType[] = [
@@ -18,7 +19,7 @@ const EVENT_TYPES: ShopEventType[] = [
   'sold_out', 'discount', 'reservation', 'exchange_meet', 'fan_meet',
 ]
 
-export default function ShopEventManager({ shopId, shopSlug }: Props) {
+export default function ShopEventManager({ shopId, shopSlug, hideForm }: Props) {
   const { user } = useAuth()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [events, setEvents] = useState<any[]>([])
@@ -105,8 +106,9 @@ export default function ShopEventManager({ shopId, shopSlug }: Props) {
 
   return (
     <div>
+      {!hideForm && (
       <button
-        onClick={() => setShowForm(v => !v)}
+        onClick={() => { window.location.href = '/shop/' + shopSlug + '/manage/events' }}
         style={{
           width: '100%', padding: '11px', borderRadius: '10px', marginBottom: '16px',
           background: showForm ? 'var(--surface2)' : 'var(--accent)',
@@ -116,6 +118,7 @@ export default function ShopEventManager({ shopId, shopSlug }: Props) {
       >
         {showForm ? '취소' : '+ 새 소식 등록'}
       </button>
+      )}
 
       {showForm && (
         <div style={{

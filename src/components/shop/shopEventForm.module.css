@@ -1,0 +1,21 @@
+.wrap { max-width: 640px; margin: 0 auto; padding: 40px 24px 100px; }
+.back { font-size: 13px; font-weight: 700; color: var(--accent); text-decoration: none; }
+.title { font-size: 26px; font-weight: 900; color: var(--text); margin: 16px 0 8px; }
+.desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0 0 32px; }
+.label { display: block; font-size: 14px; font-weight: 800; color: var(--text); margin: 24px 0 10px; }
+.opt { font-weight: 500; color: var(--muted); font-size: 12.5px; }
+.types { display: flex; flex-wrap: wrap; gap: 8px; }
+.type, .typeOn { padding: 9px 15px; border-radius: 9999px; font-size: 13.5px; font-weight: 600; cursor: pointer; font-family: inherit; border: 1.5px solid var(--border); background: var(--surface); color: var(--muted); }
+.typeOn { border-color: var(--accent); background: var(--accent-l); color: var(--accent); font-weight: 700; }
+.input, .textarea { width: 100%; border: 1px solid var(--border); border-radius: 10px; padding: 13px 16px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--text); box-sizing: border-box; }
+.input:focus, .textarea:focus { outline: none; border-color: var(--accent); }
+.textarea { resize: vertical; line-height: 1.6; }
+.dates { display: flex; align-items: center; gap: 12px; }
+.tilde { color: var(--muted); flex-shrink: 0; }
+.imageBtn { padding: 14px 20px; border: 1.5px dashed var(--border); border-radius: 10px; background: var(--surface); color: var(--muted); font-size: 14px; cursor: pointer; font-family: inherit; }
+.imageBtn:hover { border-color: var(--accent); color: var(--accent); }
+.previewBox { position: relative; display: inline-block; }
+.preview { width: 140px; height: 140px; object-fit: cover; border-radius: 12px; }
+.previewDel { position: absolute; top: -8px; right: -8px; width: 26px; height: 26px; border-radius: 9999px; background: var(--red, #e04343); color: #fff; border: none; cursor: pointer; font-size: 13px; }
+.submit { margin-top: 36px; width: 100%; padding: 16px; border: none; border-radius: 12px; background: var(--accent); color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; font-family: inherit; }
+.submit:disabled { opacity: .5; cursor: not-allowed; }

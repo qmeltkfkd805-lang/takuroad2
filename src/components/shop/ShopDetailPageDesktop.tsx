@@ -484,7 +484,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                     )}
                   </>
                 )}
-                <button onClick={() => router.push(`/event/new?shop=${shop.slug}`)} style={dashedBtn}>
+                <button onClick={() => router.push(canManage && !!user && shop.owner_id === user.id && shop.is_claimed ? ('/shop/' + shop.slug + '/manage/events') : ('/event/new?shop=' + shop.slug))} style={dashedBtn}>
                   <Ico name="plus" size={15} /> 이벤트 등록하기
                 </button>
 
