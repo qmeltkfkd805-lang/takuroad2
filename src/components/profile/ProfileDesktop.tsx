@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { OtakuPassport } from '@/services/passportService'
 import PassportCard from '@/components/passport/PassportCard'
@@ -60,9 +60,11 @@ interface Props {
 
 export default function ProfileDesktop({ passport, userId }: Props) {
   const router = useRouter()
-  const [cat, setCat] = useState<Cat>('profile')
-  const [sub, setSub] = useState<Sub>('passport')
-  const [openCat, setOpenCat] = useState<Cat | null>('profile')
+  const urlTab = useSearchParams().get('tab') as Sub | null
+  const urlCat = urlTab ? (IA.find(c => c.subs.some(s => s.key === urlTab))?.cat ?? 'profile') : 'profile'
+  const [cat, setCat] = useState<Cat>(urlCat)
+  const [sub, setSub] = useState<Sub>(urlTab ?? 'passport')
+  const [openCat, setOpenCat] = useState<Cat | null>(urlCat)
 
   function toggleCat(c: Cat) {
     setOpenCat(prev => (prev === c ? null : c))

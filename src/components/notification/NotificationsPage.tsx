@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getNotifications, markAsRead, markAllAsRead, Notification } from '@/services/notificationService'
+import { getNotificationLink } from '@/services/notificationService'
 import { ROUTES } from '@/lib/constants/routes'
 
 const TYPE_ICON: Record<string, string> = {
@@ -39,7 +40,8 @@ export default function NotificationsPage() {
       setNotifications(prev => prev.map(n => n.id === noti.id ? { ...n, is_read: true } : n))
       window.dispatchEvent(new Event('noti-read'))
     }
-    if (noti.link) router.push(noti.link)
+    const dest = getNotificationLink(noti)
+    if (dest && dest !== '/') router.push(dest)
   }
 
   async function handleMarkAllRead() {

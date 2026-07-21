@@ -569,11 +569,13 @@ export async function approveVerifyRequest(requestId: string, shopId: string, us
   return !shopError
 }
 
-export async function rejectVerifyRequest(requestId: string): Promise<boolean> {
+export async function rejectVerifyRequest(requestId: string, reason?: string): Promise<boolean> {
   const supabase = createClient()
+  const patch: any = { status: 'rejected' }
+  if (reason && reason.trim()) patch.note = reason.trim()
   const { error } = await supabase
     .from('shop_verify_requests')
-    .update({ status: 'rejected' } as any)
+    .update(patch)
     .eq('id', requestId)
   return !error
 }

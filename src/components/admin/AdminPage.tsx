@@ -72,8 +72,9 @@ export default function AdminPage() {
   }
 
   async function handleRejectVerify(requestId: string) {
-    if (!confirm('이 인증 신청을 거절할까요?')) return
-    await rejectVerifyRequest(requestId)
+    const reason = prompt('거절 사유를 입력하세요. (신청자에게 표시됩니다)')
+    if (reason === null) return
+    await rejectVerifyRequest(requestId, reason)
     setVerifyRequests(prev => prev.filter(r => r.id !== requestId))
   }
 

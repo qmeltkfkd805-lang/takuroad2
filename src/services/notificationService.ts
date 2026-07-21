@@ -55,6 +55,7 @@ export async function markAllAsRead(userId: string): Promise<void> {
 
 // 알림이 가리키는 곳으로 이동할 링크 만들기
 export function getNotificationLink(noti: Notification, shopSlug?: string): string {
+  if (noti.type === 'verify_approved' || noti.type === 'verify_rejected') return '/profile?tab=verify'
   if (noti.link) return noti.link
   if (shopSlug) return `/shop/${shopSlug}`
   return '/'
