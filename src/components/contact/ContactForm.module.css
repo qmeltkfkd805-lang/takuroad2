@@ -40,3 +40,9 @@
   cursor: pointer; font-family: inherit; transition: opacity .15s;
 }
 .submit:disabled { opacity: .4; cursor: not-allowed; }
+
+.done { text-align: center; padding: 48px 20px; }
+.doneIcon { width: 56px; height: 56px; border-radius: 9999px; background: var(--accent); color: #fff; font-size: 28px; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
+.doneTitle { font-size: 19px; font-weight: 800; color: var(--text); margin: 0 0 8px; }
+.doneDesc { font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0 0 18px; }
+.doneId { display: inline-block; font-size: 14px; font-weight: 700; color: var(--accent); background: var(--accent-l); padding: 8px 18px; border-radius: 9999px; letter-spacing: .5px; }
