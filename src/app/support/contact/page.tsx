@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import ContactForm from '@/components/contact/ContactForm'
+import ContactSection from '@/components/contact/ContactSection'
 import styles from './contact.module.css'
 
 export const metadata = { title: '문의하기 · 타쿠로드' }
@@ -22,7 +22,7 @@ export default function Page() {
 
       <div className={styles.grid}>
         <div className={styles.formCol}>
-          <ContactForm />
+          <ContactSection />
         </div>
         <aside className={styles.side}>
           <h3 className={styles.sideTitle}>자주 찾는 도움말</h3>

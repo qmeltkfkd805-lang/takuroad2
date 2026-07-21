@@ -6,7 +6,7 @@ import { CONTACT_TYPES, FIELD_DEFS, FieldKey } from './contactConfig'
 import { createContactMessage } from '@/services/contactService'
 import styles from './ContactForm.module.css'
 
-export default function ContactForm() {
+export default function ContactForm({ onSent }: { onSent?: () => void }) {
   const { user } = useAuth()
   const sp = useSearchParams()
   const fromPath = sp.get('from')
@@ -47,7 +47,7 @@ export default function ContactForm() {
       email: emailValue, pageUrl: fromPath, pageLabel: fromLabel,
     })
     setSending(false)
-    if (res.ok && res.id) setSentId(res.id)
+    if (res.ok && res.id) { setSentId(res.id); onSent?.() }
     else alert('전송에 실패했어요. 잠시 후 다시 시도해 주세요.')
   }
 

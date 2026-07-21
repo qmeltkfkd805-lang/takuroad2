@@ -32,3 +32,13 @@ export async function createContactMessage(payload: ContactPayload): Promise<{ o
   if (error) return { ok: false, error: error.message }
   return { ok: true, id: (data as any)?.id }
 }
+export async function getMyContactMessages(userId: string) {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('contact_messages')
+    .select('id, type, title, content, status, created_at, answered_at')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+  if (error) return []
+  return data ?? []
+}

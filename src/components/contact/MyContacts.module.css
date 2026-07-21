@@ -1,0 +1,13 @@
+.wrap { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); }
+.title { font-size: 16px; font-weight: 800; color: var(--text); margin: 0 0 16px; }
+.table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.table thead tr { border-bottom: 2px solid var(--border); }
+.table th { text-align: left; padding: 12px 8px; color: var(--muted); font-size: 12px; font-weight: 700; white-space: nowrap; }
+.table tbody tr { border-bottom: 1px solid var(--border); }
+.type { padding: 14px 8px; color: var(--muted); white-space: nowrap; }
+.subject { padding: 14px 8px; font-weight: 700; color: var(--text); max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.date { padding: 14px 8px; color: var(--muted); font-size: 12px; white-space: nowrap; }
+.badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 9999px; white-space: nowrap; }
+.pending { background: var(--surface2); color: var(--muted); }
+.processing { background: #fef3c7; color: #b45309; }
+.done { background: var(--accent-l); color: var(--accent); }
