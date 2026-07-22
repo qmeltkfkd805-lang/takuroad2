@@ -8,7 +8,7 @@ const MENUS = [
   { key: 'hours', icon: '🕒', label: '영업시간', desc: '요일별 영업시간 관리', href: 'manage/hours' },
   { key: 'holiday', icon: '📢', label: '휴무 공지', desc: '임시 휴무 안내', href: 'manage/holiday' },
   { key: 'events', icon: '🎉', label: '이벤트', desc: '진행 중인 이벤트 등록', href: 'manage/events' },
-  { key: 'stock', icon: '📦', label: '입고 소식', desc: '신규 굿즈 입고 알림' },
+  { key: 'stock', icon: '📦', label: '입고 소식', desc: '재입고·신상품 소식 등록', href: 'manage/events/new?type=restock' },
   { key: 'photos', icon: '🖼️', label: '사진 관리', desc: '매장 사진 추가·정렬' },
 ]
 

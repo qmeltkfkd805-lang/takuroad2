@@ -3,6 +3,7 @@
 import { Shop } from '@/types/shop'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import { formatDistance } from '@/hooks/useCurrentLocation'
+import VerifiedBadge from './VerifiedBadge'
 
 interface ShopCardProps {
   shop: Shop
@@ -65,9 +66,7 @@ export default function ShopCard({ shop, isActive, onClick }: ShopCardProps) {
           }}>
             {shop.name}
           </span>
-          {shop.is_verified && (
-            <span style={{ fontSize: '12px', color: 'var(--cyan)' }}>✓</span>
-          )}
+          {(shop as any).is_claimed && <VerifiedBadge size={13} />}
           {shop.is_verified && (
             <span style={{ fontSize: '12px', color: 'var(--cyan)' }}>✓</span>
           )}

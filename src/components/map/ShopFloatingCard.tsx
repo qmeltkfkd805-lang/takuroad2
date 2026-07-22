@@ -6,6 +6,7 @@ import { ROUTES } from '@/lib/constants/routes'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import { getTodayStatus } from '@/lib/utils/date'
 import { formatDistance } from '@/hooks/useCurrentLocation'
+import VerifiedBadge from '../shop/VerifiedBadge'
 
 interface ShopFloatingCardProps {
   shop: Shop
@@ -70,6 +71,7 @@ export default function ShopFloatingCard({ shop, onClose, onToggleSave }: ShopFl
               fontSize: 15, fontWeight: 800, lineHeight: 1.25,
               overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
             }}>{shop.name}</span>
+            {(shop as any).is_claimed && <VerifiedBadge size={14} />}
             {shop.is_verified && (
               <span style={{
                 width: 15, height: 15, borderRadius: 9999, background: 'var(--cyan)', flexShrink: 0,

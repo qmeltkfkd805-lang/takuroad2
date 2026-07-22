@@ -16,7 +16,7 @@ import { deleteShop } from '@/services/shopService'
 import { getMyLevelInfo } from '@/services/expService'
 import KakaoMap, { KakaoMapRef } from '@/components/map/KakaoMap'
 import { Review } from '@/types/review'
-import { getActiveShopEvents } from '@/services/shopEventService'
+import { getActiveShopEvents, EVENT_TYPE_LABEL } from '@/services/shopEventService'
 import { getEventsByShop } from '@/services/eventService'
 import { EventStatusBadge } from '@/components/tds/EventStatusBadge'
 import ShopHighlights from './ShopHighlights'
@@ -24,6 +24,7 @@ import ShopProductAccordion from './ShopProductAccordion'
 import ShopAmenityBadges from './ShopAmenityBadges'
 import ReviewSection from './ReviewSection'
 import VerifyRequestButton from './VerifyRequestButton'
+import VerifiedBadge from './VerifiedBadge'
 import ReportIssueButton from './ReportIssueButton'
 import CheckInButton from './CheckInButton'
 
@@ -33,12 +34,13 @@ interface Props {
   onAddToRoute?: (shop: Shop) => void
 }
 
-type TabId = 'intro' | 'events' | 'works' | 'photos' | 'reviews'
+type TabId = 'intro' | 'events' | 'works' | 'photos' | 'stock' | 'reviews'
 const TABS: { id: TabId; label: string }[] = [
   { id: 'intro', label: '정보' },
   { id: 'events', label: '이벤트' },
   { id: 'works', label: '취급 작품' },
   { id: 'photos', label: '사진' },
+  { id: 'stock', label: '소식' },
   { id: 'reviews', label: '리뷰' },
 ]
 
@@ -132,13 +134,18 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
   }, [shop.lat, shop.lng])
   const [shopEvents, setShopEvents] = useState<any[]>([])
   useEffect(() => { getActiveShopEvents(shop.id).then(setShopEvents) }, [shop.id])
+  const stockNews = shopEvents.filter((e: any) => e.type !== 'event')
+  const visibleTabs = TABS.filter(t => t.id !== 'stock' || stockNews.length > 0)
+  const [stockModal, setStockModal] = useState<any | null>(null)
+  const [postMenu, setPostMenu] = useState(false)
+  const [eventMenu, setEventMenu] = useState(false)
   const [workEvents, setWorkEvents] = useState<any[]>([])
   useEffect(() => { getEventsByShop(shop.id).then(setWorkEvents) }, [shop.id])
   const [eventsPage, setEventsPage] = useState(0)
   const [selectedEvent, setSelectedEvent] = useState<any | null>(null)
   const allEvents = [
-    ...shopEvents.map((e: any) => ({ id: String(e.id), title: e.title, type: e.type, start: e.starts_at ?? null, end: e.ends_at ?? null, image: e.image_url ?? null, description: e.description ?? null })),
-    ...workEvents.map((e: any) => ({ id: `work-${e.id}`, title: e.title, type: e.type, start: e.startDate ?? null, end: e.endDate ?? null, image: null, description: null })),
+    ...shopEvents.filter((e: any) => e.type === 'event').map((e: any) => ({ id: String(e.id), source: 'shop', title: e.title, type: e.type, start: e.starts_at ?? null, end: e.ends_at ?? null, image: e.image_url ?? null, video: e.video_url ?? null, description: e.description ?? null })),
+    ...workEvents.map((e: any) => ({ id: `work-${e.id}`, source: 'work', title: e.title, type: e.type, start: e.startDate ?? null, end: e.endDate ?? null, image: null, video: null, description: null })),
   ]
   const EVENTS_PER_PAGE = 4
   const eventsTotalPages = Math.max(1, Math.ceil(allEvents.length / EVENTS_PER_PAGE))
@@ -231,10 +238,10 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                 </div>
               )}
               <div style={{ position: 'absolute', left: 24, bottom: 22, right: 24, color: '#fff' }}>
-                <h1 style={{ fontSize: 27, fontWeight: 900, lineHeight: 1.2, marginBottom: 10, textShadow: '0 2px 12px rgba(0,0,0,.4)' }}>
-                  {shop.name}
+                <h1 style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 27, fontWeight: 900, lineHeight: 1.2, marginBottom: 10, textShadow: '0 2px 12px rgba(0,0,0,.4)' }}>
+                  <span style={{ minWidth: 0 }}>{shop.name}</span>
                   {shop.is_claimed && (
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginLeft: 10, verticalAlign: 'middle', fontSize: 12, fontWeight: 800, color: '#fff', background: color, padding: '4px 10px', borderRadius: 9999, textShadow: 'none' }}>🏪 인증된 사장님</span>
+                    <span style={{ whiteSpace: 'nowrap', marginLeft: 8 }}><VerifiedBadge size={20} color={color} /></span>
                   )}
                 </h1>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 9, flexWrap: 'wrap' }}>
@@ -313,7 +320,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
               position: 'sticky', top: 0, zIndex: 50, background: 'var(--surface)',
               borderBottom: '1px solid var(--border)', marginBottom: 24, display: 'flex', gap: 4,
             }}>
-              {TABS.map(t => (
+              {visibleTabs.map(t => (
                 <button key={t.id} onClick={() => setTab(t.id)} style={{
                   padding: '14px 16px', border: 'none', background: 'transparent', cursor: 'pointer',
                   fontFamily: 'inherit', fontSize: 14.5, fontWeight: tab === t.id ? 800 : 600,
@@ -448,32 +455,38 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                   <p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 8 }}>진행 중인 이벤트·소식이 없어요.</p>
                 ) : (
                   <>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                       {pagedEvents.map(e => {
                         const dateRange = [evFmt(e.start), evFmt(e.end)].filter(Boolean).join(' ~ ')
                         return (
-                          <div key={e.id} onClick={() => setSelectedEvent(e)} style={{ display: 'flex', border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden', background: 'var(--surface)', cursor: 'pointer' }}>
-                            <div style={{ position: 'relative', width: 108, flexShrink: 0, background: e.image ? '#f5f2ee' : 'linear-gradient(135deg,#FFE3EC,#FFF0F5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                              {e.image
-                                ? <img src={e.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                : <svg width={32} height={32} viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" style={{ opacity: .55 }}><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4" /></svg>}
-                            </div>
-                            <div style={{ flex: 1, minWidth: 0, padding: '12px 14px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 5 }}>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                <span style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l, rgba(232,0,111,.08))', padding: '2px 8px', borderRadius: 9999 }}>{evLabel(e.type)}</span>
+                          <article key={e.id} onClick={() => setSelectedEvent(e)} style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', background: 'var(--surface)', cursor: 'pointer' }}>
+                            {(e as any).video ? (
+                              <video src={(e as any).video + '#t=0.1'} preload="metadata" muted playsInline style={{ width: '100%', maxHeight: 420, objectFit: 'cover', display: 'block', background: '#000' }} />
+                            ) : e.image ? (
+                              <img src={e.image} alt="" style={{ width: '100%', maxHeight: 420, objectFit: 'cover', display: 'block', background: '#000' }} />
+                            ) : (
+                              <div style={{ height: 150, background: 'linear-gradient(135deg,#FFE3EC,#FFF0F5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <svg width={40} height={40} viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" style={{ opacity: .5 }}><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4" /></svg>
+                              </div>
+                            )}
+                            <div style={{ padding: '16px 18px 18px' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 9 }}>
+                                <span style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l, rgba(232,0,111,.08))', padding: '3px 10px', borderRadius: 9999 }}>{evLabel(e.type)}</span>
                                 <EventStatusBadge startDate={e.start} endDate={e.end} now={new Date()} />
                               </div>
-                              <div style={{ fontSize: 14.5, fontWeight: 700, lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{e.title}</div>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: 'var(--muted)' }}>
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9B968D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21c-4.5-5.5-6.6-9.4-6.6-12.5a6.6 6.6 0 0 1 13.2 0c0 3.1-2.1 7-6.6 12.5z" /><circle cx="12" cy="8.5" r="2.3" /></svg>
-                                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{[shop.name, dateRange].filter(Boolean).join(' · ')}</span>
+                              <div style={{ fontSize: 17, fontWeight: 900, lineHeight: 1.35, marginBottom: 9 }}>{e.title}</div>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: 5, fontSize: 13, color: 'var(--muted)' }}>
+                                <span>📅 {dateRange || '상시'}</span>
+                                <span>📍 {shop.name}</span>
                               </div>
+                              {e.description && (
+                                <p style={{ fontSize: 14, lineHeight: 1.7, color: 'var(--text)', marginTop: 11, whiteSpace: 'pre-wrap', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{e.description}</p>
+                              )}
                             </div>
-                          </div>
+                          </article>
                         )
                       })}
-                    </div>
-                    {eventsTotalPages > 1 && (
+                    </div>                    {eventsTotalPages > 1 && (
                       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 10, marginTop: 16 }}>
                         <button onClick={() => setEventsPage(pg => Math.max(0, pg - 1))} disabled={eventsPage === 0} aria-label="이전" style={{ border: 'none', background: 'none', fontFamily: 'inherit', fontSize: 16, color: 'var(--muted)', padding: 2, cursor: eventsPage === 0 ? 'default' : 'pointer', opacity: eventsPage === 0 ? 0.3 : 1 }}>&lsaquo;</button>
                         {Array.from({ length: eventsTotalPages }).map((_, i) => (
@@ -491,7 +504,9 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                 {selectedEvent && (
                   <div onClick={() => setSelectedEvent(null)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 20 }}>
                     <div onClick={ev => ev.stopPropagation()} style={{ background: 'var(--surface)', borderRadius: 18, maxWidth: 440, width: '100%', maxHeight: '86vh', overflow: 'auto' }}>
-                      {selectedEvent.image ? (
+                      {selectedEvent.video ? (
+                        <video src={selectedEvent.video} controls playsInline style={{ width: '100%', maxHeight: 320, objectFit: 'contain', background: '#000', display: 'block' }} />
+                      ) : selectedEvent.image ? (
                         <img src={selectedEvent.image} alt="" style={{ width: '100%', height: 200, objectFit: 'cover', display: 'block' }} />
                       ) : (
                         <div style={{ height: 140, background: 'linear-gradient(135deg,#FFE3EC,#FFF0F5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -502,6 +517,16 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
                           <span style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l, rgba(232,0,111,.08))', padding: '3px 10px', borderRadius: 9999 }}>{evLabel(selectedEvent.type)}</span>
                           <EventStatusBadge startDate={selectedEvent.start} endDate={selectedEvent.end} now={new Date()} />
+                          {canManage && (
+                            <div style={{ marginLeft: 'auto', position: 'relative' }}>
+                              <button onClick={() => setEventMenu(o => !o)} style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: 19, color: 'var(--muted)', lineHeight: 1, padding: '2px 6px' }}>⋯</button>
+                              {eventMenu && (
+                                <div style={{ position: 'absolute', top: 26, right: 0, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.18)', overflow: 'hidden', minWidth: 130, zIndex: 3 }}>
+                                  <button onClick={() => { setEventMenu(false); router.push(selectedEvent.source === 'shop' ? ('/shop/' + shop.slug + '/manage/events/' + selectedEvent.id + '/edit') : ('/event/' + String(selectedEvent.id).replace('work-', '') + '/edit')) }} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '11px 14px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 600 }}>수정하기</button>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
                         <h3 style={{ fontSize: 19, fontWeight: 900, marginBottom: 14, lineHeight: 1.3 }}>{selectedEvent.title}</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 13.5, color: 'var(--muted)' }}>
@@ -579,6 +604,71 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
               </Section>
             )}
 
+            {tab === 'stock' && (
+              <Section title={'소식 ' + stockNews.length}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+                  {stockNews.map((v: any) => (
+                    <div key={v.id} onClick={() => setStockModal(v)} style={{ position: 'relative', aspectRatio: '1 / 1', overflow: 'hidden', cursor: 'pointer', background: '#000' }}>
+                      {v.video_url
+                        ? <video src={v.video_url + '#t=0.1'} preload="metadata" muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        : v.image_url
+                          ? <img src={v.image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          : <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg,#FFE3EC,#FFF0F5)' }} />}
+                      {v.video_url && <div style={{ position: 'absolute', top: 7, right: 7, color: '#fff', fontSize: 13, textShadow: '0 1px 4px rgba(0,0,0,.6)' }}>▶</div>}
+                      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,0) 42%)', pointerEvents: 'none' }} />
+                      <div style={{ position: 'absolute', left: 8, right: 8, bottom: 7, color: '#fff', fontSize: 11.5, fontWeight: 700, lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{v.title}</div>
+                    </div>
+                  ))}
+                </div>
+              </Section>
+            )}
+
+            {stockModal && (
+              <div onClick={() => setStockModal(null)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.88)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 24 }}>
+                <div onClick={ev => ev.stopPropagation()} style={{ display: 'flex', width: '100%', maxWidth: 900, maxHeight: '84vh', background: 'var(--surface)', borderRadius: 14, overflow: 'hidden' }}>
+                  <div style={{ flex: '1 1 auto', background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: 0 }}>
+                    {stockModal.video_url
+                      ? <video src={stockModal.video_url} controls autoPlay playsInline style={{ width: '100%', maxHeight: '84vh', objectFit: 'contain', display: 'block' }} />
+                      : stockModal.image_url
+                        ? <img src={stockModal.image_url} alt="" style={{ width: '100%', maxHeight: '84vh', objectFit: 'contain', display: 'block' }} />
+                        : <div style={{ width: '100%', aspectRatio: '1 / 1', background: 'linear-gradient(135deg,#FFE3EC,#FFF0F5)' }} />}
+                  </div>
+                  <div style={{ flex: '0 0 340px', display: 'flex', flexDirection: 'column', borderLeft: '1px solid var(--border)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '14px 16px', borderBottom: '1px solid var(--border)' }}>
+                      <div style={{ width: 34, height: 34, borderRadius: 9999, overflow: 'hidden', flexShrink: 0, background: 'var(--surface2)' }}>
+                        {images[0] && <img src={images[0]} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+                      </div>
+                      <span style={{ fontSize: 14, fontWeight: 800 }}>{shop.name}</span>
+                      {canManage && (
+                        <div style={{ marginLeft: 'auto', position: 'relative' }}>
+                          <button onClick={() => setPostMenu(o => !o)} style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: 19, color: 'var(--muted)', lineHeight: 1, padding: '2px 6px' }}>⋯</button>
+                          {postMenu && (
+                            <div style={{ position: 'absolute', top: 26, right: 0, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.18)', overflow: 'hidden', minWidth: 130, zIndex: 3 }}>
+                              <button onClick={() => { setPostMenu(false); router.push('/shop/' + shop.slug + '/manage/events/' + stockModal.id + '/edit') }} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '11px 14px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 600 }}>수정하기</button>
+                              <button onClick={() => { setPostMenu(false); router.push('/shop/' + shop.slug + '/manage/events') }} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '11px 14px', border: 'none', borderTop: '1px solid var(--border)', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13.5, color: 'var(--muted)' }}>소식 관리</button>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      <button onClick={() => { setPostMenu(false); setStockModal(null) }} style={{ marginLeft: canManage ? 4 : 'auto', border: 'none', background: 'none', cursor: 'pointer', fontSize: 20, color: 'var(--muted)', lineHeight: 1 }}>×</button>
+                    </div>
+                    <div style={{ flex: 1, overflowY: 'auto', padding: '16px' }}>
+                      <span style={{ display: 'inline-block', fontSize: 11.5, fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l, rgba(232,0,111,.08))', padding: '3px 9px', borderRadius: 9999, marginBottom: 10 }}>{EVENT_TYPE_LABEL[stockModal.type as keyof typeof EVENT_TYPE_LABEL] ?? stockModal.type}</span>
+                      <div style={{ fontSize: 15, fontWeight: 800, lineHeight: 1.45 }}>{stockModal.title}</div>
+                      {stockModal.description && <p style={{ fontSize: 14, lineHeight: 1.75, color: 'var(--text)', marginTop: 8, whiteSpace: 'pre-wrap' }}>{stockModal.description}</p>}
+                      {(stockModal.starts_at || stockModal.ends_at) && (
+                        <p style={{ fontSize: 12.5, color: 'var(--muted)', marginTop: 10 }}>
+                          {stockModal.starts_at}{stockModal.ends_at && stockModal.ends_at !== stockModal.starts_at ? ' ~ ' + stockModal.ends_at : ''}
+                        </p>
+                      )}
+                    </div>
+                    <div style={{ padding: '12px 16px', borderTop: '1px solid var(--border)', fontSize: 12, color: 'var(--muted)' }}>
+                      {new Date(stockModal.created_at).toLocaleDateString('ko-KR')}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             {tab === 'reviews' && (
               <Section title="리뷰">
                 <ReviewSection shopId={shop.id} shopName={shop.name} accentColor={color} />

@@ -71,6 +71,7 @@ export default function ShopDetailPage({ shop }: Props) {
         <ShopHeader
           name={shop.name}
           isVerified={shop.is_verified}
+          isClaimed={shop.is_claimed}
           cats={shop.cats}
           ratingAvg={shop.rating_avg}
           ratingCount={shop.rating_count}

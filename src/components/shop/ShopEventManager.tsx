@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import {
-  getAllShopEvents, createShopEvent, deactivateShopEvent,
+  getAllShopEvents, createShopEvent, deactivateShopEvent, setShopEventActive,
   pinShopEvent, deleteShopEvent, uploadEventImage, ShopEventType,
   EVENT_TYPE_ICON, EVENT_TYPE_LABEL,
 } from '@/services/shopEventService'
@@ -25,6 +25,7 @@ export default function ShopEventManager({ shopId, shopSlug, hideForm }: Props) 
   const [events, setEvents] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
+  const [managing, setManaging] = useState<any | null>(null)
   const [type, setType] = useState<ShopEventType>('notice')
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -84,13 +85,15 @@ export default function ShopEventManager({ shopId, shopSlug, hideForm }: Props) 
     setSubmitting(false)
   }
 
-  async function handleDeactivate(eventId: string) {
-    await deactivateShopEvent(eventId)
+  async function handleToggleActive(eventId: string, isActive: boolean) {
+    await setShopEventActive(eventId, !isActive)
+    setManaging((m: any) => (m && m.id === eventId ? { ...m, is_active: !isActive } : m))
     loadEvents()
   }
 
   async function handlePin(eventId: string, current: boolean) {
     await pinShopEvent(eventId, !current)
+    setManaging((m: any) => (m && m.id === eventId ? { ...m, is_pinned: !current } : m))
     loadEvents()
   }
 
@@ -224,64 +227,95 @@ export default function ShopEventManager({ shopId, shopSlug, hideForm }: Props) 
           아직 등록된 소식이 없어요
         </p>
       ) : (
-        events.map(event => {
-          const isExpired = event.ends_at && new Date(event.ends_at) < new Date()
-          return (
-            <div key={event.id} style={{
-              padding: '14px', borderRadius: '10px', marginBottom: '8px',
-              border: '1px solid var(--border)',
-              background: event.is_active && !isExpired ? 'var(--surface)' : 'var(--surface2)',
-              opacity: event.is_active && !isExpired ? 1 : 0.6,
-            }}>
-              {event.image_url && (
-                <img
-                  src={event.image_url}
-                  alt=""
-                  style={{ width: '100%', maxHeight: '200px', objectFit: 'contain', borderRadius: '8px', marginBottom: '8px', background: 'var(--surface2)' }}
-                />
-              )}
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                <span style={{ fontWeight: 700, fontSize: '13px' }}>
-                  {EVENT_TYPE_ICON[event.type as ShopEventType]} {event.title}
-                  {event.is_pinned && ' 📌'}
-                </span>
-                {!event.is_active && <span style={{ fontSize: '11px', color: 'var(--muted)' }}>비활성</span>}
-                {isExpired && event.is_active && <span style={{ fontSize: '11px', color: 'var(--muted)' }}>만료됨</span>}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px' }}>
+          {events.map(event => {
+            const isExpired = event.ends_at && new Date(event.ends_at) < new Date()
+            const dim = !event.is_active || isExpired
+            return (
+              <div
+                key={event.id}
+                onClick={() => setManaging(event)}
+                style={{ position: 'relative', aspectRatio: '1 / 1', overflow: 'hidden', cursor: 'pointer', background: '#000', opacity: dim ? 0.45 : 1 }}
+              >
+                {event.video_url
+                  ? <video src={event.video_url + '#t=0.1'} preload="metadata" muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  : event.image_url
+                    ? <img src={event.image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    : <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg,#FFE3EC,#FFF0F5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px' }}>{EVENT_TYPE_ICON[event.type as ShopEventType] ?? '📌'}</div>}
+                <div style={{ position: 'absolute', top: '5px', left: '6px', right: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  {event.is_pinned && <span style={{ fontSize: '11px' }}>📌</span>}
+                  {dim && <span style={{ fontSize: '9.5px', fontWeight: 800, color: '#fff', background: 'rgba(0,0,0,.6)', padding: '1px 6px', borderRadius: '9999px' }}>{!event.is_active ? '숨김' : '만료'}</span>}
+                  {event.video_url && <span style={{ marginLeft: 'auto', color: '#fff', fontSize: '12px', textShadow: '0 1px 4px rgba(0,0,0,.6)' }}>▶</span>}
+                </div>
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 45%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', left: '6px', right: '6px', bottom: '5px', color: '#fff', fontSize: '10.5px', fontWeight: 700, lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{event.title}</div>
               </div>
-              {event.description && (
-                <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '8px' }}>{event.description}</p>
-              )}
-              {(event.starts_at || event.ends_at) && (
-                <p style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '8px' }}>
-                  {event.starts_at ? new Date(event.starts_at).toLocaleDateString('ko-KR') : ''}
-                  {event.ends_at ? ` ~ ${new Date(event.ends_at).toLocaleDateString('ko-KR')}` : ''}
+            )
+          })}
+        </div>
+      )}
+
+      {managing && (
+        <div onClick={() => setManaging(null)} style={{ position: 'fixed', inset: 0, zIndex: 999, background: 'rgba(0,0,0,.75)', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--surface)', borderRadius: '20px 20px 0 0', width: '100%', maxWidth: '680px', maxHeight: '92vh', overflowY: 'auto' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '14px 16px', borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, background: 'var(--surface)', zIndex: 1 }}>
+              <span style={{ fontSize: '11.5px', fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l, rgba(232,0,111,.08))', padding: '3px 9px', borderRadius: '9999px' }}>
+                {EVENT_TYPE_LABEL[managing.type as ShopEventType] ?? managing.type}
+              </span>
+              {managing.is_pinned && <span style={{ fontSize: '11px' }}>📌</span>}
+              {!managing.is_active && <span style={{ fontSize: '11px', color: 'var(--muted)' }}>숨김</span>}
+              <button onClick={() => setManaging(null)} style={{ marginLeft: 'auto', background: 'none', border: 'none', fontSize: '22px', cursor: 'pointer', color: 'var(--muted)', lineHeight: 1 }}>✕</button>
+            </div>
+
+            {(managing.video_url || managing.image_url) && (
+              <div style={{ background: '#000', display: 'flex', justifyContent: 'center' }}>
+                {managing.video_url
+                  ? <video src={managing.video_url} controls playsInline style={{ width: '100%', maxHeight: '55vh', objectFit: 'contain', display: 'block' }} />
+                  : <img src={managing.image_url} alt="" style={{ width: '100%', maxHeight: '55vh', objectFit: 'contain', display: 'block' }} />}
+              </div>
+            )}
+
+            <div style={{ padding: '16px 18px' }}>
+              <div style={{ fontSize: '15px', fontWeight: 900, lineHeight: 1.45 }}>{managing.title}</div>
+              {managing.description && <p style={{ fontSize: '13.5px', lineHeight: 1.7, color: 'var(--muted)', marginTop: '8px', whiteSpace: 'pre-wrap' }}>{managing.description}</p>}
+              {(managing.starts_at || managing.ends_at) && (
+                <p style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '10px' }}>
+                  {managing.starts_at ? new Date(managing.starts_at).toLocaleDateString('ko-KR') : ''}
+                  {managing.ends_at ? ` ~ ${new Date(managing.ends_at).toLocaleDateString('ko-KR')}` : ''}
                 </p>
               )}
-              <div style={{ display: 'flex', gap: '6px' }}>
-                <button
-                  onClick={() => handlePin(event.id, event.is_pinned)}
-                  style={{ fontSize: '11px', padding: '4px 8px', borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', fontFamily: 'inherit' }}
-                >
-                  {event.is_pinned ? '고정 해제' : '상단 고정'}
-                </button>
-                {event.is_active && (
-                  <button
-                    onClick={() => handleDeactivate(event.id)}
-                    style={{ fontSize: '11px', padding: '4px 8px', borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', fontFamily: 'inherit' }}
-                  >
-                    종료하기
-                  </button>
-                )}
-                <button
-                  onClick={() => handleDelete(event.id)}
-                  style={{ fontSize: '11px', padding: '4px 8px', borderRadius: '6px', border: '1px solid var(--red)', color: 'var(--red)', background: 'var(--surface)', cursor: 'pointer', fontFamily: 'inherit' }}
-                >
-                  삭제
-                </button>
-              </div>
             </div>
-          )
-        })
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', padding: '0 18px 24px' }}>
+              <button
+                onClick={() => { window.location.href = '/shop/' + shopSlug + '/manage/events/' + managing.id + '/edit' }}
+                style={{ fontSize: '13px', fontWeight: 700, padding: '12px', borderRadius: '10px', border: '1px solid var(--accent)', color: 'var(--accent)', background: 'var(--surface)', cursor: 'pointer', fontFamily: 'inherit' }}
+              >수정</button>
+              <button
+                onClick={() => handlePin(managing.id, managing.is_pinned)}
+                style={{
+                  fontSize: '13px', fontWeight: 700, padding: '12px', borderRadius: '10px', cursor: 'pointer', fontFamily: 'inherit',
+                  border: managing.is_pinned ? '1px solid var(--accent)' : '1px solid var(--border)',
+                  background: managing.is_pinned ? 'var(--accent-l, rgba(232,0,111,.08))' : 'var(--surface)',
+                  color: managing.is_pinned ? 'var(--accent)' : 'var(--text)',
+                }}
+              >{managing.is_pinned ? '📌 고정됨' : '상단 고정'}</button>
+              <button
+                onClick={() => handleToggleActive(managing.id, managing.is_active)}
+                style={{
+                  fontSize: '13px', fontWeight: 700, padding: '12px', borderRadius: '10px', cursor: 'pointer', fontFamily: 'inherit',
+                  border: managing.is_active ? '1px solid var(--border)' : '1px solid var(--muted)',
+                  background: managing.is_active ? 'var(--surface)' : 'var(--surface2)',
+                  color: managing.is_active ? 'var(--text)' : 'var(--muted)',
+                }}
+              >{managing.is_active ? '숨김' : '숨김 해제'}</button>
+              <button
+                onClick={() => { handleDelete(managing.id); setManaging(null) }}
+                style={{ fontSize: '13px', fontWeight: 700, padding: '12px', borderRadius: '10px', border: '1px solid var(--red)', color: 'var(--red)', background: 'var(--surface)', cursor: 'pointer', fontFamily: 'inherit' }}
+              >삭제</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

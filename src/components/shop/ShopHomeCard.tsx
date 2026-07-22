@@ -1,4 +1,5 @@
 'use client'
+import VerifiedBadge from './VerifiedBadge'
 import { useRouter } from 'next/navigation'
 import { ROUTES } from '@/lib/constants/routes'
 import { shopRegion, shopDistrict } from '@/lib/utils/region'
@@ -36,7 +37,7 @@ export default function ShopHomeCard({ shop, rank }: { shop: ShopHomeItem; rank?
       </div>
 
       <div className={styles.body}>
-        <h3 className={styles.name} title={shop.name}>{shop.name}</h3>
+        <h3 className={styles.name} title={shop.name}>{shop.name}{(shop as any).is_claimed && <span style={{ marginLeft: 4, display: 'inline-flex', verticalAlign: 'middle' }}><VerifiedBadge size={14} /></span>}</h3>
         <p className={styles.place}>{placeLabel(shop)}</p>
 
         <div className={styles.stats}>
@@ -82,7 +83,7 @@ export function ShopMiniCard({
         <span className={badgeTone === 'event' ? styles.badgeEvent : styles.badgeNew}>{badge}</span>
       </div>
       <div className={styles.miniBody}>
-        <h4 className={styles.miniName} title={shop.name}>{shop.name}</h4>
+        <h4 className={styles.miniName} title={shop.name}>{shop.name}{(shop as any).is_claimed && <span style={{ marginLeft: 3, display: 'inline-flex', verticalAlign: 'middle' }}><VerifiedBadge size={12} /></span>}</h4>
         <p className={styles.miniSub} title={sub}>{sub}</p>
       </div>
     </article>

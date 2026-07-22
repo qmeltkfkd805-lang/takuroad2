@@ -1,6 +1,7 @@
-﻿'use client'
+'use client'
 import { useState } from 'react'
 import { CategoryChip } from './CategoryChip'
+import VerifiedBadge from './VerifiedBadge'
 
 interface TodayStatus {
   isOpen: boolean
@@ -18,6 +19,7 @@ interface HourRow {
 interface ShopHeaderProps {
   name: string
   isVerified: boolean
+  isClaimed?: boolean
   cats: string[]
   ratingAvg: number
   ratingCount: number
@@ -27,7 +29,7 @@ interface ShopHeaderProps {
 }
 
 export default function ShopHeader({
-  name, isVerified, cats, ratingAvg, ratingCount, todayStatus, hoursFormatted, color,
+  name, isVerified, isClaimed, cats, ratingAvg, ratingCount, todayStatus, hoursFormatted, color,
 }: ShopHeaderProps) {
   const [hoursOpen, setHoursOpen] = useState(false)
 
@@ -40,8 +42,9 @@ export default function ShopHeader({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-        <h1 style={{ fontSize: 24, fontWeight: 900, lineHeight: 1.25, letterSpacing: '-.02em', margin: 0 }}>
-          {name}
+        <h1 style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 24, fontWeight: 900, lineHeight: 1.25, letterSpacing: '-.02em', margin: 0 }}>
+          <span style={{ minWidth: 0 }}>{name}</span>
+          {isClaimed && <VerifiedBadge size={19} color={color} />}
         </h1>
         {isVerified && (
           <span style={{
@@ -130,6 +133,3 @@ export default function ShopHeader({
     </div>
   )
 }
-
-
-

@@ -19,3 +19,4 @@
 .previewDel { position: absolute; top: -8px; right: -8px; width: 26px; height: 26px; border-radius: 9999px; background: var(--red, #e04343); color: #fff; border: none; cursor: pointer; font-size: 13px; }
 .submit { margin-top: 36px; width: 100%; padding: 16px; border: none; border-radius: 12px; background: var(--accent); color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; font-family: inherit; }
 .submit:disabled { opacity: .5; cursor: not-allowed; }
+.videoPreview { width: 200px; max-height: 340px; border-radius: 12px; background: #000; display: block; }
