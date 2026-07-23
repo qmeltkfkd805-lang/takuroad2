@@ -9,6 +9,7 @@ import { createShop, searchShops } from '@/services/shopService'
 import { Shop } from '@/types/shop'
 import { generateSlug } from '@/lib/utils/shop'
 import { CATEGORIES } from '@/lib/constants/categories'
+import AppIcon from '@/components/tds/AppIcon'
 
 const TYPE_LABEL: Record<string, string> = {
   popup: '🎪 팝업스토어', collab_cafe: '☕ 콜라보 카페', exhibition: '🖼️ 전시',
@@ -74,7 +75,7 @@ export default function EventReviewPage() {
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--bg)', padding: '16px', maxWidth: '680px', margin: '0 auto' }}>
       <h1 style={{ fontSize: '20px', fontWeight: 900, color: 'var(--text)', margin: '4px 0 6px' }}>
-        🛡️ 이벤트 제보 검수
+        <AppIcon name="shield" size={17} style={{ marginRight: 6 }} />이벤트 제보 검수
       </h1>
       <p style={{ fontSize: '13px', color: 'var(--muted)', margin: '0 0 20px' }}>
         검수 대기 {queue.length}건 · 수정 후 승인할 수 있어요
@@ -235,13 +236,13 @@ function ReviewCard({ submission, reviewerId, onDone }: {
           제보 <b style={{ color: 'var(--text)' }}>{submission.submitterName}</b>
           <a href={`/work/${submission.tagId}`} target="_blank" rel="noopener noreferrer"
             style={{ color: 'var(--purple)', fontWeight: 700, textDecoration: 'none' }}>
-            🎮 {submission.tagName} ↗
+            <AppIcon name="game" size={13} style={{ marginRight: 5 }} />{submission.tagName} ↗
           </a>
         </span>
         <a href={submission.sourceUrl} target="_blank" rel="noopener noreferrer"
           style={{ fontSize: '13px', color: '#fff', background: 'var(--purple)', fontWeight: 700,
             padding: '6px 12px', borderRadius: 'var(--r-sm)', textDecoration: 'none' }}>
-          🔗 출처 확인
+          <AppIcon name="link" size={13} style={{ marginRight: 5 }} />출처 확인
         </a>
       </div>
 
@@ -294,7 +295,7 @@ function ReviewCard({ submission, reviewerId, onDone }: {
             <div style={{ padding: '12px', borderRadius: 'var(--r-sm)',
               border: '1px dashed var(--border)', background: 'var(--surface2)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <div>
-                <div style={{ fontSize: '13px', fontWeight: 700 }}>📍 제보된 장소: {snapName}</div>
+                <div style={{ fontSize: '13px', fontWeight: 700 }}><AppIcon name="pin" size={13} style={{ marginRight: 5 }} />제보된 장소: {snapName}</div>
                 {snapAddr && <div style={{ fontSize: '12px', color: 'var(--muted)' }}>{snapAddr}</div>}
               </div>
 
@@ -320,7 +321,7 @@ function ReviewCard({ submission, reviewerId, onDone }: {
                     {shopResults.map(sp => (
                       <div key={sp.id} onClick={() => matchExistingShop(sp)}
                         style={{ padding: '10px 12px', cursor: 'pointer', borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
-                        <div style={{ fontSize: '13px', fontWeight: 700 }}>📍 {sp.name}</div>
+                        <div style={{ fontSize: '13px', fontWeight: 700 }}><AppIcon name="pin" size={13} style={{ marginRight: 5 }} />{sp.name}</div>
                         {sp.addr && <div style={{ fontSize: '11px', color: 'var(--muted)' }}>{sp.addr}</div>}
                       </div>
                     ))}
@@ -340,7 +341,7 @@ function ReviewCard({ submission, reviewerId, onDone }: {
               </div>
 
               {/* 2. 새 Shop으로 만들기 */}
-              <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--accent)' }}>🆕 새 Shop으로 만들기</div>
+              <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--accent)' }}><AppIcon name="sparkle" size={12} style={{ marginRight: 5 }} />새 Shop으로 만들기</div>
 
               <div>
                 <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: 'var(--muted)', marginBottom: '4px' }}>
@@ -374,7 +375,7 @@ function ReviewCard({ submission, reviewerId, onDone }: {
                 style={{ padding: '10px', borderRadius: 'var(--r-sm)', border: 'none',
                   background: creatingShop ? 'var(--border)' : 'var(--accent)', color: '#fff',
                   fontSize: '13px', fontWeight: 700, cursor: creatingShop ? 'not-allowed' : 'pointer', fontFamily: 'inherit' }}>
-                {creatingShop ? '생성 중...' : '📍 이 장소로 새 Shop 생성'}
+                {creatingShop ? '생성 중...' : <><AppIcon name="pin" size={13} style={{ marginRight: 5 }} />이 장소로 새 Shop 생성</>}
               </button>
             </div>
           )}
@@ -402,12 +403,12 @@ function ReviewCard({ submission, reviewerId, onDone }: {
       {/* 미리보기 */}
       <div style={{ padding: '14px 16px', background: 'var(--surface2)', borderTop: '1px solid var(--border)' }}>
         <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--muted)', marginBottom: '8px' }}>
-          👁️ 승인 후 — 작품 홈 「새로운 소식」
+          <AppIcon name="eye" size={13} style={{ marginRight: 5 }} />승인 후 — 작품 홈 「새로운 소식」
         </div>
         <WorkEventList events={[preview]} />
 
         <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--muted)', margin: '14px 0 8px' }}>
-          👁️ 승인 후 — {snapName} 「진행 중인 이벤트」
+          <AppIcon name="eye" size={13} style={{ marginRight: 5 }} />승인 후 — {snapName} 「진행 중인 이벤트」
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 14px',
           borderRadius: 'var(--r-sm)', border: '1px solid var(--border)', background: 'var(--surface)' }}>

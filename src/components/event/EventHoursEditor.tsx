@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { BusinessHours } from '@/types/database'
 import { WEEKDAYS, WEEKDAY_LABEL } from '@/lib/constants/categories'
 import { isHolidayClosed } from '@/lib/event/eventHours'
+import AppIcon from '@/components/tds/AppIcon'
 
 /**
  * 이벤트 운영시간 입력 — 샵 등록 위저드와 같은 조작 방식.
@@ -54,10 +55,10 @@ export default function EventHoursEditor({
         <span style={{ color: 'var(--muted)' }}>~</span>
         <input type="time" value={bulkClose} onChange={e => setBulkClose(e.target.value)} style={timeInp} />
         <button onClick={toggleAllDays} style={toggle(allApplied)}>
-          {allApplied ? '✓ 모든 요일 적용' : '모든 요일 적용'}
+          {allApplied && <AppIcon name="check" size={12} style={{ marginRight: 4 }} />}모든 요일 적용
         </button>
         <button onClick={toggleHoliday} style={toggle(holiday)}>
-          {holiday ? '✓ 공휴일 휴무' : '공휴일 휴무'}
+          {holiday && <AppIcon name="check" size={12} style={{ marginRight: 4 }} />}공휴일 휴무
         </button>
       </div>
 

@@ -8,6 +8,7 @@ import { searchPlace, PlaceSearchResult } from '@/lib/utils/geocode'
 import { createEventSubmission } from '@/services/eventSubmissionService'
 import { getShopBySlug } from '@/services/shopService'
 import { Shop } from '@/types/shop'
+import AppIcon from '@/components/tds/AppIcon'
 
 const EVENT_TYPES = [
   { value: 'popup', label: '🎪 팝업스토어' },
@@ -109,7 +110,7 @@ export default function EventSubmitPage({ initialTagId, initialShopSlug }: Props
     setSubmitting(false)
 
     if (ok) {
-      alert('제보가 접수되었어요! 검수 후 등록됩니다. 감사합니다 🙏')
+      alert('제보가 접수되었어요! 검수 후 등록됩니다. 감사합니다.')
       router.push('/')
     } else {
       alert('제보 저장에 실패했어요. 잠시 후 다시 시도해주세요.')
@@ -119,7 +120,7 @@ export default function EventSubmitPage({ initialTagId, initialShopSlug }: Props
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--bg)', padding: '16px', maxWidth: '600px', margin: '0 auto' }}>
       <h1 style={{ fontSize: '20px', fontWeight: 900, color: 'var(--text)', margin: '4px 0 20px' }}>
-        🎪 이벤트 제보하기
+        <AppIcon name="ticket" size={18} style={{ marginRight: 7 }} />이벤트 제보하기
       </h1>
 
       <Field label="이벤트명 *">
@@ -130,7 +131,7 @@ export default function EventSubmitPage({ initialTagId, initialShopSlug }: Props
       {/* 작품 — 우리 DB 검색-선택 */}
       <Field label="작품 *">
         {tagName ? (
-          <Selected icon="🎮" label={tagName} onClear={() => { setTagId(''); setTagName('') }} />
+          <Selected icon="game" label={tagName} onClear={() => { setTagId(''); setTagName('') }} />
         ) : (
           <>
             <div style={{ display: 'flex', gap: '6px' }}>
@@ -148,7 +149,7 @@ export default function EventSubmitPage({ initialTagId, initialShopSlug }: Props
               <ResultBox>
                 {tagResults.map(t => (
                   <ResultRow key={t.id} onClick={() => { setTagId(t.id); setTagName(t.name); setTagQuery('') }}>
-                    🎮 {t.name}
+                    <AppIcon name="game" size={13} style={{ marginRight: 5 }} />{t.name}
                   </ResultRow>
                 ))}
               </ResultBox>
@@ -178,14 +179,14 @@ export default function EventSubmitPage({ initialTagId, initialShopSlug }: Props
         {lockedShop ? (
           <div style={{ padding: '11px 14px', borderRadius: 'var(--r-sm)',
             background: 'var(--surface2)', border: '1px solid var(--accent)' }}>
-            <div style={{ fontSize: '14px', fontWeight: 700 }}>📍 {lockedShop.name}</div>
+            <div style={{ fontSize: '14px', fontWeight: 700 }}><AppIcon name="pin" size={13} style={{ marginRight: 5 }} />{lockedShop.name}</div>
             {lockedShop.addr && <div style={{ fontSize: '12px', color: 'var(--muted)' }}>{lockedShop.addr}</div>}
             <div style={{ fontSize: '11px', color: 'var(--accent)', fontWeight: 700, marginTop: '4px' }}>
               이 샵으로 제보 중
             </div>
           </div>
         ) : place ? (
-          <Selected icon="📍" label={`${place.name} · ${place.roadAddress}`}
+          <Selected icon="pin" label={`${place.name} · ${place.roadAddress}`}
             onClear={() => { setPlace(null); setPlaceQuery(''); setPlaceResults([]) }} />
         ) : (
           <>
@@ -204,7 +205,7 @@ export default function EventSubmitPage({ initialTagId, initialShopSlug }: Props
               <ResultBox>
                 {placeResults.map((p, i) => (
                   <ResultRow key={i} onClick={() => { setPlace(p); setPlaceResults([]) }}>
-                    <div style={{ fontSize: '14px', fontWeight: 700 }}>📍 {p.name}</div>
+                    <div style={{ fontSize: '14px', fontWeight: 700 }}><AppIcon name="pin" size={13} style={{ marginRight: 5 }} />{p.name}</div>
                     <div style={{ fontSize: '12px', color: 'var(--muted)' }}>{p.roadAddress}</div>
                   </ResultRow>
                 ))}
@@ -255,7 +256,7 @@ function Selected({ icon, label, onClear }: { icon: string; label: string; onCle
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
       <span style={{ flex: 1, padding: '11px 14px', borderRadius: 'var(--r-sm)',
         background: 'var(--surface2)', fontSize: '14px', fontWeight: 700 }}>
-        {icon} {label}
+        <AppIcon name={icon} size={14} style={{ marginRight: 6 }} />{label}
       </span>
       <button onClick={onClear}
         style={{ ...inputStyle, width: 'auto', padding: '11px 14px', cursor: 'pointer' }}>변경</button>
