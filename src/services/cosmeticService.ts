@@ -230,7 +230,6 @@ export interface ShowcaseBadge {
   earned?: boolean
   earnedAt: string
   hint?: string | null
-  hint?: string | null
 }
 
 /** 내가 딴 배지 전부 (대표 배지로 고를 수 있는 후보) */
