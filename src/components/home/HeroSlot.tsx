@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import AppIcon from '@/components/tds/AppIcon'
 
 const PALETTE = [
   { bg: '#EEEDFE', fg: '#3C3489' }, { bg: '#E1F5EE', fg: '#0F6E56' },
@@ -54,7 +55,7 @@ export default function HeroSlot({ reason, work, goodsCount, shopCount }: HeroSl
               {work.name}
             </div>
             <div style={{ fontSize: '13px', color: 'var(--muted)' }}>
-              🛍️ 판매 중 {goodsCount} · 📍 {shopCount}곳
+              <AppIcon name="bag" size={13} style={{ marginRight: 4 }} />판매 중 {goodsCount} · <AppIcon name="pin" size={13} style={{ margin: '0 4px 0 2px' }} />{shopCount}곳
             </div>
           </div>
           <span style={{ fontSize: '20px', color: 'var(--muted)' }}>→</span>

@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useRef, useEffect } from 'react'
 import Link from 'next/link'
@@ -8,6 +8,7 @@ import KakaoMap, { KakaoMapRef } from '@/components/map/KakaoMap'
 import { CATEGORIES } from '@/lib/constants/categories'
 import { getShopStatus } from '@/lib/utils/shopStatus'
 import styles from './rail.module.css'
+import AppIcon from '@/components/tds/AppIcon'
 
 const noop = () => {}
 
@@ -84,7 +85,7 @@ export default function MiniMapWidget({ shops, hotMap }: Props) {
       {featured && (
         <Link href={`/shop/${featured.slug}`} className={styles.mapShopCard}>
           <span className={styles.mapShopThumb}>
-            {featured.images?.[0] ? <img src={featured.images[0]} alt="" /> : <span>🏪</span>}
+            {featured.images?.[0] ? <img src={featured.images[0]} alt="" /> : <AppIcon name="shop" size={22} color="var(--muted)" />}
           </span>
           <span className={styles.mapShopBody}>
             <span className={styles.mapShopName}>{featured.name}</span>
@@ -102,4 +103,3 @@ export default function MiniMapWidget({ shops, hotMap }: Props) {
     </div>
   )
 }
-
