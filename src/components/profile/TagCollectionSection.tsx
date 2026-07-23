@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { getMyTagCollections } from '@/services/tagCollectionService'
+import AppIcon from '@/components/tds/AppIcon'
 
 interface Props {
   userId: string
@@ -31,7 +32,7 @@ export default function TagCollectionSection({ userId }: Props) {
 
   return (
     <div style={{ marginBottom: '24px' }}>
-      <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '10px' }}>📚 작품 컬렉션</h3>
+      <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '10px' }}><AppIcon name="books" size={15} color="var(--accent)" style={{ marginRight: 6 }} />작품 컬렉션</h3>
 
       <div style={{
         padding: '14px', borderRadius: '12px', background: 'var(--accent-l)', marginBottom: '14px',

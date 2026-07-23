@@ -1,33 +1,31 @@
 'use client'
-
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import { getShopHomeItems, ShopHomeItem } from '@/services/shopHomeService'
 import { getSavedShops } from '@/services/shopService'
-import { Shop } from '@/types/shop'
-import { ROUTES } from '@/lib/constants/routes'
-import ShopCard from '@/components/shop/ShopCard'
+import ShopHomeCard from '@/components/shop/ShopHomeCard'
+import AppIcon from '@/components/tds/AppIcon'
 
 export default function SavedShopsTab({ userId }: { userId: string }) {
-  const [shops, setShops] = useState<Shop[]>([])
+  const [shops, setShops] = useState<ShopHomeItem[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getSavedShops(userId).then(data => {
-      setShops(data)
+    Promise.all([getShopHomeItems(), getSavedShops(userId)]).then(([all, saved]) => {
+      const byId = new Map(all.map(s => [s.id, s]))
+      const items = (saved as any[])
+        .map(s => byId.get(s.id))
+        .filter(Boolean) as ShopHomeItem[]
+      setShops(items)
       setLoading(false)
-    })
+    }).catch(() => setLoading(false))
   }, [userId])
 
   if (loading) return <LoadingState />
-  if (shops.length === 0) return <EmptyState icon="🔖" text="저장한 샵이 없어요" />
+  if (shops.length === 0) return <EmptyState icon="bookmark" text="저장한 샵이 없어요" />
 
   return (
-    <div>
-      {shops.map(shop => (
-        <Link key={shop.id} href={ROUTES.shop(shop.slug)} style={{ textDecoration: 'none', color: 'inherit' }}>
-          <ShopCard shop={shop} isActive={false} onClick={() => {}} />
-        </Link>
-      ))}
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
+      {shops.map(s => <ShopHomeCard key={s.id} shop={s} />)}
     </div>
   )
 }
@@ -39,7 +37,7 @@ export function LoadingState() {
 export function EmptyState({ icon, text }: { icon: string; text: string }) {
   return (
     <div style={{ padding: '60px 20px', textAlign: 'center' }}>
-      <div style={{ fontSize: '40px', marginBottom: '12px' }}>{icon}</div>
+      <AppIcon name={icon} size={40} color="var(--muted)" style={{ margin: '0 auto 12px' }} />
       <p style={{ color: 'var(--muted)', fontSize: '14px' }}>{text}</p>
     </div>
   )

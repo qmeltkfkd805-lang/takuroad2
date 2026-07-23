@@ -22,7 +22,7 @@ export default function SavedRoutesTab({ userId }: { userId: string }) {
   }
 
   if (loading) return <LoadingState />
-  if (routes.length === 0) return <EmptyState icon="❤️" text="저장한 루트가 없어요" />
+  if (routes.length === 0) return <EmptyState icon="heart" text="저장한 루트가 없어요" />
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14 }}>

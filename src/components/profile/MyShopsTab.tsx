@@ -6,6 +6,7 @@ import { Shop } from '@/types/shop'
 import { ROUTES } from '@/lib/constants/routes'
 import { SHOP_STATUS_LABEL } from '@/lib/constants/categories'
 import { LoadingState, EmptyState } from './SavedShopsTab'
+import AppIcon from '@/components/tds/AppIcon'
 export default function MyShopsTab({ userId }: { userId: string }) {
   const [shops, setShops] = useState<Shop[]>([])
   const [loading, setLoading] = useState(true)
@@ -16,7 +17,7 @@ export default function MyShopsTab({ userId }: { userId: string }) {
     })
   }, [userId])
   if (loading) return <LoadingState />
-  if (shops.length === 0) return <EmptyState icon="🏪" text="등록한 샵이 없어요" />
+  if (shops.length === 0) return <EmptyState icon="shop" text="등록한 샵이 없어요" />
   const statusColor: Record<string, string> = {
     pending: 'var(--yellow)',
     active: 'var(--green)',
@@ -52,7 +53,7 @@ export default function MyShopsTab({ userId }: { userId: string }) {
                   border: '1px solid #fcd34d', borderRadius: 10,
                   display: 'flex', alignItems: 'center', gap: 8,
                 }}>
-                  <span style={{ fontSize: 18, flexShrink: 0 }}>🏅</span>
+                  <AppIcon name="medal" size={18} color="var(--accent)" />
                   <div style={{ fontSize: 12, color: '#92400e', lineHeight: 1.5 }}>
                     <b>사장님에게 소유권이 이전되었어요.</b><br />
                     이 샵은 공식 사장님이 인증받아 직접 관리하고 있어요. 첫 등록자로서의 기여는 계속 남아있어요.

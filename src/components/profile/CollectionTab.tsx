@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { getRegionCollections, getUnvisitedShopsForRegion, getOfficialLists, getMyProgress } from '@/services/pilgrimageService'
 import { LoadingState } from './SavedShopsTab'
 import TagCollectionSection from './TagCollectionSection'
+import AppIcon from '@/components/tds/AppIcon'
 
 export default function CollectionTab({ userId }: { userId: string }) {
   const [regions, setRegions] = useState<any[]>([])
@@ -49,7 +50,7 @@ export default function CollectionTab({ userId }: { userId: string }) {
           padding: '16px', marginBottom: '20px', background: 'var(--accent-l)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
-            <span style={{ fontSize: '16px' }}>🇰🇷</span>
+            <AppIcon name="map" size={16} color="var(--accent)" />
             <span style={{ fontWeight: 900, fontSize: '15px' }}>{list.title}</span>
           </div>
           <div style={{
@@ -69,7 +70,7 @@ export default function CollectionTab({ userId }: { userId: string }) {
 <TagCollectionSection userId={userId} />
 
       {/* 지역별 컬렉션 */}
-      <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '12px' }}>📍 지역 컬렉션</h3>
+      <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '12px' }}><AppIcon name="pin" size={15} color="var(--accent)" style={{ marginRight: 6 }} />지역 컬렉션</h3>
 
       {regions.length === 0 ? (
         <p style={{ textAlign: 'center', color: 'var(--muted)', fontSize: '13px', padding: '40px 0' }}>
@@ -89,7 +90,7 @@ export default function CollectionTab({ userId }: { userId: string }) {
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
               <span style={{ fontWeight: 700, fontSize: '14px' }}>
-                {region.region} {region.isComplete && '🎉'}
+                {region.region} {region.isComplete && <AppIcon name="sparkle" size={13} color="var(--accent)" />}
               </span>
               <span style={{ fontSize: '13px', color: region.isComplete ? 'var(--green)' : 'var(--muted)', fontWeight: 700 }}>
                 {region.isComplete ? 'COMPLETE' : `${region.visited} / ${region.total}`}
@@ -131,7 +132,7 @@ export default function CollectionTab({ userId }: { userId: string }) {
             </h3>
             {unvisitedShops.length === 0 ? (
               <p style={{ textAlign: 'center', color: 'var(--green)', fontWeight: 700, padding: '20px 0' }}>
-                🎉 모두 방문했어요!
+                <AppIcon name="sparkle" size={14} style={{ marginRight: 5 }} />모두 방문했어요!
               </p>
             ) : (
               unvisitedShops.map(shop => (

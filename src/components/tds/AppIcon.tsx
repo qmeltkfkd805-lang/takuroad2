@@ -10,7 +10,7 @@ import { CSSProperties, ReactNode } from 'react'
 
 const PNG_ICONS = new Set([
   'shop', 'event', 'goods', 'book', 'tcg', 'secondhand', 'cafe', 'popup', 'game', 'onlineshop',
-  'box', 'calendar', 'clock', 'photo', 'news', 'bell', 'heart', 'star', 'gift', 'fire',
+  'box', 'calendar', 'photo', 'news', 'bell', 'heart', 'star', 'gift', 'fire',
   'coin', 'receipt', 'people', 'search', 'map', 'route', 'work', 'collection', 'activity',
   'price', 'parcel', 'staff', 'service', 'wifi', 'parking', 'restroom', 'elevator',
   'exchange', 'exhibition', 'gacha', 'premium', 'new', 'checkin', 'card', 'cash', 'lv',
@@ -66,6 +66,7 @@ const SVG_ICONS: Record<string, ReactNode> = {
   dice: <><rect x="4" y="4" width="16" height="16" rx="3" /><circle cx="9" cy="9" r="1.2" fill="currentColor" stroke="none" /><circle cx="15" cy="15" r="1.2" fill="currentColor" stroke="none" /></>,
   ticket: <><path d="M3.5 8.5V6.5h17v2a2.5 2.5 0 0 0 0 5v2h-17v-2a2.5 2.5 0 0 0 0-5z" /><path d="M12 7v2M12 12v2M12 17v-2" /></>,
   palette: <><path d="M12 3.5a8.5 8.5 0 0 0 0 17c1.4 0 2-.9 2-1.8 0-1.3-1.2-1.6-1.2-2.7 0-.8.7-1.5 1.6-1.5h1.8a4.3 4.3 0 0 0 4.3-4.3C20.5 6.4 16.7 3.5 12 3.5z" /><circle cx="8" cy="10" r="1.1" fill="currentColor" stroke="none" /><circle cx="12" cy="7.6" r="1.1" fill="currentColor" stroke="none" /><circle cx="15.8" cy="9.6" r="1.1" fill="currentColor" stroke="none" /></>,
+  clock: <><circle cx="12" cy="12" r="8.6" /><path d="M12 7.4V12l3.2 2" /></>,
   hourglass: <><path d="M7 3.5h10M7 20.5h10" /><path d="M7.5 3.5v3.2L12 12l-4.5 5.3v3.2M16.5 3.5v3.2L12 12l4.5 5.3v3.2" /></>,
 }
 

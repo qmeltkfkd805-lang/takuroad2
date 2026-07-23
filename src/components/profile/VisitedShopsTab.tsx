@@ -21,7 +21,7 @@ export default function VisitedShopsTab({ userId }: { userId: string }) {
     }).catch(() => setLoading(false))
   }, [userId])
   if (loading) return <LoadingState />
-  if (shops.length === 0) return <EmptyState icon="📍" text="아직 방문한 샵이 없어요" />
+  if (shops.length === 0) return <EmptyState icon="pin" text="아직 방문한 샵이 없어요" />
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
       {shops.map(s => <ShopHomeCard key={s.id} shop={s} />)}

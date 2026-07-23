@@ -14,7 +14,7 @@ export default function VerifyStatusTab({ userId }: { userId: string }) {
     })
   }, [userId])
   if (loading) return <LoadingState />
-  if (requests.length === 0) return <EmptyState icon="🛡️" text="인증 신청 내역이 없어요" />
+  if (requests.length === 0) return <EmptyState icon="shield" text="인증 신청 내역이 없어요" />
   const statusInfo: Record<string, { label: string; color: string }> = {
     pending:  { label: '심사중', color: 'var(--yellow)' },
     approved: { label: '승인됨', color: 'var(--green)' },

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { getMyRoutes, deleteRoute, toggleRouteShare } from '@/services/routeService'
 import { EmptyState, LoadingState } from './SavedShopsTab'
+import AppIcon from '@/components/tds/AppIcon'
 
 const DIFF: Record<number, { l: string; c: string }> = {
   1: { l: '가볍게', c: '#22c55e' }, 2: { l: '반나절', c: '#ea9f0a' }, 3: { l: '하루', c: '#ef4444' },
@@ -50,7 +51,7 @@ export default function MyRoutesTab({ userId }: { userId: string }) {
       >+ 새 루트 만들기</button>
 
       {routes.length === 0 ? (
-        <EmptyState icon="🗺️" text="만든 루트가 없어요" />
+        <EmptyState icon="map" text="만든 루트가 없어요" />
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
           {routes.map(r => {
@@ -68,14 +69,14 @@ export default function MyRoutesTab({ userId }: { userId: string }) {
                   <div style={{ padding: '10px 12px 8px' }}>
                     <div style={{ fontSize: 14, fontWeight: 800, marginBottom: 6, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.title}</div>
                     <div style={{ fontSize: 12, color: 'var(--muted)', display: 'flex', gap: 8 }}>
-                      <span>📍 {r.route_shops?.length ?? 0}곳</span>
-                      {r.total_duration_min ? <span>🚶 {r.total_duration_min}분</span> : null}
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><AppIcon name="pin" size={12} />{r.route_shops?.length ?? 0}곳</span>
+                      {r.total_duration_min ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><AppIcon name="clock" size={12} />{r.total_duration_min}분</span> : null}
                     </div>
                   </div>
                 </button>
                 <div style={{ display: 'flex', borderTop: '1px solid var(--border)' }}>
-                  <button onClick={(e) => handleShare(e, r)} style={{ flex: 1, padding: '8px', border: 'none', background: 'none', color: 'var(--muted)', fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>🔗 공유</button>
-                  <button onClick={(e) => handleDelete(e, r.id)} style={{ flex: 1, padding: '8px', border: 'none', borderLeft: '1px solid var(--border)', background: 'none', color: 'var(--muted)', fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>🗑 삭제</button>
+                  <button onClick={(e) => handleShare(e, r)} style={{ flex: 1, padding: '8px', border: 'none', background: 'none', color: 'var(--muted)', fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}><AppIcon name="link" size={12} style={{ marginRight: 4 }} />공유</button>
+                  <button onClick={(e) => handleDelete(e, r.id)} style={{ flex: 1, padding: '8px', border: 'none', borderLeft: '1px solid var(--border)', background: 'none', color: 'var(--muted)', fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}><AppIcon name="trash" size={12} style={{ marginRight: 4 }} />삭제</button>
                 </div>
               </div>
             )

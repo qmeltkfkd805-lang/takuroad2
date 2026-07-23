@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { updateNickname, deleteAccount } from '@/services/shopService'
+import AppIcon from '@/components/tds/AppIcon'
 
 export default function AccountSettingsTab() {
   const router = useRouter()
@@ -62,7 +63,7 @@ export default function AccountSettingsTab() {
           marginBottom: '10px',
         }}
       >
-        <span style={{ fontSize: '14px', fontWeight: 700 }}>📊 내 활동 (레벨 · 경험치)</span>
+        <span style={{ fontSize: '14px', fontWeight: 700 }}><AppIcon name="chart" size={14} style={{ marginRight: 6 }} />내 활동 (레벨 · 경험치)</span>
         <span style={{ color: 'var(--muted)' }}>›</span>
       </Link>
 
@@ -75,7 +76,7 @@ export default function AccountSettingsTab() {
           marginBottom: '32px',
         }}
       >
-        <span style={{ fontSize: '14px', fontWeight: 700 }}>📔 {currentYear}년 타쿠로드 리포트</span>
+        <span style={{ fontSize: '14px', fontWeight: 700 }}><AppIcon name="book" size={14} style={{ marginRight: 6 }} />{currentYear}년 타쿠로드 리포트</span>
         <span style={{ color: 'var(--muted)' }}>›</span>
       </Link>
 

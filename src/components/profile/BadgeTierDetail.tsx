@@ -1,9 +1,10 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { getBadgeTiers, getUnvisitedShopsForTag, RARITY_COLOR, RARITY_LABEL } from '@/services/badgeService'
 import { LoadingState } from './SavedShopsTab'
+import AppIcon from '@/components/tds/AppIcon'
 
 interface Props {
   badgeSlug: string
@@ -116,7 +117,7 @@ export default function BadgeTierDetail({ badgeSlug, userId, onBack }: Props) {
                     cursor: 'pointer', fontFamily: 'inherit',
                   }}
                 >
-                  📍 남은 샵 보기
+                  <AppIcon name="pin" size={13} style={{ marginRight: 5 }} />남은 샵 보기
                 </button>
               )}
             </div>
