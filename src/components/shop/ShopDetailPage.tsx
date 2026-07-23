@@ -13,7 +13,6 @@ import ReviewSection from './ReviewSection'
 import ReportIssueButton from './ReportIssueButton'
 import ShopEventList from './ShopEventList'
 import ConfirmInfoButton from './ConfirmInfoButton'
-import ShopProductAccordion from './ShopProductAccordion'
 import ShopAmenityBadges from './ShopAmenityBadges'
 import ShopHighlights from './ShopHighlights'
 import ShopTagBadges from './ShopTagBadges'
@@ -179,7 +178,6 @@ export default function ShopDetailPage({ shop }: Props) {
         {/* === 취급 작품 / 굿즈 === */}
         <ShopHighlights shopId={shop.id} />
         <ShopTagBadges shopId={shop.id} />
-        <ShopProductAccordion shopId={shop.id} />
 
         {/* === 편의시설 === */}
         <ShopAmenityBadges shopId={shop.id} />
@@ -276,7 +274,6 @@ function InfoRow({ icon, label, children }: {
     </div>
   )
 }
-
 
 
 

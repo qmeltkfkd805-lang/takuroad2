@@ -2,6 +2,7 @@
 
 import { Shop } from '@/types/shop'
 import ShopCard from './ShopCard'
+import AppIcon from '@/components/tds/AppIcon'
 
 interface ShopListPanelProps {
   shops: Shop[]
@@ -68,7 +69,7 @@ export default function ShopListPanel({
           </div>
         ) : shops.length === 0 ? (
           <div style={{ padding: '60px 20px', textAlign: 'center' }}>
-            <div style={{ fontSize: '40px', marginBottom: '12px' }}>🗾</div>
+            <AppIcon name="map" size={40} color="var(--muted)" style={{ margin: '0 auto 12px' }} />
             <p style={{ color: 'var(--muted)', fontSize: '14px' }}>이 조건에 맞는 성지가 없어요.</p>
           </div>
         ) : (

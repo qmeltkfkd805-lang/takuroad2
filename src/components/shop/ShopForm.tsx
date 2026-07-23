@@ -19,6 +19,7 @@ import { searchPlace, PlaceSearchResult } from '@/lib/utils/geocode'
 import ShopMainImageUploader from './ShopMainImageUploader'
 import ShopFormWizard from './ShopFormWizard'
 import { useIsDesktop } from '@/hooks/useIsDesktop'
+import AppIcon from '@/components/tds/AppIcon'
 
 interface Props {
   mode: 'create' | 'edit'
@@ -199,7 +200,7 @@ export default function ShopForm({ mode, shop }: Props) {
               />
               {form.slug && (
                 <p style={{ fontSize: '12px', color: 'var(--muted)' }}>
-                  🔗 페이지 주소: /shop/{form.slug}
+                  <AppIcon name="link" size={13} style={{ marginRight: 5 }} />페이지 주소: /shop/{form.slug}
                 </p>
               )}
             </Field>
@@ -485,15 +486,15 @@ export default function ShopForm({ mode, shop }: Props) {
             <ShopEnrichmentSection shopId={enrichmentShopId} />
 
             <div style={{ height: '1px', background: 'var(--border)', margin: '8px 0' }} />
-            <h3 style={{ fontSize: '14px', fontWeight: 900 }}>🎉 이벤트 / 공지</h3>
+            <h3 style={{ fontSize: '14px', fontWeight: 900 }}><AppIcon name="event" size={14} color="var(--accent)" style={{ marginRight: 6 }} />이벤트 / 공지</h3>
             <ShopEventManager shopId={enrichmentShopId} shopSlug={mode === 'edit' ? shop!.slug : createdShopSlug!} />
 
             <div style={{ height: '1px', background: 'var(--border)', margin: '8px 0' }} />
-            <h3 style={{ fontSize: '14px', fontWeight: 900 }}>🚗 편의시설 / 서비스</h3>
+            <h3 style={{ fontSize: '14px', fontWeight: 900 }}><AppIcon name="car" size={14} color="var(--accent)" style={{ marginRight: 6 }} />편의시설 / 서비스</h3>
             <ShopAmenitySection shopId={enrichmentShopId} />
 
             <div style={{ height: '1px', background: 'var(--border)', margin: '8px 0' }} />
-            <h3 style={{ fontSize: '14px', fontWeight: 900 }}>🌟 추천 코너</h3>
+            <h3 style={{ fontSize: '14px', fontWeight: 900 }}><AppIcon name="sparkle" size={14} color="var(--accent)" style={{ marginRight: 6 }} />추천 코너</h3>
             <ShopHighlightManager shopId={enrichmentShopId} shopSlug={mode === 'edit' ? shop!.slug : createdShopSlug!} />
             
             {createdShopId && createdShopSlug && (

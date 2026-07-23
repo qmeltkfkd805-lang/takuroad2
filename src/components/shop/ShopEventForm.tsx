@@ -10,6 +10,7 @@ import {
 import { getAllTags } from '@/services/shopService'
 import { getAllGoodsTypes } from '@/services/shopProductService'
 import styles from './shopEventForm.module.css'
+import AppIcon from '@/components/tds/AppIcon'
 
 const EVENT_TYPES: ShopEventType[] = [
   'notice', 'event', 'restock', 'new_arrival',
@@ -233,7 +234,7 @@ export default function ShopEventForm({ shopId, shopSlug, initialType, event }: 
           <button className={styles.previewDel} onClick={removeImage}>✕</button>
         </div>
       ) : (
-        <button className={styles.imageBtn} onClick={() => fileRef.current?.click()}>📷 사진 추가</button>
+        <button className={styles.imageBtn} onClick={() => fileRef.current?.click()}><AppIcon name="camera" size={15} style={{ marginRight: 6 }} />사진 추가</button>
       )}
       <input ref={fileRef} type="file" accept="image/*" onChange={onImage} hidden />
 
@@ -244,7 +245,7 @@ export default function ShopEventForm({ shopId, shopSlug, initialType, event }: 
           <button className={styles.previewDel} onClick={removeVideo}>✕</button>
         </div>
       ) : (
-        <button className={styles.imageBtn} onClick={() => videoRef.current?.click()}>🎬 영상 추가</button>
+        <button className={styles.imageBtn} onClick={() => videoRef.current?.click()}><AppIcon name="film" size={15} style={{ marginRight: 6 }} />영상 추가</button>
       )}
       <input ref={videoRef} type="file" accept="video/*" onChange={onVideo} hidden />
 

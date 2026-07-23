@@ -6,6 +6,7 @@ import { getTodayStatus, getPopupStatus } from '@/lib/utils/date'
 import { useAuth } from '@/components/layout/AuthProvider'
 import Link from 'next/link'
 import { ROUTES } from '@/lib/constants/routes'
+import AppIcon from '@/components/tds/AppIcon'
 
 interface ShopDetailProps {
   shop: Shop
@@ -90,7 +91,7 @@ export default function ShopDetail({ shop, onClose }: ShopDetailProps) {
       {/* 주소 */}
       {shop.addr && (
         <div style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '8px', display: 'flex', gap: '6px' }}>
-          <span>📍</span>
+          <AppIcon name="pin" size={15} />
           <span>{shop.addr}</span>
         </div>
       )}
@@ -98,7 +99,7 @@ export default function ShopDetail({ shop, onClose }: ShopDetailProps) {
       {/* 영업시간 */}
       {shop.hours && (
         <div style={{ fontSize: '13px', marginBottom: '8px', display: 'flex', gap: '6px', alignItems: 'center' }}>
-          <span>🕐</span>
+          <AppIcon name="clock" size={15} />
           <span style={{ color: todayStatus.isOpen ? 'var(--green)' : 'var(--red)', fontWeight: 700 }}>
             {todayStatus.label}
           </span>
@@ -111,7 +112,7 @@ export default function ShopDetail({ shop, onClose }: ShopDetailProps) {
       {/* 주차 */}
       {shop.parking !== null && (
         <div style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '8px', display: 'flex', gap: '6px' }}>
-          <span>🅿️</span>
+          <AppIcon name="parking" size={15} />
           <span>
             {shop.parking ? '주차 가능' : '주차 불가'}
             {shop.parking_note && ` · ${shop.parking_note}`}
@@ -155,7 +156,7 @@ export default function ShopDetail({ shop, onClose }: ShopDetailProps) {
               fontWeight: 700, fontSize: '13px', color: 'var(--text)',
             }}
           >
-            🔗 링크
+            <AppIcon name="link" size={14} style={{ marginRight: 5 }} />링크
           </a>
         )}
 
@@ -170,7 +171,7 @@ export default function ShopDetail({ shop, onClose }: ShopDetailProps) {
               fontWeight: 700, fontSize: '13px', color: 'var(--text)',
             }}
           >
-            🗺️ 길찾기
+            <AppIcon name="map" size={14} style={{ marginRight: 5 }} />길찾기
           </a>
         )}
       </div>

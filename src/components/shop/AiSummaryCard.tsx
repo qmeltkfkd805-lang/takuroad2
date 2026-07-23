@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { getAiSummary, generateAiSummary } from '@/services/reviewService'
+import AppIcon from '@/components/tds/AppIcon'
 
 interface Props {
   shopId: string
@@ -51,7 +52,7 @@ export default function AiSummaryCard({ shopId, reviewCount, accentColor }: Prop
       borderRadius: '12px', padding: '14px', marginBottom: '20px',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
-        <span style={{ fontSize: '14px' }}>✨</span>
+        <AppIcon name="sparkle" size={14} />
         <span style={{ fontSize: '13px', fontWeight: 900, color: accentColor }}>AI 리뷰 요약</span>
       </div>
 

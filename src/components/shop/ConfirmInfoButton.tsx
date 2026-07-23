@@ -5,6 +5,7 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { confirmInfo, getConfirmationStats, hasCheckedInToday, InfoConfirmationStats } from '@/services/shopInfoConfirmService'
 import { ROUTES } from '@/lib/constants/routes'
 import { useRouter } from 'next/navigation'
+import AppIcon from '@/components/tds/AppIcon'
 
 interface Props {
   shopId: string
@@ -60,7 +61,7 @@ export default function ConfirmInfoButton({ shopId, targetTable, targetField, ta
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--muted)' }}>
       {stats.count > 0 && (
         <span>
-          👥 {stats.count}명 확인
+          <AppIcon name="users" size={13} style={{ marginRight: 4 }} />{stats.count}명 확인
           {stats.lastConfirmedAt && ` · ${new Date(stats.lastConfirmedAt).toLocaleDateString('ko-KR')}`}
         </span>
       )}
@@ -79,7 +80,7 @@ export default function ConfirmInfoButton({ shopId, targetTable, targetField, ta
         {justConfirmed
           ? '✓ 확인했어요'
           : hasCheckIn
-            ? '📍 방문해서 확인했어요'
+            ? <><AppIcon name="pin" size={13} style={{ marginRight: 4 }} />방문해서 확인했어요</>
             : '✓ 나도 확인했어요'}
       </button>
     </div>

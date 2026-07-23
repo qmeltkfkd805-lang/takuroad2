@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { searchShops } from '@/services/shopService'
 import { Shop } from '@/types/shop'
 import styles from './claim.module.css'
+import AppIcon from '@/components/tds/AppIcon'
 
 const BENEFITS = [
   '영업시간 수정', '휴무 공지 등록', '이벤트 등록', '굿즈 입고 소식',
@@ -28,7 +29,7 @@ export default function ClaimShopPage() {
   return (
     <div className={styles.wrap}>
       <section className={styles.intro}>
-        <span className={styles.badge}>🏪 사장님 인증</span>
+        <span className={styles.badge}>사장님 인증</span>
         <h1 className={styles.title}>내 매장, 직접 관리하세요</h1>
         <p className={styles.desc}>사장님 인증을 받으면 매장을 직접 관리할 수 있어요.</p>
         <div className={styles.benefits}>

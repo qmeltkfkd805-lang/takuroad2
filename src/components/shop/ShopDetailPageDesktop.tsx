@@ -20,11 +20,11 @@ import { getActiveShopEvents, EVENT_TYPE_LABEL } from '@/services/shopEventServi
 import { getEventsByShop } from '@/services/eventService'
 import { EventStatusBadge } from '@/components/tds/EventStatusBadge'
 import ShopHighlights from './ShopHighlights'
-import ShopProductAccordion from './ShopProductAccordion'
 import ShopAmenityBadges from './ShopAmenityBadges'
 import ReviewSection from './ReviewSection'
 import VerifyRequestButton from './VerifyRequestButton'
 import VerifiedBadge from './VerifiedBadge'
+import AppIcon from '@/components/tds/AppIcon'
 import ReportIssueButton from './ReportIssueButton'
 import CheckInButton from './CheckInButton'
 
@@ -229,7 +229,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                   {menuOpen && (
                     <div style={{ position: 'absolute', top: 44, right: 0, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 8px 24px rgba(0,0,0,.18)', overflow: 'hidden', minWidth: 150 }}>
                       {!!user && shop.owner_id === user.id && shop.is_claimed && (
-                        <button onClick={() => { setMenuOpen(false); router.push('/shop/' + shop.slug + '/manage') }} style={{ ...menuItemStyle, fontWeight: 800, color: color }}>🏪 매장 관리</button>
+                        <button onClick={() => { setMenuOpen(false); router.push('/shop/' + shop.slug + '/manage') }} style={{ ...menuItemStyle, fontWeight: 800, color: color }}><AppIcon name="shop" size={15} color={color} style={{ marginRight: 6 }} />매장 관리</button>
                       )}
                       <button onClick={() => { setMenuOpen(false); router.push(ROUTES.shopEdit(shop.slug)) }} style={menuItemStyle}>수정하기</button>
                       <button onClick={handleDelete} style={{ ...menuItemStyle, color: '#e04343', borderTop: '1px solid var(--border)' }}>샵 삭제하기</button>
@@ -273,7 +273,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                   </span>
                   {shop.temporary_holiday_end && new Date(shop.temporary_holiday_end) >= new Date(new Date().toDateString()) && (
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,.18)', color: '#fff', borderRadius: 8, padding: '6px 12px', fontWeight: 800, fontSize: 12.5, alignSelf: 'flex-start', marginTop: 2, backdropFilter: 'blur(4px)' }}>
-                      <span style={{ color: '#ffb3b3' }}>📢 임시 휴무</span>
+                      <span style={{ color: '#ffb3b3', display: 'inline-flex', alignItems: 'center', gap: 5 }}><AppIcon name="megaphone" size={13} color="#ffb3b3" />임시 휴무</span>
                       <span style={{ fontWeight: 600, opacity: .95 }}>
                         {shop.temporary_holiday_start}{shop.temporary_holiday_end && shop.temporary_holiday_end !== shop.temporary_holiday_start ? ' ~ ' + shop.temporary_holiday_end : ''}
                         {shop.temporary_holiday_message ? ' · ' + shop.temporary_holiday_message : ''}
@@ -336,7 +336,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
               <div>
                 {shop.temporary_holiday_end && new Date(shop.temporary_holiday_end) >= new Date(new Date().toDateString()) && (
                   <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', background: '#fdecec', border: '1px solid #f5c2c2', borderRadius: 14, padding: '18px 20px', marginBottom: 20 }}>
-                    <span style={{ fontSize: 22, flexShrink: 0, lineHeight: 1.2 }}>📢</span>
+                    <AppIcon name="megaphone" size={22} color="#c0392b" style={{ flexShrink: 0, marginTop: 2 }} />
                     <div>
                       <div style={{ fontSize: 15, fontWeight: 900, color: '#c0392b', marginBottom: 4 }}>임시 휴무 안내</div>
                       {(shop.temporary_holiday_start || shop.temporary_holiday_end) && (
@@ -476,8 +476,8 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                               </div>
                               <div style={{ fontSize: 17, fontWeight: 900, lineHeight: 1.35, marginBottom: 9 }}>{e.title}</div>
                               <div style={{ display: 'flex', flexDirection: 'column', gap: 5, fontSize: 13, color: 'var(--muted)' }}>
-                                <span>📅 {dateRange || '상시'}</span>
-                                <span>📍 {shop.name}</span>
+                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><AppIcon name="calendar" size={13} />{dateRange || '상시'}</span>
+                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><AppIcon name="pin" size={13} />{shop.name}</span>
                               </div>
                               {e.description && (
                                 <p style={{ fontSize: 14, lineHeight: 1.7, color: 'var(--text)', marginTop: 11, whiteSpace: 'pre-wrap', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{e.description}</p>
@@ -549,7 +549,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
             )}
 
             {tab === 'works' && (
-              <Section title="취급 작품 · 굿즈">
+              <Section title="취급 작품">
                 {works.length > 0 ? (
                   <>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, 180px)', justifyContent: 'start', gap: 12, marginBottom: worksTotalPages > 1 ? 16 : 24 }}>
@@ -586,7 +586,6 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                   <p style={{ color: 'var(--muted)', marginBottom: 8 }}>등록된 취급 작품이 없어요.</p>
                 )}
                 <ShopHighlights shopId={shop.id} />
-                <ShopProductAccordion shopId={shop.id} />
               </Section>
             )}
 
@@ -657,7 +656,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                       <div style={{ fontSize: 15, fontWeight: 800, lineHeight: 1.45 }}>{stockModal.title}</div>
                       {(stockModal.tags?.name || stockModal.goods_types?.name) && (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
-                          {stockModal.tags?.name && <span style={{ fontSize: 12, fontWeight: 700, padding: '4px 10px', borderRadius: 9999, background: 'var(--surface2)', color: 'var(--text)' }}>📚 {stockModal.tags.name}</span>}
+                          {stockModal.tags?.name && <span style={{ fontSize: 12, fontWeight: 700, padding: '4px 10px', borderRadius: 9999, background: 'var(--surface2)', color: 'var(--text)' , display: 'inline-flex', alignItems: 'center', gap: 5 }}><AppIcon name="books" size={13} />{stockModal.tags.name}</span>}
                           {stockModal.goods_types?.name && <span style={{ fontSize: 12, fontWeight: 700, padding: '4px 10px', borderRadius: 9999, background: 'var(--surface2)', color: 'var(--text)' }}>{stockModal.goods_types.icon ? stockModal.goods_types.icon + ' ' : '🏷 '}{stockModal.goods_types.name}</span>}
                         </div>
                       )}

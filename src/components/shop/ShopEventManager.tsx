@@ -7,6 +7,7 @@ import {
   pinShopEvent, deleteShopEvent, uploadEventImage, ShopEventType,
   EVENT_TYPE_ICON, EVENT_TYPE_LABEL,
 } from '@/services/shopEventService'
+import AppIcon from '@/components/tds/AppIcon'
 
 interface Props {
   shopId: string
@@ -187,7 +188,7 @@ export default function ShopEventManager({ shopId, shopSlug, hideForm }: Props) 
                 fontSize: '12px', color: 'var(--muted)', cursor: 'pointer', fontFamily: 'inherit',
               }}
             >
-              📷 사진 추가 (선택)
+              <AppIcon name="camera" size={14} style={{ marginRight: 5 }} />사진 추가 (선택)
             </button>
           )}
           <input
@@ -243,7 +244,7 @@ export default function ShopEventManager({ shopId, shopSlug, hideForm }: Props) 
                     ? <img src={event.image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     : <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg,#FFE3EC,#FFF0F5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px' }}>{EVENT_TYPE_ICON[event.type as ShopEventType] ?? '📌'}</div>}
                 <div style={{ position: 'absolute', top: '5px', left: '6px', right: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  {event.is_pinned && <span style={{ fontSize: '11px' }}>📌</span>}
+                  {event.is_pinned && <AppIcon name="pushpin" size={12} color="#fff" />}
                   {dim && <span style={{ fontSize: '9.5px', fontWeight: 800, color: '#fff', background: 'rgba(0,0,0,.6)', padding: '1px 6px', borderRadius: '9999px' }}>{!event.is_active ? '숨김' : '만료'}</span>}
                   {event.video_url && <span style={{ marginLeft: 'auto', color: '#fff', fontSize: '12px', textShadow: '0 1px 4px rgba(0,0,0,.6)' }}>▶</span>}
                 </div>
@@ -262,7 +263,7 @@ export default function ShopEventManager({ shopId, shopSlug, hideForm }: Props) 
               <span style={{ fontSize: '11.5px', fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l, rgba(232,0,111,.08))', padding: '3px 9px', borderRadius: '9999px' }}>
                 {EVENT_TYPE_LABEL[managing.type as ShopEventType] ?? managing.type}
               </span>
-              {managing.is_pinned && <span style={{ fontSize: '11px' }}>📌</span>}
+              {managing.is_pinned && <AppIcon name="pushpin" size={13} color="var(--accent)" />}
               {!managing.is_active && <span style={{ fontSize: '11px', color: 'var(--muted)' }}>숨김</span>}
               <button onClick={() => setManaging(null)} style={{ marginLeft: 'auto', background: 'none', border: 'none', fontSize: '22px', cursor: 'pointer', color: 'var(--muted)', lineHeight: 1 }}>✕</button>
             </div>
@@ -305,7 +306,7 @@ export default function ShopEventManager({ shopId, shopSlug, hideForm }: Props) 
                   background: managing.is_pinned ? 'var(--accent-l, rgba(232,0,111,.08))' : 'var(--surface)',
                   color: managing.is_pinned ? 'var(--accent)' : 'var(--text)',
                 }}
-              >{managing.is_pinned ? '📌 고정됨' : '상단 고정'}</button>
+              >{managing.is_pinned ? <><AppIcon name="pushpin" size={13} style={{ marginRight: 5 }} />고정됨</> : '상단 고정'}</button>
               <button
                 onClick={() => handleToggleActive(managing.id, managing.is_active)}
                 style={{

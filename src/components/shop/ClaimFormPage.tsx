@@ -6,6 +6,7 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { getShopBySlug, requestShopVerify, getMyVerifyRequest } from '@/services/shopService'
 import { Shop } from '@/types/shop'
 import styles from './claimForm.module.css'
+import AppIcon from '@/components/tds/AppIcon'
 
 const MANAGE_FEATURES = [
   '영업시간 수정', '휴무 공지', '이벤트 등록', '매장 사진 관리', '굿즈 입고 소식', '댓글 답변',
@@ -143,10 +144,10 @@ export default function ClaimFormPage({ slug }: { slug: string }) {
       <h3 className={styles.section}>증빙 자료<em className={styles.reqMark}>*</em></h3>
       <p className={styles.hint}>사업자등록증이 가장 좋아요. 없다면 매장 명함·내부 사진 등 운영을 증명할 자료를 올려주세요.</p>
       {!file ? (
-        <button className={styles.fileBtn} onClick={() => fileRef.current?.click()}>📎 사업자등록증 / 증빙 자료 첨부</button>
+        <button className={styles.fileBtn} onClick={() => fileRef.current?.click()}><AppIcon name="clip" size={14} style={{ marginRight: 6 }} />사업자등록증 / 증빙 자료 첨부</button>
       ) : (
         <div className={styles.fileCard}>
-          {preview ? <img src={preview} alt="" className={styles.thumb} /> : <span className={styles.fileIcon}>📄</span>}
+          {preview ? <img src={preview} alt="" className={styles.thumb} /> : <span className={styles.fileIcon}><AppIcon name="note" size={24} /></span>}
           <span className={styles.fileName}>{file.name}</span>
           <button className={styles.fileDel} onClick={() => { setFile(null); setPreview(null); if (fileRef.current) fileRef.current.value = '' }}>삭제</button>
         </div>

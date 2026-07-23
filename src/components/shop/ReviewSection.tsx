@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { ROUTES } from '@/lib/constants/routes'
 import { Button } from '@/components/tds/Button'
 import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
+import AppIcon from '@/components/tds/AppIcon'
 
 interface Props {
   shopId: string
@@ -190,7 +191,7 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
                 fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
               }}
             >
-              📷 사진 {images.length > 0 ? `${images.length}/5` : '추가'}
+              <AppIcon name="camera" size={14} style={{ marginRight: 5 }} />사진 {images.length > 0 ? `${images.length}/5` : '추가'}
             </button>
             <input
               ref={fileInputRef}
@@ -220,7 +221,7 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
         </div>
       ) : reviews.length === 0 ? (
         <div style={{ padding: '40px 0', textAlign: 'center' }}>
-          <div style={{ fontSize: '36px', marginBottom: '8px' }}>✏️</div>
+          <AppIcon name="pencil" size={36} color="var(--muted)" style={{ margin: '0 auto 8px' }} />
           <p style={{ color: 'var(--muted)', fontSize: '14px' }}>아직 리뷰가 없어요. 첫 리뷰를 남겨보세요!</p>
         </div>
       ) : (
@@ -533,5 +534,4 @@ function ReviewItem({ review, currentUserId, onDelete, accentColor }: {
     </div>
   )
 }
-
 

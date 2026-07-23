@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -7,6 +7,7 @@ import { getShopTags } from '@/services/shopProductService'
 import { addTagToCollection, getMyCollectedTagIds } from '@/services/tagCollectionService'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/tds/Button'
+import AppIcon from '@/components/tds/AppIcon'
 
 interface Props {
   shopId: string
@@ -148,9 +149,9 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
             background: 'var(--surface)', borderRadius: '20px',
             padding: '32px 28px', textAlign: 'center', maxWidth: '300px',
           }}>
-            <div style={{ fontSize: '48px', marginBottom: '12px' }}>🎉</div>
+            <AppIcon name="sparkle" size={48} color="var(--accent)" style={{ margin: '0 auto 12px' }} />
             <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '8px' }}>새 배지 획득!</p>
-            <div style={{ fontSize: '36px', marginBottom: '8px' }}>🏅</div>
+            <AppIcon name="medal" size={36} color="var(--accent)" style={{ margin: '0 auto 8px' }} />
             <p style={{ fontSize: '16px', fontWeight: 900 }}>{newBadge.name}</p>
           </div>
         </div>
@@ -168,7 +169,7 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
             background: 'var(--surface)', borderRadius: '20px 20px 0 0',
             width: '100%', maxWidth: '680px', padding: '24px 20px',
           }}>
-            <div style={{ fontSize: '36px', textAlign: 'center', marginBottom: '8px' }}>📖</div>
+            <AppIcon name="books" size={36} color="var(--accent)" style={{ margin: '0 auto 8px' }} />
             <h3 style={{ fontSize: '16px', fontWeight: 900, textAlign: 'center', marginBottom: '6px' }}>
               이 곳에서 관심 있는 작품이 있나요?
             </h3>
@@ -227,7 +228,6 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
     </div>
   )
 }
-
 
 
 

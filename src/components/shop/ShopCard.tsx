@@ -50,7 +50,7 @@ export default function ShopCard({ shop, isActive, onClick }: ShopCardProps) {
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         ) : (
-          catInfo?.icon ?? '🏪'
+          <CatIcon name={catInfo?.icon ?? 'shop'} color={catInfo?.color ?? '#e8006f'} size={28} />
         )}
       </div>
 
@@ -68,7 +68,7 @@ export default function ShopCard({ shop, isActive, onClick }: ShopCardProps) {
           </span>
           {(shop as any).is_claimed && <VerifiedBadge size={13} />}
           {shop.is_verified && (
-            <span style={{ fontSize: '12px', color: 'var(--cyan)' }}>✓</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }} aria-label="정보 확인됨"><path d="m5 12 5 5 9-10" /></svg>
           )}
           {shop.status === 'temporary_closed' && (
             <span style={{
@@ -93,7 +93,7 @@ export default function ShopCard({ shop, isActive, onClick }: ShopCardProps) {
           whiteSpace: 'nowrap',
           marginBottom: '6px',
         }}>
-          📍 {shop.addr ?? '주소 정보 없음'}
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: '-1px', marginRight: 3 }} aria-hidden><path d="M12 21c-4.5-5.5-6.6-9.4-6.6-12.5a6.6 6.6 0 0 1 13.2 0c0 3.1-2.1 7-6.6 12.5z" /><circle cx="12" cy="8.5" r="2.3" /></svg>{shop.addr ?? '주소 정보 없음'}
           {shop.distance !== undefined && (
             <span style={{ marginLeft: '6px', color: 'var(--accent)', fontWeight: 700 }}>
               {formatDistance(shop.distance)}
@@ -124,11 +124,24 @@ export default function ShopCard({ shop, isActive, onClick }: ShopCardProps) {
           })}
           {shop.rating_count > 0 && (
             <span style={{ fontSize: '11px', color: 'var(--muted)', alignSelf: 'center' }}>
-              ★ {shop.rating_avg.toFixed(1)} ({shop.rating_count})
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style={{ verticalAlign: '-1px', marginRight: 2 }} aria-hidden><path d="m12 2.6 2.9 6 6.6.9-4.8 4.6 1.2 6.5-5.9-3.1-5.9 3.1 1.2-6.5L2.5 9.5l6.6-.9z" /></svg>{shop.rating_avg.toFixed(1)} ({shop.rating_count})
             </span>
           )}
         </div>
       </div>
     </div>
+  )
+}
+
+function CatIcon({ name, color, size = 18 }: { name: string; color: string; size?: number }) {
+  return (
+    <span style={{
+      width: size, height: size, display: 'inline-block', flexShrink: 0,
+      backgroundColor: color,
+      WebkitMaskImage: `url(/icons/${name}.png)`, maskImage: `url(/icons/${name}.png)`,
+      WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat',
+      WebkitMaskSize: 'contain', maskSize: 'contain',
+      WebkitMaskPosition: 'center', maskPosition: 'center',
+    }} />
   )
 }
