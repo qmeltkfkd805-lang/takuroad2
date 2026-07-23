@@ -9,7 +9,7 @@ const MENUS = [
   { key: 'holiday', icon: '📢', label: '휴무 공지', desc: '임시 휴무 안내', href: 'manage/holiday' },
   { key: 'events', icon: '🎉', label: '이벤트', desc: '진행 중인 이벤트 등록', href: 'manage/events' },
   { key: 'stock', icon: '📦', label: '입고 소식', desc: '재입고·신상품 소식 등록', href: 'manage/events/new?type=restock' },
-  { key: 'photos', icon: '🖼️', label: '사진 관리', desc: '매장 사진 추가·정렬' },
+  { key: 'photos', icon: '🖼️', label: '사진 관리', desc: '매장 사진 추가·정렬', href: 'manage/photos' },
 ]
 
 export default function ShopManagePage({ shop }: { shop: Shop }) {

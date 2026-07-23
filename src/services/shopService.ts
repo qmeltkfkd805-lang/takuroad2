@@ -831,3 +831,53 @@ export async function updateShopFields(
   const { error } = await q
   return !error
 }
+// ── 사진 관리 (사장님 매장 관리) ──
+
+export interface ShopImageRow {
+  id: string
+  image_url: string
+  is_cover: boolean
+  sort_order: number
+}
+
+export async function getShopImages(shopId: string): Promise<ShopImageRow[]> {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('shop_images')
+    .select('id, image_url, is_cover, sort_order')
+    .eq('shop_id', shopId)
+    .order('is_cover', { ascending: false })
+    .order('sort_order', { ascending: true })
+  return (data ?? []) as ShopImageRow[]
+}
+
+export async function addShopImage(shopId: string, imageUrl: string, userId: string, sortOrder: number): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase
+    .from('shop_images')
+    .insert({ shop_id: shopId, image_url: imageUrl, is_cover: false, sort_order: sortOrder, uploaded_by: userId } as any)
+  return !error
+}
+
+export async function deleteShopImage(imageId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase.from('shop_images').delete().eq('id', imageId)
+  return !error
+}
+
+/** 대표 사진 지정 — 기존 cover 해제 후 지정 (행을 지우지 않는다) */
+export async function setShopCoverImage(shopId: string, imageId: string): Promise<boolean> {
+  const supabase = createClient()
+  await supabase.from('shop_images').update({ is_cover: false } as any).eq('shop_id', shopId).eq('is_cover', true)
+  const { error } = await supabase.from('shop_images').update({ is_cover: true, sort_order: 0 } as any).eq('id', imageId)
+  return !error
+}
+
+/** 순서 일괄 갱신 */
+export async function reorderShopImages(items: { id: string; sort_order: number }[]): Promise<boolean> {
+  const supabase = createClient()
+  const results = await Promise.all(
+    items.map(it => supabase.from('shop_images').update({ sort_order: it.sort_order } as any).eq('id', it.id))
+  )
+  return results.every(r => !r.error)
+}
