@@ -169,7 +169,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
 
   async function handleTempSave() {
     const ok = await saveCore()
-    if (ok) { setSavedNote('임시저장됐어요'); setTimeout(() => setSavedNote(''), 2000) }
+    if (ok) { setSavedNote(mode === 'edit' ? '저장됐어요 ✓' : '임시저장됐어요'); setTimeout(() => setSavedNote(''), 2000) }
   }
   async function goNext() {
     if (step === 1) { if (!(await saveCore())) return }
@@ -200,14 +200,14 @@ export default function ShopFormWizard({ mode, shop }: Props) {
       <style>{`.taku-page-2col{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}@media (max-width:900px){.taku-page-2col{grid-template-columns:1fr}}`}</style>
 
       {/* 헤더 */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
+      <div style={{ position: 'sticky', top: 64, zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18, padding: '12px 0', background: 'var(--bg, var(--surface))', borderBottom: '1px solid var(--border)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <button onClick={() => router.back()} style={iconBtn} aria-label="뒤로"><Svg><path d="m15 18-6-6 6-6" /></Svg></button>
           <h1 style={{ fontSize: 26, fontWeight: 900, margin: 0 }}>{mode === 'edit' ? '샵 수정' : '샵 등록'}</h1>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           {savedNote && <span style={{ fontSize: 13, color: 'var(--green)', fontWeight: 700 }}>{savedNote}</span>}
-          <button onClick={handleTempSave} disabled={saving} style={ghostBtn}>임시저장</button>
+          <button onClick={handleTempSave} disabled={saving} style={mode === 'edit' ? { ...ghostBtn, background: 'var(--accent)', color: '#fff', border: 'none', fontWeight: 800 } : ghostBtn}>{saving ? '저장 중...' : mode === 'edit' ? '저장하기' : '임시저장'}</button>
           <button onClick={() => router.back()} style={ghostBtn}>나가기</button>
         </div>
       </div>
