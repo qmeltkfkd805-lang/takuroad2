@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -7,6 +7,8 @@ import {
   createShopEvent, updateShopEvent, uploadEventImage, uploadEventVideo,
   MAX_EVENT_VIDEO_MB, ShopEventType, EVENT_TYPE_ICON, EVENT_TYPE_LABEL,
 } from '@/services/shopEventService'
+import { getAllTags } from '@/services/shopService'
+import { getAllGoodsTypes } from '@/services/shopProductService'
 import styles from './shopEventForm.module.css'
 
 const EVENT_TYPES: ShopEventType[] = [
@@ -40,6 +42,23 @@ export default function ShopEventForm({ shopId, shopSlug, initialType, event }: 
   const [videoFile, setVideoFile] = useState<File | null>(null)
   const [videoPreview, setVideoPreview] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
+
+  // 작품 · 굿즈 종류 (선택)
+  const [tagId, setTagId] = useState<string | null>(event?.tag_id ?? null)
+  const [goodsTypeId, setGoodsTypeId] = useState<string | null>(event?.goods_type_id ?? null)
+  const [allTags, setAllTags] = useState<any[]>([])
+  const [goodsTypes, setGoodsTypes] = useState<any[]>([])
+  const [tagSearch, setTagSearch] = useState('')
+
+  useEffect(() => {
+    getAllTags().then(rows => setAllTags(rows ?? []))
+    getAllGoodsTypes().then(rows => setGoodsTypes(rows ?? []))
+  }, [])
+
+  const pickedTag = allTags.find(t => t.id === tagId) ?? null
+  const tagHits = tagSearch.trim()
+    ? allTags.filter(t => String(t.name ?? '').toLowerCase().includes(tagSearch.trim().toLowerCase())).slice(0, 8)
+    : []
 
   function onImage(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0]
@@ -107,6 +126,8 @@ export default function ShopEventForm({ shopId, shopSlug, initialType, event }: 
         video_url: videoUrl ?? null,
         starts_at: startsAt || null,
         ends_at: endsAt || null,
+        tag_id: tagId,
+        goods_type_id: goodsTypeId,
       })
     } else {
       ok = await createShopEvent({
@@ -115,6 +136,8 @@ export default function ShopEventForm({ shopId, shopSlug, initialType, event }: 
         imageUrl, videoUrl,
         startsAt: startsAt || null,
         endsAt: endsAt || null,
+        tagId: tagId ?? undefined,
+        goodsTypeId: goodsTypeId ?? undefined,
         userId: user.id,
       })
     }
@@ -151,6 +174,47 @@ export default function ShopEventForm({ shopId, shopSlug, initialType, event }: 
 
       <label className={styles.label}>제목</label>
       <input className={styles.input} value={title} onChange={e => setTitle(e.target.value)} placeholder="예: 블루아카 아크릴 재입고" />
+
+      <label className={styles.label}>작품 <span className={styles.opt}>(선택 · 작품 페이지에도 소식이 올라가요)</span></label>
+      {pickedTag ? (
+        <div className={styles.picked}>
+          <span className={styles.pickedChip}>
+            {pickedTag.name}
+            <button className={styles.pickedX} onClick={() => { setTagId(null); setTagSearch('') }}>✕</button>
+          </span>
+        </div>
+      ) : (
+        <>
+          <input
+            className={styles.input}
+            value={tagSearch}
+            onChange={e => setTagSearch(e.target.value)}
+            placeholder="작품 이름으로 검색 (예: 블루아카, 원피스)"
+          />
+          {tagHits.length > 0 && (
+            <div className={styles.hits}>
+              {tagHits.map(t => (
+                <button key={t.id} className={styles.hit} onClick={() => { setTagId(t.id); setTagSearch('') }}>
+                  {t.name}
+                </button>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
+      <label className={styles.label}>굿즈 종류 <span className={styles.opt}>(선택)</span></label>
+      <div className={styles.types}>
+        {goodsTypes.map(g => (
+          <button
+            key={g.id}
+            className={goodsTypeId === g.id ? styles.typeOn : styles.type}
+            onClick={() => setGoodsTypeId(goodsTypeId === g.id ? null : g.id)}
+          >
+            {g.icon ? g.icon + ' ' : ''}{g.name}
+          </button>
+        ))}
+      </div>
 
       <label className={styles.label}>설명 <span className={styles.opt}>(선택)</span></label>
       <textarea className={styles.textarea} value={description} onChange={e => setDescription(e.target.value)} rows={4} placeholder="자세한 내용을 적어주세요." />

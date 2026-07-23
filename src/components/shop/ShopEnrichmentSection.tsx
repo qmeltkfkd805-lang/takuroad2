@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react'
 import { getAllTags } from '@/services/shopService'
 import {
-  getShopTags, updateShopTags, getShopProductsBySeries,
-  upsertShopProduct, getAllGoodsTypes, Availability, AVAILABILITY_LABEL,
+  getShopTags, updateShopTags, getAllGoodsTypes,
   getShopGoodsCategories, updateShopGoodsCategories, deactivateProductsByTag,
 } from '@/services/shopProductService'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -13,14 +12,12 @@ interface Props {
   shopId: string
 }
 
-const AVAILABILITY_ORDER: Availability[] = ['unknown', 'not_sold', 'sold_out', 'few', 'normal', 'many']
 
 export default function ShopEnrichmentSection({ shopId }: Props) {
   const { user } = useAuth()
   const [allTags, setAllTags] = useState<any[]>([])
   const [myTags, setMyTags] = useState<any[]>([])
   const [allGoodsTypes, setAllGoodsTypes] = useState<any[]>([])
-  const [products, setProducts] = useState<any[]>([])
   const [myGoodsCategories, setMyGoodsCategories] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
   const [savingTags, setSavingTags] = useState(false)
@@ -28,24 +25,21 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
   const [tagSearch, setTagSearch] = useState('')
   const [goodsTagSearch, setGoodsTagSearch] = useState('')
   const [openTagId, setOpenTagId] = useState<string | null>(null)
-  const [openGoodsKey, setOpenGoodsKey] = useState<string | null>(null)
 
   useEffect(() => {
     loadAll()
   }, [shopId])
 
   async function loadAll() {
-    const [tags, shopTags, goodsTypes, productsBySeries, goodsCategories] = await Promise.all([
+    const [tags, shopTags, goodsTypes, goodsCategories] = await Promise.all([
       getAllTags(),
       getShopTags(shopId),
       getAllGoodsTypes(),
-      getShopProductsBySeries(shopId),
       getShopGoodsCategories(shopId),
     ])
     setAllTags(tags)
     setMyTags(shopTags)
     setAllGoodsTypes(goodsTypes)
-    setProducts(productsBySeries)
     setMyGoodsCategories(goodsCategories)
     setLoading(false)
   }
@@ -85,19 +79,6 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
     setSavingCategories(true)
     await updateShopGoodsCategories(shopId, myGoodsCategories)
     setSavingCategories(false)
-  }
-
-  async function setAvailability(tagId: string, goodsTypeId: string, value: Availability) {
-    if (!user) return
-    await upsertShopProduct({
-      shopId, tagId, goodsTypeId,
-      availability: value,
-      source: 'owner',
-      confirmedByType: 'owner',
-      userId: user.id,
-    })
-    setOpenGoodsKey(null)
-    await loadAll()
   }
 
   if (loading) {
@@ -241,130 +222,6 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
         </button>
       </div>
 
-      <div style={{ height: '1px', background: 'var(--border)' }} />
-
-      {/* 2단계: 작품별 굿즈 상세 (아코디언, 평소엔 접힌 상태) */}
-      <div>
-        <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}><Svg size={15} color="var(--accent)"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></Svg>작품별 취급 굿즈</h3>
-        <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '14px' }}>
-          선택사항이에요. 작품을 눌러서 펼친 다음, 굿즈 칸을 눌러 재고 상태를 선택해주세요.
-        </p>
-
-        {myTags.length === 0 ? (
-          <p style={{ fontSize: '13px', color: 'var(--muted)' }}>먼저 위에서 취급 작품을 선택하고 저장해주세요</p>
-        ) : (
-          <>
-            {myTags.length > 5 && (
-              <input
-                type="text"
-                value={goodsTagSearch}
-                onChange={e => setGoodsTagSearch(e.target.value)}
-                placeholder="작품 검색..."
-                style={{
-                  width: '100%', padding: '9px 12px', marginBottom: '10px',
-                  border: '1.5px solid var(--border)', borderRadius: '8px',
-                  fontSize: '13px', fontFamily: 'inherit',
-                  background: 'var(--surface)', color: 'var(--text)',
-                  outline: 'none', boxSizing: 'border-box',
-                }}
-              />
-            )}
-
-            {filteredMyTags.map(tag => {
-              const series = products.find(p => p.tagId === tag.id)
-              const isOpen = openTagId === tag.id
-              const filledCount = series?.goodsList.filter((g: any) => g.availability !== 'unknown').length ?? 0
-
-              return (
-                <div key={tag.id} style={{ marginBottom: '8px', border: '1px solid var(--border)', borderRadius: '10px', overflow: 'hidden' }}>
-                  <button
-                    onClick={() => setOpenTagId(isOpen ? null : tag.id)}
-                    style={{
-                      width: '100%', padding: '12px 14px', display: 'flex',
-                      justifyContent: 'space-between', alignItems: 'center',
-                      background: 'var(--surface2)', border: 'none', cursor: 'pointer', fontFamily: 'inherit',
-                    }}
-                  >
-                    <span style={{ fontWeight: 700, fontSize: '13px' }}>
-                      {tag.name}
-                      {filledCount > 0 && (
-                        <span style={{ color: 'var(--accent)', fontWeight: 700, marginLeft: '6px' }}>
-                          ({filledCount}개 입력됨)
-                        </span>
-                      )}
-                    </span>
-                    <span style={{ display: 'inline-flex', color: 'var(--muted)' }}>{isOpen ? <Svg size={13}><path d="m18 15-6-6-6 6" /></Svg> : <Svg size={13}><path d="m6 9 6 6 6-6" /></Svg>}</span>
-                  </button>
-
-                  {isOpen && (
-                    <div style={{ padding: '12px' }}>
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(90px, 1fr))', gap: '6px' }}>
-                        {allGoodsTypes.map((gt: any) => {
-                          const existing = series?.goodsList.find((g: any) => g.goodsTypeId === gt.id)
-                          const availability: Availability = existing?.availability ?? 'unknown'
-                          const isSet = availability !== 'unknown'
-                          const goodsKey = `${tag.id}-${gt.id}`
-                          const isGoodsOpen = openGoodsKey === goodsKey
-
-                          return (
-                            <div key={gt.id} style={{ position: 'relative' }}>
-                              <button
-                                onClick={() => setOpenGoodsKey(isGoodsOpen ? null : goodsKey)}
-                                style={{
-                                  width: '100%', padding: '8px 6px', borderRadius: '8px', textAlign: 'center',
-                                  border: `1.5px solid ${isSet ? 'var(--accent)' : 'var(--border)'}`,
-                                  background: isSet ? 'var(--accent-l)' : 'var(--surface)',
-                                  cursor: 'pointer', fontFamily: 'inherit',
-                                }}
-                              >
-                                <div style={{ fontSize: '16px' }}>{gt.icon}</div>
-                                <div style={{ fontSize: '10px', fontWeight: 700, marginTop: '2px' }}>{gt.name}</div>
-                                <div style={{
-                                  fontSize: '9px', fontWeight: 700, marginTop: '2px',
-                                  color: isSet ? 'var(--accent)' : 'var(--muted)',
-                                }}>
-                                  {AVAILABILITY_LABEL[availability]}
-                                </div>
-                              </button>
-
-                              {isGoodsOpen && (
-                                <div style={{
-                                  position: 'absolute', top: '100%', left: 0, zIndex: 20,
-                                  marginTop: '4px', background: 'var(--surface)',
-                                  border: '1px solid var(--border)', borderRadius: '8px',
-                                  boxShadow: '0 4px 12px rgba(0,0,0,.15)', overflow: 'hidden',
-                                  minWidth: '110px',
-                                }}>
-                                  {AVAILABILITY_ORDER.map(opt => (
-                                    <button
-                                      key={opt}
-                                      onClick={() => setAvailability(tag.id, gt.id, opt)}
-                                      style={{
-                                        display: 'block', width: '100%', padding: '8px 12px',
-                                        textAlign: 'left', border: 'none',
-                                        background: opt === availability ? 'var(--accent-l)' : 'var(--surface)',
-                                        color: opt === availability ? 'var(--accent)' : 'var(--text)',
-                                        fontWeight: opt === availability ? 700 : 400,
-                                        fontSize: '12px', cursor: 'pointer', fontFamily: 'inherit',
-                                      }}
-                                    >
-                                      {AVAILABILITY_LABEL[opt]}
-                                    </button>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )
-            })}
-          </>
-        )}
-      </div>
     </div>
   )
 }

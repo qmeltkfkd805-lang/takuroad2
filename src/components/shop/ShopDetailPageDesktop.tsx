@@ -655,6 +655,12 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                     <div style={{ flex: 1, overflowY: 'auto', padding: '16px' }}>
                       <span style={{ display: 'inline-block', fontSize: 11.5, fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l, rgba(232,0,111,.08))', padding: '3px 9px', borderRadius: 9999, marginBottom: 10 }}>{EVENT_TYPE_LABEL[stockModal.type as keyof typeof EVENT_TYPE_LABEL] ?? stockModal.type}</span>
                       <div style={{ fontSize: 15, fontWeight: 800, lineHeight: 1.45 }}>{stockModal.title}</div>
+                      {(stockModal.tags?.name || stockModal.goods_types?.name) && (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
+                          {stockModal.tags?.name && <span style={{ fontSize: 12, fontWeight: 700, padding: '4px 10px', borderRadius: 9999, background: 'var(--surface2)', color: 'var(--text)' }}>📚 {stockModal.tags.name}</span>}
+                          {stockModal.goods_types?.name && <span style={{ fontSize: 12, fontWeight: 700, padding: '4px 10px', borderRadius: 9999, background: 'var(--surface2)', color: 'var(--text)' }}>{stockModal.goods_types.icon ? stockModal.goods_types.icon + ' ' : '🏷 '}{stockModal.goods_types.name}</span>}
+                        </div>
+                      )}
                       {stockModal.description && <p style={{ fontSize: 14, lineHeight: 1.75, color: 'var(--text)', marginTop: 8, whiteSpace: 'pre-wrap' }}>{stockModal.description}</p>}
                       {(stockModal.starts_at || stockModal.ends_at) && (
                         <p style={{ fontSize: 12.5, color: 'var(--muted)', marginTop: 10 }}>

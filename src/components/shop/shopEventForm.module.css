@@ -20,3 +20,10 @@
 .submit { margin-top: 36px; width: 100%; padding: 16px; border: none; border-radius: 12px; background: var(--accent); color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; font-family: inherit; }
 .submit:disabled { opacity: .5; cursor: not-allowed; }
 .videoPreview { width: 200px; max-height: 340px; border-radius: 12px; background: #000; display: block; }
+
+.picked { display: flex; flex-wrap: wrap; gap: 8px; }
+.pickedChip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px 9px 16px; border-radius: 9999px; background: var(--accent-l, rgba(232,0,111,.08)); color: var(--accent); border: 1.5px solid var(--accent); font-size: 14px; font-weight: 700; }
+.pickedX { border: none; background: none; color: var(--accent); cursor: pointer; font-size: 13px; padding: 0; line-height: 1; font-family: inherit; }
+.hits { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.hit { padding: 8px 14px; border-radius: 9999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 13.5px; cursor: pointer; font-family: inherit; }
+.hit:hover { border-color: var(--accent); color: var(--accent); }

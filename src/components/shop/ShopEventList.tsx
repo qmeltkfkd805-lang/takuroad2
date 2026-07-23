@@ -133,6 +133,12 @@ export default function ShopEventList({ shopId }: Props) {
 
             <div style={{ padding: '16px 18px 28px' }}>
               <div style={{ fontSize: '16px', fontWeight: 900, lineHeight: 1.45 }}>{selected.title}</div>
+              {(selected.tags?.name || selected.goods_types?.name) && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '10px' }}>
+                  {selected.tags?.name && <span style={{ fontSize: '12px', fontWeight: 700, padding: '4px 10px', borderRadius: '9999px', background: 'var(--surface2)' }}>📚 {selected.tags.name}</span>}
+                  {selected.goods_types?.name && <span style={{ fontSize: '12px', fontWeight: 700, padding: '4px 10px', borderRadius: '9999px', background: 'var(--surface2)' }}>{selected.goods_types.icon ? selected.goods_types.icon + ' ' : '🏷 '}{selected.goods_types.name}</span>}
+                </div>
+              )}
               {selected.description && (
                 <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'var(--text)', marginTop: '10px', whiteSpace: 'pre-wrap' }}>{selected.description}</p>
               )}

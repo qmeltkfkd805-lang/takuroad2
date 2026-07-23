@@ -277,6 +277,12 @@ export default function ShopEventManager({ shopId, shopSlug, hideForm }: Props) 
 
             <div style={{ padding: '16px 18px' }}>
               <div style={{ fontSize: '15px', fontWeight: 900, lineHeight: 1.45 }}>{managing.title}</div>
+              {(managing.tags?.name || managing.goods_types?.name) && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '10px' }}>
+                  {managing.tags?.name && <span style={{ fontSize: '12px', fontWeight: 700, padding: '4px 10px', borderRadius: '9999px', background: 'var(--surface2)' }}>📚 {managing.tags.name}</span>}
+                  {managing.goods_types?.name && <span style={{ fontSize: '12px', fontWeight: 700, padding: '4px 10px', borderRadius: '9999px', background: 'var(--surface2)' }}>{managing.goods_types.icon ? managing.goods_types.icon + ' ' : '🏷 '}{managing.goods_types.name}</span>}
+                </div>
+              )}
               {managing.description && <p style={{ fontSize: '13.5px', lineHeight: 1.7, color: 'var(--muted)', marginTop: '8px', whiteSpace: 'pre-wrap' }}>{managing.description}</p>}
               {(managing.starts_at || managing.ends_at) && (
                 <p style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '10px' }}>

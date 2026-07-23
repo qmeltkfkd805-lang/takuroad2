@@ -24,7 +24,7 @@ export async function getActiveShopEvents(shopId: string) {
 
   const { data } = await supabase
     .from('shop_events')
-    .select('*')
+    .select('*, tags ( name, slug ), goods_types ( name, icon )')
     .eq('shop_id', shopId)
     .eq('is_active', true)
     .or(`ends_at.is.null,ends_at.gte.${now}`)
@@ -39,7 +39,7 @@ export async function getAllShopEvents(shopId: string) {
   const supabase = createClient()
   const { data } = await supabase
     .from('shop_events')
-    .select('*')
+    .select('*, tags ( name, slug ), goods_types ( name, icon )')
     .eq('shop_id', shopId)
     .order('created_at', { ascending: false })
   return data ?? []
@@ -52,6 +52,8 @@ export async function createShopEvent(params: {
   description?: string
   imageUrl?: string
   videoUrl?: string
+  tagId?: string
+  goodsTypeId?: string
   startsAt?: string | null
   endsAt?: string | null
   isPinned?: boolean
@@ -67,6 +69,8 @@ export async function createShopEvent(params: {
       description: params.description ?? null,
       image_url: params.imageUrl ?? null,
       video_url: params.videoUrl ?? null,
+      tag_id: params.tagId ?? null,
+      goods_type_id: params.goodsTypeId ?? null,
       starts_at: params.startsAt ?? null,
       ends_at: params.endsAt ?? null,
       is_pinned: params.isPinned ?? false,
