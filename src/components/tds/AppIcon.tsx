@@ -20,16 +20,30 @@ const PNG_ICONS = new Set([
 const S = { fill: 'none', strokeWidth: 1.9, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
 
 const SVG_ICONS: Record<string, ReactNode> = {
-  pin: <><path d="M12 21c-4.5-5.5-6.6-9.4-6.6-12.5a6.6 6.6 0 0 1 13.2 0c0 3.1-2.1 7-6.6 12.5z" /><circle cx="12" cy="8.5" r="2.3" /></>,
+  shop: <><path d="M4 9.5V20h16V9.5" /><path d="M3 9.5 5 4h14l2 5.5a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z" /><path d="M9.5 20v-5.5h5V20" /></>,
+  event: <><rect x="2.5" y="6" width="19" height="12" rx="2.5" /><path d="M15.5 6v2M15.5 11v2M15.5 16v2" /></>,
+  map: <><path d="m3 6.5 6-2.5 6 2.5 6-2.5v13l-6 2.5-6-2.5-6 2.5z" /><path d="M9 4v13M15 6.5v13" /></>,
+  calendar: <><rect x="3" y="4.5" width="18" height="16" rx="2" /><path d="M3 9.5h18M8 2.5v4M16 2.5v4" /></>,
+  photo: <><rect x="3" y="4.5" width="18" height="15" rx="2" /><circle cx="8.5" cy="10" r="1.6" /><path d="m4.5 17 4.5-4.5 3 3L16 11l4 4.5" /></>,
+  search: <><circle cx="11" cy="11" r="7" /><path d="m16.2 16.2 4.3 4.3" /></>,
+  box: <><path d="m3.5 7.5 8.5-4 8.5 4v9l-8.5 4-8.5-4z" /><path d="m3.5 7.5 8.5 4 8.5-4M12 11.5V20" /></>,
+  heart: <path d="M12 20.3 4.6 13a4.7 4.7 0 0 1 6.6-6.7l.8.8.8-.8A4.7 4.7 0 0 1 19.4 13z" />,
+  bell: <><path d="M18 9a6 6 0 1 0-12 0c0 5-2 6.5-2 6.5h16S18 14 18 9z" /><path d="M13.7 19a2 2 0 0 1-3.4 0" /></>,
+  game: <><rect x="2.5" y="7" width="19" height="10.5" rx="4" /><path d="M7 10.5v3M5.5 12h3" /><circle cx="16" cy="11.5" r="1" fill="currentColor" stroke="none" /><circle cx="18.3" cy="13.5" r="1" fill="currentColor" stroke="none" /></>,
+  star: <path d="m12 3.2 2.7 5.6 6.1.8-4.4 4.3 1.1 6.1L12 17.1 6.5 20l1.1-6.1L3.2 9.6l6.1-.8z" />,
+  gift: <><rect x="3" y="9" width="18" height="11.5" rx="1.5" /><path d="M2.5 9h19M12 9v11.5" /><path d="M12 9S10.5 4 8 4a2.2 2.2 0 0 0 0 5M12 9s1.5-5 4-5a2.2 2.2 0 0 1 0 5" /></>,
+  parking: <><rect x="3.5" y="3.5" width="17" height="17" rx="4" /><path d="M9.5 17V7.5h3.2a3 3 0 0 1 0 6H9.5" /></>,
+  people: <><circle cx="9" cy="8" r="3.2" /><path d="M3.5 20a5.5 5.5 0 0 1 11 0" /><path d="M16 5.4a3.2 3.2 0 0 1 0 5.2M17.5 14.6a5.5 5.5 0 0 1 3 5.4" /></>,  pin: <><path d="M12 21c-4.5-5.5-6.6-9.4-6.6-12.5a6.6 6.6 0 0 1 13.2 0c0 3.1-2.1 7-6.6 12.5z" /><circle cx="12" cy="8.5" r="2.3" /></>,
   pushpin: <><path d="M9 3h6l-1 6 4 3v2H6v-2l4-3z" /><path d="M12 14v7" /></>,
   sparkle: <><path d="M12 3.5 13.8 9 19 10.8 13.8 12.6 12 18 10.2 12.6 5 10.8 10.2 9z" /><path d="M18.5 4.5v3M17 6h3" /></>,
+  chat: <><path d="M3.5 8.5a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3H8l-4.5 3z" /><path d="M9 17.2v.3a3 3 0 0 0 3 3h4l4.5 3-1-3a3 3 0 0 0 1-2.3v-2.7a3 3 0 0 0-2.2-2.9" /></>,
   comment: <path d="M20.5 11.5a7.9 7.9 0 0 1-8.5 7.9 8.4 8.4 0 0 1-3.2-.6L4 20.5l1.7-4.8A7.9 7.9 0 0 1 12 3.6a7.9 7.9 0 0 1 8.5 7.9z" />,
   clip: <path d="M20.5 12.5 12.5 20.5a4.7 4.7 0 0 1-6.6-6.6l8-8a3.1 3.1 0 0 1 4.4 4.4l-8 8a1.6 1.6 0 0 1-2.2-2.2l7.4-7.4" />,
   users: <><circle cx="9" cy="8" r="3.2" /><path d="M3.5 20a5.5 5.5 0 0 1 11 0" /><path d="M16 5.4a3.2 3.2 0 0 1 0 5.2M17.5 14.6a5.5 5.5 0 0 1 3 5.4" /></>,
   user: <><circle cx="12" cy="8" r="3.4" /><path d="M5.5 20a6.5 6.5 0 0 1 13 0" /></>,
   bag: <><path d="M5 8h14l-1 12H6z" /><path d="M9 8V6.5a3 3 0 0 1 6 0V8" /></>,
   chart: <><path d="M4 20V4" /><path d="M4 20h16" /><path d="M8 17v-5M12.5 17V8M17 17v-7" /></>,
-  handshake: <path d="m8 12 2.4 2.4a1.6 1.6 0 0 0 2.3 0l.6-.6 2.3 2.3M3 10l4-4 3 1.5L13 6l4 1.5 4-1.5v7l-3 3-4-3.5" />,
+  handshake: <><circle cx="9" cy="12" r="5.6" /><circle cx="15" cy="12" r="5.6" /></>,
   tent: <><path d="m12 4 8 16H4z" /><path d="M12 4v16" /></>,
   books: <><rect x="4" y="4" width="5" height="16" rx="1" /><rect x="10" y="4" width="5" height="16" rx="1" /><path d="m16.5 5.5 3.6 1-3 14.5-3.6-1z" /></>,
   image: <><rect x="3" y="4.5" width="18" height="15" rx="2" /><circle cx="8.5" cy="10" r="1.6" /><path d="m4.5 17 4.5-4.5 3 3L16 11l4 4.5" /></>,
@@ -64,7 +78,7 @@ const SVG_ICONS: Record<string, ReactNode> = {
   car: <><path d="M4 15.5V12l2-4.5h12L20 12v3.5" /><path d="M3.5 15.5h17v3h-3v-3M7 18.5v-3" /><circle cx="7.5" cy="15.5" r="1.4" fill="currentColor" stroke="none" /><circle cx="16.5" cy="15.5" r="1.4" fill="currentColor" stroke="none" /></>,
   walk: <><circle cx="13" cy="4.6" r="1.8" /><path d="m11 21 1.5-5.5-2-2 1-4.5 3 2 2.5 1M9.5 13.5 8 21" /></>,
   dice: <><rect x="4" y="4" width="16" height="16" rx="3" /><circle cx="9" cy="9" r="1.2" fill="currentColor" stroke="none" /><circle cx="15" cy="15" r="1.2" fill="currentColor" stroke="none" /></>,
-  ticket: <><path d="M3.5 8.5V6.5h17v2a2.5 2.5 0 0 0 0 5v2h-17v-2a2.5 2.5 0 0 0 0-5z" /><path d="M12 7v2M12 12v2M12 17v-2" /></>,
+  ticket: <><rect x="2.5" y="6" width="19" height="12" rx="2.5" /><path d="M15.5 6v2M15.5 11v2M15.5 16v2" /></>,
   palette: <><path d="M12 3.5a8.5 8.5 0 0 0 0 17c1.4 0 2-.9 2-1.8 0-1.3-1.2-1.6-1.2-2.7 0-.8.7-1.5 1.6-1.5h1.8a4.3 4.3 0 0 0 4.3-4.3C20.5 6.4 16.7 3.5 12 3.5z" /><circle cx="8" cy="10" r="1.1" fill="currentColor" stroke="none" /><circle cx="12" cy="7.6" r="1.1" fill="currentColor" stroke="none" /><circle cx="15.8" cy="9.6" r="1.1" fill="currentColor" stroke="none" /></>,
   clock: <><circle cx="12" cy="12" r="8.6" /><path d="M12 7.4V12l3.2 2" /></>,
   hourglass: <><path d="M7 3.5h10M7 20.5h10" /><path d="M7.5 3.5v3.2L12 12l-4.5 5.3v3.2M16.5 3.5v3.2L12 12l4.5 5.3v3.2" /></>,
@@ -79,7 +93,8 @@ interface Props {
 }
 
 export default function AppIcon({ name, size = 18, color = 'currentColor', style, label }: Props) {
-  if (PNG_ICONS.has(name)) {
+  // 같은 이름의 SVG가 있으면 SVG를 쓴다 (작은 아이콘은 선 스타일로 통일)
+  if (!SVG_ICONS[name] && PNG_ICONS.has(name)) {
     return (
       <span
         role={label ? 'img' : undefined}

@@ -5,6 +5,7 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { createContactMessage, uploadContactFiles } from '@/services/contactService'
 import { PARTNER_TYPES, P_FIELD_DEFS, COLLAB_FIELDS, PFieldKey } from './partnerConfig'
 import styles from './PartnerForm.module.css'
+import AppIcon from '@/components/tds/AppIcon'
 
 export default function PartnerForm() {
   const { user } = useAuth()
@@ -59,7 +60,7 @@ export default function PartnerForm() {
   if (sentId) {
     return (
       <div className={styles.done}>
-        <div className={styles.doneIcon}>✓</div>
+        <div className={styles.doneIcon}><AppIcon name="check" size={28} color="#fff" /></div>
         <h3 className={styles.doneTitle}>제휴 문의가 접수되었어요</h3>
         <p className={styles.doneDesc}>검토 후 입력하신 이메일로 연락드릴게요.</p>
         <span className={styles.doneId}>#{sentId.slice(0, 8)}</span>
@@ -78,7 +79,7 @@ export default function PartnerForm() {
 
       {type.redirect ? (
         <div className={styles.redirectBox}>
-          <div className={styles.redirectIcon}>{typeKey === 'shop' ? '🏪' : '🎉'}</div>
+          <div className={styles.redirectIcon}><AppIcon name={typeKey === 'shop' ? 'shop' : 'ticket'} size={48} color="var(--accent)" style={{ display: 'block', margin: '0 auto' }} /></div>
           <div className={styles.redirectTitle}>직접 등록할 수 있어요</div>
           <p className={styles.redirectDesc}>{type.redirect.desc}</p>
           <Link href={type.redirect.href} className={styles.redirectBtn}>{type.redirect.label} →</Link>
@@ -140,7 +141,7 @@ export default function PartnerForm() {
 
       <div className={styles.field}>
         <label className={styles.label}>첨부파일 (회사소개서·제안서·이미지)</label>
-        <label className={styles.fileBtn}>📎 파일 선택<input type="file" multiple onChange={onFiles} hidden /></label>
+        <label className={styles.fileBtn}><AppIcon name="clip" size={14} style={{ marginRight: 5 }} />파일 선택<input type="file" multiple onChange={onFiles} hidden /></label>
         {files.length > 0 && <span className={styles.fileList}>{files.map(f => f.name).join(', ')}</span>}
       </div>
 

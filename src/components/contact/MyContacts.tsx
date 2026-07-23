@@ -4,6 +4,7 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { getMyContactMessages } from '@/services/contactService'
 import { CONTACT_TYPES } from './contactConfig'
 import styles from './MyContacts.module.css'
+import AppIcon from '@/components/tds/AppIcon'
 
 const STATUS: Record<string, { label: string; cls: string }> = {
   pending:    { label: '대기', cls: 'pending' },
@@ -63,7 +64,7 @@ export default function MyContacts({ refreshKey = 0 }: { refreshKey?: number }) 
                         {m.attachment_urls?.length > 0 && (
                           <div className={styles.files}>
                             {m.attachment_urls.map((url: string, i: number) => (
-                              <a key={i} href={url} target="_blank" rel="noreferrer" className={styles.fileLink}>📎 첨부 {i + 1}</a>
+                              <a key={i} href={url} target="_blank" rel="noreferrer" className={styles.fileLink}><AppIcon name="clip" size={12} style={{ marginRight: 4 }} />첨부 {i + 1}</a>
                             ))}
                           </div>
                         )}

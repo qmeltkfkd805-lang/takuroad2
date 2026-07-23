@@ -3,18 +3,19 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { getMyChronicle, getMemoriesOnThisDay, ChronicleMonth } from '@/services/chronicleService'
+import AppIcon from '@/components/tds/AppIcon'
 
 const TYPE_ICON: Record<string, string> = {
-  check_in: '📍',
-  review: '📝',
-  badge_earned: '🏅',
-  route_completed: '🛣',
-  review_comment: '💬',
-  shop_registered: '🏪',
-  shop_verified: '✅',
-  title_set: '👑',
-  route_created: '🧭',
-  official_route: '🌟',
+  check_in: 'pin',
+  review: 'note',
+  badge_earned: 'medal',
+  route_completed: 'road',
+  review_comment: 'comment',
+  shop_registered: 'shop',
+  shop_verified: 'check',
+  title_set: 'crown',
+  route_created: 'compass',
+  official_route: 'sparkle',
 }
 
 interface Props {
@@ -53,11 +54,11 @@ export default function ChronicleTimeline({ userId }: Props) {
               borderRadius: '12px', padding: '14px', marginBottom: '8px',
             }}>
               <div style={{ fontSize: '12px', fontWeight: 900, color: 'var(--accent)', marginBottom: '6px' }}>
-                ✨ {mem.yearsAgo}년 전 오늘
+                <AppIcon name="sparkle" size={13} style={{ marginRight: 5 }} />{mem.yearsAgo}년 전 오늘
               </div>
               {mem.events.map((e: any) => (
                 <div key={e.id} style={{ fontSize: '13px', display: 'flex', gap: '6px', marginBottom: '2px' }}>
-                  <span>{TYPE_ICON[e.type] ?? '✨'}</span>
+                  <AppIcon name={TYPE_ICON[e.type] ?? 'sparkle'} size={15} color="var(--accent)" />
                   <span>{e.title}</span>
                 </div>
               ))}
@@ -100,10 +101,10 @@ export default function ChronicleTimeline({ userId }: Props) {
                     }} />
 
                     <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                      <span style={{ fontSize: '15px' }}>{TYPE_ICON[event.type] ?? '✨'}</span>
+                      <AppIcon name={TYPE_ICON[event.type] ?? 'sparkle'} size={15} color="var(--accent)" />
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: '13px', fontWeight: event.isMilestone ? 900 : 400 }}>
-                          {event.isMilestone && <span style={{ color: 'var(--accent)' }}>🎉 첫 </span>}
+                          {event.isMilestone && <span style={{ color: 'var(--accent)' }}><AppIcon name="sparkle" size={12} color="var(--accent)" style={{ marginRight: 3 }} />첫 </span>}
                           {event.title}
                         </div>
                         <div style={{ fontSize: '11px', color: 'var(--muted)' }}>

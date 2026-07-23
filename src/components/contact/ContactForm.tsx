@@ -6,6 +6,7 @@ import { CONTACT_TYPES, FIELD_DEFS, FieldKey } from './contactConfig'
 import { createContactMessage, uploadContactFiles } from '@/services/contactService'
 import styles from './ContactForm.module.css'
 import Link from 'next/link'
+import AppIcon from '@/components/tds/AppIcon'
 
 export default function ContactForm({ onSent }: { onSent?: () => void }) {
   const { user } = useAuth()
@@ -58,7 +59,7 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
   if (sentId) {
     return (
       <div className={styles.done}>
-        <div className={styles.doneIcon}>✓</div>
+        <div className={styles.doneIcon}><AppIcon name="check" size={28} color="#fff" /></div>
         <h3 className={styles.doneTitle}>문의가 접수되었어요</h3>
         <p className={styles.doneDesc}>평균 1~3일 안에 답변 드릴게요. 접수번호를 알려드려요.</p>
         <span className={styles.doneId}>#{sentId.slice(0, 8)}</span>
@@ -91,7 +92,7 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
 
       {type.redirect ? (
         <div className={styles.redirectBox}>
-          <div className={styles.redirectIcon}>🤝</div>
+          <div className={styles.redirectIcon}><AppIcon name="handshake" size={48} color="var(--accent)" style={{ display: 'block', margin: '0 auto' }} /></div>
           <div className={styles.redirectTitle}>제휴 안내 페이지에서 접수해요</div>
           <p className={styles.redirectDesc}>{type.redirect.desc}</p>
           <Link href={type.redirect.href} className={styles.redirectBtn}>{type.redirect.label} →</Link>
@@ -120,7 +121,7 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
       <div className={styles.field}>
         <label className={styles.label}>첨부파일</label>
         <label className={styles.fileBtn}>
-          📎 파일 선택
+          <AppIcon name="clip" size={14} style={{ marginRight: 5 }} />파일 선택
           <input type="file" multiple accept="image/*" onChange={onFiles} hidden />
         </label>
         {files.length > 0 && <span className={styles.fileList}>{files.map(f => f.name).join(', ')}</span>}

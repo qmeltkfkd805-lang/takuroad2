@@ -6,14 +6,15 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { getNotifications, markAsRead, markAllAsRead, Notification } from '@/services/notificationService'
 import { getNotificationLink } from '@/services/notificationService'
 import { ROUTES } from '@/lib/constants/routes'
+import AppIcon from '@/components/tds/AppIcon'
 
 const TYPE_ICON: Record<string, string> = {
-  badge: '🏅',
-  review_comment: '💬',
-  verify_approved: '✅',
-  verify_rejected: '❌',
-  shop_review: '✍️',
-  shop_comment: '💬',
+  badge: 'medal',
+  review_comment: 'comment',
+  verify_approved: 'check',
+  verify_rejected: 'close',
+  shop_review: 'pencil',
+  shop_comment: 'comment',
 }
 
 export default function NotificationsPage() {
@@ -85,7 +86,7 @@ export default function NotificationsPage() {
 
       {notifications.length === 0 ? (
         <div style={{ padding: '80px 20px', textAlign: 'center' }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔔</div>
+          <AppIcon name="bell" size={48} color="var(--muted)" style={{ margin: '0 auto 16px' }} />
           <p style={{ color: 'var(--muted)', fontSize: '14px' }}>아직 알림이 없어요</p>
         </div>
       ) : (
@@ -100,7 +101,7 @@ export default function NotificationsPage() {
             }}
           >
             <div style={{ fontSize: '20px', flexShrink: 0 }}>
-              {TYPE_ICON[noti.type] ?? '🔔'}
+              <AppIcon name={TYPE_ICON[noti.type] ?? 'bell'} size={20} color="var(--accent)" />
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: noti.is_read ? 400 : 700, fontSize: '14px', marginBottom: '2px' }}>

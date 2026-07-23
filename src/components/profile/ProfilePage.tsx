@@ -28,24 +28,10 @@ import GrowthPage from '@/components/growth/GrowthPage'
 import CosmeticPage from '@/components/cosmetic/CosmeticPage'
 import ProfileDesktop from './ProfileDesktop'
 import { useSearchParams } from 'next/navigation'
+import AppIcon from '@/components/tds/AppIcon'
 
 type Tab = 'passport' | 'customize' | 'chronicle' | 'growth' | 'visited' | 'saved' | 'routes' | 'savedroutes' | 'completed' | 'posts' | 'reviews' | 'comments' | 'shops' | 'verify' | 'badges' | 'collection' | 'settings'
 
-const TABS: { key: Tab; label: string; icon: string }[] = [
-  { key: 'passport',   label: '여권',         icon: '📔' },
-  { key: 'chronicle',  label: '연대기',       icon: '📰' },
-  { key: 'saved',      label: '저장한 샵',    icon: '🔖' },
-  { key: 'routes',     label: '내 루트',      icon: '🧭' },
-  { key: 'savedroutes', label: '저장한 루트',  icon: '❤️' },
-  { key: 'completed',  label: '완료한 루트',  icon: '🏁' },
-  { key: 'reviews',    label: '내 후기',      icon: '⭐' },
-  { key: 'comments',   label: '내 댓글',      icon: '💬' },
-  { key: 'shops',      label: '등록한 샵',    icon: '🏪' },
-  { key: 'verify',     label: '인증 현황',    icon: '🛡' },
-  { key: 'badges',     label: '배지',         icon: '🏆' },
-  { key: 'collection', label: '컬렉션',       icon: '📦' },
-  { key: 'settings',   label: '설정',         icon: '⚙️' },
-]
 const MOBILE_IA: { cat: string; label: string; subs: { key: Tab; label: string }[] }[] = [
   { cat: 'profile', label: '프로필', subs: [
     { key: 'passport', label: '여권' },
@@ -150,7 +136,7 @@ export default function ProfilePage() {
                 border: '1px solid var(--accent)', borderRadius: '8px',
                 padding: '6px 10px', cursor: 'pointer', textDecoration: 'none', fontWeight: 700,
               }}
-            >⚙️ 관리자</Link>
+            ><AppIcon name="gear" size={14} style={{ marginRight: 5 }} />관리자</Link>
           )}
           <button
             onClick={async () => { await signOut(); router.push('/') }}
@@ -248,7 +234,7 @@ function useIsDesktop() {
 function EmptyTab({ text }: { text: string }) {
   return (
     <div style={{ padding: '60px 20px', textAlign: 'center' }}>
-      <div style={{ fontSize: '40px', marginBottom: '12px' }}>📭</div>
+      <AppIcon name="mail" size={40} color="var(--muted)" style={{ margin: '0 auto 12px' }} />
       <p style={{ color: 'var(--muted)', fontSize: '14px' }}>{text}</p>
     </div>
   )

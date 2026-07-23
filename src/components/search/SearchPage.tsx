@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
@@ -13,6 +13,7 @@ import ShopCard from '@/components/shop/ShopCard'
 import WorkTagBadges from '@/components/work/WorkTagBadges'
 import { useDebounce } from '@/hooks/useDebounce'
 import SearchWorkHub from './SearchWorkHub'
+import AppIcon from '@/components/tds/AppIcon'
 
 const AVAILABILITY_LABEL: Record<string, string> = {
   unknown: '확인 안 됨', not_sold: '판매 안 함', sold_out: '품절',
@@ -97,7 +98,7 @@ export default function SearchPage() {
 
         {!loading && noResultsAtAll && (
           <div style={{ padding: '80px 20px', textAlign: 'center' }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔍</div>
+            <AppIcon name="search" size={48} color="var(--muted)" style={{ margin: '0 auto 16px' }} />
             <p style={{ fontWeight: 900, fontSize: '16px', marginBottom: '8px' }}>
               검색 결과가 없어요
             </p>
@@ -125,7 +126,7 @@ export default function SearchPage() {
               padding: '10px 16px', fontSize: '13px', color: 'var(--muted)', fontWeight: 700,
               borderBottom: '1px solid var(--border)', background: 'var(--surface2)',
             }}>
-              🛍️ 굿즈 검색 결과 {globalResults!.products.length}개
+              <AppIcon name="bag" size={15} style={{ marginRight: 6 }} />굿즈 검색 결과 {globalResults!.products.length}개
             </div>
             {globalResults!.products.map((p, i) => (
               <div
@@ -147,8 +148,8 @@ export default function SearchPage() {
                   </span>
                 </div>
                 <div style={{ fontSize: '13px', color: 'var(--muted)' }}>
-                  📍 {p.shopName}
-                  {p.confirmCount > 0 && <span> · 👥 {p.confirmCount}명 확인</span>}
+                  <AppIcon name="pin" size={12} style={{ marginRight: 4 }} />{p.shopName}
+                  {p.confirmCount > 0 && <span> · <AppIcon name="users" size={12} style={{ marginRight: 4 }} />{p.confirmCount}명 확인</span>}
                 </div>
               </div>
             ))}
@@ -161,7 +162,7 @@ export default function SearchPage() {
               padding: '10px 16px', fontSize: '13px', color: 'var(--muted)', fontWeight: 700,
               borderBottom: '1px solid var(--border)', background: 'var(--surface2)',
             }}>
-              🎮 작품 검색 결과 {globalResults!.tags.length}개
+              <AppIcon name="game" size={15} style={{ marginRight: 6 }} />작품 검색 결과 {globalResults!.tags.length}개
             </div>
             <div style={{ padding: '14px 16px' }}>
               <WorkTagBadges works={globalResults!.tags} />
@@ -182,7 +183,7 @@ export default function SearchPage() {
               padding: '10px 16px', fontSize: '13px', color: 'var(--muted)', fontWeight: 700,
               borderBottom: '1px solid var(--border)', background: 'var(--surface2)',
             }}>
-              🏪 샵 검색 결과 {shopResults.length}개
+              <AppIcon name="shop" size={15} style={{ marginRight: 6 }} />샵 검색 결과 {shopResults.length}개
             </div>
             {shopResults.map(shop => (
               <Link
@@ -199,7 +200,7 @@ export default function SearchPage() {
 
         {!query && !searched && (
           <div style={{ padding: '60px 20px', textAlign: 'center' }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔍</div>
+            <AppIcon name="search" size={48} color="var(--muted)" style={{ margin: '0 auto 16px' }} />
             <p style={{ color: 'var(--muted)', fontSize: '14px' }}>
               샵, 작품, 캐릭터, 굿즈로 검색해보세요
             </p>
