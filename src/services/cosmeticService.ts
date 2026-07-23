@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { tierHintFromCondition } from './badgeService'
 
 /* ============================================================
    코스메틱 — 프로필 꾸미기
@@ -228,6 +229,8 @@ export interface ShowcaseBadge {
   badgeName: string
   earned?: boolean
   earnedAt: string
+  hint?: string | null
+  hint?: string | null
 }
 
 /** 내가 딴 배지 전부 (대표 배지로 고를 수 있는 후보) */
@@ -289,7 +292,7 @@ export async function toggleShowcase(
 export async function getAllBadges(userId: string): Promise<ShowcaseBadge[]> {
   const supabase = createClient()
   const [tiersRes, earnedRes] = await Promise.all([
-    supabase.from('badge_tiers').select('id, name, rarity, icon_url, sort_order, badges ( name, icon_url, sort_order )').eq('is_active', true),
+    supabase.from('badge_tiers').select('id, name, rarity, icon_url, sort_order, description, condition_type, condition_target, badges ( name, icon_url, sort_order )').eq('is_active', true),
     supabase.from('user_badge_tiers').select('badge_tier_id, earned_at').eq('user_id', userId),
   ])
   const earnedMap = new Map(((earnedRes.data ?? []) as any[]).map(e => [e.badge_tier_id, e.earned_at]))
@@ -302,6 +305,7 @@ export async function getAllBadges(userId: string): Promise<ShowcaseBadge[]> {
       badgeName: t.badges?.name ?? '',
       earned: earnedMap.has(t.id),
       earnedAt: (earnedMap.get(t.id) as string) ?? '',
+      hint: tierHintFromCondition(t.condition_type ?? null, t.condition_target, earnedMap.has(t.id)) ?? t.description ?? null,
     }))
     .sort((a, b) => (b.earned ? 1 : 0) - (a.earned ? 1 : 0))
 }

@@ -70,6 +70,69 @@ export async function getBadgeGroups(userId: string | null) {
 }
 
 // 그룹 안의 시리즈 목록 (도감 ☑/□)
+/** description이 없는 티어를 위해 조건으로 안내 문구를 만든다 */
+/** activity_type → [획득함, 아직] 문구. {n}은 목표 수치로 치환된다 */
+const ACTIVITY_WORD: Record<string, [string, string]> = {
+  shop_visit:      ['샵 {n}곳을 방문했어요', '샵 {n}곳을 방문하면 얻어요'],
+  review:          ['후기를 {n}개 남겼어요', '후기를 {n}개 남기면 얻어요'],
+  photo_upload:    ['사진을 {n}장 올렸어요', '사진을 {n}장 올리면 얻어요'],
+  route_created:   ['루트를 {n}개 만들었어요', '루트를 {n}개 만들면 얻어요'],
+  route_completed: ['루트를 {n}개 완주했어요', '루트를 {n}개 완주하면 얻어요'],
+  event_visit:     ['이벤트에 {n}번 참여했어요', '이벤트에 {n}번 참여하면 얻어요'],
+  shop_added:      ['샵을 {n}곳 등록했어요', '샵을 {n}곳 등록하면 얻어요'],
+  contribution:    ['{n}번 기여했어요', '{n}번 기여하면 얻어요'],
+}
+/** 티어 조건 → 안내 문구. 획득했으면 과거형, 아니면 "~하면 얻어요" */
+export function tierHintFromCondition(type: string | null, target: any, earned = false): string | null {
+  const n = target?.count ?? null
+  const pct = target?.percent ?? null
+  let pair: [string, string] | null = null   // [획득함, 아직]
+
+  switch (type) {
+    case 'activity_count': {
+      if (!n) break
+      const w = ACTIVITY_WORD[target?.activity_type ?? '']
+      pair = w
+        ? [w[0].replace('{n}', String(n)), w[1].replace('{n}', String(n))]
+        : [n + '회 활동했어요', n + '회 활동하면 얻어요']
+      break
+    }
+    case 'comment_count':
+      if (n) pair = ['댓글을 ' + n + '개 남겼어요', '댓글을 ' + n + '개 남기면 얻어요']
+      break
+    case 'post_count':
+      if (n) pair = ['글을 ' + n + '개 썼어요', '글을 ' + n + '개 쓰면 얻어요']
+      break
+    case 'likes_received':
+      if (n) pair = ['좋아요를 ' + n + '개 받았어요', '좋아요를 ' + n + '개 받으면 얻어요']
+      break
+    case 'consecutive_days':
+      if (n) pair = [n + '일 연속 방문했어요', n + '일 연속 방문하면 얻어요']
+      break
+    case 'community_starter':
+      pair = ['커뮤니티에 첫 글을 남겼어요', '커뮤니티에 첫 글을 남기면 얻어요']
+      break
+    case 'all_masters':
+      pair = ['모든 배지를 마스터했어요', '다른 배지를 모두 마스터하면 얻어요']
+      break
+    case 'badge_group_master':
+      pair = ['이 시리즈를 모두 모았어요', '이 시리즈의 배지를 모두 모으면 얻어요']
+      break
+    case 'region_visit_count':
+      if (target?.region) pair = [target.region + '에서 ' + (n ?? 0) + '곳을 방문했어요', target.region + '에서 ' + (n ?? 0) + '곳을 방문하면 얻어요']
+      break
+    case 'category_visit_count':
+      if (target?.category) pair = [target.category + ' 샵 ' + (n ?? 0) + '곳을 방문했어요', target.category + ' 샵 ' + (n ?? 0) + '곳을 방문하면 얻어요']
+      break
+    case 'tag_visit_percent':
+      if (target?.tag) pair = [target.tag + ' 관련 샵을 ' + (pct ?? 0) + '% 방문했어요', target.tag + ' 관련 샵을 ' + (pct ?? 0) + '% 방문하면 얻어요']
+      break
+  }
+
+  if (!pair) return null
+  return earned ? pair[0] : pair[1]
+}
+
 export async function getBadgesInGroup(groupSlug: string, userId: string | null) {
   const supabase = createClient()
 
@@ -83,7 +146,7 @@ export async function getBadgesInGroup(groupSlug: string, userId: string | null)
 
   const { data: badges } = await supabase
     .from('badges')
-    .select('*, badge_tiers (id)')
+    .select('*, badge_tiers (id, name, description, sort_order, condition_type, condition_target)')
     .eq('group_id', group.id)
     .eq('is_active', true)
     .order('sort_order')
@@ -99,13 +162,22 @@ export async function getBadgesInGroup(groupSlug: string, userId: string | null)
     earnedTierIds = new Set((earned ?? []).map(e => e.badge_tier_id))
   }
 
-  return badges.map((b: any) => ({
-    id: b.id,
-    slug: b.slug,
-    name: b.name,
-    iconUrl: b.icon_url,
-    owned: (b.badge_tiers ?? []).some((t: any) => earnedTierIds.has(t.id)),
-  }))
+  return badges.map((b: any) => {
+    const tiers = [...(b.badge_tiers ?? [])].sort((x: any, y: any) => (x.sort_order ?? 0) - (y.sort_order ?? 0))
+    const owned = tiers.some((t: any) => earnedTierIds.has(t.id))
+    // 아직 못 딴 첫 단계를 다음 목표로. 다 땄으면 마지막 단계 설명.
+    const nextTier = tiers.find((t: any) => !earnedTierIds.has(t.id)) ?? tiers[tiers.length - 1]
+    return {
+      id: b.id,
+      slug: b.slug,
+      name: b.name,
+      iconUrl: b.icon_url,
+      owned,
+      hint: tierHintFromCondition(nextTier?.condition_type ?? null, nextTier?.condition_target, earnedTierIds.has(nextTier?.id)) ?? nextTier?.description ?? null,
+      hintTier: nextTier?.name ?? null,
+      allDone: tiers.length > 0 && tiers.every((t: any) => earnedTierIds.has(t.id)),
+    }
+  })
 }
 
 // 특정 시리즈(badge)의 tier 목록 + 진행률

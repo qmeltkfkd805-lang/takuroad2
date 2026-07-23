@@ -62,21 +62,46 @@ export default function BadgesTab({ userId }: { userId: string }) {
               <span className={cos.rarCount}>{got} / {group.length}</span>
             </div>
             <div className={cos.grid}>
-              {group.map(b => (
-                <div key={b.tierId} className={[cos.tile, !b.earned ? cos.tileLocked : ''].join(' ')}>
-                  <div className={[cos.thumb, cos['bg_' + b.rarity] ?? ''].join(' ')}>
-                    {b.icon ? <img src={b.icon} className={cos.badgeImg} /> : null}
-                  </div>
-                  <div className={cos.tileName}>{b.name}</div>
-                  <div className={[cos.rarity, cos['r_' + b.rarity]].join(' ')}>
-                    {RARITY_LABEL[b.rarity] ?? b.rarity}
-                  </div>
-                </div>
-              ))}
+              {group.map(b => <BadgeTile key={b.tierId} b={b} />)}
             </div>
           </div>
         )
       })}
+    </div>
+  )
+}
+
+function BadgeTile({ b }: { b: ShowcaseBadge }) {
+  const [hover, setHover] = useState(false)
+  return (
+    <div
+      className={[cos.tile, !b.earned ? cos.tileLocked : ''].join(' ')}
+      style={{ position: 'relative' }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <div className={!b.earned ? cos.tileLockedInner : undefined}>
+        <div className={[cos.thumb, cos['bg_' + b.rarity] ?? ''].join(' ')}>
+          {b.icon ? <img src={b.icon} className={cos.badgeImg} /> : null}
+        </div>
+        <div className={cos.tileName}>{b.name}</div>
+        <div className={[cos.rarity, cos['r_' + b.rarity]].join(' ')}>
+          {RARITY_LABEL[b.rarity] ?? b.rarity}
+        </div>
+      </div>
+      {hover && b.hint && (
+        <div style={{
+          position: 'absolute', left: '50%', bottom: 'calc(100% + 8px)', transform: 'translateX(-50%)',
+          width: 'max-content', maxWidth: 200, zIndex: 30,
+          background: 'var(--text)', color: 'var(--surface)',
+          fontSize: 12, lineHeight: 1.55, fontWeight: 500, textAlign: 'left',
+          padding: '9px 12px', borderRadius: 10,
+          boxShadow: '0 6px 20px rgba(0,0,0,.22)', pointerEvents: 'none',
+        }}>
+          <div style={{ fontWeight: 800, marginBottom: 3 }}>{b.earned ? '획득 완료' : '획득 조건'}</div>
+          {b.hint}
+        </div>
+      )}
     </div>
   )
 }
