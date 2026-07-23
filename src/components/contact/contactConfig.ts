@@ -33,13 +33,14 @@ export type ContactType = {
   label: string
   fields: FieldKey[]
   hint?: string
+  redirect?: { href: string; label: string; desc: string }
 }
 
 export const CONTACT_TYPES: ContactType[] = [
   { key: 'general',   label: '일반 문의',   fields: ['title', 'content'] },
   { key: 'bug',       label: '오류 신고',   fields: ['title', 'reproduce', 'browser', 'content'], hint: '어떤 화면에서 무슨 일이 있었는지 알려주시면 빠르게 고칠게요.' },
   { key: 'feature',   label: '기능 제안',   fields: ['title', 'content', 'benefit'] },
-  { key: 'partner',   label: '제휴 문의',   fields: ['company', 'manager', 'homepage', 'content'] },
+  { key: 'partner',   label: '제휴 문의',   fields: [], redirect: { href: '/support/partnership#form', label: '제휴 문의하러 가기', desc: '제휴 문의는 제휴 안내 페이지에서 접수하고 있어요. 제휴 종류에 맞는 항목을 안내해 드립니다.' } },
   { key: 'copyright', label: '저작권 문의', fields: ['title', 'content'] },
   { key: 'rights',    label: '권리자 요청', fields: ['rightsHolder', 'company', 'targetUrl', 'reason', 'evidence'], hint: '확인 후 수정 또는 삭제 등 필요한 조치를 신속히 진행합니다.' },
 ]

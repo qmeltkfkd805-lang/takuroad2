@@ -12,6 +12,7 @@ export default function PartnerForm() {
   const [common, setCommon] = useState<Record<string, string>>({})
   const [values, setValues] = useState<Record<string, string>>({})
   const [collab, setCollab] = useState<string[]>([])
+  const [collabEtc, setCollabEtc] = useState('')
   const [content, setContent] = useState('')
   const [agree, setAgree] = useState(false)
   const [files, setFiles] = useState<File[]>([])
@@ -42,7 +43,7 @@ export default function PartnerForm() {
       manager: common.manager, company: common.company,
       phone: common.phone, homepage: common.homepage,
       instagram: common.instagram, x: common.x, snsEtc: common.snsEtc,
-      collab, ...values,
+      collab, collabEtc: collab.includes('기타') ? collabEtc : undefined, ...values,
     }
     const res = await createContactMessage({
       type: 'partner',
@@ -121,7 +122,16 @@ export default function PartnerForm() {
             {c}
           </label>
         ))}
-      </div>
+        </div>
+        {collab.includes('기타') && (
+          <input
+            className={styles.input}
+            style={{ marginTop: 10 }}
+            value={collabEtc}
+            onChange={e => setCollabEtc(e.target.value)}
+            placeholder="어떤 협업을 원하시는지 적어주세요"
+          />
+        )}
 
       <div className={styles.field}>
         <label className={styles.label}>제휴 내용</label>

@@ -46,3 +46,10 @@
 .doneTitle { font-size: 19px; font-weight: 800; color: var(--text); margin: 0 0 8px; }
 .doneDesc { font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0 0 18px; }
 .doneId { display: inline-block; font-size: 14px; font-weight: 700; color: var(--accent); background: var(--accent-l); padding: 8px 18px; border-radius: 9999px; letter-spacing: .5px; }
+
+.redirectBox { text-align: center; padding: 48px 32px; margin-top: 20px; background: linear-gradient(135deg, var(--accent-l), var(--surface2)); border: 1px solid var(--border); border-radius: 20px; }
+.redirectIcon { font-size: 48px; margin-bottom: 16px; }
+.redirectTitle { font-size: 20px; font-weight: 900; color: var(--text); margin-bottom: 10px; }
+.redirectDesc { font-size: 14.5px; color: var(--muted); line-height: 1.7; margin: 0 auto 24px; max-width: 600px; }
+.redirectBtn { display: inline-block; padding: 14px 32px; background: var(--accent); color: #fff; font-size: 15px; font-weight: 800; border-radius: 9999px; text-decoration: none; transition: transform .12s; }
+.redirectBtn:hover { transform: translateY(-2px); }

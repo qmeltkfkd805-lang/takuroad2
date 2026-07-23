@@ -1,14 +1,21 @@
-import PolicyLayout from '@/components/policy/PolicyLayout'
+import ContactLinks from '@/components/common/ContactLinks'
+import NoticeBoard from '@/components/notice/NoticeBoard'
 
 export const metadata = { title: '공지사항 · 타쿠로드' }
 
 export default function Page() {
   return (
-    <PolicyLayout title="공지사항" description="타쿠로드의 업데이트와 소식을 전합니다.">
-      <div className="pending">
-        <p>서비스 업데이트, 점검 안내, 이벤트 소식 등을 이곳에서 전해드릴 예정이에요. 아직 등록된 공지가 없어요.</p>
-        <p style={{ marginTop: 12 }}>문의: <a href="mailto:ttakuroad@gmail.com">ttakuroad@gmail.com</a></p>
+    <div style={{ width: '100%', padding: '40px 40px 100px' }}>
+      <div style={{ marginBottom: 32 }}>
+        <h1 style={{ fontSize: 30, fontWeight: 900, margin: '0 0 8px' }}>공지사항</h1>
+        <p style={{ fontSize: 15, color: 'var(--muted)', margin: 0 }}>타쿠로드의 업데이트와 소식을 전합니다.</p>
       </div>
-    </PolicyLayout>
+
+      <NoticeBoard />
+
+      <div style={{ marginTop: 48, paddingTop: 28, borderTop: '1px solid var(--border)' }}>
+        <ContactLinks />
+      </div>
+    </div>
   )
 }

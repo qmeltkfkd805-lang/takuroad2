@@ -35,6 +35,10 @@ export default function Page() {
             <span className={styles.emailLabel}>이메일로 직접 문의</span>
             <a href="mailto:ttakuroad@gmail.com" className={styles.email}>ttakuroad@gmail.com</a>
           </div>
+          <div className={styles.emailBox}>
+            <span className={styles.emailLabel}>인스타그램 DM 문의</span>
+            <a href="https://instagram.com/takuroad_official" target="_blank" rel="noopener noreferrer" className={styles.email}>@takuroad_official</a>
+          </div>
         </aside>
       </div>
     </div>

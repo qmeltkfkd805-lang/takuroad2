@@ -3,7 +3,7 @@ export type PFieldKey =
   | 'address' | 'works' | 'branches'
   | 'eventName' | 'eventPeriod' | 'eventPlace'
   | 'brandName' | 'brandGoal'
-  | 'adPeriod' | 'adPlace' | 'adBudget'
+  | 'adPeriod' | 'adPlace' | 'adBudget' | 'partnerKind'
 
 export type PFieldDef = { label: string; placeholder?: string; multiline?: boolean }
 
@@ -19,6 +19,7 @@ export const P_FIELD_DEFS: Record<PFieldKey, PFieldDef> = {
   adPeriod:    { label: '예상 기간', placeholder: '예: 2주' },
   adPlace:     { label: '희망 위치', placeholder: '예: 홈 배너, 지도 추천' },
   adBudget:    { label: '예산 (선택)', placeholder: '대략적인 예산' },
+  partnerKind: { label: '원하시는 제휴 내용', placeholder: '어떤 제휴를 원하시는지 자유롭게 적어주세요', multiline: true },
 }
 
 export type PartnerType = { key: string; label: string; fields: PFieldKey[]; redirect?: { href: string; label: string; desc: string } }

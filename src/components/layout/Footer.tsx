@@ -22,6 +22,7 @@ export default function Footer() {
             <Link key={l.href} href={l.href} style={{ color: 'var(--muted)', textDecoration: 'none' }}>{l.label}</Link>
           ))}
           <a href={'mailto:' + CONTACT_EMAIL} style={{ color: 'var(--muted)', textDecoration: 'none' }}>{CONTACT_EMAIL}</a>
+        <a href="https://instagram.com/takuroad_official" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--muted)', textDecoration: 'none' }}>@takuroad_official</a>
         </nav>
         <p style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.6, margin: 0 }}>
           TAKUROAD는 애니메이션·굿즈 매장 정보를 모으는 팬 커뮤니티 서비스예요. 공식 서비스가 아니며 작품·캐릭터·상표의 권리는 각 권리자에게 있어요.

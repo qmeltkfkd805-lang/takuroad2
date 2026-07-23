@@ -3,6 +3,8 @@ import { useState, useEffect, useCallback, Fragment } from 'react'
 import { getAllContactMessages, updateContactMessage } from '@/services/contactService'
 import { CONTACT_TYPES } from '@/components/contact/contactConfig'
 import styles from './ContactAdminTab.module.css'
+import PartnerDetailView from './PartnerDetailView'
+import ContactDetailView from './ContactDetailView'
 
 const FILTERS = [
   { key: 'all', label: '전체' },
@@ -10,9 +12,10 @@ const FILTERS = [
   { key: 'processing', label: '처리중' },
   { key: 'done', label: '완료' },
 ]
+const PARTNER_KEYS = ['partnerType','manager','company','phone','homepage','instagram','x','snsEtc','collab','collabEtc','address','works','branches','eventName','eventPeriod','eventPlace','brandName','brandGoal','adPeriod','adPlace','adBudget']
 const STATUS_LABEL: Record<string, string> = { pending: '대기', processing: '처리중', done: '완료' }
 
-export default function ContactAdminTab() {
+export default function ContactAdminTab({ onlyType, excludeType }: { onlyType?: string; excludeType?: string } = {}) {
   const [filter, setFilter] = useState('all')
   const [items, setItems] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -20,8 +23,13 @@ export default function ContactAdminTab() {
 
   const load = useCallback(() => {
     setLoading(true)
-    getAllContactMessages(filter).then(data => { setItems(data); setLoading(false) })
-  }, [filter])
+    getAllContactMessages(filter).then(data => {
+      let rows = data
+      if (onlyType) rows = rows.filter((m: any) => m.type === onlyType)
+      if (excludeType) rows = rows.filter((m: any) => m.type !== excludeType)
+      setItems(rows); setLoading(false)
+    })
+  }, [filter, onlyType, excludeType])
 
   useEffect(() => { load() }, [load])
 
@@ -79,19 +87,22 @@ function Detail({ m, onSaved }: { m: any; onSaved: () => void }) {
     else alert('저장 실패: ' + res.error)
   }
 
-  const extraEntries = Object.entries(m.extra ?? {})
+  const x = m.extra ?? {}
+  const isPartner = m.type === 'partner'
+  const extraEntries = Object.entries(x).filter(([k]) => !isPartner || !PARTNER_KEYS.includes(k))
+
+  function Row({ label, value }: { label: string; value: any }) {
+    if (value === undefined || value === null || value === '') return null
+    return <div className={styles.extraRow}><span className={styles.extraKey}>{label}</span><span>{String(value)}</span></div>
+  }
 
   return (
     <div className={styles.detail}>
       <div className={styles.detailBody}>
-        <div className={styles.dLabel}>문의 내용</div>
-        <p className={styles.dContent}>{m.content}</p>
-        {extraEntries.length > 0 && (
-          <div className={styles.extra}>
-            {extraEntries.map(([k, v]) => (
-              <div key={k} className={styles.extraRow}><span className={styles.extraKey}>{k}</span><span>{String(v)}</span></div>
-            ))}
-          </div>
+        {isPartner ? (
+          <PartnerDetailView extra={x} content={m.content} />
+        ) : (
+          <ContactDetailView m={m} />
         )}
         {m.attachment_urls?.length > 0 && (
           <div className={styles.files}>
@@ -100,8 +111,6 @@ function Detail({ m, onSaved }: { m: any; onSaved: () => void }) {
             ))}
           </div>
         )}
-        {m.page_url && <div className={styles.dMeta}>문의 위치: {m.page_label || m.page_url}</div>}
-        <div className={styles.dMeta}>답변 이메일: {m.email}</div>
       </div>
       <div className={styles.admin}>
         <label className={styles.aLabel}>상태</label>

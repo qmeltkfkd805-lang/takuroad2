@@ -5,6 +5,7 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { CONTACT_TYPES, FIELD_DEFS, FieldKey } from './contactConfig'
 import { createContactMessage, uploadContactFiles } from '@/services/contactService'
 import styles from './ContactForm.module.css'
+import Link from 'next/link'
 
 export default function ContactForm({ onSent }: { onSent?: () => void }) {
   const { user } = useAuth()
@@ -88,6 +89,15 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
         </div>
       )}
 
+      {type.redirect ? (
+        <div className={styles.redirectBox}>
+          <div className={styles.redirectIcon}>🤝</div>
+          <div className={styles.redirectTitle}>제휴 안내 페이지에서 접수해요</div>
+          <p className={styles.redirectDesc}>{type.redirect.desc}</p>
+          <Link href={type.redirect.href} className={styles.redirectBtn}>{type.redirect.label} →</Link>
+        </div>
+      ) : (
+        <>
       {type.fields.map((f: FieldKey) => {
         const def = FIELD_DEFS[f]
         return (
@@ -124,6 +134,8 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
       <button type="button" className={styles.submit} disabled={!canSubmit || sending} onClick={submitContact}>
         {sending ? '보내는 중…' : '문의 보내기'}
       </button>
+        </>
+      )}
     </div>
   )
 }
