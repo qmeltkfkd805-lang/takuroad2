@@ -38,6 +38,7 @@ const SVG_ICONS: Record<string, ReactNode> = {
   sparkle: <><path d="M12 3.5 13.8 9 19 10.8 13.8 12.6 12 18 10.2 12.6 5 10.8 10.2 9z" /><path d="M18.5 4.5v3M17 6h3" /></>,
   chat: <><path d="M3.5 8.5a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3H8l-4.5 3z" /><path d="M9 17.2v.3a3 3 0 0 0 3 3h4l4.5 3-1-3a3 3 0 0 0 1-2.3v-2.7a3 3 0 0 0-2.2-2.9" /></>,
   comment: <path d="M20.5 11.5a7.9 7.9 0 0 1-8.5 7.9 8.4 8.4 0 0 1-3.2-.6L4 20.5l1.7-4.8A7.9 7.9 0 0 1 12 3.6a7.9 7.9 0 0 1 8.5 7.9z" />,
+  commentbox: <path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-4 3v-3H6a2 2 0 0 1-2-2z" />,
   clip: <path d="M20.5 12.5 12.5 20.5a4.7 4.7 0 0 1-6.6-6.6l8-8a3.1 3.1 0 0 1 4.4 4.4l-8 8a1.6 1.6 0 0 1-2.2-2.2l7.4-7.4" />,
   users: <><circle cx="9" cy="8" r="3.2" /><path d="M3.5 20a5.5 5.5 0 0 1 11 0" /><path d="M16 5.4a3.2 3.2 0 0 1 0 5.2M17.5 14.6a5.5 5.5 0 0 1 3 5.4" /></>,
   user: <><circle cx="12" cy="8" r="3.4" /><path d="M5.5 20a6.5 6.5 0 0 1 13 0" /></>,
@@ -69,6 +70,9 @@ const SVG_ICONS: Record<string, ReactNode> = {
   trophy: <><path d="M8 4h8v5a4 4 0 0 1-8 0z" /><path d="M8 5.5H5.5v1.5a3 3 0 0 0 3 3M16 5.5h2.5V7a3 3 0 0 1-3 3" /><path d="M12 13v3.5M9 20h6" /></>,
   check: <path d="m5 12 5 5 9-10" strokeWidth={2.6} />,
   close: <path d="M18 6 6 18M6 6l12 12" strokeWidth={2.2} />,
+  'arrow-left': <><path d="M19 12H5" /><path d="M11 6l-6 6 6 6" /></>,
+  'chevron-down': <path d="M6 9l6 6 6-6" />,
+  'chevron-right': <path d="M9 6l6 6-6 6" />,
   warning: <><path d="M12 4 2.8 20h18.4z" /><path d="M12 10v4M12 17.2v.1" /></>,
   question: <><circle cx="12" cy="12" r="9" /><path d="M9.6 9.5a2.5 2.5 0 1 1 3.2 2.4c-.6.2-.8.7-.8 1.3v.5M12 16.8v.1" /></>,
   trash: <><path d="M4.5 6.5h15M9.5 6.5V4.8a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v1.7" /><path d="M6.5 6.5 7.4 20a1 1 0 0 0 1 .9h7.2a1 1 0 0 0 1-.9l.9-13.5" /></>,
@@ -122,7 +126,7 @@ export default function AppIcon({ name, size = 18, color = 'currentColor', style
       role={label ? 'img' : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}
-      style={{ flexShrink: 0, verticalAlign: '-2px', ...style }}
+      style={{ flexShrink: 0, display: 'inline-block', verticalAlign: '-2px', ...style }}
     >
       {label && <title>{label}</title>}
       {path}

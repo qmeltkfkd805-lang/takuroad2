@@ -80,7 +80,7 @@ export default function TagCollectionSection({ userId }: Props) {
             }}
           >
             <div style={{ fontSize: '16px', marginBottom: '4px' }}>
-              {tag.isCollected ? '✔' : '□'}
+              <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18, borderRadius: 5, border: '1.5px solid ' + (tag.isCollected ? 'var(--accent)' : 'var(--border)'), background: tag.isCollected ? 'var(--accent)' : 'transparent' }}>{tag.isCollected && <AppIcon name="check" size={12} color="#fff" />}</span>
             </div>
             <div style={{
               fontSize: '11px', fontWeight: 700,

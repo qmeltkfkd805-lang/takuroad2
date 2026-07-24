@@ -34,7 +34,7 @@ export default function ShopDetail({ shop, onClose }: ShopDetailProps) {
         }}>
           {shop.images[0]
             ? <img src={shop.images[0]} alt={shop.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            : catInfo?.icon ?? '🏪'
+            : <AppIcon name={catInfo?.icon ?? 'shop'} color={catInfo?.color ?? 'var(--accent)'} size={28} />
           }
         </div>
 
@@ -43,7 +43,7 @@ export default function ShopDetail({ shop, onClose }: ShopDetailProps) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <h2 style={{ fontSize: '17px', fontWeight: 900, lineHeight: 1.3 }}>{shop.name}</h2>
             {shop.is_verified && (
-              <span style={{ fontSize: '13px', color: 'var(--cyan)', fontWeight: 700 }}>✓인증</span>
+              <span style={{ fontSize: '13px', color: 'var(--cyan)', fontWeight: 700 }}><AppIcon name="check" size={12} color="var(--cyan)" style={{ marginRight: 2, verticalAlign: '-1px' }} />인증</span>
             )}
           </div>
           <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '5px' }}>

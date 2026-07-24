@@ -1,4 +1,5 @@
 'use client'
+import AppIcon from '@/components/tds/AppIcon'
 
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -127,7 +128,7 @@ export default function ShopAllPage() {
             <div className={styles.panelHead}>
               <strong>필터</strong>
               {dirty && <button className={styles.reset} onClick={() => update(EMPTY_FILTERS)}>초기화</button>}
-              <button className={styles.panelClose} onClick={() => setFilterOpen(false)} aria-label="닫기">✕</button>
+              <button className={styles.panelClose} onClick={() => setFilterOpen(false)} aria-label="닫기"><AppIcon name="close" size={15} /></button>
             </div>
             <div className={styles.panelBody}>
               <ShopFilterSidebar

@@ -49,7 +49,7 @@ export default function ShopDetailPage({ shop }: Props) {
         isSaved={isSaved(shop.id)}
         onToggleSave={() => { toggleSave(shop.id) }}
         onShare={() => { if (navigator.share) { navigator.share({ title: shop.name, url: window.location.href }) } else { navigator.clipboard?.writeText(window.location.href) } }}
-        fallbackIcon={catInfo?.icon ?? '🏪'}
+        fallbackIcon={catInfo?.icon ?? 'shop'}
         fallbackBg={catInfo?.bgColor ?? 'var(--surface2)'}
       />
 

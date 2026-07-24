@@ -1,4 +1,5 @@
-﻿'use client'
+'use client'
+import AppIcon from '@/components/tds/AppIcon'
 import { useState, useEffect } from 'react'
 import { getShopProductsBySeries } from '@/services/shopProductService'
 import ConfirmInfoButton from './ConfirmInfoButton'
@@ -51,7 +52,7 @@ export default function ShopProductAccordion({ shopId }: Props) {
                   <div key={g.id} style={{ padding: '10px 0', borderBottom: '1px solid var(--border)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
                       <span style={{ fontSize: '13px', fontWeight: 700 }}>
-                        {g.characterName ? `${g.characterName} ` : ''}{g.goodsTypeIcon} {g.goodsTypeName}
+                        {g.characterName ? `${g.characterName} ` : ''}<AppIcon name="tag" size={12} style={{ marginRight: 4, verticalAlign: '-2px' }} />{g.goodsTypeName}
                         {g.variantName ? ` (${g.variantName})` : ''}
                       </span>
                       <StockBadge availability={g.availability} />

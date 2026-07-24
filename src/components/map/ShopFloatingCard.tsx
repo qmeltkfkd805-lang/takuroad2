@@ -61,7 +61,7 @@ export default function ShopFloatingCard({ shop, onClose, onToggleSave }: ShopFl
         }}>
           {cover
             ? <img src={cover} alt={shop.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            : (catInfo?.icon ? <CatIcon name={catInfo.icon} color={catInfo.color ?? '#e8006f'} size={30} /> : '🏪')}
+            : (catInfo?.icon ? <CatIcon name={catInfo.icon} color={catInfo.color ?? '#e8006f'} size={30} /> : <CatIcon name="shop" color="#e8006f" size={30} />)}
         </div>
 
         {/* 이름 + 거리·평점 + 영업시간 + 자세히 보기 */}

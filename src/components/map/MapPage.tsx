@@ -1,4 +1,5 @@
 'use client'
+import AppIcon from '@/components/tds/AppIcon'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
@@ -272,8 +273,8 @@ export default function MapPage() {
         >
           {groupShops && (
             <div style={{ padding: '16px' }}>
-              <h3 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '14px' }}>
-                📍 이 위치의 샵 {groupShops.length}곳
+              <h3 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '14px', whiteSpace: 'nowrap' }}>
+                <AppIcon name="pushpin" size={15} style={{ marginRight: 5, verticalAlign: '-2px' }} />이 위치의 샵 {groupShops.length}곳
               </h3>
               {(() => {
                 // 이 그룹이 전부 같은 장소(place) 소속이면 장소 상세로 가는 배너를 띄운다
@@ -291,7 +292,7 @@ export default function MapPage() {
                       background: 'var(--accent-l)', textDecoration: 'none',
                     }}
                   >
-                    <span style={{ fontSize: '18px' }}>🏬</span>
+                    <span style={{ fontSize: '18px' }}><AppIcon name="building" size={18} color="var(--accent)" /></span>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontWeight: 800, fontSize: '14px', color: 'var(--accent)' }}>{pname} 전체 보기</div>
                       <div style={{ fontSize: '12px', color: 'var(--muted)' }}>입점 샵과 이벤트를 한눈에</div>
@@ -318,7 +319,7 @@ export default function MapPage() {
                     }}>
                       {shop.images?.[0] ? (
                         <img src={shop.images[0]} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      ) : '🏪'}
+                      ) : <AppIcon name="shop" size={18} color="var(--muted)" />}
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontWeight: 700, fontSize: '14px' }}>{shop.name}</div>

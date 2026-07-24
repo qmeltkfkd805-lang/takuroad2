@@ -657,7 +657,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                       {(stockModal.tags?.name || stockModal.goods_types?.name) && (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
                           {stockModal.tags?.name && <span style={{ fontSize: 12, fontWeight: 700, padding: '4px 10px', borderRadius: 9999, background: 'var(--surface2)', color: 'var(--text)' , display: 'inline-flex', alignItems: 'center', gap: 5 }}><AppIcon name="books" size={13} />{stockModal.tags.name}</span>}
-                          {stockModal.goods_types?.name && <span style={{ fontSize: 12, fontWeight: 700, padding: '4px 10px', borderRadius: 9999, background: 'var(--surface2)', color: 'var(--text)' }}>{stockModal.goods_types.icon ? stockModal.goods_types.icon + ' ' : '🏷 '}{stockModal.goods_types.name}</span>}
+                          {stockModal.goods_types?.name && <span style={{ fontSize: 12, fontWeight: 700, padding: '4px 10px', borderRadius: 9999, background: 'var(--surface2)', color: 'var(--text)' }}>{<AppIcon name="tag" size={11} style={{ marginRight: 3, verticalAlign: '-1px' }} />}{stockModal.goods_types.name}</span>}
                         </div>
                       )}
                       {stockModal.description && <p style={{ fontSize: 14, lineHeight: 1.75, color: 'var(--text)', marginTop: 8, whiteSpace: 'pre-wrap' }}>{stockModal.description}</p>}

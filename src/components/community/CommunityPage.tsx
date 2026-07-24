@@ -14,6 +14,7 @@ import {
   CommunityStats, TrendingTag,
 } from '@/types/community-post'
 import { PostCard } from '@/components/community/PostUI'
+import AppIcon from '@/components/tds/AppIcon'
 
 type Scope = 'all' | 'popular' | 'mine'
 type View = 'list' | 'grid'
@@ -35,6 +36,9 @@ export default function CommunityPage() {
   const { user } = useAuth()
   const router = useRouter()
   const [board, setBoard] = useState<Sel>('all')
+  // 카테고리 칸은 '전체'에서만 의미가 있다 (게시판을 고르면 전부 같은 카테고리)
+  const showCat = board === 'all'
+  const listCols = showCat ? '76px 1fr 66px 66px 52px 44px' : '1fr 76px 66px 52px 44px'
   const [sort, setSort] = useState<PostSort>('latest')
   const [scope, setScope] = useState<Scope>('all')
   const [view, setView] = useState<View>('list')
@@ -168,7 +172,7 @@ export default function CommunityPage() {
             <div style={{ display: 'flex', flex: 1, minWidth: 200, alignItems: 'center', gap: 8, padding: '9px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
               <input value={searchInput} onChange={e => setSearchInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && setSearch(searchInput)} placeholder="제목·내용 검색" style={{ flex: 1, border: 'none', background: 'none', outline: 'none', fontSize: 14, color: 'var(--text)', fontFamily: 'inherit' }} />
-              {search && <button onClick={() => { setSearchInput(''); setSearch('') }} style={{ border: 'none', background: 'none', color: 'var(--muted)', cursor: 'pointer', fontSize: 14 }}>✕</button>}
+              {search && <button onClick={() => { setSearchInput(''); setSearch('') }} style={{ border: 'none', background: 'none', color: 'var(--muted)', cursor: 'pointer', fontSize: 14 }}><AppIcon name="close" size={13} /></button>}
             </div>
             <div style={{ position: 'relative' }}>
               <button onClick={() => setTagOpen(o => !o)} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 14px', borderRadius: 10, border: `1px solid ${tagFilter ? 'var(--accent)' : 'var(--border)'}`, background: 'var(--surface)', color: tagFilter ? 'var(--accent)' : 'var(--text)', fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
@@ -233,12 +237,12 @@ export default function CommunityPage() {
             </div>
           ) : (
             <div style={{ border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '90px 1fr 116px 78px 64px 60px', gap: 8, padding: '11px 16px', borderBottom: '1px solid var(--border)', fontSize: 12.5, fontWeight: 800, color: 'var(--muted)', background: 'var(--surface2)' }}>
-                <span>카테고리</span><span>제목</span><span>작성자</span><span style={{ textAlign: 'right' }}>작성일</span><span style={{ textAlign: 'center' }}>좋아요</span><span style={{ textAlign: 'center' }}>조회</span>
+              <div style={{ display: 'grid', gridTemplateColumns: listCols, gap: 12, padding: '11px 16px', borderBottom: '1px solid var(--border)', fontSize: 12.5, fontWeight: 800, color: 'var(--muted)', background: 'var(--surface2)' }}>
+                {showCat && <span style={{ textAlign: 'center' }}>카테고리</span>}<span style={{ textAlign: 'center' }}>제목</span><span style={{ textAlign: 'center' }}>작성자</span><span style={{ textAlign: 'center' }}>작성일</span><span style={{ textAlign: 'center' }}>조회</span><span style={{ textAlign: 'center' }}>좋아요</span>
               </div>
               {paged.map(p => (
-                <div key={p.id} className="taku-prow" onClick={() => openPost(p)} style={{ display: 'grid', gridTemplateColumns: '90px 1fr 116px 78px 64px 60px', gap: 8, padding: '11px 16px', borderBottom: '1px solid var(--border)', alignItems: 'center', cursor: 'pointer', fontSize: 13.5 }}>
-                  <span style={{ color: 'var(--muted)', fontSize: 12.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{BOARD_LABEL[p.board]}</span>
+                <div key={p.id} className="taku-prow" onClick={() => openPost(p)} style={{ display: 'grid', gridTemplateColumns: listCols, gap: 12, padding: '11px 16px', borderBottom: '1px solid var(--border)', alignItems: 'center', cursor: 'pointer', fontSize: 13.5 }}>
+                  {showCat && <span style={{ color: 'var(--muted)', fontSize: 12.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{BOARD_LABEL[p.board]}</span>}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 600 }}>{p.flair && <span style={flairBadge}>{p.flair}</span>}{p.isSpoiler && <span style={spoilerBadge}>스포주의</span>}{p.title || '(제목 없음)'}{p.commentCount > 0 && <span style={{ color: 'var(--accent)', fontWeight: 800, marginLeft: 6, fontSize: 12.5 }}>[{p.commentCount}]</span>}</span>
                     {p.images.length > 0 && (
@@ -247,14 +251,10 @@ export default function CommunityPage() {
                       </span>
                     )}
                   </div>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, minWidth: 0 }}>
-                  <UserAvatar userId={p.author?.id} src={p.author?.avatarUrl} name={p.author?.nickname} size={18} showEffect={false} />
-                  <span style={{ color: 'var(--muted)', fontSize: 12.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.author?.nickname ?? '익명'}</span>
-                  <UserTitle userId={p.author?.id} />
-                </span>
-                  <span style={{ textAlign: 'right', color: 'var(--muted)', fontSize: 12 }}>{timeAgo(p.createdAt)}</span>
-                  <span style={{ textAlign: 'center', color: '#FF4D6D', fontWeight: 700, fontSize: 12.5 }}>♥ {p.likeCount}</span>
+                  <span style={{ color: 'var(--muted)', fontSize: 12.5, textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.author?.nickname ?? '익명'}</span>
+                  <span style={{ textAlign: 'center', color: 'var(--muted)', fontSize: 12 }}>{timeAgo(p.createdAt)}</span>
                   <span style={{ textAlign: 'center', color: 'var(--muted)', fontSize: 12.5 }}>{p.viewCount}</span>
+                  <span style={{ textAlign: 'center', color: '#FF4D6D', fontWeight: 700, fontSize: 12.5 }}>♥ {p.likeCount}</span>
                 </div>
               ))}
             </div>

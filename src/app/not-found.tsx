@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ROUTES } from '@/lib/constants/routes'
+import { Taku } from '@/components/tds'
 
 export default function NotFound() {
   return (
@@ -8,7 +9,7 @@ export default function NotFound() {
       alignItems: 'center', justifyContent: 'center',
       background: 'var(--bg)', padding: '24px', textAlign: 'center',
     }}>
-      <div style={{ fontSize: '56px', marginBottom: '16px' }}>🗺️</div>
+      <div style={{ marginBottom: '20px' }}><Taku pose="map" size={110} /></div>
       <h1 style={{ fontSize: '24px', fontWeight: 900, marginBottom: '8px' }}>
         페이지를 찾을 수 없어요
       </h1>

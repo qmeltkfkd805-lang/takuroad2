@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { getMyReviews } from '@/services/reviewService'
 import { ROUTES } from '@/lib/constants/routes'
 import styles from './SectionPreview.module.css'
+import AppIcon from '@/components/tds/AppIcon'
 
 export default function MyReviewsPreview({ userId }: { userId: string }) {
   const [reviews, setReviews] = useState<any[]>([])
@@ -30,7 +31,7 @@ export default function MyReviewsPreview({ userId }: { userId: string }) {
                 <span className={styles.title}>{r.shops?.name ?? '알 수 없음'}</span>
                 <span className={styles.date}>{new Date(r.created_at).toLocaleDateString('ko-KR')}</span>
               </div>
-              <div className={styles.stars}>{'★'.repeat(r.stars)}{'☆'.repeat(5 - r.stars)}</div>
+              <div className={styles.stars}><AppIcon name="star" size={13} color="#f59e0b" style={{ verticalAlign: '-2px', marginRight: 3 }} />{r.stars}</div>
               {r.content && <p className={styles.desc}>{r.content}</p>}
             </Link>
           ))}

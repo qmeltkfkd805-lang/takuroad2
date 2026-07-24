@@ -1,4 +1,5 @@
 'use client'
+import AppIcon from '@/components/tds/AppIcon'
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -27,10 +28,10 @@ export default function VerifyRequestButton({ shopId, shopName, slug, accentColo
 
   if (myRequest) {
     const statusInfo = {
-      pending:  { label: '인증 심사 중', color: 'var(--yellow)', icon: '⏳' },
-      approved: { label: '인증 완료', color: 'var(--green)', icon: '✓' },
-      rejected: { label: '인증 거절됨', color: 'var(--red)', icon: '✕' },
-    }[myRequest.status] ?? { label: '상태 없음', color: 'var(--muted)', icon: '·' }
+      pending:  { label: '인증 심사 중', color: 'var(--yellow)', icon: 'clock' },
+      approved: { label: '인증 완료', color: 'var(--green)', icon: 'check' },
+      rejected: { label: '인증 거절됨', color: 'var(--red)', icon: 'close' },
+    }[myRequest.status] ?? { label: '상태 없음', color: 'var(--muted)', icon: 'question' }
 
     return (
       <div style={{
@@ -38,7 +39,7 @@ export default function VerifyRequestButton({ shopId, shopName, slug, accentColo
         background: `${statusInfo.color}15`, border: `1px solid ${statusInfo.color}40`,
         marginBottom: '20px', fontSize: '13px', fontWeight: 700, color: statusInfo.color,
       }}>
-        {statusInfo.icon} {statusInfo.label}
+        <AppIcon name={statusInfo.icon} size={13} color={statusInfo.color} style={{ verticalAlign: '-2px', marginRight: 3 }} />{statusInfo.label}
         {myRequest.status === 'rejected' && (
           <Link
             href={`/shop/claim/${slug}`}

@@ -9,7 +9,7 @@ const DIFF: Record<number, { l: string; c: string }> = {
   1: { l: '가볍게', c: '#22c55e' }, 2: { l: '반나절', c: '#ea9f0a' }, 3: { l: '하루', c: '#ef4444' },
 }
 
-export default function MyRoutesTab({ userId }: { userId: string }) {
+export default function MyRoutesTab({ userId, readOnly }: { userId: string; readOnly?: boolean }) {
   const router = useRouter()
   const [routes, setRoutes] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -17,7 +17,7 @@ export default function MyRoutesTab({ userId }: { userId: string }) {
   useEffect(() => { load() }, [userId])
   async function load() {
     const data = await getMyRoutes(userId)
-    setRoutes(data)
+    setRoutes(readOnly ? (data ?? []).filter((r: any) => r.is_shared || r.is_official) : data)
     setLoading(false)
   }
 
@@ -45,13 +45,13 @@ export default function MyRoutesTab({ userId }: { userId: string }) {
 
   return (
     <div style={{ padding: '16px' }}>
-      <button
+      {!readOnly && <button
         onClick={() => router.push('/route/new')}
         style={{ width: '100%', padding: '12px', borderRadius: '10px', marginBottom: '20px', background: 'var(--accent)', color: '#fff', border: 'none', fontWeight: 700, fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit' }}
-      >+ 새 루트 만들기</button>
+      >+ 새 루트 만들기</button>}
 
       {routes.length === 0 ? (
-        <EmptyState icon="map" text="만든 루트가 없어요" />
+        <EmptyState icon="map" text={readOnly ? "공개한 루트가 없어요" : "만든 루트가 없어요"} />
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
           {routes.map(r => {
@@ -74,10 +74,10 @@ export default function MyRoutesTab({ userId }: { userId: string }) {
                     </div>
                   </div>
                 </button>
-                <div style={{ display: 'flex', borderTop: '1px solid var(--border)' }}>
+                {!readOnly && <div style={{ display: 'flex', borderTop: '1px solid var(--border)' }}>
                   <button onClick={(e) => handleShare(e, r)} style={{ flex: 1, padding: '8px', border: 'none', background: 'none', color: 'var(--muted)', fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}><AppIcon name="link" size={12} style={{ marginRight: 4 }} />공유</button>
                   <button onClick={(e) => handleDelete(e, r.id)} style={{ flex: 1, padding: '8px', border: 'none', borderLeft: '1px solid var(--border)', background: 'none', color: 'var(--muted)', fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}><AppIcon name="trash" size={12} style={{ marginRight: 4 }} />삭제</button>
-                </div>
+                </div>}
               </div>
             )
           })}

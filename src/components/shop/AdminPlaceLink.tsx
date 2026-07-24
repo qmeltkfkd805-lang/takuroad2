@@ -1,4 +1,5 @@
 'use client'
+import AppIcon from '@/components/tds/AppIcon'
 
 import { useState } from 'react'
 import { searchPlace, PlaceSearchResult } from '@/lib/utils/geocode'
@@ -57,7 +58,7 @@ export default function AdminPlaceLink({
     <div style={{ marginTop: 14, padding: 14, border: '1px dashed var(--border)', borderRadius: 12, background: 'var(--surface2)' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
         <div>
-          <div style={{ fontSize: 13, fontWeight: 800 }}>🛠 소속 장소 (관리자)</div>
+          <div style={{ fontSize: 13, fontWeight: 800 }}><AppIcon name="gear" size={13} style={{ marginRight: 4, verticalAlign: '-2px' }} />소속 장소 (관리자)</div>
           <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>
             현재: {currentPlaceName ?? '없음 (독립 매장)'}
           </div>

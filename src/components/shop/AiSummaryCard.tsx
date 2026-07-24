@@ -89,7 +89,7 @@ export default function AiSummaryCard({ shopId, reviewCount, accentColor }: Prop
               fontSize: '13px', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
             }}
           >
-            {generating ? '요약 생성 중...' : '✨ AI 요약 생성하기'}
+            {generating ? '요약 생성 중...' : <><AppIcon name="sparkle" size={13} color="#fff" style={{ marginRight: 4, verticalAlign: '-2px' }} />AI 요약 생성하기</>}
           </button>
         </div>
       )}

@@ -9,11 +9,12 @@ import { createEventSubmission } from '@/services/eventSubmissionService'
 import { getShopBySlug } from '@/services/shopService'
 import { Shop } from '@/types/shop'
 import AppIcon from '@/components/tds/AppIcon'
+import { Icon } from '@/components/tds'
 
 const EVENT_TYPES = [
-  { value: 'popup', label: '🎪 팝업스토어' },
-  { value: 'collab_cafe', label: '☕ 콜라보 카페' },
-  { value: 'exhibition', label: '🖼️ 전시' },
+  { value: 'popup', label: '팝업스토어', icon: 'popup' },
+  { value: 'collab_cafe', label: '콜라보 카페', icon: 'cafe' },
+  { value: 'exhibition', label: '전시', icon: 'exhibition' },
 ]
 
 interface Props {
@@ -168,7 +169,7 @@ export default function EventSubmitPage({ initialTagId, initialShopSlug }: Props
                 background: type === et.value ? 'var(--surface2)' : 'var(--surface)',
                 color: 'var(--text)', fontSize: '13px', fontWeight: 700, fontFamily: 'inherit',
               }}>
-              {et.label}
+              <Icon name={et.icon} size={16} style={{ display: 'inline-block', marginRight: 5, verticalAlign: '-3px' }} />{et.label}
             </button>
           ))}
         </div>

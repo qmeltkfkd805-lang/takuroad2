@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react'
 import { getActiveShopEvents, EVENT_TYPE_ICON, EVENT_TYPE_LABEL, ShopEventType } from '@/services/shopEventService'
 import { SectionHeader } from '@/components/tds/SectionHeader'
+import AppIcon from '@/components/tds/AppIcon'
+import { Icon } from '@/components/tds'
 import { getEventsByShop, WORK_EVENT_ICON } from '@/services/eventService'
 
 interface Props {
@@ -44,7 +46,7 @@ export default function ShopEventList({ shopId }: Props) {
       setNews(sorted)
       setWorks(workEvents.map(e => ({
         id: `work-${e.id}`,
-        icon: WORK_EVENT_ICON[e.type] ?? '🎯',
+        icon: WORK_EVENT_ICON[e.type] ?? 'event',
         title: e.title ?? '',
         dateText: fmtRange(e.startDate, e.endDate),
         sortKey: (e.startDate ?? e.createdAt ?? '').slice(0, 10),
@@ -72,7 +74,7 @@ export default function ShopEventList({ shopId }: Props) {
                   ? <video src={n.video_url + '#t=0.1'} preload="metadata" muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   : n.image_url
                     ? <img src={n.image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    : <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg,#FFE3EC,#FFF0F5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px' }}>{EVENT_TYPE_ICON[n.type as ShopEventType] ?? '📌'}</div>}
+                    : <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg,#FFE3EC,#FFF0F5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px' }}><AppIcon name={EVENT_TYPE_ICON[n.type as ShopEventType] ?? 'pushpin'} size={26} color="var(--accent)" /></div>}
                 {n.video_url && (
                   <span style={{ position: 'absolute', top: '6px', right: '6px', color: '#fff', fontSize: '12px', textShadow: '0 1px 4px rgba(0,0,0,.6)' }}>▶</span>
                 )}
@@ -90,7 +92,7 @@ export default function ShopEventList({ shopId }: Props) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {works.map(item => (
               <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px', borderRadius: '14px', border: '1px solid var(--border)', background: 'var(--surface)' }}>
-                <div style={{ width: '44px', height: '44px', borderRadius: '12px', flexShrink: 0, background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px' }}>{item.icon}</div>
+                <div style={{ width: '44px', height: '44px', borderRadius: '12px', flexShrink: 0, background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px' }}><Icon name={item.icon} size={22} /></div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontWeight: 800, fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginBottom: '3px' }}>{item.title}</div>
                   {item.dateText && <p style={{ fontSize: '12px', color: 'var(--muted)', margin: 0 }}>{item.dateText}</p>}
@@ -120,7 +122,7 @@ export default function ShopEventList({ shopId }: Props) {
               <button
                 onClick={() => setSelected(null)}
                 style={{ marginLeft: 'auto', background: 'none', border: 'none', fontSize: '22px', cursor: 'pointer', color: 'var(--muted)', lineHeight: 1 }}
-              >✕</button>
+              ><AppIcon name="close" size={15} /></button>
             </div>
 
             {(selected.video_url || selected.image_url) && (
@@ -135,8 +137,8 @@ export default function ShopEventList({ shopId }: Props) {
               <div style={{ fontSize: '16px', fontWeight: 900, lineHeight: 1.45 }}>{selected.title}</div>
               {(selected.tags?.name || selected.goods_types?.name) && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '10px' }}>
-                  {selected.tags?.name && <span style={{ fontSize: '12px', fontWeight: 700, padding: '4px 10px', borderRadius: '9999px', background: 'var(--surface2)' }}>📚 {selected.tags.name}</span>}
-                  {selected.goods_types?.name && <span style={{ fontSize: '12px', fontWeight: 700, padding: '4px 10px', borderRadius: '9999px', background: 'var(--surface2)' }}>{selected.goods_types.icon ? selected.goods_types.icon + ' ' : '🏷 '}{selected.goods_types.name}</span>}
+                  {selected.tags?.name && <span style={{ fontSize: '12px', fontWeight: 700, padding: '4px 10px', borderRadius: '9999px', background: 'var(--surface2)' }}><AppIcon name="film" size={11} style={{ marginRight: 4, verticalAlign: '-1px' }} />{selected.tags.name}</span>}
+                  {selected.goods_types?.name && <span style={{ fontSize: '12px', fontWeight: 700, padding: '4px 10px', borderRadius: '9999px', background: 'var(--surface2)' }}>{<AppIcon name="tag" size={11} style={{ marginRight: 3, verticalAlign: '-1px' }} />}{selected.goods_types.name}</span>}
                 </div>
               )}
               {selected.description && (

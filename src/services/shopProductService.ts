@@ -280,7 +280,7 @@ export async function getProductsByTag(tagId: string) {
       shopSlug: p.shops?.slug ?? '',
       character: p.characters?.name ?? null,
       goodsType: p.goods_types?.name ?? '굿즈',
-      goodsIcon: p.goods_types?.icon ?? '🛍️',
+      goodsIcon: p.goods_types?.icon ?? null,
     }))
     // 확인 안 됨/판매 안 함은 "판매 중인 굿즈"가 아니므로 제외
     .filter(p => p.availability !== 'unknown' && p.availability !== 'not_sold')

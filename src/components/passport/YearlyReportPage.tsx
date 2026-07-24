@@ -1,4 +1,5 @@
 'use client'
+import AppIcon from '@/components/tds/AppIcon'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -60,7 +61,7 @@ export default function YearlyReportPage({ year }: Props) {
         <button
           onClick={() => router.back()}
           style={{ background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer' }}
-        >←</button>
+        ><AppIcon name="arrow-left" size={20} /></button>
         <h1 style={{ fontSize: '16px', fontWeight: 900, flex: 1 }}>{year}년 리포트</h1>
 
         {years.length > 1 && (
@@ -89,8 +90,8 @@ export default function YearlyReportPage({ year }: Props) {
         }}>
           TAKUROAD
         </div>
-        <h2 style={{ fontSize: '24px', fontWeight: 900, marginBottom: '24px' }}>
-          📔 {year} 타쿠로드 리포트
+        <h2 style={{ fontSize: '24px', fontWeight: 900, marginBottom: '24px', whiteSpace: 'nowrap' }}>
+          <AppIcon name="note" size={22} style={{ marginRight: 6, verticalAlign: '-3px' }} />{year} 타쿠로드 리포트
         </h2>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px' }}>
@@ -118,10 +119,10 @@ export default function YearlyReportPage({ year }: Props) {
           style={{
             width: '100%', padding: '13px', borderRadius: '12px',
             background: 'var(--accent)', color: '#fff', border: 'none',
-            fontWeight: 900, fontSize: '15px', cursor: 'pointer', fontFamily: 'inherit',
+            fontWeight: 900, fontSize: '15px', cursor: 'pointer', fontFamily: 'inherit', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, whiteSpace: 'nowrap',
           }}
         >
-          📤 리포트 공유하기
+          <AppIcon name="link" size={15} style={{ marginRight: 5, verticalAlign: '-2px' }} />리포트 공유하기
         </button>
       </div>
 

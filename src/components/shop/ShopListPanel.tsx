@@ -57,7 +57,7 @@ export default function ShopListPanel({
             padding: '4px',
           }}
         >
-          ✕
+          <AppIcon name="close" size={16} />
         </button>
       </div>
 

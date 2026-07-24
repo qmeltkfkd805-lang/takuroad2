@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { Taku } from '@/components/tds'
 import { Shop } from '@/types/shop'
 import { Tag } from '@/types/tag'
 import { ROUTES } from '@/lib/constants/routes'
@@ -36,7 +37,7 @@ export default function TagPage({ tag, shops }: Props) {
       {/* 샵 목록 */}
       {shops.length === 0 ? (
         <div style={{ padding: '80px 20px', textAlign: 'center' }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>🏷️</div>
+          <div style={{ marginBottom: '16px' }}><Taku pose="shopping" size={96} /></div>
           <p style={{ fontWeight: 900, fontSize: '16px', marginBottom: '8px' }}>
             #{tag.name} 관련 샵이 없어요
           </p>

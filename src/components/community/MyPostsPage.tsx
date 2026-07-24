@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getMyPosts, submitAppeal, uploadAppealImage } from '@/services/communityPostService'
 import { CommunityPost, REASON_LABEL, BOARD_LABEL, NewAppeal } from '@/types/community-post'
+import AppIcon from '@/components/tds/AppIcon'
 
 export default function MyPostsPage() {
   const { user } = useAuth()
@@ -131,7 +132,7 @@ function AppealModal({ post, onClose, onDone }: { post: CommunityPost; onClose: 
         {snsLinks.map((lnk, i) => (
           <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
             <input value={lnk} onChange={e => setLink(i, e.target.value)} placeholder="본인 SNS 계정 URL" style={{ ...inp, marginBottom: 0 }} />
-            {snsLinks.length > 1 && <button onClick={() => removeLink(i)} style={miniBtn}>✕</button>}
+            {snsLinks.length > 1 && <button onClick={() => removeLink(i)} style={miniBtn}><AppIcon name="close" size={12} /></button>}
           </div>
         ))}
         <button onClick={addLink} style={{ ...miniBtn, width: 'auto', padding: '8px 12px', marginBottom: 8 }}>+ 링크 추가</button>

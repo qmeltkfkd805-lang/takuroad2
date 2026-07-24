@@ -168,7 +168,7 @@ export default function ShopEventForm({ shopId, shopSlug, initialType, event }: 
       <div className={styles.types}>
         {EVENT_TYPES.map(t => (
           <button key={t} className={type === t ? styles.typeOn : styles.type} onClick={() => setType(t)}>
-            {EVENT_TYPE_ICON[t]} {EVENT_TYPE_LABEL[t]}
+            <AppIcon name={EVENT_TYPE_ICON[t]} size={14} style={{ marginRight: 4, verticalAlign: '-2px' }} />{EVENT_TYPE_LABEL[t]}
           </button>
         ))}
       </div>
@@ -181,7 +181,7 @@ export default function ShopEventForm({ shopId, shopSlug, initialType, event }: 
         <div className={styles.picked}>
           <span className={styles.pickedChip}>
             {pickedTag.name}
-            <button className={styles.pickedX} onClick={() => { setTagId(null); setTagSearch('') }}>✕</button>
+            <button className={styles.pickedX} onClick={() => { setTagId(null); setTagSearch('') }}><AppIcon name="close" size={15} /></button>
           </span>
         </div>
       ) : (
@@ -212,7 +212,7 @@ export default function ShopEventForm({ shopId, shopSlug, initialType, event }: 
             className={goodsTypeId === g.id ? styles.typeOn : styles.type}
             onClick={() => setGoodsTypeId(goodsTypeId === g.id ? null : g.id)}
           >
-            {g.icon ? g.icon + ' ' : ''}{g.name}
+            <AppIcon name="tag" size={14} style={{ marginRight: 4, verticalAlign: '-2px' }} />{g.name}
           </button>
         ))}
       </div>
@@ -231,7 +231,7 @@ export default function ShopEventForm({ shopId, shopSlug, initialType, event }: 
       {showImage ? (
         <div className={styles.previewBox}>
           <img src={showImage} alt="" className={styles.preview} />
-          <button className={styles.previewDel} onClick={removeImage}>✕</button>
+          <button className={styles.previewDel} onClick={removeImage}><AppIcon name="close" size={15} /></button>
         </div>
       ) : (
         <button className={styles.imageBtn} onClick={() => fileRef.current?.click()}><AppIcon name="camera" size={15} style={{ marginRight: 6 }} />사진 추가</button>
@@ -242,7 +242,7 @@ export default function ShopEventForm({ shopId, shopSlug, initialType, event }: 
       {showVideo ? (
         <div className={styles.previewBox}>
           <video src={showVideo} className={styles.videoPreview} controls playsInline muted />
-          <button className={styles.previewDel} onClick={removeVideo}>✕</button>
+          <button className={styles.previewDel} onClick={removeVideo}><AppIcon name="close" size={15} /></button>
         </div>
       ) : (
         <button className={styles.imageBtn} onClick={() => videoRef.current?.click()}><AppIcon name="film" size={15} style={{ marginRight: 6 }} />영상 추가</button>

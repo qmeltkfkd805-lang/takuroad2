@@ -2,15 +2,18 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { ROUTES } from '@/lib/constants/routes'
 import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
+import UserLevelBadge from '@/components/cosmetic/UserLevelBadge'
 import {
   togglePostLike, incrementPostView, getComments, addComment, deleteComment, toggleCommentLike,
   reportPost, hidePost, deletePost, setPostVisibility,
 } from '@/services/communityPostService'
 import { CommunityPost, PostComment, ReportReason, REPORT_REASONS, BOARD_LABEL, Poll } from '@/types/community-post'
 import { getPollByPost, votePoll } from '@/services/pollService'
+import AppIcon from '@/components/tds/AppIcon'
 
 // ── 카드 ──
 export function PostCard({ post, onOpen, showBoard }: { post: CommunityPost; onOpen: (p: CommunityPost) => void; showBoard?: boolean }) {
@@ -35,13 +38,11 @@ export function PostCard({ post, onOpen, showBoard }: { post: CommunityPost; onO
         {post.title && <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{post.flair && <span style={flairBadge}>{post.flair}</span>}{post.isSpoiler && <span style={{ display: 'inline-block', fontSize: 10, fontWeight: 800, color: '#fff', background: '#e04343', padding: '1px 6px', borderRadius: 5, marginRight: 5, verticalAlign: 'middle' }}>스포</span>}{post.title}</div>}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 12, color: 'var(--muted)' }}>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, minWidth: 0 }}>
-            <UserAvatar userId={post.author?.id} src={post.author?.avatarUrl} name={post.author?.nickname} size={18} showEffect={false} />
             <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{post.author?.nickname ?? '익명'}</span>
-            <UserTitle userId={post.author?.id} />
           </span>
           <span style={{ display: 'inline-flex', gap: 8, flexShrink: 0 }}>
             <span>♥ {post.likeCount}</span>
-            <span>💬 {post.commentCount}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><AppIcon name="comment" size={13} />{post.commentCount}</span>
           </span>
         </div>
       </div>
@@ -175,9 +176,15 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
           </div>
           {post.title && <h3 style={{ fontSize: 19, fontWeight: 800, margin: '0 0 8px' }}>{post.flair && <span style={{ ...flairBadge, fontSize: 13 }}>{post.flair}</span>}{post.title}</h3>}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: 'var(--muted)', paddingBottom: 14, marginBottom: 16, borderBottom: '1px solid var(--border)' }}>
-            <UserAvatar userId={post.author?.id} src={post.author?.avatarUrl} name={post.author?.nickname} size={30} />
-            <span style={{ fontWeight: 700, color: 'var(--text)' }}>{post.author?.nickname ?? '익명'}</span>
-            <UserTitle userId={post.author?.id} />
+            <Link
+              href={post.author?.nickname ? '/user/' + encodeURIComponent(post.author.nickname) : '#'}
+              onClick={e => e.stopPropagation()}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none', color: 'inherit' }}
+            >
+              <UserAvatar userId={post.author?.id} src={post.author?.avatarUrl} name={post.author?.nickname} size={30} />
+              <span style={{ fontWeight: 700, color: 'var(--text)' }}>{post.author?.nickname ?? '익명'}</span>
+            </Link>
+            <UserLevelBadge userId={post.author?.id} />
             <span>· 조회 {post.viewCount}</span>
           </div>
           {post.content && (isHtml
@@ -324,7 +331,7 @@ function PollView({ poll, userId, onChanged, onRequireLogin }: { poll: Poll; use
   return (
     <div style={{ border: '1px solid var(--border)', borderRadius: 14, padding: '16px 18px', margin: '4px 0 16px', background: 'var(--surface2)' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 12 }}>
-        <span style={{ fontWeight: 800, fontSize: 15 }}>📊 {poll.title}</span>
+        <span style={{ fontWeight: 800, fontSize: 15, display: 'inline-flex', alignItems: 'center', gap: 6 }}><AppIcon name="chart" size={15} />{poll.title}</span>
         {endLabel && <span style={{ fontSize: 11.5, fontWeight: 700, color: poll.closed ? '#c0392b' : 'var(--muted)' }}>{endLabel}</span>}
       </div>
 
@@ -336,7 +343,7 @@ function PollView({ poll, userId, onChanged, onRequireLogin }: { poll: Poll; use
               <div key={o.id} style={{ position: 'relative', border: '1px solid var(--border)', borderRadius: 9, overflow: 'hidden', background: 'var(--surface)' }}>
                 <div style={{ position: 'absolute', inset: 0, width: `${pct}%`, background: o.votedByMe ? 'rgba(232,0,111,.18)' : 'rgba(232,0,111,.08)' }} />
                 <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-between', gap: 8, padding: '10px 12px', fontSize: 14 }}>
-                  <span style={{ fontWeight: o.votedByMe ? 800 : 500 }}>{o.votedByMe ? '✓ ' : ''}{o.label}</span>
+                  <span style={{ fontWeight: o.votedByMe ? 800 : 500 }}>{o.votedByMe && <AppIcon name="check" size={12} style={{ marginRight: 4 }} />}{o.label}</span>
                   <span style={{ fontWeight: 800, color: 'var(--accent)', flex: 'none' }}>{pct}% · {o.voteCount}</span>
                 </div>
               </div>
@@ -393,9 +400,7 @@ function CommentRow({ c, isReply, highlight, user, isAdmin, onLike, onReply, onD
       {isReply && <span style={{ color: 'var(--muted)', flexShrink: 0, fontSize: 13, marginTop: 1 }}>↳</span>}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
-          <UserAvatar userId={c.author?.id} src={c.author?.avatarUrl} name={c.author?.nickname} size={22} showEffect={false} />
           <span style={{ fontSize: 12.5, fontWeight: 700 }}>{c.author?.nickname ?? '익명'}</span>
-          <UserTitle userId={c.author?.id} />
         </div>
         <div style={{ fontSize: 13.5, lineHeight: 1.5, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{c.content}</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 5 }}>

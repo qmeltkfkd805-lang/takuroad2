@@ -1,4 +1,5 @@
 'use client'
+import AppIcon from '@/components/tds/AppIcon'
 
 import { useState, useRef } from 'react'
 import { uploadAvatar, updateNickname } from '@/services/shopService'
@@ -59,7 +60,7 @@ export default function ProfileEditModal({
       <div className={styles.modal} onClick={e => e.stopPropagation()}>
         <div className={styles.head}>
           <h2>프로필 수정</h2>
-          <button className={styles.x} onClick={onClose} aria-label="닫기">✕</button>
+          <button className={styles.x} onClick={onClose} aria-label="닫기"><AppIcon name="close" size={14} /></button>
         </div>
 
         <div className={styles.avatarBox}>

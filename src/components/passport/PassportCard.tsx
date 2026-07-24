@@ -12,6 +12,7 @@ import { useWorn } from '@/components/cosmetic/CosmeticProvider'
 import { UserAvatar } from '@/components/cosmetic/UserFace'
 import { bgStyle, fxClass } from '@/lib/cosmetics/style'
 import styles from './PassportCard.module.css'
+import FollowButton from '@/components/cosmetic/FollowButton'
 
 /* 오타쿠 여권 — 프로필의 얼굴
 
@@ -29,13 +30,14 @@ import styles from './PassportCard.module.css'
 interface Props {
   passport: OtakuPassport
   isOwner?: boolean
+  showFollow?: boolean
   onCustomizeClick?: () => void
   previewWorn?: any
   compact?: boolean
   hideRecentVisits?: boolean
 }
 
-export default function PassportCard({ passport, isOwner, onCustomizeClick, previewWorn, compact, hideRecentVisits }: Props) {
+export default function PassportCard({ passport, isOwner, showFollow, onCustomizeClick, previewWorn, compact, hideRecentVisits }: Props) {
   const router = useRouter()
   const [showEdit, setShowEdit] = useState(false)
   const [nickname, setNickname] = useState(passport.nickname)
@@ -121,6 +123,8 @@ export default function PassportCard({ passport, isOwner, onCustomizeClick, prev
           </button>
         )}
       </div>
+
+      {showFollow && <FollowButton targetUserId={passport.userId} />}
 
       {/* 기록 도장 */}
       <div className={styles.stats}>

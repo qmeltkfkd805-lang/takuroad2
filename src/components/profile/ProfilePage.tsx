@@ -109,7 +109,7 @@ export default function ProfilePage() {
           <button
             onClick={() => router.push('/')}
             style={{ background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer' }}
-          >←</button>
+          ><AppIcon name="arrow-left" size={20} /></button>
           <div style={{
             width: '44px', height: '44px', borderRadius: '50%',
             background: 'var(--accent)', color: '#fff',

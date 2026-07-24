@@ -1,4 +1,4 @@
-﻿import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 
 // 작품(tag)에 일어난 사건. type별로 표시만 다르게.
 export interface WorkEvent {
@@ -16,9 +16,7 @@ export interface WorkEvent {
 }
 
 // 작품 이벤트 type별 아이콘/라벨 (작품 홈·샵 상세 공용)
-export const WORK_EVENT_ICON: Record<string, string> = {
-  goods_added: '🛍️', popup: '🎪', collab_cafe: '☕', exhibition: '🖼️',
-}
+export const WORK_EVENT_ICON: Record<string, string> = { goods_added: 'goods', popup: 'popup', collab_cafe: 'cafe', exhibition: 'exhibition' }
 export const WORK_EVENT_LABEL: Record<string, string> = {
   goods_added: '새 굿즈', popup: '팝업스토어', collab_cafe: '콜라보 카페', exhibition: '전시',
 }

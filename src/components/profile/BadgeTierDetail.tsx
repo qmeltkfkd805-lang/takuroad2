@@ -13,7 +13,7 @@ interface Props {
 }
 
 function BadgeIcon({ iconUrl, size = 40 }: { iconUrl: string | null; size?: number }) {
-  if (!iconUrl) return <span style={{ fontSize: size }}>🏅</span>
+  if (!iconUrl) return <AppIcon name="medal" size={size} color="var(--muted)" />
   if (iconUrl.startsWith('http')) {
     return (
       <img
@@ -54,7 +54,7 @@ export default function BadgeTierDetail({ badgeSlug, userId, onBack }: Props) {
         <button
           onClick={onBack}
           style={{ background: 'none', border: 'none', fontSize: '18px', cursor: 'pointer' }}
-        >←</button>
+        ><AppIcon name="arrow-left" size={18} /></button>
         <h2 style={{ fontSize: '18px', fontWeight: 900 }}>{data.badge.name}</h2>
       </div>
 
@@ -74,7 +74,7 @@ export default function BadgeTierDetail({ badgeSlug, userId, onBack }: Props) {
           background: tier.earned ? `${RARITY_COLOR[tier.rarity as keyof typeof RARITY_COLOR]}10` : 'var(--surface2)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-            <span style={{ fontSize: '18px' }}>{tier.earned ? '☑' : '□'}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18, borderRadius: 5, flexShrink: 0, border: '1.5px solid ' + (tier.earned ? 'var(--accent)' : 'var(--border)'), background: tier.earned ? 'var(--accent)' : 'transparent' }}>{tier.earned && <AppIcon name="check" size={12} color="#fff" />}</span>
             <span style={{ fontWeight: 900, fontSize: '15px' }}>
               {tier.isHidden && !tier.earned ? '???' : tier.name}
             </span>

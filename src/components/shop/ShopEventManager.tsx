@@ -141,7 +141,7 @@ export default function ShopEventManager({ shopId, shopSlug, hideForm }: Props) 
                   fontSize: '12px', cursor: 'pointer', fontFamily: 'inherit',
                 }}
               >
-                {EVENT_TYPE_ICON[t]} {EVENT_TYPE_LABEL[t]}
+                <AppIcon name={EVENT_TYPE_ICON[t]} size={14} style={{ marginRight: 4, verticalAlign: '-2px' }} />{EVENT_TYPE_LABEL[t]}
               </button>
             ))}
           </div>
@@ -177,7 +177,7 @@ export default function ShopEventManager({ shopId, shopSlug, hideForm }: Props) 
                   cursor: 'pointer', fontSize: '12px',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}
-              >✕</button>
+              ><AppIcon name="close" size={15} /></button>
             </div>
           ) : (
             <button
@@ -242,7 +242,7 @@ export default function ShopEventManager({ shopId, shopSlug, hideForm }: Props) 
                   ? <video src={event.video_url + '#t=0.1'} preload="metadata" muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   : event.image_url
                     ? <img src={event.image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    : <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg,#FFE3EC,#FFF0F5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px' }}>{EVENT_TYPE_ICON[event.type as ShopEventType] ?? '📌'}</div>}
+                    : <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg,#FFE3EC,#FFF0F5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px' }}><AppIcon name={EVENT_TYPE_ICON[event.type as ShopEventType] ?? 'pushpin'} size={26} color="var(--accent)" /></div>}
                 <div style={{ position: 'absolute', top: '5px', left: '6px', right: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                   {event.is_pinned && <AppIcon name="pushpin" size={12} color="#fff" />}
                   {dim && <span style={{ fontSize: '9.5px', fontWeight: 800, color: '#fff', background: 'rgba(0,0,0,.6)', padding: '1px 6px', borderRadius: '9999px' }}>{!event.is_active ? '숨김' : '만료'}</span>}
@@ -265,7 +265,7 @@ export default function ShopEventManager({ shopId, shopSlug, hideForm }: Props) 
               </span>
               {managing.is_pinned && <AppIcon name="pushpin" size={13} color="var(--accent)" />}
               {!managing.is_active && <span style={{ fontSize: '11px', color: 'var(--muted)' }}>숨김</span>}
-              <button onClick={() => setManaging(null)} style={{ marginLeft: 'auto', background: 'none', border: 'none', fontSize: '22px', cursor: 'pointer', color: 'var(--muted)', lineHeight: 1 }}>✕</button>
+              <button onClick={() => setManaging(null)} style={{ marginLeft: 'auto', background: 'none', border: 'none', fontSize: '22px', cursor: 'pointer', color: 'var(--muted)', lineHeight: 1 }}><AppIcon name="close" size={15} /></button>
             </div>
 
             {(managing.video_url || managing.image_url) && (
@@ -280,8 +280,8 @@ export default function ShopEventManager({ shopId, shopSlug, hideForm }: Props) 
               <div style={{ fontSize: '15px', fontWeight: 900, lineHeight: 1.45 }}>{managing.title}</div>
               {(managing.tags?.name || managing.goods_types?.name) && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '10px' }}>
-                  {managing.tags?.name && <span style={{ fontSize: '12px', fontWeight: 700, padding: '4px 10px', borderRadius: '9999px', background: 'var(--surface2)' }}>📚 {managing.tags.name}</span>}
-                  {managing.goods_types?.name && <span style={{ fontSize: '12px', fontWeight: 700, padding: '4px 10px', borderRadius: '9999px', background: 'var(--surface2)' }}>{managing.goods_types.icon ? managing.goods_types.icon + ' ' : '🏷 '}{managing.goods_types.name}</span>}
+                  {managing.tags?.name && <span style={{ fontSize: '12px', fontWeight: 700, padding: '4px 10px', borderRadius: '9999px', background: 'var(--surface2)' }}><AppIcon name="film" size={11} style={{ marginRight: 4, verticalAlign: '-1px' }} />{managing.tags.name}</span>}
+                  {managing.goods_types?.name && <span style={{ fontSize: '12px', fontWeight: 700, padding: '4px 10px', borderRadius: '9999px', background: 'var(--surface2)' }}>{<AppIcon name="tag" size={11} style={{ marginRight: 3, verticalAlign: '-1px' }} />}{managing.goods_types.name}</span>}
                 </div>
               )}
               {managing.description && <p style={{ fontSize: '13.5px', lineHeight: 1.7, color: 'var(--muted)', marginTop: '8px', whiteSpace: 'pre-wrap' }}>{managing.description}</p>}

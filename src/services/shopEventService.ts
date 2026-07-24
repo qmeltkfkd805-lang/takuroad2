@@ -5,11 +5,7 @@ export type ShopEventType =
   | 'sold_out' | 'discount' | 'reservation'
   | 'exchange_meet' | 'fan_meet'
 
-export const EVENT_TYPE_ICON: Record<ShopEventType, string> = {
-  notice: '📢', event: '🎉', restock: '📦', new_arrival: '🆕',
-  sold_out: '❌', discount: '🎁', reservation: '🎟',
-  exchange_meet: '🤝', fan_meet: '👥',
-}
+export const EVENT_TYPE_ICON: Record<ShopEventType, string> = { notice: 'megaphone', event: 'event', restock: 'box', new_arrival: 'sparkle', sold_out: 'close', discount: 'gift', reservation: 'ticket', exchange_meet: 'handshake', fan_meet: 'users' }
 
 export const EVENT_TYPE_LABEL: Record<ShopEventType, string> = {
   notice: '공지', event: '이벤트', restock: '재입고', new_arrival: '신상품',

@@ -34,7 +34,7 @@ export default function ClaimShopPage() {
         <p className={styles.desc}>사장님 인증을 받으면 매장을 직접 관리할 수 있어요.</p>
         <div className={styles.benefits}>
           {BENEFITS.map(b => (
-            <div key={b} className={styles.benefit}><span className={styles.check}>✓</span>{b}</div>
+            <div key={b} className={styles.benefit}><span className={styles.check}><AppIcon name="check" size={14} /></span>{b}</div>
           ))}
         </div>
       </section>

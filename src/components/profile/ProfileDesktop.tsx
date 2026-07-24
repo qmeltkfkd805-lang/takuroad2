@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import AppIcon from '@/components/tds/AppIcon'
 import { OtakuPassport } from '@/services/passportService'
 import PassportCard from '@/components/passport/PassportCard'
 import GrowthPage from '@/components/growth/GrowthPage'
@@ -80,7 +81,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
               onClick={() => toggleCat(c.cat)}
             >
               <span>{c.label}</span>
-              <span className={styles.arrow}>{openCat === c.cat ? '▾' : '▸'}</span>
+              <span className={styles.arrow}>{openCat === c.cat ? <AppIcon name="chevron-down" size={14} /> : <AppIcon name="chevron-right" size={14} />}</span>
             </button>
             {openCat === c.cat && (
               <div className={styles.subs}>

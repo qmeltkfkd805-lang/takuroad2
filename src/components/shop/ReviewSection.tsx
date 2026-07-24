@@ -174,7 +174,7 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
                       border: 'none', cursor: 'pointer', fontSize: '11px',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}
-                  >✕</button>
+                  ><AppIcon name="close" size={15} /></button>
                 </div>
               ))}
             </div>
@@ -509,7 +509,7 @@ function ReviewItem({ review, currentUserId, onDelete, accentColor }: {
               color: '#fff', fontSize: '20px', cursor: 'pointer',
               width: '36px', height: '36px', borderRadius: '50%',
             }}
-          >✕</button>
+          ><AppIcon name="close" size={15} /></button>
           {review.images.length > 1 && (
             <div style={{
               position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)',

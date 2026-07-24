@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { WorkEvent, WORK_EVENT_ICON, WORK_EVENT_LABEL } from '@/services/eventService'
+import { Icon } from '@/components/tds'
 
 function timeAgo(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime()
@@ -33,7 +34,7 @@ export default function WorkEventList({ events }: { events: WorkEvent[] }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {events.map(ev => {
-        const icon = WORK_EVENT_ICON[ev.type] ?? '✨'
+        const icon = WORK_EVENT_ICON[ev.type] ?? 'event'
         return (
           <div
             key={ev.id}
@@ -44,7 +45,7 @@ export default function WorkEventList({ events }: { events: WorkEvent[] }) {
               border: '1px solid var(--border)', background: 'var(--surface)',
             }}
           >
-            <span style={{ fontSize: '20px', flexShrink: 0 }}>{icon}</span>
+            <Icon name={icon} size={20} style={{ flexShrink: 0 }} />
             <span style={{ flex: 1, fontSize: '14px', fontWeight: 600, color: 'var(--text)' }}>
               {ev.title ?? (WORK_EVENT_LABEL[ev.type] ?? '새로운 소식')}
             </span>
@@ -75,7 +76,7 @@ export default function WorkEventList({ events }: { events: WorkEvent[] }) {
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ fontSize: '20px' }}>{WORK_EVENT_ICON[selected.type] ?? '✨'}</span>
+                <Icon name={WORK_EVENT_ICON[selected.type] ?? 'event'} size={20} />
                 <span style={{ fontWeight: 900, fontSize: '16px' }}>
                   {selected.title ?? (WORK_EVENT_LABEL[selected.type] ?? '새로운 소식')}
                 </span>

@@ -81,7 +81,7 @@ export default function ClaimFormPage({ slug }: { slug: string }) {
     return (
       <div className={styles.wrap}>
         <div className={styles.done}>
-          <div className={styles.doneIcon}>✓</div>
+          <div className={styles.doneIcon}><AppIcon name="check" size={28} /></div>
           <h2 className={styles.doneTitle}>인증 신청이 접수되었어요</h2>
           <p className={styles.doneDesc}>운영진이 검토 후 결과를 알려드릴게요.</p>
           <Link href="/mypage" className={styles.doneBtn}>마이페이지로</Link>

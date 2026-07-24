@@ -1,4 +1,5 @@
 'use client'
+import AppIcon from '@/components/tds/AppIcon'
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -177,7 +178,7 @@ export default function PhotosManage({ shop }: { shop: Shop }) {
                   onClick={() => onCover(img)}
                   disabled={busy}
                 >★ 대표</button>
-                <button className={styles.toolDel} onClick={() => onDelete(img)} disabled={busy} aria-label="삭제">✕</button>
+                <button className={styles.toolDel} onClick={() => onDelete(img)} disabled={busy} aria-label="삭제"><AppIcon name="close" size={15} /></button>
               </div>
             </div>
           ))}

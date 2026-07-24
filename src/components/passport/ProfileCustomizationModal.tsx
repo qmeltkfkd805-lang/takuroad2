@@ -1,4 +1,5 @@
 'use client'
+import AppIcon from '@/components/tds/AppIcon'
 
 import { useState, useEffect, useRef } from 'react'
 import PassportCard from './PassportCard'
@@ -107,8 +108,8 @@ export default function ProfileCustomizationModal({ passport, userId, onClose, o
             <p>나만의 여권을 꾸며보세요!</p>
           </div>
           <div className={styles.headRight}>
-            <button className={styles.random}>🎲 랜덤 꾸미기</button>
-            <button className={styles.x} onClick={onClose} aria-label="닫기">✕</button>
+            <button className={styles.random}><AppIcon name="dice" size={14} style={{ marginRight: 5, verticalAlign: '-2px' }} />랜덤 꾸미기</button>
+            <button className={styles.x} onClick={onClose} aria-label="닫기"><AppIcon name="close" size={14} /></button>
           </div>
         </div>
 

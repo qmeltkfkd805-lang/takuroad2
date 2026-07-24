@@ -1,4 +1,5 @@
-﻿'use client'
+'use client'
+import AppIcon from '@/components/tds/AppIcon'
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
@@ -204,7 +205,7 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
                 {goods.map((g: any) => {
                   const inner = (
                     <>
-                      <span className={styles.goodsIcon}>{g.goodsIcon}</span>
+                      <span className={styles.goodsIcon}><AppIcon name="tag" size={22} color="var(--muted)" /></span>
                       <span className={styles.goodsName}>{g.character ? `${g.character} ` : ''}{g.goodsType}</span>
                       <span className={styles.goodsShop}>📍 {g.shopName}</span>
                       <span className={styles.goodsAvail} style={{ color: AVAIL_COLOR[g.availability] }}>{AVAILABILITY_LABEL[g.availability as Availability]}</span>

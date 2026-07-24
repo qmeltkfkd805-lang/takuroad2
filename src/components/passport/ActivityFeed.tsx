@@ -1,14 +1,9 @@
 'use client'
+import AppIcon from '@/components/tds/AppIcon'
 
 import Link from 'next/link'
 
-const TYPE_ICON: Record<string, string> = {
-  check_in: '📍',
-  review: '📝',
-  badge_earned: '🏅',
-  route_completed: '🛣',
-  review_comment: '💬',
-}
+const TYPE_ICON: Record<string, string> = { check_in: 'pushpin', review: 'pencil', badge_earned: 'medal', route_completed: 'road', review_comment: 'commentbox' }
 
 interface Props {
   activities: any[]
@@ -16,11 +11,7 @@ interface Props {
 
 export default function ActivityFeed({ activities }: Props) {
   if (activities.length === 0) {
-    return (
-      <div style={{ padding: '24px 16px', textAlign: 'center', color: 'var(--muted)', fontSize: '13px' }}>
-        아직 활동 기록이 없어요
-      </div>
-    )
+    return null
   }
 
   return (
@@ -34,7 +25,7 @@ export default function ActivityFeed({ activities }: Props) {
             display: 'flex', alignItems: 'center', gap: '10px',
             padding: '10px 0', borderBottom: '1px solid var(--border)',
           }}>
-            <span style={{ fontSize: '16px' }}>{TYPE_ICON[activity.type] ?? '✨'}</span>
+            <span style={{ fontSize: '16px' }}><AppIcon name={TYPE_ICON[activity.type] ?? 'sparkle'} size={16} color="var(--accent)" /></span>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: '13px', fontWeight: 700 }}>{activity.title}</div>
               <div style={{ fontSize: '11px', color: 'var(--muted)' }}>

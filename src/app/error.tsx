@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { Taku } from '@/components/tds'
 
 export default function Error({
   error,
@@ -19,7 +20,7 @@ export default function Error({
       alignItems: 'center', justifyContent: 'center',
       background: 'var(--bg)', padding: '24px', textAlign: 'center',
     }}>
-      <div style={{ fontSize: '48px', marginBottom: '16px' }}>⚠️</div>
+      <div style={{ marginBottom: '20px' }}><Taku pose="sit" size={96} /></div>
       <h1 style={{ fontSize: '20px', fontWeight: 900, marginBottom: '8px' }}>
         오류가 발생했어요
       </h1>

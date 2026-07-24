@@ -14,7 +14,7 @@ interface Props {
 }
 
 function BadgeIcon({ iconUrl }: { iconUrl: string | null }) {
-  if (!iconUrl) return <span style={{ fontSize: 40 }}>🏅</span>
+  if (!iconUrl) return <AppIcon name="medal" size={40} color="var(--muted)" />
   if (iconUrl.startsWith('http')) {
     return (
       <img
@@ -67,7 +67,7 @@ export default function BadgeSeriesList({ groupSlug, groupName, userId, onBack }
         <button
           onClick={onBack}
           style={{ background: 'none', border: 'none', fontSize: '18px', cursor: 'pointer' }}
-        >←</button>
+        ><AppIcon name="arrow-left" size={18} /></button>
         <h2 style={{ fontSize: '16px', fontWeight: 900 }}>{groupName}</h2>
       </div>
 
@@ -93,12 +93,12 @@ export default function BadgeSeriesList({ groupSlug, groupName, userId, onBack }
                 position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
                 background: 'none', border: 'none', fontSize: '14px', color: 'var(--muted)', cursor: 'pointer',
               }}
-            >✕</button>
+            ><AppIcon name="close" size={14} color="var(--muted)" /></button>
           ) : (
             <span style={{
               position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
               fontSize: '14px', color: 'var(--muted)', pointerEvents: 'none',
-            }}>🔍</span>
+            }}><AppIcon name="search" size={14} color="var(--muted)" /></span>
           )}
         </div>
       )}

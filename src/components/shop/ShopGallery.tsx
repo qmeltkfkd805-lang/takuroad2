@@ -1,5 +1,6 @@
-﻿'use client'
+'use client'
 import { useState } from 'react'
+import AppIcon from '@/components/tds/AppIcon'
 
 interface ShopGalleryProps {
   images: string[]
@@ -16,7 +17,7 @@ const H = 340
 
 export default function ShopGallery({
   images, shopName, onBack, isSaved, onToggleSave, onShare,
-  fallbackIcon = '🏪', fallbackBg = 'var(--surface2)',
+  fallbackIcon = 'shop', fallbackBg = 'var(--surface2)',
 }: ShopGalleryProps) {
   const [idx, setIdx] = useState(0)
   const hasImages = images.length > 0
@@ -29,7 +30,7 @@ export default function ShopGallery({
           style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
       ) : (
         <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 72 }}>
-          {fallbackIcon}
+          <AppIcon name={fallbackIcon} size={72} color="var(--muted)" />
         </div>
       )}
 
