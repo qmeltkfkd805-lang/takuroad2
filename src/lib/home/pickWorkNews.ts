@@ -1,4 +1,4 @@
-﻿import { FeedItem } from '@/lib/feed/types'
+import { FeedItem } from '@/lib/feed/types'
 import { toEventFeed } from '@/lib/feed/toEventFeed'
 import type { WorkEvent } from '@/services/eventService'
 
@@ -27,7 +27,7 @@ export function pickWorkNews(
   // 작품 맥락 붙이기 (어떤 작품의 소식인지)
   return {
     ...picked,
-    imageUrl: work.coverUrl ?? null,
+    imageUrl: picked.imageUrl ?? work.coverUrl ?? null,
     contextLabel: work.name,
     contextAffinity: affinity ?? undefined,
   }

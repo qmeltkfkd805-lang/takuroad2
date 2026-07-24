@@ -13,6 +13,8 @@ export interface WorkEvent {
   endDate?: string | null
   shopName?: string | null
   shopSlug?: string | null
+  coverUrl?: string | null
+  shopImage?: string | null
 }
 
 // 작품 이벤트 type별 아이콘/라벨 (작품 홈·샵 상세 공용)
@@ -27,7 +29,7 @@ export async function getEventsByTag(tagId: string, limit = 20): Promise<WorkEve
   const supabase = createClient()
   const { data, error } = await supabase
     .from('events')
-    .select('id, tag_id, type, shop_id, title, created_at, start_date, end_date')
+    .select('id, tag_id, type, shop_id, title, created_at, start_date, end_date, cover_url')
     .eq('tag_id', tagId)
     .order('created_at', { ascending: false })
     .limit(limit)
@@ -39,7 +41,7 @@ export async function getEventsByTag(tagId: string, limit = 20): Promise<WorkEve
   const shopIds = [...new Set(rows.map((e: any) => e.shop_id).filter(Boolean))]
   let shopMap = new Map<string, any>()
   if (shopIds.length) {
-    const { data: shops } = await supabase.from('shops').select('id, name, slug').in('id', shopIds)
+    const { data: shops } = await supabase.from('shops').select('id, name, slug, shop_images ( image_url, is_cover )').in('id', shopIds)
     shopMap = new Map((shops ?? []).map((s: any) => [s.id, s]))
   }
 
@@ -54,6 +56,8 @@ export async function getEventsByTag(tagId: string, limit = 20): Promise<WorkEve
     endDate: e.end_date,
     shopName: e.shop_id ? (shopMap.get(e.shop_id)?.name ?? null) : null,
     shopSlug: e.shop_id ? (shopMap.get(e.shop_id)?.slug ?? null) : null,
+    coverUrl: e.cover_url ?? null,
+    shopImage: ((shopMap.get(e.shop_id)?.shop_images ?? []).find((i: any) => i.is_cover)?.image_url ?? (shopMap.get(e.shop_id)?.shop_images ?? [])[0]?.image_url ?? null),
   }))
 }
 

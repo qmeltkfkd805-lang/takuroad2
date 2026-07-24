@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -108,7 +108,7 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
     <div>
       {/* ❤️ 내 작품 */}
       <section className={styles.sectionCard}>
-        <SectionHeader title="내 최애 작품" plainIcon icon={<Icon name="colorheart" size={28} />} actionLabel="전체 보기" onAction={() => { window.location.href = "/my-works" }} />
+        <SectionHeader title="최애 작품 소식" plainIcon icon={<Icon name="colorheart" size={28} />} actionLabel="전체 보기" onAction={() => { window.location.href = "/my-works" }} />
         {loading ? (
           <Muted>불러오는 중...</Muted>
         ) : !user ? (

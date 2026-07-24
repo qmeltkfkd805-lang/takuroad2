@@ -1,4 +1,4 @@
-﻿import { FeedItem, FeedKind, FeedTone } from './types'
+import { FeedItem, FeedKind, FeedTone } from './types'
 import type { WorkEvent } from '@/services/eventService'
 
 // 이벤트 type → FeedItem 표현(kind/icon/tone + 동사). 매핑은 여기 한 곳.
@@ -34,6 +34,7 @@ export function toEventFeed(event: WorkEvent): FeedItem {
     icon: map.icon,
     tone: map.tone,
     // 이벤트에는 이제 자기 상세 페이지가 있다 (예전엔 샵으로 보냈다)
-    href: `/event/${event.id}`,
+    href: event.shopSlug ? `/shop/${event.shopSlug}` : `/event/${event.id}`,
+    imageUrl: event.coverUrl ?? event.shopImage ?? null,
   }
 }

@@ -1,7 +1,8 @@
-﻿'use client'
+'use client'
 
 import Link from 'next/link'
 import { FeedItem, FeedTone } from '@/lib/feed/types'
+import { WorkIcon } from '@/components/tds/WorkIcon'
 import styles from './HomeFeedCard.module.css'
 
 // tone → 색 (소식 뱃지 알약 + 강조)
@@ -42,7 +43,7 @@ export default function HomeFeedCard({ item }: { item: FeedItem }) {
         {item.imageUrl ? (
           <img src={item.imageUrl} alt="" className={styles.cover} draggable={false} />
         ) : (
-          <span className={styles.initials} style={{ color: tone.fg }}>{initials(item.contextLabel)}</span>
+          <WorkIcon size={36} style={{ opacity: 0.45 }} />
         )}
         {item.contextAffinity && (
           <span className={styles.affBadge}>
