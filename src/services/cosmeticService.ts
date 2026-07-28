@@ -48,11 +48,13 @@ export interface Cosmetic {
 export async function getMyCosmetics(userId: string): Promise<Cosmetic[]> {
   const supabase = createClient()
 
-  const [cosRes, tierRes, earnedRes, admin] = await Promise.all([
+  const [cosRes, tierRes, earnedRes, admin, lvlRewRes, expRes] = await Promise.all([
     supabase.from('cosmetics').select('*').eq('is_hidden', false).order('type').order('sort_order'),
     supabase.from('badge_tiers').select('id, name, reward_cosmetic_id').not('reward_cosmetic_id', 'is', null),
     supabase.from('user_badge_tiers').select('badge_tier_id').eq('user_id', userId),
     isAdmin(userId),
+    supabase.from('level_rewards').select('level, reward_id').eq('reward_type', 'cosmetic'),
+    supabase.from('user_exp').select('level').eq('user_id', userId).maybeSingle(),
   ])
 
   const earned = new Set((earnedRes.data ?? []).map((e: any) => e.badge_tier_id))
@@ -66,9 +68,19 @@ export async function getMyCosmetics(userId: string): Promise<Cosmetic[]> {
     byCos.set(t.reward_cosmetic_id, list)
   }
 
+  // 레벨 보상: 코스메틱 → 필요한 최소 레벨 (파생 해금)
+  const myLevel = (expRes.data as any)?.level ?? 1
+  const levelByCos = new Map<string, number>()
+  for (const r of (lvlRewRes.data ?? []) as any[]) {
+    const cur = levelByCos.get(r.reward_id)
+    if (cur == null || r.level < cur) levelByCos.set(r.reward_id, r.level)
+  }
+
   return ((cosRes.data ?? []) as any[]).map(c => {
     const sources = byCos.get(c.id) ?? []
-    const unlocked = admin || c.is_default || sources.some(t => earned.has(t.id))
+    const reqLevel = levelByCos.get(c.id)   // 레벨 보상이면 필요 레벨
+    const byLevel = reqLevel != null && myLevel >= reqLevel
+    const unlocked = admin || c.is_default || sources.some(t => earned.has(t.id)) || byLevel
     return {
       id: c.id,
       type: c.type,
@@ -79,7 +91,7 @@ export async function getMyCosmetics(userId: string): Promise<Cosmetic[]> {
       assetUrl: c.asset_url ?? null,
       isDefault: c.is_default ?? false,
       unlocked,
-      fromBadge: unlocked ? null : (sources[0]?.name ?? null),
+      fromBadge: unlocked ? null : (reqLevel != null ? `LV${reqLevel} 달성` : (sources[0]?.name ?? null)),
     }
   })
 }

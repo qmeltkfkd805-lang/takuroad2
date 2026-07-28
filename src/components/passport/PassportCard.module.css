@@ -3,7 +3,18 @@
   border: 1.5px solid var(--border); border-radius: 20px;
   background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
   transition: background .3s ease;
+  position: relative; z-index: 0;      /* 효과(꽃잎) 레이어 기준 */
+  overflow: hidden;                    /* 꽃잎이 카드 밖으로 안 새게 */
 }
+/* 효과(꽃잎·오로라·홀로 등)는 전용 배경 레이어(.fxBg)에만 그린다.
+   ⭐ 효과를 카드 본체 pseudo로 두면 mix-blend-mode 때문에 프사·이름·배지 위로 샌다.
+      그래서 효과를 절대배치 배경 레이어로 분리하고(z-index:0),
+      실제 내용은 전부 그 위(z-index:1)에 둔다. 내용은 무엇이 와도 안 가려진다. */
+.fxBg {
+  position: absolute; inset: 0; z-index: 0;
+  pointer-events: none; overflow: hidden; border-radius: inherit;
+}
+.card > *:not(.fxBg) { position: relative; z-index: 1; }
 /* 배경/테마를 착용하면 안쪽 박스들이 반투명 흰색으로 — 어떤 배경에서도 읽힌다 */
 .dressed .stats > div,
 .dressed .series,

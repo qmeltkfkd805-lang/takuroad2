@@ -36,6 +36,8 @@ export default async function Page({ params }: Props) {
   if (!user) redirect('/login')
   const shop = await getShop(slug)
   if (!shop) notFound()
-  if (!shop.is_claimed || shop.owner_id !== user.id) redirect(`/shop/${slug}`)
+  const { data: prof } = await supabase.from('profiles').select('role').eq('id', user.id).maybeSingle()
+  const isAdmin = (prof as any)?.role === 'admin'
+  if (!isAdmin && (!shop.is_claimed || shop.owner_id !== user.id)) redirect(`/shop/${slug}`)
   return <HolidayManage shop={shop} />
 }

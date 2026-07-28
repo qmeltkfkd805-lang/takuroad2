@@ -128,21 +128,35 @@ button { font-family: inherit; }
   animation: tkDriftFast 9s linear infinite;
 }
 
-/* ── 벚꽃 (에픽) — 흔들리며 떨어진다. 직선 낙하는 기계다 ── */
+/* ── 벚꽃 (에픽) — 진짜 꽃잎이 흔들리며 떨어진다. 직선 낙하는 기계다.
+   ⭐ 꽃잎 이미지(투명 PNG)를 여러 겹으로 얹고, 층 전체가 회전하며 낙하한다.
+      두 층이 다른 속도·방향으로 떨어져 겹치면 진짜 흩날리는 느낌이 난다. */
 .tkfx-sakura::before {
   background-image:
-    radial-gradient(ellipse 9px 6px    at 15% 10%, #FFB3CC, transparent),
-    radial-gradient(ellipse 7px 4.5px  at 62% 24%, #FFC9DB, transparent),
-    radial-gradient(ellipse 10px 6.5px at 38% 56%, #FFA8C5, transparent),
-    radial-gradient(ellipse 8px 5px    at 85% 72%, #FFD3E0, transparent);
-  animation: tkFallSway 7.5s ease-in-out infinite;
+    url(/cosmetics/petal-1.png),
+    url(/cosmetics/petal-2.png),
+    url(/cosmetics/petal-3.png),
+    url(/cosmetics/petal-1.png),
+    url(/cosmetics/petal-2.png),
+    url(/cosmetics/petal-3.png),
+    url(/cosmetics/petal-1.png);
+  background-position: 8% 4%, 30% 14%, 52% 24%, 72% 10%, 20% 44%, 64% 56%, 88% 66%;
+  background-size: 17px, 12px, 14px, 11px, 18px, 13px, 16px;
+  background-repeat: no-repeat;
+  animation: tkFallSway 9s ease-in-out infinite;
 }
 .tkfx-sakura::after {
   background-image:
-    radial-gradient(ellipse 8px 5.5px at 44% 8%,  #FFC0D6, transparent),
-    radial-gradient(ellipse 9.5px 6px at 8%  63%, #FFB3CC, transparent),
-    radial-gradient(ellipse 7px 4.5px at 73% 41%, #FFD3E0, transparent);
-  animation: tkFallSwayB 10.5s ease-in-out infinite;
+    url(/cosmetics/petal-2.png),
+    url(/cosmetics/petal-3.png),
+    url(/cosmetics/petal-1.png),
+    url(/cosmetics/petal-2.png),
+    url(/cosmetics/petal-3.png),
+    url(/cosmetics/petal-1.png);
+  background-position: 44% 2%, 8% 30%, 26% 62%, 58% 40%, 78% 74%, 94% 22%;
+  background-size: 15px, 10px, 13px, 12px, 16px, 11px;
+  background-repeat: no-repeat;
+  animation: tkFallSwayB 12s ease-in-out infinite;
 }
 
 /* ── 오라 (에픽) ── */
@@ -239,6 +253,21 @@ button { font-family: inherit; }
   animation: tkGrainB .75s steps(4) infinite;
 }
 
+/* ── 차창 불빛 (에픽) — 밤열차 창밖의 별빛. 진짜 별빛 이미지를 screen으로 얹는다.
+   ⭐ screen 블렌드라 검정 부분은 사라지고 별빛만 배경 위에 '빛으로' 더해진다.
+      두 겹이 다른 속도로 반짝이고(::before) 아주 느리게 흐른다(::after) — 열차가 지나가니까. */
+.tkfx-window::before {
+  inset: 0;
+  background: url(/cosmetics/fx-window.png) center / cover no-repeat;
+  animation: tkTwinkleC 5s ease-in-out infinite;
+}
+.tkfx-window::after {
+  inset: -4%;
+  background: url(/cosmetics/fx-window.png) center / cover no-repeat;
+  opacity: .4;
+  animation: tkPassSlow 60s linear infinite;
+}
+
 /* ── 썸네일 — 뭔지 한눈에 알아볼 수 있어야 한다 ── */
 .tkfx-preview { --fx-strength: 3.5; }
 .tkfx-preview.tkfx-holo::before { animation-duration: 4s; }
@@ -248,6 +277,11 @@ button { font-family: inherit; }
 @keyframes tkTwinkleB { 0%,100% { opacity: .75 } 30% { opacity: .25 } 70% { opacity: 1 } }
 @keyframes tkDriftSlow { from { transform: translate3d(0,0,0) } to { transform: translate3d(14px, 22px, 0) } }
 @keyframes tkDriftFast { from { transform: translate3d(0,0,0) } to { transform: translate3d(-22px, 30px, 0) } }
+/* 창밖 불빛 — 수평으로 흐른다(열차 진행 방향). 별의 대각선 드리프트와 구분된다. */
+@keyframes tkPassSlow { from { transform: translate3d(0,0,0) } to { transform: translate3d(-26px, 4px, 0) } }
+@keyframes tkPassFast { from { transform: translate3d(0,0,0) } to { transform: translate3d(-40px, -3px, 0) } }
+@keyframes tkTwinkleC { 0%,100% { opacity: .7 } 50% { opacity: 1 } }
+@keyframes tkTwinkleD { 0%,100% { opacity: .8 } 45% { opacity: .3 } }
 @keyframes tkFallSway {
   0%   { transform: translate3d(0,-12%,0) rotate(0deg); opacity: 0 }
   12%  { opacity: .9 }

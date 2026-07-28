@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
 import { recordShopVisitActivity } from './activityService'
 import { geekAreaFromAddr } from '@/lib/utils/geekArea'
-import { addExp } from './expService'
 import { evaluateBadgeTiersForUser } from './badgeService'
 
 const CHECK_IN_EXP = 5
@@ -82,7 +81,7 @@ export async function createCheckIn(
     return { success: false, error: '방문 기록에 실패했어요' }
   }
 
-  await addExp(userId, CHECK_IN_EXP, 'check_in', 'shop', shopId)
+  // XP는 아래 recordShopVisitActivity → createActivity 훅에서 shop_visit(5XP)로 지급된다 (중복 방지 포함)
 
   // 샵 정보 조회 (slug = 링크용, addr → 덕질 지역 = Activity 스냅샷용)
   let slug = shopSlug

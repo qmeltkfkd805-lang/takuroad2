@@ -30,6 +30,11 @@ export const FRAME_STYLE: Record<string, CSSProperties> = {
     backgroundClip: 'content-box, border-box',
     boxShadow: '0 0 16px rgba(255,143,179,.55)',
   },
+  /* 승차권 프레임 — 점선(구멍 뚫린 표 가장자리) + 밖으로 남색 표지. 한 장의 승차권처럼. */
+  'frame-ticket': {
+    border: '3px dashed #E8C88A',
+    boxShadow: '0 0 0 3px #1E2A4E, 0 0 14px rgba(232,200,138,.5)',
+  },
 }
 
 /** 프로필 배경 */
@@ -45,6 +50,8 @@ export const BG_STYLE: Record<string, CSSProperties> = {
   'bg-cafe':   { background: 'linear-gradient(160deg,#F4E7D6 0%,#D9B892 60%,#B08C63 100%)' },
   'bg-film':   { background: 'linear-gradient(180deg,#2A2732 0%,#4A4438 45%,#1C1B22 100%)', color: '#fff' },
   'bg-coral':  { background: 'linear-gradient(160deg,#FF8FB3 0%,#FFB877 55%,#FFE3A3 100%)' },
+  /* 밤열차 창밖 — 깊은 밤에서 저 아래 도시 불빛의 온기로. 별·반짝임은 효과(fx-window)의 몫. */
+  'bg-nighttrain': { background: 'linear-gradient(180deg,#0F1830 0%,#1B2748 42%,#2E3A63 68%,#4A3F63 85%,#6E4E5A 100%)', color: '#fff' },
 
   /* 일반 등급 — 색깔만. 이미지가 있는 건 레어 이상이다. */
   'bg-cream':    { background: 'linear-gradient(160deg,#FFF9EC,#FBF6EE)' },
@@ -124,6 +131,7 @@ const FX_GLOBAL: Record<string, string> = {
   'fx-aurora':  'tkfx-aurora',
   'fx-holo':    'tkfx-holo',
   'fx-grain':   'tkfx-grain',
+  'fx-window':  'tkfx-window',
 }
 
 /** 효과를 입힐 때 쓴다 — 베이스(.tkfx) + 종류 */

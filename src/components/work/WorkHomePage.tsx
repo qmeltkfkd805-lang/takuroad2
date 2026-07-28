@@ -2,6 +2,8 @@
 import AppIcon from '@/components/tds/AppIcon'
 
 import { useState, useEffect, useRef } from 'react'
+import { useDominantColor } from '@/lib/utils/useDominantColor'
+import { getWorkFanartHighlight } from '@/services/fanartService'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import WorkAffinityButton from './WorkAffinityButton'
@@ -69,6 +71,9 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
   const now = new Date()
 
   const [activeId, setActiveId] = useState('feed')
+  const [fanartHero, setFanartHero] = useState<string | null>(null)
+  const heroImage = tag.cover_url || fanartHero
+  const heroColor = useDominantColor(heroImage)
   const clickLockRef = useRef(false)
   useEffect(() => {
     const els = TABS.map(t => document.getElementById(t.id)).filter(Boolean) as HTMLElement[]
@@ -82,6 +87,16 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
     els.forEach(el => obs.observe(el))
     return () => obs.disconnect()
   }, [])
+
+  // 커버가 없으면 히어로 이미지를 대표/인기 팬아트로 채움
+  useEffect(() => {
+    if (tag.cover_url) { setFanartHero(null); return }
+    let alive = true
+    getWorkFanartHighlight(tag.id).then(h => {
+      if (alive && h.post?.images?.[0]) setFanartHero(h.post.images[0])
+    })
+    return () => { alive = false }
+  }, [tag.id, tag.cover_url])
 
   const eventCards = (events ?? []).filter((e: any) => EVENT_TYPES.includes(e.type))
 
@@ -105,15 +120,15 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
   if (tag.ip_type) chips.push(tag.ip_type)
   if (tag.release_year) chips.push(`${tag.release_year}~`)
   if (tag.genres) chips.push(...tag.genres)
-  const accent = (tag as any).accent_color || '#FF5692'
+  const accent = heroColor || (tag as any).accent_color || '#FF5692'
 
   return (
     <div className={styles.page}>
       {/* Hero */}
-      <section style={{ background: `linear-gradient(135deg, ${accent}, ${shade(accent, 0.42)})` }}>
+      <section style={{ background: `radial-gradient(130% 130% at 12% 8%, rgba(255,255,255,.18) 0%, transparent 46%), linear-gradient(140deg, ${accent} 0%, ${shade(accent, 0.34)} 55%, ${shade(accent, 0.64)} 100%)` }}>
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 22px', display: 'flex', gap: 22, alignItems: 'center', flexWrap: 'wrap' }}>
-          <div style={{ width: 108, height: 144, borderRadius: 14, flexShrink: 0, background: tag.cover_url ? `url(${tag.cover_url}) center/cover` : 'rgba(255,255,255,.16)', border: '1px solid rgba(255,255,255,.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-            {!tag.cover_url && <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.85)" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-5-5L5 21" /></svg>}
+          <div style={{ width: 240, height: 180, borderRadius: 14, flexShrink: 0, background: heroImage ? `url(${heroImage}) center/cover` : 'rgba(255,255,255,.16)', border: heroImage ? 'none' : '1px solid rgba(255,255,255,.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+            {!heroImage && <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.85)" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-5-5L5 21" /></svg>}
           </div>
           <div style={{ flex: 1, minWidth: 240, color: '#fff' }}>
             <h1 style={{ fontSize: 30, fontWeight: 900, margin: '0 0 6px' }}>{tag.name}</h1>

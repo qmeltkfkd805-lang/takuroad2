@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import AppIcon from '@/components/tds/AppIcon'
 
 interface ShopGalleryProps {
@@ -20,14 +20,28 @@ export default function ShopGallery({
   fallbackIcon = 'shop', fallbackBg = 'var(--surface2)',
 }: ShopGalleryProps) {
   const [idx, setIdx] = useState(0)
+  const [zoom, setZoom] = useState(false)
   const hasImages = images.length > 0
   const multi = images.length > 1
 
+  // 라이트박스 열렸을 때 키보드(←/→/Esc)
+  useEffect(() => {
+    if (!zoom) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setZoom(false)
+      else if (e.key === 'ArrowLeft') setIdx(i => (i - 1 + images.length) % images.length)
+      else if (e.key === 'ArrowRight') setIdx(i => (i + 1) % images.length)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [zoom, images.length])
+
   return (
+    <>
     <div style={{ position: 'relative', height: H, background: fallbackBg, overflow: 'hidden' }}>
       {hasImages ? (
-        <img src={images[idx]} alt={shopName}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+        <img src={images[idx]} alt={shopName} onClick={() => setZoom(true)}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', cursor: 'zoom-in' }} />
       ) : (
         <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 72 }}>
           <AppIcon name={fallbackIcon} size={72} color="var(--muted)" />
@@ -75,7 +89,37 @@ export default function ShopGallery({
       {multi && idx > 0 && <Arrow side="left" onClick={() => setIdx((i) => i - 1)} />}
       {multi && idx < images.length - 1 && <Arrow side="right" onClick={() => setIdx((i) => i + 1)} />}
     </div>
+
+    {/* 라이트박스 — 눌러서 크게, 크게 봐도 ‹ ›로 넘김 */}
+    {zoom && hasImages && (
+      <div onClick={() => setZoom(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.94)', zIndex: 3000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <button onClick={() => setZoom(false)} aria-label="닫기" style={{ position: 'absolute', top: 16, right: 16, width: 42, height: 42, borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,.15)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
+        </button>
+        <img src={images[idx]} alt="" onClick={e => e.stopPropagation()} style={{ maxWidth: '94vw', maxHeight: '86vh', objectFit: 'contain', borderRadius: 6 }} />
+        {multi && (
+          <button onClick={e => { e.stopPropagation(); setIdx(i => (i - 1 + images.length) % images.length) }} aria-label="이전" style={lbArrow('left')}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+          </button>
+        )}
+        {multi && (
+          <button onClick={e => { e.stopPropagation(); setIdx(i => (i + 1) % images.length) }} aria-label="다음" style={lbArrow('right')}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+          </button>
+        )}
+        {multi && <div style={{ position: 'absolute', bottom: 22, left: 0, right: 0, textAlign: 'center', color: 'rgba(255,255,255,.9)', fontSize: 14, fontWeight: 700 }}>{idx + 1} / {images.length}</div>}
+      </div>
+    )}
+    </>
   )
+}
+
+function lbArrow(side: 'left' | 'right'): React.CSSProperties {
+  return {
+    position: 'absolute', ...(side === 'left' ? { left: 12 } : { right: 12 }), top: '50%', transform: 'translateY(-50%)',
+    width: 46, height: 46, borderRadius: '50%', border: 'none', cursor: 'pointer',
+    background: 'rgba(255,255,255,.15)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
+  }
 }
 
 function FloatBtn({ children, onClick, style, label, active }: {

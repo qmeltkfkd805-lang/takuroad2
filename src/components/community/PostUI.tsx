@@ -15,11 +15,30 @@ import { CommunityPost, PostComment, ReportReason, REPORT_REASONS, BOARD_LABEL, 
 import { getPollByPost, votePoll } from '@/services/pollService'
 import AppIcon from '@/components/tds/AppIcon'
 
+// ── 대표 팬아트 배지 ──
+export function FeaturedTag({ kind, inline }: { kind: 'current' | 'past'; inline?: boolean }) {
+  const cur = kind === 'current'
+  const fg = cur ? '#7a4f00' : (inline ? 'var(--muted)' : '#fff')
+  const base: React.CSSProperties = {
+    display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 9px', borderRadius: 9999,
+    fontSize: 11.5, fontWeight: 800, color: fg,
+    background: cur ? 'linear-gradient(90deg,#FFE08A,#FFC64B)' : (inline ? 'var(--surface2)' : 'rgba(0,0,0,.6)'),
+  }
+  const pos: React.CSSProperties = inline ? {} : { position: 'absolute', top: 8, left: 8, zIndex: 2, boxShadow: '0 2px 6px rgba(0,0,0,.18)' }
+  return (
+    <span style={{ ...base, ...pos }}>
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={fg} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3" /></svg>
+      {cur ? '이번 시즌 대표' : '역대 대표'}
+    </span>
+  )
+}
+
 // ── 카드 ──
 export function PostCard({ post, onOpen, showBoard }: { post: CommunityPost; onOpen: (p: CommunityPost) => void; showBoard?: boolean }) {
   const cover = post.images[0] ?? null
   return (
-    <div onClick={() => onOpen(post)} style={{ border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden', background: 'var(--surface)', cursor: 'pointer' }}>
+    <div onClick={() => onOpen(post)} style={{ position: 'relative', border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden', background: 'var(--surface)', cursor: 'pointer' }}>
+      {post.featured && <FeaturedTag kind={post.featured} />}
       {cover ? (
         <div style={{ aspectRatio: '1 / 1', background: 'var(--surface2)', position: 'relative' }}>
           <img src={cover} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: post.isSpoiler ? 'blur(12px)' : 'none' }} />
@@ -159,6 +178,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
                 {post.work.name} ›
               </button>
             )}
+            {post.featured && <FeaturedTag kind={post.featured} inline />}
             {isAuthor && (
               <div style={{ marginLeft: 'auto', position: 'relative' }}>
                 <button onClick={() => setMenuOpen(o => !o)} aria-label="더보기" style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--muted)', padding: 4, display: 'flex' }}>

@@ -24,7 +24,7 @@ export async function getShopTags(shopId: string) {
   const supabase = createClient()
   const { data } = await supabase
     .from('shop_tags')
-    .select('tag_id, tags ( id, name, slug )')
+    .select('tag_id, tags ( id, name, slug, cover_url )')
     .eq('shop_id', shopId)
   return (data ?? []).map((d: any) => d.tags).filter(Boolean)
 }

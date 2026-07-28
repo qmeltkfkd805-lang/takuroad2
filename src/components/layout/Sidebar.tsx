@@ -87,7 +87,7 @@ function LvCard({ info }: { info: LevelInfo }) {
   const span = ceil != null ? ceil - floor : 0
   const pct = span > 0 ? Math.min(100, Math.round((earned / span) * 100)) : 100
   return (
-    <div className={styles.lv}>
+    <Link href="/growth" className={styles.lv} style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}>
       <span className={styles.lvIconBox}>
         <img src={info.icon} alt="" className={styles.lvIcon} />
       </span>
@@ -101,6 +101,6 @@ function LvCard({ info }: { info: LevelInfo }) {
           {ceil != null ? earned.toLocaleString() + ' / ' + span.toLocaleString() + ' EXP' : '최고 등급'}
         </div>
       </div>
-    </div>
+    </Link>
   )
 }

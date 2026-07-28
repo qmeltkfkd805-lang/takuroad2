@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/client'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '@/types/database'
 import { countActivity } from './growthService'
+import { addExpOnce, BADGE_XP_BY_RARITY } from './expService'
 
 export type BadgeRarity = 'common' | 'rare' | 'epic' | 'legendary'
 
@@ -405,6 +406,12 @@ export async function evaluateBadgeTiersForUser(userId: string, client?: Supabas
         } else {
           newlyEarned.push(tier.id)
           console.log('[배지 획득]', tier.name)
+          // ⭐ 배지 보너스 XP (tier당 1회) — reward_exp 우선, 없으면 등급 기본값
+          const xp = (tier as any).reward_exp ?? BADGE_XP_BY_RARITY[tier.rarity ?? 'common'] ?? 15
+          if (xp > 0) {
+            try { await addExpOnce(userId, xp, 'badge', 'badge', tier.id) }
+            catch (e) { console.error('[배지 XP 실패]', tier.name, e) }
+          }
         }
       }
     } catch (e) {

@@ -14,6 +14,7 @@ import { getShopTags, getAllGoodsTypes, getShopGoodsCategories } from '@/service
 import { getReviews } from '@/services/reviewService'
 import { deleteShop } from '@/services/shopService'
 import { getMyLevelInfo } from '@/services/expService'
+import { WorkIcon } from '@/components/tds/WorkIcon'
 import KakaoMap, { KakaoMapRef } from '@/components/map/KakaoMap'
 import { Review } from '@/types/review'
 import { getActiveShopEvents, EVENT_TYPE_LABEL } from '@/services/shopEventService'
@@ -104,7 +105,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
     getShopAmenities(shop.id).then(g => setHighlights((g['highlight'] as { id: string; name: string }[]) ?? []))
   }, [shop.id])
 
-  const [works, setWorks] = useState<{ id: string; name: string; slug: string }[]>([])
+  const [works, setWorks] = useState<{ id: string; name: string; slug: string; cover_url?: string | null }[]>([])
   useEffect(() => { getShopTags(shop.id).then(setWorks) }, [shop.id])
   const [goodsTypes, setGoodsTypes] = useState<{ id: string; name: string }[]>([])
   useEffect(() => {
@@ -152,7 +153,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
   const pagedEvents = allEvents.slice(eventsPage * EVENTS_PER_PAGE, eventsPage * EVENTS_PER_PAGE + EVENTS_PER_PAGE)
   const worksRef = useRef<HTMLDivElement>(null)
   const [worksPage, setWorksPage] = useState(0)
-  const WORKS_PER_PAGE = 16 // 4열 × 4줄
+  const WORKS_PER_PAGE = 15 // 3열 × 5줄 (열 수의 배수라 마지막 줄까지 꽉 참)
   const worksTotalPages = Math.max(1, Math.ceil(works.length / WORKS_PER_PAGE))
   const pagedWorks = works.slice(worksPage * WORKS_PER_PAGE, worksPage * WORKS_PER_PAGE + WORKS_PER_PAGE)
   const worksPageWindow = (() => {
@@ -191,7 +192,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100dvh' }}>
       <div style={{ maxWidth: 1240, margin: '0 auto', padding: '20px 24px 64px' }}>
-        <style>{`.taku-page-2col{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}@media (max-width:900px){.taku-page-2col{grid-template-columns:1fr}}`}</style>
+        <style>{`.taku-page-2col{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}@media (hover:none) and (pointer:coarse) and (max-width:900px){.taku-page-2col{grid-template-columns:1fr}}`}</style>
 
         {/* Breadcrumb */}
         <nav style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--muted)', marginBottom: 16 }}>
@@ -228,7 +229,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                   </button>
                   {menuOpen && (
                     <div style={{ position: 'absolute', top: 44, right: 0, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 8px 24px rgba(0,0,0,.18)', overflow: 'hidden', minWidth: 150 }}>
-                      {!!user && shop.owner_id === user.id && shop.is_claimed && (
+                      {(isAdmin || (!!user && shop.owner_id === user.id && shop.is_claimed)) && (
                         <button onClick={() => { setMenuOpen(false); router.push('/shop/' + shop.slug + '/manage') }} style={{ ...menuItemStyle, fontWeight: 800, color: color }}><AppIcon name="shop" size={15} color={color} style={{ marginRight: 6 }} />매장 관리</button>
                       )}
                       <button onClick={() => { setMenuOpen(false); router.push(ROUTES.shopEdit(shop.slug)) }} style={menuItemStyle}>수정하기</button>
@@ -497,7 +498,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                     )}
                   </>
                 )}
-                <button onClick={() => router.push(canManage && !!user && shop.owner_id === user.id && shop.is_claimed ? ('/shop/' + shop.slug + '/manage/events') : ('/event/new?shop=' + shop.slug))} style={dashedBtn}>
+                <button onClick={() => router.push((isAdmin || (!!user && shop.owner_id === user.id && shop.is_claimed)) ? ('/shop/' + shop.slug + '/manage/events') : ('/event/new?shop=' + shop.slug))} style={dashedBtn}>
                   <Ico name="plus" size={15} /> 이벤트 등록하기
                 </button>
 
@@ -552,13 +553,15 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
               <Section title="취급 작품">
                 {works.length > 0 ? (
                   <>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, 180px)', justifyContent: 'start', gap: 12, marginBottom: worksTotalPages > 1 ? 16 : 24 }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: worksTotalPages > 1 ? 16 : 24 }}>
                       {pagedWorks.map(w => (
                         <Link key={w.id} href={`/work/${w.slug}`} style={{
                           border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden',
                           background: 'var(--surface)', textDecoration: 'none', color: 'inherit', display: 'block',
                         }}>
-                          <div style={{ height: 96, background: 'linear-gradient(135deg, var(--accent), #ff8fb1)' }} />
+                          <div style={{ height: 96, display: 'flex', alignItems: 'center', justifyContent: 'center', background: w.cover_url ? `url(${w.cover_url}) center/cover no-repeat` : 'var(--surface2)' }}>
+                            {!w.cover_url && <WorkIcon size={34} />}
+                          </div>
                           <div style={{ padding: '10px 12px 12px' }}>
                             <div style={{ fontSize: 14, fontWeight: 800, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{w.name}</div>
                           </div>
@@ -704,10 +707,15 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
 
             <SideCard
               title="취급 작품"
-              action={works.length > 2 ? (
-                <div style={{ display: 'flex', gap: 6 }}>
-                  <button onClick={() => worksRef.current?.scrollBy({ left: -180, behavior: 'smooth' })} aria-label="이전" style={headerArrow}>‹</button>
-                  <button onClick={() => worksRef.current?.scrollBy({ left: 180, behavior: 'smooth' })} aria-label="다음" style={headerArrow}>›</button>
+              action={works.length > 0 ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <button onClick={() => setTab('works')} style={{ border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 12.5, fontWeight: 700, color: 'var(--muted)' }}>전체 보기 ›</button>
+                  {works.length > 2 && (
+                    <div style={{ display: 'flex', gap: 6 }}>
+                      <button onClick={() => worksRef.current?.scrollBy({ left: -180, behavior: 'smooth' })} aria-label="이전" style={headerArrow}>‹</button>
+                      <button onClick={() => worksRef.current?.scrollBy({ left: 180, behavior: 'smooth' })} aria-label="다음" style={headerArrow}>›</button>
+                    </div>
+                  )}
                 </div>
               ) : undefined}
             >
@@ -720,7 +728,9 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                         flex: '0 0 auto', width: 112, border: '1px solid var(--border)', borderRadius: 12,
                         overflow: 'hidden', background: 'var(--surface)', textDecoration: 'none', color: 'inherit',
                       }}>
-                        <div style={{ height: 70, background: 'linear-gradient(135deg, var(--accent), #ff8fb1)' }} />
+                        <div style={{ height: 70, display: 'flex', alignItems: 'center', justifyContent: 'center', background: w.cover_url ? `url(${w.cover_url}) center/cover no-repeat` : 'var(--surface2)' }}>
+                          {!w.cover_url && <WorkIcon size={26} />}
+                        </div>
                         <div style={{ padding: '8px 10px 10px' }}>
                           <div style={{ fontSize: 13, fontWeight: 800, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{w.name}</div>
                         </div>

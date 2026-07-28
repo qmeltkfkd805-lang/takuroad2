@@ -6,14 +6,22 @@
 
 export type Json = string | number | boolean | null | { [key: string]: Json } | Json[]
 
+/** 하루 영업시간. breakStart/breakEnd는 휴게시간(있는 매장만). 없으면 필드 자체가 없음 */
+export interface DayHours {
+  open: string
+  close: string
+  breakStart?: string | null
+  breakEnd?: string | null
+}
+
 export interface BusinessHours {
-  mon?: { open: string; close: string } | null
-  tue?: { open: string; close: string } | null
-  wed?: { open: string; close: string } | null
-  thu?: { open: string; close: string } | null
-  fri?: { open: string; close: string } | null
-  sat?: { open: string; close: string } | null
-  sun?: { open: string; close: string } | null
+  mon?: DayHours | null
+  tue?: DayHours | null
+  wed?: DayHours | null
+  thu?: DayHours | null
+  fri?: DayHours | null
+  sat?: DayHours | null
+  sun?: DayHours | null
 }
 
 export type ShopStatus =

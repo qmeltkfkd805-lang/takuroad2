@@ -9,12 +9,12 @@ import {
   setShopCoverImage, reorderShopImages, uploadShopMainImage,
   ShopImageRow,
 } from '@/services/shopService'
-import { Shop } from '@/types/shop'
 import styles from './photosManage.module.css'
 
 const MAX_PHOTOS = 20
 
-export default function PhotosManage({ shop }: { shop: Shop }) {
+/** 여러 장 업로드 + ★대표 지정 + 순서변경 + 삭제. embedded=true면 등록 위저드용으로 헤더 숨김 */
+export default function PhotosManage({ shop, embedded = false }: { shop: { id: string; slug: string }; embedded?: boolean }) {
   const { user } = useAuth()
   const router = useRouter()
   const fileRef = useRef<HTMLInputElement>(null)
@@ -86,7 +86,7 @@ export default function PhotosManage({ shop }: { shop: Shop }) {
       await load()
       setSavedFlash(true)
       setTimeout(() => setSavedFlash(false), 2000)
-      router.refresh()
+      if (!embedded) router.refresh()
     } else {
       alert('순서 저장에 실패했어요.')
     }
@@ -121,7 +121,7 @@ export default function PhotosManage({ shop }: { shop: Shop }) {
     if (fileRef.current) fileRef.current.value = ''
     await load()
     setBusy(false)
-    router.refresh()
+    if (!embedded) router.refresh()
   }
 
   async function onDelete(img: ShopImageRow) {
@@ -133,7 +133,7 @@ export default function PhotosManage({ shop }: { shop: Shop }) {
     if (!ok) alert('삭제에 실패했어요.')
     await load()
     setBusy(false)
-    router.refresh()
+    if (!embedded) router.refresh()
   }
 
   async function onCover(img: ShopImageRow) {
@@ -144,14 +144,18 @@ export default function PhotosManage({ shop }: { shop: Shop }) {
     if (!ok) alert('대표 사진 지정에 실패했어요.')
     await load()
     setBusy(false)
-    router.refresh()
+    if (!embedded) router.refresh()
   }
 
   return (
     <div className={styles.wrap}>
-      <Link href={'/shop/' + shop.slug + '/manage'} className={styles.back}>← 매장 관리</Link>
-      <h1 className={styles.title}>사진 관리</h1>
-      <p className={styles.desc}>⠿ 손잡이를 잡고 끌어서 순서를 바꿀 수 있어요. 대표 사진이 목록과 지도에 먼저 보여요.</p>
+      {!embedded && (
+        <>
+          <Link href={'/shop/' + shop.slug + '/manage'} className={styles.back}>← 매장 관리</Link>
+          <h1 className={styles.title}>사진 관리</h1>
+        </>
+      )}
+      <p className={styles.desc}>여러 장을 올리고 <b>★ 대표</b>를 지정하세요. 대표가 샵 카드·상세 히어로에 먼저 보이고, 나머지는 ‹ ›로 넘겨봐요. ⠿ 손잡이로 순서도 바꿀 수 있어요.</p>
 
       {loading ? (
         <p className={styles.empty}>불러오는 중…</p>

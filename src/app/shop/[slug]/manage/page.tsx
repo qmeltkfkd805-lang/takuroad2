@@ -38,8 +38,10 @@ export default async function Page({ params }: Props) {
   const shop = await getShop(slug)
   if (!shop) notFound()
 
-  // 권한 체크: 인증된 소유자만 (UI 숨김이 아니라 라우트에서 차단)
-  if (!shop.is_claimed || shop.owner_id !== user.id) {
+  // 권한 체크: 인증된 소유자 또는 관리자 (관리자는 모든 샵을 관리할 수 있다)
+  const { data: prof } = await supabase.from('profiles').select('role').eq('id', user.id).maybeSingle()
+  const isAdmin = (prof as any)?.role === 'admin'
+  if (!isAdmin && (!shop.is_claimed || shop.owner_id !== user.id)) {
     redirect(`/shop/${slug}`)
   }
 

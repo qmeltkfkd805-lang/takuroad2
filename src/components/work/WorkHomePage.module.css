@@ -109,7 +109,7 @@
 .tabs { justify-content: center; gap: 8px; padding: 0 16px; }
 .tab { flex-direction: row !important; gap: 10px !important; align-items: center; padding: 14px 22px; font-size: 14px; }
 .tab svg { display: inline-block; width: 22px; height: 22px; }
-@media (max-width: 900px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 900px) {
   .tabs { justify-content: flex-start; }
   .tab { padding: 13px 16px; }
 }
@@ -127,7 +127,7 @@
 .heroActions > :first-child { flex: 0 1 auto; }
 .heroActions button { min-width: 96px; }
 
-@media (max-width: 720px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 720px) {
   .hero { padding: 18px 16px 20px; min-height: 0; }
   .poster { width: 96px; height: 132px; }
   .heroTitle { font-size: 24px; }
@@ -161,7 +161,7 @@
 /* === 탭: 시안처럼 넓게 균등 분배 === */
 .tabs { justify-content: space-between; gap: 0; padding: 0 8%; }
 .tab { flex: 1; justify-content: center; gap: 9px !important; padding: 15px 8px; }
-@media (max-width: 900px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 900px) {
   .tabs { justify-content: flex-start; padding: 0 8px; }
   .tab { flex: 0 0 auto; }
 }
@@ -206,7 +206,7 @@
 /* === Feed: 첫 소식 크게(featured) + 나머지 그리드 === */
 .feedGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
 .feedFeatured { grid-column: span 2; }
-@media (max-width: 620px) { .feedFeatured { grid-column: span 1; } }
+@media (hover: none) and (pointer: coarse) and (max-width: 620px) { .feedFeatured { grid-column: span 1; } }
 
 /* Feed 이벤트성 소식 배너 (전체 폭, 있을 때만) */
 .feedBanner { margin-bottom: 14px; }

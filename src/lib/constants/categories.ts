@@ -4,6 +4,7 @@
   { name: '카드/TCG',    slug: 'tcg',         icon: 'tcg',        color: '#b45309', bgColor: 'rgba(180,83,9,.12)' },
   { name: '중고샵',      slug: 'used',        icon: 'secondhand', color: '#059669', bgColor: 'rgba(5,150,105,.12)' },
   { name: '콜라보카페',  slug: 'collab-cafe', icon: 'cafe',       color: '#ea580c', bgColor: 'rgba(234,88,12,.12)' },
+  { name: '음식점/카페', slug: 'restaurant',  icon: 'cafe',       color: '#ca8a04', bgColor: 'rgba(202,138,4,.12)' },
   { name: '팝업스토어',  slug: 'popup',       icon: 'popup',      color: '#0099cc', bgColor: 'rgba(0,153,204,.12)' },
   { name: '게임샵',      slug: 'game',        icon: 'game',       color: '#7c3aed', bgColor: 'rgba(124,58,237,.12)' },
   { name: '온라인숍',    slug: 'online',      icon: 'onlineshop', color: '#16a34a', bgColor: 'rgba(22,163,74,.12)' },

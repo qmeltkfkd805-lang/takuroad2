@@ -84,9 +84,12 @@ export default function MyWorksPage() {
   return (
     <div style={{ padding: '28px 32px 72px' }}>
       <style>{`.taku-noscroll::-webkit-scrollbar{display:none}.taku-noscroll{scrollbar-width:none;-ms-overflow-style:none}`}</style>
-      <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 6 }}>작품</h1>
-        <p style={{ fontSize: 14.5, color: 'var(--muted)' }}>최애 작품을 제일 위에서 바로 만나보세요.</p>
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, marginBottom: 24 }}>
+        <div>
+          <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 6 }}>작품</h1>
+          <p style={{ fontSize: 14.5, color: 'var(--muted)' }}>최애 작품을 제일 위에서 바로 만나보세요.</p>
+        </div>
+        <Link href="/work/new" style={{ ...primaryBtn, flexShrink: 0 }}>+ 작품 등록하기</Link>
       </div>
 
       {loading ? (

@@ -20,8 +20,6 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
   const [allGoodsTypes, setAllGoodsTypes] = useState<any[]>([])
   const [myGoodsCategories, setMyGoodsCategories] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
-  const [savingTags, setSavingTags] = useState(false)
-  const [savingCategories, setSavingCategories] = useState(false)
   const [tagSearch, setTagSearch] = useState('')
   const [goodsTagSearch, setGoodsTagSearch] = useState('')
   const [openTagId, setOpenTagId] = useState<string | null>(null)
@@ -44,41 +42,19 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
     setLoading(false)
   }
 
-  function toggleTag(tag: any) {
-    setMyTags(prev =>
-      prev.some(t => t.id === tag.id)
-        ? prev.filter(t => t.id !== tag.id)
-        : [...prev, tag]
-    )
+  // 선택하면 바로 저장 — 따로 저장 버튼 없음
+  async function toggleTag(tag: any) {
+    const exists = myTags.some(t => t.id === tag.id)
+    const next = exists ? myTags.filter(t => t.id !== tag.id) : [...myTags, tag]
+    setMyTags(next)
+    await updateShopTags(shopId, next.map(t => t.id))
+    if (exists) await deactivateProductsByTag(shopId, tag.id)  // 작품을 빼면 그 작품의 굿즈도 비활성화
   }
 
-  async function saveTags() {
-    setSavingTags(true)
-
-    const previousTagIds = (await getShopTags(shopId)).map((t: any) => t.id)
-    const currentTagIds = myTags.map(t => t.id)
-    const removedTagIds = previousTagIds.filter(id => !currentTagIds.includes(id))
-
-    await updateShopTags(shopId, currentTagIds)
-
-    for (const removedTagId of removedTagIds) {
-      await deactivateProductsByTag(shopId, removedTagId)
-    }
-
-    await loadAll()
-    setSavingTags(false)
-  }
-
-  function toggleGoodsCategory(id: string) {
-    setMyGoodsCategories(prev =>
-      prev.includes(id) ? prev.filter(g => g !== id) : [...prev, id]
-    )
-  }
-
-  async function saveGoodsCategories() {
-    setSavingCategories(true)
-    await updateShopGoodsCategories(shopId, myGoodsCategories)
-    setSavingCategories(false)
+  async function toggleGoodsCategory(id: string) {
+    const next = myGoodsCategories.includes(id) ? myGoodsCategories.filter(g => g !== id) : [...myGoodsCategories, id]
+    setMyGoodsCategories(next)
+    await updateShopGoodsCategories(shopId, next)
   }
 
   if (loading) {
@@ -125,17 +101,7 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
             )
           })}
         </div>
-        <button
-          onClick={saveGoodsCategories}
-          disabled={savingCategories}
-          style={{
-            padding: '9px 16px', borderRadius: '8px', border: 'none',
-            background: 'var(--accent)', color: '#fff', fontWeight: 700,
-            fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
-          }}
-        >
-          {savingCategories ? '저장 중...' : '취급 분야 저장'}
-        </button>
+        <p style={{ fontSize: '12px', color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '5px', margin: 0 }}><Svg size={13} color="var(--accent)"><path d="m5 12 5 5L20 6" /></Svg>선택하면 자동 저장돼요</p>
       </div>
 
       <div style={{ height: '1px', background: 'var(--border)' }} />
@@ -209,17 +175,7 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
           )}
         </div>
 
-        <button
-          onClick={saveTags}
-          disabled={savingTags}
-          style={{
-            padding: '9px 16px', borderRadius: '8px', border: 'none',
-            background: 'var(--accent)', color: '#fff', fontWeight: 700,
-            fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
-          }}
-        >
-          {savingTags ? '저장 중...' : '취급 작품 저장'}
-        </button>
+        <p style={{ fontSize: '12px', color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '5px', margin: 0 }}><Svg size={13} color="var(--accent)"><path d="m5 12 5 5L20 6" /></Svg>선택하면 자동 저장돼요</p>
       </div>
 
     </div>

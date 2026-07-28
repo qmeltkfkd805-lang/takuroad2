@@ -92,6 +92,27 @@ export async function createActivity(input: CreateActivityInput): Promise<void> 
     return
   }
 
+  // ⭐ XP 지급 — createActivity가 XP의 중심. 활동 타입별로 한 번만(addExpOnce).
+  //    (fire-and-forget: 실패해도 기록·배지에 영향 없음)
+  import('./expService')
+    .then(async ({ XP_RULES, WORK_PROGRESS_XP, addExp, addExpOnce }) => {
+      const rule = XP_RULES[input.type]
+      if (!rule) return
+      if (input.type === 'work_progress') {
+        // 마일스톤별 XP. 마일스톤 활동은 업스트림(checkWorkMilestone)에서 1회만 생성됨 → once 불필요.
+        const pct = input.snapshot.pct
+        const xp = pct ? WORK_PROGRESS_XP[pct] : undefined
+        if (xp && input.workId) {
+          await addExp(input.userId, xp, 'work_progress', 'work', input.workId)
+        }
+        return
+      }
+      if (rule.baseXp > 0) {
+        await addExpOnce(input.userId, rule.baseXp, input.type, input.refType, input.refId)
+      }
+    })
+    .catch(e => console.error('[XP 지급 실패]', e))
+
   // ⭐⭐ 모든 기록이 여기를 지나간다 → 배지 평가도 여기서 한 번만.
   //    새 활동이 생겨도 평가 호출을 따로 붙일 필요가 없다.
   //    사용자를 기다리게 하지 않는다 (실패해도 기록은 이미 남았다)

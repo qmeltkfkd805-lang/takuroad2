@@ -114,10 +114,12 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
         ) : !user ? (
           <PromptBox text="로그인하면 좋아하는 작품을 모아볼 수 있어요" href="/login" cta="로그인" />
         ) : myWorks.length === 0 ? (
-          <PromptBox text="아직 좋아하는 작품이 없어요" href="/search" cta="작품 찾아보기" />
+          <PromptBox text="아직 최애 작품이 없어요. 작품홈에서 골라보세요" href="/my-works" cta="작품홈 가기" />
+        ) : newsItems.filter(n => n.kind !== 'none').length === 0 ? (
+          <Muted>아직 소식이 없어요</Muted>
         ) : (
           <div className={styles.feedGrid} {...worksDrag}>
-            {newsItems.slice(0, 5).map((item, i) => (
+            {newsItems.filter(n => n.kind !== 'none').slice(0, 5).map((item, i) => (
               <HomeFeedCard key={item.contextLabel ?? i} item={item} />
             ))}
           </div>
@@ -202,7 +204,8 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
                     distanceM: r.total_distance_m,
                     durationMin: r.total_duration_min,
                   }}
-                  onClick={() => { window.location.href = `/route/${r.id}` }}
+                  onClick={() => { window.location.href = `/route/${r.share_token}` }}
+                  onStart={() => { window.location.href = `/route/${r.share_token}` }}
                 />
               </div>
             ))}

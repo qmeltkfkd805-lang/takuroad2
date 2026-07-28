@@ -82,7 +82,16 @@ export async function createPost(userId: string, input: NewPost): Promise<string
     .select('id')
     .single()
   if (error) { console.error('[게시글 등록 실패]', error.message, error.code); return null }
-  return data?.id ?? null
+  const postId = data?.id ?? null
+
+  // 팬아트 업로드 XP (비활동 소스 — 글당 1회)
+  if (postId && input.board === 'fanart') {
+    import('./expService')
+      .then(({ addExpOnce, XP_RULES }) => addExpOnce(userId, XP_RULES.fanart.baseXp, 'fanart', 'post', postId))
+      .catch(e => console.error('[팬아트 XP 실패]', e))
+  }
+
+  return postId
 }
 
 // ── 커뮤니티 게시판 목록 (board 기준, active) ──

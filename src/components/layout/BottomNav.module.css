@@ -13,7 +13,7 @@
 .icon svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .label { font-size: 10px; font-weight: 700; }
 
-/* 데스크탑에선 하단탭 숨김 (사이드바가 대신) */
-@media (min-width: 1024px) {
+/* PC(마우스 기기)에선 하단탭 숨김 (사이드바가 대신). 폭이 아니라 기기 기준이라 창을 줄여도 유지 */
+@media (hover: hover) and (pointer: fine) {
   .nav { display: none; }
 }

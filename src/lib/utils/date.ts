@@ -33,17 +33,24 @@ export function getTodayStatus(hours: BusinessHours | null): {
 
   const { open, close } = todayData
   const now = today.getHours() * 60 + today.getMinutes()
-  const [openH, openM] = open.split(':').map(Number)
-  const [closeH, closeM] = close.split(':').map(Number)
-  const openMin = openH * 60 + openM
-  const closeMin = closeH * 60 + closeM
+  const toMin = (t: string) => { const [h, m] = t.split(':').map(Number); return h * 60 + m }
+  const openMin = toMin(open)
+  const closeMin = toMin(close)
 
-  const isOpen = now >= openMin && now < closeMin
-  const todayHours = `${open} ~ ${close}`
+  // 휴게시간 (있는 매장만)
+  const hasBreak = !!(todayData.breakStart && todayData.breakEnd)
+  const breakStartMin = hasBreak ? toMin(todayData.breakStart!) : null
+  const breakEndMin = hasBreak ? toMin(todayData.breakEnd!) : null
+  const inBreak = hasBreak && now >= breakStartMin! && now < breakEndMin!
+
+  const isOpen = now >= openMin && now < closeMin && !inBreak
+  const todayHours = hasBreak
+    ? `${open} ~ ${todayData.breakStart}, ${todayData.breakEnd} ~ ${close}`
+    : `${open} ~ ${close}`
 
   return {
     isOpen,
-    label: isOpen ? '영업중' : '영업 종료',
+    label: inBreak ? '휴게시간' : isOpen ? '영업중' : '영업 종료',
     todayHours,
   }
 }
@@ -64,7 +71,9 @@ export function formatBusinessHours(hours: BusinessHours | null) {
         ? '정보 없음'
         : data === null
           ? '휴무'
-          : `${data.open} ~ ${data.close}`,
+          : data.breakStart && data.breakEnd
+            ? `${data.open} ~ ${data.breakStart}, ${data.breakEnd} ~ ${data.close}`
+            : `${data.open} ~ ${data.close}`,
       isOpen: data !== null && data !== undefined,
     }
   })

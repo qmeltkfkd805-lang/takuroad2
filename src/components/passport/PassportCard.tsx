@@ -57,9 +57,12 @@ export default function PassportCard({ passport, isOwner, showFollow, onCustomiz
 
   return (
     <div
-      className={[styles.card, dressed ? styles.dressed : '', fxClass(worn.effect?.slug)].join(' ')}
+      className={[styles.card, dressed ? styles.dressed : ''].join(' ')}
       style={skin}
     >
+      {/* 효과 — 배경 레이어(내용 뒤). mix-blend-mode 효과가 프사·이름·칭호·배지 위로 새지 않게 분리 */}
+      <div className={`${styles.fxBg} ${fxClass(worn.effect?.slug)}`} aria-hidden="true" />
+
       {/* 여권 헤더 */}
       <div className={styles.head}>
         <div className={styles.brand}>TAKUROAD PASSPORT</div>
@@ -86,6 +89,7 @@ export default function PassportCard({ passport, isOwner, showFollow, onCustomiz
             src={isOwner ? avatarUrl : passport.avatarUrl}
             name={passport.nickname}
             size={88}
+            showEffect={false}
           />
           {isOwner && (
             <button className={styles.avatarEdit} onClick={() => setShowEdit(true)} aria-label='프로필 수정'>

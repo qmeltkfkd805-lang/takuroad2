@@ -26,7 +26,7 @@ const CheckIcon = (p: { size?: number; color?: string }) => <Svg {...p}><path d=
 
 export default function WorkRegister({ mode = 'create', editId = null }: { mode?: 'create' | 'edit'; editId?: string | null } = {}) {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user, isAdmin } = useAuth()
 
   const editing = mode === 'edit'
   const [loadingEdit, setLoadingEdit] = useState(mode === 'edit')
@@ -112,7 +112,6 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
     if (n === 1) {
       if (!name.trim()) return '작품명을 입력해주세요'
       if (!ipType) return 'IP 타입을 선택해주세요'
-      if (!cover) return '대표 이미지를 추가해주세요'
       if (!desc.trim()) return '한 줄 소개를 입력해주세요'
       return null
     }
@@ -130,7 +129,7 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
 
   const guide = [
     { label: '작품명·IP 타입', ok: !!name.trim() && !!ipType },
-    { label: '대표 이미지', ok: !!cover },
+    ...(isAdmin ? [{ label: '대표 이미지', ok: !!cover }] : []),
     { label: '한 줄 소개', ok: !!desc.trim() },
     { label: '장르 선택', ok: genres.length > 0 },
   ]
@@ -225,21 +224,33 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
               <div style={chipWrap}>{ORIGINAL.map((t) => <button key={t} onClick={() => setOriginal(original === t ? '' : t)} style={chip(original === t)}>{t}</button>)}</div>
               <Label>연재 상태</Label>
               <div style={chipWrap}>{STATUS.map((s) => { const on = status === s.v; return <button key={s.v} onClick={() => setStatus(on ? '' : s.v)} style={{ ...chip(on), borderColor: on ? s.c : 'var(--border)', background: on ? s.c : 'var(--surface)' }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: 9999, background: on ? '#fff' : s.c }} />{s.v}</span></button> })}</div>
-              <Label req>대표 이미지</Label>
-              <ImageBox url={cover} uploading={upCover} onPick={() => coverRef.current?.click()} onClear={() => setCover('')} height={150} />
-              <input ref={coverRef} type="file" accept="image/*" onChange={(e) => onPick(e, 'cover')} style={{ display: 'none' }} />
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6, margin: '8px 0 4px', fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
-                <Svg size={14} color="var(--accent)"><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" /></Svg>
-                <span>저작권 보호를 위해 <b style={{ color: 'var(--text)' }}>직접 찍은 사진이나 직접 그린 그림</b>으로 등록해주세요. (공식 포스터·타인 저작물 사용 금지)</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '10px 0 16px' }}>
-                <Label>대표 색상</Label>
-                <input type="color" value={accent} onChange={(e) => setAccent(e.target.value)} style={{ width: 40, height: 30, border: '1px solid var(--border)', borderRadius: 8, background: 'none', cursor: 'pointer' }} />
-                <span style={{ fontSize: 12, color: 'var(--muted)' }}>{accent} · 커버에서 자동 추출됨 (수정 가능)</span>
-              </div>
-              <Label>배너 이미지 (선택)</Label>
-              <ImageBox url={banner} uploading={upBanner} onPick={() => bannerRef.current?.click()} onClear={() => setBanner('')} height={110} />
-              <input ref={bannerRef} type="file" accept="image/*" onChange={(e) => onPick(e, 'banner')} style={{ display: 'none' }} />
+              {isAdmin ? (
+                <>
+                  <Label>대표 이미지 (관리자)</Label>
+                  <ImageBox url={cover} uploading={upCover} onPick={() => coverRef.current?.click()} onClear={() => setCover('')} height={150} />
+                  <input ref={coverRef} type="file" accept="image/*" onChange={(e) => onPick(e, 'cover')} style={{ display: 'none' }} />
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6, margin: '8px 0 4px', fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
+                    <Svg size={14} color="var(--accent)"><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" /></Svg>
+                    <span>저작권 보호를 위해 <b style={{ color: 'var(--text)' }}>직접 찍은 사진이나 직접 그린 그림</b>으로 등록해주세요. (공식 포스터·타인 저작물 사용 금지)</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '10px 0 16px' }}>
+                    <Label>대표 색상</Label>
+                    <input type="color" value={accent} onChange={(e) => setAccent(e.target.value)} style={{ width: 40, height: 30, border: '1px solid var(--border)', borderRadius: 8, background: 'none', cursor: 'pointer' }} />
+                    <span style={{ fontSize: 12, color: 'var(--muted)' }}>{accent} · 커버에서 자동 추출됨 (수정 가능)</span>
+                  </div>
+                  <Label>배너 이미지 (선택)</Label>
+                  <ImageBox url={banner} uploading={upBanner} onPick={() => bannerRef.current?.click()} onClear={() => setBanner('')} height={110} />
+                  <input ref={bannerRef} type="file" accept="image/*" onChange={(e) => onPick(e, 'banner')} style={{ display: 'none' }} />
+                </>
+              ) : (
+                <>
+                  <Label>대표 이미지</Label>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, margin: '2px 0 16px', padding: '13px 15px', borderRadius: 12, background: 'var(--surface2)', border: '1px solid var(--border)', fontSize: 12.5, color: 'var(--muted)', lineHeight: 1.6 }}>
+                    <Svg size={15} color="var(--accent)"><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" /></Svg>
+                    <span>작품 대표 이미지는 팬들이 올린 <b style={{ color: 'var(--text)' }}>팬아트</b>로 자동 채워져요. 등록 후 창작 탭에 팬아트를 올리면, 이번 시즌 대표 팬아트가 작품 홈 상단에 노출됩니다.</span>
+                  </div>
+                </>
+              )}
               <div style={{ height: 12 }} />
               <Label req>한 줄 소개</Label>
               <textarea value={desc} onChange={(e) => setDesc(e.target.value)} maxLength={80} placeholder="이 작품을 한 줄로 소개해주세요!" style={{ ...inp, minHeight: 64, resize: 'vertical' }} />
@@ -336,7 +347,7 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
           </div>
         </aside>
       </div>
-      <style>{`@media (max-width: 1000px){ .wr-cols{ flex-direction: column !important; } .wr-cols > aside{ width: 100% !important; position: static !important; } }`}</style>
+      <style>{`@media (hover:none) and (pointer:coarse) and (max-width: 1000px){ .wr-cols{ flex-direction: column !important; } .wr-cols > aside{ width: 100% !important; position: static !important; } }`}</style>
     </div>
   )
 }

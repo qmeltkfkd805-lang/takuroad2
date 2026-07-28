@@ -11,6 +11,7 @@ import { getActiveWorks, ActiveWork } from '@/services/activeWorksService'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { CosmeticProvider } from '@/components/cosmetic/CosmeticProvider'
 import UnlockModal from '@/components/cosmetic/UnlockModal'
+import LevelUpModal from '@/components/growth/LevelUpModal'
 import { logVisit } from '@/services/trafficService'
 
 const NO_SHELL = ['/login', '/admin', '/dev', '/test']
@@ -41,11 +42,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     getActiveWorks(10).then(setTrending).catch(() => setTrending([]))
   }, [])
 
-  if (bare) return <CosmeticProvider><UnlockModal />{children}</CosmeticProvider>
+  if (bare) return <CosmeticProvider><UnlockModal /><LevelUpModal />{children}</CosmeticProvider>
 
   return (
     <CosmeticProvider>
     <UnlockModal />
+    <LevelUpModal />
     <div className={styles.shell}>
       <header className={styles.header}>
         <Link href="/" className={styles.logo}>

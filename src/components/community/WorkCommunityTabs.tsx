@@ -4,9 +4,11 @@ import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { ROUTES } from '@/lib/constants/routes'
-import { getWorkPosts, getRepresentativeFanArt } from '@/services/communityPostService'
+import { getWorkPosts } from '@/services/communityPostService'
+import { getFanartBadgesForTag } from '@/services/fanartService'
 import { Board, CommunityPost, PostSort, WORK_TAB_BOARDS, BOARD_LABEL } from '@/types/community-post'
 import { PostCard, PostDetailModal } from '@/components/community/PostUI'
+import WorkFeaturedFanart from '@/components/community/WorkFeaturedFanart'
 
 // 작품 상세: 이 작품에 연결된 팬 활동(팬아트/팬창작/굿즈자랑)이 모이는 허브 섹션
 export default function WorkCommunityTabs({ tagId, workName }: { tagId: string; workName: string }) {
@@ -14,40 +16,26 @@ export default function WorkCommunityTabs({ tagId, workName }: { tagId: string; 
   const router = useRouter()
   const [board, setBoard] = useState<Board>('fanart')
   const [sort, setSort] = useState<PostSort>('popular')
-  const [rep, setRep] = useState<CommunityPost | null>(null)
   const [posts, setPosts] = useState<CommunityPost[]>([])
   const [loading, setLoading] = useState(true)
   const [opened, setOpened] = useState<CommunityPost | null>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
-    const [list, r] = await Promise.all([
-      getWorkPosts(tagId, board, sort, user?.id),
-      board === 'fanart' ? getRepresentativeFanArt(tagId, user?.id) : Promise.resolve(null),
-    ])
-    setPosts(list); setRep(r); setLoading(false)
+    const list = await getWorkPosts(tagId, board, sort, user?.id)
+    if (board === 'fanart') {
+      const badges = await getFanartBadgesForTag(tagId)
+      if (badges.size) list.forEach(p => { const f = badges.get(p.id); if (f) p.featured = f })
+    }
+    setPosts(list); setLoading(false)
   }, [tagId, board, sort, user?.id])
 
   useEffect(() => { load() }, [load])
 
   return (
     <div>
-      {/* 대표 팬아트 */}
-      {board === 'fanart' && rep && (
-        <div style={{ marginBottom: 24 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 12 }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5B100" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3" /></svg>
-            <h3 style={{ fontSize: 16, fontWeight: 900, margin: 0 }}>이번 주 대표 팬아트</h3>
-          </div>
-          <div onClick={() => setOpened(rep)} style={{ position: 'relative', borderRadius: 18, overflow: 'hidden', cursor: 'pointer', border: '1px solid var(--border)', background: 'var(--surface2)' }}>
-            {rep.images[0] && <img src={rep.images[0]} alt="" style={{ width: '100%', maxHeight: 420, objectFit: 'cover', display: 'block' }} />}
-            <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '28px 20px 16px', background: 'linear-gradient(0deg, rgba(0,0,0,.72), rgba(0,0,0,0))', color: '#fff' }}>
-              {rep.title && <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 3 }}>{rep.title}</div>}
-              <div style={{ fontSize: 13, opacity: 0.9 }}>{rep.author?.nickname ?? '익명'} · ♥ {rep.likeCount}</div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* 대표 팬아트 (시즌 대표 / 인기 임시 / 팬아트 없음 3-case) */}
+      {board === 'fanart' && <WorkFeaturedFanart tagId={tagId} workName={workName} onOpenPost={setOpened} />}
 
       {/* 탭 + 글쓰기 */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 14, flexWrap: 'wrap' }}>

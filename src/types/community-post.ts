@@ -102,6 +102,7 @@ export interface CommunityPost {
   commentCount: number
   likedByMe: boolean
   createdAt: string
+  featured?: 'current' | 'past' | null   // 대표 팬아트 배지 (featured_fanart 기준)
 }
 
 export interface NewPost {

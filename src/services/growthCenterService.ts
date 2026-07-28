@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/client'
 import { Challenge, GrowthSeries, getGrowthChallenges, getGrowthSeries, getRecentBadges, EarnedBadge } from '@/services/growthService'
 import { Cosmetic, getMyCosmetics } from '@/services/cosmeticService'
+import { getMyLevelInfo, LevelInfo, DAILY_GOAL_XP, DAILY_GOAL_EXCLUDE, getNextReward, LevelReward } from '@/services/expService'
 
 /* 성장 센터 (/growth) — 한 화면이 필요한 모든 것
 
@@ -28,13 +29,37 @@ export interface CategoryProgress {
   total: number
 }
 
+export interface QuestStatus { key: string; label: string; xp: number; done: boolean }
+
+/** 성장 요약 — 레벨/XP, 오늘·이번주·총, 일일목표, 일일미션, 최근 레벨업 */
+export interface GrowthSummary {
+  level: LevelInfo
+  today: number
+  week: number
+  total: number
+  goal: number
+  goalCurrent: number
+  goalDone: boolean
+  quests: QuestStatus[]
+  questAll: { xp: number; done: boolean }
+  recentLevelUps: { level: number; at: string }[]
+}
+
+const QUEST_LABEL: Record<string, string> = {
+  attendance: '출석', comment: '댓글 쓰기', like: '좋아요 누르기', post: '게시글 쓰기',
+}
+
 export interface GrowthCenter {
+  /** 레벨/XP·오늘·이번주·일일목표·최근 레벨업 */
+  summary: GrowthSummary
   /** 지금 도전 중 (진행률 높은 순) */
   challenges: Challenge[]
   /** 최근 해금한 배지 */
   recent: EarnedBadge[]
   /** 이번 보상 미리보기 — 지금 가장 가까운 도전이 주는 것 */
   nextReward: { cosmetic: Cosmetic; tierName: string } | null
+  /** 다음 레벨 보상 — 내 레벨보다 높은 가장 가까운 level_rewards */
+  nextLevelReward: { level: number; reward: LevelReward } | null
   /** 꾸미기 보상 진행도 */
   cosmetics: CosmeticProgress[]
   /** 업적 카테고리 */
@@ -133,5 +158,49 @@ export async function getGrowthCenter(userId: string): Promise<GrowthCenter> {
   const totalEarned = series.reduce((a, s) => a + s.earnedCount, 0)
   const totalSteps = series.reduce((a, s) => a + s.steps.length, 0)
 
-  return { challenges, series, recent, nextReward, cosmetics, categories, totalEarned, totalSteps }
+  /* ── 성장 요약 ── */
+  // 일일 미션 판정·지급 (하루 1회)
+  const { data: qd } = await supabase.rpc('claim_daily_quests', { p_user_id: userId } as any)
+  const qrows = (qd ?? []) as any[]
+  const allRow = qrows.find(r => r.quest === 'all')
+  const quests = qrows.filter(r => r.quest !== 'all').map(r => ({
+    key: r.quest, label: QUEST_LABEL[r.quest] ?? r.quest, xp: r.xp, done: r.done,
+  }))
+  const questAll = { xp: allRow?.xp ?? 15, done: !!allRow?.done }
+  // 일일 목표 보너스 (미션 XP 반영 후 판정, 하루 1회)
+  await supabase.rpc('claim_daily_goal', { p_user_id: userId } as any).then(() => {}, () => {})
+
+  const levelInfo = await getMyLevelInfo(userId)
+  const nextLevelReward = await getNextReward(levelInfo.level)
+
+  const now = new Date()
+  const todayStart = new Date(now); todayStart.setHours(0, 0, 0, 0)
+  const weekStart = new Date(now); weekStart.setHours(0, 0, 0, 0)
+  weekStart.setDate(weekStart.getDate() - ((now.getDay() + 6) % 7))   // 이번 주 월요일
+
+  const { data: wk } = await supabase
+    .from('exp_logs').select('amount, reason, created_at')
+    .eq('user_id', userId).gte('created_at', weekStart.toISOString())
+  const rows = (wk ?? []) as any[]
+  const week = rows.reduce((s, r) => s + (r.amount ?? 0), 0)
+  const todayRows = rows.filter(r => new Date(r.created_at) >= todayStart)
+  const today = todayRows.reduce((s, r) => s + (r.amount ?? 0), 0)
+  const goalCurrent = todayRows
+    .filter(r => !DAILY_GOAL_EXCLUDE.includes(r.reason))
+    .reduce((s, r) => s + (r.amount ?? 0), 0)
+
+  const { data: lu } = await supabase
+    .from('activity_logs').select('snapshot, created_at')
+    .eq('user_id', userId).eq('type', 'level_up')
+    .order('created_at', { ascending: false }).limit(5)
+  const recentLevelUps = ((lu ?? []) as any[]).map(r => ({ level: r.snapshot?.level ?? 0, at: r.created_at }))
+
+  const summary: GrowthSummary = {
+    level: levelInfo, today, week, total: levelInfo.totalExp,
+    goal: DAILY_GOAL_XP, goalCurrent, goalDone: goalCurrent >= DAILY_GOAL_XP,
+    quests, questAll,
+    recentLevelUps,
+  }
+
+  return { summary, challenges, series, recent, nextReward, nextLevelReward, cosmetics, categories, totalEarned, totalSteps }
 }

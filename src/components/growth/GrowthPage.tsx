@@ -9,6 +9,7 @@ import { RARITY_LABEL, fxClass, bgStyle, FRAME_STYLE } from '@/lib/cosmetics/sty
 import { Icon, Taku } from '@/components/tds'
 import { MaskIcon } from '@/components/collection/MaskIcon'
 import { ROUTES } from '@/lib/constants/routes'
+import { XP_RULES, REASON_LABEL } from '@/services/expService'
 import styles from './GrowthPage.module.css'
 
 /* 성장 센터 — 덕질은 끝이 없습니다
@@ -29,6 +30,7 @@ export default function GrowthPage() {
   const router = useRouter()
   const [d, setD] = useState<GrowthCenter | null>(null)
   const [loading, setLoading] = useState(true)
+  const [xpHelp, setXpHelp] = useState(false)
 
   useEffect(() => {
     if (!user) { setLoading(false); return }
@@ -64,6 +66,149 @@ export default function GrowthPage() {
           </div>
         )}
       </header>
+
+      {/* ═══ 성장 요약 — 레벨/XP · 오늘/이번주/총 · 일일목표 · 최근 레벨업 ═══ */}
+      {d?.summary && (() => {
+        const sm = d.summary
+        const lv = sm.level
+        const span = (lv.nextLevelThreshold ?? lv.currentLevelExp) - lv.currentLevelExp
+        const lvPct = span > 0 ? Math.min(100, Math.round(((lv.totalExp - lv.currentLevelExp) / span) * 100)) : 100
+        const goalPct = Math.min(100, Math.round((sm.goalCurrent / sm.goal) * 100))
+        const tiles: [string, number, boolean][] = [['오늘', sm.today, true], ['이번 주', sm.week, true], ['총 XP', sm.total, false]]
+        const xpHelpList: { label: string; xp: string }[] = [
+          ...Object.entries(XP_RULES)
+            .filter(([, r]) => r.baseXp > 0 && r.visible)
+            .map(([k, r]) => ({ label: REASON_LABEL[k] ?? k, xp: String(r.baseXp) })),
+          { label: '작품 정주행', xp: '10~50' },
+          { label: '배지 획득', xp: '15~120' },
+        ]
+        return (
+          <section style={{ position: 'relative', border: '1px solid var(--border)', borderRadius: 16, background: 'var(--surface)', padding: '18px 20px', marginBottom: 18 }}>
+            {/* 경험치 얻는 방법 ? */}
+            <div style={{ position: 'absolute', top: 14, right: 16 }}>
+              <button onClick={() => setXpHelp(v => !v)} aria-label="경험치 얻는 방법"
+                style={{ width: 22, height: 22, borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--surface2)', color: 'var(--muted)', fontSize: 12, fontWeight: 900, cursor: 'pointer', lineHeight: 1, fontFamily: 'inherit' }}>?</button>
+              {xpHelp && (
+                <>
+                  <div onClick={() => setXpHelp(false)} style={{ position: 'fixed', inset: 0, zIndex: 40 }} />
+                  <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 6px)', zIndex: 50, width: 220, padding: '12px 14px', borderRadius: 12, background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: '0 10px 30px rgba(0,0,0,.14)' }}>
+                    <div style={{ fontSize: 12.5, fontWeight: 900, marginBottom: 8 }}>경험치 얻는 방법</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                      {xpHelpList.map((h, i) => (
+                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--muted)' }}>
+                          <span>{h.label}</span><b style={{ color: 'var(--accent)' }}>+{h.xp}</b>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 8, lineHeight: 1.5 }}>배지를 달성하면 더 큰 보너스 XP를 받아요.</div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* 레벨 + XP */}
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+              <b style={{ fontSize: 20, fontWeight: 900 }}>LV.{lv.level}</b>
+              <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--accent)' }}>{lv.title}</span>
+            </div>
+            <div style={{ height: 9, borderRadius: 9999, background: 'var(--surface2)', overflow: 'hidden', marginTop: 8 }}>
+              <div style={{ height: '100%', width: `${lvPct}%`, background: 'linear-gradient(90deg,#FFC64B,#FF8A3D)' }} />
+            </div>
+            <div style={{ fontSize: 11.5, color: 'var(--muted)', marginTop: 5 }}>
+              {lv.nextLevelExp != null ? `다음 레벨까지 ${lv.nextLevelExp.toLocaleString()} XP` : '최고 레벨'}
+            </div>
+
+            {/* 다음 레벨 보상 — 보상을 크게 보여줘야 갖고 싶어진다 (설계 §8) */}
+            {d.nextLevelReward && (() => {
+              const r = d.nextLevelReward.reward
+              const rlv = d.nextLevelReward.level
+              return (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 14, padding: '12px 14px', borderRadius: 14, border: '1px solid #F1D48A', background: 'linear-gradient(135deg, rgba(255,224,138,.20), rgba(255,198,75,.05))' }}>
+                  <div
+                    className={r.type === 'effect' ? 'tkfx-preview ' + fxClass(r.slug) : undefined}
+                    style={{ position: 'relative', width: 62, height: 62, borderRadius: 12, overflow: 'hidden', flexShrink: 0, border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      ...(r.type === 'background' ? bgStyle(r.slug, r.assetUrl) : { background: r.type === 'effect' ? '#161b2e' : 'var(--surface2)' }) }}
+                  >
+                    {r.type === 'frame' && <span style={{ width: 34, height: 34, borderRadius: '50%', background: '#fff', ...(FRAME_STYLE[r.slug] || {}) }} />}
+                    {r.type === 'title' && <span style={{ fontSize: 22 }}>🏷️</span>}
+                  </div>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ fontSize: 11.5, fontWeight: 900, color: '#C98A00' }}>🎁 다음 레벨 보상</div>
+                    <div style={{ fontSize: 16, fontWeight: 900, marginTop: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.name}</div>
+                    <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}><b style={{ color: 'var(--text)' }}>LV.{rlv}</b> 달성 시 해금 · {RARITY_LABEL[r.rarity] ?? r.rarity}</div>
+                  </div>
+                </div>
+              )
+            })()}
+
+            {/* 오늘 / 이번주 / 총 */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10, marginTop: 16 }}>
+              {tiles.map(([label, val, plus], i) => (
+                <div key={i} style={{ background: 'var(--surface2)', borderRadius: 12, padding: '12px 10px', textAlign: 'center' }}>
+                  <div style={{ fontSize: 11.5, color: 'var(--muted)', fontWeight: 700 }}>{label}</div>
+                  <div style={{ fontSize: 17, fontWeight: 900, marginTop: 3 }}>{plus ? '+' : ''}{val.toLocaleString()}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* 일일 목표 */}
+            <div style={{ marginTop: 16 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, marginBottom: 6 }}>
+                <span style={{ fontWeight: 800 }}>오늘 목표{sm.goalDone && <span style={{ color: 'var(--accent)' }}> · 달성! +5</span>}</span>
+                <span style={{ color: 'var(--muted)' }}>{sm.goalCurrent} / {sm.goal} XP</span>
+              </div>
+              <div style={{ height: 9, borderRadius: 9999, background: 'var(--surface2)', overflow: 'hidden' }}>
+                <div style={{ height: '100%', width: `${goalPct}%`, background: sm.goalDone ? 'linear-gradient(90deg,#38C172,#2FA360)' : 'var(--accent)' }} />
+              </div>
+            </div>
+
+            {/* 일일 미션 */}
+            {sm.quests && sm.quests.length > 0 && (
+              <div style={{ marginTop: 16 }}>
+                <div style={{ fontSize: 11.5, color: 'var(--muted)', fontWeight: 800, marginBottom: 8 }}>일일 미션</div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 8 }}>
+                  {sm.quests.map((q, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 12px', borderRadius: 10, background: 'var(--surface2)' }}>
+                      <span style={{ width: 20, height: 20, borderRadius: '50%', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: q.done ? 'var(--accent)' : 'transparent', border: q.done ? 'none' : '1.5px solid var(--border)' }}>
+                        {q.done && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 5 5L20 6" /></svg>}
+                      </span>
+                      <span style={{ flex: 1, fontSize: 12.5, fontWeight: 700, color: q.done ? 'var(--text)' : 'var(--muted)' }}>{q.label}</span>
+                      <b style={{ fontSize: 12, color: q.done ? 'var(--muted)' : 'var(--accent)' }}>+{q.xp}</b>
+                    </div>
+                  ))}
+                </div>
+                {/* 올클리어 보너스 */}
+                {sm.questAll && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8, padding: '10px 12px', borderRadius: 10, border: `1px solid ${sm.questAll.done ? '#F1D48A' : 'var(--border)'}`, background: sm.questAll.done ? 'linear-gradient(135deg, rgba(255,224,138,.20), rgba(255,198,75,.06))' : 'var(--surface)' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={sm.questAll.done ? '#D69A00' : 'var(--muted)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3" /></svg>
+                    <span style={{ flex: 1, fontSize: 12.5, fontWeight: 800, color: 'var(--text)' }}>미션 전부 완료{sm.questAll.done && ' · 달성!'}</span>
+                    <b style={{ fontSize: 12.5, color: sm.questAll.done ? '#C98A00' : 'var(--accent)' }}>+{sm.questAll.xp}</b>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* 최근 레벨업 */}
+            {sm.recentLevelUps.length > 0 && (
+              <div style={{ marginTop: 16 }}>
+                <div style={{ fontSize: 11.5, color: 'var(--muted)', fontWeight: 800, marginBottom: 7 }}>최근 레벨업</div>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  {sm.recentLevelUps.map((r, i) => (
+                    <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 10px', borderRadius: 9999, background: 'var(--surface2)', fontSize: 12, fontWeight: 700 }}>
+                      LV.{r.level}<span style={{ color: 'var(--muted)', fontWeight: 600 }}>{r.at?.slice(0, 10).replace(/-/g, '.')}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* XP 내역 진입 */}
+            <div style={{ marginTop: 14, textAlign: 'right' }}>
+              <button onClick={() => router.push('/xp')} style={{ border: 'none', background: 'none', color: 'var(--accent)', fontWeight: 800, fontSize: 12.5, cursor: 'pointer', fontFamily: 'inherit' }}>XP 내역 전체 보기 ›</button>
+            </div>
+          </section>
+        )
+      })()}
 
       <div className={styles.layout}>
         {/* ═══ 왼쪽 — 도전 ═══ */}

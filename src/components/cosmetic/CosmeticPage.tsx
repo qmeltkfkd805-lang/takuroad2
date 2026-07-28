@@ -142,9 +142,12 @@ export default function CosmeticPage() {
         {/* 지금 내 프로필 — 고르는 즉시 바뀐다 */}
         <aside className={styles.previewCol}>
           <div
-            className={[styles.card, fxClass(worn.effect?.slug)].join(' ')}
+            className={styles.card}
             style={bgStyle(worn.background?.slug, worn.background?.assetUrl)}
           >
+            {/* 효과 — 배경 레이어(내용 뒤). 프사·이름·칭호·배지 위로 안 새게 분리 */}
+            <div className={`${styles.fxBg} ${fxClass(worn.effect?.slug)}`} aria-hidden="true" />
+
             <div className={styles.avatarWrap}>
               <div
                 className={styles.avatar}

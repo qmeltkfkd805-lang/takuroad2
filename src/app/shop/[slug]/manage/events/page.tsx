@@ -19,7 +19,9 @@ export default async function Page({ params }: Props) {
     .eq('slug', slug)
     .maybeSingle()
   if (!shop) notFound()
-  if (!shop.is_claimed || shop.owner_id !== user.id) redirect('/shop/' + slug)
+  const { data: prof } = await supabase.from('profiles').select('role').eq('id', user.id).maybeSingle()
+  const isAdmin = (prof as any)?.role === 'admin'
+  if (!isAdmin && (!shop.is_claimed || shop.owner_id !== user.id)) redirect('/shop/' + slug)
 
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '40px 24px 100px' }}>
