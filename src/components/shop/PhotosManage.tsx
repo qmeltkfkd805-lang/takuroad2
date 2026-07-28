@@ -9,6 +9,8 @@ import {
   setShopCoverImage, reorderShopImages, uploadShopMainImage,
   ShopImageRow,
 } from '@/services/shopService'
+import Cropper from 'react-easy-crop'
+import { getCroppedImageFile, CropArea } from '@/lib/utils/cropImage'
 import styles from './photosManage.module.css'
 
 const MAX_PHOTOS = 20
@@ -25,6 +27,14 @@ export default function PhotosManage({ shop, embedded = false }: { shop: { id: s
   const [dirty, setDirty] = useState(false)
   const [savedFlash, setSavedFlash] = useState(false)
   const imagesRef = useRef<ShopImageRow[]>([])
+
+  // 대표 구도 조정(자르기) — 대표 사진이 히어로에 어떻게 보일지 정한다
+  const [cropTarget, setCropTarget] = useState<ShopImageRow | null>(null)
+  const [crop, setCrop] = useState({ x: 0, y: 0 })
+  const [zoom, setZoom] = useState(1)
+  const [rotation, setRotation] = useState(0)
+  const [caPixels, setCaPixels] = useState<CropArea | null>(null)
+  const [cropBusy, setCropBusy] = useState(false)
 
   useEffect(() => { imagesRef.current = images }, [images])
 
@@ -147,6 +157,40 @@ export default function PhotosManage({ shop, embedded = false }: { shop: { id: s
     if (!embedded) router.refresh()
   }
 
+  // 구도 조정 열기
+  function openCrop(img: ShopImageRow) {
+    if (busy) return
+    setCrop({ x: 0, y: 0 }); setZoom(1); setRotation(0); setCaPixels(null)
+    setCropTarget(img)
+  }
+
+  // 잘라서 저장 — 원본은 잘린 새 이미지로 교체(같은 자리·대표 유지)
+  async function saveCrop() {
+    if (!cropTarget || !caPixels || !user) return
+    setCropBusy(true)
+    const wasCover = cropTarget.is_cover
+    const so = cropTarget.sort_order
+    try {
+      const file = await getCroppedImageFile(cropTarget.image_url, caPixels, `crop-${Date.now()}.jpg`, rotation)
+      const url = await uploadShopMainImage(file, shop.slug)
+      if (!url) { alert('구도 저장에 실패했어요.'); setCropBusy(false); return }
+      if (dirty) await persistOrder()
+      await addShopImage(shop.id, url, user.id, so)
+      await deleteShopImage(cropTarget.id)
+      const rows = await getShopImages(shop.id)
+      if (wasCover) {
+        const nw = rows.find(r => r.image_url === url)
+        if (nw) await setShopCoverImage(shop.id, nw.id)
+      }
+      await load()
+      if (!embedded) router.refresh()
+    } catch {
+      alert('이미지를 불러오지 못했어요. 새로고침 후 다시 시도해주세요.')
+    }
+    setCropTarget(null)
+    setCropBusy(false)
+  }
+
   return (
     <div className={styles.wrap}>
       {!embedded && (
@@ -155,7 +199,7 @@ export default function PhotosManage({ shop, embedded = false }: { shop: { id: s
           <h1 className={styles.title}>사진 관리</h1>
         </>
       )}
-      <p className={styles.desc}>여러 장을 올리고 <b>★ 대표</b>를 지정하세요. 대표가 샵 카드·상세 히어로에 먼저 보이고, 나머지는 ‹ ›로 넘겨봐요. ⠿ 손잡이로 순서도 바꿀 수 있어요.</p>
+      <p className={styles.desc}>여러 장을 올리고 <b>★ 대표</b>를 지정하세요. <b>✂ 구도</b>로 대표가 화면에 어떻게 보일지 맞출 수 있어요. 대표는 샵 카드·상세 히어로에 먼저 보이고, 나머지는 ‹ ›로 넘겨봐요. ⠿ 손잡이로 순서 변경.</p>
 
       {loading ? (
         <p className={styles.empty}>불러오는 중…</p>
@@ -182,6 +226,7 @@ export default function PhotosManage({ shop, embedded = false }: { shop: { id: s
                   onClick={() => onCover(img)}
                   disabled={busy}
                 >★ 대표</button>
+                <button className={styles.tool} onClick={() => openCrop(img)} disabled={busy}>✂ 구도</button>
                 <button className={styles.toolDel} onClick={() => onDelete(img)} disabled={busy} aria-label="삭제"><AppIcon name="close" size={15} /></button>
               </div>
             </div>
@@ -203,6 +248,42 @@ export default function PhotosManage({ shop, embedded = false }: { shop: { id: s
       </button>
       <p className={styles.count}>{images.length} / {MAX_PHOTOS}장</p>
       <input ref={fileRef} type="file" accept="image/*" multiple onChange={onFiles} hidden />
+
+      {/* 구도 조정(자르기) — 보일 영역을 정한다 */}
+      {cropTarget && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.85)', zIndex: 3000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
+          <div style={{ width: '100%', maxWidth: 520 }}>
+            <div style={{ color: '#fff', fontWeight: 800, fontSize: 15, marginBottom: 4, textAlign: 'center' }}>구도 조정</div>
+            <div style={{ color: 'rgba(255,255,255,.7)', fontSize: 12.5, marginBottom: 10, textAlign: 'center' }}>대표 사진이 목록·상세 맨 위에 어떻게 보일지 맞춰주세요 (드래그·확대·회전)</div>
+            <div style={{ position: 'relative', width: '100%', height: 300, borderRadius: 12, overflow: 'hidden', background: '#000' }}>
+              <Cropper
+                image={cropTarget.image_url}
+                crop={crop}
+                zoom={zoom}
+                rotation={rotation}
+                aspect={16 / 9}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onRotationChange={setRotation}
+                onCropComplete={(_a, px) => setCaPixels(px as CropArea)}
+              />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '10px 0' }}>
+              <span style={{ fontSize: 12, color: '#ccc', width: 30 }}>확대</span>
+              <input type="range" min={1} max={3} step={0.1} value={zoom} onChange={e => setZoom(Number(e.target.value))} style={{ flex: 1 }} />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '10px 0' }}>
+              <span style={{ fontSize: 12, color: '#ccc', width: 30 }}>회전</span>
+              <input type="range" min={-180} max={180} step={1} value={rotation} onChange={e => setRotation(Number(e.target.value))} style={{ flex: 1 }} />
+              <span style={{ fontSize: 11, color: '#ccc', width: 34, textAlign: 'right' }}>{rotation}°</span>
+            </div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button onClick={() => setCropTarget(null)} disabled={cropBusy} style={{ flex: 1, padding: 11, borderRadius: 8, border: 'none', background: 'rgba(255,255,255,.15)', color: '#fff', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>취소</button>
+              <button onClick={saveCrop} disabled={cropBusy} style={{ flex: 1, padding: 11, borderRadius: 8, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit' }}>{cropBusy ? '저장 중…' : '이 구도로 저장'}</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
