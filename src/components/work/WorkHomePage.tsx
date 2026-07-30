@@ -66,6 +66,17 @@ function shade(hex: string, p: number): string {
   return '#' + [r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('')
 }
 
+// 링크 라벨 → 브랜드 아이콘 파일 (없으면 homepage로 폴백)
+function linkIcon(label: string): string {
+  const s = (label || '').toLowerCase()
+  if (label.includes('인스타') || s.includes('insta')) return 'instargram'
+  if (label.includes('트위터') || s === 'x' || s.startsWith('x ') || s.includes('twitter')) return 'X'
+  if (label.includes('유튜브') || s.includes('youtube') || s.includes('yt')) return 'youtube'
+  if (label.includes('팬클럽') || s.includes('fanclub') || s.includes('fan club')) return 'fanclub'
+  if (label.includes('카카오') || label.includes('카페') || s.includes('kakao')) return 'kakao'
+  return 'homepage'
+}
+
 export default function WorkHomePage({ tag, feed, events, shops, goods, routes, communityPosts, favoriteCount }: Props) {
   const router = useRouter()
   const now = new Date()
@@ -166,6 +177,22 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
       {/* 본문 + 우측 광고칸 */}
       <div className={styles.layout}>
         <div className={styles.main}>
+          {/* 0) 공식 사이트 */}
+          {Array.isArray((tag as any).links) && (tag as any).links.filter((l: any) => l?.url).length > 0 && (
+            <section id="links" className={styles.section}>
+              <SectionHeader title="공식 사이트" icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1" /><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" /></svg>} plainIcon />
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                {(tag as any).links.filter((l: any) => l?.url).map((l: any, i: number) => (
+                  <a key={i} href={l.url} target="_blank" rel="noopener noreferrer"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 13, fontWeight: 700, background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)', padding: '9px 15px', borderRadius: 9999, textDecoration: 'none' }}>
+                    <img src={`/icons/${linkIcon(l.label)}.png`} alt="" style={{ width: 17, height: 17, objectFit: 'contain', flexShrink: 0 }} />
+                    {l.label === '트위터' ? 'X (트위터)' : (l.label || '링크')}
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
+
           {/* 1) Feed */}
           <section id="feed" className={styles.section}>
             <SectionHeader title="새 소식 (Feed)" icon={<Icon name="colorfire" size={24} />} plainIcon />

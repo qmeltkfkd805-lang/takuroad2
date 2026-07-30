@@ -409,7 +409,7 @@ export async function getTagBySlug(slug: string) {
   const supabase = createClient()
   const { data } = await supabase
     .from('tags')
-    .select('id, name, slug, created_at, cover_url, banner_image, english_name, ip_type, release_year, genres, description')
+    .select('id, name, slug, created_at, cover_url, banner_image, english_name, ip_type, release_year, genres, description, accent_color, links')
     .eq('slug', slug)
     .maybeSingle()
   return data

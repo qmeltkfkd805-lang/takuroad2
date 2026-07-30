@@ -15,10 +15,7 @@ export interface NewWork {
   genres?: string[]
   keywords?: string[]
   aliases?: string[]
-  homepage_url?: string
-  twitter_url?: string
-  youtube_url?: string
-  official_url?: string
+  links?: { label: string; url: string }[]   // 공식 링크 — 원하는 만큼
 }
 
 function slugify(name: string, eng?: string): string {
@@ -50,10 +47,7 @@ export async function createWork(userId: string, w: NewWork): Promise<{ slug: st
     accent_color: w.accent_color || null,
     status: w.status || null,
     original_type: w.original_type || null,
-    homepage_url: w.homepage_url || null,
-    twitter_url: w.twitter_url || null,
-    youtube_url: w.youtube_url || null,
-    official_url: w.official_url || null,
+    links: w.links ?? [],
     created_by: userId,
   } as any).select('id').single()
   if (error) { console.error('[createWork]', error); return null }
@@ -112,10 +106,7 @@ export async function updateWork(id: string, w: NewWork): Promise<boolean> {
     accent_color: w.accent_color || null,
     status: w.status || null,
     original_type: w.original_type || null,
-    homepage_url: w.homepage_url || null,
-    twitter_url: w.twitter_url || null,
-    youtube_url: w.youtube_url || null,
-    official_url: w.official_url || null,
+    links: w.links ?? [],
   } as any).eq('id', id)
   if (error) { console.error('[updateWork]', error); return false }
   return true

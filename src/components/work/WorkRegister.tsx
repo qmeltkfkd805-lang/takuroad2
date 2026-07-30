@@ -4,15 +4,8 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { useRouter } from 'next/navigation'
 import { createWork, uploadWorkImage, findDuplicateWork, getWorkForEdit, updateWork } from '@/services/workRegisterService'
 
-const IP_TYPES = ['애니', '게임', '만화', '웹툰', '소설', '기타']
-const STATUS = [
-  { v: '연재중', c: '#22c55e' },
-  { v: '완결', c: '#3b82f6' },
-  { v: '휴재', c: '#eab308' },
-  { v: '종료', c: '#6b7280' },
-]
-const ORIGINAL = ['원작', '2차 창작', '파생 작품']
-const GENRES = ['액션', '판타지', '학원', '일상', 'SF', '추리', '로맨스', '코미디', '스포츠', '음악', '호러', '드라마', '마법소녀', '소년물', '19', '고어']
+const GENRES =['액션', '판타지', '학원', '일상', 'SF', '추리', '로맨스', '코미디', '스포츠', '음악', '호러', '드라마', '마법소녀', '소년물', '로봇/메카', '19', '고어']
+const FIXED_LINKS = ['홈페이지', 'X (트위터)', '유튜브', '팬클럽', '인스타그램']
 const STEPS = [
   { n: 1, label: '기본 정보' },
   { n: 2, label: '분류' },
@@ -40,23 +33,18 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
   const [original, setOriginal] = useState('')
   const [status, setStatus] = useState('')
   const [cover, setCover] = useState('')
-  const [banner, setBanner] = useState('')
   const [accent, setAccent] = useState('#FF5692')
   const [desc, setDesc] = useState('')
   const [genres, setGenres] = useState<string[]>([])
   const [keywords, setKeywords] = useState<string[]>([])
   const [kwInput, setKwInput] = useState('')
-  const [homepage, setHomepage] = useState('')
-  const [twitter, setTwitter] = useState('')
-  const [youtube, setYoutube] = useState('')
-  const [official, setOfficial] = useState('')
+  const [fixedLinks, setFixedLinks] = useState<Record<string, string>>({})
+  const [extraLinks, setExtraLinks] = useState<{ label: string; url: string }[]>([])
 
   const [upCover, setUpCover] = useState(false)
-  const [upBanner, setUpBanner] = useState(false)
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
   const coverRef = useRef<HTMLInputElement | null>(null)
-  const bannerRef = useRef<HTMLInputElement | null>(null)
 
   const slugForUpload = useMemo(() => {
     // Storage 경로는 ASCII만 안전 — 영문/숫자만 추출, 한글 등은 제거 후 없으면 랜덤
@@ -84,16 +72,15 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
     img.src = url
   }
 
-  async function onPick(e: React.ChangeEvent<HTMLInputElement>, kind: 'cover' | 'banner') {
+  async function onPick(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file || !user) return
-    kind === 'cover' ? setUpCover(true) : setUpBanner(true)
-    if (kind === 'cover') extractColor(file)
-    const url = await uploadWorkImage(file, slugForUpload, kind)
-    kind === 'cover' ? setUpCover(false) : setUpBanner(false)
-    if (url) { kind === 'cover' ? setCover(url) : setBanner(url) } else setMsg('이미지 업로드 실패')
-    if (kind === 'cover' && coverRef.current) coverRef.current.value = ''
-    if (kind === 'banner' && bannerRef.current) bannerRef.current.value = ''
+    setUpCover(true)
+    extractColor(file)
+    const url = await uploadWorkImage(file, slugForUpload, 'cover')
+    setUpCover(false)
+    if (url) setCover(url); else setMsg('이미지 업로드 실패')
+    if (coverRef.current) coverRef.current.value = ''
   }
 
   function toggleGenre(g: string) { setGenres((a) => a.includes(g) ? a.filter((x) => x !== g) : [...a, g]) }
@@ -111,7 +98,6 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
   function stepIssue(n: number): string | null {
     if (n === 1) {
       if (!name.trim()) return '작품명을 입력해주세요'
-      if (!ipType) return 'IP 타입을 선택해주세요'
       if (!desc.trim()) return '한 줄 소개를 입력해주세요'
       return null
     }
@@ -128,7 +114,7 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
   }
 
   const guide = [
-    { label: '작품명·IP 타입', ok: !!name.trim() && !!ipType },
+    { label: '작품명', ok: !!name.trim() },
     ...(isAdmin ? [{ label: '대표 이미지', ok: !!cover }] : []),
     { label: '한 줄 소개', ok: !!desc.trim() },
     { label: '장르 선택', ok: genres.length > 0 },
@@ -142,9 +128,18 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
       if (w) {
         setName(w.name ?? ''); setEng(w.english_name ?? ''); setSlug(w.slug ?? ''); setAliases(w.aliases ?? [])
         setIpType(w.ip_type ?? ''); setOriginal(w.original_type ?? ''); setStatus(w.status ?? '')
-        setCover(w.cover_url ?? ''); setBanner(w.banner_image ?? ''); setAccent(w.accent_color ?? '#FF5692')
+        setCover(w.cover_url ?? ''); setAccent(w.accent_color ?? '#FF5692')
         setDesc(w.description ?? ''); setGenres(w.genres ?? []); setKeywords(w.keywords ?? [])
-        setHomepage(w.homepage_url ?? ''); setTwitter(w.twitter_url ?? ''); setYoutube(w.youtube_url ?? ''); setOfficial(w.official_url ?? '')
+        const all: { label: string; url: string }[] = (Array.isArray(w.links) && w.links.length ? w.links : [
+          w.homepage_url && { label: '홈페이지', url: w.homepage_url },
+          w.twitter_url && { label: 'X (트위터)', url: w.twitter_url },
+          w.youtube_url && { label: '유튜브', url: w.youtube_url },
+          w.official_url && { label: '공식 사이트', url: w.official_url },
+        ].filter(Boolean)) as { label: string; url: string }[]
+        const fx: Record<string, string> = {}
+        const ex: { label: string; url: string }[] = []
+        for (const l of all) { const key = l.label === '트위터' ? 'X (트위터)' : l.label; if (FIXED_LINKS.includes(key)) fx[key] = l.url; else ex.push(l) }
+        setFixedLinks(fx); setExtraLinks(ex)
       }
       setLoadingEdit(false)
     }).catch(() => setLoadingEdit(false))
@@ -158,8 +153,11 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
     setSaving(true); setMsg(null)
     const payload = {
       name, slug, english_name: eng, aliases, ip_type: ipType, original_type: original, status,
-      cover_url: cover, banner_image: banner, accent_color: accent, description: desc,
-      genres, keywords, homepage_url: homepage, twitter_url: twitter, youtube_url: youtube, official_url: official,
+      cover_url: cover, accent_color: accent, description: desc,
+      genres, keywords, links: [
+        ...FIXED_LINKS.filter((k) => (fixedLinks[k] ?? '').trim()).map((k) => ({ label: k, url: fixedLinks[k].trim() })),
+        ...extraLinks.map((l) => ({ label: l.label.trim(), url: l.url.trim() })).filter((l) => l.url),
+      ],
     }
     if (editing && editId) {
       const ok = await updateWork(editId, payload)
@@ -218,17 +216,11 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
                 <button onClick={addAlias} style={{ ...miniBtn, padding: '0 16px' }}>추가</button>
               </div>
               <div style={{ ...chipWrap, marginBottom: aliases.length ? 16 : 6 }}>{aliases.map((a) => <button key={a} onClick={() => setAliases((x) => x.filter((y) => y !== a))} style={{ ...chip(true), display: 'inline-flex', alignItems: 'center', gap: 5 }}>{a}<Svg size={12} color="#fff"><path d="M6 6l12 12M18 6 6 18" /></Svg></button>)}</div>
-              <Label req>IP 타입</Label>
-              <div style={chipWrap}>{IP_TYPES.map((t) => <button key={t} onClick={() => setIpType(t)} style={chip(ipType === t)}>{t}</button>)}</div>
-              <Label>원작 여부</Label>
-              <div style={chipWrap}>{ORIGINAL.map((t) => <button key={t} onClick={() => setOriginal(original === t ? '' : t)} style={chip(original === t)}>{t}</button>)}</div>
-              <Label>연재 상태</Label>
-              <div style={chipWrap}>{STATUS.map((s) => { const on = status === s.v; return <button key={s.v} onClick={() => setStatus(on ? '' : s.v)} style={{ ...chip(on), borderColor: on ? s.c : 'var(--border)', background: on ? s.c : 'var(--surface)' }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: 9999, background: on ? '#fff' : s.c }} />{s.v}</span></button> })}</div>
               {isAdmin ? (
                 <>
                   <Label>대표 이미지 (관리자)</Label>
                   <ImageBox url={cover} uploading={upCover} onPick={() => coverRef.current?.click()} onClear={() => setCover('')} height={150} />
-                  <input ref={coverRef} type="file" accept="image/*" onChange={(e) => onPick(e, 'cover')} style={{ display: 'none' }} />
+                  <input ref={coverRef} type="file" accept="image/*" onChange={(e) => onPick(e)} style={{ display: 'none' }} />
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6, margin: '8px 0 4px', fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
                     <Svg size={14} color="var(--accent)"><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" /></Svg>
                     <span>저작권 보호를 위해 <b style={{ color: 'var(--text)' }}>직접 찍은 사진이나 직접 그린 그림</b>으로 등록해주세요. (공식 포스터·타인 저작물 사용 금지)</span>
@@ -238,9 +230,6 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
                     <input type="color" value={accent} onChange={(e) => setAccent(e.target.value)} style={{ width: 40, height: 30, border: '1px solid var(--border)', borderRadius: 8, background: 'none', cursor: 'pointer' }} />
                     <span style={{ fontSize: 12, color: 'var(--muted)' }}>{accent} · 커버에서 자동 추출됨 (수정 가능)</span>
                   </div>
-                  <Label>배너 이미지 (선택)</Label>
-                  <ImageBox url={banner} uploading={upBanner} onPick={() => bannerRef.current?.click()} onClear={() => setBanner('')} height={110} />
-                  <input ref={bannerRef} type="file" accept="image/*" onChange={(e) => onPick(e, 'banner')} style={{ display: 'none' }} />
                 </>
               ) : (
                 <>
@@ -276,15 +265,27 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
 
           {step === 3 && (
             <>
-              <StepHead title="공식 링크를 연결해요" sub="있으면 넣고, 없어도 등록할 수 있어요." />
-              <Label>공식 홈페이지</Label>
-              <input value={homepage} onChange={(e) => setHomepage(e.target.value)} placeholder="https://" style={inp} />
-              <Label>공식 X (Twitter)</Label>
-              <input value={twitter} onChange={(e) => setTwitter(e.target.value)} placeholder="https://x.com/..." style={inp} />
-              <Label>공식 유튜브</Label>
-              <input value={youtube} onChange={(e) => setYoutube(e.target.value)} placeholder="https://youtube.com/..." style={inp} />
-              <Label>공식 사이트 (기타)</Label>
-              <input value={official} onChange={(e) => setOfficial(e.target.value)} placeholder="https://" style={inp} />
+              <StepHead title="공식 링크를 연결해요" sub="해당하는 것만 넣으면 돼요. 없어도 등록할 수 있어요." />
+              <Label>공식 링크</Label>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+                {FIXED_LINKS.map((k) => (
+                  <div key={k} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                    <span style={{ width: 90, flexShrink: 0, fontSize: 13, fontWeight: 700, color: 'var(--muted)' }}>{k}</span>
+                    <input value={fixedLinks[k] ?? ''} onChange={(e) => setFixedLinks((f) => ({ ...f, [k]: e.target.value }))} placeholder="https://" style={{ ...inp, flex: 1, marginBottom: 0 }} />
+                  </div>
+                ))}
+              </div>
+              <Label>추가 링크 (선택)</Label>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {extraLinks.map((lk, i) => (
+                  <div key={i} style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                    <input value={lk.label} onChange={(e) => setExtraLinks((a) => a.map((x, j) => j === i ? { ...x, label: e.target.value } : x))} placeholder="이름 (예: 네이버 카페)" style={{ ...inp, width: 160, marginBottom: 0 }} />
+                    <input value={lk.url} onChange={(e) => setExtraLinks((a) => a.map((x, j) => j === i ? { ...x, url: e.target.value } : x))} placeholder="https://" style={{ ...inp, flex: 1, marginBottom: 0 }} />
+                    <button onClick={() => setExtraLinks((a) => a.filter((_, j) => j !== i))} aria-label="삭제" style={{ width: 40, height: 40, flexShrink: 0, borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--muted)', cursor: 'pointer', fontFamily: 'inherit' }}><Svg size={14}><path d="M6 6l12 12M18 6 6 18" /></Svg></button>
+                  </div>
+                ))}
+                <button onClick={() => setExtraLinks((a) => [...a, { label: '', url: '' }])} style={{ alignSelf: 'flex-start', padding: '9px 14px', borderRadius: 10, border: '1.5px dashed var(--border)', background: 'transparent', color: 'var(--accent)', fontWeight: 800, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>+ 링크 추가</button>
+              </div>
               <button onClick={save} disabled={saving} style={{ width: '100%', marginTop: 20, padding: 16, borderRadius: 12, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 16, cursor: saving ? 'default' : 'pointer', fontFamily: 'inherit' }}>{saving ? '저장 중...' : (editing ? '변경사항 저장' : '작품 등록하기')}</button>
             </>
           )}
@@ -309,7 +310,6 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
               </div>
               <div style={{ flex: 1, minWidth: 0, color: '#fff' }}>
                 <div style={{ fontSize: 21, fontWeight: 900, marginBottom: 8, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{name || '작품명'}</div>
-                {ipType && <span style={{ fontSize: 12, fontWeight: 800, background: 'rgba(255,255,255,.22)', color: '#fff', padding: '3px 11px', borderRadius: 9999 }}>{ipType}</span>}
                 <div style={{ display: 'flex', gap: 6, marginTop: 12, flexWrap: 'wrap' }}>
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: accent, color: '#fff', fontWeight: 800, fontSize: 12, padding: '7px 13px', borderRadius: 9999, border: '1px solid rgba(255,255,255,.6)' }}><Svg size={13} color="#fff" fill="#fff"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5.5c2 0 3.2 1.2 4 2.3.8-1.1 2-2.3 4-2.3 3.5 0 5 3.5 3.5 7C19 16.65 12 21 12 21z" /></Svg>최애</span>
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: '#fff', color: '#333', fontWeight: 800, fontSize: 12, padding: '7px 13px', borderRadius: 9999 }}><Svg size={13} color="#FFB300" fill="#FFB300"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z" /></Svg>관심</span>
@@ -321,10 +321,6 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
               </div>
             </div>
             <div style={{ padding: 16 }}>
-              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 10 }}>
-                {status && <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--muted)' }}>{status}</span>}
-                {original && <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--muted)' }}>· {original}</span>}
-              </div>
               <div style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.6, marginBottom: 12 }}>{desc || '한 줄 소개가 여기에 표시됩니다.'}</div>
               {(genres.length > 0 || keywords.length > 0) && (
                 <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
