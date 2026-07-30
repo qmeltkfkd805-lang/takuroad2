@@ -26,7 +26,6 @@ import ReviewSection from './ReviewSection'
 import VerifyRequestButton from './VerifyRequestButton'
 import VerifiedBadge from './VerifiedBadge'
 import AppIcon from '@/components/tds/AppIcon'
-import ReportIssueButton from './ReportIssueButton'
 import CheckInButton from './CheckInButton'
 
 interface Props {
@@ -407,11 +406,11 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                         </a>
                       } />
                     )}
-                    <InfoItem label="주차" value={shop.parking === null
-                      ? <span style={{ color: 'var(--muted)' }}>정보 없음</span>
-                      : shop.parking
-                        ? <span>주차 가능{shop.parking_note && <><br /><span style={{ color: 'var(--muted)', fontSize: 13 }}>{shop.parking_note}</span></>}</span>
-                        : '주차 불가'} />
+                    <InfoItem label="주차" value={
+                      shop.parking === null && !shop.parking_note
+                        ? <span style={{ color: 'var(--muted)' }}>정보 없음</span>
+                        : <span>{shop.parking === null ? <span style={{ color: 'var(--muted)' }}>정보 없음</span> : shop.parking ? '주차 가능' : '주차 불가'}{shop.parking_note && <><br /><span style={{ color: 'var(--muted)', fontSize: 13 }}>{shop.parking_note}</span></>}</span>
+                    } />
                   </div>
                   {holidayClosed && (
                     <div style={{ marginTop: 12, padding: '10px 12px', borderRadius: 10, background: 'rgba(239,90,90,.09)', color: '#c0392b', fontSize: 13, fontWeight: 700 }}>
@@ -419,7 +418,6 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                     </div>
                   )}
                   {!shop.is_claimed && <VerifyRequestButton shopId={shop.id} shopName={shop.name} slug={shop.slug} accentColor={color} />}
-                  <ReportIssueButton shopId={shop.id} label="정보 수정 제안하기" variant="dashed" accentColor={color} />
                 </Section>
 
                 {/* 편의시설 / 서비스 */}

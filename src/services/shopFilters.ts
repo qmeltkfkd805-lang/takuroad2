@@ -16,8 +16,7 @@ export interface ShopFilters {
   openNow: boolean               // 영업중만
   excludeClosedToday: boolean    // 오늘 휴무 제외
   hasEvent: boolean              // 이벤트 진행중
-  verified: boolean              // 공식 등록샵
-  claimed: boolean               // 사장님 인증
+  official: boolean              // 공식 인증샵 (정보 확인 or 사장님 인증)
   featured: boolean              // 운영자 추천
   mine: 'favorite' | 'library' | 'saved' | null  // 내 취향
   sort: 'hot' | 'reviews' | 'saves' | 'recent'
@@ -27,7 +26,7 @@ export const EMPTY_FILTERS: ShopFilters = {
   region: null, district: null,
   workSlugs: [], cats: [], goodsSlugs: [],
   openNow: false, excludeClosedToday: false, hasEvent: false,
-  verified: false, claimed: false, featured: false,
+  official: false, featured: false,
   mine: null, sort: 'hot',
 }
 
@@ -47,7 +46,7 @@ export function isDirty(f: ShopFilters): boolean {
   return !!(
     f.region || f.district || f.workSlugs.length || f.cats.length || f.goodsSlugs.length ||
     f.openNow || f.excludeClosedToday || f.hasEvent ||
-    f.verified || f.claimed || f.featured || f.mine || f.sort !== 'hot'
+    f.official || f.featured || f.mine
   )
 }
 
@@ -68,16 +67,16 @@ export function applyShopFilters(
       if (!f.workSlugs.every(w => slugs.has(w))) return false
     }
 
-    // 샵 종류 — 하나라도 맞으면 (OR)
+    // 샵 종류 — 고른 종류를 전부 가진 샵만 (AND)
     if (f.cats.length) {
       const catSet = new Set(s.cats)
-      if (!f.cats.some(c => catSet.has(c))) return false
+      if (!f.cats.every(c => catSet.has(c))) return false
     }
 
-    // 취급 굿즈 — 고른 굿즈를 전부 취급 (AND)
+    // 취급 분야 — 고른 것 중 하나라도 취급하면 (OR)
     if (f.goodsSlugs.length) {
       const gset = new Set(s.goodsSlugs)
-      if (!f.goodsSlugs.every(g => gset.has(g))) return false
+      if (!f.goodsSlugs.some(g => gset.has(g))) return false
     }
 
     // 운영 상태
@@ -90,8 +89,7 @@ export function applyShopFilters(
     }
 
     if (f.hasEvent && !s.hasEvent) return false
-    if (f.verified && !s.is_verified) return false
-    if (f.claimed && !s.is_claimed) return false
+    if (f.official && !(s.is_verified || s.is_claimed)) return false
     if (f.featured && s.featured_order == null) return false
 
     // 내 취향
@@ -128,8 +126,8 @@ export interface ShopPreset {
  * 위치 기반 프리셋은 지도의 몫.
  */
 export const SHOP_PRESETS: ShopPreset[] = [
-  { id: 'figure', label: '피규어 쇼핑', icon: 'bag',   color: '#E8006F', patch: { goodsSlugs: ['figure'], openNow: true } },
-  { id: 'gacha',  label: '가챠 투어',   icon: 'sparkle', color: '#E03535', patch: { goodsSlugs: ['gacha'], openNow: true } },
+  { id: 'figure', label: '피규어 쇼핑', icon: 'bag',   color: '#E8006F', patch: { goodsSlugs: ['figure-new'], openNow: true } },
+  { id: 'gacha',  label: '가챠 투어',   icon: 'sparkle', color: '#E03535', patch: { goodsSlugs: ['gacha-new'], openNow: true } },
   { id: 'cafe',   label: '콜라보 카페', icon: 'party', color: '#EA580C', patch: { cats: ['콜라보카페'], hasEvent: true } },
 ]
 
@@ -144,8 +142,7 @@ export function filtersToParams(f: ShopFilters): URLSearchParams {
   if (f.openNow) p.set('open', '1')
   if (f.excludeClosedToday) p.set('notclosed', '1')
   if (f.hasEvent) p.set('event', '1')
-  if (f.verified) p.set('verified', '1')
-  if (f.claimed) p.set('claimed', '1')
+  if (f.official) p.set('official', '1')
   if (f.featured) p.set('featured', '1')
   if (f.mine) p.set('mine', f.mine)
   if (f.sort !== 'hot') p.set('sort', f.sort)
@@ -184,8 +181,7 @@ export function paramsToFilters(p: URLSearchParams): ShopFilters {
     openNow: p.get('open') === '1',
     excludeClosedToday: p.get('notclosed') === '1',
     hasEvent: p.get('event') === '1',
-    verified: p.get('verified') === '1',
-    claimed: p.get('claimed') === '1',
+    official: p.get('official') === '1' || p.get('verified') === '1' || p.get('claimed') === '1',
     featured: p.get('featured') === '1',
     mine: (mine === 'favorite' || mine === 'library' || mine === 'saved') ? mine as any : null,
     sort: (sort === 'reviews' || sort === 'saves' || sort === 'recent') ? sort as any : 'hot',

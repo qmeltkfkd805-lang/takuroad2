@@ -8,7 +8,9 @@
   { name: '팝업스토어',  slug: 'popup',       icon: 'popup',      color: '#0099cc', bgColor: 'rgba(0,153,204,.12)' },
   { name: '게임샵',      slug: 'game',        icon: 'game',       color: '#7c3aed', bgColor: 'rgba(124,58,237,.12)' },
   { name: '온라인숍',    slug: 'online',      icon: 'onlineshop', color: '#16a34a', bgColor: 'rgba(22,163,74,.12)' },
-  { name: '가챠/쿠지',   slug: 'kuji',        icon: 'gacha',      color: '#e03535', bgColor: 'rgba(224,53,53,.12)' },
+  { name: '가챠',        slug: 'gacha',       icon: 'gacha',      color: '#e03535', bgColor: 'rgba(224,53,53,.12)' },
+  { name: '쿠지',        slug: 'kuji',        icon: 'gacha',      color: '#f59e0b', bgColor: 'rgba(245,158,11,.12)' },
+  { name: '인형뽑기',    slug: 'claw',        icon: 'gacha',      color: '#c026d3', bgColor: 'rgba(192,38,211,.12)' },
   { name: '전시',        slug: 'exhibition',  icon: 'exhibition', color: '#4f46e5', bgColor: 'rgba(79,70,229,.12)' },
 ] as const
 

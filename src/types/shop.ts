@@ -34,7 +34,7 @@ export interface Shop {
   eventTitle: string | null
   eventCover: string | null
 
-  // shop_categories JOIN → 첫 번째가 대표 카테고리 (마커 색상용)
+  // 카테고리는 shops.cats(text[])에 직접 저장. 첫 번째가 대표(마커 색상용).
   cat: string
   cats: string[]
 

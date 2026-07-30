@@ -5,9 +5,9 @@ import { resolveEventCover } from '@/lib/event/eventCover'
 import { Shop } from '@/types/shop'
 
 export function toShop(raw: any): Shop {
-  const cats = (raw.shop_categories ?? [])
-    .map((sc: any) => sc.categories?.name)
-    .filter(Boolean) as string[]
+  // 카테고리는 shops.cats(text[]) 컬럼에 직접 저장 — categories/shop_categories 테이블 의존 제거.
+  // 표시용 색/아이콘은 코드 상수(CATEGORY_NAME_MAP)에서 이름으로 조회한다.
+  const cats = (raw.cats ?? []) as string[]
 
   const images = (raw.shop_images ?? [])
     .sort((a: any, b: any) => {
@@ -90,7 +90,7 @@ export async function getShops(): Promise<Shop[]> {
       added_by, owner_id,
       created_at, updated_at,
       shop_images ( image_url, is_cover, sort_order ),
-      shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+      cats
     `)
     .eq('status', 'active')
     .order('created_at', { ascending: false })
@@ -123,7 +123,7 @@ export async function getShopBySlug(slug: string): Promise<Shop | null> {
       added_by, owner_id,
       created_at, updated_at,
       shop_images ( image_url, is_cover, sort_order ),
-      shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+      cats
     `)
     .eq('slug', slug)
     .eq('status', 'active')
@@ -146,7 +146,7 @@ export async function searchShops(query: string): Promise<Shop[]> {
       id, slug, name, addr, lat, lng,
       rating_avg, rating_count, status,
       shop_images ( image_url, is_cover, sort_order ),
-      shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+      cats
     `)
     .in('status', ['active', 'temporary_closed', 'closed'])
 
@@ -224,6 +224,7 @@ export async function createShop(
       place_id:     data.place_id || null,
       floor:        data.floor || null,
       unit:         data.unit || null,
+      cats:         data.cats ?? [],
       added_by:     userId,
       owner_id:     userId,
       status:       'active',
@@ -232,19 +233,6 @@ export async function createShop(
     .single()
 
   if (error || !shop) return null
-
-  if (data.cats.length > 0) {
-    const { data: cats } = await supabase
-      .from('categories')
-      .select('id, name')
-      .in('name', data.cats)
-
-    if (cats && cats.length > 0) {
-      await supabase
-        .from('shop_categories')
-        .insert(cats.map((c: any) => ({ shop_id: shop.id, category_id: c.id })) as any)
-    }
-  }
 
   // 성장 Activity — 샵 등록.
   // 카운터는 나중에 '아직 살아있는(active) 샵'만 세므로, 쓰레기 샵을 지우면 카운트도 빠진다
@@ -304,6 +292,7 @@ export async function updateShop(
       place_id:     data.place_id ?? null,
       floor:        data.floor ?? null,
       unit:         data.unit ?? null,
+      ...(data.cats !== undefined ? { cats: data.cats } : {}),
       info_last_confirmed_at: new Date().toISOString(),
       info_confirmed_by_type: isAdmin ? 'admin' : 'owner',
     } as any)
@@ -334,24 +323,6 @@ export async function updateShop(
           oldValue: oldVal, newValue: newVal,
           changeSource: 'owner', changedBy: userId, reason: 'owner_update',
         })
-      }
-    }
-  }
-
-  // cats를 넘긴 경우에만 카테고리 갱신 (부분 업데이트 시 카테고리 보존)
-  if (data.cats !== undefined) {
-    await supabase.from('shop_categories').delete().eq('shop_id', shopId)
-
-    if (data.cats.length > 0) {
-      const { data: cats } = await supabase
-        .from('categories')
-        .select('id, name')
-        .in('name', data.cats)
-
-      if (cats && cats.length > 0) {
-        await supabase
-          .from('shop_categories')
-          .insert(cats.map((c: any) => ({ shop_id: shopId, category_id: c.id })) as any)
       }
     }
   }
@@ -421,7 +392,7 @@ export async function getShopsByTag(tagSlug: string): Promise<Shop[]> {
       temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
         added_by, owner_id, created_at, updated_at,
         shop_images ( image_url, is_cover, sort_order ),
-        shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+        cats
       )
     `)
     .eq('tags.slug', tagSlug)
@@ -521,7 +492,7 @@ export async function getPendingShops(): Promise<Shop[]> {
       temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
       added_by, owner_id, created_at, updated_at,
       shop_images ( image_url, is_cover, sort_order ),
-      shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+      cats
     `)
     .eq('status', 'pending')
     .order('created_at', { ascending: false })
@@ -624,7 +595,7 @@ export async function getMyShops(userId: string): Promise<Shop[]> {
       temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
       added_by, owner_id, created_at, updated_at,
       shop_images ( image_url, is_cover, sort_order ),
-      shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+      cats
     `)
     .eq('added_by', userId)
     .neq('status', 'deleted')
@@ -653,7 +624,7 @@ export async function getSavedShops(userId: string): Promise<Shop[]> {
       temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
         added_by, owner_id, created_at, updated_at,
         shop_images ( image_url, is_cover, sort_order ),
-        shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+        cats
       )
     `)
     .eq('user_id', userId)
@@ -685,7 +656,7 @@ export async function getVisitedShops(userId: string): Promise<Shop[]> {
       temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
         added_by, owner_id, created_at, updated_at,
         shop_images ( image_url, is_cover, sort_order ),
-        shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+        cats
       )
     `)
     .eq('user_id', userId)

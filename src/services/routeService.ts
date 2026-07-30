@@ -118,7 +118,7 @@ export async function getRouteByShareToken(token: string) {
         id, sort_order, distance_from_prev_m, duration_from_prev_min,
         shops ( id, slug, name, addr, lat, lng,
           shop_images ( image_url, is_cover, sort_order ),
-          shop_categories ( categories ( name, color, icon ) )
+          cats
         )
       )
     `)

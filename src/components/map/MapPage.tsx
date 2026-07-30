@@ -1,7 +1,7 @@
 'use client'
 import AppIcon from '@/components/tds/AppIcon'
 
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useShops } from '@/hooks/useShops'
 import { useCurrentLocation } from '@/hooks/useCurrentLocation'
@@ -18,11 +18,15 @@ import styles from './MapPage.module.css'
 import fab from './MapFab.module.css'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import MapBottomSheet from './MapBottomSheet'
-import ShopFloatingCard from './ShopFloatingCard'
+import MapPinModal from './MapPinModal'
+import { getOngoingMapEvents, MapEvent } from '@/services/mapEventService'
 
 // Place 소속 샵은 place 좌표로 접어서 표시한다 (저장 좌표 lat/lng 은 안 건드림)
 const dispLat = (s: any) => s.displayLat ?? s.lat
 const dispLng = (s: any) => s.displayLng ?? s.lng
+
+// 이벤트 type → 샵 카테고리 이름 (카테고리 필터 매칭용)
+const EV_CAT_NAME: Record<string, string> = { popup: '팝업스토어', collab_cafe: '콜라보카페', exhibition: '전시', official_event: '행사' }
 
 
 // 샵들이 퍼져 있는 정도에 맞춰 카카오 지도 레벨을 고름 (작을수록 확대)
@@ -53,8 +57,29 @@ export default function MapPage() {
   const mapRef = useRef<KakaoMapRef>(null)
   const [locToast, setLocToast] = useState(false)
   const [sheetState, setSheetState] = useState<'closed' | 'peek' | 'expanded'>('peek')
+  const [mapEvents, setMapEvents] = useState<MapEvent[]>([])
+  const [selectedEvent, setSelectedEvent] = useState<MapEvent | null>(null)
+
+  // 선택한 카테고리에 맞는 이벤트만 (전체면 모두, 팝업/콜라보/전시/행사면 해당 타입만)
+  const filteredEvents = useMemo(() => {
+    if (!selectedCat || selectedCat === '전체') return mapEvents
+    return mapEvents.filter(ev => !!ev.type && EV_CAT_NAME[ev.type] === selectedCat)
+  }, [mapEvents, selectedCat])
+
+  // 진행중 이벤트를 지도에 핀으로 (전시 등 — 샵과 별개로 자체 좌표로 표시)
+  useEffect(() => {
+    let alive = true
+    getOngoingMapEvents().then(evs => { if (alive) setMapEvents(evs) })
+    return () => { alive = false }
+  }, [])
+
+  const handleSelectEvent = useCallback((ev: MapEvent) => {
+    setSelectedShop(null)
+    setSelectedEvent(ev)
+  }, [setSelectedShop])
 
   const handleSelectShop = useCallback((shop: Shop) => {
+    setSelectedEvent(null)
     setSelectedShop(shop)
 
     setGroupShops(null)
@@ -192,9 +217,11 @@ export default function MapPage() {
           <KakaoMap
             ref={mapRef}
             shops={mapShops}
+            events={filteredEvents}
             activeShopId={selectedShop?.id ?? null}
             myLocation={location}
             onSelectShop={handleSelectShop}
+            onSelectEvent={handleSelectEvent}
             onMapClick={handleMapClick}
             onSelectGroup={handleSelectGroup}
           />
@@ -258,12 +285,16 @@ export default function MapPage() {
           </div>
         )}
         {!selectedShop && (
-          <MapBottomSheet shops={filtered} onSelectShop={handleSelectShop} onStateChange={setSheetState} onListClick={goToFilteredList} />
+          <MapBottomSheet shops={filtered} events={filteredEvents} onSelectShop={handleSelectShop} onSelectEvent={handleSelectEvent} onStateChange={setSheetState} onListClick={goToFilteredList} />
         )}
 
-        {/* 샵 상세 — 지도 위 작은 플로팅 카드 */}
-        {selectedShop && (
-          <ShopFloatingCard shop={{ ...selectedShop, isSaved: isSaved(selectedShop.id) } as Shop} onClose={() => setSelectedShop(null)} onToggleSave={(sh) => { if (!user) { router.push(ROUTES.login); return } toggleSave(sh.id) }} />
+        {/* 핀 클릭 — 샵/이벤트 요약 모달 (전체보기 → 상세) */}
+        {(selectedShop || selectedEvent) && (
+          <MapPinModal
+            shop={selectedShop ? ({ ...selectedShop, isSaved: isSaved(selectedShop.id) } as Shop) : null}
+            event={selectedEvent}
+            onClose={() => { setSelectedShop(null); setSelectedEvent(null) }}
+          />
         )}
 
         {/* 같은 위치 샵 목록 바텀시트 */}

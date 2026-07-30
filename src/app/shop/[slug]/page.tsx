@@ -27,7 +27,7 @@ async function getShopBySlugServer(slug: string) {
       added_by, owner_id,
       created_at, updated_at,
       shop_images ( image_url, is_cover, sort_order ),
-      shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+      cats
     `)
     .eq('slug', slug)
     .in('status', ['active', 'temporary_closed', 'closed'])

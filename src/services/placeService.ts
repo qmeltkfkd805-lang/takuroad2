@@ -80,7 +80,7 @@ export async function getPlaceBySlug(
       temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
         added_by, owner_id, created_at, updated_at,
         shop_images ( image_url, is_cover, sort_order ),
-        shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+        cats
       `)
       .eq('place_id', place.id)
       .eq('status', 'active'),

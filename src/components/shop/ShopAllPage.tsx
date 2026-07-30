@@ -13,9 +13,13 @@ import {
   ShopFilters, EMPTY_FILTERS, applyShopFilters, isDirty,
   paramsToFilters, filtersToParams, SHOP_PRESETS, UserContext,
 } from '@/services/shopFilters'
-import ShopHomeCard from './ShopHomeCard'
+import ShopHomeCard, { EventHomeCard } from './ShopHomeCard'
 import ShopFilterSidebar from './ShopFilterSidebar'
+import { getOngoingMapEvents, MapEvent } from '@/services/mapEventService'
 import styles from './ShopAllPage.module.css'
+
+// 이벤트 type → 샵 종류 이름 (카테고리 필터 매칭용)
+const EV_CAT_NAME: Record<string, string> = { popup: '팝업스토어', collab_cafe: '콜라보카페', exhibition: '전시', official_event: '행사' }
 
 export default function ShopAllPage() {
   const router = useRouter()
@@ -28,6 +32,7 @@ export default function ShopAllPage() {
   const [userCtx, setUserCtx] = useState<UserContext>({ favoriteTagIds: new Set(), libraryTagIds: new Set(), savedShopIds: new Set() })
   const [loading, setLoading] = useState(true)
   const [filterOpen, setFilterOpen] = useState(params?.get('filter') === '1')
+  const [events, setEvents] = useState<MapEvent[]>([])
 
   // URL → 필터
   const [filters, setFilters] = useState<ShopFilters>(() => paramsToFilters(new URLSearchParams(params?.toString() ?? '')))
@@ -37,6 +42,7 @@ export default function ShopAllPage() {
       .then(([shops, w, g]) => { setItems(shops); setWorks(w); setGoodsTypes(g) })
       .catch(() => {})
       .finally(() => setLoading(false))
+    getOngoingMapEvents().then(setEvents).catch(() => {})
   }, [])
 
   useEffect(() => {
@@ -74,12 +80,28 @@ export default function ShopAllPage() {
     [items, filters, userCtx],
   )
 
+  // 이벤트도 지도처럼 노출. 샵 전용 필터(굿즈·작품·내취향·인증·추천·영업)가 걸리면 이벤트는 제외,
+  // 카테고리 필터는 이벤트 타입에 매칭(전시→exhibition 등).
+  const eventRows = useMemo(() => {
+    // 이벤트엔 없는 샵 전용 필터(굿즈·작품·내취향·인증·추천·영업)가 걸리면 제외.
+    // 카테고리(전시/팝업 등)와 지역은 이벤트에도 매칭한다.
+    if (filters.goodsSlugs.length || filters.workSlugs.length || filters.mine ||
+        filters.official || filters.featured || filters.openNow || filters.excludeClosedToday) return []
+    return events.filter(ev => {
+      if (!ev.type || !EV_CAT_NAME[ev.type]) return false
+      if (filters.cats.length && !filters.cats.includes(EV_CAT_NAME[ev.type])) return false
+      if (filters.region && ev.region !== filters.region) return false
+      if (filters.district && ev.district !== filters.district) return false
+      return true
+    })
+  }, [events, filters])
+
   const dirty = isDirty(filters)
   const activeCount =
     filters.workSlugs.length + filters.cats.length + filters.goodsSlugs.length +
     (filters.region ? 1 : 0) + (filters.district ? 1 : 0) +
     [filters.openNow, filters.excludeClosedToday, filters.hasEvent,
-     filters.verified, filters.claimed, filters.featured, !!filters.mine].filter(Boolean).length
+     filters.official, filters.featured, !!filters.mine].filter(Boolean).length
 
   return (
     <div className={styles.page}>
@@ -107,7 +129,7 @@ export default function ShopAllPage() {
           <EventIcon name="tag" size={15} />
           필터{dirty ? ` · ${activeCount}` : ''}
         </button>
-        <span className={styles.count}>{loading ? '불러오는 중…' : `${rows.length}개 샵`}</span>
+        <span className={styles.count}>{loading ? '불러오는 중…' : `${rows.length}개 샵${eventRows.length ? ` · 이벤트 ${eventRows.length}` : ''}`}</span>
         <select
           className={styles.sort}
           value={filters.sort}
@@ -151,13 +173,16 @@ export default function ShopAllPage() {
 
       {loading ? (
         <div className={styles.skeleton} />
-      ) : rows.length === 0 ? (
+      ) : rows.length === 0 && eventRows.length === 0 ? (
         <div className={styles.empty}>
           <p>조건에 맞는 샵이 없어요.</p>
           {dirty && <button onClick={() => update(EMPTY_FILTERS)}>필터 초기화</button>}
         </div>
       ) : (
         <div className={styles.grid}>
+          {eventRows.map(ev => (
+            <EventHomeCard key={`e-${ev.id}`} event={ev} onClick={() => router.push(`/event/${ev.id}`)} />
+          ))}
           {rows.map(s => <ShopHomeCard key={s.id} shop={s} />)}
         </div>
       )}

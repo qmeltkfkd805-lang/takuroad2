@@ -51,7 +51,7 @@ const SHOP_SELECT = `
   added_by, owner_id,
   created_at, updated_at,
   shop_images ( image_url, is_cover, sort_order ),
-  shop_categories ( categories ( name, slug, color, icon, bg_color ) )
+  cats
 `
 
 /** 샵 + 취급 작품 + 진행 중 이벤트를 한 번에 */
@@ -59,10 +59,11 @@ export async function getShopHomeItems(): Promise<ShopHomeItem[]> {
   const supabase = createClient()
   const today = new Date().toISOString().slice(0, 10)
 
-  const [shopRes, tagRes, goodsRes, evRes] = await Promise.all([
+  const [shopRes, tagRes, goodsRes, goodsCatRes, evRes] = await Promise.all([
     supabase.from('shops').select(SHOP_SELECT).eq('status', 'active'),
     supabase.from('shop_tags').select('shop_id, tags ( id, name, slug )'),
     supabase.from('shop_products').select('shop_id, goods_types ( slug )'),
+    supabase.from('shop_goods_categories').select('shop_id, goods_types ( slug )'),
     supabase
       .from('events')
       .select('shop_id, title, end_date, cover_url, tag_id')
@@ -88,15 +89,19 @@ export async function getShopHomeItems(): Promise<ShopHomeItem[]> {
     workMap.set(r.shop_id, list)
   }
 
-  // 샵 → 취급 굿즈 slug 집합
+  // 샵 → 취급 굿즈 slug 집합 (개별 상품 + 취급 분야 둘 다에서 모음)
   const goodsMap = new Map<string, Set<string>>()
-  for (const r of (goodsRes.data ?? []) as any[]) {
-    const slug = r.goods_types?.slug
-    if (!slug) continue
-    const set = goodsMap.get(r.shop_id) ?? new Set<string>()
-    set.add(slug)
-    goodsMap.set(r.shop_id, set)
+  const addGoods = (rows: any[]) => {
+    for (const r of rows) {
+      const slug = r.goods_types?.slug
+      if (!slug) continue
+      const set = goodsMap.get(r.shop_id) ?? new Set<string>()
+      set.add(slug)
+      goodsMap.set(r.shop_id, set)
+    }
   }
+  addGoods((goodsRes.data ?? []) as any[])
+  addGoods((goodsCatRes.data ?? []) as any[])
 
   // 이벤트 포스터가 없으면 작품 커버로 대체 — tags.cover_url을 미리 모은다
   const evTagIds = [...new Set((evRes.data ?? []).map((e: any) => e.tag_id).filter(Boolean))]

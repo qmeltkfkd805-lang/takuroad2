@@ -58,9 +58,9 @@ export default function ShopFilterSidebar({
         </div>
       </Group>
 
-      {/* 취급 굿즈 */}
+      {/* 취급 분야 */}
       {goodsTypes.length > 0 && (
-        <Group label="취급 굿즈" icon="bag" badge={filters.goodsSlugs.length}>
+        <Group label="취급 분야" icon="bag" badge={filters.goodsSlugs.length}>
           <div className={styles.chips}>
             {goodsTypes.map(g => (
               <button
@@ -129,9 +129,8 @@ export default function ShopFilterSidebar({
       )}
 
       {/* 인증 */}
-      <Group label="인증" icon="starFill" defaultOpen={false} badge={[filters.verified, filters.claimed, filters.featured].filter(Boolean).length}>
-        <Check label="공식 등록샵" on={filters.verified} onClick={() => set({ verified: !filters.verified })} />
-        <Check label="사장님 인증" on={filters.claimed} onClick={() => set({ claimed: !filters.claimed })} />
+      <Group label="인증" icon="starFill" defaultOpen={false} badge={[filters.official, filters.featured].filter(Boolean).length}>
+        <Check label="공식 인증샵" on={filters.official} onClick={() => set({ official: !filters.official })} />
         <Check label="운영자 추천" on={filters.featured} onClick={() => set({ featured: !filters.featured })} />
       </Group>
     </div>

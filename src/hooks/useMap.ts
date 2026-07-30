@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, RefObject } from 'react'
 import { Shop } from '@/types/shop'
+import { MapEvent } from '@/services/mapEventService'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import { loadMaps, createMap, createOverlay, MapInstance, OverlayHandle } from '@/lib/map/provider'
 
@@ -17,6 +18,7 @@ interface MarkerRef {
 export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
   const mapRef = useRef<MapInstance | null>(null)
   const markersRef = useRef<MarkerRef[]>([])
+  const eventMarkersRef = useRef<OverlayHandle[]>([])
   const myLocRef = useRef<OverlayHandle | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
 
@@ -91,6 +93,33 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     markersRef.current = []
   }, [])
 
+  // 이벤트 마커 — 샵 물방울 핀과 구분되게 '원형 포스터/별 배지'로.
+  const clearEventMarkers = useCallback(() => {
+    eventMarkersRef.current.forEach(h => h.remove())
+    eventMarkersRef.current = []
+  }, [])
+
+  const renderEventMarkers = useCallback((
+    events: MapEvent[],
+    onClick: (ev: MapEvent) => void
+  ) => {
+    clearEventMarkers()
+    if (!mapRef.current) return
+    events.forEach(ev => {
+      if (!ev.lat || !ev.lng) return
+      const el = document.createElement('div')
+      el.style.cssText = 'cursor:pointer;width:34px;height:34px'
+      el.innerHTML = ev.coverUrl
+        ? `<div style="width:34px;height:34px;border-radius:50%;border:2.5px solid #e8006f;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.35);background:#fff"><img src="${ev.coverUrl}" style="width:100%;height:100%;object-fit:cover" /></div>`
+        : `<div style="width:30px;height:30px;border-radius:50%;border:2.5px solid #fff;background:#e8006f;box-shadow:0 1px 3px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.7 1.4 6.8L12 17.8 5.9 21.2l1.4-6.8L2.2 9.7l6.9-.7z"/></svg></div>`
+      el.addEventListener('click', () => onClick(ev))
+      const handle = createOverlay(mapRef.current!, {
+        lat: ev.lat, lng: ev.lng, content: el, yAnchor: 0.5, xAnchor: 0.5,
+      })
+      eventMarkersRef.current.push(handle)
+    })
+  }, [clearEventMarkers])
+
   // 현재 위치 — 파란 점 + 퍼지는 원
   const setMyLocation = useCallback((lat: number, lng: number) => {
     if (!mapRef.current) return
@@ -159,5 +188,5 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     mapRef.current.setCenter(c.lat, c.lng)
   }, [])
 
-  return { isLoaded, moveCenter, onMapClick, renderMarkers, clearMarkers, setMyLocation, relayout }
+  return { isLoaded, moveCenter, onMapClick, renderMarkers, renderEventMarkers, clearMarkers, setMyLocation, relayout }
 }

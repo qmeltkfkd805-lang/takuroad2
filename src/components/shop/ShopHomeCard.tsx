@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation'
 import { ROUTES } from '@/lib/constants/routes'
 import { shopRegion, shopDistrict } from '@/lib/utils/region'
 import { ShopHomeItem } from '@/services/shopHomeService'
+import { MapEvent, MAP_EVENT_TYPE_LABEL } from '@/services/mapEventService'
+import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import styles from './ShopHomeCard.module.css'
 
 /** 2100 → 2.1k. 찜 수가 네 자리를 넘으면 카드가 흔들린다 */
@@ -52,8 +54,47 @@ export default function ShopHomeCard({ shop, rank }: { shop: ShopHomeItem; rank?
         </div>
 
         <div className={styles.chips}>
-          {shop.cat && <span className={styles.chip}>{shop.cat}</span>}
-          {shop.works[0] && <span className={styles.chipWork}>{shop.works[0].name}</span>}
+          {shop.cats.map(c => {
+            const ci = CATEGORY_NAME_MAP[c]
+            return (
+              <span key={c} className={styles.chip}
+                style={ci ? { background: ci.bgColor, color: ci.color, borderColor: `${ci.color}33` } : undefined}>
+                {c}
+              </span>
+            )
+          })}
+        </div>
+      </div>
+    </article>
+  )
+}
+
+/* ───────── 이벤트 카드 : 샵 카드와 동일한 크기·크롭 (4:3 cover) ───────── */
+
+const evFmtDate = (d: string) => { const p = d.split('-'); return p.length === 3 ? `${p[0].slice(2)}.${p[1]}.${p[2]}` : d }
+const evPeriod = (s: string | null, e: string | null) =>
+  s && e ? `${evFmtDate(s)} ~ ${evFmtDate(e)}` : e ? `~ ${evFmtDate(e)}` : s ? `${evFmtDate(s)} ~` : null
+
+const EV_CHIP_CAT: Record<string, string> = { popup: '팝업스토어', collab_cafe: '콜라보카페', exhibition: '전시', official_event: '행사' }
+
+export function EventHomeCard({ event, onClick }: { event: MapEvent; onClick: () => void }) {
+  const label = event.type ? (MAP_EVENT_TYPE_LABEL[event.type] ?? '이벤트') : '이벤트'
+  const evCi = event.type ? CATEGORY_NAME_MAP[EV_CHIP_CAT[event.type]] : undefined
+  const period = evPeriod(event.startDate, event.endDate)
+  return (
+    <article className={styles.card} onClick={onClick}>
+      <div className={styles.thumb}>
+        {event.coverUrl ? <img src={event.coverUrl} alt="" /> : <div className={styles.noImage}>이벤트</div>}
+      </div>
+      <div className={styles.body}>
+        <h3 className={styles.name} title={event.title}>{event.title}</h3>
+        {period && <p className={styles.place}>🗓 {period}</p>}
+        <p className={styles.place}>{event.address ?? '장소 미정'}</p>
+        <div className={styles.chips}>
+          <span className={styles.chip}
+            style={evCi ? { background: evCi.bgColor, color: evCi.color, borderColor: `${evCi.color}33` } : undefined}>
+            {label}
+          </span>
         </div>
       </div>
     </article>

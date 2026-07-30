@@ -332,10 +332,10 @@ async function getCategoryVisitProgress(userId: string, category: string, count:
   const supabase = client ?? createClient()
   const { data } = await supabase
     .from('check_ins')
-    .select('shop_id, shops!inner(shop_categories!inner(categories!inner(name)))')
+    .select('shop_id, shops!inner(cats)')
     .eq('user_id', userId)
   const matching = (data ?? []).filter((d: any) =>
-    d.shops?.shop_categories?.some((sc: any) => sc.categories?.name === category)
+    (d.shops?.cats ?? []).includes(category)
   )
   const visited = new Set(matching.map((d: any) => d.shop_id)).size
   return { visited, total: count, percent: Math.min(100, Math.round((visited / count) * 100)) }

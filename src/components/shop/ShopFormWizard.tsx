@@ -366,7 +366,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
               </div>
             </Field>
 
-            <Field label="영업시간" hint="요일별로 입력. 비우면 휴무로 표시돼요">
+            <Field label="영업시간" hint={<>24시 표기로 입력해 주세요. (예: 오후 6시 → 18, 자정 마감 → 24)<br />종료가 시작보다 빠르면 다음날로 계산돼요.<br />비우면 휴무로 표시돼요.</>}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 12, padding: 12, background: 'var(--surface2)', borderRadius: 10 }}>
                 {/* 시간 + 적용 */}
                 <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
@@ -605,11 +605,11 @@ function StepHead({ icon, title, sub }: { icon: React.ReactNode; title: string; 
   )
 }
 
-function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
+function Field({ label, hint, children }: { label: string; hint?: React.ReactNode; children: React.ReactNode }) {
   return (
     <div style={{ marginBottom: 22 }}>
       <div style={{ fontSize: 13, fontWeight: 800, marginBottom: 6 }}>{label}</div>
-      {hint && <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 8 }}>{hint}</p>}
+      {hint && <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 8, lineHeight: 1.6 }}>{hint}</p>}
       {children}
     </div>
   )
@@ -662,46 +662,39 @@ const iconBtn: React.CSSProperties = {
   color: 'var(--text)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
 }
 
-/* 오전/오후를 '글자 클릭'으로 토글하는 시간 입력.
-   네이티브 <input type="time">은 오전/오후를 시계 피커로만 바꿀 수 있어 불편 → 커스텀. */
+/* 24시간제 시간 입력 (0~24시). 오전/오후 없이 숫자로 직접 입력.
+   종료가 시작보다 이르면(예: 09:00~01:00) 자동으로 다음날로 계산된다(date.ts). */
 function TimeField({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const [hhStr, mmStr] = (value || '00:00').split(':')
   const hh = Number(hhStr) || 0
   const mm = Number(mmStr) || 0
-  const isPM = hh >= 12
-  const h12 = hh % 12 === 0 ? 12 : hh % 12
 
-  // 타이핑 중 표시용 로컬 상태. 밖에서 값이 바뀌면(오전/오후 토글·일괄적용) 동기화하되,
+  // 타이핑 중 표시용 로컬 상태. 밖에서 값이 바뀌면(일괄적용 등) 동기화하되,
   // 입력 중(focused)엔 건드리지 않아 커서/자릿수가 튀지 않게 한다.
   const [focused, setFocused] = useState(false)
-  const [hText, setHText] = useState(String(h12))
+  const [hText, setHText] = useState(String(hh).padStart(2, '0'))
   const [mText, setMText] = useState(String(mm).padStart(2, '0'))
   useEffect(() => {
-    if (!focused) { setHText(String(h12)); setMText(String(mm).padStart(2, '0')) }
+    if (!focused) { setHText(String(hh).padStart(2, '0')); setMText(String(mm).padStart(2, '0')) }
   }, [value, focused])   // eslint-disable-line react-hooks/exhaustive-deps
 
-  const commit = (h12v: number, mmv: number, pm: boolean) => {
-    const ch = Math.min(12, Math.max(1, h12v || 12))
-    const cm = Math.min(59, Math.max(0, mmv || 0))
-    const base = (ch % 12) + (pm ? 12 : 0)
-    onChange(`${String(base).padStart(2, '0')}:${String(cm).padStart(2, '0')}`)
+  const commit = (hv: number, mv: number) => {
+    const ch = Math.min(24, Math.max(0, hv || 0))
+    const cm = ch === 24 ? 0 : Math.min(59, Math.max(0, mv || 0))   // 24시는 분 0 고정
+    onChange(`${String(ch).padStart(2, '0')}:${String(cm).padStart(2, '0')}`)
   }
-  const onHour = (raw: string) => { const d = raw.replace(/\D/g, '').slice(0, 2); setHText(d); if (d) commit(Number(d), mm, isPM) }
-  const onMin = (raw: string) => { const d = raw.replace(/\D/g, '').slice(0, 2); setMText(d); if (d) commit(h12, Number(d), isPM) }
+  const onHour = (raw: string) => { const d = raw.replace(/\D/g, '').slice(0, 2); setHText(d); if (d !== '') commit(Number(d), mm) }
+  const onMin = (raw: string) => { const d = raw.replace(/\D/g, '').slice(0, 2); setMText(d); if (d !== '') commit(hh, Number(d)) }
 
-  const numInp: React.CSSProperties = { ...inp, width: 40, padding: '6px 4px', fontSize: 13, textAlign: 'center', background: 'var(--surface)' }
+  const numInp: React.CSSProperties = { ...inp, width: 44, padding: '6px 4px', fontSize: 13, textAlign: 'center', background: 'var(--surface)' }
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-      <button type="button" onClick={() => commit(h12, mm, !isPM)}
-        style={{ padding: '6px 9px', borderRadius: 6, border: '1.5px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 800, fontSize: 12.5, cursor: 'pointer', fontFamily: 'inherit' }}>
-        {isPM ? '오후' : '오전'}
-      </button>
-      <input inputMode="numeric" value={hText} aria-label="시"
+      <input inputMode="numeric" value={hText} aria-label="시" maxLength={2}
         onFocus={e => { setFocused(true); e.target.select() }}
-        onBlur={() => { setFocused(false); setHText(String(h12)) }}
+        onBlur={() => { setFocused(false); setHText(String(hh).padStart(2, '0')) }}
         onChange={e => onHour(e.target.value)} style={numInp} />
       <span style={{ color: 'var(--muted)' }}>:</span>
-      <input inputMode="numeric" value={mText} aria-label="분"
+      <input inputMode="numeric" value={mText} aria-label="분" maxLength={2}
         onFocus={e => { setFocused(true); e.target.select() }}
         onBlur={() => { setFocused(false); setMText(String(mm).padStart(2, '0')) }}
         onChange={e => onMin(e.target.value)} style={numInp} />

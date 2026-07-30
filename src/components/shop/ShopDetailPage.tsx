@@ -10,7 +10,6 @@ import { useSaved } from '@/hooks/useSaved'
 import VerifyRequestButton from './VerifyRequestButton'
 import CheckInButton from './CheckInButton'
 import ReviewSection from './ReviewSection'
-import ReportIssueButton from './ReportIssueButton'
 import ShopEventList from './ShopEventList'
 import ConfirmInfoButton from './ConfirmInfoButton'
 import ShopAmenityBadges from './ShopAmenityBadges'
@@ -96,7 +95,7 @@ export default function ShopDetailPage({ shop }: Props) {
                 <span style={{ color: shop.parking ? 'var(--text)' : 'var(--muted)' }}>
                   {shop.parking ? '주차 가능' : '주차 불가'}
                 </span>
-                {shop.parking && shop.parking_note && (
+                {shop.parking_note && (
                   <span style={{ color: 'var(--muted)', fontWeight: 400 }}>· {shop.parking_note}</span>
                 )}
               </span>
@@ -249,10 +248,6 @@ export default function ShopDetailPage({ shop }: Props) {
 
         <ReviewSection shopId={shop.id} shopName={shop.name} accentColor={color} />
 
-        {/* === 정보 신고 === */}
-        <div style={{ marginTop: '24px', textAlign: 'center' }}>
-          <ReportIssueButton shopId={shop.id} />
-        </div>
 
       </div>
     </div>

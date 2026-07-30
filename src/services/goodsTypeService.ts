@@ -11,7 +11,7 @@ export interface GoodsType {
 
 export async function getAllGoodsTypes(): Promise<GoodsType[]> {
   const supabase = createClient()
-  const { data } = await supabase.from('goods_types').select('*').order('sort_order')
+  const { data } = await supabase.from('goods_types').select('*').eq('is_active', true).order('sort_order')
   return (data ?? []).map((d: any) => ({
     id: d.id,
     name: d.name,

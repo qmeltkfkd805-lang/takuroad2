@@ -2,13 +2,16 @@
 
 import { useRef, useEffect, forwardRef, useImperativeHandle } from 'react'
 import { Shop } from '@/types/shop'
+import { MapEvent } from '@/services/mapEventService'
 import { useMap } from '@/hooks/useMap'
 
 interface KakaoMapProps {
   shops: Shop[]
+  events?: MapEvent[]
   activeShopId: string | null
   myLocation: { lat: number; lng: number } | null
   onSelectShop: (shop: Shop) => void
+  onSelectEvent?: (ev: MapEvent) => void
   onMapClick: () => void
   onSelectGroup: (shops: Shop[]) => void
 }
@@ -20,14 +23,16 @@ export interface KakaoMapRef {
 
 const KakaoMap = forwardRef<KakaoMapRef, KakaoMapProps>(function KakaoMap({
   shops,
+  events,
   activeShopId,
   myLocation,
   onSelectShop,
+  onSelectEvent,
   onMapClick,
   onSelectGroup,
 }, ref) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const { isLoaded, renderMarkers, onMapClick: registerClick, moveCenter, setMyLocation, relayout } = useMap(containerRef)
+  const { isLoaded, renderMarkers, renderEventMarkers, onMapClick: registerClick, moveCenter, setMyLocation, relayout } = useMap(containerRef)
 
   useImperativeHandle(ref, () => ({
     moveCenter,
@@ -43,6 +48,11 @@ const KakaoMap = forwardRef<KakaoMapRef, KakaoMapProps>(function KakaoMap({
     if (!isLoaded) return
     renderMarkers(shops, activeShopId, onSelectShop, onSelectGroup)
   }, [isLoaded, shops, activeShopId, renderMarkers, onSelectShop, onSelectGroup])
+
+  useEffect(() => {
+    if (!isLoaded) return
+    renderEventMarkers(events ?? [], onSelectEvent ?? (() => {}))
+  }, [isLoaded, events, renderEventMarkers, onSelectEvent])
 
   useEffect(() => {
     if (!isLoaded || !myLocation) return
