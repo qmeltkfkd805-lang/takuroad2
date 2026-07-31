@@ -160,10 +160,10 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
       ],
     }
     if (editing && editId) {
-      const ok = await updateWork(editId, payload)
-      if (!ok) { setSaving(false); setMsg('수정 실패 — 다시 시도해주세요'); return }
+      const res = await updateWork(editId, payload)
+      if (!res) { setSaving(false); setMsg('수정 실패 — 다시 시도해주세요'); return }
       setSaving(false)
-      router.push('/my-works')
+      router.push(`/work/${res.slug}`)
       return
     }
     const dup = await findDuplicateWork(name, eng, aliases)
@@ -181,10 +181,10 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
     <div style={{ maxWidth: 1500, margin: '0 auto', padding: '20px 40px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <button onClick={() => router.push('/my-works')} style={iconBtn} aria-label="뒤로"><Svg><path d="m15 18-6-6 6-6" /></Svg></button>
+          <button onClick={() => router.push(editing && slug ? `/work/${slug}` : '/my-works')} style={iconBtn} aria-label="뒤로"><Svg><path d="m15 18-6-6 6-6" /></Svg></button>
           <h1 style={{ fontSize: 26, fontWeight: 900, margin: 0 }}>{editing ? '작품 수정' : '작품 등록'}</h1>
         </div>
-        <button onClick={() => router.push('/my-works')} style={ghostBtn}>나가기</button>
+        <button onClick={() => router.push(editing && slug ? `/work/${slug}` : '/my-works')} style={ghostBtn}>나가기</button>
       </div>
 
       <div style={{ display: 'flex', gap: 8, overflowX: 'auto', marginBottom: 28, paddingBottom: 6 }}>

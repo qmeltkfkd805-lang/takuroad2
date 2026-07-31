@@ -83,9 +83,17 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
 
   const [activeId, setActiveId] = useState('feed')
   const [fanartHero, setFanartHero] = useState<string | null>(null)
+  const [menuOpen, setMenuOpen] = useState(false)
   const heroImage = tag.cover_url || fanartHero
   const heroColor = useDominantColor(heroImage)
   const clickLockRef = useRef(false)
+  const menuRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    if (!menuOpen) return
+    const onDoc = (e: MouseEvent) => { if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false) }
+    document.addEventListener('mousedown', onDoc)
+    return () => document.removeEventListener('mousedown', onDoc)
+  }, [menuOpen])
   useEffect(() => {
     const els = TABS.map(t => document.getElementById(t.id)).filter(Boolean) as HTMLElement[]
     if (!els.length) return
@@ -137,7 +145,28 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
     <div className={styles.page}>
       {/* Hero */}
       <section style={{ background: `radial-gradient(130% 130% at 12% 8%, rgba(255,255,255,.18) 0%, transparent 46%), linear-gradient(140deg, ${accent} 0%, ${shade(accent, 0.34)} 55%, ${shade(accent, 0.64)} 100%)` }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 22px', display: 'flex', gap: 22, alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 22px', display: 'flex', gap: 22, alignItems: 'center', flexWrap: 'wrap', position: 'relative' }}>
+          {/* 우측 상단 ... 메뉴 — 정보 수정 */}
+          <div ref={menuRef} style={{ position: 'absolute', top: 14, right: 18, zIndex: 20 }}>
+            <button
+              onClick={() => setMenuOpen(o => !o)}
+              aria-label="더보기"
+              style={{ border: '1px solid rgba(255,255,255,.34)', background: 'rgba(255,255,255,.16)', color: '#fff', cursor: 'pointer', width: 34, height: 34, borderRadius: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7" /><circle cx="12" cy="12" r="1.7" /><circle cx="12" cy="19" r="1.7" /></svg>
+            </button>
+            {menuOpen && (
+              <div style={{ position: 'absolute', top: '100%', right: 0, zIndex: 30, marginTop: 6, minWidth: 150, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.16)', overflow: 'hidden' }}>
+                <button
+                  onClick={() => { setMenuOpen(false); router.push(`/work/${tag.slug}/edit`) }}
+                  style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '11px 14px', border: 'none', background: 'none', textAlign: 'left', fontSize: 14, fontWeight: 700, color: 'var(--text)', cursor: 'pointer', fontFamily: 'inherit' }}
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
+                  수정하기
+                </button>
+              </div>
+            )}
+          </div>
           <div style={{ width: 240, height: 180, borderRadius: 14, flexShrink: 0, background: heroImage ? `url(${heroImage}) center/cover` : 'rgba(255,255,255,.16)', border: heroImage ? 'none' : '1px solid rgba(255,255,255,.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
             {!heroImage && <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.85)" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-5-5L5 21" /></svg>}
           </div>

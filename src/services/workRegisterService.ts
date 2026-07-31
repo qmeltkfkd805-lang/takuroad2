@@ -89,12 +89,13 @@ export async function getWorkForEdit(id: string) {
   return data as any
 }
 
-export async function updateWork(id: string, w: NewWork): Promise<boolean> {
+export async function updateWork(id: string, w: NewWork): Promise<{ slug: string } | null> {
   const supabase = createClient()
   const custom = w.slug?.trim() ? cleanSlug(w.slug) : ''
+  const slug = custom || slugify(w.name, w.english_name)
   const { error } = await supabase.from('tags').update({
     name: w.name.trim(),
-    slug: custom || slugify(w.name, w.english_name),
+    slug,
     english_name: w.english_name?.trim() || null,
     ip_type: w.ip_type || null,
     description: w.description?.trim() || null,
@@ -108,6 +109,6 @@ export async function updateWork(id: string, w: NewWork): Promise<boolean> {
     original_type: w.original_type || null,
     links: w.links ?? [],
   } as any).eq('id', id)
-  if (error) { console.error('[updateWork]', error); return false }
-  return true
+  if (error) { console.error('[updateWork]', error); return null }
+  return { slug }
 }
