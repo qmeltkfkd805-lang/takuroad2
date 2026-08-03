@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { useAuth } from '@/components/layout/AuthProvider'
 import AppIcon from '@/components/tds/AppIcon'
 import { OtakuPassport } from '@/services/passportService'
 import PassportCard from '@/components/passport/PassportCard'
@@ -61,6 +62,7 @@ interface Props {
 
 export default function ProfileDesktop({ passport, userId }: Props) {
   const router = useRouter()
+  const { isAdmin } = useAuth()
   const urlTab = useSearchParams().get('tab') as Sub | null
   const urlCat = urlTab ? (IA.find(c => c.subs.some(s => s.key === urlTab))?.cat ?? 'profile') : 'profile'
   const [cat, setCat] = useState<Cat>(urlCat)
@@ -101,6 +103,17 @@ export default function ProfileDesktop({ passport, userId }: Props) {
             )}
           </div>
         ))}
+
+        {isAdmin && (
+          <Link
+            href="/admin"
+            className={styles.cat}
+            style={{ marginTop: 10, color: 'var(--accent)', fontWeight: 800, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          >
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><AppIcon name="gear" size={15} />관리자 화면</span>
+            <AppIcon name="chevron-right" size={14} />
+          </Link>
+        )}
       </nav>
 
       <div className={styles.content}>

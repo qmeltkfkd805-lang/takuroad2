@@ -11,6 +11,7 @@ import {
 } from '@/services/eventHomeService'
 import EventFilterBar, { EventFilters, EMPTY_FILTERS } from './EventFilterBar'
 import EventHomeRail from './EventHomeRail'
+import EventCalendarWidget from './EventCalendarWidget'
 import { EventIcon, EventIconName } from './EventIcon'
 import styles from './EventHomePage.module.css'
 
@@ -201,6 +202,7 @@ export default function EventHomePage() {
       </div>
 
       <aside className={styles.rail}>
+        <EventCalendarWidget items={items} />
         <EventHomeRail
           items={items}
           favoriteTagIds={favoriteTagIds}

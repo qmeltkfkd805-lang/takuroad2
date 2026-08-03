@@ -52,13 +52,26 @@ export async function getPlaceBySlug(
   supabase: SupabaseClient,
   slug: string,
 ): Promise<PlaceDetail | null> {
-  const { data: place, error } = await supabase
-    .from('places')
-    .select('*')
-    .eq('slug', slug)
-    .maybeSingle()
+  // 한글 slug는 URL을 거치며 유니코드 정규화(NFC/NFD)가 달라질 수 있어
+  // DB 저장값과 바이트가 안 맞으면 .eq()가 0건이 된다. 두 형태를 모두 시도한다.
+  const decoded = (() => { try { return decodeURIComponent(slug) } catch { return slug } })()
+  const variants = Array.from(new Set([
+    slug, decoded,
+    slug.normalize('NFC'), slug.normalize('NFD'),
+    decoded.normalize('NFC'), decoded.normalize('NFD'),
+  ]))
 
-  if (error) { console.error('[place] 조회 실패:', error.message); return null }
+  let place: any = null
+  for (const v of variants) {
+    const { data, error } = await supabase.from('places').select('*').eq('slug', v).maybeSingle()
+    if (error) { console.error('[place] 조회 실패:', error.message); continue }
+    if (data) { place = data; break }
+  }
+  // 최후: 대소문자·정규화 무시 부분매칭
+  if (!place) {
+    const { data } = await supabase.from('places').select('*').ilike('slug', decoded).limit(1).maybeSingle()
+    if (data) place = data
+  }
   if (!place) return null
 
   const today = new Date().toISOString().slice(0, 10)
@@ -200,6 +213,29 @@ export async function findPlaceByAddr(addr: string | null): Promise<{ id: string
 }
 
 /**
+ * 같은 주소(정규화 기준)를 가진 다른 샵이 이미 어떤 장소에 연결돼 있으면 그 장소를 돌려준다.
+ * place_address_map에 학습돼 있지 않아도, "완전히 같은 주소면 한 장소로 묶는다"를 보장한다.
+ */
+export async function findPlaceBySameAddr(addr: string | null): Promise<{ id: string; name: string; slug: string } | null> {
+  const key = normalizeAddr(addr)
+  if (!key) return null
+  const supabase = createClient()
+
+  const { data, error } = await supabase
+    .from('shops')
+    .select('addr, places ( id, name, slug )')
+    .not('place_id', 'is', null)
+    .eq('status', 'active')
+
+  if (error) { console.error('[place] 동일 주소 샵 조회 실패:', error.message); return null }
+  for (const row of (data ?? []) as any[]) {
+    const p = row.places
+    if (p && normalizeAddr(row.addr) === key) return { id: p.id, name: p.name, slug: p.slug }
+  }
+  return null
+}
+
+/**
  * 관리자 학습 — "이 주소는 이 장소다"를 등록한다.
  * 1) place 없으면 카카오 정보로 생성
  * 2) place_address_map에 (정규화 주소 → place_id) 등록
@@ -235,8 +271,9 @@ export async function mapAddrToPlace(input: {
 
   // 2) 없으면 생성
   if (!placeId) {
+    // slug는 ASCII만 — 한글이 URL을 거치며 정규화가 바뀌면 조회가 깨진다.
     const base = input.name.trim().toLowerCase()
-      .replace(/[^a-z0-9가-힣]+/g, '-').replace(/^-+|-+$/g, '') || 'place'
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'place'
     const suffix = input.kakaoPlaceId ? input.kakaoPlaceId.slice(-6) : Math.random().toString(36).slice(2, 6)
     const { data: created, error } = await supabase
       .from('places')

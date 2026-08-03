@@ -22,6 +22,8 @@ export interface EventHomeItem {
   region: string | null
   startDate: string | null
   endDate: string | null
+  reserveStart: string | null
+  reserveEnd: string | null
 }
 
 const today = () => new Date().toISOString().slice(0, 10)
@@ -68,6 +70,8 @@ async function hydrate(rows: any[]): Promise<EventHomeItem[]> {
       region: shop ? shopRegion({ region: shop.region ?? null, addr: shop.addr ?? null }) : null,
       startDate: r.start_date ?? null,
       endDate: r.end_date ?? null,
+      reserveStart: r.reserve_start ?? null,
+      reserveEnd: r.reserve_end ?? null,
     }
   })
 }
@@ -77,7 +81,7 @@ export async function getEventHomeItems(): Promise<EventHomeItem[]> {
   const supabase = createClient()
   const { data, error } = await supabase
     .from('events')
-    .select('id, tag_id, type, shop_id, title, start_date, end_date, cover_url, place_name')
+    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, cover_url, place_name')
     .in('type', HOME_TYPES)
     .or(`end_date.is.null,end_date.gte.${today()}`)
     .order('start_date', { ascending: true })
@@ -91,7 +95,7 @@ export async function getPastEventItems(limit = 12): Promise<EventHomeItem[]> {
   const supabase = createClient()
   const { data, error } = await supabase
     .from('events')
-    .select('id, tag_id, type, shop_id, title, start_date, end_date, cover_url, place_name')
+    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, cover_url, place_name')
     .in('type', HOME_TYPES)
     .lt('end_date', today())
     .order('end_date', { ascending: false })

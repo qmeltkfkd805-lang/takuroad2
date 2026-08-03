@@ -5,6 +5,7 @@ import { getAllTags } from '@/services/shopService'
 import {
   getShopTags, updateShopTags, getAllGoodsTypes,
   getShopGoodsCategories, updateShopGoodsCategories, deactivateProductsByTag,
+  getShopCustomGoods, updateShopCustomGoods,
 } from '@/services/shopProductService'
 import { useAuth } from '@/components/layout/AuthProvider'
 
@@ -19,6 +20,9 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
   const [myTags, setMyTags] = useState<any[]>([])
   const [allGoodsTypes, setAllGoodsTypes] = useState<any[]>([])
   const [myGoodsCategories, setMyGoodsCategories] = useState<string[]>([])
+  const [customGoods, setCustomGoods] = useState<string[]>([])
+  const [etcInput, setEtcInput] = useState('')
+  const [showEtc, setShowEtc] = useState(false)
   const [loading, setLoading] = useState(true)
   const [tagSearch, setTagSearch] = useState('')
   const [goodsTagSearch, setGoodsTagSearch] = useState('')
@@ -29,18 +33,29 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
   }, [shopId])
 
   async function loadAll() {
-    const [tags, shopTags, goodsTypes, goodsCategories] = await Promise.all([
+    const [tags, shopTags, goodsTypes, goodsIds, custom] = await Promise.all([
       getAllTags(),
       getShopTags(shopId),
       getAllGoodsTypes(),
       getShopGoodsCategories(shopId),
+      getShopCustomGoods(shopId),
     ])
+    // '기타'는 항상 맨 뒤로
+    const sortedGoods = [...(goodsTypes as any[])].sort((a, b) => {
+      const ae = a.name === '기타' ? 1 : 0
+      const be = b.name === '기타' ? 1 : 0
+      return ae - be
+    })
     setAllTags(tags)
     setMyTags(shopTags)
-    setAllGoodsTypes(goodsTypes)
-    setMyGoodsCategories(goodsCategories)
+    setAllGoodsTypes(sortedGoods)
+    setMyGoodsCategories(goodsIds)
+    setCustomGoods(custom)
+    setShowEtc(custom.length > 0)
     setLoading(false)
   }
+
+  const etcType = allGoodsTypes.find((g: any) => g.name === '기타')
 
   // 선택하면 바로 저장 — 따로 저장 버튼 없음
   async function toggleTag(tag: any) {
@@ -52,9 +67,26 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
   }
 
   async function toggleGoodsCategory(id: string) {
+    // '기타'는 저장 대상이 아니라 직접 입력창을 여는 토글이다.
+    if (etcType && id === etcType.id) { setShowEtc(v => !v); return }
     const next = myGoodsCategories.includes(id) ? myGoodsCategories.filter(g => g !== id) : [...myGoodsCategories, id]
     setMyGoodsCategories(next)
     await updateShopGoodsCategories(shopId, next)
+  }
+
+  // '기타' 직접 입력 → 각각 하나의 취급 상품으로 추가
+  async function addCustomGood() {
+    const v = etcInput.trim()
+    if (!v) return
+    if (customGoods.includes(v)) { setEtcInput(''); return }
+    const next = [...customGoods, v]
+    setCustomGoods(next); setEtcInput('')
+    await updateShopCustomGoods(shopId, next)
+  }
+  async function removeCustomGood(v: string) {
+    const next = customGoods.filter(g => g !== v)
+    setCustomGoods(next)
+    await updateShopCustomGoods(shopId, next)
   }
 
   if (loading) {
@@ -80,7 +112,8 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
           {allGoodsTypes.map((gt: any) => {
-            const selected = myGoodsCategories.includes(gt.id)
+            const isEtc = etcType && gt.id === etcType.id
+            const selected = isEtc ? showEtc : myGoodsCategories.includes(gt.id)
             return (
               <button
                 key={gt.id}
@@ -101,6 +134,54 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
             )
           })}
         </div>
+        {(showEtc || customGoods.length > 0) && (
+          <div style={{ marginBottom: '12px', padding: '12px', border: '1px dashed var(--border)', borderRadius: '10px', background: 'var(--surface2)' }}>
+            <div style={{ fontSize: '12px', fontWeight: 800, marginBottom: '8px', color: 'var(--text)' }}>기타 취급 상품 직접 입력</div>
+            {customGoods.length > 0 && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '8px' }}>
+                {customGoods.map(v => (
+                  <span
+                    key={v}
+                    onClick={() => removeCustomGood(v)}
+                    style={{
+                      display: 'inline-flex', alignItems: 'center', gap: '4px',
+                      padding: '6px 10px', borderRadius: '16px', cursor: 'pointer',
+                      border: '1.5px solid var(--accent)', background: 'var(--accent-l)',
+                      color: 'var(--accent)', fontSize: '12px', fontWeight: 700,
+                    }}
+                  >
+                    {v} <Svg size={12}><path d="M18 6 6 18M6 6l12 12" /></Svg>
+                  </span>
+                ))}
+              </div>
+            )}
+            <div style={{ display: 'flex', gap: '6px' }}>
+              <input
+                type="text"
+                value={etcInput}
+                onChange={e => setEtcInput(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomGood() } }}
+                maxLength={30}
+                placeholder="예: 넨도로이드 입력 후 Enter"
+                style={{
+                  flex: 1, padding: '9px 12px',
+                  border: '1.5px solid var(--border)', borderRadius: '8px',
+                  fontSize: '13px', fontFamily: 'inherit',
+                  background: 'var(--surface)', color: 'var(--text)',
+                  outline: 'none', boxSizing: 'border-box',
+                }}
+              />
+              <button
+                onClick={addCustomGood}
+                disabled={!etcInput.trim()}
+                style={{ padding: '0 16px', borderRadius: '8px', border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 700, fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0, opacity: etcInput.trim() ? 1 : 0.5 }}
+              >
+                추가
+              </button>
+            </div>
+            <p style={{ fontSize: '11px', color: 'var(--muted)', margin: '8px 0 0' }}>입력한 항목 하나하나가 취급 상품으로 등록돼요. 칩을 누르면 삭제돼요.</p>
+          </div>
+        )}
         <p style={{ fontSize: '12px', color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '5px', margin: 0 }}><Svg size={13} color="var(--accent)"><path d="m5 12 5 5L20 6" /></Svg>선택하면 자동 저장돼요</p>
       </div>
 

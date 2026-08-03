@@ -10,7 +10,7 @@ import { ROUTES } from '@/lib/constants/routes'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useSaved } from '@/hooks/useSaved'
 import { getShopAmenities } from '@/services/shopAmenityService'
-import { getShopTags, getAllGoodsTypes, getShopGoodsCategories } from '@/services/shopProductService'
+import { getShopTags, getAllGoodsTypes, getShopGoodsCategories, getShopCustomGoods } from '@/services/shopProductService'
 import { getReviews } from '@/services/reviewService'
 import { deleteShop } from '@/services/shopService'
 import { getMyLevelInfo } from '@/services/expService'
@@ -58,6 +58,7 @@ function detectSns(url: string | null): { name: string; url: string } | null {
   if (u.includes('x.com') || u.includes('twitter.com')) return { name: 'x', url }
   if (u.includes('youtube.com') || u.includes('youtu.be')) return { name: 'youtube', url }
   if (u.includes('kakao')) return { name: 'kakao', url }
+  if (u.includes('cafe.naver')) return { name: 'navercafe', url }
   if (u.includes('naver')) return { name: 'naver', url }
   return { name: 'globe', url }
 }
@@ -108,8 +109,15 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
   useEffect(() => { getShopTags(shop.id).then(setWorks) }, [shop.id])
   const [goodsTypes, setGoodsTypes] = useState<{ id: string; name: string }[]>([])
   useEffect(() => {
-    Promise.all([getAllGoodsTypes(), getShopGoodsCategories(shop.id)])
-      .then(([all, ids]) => setGoodsTypes((all as any[]).filter(g => ids.includes(g.id)).map(g => ({ id: g.id, name: g.name }))))
+    Promise.all([getAllGoodsTypes(), getShopGoodsCategories(shop.id), getShopCustomGoods(shop.id)])
+      .then(([all, ids, custom]) => {
+        const list = (all as any[])
+          .filter(g => ids.includes(g.id) && g.name !== '기타')  // '기타' 자체는 표시 안 함(직접 입력만)
+          .map(g => ({ id: g.id, name: g.name }))
+        // 직접 입력한 기타 취급 상품을 뒤에 붙인다
+        custom.forEach((v, i) => list.push({ id: `custom-${i}`, name: v }))
+        setGoodsTypes(list)
+      })
   }, [shop.id])
   const [reviews, setReviews] = useState<Review[]>([])
   useEffect(() => { getReviews(shop.id).then(setReviews) }, [shop.id])
@@ -979,6 +987,7 @@ const SNS_ICON_FILES: Record<string, string[]> = {
   kakao: ['kakao', 'kakaotalk'],
   youtube: ['youtube'],
   naver: ['naver'],
+  navercafe: ['navercafe', 'naver'],
   globe: ['homepage', 'globe'],
   homepage: ['homepage', 'globe'],
 }

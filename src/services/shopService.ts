@@ -261,7 +261,7 @@ export async function updateShop(
   // 변경 전 값 가져오기 (로그용)
   const { data: before } = await supabase
     .from('shops')
-    .select('name, description, addr, lat, lng, hours, parking, parking_note, shop_link, sns_links, phone, start_date, end_date, event_info')
+    .select('name, description, addr, lat, lng, hours, parking, parking_note, shop_link, sns_links, phone, start_date, end_date, event_info, is_claimed, owner_id')
     .eq('id', shopId)
     .maybeSingle()
 
@@ -297,7 +297,17 @@ export async function updateShop(
       info_confirmed_by_type: isAdmin ? 'admin' : 'owner',
     } as any)
     .eq('id', shopId)
-  if (!isAdmin) updateQuery = updateQuery.eq('owner_id', userId)
+  if (!isAdmin) {
+    const claimed = (before as any)?.is_claimed === true
+    const ownerId = (before as any)?.owner_id
+    // 인증된 매장은 사장님(owner_id)만 수정 가능. 다른 사람은 저장 자체를 막는다.
+    if (claimed && ownerId !== userId) {
+      console.warn('[updateShop] 인증된 매장은 사장님만 수정할 수 있어요.')
+      return false
+    }
+    if (claimed) updateQuery = updateQuery.eq('owner_id', userId)
+    // 미인증 매장은 로그인 사용자 누구나 수정 가능 (필터 없음)
+  }
   const { error } = await updateQuery
 
   if (error) return false

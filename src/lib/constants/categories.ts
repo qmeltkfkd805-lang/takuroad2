@@ -7,6 +7,7 @@
   { name: '음식점/카페', slug: 'restaurant',  icon: 'cafe',       color: '#ca8a04', bgColor: 'rgba(202,138,4,.12)' },
   { name: '팝업스토어',  slug: 'popup',       icon: 'popup',      color: '#0099cc', bgColor: 'rgba(0,153,204,.12)' },
   { name: '게임샵',      slug: 'game',        icon: 'game',       color: '#7c3aed', bgColor: 'rgba(124,58,237,.12)' },
+  { name: '프라모델',    slug: 'plamodel',    icon: 'goods',      color: '#2563eb', bgColor: 'rgba(37,99,235,.12)' },
   { name: '온라인숍',    slug: 'online',      icon: 'onlineshop', color: '#16a34a', bgColor: 'rgba(22,163,74,.12)' },
   { name: '가챠',        slug: 'gacha',       icon: 'gacha',      color: '#e03535', bgColor: 'rgba(224,53,53,.12)' },
   { name: '쿠지',        slug: 'kuji',        icon: 'gacha',      color: '#f59e0b', bgColor: 'rgba(245,158,11,.12)' },

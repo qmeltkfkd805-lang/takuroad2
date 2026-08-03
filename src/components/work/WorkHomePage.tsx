@@ -73,6 +73,7 @@ function linkIcon(label: string): string {
   if (label.includes('트위터') || s === 'x' || s.startsWith('x ') || s.includes('twitter')) return 'X'
   if (label.includes('유튜브') || s.includes('youtube') || s.includes('yt')) return 'youtube'
   if (label.includes('팬클럽') || s.includes('fanclub') || s.includes('fan club')) return 'fanclub'
+  if (label.includes('네이버카페') || label.includes('네이버 카페') || s.includes('cafe.naver')) return 'navercafe'
   if (label.includes('카카오') || label.includes('카페') || s.includes('kakao')) return 'kakao'
   return 'homepage'
 }

@@ -10,7 +10,7 @@ import { Shop, ShopFormData } from '@/types/shop'
 import { BusinessHours } from '@/types/database'
 import { generateSlug } from '@/lib/utils/shop'
 import { geocodeAddress, searchPlace, PlaceSearchResult } from '@/lib/utils/geocode'
-import { findPlaceByAddr } from '@/services/placeService'
+import { findPlaceByAddr, findPlaceBySameAddr } from '@/services/placeService'
 import AdminPlaceLink from './AdminPlaceLink'
 import { getTodayStatus } from '@/lib/utils/date'
 import ShopEnrichmentSection from './ShopEnrichmentSection'
@@ -58,6 +58,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [savedNote, setSavedNote] = useState('')
+  const [ownerAsk, setOwnerAsk] = useState(false)   // 등록 완료 후 "사장님입니까?" 모달
   const [placeResults, setPlaceResults] = useState<PlaceSearchResult[]>([])
   const [searchingPlace, setSearchingPlace] = useState(false)
   const [createdShopId, setCreatedShopId] = useState<string | null>(null)
@@ -112,10 +113,12 @@ export default function ShopFormWizard({ mode, shop }: Props) {
     set('lng', place.lng)
     setPlaceResults([])
 
-    // 이 주소가 학습된 장소(place_address_map)에 있으면 자동 연결.
-    // 없으면 독립 매장 — place는 관리자가 샵 편집에서 지정할 때만 생긴다.
+    // 1) 학습된 장소(place_address_map)에 있으면 자동 연결.
+    // 2) 없더라도 완전히 같은 주소의 다른 샵이 이미 장소에 묶여 있으면 그 장소로 연결.
+    // 3) 둘 다 없으면 독립 매장.
     setPlaceLinking(true)
-    const matched = await findPlaceByAddr(place.roadAddress || place.address)
+    const addr = place.roadAddress || place.address
+    const matched = (await findPlaceByAddr(addr)) || (await findPlaceBySameAddr(addr))
     setPlaceLinking(false)
     if (matched) {
       setForm(prev => ({ ...prev, place_id: matched.id, place_name: matched.name }))
@@ -211,7 +214,15 @@ export default function ShopFormWizard({ mode, shop }: Props) {
   function goToStep(n: number) { if (n === 1 || canEnrich) setStep(n) }
   async function finish() {
     if (mode === 'edit') { if (!(await saveCore())) return; router.push(ROUTES.shop(shop!.slug)); return }
+    // 신규 등록 완료 → "이 샵의 사장님입니까?" 물어보고, 네면 바로 인증 신청으로
+    setOwnerAsk(true)
+  }
+  function goShopAfterRegister() {
     router.push(shopSlug ? ROUTES.shop(shopSlug) : '/profile?tab=shops')
+  }
+  function goClaim() {
+    if (shopSlug) router.push(`/shop/claim/${shopSlug}`)
+    else router.push('/profile?tab=shops')
   }
 
   const guide = [
@@ -231,6 +242,46 @@ export default function ShopFormWizard({ mode, shop }: Props) {
   return (
     <div style={{ maxWidth: 1320, margin: '0 auto', padding: '20px 32px 60px' }}>
       <style>{`.taku-page-2col{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}@media (hover:none) and (pointer:coarse) and (max-width:900px){.taku-page-2col{grid-template-columns:1fr}}`}</style>
+
+      {/* 등록 완료 → "이 샵의 사장님입니까?" 모달 */}
+      {ownerAsk && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 3000, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+          <div style={{ width: '100%', maxWidth: 420, background: 'var(--surface)', borderRadius: 18, padding: '26px 24px', boxShadow: '0 16px 48px rgba(0,0,0,.28)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, textAlign: 'center', marginBottom: 16 }}>
+              <div style={{ width: 48, height: 48, borderRadius: 9999, background: 'var(--accent-l, rgba(232,0,111,.1))', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 4 }}>
+                <Svg size={24} color="var(--accent)"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h.01M15 9h.01M9 13h.01M15 13h.01M9 17h.01M15 17h.01" /></Svg>
+              </div>
+              <h2 style={{ fontSize: 20, fontWeight: 900, margin: 0 }}>이 샵의 사장님이신가요?</h2>
+              <p style={{ fontSize: 13.5, color: 'var(--muted)', margin: 0, lineHeight: 1.5 }}>
+                샵 등록이 완료됐어요. 실제 이 매장의 사장님이시라면 바로 사장님 인증을 신청할 수 있어요.
+              </p>
+            </div>
+
+            {/* 안내 문구 */}
+            <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start', background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 13px', marginBottom: 18 }}>
+              <Svg size={16} color="var(--accent)"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></Svg>
+              <p style={{ fontSize: 12.5, color: 'var(--text)', margin: 0, lineHeight: 1.55 }}>
+                사장님 인증을 받으면 <b>이 매장은 사장님만 수정할 수 있어요.</b> 다른 사람이 임의로 매장 정보를 바꿀 수 없어 정보를 안전하게 지킬 수 있어요.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+              <button
+                onClick={goClaim}
+                style={{ width: '100%', padding: '13px', borderRadius: 12, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: 'pointer', fontFamily: 'inherit' }}
+              >
+                네, 사장님 인증 신청할게요
+              </button>
+              <button
+                onClick={goShopAfterRegister}
+                style={{ width: '100%', padding: '13px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, fontSize: 15, cursor: 'pointer', fontFamily: 'inherit' }}
+              >
+                아니요, 괜찮아요
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 헤더 */}
       <div style={{ position: 'sticky', top: 64, zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18, padding: '12px 0', background: 'var(--bg, var(--surface))', borderBottom: '1px solid var(--border)' }}>

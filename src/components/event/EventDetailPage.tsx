@@ -12,6 +12,7 @@ import {
   EventDetail, RelatedEvent,
   getEventDetail, getRelatedEvents, deleteEvent,
 } from '@/services/eventDetailService'
+import { getMySavedEventIds, saveEvent, unsaveEvent } from '@/services/eventSaveService'
 import EventReviewTab from './EventReviewTab'
 import EventVisitButton from './EventVisitButton'
 import EventQnaTab from './EventQnaTab'
@@ -37,22 +38,7 @@ const fmtFull = (s: string | null) => {
   const w = ['일', '월', '화', '수', '목', '금', '토'][d.getDay()]
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')} (${w})`
 }
-const ymd = (s: string) => s.replaceAll('-', '')
 
-/** 구글 캘린더 추가 링크 — 백엔드 없이 URL만으로 동작한다 */
-function calendarUrl(ev: EventDetail): string | null {
-  if (!ev.startDate || !ev.endDate) return null
-  const end = new Date(ev.endDate)
-  end.setDate(end.getDate() + 1)   // 종일 일정은 종료일 +1
-  const params = new URLSearchParams({
-    action: 'TEMPLATE',
-    text: ev.title,
-    dates: `${ymd(ev.startDate)}/${ymd(end.toISOString().slice(0, 10))}`,
-    details: [ev.work?.name, ev.description].filter(Boolean).join('\n\n'),
-    location: ev.shop?.addr ?? ev.placeSnapshot ?? '',
-  })
-  return `https://calendar.google.com/calendar/render?${params.toString()}`
-}
 
 /** 카카오맵 길찾기 — 좌표가 있으면 목적지 지정, 없으면 주소 검색 */
 function directionsUrl(ev: EventDetail): string | null {
@@ -81,6 +67,19 @@ export default function EventDetailPage() {
   const [qnaCount, setQnaCount] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const [saved, setSaved] = useState(false)
+
+  useEffect(() => {
+    if (!user || !eventId) { setSaved(false); return }
+    getMySavedEventIds(user.id).then(ids => setSaved(ids.includes(eventId))).catch(() => {})
+  }, [user, eventId])
+
+  async function toggleSaveEvent() {
+    if (!user) { router.push(`/login?redirect=/event/${eventId}`); return }
+    if (!eventId) return
+    if (saved) { setSaved(false); await unsaveEvent(user.id, eventId) }
+    else { setSaved(true); await saveEvent(user.id, eventId) }
+  }
 
   useEffect(() => {
     if (!menuOpen) return
@@ -157,7 +156,6 @@ export default function EventDetailPage() {
   const ended = status.kind === 'ended'
   const dLeft = event.endDate ? daysUntil(event.endDate) : null
   const place = event.shop?.name ?? event.placeSnapshot
-  const cal = calendarUrl(event)
   const dir = directionsUrl(event)
 
   // 지도에 찍을 좌표 — 샵이 있으면 샵, 없으면 장소 검색으로 저장된 좌표
@@ -190,6 +188,14 @@ export default function EventDetailPage() {
                 <span className={styles.heroScrim} />
               </>
             )}
+            {/* 좌측 상단 저장 버튼 */}
+            <button
+              onClick={toggleSaveEvent}
+              aria-label={saved ? '저장 해제' : '저장'}
+              style={{ position: 'absolute', top: 12, left: 12, zIndex: 6, width: 40, height: 40, borderRadius: 9999, border: 'none', cursor: 'pointer', background: saved ? 'var(--accent)' : 'rgba(255,255,255,.95)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 10px rgba(0,0,0,.18)' }}
+            >
+              <EventIcon name="heart" size={20} color={saved ? '#fff' : 'var(--muted)'} />
+            </button>
             {canEdit && (
               <div className={styles.heroMenu} ref={menuRef}>
                 <button
@@ -543,11 +549,14 @@ export default function EventDetailPage() {
               <TimeRow date={fmtFull(event.startDate)} label="이벤트 시작" />
               <TimeRow date={fmtFull(event.endDate)} label="이벤트 종료" />
             </div>
-            {cal && !ended && (
-              <a className={styles.calBtn} href={cal} target="_blank" rel="noreferrer">
-                <EventIcon name="calendarPlus" size={16} />캘린더에 추가
-              </a>
-            )}
+            <button
+              className={styles.calBtn}
+              onClick={toggleSaveEvent}
+              style={{ width: '100%', boxSizing: 'border-box', justifyContent: 'center', cursor: 'pointer', fontFamily: 'inherit', ...(saved ? { background: 'var(--accent)', color: '#fff', borderColor: 'var(--accent)' } : {}) }}
+            >
+              <EventIcon name={saved ? 'starFill' : 'calendarPlus'} size={16} color={saved ? '#fff' : undefined} />
+              {saved ? '저장됨 · 내 캘린더' : '내 캘린더에 저장'}
+            </button>
 
           </section>
 

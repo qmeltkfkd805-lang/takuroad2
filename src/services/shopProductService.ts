@@ -248,6 +248,26 @@ export async function updateShopGoodsCategories(shopId: string, goodsTypeIds: st
   return !error
 }
 
+// 샵별 '기타' 직접 입력 취급 상품 (자유 텍스트, shops.custom_goods 배열)
+export async function getShopCustomGoods(shopId: string): Promise<string[]> {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('shops')
+    .select('custom_goods')
+    .eq('id', shopId)
+    .maybeSingle()
+  return ((data as any)?.custom_goods ?? []) as string[]
+}
+
+export async function updateShopCustomGoods(shopId: string, items: string[]): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase
+    .from('shops')
+    .update({ custom_goods: items } as any)
+    .eq('id', shopId)
+  return !error
+}
+
 // 특정 작품의 모든 굿즈를 비활성화 (취급 작품에서 제외할 때 사용)
 export async function deactivateProductsByTag(shopId: string, tagId: string): Promise<boolean> {
   const supabase = createClient()
