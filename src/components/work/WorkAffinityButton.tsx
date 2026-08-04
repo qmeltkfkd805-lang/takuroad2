@@ -35,9 +35,17 @@ export default function WorkAffinityButton({ tagId }: { tagId: string }) {
   if (loading) return <div style={{ height: '40px' }} />
 
   return (
-    <div style={{ display: 'flex', gap: '8px' }}>
-      <TierButton active={affinity === 'favorite'} icon={<HeartIcon active={affinity === 'favorite'} />} label="최애" onClick={() => toggle('favorite')} />
-      <TierButton active={affinity === 'interest'} icon={<StarIcon active={affinity === 'interest'} />} label="관심" onClick={() => toggle('interest')} />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+      <div style={{ display: 'flex', gap: '8px' }}>
+        <TierButton active={affinity === 'favorite'} icon={<HeartIcon active={affinity === 'favorite'} />} label="최애" onClick={() => toggle('favorite')} />
+        <TierButton active={affinity === 'interest'} icon={<StarIcon active={affinity === 'interest'} />} label="관심" onClick={() => toggle('interest')} />
+      </div>
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, color: 'var(--muted)', paddingLeft: 2 }}>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.7 21a2 2 0 0 1-3.4 0" />
+        </svg>
+        {affinity ? '새 이벤트가 열리면 알림을 보내드려요' : '최애·관심으로 등록하면 새 이벤트 알림을 받아요'}
+      </span>
     </div>
   )
 }
