@@ -62,15 +62,22 @@ interface Props {
 
 export default function ProfileDesktop({ passport, userId }: Props) {
   const router = useRouter()
-  const { isAdmin } = useAuth()
+  const { isAdmin, signOut } = useAuth()
   const urlTab = useSearchParams().get('tab') as Sub | null
   const urlCat = urlTab ? (IA.find(c => c.subs.some(s => s.key === urlTab))?.cat ?? 'profile') : 'profile'
   const [cat, setCat] = useState<Cat>(urlCat)
   const [sub, setSub] = useState<Sub>(urlTab ?? 'passport')
   const [openCat, setOpenCat] = useState<Cat | null>(urlCat)
+  const [loggingOut, setLoggingOut] = useState(false)
 
   function toggleCat(c: Cat) {
     setOpenCat(prev => (prev === c ? null : c))
+  }
+
+  async function handleLogout() {
+    setLoggingOut(true)
+    await signOut()
+    router.push('/')
   }
 
   return (
@@ -114,6 +121,22 @@ export default function ProfileDesktop({ passport, userId }: Props) {
             <AppIcon name="chevron-right" size={14} />
           </Link>
         )}
+
+        <button
+          onClick={handleLogout}
+          disabled={loggingOut}
+          className={styles.cat}
+          style={{ marginTop: isAdmin ? 4 : 10, color: 'var(--muted)', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: loggingOut ? 'not-allowed' : 'pointer' }}
+        >
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <path d="m16 17 5-5-5-5" />
+              <path d="M21 12H9" />
+            </svg>
+            {loggingOut ? '로그아웃 중...' : '로그아웃'}
+          </span>
+        </button>
       </nav>
 
       <div className={styles.content}>

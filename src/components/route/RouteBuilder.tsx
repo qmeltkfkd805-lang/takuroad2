@@ -2,7 +2,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getAllTagsFull, AdminTag } from '@/services/workAdminService'
-import { getShopsByTag, getShops, getSavedShops } from '@/services/shopService'
+import { getShops, getSavedShops } from '@/services/shopService'
 import { createRoute, uploadRouteCover, updateRouteMeta, updateRoute, getRouteForEdit, getRouteMeta, deleteRoute, toggleRouteShare } from '@/services/routeService'
 import { useRouter } from 'next/navigation'
 import { shopRegion } from '@/lib/shop/quickCompleteness'
@@ -51,7 +51,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   const { user } = useAuth()
 
   const [step, setStep] = useState(1)
-  const [sourceMode, setSourceMode] = useState<SourceMode>('work')
+  const [sourceMode, setSourceMode] = useState<SourceMode>('region')  // 샵 소스: 샵 검색(region) / 저장한 샵(saved)
   const [tags, setTags] = useState<AdminTag[]>([])
   const [tagQuery, setTagQuery] = useState('')
   const [selectedTag, setSelectedTag] = useState<AdminTag | null>(null)
@@ -59,7 +59,6 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   const [loadingShops, setLoadingShops] = useState(false)
   const [query, setQuery] = useState('')
   const [added, setAdded] = useState<Shop[]>([])
-  const [dragIndex, setDragIndex] = useState<number | null>(null)
 
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
@@ -78,6 +77,8 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   const [loadingEdit, setLoadingEdit] = useState(mode === 'edit')
   const [shareBusy, setShareBusy] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
+  const [showExit, setShowExit] = useState(false)   // 나가기 확인 다이얼로그
+  const [guideOpen, setGuideOpen] = useState(false)  // '좋은 루트 만드는 법' 접기/펼치기
 
   useEffect(() => { getAllTagsFull().then(setTags).catch(() => {}) }, [])
 
@@ -119,12 +120,9 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sourceMode])
 
-  async function pickTag(t: AdminTag) {
-    setSelectedTag(t); setTagQuery(''); setQuery(''); setLoadingShops(true)
-    setPrimaryTagId(t.id)
-    const shops = await getShopsByTag(t.slug).catch(() => [])
-    setCandidates(shops.filter((s) => s.lat != null && s.lng != null))
-    setLoadingShops(false)
+  // 작품 선택 — 루트의 대표 작품만 지정 (샵 후보는 건드리지 않음: 샵은 검색/저장한 샵에서 담는다)
+  function pickTag(t: AdminTag) {
+    setSelectedTag(t); setTagQuery(''); setPrimaryTagId(t.id)
   }
 
   async function onPickFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -138,10 +136,12 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   }
   function toggleTheme(t: string) { setThemes((a) => a.includes(t) ? a.filter((x) => x !== t) : [...a, t]) }
 
-  const q = query.trim().toLowerCase()
+  // 띄어쓰기·대소문자 무시 검색용 정규화
+  const norm = (s: string) => (s ?? '').toLowerCase().replace(/\s+/g, '')
+  const q = norm(query)
   const filtered = useMemo(() => {
     if (!q) return candidates
-    return candidates.filter((s) => (s.name ?? '').toLowerCase().includes(q) || (s.addr ?? '').toLowerCase().includes(q) || shopRegion(s).toLowerCase().includes(q))
+    return candidates.filter((s) => norm(s.name ?? '').includes(q) || norm(s.addr ?? '').includes(q) || norm(shopRegion(s)).includes(q))
   }, [candidates, q])
   const addedIds = useMemo(() => new Set(added.map((s) => s.id)), [added])
 
@@ -151,14 +151,60 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   function move(i: number, dir: -1 | 1) {
     setAdded((a) => { const j = i + dir; if (j < 0 || j >= a.length) return a; const c = [...a]; [c[i], c[j]] = [c[j], c[i]]; return c })
   }
-  function moveTo(target2: number) {
-    setAdded((a) => { if (dragIndex == null || dragIndex === target2) return a; const c = [...a]; const [m] = c.splice(dragIndex, 1); c.splice(target2, 0, m); return c })
-    setDragIndex(null)
+  // ── 꾹 눌러서 순서 바꾸기 (터치·마우스 공통) — 드래그 행이 손가락을 따라오고 나머지는 자리를 비켜줌 ──
+  const rowRefs = useRef<(HTMLElement | null)[]>([])
+  const listRef = useRef<HTMLDivElement | null>(null)
+  const pressTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastYRef = useRef(0)
+  const [drag, setDrag] = useState<{ from: number; to: number; y: number; startY: number; h: number } | null>(null)
+
+  const startDrag = (e: React.PointerEvent, i: number) => {
+    lastYRef.current = e.clientY
+    const downY = e.clientY
+    if (pressTimer.current) clearTimeout(pressTimer.current)
+    // 누른 채로 살짝 움직이면 스크롤로 보고 롱프레스 취소
+    const preMove = (ev: PointerEvent) => { lastYRef.current = ev.clientY; if (Math.abs(ev.clientY - downY) > 12) cancel() }
+    const cancel = () => {
+      if (pressTimer.current) { clearTimeout(pressTimer.current); pressTimer.current = null }
+      window.removeEventListener('pointermove', preMove); window.removeEventListener('pointerup', cancel); window.removeEventListener('pointercancel', cancel)
+    }
+    window.addEventListener('pointermove', preMove)
+    window.addEventListener('pointerup', cancel)
+    window.addEventListener('pointercancel', cancel)
+    pressTimer.current = setTimeout(() => {
+      window.removeEventListener('pointermove', preMove)
+      const el = rowRefs.current[i]
+      const h = el ? el.getBoundingClientRect().height : 52
+      const y0 = lastYRef.current
+      setDrag({ from: i, to: i, y: y0, startY: y0, h })
+      try { (navigator as any).vibrate?.(12) } catch { /* noop */ }
+    }, 180)
   }
 
-  const tagMatches = tagQuery.trim() ? tags.filter((t) => t.name.includes(tagQuery.trim())).slice(0, 8) : []
+  useEffect(() => {
+    if (!drag) return
+    const onMove = (e: PointerEvent) => {
+      e.preventDefault()
+      const y = e.clientY
+      const top = listRef.current?.getBoundingClientRect().top ?? 0
+      const to = Math.max(0, Math.min(added.length - 1, Math.floor((y - top) / drag.h)))
+      setDrag((d) => d ? { ...d, y, to } : d)
+    }
+    const onUp = () => {
+      setDrag((d) => {
+        if (d && d.to !== d.from) setAdded((a) => { const c = [...a]; const [m] = c.splice(d.from, 1); c.splice(d.to, 0, m); return c })
+        return null
+      })
+    }
+    window.addEventListener('pointermove', onMove, { passive: false })
+    window.addEventListener('pointerup', onUp)
+    window.addEventListener('pointercancel', onUp)
+    return () => { window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerup', onUp); window.removeEventListener('pointercancel', onUp) }
+  }, [drag, added.length])
+
+  const tagMatches = tagQuery.trim() ? tags.filter((t) => norm(t.name).includes(norm(tagQuery))).slice(0, 8) : []
   const mapStops = useMemo(() => added.map((s) => ({ id: s.id, lat: s.lat as number, lng: s.lng as number, name: s.name })), [added])
-  const showCandidates = sourceMode !== 'work' || !!selectedTag
+  const showCandidates = true   // 샵 후보 목록은 항상 표시 (샵 검색 / 저장한 샵)
 
   // 추천 제목 (선택 작품/지역/테마/난이도 기반, 자동입력 아님)
   const suggestions = useMemo(() => {
@@ -246,94 +292,89 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
     if (n === 4) return themes.length >= 1 ? null : '테마를 1개 이상 선택해주세요'
     return null
   }
-  const stepDone = (n: number) => stepIssue(n) === null
   const curIssue = stepIssue(step)
   const canNext = curIssue === null
-  // 스텝바 이동: 현재까지 다 완료했거나, 이미 지난(완료된) 단계로만 이동 허용
-  function goToStep(target: number) {
-    if (target <= step) { setStep(target); setMsg(null); return }
-    for (let n = step; n < target; n++) {
-      const iss = stepIssue(n)
-      if (iss) { setStep(n); setMsg(iss); return }
-    }
-    setStep(target); setMsg(null)
-  }
+
+  // 나가기 — 작성 내용이 있으면 확인
+  const hasContent = added.length > 0 || !!title.trim() || !!coverUrl || themes.length > 0 || !!desc.trim() || !!target.trim() || !!tips.trim()
+  const requestExit = () => { if (hasContent && !editing) setShowExit(true); else router.push('/routes') }
+  const doExit = () => { setShowExit(false); router.push('/routes') }
+  const cur = STEPS.find(s => s.n === step)!
+  const upcoming = STEPS.filter(s => s.n > step)
+  const progressPct = Math.round((step / STEPS.length) * 100)
+  // 하단 다음 버튼 라벨
+  const nextLabel = step === 1
+    ? (added.length >= 2 ? `선택한 샵 ${added.length}개로 다음 단계` : (added.length === 1 ? '샵을 1곳 더 담아주세요' : '샵을 담아주세요'))
+    : '다음 단계'
 
   return (
-    <div style={{ maxWidth: 1320, margin: '0 auto', padding: '20px 32px' }}>
-      {/* 헤더 */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <button onClick={() => router.push('/routes')} style={iconBtn} aria-label="뒤로"><Svg><path d="m15 18-6-6 6-6" /></Svg></button>
-          <div><h1 style={{ fontSize: 26, fontWeight: 900, margin: 0 }}>{editing ? '루트 수정' : '루트 만들기'}</h1>{editing && lastEdited && <div style={{ fontSize: 12.5, color: 'var(--muted)', marginTop: 2 }}>마지막 수정: {new Date(lastEdited).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</div>}</div>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <button onClick={() => router.push('/routes')} style={ghostBtn}>나가기</button>
-        </div>
+    <div className="rb-root" style={{ maxWidth: 1320, margin: '0 auto', padding: '20px 32px' }}>
+      <style>{`
+        .rb-root{ width:100%; max-width:100%; overflow-x:hidden; }
+        .rb-bottom{ position:sticky; bottom:0; }
+        @media (hover:none) and (pointer:coarse){
+          .rb-root{ padding:12px 14px 96px !important; }
+          .rb-form{ padding:16px 16px !important; border-radius:14px !important; border-left:none !important; border-right:none !important; margin:0 -14px !important; }
+          .rb-bottom{ position:fixed !important; left:0; right:0; bottom:0; }
+        }
+      `}</style>
+      {/* 전용 헤더 — 뒤로 · 루트 만들기 · 나가기 */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+        <button onClick={requestExit} style={iconBtn} aria-label="뒤로"><Svg><path d="m15 18-6-6 6-6" /></Svg></button>
+        <h1 style={{ flex: 1, fontSize: 20, fontWeight: 900, margin: 0 }}>{editing ? '루트 수정' : '루트 만들기'}</h1>
+        <button onClick={requestExit} style={ghostBtn}>나가기</button>
       </div>
 
-      {/* 스텝바 */}
-      <div style={{ display: 'flex', gap: 8, overflowX: 'auto', marginBottom: 28, paddingBottom: 6 }}>
-        {STEPS.map((s) => {
-          const active = step === s.n
-          const done = step > s.n
-          const incomplete = step > s.n && !stepDone(s.n)
-          return (
-            <button key={s.n} onClick={() => goToStep(s.n)} style={{ flex: '1 0 auto', display: 'flex', alignItems: 'center', gap: 7, padding: '10px 16px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', borderBottom: `3px solid ${active ? 'var(--accent)' : 'transparent'}` }}>
-              <span style={{ width: 28, height: 28, borderRadius: 9999, flexShrink: 0, fontSize: 14, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', background: incomplete ? 'var(--red)' : (active || done ? 'var(--accent)' : 'var(--surface2)'), color: (incomplete || active || done) ? '#fff' : 'var(--muted)' }}>{incomplete ? '!' : (done ? <CheckIcon size={12} color="#fff" /> : s.n)}</span>
-              <span style={{ fontSize: 15, fontWeight: active ? 800 : 600, color: active ? 'var(--text)' : 'var(--muted)', whiteSpace: 'nowrap' }}>{s.label}</span>
-            </button>
-          )
-        })}
-      </div>
-
-      {/* 본문 2단 */}
-      <div>
-        {/* 왼쪽: 폼 */}
-        <div style={{ border: '1px solid var(--border)', borderRadius: 18, padding: 32, background: 'var(--surface)' }}>
-          {/* 작성 가이드 */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 22, padding: '12px 14px', background: 'var(--surface2)', borderRadius: 12 }}>
-            <span style={{ fontSize: 12.5, fontWeight: 900, color: 'var(--muted)', display: 'inline-flex', alignItems: 'center', gap: 5, marginRight: 2 }}><MaskIcon name="star" size={15} color="var(--accent)" />작성 가이드</span>
-            {guide.map((g) => (
-              <span key={g.label} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, padding: '6px 11px', borderRadius: 9999, background: 'var(--surface)', border: `1px solid ${g.ok ? 'var(--accent)' : 'var(--border)'}`, color: g.ok ? 'var(--accent)' : 'var(--muted)' }}>
-                <span style={{ width: 16, height: 16, borderRadius: 9999, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: g.ok ? 'var(--accent)' : 'var(--surface2)' }}>{g.ok ? <CheckIcon size={11} color="#fff" /> : <span style={{ width: 5, height: 5, borderRadius: 9999, background: 'var(--muted)' }} />}</span>
-                {g.label}
-              </span>
-            ))}
+      {/* 스텝 표시 — N/전체 · 단계명 · 진행 바 · 다음 단계 보조 텍스트 */}
+      <div style={{ marginBottom: 22 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 8 }}>
+          <span style={{ fontSize: 15, fontWeight: 900, color: 'var(--accent)' }}>{step} / {STEPS.length}</span>
+          <span style={{ fontSize: 18, fontWeight: 900 }}>{cur.label}</span>
+        </div>
+        <div style={{ height: 8, borderRadius: 9999, background: 'var(--surface2)', overflow: 'hidden' }}>
+          <div style={{ width: `${progressPct}%`, height: '100%', background: 'var(--accent)', borderRadius: 9999, transition: 'width .25s' }} />
+        </div>
+        {upcoming.length > 0 && (
+          <div style={{ marginTop: 8, fontSize: 12.5, color: 'var(--muted)', lineHeight: 1.5 }}>
+            다음: {upcoming.map(s => s.label).join(' · ')}
           </div>
+        )}
+      </div>
+
+      {/* 본문 */}
+      <div>
+        <div className="rb-form" style={{ border: '1px solid var(--border)', borderRadius: 18, padding: 32, background: 'var(--surface)' }}>
           {/* STEP 1 — 샵 불러오기 */}
           {step === 1 && (
             <>
-              <StepHead icon={<MaskIcon name="shop" size={20} color="var(--accent)" />} title="어디서 샵을 가져올까요?" sub="작품·지역·저장한 샵 중에서 골라 담을 준비를 해요." />
-              <Label>샵 불러오기 방식</Label>
-              <div style={{ display: 'flex', gap: 6, marginBottom: 14 }}>
-                <button onClick={() => switchMode('work')} style={modeBtn(sourceMode === 'work')}>작품별</button>
-                <button onClick={() => switchMode('region')} style={modeBtn(sourceMode === 'region')}>지역별</button>
-                <button onClick={() => switchMode('saved')} style={modeBtn(sourceMode === 'saved')}>저장한 샵</button>
-              </div>
+              <StepHead icon={<MaskIcon name="shop" size={20} color="var(--accent)" />} title="어디서 샵을 가져올까요?" sub="작품을 정하고, 샵 검색·저장한 샵에서 골라 담아요." />
 
-              {sourceMode === 'work' && (
-                <>
-                  <Label>작품 선택</Label>
-                  {selectedTag ? (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontWeight: 800 }}><MaskIcon name="star" size={15} color="var(--accent)" />{selectedTag.name}</span>
-                      <button onClick={() => { setSelectedTag(null); setCandidates([]) }} style={smallBtn}>변경</button>
-                    </div>
-                  ) : (
-                    <div style={{ position: 'relative', marginBottom: 12 }}>
-                      <input value={tagQuery} onChange={(e) => setTagQuery(e.target.value)} placeholder="작품 이름 검색" style={inp} />
-                      {tagMatches.length > 0 && (
-                        <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 10, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, marginTop: 4, overflow: 'hidden' }}>
-                          {tagMatches.map((t) => (
-                            <button key={t.id} onClick={() => pickTag(t)} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '10px 12px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, color: 'var(--text)' }}>{t.name}</button>
-                          ))}
-                        </div>
-                      )}
+              {/* 작품 선택 — 샵 소스와 별개로, 루트의 대표 작품을 지정 (선택) */}
+              <Label>작품 선택 <span style={{ fontWeight: 600, color: 'var(--muted)' }}>· 선택</span></Label>
+              {selectedTag ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 18 }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontWeight: 800 }}><MaskIcon name="star" size={15} color="var(--accent)" />{selectedTag.name}</span>
+                  <button onClick={() => { setSelectedTag(null); setPrimaryTagId(null) }} style={smallBtn}>변경</button>
+                </div>
+              ) : (
+                <div style={{ position: 'relative', marginBottom: 18 }}>
+                  <input value={tagQuery} onChange={(e) => setTagQuery(e.target.value)} placeholder="작품 이름 검색" style={inp} />
+                  {tagMatches.length > 0 && (
+                    <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 10, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, marginTop: 4, overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,.12)' }}>
+                      {tagMatches.map((t) => (
+                        <button key={t.id} onClick={() => pickTag(t)} style={{ display: 'block', width: '100%', textAlign: 'left', minHeight: 44, padding: '10px 12px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, color: 'var(--text)' }}>{t.name}</button>
+                      ))}
                     </div>
                   )}
-                </>
+                </div>
               )}
+
+              {/* 샵 불러오기 — 샵 검색 / 저장한 샵 */}
+              <Label>샵 불러오기</Label>
+              <div style={{ display: 'flex', gap: 4, marginBottom: 16, padding: 4, background: 'var(--surface2)', borderRadius: 12 }}>
+                <button onClick={() => switchMode('region')} style={modeBtn(sourceMode === 'region')}>샵 검색</button>
+                <button onClick={() => switchMode('saved')} style={modeBtn(sourceMode === 'saved')}>저장한 샵</button>
+              </div>
 
               {showCandidates && (
                 <>
@@ -353,7 +394,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
                         <button onClick={() => add(s)} disabled={addedIds.has(s.id)} style={{ ...smallBtn, opacity: addedIds.has(s.id) ? 0.4 : 1 }}>{addedIds.has(s.id) ? '담김' : '담기'}</button>
                       </div>
                     ))}
-                    {!loadingShops && filtered.length === 0 && <div style={{ padding: 16, textAlign: 'center', color: 'var(--muted)', fontSize: 13 }}>{sourceMode === 'saved' ? '저장한 샵이 없어요' : sourceMode === 'work' ? '작품을 먼저 선택하세요' : '검색 결과가 없어요'}</div>}
+                    {!loadingShops && filtered.length === 0 && <div style={{ padding: 16, textAlign: 'center', color: 'var(--muted)', fontSize: 13 }}>{sourceMode === 'saved' ? '저장한 샵이 없어요' : '검색 결과가 없어요'}</div>}
                   </div>
                 </>
               )}
@@ -367,22 +408,32 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
               {added.length >= 2 && (
                 <div style={{ marginBottom: 16 }}><RouteMiniMap stops={mapStops} /></div>
               )}
-              <Label>루트 순서 ({added.length}) · 드래그로 이동</Label>
+              <Label>루트 순서 ({added.length}) · 손잡이를 꾹 눌러 이동</Label>
               {added.length === 0 ? (
                 <div style={{ padding: 20, textAlign: 'center', color: 'var(--muted)', fontSize: 13, border: '1px dashed var(--border)', borderRadius: 10 }}>1단계에서 샵을 담아주세요</div>
               ) : (
-                <div>
-                  {added.map((s, i) => (
-                    <div key={s.id} draggable onDragStart={() => setDragIndex(i)} onDragOver={(e) => e.preventDefault()} onDrop={() => moveTo(i)} onDragEnd={() => setDragIndex(null)}
-                      style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 4px', borderBottom: '1px solid var(--border)', background: dragIndex === i ? 'var(--surface2)' : 'transparent', cursor: 'grab' }}>
-                      <span style={{ color: 'var(--muted)', flexShrink: 0 }}><Svg size={15}><path d="M4 8h16M4 16h16" /></Svg></span>
+                <div ref={listRef} style={{ touchAction: drag ? 'none' : undefined }}>
+                  {added.map((s, i) => {
+                    const dragging = drag?.from === i
+                    let shift = 0
+                    if (drag && !dragging) {
+                      if (drag.from < drag.to && i > drag.from && i <= drag.to) shift = -drag.h
+                      else if (drag.from > drag.to && i >= drag.to && i < drag.from) shift = drag.h
+                    }
+                    const transform = dragging ? `translateY(${drag!.y - drag!.startY}px)` : (shift ? `translateY(${shift}px)` : undefined)
+                    return (
+                    <div key={s.id} ref={(el) => { rowRefs.current[i] = el }}
+                      onPointerDown={(e) => startDrag(e, i)}
+                      style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 4px', borderBottom: '1px solid var(--border)', background: dragging ? 'var(--accent-l, #FFE6EF)' : 'var(--surface)', boxShadow: dragging ? '0 6px 18px rgba(0,0,0,.16)' : 'none', borderRadius: dragging ? 10 : 0, position: 'relative', zIndex: dragging ? 20 : 1, transform, transition: dragging ? 'none' : 'transform .15s', cursor: 'grab' }}>
+                      <span aria-hidden style={{ color: dragging ? 'var(--accent)' : 'var(--muted)', flexShrink: 0, display: 'inline-flex', alignItems: 'center' }}><Svg size={17}><circle cx="9" cy="6" r="1" /><circle cx="15" cy="6" r="1" /><circle cx="9" cy="12" r="1" /><circle cx="15" cy="12" r="1" /><circle cx="9" cy="18" r="1" /><circle cx="15" cy="18" r="1" /></Svg></span>
                       <span style={{ width: 22, height: 22, borderRadius: 9999, background: 'var(--accent)', color: '#fff', fontSize: 11, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{i + 1}</span>
                       <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{s.name}</span>
-                      <button onClick={() => move(i, -1)} disabled={i === 0} style={{ ...smallBtn, opacity: i === 0 ? 0.3 : 1 }} aria-label="위로"><Svg size={13}><path d="m18 15-6-6-6 6" /></Svg></button>
-                      <button onClick={() => move(i, 1)} disabled={i === added.length - 1} style={{ ...smallBtn, opacity: i === added.length - 1 ? 0.3 : 1 }} aria-label="아래로"><Svg size={13}><path d="m6 9 6 6 6-6" /></Svg></button>
-                      <button onClick={() => remove(s.id)} style={{ ...smallBtn, color: 'var(--red)' }} aria-label="삭제"><Svg size={13}><path d="M6 6l12 12M18 6 6 18" /></Svg></button>
+                      <button onPointerDown={(e) => e.stopPropagation()} onClick={() => move(i, -1)} disabled={i === 0} style={{ ...smallBtn, opacity: i === 0 ? 0.3 : 1 }} aria-label="위로"><Svg size={13}><path d="m18 15-6-6-6 6" /></Svg></button>
+                      <button onPointerDown={(e) => e.stopPropagation()} onClick={() => move(i, 1)} disabled={i === added.length - 1} style={{ ...smallBtn, opacity: i === added.length - 1 ? 0.3 : 1 }} aria-label="아래로"><Svg size={13}><path d="m6 9 6 6 6-6" /></Svg></button>
+                      <button onPointerDown={(e) => e.stopPropagation()} onClick={() => remove(s.id)} style={{ ...smallBtn, color: 'var(--red)' }} aria-label="삭제"><Svg size={13}><path d="M6 6l12 12M18 6 6 18" /></Svg></button>
                     </div>
-                  ))}
+                    )
+                  })}
                 </div>
               )}
               <button onClick={() => setStep(1)} style={{ ...ghostBtn, marginTop: 12, display: 'inline-flex', alignItems: 'center', gap: 5 }}><Svg size={14}><path d="M12 5v14M5 12h14" /></Svg>샵 더 담기</button>
@@ -457,7 +508,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
                 <ReviewRow label="테마" value={themes.length ? themes.join(', ') : '(없음)'} ok={themes.length > 0} />
                 <ReviewRow label="대표 이미지" value={coverUrl ? '있음' : '없음'} ok={!!coverUrl} />
               </div>
-              <button onClick={save} disabled={saving} style={{ width: '100%', padding: 16, borderRadius: 12, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 16, cursor: saving ? 'default' : 'pointer', fontFamily: 'inherit' }}>{saving ? '저장 중...' : (editing ? '변경사항 저장' : '루트 저장하기')}</button>
+              {/* 저장 버튼은 하단 고정 액션 바에 있음 */}
               {editing && (
                 <>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginTop: 14, padding: '12px 14px', background: 'var(--surface2)', borderRadius: 12 }}>
@@ -475,24 +526,52 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
 
           {/* 미완료 안내 */}
           {msg && <div style={{ marginTop: 18, display: 'flex', alignItems: 'center', gap: 7, background: '#FDECEC', border: '1px solid var(--red)', color: 'var(--red)', borderRadius: 10, padding: '10px 14px', fontSize: 13, fontWeight: 700 }}><Svg size={15} color="var(--red)"><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" /></Svg>{msg}</div>}
-          {/* 단계 이동 */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, marginTop: 18, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
-            <button onClick={() => setStep((s) => Math.max(1, s - 1))} disabled={step === 1} style={{ ...ghostBtn, opacity: step === 1 ? 0.4 : 1, display: 'inline-flex', alignItems: 'center', gap: 5 }}><Svg size={15}><path d="m15 18-6-6 6-6" /></Svg>이전</button>
-            {step < 5 ? (
-              <button onClick={() => { if (canNext) { setStep((s) => Math.min(5, s + 1)); setMsg(null) } else { setMsg(curIssue) } }} style={{ padding: '13px 26px', borderRadius: 10, border: 'none', background: canNext ? 'var(--accent)' : 'var(--border)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: 'pointer', fontFamily: 'inherit', display: 'inline-flex', alignItems: 'center', gap: 5 }}>다음 단계<Svg size={15} color="#fff"><path d="m9 18 6-6-6-6" /></Svg></button>
-            ) : <span />}
+          {/* 좋은 루트 만드는 법 — 접이식 한 줄 */}
+          <div style={{ marginTop: 20, border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden' }}>
+            <button onClick={() => setGuideOpen((o) => !o)} style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', minHeight: 48, padding: '0 14px', border: 'none', background: 'var(--surface)', cursor: 'pointer', fontFamily: 'inherit' }}>
+              <MaskIcon name="star" size={16} color="var(--accent)" />
+              <span style={{ flex: 1, textAlign: 'left', fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>좋은 루트 만드는 법</span>
+              <Svg size={16} style={{ transform: guideOpen ? 'rotate(180deg)' : 'none', transition: 'transform .15s' }}><path d="m6 9 6 6 6-6" /></Svg>
+            </button>
+            {guideOpen && (
+              <div style={{ padding: '4px 14px 14px', display: 'flex', flexDirection: 'column', gap: 9, borderTop: '1px solid var(--border)' }}>
+                {guide.map((g) => (
+                  <div key={g.label} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 13.5, color: g.ok ? 'var(--text)' : 'var(--muted)' }}>
+                    <span style={{ width: 18, height: 18, borderRadius: 9999, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: g.ok ? 'var(--accent)' : 'var(--surface2)' }}>{g.ok ? <CheckIcon size={12} color="#fff" /> : <span style={{ width: 5, height: 5, borderRadius: 9999, background: 'var(--muted)' }} />}</span>
+                    {g.label}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
-
       </div>
 
-      {/* 하단 배너 */}
-      <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', background: 'var(--accent-l, #FFE6EF)', borderRadius: 16, padding: '16px 20px' }}>
-        <div>
-          <div style={{ fontSize: 15, fontWeight: 900, color: 'var(--accent)' }}>어렵지 않아요! 5단계만 따라하면 루트 완성</div>
-          <div style={{ fontSize: 13, color: 'var(--text)', marginTop: 2 }}>왼쪽에서 순서대로 채우면 완성돼요.</div>
+      {/* 하단 고정 액션 바 */}
+      <div className="rb-bottom" style={{ background: 'var(--surface)', borderTop: '1px solid var(--border)', padding: '10px 14px calc(10px + env(safe-area-inset-bottom))', marginTop: 20, display: 'flex', gap: 10, zIndex: 30 }}>
+        {step > 1 && (
+          <button onClick={() => setStep((s) => Math.max(1, s - 1))} style={{ ...ghostBtn, minHeight: 50, flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 4, padding: '0 18px' }}><Svg size={15}><path d="m15 18-6-6 6-6" /></Svg>이전</button>
+        )}
+        {step < STEPS.length ? (
+          <button onClick={() => { if (canNext) { setStep((s) => Math.min(STEPS.length, s + 1)); setMsg(null) } else { setMsg(curIssue) } }} disabled={!canNext} style={{ flex: 1, minWidth: 0, minHeight: 50, borderRadius: 12, border: 'none', background: canNext ? 'var(--accent)' : 'var(--border)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: canNext ? 'pointer' : 'default', fontFamily: 'inherit', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{canNext ? nextLabel : (curIssue ?? nextLabel)}</button>
+        ) : (
+          <button onClick={save} disabled={saving} style={{ flex: 1, minWidth: 0, minHeight: 50, borderRadius: 12, border: 'none', background: saving ? 'var(--border)' : 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: saving ? 'default' : 'pointer', fontFamily: 'inherit' }}>{saving ? '저장 중…' : (editing ? '변경사항 저장' : '루트 저장하기')}</button>
+        )}
+      </div>
+
+      {/* 나가기 확인 다이얼로그 */}
+      {showExit && (
+        <div onClick={() => setShowExit(false)} style={{ position: 'fixed', inset: 0, zIndex: 4000, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+          <div onClick={(e) => e.stopPropagation()} style={{ width: '100%', maxWidth: 340, background: 'var(--surface)', borderRadius: 18, padding: '22px 20px 18px' }}>
+            <div style={{ fontSize: 17, fontWeight: 900, marginBottom: 8 }}>루트 만들기를 종료할까요?</div>
+            <div style={{ fontSize: 13.5, color: 'var(--muted)', lineHeight: 1.5, marginBottom: 18 }}>작성 중인 내용이 저장되지 않을 수 있어요.</div>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button onClick={() => setShowExit(false)} style={{ flex: 1, minHeight: 48, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 800, fontSize: 14.5, cursor: 'pointer', fontFamily: 'inherit' }}>계속 작성</button>
+              <button onClick={doExit} style={{ flex: 1, minHeight: 48, borderRadius: 12, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14.5, cursor: 'pointer', fontFamily: 'inherit' }}>나가기</button>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
 
     </div>
   )
@@ -526,7 +605,7 @@ const smallBtn: React.CSSProperties = { padding: '7px 11px', borderRadius: 8, bo
 const ghostBtn: React.CSSProperties = { padding: '9px 15px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }
 const iconBtn: React.CSSProperties = { width: 36, height: 36, borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }
 function modeBtn(active: boolean): React.CSSProperties {
-  return { flex: 1, padding: '10px', borderRadius: 10, border: `1px solid ${active ? 'var(--accent)' : 'var(--border)'}`, background: active ? 'var(--accent)' : 'var(--surface)', color: active ? '#fff' : 'var(--text)', fontWeight: 800, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }
+  return { flex: 1, minWidth: 0, minHeight: 44, padding: '10px 6px', borderRadius: 9, border: 'none', background: active ? 'var(--accent)' : 'transparent', color: active ? '#fff' : 'var(--muted)', fontWeight: 800, fontSize: 13.5, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap', boxShadow: active ? '0 1px 3px rgba(0,0,0,.12)' : 'none' }
 }
 function chip(active: boolean): React.CSSProperties {
   return { padding: '8px 14px', borderRadius: 9999, border: `1px solid ${active ? 'var(--accent)' : 'var(--border)'}`, background: active ? 'var(--accent)' : 'var(--surface)', color: active ? '#fff' : 'var(--text)', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }

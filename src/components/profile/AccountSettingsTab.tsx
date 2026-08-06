@@ -9,14 +9,21 @@ import AppIcon from '@/components/tds/AppIcon'
 
 export default function AccountSettingsTab() {
   const router = useRouter()
-  const { user, profile } = useAuth()
+  const { user, profile, signOut } = useAuth()
   const [nickname, setNickname] = useState(profile?.nickname ?? '')
   const [editing, setEditing] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [deleting, setDeleting] = useState(false)
+  const [loggingOut, setLoggingOut] = useState(false)
   const [confirmText, setConfirmText] = useState('')
+
+  async function handleLogout() {
+    setLoggingOut(true)
+    await signOut()
+    router.push('/')
+  }
 
   const currentYear = new Date().getFullYear()
 
@@ -138,6 +145,26 @@ export default function AccountSettingsTab() {
         <h3 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '10px' }}>이메일</h3>
         <p style={{ fontSize: '14px', color: 'var(--muted)' }}>{user?.email}</p>
       </div>
+
+      <button
+        onClick={handleLogout}
+        disabled={loggingOut}
+        style={{
+          width: '100%', padding: '12px', borderRadius: '10px',
+          border: '1.5px solid var(--border)', background: 'var(--surface)',
+          color: 'var(--text)', fontSize: '14px', fontWeight: 700,
+          cursor: loggingOut ? 'not-allowed' : 'pointer', fontFamily: 'inherit',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+          marginBottom: '32px',
+        }}
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <path d="m16 17 5-5-5-5" />
+          <path d="M21 12H9" />
+        </svg>
+        {loggingOut ? '로그아웃 중...' : '로그아웃'}
+      </button>
 
       <div style={{ height: '1px', background: 'var(--border)', margin: '0 0 32px' }} />
 

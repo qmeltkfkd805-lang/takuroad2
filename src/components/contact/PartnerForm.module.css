@@ -28,7 +28,7 @@
 .doneTitle { font-size: 20px; font-weight: 800; color: var(--text); margin: 0 0 8px; }
 .doneDesc { font-size: 14px; color: var(--muted); margin: 0 0 18px; }
 .doneId { display: inline-block; font-size: 14px; font-weight: 700; color: var(--accent); background: var(--accent-l); padding: 8px 18px; border-radius: 9999px; }
-@media (max-width: 768px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 768px) {
   .row2, .row3 { grid-template-columns: 1fr; }
 }
 

@@ -7,19 +7,19 @@
   margin: 0 auto;
   padding: 24px 24px 72px;
 }
-@media (min-width: 1024px) {
+@media (min-width: 1024px), (hover: hover) and (pointer: fine) {
   .layout { grid-template-columns: minmax(0, 1fr) 320px; align-items: start; }
 }
 
 .main { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 .rail { min-width: 0; }
-@media (min-width: 1024px) {
+@media (min-width: 1024px), (hover: hover) and (pointer: fine) {
   .rail { position: sticky; top: 76px; }
 }
 
 /* Hero + 통계 */
 .heroRow { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
-@media (min-width: 768px) {
+@media (min-width: 768px), (hover: hover) and (pointer: fine) {
   .heroRow { grid-template-columns: minmax(0, 1fr) 260px; }
 }
 

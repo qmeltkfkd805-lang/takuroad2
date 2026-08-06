@@ -4,7 +4,7 @@
   grid-template-columns: 1fr;
   gap: 2px 28px;
 }
-@media (min-width: 560px) {
+@media (min-width: 560px), (hover: hover) and (pointer: fine) {
   .grid { grid-template-columns: 1fr 1fr; }
 }
 

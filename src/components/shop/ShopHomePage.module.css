@@ -1,6 +1,6 @@
 .page { padding: 22px 28px 72px; }
 .layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; max-width: 1360px; margin: 0 auto; }
-@media (min-width: 1180px) { .layout { grid-template-columns: minmax(0, 1fr) 340px; } }
+@media (min-width: 1180px), (hover: hover) and (pointer: fine) { .layout { grid-template-columns: minmax(0, 1fr) 340px; } }
 
 .main { min-width: 0; display: flex; flex-direction: column; gap: 26px; }
 .skeleton { height: 480px; border-radius: 18px; background: var(--surface2); }
@@ -112,7 +112,7 @@
 
 /* ── 아래 2단 ── */
 .twoCol { display: grid; grid-template-columns: minmax(0, 1fr); gap: 26px; }
-@media (min-width: 900px) { .twoCol { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+@media (min-width: 900px), (hover: hover) and (pointer: fine) { .twoCol { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
 
 /* ── 우측 레일 ── */
 .rail { display: flex; flex-direction: column; gap: 16px; min-width: 0; }

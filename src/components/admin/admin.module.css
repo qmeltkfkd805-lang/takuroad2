@@ -21,7 +21,7 @@
 .tabActive { background: var(--accent); color: #fff; }
 
 /* PC(1024+): 왼쪽 세로 사이드바 + 오른쪽 콘텐츠 */
-@media (min-width: 1024px) {
+@media (min-width: 1024px), (hover: hover) and (pointer: fine) {
   .layout {
     display: grid; grid-template-columns: 220px minmax(0, 1fr);
     max-width: 1280px; margin: 0 auto; align-items: start;

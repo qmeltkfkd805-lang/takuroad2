@@ -9,19 +9,25 @@
 .logo img { height: 56px; width: auto; display: block; }
 .logoText { font-size: 19px; font-weight: 900; color: var(--accent); letter-spacing: -0.3px; }
 .headerBar { flex: 1; min-width: 0; }
+/* 📱 마이페이지: 자체 헤더가 있어 모바일에선 전역 상단바 전체 숨김 */
+@media (hover: none) and (pointer: coarse) {
+  .headerHiddenMobile { display: none !important; }
+}
 .body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .main { min-width: 0; flex: 1; min-height: 0; display: flex; flex-direction: column; padding-bottom: calc(58px + env(safe-area-inset-bottom)); }
 .sidebar { display: none; }
 @media (hover: hover) and (pointer: fine) {
   /* PC(마우스 기기)는 창을 줄여도 항상 데스크톱 레이아웃. 폭이 아니라 기기 기준.
-     헤더·본문 전체를 가운데 정렬 (사이드바 포함) — 좌우 여백 자동 */
-  .header { max-width: 1400px; width: 100%; margin: 0 auto; }
+     헤더·본문 전체를 가운데 정렬 (사이드바 포함) — 좌우 여백 자동
+     min-width로 데스크톱 최소 폭(사이드바 240 + 본문 1040)을 고정해,
+     창을 그보다 좁히면 모바일로 안 바뀌고 헤더·본문이 함께 가로 스크롤된다. */
+  .header { min-width: 1280px; max-width: 1400px; width: 100%; margin: 0 auto; }
   .logo { display: flex; width: 240px; }
   .logoText {
     font-family: 'Gaegu', sans-serif; font-size: 25px; font-weight: 700;
     letter-spacing: 0.5px; -webkit-text-stroke: 1px var(--accent);
   }
-  .body { display: grid; grid-template-columns: 240px 1fr; max-width: 1400px; width: 100%; margin: 0 auto; }
+  .body { display: grid; grid-template-columns: 240px 1fr; min-width: 1280px; max-width: 1400px; width: 100%; margin: 0 auto; }
   .main { padding-bottom: 0; min-width: 1040px; }
   .sidebar {
     display: block; position: sticky; top: 72px; height: calc(100dvh - 84px); overflow-y: auto;

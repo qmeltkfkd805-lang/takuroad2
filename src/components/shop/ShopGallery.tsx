@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import AppIcon from '@/components/tds/AppIcon'
 
 interface ShopGalleryProps {
@@ -24,6 +24,19 @@ export default function ShopGallery({
   const hasImages = images.length > 0
   const multi = images.length > 1
 
+  // 드래그(스와이프)로 사진 넘기기
+  const swipe = useRef<{ x: number; y: number; moved: boolean }>({ x: 0, y: 0, moved: false })
+  const onTStart = (e: React.TouchEvent) => { const t = e.touches[0]; swipe.current = { x: t.clientX, y: t.clientY, moved: false } }
+  const onTMove = (e: React.TouchEvent) => { if (Math.abs(e.touches[0].clientX - swipe.current.x) > 8) swipe.current.moved = true }
+  const onTEnd = (e: React.TouchEvent) => {
+    const dx = e.changedTouches[0].clientX - swipe.current.x
+    const dy = e.changedTouches[0].clientY - swipe.current.y
+    if (multi && Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) setIdx(i => Math.min(images.length - 1, i + 1))
+      else setIdx(i => Math.max(0, i - 1))
+    }
+  }
+
   // 라이트박스 열렸을 때 키보드(←/→/Esc)
   useEffect(() => {
     if (!zoom) return
@@ -38,9 +51,11 @@ export default function ShopGallery({
 
   return (
     <>
-    <div style={{ position: 'relative', height: H, background: fallbackBg, overflow: 'hidden' }}>
+    <div
+      onTouchStart={onTStart} onTouchMove={onTMove} onTouchEnd={onTEnd}
+      style={{ position: 'relative', height: H, background: fallbackBg, overflow: 'hidden', touchAction: 'pan-y' }}>
       {hasImages ? (
-        <img src={images[idx]} alt={shopName} onClick={() => setZoom(true)}
+        <img src={images[idx]} alt={shopName} onClick={() => { if (swipe.current.moved) return; setZoom(true) }}
           style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', cursor: 'zoom-in' }} />
       ) : (
         <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 72 }}>

@@ -126,11 +126,40 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
         )}
       </section>
 
-      {/* 🔥 이번 주 가장 활발한 작품 */}
+      {/* 🧭 추천 루트 */}
+      {routes.length > 0 && (
+        <section className={styles.sectionCard}>
+          <SectionHeader
+            title="추천 루트"
+            plainIcon
+            icon={<Icon name="colorroute" size={28} />}
+            actionLabel="전체 보기"
+            onAction={() => { window.location.href = ROUTES.routes }}
+          />
+          <div className={styles.eventRow} {...routesDrag}>
+            {routes.map((r: any) => (
+              <div key={r.id} className={styles.eventItem}>
+                <RouteCard
+                  route={{
+                    id: r.id,
+                    title: r.title,
+                    summary: r.description,
+                    shopCount: r.route_shops?.length ?? 0,
+                    distanceM: r.total_distance_m,
+                    durationMin: r.total_duration_min,
+                  }}
+                  onClick={() => { window.location.href = `/route/${r.share_token}` }}
+                  onStart={() => { window.location.href = `/route/${r.share_token}` }}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 🏪 많이 찾는 굿즈샵 */}
       {eventCards.length > 0 && (
-        <section className={styles.sectionCard}>
+        <section className={routes.length > 0 ? styles.sectionCard + ' ' + styles.tightTop : styles.sectionCard}>
           <SectionHeader
             title="지금 가볼 만한 이벤트"
             plainIcon
@@ -163,7 +192,7 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
 
       {popularShops.length > 0 && (
         <section className={styles.sectionCard}>
-          <SectionHeader title="지금 많이 찾는 샵" plainIcon icon={<Icon name="colorshop" size={28} />} />
+          <SectionHeader title="샵 둘러보기" plainIcon icon={<Icon name="colorshop" size={28} />} />
           {/* 지도 바텀시트와 같은 가로 줄 (200x280 카드) */}
           <div className={styles.shopRow} {...shopsDrag}>
             {popularShops.map(shop => (
@@ -182,36 +211,6 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
         </section>
       )}
 
-      {/* 🧭 추천 루트 */}
-      {routes.length > 0 && (
-        <section className={styles.sectionCard}>
-          <SectionHeader
-            title="추천 루트"
-            plainIcon
-            icon={<Icon name="colorroute" size={28} />}
-            actionLabel="전체 보기"
-            onAction={() => { window.location.href = ROUTES.routes }}
-          />
-          <div className={styles.eventRow} {...routesDrag}>
-            {routes.map((r: any) => (
-              <div key={r.id} className={styles.eventItem}>
-                <RouteCard
-                  route={{
-                    id: r.id,
-                    title: r.title,
-                    summary: r.description,
-                    shopCount: r.route_shops?.length ?? 0,
-                    distanceM: r.total_distance_m,
-                    durationMin: r.total_duration_min,
-                  }}
-                  onClick={() => { window.location.href = `/route/${r.share_token}` }}
-                  onStart={() => { window.location.href = `/route/${r.share_token}` }}
-                />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
     </div>
   )
 }
@@ -228,12 +227,12 @@ function SectionTitle({ children, inset }: { children: React.ReactNode; inset?: 
 }
 
 function Muted({ children }: { children: React.ReactNode }) {
-  return <div style={{ padding: '20px 16px', color: 'var(--muted)', fontSize: '14px' }}>{children}</div>
+  return <div className={styles.mutedFlush} style={{ padding: '20px 16px', color: 'var(--muted)', fontSize: '14px' }}>{children}</div>
 }
 
 function PromptBox({ text, href, cta }: { text: string; href: string; cta: string }) {
   return (
-    <div style={{ margin: '0 16px', padding: '20px', borderRadius: 'var(--r-sm)', background: 'var(--surface2)', textAlign: 'center' }}>
+    <div className={styles.promptFlush} style={{ margin: '0 16px', padding: '20px', borderRadius: 'var(--r-sm)', background: 'var(--surface2)', textAlign: 'center' }}>
       <p style={{ fontSize: '13px', color: 'var(--muted)', margin: '0 0 12px' }}>{text}</p>
       <Link href={href} style={{
         display: 'inline-block', padding: '9px 20px', borderRadius: 'var(--r-sm)',

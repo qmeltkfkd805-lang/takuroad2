@@ -19,6 +19,10 @@ const NO_SHELL = ['/login', '/admin', '/dev', '/test']
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() ?? '/'
   const bare = NO_SHELL.some(p => pathname === p || pathname.startsWith(p + '/'))
+  // 루트 만들기/수정: 작성 전용 화면 (/route/new, /route/[token]/edit)
+  const isRouteBuilder = pathname === '/route/new' || (pathname.startsWith('/route/') && pathname.endsWith('/edit'))
+  const hideBottomNav = pathname === '/community/write' || isRouteBuilder   // 글쓰기·루트작성: 하단 네비 숨김
+  const hideHeaderMobile = pathname.startsWith('/profile') || isRouteBuilder // 마이페이지·루트작성: 모바일 전역 상단바 숨김
   const { user } = useAuth()
   const evalOnceRef = useRef(false)
   useEffect(() => {
@@ -49,7 +53,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <UnlockModal />
     <LevelUpModal />
     <div className={styles.shell}>
-      <header className={styles.header}>
+      <header className={`${styles.header}${hideHeaderMobile ? ' ' + styles.headerHiddenMobile : ''}`}>
         <Link href="/" className={styles.logo}>
           <img src="/brand/takuroad-logo.png" alt="TAKUROAD" />
         </Link>
@@ -59,7 +63,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <aside className={styles.sidebar}><Sidebar /></aside>
         <main className={styles.main}>{children}</main>
       </div>
-      <BottomNav />
+      {!hideBottomNav && <BottomNav />}
     </div>
     </CosmeticProvider>
   )

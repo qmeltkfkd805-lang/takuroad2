@@ -55,6 +55,16 @@ export async function getFollowCounts(userId: string): Promise<{ followers: numb
   return { followers: a.count ?? 0, following: b.count ?? 0 }
 }
 
+/** 내가 팔로우한 유저 id 목록 */
+export async function getFollowingIds(userId: string): Promise<string[]> {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('user_follows')
+    .select('following_id')
+    .eq('follower_id', userId)
+  return (data ?? []).map((r: any) => r.following_id)
+}
+
 /** 이 사람을 팔로우하면서 알림을 켠 사람들 (새 글 알림 보낼 대상) */
 export async function getNotifyFollowerIds(authorId: string): Promise<string[]> {
   const supabase = createClient()

@@ -36,7 +36,7 @@
 .formSection { padding: 48px 0; scroll-margin-top: 80px; }
 .formPlaceholder { text-align: center; color: var(--muted); font-size: 14px; padding: 40px; background: var(--surface2); border-radius: 16px; }
 
-@media (max-width: 768px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 768px) {
   .heroTitle { font-size: 30px; }
   .provideGrid { grid-template-columns: repeat(2, 1fr); }
   .typeGrid { grid-template-columns: 1fr; }

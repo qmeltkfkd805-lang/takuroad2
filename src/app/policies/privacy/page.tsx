@@ -8,7 +8,7 @@ export default function Page() {
     <PolicyLayout
       title="개인정보처리방침"
       description="타쿠로드가 어떤 정보를 모으고 어떻게 다루는지 알려드립니다."
-      updated="2026년 7월 23일"
+      updated="2026년 8월 4일"
     >
       <p>
         타쿠로드는 이용자의 개인정보를 소중하게 생각합니다. 어떤 정보를 어떤 목적으로 수집하고,
@@ -49,14 +49,20 @@ export default function Page() {
 
       <h2>4. 제3자 서비스와 광고</h2>
       <p>
-        타쿠로드는 서비스 운영을 위해 외부 서비스를 이용할 수 있습니다. 이용 현황 분석을 위한 통계 도구를
-        도입하거나 Google AdSense 등 광고 서비스를 이용할 수 있습니다.
+        타쿠로드는 서비스 운영과 수익화를 위해 <strong>Google AdSense</strong>를 포함한 제3자 광고 서비스와,
+        이용 현황 분석을 위한 통계 도구를 이용할 수 있습니다.
       </p>
       <p>
-        이러한 서비스는 맞춤형 콘텐츠나 광고를 제공하기 위해 쿠키를 이용해 방문 정보를 수집할 수
-        있습니다. 각 서비스의 데이터 처리 방식은 해당 사업자의 정책을 따르며, 이용자는 사업자가
-        제공하는 설정을 통해 맞춤 광고를 거부할 수 있습니다.
+        Google을 포함한 제3자 광고 사업자는 이용자가 이 사이트 및 다른 사이트를 방문한 기록을 바탕으로 광고를
+        게재하기 위해 쿠키(광고 쿠키 포함)를 사용할 수 있습니다. 이렇게 수집·이용되는 정보는 각 사업자의
+        개인정보처리방침에 따라 처리되며, 타쿠로드는 해당 정보를 직접 저장하지 않습니다.
       </p>
+      <p>맞춤형 광고를 원하지 않는 경우 아래에서 설정을 변경하거나 거부할 수 있습니다.</p>
+      <ul>
+        <li>Google 광고 설정: <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer">google.com/settings/ads</a></li>
+        <li>제3자 맞춤 광고 일괄 거부: <a href="https://www.aboutads.info/choices" target="_blank" rel="noopener noreferrer">aboutads.info/choices</a></li>
+        <li>Google의 광고 기술 및 데이터 이용 안내: <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">policies.google.com/technologies/ads</a></li>
+      </ul>
 
       <h2>5. 쿠키</h2>
       <p>

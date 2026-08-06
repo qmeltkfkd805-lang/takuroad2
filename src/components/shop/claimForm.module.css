@@ -41,6 +41,6 @@
 .doneDesc { font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0 0 24px; }
 .doneBtn { display: inline-block; padding: 13px 32px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 800; border-radius: 9999px; text-decoration: none; }
 
-@media (max-width: 768px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 768px) {
   .row2 { grid-template-columns: 1fr; }
 }

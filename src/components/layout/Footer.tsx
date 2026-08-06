@@ -4,13 +4,14 @@ import Link from 'next/link'
 const CONTACT_EMAIL = 'contact@takuroad.kr'
 
 const LINKS: { label: string; href: string }[] = [
+  { label: '서비스 소개', href: '/about' },
   { label: '공지사항', href: '/support/notice' },
   { label: '문의하기', href: '/support/contact' },
   { label: '제휴 문의', href: '/support/partnership' },
-  { label: '이용약관', href: '/policy/terms' },
-  { label: '개인정보처리방침', href: '/policy/privacy' },
-  { label: '저작권 안내', href: '/policy/copyright' },
-  { label: '권리자 문의', href: '/policy/rights' },
+  { label: '이용약관', href: '/policies/terms' },
+  { label: '개인정보처리방침', href: '/policies/privacy' },
+  { label: '저작권 안내', href: '/policies/copyright' },
+  { label: '권리자 문의', href: '/policies/rights' },
 ]
 
 export default function Footer() {

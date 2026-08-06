@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
+import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { ROUTES } from '@/lib/constants/routes'
 import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
@@ -14,9 +16,11 @@ import {
   CommunityStats, TrendingTag,
 } from '@/types/community-post'
 import { PostCard } from '@/components/community/PostUI'
+import { getFollowingIds } from '@/services/followService'
+import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import AppIcon from '@/components/tds/AppIcon'
 
-type Scope = 'all' | 'popular' | 'mine'
+type Scope = 'all' | 'popular' | 'mine' | 'subscribed' | 'worksub'
 type View = 'list' | 'grid'
 type Sel = Board | 'all'
 type Tag = { id: string; name: string; slug: string }
@@ -35,6 +39,9 @@ function timeAgo(iso: string): string {
 export default function CommunityPage() {
   const { user } = useAuth()
   const router = useRouter()
+  const isDesktop = useIsDesktop()
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [creationOpen, setCreationOpen] = useState(false)   // 서랍: 창작게시판 아코디언
   const [board, setBoard] = useState<Sel>('all')
   // 카테고리 칸은 '전체'에서만 의미가 있다 (게시판을 고르면 전부 같은 카테고리)
   const showCat = board === 'all'
@@ -73,6 +80,57 @@ export default function CommunityPage() {
 
   const load = useCallback(async () => {
     setLoading(true)
+    // 구독 = 내가 팔로우한 유저의 글만 (커뮤니티 서비스에 필터가 없어 클라이언트에서 걸러낸다)
+    if (scope === 'subscribed') {
+      if (!user) { setPosts([]); setNotices([]); setLoading(false); setPage(1); return }
+      const [all, ntc, followingIds] = await Promise.all([
+        getPosts(board, sort, user.id, { search, tagId: tagFilter?.id }),
+        getNotices(board),
+        getFollowingIds(user.id),
+      ])
+      const set = new Set(followingIds)
+      setPosts(all.filter(p => p.author && set.has(p.author.id)))
+      setNotices(ntc); setLoading(false); setPage(1)
+      return
+    }
+    // 작품구독 = 내가 최애·관심으로 저장한 작품이 태그된, 남이 올린 글
+    if (scope === 'worksub') {
+      if (!user) { setPosts([]); setNotices([]); setLoading(false); setPage(1); return }
+      const [all, ntc, rels] = await Promise.all([
+        getPosts(board, sort, user.id, { search, tagId: tagFilter?.id }),
+        getNotices(board),
+        getMyWorkRelationships(user.id),
+      ])
+      const myWorkIds = new Set(rels.filter(r => r.affinity).map(r => r.work.id))
+      // 구독(최애·관심)한 작품이 태그된 글. tag_ids뿐 아니라 대표 태그(tag_id)·작품(work)도 함께 매칭
+      setPosts(all.filter(p => {
+        const ids = [...(p.tagIds ?? []), p.tagId, p.work?.id].filter(Boolean) as string[]
+        return ids.some(id => myWorkIds.has(id))
+      }))
+      setNotices(ntc); setLoading(false); setPage(1)
+      return
+    }
+    // 인기글 = 종합 점수(좋아요·3 + 댓글·2 + 조회·0.1) 상위. 참여 있는 글만(점수 0 초과)
+    if (scope === 'popular') {
+      const [all, ntc] = await Promise.all([
+        getPosts(board, 'latest', user?.id, { search, tagId: tagFilter?.id }),
+        getNotices(board),
+      ])
+      const popScore = (p: CommunityPost) => p.likeCount * 3 + p.commentCount * 2 + p.viewCount * 0.1
+      const ranked = all.filter(p => popScore(p) > 0).sort((a, b) => popScore(b) - popScore(a))
+      setPosts(ranked); setNotices(ntc); setLoading(false); setPage(1)
+      return
+    }
+    // 📱 모바일: 팬창작물(부모)을 보면 팬아트(세부) 글도 함께 — 창작게시판 전체. 팬아트 선택 시엔 팬아트만.
+    if (!isDesktop && board === 'fancraft') {
+      const [all, ntc] = await Promise.all([
+        getPosts('all', sort, user?.id, { mineOnly: scope === 'mine', search, tagId: tagFilter?.id }),
+        getNotices(board),
+      ])
+      setPosts(all.filter(p => p.board === 'fancraft' || p.board === 'fanart'))
+      setNotices(ntc); setLoading(false); setPage(1)
+      return
+    }
     const [list, ntc] = await Promise.all([
       getPosts(board, scope === 'popular' ? 'popular' : sort, user?.id, {
         mineOnly: scope === 'mine', search, tagId: tagFilter?.id,
@@ -80,7 +138,7 @@ export default function CommunityPage() {
       getNotices(board),
     ])
     setPosts(list); setNotices(ntc); setLoading(false); setPage(1)
-  }, [board, sort, scope, search, tagFilter?.id, user?.id])
+  }, [board, sort, scope, search, tagFilter?.id, user?.id, isDesktop])
 
   useEffect(() => { load() }, [load])
 
@@ -111,15 +169,157 @@ export default function CommunityPage() {
     ? sortedTags.filter(t => t.name.toLowerCase().includes(tagQuery.trim().toLowerCase())).slice(0, 30)
     : sortedTags.slice(0, 30)
 
+  // 📱 모바일: 팬톡(네이트 판) 스타일 — 카테고리 탭 + 썸네일 리스트 + 서랍. PC는 아래 기존 화면 그대로.
+  if (!isDesktop) {
+    const boardLabel = board === 'all' ? '커뮤니티' : (BOARD_LABEL[board] ?? '커뮤니티')
+    const tagNameById = new Map(allTags.map(t => [t.id, t.name]))
+    const namesOf = (p: CommunityPost) => (p.tagIds ?? []).map(id => tagNameById.get(id)).filter((n): n is string => !!n)
+    const rows = paged.map(p => <PannRow key={p.id} p={p} showBoard={board === 'all' || board === 'fancraft'} onOpen={openPost} tagNames={namesOf(p)} />)
+    const mainBoards = BOARDS.filter(b => !CREATION_BOARDS.includes(b.value))   // 창작게시판(팬아트·팬창작물) 제외한 일반 게시판
+    const mobTabs: { label: string; active: boolean; on: () => void }[] = [
+      { label: '전체',    active: board === 'all' && scope === 'all',        on: () => { setBoard('all'); setScope('all') } },
+      { label: '인기글',  active: scope === 'popular',                        on: () => { setBoard('all'); setScope('popular') } },
+      { label: '팬창작물', active: board === 'fancraft' && scope === 'all',   on: () => { setBoard('fancraft'); setScope('all') } },
+      { label: '작품구독', active: scope === 'worksub',                        on: () => { setBoard('all'); setScope('worksub') } },
+      { label: '팔로잉',   active: scope === 'subscribed',                     on: () => { setBoard('all'); setScope('subscribed') } },
+    ]
+
+    return (
+      <div style={{ background: 'var(--bg)', minHeight: '100%', paddingBottom: 24 }}>
+        <style>{`.taku-noscroll::-webkit-scrollbar{display:none}.taku-noscroll{scrollbar-width:none}`}</style>
+
+        {/* 헤더 — 햄버거 · 제목 · 글쓰기 */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 12px', background: 'var(--surface)', borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, zIndex: 20 }}>
+          <button onClick={() => setDrawerOpen(true)} aria-label="카테고리" style={iconBtn}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+          </button>
+          <div style={{ flex: 1, fontSize: 17, fontWeight: 900 }}>{boardLabel}</div>
+          <button onClick={() => setTagOpen(o => !o)} aria-label="작품 필터" style={{ ...iconBtn, ...(tagFilter || tagOpen ? { background: 'var(--accent)', color: '#fff' } : {}) }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 5h18l-7 8v6l-4-2v-4z" /></svg>
+          </button>
+          <button onClick={openWrite} aria-label="글쓰기" style={{ ...iconBtn, background: 'var(--accent)', color: '#fff' }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
+          </button>
+        </div>
+
+        {/* 카테고리 탭 — 전체 · 인기글 · 팬창작물 · 구독 (나머지 게시판은 왼쪽 서랍에) */}
+        <div className="taku-noscroll" style={{ display: 'flex', overflowX: 'auto', background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
+          {mobTabs.map(t => <MobTab key={t.label} label={t.label} active={t.active} onClick={t.on} />)}
+        </div>
+
+        {/* 작품 필터 — 필터 버튼 누르면 검색창만 뜨고, 입력하면 아래에 작품 목록 */}
+        {tagOpen && (
+          <div style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)', padding: '10px 16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
+              <input autoFocus value={tagQuery} onChange={e => setTagQuery(e.target.value)} placeholder="작품 검색" style={{ flex: 1, border: 'none', background: 'none', outline: 'none', fontSize: 14, color: 'var(--text)', fontFamily: 'inherit' }} />
+              <button onClick={() => { setTagOpen(false); setTagQuery('') }} aria-label="닫기" style={{ border: 'none', background: 'none', color: 'var(--muted)', cursor: 'pointer', display: 'flex' }}><AppIcon name="close" size={13} /></button>
+            </div>
+            {tagQuery.trim() && (
+              <div className="taku-noscroll" style={{ marginTop: 8, maxHeight: 280, overflowY: 'auto' }}>
+                {filteredTags.map(t => (
+                  <button key={t.id} onClick={() => { setTagFilter(t); setTagOpen(false); setTagQuery('') }} style={{ display: 'block', width: '100%', textAlign: 'left', border: 'none', background: tagFilter?.id === t.id ? 'var(--accent-l, rgba(232,0,111,.08))' : 'none', color: tagFilter?.id === t.id ? 'var(--accent)' : 'var(--text)', padding: '11px 10px', borderRadius: 8, fontSize: 14.5, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>{t.name}</button>
+                ))}
+                {filteredTags.length === 0 && <div style={{ padding: '14px 10px', fontSize: 13.5, color: 'var(--muted)' }}>결과 없음</div>}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* 작품 필터 활성 칩 */}
+        {tagFilter && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 16px', background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
+            <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent)' }}># {tagFilter.name}</span>
+            <button onClick={() => setTagFilter(null)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, border: 'none', background: 'var(--surface2)', color: 'var(--muted)', borderRadius: 9999, padding: '4px 10px', fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>필터 해제 <AppIcon name="close" size={11} /></button>
+          </div>
+        )}
+
+        {/* 공지 */}
+        {notices.length > 0 && (
+          <div style={{ background: 'var(--surface)' }}>
+            {notices.map(n => (
+              <div key={n.id} onClick={() => openPost(n)} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', borderBottom: '1px solid var(--border)', cursor: 'pointer' }}>
+                <span style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', border: '1px solid var(--accent)', borderRadius: 9999, padding: '2px 8px', flexShrink: 0 }}>공지</span>
+                <span style={{ fontSize: 14, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{n.title || '(제목 없음)'}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* 리스트 */}
+        <div style={{ background: 'var(--surface)' }}>
+          {loading ? (
+            <p style={{ color: 'var(--muted)', padding: '32px 16px', textAlign: 'center' }}>불러오는 중…</p>
+          ) : posts.length === 0 ? (
+            <div style={{ padding: '48px 20px', textAlign: 'center', color: 'var(--muted)' }}>
+              <p style={{ margin: '0 0 16px', fontSize: 14 }}>{
+                scope === 'subscribed'
+                  ? (user ? '팔로우한 유저의 글이 아직 없어요.' : '로그인하고 유저를 팔로우하면 여기에 모여요.')
+                  : scope === 'worksub'
+                    ? (user ? '최애·관심 작품이 태그된 글이 아직 없어요.' : '로그인하고 최애·관심 작품을 등록하면 여기에 모여요.')
+                    : scope === 'popular'
+                      ? '아직 인기글이 없어요. 추천·댓글·조회가 쌓이면 올라와요.'
+                      : (search || tagFilter ? '조건에 맞는 글이 없어요.' : '아직 글이 없어요. 첫 글을 남겨보세요!')
+              }</p>
+              {scope !== 'subscribed' && scope !== 'popular' && scope !== 'worksub' && <button onClick={openWrite} style={{ padding: '11px 18px', borderRadius: 11, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>게시글 작성</button>}
+            </div>
+          ) : rows}
+        </div>
+
+        {/* 페이지 */}
+        {!loading && totalPages > 1 && (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 6, margin: '20px 0' }}>
+            <PageBtn disabled={page === 1} onClick={() => setPage(p => Math.max(1, p - 1))}>‹</PageBtn>
+            {pageNumbers(page, totalPages).map((n, i) => n === '…'
+              ? <span key={i} style={{ color: 'var(--muted)', padding: '0 4px' }}>…</span>
+              : <PageBtn key={i} active={n === page} onClick={() => setPage(n as number)}>{n}</PageBtn>)}
+            <PageBtn disabled={page === totalPages} onClick={() => setPage(p => Math.min(totalPages, p + 1))}>›</PageBtn>
+          </div>
+        )}
+
+        {/* 왼쪽 서랍 — 카테고리 */}
+        {drawerOpen && typeof document !== 'undefined' && createPortal(
+          <div onClick={() => setDrawerOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,.45)' }}>
+            <div onClick={e => e.stopPropagation()} style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '80%', maxWidth: 320, background: 'var(--surface)', boxShadow: '2px 0 24px rgba(0,0,0,.2)', overflowY: 'auto' }}>
+              <div style={{ padding: '18px 18px 12px', fontSize: 18, fontWeight: 900 }}>커뮤니티</div>
+              <DrawerGroup label="게시판">
+                <DrawerItem label="전체" active={board === 'all'} onClick={() => { setBoard('all'); setScope('all'); setDrawerOpen(false) }} />
+                {mainBoards.map(b => <DrawerItem key={b.value} label={b.label} active={board === b.value} onClick={() => { setBoard(b.value); setScope('all'); setDrawerOpen(false) }} />)}
+                {/* 창작게시판 — 누르면 세부(팬아트·팬창작물) 펼침 */}
+                <button onClick={() => setCreationOpen(o => !o)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', textAlign: 'left', border: 'none', background: 'none', color: (board === 'fanart' || board === 'fancraft') ? 'var(--accent)' : 'var(--text)', padding: '12px 18px', fontSize: 15, fontWeight: (board === 'fanart' || board === 'fancraft') ? 800 : 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+                  창작게시판
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: creationOpen ? 'rotate(180deg)' : 'none', transition: 'transform .15s' }}><path d="m6 9 6 6 6-6" /></svg>
+                </button>
+                {creationOpen && (
+                  <>
+                    <DrawerItem sub label="팬아트" active={board === 'fanart'} onClick={() => { setBoard('fanart'); setScope('all'); setDrawerOpen(false) }} />
+                    <DrawerItem sub label="팬창작물" active={board === 'fancraft'} onClick={() => { setBoard('fancraft'); setScope('all'); setDrawerOpen(false) }} />
+                  </>
+                )}
+              </DrawerGroup>
+              <DrawerGroup label="보기">
+                <DrawerItem label="인기글" active={scope === 'popular'} onClick={() => { setBoard('all'); setScope('popular'); setDrawerOpen(false) }} />
+                <DrawerItem label="작품구독" active={scope === 'worksub'} onClick={() => { setBoard('all'); setScope('worksub'); setDrawerOpen(false) }} />
+                <DrawerItem label="팔로잉" active={scope === 'subscribed'} onClick={() => { setBoard('all'); setScope('subscribed'); setDrawerOpen(false) }} />
+                <DrawerItem label="내 게시글" active={scope === 'mine'} onClick={() => { setBoard('all'); setScope('mine'); setDrawerOpen(false) }} />
+              </DrawerGroup>
+            </div>
+          </div>,
+          document.body,
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className="taku-comm-min" style={{ padding: '24px 32px 72px' }}>
       <style>{`
         .taku-comm{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
-        @media (max-width:1024px){.taku-comm{grid-template-columns:1fr}.taku-comm-side{display:none}}
+        @media (hover:none) and (pointer:coarse) and (max-width:1024px){.taku-comm{grid-template-columns:1fr}.taku-comm-side{display:none}}
         .taku-noscroll::-webkit-scrollbar{display:none}.taku-noscroll{scrollbar-width:none}
                 .taku-prow:hover{background:var(--surface2)}
         .taku-comm-min{min-width:1040px}
-        @media (max-width:1024px){.taku-comm-min{min-width:0}}
+        @media (hover:none) and (pointer:coarse) and (max-width:1024px){.taku-comm-min{min-width:0}}
       `}</style>
 
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, marginBottom: 18, flexWrap: 'wrap' }}>
@@ -304,8 +504,6 @@ export default function CommunityPage() {
               <Stat icon="user" color="#3B9BE8" label="온라인 유저" value="—" />
             </div>
           </SideCard>
-
-          <AdCard />
         </aside>
       </div>
 
@@ -320,6 +518,67 @@ const spoilerBadge: React.CSSProperties = {
 const flairBadge: React.CSSProperties = {
   display: 'inline-block', fontSize: 11, fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l, rgba(232,0,111,.12))',
   padding: '1px 7px', borderRadius: 5, marginRight: 6, verticalAlign: 'middle',
+}
+
+/* ── 📱 모바일 팬톡 스타일 전용 ── */
+const iconBtn: React.CSSProperties = {
+  width: 38, height: 38, borderRadius: 10, border: 'none', background: 'var(--surface2)',
+  color: 'var(--text)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+  cursor: 'pointer', flexShrink: 0, fontFamily: 'inherit',
+}
+
+function MobTab({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button onClick={onClick} style={{ padding: '12px 14px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, fontWeight: active ? 800 : 600, color: active ? 'var(--accent)' : 'var(--muted)', borderBottom: `2.5px solid ${active ? 'var(--accent)' : 'transparent'}`, whiteSpace: 'nowrap', flexShrink: 0 }}>{label}</button>
+  )
+}
+
+function PannRow({ p, showBoard, onOpen, tagNames }: { p: CommunityPost; showBoard: boolean; onOpen: (p: CommunityPost) => void; tagNames?: string[] }) {
+  const thumb = p.images?.[0]
+  return (
+    <div onClick={() => onOpen(p)} style={{ display: 'flex', gap: 12, padding: '13px 16px', borderBottom: '1px solid var(--border)', cursor: 'pointer', alignItems: 'flex-start' }}>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.36, color: 'var(--text)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          {p.flair && <span style={flairBadge}>{p.flair}</span>}
+          {p.isSpoiler && <span style={spoilerBadge}>스포주의</span>}
+          {p.title || '(제목 없음)'}
+          {p.commentCount > 0 && <span style={{ color: 'var(--accent)', fontWeight: 800, marginLeft: 5 }}>({p.commentCount})</span>}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6, fontSize: 12, color: 'var(--muted)' }}>
+          {showBoard && <><span style={{ color: 'var(--accent)', fontWeight: 700 }}>{BOARD_LABEL[p.board]}</span><span>·</span></>}
+          <span>조회 {p.viewCount}</span><span>·</span><span>추천 {p.likeCount}</span>
+        </div>
+        {tagNames && tagNames.length > 0 && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginTop: 8 }}>
+            {tagNames.slice(0, 5).map((n, i) => (
+              <span key={i} style={{ fontSize: 11.5, fontWeight: 600, color: 'var(--muted)', border: '1px solid var(--border)', borderRadius: 8, padding: '3px 9px', maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{n}</span>
+            ))}
+          </div>
+        )}
+      </div>
+      {thumb && (
+        <div style={{ width: 64, height: 64, borderRadius: 10, overflow: 'hidden', flexShrink: 0, background: 'var(--surface2)' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={thumb} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        </div>
+      )}
+    </div>
+  )
+}
+
+function DrawerGroup({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div style={{ borderTop: '1px solid var(--border)', padding: '6px 0' }}>
+      <div style={{ padding: '10px 18px 4px', fontSize: 12, fontWeight: 800, color: 'var(--muted)' }}>{label}</div>
+      {children}
+    </div>
+  )
+}
+
+function DrawerItem({ label, active, onClick, sub }: { label: string; active: boolean; onClick: () => void; sub?: boolean }) {
+  return (
+    <button onClick={onClick} style={{ display: 'block', width: '100%', textAlign: 'left', border: 'none', background: active ? 'var(--accent-l, rgba(232,0,111,.08))' : 'none', color: active ? 'var(--accent)' : (sub ? 'var(--muted)' : 'var(--text)'), padding: sub ? '3px 18px 10px 34px' : '12px 18px', marginTop: sub ? -8 : undefined, fontSize: sub ? 14 : 15, fontWeight: active ? 800 : 600, cursor: 'pointer', fontFamily: 'inherit' }}>{sub ? `ㄴ ${label}` : label}</button>
+  )
 }
 
 function BoardTab({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
@@ -349,18 +608,6 @@ function SideCard({ title, children }: { title: string; children: React.ReactNod
     <div style={{ border: '1px solid var(--border)', borderRadius: 16, background: 'var(--surface)', padding: '16px 18px' }}>
       <div style={{ fontSize: 15, fontWeight: 900, marginBottom: 14 }}>{title}</div>
       {children}
-    </div>
-  )
-}
-
-function AdCard() {
-  useEffect(() => {
-    try { ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({}) } catch { /* noop */ }
-  }, [])
-  return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 16, background: 'var(--surface)', padding: 12, overflow: 'hidden' }}>
-      <div style={{ fontSize: 10.5, color: 'var(--muted)', textAlign: 'right', marginBottom: 4 }}>광고</div>
-      <ins className="adsbygoogle" style={{ display: 'block' }} data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true" />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { EventHomeItem, getEventHomeItems, getPastEventItems } from '@/services/eventHomeService'
@@ -156,22 +156,12 @@ export default function EventCalendarPage() {
   return (
     <div style={{ maxWidth: 1400, margin: '0 auto', padding: '20px 24px 40px' }}>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap" />
-      <style>{`.evcal-wrap{display:flex;gap:24px;align-items:flex-start}.evcal-cal{flex:1;min-width:0}.evcal-side{width:400px;flex-shrink:0}@media (max-width:980px){.evcal-wrap{flex-direction:column}.evcal-side{width:100%}}`}</style>
+      <style>{`.evcal-wrap{display:flex;gap:24px;align-items:flex-start}.evcal-cal{flex:1;min-width:0}.evcal-side{width:400px;flex-shrink:0}@media (hover:none) and (pointer:coarse) and (max-width:980px){.evcal-wrap{flex-direction:column}.evcal-side{width:100%}}`}</style>
 
-      {/* 상단: 작품 드롭다운 + 초기화 (전체/저장 탭은 달력 헤더로 이동) */}
+      {/* 상단: 작품 검색 + 초기화 (전체/저장 탭은 달력 헤더로 이동) */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 18 }}>
         <div style={{ flex: 1 }} />
-        <div style={{ position: 'relative' }}>
-          <select
-            value={workFilter}
-            onChange={e => setWorkFilter(e.target.value)}
-            style={{ appearance: 'none', WebkitAppearance: 'none', minWidth: 260, padding: '11px 40px 11px 16px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontSize: 14, fontWeight: 700, fontFamily: 'inherit', cursor: 'pointer' }}
-          >
-            <option value="">작품 전체</option>
-            {workOptions.map(w => <option key={w.id} value={w.id}>{w.name}</option>)}
-          </select>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}><path d="m6 9 6 6 6-6" /></svg>
-        </div>
+        <WorkSearch options={workOptions} value={workFilter} onChange={setWorkFilter} />
         <button onClick={resetFilters} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '11px 14px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--muted)', fontSize: 13.5, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54z" /></svg>
           필터 초기화
@@ -368,6 +358,64 @@ export default function EventCalendarPage() {
         <Guide icon="cursor" title="상세 보기" desc="날짜를 클릭하면 해당 날짜의 이벤트를 볼 수 있어요." />
         <Guide icon="heart" title="저장하기" desc="이벤트 카드의 ♡를 눌러 내 저장 이벤트에 추가하세요." />
       </div>
+    </div>
+  )
+}
+
+// 작품 검색 콤보박스 — 타이핑하면 실시간으로 목록이 좁혀지고, 클릭하면 그 작품만 필터
+function WorkSearch({ options, value, onChange }: { options: { id: string; name: string }[]; value: string; onChange: (id: string) => void }) {
+  const [query, setQuery] = useState('')
+  const [open, setOpen] = useState(false)
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const selectedName = options.find(o => o.id === value)?.name ?? ''
+
+  useEffect(() => {
+    if (!open) return
+    const onDoc = (e: MouseEvent) => { if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false) }
+    document.addEventListener('mousedown', onDoc)
+    return () => document.removeEventListener('mousedown', onDoc)
+  }, [open])
+
+  const q = query.trim().toLowerCase()
+  const list = q ? options.filter(o => o.name.toLowerCase().includes(q)) : options
+
+  const pick = (id: string) => { onChange(id); setQuery(''); setOpen(false) }
+  const clear = () => { onChange(''); setQuery(''); setOpen(false) }
+
+  const optStyle = (on: boolean): React.CSSProperties => ({
+    display: 'block', width: '100%', textAlign: 'left', padding: '9px 12px', borderRadius: 9,
+    border: 'none', background: on ? 'var(--accent-l, rgba(232,0,111,.08))' : 'transparent',
+    color: on ? 'var(--accent)' : 'var(--text)', fontSize: 13.5, fontWeight: on ? 800 : 600,
+    cursor: 'pointer', fontFamily: 'inherit',
+  })
+
+  return (
+    <div ref={wrapRef} style={{ position: 'relative', minWidth: 260 }}>
+      <input
+        value={open ? query : selectedName}
+        onChange={e => { setQuery(e.target.value); if (!open) setOpen(true) }}
+        onFocus={() => { setOpen(true); setQuery('') }}
+        placeholder="작품 검색"
+        style={{ width: '100%', padding: '11px 38px 11px 38px', borderRadius: 12, border: `1px solid ${open ? 'var(--accent)' : 'var(--border)'}`, background: 'var(--surface)', color: 'var(--text)', fontSize: 14, fontWeight: 700, fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }}
+      />
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
+      {value ? (
+        <button onClick={clear} aria-label="작품 필터 해제" style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', border: 'none', background: 'none', cursor: 'pointer', color: 'var(--muted)', padding: 3, display: 'inline-flex' }}>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
+        </button>
+      ) : (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}><path d="m6 9 6 6 6-6" /></svg>
+      )}
+      {open && (
+        <div style={{ position: 'absolute', zIndex: 30, top: 'calc(100% + 6px)', left: 0, right: 0, maxHeight: 300, overflowY: 'auto', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 10px 30px rgba(0,0,0,.14)', padding: 6 }}>
+          <button onClick={() => pick('')} style={optStyle(value === '')}>작품 전체</button>
+          {list.length === 0 ? (
+            <div style={{ padding: '10px 12px', fontSize: 13, color: 'var(--muted)' }}>검색 결과가 없어요.</div>
+          ) : list.map(o => (
+            <button key={o.id} onClick={() => pick(o.id)} style={optStyle(o.id === value)}>{o.name}</button>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

@@ -44,12 +44,17 @@
 .dot { width: 7px; height: 7px; border-radius: var(--r-full); border: none; background: rgba(0,0,0,.2); cursor: pointer; padding: 0; }
 .dotActive { background: #fff; width: 18px; }
 
-@media (max-width: 640px) {
-  .slide { min-height: 300px; padding: 26px 24px; }
-  .title { font-size: 25px; }
+@media (hover: none) and (pointer: coarse) and (max-width: 640px) {
+  .wrap { padding: 0 0 12px; }                       /* 위쪽 여백 제거 — 헤더 바로 아래 붙게 */
+  .viewport { border-radius: 0; }
+  .slide { min-height: 190px; padding: 20px; border: none; border-radius: 0; }  /* 좌우 꽉 차고 높이 줄인 히어로 */
+  .title { font-size: 21px; line-height: 1.25; }
+  .subtitle { font-size: 13.5px; margin-top: 8px; }
+  .ctaRow { margin-top: 14px; }
   .arrow { display: none; }
-  .ctaPrimary, .ctaSecondary { padding: 11px 18px; font-size: 14px; }
-  .ctaSolo { padding: 13px 26px; font-size: 15px; }
+  .ctaPrimary, .ctaSecondary { padding: 10px 16px; font-size: 13.5px; }
+  .ctaSolo { padding: 11px 22px; font-size: 14px; }
+  .dots { bottom: 12px; }
 }
 
 

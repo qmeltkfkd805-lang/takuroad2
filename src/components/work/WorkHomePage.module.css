@@ -87,7 +87,7 @@
 .layout { max-width: 1200px; margin: 0 auto; }
 .main { min-width: 0; padding-bottom: 40px; }
 .adCol { display: none; }
-@media (min-width: 1024px) {
+@media (min-width: 1024px), (hover: hover) and (pointer: fine) {
   .layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; padding: 0 20px; }
   .adCol { display: block; padding-top: 18px; }
   .section { padding-left: 0; padding-right: 0; }
@@ -140,7 +140,7 @@
 
 /* === 본문 시안형: 섹션 카드박스 + 그리드로 폭 꽉 채우기 === */
 .layout { max-width: 1400px; }
-@media (min-width: 1024px) {
+@media (min-width: 1024px), (hover: hover) and (pointer: fine) {
   .layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; padding: 20px; }
 }
 
@@ -167,7 +167,7 @@
 }
 
 /* === 본문 더 꽉 채우기: 광고칸 좁히고 카드 작게 === */
-@media (min-width: 1024px) {
+@media (min-width: 1024px), (hover: hover) and (pointer: fine) {
   .layout { grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; padding: 20px 24px; }
 }
 .rowScroll { grid-template-columns: repeat(auto-fill, minmax(178px, 1fr)); gap: 14px; }
@@ -199,7 +199,7 @@
 
 /* === 레이아웃: 가운데 정렬 제거, 본문 왼쪽부터 넓게 === */
 .layout { max-width: none !important; margin: 0 !important; }
-@media (min-width: 1024px) {
+@media (min-width: 1024px), (hover: hover) and (pointer: fine) {
   .layout { grid-template-columns: minmax(0, 1fr) 300px !important; gap: 24px; padding: 20px 28px !important; }
 }
 

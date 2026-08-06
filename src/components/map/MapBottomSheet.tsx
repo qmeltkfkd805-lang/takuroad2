@@ -47,11 +47,11 @@ function EventCard({ ev, onClick }: { ev: MapEvent; onClick: () => void }) {
       <div style={{ position: 'relative', height: 120, background: '#F7F7F8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {ev.coverUrl ? <img src={ev.coverUrl} alt={ev.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span style={{ color: 'var(--muted)', fontSize: 13 }}>이벤트</span>}
       </div>
-      <div style={{ padding: '12px 14px 14px' }}>
+      <div className="evcard-body" style={{ padding: '12px 14px 14px' }}>
         <div style={{ fontSize: 15, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginBottom: 6 }}>{ev.title}</div>
         {period && <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, color: 'var(--muted)', marginBottom: 6 }}><CalIco />{period}</div>}
         {ev.address && <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 13, color: 'var(--muted)', marginBottom: 10 }}><PinIco /><span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ev.address}</span></div>}
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}><Chip tone={tone}>{label}</Chip></div>
+        <div className="shopcard-cats" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}><Chip tone={tone}>{label}</Chip></div>
       </div>
     </div>
   )

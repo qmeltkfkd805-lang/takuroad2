@@ -32,30 +32,9 @@ export default function PostDetailPage() {
 
   return (
     <div style={{ padding: '20px 48px 72px' }}>
-      <style>{`
-        .taku-detail{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px}
-        @media (max-width:1024px){.taku-detail{grid-template-columns:1fr}.taku-detail-side{display:none}}
-      `}</style>
-      <div className="taku-detail">
-        <div style={{ minWidth: 0 }}>
-          <PostDetailModal post={post} variant="page" onClose={() => router.back()} onChanged={load} />
-        </div>
-        <aside className="taku-detail-side">
-          <AdCard />
-        </aside>
+      <div style={{ maxWidth: 820, margin: '0 auto', minWidth: 0 }}>
+        <PostDetailModal post={post} variant="page" onClose={() => router.back()} onChanged={load} />
       </div>
-    </div>
-  )
-}
-
-function AdCard() {
-  useEffect(() => {
-    try { ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({}) } catch { /* noop */ }
-  }, [])
-  return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 16, background: 'var(--surface)', padding: 12, overflow: 'hidden', position: 'sticky', top: 16 }}>
-      <div style={{ fontSize: 10.5, color: 'var(--muted)', textAlign: 'right', marginBottom: 4 }}>광고</div>
-      <ins className="adsbygoogle" style={{ display: 'block', width: '100%', minHeight: 600 }} data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="vertical" data-full-width-responsive="true" />
     </div>
   )
 }

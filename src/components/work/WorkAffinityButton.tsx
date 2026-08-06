@@ -1,12 +1,12 @@
 ﻿'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getAffinity, setAffinity, clearAffinity } from '@/services/workRelationshipService'
 import { FavoriteTier } from '@/types/work-relationship'
 
-export default function WorkAffinityButton({ tagId }: { tagId: string }) {
+export default function WorkAffinityButton({ tagId, trailing }: { tagId: string; trailing?: ReactNode }) {
   const { user } = useAuth()
   const router = useRouter()
   const [affinity, setAff] = useState<FavoriteTier | null>(null)
@@ -32,13 +32,19 @@ export default function WorkAffinityButton({ tagId }: { tagId: string }) {
     setSaving(false)
   }
 
-  if (loading) return <div style={{ height: '40px' }} />
+  if (loading) return (
+    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+      <div style={{ height: '40px' }} />
+      {trailing}
+    </div>
+  )
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-      <div style={{ display: 'flex', gap: '8px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
         <TierButton active={affinity === 'favorite'} icon={<HeartIcon active={affinity === 'favorite'} />} label="최애" onClick={() => toggle('favorite')} />
         <TierButton active={affinity === 'interest'} icon={<StarIcon active={affinity === 'interest'} />} label="관심" onClick={() => toggle('interest')} />
+        {trailing}
       </div>
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, color: 'var(--muted)', paddingLeft: 2 }}>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

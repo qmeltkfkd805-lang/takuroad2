@@ -100,6 +100,22 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
   }, [lightboxIdx, images.length])
   const go = (d: number) => setIdx(i => (i + d + images.length) % images.length)
 
+  // 히어로 화살표: 평소 숨김 → 마우스 올리면 표시(데스크톱). 모바일은 스와이프로 넘김.
+  const [heroHover, setHeroHover] = useState(false)
+  const heroSwipe = useRef<{ x: number; y: number; moved: boolean }>({ x: 0, y: 0, moved: false })
+  const heroTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0]
+    heroSwipe.current = { x: t.clientX, y: t.clientY, moved: false }
+  }
+  const heroTouchMove = (e: React.TouchEvent) => {
+    if (Math.abs(e.touches[0].clientX - heroSwipe.current.x) > 8) heroSwipe.current.moved = true
+  }
+  const heroTouchEnd = (e: React.TouchEvent) => {
+    const dx = e.changedTouches[0].clientX - heroSwipe.current.x
+    const dy = e.changedTouches[0].clientY - heroSwipe.current.y
+    if (images.length > 1 && Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) go(dx < 0 ? 1 : -1)
+  }
+
   const [highlights, setHighlights] = useState<{ id: string; name: string }[]>([])
   useEffect(() => {
     getShopAmenities(shop.id).then(g => setHighlights((g['highlight'] as { id: string; name: string }[]) ?? []))
@@ -220,9 +236,16 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
           <main style={{ minWidth: 0 }}>
 
             {/* Hero */}
-            <div style={{ position: 'relative', height: 300, borderRadius: 18, overflow: 'hidden', background: catInfo?.bgColor ?? 'var(--surface2)' }}>
+            <div
+              onMouseEnter={() => setHeroHover(true)}
+              onMouseLeave={() => setHeroHover(false)}
+              onTouchStart={heroTouchStart}
+              onTouchMove={heroTouchMove}
+              onTouchEnd={heroTouchEnd}
+              style={{ position: 'relative', height: 300, borderRadius: 18, overflow: 'hidden', background: catInfo?.bgColor ?? 'var(--surface2)', touchAction: 'pan-y' }}
+            >
               {hasImages ? (
-                <img src={images[idx]} alt={shop.name} onClick={() => setLightboxIdx(idx)} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', cursor: 'zoom-in' }} />
+                <img src={images[idx]} alt={shop.name} onClick={() => { if (heroSwipe.current.moved) return; setLightboxIdx(idx) }} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', cursor: 'zoom-in' }} />
               ) : (
                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 84 }}>
                   {catInfo?.icon ? <CatIcon name={catInfo.icon} color={color} size={80} /> : <svg width={72} height={72} viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" style={{ opacity: .5 }}><path d="M3 9l1-5h16l1 5" /><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9" /><path d="M9 20v-6h6v6" /><path d="M3 9h18" /></svg>}
@@ -297,8 +320,8 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
               </div>
               {images.length > 1 && (
                 <>
-                  <button onClick={() => go(-1)} aria-label="이전 사진" style={heroArrow('left')}>‹</button>
-                  <button onClick={() => go(1)} aria-label="다음 사진" style={heroArrow('right')}>›</button>
+                  <button onClick={() => go(-1)} aria-label="이전 사진" style={{ ...heroArrow('left'), opacity: heroHover ? 1 : 0, pointerEvents: heroHover ? 'auto' : 'none', transition: 'opacity .2s ease' }}>‹</button>
+                  <button onClick={() => go(1)} aria-label="다음 사진" style={{ ...heroArrow('right'), opacity: heroHover ? 1 : 0, pointerEvents: heroHover ? 'auto' : 'none', transition: 'opacity .2s ease' }}>›</button>
                   <div style={{ position: 'absolute', right: 14, bottom: 14, background: 'rgba(0,0,0,.55)', color: '#fff', fontSize: 12, fontWeight: 700, padding: '3px 9px', borderRadius: 9999 }}>
                     {idx + 1} / {images.length}
                   </div>

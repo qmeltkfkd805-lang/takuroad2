@@ -38,8 +38,13 @@
 
 .login { font-size: 13px; font-weight: 800; color: var(--accent); text-decoration: none; padding: 8px 14px; border-radius: var(--r-full); background: var(--accent-l); }
 
-@media (max-width: 640px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 640px) {
   .userMeta { display: none; }
+}
+
+/* 📱 마이페이지(/profile): 모바일에서 전역 검색창 숨김 — 페이지 자체 헤더와 중복 */
+@media (hover: none) and (pointer: coarse) {
+  .hideSearchMobile { display: none !important; }
 }
 
 

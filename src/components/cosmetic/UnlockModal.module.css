@@ -141,7 +141,7 @@
   .fxSparkle::after, .fxStar::after, .fxSakura::after, .fxAura, .fxNeon { animation: none; }
 }
 
-@media (max-width: 480px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 480px) {
   .modal { padding: 24px 18px 18px; }
   .rewardBig .preview { width: 140px; height: 140px; }
 }

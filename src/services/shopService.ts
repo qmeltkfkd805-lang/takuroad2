@@ -227,28 +227,65 @@ export async function createShop(
       cats:         data.cats ?? [],
       added_by:     userId,
       owner_id:     userId,
-      status:       'active',
+      status:       data.status ?? 'active',   // 위저드는 'hidden'으로 만들고 '등록 완료' 때 공개
     } as any)
     .select('slug, id')
     .single()
 
-  if (error || !shop) return null
+  if (error || !shop) { if (error) console.error('[shop] 생성 실패:', error.message); return null }
 
-  // 성장 Activity — 샵 등록.
-  // 카운터는 나중에 '아직 살아있는(active) 샵'만 세므로, 쓰레기 샵을 지우면 카운트도 빠진다
-  try {
-    await recordShopRegisterActivity({
-      userId,
-      shopId: shop.id,
-      shopName: (data as any)?.name ?? '샵',
-      shopSlug: shop.slug,
-      region: ((data as any)?.region?.trim() || geekAreaFromAddr((data as any)?.addr ?? null)) ?? null,
-    })
-  } catch (e) {
-    console.error('[샵 등록 Activity 실패]', e)
+  // 성장 Activity — 샵 등록. (경험치)
+  // ⭐ 위저드는 'hidden'(임시)으로 만들고 '등록 완료' 때 publishShop에서 경험치를 준다.
+  //    그래서 여기선 바로 active로 만드는 경로(이벤트 리뷰 등)에만 지급한다.
+  if ((data.status ?? 'active') === 'active') {
+    try {
+      await recordShopRegisterActivity({
+        userId,
+        shopId: shop.id,
+        shopName: (data as any)?.name ?? '샵',
+        shopSlug: shop.slug,
+        region: ((data as any)?.region?.trim() || geekAreaFromAddr((data as any)?.addr ?? null)) ?? null,
+      })
+    } catch (e) {
+      console.error('[샵 등록 Activity 실패]', e)
+    }
   }
 
   return { slug: shop.slug, id: shop.id }
+}
+
+/** 임시(hidden) 샵을 공개(active)로 전환 — 위저드 '등록 완료' 시 호출.
+ *  이때(등록이 실제로 완료된 시점) 최초 1회 경험치를 준다. */
+export async function publishShop(shopId: string): Promise<boolean> {
+  const supabase = createClient()
+  // 이전 상태·정보 확인 (경험치 중복 지급 방지)
+  const { data: before } = await supabase
+    .from('shops')
+    .select('status, name, slug, added_by, region, addr')
+    .eq('id', shopId)
+    .maybeSingle()
+
+  const { error } = await supabase
+    .from('shops')
+    .update({ status: 'active' } as any)
+    .eq('id', shopId)
+  if (error) { console.error('[shop] 공개 전환 실패:', error.message); return false }
+
+  // 최초 공개(등록 완료)일 때만 경험치/Activity 지급
+  if (before && (before as any).status !== 'active') {
+    try {
+      await recordShopRegisterActivity({
+        userId: (before as any).added_by,
+        shopId,
+        shopName: (before as any).name ?? '샵',
+        shopSlug: (before as any).slug,
+        region: (((before as any).region?.trim()) || geekAreaFromAddr((before as any).addr ?? null)) ?? null,
+      })
+    } catch (e) {
+      console.error('[샵 등록 Activity 실패]', e)
+    }
+  }
+  return true
 }
 
 export async function updateShop(
@@ -419,7 +456,7 @@ export async function getTagBySlug(slug: string) {
   const supabase = createClient()
   const { data } = await supabase
     .from('tags')
-    .select('id, name, slug, created_at, cover_url, banner_image, english_name, ip_type, release_year, genres, description, accent_color, links')
+    .select('id, name, slug, created_at, cover_url, banner_image, english_name, ip_type, release_year, genres, keywords, description, accent_color, links')
     .eq('slug', slug)
     .maybeSingle()
   return data

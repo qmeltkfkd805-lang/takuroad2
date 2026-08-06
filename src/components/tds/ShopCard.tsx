@@ -104,7 +104,7 @@ export function ShopCard({ shop, meta = 'region', badge, onClick, onToggleSave, 
         )}
 
         {shop.cats?.length > 0 && (
-          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          <div className="shopcard-cats" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
             {shop.cats.slice(0, 2).map((c) => (
               <Chip key={c} tone={CAT_TONE[c] ?? 'gray'}>{c}</Chip>
             ))}

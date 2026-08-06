@@ -17,8 +17,9 @@ export default function HomeRail({ shops = [], hotMap, eventCount = 0 }: Props) 
   return (
     <aside className={styles.rail}>
       <MiniMapWidget shops={shops} hotMap={hotMap} eventCount={eventCount} />
-      <CollectionStatsWidget />
-      <RecentCheckinsWidget />
+      {/* 내 컬렉션·최근 체크인은 모바일에서 숨김 (PC는 그대로) */}
+      <div className={styles.hideMobile}><CollectionStatsWidget /></div>
+      <div className={styles.hideMobile}><RecentCheckinsWidget /></div>
     </aside>
   )
 }

@@ -2,7 +2,8 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useRouter } from 'next/navigation'
-import { createWork, uploadWorkImage, findDuplicateWork, getWorkForEdit, updateWork } from '@/services/workRegisterService'
+import { createWork, uploadWorkImage, findDuplicateWork, getWorkForEdit, updateWork, getPromotedGenres } from '@/services/workRegisterService'
+import { IP_TYPES, normIpType, ipTypeList } from '@/lib/constants/ipType'
 
 const GENRES =['액션', '판타지', '학원', '일상', 'SF', '추리', '로맨스', '코미디', '스포츠', '음악', '호러', '드라마', '마법소녀', '소년물', '로봇/메카', '19', '고어']
 const FIXED_LINKS = ['홈페이지', 'X (트위터)', '유튜브', '팬클럽', '인스타그램']
@@ -43,6 +44,23 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
 
   const [upCover, setUpCover] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [dupName, setDupName] = useState<string | null>(null)   // 이미 등록된 동일 작품 (있으면 등록 차단)
+
+  // 작품명·영문명·별칭을 입력하는 즉시 중복 검사 (신규 등록만)
+  useEffect(() => {
+    if (editing) { setDupName(null); return }
+    if (!name.trim()) { setDupName(null); return }
+    let alive = true
+    const t = setTimeout(async () => {
+      const dup = await findDuplicateWork(name, eng, aliases)
+      if (alive) setDupName(dup)
+    }, 400)
+    return () => { alive = false; clearTimeout(t) }
+  }, [name, eng, aliases, editing])
+
+  // 자유 태그가 서로 다른 작품 3개 이상에서 쓰이면 장르로 승격 — 기본 장르 칩에 합쳐 보여준다
+  const [promotedGenres, setPromotedGenres] = useState<string[]>([])
+  useEffect(() => { getPromotedGenres(3, GENRES).then(setPromotedGenres).catch(() => {}) }, [])
   const [msg, setMsg] = useState<string | null>(null)
   const coverRef = useRef<HTMLInputElement | null>(null)
 
@@ -98,6 +116,7 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
   function stepIssue(n: number): string | null {
     if (n === 1) {
       if (!name.trim()) return '작품명을 입력해주세요'
+      if (dupName) return `이미 등록된 작품이에요: "${dupName}"`
       if (!desc.trim()) return '한 줄 소개를 입력해주세요'
       return null
     }
@@ -127,7 +146,7 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
       if (!alive) return
       if (w) {
         setName(w.name ?? ''); setEng(w.english_name ?? ''); setSlug(w.slug ?? ''); setAliases(w.aliases ?? [])
-        setIpType(w.ip_type ?? ''); setOriginal(w.original_type ?? ''); setStatus(w.status ?? '')
+        setIpType(ipTypeList(w.ip_type).join(',')); setOriginal(w.original_type ?? ''); setStatus(w.status ?? '')
         setCover(w.cover_url ?? ''); setAccent(w.accent_color ?? '#FF5692')
         setDesc(w.description ?? ''); setGenres(w.genres ?? []); setKeywords(w.keywords ?? [])
         const all: { label: string; url: string }[] = (Array.isArray(w.links) && w.links.length ? w.links : [
@@ -146,12 +165,8 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
     return () => { alive = false }
   }, [mode, editId])
 
-  async function save() {
-    if (!user) return
-    const iss = stepIssue(1) || stepIssue(2)
-    if (iss) { setMsg(iss); return }
-    setSaving(true); setMsg(null)
-    const payload = {
+  function buildPayload() {
+    return {
       name, slug, english_name: eng, aliases, ip_type: ipType, original_type: original, status,
       cover_url: cover, accent_color: accent, description: desc,
       genres, keywords, links: [
@@ -159,6 +174,26 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
         ...extraLinks.map((l) => ({ label: l.label.trim(), url: l.url.trim() })).filter((l) => l.url),
       ],
     }
+  }
+  const [savedNote, setSavedNote] = useState('')
+  // 상단 '저장하기' — 이동 없이 그 자리에서 저장 (수정 모드)
+  async function handleTopSave() {
+    if (!user || !editing || !editId) return
+    const iss1 = stepIssue(1); if (iss1) { setStep(1); setMsg(iss1); return }
+    const iss2 = stepIssue(2); if (iss2) { setStep(2); setMsg(iss2); return }
+    setSaving(true); setMsg(null)
+    const ok = await updateWork(editId, buildPayload())
+    setSaving(false)
+    if (ok) { setSavedNote('저장됐어요 ✓'); setTimeout(() => setSavedNote(''), 2000) }
+    else setMsg('저장 실패 — 다시 시도해주세요')
+  }
+
+  async function save() {
+    if (!user) return
+    const iss = stepIssue(1) || stepIssue(2)
+    if (iss) { setMsg(iss); return }
+    setSaving(true); setMsg(null)
+    const payload = buildPayload()
     if (editing && editId) {
       const res = await updateWork(editId, payload)
       if (!res) { setSaving(false); setMsg('수정 실패 — 다시 시도해주세요'); return }
@@ -178,13 +213,19 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
   if (!user) return <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>로그인하면 작품을 등록할 수 있어요.</div>
 
   return (
-    <div style={{ maxWidth: 1500, margin: '0 auto', padding: '20px 40px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
+    <div className="wr-root" style={{ maxWidth: 1500, margin: '0 auto', padding: '20px 40px' }}>
+      <div style={{ position: 'sticky', top: 64, zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18, padding: '10px 0', background: 'var(--bg, var(--surface))', borderBottom: '1px solid var(--border)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <button onClick={() => router.push(editing && slug ? `/work/${slug}` : '/my-works')} style={iconBtn} aria-label="뒤로"><Svg><path d="m15 18-6-6 6-6" /></Svg></button>
           <h1 style={{ fontSize: 26, fontWeight: 900, margin: 0 }}>{editing ? '작품 수정' : '작품 등록'}</h1>
         </div>
-        <button onClick={() => router.push(editing && slug ? `/work/${slug}` : '/my-works')} style={ghostBtn}>나가기</button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          {savedNote && <span style={{ fontSize: 13, color: 'var(--green)', fontWeight: 700 }}>{savedNote}</span>}
+          {editing && (
+            <button onClick={handleTopSave} disabled={saving} style={{ ...ghostBtn, background: 'var(--accent)', color: '#fff', border: 'none', fontWeight: 800 }}>{saving ? '저장 중...' : '저장하기'}</button>
+          )}
+          <button onClick={() => router.push(editing && slug ? `/work/${slug}` : '/my-works')} style={ghostBtn}>나가기</button>
+        </div>
       </div>
 
       <div style={{ display: 'flex', gap: 8, overflowX: 'auto', marginBottom: 28, paddingBottom: 6 }}>
@@ -205,7 +246,12 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
             <>
               <StepHead title="기본 정보를 입력해주세요" sub="정확히 입력할수록 더 많은 타쿠들이 작품을 발견할 수 있어요." />
               <Label req>작품명</Label>
-              <input value={name} onChange={(e) => setName(e.target.value)} maxLength={50} placeholder="예: 원피스, 귀멸의 칼날, 스파이 패밀리 등" style={inp} />
+              <input value={name} onChange={(e) => setName(e.target.value)} maxLength={50} placeholder="예: 원피스, 귀멸의 칼날, 스파이 패밀리 등" style={{ ...inp, border: dupName ? '1px solid var(--red, #e04343)' : inp.border }} />
+              {dupName && (
+                <p style={{ margin: '6px 2px 0', fontSize: 12.5, fontWeight: 700, color: 'var(--red, #e04343)' }}>
+                  이미 등록된 작품이에요: “{dupName}” — 같은 작품은 새로 등록할 수 없어요.
+                </p>
+              )}
               <Label>작품명 (영문)</Label>
               <input value={eng} onChange={(e) => setEng(e.target.value)} maxLength={100} placeholder="예: One Piece, Demon Slayer (선택)" style={inp} />
               <Label>URL 주소 (slug)</Label>
@@ -248,9 +294,15 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
 
           {step === 2 && (
             <>
-              <StepHead title="장르와 태그를 골라요" sub="작품홈에서 분류·검색에 쓰여요." />
+              <StepHead title="유형·장르와 태그를 골라요" sub="작품홈에서 분류·검색에 쓰여요." />
+              <Label req>유형 (복수 선택)</Label>
+              <div style={chipWrap}>{IP_TYPES.map((t) => {
+                const on = ipTypeList(ipType).includes(t)
+                return <button key={t} onClick={() => { const list = ipTypeList(ipType); setIpType((on ? list.filter(x => x !== t) : [...list, t]).join(',')) }} style={chip(on)}>{t}</button>
+              })}</div>
+              <div style={{ height: 8 }} />
               <Label req>장르 (복수 선택)</Label>
-              <div style={chipWrap}>{GENRES.map((g) => <button key={g} onClick={() => toggleGenre(g)} style={chip(genres.includes(g))}>{g}</button>)}</div>
+              <div style={chipWrap}>{[...new Set([...GENRES, ...promotedGenres, ...genres])].filter((g) => !(IP_TYPES as readonly string[]).includes(normIpType(g) ?? '')).map((g) => <button key={g} onClick={() => toggleGenre(g)} style={chip(genres.includes(g))}>{g}</button>)}</div>
               <div style={{ height: 8 }} />
               <Label>태그 (복수, 자유 입력)</Label>
               <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
@@ -324,7 +376,7 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
               <div style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.6, marginBottom: 12 }}>{desc || '한 줄 소개가 여기에 표시됩니다.'}</div>
               {(genres.length > 0 || keywords.length > 0) && (
                 <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
-                  {[...genres, ...keywords].slice(0, 8).map((g) => <span key={g} style={{ fontSize: 12, color: 'var(--muted)', background: 'var(--surface2)', padding: '3px 9px', borderRadius: 9999 }}># {g}</span>)}
+                  {[...genres, ...keywords].slice(0, 8).map((g, i) => <span key={`${g}-${i}`} style={{ fontSize: 12, color: 'var(--muted)', background: 'var(--surface2)', padding: '3px 9px', borderRadius: 9999 }}># {g}</span>)}
                 </div>
               )}
             </div>
@@ -343,7 +395,12 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
           </div>
         </aside>
       </div>
-      <style>{`@media (hover:none) and (pointer:coarse) and (max-width: 1000px){ .wr-cols{ flex-direction: column !important; } .wr-cols > aside{ width: 100% !important; position: static !important; } }`}</style>
+      <style>{`@media (hover:none) and (pointer:coarse) and (max-width: 1000px){
+        .wr-root{ padding: 12px 14px !important; }
+        .wr-cols{ flex-direction: column !important; gap: 0 !important; }
+        .wr-cols > aside{ display: none !important; }               /* 모바일: 작품 미리보기·가이드 숨김 */
+        .wr-cols > div{ border: none !important; border-radius: 0 !important; padding: 0 !important; background: transparent !important; }  /* 폼 네모칸 제거 */
+      }`}</style>
     </div>
   )
 }

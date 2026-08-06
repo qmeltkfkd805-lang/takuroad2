@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { CATEGORIES, WEEKDAYS, WEEKDAY_LABEL } from '@/lib/constants/categories'
 import { ROUTES } from '@/lib/constants/routes'
-import { createShop, updateShop } from '@/services/shopService'
+import { createShop, updateShop, publishShop } from '@/services/shopService'
 import { Shop, ShopFormData } from '@/types/shop'
 import { BusinessHours } from '@/types/database'
 import { generateSlug } from '@/lib/utils/shop'
@@ -155,7 +155,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
     days.forEach(d => { h[d] = { ...(h[d] || {}), open: bulkOpen, close: bulkClose } })
     set('hours', h)
   }
-  function applySelectedDays() { if (pickDays.length > 0) applyBulkToDays(pickDays) }
+  function applySelectedDays() { if (pickDays.length > 0) { applyBulkToDays(pickDays); setPickDays([]) } }
   function togglePickDay(day: string) {
     setPickDays(p => p.includes(day) ? p.filter(x => x !== day) : [...p, day])
   }
@@ -191,7 +191,8 @@ export default function ShopFormWizard({ mode, shop }: Props) {
     }
 
     if (mode === 'create' && !createdShopId) {
-      const result = await createShop(finalForm, user.id)
+      // 완료 전까지는 비공개(hidden) 임시 상태. '등록 완료' 눌러야 active로 공개된다.
+      const result = await createShop({ ...finalForm, status: 'hidden' }, user.id)
       if (!result) { setError('등록에 실패했어요. 슬러그가 중복되었을 수 있어요.'); setSaving(false); return false }
       setCreatedShopId(result.id); setCreatedShopSlug(result.slug)
     } else if (shopId) {
@@ -214,7 +215,9 @@ export default function ShopFormWizard({ mode, shop }: Props) {
   function goToStep(n: number) { if (n === 1 || canEnrich) setStep(n) }
   async function finish() {
     if (mode === 'edit') { if (!(await saveCore())) return; router.push(ROUTES.shop(shop!.slug)); return }
-    // 신규 등록 완료 → "이 샵의 사장님입니까?" 물어보고, 네면 바로 인증 신청으로
+    // 신규: 여기(등록 완료)서야 비공개 임시 → active로 공개된다
+    if (createdShopId) { setSaving(true); await publishShop(createdShopId); setSaving(false) }
+    // "이 샵의 사장님입니까?" 물어보고, 네면 바로 인증 신청으로
     setOwnerAsk(true)
   }
   function goShopAfterRegister() {
@@ -240,8 +243,14 @@ export default function ShopFormWizard({ mode, shop }: Props) {
   const previewImg = mode === 'edit' ? (shop?.images?.[0] ?? null) : null
 
   return (
-    <div style={{ maxWidth: 1320, margin: '0 auto', padding: '20px 32px 60px' }}>
-      <style>{`.taku-page-2col{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}@media (hover:none) and (pointer:coarse) and (max-width:900px){.taku-page-2col{grid-template-columns:1fr}}`}</style>
+    <div className="sw-root" style={{ maxWidth: 1320, margin: '0 auto', padding: '20px 32px 60px' }}>
+      <style>{`.taku-page-2col{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
+      @media (hover:none) and (pointer:coarse) and (max-width:900px){
+        .sw-root{ padding: 12px 14px 60px !important; }
+        .taku-page-2col{ grid-template-columns:1fr; gap:0 }
+        .taku-page-2col > aside{ display:none !important; }           /* 모바일: 샵 미리보기·TIP 숨김 */
+        .taku-page-2col > div{ border:none !important; border-radius:0 !important; padding:0 !important; background:transparent !important; }  /* 폼 네모칸 제거 */
+      }`}</style>
 
       {/* 등록 완료 → "이 샵의 사장님입니까?" 모달 */}
       {ownerAsk && (
@@ -387,8 +396,8 @@ export default function ShopFormWizard({ mode, shop }: Props) {
                 </p>
               )}
 
-              {/* 관리자 학습: 이 주소 = 이 장소 매핑 (편집 모드 + 관리자) */}
-              {mode === 'edit' && isAdmin && form.addr && (
+              {/* 관리자 학습: 이 주소 = 이 장소 매핑 (등록·편집 모두, 관리자) */}
+              {isAdmin && form.addr && (
                 <AdminPlaceLink
                   shopAddr={form.addr}
                   currentPlaceName={form.place_name}
@@ -565,7 +574,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
               <ReviewRow label="주소" value={form.addr || '미입력'} ok={!!form.addr.trim()} />
               <ReviewRow label="영업시간" value={form.hours && Object.values(form.hours).some(Boolean) ? '입력됨' : '미입력'} ok={!!form.hours && Object.values(form.hours).some(Boolean)} />
             </div>
-            {mode === 'create' && <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>등록 후 관리자 승인 후 지도에 표시돼요.</p>}
+            {mode === 'create' && <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>‘등록 완료’를 눌러야 지도에 공개돼요. 그전까지는 저장돼도 비공개(임시)예요.</p>}
           </>
         )}
 

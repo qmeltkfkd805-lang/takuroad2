@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, useRef, useMemo, FormEvent } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import { getUnreadCount, getNotifications, markAsRead, markAllAsRead, getNotificationLink, Notification } from '@/services/notificationService'
@@ -42,6 +42,8 @@ function buildSuggestions(r: GlobalSearchResult, term: string): Suggestion[] {
 
 export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveWork[] }) {
   const router = useRouter()
+  const pathname = usePathname() ?? ''
+  const isProfile = pathname.startsWith('/profile')   // 📱 마이페이지에선 모바일 검색창 숨김 (자체 헤더가 있어 중복)
   const { user, profile } = useAuth()
   const [q, setQ] = useState('')
   const [unread, setUnread] = useState(0)
@@ -119,7 +121,7 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
 
   return (
     <div className={styles.bar}>
-      <div className={styles.searchWrap} ref={wrapRef}>
+      <div className={`${styles.searchWrap}${isProfile ? ' ' + styles.hideSearchMobile : ''}`} ref={wrapRef}>
         <form className={styles.search} onSubmit={onSearch}>
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
           <input

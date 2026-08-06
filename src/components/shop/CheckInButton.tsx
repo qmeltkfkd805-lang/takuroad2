@@ -3,8 +3,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { createCheckIn, getMyCheckInStatus, getShopCheckInCount } from '@/services/checkInService'
-import { getShopTags } from '@/services/shopProductService'
-import { addTagToCollection, getMyCollectedTagIds } from '@/services/tagCollectionService'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/tds/Button'
 import AppIcon from '@/components/tds/AppIcon'
@@ -17,15 +15,13 @@ interface Props {
   accentColor: string
 }
 
-export default function CheckInButton({ shopId, shopName, shopLat, shopLng, accentColor }: Props) {
+export default function CheckInButton({ shopId, shopName, shopLat, shopLng }: Props) {
   const { user } = useAuth()
   const [checkedInToday, setCheckedInToday] = useState(false)
   const [checkInCount, setCheckInCount] = useState(0)
   const [submitting, setSubmitting] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
   const [newBadge, setNewBadge] = useState<{ name: string; rarity: string } | null>(null)
-  const [pickerTags, setPickerTags] = useState<any[] | null>(null)
-  const [pickedTagIds, setPickedTagIds] = useState<string[]>([])
 
   useEffect(() => {
     if (user) {
@@ -49,15 +45,6 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
       setToast('방문 기록 완료!')
       setTimeout(() => setToast(null), 2500)
 
-      const [shopTags, myCollected] = await Promise.all([
-        getShopTags(shopId),
-        getMyCollectedTagIds(user.id),
-      ])
-      const pickable = shopTags.filter((t: any) => !myCollected.includes(t.id))
-      if (pickable.length > 0) {
-        setTimeout(() => setPickerTags(pickable), 600)
-      }
-
       if (result.newTierIds && result.newTierIds.length > 0) {
         const supabase = createClient()
         const { data } = await supabase
@@ -76,26 +63,6 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
       setTimeout(() => setToast(null), 2500)
     }
     setSubmitting(false)
-  }
-
-  function togglePickedTag(tagId: string) {
-    setPickedTagIds(prev =>
-      prev.includes(tagId) ? prev.filter(id => id !== tagId) : [...prev, tagId]
-    )
-  }
-
-  async function handleSaveCollection() {
-    if (!user) return
-    for (const tagId of pickedTagIds) {
-      await addTagToCollection(user.id, tagId, shopId)
-    }
-    setPickerTags(null)
-    setPickedTagIds([])
-  }
-
-  function handleSkipCollection() {
-    setPickerTags(null)
-    setPickedTagIds([])
   }
 
   const checkinIcon = (
@@ -157,74 +124,6 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng, acce
         </div>
       )}
 
-      {pickerTags && pickerTags.length > 0 && (
-        <div
-          style={{
-            position: 'fixed', inset: 0, zIndex: 1000,
-            background: 'rgba(0,0,0,.6)',
-            display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-          }}
-        >
-          <div style={{
-            background: 'var(--surface)', borderRadius: '20px 20px 0 0',
-            width: '100%', maxWidth: '680px', padding: '24px 20px',
-          }}>
-            <AppIcon name="books" size={36} color="var(--accent)" style={{ margin: '0 auto 8px' }} />
-            <h3 style={{ fontSize: '16px', fontWeight: 900, textAlign: 'center', marginBottom: '6px' }}>
-              이 곳에서 관심 있는 작품이 있나요?
-            </h3>
-            <p style={{ fontSize: '13px', color: 'var(--muted)', textAlign: 'center', marginBottom: '18px' }}>
-              선택한 작품은 내 컬렉션에 기록돼요
-            </p>
-
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px', justifyContent: 'center' }}>
-              {pickerTags.map(tag => {
-                const isPicked = pickedTagIds.includes(tag.id)
-                return (
-                  <button
-                    key={tag.id}
-                    onClick={() => togglePickedTag(tag.id)}
-                    style={{
-                      padding: '9px 16px', borderRadius: '20px', cursor: 'pointer',
-                      border: `1.5px solid ${isPicked ? 'var(--accent)' : 'var(--border)'}`,
-                      background: isPicked ? 'var(--accent-l)' : 'var(--surface2)',
-                      color: isPicked ? 'var(--accent)' : 'var(--text)',
-                      fontSize: '14px', fontWeight: 700, fontFamily: 'inherit',
-                    }}
-                  >
-                    {isPicked && '✓ '}{tag.name}
-                  </button>
-                )
-              })}
-            </div>
-
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <button
-                onClick={handleSkipCollection}
-                style={{
-                  flex: 1, padding: '12px', borderRadius: '10px',
-                  border: '1px solid var(--border)', background: 'var(--surface)',
-                  fontSize: '14px', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
-                }}
-              >
-                건너뛰기
-              </button>
-              <button
-                onClick={handleSaveCollection}
-                disabled={pickedTagIds.length === 0}
-                style={{
-                  flex: 1, padding: '12px', borderRadius: '10px', border: 'none',
-                  background: pickedTagIds.length > 0 ? accentColor : 'var(--border)',
-                  color: '#fff', fontSize: '14px', fontWeight: 700,
-                  cursor: pickedTagIds.length > 0 ? 'pointer' : 'not-allowed', fontFamily: 'inherit',
-                }}
-              >
-                컬렉션에 추가 ({pickedTagIds.length})
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

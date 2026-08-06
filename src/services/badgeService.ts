@@ -549,6 +549,54 @@ export async function getMyFeaturedBadges(userId: string) {
   return data ?? []
 }
 
+/* 내가 획득한 배지 (최근 순) — 마이페이지 대표 배지 진열용.
+   대표 배지(showcase)를 안 골랐어도 실제 획득 배지를 보여줄 수 있게. */
+export async function getMyEarnedBadges(userId: string, limit = 4): Promise<{ name: string; rarity: string; iconUrl: string | null }[]> {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('user_badge_tiers')
+    .select('earned_at, badge_tiers ( name, rarity, icon_url, badges ( icon_url ) )')
+    .eq('user_id', userId)
+    .order('earned_at', { ascending: false })
+    .limit(limit)
+  return ((data ?? []) as any[])
+    .map(r => r.badge_tiers)
+    .filter(Boolean)
+    .map((t: any) => ({ name: t.name ?? '배지', rarity: t.rarity ?? 'common', iconUrl: t.icon_url ?? t.badges?.icon_url ?? null }))
+}
+
+/* 다음 방문 배지 진행 — 마이페이지 여권 카드용.
+   샵 방문(shop_visit) 수 기준으로, 아직 못 딴 가장 가까운 배지까지 몇 곳 남았는지.
+   대표 배지 아이콘/이름도 함께 돌려준다. 없으면 null → 호출부에서 XP로 대체. */
+export async function getNextVisitBadge(userId: string): Promise<
+  { name: string; current: number; target: number; remaining: number; done: boolean } | null
+> {
+  const supabase = createClient()
+  const { data: tiers } = await supabase
+    .from('badge_tiers')
+    .select('name, condition_type, condition_target')
+    .eq('is_active', true)
+    .eq('award_type', 'automatic')
+    .eq('condition_type', 'activity_count')
+
+  const visitTiers = (tiers ?? [])
+    .filter((t: any) => t.condition_target?.activity_type === 'shop_visit' && typeof t.condition_target?.count === 'number')
+    .map((t: any) => ({ name: t.name as string, count: t.condition_target.count as number }))
+    .sort((a, b) => a.count - b.count)
+
+  if (visitTiers.length === 0) return null
+
+  const { data: ci } = await supabase.from('check_ins').select('shop_id').eq('user_id', userId)
+  const visited = new Set((ci ?? []).map((c: any) => c.shop_id)).size
+
+  const next = visitTiers.find(v => v.count > visited)
+  if (!next) {
+    const last = visitTiers[visitTiers.length - 1]
+    return { name: last.name, current: last.count, target: last.count, remaining: 0, done: true }
+  }
+  return { name: next.name, current: Math.min(visited, next.count), target: next.count, remaining: next.count - visited, done: false }
+}
+
 // tier 통계 (획득률/획득자 수)
 export async function getTierStats(tierId: string) {
   const supabase = createClient()

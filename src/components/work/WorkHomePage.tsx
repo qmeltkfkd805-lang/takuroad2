@@ -16,6 +16,9 @@ import { SectionHeader, EventCard, ShopCard, RouteCard, Icon } from '@/component
 import HomeFeedCard from '@/components/home/HomeFeedCard'
 import type { FeedItem } from '@/lib/feed/types'
 import { AVAILABILITY_LABEL, type Availability } from '@/services/shopProductService'
+import { ipTypeList } from '@/lib/constants/ipType'
+import { useAuth } from '@/components/layout/AuthProvider'
+import { deleteWork } from '@/services/workRegisterService'
 import styles from './WorkHomePage.module.css'
 
 const AVAIL_COLOR: Record<string, string> = {
@@ -33,6 +36,7 @@ interface WorkTag {
   ip_type?: string | null
   release_year?: number | null
   genres?: string[] | null
+  keywords?: string[] | null
   description?: string | null
 }
 
@@ -80,7 +84,16 @@ function linkIcon(label: string): string {
 
 export default function WorkHomePage({ tag, feed, events, shops, goods, routes, communityPosts, favoriteCount }: Props) {
   const router = useRouter()
+  const { isAdmin } = useAuth()
   const now = new Date()
+
+  async function handleDeleteWork() {
+    setMenuOpen(false)
+    if (typeof window !== 'undefined' && !window.confirm(`"${tag.name}" 작품을 삭제할까요?\n되돌릴 수 없어요.`)) return
+    const r = await deleteWork(tag.id)
+    if (r.ok) { alert('작품을 삭제했어요.'); router.push('/my-works') }
+    else alert('삭제 실패 — 연결된 샵·글이 있으면 삭제되지 않을 수 있어요.')
+  }
 
   const [activeId, setActiveId] = useState('feed')
   const [fanartHero, setFanartHero] = useState<string | null>(null)
@@ -137,9 +150,10 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
   }
 
   const chips: string[] = []
-  if (tag.ip_type) chips.push(tag.ip_type)
+  ipTypeList(tag.ip_type).forEach(t => chips.push(t))       // 유형 (복수 가능)
   if (tag.release_year) chips.push(`${tag.release_year}~`)
   if (tag.genres) chips.push(...tag.genres)
+  if (tag.keywords) tag.keywords.forEach(k => chips.push('#' + k))   // 직접 입력한 태그
   const accent = heroColor || (tag as any).accent_color || '#FF5692'
 
   return (
@@ -165,6 +179,15 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
                   수정하기
                 </button>
+                {isAdmin && (
+                  <button
+                    onClick={handleDeleteWork}
+                    style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '11px 14px', border: 'none', borderTop: '1px solid var(--border)', background: 'none', textAlign: 'left', fontSize: 14, fontWeight: 700, color: '#e04343', cursor: 'pointer', fontFamily: 'inherit' }}
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" /></svg>
+                    삭제하기
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -180,8 +203,7 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
               </div>
             )}
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              <WorkAffinityButton tagId={tag.id} />
-              <WorkStateButton tagId={tag.id} />
+              <WorkAffinityButton tagId={tag.id} trailing={<WorkStateButton tagId={tag.id} />} />
             </div>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, marginTop: 14, color: '#fff', opacity: 0.92 }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff" stroke="none"><circle cx="9" cy="8" r="3.2" /><path d="M3.5 19a5.5 5.5 0 0 1 11 0z" /><circle cx="16.6" cy="8.6" r="2.5" opacity=".85" /><path d="M14.5 19a5 5 0 0 1 7-4.4A5 5 0 0 1 21.5 19z" opacity=".85" /></svg>

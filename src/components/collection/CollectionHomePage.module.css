@@ -249,15 +249,15 @@
   .bar > span, .heroBar > span, .subBar > span { transition: none; }
 }
 
-@media (max-width: 980px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 980px) {
   .challengeGrid { grid-template-columns: minmax(0, 1fr); }
   .subs { flex-direction: row; }
   .sub { flex: 1; }
 }
-@media (max-width: 900px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 900px) {
   .stats { grid-template-columns: repeat(2, 1fr); }
 }
-@media (max-width: 720px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 720px) {
   .page { padding: 22px 16px 70px; }
   .block, .blockSm { padding: 18px 16px; }
   .subs { flex-direction: column; }

@@ -59,12 +59,12 @@
 .email { color: var(--muted); text-decoration: none; }
 .email:hover { color: var(--accent); }
 
-@media (max-width: 768px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 768px) {
   .inner { padding: 36px 20px 28px; }
   .grid { grid-template-columns: 1fr 1fr; gap: 28px; }
   .brandCol { grid-column: 1 / -1; }
   .bottom { flex-direction: column; gap: 8px; align-items: flex-start; }
 }
-@media (max-width: 480px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 480px) {
   .grid { grid-template-columns: 1fr; }
 }

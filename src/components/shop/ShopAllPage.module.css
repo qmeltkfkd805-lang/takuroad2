@@ -63,7 +63,7 @@
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
 
 /* 모바일: 필터를 전체화면 시트로 */
-@media (max-width: 899px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 899px) {
   .filterBtn { display: inline-flex; }
   .sidebar {
     position: fixed; inset: 0; z-index: 60;

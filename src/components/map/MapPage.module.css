@@ -12,7 +12,7 @@
 .adCol { display: none; }
 .adSlot { min-height: 600px; }
 
-@media (min-width: 1024px) {
+@media (min-width: 1024px), (hover: hover) and (pointer: fine) {
   .layout { position: static; top: auto; left: auto; right: auto; bottom: auto; height: 100%; }
   .adCol {
     display: block; width: 180px; flex-shrink: 0; height: 100%;

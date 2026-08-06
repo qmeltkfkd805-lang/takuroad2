@@ -625,7 +625,7 @@
 .sheetCopy { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
 
 /* ---- 반응형 ---- */
-@media (max-width: 920px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 920px) {
   .topGrid { grid-template-columns: 1fr; }
   .contentGrid { grid-template-columns: 1fr; }
   .hero { min-height: 260px; }
@@ -633,7 +633,7 @@
   .heroTitle { font-size: 24px; }
   .page { padding: 12px 16px 56px; }
 }
-@media (max-width: 560px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 560px) {
   .statBox { grid-template-columns: repeat(2, 1fr); }
   .heroButtons { flex-direction: column; }
   .spotThumb { width: 72px; height: 60px; }

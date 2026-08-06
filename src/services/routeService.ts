@@ -95,7 +95,7 @@ export async function getMyRoutes(userId: string) {
       id, title, description, cover_image_url,
       total_distance_m, total_duration_min,
       is_shared, is_official, share_token, created_at,
-      route_shops ( id, shop_id, sort_order, shops ( name, slug, region, addr ) )
+      route_shops ( id, shop_id, sort_order, shops ( name, slug, region, addr, lat, lng ) )
     `)
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
@@ -378,7 +378,7 @@ export async function getSavedRoutes(userId: string) {
         id, title, description, cover_image_url, likes,
         total_distance_m, total_duration_min, official_difficulty,
         is_shared, share_token,
-        route_shops ( id )
+        route_shops ( id, sort_order, shops ( region, addr, lat, lng ) )
       )
     `)
     .eq('user_id', userId)

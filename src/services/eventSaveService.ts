@@ -26,7 +26,9 @@ export async function saveEventsBulk(userId: string, eventIds: string[]): Promis
   const supabase = createClient()
   if (eventIds.length === 0) return true
   const rows = eventIds.map(id => ({ user_id: userId, event_id: id }))
-  const { error } = await supabase.from('saved_events').upsert(rows as any, { onConflict: 'user_id,event_id' })
+  // (user_id, event_id)가 전체 PK라 충돌 시 갱신할 값이 없음.
+  // ignoreDuplicates: true → ON CONFLICT DO NOTHING (UPDATE 정책 불필요, INSERT 정책만으로 동작)
+  const { error } = await supabase.from('saved_events').upsert(rows as any, { onConflict: 'user_id,event_id', ignoreDuplicates: true })
   if (error) { console.error('[저장 이벤트] 일괄 저장 실패:', error.message); return false }
   return true
 }

@@ -26,7 +26,10 @@ export interface CompletedRoute {
   cover: string | null
   difficulty: number | null
   distance: number | null
+  durationMin: number | null
   total: number
+  regions: string[]
+  stops: { lat: number; lng: number }[]
 }
 
 // 방문=전체(완주)인 루트
@@ -37,11 +40,13 @@ export async function getCompletedRoutes(userId: string): Promise<CompletedRoute
   const routeIds = Array.from(new Set((prog as any[]).map((p) => p.route_id)))
   const { data: routes } = await supabase
     .from('routes')
-    .select('id, title, share_token, cover_image_url, official_difficulty, total_distance_m, route_shops ( id )')
+    .select('id, title, share_token, cover_image_url, official_difficulty, total_distance_m, total_duration_min, route_shops ( id, sort_order, shops ( region, addr, lat, lng ) )')
     .in('id', routeIds)
   return ((routes ?? []) as any[]).map((r) => {
     const total = r.route_shops?.length ?? 0
     const visited = (prog as any[]).filter((p) => p.route_id === r.id).length
-    return { id: r.id, title: r.title, shareToken: r.share_token, cover: r.cover_image_url, difficulty: r.official_difficulty, distance: r.total_distance_m, total, visited }
+    const regions = Array.from(new Set((r.route_shops ?? []).map((rs: any) => rs.shops?.region || (rs.shops?.addr ? String(rs.shops.addr).trim().split(/\s+/)[0] : null)).filter(Boolean))) as string[]
+    const stops = [...(r.route_shops ?? [])].sort((a: any, b: any) => (a.sort_order ?? 0) - (b.sort_order ?? 0)).map((rs: any) => ({ lat: rs.shops?.lat, lng: rs.shops?.lng })).filter((s: any) => typeof s.lat === 'number' && typeof s.lng === 'number')
+    return { id: r.id, title: r.title, shareToken: r.share_token, cover: r.cover_image_url, difficulty: r.official_difficulty, distance: r.total_distance_m, durationMin: r.total_duration_min ?? null, total, visited, regions, stops }
   }).filter((r: any) => r.total > 0 && r.visited >= r.total).map(({ visited, ...r }: any) => r)
 }

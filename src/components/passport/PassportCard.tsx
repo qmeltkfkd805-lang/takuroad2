@@ -1,5 +1,6 @@
 'use client'
 import { useState, useRef } from 'react'
+import { createPortal } from 'react-dom'
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -194,13 +195,18 @@ export default function PassportCard({ passport, isOwner, showFollow, onCustomiz
           </div>
         </div>
       )}
-      {showEdit && (
+      {/* ⭐ 모달은 카드 밖(body)으로 포탈한다.
+          .card > *:not(.fxBg) { position: relative } 규칙이 오버레이의
+          position:fixed 를 덮어써서 여권 밑에 붙어버리는 걸 막는다.
+          (카드의 overflow:hidden 클리핑도 함께 벗어난다) */}
+      {showEdit && typeof document !== 'undefined' && createPortal(
         <ProfileCustomizationModal
           passport={passport}
           userId={passport.userId}
           onClose={() => setShowEdit(false)}
           onSaved={(v) => { setNickname(v.nickname); setTagline2(v.tagline) }}
-        />
+        />,
+        document.body,
       )}
     </div>
   )

@@ -3,9 +3,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
+import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { ROUTES } from '@/lib/constants/routes'
-import { getAllTagsForSelect } from '@/services/routeService'
+import { getAllTagsForSelect, getMyRoutes } from '@/services/routeService'
 import { createPost, updatePost, getPost, uploadPostImage } from '@/services/communityPostService'
+import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import { createPoll } from '@/services/pollService'
 import { Board, BOARDS, BOARD_FLAIRS, CREATION_BOARDS, boardMeta, NewPost, NewPoll } from '@/types/community-post'
 
@@ -31,18 +33,22 @@ const FANART_AGREE = [
 
 export default function PostWritePage() {
   const { user, isAdmin } = useAuth()
+  const isDesktop = useIsDesktop()
   const router = useRouter()
   const sp = useSearchParams()
   const lockTag = sp.get('lockTag') === '1'
   const editId = sp.get('edit')
   const editorRef = useRef<HTMLDivElement>(null)
   const tagBoxRef = useRef<HTMLDivElement>(null)
+  const boardRef = useRef<HTMLDivElement>(null)
 
   const [board, setBoard] = useState<Board>((sp.get('board') as Board) || 'free')
   const [tags, setTags] = useState<Tag[]>([])
   const [tagIds, setTagIds] = useState<string[]>(sp.get('tag') ? [sp.get('tag')!] : [])
   const [tagQuery, setTagQuery] = useState('')
   const [tagOpen, setTagOpen] = useState(false)
+  const [boardOpen, setBoardOpen] = useState(false)
+  const [myWorks, setMyWorks] = useState<{ id: string; name: string }[]>([])   // 내 최애·관심 작품 (빠른 태그)
 
   const [title, setTitle] = useState('')
   const [images, setImages] = useState<string[]>([])
@@ -60,7 +66,27 @@ export default function PostWritePage() {
   const [color, setColor] = useState('#E8006F')
   const [pollOpen, setPollOpen] = useState(false)
   const [tableOpen, setTableOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)   // 모바일: 등록 시 옵션 선택 모달
   const [pollData, setPollData] = useState<NewPoll | null>(null)
+  const [moreOpen, setMoreOpen] = useState(false)           // 모바일: 툴바 "더보기" 패널
+  const [routePickOpen, setRoutePickOpen] = useState(false) // 내 루트 공유 — 루트 선택 모달
+  const [myRoutes, setMyRoutes] = useState<{ id: string; title: string; share_token: string; cover_image_url: string | null; shopCount: number }[]>([])
+
+  // 내 최애·관심 작품 — 작품 선택 아래 빠른 태그로 노출
+  useEffect(() => {
+    if (!user) { setMyWorks([]); return }
+    getMyWorkRelationships(user.id)
+      .then(rels => setMyWorks(rels.filter(r => r.affinity).map(r => ({ id: r.work.id, name: r.work.name }))))
+      .catch(() => setMyWorks([]))
+  }, [user])
+
+  // 내가 만든 루트 — "내 루트 공유"에서 골라 글에 삽입
+  useEffect(() => {
+    if (!user) { setMyRoutes([]); return }
+    getMyRoutes(user.id)
+      .then(rs => setMyRoutes((rs as any[]).map(r => ({ id: r.id, title: r.title, share_token: r.share_token, cover_image_url: r.cover_image_url ?? null, shopCount: r.route_shops?.length ?? 0 }))))
+      .catch(() => setMyRoutes([]))
+  }, [user])
 
   const meta = boardMeta(board)!
   const selectedTags = tags.filter(t => tagIds.includes(t.id))
@@ -97,6 +123,13 @@ export default function PostWritePage() {
     return () => document.removeEventListener('mousedown', onDown)
   }, [tagOpen])
 
+  useEffect(() => {
+    if (!boardOpen) return
+    const onDown = (e: MouseEvent) => { if (boardRef.current && !boardRef.current.contains(e.target as Node)) setBoardOpen(false) }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [boardOpen])
+
   const refreshActive = useCallback(() => {
     const el = editorRef.current
     const sel = typeof window !== 'undefined' ? window.getSelection() : null
@@ -122,6 +155,30 @@ export default function PostWritePage() {
   }, [refreshActive])
 
   const exec = (cmd: string, val?: string) => { document.execCommand(cmd, false, val); editorRef.current?.focus(); refreshActive() }
+
+  // 인용구 안에서 엔터 → 인용구를 빠져나와 일반 문단으로 (반복 방지). 여러 줄은 Shift+Enter로.
+  const onEditorKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== 'Enter' || e.shiftKey || e.nativeEvent.isComposing) return
+    const sel = window.getSelection()
+    if (!sel || !sel.rangeCount) return
+    let node: Node | null = sel.anchorNode
+    let bq: HTMLElement | null = null
+    while (node && node !== editorRef.current) {
+      if (node.nodeType === 1 && (node as HTMLElement).tagName === 'BLOCKQUOTE') { bq = node as HTMLElement; break }
+      node = node.parentNode
+    }
+    if (!bq || !bq.parentNode) return
+    e.preventDefault()
+    const p = document.createElement('div')
+    p.appendChild(document.createElement('br'))
+    bq.parentNode.insertBefore(p, bq.nextSibling)
+    const range = document.createRange()
+    range.setStart(p, 0)
+    range.collapse(true)
+    sel.removeAllRanges()
+    sel.addRange(range)
+    refreshActive()
+  }
 
   const onPickImages = async (list: FileList | null) => {
     if (!user || !list) return
@@ -150,6 +207,22 @@ export default function PostWritePage() {
   }
 
   const appendBlock = (html: string) => { if (editorRef.current) { editorRef.current.innerHTML += html + '<p><br/></p>'; editorRef.current.focus() } }
+  // 내가 만든 루트를 본문에 카드형 링크로 삽입
+  const insertRoute = (r: { title: string; share_token: string; cover_image_url: string | null; shopCount: number }) => {
+    const routeSvg = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h6a4 4 0 0 0 0-8H10a4 4 0 0 1 0-8h6"/></svg>`
+    const cover = r.cover_image_url
+      ? `<img src="${escapeHtml(r.cover_image_url)}" style="width:60px;height:60px;border-radius:10px;object-fit:cover;flex:none;" />`
+      : `<span style="width:60px;height:60px;border-radius:10px;background:#f3f3f5;display:inline-flex;align-items:center;justify-content:center;color:#999;flex:none;">${routeSvg}</span>`
+    appendBlock(
+      `<a href="/route/${escapeHtml(r.share_token)}" contenteditable="false" style="display:flex;align-items:center;gap:12px;border:1px solid #eee;border-radius:14px;padding:12px 14px;margin:8px 0;text-decoration:none;color:inherit;background:#fafafa;">`
+      + cover
+      + `<span style="min-width:0;"><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;color:#e8006f;">${routeSvg.replace('width="20" height="20"', 'width="13" height="13"')} 내 루트</span>`
+      + `<span style="display:block;font-weight:800;font-size:15px;color:#111;margin-top:2px;">${escapeHtml(r.title)}</span>`
+      + `<span style="display:block;font-size:12px;color:#888;margin-top:2px;">${r.shopCount}개 장소 · 눌러서 루트 보기</span></span></a>`
+    )
+    setRoutePickOpen(false)
+    setMoreOpen(false)
+  }
   const applyBoardTemplate = (b: Board) => {
     const tmpl = BOARD_TEMPLATES[b]
     const el = editorRef.current
@@ -224,6 +297,47 @@ export default function PostWritePage() {
   const standaloneBoards = BOARDS.filter(b => !CREATION_BOARDS.includes(b.value))
   const creationBoards = BOARDS.filter(b => CREATION_BOARDS.includes(b.value))
 
+  // 설정 필드 — PC는 옆 패널, 모바일은 등록 모달에서 재사용
+  const settingsFields = (
+    <>
+      <label style={{ display: 'flex', alignItems: 'flex-start', gap: 9, fontSize: 13.5, cursor: 'pointer', lineHeight: 1.4 }}>
+        <input type="checkbox" checked={spoiler} onChange={() => setSpoiler(v => !v)} style={{ marginTop: 2, accentColor: 'var(--accent)' }} />
+        <span>🚨 스포일러 포함 (목록에서 &lsquo;스포주의&rsquo; 표시)</span>
+      </label>
+      {tagIds.length > 0 && (
+        <label style={{ display: 'flex', alignItems: 'flex-start', gap: 9, fontSize: 13.5, cursor: 'pointer', lineHeight: 1.4 }}>
+          <input type="checkbox" checked={showOnWork} onChange={() => setShowOnWork(v => !v)} style={{ marginTop: 2, accentColor: 'var(--accent)' }} />
+          <span>작품 상세 페이지에도 함께 등록</span>
+        </label>
+      )}
+      {isAdmin && (
+        <label style={{ display: 'flex', alignItems: 'flex-start', gap: 9, fontSize: 13.5, cursor: 'pointer', lineHeight: 1.4 }}>
+          <input type="checkbox" checked={isNotice} onChange={() => setIsNotice(v => !v)} style={{ marginTop: 2, accentColor: 'var(--accent)' }} />
+          <span>📌 공지로 등록 (상단 고정)</span>
+        </label>
+      )}
+      {isAdmin && isNotice && (
+        <div style={{ paddingLeft: 24 }}>
+          <div style={{ fontSize: 12.5, color: 'var(--muted)', marginBottom: 5 }}>공지 노출 게시판</div>
+          <select value={noticeScope} onChange={e => setNoticeScope(e.target.value as ('all' | Board))} style={{ ...selectStyle, width: '100%', boxSizing: 'border-box', padding: '9px 12px' }}>
+            <option value="all">전체 게시판</option>
+            {BOARDS.map(b => <option key={b.value} value={b.value}>{b.label}</option>)}
+          </select>
+          <div style={{ fontSize: 11.5, color: 'var(--muted)', marginTop: 5 }}>공지는 사진·작품 없이 등록할 수 있어요.</div>
+        </div>
+      )}
+      {tagIds.length === 0 && !isAdmin && <div style={{ fontSize: 12.5, color: 'var(--muted)' }}>작품을 선택하면 추가 옵션이 나와요.</div>}
+    </>
+  )
+
+  // 팬아트 등록 동의 체크박스 — PC는 본문 아래 인라인, 모바일은 등록 모달에서 재사용
+  const fanartAgreeFields = FANART_AGREE.map((label, i) => (
+    <label key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 9, fontSize: 13, lineHeight: 1.45, cursor: 'pointer' }}>
+      <input type="checkbox" checked={agree[i]} onChange={() => setAgree(prev => prev.map((v, idx) => (idx === i ? !v : v)))} style={{ marginTop: 2, accentColor: 'var(--accent)', flexShrink: 0 }} />
+      <span>{label}</span>
+    </label>
+  ))
+
   return (
     <div style={{ minHeight: '100vh', background: 'var(--surface)' }}>
       <style>{`
@@ -232,28 +346,47 @@ export default function PostWritePage() {
         .taku-editor img{max-width:100%}
         .taku-editor blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}
         .taku-write-grid{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:24px}
-        @media (max-width:900px){.taku-write-grid{grid-template-columns:1fr}.taku-write-side{order:-1}}
         .tb-btn{width:34px;height:34px;border:none;background:none;border-radius:7px;cursor:pointer;color:var(--text);display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
         .tb-btn:hover{background:var(--surface2)}
+        @media (hover:none) and (pointer:coarse) and (max-width:900px){
+          .taku-write-grid{grid-template-columns:1fr}
+          .pw-body{ padding: 4px 16px 150px !important; }
+          /* 네모칸 제거 — 게시판·작품·본문을 밑줄 스타일로, 게시판 아래 작품 세로 배치 */
+          .pw-catrow{ flex-direction: column !important; gap: 0 !important; }
+          .pw-catrow .pw-select-btn, .pw-catrow input{ border:none !important; border-bottom:1px solid var(--border) !important; border-radius:0 !important; background:none !important; padding:15px 2px !important; font-size:16px !important; width:100% !important; box-sizing:border-box !important; }
+          .pw-catrow > div{ min-width:0 !important; flex:none !important; }
+          .pw-editor{ border:none !important; border-radius:0 !important; padding:14px 2px !important; max-height:none !important; }              /* 하단 고정 툴바 공간 확보 */
+          .pw-toolbar{ position: fixed !important; left:0; right:0; bottom:0; top:auto !important; margin:0 !important; border-radius:0 !important; border-left:none !important; border-right:none !important; z-index:40 !important; padding-bottom: env(safe-area-inset-bottom); }
+          .pw-toolbar > div{ flex-wrap: nowrap !important; overflow-x: auto; scrollbar-width: none; }
+          .pw-toolbar > div::-webkit-scrollbar{ display:none; }
+          .pw-tb-format{ display:none !important; }   /* 모바일: 글꼴·크기·서식 줄 숨김 */
+          .pw-tb-extra{ display:none !important; }     /* 모바일: 툴바 부가 버튼은 더보기 패널로 이동 */
+          .pw-more-btn{ display:inline-flex !important; }  /* 모바일: 더보기(…) 노출 */
+          /* 더보기 패널 — 사진·동영상·더보기 줄 아래에 그리드로 펼쳐짐 (툴바 줄은 그대로 유지) */
+          .pw-more-panel{ display:grid !important; grid-template-columns:repeat(4,1fr); gap:6px 8px; padding:14px 12px 12px; border-top:1px solid var(--border); background:var(--surface); overflow:visible !important; flex-wrap:wrap !important; }
+          .taku-editor a[contenteditable="false"]{ user-select:none; }
+        }
       `}</style>
 
       {/* 상단 바 */}
       <div style={{ position: 'sticky', top: 0, zIndex: 20, background: 'var(--surface)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <button onClick={() => router.back()} aria-label="뒤로" style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--text)', display: 'flex' }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+          <button onClick={() => router.back()} aria-label={isDesktop ? '뒤로' : '닫기'} style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--text)', display: 'flex' }}>
+            {isDesktop
+              ? <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+              : <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12" /></svg>}
           </button>
-          <span style={{ fontSize: 19, fontWeight: 900 }}>{editId ? '글 수정' : '글쓰기'}</span>
+          {isDesktop && <span style={{ fontSize: 19, fontWeight: 900 }}>{editId ? '글 수정' : '글쓰기'}</span>}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <button onClick={saveDraft} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '9px 16px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>
             임시저장 <span style={{ color: 'var(--muted)', fontWeight: 800 }}>{hasDraft ? 1 : 0}</span>
           </button>
-          <button onClick={submit} disabled={saving} style={{ padding: '9px 22px', borderRadius: 10, border: 'none', background: saving ? 'var(--border)' : 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: saving ? 'default' : 'pointer', fontFamily: 'inherit' }}>{saving ? (editId ? '수정 중…' : '등록 중…') : (editId ? '수정' : '등록')}</button>
+          <button onClick={() => { if (isDesktop) submit(); else setSettingsOpen(true) }} disabled={saving || (isDesktop && isFanart && !allAgreed)} style={{ padding: '9px 22px', borderRadius: 10, border: 'none', background: (saving || (isDesktop && isFanart && !allAgreed)) ? 'var(--border)' : 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: (saving || (isDesktop && isFanart && !allAgreed)) ? 'default' : 'pointer', fontFamily: 'inherit' }}>{saving ? (editId ? '수정 중…' : '등록 중…') : (editId ? '수정' : '등록')}</button>
         </div>
       </div>
 
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '20px 24px 80px' }}>
+      <div className="pw-body" style={{ maxWidth: 1080, margin: '0 auto', padding: '20px 24px 80px' }}>
         {showDraftBanner && hasDraft && (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, background: 'var(--surface2)', borderRadius: 12, padding: '12px 16px', marginBottom: 16, fontSize: 14 }}>
             <span>임시저장된 글이 있어요. 이어서 작성할까요?</span>
@@ -268,25 +401,46 @@ export default function PostWritePage() {
         <div className="taku-write-grid">
           {/* 에디터 */}
           <div style={{ minWidth: 0 }}>
-            {/* 게시판 + 작품 */}
-            <div style={{ display: 'flex', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
-              <select value={board} onChange={e => { const nb = e.target.value as Board; setBoard(nb); setFlair(null); applyBoardTemplate(nb) }} style={selectStyle}>
-                {standaloneBoards.map(b => <option key={b.value} value={b.value}>{b.label}</option>)}
-                <optgroup label="창작게시판">
-                  {creationBoards.map(b => <option key={b.value} value={b.value}>{b.label}</option>)}
-                </optgroup>
-              </select>
+            {/* 게시판 + 작품 (모바일: 세로로 쌓고 밑줄 스타일) */}
+            <div className="pw-catrow" style={{ display: 'flex', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
+              <div ref={boardRef} style={{ position: 'relative' }}>
+                <button className="pw-select-btn" onClick={() => setBoardOpen(o => !o)} style={{ ...selectStyle, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, cursor: 'pointer', minWidth: 160, background: 'var(--surface)', color: 'var(--text)', fontFamily: 'inherit' }}>
+                  {meta.label}
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: boardOpen ? 'rotate(180deg)' : 'none', transition: 'transform .15s', flexShrink: 0 }}><path d="m6 9 6 6 6-6" /></svg>
+                </button>
+                {boardOpen && (
+                  <div style={{ position: 'absolute', top: '100%', left: 0, zIndex: 40, marginTop: 6, minWidth: 200, maxHeight: 320, overflowY: 'auto', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 10px 30px rgba(0,0,0,.16)', padding: 6 }}>
+                    {standaloneBoards.map(b => (
+                      <button key={b.value} onClick={() => { setBoard(b.value); setFlair(null); applyBoardTemplate(b.value); setBoardOpen(false) }} style={{ display: 'block', width: '100%', textAlign: 'left', border: 'none', background: board === b.value ? 'var(--accent-l, rgba(232,0,111,.1))' : 'none', color: board === b.value ? 'var(--accent)' : 'var(--text)', padding: '11px 13px', borderRadius: 8, fontSize: 14.5, fontWeight: board === b.value ? 800 : 600, cursor: 'pointer', fontFamily: 'inherit' }}>{b.label}</button>
+                    ))}
+                    <div style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 800, padding: '10px 13px 4px' }}>창작게시판</div>
+                    {creationBoards.map(b => (
+                      <button key={b.value} onClick={() => { setBoard(b.value); setFlair(null); applyBoardTemplate(b.value); setBoardOpen(false) }} style={{ display: 'block', width: '100%', textAlign: 'left', border: 'none', background: board === b.value ? 'var(--accent-l, rgba(232,0,111,.1))' : 'none', color: board === b.value ? 'var(--accent)' : 'var(--text)', padding: '11px 13px 11px 26px', borderRadius: 8, fontSize: 14, fontWeight: board === b.value ? 800 : 600, cursor: 'pointer', fontFamily: 'inherit' }}>ㄴ {b.label}</button>
+                    ))}
+                  </div>
+                )}
+              </div>
               <div ref={tagBoxRef} style={{ position: 'relative', flex: 1, minWidth: 200 }}>
                 {!lockTag && (
-                  <>
-                    <input value={tagQuery} onChange={e => { setTagQuery(e.target.value); setTagOpen(true) }} onFocus={() => setTagOpen(true)} placeholder={workRequired ? '작품 선택 (필수 · 여러 개 가능)' : '작품 선택 (여러 개 가능)'} style={{ ...selectStyle, width: '100%', boxSizing: 'border-box', borderColor: workRequired && tagIds.length === 0 ? 'var(--accent)' : 'var(--border)' }} />
-                    {tagOpen && (
+                  <div style={{ position: 'relative' }}>
+                    <input value={tagQuery} onChange={e => { setTagQuery(e.target.value); setTagOpen(true) }} placeholder={workRequired ? '작품 검색 (필수 · 여러 개 가능)' : '작품 검색 (여러 개 가능)'} style={{ ...selectStyle, width: '100%', boxSizing: 'border-box', borderColor: workRequired && tagIds.length === 0 ? 'var(--accent)' : 'var(--border)' }} />
+                    {tagOpen && tagQuery.trim() && (
                       <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 30, marginTop: 4, maxHeight: 240, overflow: 'auto', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 8px 24px rgba(0,0,0,.14)' }}>
                         {filteredTags.filter(t => !tagIds.includes(t.id)).length === 0 ? <div style={{ padding: '12px 14px', fontSize: 13, color: 'var(--muted)' }}>결과 없음</div>
                           : filteredTags.filter(t => !tagIds.includes(t.id)).map(t => <button key={t.id} onClick={() => { toggleTag(t.id); setTagQuery('') }} style={{ display: 'block', width: '100%', textAlign: 'left', border: 'none', background: 'none', padding: '10px 14px', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, color: 'var(--text)' }}>{t.name}</button>)}
                       </div>
                     )}
-                  </>
+                  </div>
+                )}
+                {!lockTag && myWorks.filter(w => !tagIds.includes(w.id)).length > 0 && (
+                  <div style={{ marginTop: 8 }}>
+                    <div style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 700, marginBottom: 6 }}>내 최애·관심 작품</div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                      {myWorks.filter(w => !tagIds.includes(w.id)).map(w => (
+                        <button key={w.id} onClick={() => toggleTag(w.id)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, fontSize: 13, padding: '6px 12px', borderRadius: 9999, cursor: 'pointer', fontFamily: 'inherit' }}># {w.name}</button>
+                      ))}
+                    </div>
+                  </div>
                 )}
                 {selectedTags.length > 0 && (
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
@@ -313,8 +467,8 @@ export default function PostWritePage() {
             {/* 제목 */}
             <input value={title} onChange={e => setTitle(e.target.value)} maxLength={100} placeholder="제목을 입력해 주세요" style={{ width: '100%', border: 'none', borderBottom: '1px solid var(--border)', background: 'none', padding: '12px 2px', fontSize: 22, fontWeight: 700, color: 'var(--text)', fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }} />
 
-            {/* 툴바 (2줄) */}
-            <div style={{ border: '1px solid var(--border)', borderRadius: 12, marginBottom: 12, overflow: 'hidden', position: 'sticky', top: 62, zIndex: 5, background: 'var(--surface)' }}>
+            {/* 툴바 — 모바일에선 하단 고정 */}
+            <div className="pw-toolbar" style={{ border: '1px solid var(--border)', borderRadius: 12, marginBottom: 12, overflow: 'hidden', position: 'sticky', top: 62, zIndex: 5, background: 'var(--surface)' }}>
               {/* 1행: 삽입 */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap', padding: '6px 8px' }}>
                 <label className="tb-btn" title="사진" style={{ cursor: 'pointer' }}>
@@ -325,6 +479,7 @@ export default function PostWritePage() {
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2.5" y="6" width="14" height="12" rx="2" /><path d="m16.5 10 5-2.5v9L16.5 14" /></svg>
                   <input type="file" accept="video/*" multiple onChange={e => onPickVideo(e.target.files)} style={{ display: 'none' }} />
                 </label>
+                <span className="pw-tb-extra" style={{ display: 'contents' }}>
                 <label className="tb-btn" title="파일" style={{ cursor: 'pointer' }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.5 12.5 21a5 5 0 0 1-7-7l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7L10.1 18.7a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8" /></svg>
                   <input type="file" multiple onChange={e => onPickFile(e.target.files)} style={{ display: 'none' }} />
@@ -342,9 +497,14 @@ export default function PostWritePage() {
                 <Sep />
                 <button className="tb-btn" title="인용구" onClick={() => exec('formatBlock', 'blockquote')} style={{ fontSize: 16 }}>&ldquo;</button>
                 <button className="tb-btn" title="구분선" onClick={() => exec('insertHorizontalRule')}>―</button>
+                </span>
+                {/* 📱 모바일 전용: 더보기 (…) — 투표·링크·파일·인용구·내 루트 공유 */}
+                <button className="pw-more-btn tb-btn" title="더보기" onClick={() => setMoreOpen(o => !o)} style={{ display: 'none', ...(moreOpen ? { background: 'rgba(232,0,111,.14)', color: 'var(--accent)' } : {}) }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8" /><circle cx="12" cy="12" r="1.8" /><circle cx="19" cy="12" r="1.8" /></svg>
+                </button>
               </div>
-              {/* 2행: 글자 서식 */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap', padding: '6px 8px', borderTop: '1px solid var(--border)', background: 'var(--surface2)' }}>
+              {/* 2행: 글자 서식 (모바일에선 숨김) */}
+              <div className="pw-tb-format" style={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap', padding: '6px 8px', borderTop: '1px solid var(--border)', background: 'var(--surface2)' }}>
                 <select onChange={e => { exec('fontName', e.target.value); e.target.selectedIndex = 0 }} defaultValue="" style={{ ...tbSelect }}>
                   <option value="" disabled>글꼴</option>
                   <option value="sans-serif">기본서체</option>
@@ -375,10 +535,26 @@ export default function PostWritePage() {
                 <button className="tb-btn" title="가운데 정렬" onClick={() => exec('justifyCenter')} style={act(active.justifyCenter)}><AlignIcon dir="center" /></button>
                 <button className="tb-btn" title="오른쪽 정렬" onClick={() => exec('justifyRight')} style={act(active.justifyRight)}><AlignIcon dir="right" /></button>
               </div>
+              {/* 📱 더보기 패널 — 툴바(사진·동영상·더보기 줄) 아래에 펼쳐짐 (모바일 전용) */}
+              {moreOpen && (
+                <div className="pw-more-panel">
+                  <MoreItem label="투표" onClick={() => { setMoreOpen(false); insertPoll() }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M6 20v-6M12 20V4M18 20v-9" /></svg>} />
+                  <MoreItem label="링크" onClick={() => { setMoreOpen(false); const u = window.prompt('링크 URL'); if (u) exec('createLink', u) }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1" /><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1" /></svg>} />
+                  <label style={moreItemStyle}>
+                    <span style={moreIconStyle}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.5 12.5 21a5 5 0 0 1-7-7l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7L10.1 18.7a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8" /></svg></span>
+                    <span style={{ fontSize: 12, fontWeight: 700 }}>파일</span>
+                    <input type="file" multiple onChange={e => { onPickFile(e.target.files); setMoreOpen(false) }} style={{ display: 'none' }} />
+                  </label>
+                  <MoreItem label="인용구" onClick={() => { setMoreOpen(false); exec('formatBlock', 'blockquote') }} icon={<span style={{ fontSize: 26, fontWeight: 800, lineHeight: 1 }}>&ldquo;</span>} />
+                  <MoreItem label="표" onClick={() => { setMoreOpen(false); insertTable() }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 10h18M3 15h18M9 4v16M15 4v16" /></svg>} />
+                  <MoreItem label="구분선" onClick={() => { setMoreOpen(false); exec('insertHorizontalRule') }} icon={<span style={{ fontSize: 22, fontWeight: 800, lineHeight: 1 }}>―</span>} />
+                  <MoreItem label="내 루트" onClick={() => { setMoreOpen(false); setRoutePickOpen(true) }} icon={<RouteIcon />} />
+                </div>
+              )}
             </div>
 
             {/* 본문 */}
-            <div ref={editorRef} className="taku-editor" contentEditable suppressContentEditableWarning data-ph="내용을 입력하세요."
+            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph="내용을 입력하세요." onKeyDown={onEditorKeyDown}
               style={{ minHeight: 340, maxHeight: '55vh', overflowY: 'auto', fontSize: 16, lineHeight: 1.7, color: 'var(--text)', padding: '12px 14px', border: '1px solid var(--border)', borderRadius: 12 }} />
 
             {pollData && (
@@ -402,57 +578,101 @@ export default function PostWritePage() {
               </div>
             )}
 
-            {/* 팬아트 동의 */}
-            {isFanart && (
+            {/* 팬아트 동의 — PC만 인라인. 모바일은 등록 모달에서 */}
+            {isFanart && isDesktop && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 9, padding: '14px 16px', background: 'var(--surface2)', borderRadius: 12, marginTop: 18 }}>
-                {FANART_AGREE.map((label, i) => (
-                  <label key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 9, fontSize: 13, lineHeight: 1.45, cursor: 'pointer' }}>
-                    <input type="checkbox" checked={agree[i]} onChange={() => setAgree(prev => prev.map((v, idx) => (idx === i ? !v : v)))} style={{ marginTop: 2, accentColor: 'var(--accent)', flexShrink: 0 }} />
-                    <span>{label}</span>
-                  </label>
-                ))}
+                {fanartAgreeFields}
               </div>
             )}
           </div>
 
-          {/* 설정 사이드바 */}
-          <aside className="taku-write-side">
-            <div style={{ border: '1px solid var(--border)', borderRadius: 14, padding: '16px 16px', display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <div style={{ fontSize: 14, fontWeight: 900 }}>설정</div>
-              <label style={{ display: 'flex', alignItems: 'flex-start', gap: 9, fontSize: 13.5, cursor: 'pointer', lineHeight: 1.4 }}>
-                <input type="checkbox" checked={spoiler} onChange={() => setSpoiler(v => !v)} style={{ marginTop: 2, accentColor: 'var(--accent)' }} />
-                <span>🚨 스포일러 포함 (목록에서 &lsquo;스포주의&rsquo; 표시)</span>
-              </label>
-              {tagIds.length > 0 && (
-                <label style={{ display: 'flex', alignItems: 'flex-start', gap: 9, fontSize: 13.5, cursor: 'pointer', lineHeight: 1.4 }}>
-                  <input type="checkbox" checked={showOnWork} onChange={() => setShowOnWork(v => !v)} style={{ marginTop: 2, accentColor: 'var(--accent)' }} />
-                  <span>작품 상세 페이지에도 함께 등록</span>
-                </label>
-              )}
-              {isAdmin && (
-                <label style={{ display: 'flex', alignItems: 'flex-start', gap: 9, fontSize: 13.5, cursor: 'pointer', lineHeight: 1.4 }}>
-                  <input type="checkbox" checked={isNotice} onChange={() => setIsNotice(v => !v)} style={{ marginTop: 2, accentColor: 'var(--accent)' }} />
-                  <span>📌 공지로 등록 (상단 고정)</span>
-                </label>
-              )}
-              {isAdmin && isNotice && (
-                <div style={{ paddingLeft: 24 }}>
-                  <div style={{ fontSize: 12.5, color: 'var(--muted)', marginBottom: 5 }}>공지 노출 게시판</div>
-                  <select value={noticeScope} onChange={e => setNoticeScope(e.target.value as ('all' | Board))} style={{ ...selectStyle, width: '100%', boxSizing: 'border-box', padding: '9px 12px' }}>
-                    <option value="all">전체 게시판</option>
-                    {BOARDS.map(b => <option key={b.value} value={b.value}>{b.label}</option>)}
-                  </select>
-                  <div style={{ fontSize: 11.5, color: 'var(--muted)', marginTop: 5 }}>공지는 사진·작품 없이 등록할 수 있어요.</div>
-                </div>
-              )}
-              {tagIds.length === 0 && !isAdmin && <div style={{ fontSize: 12.5, color: 'var(--muted)' }}>작품을 선택하면 추가 옵션이 나와요.</div>}
-            </div>
-          </aside>
+          {/* 설정 사이드바 — PC만. 모바일은 등록 시 모달로 */}
+          {isDesktop && (
+            <aside className="taku-write-side">
+              <div style={{ border: '1px solid var(--border)', borderRadius: 14, padding: '16px 16px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+                <div style={{ fontSize: 14, fontWeight: 900 }}>설정</div>
+                {settingsFields}
+              </div>
+            </aside>
+          )}
         </div>
       </div>
       {pollOpen && <PollModal onClose={() => setPollOpen(false)} onConfirm={data => { setPollData(data); setPollOpen(false) }} />}
       {tableOpen && <TableModal onClose={() => setTableOpen(false)} onConfirm={html => { appendBlock(html); setTableOpen(false) }} />}
+
+      {/* 📱 등록 옵션 모달 (모바일: 등록 누르면 뜸) */}
+      {settingsOpen && (
+        <div onClick={() => setSettingsOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 3000, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: 'flex-end' }}>
+          <div onClick={e => e.stopPropagation()} style={{ width: '100%', background: 'var(--surface)', borderRadius: '20px 20px 0 0', padding: '20px 18px calc(18px + env(safe-area-inset-bottom))', display: 'flex', flexDirection: 'column', gap: 14, maxHeight: '82vh', overflowY: 'auto' }}>
+            <div style={{ fontSize: 16, fontWeight: 900 }}>{editId ? '수정 옵션' : '등록 옵션'}</div>
+            {settingsFields}
+            {isFanart && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 9, padding: '14px 16px', background: 'var(--surface2)', borderRadius: 12 }}>
+                <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--muted)' }}>창작게시판 등록 동의</div>
+                {fanartAgreeFields}
+              </div>
+            )}
+            {isFanart && !allAgreed && <div style={{ fontSize: 12.5, color: 'var(--accent)', fontWeight: 700 }}>모든 동의 항목에 체크해야 등록할 수 있어요.</div>}
+            {err && <div style={{ fontSize: 13, color: '#c0392b', background: 'rgba(239,90,90,.08)', borderRadius: 10, padding: '10px 12px' }}>{err}</div>}
+            <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
+              <button onClick={() => setSettingsOpen(false)} style={{ flex: 1, padding: '13px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--muted)', fontWeight: 800, fontSize: 15, cursor: 'pointer', fontFamily: 'inherit' }}>취소</button>
+              <button onClick={submit} disabled={saving || (isFanart && !allAgreed)} style={{ flex: 2, padding: '13px', borderRadius: 12, border: 'none', background: (saving || (isFanart && !allAgreed)) ? 'var(--border)' : 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: (saving || (isFanart && !allAgreed)) ? 'default' : 'pointer', fontFamily: 'inherit' }}>{saving ? (editId ? '수정 중…' : '등록 중…') : (editId ? '수정' : '등록')}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 📱 내 루트 공유 — 루트 선택 모달 */}
+      {routePickOpen && (
+        <div onClick={() => setRoutePickOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 3100, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: 'flex-end' }}>
+          <div onClick={e => e.stopPropagation()} style={{ width: '100%', background: 'var(--surface)', borderRadius: '20px 20px 0 0', padding: '18px 18px calc(16px + env(safe-area-inset-bottom))', maxHeight: '78vh', overflowY: 'auto' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+              <span style={{ fontSize: 16, fontWeight: 900 }}>내 루트 공유</span>
+              <button onClick={() => setRoutePickOpen(false)} aria-label="닫기" style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--muted)', display: 'flex' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
+              </button>
+            </div>
+            <div style={{ fontSize: 12.5, color: 'var(--muted)', marginBottom: 12 }}>내가 만든 루트를 골라 글에 넣을 수 있어요.</div>
+            {myRoutes.length === 0 ? (
+              <div style={{ padding: '28px 0', textAlign: 'center', color: 'var(--muted)', fontSize: 14 }}>아직 만든 루트가 없어요.</div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {myRoutes.map(r => (
+                  <button key={r.id} onClick={() => insertRoute(r)} style={{ display: 'flex', alignItems: 'center', gap: 12, width: '100%', textAlign: 'left', border: '1px solid var(--border)', borderRadius: 14, padding: '10px 12px', background: 'var(--surface)', cursor: 'pointer', fontFamily: 'inherit' }}>
+                    {r.cover_image_url
+                      ? <img src={r.cover_image_url} alt="" style={{ width: 52, height: 52, borderRadius: 10, objectFit: 'cover', flex: 'none' }} />
+                      : <span style={{ width: 52, height: 52, borderRadius: 10, background: 'var(--surface2)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flex: 'none', color: 'var(--muted)' }}><RouteIcon /></span>}
+                    <span style={{ minWidth: 0, flex: 1 }}>
+                      <span style={{ display: 'block', fontWeight: 800, fontSize: 15, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title || '제목 없는 루트'}</span>
+                      <span style={{ display: 'block', fontSize: 12.5, color: 'var(--muted)', marginTop: 2 }}>{r.shopCount}개 장소</span>
+                    </span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flex: 'none' }}><path d="m9 18 6-6-6-6" /></svg>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
+  )
+}
+
+const moreIconStyle: React.CSSProperties = { width: 46, height: 46, borderRadius: 14, background: 'var(--surface2)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text)' }
+const moreItemStyle: React.CSSProperties = { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', color: 'var(--text)', padding: '6px 0' }
+function RouteIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="6" cy="19" r="2" /><circle cx="18" cy="5" r="2" /><path d="M8 19h6a4 4 0 0 0 0-8H10a4 4 0 0 1 0-8h6" />
+    </svg>
+  )
+}
+function MoreItem({ label, icon, onClick }: { label: string; icon: React.ReactNode; onClick: () => void }) {
+  return (
+    <button onClick={onClick} style={moreItemStyle}>
+      <span style={moreIconStyle}>{icon}</span>
+      <span style={{ fontSize: 12, fontWeight: 700 }}>{label}</span>
+    </button>
   )
 }
 

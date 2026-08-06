@@ -1,7 +1,13 @@
 ﻿.homeLayout { width: 100%; padding: 0 24px; }
 .rail { display: flex; flex-direction: column; gap: 14px; padding: 16px; }
 
-@media (min-width: 1024px) {
+/* 📱 모바일(터치 기기)에서는 좌우 여백 없이 화면 꽉 차게 */
+@media (hover: none) and (pointer: coarse) {
+  .homeLayout { padding: 0; }
+  .hideMobile { display: none; }   /* 내 컬렉션·최근 체크인 모바일에서 숨김 */
+}
+
+@media (min-width: 1024px), (hover: hover) and (pointer: fine) {
   .homeLayout { display: grid; grid-template-columns: minmax(0, 1fr) 400px; align-items: start; gap: 40px; max-width: 1480px; }
   .rail { position: sticky; top: 76px; padding: 20px 20px 20px 0; }
 }

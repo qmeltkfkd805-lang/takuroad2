@@ -243,7 +243,7 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
 
   return (
     <div style={{ maxWidth: 1320, margin: '0 auto', padding: '20px 32px 60px' }}>
-      <style>{`.taku-page-2col{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}@media (max-width:900px){.taku-page-2col{grid-template-columns:1fr}}`}</style>
+      <style>{`.taku-page-2col{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}@media (hover:none) and (pointer:coarse) and (max-width:900px){.taku-page-2col{grid-template-columns:1fr}}`}</style>
 
       {/* 헤더 */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
