@@ -132,7 +132,7 @@ export default function CommunityPage() {
       return
     }
     const [list, ntc] = await Promise.all([
-      getPosts(board, scope === 'popular' ? 'popular' : sort, user?.id, {
+      getPosts(board, sort, user?.id, {
         mineOnly: scope === 'mine', search, tagId: tagFilter?.id,
       }),
       getNotices(board),
