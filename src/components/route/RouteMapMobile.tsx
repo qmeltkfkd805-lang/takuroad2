@@ -6,7 +6,7 @@ import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getRouteByShareToken, toggleRouteSave, getMySavedRouteIds } from '@/services/routeService'
-import { useCurrentLocation, formatDistance } from '@/hooks/useCurrentLocation'
+import { useCurrentLocation, formatDistance, calcDistance } from '@/hooks/useCurrentLocation'
 import { shopRegion } from '@/lib/utils/region'
 import { useRouteRun, type EndResult } from '@/lib/routeRun/useRouteRun'
 import RouteMap, { type RouteMapRef } from './RouteMap'
@@ -40,6 +40,7 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
   const [showEndSheet, setShowEndSheet] = useState(false)
   const [ending, setEnding] = useState(false)
   const [endResult, setEndResult] = useState<EndResult | null>(null)
+  const [skippedShops, setSkippedShops] = useState<Set<string>>(new Set())
 
   const mapRef = useRef<RouteMapRef>(null)
   const fitTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -121,6 +122,19 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
   const running = run.phase === 'running' || run.phase === 'paused'
   const visitedCount = sheetStops.filter(s => s.visited).length
 
+  // 샵 좌표 맵(안내 커서 거리 계산용)
+  const shopCoord = useMemo(() => {
+    const m = new Map<string, { lat: number; lng: number }>()
+    for (const rs of rawStops) { const s = rs.shops; if (s && s.lat && s.lng) m.set(s.id, { lat: s.lat, lng: s.lng }) }
+    return m
+  }, [rawStops])
+
+  // 다음 안내 = 전체 샵 순서에서 아직 안 지나갔고(도착/확인) 건너뛰지 않은 첫 샵
+  const nextShop = sheetStops.find(s => !run.arrivedShopIds.has(s.id) && !s.visited && !skippedShops.has(s.id)) ?? null
+  const nextLabel = nextShop ? `${nextShop.order}. ${nextShop.name}${nextShop.floor ? ` (${nextShop.floor})` : ''}` : null
+  const nextCoord = nextShop ? shopCoord.get(nextShop.id) ?? null : null
+  const nextDistanceM = myLoc && nextCoord ? Math.round(calcDistance(myLoc.lat, myLoc.lng, nextCoord.lat, nextCoord.lng)) : null
+
   // 시트 높이 → 지도 아래 여백(bounds)로 반영 (드래그가 멈춘 뒤 재맞춤)
   const onHeight = useCallback((px: number) => {
     setSheetH(px)
@@ -146,11 +160,13 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
     router.replace(`/map?${p.toString()}`, { scroll: false })
   }, [params, router])
 
+  const resuming = run.hasExistingSession && !running
   function onStart() {
     run.requestLocationNow()   // 사용자 탭(제스처)에서 위치 권한 요청 → iOS 팝업 확실히
-    run.start()
+    if (resuming) run.resume(); else { setSkippedShops(new Set()); run.start() }
     setSelectedId(null)
   }
+  const skipNext = () => { if (nextShop) setSkippedShops(prev => { const n = new Set(prev); n.add(nextShop.id); return n }) }
   async function handleRunEnd(mode: 'complete' | 'partial' | 'later', manualIds: string[]) {
     if (ending) return
     setEnding(true)
@@ -164,9 +180,8 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
   function closeRunComplete() { setEndResult(null); router.push(`/route/${routeId}`) }
 
   const navigateNext = () => {
-    const cp = run.nextCheckpoint
-    if (!cp) return
-    window.open(`https://map.kakao.com/link/to/${encodeURIComponent(cp.label ?? '목적지')},${cp.lat},${cp.lng}`, '_blank', 'noopener')
+    if (!nextShop || !nextCoord) return
+    window.open(`https://map.kakao.com/link/to/${encodeURIComponent(nextShop.name)},${nextCoord.lat},${nextCoord.lng}`, '_blank', 'noopener')
   }
   const onPauseResume = () => { if (run.phase === 'paused') run.resume(); else run.pause() }
 
@@ -256,13 +271,16 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
         running={running}
         phase={run.phase}
         onStart={onStart}
+        startLabel={resuming ? '이어서 따라가기' : '루트 시작하기'}
         starting={run.phase === 'loading'}
         visitedCount={visitedCount}
         totalStops={sheetStops.length}
-        nextLabel={run.nextCheckpoint?.label ?? null}
-        nextDistanceM={run.nextDistanceM}
+        fieldVerified={run.verifiedCount}
+        checkpointTotal={run.totalCheckpoints}
+        nextLabel={nextLabel}
+        nextDistanceM={nextDistanceM}
         onNavigate={navigateNext}
-        onSkip={() => run.nextCheckpoint && run.skip(run.nextCheckpoint.key)}
+        onSkip={skipNext}
         onPauseResume={onPauseResume}
         onEnd={() => setShowEndSheet(true)}
       />

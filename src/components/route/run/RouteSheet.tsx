@@ -50,9 +50,12 @@ export default function RouteSheet(props: {
   running: boolean
   phase: RunPhase
   onStart: () => void
+  startLabel: string
   starting: boolean
   visitedCount: number
   totalStops: number
+  fieldVerified: number
+  checkpointTotal: number
   nextLabel: string | null
   nextDistanceM: number | null
   onNavigate: () => void
@@ -62,8 +65,8 @@ export default function RouteSheet(props: {
 }) {
   const {
     onHeightChange, title, metaLine, stops, selectedId, onSelect, onOpenDetail,
-    running, phase, onStart, starting, visitedCount, totalStops,
-    nextLabel, nextDistanceM, onNavigate, onSkip, onPauseResume, onEnd,
+    running, phase, onStart, startLabel, starting, visitedCount, totalStops,
+    fieldVerified, checkpointTotal, nextLabel, nextDistanceM, onNavigate, onSkip, onPauseResume, onEnd,
   } = props
 
   const [snap, setSnap] = useState<SheetSnap>('collapsed')
@@ -139,23 +142,28 @@ export default function RouteSheet(props: {
           <div className={styles.runHead}>
             <div>
               <span className={styles.badge}>{phase === 'paused' ? '일시중지' : '진행 중'}</span>
-              <span className={styles.runCount}>방문 {visitedCount}/{totalStops}곳</span>
+              <span className={styles.runCount}>현장 확인 {fieldVerified}/{checkpointTotal}</span>
             </div>
+            <span className={styles.runVisited}>방문 기록 {visitedCount}/{totalStops}곳</span>
           </div>
-          <div className={styles.bar}><div className={styles.barFill} style={{ width: `${totalStops ? Math.round((visitedCount / totalStops) * 100) : 0}%` }} /></div>
+          <div className={styles.bar}><div className={styles.barFill} style={{ width: `${checkpointTotal ? Math.round((fieldVerified / checkpointTotal) * 100) : 0}%` }} /></div>
           <div className={styles.nextRow}>
             <div className={styles.nextInfo}>
               <span className={styles.nextLabel}>다음</span>
-              <span className={styles.nextName}>{nextLabel ?? '모든 지점 확인됨 🎉'}</span>
+              <span className={styles.nextName}>{nextLabel ?? '안내할 다음 지점이 없어요'}</span>
             </div>
-            <span className={styles.nextDist}>{nextDistanceM != null ? walkText(Math.round(nextDistanceM / 75), nextDistanceM) : '위치 확인 중…'}</span>
+            {nextLabel && <span className={styles.nextDist}>{nextDistanceM != null ? walkText(Math.round(nextDistanceM / 75), nextDistanceM) : '위치 확인 중…'}</span>}
           </div>
+          {!nextLabel && <div className={styles.runNote}>방문한 곳은 ‘오늘 루트 종료’에서 확인해 주세요.</div>}
           <div className={styles.runBtns}>
             <button className={styles.ghost} onClick={onNavigate} disabled={!nextLabel}>길안내</button>
             <button className={styles.ghost} onClick={onSkip} disabled={!nextLabel}>건너뛰기</button>
             <button className={styles.ghost} onClick={onPauseResume}>{phase === 'paused' ? '다시 시작' : '일시중지'}</button>
           </div>
           <button className={styles.endBtn} onClick={onEnd}>오늘 루트 종료</button>
+          <button className={styles.listToggle} onClick={() => snapTo(snap === 'expanded' ? 'collapsed' : 'expanded')}>
+            코스 목록 {snap === 'expanded' ? '▾' : '▸'}
+          </button>
           {snap === 'expanded' && <CourseList stops={stops} selectedId={selectedId} onSelect={onSelect} onOpenDetail={onOpenDetail} listRef={listRef} showVisited />}
         </div>
       ) : selected ? (
@@ -172,7 +180,7 @@ export default function RouteSheet(props: {
             </div>
           </div>
           <button className={styles.detailLink} onClick={() => onOpenDetail(selected.slug)}>상세 보기 →</button>
-          <button className={styles.cta} onClick={onStart} disabled={starting}>{starting ? '준비 중…' : '루트 시작하기'}</button>
+          <button className={styles.cta} onClick={onStart} disabled={starting}>{starting ? '준비 중…' : startLabel}</button>
           {snap === 'expanded' && <CourseList stops={stops} selectedId={selectedId} onSelect={onSelect} onOpenDetail={onOpenDetail} listRef={listRef} />}
         </div>
       ) : (
@@ -181,7 +189,7 @@ export default function RouteSheet(props: {
             <div className={styles.sumTitle}>{title}</div>
             <div className={styles.sumMeta}>{metaLine}</div>
           </div>
-          <button className={styles.cta} onClick={onStart} disabled={starting}>{starting ? '준비 중…' : '루트 시작하기'}</button>
+          <button className={styles.cta} onClick={onStart} disabled={starting}>{starting ? '준비 중…' : startLabel}</button>
           <button className={styles.listToggle} onClick={() => snapTo(snap === 'expanded' ? 'collapsed' : 'expanded')}>
             코스 목록 {snap === 'expanded' ? '▾' : '▸'}
           </button>

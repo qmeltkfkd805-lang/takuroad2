@@ -57,6 +57,7 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
   const [location, setLocation] = useState<RunLocation | null>(null)
   const [geoDenied, setGeoDenied] = useState(false)
   const [arrivals, setArrivals] = useState<Arrival[]>([])
+  const [hasExistingSession, setHasExistingSession] = useState(false)   // 이어갈 수 있는 세션이 있음(자동 진입은 안 함)
 
   const sessionRef = useRef<string | null>(null)
   const phaseRef = useRef<RunPhase>('idle')
@@ -151,6 +152,7 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
     const { ok, data } = await postJson('/api/route-session/start', { routeId })
     if (!ok || !data.session) { setPhase('error'); return }
     applyStart(data)
+    setHasExistingSession(false)
     setPhase('running')
   }, [routeId, applyStart])
 
@@ -163,6 +165,7 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
   const resume = useCallback(async () => {
     const sid = sessionRef.current
     if (sid) await postJson('/api/route-session/resume', { sessionId: sid })
+    setHasExistingSession(false)
     setPhase('running')
   }, [])
 
@@ -204,8 +207,8 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
     startedOnceRef.current = true
     ;(async () => {
       const status = await refreshActive()
-      if (status === 'active') setPhase('running')
-      else if (status === 'paused') setPhase('paused')
+      // 남은 세션이 있어도 자동 진입하지 않음 — idle로 두고 '이어서 따라가기'를 유도(사용자 탭 시 resume)
+      if (status === 'active' || status === 'paused') { setHasExistingSession(true); setPhase('idle') }
       else if (autoStart) await start()
       else setPhase('idle')
     })()
@@ -244,7 +247,7 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
     ? Math.round(calcDistance(location.lat, location.lng, nextCheckpoint.lat, nextCheckpoint.lng))
     : null
 
-  // 확인된 샵 집합(샵 체크포인트 확인 + 수동기록). 건물 도착만으론 내부 샵 확인 아님.
+  // 확인된 샵 집합(샵 체크포인트 확인 + 수동기록). 건물 도착만으론 내부 샵 확인 아님(보상 기준).
   const confirmedShopIds = new Set<string>()
   for (const c of snap.checkpoints) {
     const st = visitStatus.get(c.key) ?? 'pending'
@@ -254,6 +257,12 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
     if (st === 'manual_recorded' && key.startsWith('shop:')) confirmedShopIds.add(key.slice(5))
   })
 
+  // 안내 커서용 '지나간 샵' — 확인된 체크포인트(건물 포함)에 속한 샵. 보상엔 안 쓰고 다음 안내에만 사용.
+  const arrivedShopIds = new Set<string>()
+  for (const c of snap.checkpoints) {
+    if (VERIFIED.has(visitStatus.get(c.key) ?? 'pending')) c.shopIds.forEach(id => arrivedShopIds.add(id))
+  }
+
   return {
     phase,
     session: snap.session,
@@ -262,6 +271,7 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
     visitStatus,
     location,
     hasFix: !!location,
+    hasExistingSession,
     geoDenied,
     arrivals,
     requestLocationNow,
@@ -270,6 +280,7 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
     nextCheckpoint,
     nextDistanceM,
     confirmedShopIds,
+    arrivedShopIds,
     start, pause, resume, undo, skip, end, dismissArrival, refreshActive,
   }
 }

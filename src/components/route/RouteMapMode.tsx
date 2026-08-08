@@ -3,7 +3,6 @@
    좌측 루트 패널(정보+방문 코스) + 우측 인터랙티브 지도(RouteMap) 연동.
    실제 경로 데이터가 없으므로 지도 연결선은 점선(단순 연결)으로 표기한다. */
 import { useState, useEffect, useMemo, useRef } from 'react'
-import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -23,9 +22,8 @@ import RouteRunSheet from './run/RouteRunSheet'
 import ArrivalToast from './run/ArrivalToast'
 import RouteEndSheet, { type EndShop } from './run/RouteEndSheet'
 import RouteRunComplete from './run/RouteRunComplete'
+import RouteMap from './RouteMap'
 import styles from './RouteMapMode.module.css'
-
-const RouteMap = dynamic(() => import('./RouteMap'), { ssr: false })
 
 function fmtDur(min: number | null | undefined): string | null {
   if (min == null) return null

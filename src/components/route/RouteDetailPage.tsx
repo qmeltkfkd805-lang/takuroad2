@@ -100,6 +100,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
   const [visitedIds, setVisitedIds] = useState<Set<string>>(new Set())
   const [selectedShopId, setSelectedShopId] = useState<string | null>(null)
   const [activeAnchor, setActiveAnchor] = useState('course')
+  const [courseOpen, setCourseOpen] = useState(true)   // 방문 코스 접기/펴기 (기본 펴짐)
   const [toast, setToast] = useState<string | null>(null)
   const [showComplete, setShowComplete] = useState(false)
   const celebratedRef = useRef(false)
@@ -319,8 +320,21 @@ export default function RouteDetailPage({ route }: { route: any }) {
               </div>
             )}
 
+            {authorNotes.length > 0 && (
+              <div className={styles.block}>
+                <h2 className={styles.blockTitle}>여행 전 tip</h2>
+                <ul className={styles.notesList}>
+                  {authorNotes.map((n, i) => <li key={i} className={styles.noteItem}><span className={styles.noteCheck}><CheckIcon size={13} color="var(--accent)" /></span>{n}</li>)}
+                </ul>
+              </div>
+            )}
+
             <div className={styles.block}>
-              <h2 className={styles.blockTitle}>방문 코스</h2>
+              <div className={styles.blockHead}>
+                <h2 className={styles.blockTitle}>방문 코스</h2>
+                <button className={styles.foldBtn} onClick={() => setCourseOpen(o => !o)} aria-expanded={courseOpen}>{courseOpen ? '접기 ▲' : '펼치기 ▼'}</button>
+              </div>
+              {courseOpen && (
               <ol className={styles.timeline}>
                 {sortedStops.map((rs: any, i: number) => {
                   const shop = rs.shops
@@ -376,17 +390,9 @@ export default function RouteDetailPage({ route }: { route: any }) {
                   )
                 })}
               </ol>
-              {singleSpot && <p className={styles.singleNote}>한 곳으로 이루어진 루트예요. 이동 경로·거리는 표시하지 않아요.</p>}
+              )}
+              {courseOpen && singleSpot && <p className={styles.singleNote}>한 곳으로 이루어진 루트예요. 이동 경로·거리는 표시하지 않아요.</p>}
             </div>
-
-            {authorNotes.length > 0 && (
-              <div className={styles.block}>
-                <h2 className={styles.blockTitle}>여행 전 알아두기</h2>
-                <ul className={styles.notesList}>
-                  {authorNotes.map((n, i) => <li key={i} className={styles.noteItem}><span className={styles.noteCheck}><CheckIcon size={13} color="var(--accent)" /></span>{n}</li>)}
-                </ul>
-              </div>
-            )}
 
             <div className={styles.block}>
               <h2 className={styles.blockTitle}>여행자 팁{routeTips.length ? ` ${routeTips.length}` : ''}</h2>
