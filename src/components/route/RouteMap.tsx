@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, forwardRef, useImperativeHandle } from 'react'
 import { arrowMarkers, splitReturnRuns, type RouteRun } from '@/lib/route/mapGeometry'
 import { buildMarkerEl, buildCircleMarkerEl, buildArrowEl, buildClusterEl } from './map/routeMarker'
 
@@ -29,18 +29,31 @@ interface Props {
   variant?: 'route' | 'preview'
   /** 되돌아가는 구간 존재 여부 콜백(범례 표시용) */
   onHasReturn?: (hasReturn: boolean) => void
+  /** 현재 위치(파란 점) — 모바일 진행 모드용. 없으면 안 그림. */
+  myLocation?: { lat: number; lng: number } | null
+  /** 하단 시트에 가려지지 않도록 bounds 아래쪽 여백(px). 기본 40. */
+  bottomPadding?: number
+}
+
+export interface RouteMapRef {
+  /** 전체 루트가 보이게 맞춤. pad를 주면 아래쪽 여백을 갱신한다. */
+  fit: (bottomPad?: number) => void
+  /** 특정 좌표로 부드럽게 이동. */
+  panTo: (lat: number, lng: number, level?: number) => void
 }
 
 /* 루트 상세 지도 — 실제 카카오 지도.
    · 마커: 작은 흰색 번호 원 / 출발·도착 플래그 / 선택 강조 + 나머지 약화 (routeMarker)
    · 경로: 흰색 외곽선 + 핑크 실선 2중 + 진행방향 화살표
    · 컨테이너 크기 확정 후 relayout + setBounds 재맞춤 */
-export default function RouteMap({ shops, selectedIndex = null, onSelectIndex, geometry = null, variant = 'route', onHasReturn }: Props) {
+const RouteMap = forwardRef<RouteMapRef, Props>(function RouteMap({ shops, selectedIndex = null, onSelectIndex, geometry = null, variant = 'route', onHasReturn, myLocation = null, bottomPadding = 40 }: Props, ref) {
   const preview = variant === 'preview'
   const onHasReturnRef = useRef(onHasReturn)
   onHasReturnRef.current = onHasReturn
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<any>(null)
+  const bottomPadRef = useRef<number>(bottomPadding)
+  const myLocRef = useRef<any>(null)        // 현재 위치 오버레이
   const markerRef = useRef<any[]>([])       // CustomOverlay[]
   const arrowRef = useRef<any[]>([])
   const pathRef = useRef<any[]>([])
@@ -66,7 +79,8 @@ export default function RouteMap({ shops, selectedIndex = null, onSelectIndex, g
       if (valid.length > 1) {
         const b = new window.kakao.maps.LatLngBounds()
         valid.forEach(s => b.extend(new window.kakao.maps.LatLng(s.lat, s.lng)))
-        map.setBounds(b, 40, 40, 40, 40)
+        const pb = Math.max(40, bottomPadRef.current)
+        map.setBounds(b, 40, 40, pb, 40)   // top, right, bottom(시트 높이 반영), left
       } else {
         map.setLevel(4)
         map.setCenter(new window.kakao.maps.LatLng(valid[0].lat, valid[0].lng))
@@ -315,5 +329,31 @@ export default function RouteMap({ shops, selectedIndex = null, onSelectIndex, g
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedIndex])
 
+  // 현재 위치(파란 점) 표시/갱신
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !window.kakao?.maps) return
+    const K = window.kakao.maps
+    if (myLocRef.current) { try { myLocRef.current.setMap(null) } catch { /* noop */ } myLocRef.current = null }
+    if (!myLocation) return
+    const el = document.createElement('div')
+    el.style.cssText = 'width:18px;height:18px;border-radius:50%;background:#338bff;border:3px solid #fff;box-shadow:0 0 0 4px rgba(51,139,255,.25),0 1px 4px rgba(0,0,0,.3)'
+    const ov = new K.CustomOverlay({ position: new K.LatLng(myLocation.lat, myLocation.lng), content: el, yAnchor: 0.5, xAnchor: 0.5, zIndex: 20 })
+    ov.setMap(map); myLocRef.current = ov
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [myLocation?.lat, myLocation?.lng])
+
+  useImperativeHandle(ref, () => ({
+    fit: (bottomPad?: number) => { if (bottomPad != null) bottomPadRef.current = bottomPad; fitToBounds() },
+    panTo: (lat: number, lng: number, level?: number) => {
+      const map = mapRef.current
+      if (!map || !window.kakao?.maps) return
+      const pos = new window.kakao.maps.LatLng(lat, lng)
+      try { if (level != null) map.setLevel(level, { anchor: pos, animate: { duration: 250 } }); map.panTo(pos) } catch { /* noop */ }
+    },
+  }), [])
+
   return <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
-}
+})
+
+export default RouteMap

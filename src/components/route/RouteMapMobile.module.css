@@ -1,0 +1,37 @@
+/* 전역 상단바/하단탭 위를 덮는 전체화면 지도 레이어. 하단탭(z-index 40)은 위에 남는다. */
+.wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  background: var(--surface2);
+  overflow: hidden;
+}
+.center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--muted); font-size: 14px; font-weight: 600; }
+.back { border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: inherit; font-size: 13px; font-weight: 800; padding: 8px 16px; border-radius: 10px; cursor: pointer; }
+
+/* 컴팩트 앱바 */
+.appbar {
+  position: absolute; top: 0; left: 0; right: 0; height: 54px; z-index: 10;
+  display: flex; align-items: center; gap: 4px; padding: 0 6px;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding-top: env(safe-area-inset-top);
+}
+.iconBtn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: none; background: none; color: var(--text); cursor: pointer; border-radius: 10px; flex-shrink: 0; }
+.iconBtn:hover { background: var(--surface2); }
+.appTitle { flex: 1; min-width: 0; font-size: 15.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 4px; }
+.menuWrap { position: relative; }
+.menu { position: absolute; top: 44px; right: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 6px 22px rgba(0,0,0,.16); padding: 5px; min-width: 150px; z-index: 20; }
+.menu button { display: block; width: 100%; text-align: left; padding: 11px 14px; border: none; background: none; color: var(--text); font-family: inherit; font-size: 14px; font-weight: 700; border-radius: 9px; cursor: pointer; }
+.menu button:hover { background: var(--surface2); }
+
+/* 지도 — 앱바 아래부터 화면 끝까지(하단탭은 그 위에 얹힘) */
+.map { position: absolute; top: calc(54px + env(safe-area-inset-top)); left: 0; right: 0; bottom: 0; }
+
+/* 우측 플로팅 버튼 (시트 높이에 맞춰 위로) */
+.fabs { position: fixed; right: 12px; z-index: 44; display: flex; flex-direction: column; gap: 10px; transition: bottom .28s cubic-bezier(.32,.72,0,1); }
+.fab { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255,255,255,.97); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.14); }
+.fab:hover { border-color: var(--accent); color: var(--accent); }
+
+.geoWarn { position: fixed; left: 50%; transform: translateX(-50%); z-index: 44; background: #fffbeb; color: #92400e; border: 1px solid #fde68a; border-radius: 10px; padding: 7px 12px; font-size: 11.5px; font-weight: 700; white-space: nowrap; transition: bottom .28s cubic-bezier(.32,.72,0,1); }
+
+.toast { position: fixed; left: 50%; bottom: calc(58px + env(safe-area-inset-bottom) + 220px); transform: translateX(-50%); z-index: 80; background: rgba(32,32,45,.94); color: #fff; padding: 10px 16px; border-radius: 12px; font-size: 12.5px; font-weight: 600; box-shadow: 0 4px 16px rgba(0,0,0,.25); max-width: 88%; text-align: center; }

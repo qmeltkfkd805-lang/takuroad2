@@ -9,19 +9,27 @@ export interface EndShop { id: string; name: string; floor?: string | null }
 export default function RouteEndSheet(props: {
   shops: EndShop[]
   confirmedShopIds: Set<string>
+  fieldVerifiedCount: number
   busy: boolean
   onEnd: (mode: 'complete' | 'partial' | 'later', manualShopIds: string[]) => void
   onClose: () => void
 }) {
-  const { shops, confirmedShopIds, busy, onEnd, onClose } = props
+  const { shops, confirmedShopIds, fieldVerifiedCount, busy, onEnd, onClose } = props
   const unconfirmed = shops.filter(s => !confirmedShopIds.has(s.id))
   const confirmedCount = shops.length - unconfirmed.length
   const [checked, setChecked] = useState<Set<string>>(new Set())
+  const [askHonest, setAskHonest] = useState(false)
 
   const toggle = (id: string) => setChecked(prev => {
     const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n
   })
   const manualIds = [...checked]
+
+  // 현장에서 자동 확인된 곳이 하나도 없으면 완주 전에 부드럽게 한 번 확인
+  const onCompleteTap = () => {
+    if (fieldVerifiedCount === 0) { setAskHonest(true); return }
+    onEnd('complete', manualIds)
+  }
 
   return (
     <div className={styles.overlay} role="dialog" aria-modal="true" onClick={busy ? undefined : onClose}>
@@ -53,17 +61,32 @@ export default function RouteEndSheet(props: {
           </>
         )}
 
-        <div className={styles.actions}>
-          <button className={styles.primary} disabled={busy} onClick={() => onEnd('complete', manualIds)}>
-            {busy ? '처리 중…' : '루트 완주로 마치기'}
-          </button>
-          <button className={styles.secondary} disabled={busy} onClick={() => onEnd('partial', manualIds)}>
-            부분 기록만 하고 종료
-          </button>
-          <button className={styles.textBtn} disabled={busy} onClick={() => onEnd('later', [])}>
-            나중에 이어가기
-          </button>
-        </div>
+        {askHonest ? (
+          <div className={styles.confirm}>
+            <p className={styles.confirmMsg}>
+              잠깐만요 🙂 현장에서 자동으로 확인된 곳이 아직 없어요.<br />
+              실제로 다녀온 곳만 체크했다면 그대로 완주할게요. 혹시 안 가본 곳도 체크했다면 풀어주세요.
+            </p>
+            <div className={styles.actions}>
+              <button className={styles.primary} disabled={busy} onClick={() => onEnd('complete', manualIds)}>
+                {busy ? '처리 중…' : '실제로 다녀왔어요, 완주'}
+              </button>
+              <button className={styles.textBtn} disabled={busy} onClick={() => setAskHonest(false)}>다시 확인할게요</button>
+            </div>
+          </div>
+        ) : (
+          <div className={styles.actions}>
+            <button className={styles.primary} disabled={busy} onClick={onCompleteTap}>
+              {busy ? '처리 중…' : '루트 완주로 마치기'}
+            </button>
+            <button className={styles.secondary} disabled={busy} onClick={() => onEnd('partial', manualIds)}>
+              부분 기록만 하고 종료
+            </button>
+            <button className={styles.textBtn} disabled={busy} onClick={() => onEnd('later', [])}>
+              나중에 이어가기
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

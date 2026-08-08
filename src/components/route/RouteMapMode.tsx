@@ -307,6 +307,7 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
         <RouteEndSheet
           shops={endShops}
           confirmedShopIds={run.confirmedShopIds}
+          fieldVerifiedCount={run.verifiedCount}
           busy={ending}
           onEnd={handleRunEnd}
           onClose={() => setShowEndSheet(false)}

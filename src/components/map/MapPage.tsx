@@ -21,6 +21,8 @@ import MapBottomSheet from './MapBottomSheet'
 import MapPinModal from './MapPinModal'
 import { getOngoingMapEvents, MapEvent } from '@/services/mapEventService'
 import RouteMapMode from '@/components/route/RouteMapMode'
+import RouteMapMobile from '@/components/route/RouteMapMobile'
+import { useIsDesktop } from '@/hooks/useIsDesktop'
 
 // Place 소속 샵은 place 좌표로 접어서 표시한다 (저장 좌표 lat/lng 은 안 건드림)
 const dispLat = (s: any) => s.displayLat ?? s.lat
@@ -54,6 +56,7 @@ export default function MapPage() {
   } = useShops()
 
   const { location, requestLocation } = useCurrentLocation()
+  const isDesktop = useIsDesktop()
   const [groupShops, setGroupShops] = useState<Shop[] | null>(null)
   const mapRef = useRef<KakaoMapRef>(null)
   const [locToast, setLocToast] = useState(false)
@@ -188,8 +191,9 @@ export default function MapPage() {
   }, [searchParams, setSelectedCat])
 
   // 루트 보기 모드: URL에 routeId가 있으면 일반 지도 대신 루트 전용 뷰
+  // 모바일은 지도 중심 전체화면(RouteMapMobile), 데스크톱은 기존 2단 레이아웃(RouteMapMode)
   const routeId = searchParams?.get('routeId')
-  if (routeId) return <RouteMapMode routeId={routeId} />
+  if (routeId) return isDesktop ? <RouteMapMode routeId={routeId} /> : <RouteMapMobile routeId={routeId} />
 
   return (
     <div className={styles.layout}>

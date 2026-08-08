@@ -178,6 +178,15 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
     setArrivals(prev => prev.filter(a => a.id !== id))
   }, [])
 
+  // 건너뛰기 — 로컬로 '다음 추천'만 넘김(서버 상태는 pending 유지 → 종료 시 직접 확인 가능)
+  const skip = useCallback((key: string) => {
+    setVisitStatus(prev => {
+      const st = prev.get(key) ?? 'pending'
+      if (VERIFIED.has(st) || st === 'manual_recorded') return prev
+      const m = new Map(prev); m.set(key, 'skipped'); return m
+    })
+  }, [])
+
   const end = useCallback(async (mode: 'complete' | 'partial' | 'later', manualShopIds: string[] = []): Promise<EndResult | null> => {
     const sid = sessionRef.current
     if (!sid) return null
@@ -226,8 +235,11 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
   const totalCheckpoints = snap.checkpoints.length
   const verifiedCount = snap.checkpoints.filter(c => VERIFIED.has(visitStatus.get(c.key) ?? 'pending')).length
 
-  // 다음 추천 체크포인트(순서상 첫 미확인) + 현재 위치까지 거리
-  const nextCheckpoint = snap.checkpoints.find(c => !VERIFIED.has(visitStatus.get(c.key) ?? 'pending')) ?? null
+  // 다음 추천 체크포인트(순서상 첫 미확인, 건너뛴 곳 제외) + 현재 위치까지 거리
+  const nextCheckpoint = snap.checkpoints.find(c => {
+    const st = visitStatus.get(c.key) ?? 'pending'
+    return !VERIFIED.has(st) && st !== 'skipped'
+  }) ?? null
   const nextDistanceM = nextCheckpoint && location
     ? Math.round(calcDistance(location.lat, location.lng, nextCheckpoint.lat, nextCheckpoint.lng))
     : null
@@ -258,6 +270,6 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
     nextCheckpoint,
     nextDistanceM,
     confirmedShopIds,
-    start, pause, resume, undo, end, dismissArrival, refreshActive,
+    start, pause, resume, undo, skip, end, dismissArrival, refreshActive,
   }
 }

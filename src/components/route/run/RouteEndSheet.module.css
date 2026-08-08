@@ -38,3 +38,5 @@
 .textBtn { min-height: 38px; border: none; background: none; color: var(--muted); font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
 .textBtn:hover { color: var(--text); }
 .textBtn:disabled { opacity: .6; cursor: default; }
+.confirm { margin-top: 4px; }
+.confirmMsg { font-size: 13px; line-height: 1.6; font-weight: 600; color: var(--text); background: var(--surface2); border-radius: 12px; padding: 12px 14px; margin: 0 0 12px; }

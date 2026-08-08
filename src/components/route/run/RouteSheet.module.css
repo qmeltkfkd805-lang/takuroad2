@@ -1,0 +1,74 @@
+.sheet {
+  position: fixed;
+  left: 0; right: 0;
+  bottom: calc(58px + env(safe-area-inset-bottom));
+  z-index: 45;
+  background: var(--surface);
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, .16);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.handleZone { flex-shrink: 0; padding: 8px 0 6px; cursor: grab; display: flex; justify-content: center; touch-action: none; }
+.handle { width: 40px; height: 4px; border-radius: 2px; background: var(--border); }
+.content { flex: 1; min-height: 0; overflow-y: auto; padding: 0 16px calc(14px + env(safe-area-inset-bottom)); -webkit-overflow-scrolling: touch; }
+
+/* 요약(idle collapsed) */
+.summary { margin-bottom: 12px; }
+.sumTitle { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.3; }
+.sumMeta { font-size: 12.5px; font-weight: 600; color: var(--muted); margin-top: 4px; }
+.cta { width: 100%; min-height: 50px; border-radius: 13px; border: none; background: var(--accent); color: #fff; font-family: inherit; font-size: 15.5px; font-weight: 800; cursor: pointer; }
+.cta:hover { filter: brightness(1.05); }
+.cta:disabled { opacity: .6; cursor: default; }
+.listToggle { width: 100%; margin-top: 10px; padding: 8px; border: none; background: none; color: var(--accent); font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
+
+/* 선택 스팟 카드 */
+.spotCard { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
+.spotThumb { width: 60px; height: 60px; border-radius: 12px; overflow: hidden; background: var(--surface2); flex-shrink: 0; }
+.spotThumb img { width: 100%; height: 100%; object-fit: cover; }
+.noThumb { display: block; width: 100%; height: 100%; background: var(--surface2); }
+.spotBody { min-width: 0; flex: 1; }
+.spotName { display: flex; align-items: center; gap: 7px; font-size: 15.5px; font-weight: 800; color: var(--text); }
+.spotNum { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 11.5px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.spotMeta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 5px; font-size: 11.5px; font-weight: 700; color: var(--text); }
+.spotNext { font-size: 12.5px; font-weight: 700; color: var(--accent); margin-top: 6px; }
+.detailLink { display: block; width: 100%; text-align: left; padding: 6px 0 12px; border: none; background: none; color: var(--muted); font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.detailLink:hover { color: var(--accent); }
+
+.tag { padding: 2px 7px; border-radius: 6px; font-size: 10.5px; font-weight: 700; background: var(--surface2); color: var(--muted); }
+
+/* 진행 모드 */
+.runHead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.badge { font-size: 10.5px; font-weight: 800; color: var(--accent); background: var(--accent-l); border-radius: 9999px; padding: 3px 9px; margin-right: 8px; }
+.runCount { font-size: 15px; font-weight: 800; color: var(--text); }
+.bar { height: 6px; border-radius: 3px; background: var(--surface2); overflow: hidden; margin-bottom: 12px; }
+.barFill { height: 100%; background: #16a34a; border-radius: 3px; transition: width .4s ease; }
+.nextRow { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; background: var(--surface2); border-radius: 12px; margin-bottom: 10px; }
+.nextInfo { min-width: 0; }
+.nextLabel { display: block; font-size: 10.5px; font-weight: 800; color: var(--accent); }
+.nextName { font-size: 14px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+.nextDist { font-size: 12px; font-weight: 700; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+.runBtns { display: flex; gap: 8px; margin-bottom: 8px; }
+.ghost { flex: 1; min-height: 42px; border-radius: 11px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: inherit; font-size: 12.5px; font-weight: 800; cursor: pointer; }
+.ghost:hover { border-color: var(--accent); color: var(--accent); }
+.ghost:disabled { opacity: .5; cursor: default; }
+.endBtn { width: 100%; min-height: 48px; border-radius: 13px; border: none; background: var(--accent); color: #fff; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer; margin-bottom: 8px; }
+.endBtn:hover { filter: brightness(1.05); }
+
+/* 코스 목록 */
+.list { list-style: none; margin: 10px 0 0; padding: 0; border-top: 1px solid var(--border); }
+.travel { margin: 8px 0 6px 38px; font-size: 11.5px; color: var(--muted); font-weight: 600; }
+.tip { margin: 0 0 8px 38px; padding: 7px 10px; font-size: 12px; color: var(--accent); font-weight: 700; line-height: 1.45; background: var(--accent-l); border-radius: 9px; }
+.row { display: flex; align-items: center; gap: 10px; padding: 8px 4px; border-radius: 10px; cursor: pointer; }
+.row:hover { background: var(--surface2); }
+.rowSel { background: var(--accent-l); }
+.rowNum { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.rowNumDone { background: #16a34a; }
+.rowThumb { width: 46px; height: 46px; border-radius: 9px; overflow: hidden; background: var(--surface2); flex-shrink: 0; }
+.rowThumb img { width: 100%; height: 100%; object-fit: cover; }
+.rowBody { flex: 1; min-width: 0; }
+.rowName { font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rowMeta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 3px; font-size: 11px; font-weight: 700; color: var(--text); }
+.rowDetail { flex-shrink: 0; border: none; background: none; color: var(--muted); font-family: inherit; font-size: 11.5px; font-weight: 700; cursor: pointer; }
+.rowDetail:hover { color: var(--accent); }
