@@ -77,7 +77,7 @@
 .blockTitle { margin: 0 0 14px; font-size: 18px; font-weight: 900; }
 .blockHead { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
 .blockHead .blockTitle { margin: 0; }
-.foldBtn { border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-family: inherit; font-size: 12px; font-weight: 800; padding: 6px 13px; border-radius: 8px; cursor: pointer; flex-shrink: 0; }
+.foldBtn { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-family: inherit; font-size: 12px; font-weight: 800; padding: 6px 12px; border-radius: 8px; cursor: pointer; flex-shrink: 0; }
 .foldBtn:hover { border-color: var(--accent); color: var(--accent); }
 .introText { margin: 0; font-size: 14.5px; line-height: 1.75; color: var(--text); white-space: pre-wrap; }
 

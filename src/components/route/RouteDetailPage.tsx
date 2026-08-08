@@ -36,6 +36,7 @@ const ExpandIcon = (p: any) => <Svg {...p}><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h
 const LockIcon = (p: any) => <Svg {...p}><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></Svg>
 const GlobeIcon = (p: any) => <Svg {...p}><circle cx="12" cy="12" r="9" /><path d="M3 12h18" /><path d="M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18" /></Svg>
 const PencilIcon = (p: any) => <Svg {...p}><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" /></Svg>
+const ChevronIcon = (p: any) => <Svg {...p}><path d="m6 9 6 6 6-6" /></Svg>
 function HeartIcon({ size = 16, color = 'currentColor', filled = false }: { size?: number; color?: string; filled?: boolean }) {
   return <svg width={size} height={size} viewBox="0 0 24 24" fill={filled ? color : 'none'} stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ flexShrink: 0, verticalAlign: '-3px' }}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.5 4.04 3 5.5l7 7Z" /></svg>
 }
@@ -332,7 +333,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
             <div className={styles.block}>
               <div className={styles.blockHead}>
                 <h2 className={styles.blockTitle}>방문 코스</h2>
-                <button className={styles.foldBtn} onClick={() => setCourseOpen(o => !o)} aria-expanded={courseOpen}>{courseOpen ? '접기 ▲' : '펼치기 ▼'}</button>
+                <button className={styles.foldBtn} onClick={() => setCourseOpen(o => !o)} aria-expanded={courseOpen}>{courseOpen ? '접기' : '펼치기'}<ChevronIcon size={15} style={{ transform: courseOpen ? 'rotate(180deg)' : 'none', transition: 'transform .2s ease' }} /></button>
               </div>
               {courseOpen && (
               <ol className={styles.timeline}>
