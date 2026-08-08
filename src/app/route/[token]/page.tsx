@@ -9,13 +9,14 @@ interface Props {
 
 const SELECT = `
   id, title, description, cover_image_url, is_official,
-  likes, official_difficulty, target_audience, tips, primary_tag_id,
+  likes, official_difficulty, target_audience, tips, primary_tag_id, themes,
   total_distance_m, total_duration_min,
   is_shared, user_id, created_at, share_token,
   profiles!routes_user_id_fkey ( nickname ),
+  primary_tag:tags!primary_tag_id ( name ),
   route_shops (
-    id, sort_order, distance_from_prev_m, duration_from_prev_min,
-    shops ( id, slug, name, addr, lat, lng, region,
+    id, sort_order, distance_from_prev_m, duration_from_prev_min, move_tip,
+    shops ( id, slug, name, addr, lat, lng, region, hours, status, floor, unit, floor_info,
       shop_images ( image_url, is_cover, sort_order ),
       cats
     )

@@ -11,6 +11,7 @@ interface RouteShopInput {
   shopId: string
   lat: number
   lng: number
+  moveTip?: string | null   // 이 스팟 → 다음 스팟 이동 팁
 }
 
 // 猷⑦듃 ?앹꽦 (???쒖꽌 + 嫄곕━/?쒓컙 怨꾩궛 ?ы븿)
@@ -43,6 +44,7 @@ export async function createRoute(
       sort_order: i,
       distance_from_prev_m: distFromPrev,
       duration_from_prev_min: durFromPrev,
+      move_tip: i < shops.length - 1 ? (shop.moveTip?.trim() || null) : null,
     }
   })
 
@@ -115,8 +117,9 @@ export async function getRouteByShareToken(token: string) {
       is_shared, user_id, created_at,
       profiles!routes_user_id_fkey ( nickname ),
       route_shops (
-        id, sort_order, distance_from_prev_m, duration_from_prev_min,
-        shops ( id, slug, name, addr, lat, lng,
+        id, sort_order, distance_from_prev_m, duration_from_prev_min, move_tip,
+        shops ( id, slug, name, addr, lat, lng, place_id, floor, unit, floor_info,
+          places ( name, access_note ),
           shop_images ( image_url, is_cover, sort_order ),
           cats
         )
@@ -141,6 +144,22 @@ export async function deleteRoute(routeId: string, userId: string): Promise<bool
     .eq('id', routeId)
     .eq('user_id', userId)
   return !error
+}
+
+// 관리자: 남의 루트도 삭제/공개설정 (서버 API가 admin 확인 후 Service Role로 처리)
+export async function adminDeleteRoute(routeId: string): Promise<boolean> {
+  const res = await fetch('/api/admin/route-action', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ routeId, action: 'delete' }),
+  })
+  return res.ok
+}
+export async function adminSetRouteShared(routeId: string, shared: boolean): Promise<boolean> {
+  const res = await fetch('/api/admin/route-action', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ routeId, action: 'setShared', shared }),
+  })
+  return res.ok
 }
 
 // 猷⑦듃 怨듭쑀 ?ㅼ젙 ?좉?
@@ -168,7 +187,7 @@ export async function getPublicRoutes(filters?: { region?: string; tag?: string;
       profiles!routes_user_id_fkey ( nickname ),
       route_shops (
         id, sort_order,
-        shops ( id, name, region, addr, shop_tags ( tags ( name ) ) )
+        shops ( id, name, region, addr, lat, lng, place_id, places ( name ), shop_tags ( tags ( name ) ) )
       )
     `)
     .eq('is_shared', true)
@@ -252,7 +271,7 @@ export async function getRouteForEdit(routeId: string) {
   const { data, error } = await supabase
     .from('routes')
     .select(`id, title, description, official_difficulty,
-      route_shops ( sort_order, shops ( id, name, lat, lng, addr, region ) )`)
+      route_shops ( sort_order, move_tip, shops ( id, name, lat, lng, addr, region ) )`)
     .eq('id', routeId)
     .maybeSingle()
   if (error || !data) { console.error('[route edit load]', error); return null }
@@ -270,7 +289,7 @@ export async function updateRoute(routeId: string, title: string, description: s
       dur = estimateWalkMinutes(d)
       totalDistance += d; totalDuration += dur
     }
-    return { route_id: routeId, shop_id: shop.shopId, sort_order: i, distance_from_prev_m: d, duration_from_prev_min: dur }
+    return { route_id: routeId, shop_id: shop.shopId, sort_order: i, distance_from_prev_m: d, duration_from_prev_min: dur, move_tip: i < shops.length - 1 ? (shop.moveTip?.trim() || null) : null }
   })
   const { error: upErr } = await supabase.from('routes').update({
     title, description: description || null, official_difficulty: difficulty,

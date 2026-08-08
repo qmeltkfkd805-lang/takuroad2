@@ -30,7 +30,7 @@ export default function ShopHomeCard({ shop, rank }: { shop: ShopHomeItem; rank?
   return (
     <article className={styles.card} onClick={() => router.push(ROUTES.shop(shop.slug))}>
       <div className={`${styles.thumb} ${isPoster ? styles.thumbContain : ''}`}>
-        {cover ? <img src={cover} alt="" /> : <div className={styles.noImage}>사진 준비 중</div>}
+        {cover ? <img src={cover} alt="" loading="lazy" /> : <div className={styles.noImage}>사진 준비 중</div>}
         {rank != null && (
           <span className={rank <= 3 ? styles.rankHot : styles.rank}>
             {rank <= 3 ? `HOT ${rank}` : rank}
@@ -43,18 +43,22 @@ export default function ShopHomeCard({ shop, rank }: { shop: ShopHomeItem; rank?
         <p className={styles.place}>{placeLabel(shop)}</p>
 
         <div className={styles.stats}>
-          <span className={styles.rating}>
-            <Star />
-            <strong>{shop.rating_avg ? shop.rating_avg.toFixed(1) : '-'}</strong>
-            {shop.rating_count > 0 && <em>({compact(shop.rating_count)})</em>}
-          </span>
-          <span className={styles.saves}>
-            <Heart />{compact(shop.bookmark_count)}
+          {shop.rating_count > 0 ? (
+            <span className={styles.rating} title="별점">
+              <Star />
+              <strong>{(shop.rating_avg ?? 0).toFixed(1)}</strong>
+              <em>후기 {compact(shop.rating_count)}</em>
+            </span>
+          ) : (
+            <span className={styles.noReview}>아직 후기가 없어요</span>
+          )}
+          <span className={styles.saves} title="찜">
+            <Heart />찜 {compact(shop.bookmark_count)}
           </span>
         </div>
 
         <div className={styles.chips}>
-          {shop.cats.map(c => {
+          {shop.cats.slice(0, 2).map(c => {
             const ci = CATEGORY_NAME_MAP[c]
             return (
               <span key={c} className={styles.chip}
@@ -120,7 +124,7 @@ export function ShopMiniCard({
   return (
     <article className={styles.mini} onClick={() => router.push(ROUTES.shop(shop.slug))}>
       <div className={styles.miniThumb}>
-        {cover ? <img src={cover} alt="" /> : <div className={styles.noImage} />}
+        {cover ? <img src={cover} alt="" loading="lazy" /> : <div className={styles.noImage} />}
         <span className={badgeTone === 'event' ? styles.badgeEvent : styles.badgeNew}>{badge}</span>
       </div>
       <div className={styles.miniBody}>

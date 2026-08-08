@@ -139,7 +139,7 @@ export default function ShopFilterSidebar({
 
 /* ---- 작은 조각 ---- */
 function Group({
-  label, icon, defaultOpen = true, badge, children,
+  label, icon, defaultOpen = false, badge, children,
 }: {
   label: string; icon: any; defaultOpen?: boolean; badge?: number; children: React.ReactNode
 }) {

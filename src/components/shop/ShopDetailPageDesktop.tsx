@@ -205,8 +205,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
     if (ok) router.push('/map')
     else window.alert('삭제에 실패했어요. 권한이 없거나 연결된 데이터가 있을 수 있어요.')
   }
-  const handleDirections = () =>
-    window.open(`https://map.kakao.com/link/search/${encodeURIComponent(shop.name)}`, '_blank', 'noopener')
+  const handleDirections = () => router.push(`/map?shop=${shop.slug}`)
   const handleShare = () => {
     if (navigator.share) navigator.share({ title: shop.name, url: window.location.href })
     else navigator.clipboard?.writeText(window.location.href)
@@ -728,6 +727,11 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                   </div>
                 )}
               </div>
+              {shop.place_access_note && (
+                <div style={{ fontSize: 12.5, fontWeight: 700, color, margin: '0 0 10px', lineHeight: 1.5 }}>
+                  가는 길 · {shop.place_access_note}
+                </div>
+              )}
               <div style={{ display: 'flex', gap: 8 }}>
                 <button onClick={handleDirections} style={sideBtn(false, color)}>길찾기</button>
                 <Link href={`/map?shop=${shop.slug}`} style={{ ...sideBtn(true, color), textDecoration: 'none', textAlign: 'center' }}>지도 크게 보기</Link>

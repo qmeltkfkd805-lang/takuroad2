@@ -7,7 +7,7 @@ export interface RelatedRoute {
   cover_image_url: string | null
   shop_count: number
   distance_m: number | null
-  reason: '같은 작품·근처' | '근처 지역' | '같은 작품'
+  reason: '같은 작품·지역' | '같은 지역' | '같은 작품'
 }
 
 // 우선순위: 1) 같은 작품 + 근처 지역  2) 같은 지역  3) 같은 작품
@@ -18,7 +18,10 @@ export async function getRelatedRoutes(
   limit = 4
 ): Promise<RelatedRoute[]> {
   const supabase = createClient()
-  const uniqRegions = Array.from(new Set(regions.filter(Boolean)))
+  // 지역은 시/도 단위까지 넓혀 매칭 ("경기 수원시" → "경기"도 함께)
+  const uniqRegions = Array.from(new Set(
+    regions.filter(Boolean).flatMap((r) => [r, r.split(' ')[0]]).filter(Boolean)
+  ))
 
   type Cand = { id: string; title: string; share_token: string; cover_image_url: string | null; shop_count: number; distance_m: number | null; sameTag: boolean; sameRegion: boolean }
   const map = new Map<string, Cand>()
@@ -64,8 +67,8 @@ export async function getRelatedRoutes(
   // 점수: 같은 작품+근처(3) > 같은 지역(2) > 같은 작품(1)
   const scored = Array.from(map.values()).map((c) => {
     let score: number, reason: RelatedRoute['reason']
-    if (c.sameTag && c.sameRegion) { score = 3; reason = '같은 작품·근처' }
-    else if (c.sameRegion) { score = 2; reason = '근처 지역' }
+    if (c.sameTag && c.sameRegion) { score = 3; reason = '같은 작품·지역' }
+    else if (c.sameRegion) { score = 2; reason = '같은 지역' }
     else { score = 1; reason = '같은 작품' }
     return { c, score, reason }
   })

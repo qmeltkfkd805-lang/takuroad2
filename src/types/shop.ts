@@ -26,6 +26,7 @@ export interface Shop {
   unit: string | null         // "305호"
   place_name: string | null   // 소속 장소 이름 (표시용)
   place_slug: string | null   // 소속 장소 slug (상세 링크용)
+  place_access_note: string | null  // 소속 건물 가는 길/출구 안내
   displayLat: number | null   // place_id 있으면 place 좌표, 없으면 shop 좌표
   displayLng: number | null
 

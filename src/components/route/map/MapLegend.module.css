@@ -1,0 +1,29 @@
+.wrap { position: absolute; right: 12px; bottom: 12px; z-index: 5; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+
+.panel {
+  background: rgba(255,255,255,.96); border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.16); padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 6px;
+  font-size: 11.5px; font-weight: 700; color: var(--text);
+}
+.row { display: flex; align-items: center; gap: 8px; }
+.flag { background: var(--accent); color: #fff; font-size: 9.5px; font-weight: 800; padding: 1px 6px; border-radius: 9999px; }
+.line { width: 20px; height: 4px; border-radius: 2px; background: var(--accent); flex-shrink: 0; }
+.dash { width: 20px; height: 0; border-top: 3px dashed #7c3aed; flex-shrink: 0; }
+.dot { width: 13px; height: 13px; border-radius: 50%; background: var(--accent); border: 2px solid #fff; box-shadow: 0 0 0 2px rgba(232,0,111,.3); flex-shrink: 0; }
+.attr { font-size: 9.5px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+
+.toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 13px; border-radius: 9999px;
+  border: 1px solid var(--border); background: rgba(255,255,255,.97);
+  color: var(--text); font-family: inherit; font-size: 12px; font-weight: 800;
+  cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.14);
+}
+.toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+@media (max-width: 1023px) and (pointer: coarse) {
+  .wrap { right: 8px; bottom: 8px; }
+  .panel { padding: 8px 10px; font-size: 10.5px; gap: 5px; }
+  .attr { display: none; }
+}

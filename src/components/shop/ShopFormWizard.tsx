@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { CATEGORIES, WEEKDAYS, WEEKDAY_LABEL } from '@/lib/constants/categories'
@@ -12,6 +12,7 @@ import { generateSlug } from '@/lib/utils/shop'
 import { geocodeAddress, searchPlace, PlaceSearchResult } from '@/lib/utils/geocode'
 import { findPlaceByAddr, findPlaceBySameAddr } from '@/services/placeService'
 import AdminPlaceLink from './AdminPlaceLink'
+import AdminPlaceAccessNote from './AdminPlaceAccessNote'
 import { getTodayStatus } from '@/lib/utils/date'
 import ShopEnrichmentSection from './ShopEnrichmentSection'
 import ShopAmenitySection from './ShopAmenitySection'
@@ -61,6 +62,14 @@ export default function ShopFormWizard({ mode, shop }: Props) {
   const [ownerAsk, setOwnerAsk] = useState(false)   // 등록 완료 후 "사장님입니까?" 모달
   const [placeResults, setPlaceResults] = useState<PlaceSearchResult[]>([])
   const [searchingPlace, setSearchingPlace] = useState(false)
+  const placeBoxRef = useRef<HTMLDivElement>(null)
+  // 검색 결과 드롭다운 바깥 클릭 시 닫기 (레이아웃을 밀지 않도록 오버레이로 표시)
+  useEffect(() => {
+    if (placeResults.length === 0) return
+    const onDown = (e: MouseEvent) => { if (placeBoxRef.current && !placeBoxRef.current.contains(e.target as Node)) setPlaceResults([]) }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [placeResults.length])
   const [createdShopId, setCreatedShopId] = useState<string | null>(null)
   const [createdShopSlug, setCreatedShopSlug] = useState<string | null>(null)
   const [links, setLinks] = useState<string[]>([''])
@@ -369,25 +378,27 @@ export default function ShopFormWizard({ mode, shop }: Props) {
             </Field>
 
             <Field label="주소" hint="장소명(예: 수원 스타필드)이나 주소를 입력하고 검색해주세요">
-              <div style={{ display: 'flex', gap: 6 }}>
-                <input value={form.addr ?? ''} onChange={e => { set('addr', e.target.value); set('lat', null); set('lng', null) }}
-                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handlePlaceSearch() } }}
-                  placeholder="예: 수원 스타필드, 서울 마포구 와우산로 21" style={{ ...inp, flex: 1 }} />
-                <button onClick={handlePlaceSearch} disabled={searchingPlace || !form.addr.trim()}
-                  style={{ padding: '0 18px', borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0 }}>
-                  {searchingPlace ? '검색중' : '검색'}
-                </button>
-              </div>
-              {placeResults.length > 0 && (
-                <div style={{ marginTop: 8, border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
-                  {placeResults.map((place, i) => (
-                    <div key={i} onClick={() => selectPlace(place)} style={{ padding: '10px 12px', cursor: 'pointer', borderBottom: i < placeResults.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                      <div style={{ fontSize: 13, fontWeight: 700 }}>{place.name}</div>
-                      <div style={{ fontSize: 12, color: 'var(--muted)' }}>{place.roadAddress}</div>
-                    </div>
-                  ))}
+              <div ref={placeBoxRef} style={{ position: 'relative' }}>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <input value={form.addr ?? ''} onChange={e => { set('addr', e.target.value); set('lat', null); set('lng', null) }}
+                    onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handlePlaceSearch() } if (e.key === 'Escape') setPlaceResults([]) }}
+                    placeholder="예: 수원 스타필드, 서울 마포구 와우산로 21" style={{ ...inp, flex: 1 }} />
+                  <button onClick={handlePlaceSearch} disabled={searchingPlace || !form.addr.trim()}
+                    style={{ padding: '0 18px', borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0 }}>
+                    {searchingPlace ? '검색중' : '검색'}
+                  </button>
                 </div>
-              )}
+                {placeResults.length > 0 && (
+                  <div style={{ position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0, zIndex: 50, maxHeight: 260, overflowY: 'auto', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.14)' }} role="listbox">
+                    {placeResults.map((place, i) => (
+                      <div key={i} role="option" aria-selected={false} onClick={() => selectPlace(place)} style={{ padding: '10px 12px', cursor: 'pointer', borderBottom: i < placeResults.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                        <div style={{ fontSize: 13, fontWeight: 700 }}>{place.name}</div>
+                        <div style={{ fontSize: 12, color: 'var(--muted)' }}>{place.roadAddress}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
               {form.lat && form.addr && <p style={{ fontSize: 12, color: 'var(--green)', marginTop: 4 }}><Svg size={12}><path d="m5 12 5 5L20 6" /></Svg> 위치가 설정됐어요</p>}
               {placeLinking && <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>장소 연결 중…</p>}
               {form.place_name && !placeLinking && (
@@ -403,6 +414,9 @@ export default function ShopFormWizard({ mode, shop }: Props) {
                   currentPlaceName={form.place_name}
                   onLinked={p => setForm(prev => ({ ...prev, place_id: p.id, place_name: p.name }))}
                 />
+              )}
+              {isAdmin && form.place_id && (
+                <AdminPlaceAccessNote placeId={form.place_id} placeName={form.place_name} />
               )}
             </Field>
 

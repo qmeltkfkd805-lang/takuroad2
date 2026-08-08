@@ -126,9 +126,11 @@ export interface ShopPreset {
  * 위치 기반 프리셋은 지도의 몫.
  */
 export const SHOP_PRESETS: ShopPreset[] = [
-  { id: 'figure', label: '피규어 쇼핑', icon: 'bag',   color: '#E8006F', patch: { goodsSlugs: ['figure-new'], openNow: true } },
+  { id: 'figure', label: '피규어 쇼핑', icon: 'bag',    color: '#E8006F', patch: { goodsSlugs: ['figure-new'], openNow: true } },
   { id: 'gacha',  label: '가챠 투어',   icon: 'sparkle', color: '#E03535', patch: { goodsSlugs: ['gacha-new'], openNow: true } },
-  { id: 'cafe',   label: '콜라보 카페', icon: 'party', color: '#EA580C', patch: { cats: ['콜라보카페'], hasEvent: true } },
+  { id: 'cafe',   label: '콜라보 카페', icon: 'party',  color: '#EA580C', patch: { cats: ['콜라보카페'], hasEvent: true } },
+  { id: 'exhibition', label: '전시회', icon: 'star', color: '#4F46E5', patch: { cats: ['전시'] } },
+  { id: 'popup',  label: '이번 주 팝업', icon: 'ticket', color: '#0099CC', patch: { cats: ['팝업스토어'] } },
 ]
 
 /** URL 쿼리 ↔ 필터 */

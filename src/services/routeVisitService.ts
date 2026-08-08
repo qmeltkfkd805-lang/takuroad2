@@ -19,6 +19,29 @@ export async function setShopVisited(routeId: string, shopId: string, userId: st
   return !error
 }
 
+// 이 루트를 이미 완주(완주 기록 보유)했는지
+export async function isRouteCompleted(routeId: string, userId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { data } = await supabase.from('route_completions').select('id').eq('route_id', routeId).eq('user_id', userId).maybeSingle()
+  return !!data
+}
+
+// 완주 기록 남기기 — 이미 있으면 재기록하지 않음(배찌·완주수는 딱 한 번만 반영)
+export async function recordRouteCompletion(routeId: string, userId: string): Promise<{ firstTime: boolean }> {
+  const supabase = createClient()
+  const { data: ex } = await supabase.from('route_completions').select('id').eq('route_id', routeId).eq('user_id', userId).maybeSingle()
+  if (ex) return { firstTime: false }
+  const { error } = await supabase.from('route_completions').insert({ route_id: routeId, user_id: userId } as any)
+  return { firstTime: !error }
+}
+
+// 방문 체크 초기화(재도전) — 완주 기록(route_completions)은 그대로 두고 진행(route_progress)만 삭제
+export async function resetRouteProgress(routeId: string, userId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase.from('route_progress').delete().eq('route_id', routeId).eq('user_id', userId)
+  return !error
+}
+
 export interface CompletedRoute {
   id: string
   title: string

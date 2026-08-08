@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getAllTagsFull, AdminTag } from '@/services/workAdminService'
 import { getShops, getSavedShops } from '@/services/shopService'
-import { createRoute, uploadRouteCover, updateRouteMeta, updateRoute, getRouteForEdit, getRouteMeta, deleteRoute, toggleRouteShare } from '@/services/routeService'
+import { createRoute, updateRouteMeta, updateRoute, getRouteForEdit, getRouteMeta, deleteRoute, toggleRouteShare } from '@/services/routeService'
 import { useRouter } from 'next/navigation'
 import { shopRegion } from '@/lib/shop/quickCompleteness'
 import { Shop } from '@/types/shop'
@@ -14,7 +14,7 @@ const DIFF = [
   { v: 2, l: '반나절', c: '#835700' },
   { v: 3, l: '하루 코스', c: '#A23E18' },
 ]
-const THEMES = ['카페', '굿즈', '사진명소', '가족', '커플', '혼자', '실내', '비오는날', '친구', '가챠', '쿠지', '전시', '게임', '만화카페']
+const THEMES = ['카페', '굿즈', '사진명소', '가족', '커플', '혼자', '실내', '비오는날', '친구', '가챠', '쿠지', '전시', '팝업', '게임', '만화카페']
 const STEPS = [
   { n: 1, label: '샵 불러오기' },
   { n: 2, label: '코스 담기' },
@@ -59,6 +59,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   const [loadingShops, setLoadingShops] = useState(false)
   const [query, setQuery] = useState('')
   const [added, setAdded] = useState<Shop[]>([])
+  const [moveTips, setMoveTips] = useState<Record<string, string>>({})   // fromShopId → 다음 스팟까지 이동 팁
 
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
@@ -67,9 +68,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   const [themes, setThemes] = useState<string[]>([])
   const [target, setTarget] = useState('')
   const [tips, setTips] = useState('')
-  const [uploading, setUploading] = useState(false)
   const [primaryTagId, setPrimaryTagId] = useState<string | null>(null)
-  const fileRef = useRef<HTMLInputElement | null>(null)
 
   const [saving, setSaving] = useState(false)
   const editing = mode === 'edit'
@@ -90,8 +89,12 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
       if (!alive) return
       if (r) {
         setTitle(r.title ?? ''); setDesc(r.description ?? ''); setDifficulty(r.official_difficulty ?? 1)
-        const shops = (r.route_shops ?? []).slice().sort((a: any, b: any) => a.sort_order - b.sort_order).map((rs: any) => rs.shops).filter((s: any) => s && s.lat != null && s.lng != null)
+        const ordered = (r.route_shops ?? []).slice().sort((a: any, b: any) => a.sort_order - b.sort_order)
+        const shops = ordered.map((rs: any) => rs.shops).filter((s: any) => s && s.lat != null && s.lng != null)
         setAdded(shops as Shop[])
+        const tips: Record<string, string> = {}
+        ordered.forEach((rs: any) => { if (rs.shops?.id && rs.move_tip) tips[rs.shops.id] = rs.move_tip })
+        setMoveTips(tips)
       }
       setLoadingEdit(false)
     }).catch(() => setLoadingEdit(false))
@@ -125,15 +128,6 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
     setSelectedTag(t); setTagQuery(''); setPrimaryTagId(t.id)
   }
 
-  async function onPickFile(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file || !user) return
-    setUploading(true)
-    const url = await uploadRouteCover(file, user.id, 'new')
-    setUploading(false)
-    if (url) setCoverUrl(url); else setMsg('이미지 업로드 실패')
-    if (fileRef.current) fileRef.current.value = ''
-  }
   function toggleTheme(t: string) { setThemes((a) => a.includes(t) ? a.filter((x) => x !== t) : [...a, t]) }
 
   // 띄어쓰기·대소문자 무시 검색용 정규화
@@ -156,7 +150,10 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   const listRef = useRef<HTMLDivElement | null>(null)
   const pressTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const lastYRef = useRef(0)
-  const [drag, setDrag] = useState<{ from: number; to: number; y: number; startY: number; h: number } | null>(null)
+  const grabRef = useRef(0)   // 행 안에서 잡은 지점(오프셋)
+  const hRef = useRef(52)      // 행 높이
+  // 실시간 재정렬: 드래그하는 동안 added 순서가 바로 바뀌고, 잡은 행만 손가락을 따라 떠 있게 한다
+  const [drag, setDrag] = useState<{ id: string; index: number; dy: number } | null>(null)
 
   const startDrag = (e: React.PointerEvent, i: number) => {
     lastYRef.current = e.clientY
@@ -174,28 +171,35 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
     pressTimer.current = setTimeout(() => {
       window.removeEventListener('pointermove', preMove)
       const el = rowRefs.current[i]
-      const h = el ? el.getBoundingClientRect().height : 52
-      const y0 = lastYRef.current
-      setDrag({ from: i, to: i, y: y0, startY: y0, h })
+      const rect = el?.getBoundingClientRect()
+      hRef.current = rect ? rect.height : 52
+      // 잡은 지점이 행 안 어디인지 실제 위치로 측정 (누르는 동안의 미세한 흔들림·스크롤에 영향받지 않게)
+      grabRef.current = rect ? lastYRef.current - rect.top : hRef.current / 2
+      setDrag({ id: added[i].id, index: i, dy: 0 })
       try { (navigator as any).vibrate?.(12) } catch { /* noop */ }
     }, 180)
   }
 
   useEffect(() => {
     if (!drag) return
+    const dragId = drag.id
     const onMove = (e: PointerEvent) => {
       e.preventDefault()
       const y = e.clientY
-      const top = listRef.current?.getBoundingClientRect().top ?? 0
-      const to = Math.max(0, Math.min(added.length - 1, Math.floor((y - top) / drag.h)))
-      setDrag((d) => d ? { ...d, y, to } : d)
-    }
-    const onUp = () => {
-      setDrag((d) => {
-        if (d && d.to !== d.from) setAdded((a) => { const c = [...a]; const [m] = c.splice(d.from, 1); c.splice(d.to, 0, m); return c })
-        return null
+      const listTop = listRef.current?.getBoundingClientRect().top ?? 0
+      const h = hRef.current
+      // 잡은 행의 실제 top이 놓인 슬롯
+      const raw = Math.max(0, Math.min(added.length - 1, Math.round((y - grabRef.current - listTop) / h)))
+      // 실시간으로 순서 반영 → 화면에 보이는 그대로가 결과가 된다
+      setAdded((a) => {
+        const idx = a.findIndex((x) => x.id === dragId)
+        if (idx === -1 || idx === raw) return a
+        const c = [...a]; const [m] = c.splice(idx, 1); c.splice(raw, 0, m); return c
       })
+      // 잡은 행만 손가락을 따라 떠 있게 오프셋 갱신
+      setDrag((d) => d ? { ...d, index: raw, dy: (y - grabRef.current) - (listTop + raw * h) } : d)
     }
+    const onUp = () => setDrag(null)
     window.addEventListener('pointermove', onMove, { passive: false })
     window.addEventListener('pointerup', onUp)
     window.addEventListener('pointercancel', onUp)
@@ -225,7 +229,6 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
 
   const guide = [
     { label: '루트 이름 짓기', ok: !!title.trim() },
-    { label: '대표 이미지 추가', ok: !!coverUrl },
     { label: '스팟 2곳 이상 담기', ok: added.length >= 2 },
     { label: '테마·추천 대상 설정', ok: themes.length > 0 || !!target.trim() },
   ]
@@ -235,7 +238,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
     if (!title.trim()) { setMsg('루트 이름을 입력하세요'); setStep(3); return }
     if (added.length < 2) { setMsg('샵을 2개 이상 담아주세요'); setStep(2); return }
     setSaving(true); setMsg(null)
-    const shopInput = added.map((s) => ({ shopId: s.id, lat: s.lat as number, lng: s.lng as number }))
+    const shopInput = added.map((s, i) => ({ shopId: s.id, lat: s.lat as number, lng: s.lng as number, moveTip: i < added.length - 1 ? (moveTips[s.id] ?? null) : null }))
     const meta = {
       cover_image_url: coverUrl || null,
       themes,
@@ -286,7 +289,6 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
     if (n === 2) return added.length >= 2 ? null : '샵을 2곳 이상 담아야 루트가 돼요'
     if (n === 3) {
       if (!title.trim()) return '루트 이름을 입력해주세요'
-      if (!coverUrl) return '대표 이미지를 추가해주세요'
       return null
     }
     if (n === 4) return themes.length >= 1 ? null : '테마를 1개 이상 선택해주세요'
@@ -384,14 +386,14 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
                     <span style={{ fontSize: 12, color: 'var(--muted)' }}>{loadingShops ? '불러오는 중...' : `${filtered.length}개 샵 · 담김 ${added.length}`}</span>
                     {filtered.length > 0 && <button onClick={addAll} style={smallBtn}>전체 담기</button>}
                   </div>
-                  <div style={{ maxHeight: 260, overflowY: 'auto', border: '1px solid var(--border)', borderRadius: 10 }}>
+                  <div style={{ height: 300, overflowY: 'auto', border: '1px solid var(--border)', borderRadius: 10 }}>
                     {filtered.map((s) => (
                       <div key={s.id} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 10px', borderBottom: '1px solid var(--border)' }}>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{s.name}</div>
                           <div style={{ fontSize: 11, color: 'var(--muted)' }}>{shopRegion(s)}</div>
                         </div>
-                        <button onClick={() => add(s)} disabled={addedIds.has(s.id)} style={{ ...smallBtn, opacity: addedIds.has(s.id) ? 0.4 : 1 }}>{addedIds.has(s.id) ? '담김' : '담기'}</button>
+                        <button onClick={() => addedIds.has(s.id) ? remove(s.id) : add(s)} style={{ ...smallBtn, ...(addedIds.has(s.id) ? { background: 'var(--surface)', color: 'var(--accent)', border: '1px solid var(--accent)' } : {}) }}>{addedIds.has(s.id) ? '✓ 담김' : '담기'}</button>
                       </div>
                     ))}
                     {!loadingShops && filtered.length === 0 && <div style={{ padding: 16, textAlign: 'center', color: 'var(--muted)', fontSize: 13 }}>{sourceMode === 'saved' ? '저장한 샵이 없어요' : '검색 결과가 없어요'}</div>}
@@ -408,24 +410,19 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
               {added.length >= 2 && (
                 <div style={{ marginBottom: 16 }}><RouteMiniMap stops={mapStops} /></div>
               )}
-              <Label>루트 순서 ({added.length}) · 손잡이를 꾹 눌러 이동</Label>
+              <Label>루트 순서 ({added.length}) · 꾹 눌러 이동</Label>
               {added.length === 0 ? (
                 <div style={{ padding: 20, textAlign: 'center', color: 'var(--muted)', fontSize: 13, border: '1px dashed var(--border)', borderRadius: 10 }}>1단계에서 샵을 담아주세요</div>
               ) : (
                 <div ref={listRef} style={{ touchAction: drag ? 'none' : undefined }}>
                   {added.map((s, i) => {
-                    const dragging = drag?.from === i
-                    let shift = 0
-                    if (drag && !dragging) {
-                      if (drag.from < drag.to && i > drag.from && i <= drag.to) shift = -drag.h
-                      else if (drag.from > drag.to && i >= drag.to && i < drag.from) shift = drag.h
-                    }
-                    const transform = dragging ? `translateY(${drag!.y - drag!.startY}px)` : (shift ? `translateY(${shift}px)` : undefined)
+                    const dragging = drag?.id === s.id
+                    const transform = dragging ? `translateY(${drag!.dy}px)` : undefined
                     return (
                     <div key={s.id} ref={(el) => { rowRefs.current[i] = el }}
                       onPointerDown={(e) => startDrag(e, i)}
-                      style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 4px', borderBottom: '1px solid var(--border)', background: dragging ? 'var(--accent-l, #FFE6EF)' : 'var(--surface)', boxShadow: dragging ? '0 6px 18px rgba(0,0,0,.16)' : 'none', borderRadius: dragging ? 10 : 0, position: 'relative', zIndex: dragging ? 20 : 1, transform, transition: dragging ? 'none' : 'transform .15s', cursor: 'grab' }}>
-                      <span aria-hidden style={{ color: dragging ? 'var(--accent)' : 'var(--muted)', flexShrink: 0, display: 'inline-flex', alignItems: 'center' }}><Svg size={17}><circle cx="9" cy="6" r="1" /><circle cx="15" cy="6" r="1" /><circle cx="9" cy="12" r="1" /><circle cx="15" cy="12" r="1" /><circle cx="9" cy="18" r="1" /><circle cx="15" cy="18" r="1" /></Svg></span>
+                      draggable={false} onDragStart={(e) => e.preventDefault()}
+                      style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 4px', borderBottom: '1px solid var(--border)', background: dragging ? 'var(--accent-l, #FFE6EF)' : 'var(--surface)', boxShadow: dragging ? '0 6px 18px rgba(0,0,0,.16)' : 'none', borderRadius: dragging ? 10 : 0, position: 'relative', zIndex: dragging ? 20 : 1, transform, transition: dragging ? 'none' : 'transform .15s', cursor: 'grab', userSelect: 'none', WebkitUserSelect: 'none', WebkitTouchCallout: 'none' }}>
                       <span style={{ width: 22, height: 22, borderRadius: 9999, background: 'var(--accent)', color: '#fff', fontSize: 11, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{i + 1}</span>
                       <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{s.name}</span>
                       <button onPointerDown={(e) => e.stopPropagation()} onClick={() => move(i, -1)} disabled={i === 0} style={{ ...smallBtn, opacity: i === 0 ? 0.3 : 1 }} aria-label="위로"><Svg size={13}><path d="m18 15-6-6-6 6" /></Svg></button>
@@ -434,6 +431,20 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
                     </div>
                     )
                   })}
+                </div>
+              )}
+              {added.length >= 2 && (
+                <div style={{ marginTop: 20 }}>
+                  <Label>구간 이동 팁 (선택)</Label>
+                  <div style={{ fontSize: 12, color: 'var(--muted)', margin: '2px 0 10px' }}>스팟 사이 이동에 대한 팁을 남겨보세요. 예: 지하상가로 가면 더 빨라요</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {added.slice(0, -1).map((s, i) => (
+                      <div key={s.id} style={{ border: '1px solid var(--border)', borderRadius: 10, padding: '10px 12px' }}>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--muted)', marginBottom: 6, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{i + 1} {s.name} → {i + 2} {added[i + 1].name}</div>
+                        <input value={moveTips[s.id] ?? ''} onChange={(e) => setMoveTips(prev => ({ ...prev, [s.id]: e.target.value }))} maxLength={100} placeholder="이동 팁 (예: 4번 출구로 나가 지하상가 경유)" style={{ ...inp, marginBottom: 0 }} />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
               <button onClick={() => setStep(1)} style={{ ...ghostBtn, marginTop: 12, display: 'inline-flex', alignItems: 'center', gap: 5 }}><Svg size={14}><path d="M12 5v14M5 12h14" /></Svg>샵 더 담기</button>
@@ -456,16 +467,6 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
               </div>
               <Label>한 줄 소개</Label>
               <textarea value={desc} onChange={(e) => setDesc(e.target.value)} maxLength={80} placeholder="이 루트를 한 줄로 소개해보세요! (선택)" style={{ ...inp, minHeight: 60, marginBottom: 16, resize: 'vertical' }} />
-              <Label>대표 이미지</Label>
-              <div style={{ height: 150, borderRadius: 12, overflow: 'hidden', border: '1px solid var(--border)', background: coverUrl ? 'transparent' : 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 8 }}>
-                {coverUrl ? <img src={coverUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span style={{ color: 'var(--muted)', fontSize: 13, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}><Svg size={26} color="var(--muted)"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-5-5L5 21" /></Svg>이미지를 업로드하세요</span>}
-              </div>
-              <div style={{ display: 'flex', gap: 6 }}>
-                <input value={coverUrl} onChange={(e) => setCoverUrl(e.target.value)} placeholder="이미지 URL 또는 업로드" style={{ ...inp, flex: 1 }} />
-                <button onClick={() => fileRef.current?.click()} disabled={uploading} style={{ ...smallBtn, padding: '0 14px' }}>{uploading ? '업로드 중...' : '업로드'}</button>
-                {coverUrl && <button onClick={() => setCoverUrl('')} style={{ ...smallBtn, color: 'var(--red)' }}>제거</button>}
-              </div>
-              <input ref={fileRef} type="file" accept="image/*" onChange={onPickFile} style={{ display: 'none' }} />
             </>
           )}
 
@@ -506,7 +507,6 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
                 <ReviewRow label="스팟" value={`${added.length}곳`} ok={added.length >= 2} />
                 <ReviewRow label="난이도" value={diffMeta.l} ok />
                 <ReviewRow label="테마" value={themes.length ? themes.join(', ') : '(없음)'} ok={themes.length > 0} />
-                <ReviewRow label="대표 이미지" value={coverUrl ? '있음' : '없음'} ok={!!coverUrl} />
               </div>
               {/* 저장 버튼은 하단 고정 액션 바에 있음 */}
               {editing && (

@@ -20,6 +20,7 @@ import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import MapBottomSheet from './MapBottomSheet'
 import MapPinModal from './MapPinModal'
 import { getOngoingMapEvents, MapEvent } from '@/services/mapEventService'
+import RouteMapMode from '@/components/route/RouteMapMode'
 
 // Place 소속 샵은 place 좌표로 접어서 표시한다 (저장 좌표 lat/lng 은 안 건드림)
 const dispLat = (s: any) => s.displayLat ?? s.lat
@@ -185,6 +186,10 @@ export default function MapPage() {
     const cat = searchParams.get('cat')
     if (cat) setSelectedCat(cat)
   }, [searchParams, setSelectedCat])
+
+  // 루트 보기 모드: URL에 routeId가 있으면 일반 지도 대신 루트 전용 뷰
+  const routeId = searchParams?.get('routeId')
+  if (routeId) return <RouteMapMode routeId={routeId} />
 
   return (
     <div className={styles.layout}>
