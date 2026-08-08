@@ -18,11 +18,13 @@ export default function RouteRunSheet(props: {
   nextCheckpoint: RunCheckpoint | null
   nextDistanceM: number | null
   geoDenied: boolean
+  hasFix: boolean
+  onRequestLocation: () => void
   onPause: () => void
   onResume: () => void
   onEnd: () => void
 }) {
-  const { phase, verifiedCount, totalCheckpoints, nextCheckpoint, nextDistanceM, geoDenied, onPause, onResume, onEnd } = props
+  const { phase, verifiedCount, totalCheckpoints, nextCheckpoint, nextDistanceM, geoDenied, hasFix, onRequestLocation, onPause, onResume, onEnd } = props
   const pct = totalCheckpoints ? Math.round((verifiedCount / totalCheckpoints) * 100) : 0
   const paused = phase === 'paused'
 
@@ -44,9 +46,15 @@ export default function RouteRunSheet(props: {
       </div>
       <div className={styles.bar}><div className={styles.barFill} style={{ width: `${pct}%` }} /></div>
 
+      {!hasFix && !geoDenied && (
+        <button className={styles.perm} onClick={onRequestLocation}>
+          📍 위치 권한 허용하고 자동 확인 켜기
+        </button>
+      )}
       {geoDenied && (
         <div className={styles.notice}>
           위치 권한이 꺼져 있어 자동 확인이 안 돼요. 그래도 <b>루트 종료</b>에서 방문한 곳을 직접 확인하고 완주할 수 있어요.
+          <button className={styles.retry} onClick={onRequestLocation}>위치 다시 시도</button>
         </div>
       )}
 

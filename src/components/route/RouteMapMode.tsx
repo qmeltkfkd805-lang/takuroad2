@@ -295,6 +295,8 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
             nextCheckpoint={run.nextCheckpoint}
             nextDistanceM={run.nextDistanceM}
             geoDenied={run.geoDenied}
+            hasFix={run.hasFix}
+            onRequestLocation={run.requestLocationNow}
             onPause={run.pause}
             onResume={run.resume}
             onEnd={() => setShowEndSheet(true)}

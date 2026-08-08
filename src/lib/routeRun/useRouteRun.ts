@@ -9,6 +9,7 @@ import { calcDistance } from '@/hooks/useCurrentLocation'
 
 const POLL_MS = 12000        // 위치 표본 주기(체류 판정용) — 서버 minDwell/minSamples와 맞물림
 const VERIFIED = new Set(['proximity_verified', 'checkpoint_verified', 'qr_verified'])
+const GEO_OPTS: PositionOptions = { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
 
 export interface RunCheckpoint {
   key: string
@@ -77,42 +78,51 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
     })
   }, [])
 
-  // 위치 1회 측정 + 서버 ping
-  const pingOnce = useCallback(() => {
+  // 위치 표본 처리 → running이면 서버 ping까지
+  const handlePosition = useCallback(async (pos: GeolocationPosition) => {
+    const lat = pos.coords.latitude, lng = pos.coords.longitude
+    const accuracy = pos.coords.accuracy ?? 9999
+    setGeoDenied(false)
+    setLocation({ lat, lng, accuracy })
     const sid = sessionRef.current
     if (!sid || phaseRef.current !== 'running') return
-    if (typeof navigator === 'undefined' || !navigator.geolocation) return
-    navigator.geolocation.getCurrentPosition(
-      async pos => {
-        const lat = pos.coords.latitude, lng = pos.coords.longitude
-        const accuracy = pos.coords.accuracy ?? 9999
-        setGeoDenied(false)
-        setLocation({ lat, lng, accuracy })
-        if (phaseRef.current !== 'running') return
-        const { ok, data } = await postJson('/api/route-session/ping', { sessionId: sid, lat, lng, accuracy })
-        if (ok && Array.isArray(data.confirmed) && data.confirmed.length) {
-          const cps = checkpointsRef.current
-          setVisitStatus(vsPrev => {
-            const m = new Map(vsPrev)
-            for (const c of data.confirmed) {
-              const cp = cps.find(x => x.key === c.key)
-              m.set(c.key, cp?.kind === 'building' ? 'checkpoint_verified' : 'proximity_verified')
-            }
-            return m
-          })
-          setArrivals(prev => {
-            const seen = new Set(prev.map(a => a.key))
-            const add = data.confirmed
-              .filter((c: any) => !seen.has(c.key))
-              .map((c: any) => ({ id: `${c.key}:${pos.timestamp}`, key: c.key, label: c.label ?? '도착', distanceM: Math.round(c.distanceM ?? 0) }))
-            return [...prev, ...add]
-          })
+    const { ok, data } = await postJson('/api/route-session/ping', { sessionId: sid, lat, lng, accuracy })
+    if (ok && Array.isArray(data.confirmed) && data.confirmed.length) {
+      const cps = checkpointsRef.current
+      setVisitStatus(vsPrev => {
+        const m = new Map(vsPrev)
+        for (const c of data.confirmed) {
+          const cp = cps.find(x => x.key === c.key)
+          m.set(c.key, cp?.kind === 'building' ? 'checkpoint_verified' : 'proximity_verified')
         }
-      },
-      err => { if (err && err.code === 1) setGeoDenied(true) },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 },
-    )
+        return m
+      })
+      setArrivals(prev => {
+        const seen = new Set(prev.map(a => a.key))
+        const add = data.confirmed
+          .filter((c: any) => !seen.has(c.key))
+          .map((c: any) => ({ id: `${c.key}:${pos.timestamp}`, key: c.key, label: c.label ?? '도착', distanceM: Math.round(c.distanceM ?? 0) }))
+        return [...prev, ...add]
+      })
+    }
   }, [])
+
+  const handleGeoError = useCallback((err: GeolocationPositionError) => {
+    if (err && err.code === 1) setGeoDenied(true)   // 권한 거부만 안내(타임아웃 등은 무시)
+  }, [])
+
+  // 타이머(자동)에서의 위치 측정 — running일 때만
+  const pingOnce = useCallback(() => {
+    if (phaseRef.current !== 'running') return
+    if (typeof navigator === 'undefined' || !navigator.geolocation) return
+    navigator.geolocation.getCurrentPosition(handlePosition, handleGeoError, GEO_OPTS)
+  }, [handlePosition, handleGeoError])
+
+  /** 사용자 탭에서 직접 호출 → iOS 사파리에서도 권한 팝업이 확실히 뜬다(타이머 호출은 조용히 무시됨). */
+  const requestLocationNow = useCallback(() => {
+    if (typeof navigator === 'undefined' || !navigator.geolocation) return
+    navigator.geolocation.getCurrentPosition(handlePosition, handleGeoError, GEO_OPTS)
+  }, [handlePosition, handleGeoError])
 
   const stopPolling = useCallback(() => {
     if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null }
@@ -239,8 +249,10 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
     config: snap.config,
     visitStatus,
     location,
+    hasFix: !!location,
     geoDenied,
     arrivals,
+    requestLocationNow,
     totalCheckpoints,
     verifiedCount,
     nextCheckpoint,
