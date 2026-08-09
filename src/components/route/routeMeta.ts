@@ -3,6 +3,19 @@
 import { shopRegion } from '@/lib/shop/quickCompleteness'
 import { formatDistance } from '@/hooks/useCurrentLocation'
 
+/** 루트 지도 표현 모드 — 화면 역할별로 마커·컨트롤 밀도를 다르게 한다.
+ *  preview: 상호작용/컨트롤 없음, 출발·도착+대표 스팟만 (홈 미리보기)
+ *  detail : 전체 루트·전체 스팟, 탭 시 전체화면 (루트 상세)
+ *  run    : 현재 위치·다음 스팟 중심 전체화면 (실행 지도, RouteMap 사용) */
+export type RouteMapVariant = 'preview' | 'detail' | 'run'
+
+/** preview 모드에서 마커로 노출할 대표 스팟 인덱스(출발·도착 + 중간 최대 2곳). */
+export function representativeStopIndices(n: number): number[] {
+  if (n <= 4) return Array.from({ length: n }, (_, i) => i)   // 적으면 전부
+  const set = new Set<number>([0, n - 1, Math.round((n - 1) / 3), Math.round(((n - 1) * 2) / 3)])
+  return Array.from(set).sort((a, b) => a - b)
+}
+
 export const DIFF: Record<number, { l: string; c: string }> = {
   1: { l: '가볍게', c: '#22c55e' }, 2: { l: '반나절', c: '#eab308' }, 3: { l: '하루', c: '#ef4444' },
 }

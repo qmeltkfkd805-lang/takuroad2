@@ -53,6 +53,7 @@ export default function CommunityPage() {
 
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
+  const [searchOpen, setSearchOpen] = useState(false)   // 📱 모바일 검색바 토글
   const [tagFilter, setTagFilter] = useState<Tag | null>(null)
   const [tagQuery, setTagQuery] = useState('')
   const [tagOpen, setTagOpen] = useState(false)
@@ -194,6 +195,9 @@ export default function CommunityPage() {
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
           </button>
           <div style={{ flex: 1, fontSize: 17, fontWeight: 900 }}>{boardLabel}</div>
+          <button onClick={() => setSearchOpen(o => !o)} aria-label="검색" style={{ ...iconBtn, ...(search || searchOpen ? { background: 'var(--accent)', color: '#fff' } : {}) }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
+          </button>
           <button onClick={() => setTagOpen(o => !o)} aria-label="작품 필터" style={{ ...iconBtn, ...(tagFilter || tagOpen ? { background: 'var(--accent)', color: '#fff' } : {}) }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 5h18l-7 8v6l-4-2v-4z" /></svg>
           </button>
@@ -206,6 +210,27 @@ export default function CommunityPage() {
         <div className="taku-noscroll" style={{ display: 'flex', overflowX: 'auto', background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
           {mobTabs.map(t => <MobTab key={t.label} label={t.label} active={t.active} onClick={t.on} />)}
         </div>
+
+        {/* 통합 검색 — 제목·글쓴이·댓글 */}
+        {searchOpen && (
+          <div style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)', padding: '10px 16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
+              <input autoFocus value={searchInput} onChange={e => setSearchInput(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') setSearch(searchInput.trim()) }} placeholder="제목·글쓴이·댓글 검색" style={{ flex: 1, minWidth: 0, border: 'none', background: 'none', outline: 'none', fontSize: 14, color: 'var(--text)', fontFamily: 'inherit' }} />
+              {searchInput && <button onClick={() => { setSearchInput(''); setSearch('') }} aria-label="지우기" style={{ border: 'none', background: 'none', color: 'var(--muted)', cursor: 'pointer', display: 'flex' }}><AppIcon name="close" size={13} /></button>}
+              <button onClick={() => setSearch(searchInput.trim())} style={{ flexShrink: 0, border: 'none', background: 'var(--accent)', color: '#fff', borderRadius: 8, padding: '7px 13px', fontSize: 13, fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit' }}>검색</button>
+            </div>
+          </div>
+        )}
+
+        {/* 검색 활성 칩 */}
+        {search && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 16px', background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
+            <span style={{ fontSize: 12.5, color: 'var(--muted)', fontWeight: 700 }}>검색</span>
+            <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>“{search}”</span>
+            <button onClick={() => { setSearchInput(''); setSearch('') }} style={{ marginLeft: 'auto', flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 4, border: 'none', background: 'var(--surface2)', color: 'var(--muted)', borderRadius: 9999, padding: '4px 10px', fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>해제 <AppIcon name="close" size={11} /></button>
+          </div>
+        )}
 
         {/* 작품 필터 — 필터 버튼 누르면 검색창만 뜨고, 입력하면 아래에 작품 목록 */}
         {tagOpen && (
@@ -371,7 +396,7 @@ export default function CommunityPage() {
           <div style={{ display: 'flex', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', flex: 1, minWidth: 200, alignItems: 'center', gap: 8, padding: '9px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
-              <input value={searchInput} onChange={e => setSearchInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && setSearch(searchInput)} placeholder="제목·내용 검색" style={{ flex: 1, border: 'none', background: 'none', outline: 'none', fontSize: 14, color: 'var(--text)', fontFamily: 'inherit' }} />
+              <input value={searchInput} onChange={e => setSearchInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && setSearch(searchInput.trim())} placeholder="제목·글쓴이·댓글 검색" style={{ flex: 1, border: 'none', background: 'none', outline: 'none', fontSize: 14, color: 'var(--text)', fontFamily: 'inherit' }} />
               {search && <button onClick={() => { setSearchInput(''); setSearch('') }} style={{ border: 'none', background: 'none', color: 'var(--muted)', cursor: 'pointer', fontSize: 14 }}><AppIcon name="close" size={13} /></button>}
             </div>
             <div style={{ position: 'relative' }}>

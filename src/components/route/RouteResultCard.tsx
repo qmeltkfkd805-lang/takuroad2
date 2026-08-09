@@ -1,7 +1,7 @@
 'use client'
 import RouteThumb from './RouteThumb'
 import { formatDistance } from '@/hooks/useCurrentLocation'
-import { rtStops, metaShort } from './routeMeta'
+import { rtStops, metaShort, type RouteMapVariant } from './routeMeta'
 import styles from './RouteResultCard.module.css'
 
 export type RouteView = 'grid' | 'list'
@@ -26,13 +26,14 @@ function WalkIcon({ size = 13 }: { size?: number }) {
 
 /** 홈·목록 공용 루트 카드. view로 그리드/리스트 전환, 동일 데이터 모델 사용. */
 export default function RouteResultCard({
-  route, view = 'grid', saved, onOpen, onToggleSave,
+  route, view = 'grid', saved, onOpen, onToggleSave, mapVariant = 'detail',
 }: {
   route: any
   view?: RouteView
   saved: boolean
   onOpen: () => void
   onToggleSave: (e: React.MouseEvent) => void
+  mapVariant?: RouteMapVariant
 }) {
   const stops = rtStops(route)
 
@@ -61,7 +62,7 @@ export default function RouteResultCard({
     return (
       <article className={styles.row} onClick={onOpen}>
         <div className={styles.rowThumb}>
-          <RouteThumb stops={stops} height={104} />
+          <RouteThumb stops={stops} height={104} variant={mapVariant} />
         </div>
         <div className={styles.rowBody}>
           {title}{meta}
@@ -78,7 +79,7 @@ export default function RouteResultCard({
   return (
     <article className={styles.card} onClick={onOpen}>
       <div className={styles.thumb}>
-        <RouteThumb stops={stops} height={132} />
+        <RouteThumb stops={stops} height={132} variant={mapVariant} />
         {heart}
       </div>
       <div className={styles.body}>

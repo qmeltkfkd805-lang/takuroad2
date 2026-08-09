@@ -9,16 +9,17 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { loadMaps } from '@/lib/map/provider'
+import { representativeStopIndices, type RouteMapVariant } from '@/components/route/routeMeta'
 
 type Stop = { lat: number; lng: number }
 
-export default function RouteMapThumb({ stops, height = 118, labels, showEnds = false }: { stops: Stop[]; height?: number; labels?: string[]; showEnds?: boolean }) {
+export default function RouteMapThumb({ stops, height = 118, labels, showEnds = false, variant = 'detail' }: { stops: Stop[]; height?: number; labels?: string[]; showEnds?: boolean; variant?: RouteMapVariant }) {
   const ref = useRef<HTMLDivElement>(null)
   const [inView, setInView] = useState(false)
 
   const pts = (stops ?? []).filter(s => typeof s?.lat === 'number' && typeof s?.lng === 'number')
   const coordsKey = pts.map(p => `${p.lat.toFixed(5)},${p.lng.toFixed(5)}`).join(';')
-  const labelsKey = (labels ?? []).join('|') + (showEnds ? '#e' : '')
+  const labelsKey = (labels ?? []).join('|') + (showEnds ? '#e' : '') + `#${variant}`
   const hasCoords = pts.length > 0
 
   // 화면 근처에 들어오면 초기화 (lazy)
@@ -72,7 +73,10 @@ export default function RouteMapThumb({ stops, height = 118, labels, showEnds = 
       const pinFont = height < 90 ? 8.5 : height < 170 ? 9.5 : 11
       const pinPad = pinSize < 18 ? 2 : 6
       const pinBw = height < 90 ? 1.5 : 2
+      // preview: 출발·도착 + 대표 스팟만 마커 (경로선은 전체 유지)
+      const showSet = variant === 'preview' ? new Set(representativeStopIndices(list.length)) : null
       list.forEach((p, i) => {
+        if (showSet && !showSet.has(i)) return
         const label = labels?.[i] ?? String(i + 1)
         const isFirst = i === 0, isLast = i === list.length - 1
         const wrap = document.createElement('div')

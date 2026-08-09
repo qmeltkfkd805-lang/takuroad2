@@ -7,6 +7,7 @@ import { formatDistance, calcDistance, useCurrentLocation } from '@/hooks/useCur
 import { getShopStatus, ShopStatusKind } from '@/lib/utils/shopStatus'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import { useAuth } from '@/components/layout/AuthProvider'
+import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { toggleRouteSave, getMySavedRouteIds, toggleRouteShare, deleteRoute, adminDeleteRoute, adminSetRouteShared } from '@/services/routeService'
 import { recordRouteStart, hasStartedRoute, getRouteTips, addRouteTip, deleteRouteTip, RouteTip } from '@/services/routeTipService'
 import { getRelatedRoutes, RelatedRoute } from '@/services/routeRelatedService'
@@ -73,6 +74,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
   const router = useRouter()
   const { user, isAdmin } = useAuth()
   const { location } = useCurrentLocation()
+  const isDesktop = useIsDesktop()
 
   const sortedStops = useMemo(() => (route.route_shops ?? []).slice().sort((a: any, b: any) => a.sort_order - b.sort_order), [route])
   const shopsWithCoords = useMemo(() => sortedStops.map((rs: any) => rs.shops).filter((s: any) => s && s.lat && s.lng).map((s: any) => ({ id: s.id, name: s.name, lat: s.lat, lng: s.lng })), [sortedStops])
@@ -105,6 +107,10 @@ export default function RouteDetailPage({ route }: { route: any }) {
   const [toast, setToast] = useState<string | null>(null)
   const [showComplete, setShowComplete] = useState(false)
   const celebratedRef = useRef(false)
+  // 모바일 전용: 탭 + inline CTA 가시성(스크롤 시 sticky 시작버튼 표시)
+  const [mobileTab, setMobileTab] = useState<'course' | 'reviews' | 'related'>('course')
+  const ctaRef = useRef<HTMLDivElement>(null)
+  const [ctaVisible, setCtaVisible] = useState(true)
 
   const isAuthor = !!user && user.id === route.user_id
   const canManage = isAuthor || isAdmin   // 관리자는 남의 루트도 관리 가능
@@ -222,6 +228,15 @@ export default function RouteDetailPage({ route }: { route: any }) {
   const openInternalMap = (spotId?: string) => router.push(`/map?routeId=${route.share_token}${spotId ? `&spotId=${spotId}` : ''}`)
   useEffect(() => { if (!toast) return; const t = setTimeout(() => setToast(null), 2600); return () => clearTimeout(t) }, [toast])
 
+  // 모바일: inline CTA가 화면에서 벗어나면 sticky 시작버튼 노출
+  useEffect(() => {
+    const el = ctaRef.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => setCtaVisible(e.isIntersecting), { rootMargin: '-8px 0px -120px 0px' })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [isDesktop])
+
   const scrollTo = (key: string) => {
     const el = sectionRefs[key as keyof typeof sectionRefs].current
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -232,6 +247,234 @@ export default function RouteDetailPage({ route }: { route: any }) {
       <HeartIcon size={16} filled={saved} color={saved ? 'var(--accent)' : 'currentColor'} />{saved ? '저장됨' : '저장하기'}
     </button>
   )
+
+  // 방문 코스 타임라인 (데스크톱·모바일 공용)
+  const timelineOl = (
+    <ol className={styles.timeline}>
+      {sortedStops.map((rs: any, i: number) => {
+        const shop = rs.shops
+        if (!shop) return null
+        const sel = selectedShopId === shop.id
+        const st = shop.hours || shop.status ? statusPill(getShopStatus(shop, now).kind) : null
+        const cats: string[] = Array.isArray(shop.cats) ? shop.cats : []
+        const first = i === 0, last = i === sortedStops.length - 1
+        const walkMin = rs.duration_from_prev_min, walkM = rs.distance_from_prev_m
+        const visited = visitedIds.has(shop.id)
+        return (
+          <li key={rs.id} className={styles.stop}>
+            {!first && !singleSpot && (walkMin != null || walkM != null) && (
+              <div className={styles.travel}><MaskIcon name="route" size={12} color="var(--muted)" />도보{walkMin != null ? ` ${walkMin}분` : ''}{walkM != null ? ` · ${formatDistance(walkM)}` : ''}</div>
+            )}
+            {!first && !singleSpot && sortedStops[i - 1]?.move_tip && (
+              <div className={styles.travelTip}>{sortedStops[i - 1].move_tip}</div>
+            )}
+            <div className={`${styles.stopRow} ${sel ? styles.stopRowSel : ''}`}
+              onClick={() => setSelectedShopId(sel ? null : shop.id)} role="button" tabIndex={0}
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedShopId(sel ? null : shop.id) } }}>
+              <div className={styles.stopRail}>
+                <span className={`${styles.stopNum} ${visited ? styles.stopNumDone : ''}`}>{visited ? <CheckIcon size={14} color="#fff" /> : i + 1}</span>
+                {!last && !singleSpot && <span className={styles.stopLine} />}
+              </div>
+              <div className={styles.stopThumb}>
+                {shop.shop_images?.[0]?.image_url ? <img src={shop.shop_images[0].image_url} alt="" loading="lazy" /> : <MaskIcon name="shop" size={26} color="var(--muted)" />}
+              </div>
+              <div className={styles.stopBody}>
+                <div className={styles.stopHead}>
+                  <Link href={`/shop/${shop.slug}`} target="_blank" className={styles.stopName} onClick={e => e.stopPropagation()}>{shop.name}</Link>
+                  {st && <span className={styles.statusPill} data-tone={st.tone}>{st.text}</span>}
+                </div>
+                {shop.addr && <div className={styles.stopAddr}>{shop.addr}</div>}
+                {(() => { const fl = shop.floor_info || [shop.floor, shop.unit].filter(Boolean).join(' '); return fl ? <div className={styles.stopFloor}>{fl}</div> : null })()}
+                {cats.length > 0 && (
+                  <div className={styles.stopTags}>
+                    {cats.slice(0, 2).map(c => { const ci = CATEGORY_NAME_MAP[c]; return <span key={c} className={styles.stopTag} style={ci ? { color: ci.color, background: ci.bgColor } : undefined}>{c}</span> })}
+                  </div>
+                )}
+              </div>
+              <div className={styles.stopActions}>
+                <Link href={`/shop/${shop.slug}`} target="_blank" className={styles.detailLink} onClick={e => e.stopPropagation()}>상세 보기 ›</Link>
+                <div className={styles.stopBtns}>
+                  {shop.lat && shop.lng && <button className={styles.mapAppBtn} onClick={e => { e.stopPropagation(); openInternalMap(shop.id) }} aria-label="타쿠로드 지도에서 보기" title="타쿠로드 지도에서 보기"><ColorIcon name="colormap" size={16} /></button>}
+                  <button className={visited ? styles.visitOn : styles.visitBtn} onClick={e => { e.stopPropagation(); toggleVisited(shop.id) }} aria-pressed={visited}>
+                    <CheckIcon size={13} color={visited ? '#fff' : 'var(--muted)'} />{visited ? '방문함' : '방문'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </li>
+        )
+      })}
+    </ol>
+  )
+
+  const tipsBlock = (
+    <div className={styles.block}>
+      <h2 className={styles.blockTitle}>여행자 팁{routeTips.length ? ` ${routeTips.length}` : ''}</h2>
+      {routeTips.length === 0 ? (
+        <p className={styles.emptyLine}>아직 여행자 팁이 없어요. 루트를 다녀오고 꿀팁을 남겨주세요!</p>
+      ) : (
+        <ul className={styles.tipsList}>
+          {routeTips.map(tp => (
+            <li key={tp.id} className={styles.tipItem}>
+              <div className={styles.tipContent}>{tp.content}</div>
+              <div className={styles.tipFoot}>
+                <span className={styles.tipAuthor}>{tp.nickname ?? '익명'} · {fmtDate(tp.created_at)}</span>
+                {user && tp.user_id === user.id && <button className={styles.tipDelete} onClick={() => removeTip(tp.id)}>삭제</button>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+      {started ? (
+        <div className={styles.tipForm}>
+          <textarea className={styles.tipInput} value={tipInput} maxLength={300} onChange={e => setTipInput(e.target.value)} placeholder="이 루트 다녀온 꿀팁을 남겨주세요" rows={2} />
+          <button className={styles.tipSubmit} onClick={submitTip} disabled={tipBusy || !tipInput.trim()}>{tipBusy ? '등록 중…' : '팁 등록'}</button>
+        </div>
+      ) : (
+        <p className={styles.tipLocked}>{user ? '루트를 시작하면 팁을 남길 수 있어요.' : '로그인하고 루트를 시작하면 팁을 남길 수 있어요.'}</p>
+      )}
+    </div>
+  )
+
+  /* ───────────── 📱 모바일 루트 상세 ───────────── */
+  if (!isDesktop) {
+    const statusBadge = route.is_official
+      ? <span className={styles.mStatusOfficial}><MaskIcon name="star" size={12} color="#fff" />추천</span>
+      : canManage
+        ? <span className={`${styles.mStatus} ${shared ? styles.mStatusPublic : styles.mStatusDraft}`}>{shared ? '공개됨' : '작성중'}</span>
+        : null
+    const MTABS = [
+      { key: 'course', label: '코스 안내' },
+      { key: 'reviews', label: '후기' },
+      { key: 'related', label: '관련 루트' },
+    ] as const
+    return (
+      <div className={styles.mPage}>
+        {/* 앱바 */}
+        <header className={styles.mAppbar}>
+          <button className={styles.mAppIcon} onClick={() => router.back()} aria-label="뒤로"><Svg size={22}><path d="M15 18l-6-6 6-6" /></Svg></button>
+          <div className={styles.mAppTitle}>루트 상세</div>
+          <button className={styles.mAppIcon} onClick={doShare} aria-label="공유하기"><ShareIcon size={18} /></button>
+          {canManage && (
+            <div className={styles.mMenuWrap} ref={menuRef}>
+              <button className={styles.mAppIcon} onClick={() => setMenuOpen(v => !v)} aria-haspopup="menu" aria-expanded={menuOpen} aria-label="더보기"><MoreIcon size={20} /></button>
+              {menuOpen && (
+                <div className={styles.kebabMenu} role="menu">
+                  {isAuthor && !route.is_official && <Link href={`/route/${route.share_token}/edit`} className={styles.kebabItem} role="menuitem"><PencilIcon size={15} />수정하기</Link>}
+                  <button className={styles.kebabItem} role="menuitem" onClick={handleTogglePublish} disabled={publishBusy}>{shared ? <><LockIcon size={15} />비공개로 전환</> : <><GlobeIcon size={15} />공개하기</>}</button>
+                  {!isAuthor && isAdmin && <div className={styles.kebabNote}>관리자 권한</div>}
+                  <button className={`${styles.kebabItem} ${styles.kebabDanger}`} role="menuitem" onClick={handleDelete} disabled={deleteBusy}><TrashIcon size={15} />삭제하기</button>
+                </div>
+              )}
+            </div>
+          )}
+        </header>
+
+        {/* 본문 정보 (외부 카드 없음) */}
+        <div className={styles.mInfo}>
+          {statusBadge && <div className={styles.mBadgeRow}>{statusBadge}</div>}
+          <h1 className={styles.mTitle}>{route.title}</h1>
+          <div className={styles.mAuthor}>{author ? `${author}의 루트` : '타쿠로드 루트'}{route.created_at && <> · {fmtDate(route.created_at)}</>}</div>
+          {route.description && <p className={styles.mDesc}>{route.description}</p>}
+          {tags.length > 0 && <div className={styles.mTags}>{tags.map(t => <span key={t as string} className={styles.mTag}>{t as string}</span>)}</div>}
+          <div className={styles.mStats}>
+            <span><MaskIcon name="shop" size={15} color="var(--accent)" />{spotCount}곳</span>
+            {fmtDur(route.total_duration_min) && <span><MaskIcon name="clock" size={15} color="var(--accent)" />{fmtDur(route.total_duration_min)}</span>}
+            {!singleSpot && route.total_distance_m ? <span><MaskIcon name="route" size={15} color="var(--accent)" />도보 {formatDistance(route.total_distance_m)}</span> : null}
+          </div>
+        </div>
+
+        {/* 상세 지도 — 탭 시 전체화면 */}
+        {shopsWithCoords.length > 0 ? (
+          <button className={styles.mMap} onClick={() => openInternalMap()} aria-label="전체화면 지도에서 보기">
+            <RouteThumb stops={rtStops(route)} showEnds height={230} variant="detail" />
+            <span className={styles.mMapExpand} aria-hidden><ExpandIcon size={16} /></span>
+          </button>
+        ) : (
+          <div className={styles.mMapEmpty}><ColorIcon name="colormap" size={28} /><span>좌표 정보가 없어요</span></div>
+        )}
+
+        {/* CTA — 지도 아래 */}
+        <div className={styles.mCta} ref={ctaRef}>
+          <button className={styles.mStart} onClick={handleStart}><PinIcon size={17} color="#fff" />{started ? '이어서 따라가기' : '루트 시작하기'}</button>
+          <button className={`${styles.mSave} ${saved ? styles.mSaveOn : ''}`} onClick={handleSave} disabled={savingBusy} aria-pressed={saved}><HeartIcon size={17} filled={saved} color={saved ? 'var(--accent)' : 'currentColor'} />저장</button>
+        </div>
+
+        {/* sticky 탭 */}
+        <div className={styles.mTabs} role="tablist" aria-label="루트 정보">
+          {MTABS.map(t => (
+            <button key={t.key} role="tab" aria-selected={mobileTab === t.key} className={mobileTab === t.key ? styles.mTabOn : styles.mTab} onClick={() => setMobileTab(t.key)}>{t.label}</button>
+          ))}
+        </div>
+
+        {/* 탭 콘텐츠 */}
+        <div className={styles.mTabBody}>
+          {mobileTab === 'course' && (
+            <>
+              {authorNotes.length > 0 && (
+                <div className={styles.block}>
+                  <h2 className={styles.blockTitle}>여행 전 tip</h2>
+                  <ul className={styles.notesList}>
+                    {authorNotes.map((n, i) => <li key={i} className={styles.noteItem}><span className={styles.noteCheck}><CheckIcon size={13} color="var(--accent)" /></span>{n}</li>)}
+                  </ul>
+                </div>
+              )}
+              {singleSpot ? <p className={styles.singleNote}>한 곳으로 이루어진 루트예요. 이동 경로·거리는 표시하지 않아요.</p> : timelineOl}
+              {tipsBlock}
+            </>
+          )}
+          {mobileTab === 'reviews' && (
+            <div className={styles.reviewEmpty}>
+              <MaskIcon name="star" size={26} color="var(--muted)" />
+              <p>완주 후기 기능은 준비 중이에요.<br />루트를 다녀왔다면 ‘코스 안내’의 여행자 팁으로 경험을 공유해주세요.</p>
+            </div>
+          )}
+          {mobileTab === 'related' && (
+            related.length > 0 ? (
+              <div className={styles.mRelated}>
+                {related.slice(0, 6).map(r => (
+                  <Link key={r.id} href={`/route/${r.share_token}`} className={styles.mRelatedCard}>
+                    <div className={styles.mRelatedThumb}>
+                      {r.cover_image_url ? <img src={r.cover_image_url} alt="" loading="lazy" /> : <ColorIcon name="colormap" size={24} />}
+                      <span className={styles.mRelatedReason}>{r.reason}</span>
+                    </div>
+                    <div className={styles.mRelatedInfo}>
+                      <div className={styles.mRelatedTitle}>{r.title}</div>
+                      <div className={styles.mRelatedMeta}>스팟 {r.shop_count}곳{r.distance_m != null ? ` · ${(r.distance_m / 1000).toFixed(1)}km` : ''}</div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : <p className={styles.emptyLine}>관련 루트가 아직 없어요.</p>
+          )}
+        </div>
+
+        {/* sticky 시작 버튼 — inline CTA가 화면 밖일 때만 */}
+        {!ctaVisible && (
+          <div className={styles.mStickyCta}>
+            <button className={styles.mStart} onClick={handleStart}><PinIcon size={17} color="#fff" />{started ? '이어서 따라가기' : '루트 시작하기'}</button>
+          </div>
+        )}
+
+        {toast && <div className={styles.toast} role="status">{toast}</div>}
+        {showComplete && (
+          <div className={styles.completeOverlay} role="dialog" aria-modal="true" onClick={() => setShowComplete(false)}>
+            <div className={styles.completeCard} onClick={e => e.stopPropagation()}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/taku/taku-checkin.png" alt="" className={styles.completeChar} />
+              <div className={styles.completeSub}>루트 완주</div>
+              <div className={styles.completeTitle}>{route.title}</div>
+              <p className={styles.completeMsg}>완주를 축하합니다!<br />{spotCount}곳을 모두 둘러봤어요.</p>
+              <div className={styles.completeBtns}>
+                <button className={styles.completeShare} onClick={() => { setShowComplete(false); openInternalMap() }}>지도에서 다시 보기</button>
+                <button className={styles.completeClose} onClick={() => setShowComplete(false)}>확인</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    )
+  }
 
   return (
     <div className={styles.page}>
@@ -335,92 +578,11 @@ export default function RouteDetailPage({ route }: { route: any }) {
                 <h2 className={styles.blockTitle}>방문 코스</h2>
                 <button className={styles.foldBtn} onClick={() => setCourseOpen(o => !o)} aria-expanded={courseOpen}>{courseOpen ? '접기' : '펼치기'}<ChevronIcon size={15} style={{ transform: courseOpen ? 'rotate(180deg)' : 'none', transition: 'transform .2s ease' }} /></button>
               </div>
-              {courseOpen && (
-              <ol className={styles.timeline}>
-                {sortedStops.map((rs: any, i: number) => {
-                  const shop = rs.shops
-                  if (!shop) return null
-                  const sel = selectedShopId === shop.id
-                  const st = shop.hours || shop.status ? statusPill(getShopStatus(shop, now).kind) : null
-                  const cats: string[] = Array.isArray(shop.cats) ? shop.cats : []
-                  const first = i === 0, last = i === sortedStops.length - 1
-                  const walkMin = rs.duration_from_prev_min, walkM = rs.distance_from_prev_m
-                  const visited = visitedIds.has(shop.id)
-                  return (
-                    <li key={rs.id} className={styles.stop}>
-                      {!first && !singleSpot && (walkMin != null || walkM != null) && (
-                        <div className={styles.travel}><MaskIcon name="route" size={12} color="var(--muted)" />도보{walkMin != null ? ` ${walkMin}분` : ''}{walkM != null ? ` · ${formatDistance(walkM)}` : ''}</div>
-                      )}
-                      {!first && !singleSpot && sortedStops[i - 1]?.move_tip && (
-                        <div className={styles.travelTip}>{sortedStops[i - 1].move_tip}</div>
-                      )}
-                      <div className={`${styles.stopRow} ${sel ? styles.stopRowSel : ''}`}
-                        onClick={() => setSelectedShopId(sel ? null : shop.id)} role="button" tabIndex={0}
-                        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedShopId(sel ? null : shop.id) } }}>
-                        <div className={styles.stopRail}>
-                          <span className={`${styles.stopNum} ${visited ? styles.stopNumDone : ''}`}>{visited ? <CheckIcon size={14} color="#fff" /> : i + 1}</span>
-                          {!last && !singleSpot && <span className={styles.stopLine} />}
-                        </div>
-                        <div className={styles.stopThumb}>
-                          {shop.shop_images?.[0]?.image_url ? <img src={shop.shop_images[0].image_url} alt="" loading="lazy" /> : <MaskIcon name="shop" size={26} color="var(--muted)" />}
-                        </div>
-                        <div className={styles.stopBody}>
-                          <div className={styles.stopHead}>
-                            <Link href={`/shop/${shop.slug}`} target="_blank" className={styles.stopName} onClick={e => e.stopPropagation()}>{shop.name}</Link>
-                            {st && <span className={styles.statusPill} data-tone={st.tone}>{st.text}</span>}
-                          </div>
-                          {shop.addr && <div className={styles.stopAddr}>{shop.addr}</div>}
-                          {(() => { const fl = shop.floor_info || [shop.floor, shop.unit].filter(Boolean).join(' '); return fl ? <div className={styles.stopFloor}>{fl}</div> : null })()}
-                          {cats.length > 0 && (
-                            <div className={styles.stopTags}>
-                              {cats.slice(0, 2).map(c => { const ci = CATEGORY_NAME_MAP[c]; return <span key={c} className={styles.stopTag} style={ci ? { color: ci.color, background: ci.bgColor } : undefined}>{c}</span> })}
-                            </div>
-                          )}
-                        </div>
-                        <div className={styles.stopActions}>
-                          <Link href={`/shop/${shop.slug}`} target="_blank" className={styles.detailLink} onClick={e => e.stopPropagation()}>상세 보기 ›</Link>
-                          <div className={styles.stopBtns}>
-                            {shop.lat && shop.lng && <button className={styles.mapAppBtn} onClick={e => { e.stopPropagation(); openInternalMap(shop.id) }} aria-label="타쿠로드 지도에서 보기" title="타쿠로드 지도에서 보기"><ColorIcon name="colormap" size={16} /></button>}
-                            <button className={visited ? styles.visitOn : styles.visitBtn} onClick={e => { e.stopPropagation(); toggleVisited(shop.id) }} aria-pressed={visited}>
-                              <CheckIcon size={13} color={visited ? '#fff' : 'var(--muted)'} />{visited ? '방문함' : '방문'}
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  )
-                })}
-              </ol>
-              )}
+              {courseOpen && timelineOl}
               {courseOpen && singleSpot && <p className={styles.singleNote}>한 곳으로 이루어진 루트예요. 이동 경로·거리는 표시하지 않아요.</p>}
             </div>
 
-            <div className={styles.block}>
-              <h2 className={styles.blockTitle}>여행자 팁{routeTips.length ? ` ${routeTips.length}` : ''}</h2>
-              {routeTips.length === 0 ? (
-                <p className={styles.emptyLine}>아직 여행자 팁이 없어요. 루트를 다녀오고 꿀팁을 남겨주세요!</p>
-              ) : (
-                <ul className={styles.tipsList}>
-                  {routeTips.map(tp => (
-                    <li key={tp.id} className={styles.tipItem}>
-                      <div className={styles.tipContent}>{tp.content}</div>
-                      <div className={styles.tipFoot}>
-                        <span className={styles.tipAuthor}>{tp.nickname ?? '익명'} · {fmtDate(tp.created_at)}</span>
-                        {user && tp.user_id === user.id && <button className={styles.tipDelete} onClick={() => removeTip(tp.id)}>삭제</button>}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {started ? (
-                <div className={styles.tipForm}>
-                  <textarea className={styles.tipInput} value={tipInput} maxLength={300} onChange={e => setTipInput(e.target.value)} placeholder="이 루트 다녀온 꿀팁을 남겨주세요" rows={2} />
-                  <button className={styles.tipSubmit} onClick={submitTip} disabled={tipBusy || !tipInput.trim()}>{tipBusy ? '등록 중…' : '팁 등록'}</button>
-                </div>
-              ) : (
-                <p className={styles.tipLocked}>{user ? '루트를 시작하면 팁을 남길 수 있어요.' : '로그인하고 루트를 시작하면 팁을 남길 수 있어요.'}</p>
-              )}
-            </div>
+            {tipsBlock}
           </section>
 
           {/* 후기 */}

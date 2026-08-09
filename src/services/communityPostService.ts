@@ -349,7 +349,7 @@ export async function getPostAppeals(postId: string): Promise<PostAppeal[]> {
 // ── 커뮤니티 홈: 통합 목록 (전체/board + 내 글 필터) ──
 export interface PostQuery {
   mineOnly?: boolean
-  search?: string    // 제목/내용 검색
+  search?: string    // 제목·내용·글쓴이(닉네임)·댓글 검색
   tagId?: string     // 작품(만화) 필터
 }
 export async function getPosts(
@@ -362,11 +362,16 @@ export async function getPosts(
   if (opts?.tagId) q = q.contains('tag_ids', [opts.tagId])
   if (opts?.search && opts.search.trim()) {
     const kw = opts.search.trim().replace(/[%,]/g, '')
-    // 작성자(닉네임)로도 검색
-    const { data: authors } = await supabase.from('profiles').select('id').ilike('nickname', `%${kw}%`).limit(50)
-    const ids = (authors ?? []).map((a: any) => a.id)
+    // 제목·내용 + 작성자(닉네임) + 댓글 내용으로도 검색
+    const [{ data: authors }, { data: cmts }] = await Promise.all([
+      supabase.from('profiles').select('id').ilike('nickname', `%${kw}%`).limit(50),
+      supabase.from('post_comments').select('post_id').eq('status', 'active').ilike('content', `%${kw}%`).limit(300),
+    ])
+    const authorIds = (authors ?? []).map((a: any) => a.id)
+    const commentPostIds = Array.from(new Set((cmts ?? []).map((c: any) => c.post_id).filter(Boolean)))
     const parts = [`title.ilike.%${kw}%`, `content.ilike.%${kw}%`]
-    if (ids.length) parts.push(`author_id.in.(${ids.join(',')})`)
+    if (authorIds.length) parts.push(`author_id.in.(${authorIds.join(',')})`)
+    if (commentPostIds.length) parts.push(`id.in.(${commentPostIds.join(',')})`)
     q = q.or(parts.join(','))
   }
   const { data, error } = await q.order(sort === 'popular' ? 'like_count' : 'created_at', { ascending: false })

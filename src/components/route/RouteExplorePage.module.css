@@ -177,3 +177,83 @@
 @media (max-width: 400px) {
   .grid3, .grid, .tileRow { grid-template-columns: 1fr; }
 }
+
+/* ─────────────────────────────────────────────
+   📱 모바일 루트 홈 — 탐색 중심 (기기 기준 렌더 분기, PC 미사용 클래스)
+   ───────────────────────────────────────────── */
+.mwrap { background: var(--bg); padding: 14px 16px calc(24px + env(safe-area-inset-bottom)); }
+.mhead { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.mtitle { display: flex; align-items: center; gap: 7px; margin: 0; font-size: 22px; font-weight: 900; letter-spacing: -.02em; }
+.mcreate {
+  flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; min-height: 40px; padding: 0 14px;
+  border-radius: 10px; border: 1px solid var(--accent); background: var(--surface); color: var(--accent);
+  font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer;
+}
+.msub { margin: 6px 0 0; font-size: 13.5px; color: var(--muted); font-weight: 600; }
+
+.msearch { position: relative; display: flex; margin-top: 16px; }
+.msearch input {
+  flex: 1; min-width: 0; height: 48px; padding: 0 48px 0 16px; border-radius: 12px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  font-family: inherit; font-size: 14.5px;
+}
+.msearch input:focus-within, .msearch input:focus { outline: none; border-color: var(--accent); }
+.msearchBtn {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  width: 38px; height: 38px; border-radius: 10px; border: none; background: none; color: var(--muted);
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.msearchBtn:active { color: var(--accent); }
+
+.mchips { display: flex; gap: 8px; overflow-x: auto; margin-top: 14px; padding-bottom: 2px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.mchips::-webkit-scrollbar { display: none; }
+.mchip, .mchipOn {
+  flex-shrink: 0; min-height: 40px; padding: 0 16px; border-radius: 9999px; cursor: pointer;
+  font-family: inherit; font-size: 13.5px; font-weight: 700; white-space: nowrap;
+}
+.mchip { border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+.mchipOn { border: 1px solid var(--accent); background: var(--accent); color: #fff; font-weight: 800; }
+
+/* 히어로 — 흰 배경 + 얇은 경계선 (그라데이션 제거) */
+.mhero { margin-top: 24px; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; background: var(--surface); }
+.mheroMap { display: block; width: 100%; padding: 0; border: none; background: var(--surface2); cursor: pointer; line-height: 0; }
+.mheroBody { padding: 16px; }
+.mheroBadge { display: inline-block; font-size: 11.5px; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+.mheroTitle { margin: 0 0 6px; font-size: 19px; font-weight: 900; line-height: 1.3; letter-spacing: -.02em; }
+.mheroDesc { margin: 0 0 10px; font-size: 13px; color: var(--muted); font-weight: 600; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.mheroMeta { display: flex; flex-wrap: wrap; gap: 10px 14px; font-size: 12.5px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+.mheroMeta span { display: inline-flex; align-items: center; gap: 5px; }
+.mheroBtns { display: flex; gap: 10px; align-items: stretch; }
+.mheroPrimary {
+  flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px;
+  border: none; border-radius: 12px; background: var(--accent); color: #fff; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer;
+}
+.mheroSave {
+  flex-shrink: 0; width: 48px; min-height: 48px; border-radius: 12px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--accent);
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+}
+
+/* 메인 목록 */
+.mlist { margin-top: 28px; }
+.mlistTitle { margin: 0 0 12px; font-size: 17px; font-weight: 900; letter-spacing: -.01em; }
+.mcards { display: flex; flex-direction: column; gap: 10px; }
+.mskeleton { height: 104px; border-radius: 14px; background: linear-gradient(100deg, var(--surface2) 30%, var(--border) 50%, var(--surface2) 70%); background-size: 200% 100%; animation: mshimmer 1.2s ease-in-out infinite; }
+@keyframes mshimmer { 0% { background-position: 200% 0 } 100% { background-position: -200% 0 } }
+
+.mempty { padding: 40px 16px; text-align: center; color: var(--muted); font-size: 14px; }
+.memptyChips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; }
+.memptyChips button {
+  min-height: 40px; padding: 0 14px; border-radius: 9999px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+}
+
+.mlocFail { padding: 28px 16px; text-align: center; }
+.mlocFail p { margin: 0 0 4px; font-size: 14.5px; font-weight: 800; color: var(--text); }
+.mlocFail span { display: block; font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+.mlocBtns { display: flex; justify-content: center; gap: 10px; margin-top: 16px; }
+.mlocRetry, .mlocRegion { min-height: 44px; padding: 0 18px; border-radius: 11px; font-family: inherit; font-size: 13.5px; font-weight: 800; cursor: pointer; }
+.mlocRetry { border: none; background: var(--accent); color: #fff; }
+.mlocRegion { border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+
+.mDiscover { margin-top: 28px; }

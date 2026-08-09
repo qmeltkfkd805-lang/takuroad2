@@ -22,9 +22,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   // 루트 만들기/수정: 작성 전용 화면 (/route/new, /route/[token]/edit)
   const isRouteBuilder = pathname === '/route/new' || (pathname.startsWith('/route/') && pathname.endsWith('/edit'))
   const hideBottomNav = pathname === '/community/write' || isRouteBuilder   // 글쓰기·루트작성: 하단 네비 숨김
-  // 모바일 전역 상단바: 홈·지도·커뮤니티·작품에서만 노출, 그 외 화면은 모두 숨김
+  // 모바일 전역 상단바: 홈·지도·작품에서만 노출, 그 외 화면은 모두 숨김
+  // (커뮤니티는 자체 헤더+검색이 있어 전역 상단바 제외)
   const showHeaderMobile = pathname === '/' || pathname === '/map'
-    || pathname === '/community' || pathname.startsWith('/community/')
     || pathname === '/my-works' || pathname.startsWith('/my-works/')
   const hideHeaderMobile = !showHeaderMobile
   const { user } = useAuth()

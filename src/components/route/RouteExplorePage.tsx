@@ -1,10 +1,11 @@
 'use client'
-import { useState, useEffect, useMemo } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, useMemo, useRef } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getPublicRoutes, toggleRouteSave, getMySavedRouteIds, getSavedRoutes } from '@/services/routeService'
 import { getMyFavoriteTagIds } from '@/services/shopHomeService'
-import { formatDistance } from '@/hooks/useCurrentLocation'
+import { formatDistance, calcDistance, useCurrentLocation } from '@/hooks/useCurrentLocation'
+import { useIsDesktop } from '@/hooks/useIsDesktop'
 import RouteThumb from './RouteThumb'
 import RouteResultCard, { HeartIcon } from './RouteResultCard'
 import { rtStops, rtRegions, fmtDur, metaShort } from './routeMeta'
@@ -24,6 +25,9 @@ function MaskIcon({ name, size = 15, color = 'currentColor' }: { name: string; s
 const ChevR = ({ size = 14 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden><path d="m9 18 6-6-6-6" /></svg>
 )
+const SearchSvg = ({ size = 18 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden><circle cx="11" cy="11" r="7" /><path d="m20 20-3-3" /></svg>
+)
 
 /* 소개문: 작성자 소개가 있으면 그대로, 없으면 실제 지역+스팟수로 짧은 문구, 둘 다 없으면 숨김 */
 function heroIntro(r: any): string | null {
@@ -34,8 +38,22 @@ function heroIntro(r: any): string | null {
   return null
 }
 
+/* 필터 칩 — 아래 메인 목록의 조회·정렬 기준 */
+type SortKey = 'recommended' | 'popular' | 'new' | 'nearby'
+const SORT_TABS: { key: SortKey; label: string }[] = [
+  { key: 'recommended', label: '추천' },
+  { key: 'popular', label: '인기' },
+  { key: 'new', label: '신규' },
+  { key: 'nearby', label: '내 주변' },
+]
+const SORT_TITLE: Record<SortKey, string> = {
+  recommended: '추천 루트', popular: '지금 인기 있는 루트', new: '새로 등록된 루트', nearby: '내 주변 루트',
+}
+
 export default function RouteExplorePage() {
   const router = useRouter()
+  const params = useSearchParams()
+  const isDesktop = useIsDesktop()
   const { user } = useAuth()
   const [routes, setRoutes] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -44,6 +62,10 @@ export default function RouteExplorePage() {
   const [savedRoutes, setSavedRoutes] = useState<any[]>([])
   const [favTagIds, setFavTagIds] = useState<Set<string>>(new Set())
   const [search, setSearch] = useState('')
+
+  // 위치 (내 주변 필터용)
+  const { location, error: locError, requestLocation } = useCurrentLocation()
+  const nearbyReqRef = useRef(false)
 
   useEffect(() => {
     setLoading(true); setError(false)
@@ -62,6 +84,18 @@ export default function RouteExplorePage() {
   const official = useMemo(() => routes.filter(r => r.is_official), [routes])
   const taste = useMemo(() => routes.filter(r => r.primary_tag_id && favTagIds.has(r.primary_tag_id)), [routes, favTagIds])
 
+  // 추천: 운영추천(is_official) + 내 관심작품 우선, 그 뒤 저장수. (임의 점수 없이 실제 필드만)
+  const recommended = useMemo(() => {
+    const rank = (r: any) => (r.is_official ? 2 : 0) + (r.primary_tag_id && favTagIds.has(r.primary_tag_id) ? 1 : 0)
+    return [...routes].sort((a, b) => (rank(b) - rank(a)) || ((b.likes ?? 0) - (a.likes ?? 0)) || (infoScore(b) - infoScore(a)))
+  }, [routes, favTagIds])
+  // 내 주변: 현재 위치 ↔ 루트 첫 스팟 좌표 거리순
+  const nearby = useMemo(() => {
+    if (!location) return []
+    const dist = (r: any) => { const s = rtStops(r)[0]; return s ? calcDistance(location.lat, location.lng, s.lat, s.lng) : Infinity }
+    return [...routes].map(r => [r, dist(r)] as const).sort((a, b) => a[1] - b[1]).map(x => x[0])
+  }, [routes, location])
+
   const heroList = useMemo(() => (official.length ? official : popular).slice(0, 5), [official, popular])
   const [heroIdx, setHeroIdx] = useState(0)
   useEffect(() => { setHeroIdx(0) }, [heroList.length])
@@ -71,6 +105,21 @@ export default function RouteExplorePage() {
     return () => clearInterval(id)
   }, [heroList.length])
   const hero = heroList[heroIdx] ?? heroList[0]
+
+  // 현재 정렬 (URL ?sort= 유지)
+  const sortParam = params?.get('sort')
+  const sort: SortKey = (['popular', 'new', 'nearby'] as string[]).includes(sortParam ?? '') ? (sortParam as SortKey) : 'recommended'
+  const setSort = (next: SortKey) => {
+    if (next === sort) return   // 같은 칩 재클릭 → 무시
+    const p = new URLSearchParams(params?.toString() ?? '')
+    if (next === 'recommended') p.delete('sort'); else p.set('sort', next)
+    router.replace(p.toString() ? `/routes?${p}` : '/routes', { scroll: false })
+    if (next === 'nearby' && !location) { nearbyReqRef.current = true; requestLocation() }
+  }
+  // 내 주변 첫 진입(새로고침/딥링크) 시 위치 1회 요청
+  useEffect(() => {
+    if (sort === 'nearby' && !location && !locError && !nearbyReqRef.current) { nearbyReqRef.current = true; requestLocation() }
+  }, [sort, location, locError, requestLocation])
 
   const byTag = useMemo(() => {
     const m = new Map<string, number>()
@@ -102,6 +151,130 @@ export default function RouteExplorePage() {
 
   if (loading) return <div className={styles.loading}>루트 불러오는 중…</div>
 
+  /* ───────────── 📱 모바일: 탐색 중심 홈 ───────────── */
+  if (!isDesktop) {
+    const mainRaw = sort === 'popular' ? popular : sort === 'new' ? recent : sort === 'nearby' ? nearby : recommended
+    const mainList = sort === 'recommended' && hero ? mainRaw.filter(r => r.id !== hero.id) : mainRaw
+    const nearbyWaiting = sort === 'nearby' && !location
+    return (
+      <div className={styles.mwrap}>
+        <div className={styles.mhead}>
+          <h1 className={styles.mtitle}>
+            <img src="/icons/colormap.png" alt="" width={24} height={24} style={{ display: 'block' }} />루트
+          </h1>
+          <button className={styles.mcreate} onClick={() => router.push('/route/new')}>+ 루트 만들기</button>
+        </div>
+        <p className={styles.msub}>나에게 맞는 굿즈 코스를 찾아보세요</p>
+
+        <form className={styles.msearch} onSubmit={submitSearch}>
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="지역 · 작품 · 루트 검색" aria-label="루트 검색" />
+          <button type="submit" className={styles.msearchBtn} aria-label="검색"><SearchSvg /></button>
+        </form>
+
+        <div className={styles.mchips} role="tablist" aria-label="루트 정렬">
+          {SORT_TABS.map(t => (
+            <button key={t.key} role="tab" aria-selected={t.key === sort}
+              className={t.key === sort ? styles.mchipOn : styles.mchip} onClick={() => setSort(t.key)}>{t.label}</button>
+          ))}
+        </div>
+
+        {error ? (
+          <div className={styles.mempty}>루트를 불러오지 못했어요.</div>
+        ) : routes.length === 0 ? (
+          <div className={styles.mempty}>아직 공개된 루트가 없어요.</div>
+        ) : (
+          <>
+            {sort === 'recommended' && hero && (
+              <section className={styles.mhero} aria-label="이번 주 추천 루트">
+                <button className={styles.mheroMap} onClick={() => go(hero)} aria-label={`${hero.title} 지도 미리보기`}>
+                  <RouteThumb stops={rtStops(hero)} showEnds height={184} variant="preview" />
+                </button>
+                <div className={styles.mheroBody}>
+                  <span className={styles.mheroBadge}>이번 주 추천</span>
+                  <h2 className={styles.mheroTitle}>{hero.title}</h2>
+                  {heroIntro(hero) && <p className={styles.mheroDesc}>{heroIntro(hero)}</p>}
+                  <div className={styles.mheroMeta}>
+                    {rtRegions(hero)[0] && <span><MaskIcon name="map" size={14} color="var(--accent)" />{rtRegions(hero)[0]}</span>}
+                    <span><MaskIcon name="shop" size={14} color="var(--accent)" />{hero.route_shops?.length ?? 0}곳</span>
+                    {fmtDur(hero.total_duration_min) && <span><MaskIcon name="clock" size={14} color="var(--accent)" />{fmtDur(hero.total_duration_min)}</span>}
+                    {hero.total_distance_m ? <span><MaskIcon name="route" size={14} color="var(--accent)" />{formatDistance(hero.total_distance_m)}</span> : null}
+                  </div>
+                  <div className={styles.mheroBtns}>
+                    <button className={styles.mheroPrimary} onClick={() => go(hero)}>루트 보기 <ChevR /></button>
+                    <button className={styles.mheroSave} onClick={e => onSave(e, hero)} aria-pressed={savedIds.has(hero.id)} aria-label={savedIds.has(hero.id) ? '저장됨' : '저장'}>
+                      <HeartIcon size={18} filled={savedIds.has(hero.id)} color={savedIds.has(hero.id) ? 'var(--accent)' : 'var(--muted)'} />
+                    </button>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            <section className={styles.mlist}>
+              <h2 className={styles.mlistTitle}>{SORT_TITLE[sort]}</h2>
+              {nearbyWaiting ? (
+                locError ? (
+                  <div className={styles.mlocFail}>
+                    <p>위치를 확인할 수 없어요.</p>
+                    <span>위치 권한을 허용하거나 지역을 직접 골라 둘러보세요.</span>
+                    <div className={styles.mlocBtns}>
+                      <button className={styles.mlocRetry} onClick={() => { nearbyReqRef.current = true; requestLocation() }}>다시 시도</button>
+                      <button className={styles.mlocRegion} onClick={() => toAll()}>지역 선택</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className={styles.mcards} aria-busy="true">
+                    {Array.from({ length: 4 }).map((_, i) => <div key={i} className={styles.mskeleton} />)}
+                  </div>
+                )
+              ) : mainList.length === 0 ? (
+                <div className={styles.mempty}>
+                  <p>표시할 루트가 없어요.</p>
+                  <div className={styles.memptyChips}>
+                    {SORT_TABS.filter(t => t.key !== sort).map(t => (
+                      <button key={t.key} onClick={() => setSort(t.key)}>{t.label} 보기</button>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className={styles.mcards}>
+                  {mainList.map(r => (
+                    <RouteResultCard key={r.id} route={r} view="list" mapVariant="preview" saved={savedIds.has(r.id)} onOpen={() => go(r)} onToggleSave={e => onSave(e, r)} />
+                  ))}
+                </div>
+              )}
+            </section>
+
+            {byTag.length > 0 && (
+              <section className={styles.mDiscover}>
+                <h2 className={styles.mlistTitle}>작품으로 찾아보기</h2>
+                <div className={styles.tileRow}>
+                  {byTag.slice(0, 4).map(([t, n]) => (
+                    <button key={t} className={styles.tile} onClick={() => toAll(`work=${encodeURIComponent(t)}`)}>
+                      <span className={styles.tileName}>{t}</span><span className={styles.tileSub}>루트 {n}개</span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
+            {byRegion.length > 0 && (
+              <section className={styles.mDiscover}>
+                <h2 className={styles.mlistTitle}>지역으로 떠나기</h2>
+                <div className={styles.tileRow}>
+                  {byRegion.slice(0, 4).map(([r, n]) => (
+                    <button key={r} className={styles.tile} onClick={() => toAll(`region=${encodeURIComponent(r)}`)}>
+                      <span className={styles.tileName}>{r}</span><span className={styles.tileSub}>루트 {n}개</span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
+          </>
+        )}
+      </div>
+    )
+  }
+
+  /* ───────────── 💻 데스크톱: 기존 레이아웃 (미변경) ───────────── */
   return (
     <div className={styles.wrap}>
       <div className={styles.main}>
