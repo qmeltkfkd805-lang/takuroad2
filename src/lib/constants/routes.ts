@@ -7,6 +7,7 @@ export const ROUTES = {
   place:       (slug: string) => `/place/${slug}`,
   tag:         (slug: string) => `/tag/${slug}`,
   routes:      '/routes',
+  myNews:      '/my-news',
   region:      (city: string) => `/region/${city}`,
   profile:     '/profile',
   admin:       '/admin',

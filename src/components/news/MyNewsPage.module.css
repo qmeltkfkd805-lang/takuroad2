@@ -1,0 +1,146 @@
+/* ============================================================
+   최애 새소식 (/my-news)  —  PC 2단 / 모바일 1단
+   기존 핑크 토큰(--accent)·공통 레이아웃 유지
+   ============================================================ */
+.page { width: 100%; margin: 0; padding: 20px 32px 60px; }
+
+/* ── PC 헤더 ── */
+.bcrumb { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+.bcrumb a { color: var(--muted); text-decoration: none; }
+.bcrumb a:hover { color: var(--accent); }
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.headTitle { font-size: 26px; font-weight: 900; color: var(--text); letter-spacing: -0.02em; margin: 0; }
+.headDesc { font-size: 14px; color: var(--muted); margin: 6px 0 0; }
+.allRead { flex-shrink: 0; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 13px; font-weight: 700; padding: 10px 16px; border-radius: var(--r-sm); cursor: pointer; font-family: inherit; }
+.allRead:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.allRead:disabled { opacity: .45; cursor: default; }
+
+/* ── 모바일 헤더 ── */
+.mHeader { display: none; }
+
+/* ── 카테고리 탭 (공통) ── */
+.catTabs { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; scrollbar-width: none; }
+.catTabs::-webkit-scrollbar { display: none; }
+.catTab { flex-shrink: 0; display: inline-flex; align-items: center; gap: 7px; height: 44px; padding: 0 16px; border-radius: var(--r-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; }
+.catTab:hover { border-color: var(--accent); }
+.catTabOn { border-color: var(--accent); background: var(--accent-l); color: var(--accent); }
+.catDot { width: 8px; height: 8px; border-radius: 9999px; flex-shrink: 0; }
+.catLabel { }
+.catCount { font-weight: 800; }
+.catTabOn .catCount { color: var(--accent); }
+
+/* ── PC 검색·필터 줄 ── */
+.controls { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.controls .search { flex: 0 1 420px; }
+.controls .sortBtn { margin-left: auto; }
+.search { flex: 1; display: flex; align-items: center; gap: 8px; height: 42px; padding: 0 14px; border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--surface); min-width: 0; }
+.search:focus-within { border-color: var(--accent); }
+.searchInput { flex: 1; border: none; outline: none; background: none; font-size: 14px; color: var(--text); font-family: inherit; min-width: 0; }
+.toggleChip, .sortBtn { flex-shrink: 0; height: 42px; padding: 0 14px; border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--surface); color: var(--text); font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; }
+.toggleChip:hover, .sortBtn:hover { border-color: var(--accent); }
+.toggleOn { border-color: var(--accent); background: var(--accent-l); color: var(--accent); }
+
+/* ── 본문 레이아웃 ── */
+.layout { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: start; }
+@media (min-width: 1024px), (hover: hover) and (pointer: fine) {
+  .layout { grid-template-columns: minmax(0, 1fr) 340px; }
+}
+
+/* ── 피드 ── */
+.feed { min-width: 0; }
+.group { margin-bottom: 18px; }
+.groupLabel { font-size: 14px; font-weight: 800; color: var(--muted); margin: 0 0 6px; padding: 6px 2px; }
+
+.row { display: flex; align-items: center; gap: 12px; padding: 12px 6px; min-height: 88px; border-bottom: 1px solid var(--border); text-decoration: none; color: inherit; }
+.row:hover { background: var(--surface2); }
+.rowThumb { position: relative; width: 54px; height: 54px; flex-shrink: 0; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.rowThumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.rowBody { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.rowTop { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.rowBadge { flex-shrink: 0; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 800; white-space: nowrap; }
+.rowWork { font-size: 12.5px; color: var(--muted); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.soonTag { flex-shrink: 0; font-size: 11px; font-weight: 800; color: var(--red); background: var(--red-l); padding: 2px 7px; border-radius: 9999px; }
+.rowTitle { font-size: 14.5px; font-weight: 600; color: var(--text); line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.rowTitleUnread { font-weight: 800; }
+.rowMeta { font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rowRight { flex-shrink: 0; display: flex; align-items: center; gap: 8px; }
+.rowTime { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.unreadDot { width: 8px; height: 8px; border-radius: 9999px; background: var(--accent); flex-shrink: 0; }
+.saveBtn { width: 34px; height: 34px; border: none; background: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; border-radius: 9999px; }
+.saveBtn:hover { background: var(--accent-l); }
+.chevron { color: var(--muted); display: inline-flex; }
+
+/* ── 우측 작품 필터 ── */
+.rail { position: sticky; top: 76px; }
+.railCard { border: 1px solid var(--border); border-radius: var(--r); background: var(--surface); padding: 16px; }
+.railTitle { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.railSel { font-size: 12px; font-weight: 700; color: var(--accent); }
+.workSearch { width: 100%; height: 38px; padding: 0 12px; border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--surface); font-size: 13px; color: var(--text); font-family: inherit; outline: none; margin-bottom: 8px; }
+.workSearch:focus { border-color: var(--accent); }
+.workList { max-height: 320px; overflow-y: auto; }
+.workRow, .optRow { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 8px 4px; border: none; background: none; cursor: pointer; font-family: inherit; text-align: left; }
+.workRow:hover, .optRow:hover { background: var(--surface2); }
+.workName { flex: 1; min-width: 0; font-size: 14px; color: var(--text); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.workCount { flex-shrink: 0; font-size: 12px; font-weight: 800; color: var(--accent); }
+.allWorksLink { display: inline-block; margin-top: 10px; font-size: 13px; font-weight: 700; color: var(--muted); text-decoration: none; }
+.allWorksLink:hover { color: var(--accent); }
+
+/* 체크박스 / 라디오 */
+.check, .box { width: 20px; height: 20px; flex-shrink: 0; border: 2px solid var(--border); border-radius: 6px; position: relative; }
+.check { border-radius: 9999px; }
+.checkOn, .boxOn { border-color: var(--accent); background: var(--accent); }
+.checkOn::after, .boxOn::after { content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 11px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.radio { width: 20px; height: 20px; flex-shrink: 0; border: 2px solid var(--border); border-radius: 9999px; position: relative; }
+.radioOn { border-color: var(--accent); }
+.radioOn::after { content: ''; position: absolute; inset: 3px; border-radius: 9999px; background: var(--accent); }
+
+/* ── 스켈레톤 ── */
+.skelRow { display: flex; gap: 12px; padding: 14px 6px; border-bottom: 1px solid var(--border); }
+.skelThumb { width: 54px; height: 54px; border-radius: 12px; background: var(--surface2); flex-shrink: 0; animation: pulse 1.3s ease-in-out infinite; }
+.skelBody { flex: 1; display: flex; flex-direction: column; gap: 7px; justify-content: center; }
+.skelLine { height: 11px; border-radius: 6px; background: var(--surface2); animation: pulse 1.3s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .5 } }
+
+/* ── 모바일 전용 ── */
+.mControls { display: none; }
+.chipRow { display: none; }
+.sheetOverlay { display: none; }
+
+@media (hover: none) and (pointer: coarse) {
+  .page { padding: 0 0 20px; }
+  .bcrumb, .head { display: none; }
+
+  .mHeader { display: flex; align-items: center; gap: 8px; height: 54px; padding: 0 12px; position: sticky; top: 0; z-index: 20; background: var(--surface); border-bottom: 1px solid var(--border); }
+  .mBack { width: 40px; height: 40px; border: none; background: none; display: inline-flex; align-items: center; justify-content: center; color: var(--text); cursor: pointer; }
+  .mTitle { flex: 1; text-align: center; font-size: 17px; font-weight: 800; color: var(--text); }
+  .mAllRead { flex-shrink: 0; border: none; background: none; color: var(--text); font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; padding: 8px; white-space: nowrap; }
+  .mAllRead:disabled { opacity: .4; }
+
+  /* 카테고리 + 검색/필터를 상단 고정 */
+  .catTabs { position: sticky; top: 54px; z-index: 19; background: var(--surface); padding: 10px 14px 8px; margin-bottom: 0; }
+  .controls { display: none; }
+  .mControls { display: flex; gap: 8px; padding: 4px 14px 8px; position: sticky; top: 108px; z-index: 18; background: var(--surface); }
+  .search { height: 40px; }
+  .filterBtn { flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px; border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--surface); color: var(--text); font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .chipRow { display: flex; gap: 6px; padding: 2px 14px 8px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--border); }
+  .chipRow::-webkit-scrollbar { display: none; }
+  .chip { flex-shrink: 0; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 9999px; background: var(--surface); color: var(--muted); font-size: 12.5px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; }
+  .chipOn { border-color: var(--accent); color: var(--accent); background: var(--accent-l); }
+
+  .layout { padding: 0 14px; }
+  .rail { display: none; }
+  .row { padding: 12px 8px; }
+
+  /* 바텀시트 */
+  .sheetOverlay { display: block; position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,.4); }
+  .sheetPanel { position: absolute; left: 0; right: 0; bottom: 0; max-height: 85vh; display: flex; flex-direction: column; background: var(--surface); border-radius: 20px 20px 0 0; }
+  .sheetHead { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px 8px; }
+  .sheetTitle { font-size: 17px; font-weight: 800; color: var(--text); }
+  .sheetReset { border: none; background: none; color: var(--muted); font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .sheetBody { flex: 1; overflow-y: auto; padding: 4px 18px; }
+  .sheetSection { padding: 12px 0; border-top: 1px solid var(--border); }
+  .sheetSection:first-child { border-top: none; }
+  .sheetLabel { font-size: 13px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
+  .sheetFoot { padding: 12px 18px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); }
+  .applyBtn { width: 100%; height: 50px; border: none; border-radius: var(--r-sm); background: var(--accent); color: #fff; font-size: 15px; font-weight: 800; cursor: pointer; font-family: inherit; }
+}

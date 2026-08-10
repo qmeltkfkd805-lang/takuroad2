@@ -14,47 +14,80 @@
 .eventRow { display: flex; gap: 12px; overflow-x: auto; padding: 0 0 8px; }
 .eventItem { flex-shrink: 0; width: 260px; }
 
-/* ── 나를 위한 소식 ── */
-.newsFilters { display: flex; gap: 8px; padding: 0 0 12px; flex-wrap: wrap; }
-.newsChip, .newsChipOn {
-  min-height: 34px; padding: 0 14px; border-radius: 9999px; cursor: pointer; font-family: inherit;
-  font-size: 13px; font-weight: 700; white-space: nowrap;
-}
-.newsChip { border: 1px solid var(--border); background: var(--surface); color: var(--muted); }
-.newsChipOn { border: 1px solid var(--accent); background: var(--accent); color: #fff; font-weight: 800; }
+/* ── 최애 새소식 (가로 슬라이드) — 바깥 박스 없이 헤더+카드만 ── */
+.newsSection { background: transparent; border: none; border-radius: 0; padding: 8px 0 0; margin-bottom: 30px; }
+.newsHead { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.newsHeadLeft { display: flex; align-items: baseline; gap: 9px; min-width: 0; }
+.newsHeadTitle { font-size: 19px; font-weight: 900; color: var(--text); letter-spacing: -0.02em; }
+.newsHeadCount { font-size: 13px; font-weight: 600; color: var(--muted); }
+.newsHeadRight { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.newsArrows { display: flex; gap: 6px; }
+.newsArrow { width: 30px; height: 30px; border-radius: 9999px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.newsArrow:hover { border-color: var(--accent); color: var(--accent); }
+.newsMore { border: none; background: none; color: var(--muted); font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; }
+.newsMore:hover { color: var(--accent); }
 
-.newsWrap { padding: 0; }
+.newsRail { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; cursor: grab; user-select: none; padding-bottom: 2px; }
+.newsRail::-webkit-scrollbar { display: none; }
+.newsRail:active { cursor: grabbing; }
+.newsRail img { pointer-events: none; -webkit-user-drag: none; }
 
-/* 통합 카드 — 대표 + 목록을 한 박스에 (얇은 테두리) */
-.newsCard { border: 1px solid var(--border); border-radius: var(--r-sm); overflow: hidden; background: var(--surface); }
-
-/* 대표 소식 (상단) */
-.newsHero { display: flex; align-items: stretch; }
-.newsHeroMain { flex: 1; min-width: 0; display: flex; gap: 14px; align-items: center; padding: 14px; text-decoration: none; color: inherit; }
-.newsHeroMain:hover .newsHeroTitle { color: var(--accent); }
-.newsHeroThumb { width: 92px; height: 72px; flex-shrink: 0; border-radius: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--surface2); }
-.newsHeroThumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.newsHeroBody { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
-.newsHeroTop { display: flex; align-items: center; gap: 6px; }
-.newsWork { font-size: 12.5px; font-weight: 800; color: var(--accent); }
-.newsSep { color: var(--border); }
-.newsKind { font-size: 12.5px; font-weight: 800; }
-.newsHeroTitle { font-size: 15.5px; font-weight: 800; color: var(--text); line-height: 1.35; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.newsHeroSub { font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.newsHeart { flex-shrink: 0; align-self: center; width: 44px; display: inline-flex; align-items: center; justify-content: center; border: none; background: none; cursor: pointer; margin-right: 6px; }
-
-/* 소식 목록 (하단, 구분선) */
-.newsRowLink { display: block; text-decoration: none; color: inherit; }
-.newsRow { display: flex; align-items: center; gap: 9px; padding: 12px 14px; border-top: 1px solid var(--border); }
-.newsDot { width: 7px; height: 7px; border-radius: 9999px; flex-shrink: 0; }
-.newsRowText { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13.5px; }
-.newsRowTitle { font-weight: 700; color: var(--text); }
-.newsRowMeta { color: var(--muted); font-weight: 500; }
+.newsSlideLink { flex: 0 0 clamp(210px, 31%, 300px); scroll-snap-align: start; text-decoration: none; color: inherit; user-select: none; -webkit-user-select: none; }
+.newsSlide { display: flex; align-items: center; gap: 12px; height: 80px; padding: 0 12px 0 0; border: 1px solid var(--border); border-radius: var(--r-sm); overflow: hidden; background: var(--surface); transition: border-color .12s ease, box-shadow .12s ease; }
+.newsSlideLink:hover .newsSlide { border-color: var(--accent); box-shadow: 0 4px 12px rgba(0,0,0,.05); }
+.newsSlideThumb { position: relative; width: 76px; height: 100%; flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--surface2); }
+.newsSlideThumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.newsSlideBody { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.newsSlideTop { display: flex; align-items: center; gap: 5px; min-width: 0; }
+.newsSlideWork { font-size: 12px; font-weight: 700; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.newsNewDot { width: 5px; height: 5px; border-radius: 9999px; background: var(--accent); flex-shrink: 0; margin-left: 2px; }
+.newsNew { font-size: 11px; font-weight: 800; color: var(--accent); flex-shrink: 0; }
+.newsSlideTitle { font-size: 14px; font-weight: 800; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.newsSlideMeta { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .newsChev { color: var(--muted); flex-shrink: 0; }
-.newsRowLink:hover .newsRowTitle { color: var(--accent); }
 
 @media (hover: none) and (pointer: coarse) {
-  .newsFilters, .newsWrap { padding-left: 0; padding-right: 0; }
+  .newsSection { padding: 8px 16px 0; }
+  .newsSlideLink { flex-basis: 82%; }
+}
+
+/* ── 오늘 가볼 만한 루트 (가로 슬라이드) — 큰 카드 ── */
+.routeSection { background: transparent; border: none; border-radius: 0; padding: 8px 0 0; margin-bottom: 30px; }
+.routeHead { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.routeHeadLeft { display: flex; align-items: baseline; gap: 9px; min-width: 0; }
+.routeHeadTitle { font-size: 19px; font-weight: 900; color: var(--text); letter-spacing: -0.02em; }
+.routeHeadCount { font-size: 13px; font-weight: 600; color: var(--muted); }
+.routeHeadRight { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.routeArrows { display: flex; gap: 6px; }
+.routeArrow { width: 30px; height: 30px; border-radius: 9999px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: border-color .12s ease, color .12s ease, opacity .12s ease; }
+.routeArrow:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.routeArrow:disabled { opacity: .3; cursor: default; }
+.routeMore { border: none; background: none; color: var(--muted); font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; }
+.routeMore:hover { color: var(--accent); }
+
+.routeRail { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; cursor: grab; user-select: none; padding-bottom: 2px; }
+.routeRail::-webkit-scrollbar { display: none; }
+.routeRail:active { cursor: grabbing; }
+.routeRail img { pointer-events: none; -webkit-user-drag: none; }
+
+.routeSlideLink { flex: 0 0 clamp(280px, 46%, 380px); scroll-snap-align: start; text-decoration: none; color: inherit; user-select: none; -webkit-user-select: none; }
+.routeSlide { position: relative; display: flex; flex-direction: row; height: 124px; border: 1px solid var(--border); border-radius: var(--r-sm); overflow: hidden; background: var(--surface); transition: border-color .12s ease, box-shadow .12s ease; }
+.routeSlideLink:hover .routeSlide { border-color: var(--accent); box-shadow: 0 4px 12px rgba(0,0,0,.05); }
+.routeThumb { position: relative; width: 44%; max-width: 165px; height: 100%; flex-shrink: 0; overflow: hidden; background: var(--surface2); }
+.routeThumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.routeCount { position: absolute; top: 5px; left: 5px; z-index: 2; padding: 2px 6px; border-radius: 9999px; background: rgba(255,255,255,.62); color: var(--text); font-size: 9.5px; font-weight: 800; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.routeHeart { position: absolute; top: 7px; right: 7px; z-index: 2; width: 28px; height: 28px; border: none; border-radius: 9999px; background: rgba(255,255,255,.92); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+.routeBody { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 11px 14px; justify-content: center; gap: 4px; }
+.routeName { font-size: 14px; font-weight: 800; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.routeRegion { font-size: 13px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.routeMeta { font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.routeTags { display: flex; gap: 5px; margin-top: 2px; overflow: hidden; }
+.routeTag { flex-shrink: 0; padding: 2px 8px; border-radius: 9999px; background: var(--accent-l); color: var(--accent); font-size: 11px; font-weight: 700; white-space: nowrap; }
+
+@media (hover: none) and (pointer: coarse) {
+  .routeSection { padding: 8px 16px 0; }
+  .routeSlideLink { flex-basis: 82%; }
+  .routeArrows { display: none; }
 }
 
 /* 섹션 — 큰 테두리 박스 없이 제목 + 여백 중심 (클릭 카드만 카드 처리) */

@@ -13,9 +13,14 @@ import { getShopsByTag } from '@/services/shopService'
 import { ShopCard } from '@/components/tds'
 import { useSaved } from '@/hooks/useSaved'
 import { useDragScroll } from '@/hooks/useDragScroll'
+import { useSlider } from '@/hooks/useSlider'
 import { useRouter } from 'next/navigation'
 import type { Shop } from '@/types/shop'
 import { ROUTES } from '@/lib/constants/routes'
+import RouteThumb from '@/components/route/RouteThumb'
+import { rtStops, rtRegions, fmtDur } from '@/components/route/routeMeta'
+import { formatDistance } from '@/hooks/useCurrentLocation'
+import { toggleRouteSave, getMySavedRouteIds } from '@/services/routeService'
 import { getEventsByTag } from '@/services/eventService'
 import { getMySavedEventIds, saveEvent, unsaveEvent } from '@/services/eventSaveService'
 import { pickWorkNews } from '@/lib/home/pickWorkNews'
@@ -25,7 +30,7 @@ import HomeFeedCard from './HomeFeedCard'
 import { SectionHeader, Icon } from '@/components/tds'
 import styles from './HomeFeed.module.css'
 import RankList from './RankList'
-import { EventCard, RouteCard } from '@/components/tds'
+import { EventCard } from '@/components/tds'
 
 const PALETTE = [
   { bg: '#EEEDFE', fg: '#3C3489' }, { bg: '#E1F5EE', fg: '#0F6E56' },
@@ -60,51 +65,64 @@ const NEWS_KIND: Record<string, { label: string; dot: string }> = {
 }
 const kindMeta = (k: string) => NEWS_KIND[k] ?? { label: '소식', dot: '#C7C2BA' }
 
-function NewsHero({ item, eventId, saved, onToggleSave }: { item: FeedItem; eventId: string | null; saved: boolean; onToggleSave: (id: string) => void }) {
-  const m = kindMeta(item.kind)
-  const body = (
-    <>
-      <div className={styles.newsHeroThumb} style={{ background: item.imageUrl ? undefined : '#F1EFEA' }}>
-        {item.imageUrl ? <img src={item.imageUrl} alt="" draggable={false} /> : <WorkIcon size={28} style={{ opacity: 0.4 }} />}
-      </div>
-      <div className={styles.newsHeroBody}>
-        <div className={styles.newsHeroTop}>
-          {item.contextLabel && <span className={styles.newsWork}>{item.contextLabel}</span>}
-          {item.contextLabel && <span className={styles.newsSep}>·</span>}
-          <span className={styles.newsKind} style={{ color: m.dot }}>{m.label}</span>
-        </div>
-        <div className={styles.newsHeroTitle}>{item.title}</div>
-        {item.subtitle && <div className={styles.newsHeroSub}>{item.subtitle}</div>}
-      </div>
-    </>
-  )
-  return (
-    <div className={styles.newsHero}>
-      {item.href
-        ? <Link href={item.href} className={styles.newsHeroMain}>{body}</Link>
-        : <div className={styles.newsHeroMain}>{body}</div>}
-      {eventId && (
-        <button className={styles.newsHeart} onClick={() => onToggleSave(eventId)} aria-pressed={saved} aria-label={saved ? '저장 해제' : '저장'}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill={saved ? '#FF5692' : 'none'} stroke={saved ? '#FF5692' : 'var(--muted)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.5 4.04 3 5.5l7 7Z" /></svg>
-        </button>
-      )}
-    </div>
-  )
-}
-
-function NewsRow({ item }: { item: FeedItem }) {
-  const m = kindMeta(item.kind)
+function NewsSlideCard({ item }: { item: FeedItem }) {
   const inner = (
-    <div className={styles.newsRow}>
-      <span className={styles.newsDot} style={{ background: m.dot }} />
-      <span className={styles.newsRowText}>
-        <b className={styles.newsRowTitle}>{item.title}</b>
-        {item.subtitle && <span className={styles.newsRowMeta}> · {item.subtitle}</span>}
-      </span>
+    <div className={styles.newsSlide}>
+      <div className={styles.newsSlideThumb} style={{ background: item.imageUrl ? undefined : '#F1EFEA' }}>
+        {item.imageUrl ? <img src={item.imageUrl} alt="" draggable={false} /> : <WorkIcon size={20} style={{ opacity: 0.4 }} />}
+      </div>
+      <div className={styles.newsSlideBody}>
+        <div className={styles.newsSlideTop}>
+          <span className={styles.newsSlideWork}>{item.contextLabel ?? kindMeta(item.kind).label}</span>
+          <span className={styles.newsNewDot} />
+          <span className={styles.newsNew}>NEW</span>
+        </div>
+        <div className={styles.newsSlideTitle}>{item.title}</div>
+        {item.subtitle && <div className={styles.newsSlideMeta}>{item.subtitle}</div>}
+      </div>
       <svg className={styles.newsChev} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="m9 18 6-6-6-6" /></svg>
     </div>
   )
-  return item.href ? <Link href={item.href} className={styles.newsRowLink}>{inner}</Link> : <div className={styles.newsRowLink}>{inner}</div>
+  return item.href ? <Link href={item.href} className={styles.newsSlideLink}>{inner}</Link> : <div className={styles.newsSlideLink}>{inner}</div>
+}
+
+function RouteSlideCard({ r, saved, onToggleSave }: { r: any; saved: boolean; onToggleSave: (id: string) => void }) {
+  const stops = rtStops(r)
+  const region = rtRegions(r)[0]
+  const count = r.route_shops?.length ?? 0
+  const dur = fmtDur(r.total_duration_min)
+  const dist = r.total_distance_m ? formatDistance(r.total_distance_m) : null
+  const tags = Array.from(new Set([r.primary_tag?.name, ...(Array.isArray(r.themes) ? r.themes : [])].filter(Boolean))).slice(0, 3)
+  const metaParts = [`${count}곳`, dist, dur].filter(Boolean)
+  const heart = (e: React.MouseEvent) => { e.preventDefault(); e.stopPropagation(); onToggleSave(r.id) }
+  return (
+    <Link href={`/route/${r.share_token}`} className={styles.routeSlideLink}>
+      <div className={styles.routeSlide}>
+        <div className={styles.routeThumb}>
+          <RouteThumb stops={stops} height={124} variant="preview" showEnds />
+          <span className={styles.routeCount}>{count}곳</span>
+          <button
+            className={styles.routeHeart}
+            onClick={heart}
+            aria-pressed={saved}
+            aria-label={saved ? '저장 해제' : '저장'}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill={saved ? '#FF5692' : 'none'} stroke={saved ? '#FF5692' : 'var(--muted)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.5 4.04 3 5.5l7 7Z" /></svg>
+          </button>
+        </div>
+        <div className={styles.routeBody}>
+          <div className={styles.routeName}>{r.title}</div>
+          {region && <div className={styles.routeRegion}>{region} 일대</div>}
+          <div className={styles.routeMeta}>{metaParts.join(' · ')}</div>
+          {tags.length > 0 && (
+            <div className={styles.routeTags}>
+              {tags.map(t => <span key={t} className={styles.routeTag}>{t}</span>)}
+            </div>
+          )}
+        </div>
+      </div>
+    </Link>
+  )
 }
 
 interface HomeFeedProps {
@@ -119,15 +137,16 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
   const router = useRouter()
   const { isSaved, toggleSave } = useSaved()
 
-  // 가로 줄 4개 — 마우스로 밀어서 스크롤
-  const worksDrag = useDragScroll()
+  // 가로 슬라이드 — 최애 새소식·추천 루트는 공용 useSlider(컨테이너 동작), 이벤트·샵은 단순 드래그
+  const newsSlider = useSlider(260)
+  const routeSlider = useSlider(320)
   const eventsDrag = useDragScroll()
   const shopsDrag = useDragScroll()
-  const routesDrag = useDragScroll()
   const [rels, setRels] = useState<WorkRelationship[]>([])
   const [loading, setLoading] = useState(true)
   const [newsFilter, setNewsFilter] = useState<'all' | 'work' | 'event' | 'shop'>('all')
   const [savedEventIds, setSavedEventIds] = useState<Set<string>>(new Set())
+  const [savedRouteIds, setSavedRouteIds] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     if (!user) { setLoading(false); return }
@@ -176,9 +195,12 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myWorks.map(r => r.work.id).join(',')])
 
-  // 나를 위한 소식 — 필터별 목록 (대표 1 + 목록)
+  // 최애 새소식 — 가로 슬라이드
   const allNews = newsItems.filter(n => n.kind !== 'none')
-  const activeNews = allNews.filter(n => newsFilter === 'all' || newsGroup(n.kind) === newsFilter)
+  const updateNews = newsSlider.update
+  const updateRoute = routeSlider.update
+  useEffect(() => { updateNews() }, [allNews.length, updateNews])
+  useEffect(() => { updateRoute() }, [routes.length, updateRoute])
 
   // 이벤트 소식 저장(하트)
   useEffect(() => {
@@ -197,11 +219,31 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
     })
   }
 
+  // 루트 저장(하트)
+  useEffect(() => {
+    if (!user) { setSavedRouteIds(new Set()); return }
+    getMySavedRouteIds(user.id).then(ids => setSavedRouteIds(new Set(ids))).catch(() => {})
+  }, [user])
+  const toggleSaveRoute = (routeId: string) => {
+    if (!user) { router.push(ROUTES.login); return }
+    const was = savedRouteIds.has(routeId)
+    setSavedRouteIds(prev => { const n = new Set(prev); was ? n.delete(routeId) : n.add(routeId); return n })
+    toggleRouteSave(routeId, user.id).catch(() => {
+      setSavedRouteIds(prev => { const n = new Set(prev); was ? n.add(routeId) : n.delete(routeId); return n })
+    })
+  }
+
   return (
     <div>
-      {/* 📰 나를 위한 소식 */}
-      <section className={styles.sectionCard}>
-        <SectionHeader title="나를 위한 소식" plainIcon icon={<Icon name="colorheart" size={28} />} actionLabel="전체 보기" onAction={() => { window.location.href = "/my-works" }} />
+      {/* 📰 최애 새소식 — 가로 슬라이드 */}
+      <section className={styles.newsSection}>
+        <div className={styles.newsHead}>
+          <div className={styles.newsHeadLeft}>
+            <span className={styles.newsHeadTitle}>최애 새소식</span>
+            {allNews.length > 0 && <span className={styles.newsHeadCount}>새 소식 {allNews.length}건</span>}
+          </div>
+          <button className={styles.newsMore} onClick={() => { window.location.href = ROUTES.myNews }}>전체 보기 ›</button>
+        </div>
         {loading ? (
           <Muted>불러오는 중...</Muted>
         ) : !user ? (
@@ -211,61 +253,25 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
         ) : allNews.length === 0 ? (
           <Muted>아직 소식이 없어요</Muted>
         ) : (
-          <>
-            <div className={styles.newsFilters}>
-              {NEWS_FILTERS.map(f => (
-                <button
-                  key={f.key}
-                  className={newsFilter === f.key ? styles.newsChipOn : styles.newsChip}
-                  onClick={() => setNewsFilter(f.key)}
-                >{f.label}</button>
-              ))}
-            </div>
-            {activeNews.length === 0 ? (
-              <Muted>이 분류의 소식이 아직 없어요</Muted>
-            ) : (
-              <div className={styles.newsWrap}>
-                <div className={styles.newsCard}>
-                  <NewsHero
-                    item={activeNews[0]}
-                    eventId={eventIdOf(activeNews[0])}
-                    saved={(() => { const id = eventIdOf(activeNews[0]); return !!id && savedEventIds.has(id) })()}
-                    onToggleSave={toggleSaveEvent}
-                  />
-                  {activeNews.slice(1, 4).map((item, i) => <NewsRow key={i} item={item} />)}
-                </div>
-              </div>
-            )}
-          </>
+          <div className={styles.newsRail} {...newsSlider.railProps}>
+            {allNews.map((item, i) => <NewsSlideCard key={i} item={item} />)}
+          </div>
         )}
       </section>
 
-      {/* 🧭 추천 루트 */}
+      {/* 🧭 오늘 가볼 만한 루트 — 가로 슬라이드 */}
       {routes.length > 0 && (
-        <section className={styles.sectionCard}>
-          <SectionHeader
-            title="추천 루트"
-            plainIcon
-            icon={<Icon name="colorroute" size={28} />}
-            actionLabel="전체 보기"
-            onAction={() => { window.location.href = ROUTES.routes }}
-          />
-          <div className={styles.eventRow} {...routesDrag}>
+        <section className={styles.routeSection}>
+          <div className={styles.routeHead}>
+            <div className={styles.routeHeadLeft}>
+              <span className={styles.routeHeadTitle}>오늘 가볼 만한 루트</span>
+              <span className={styles.routeHeadCount}>{routes.length}개 코스</span>
+            </div>
+            <button className={styles.routeMore} onClick={() => { window.location.href = ROUTES.routes }}>전체 보기 ›</button>
+          </div>
+          <div className={styles.routeRail} {...routeSlider.railProps}>
             {routes.map((r: any) => (
-              <div key={r.id} className={styles.eventItem}>
-                <RouteCard
-                  route={{
-                    id: r.id,
-                    title: r.title,
-                    summary: r.description,
-                    shopCount: r.route_shops?.length ?? 0,
-                    distanceM: r.total_distance_m,
-                    durationMin: r.total_duration_min,
-                  }}
-                  onClick={() => { window.location.href = `/route/${r.share_token}` }}
-                  onStart={() => { window.location.href = `/route/${r.share_token}` }}
-                />
-              </div>
+              <RouteSlideCard key={r.id} r={r} saved={savedRouteIds.has(r.id)} onToggleSave={toggleSaveRoute} />
             ))}
           </div>
         </section>

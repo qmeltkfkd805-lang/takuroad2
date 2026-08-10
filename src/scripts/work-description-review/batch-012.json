@@ -1,0 +1,179 @@
+[
+    {
+        "slug":  "battle-spirits",
+        "description":  "스피릿과 넥서스, 매직 카드를 조합해 코어를 운용하고 상대의 라이프를 먼저 줄이는 대전 카드게임.",
+        "genres":  [
+                       "액션",
+                       "판타지"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니",
+                       "카드게임"
+                   ],
+        "officialUrl":  "https://www.battlespirits.com/",
+        "source":  "https://www.battlespirits.com/"
+    },
+    {
+        "slug":  "bang-dream",
+        "description":  "소녀 밴드의 성장과 음악을 애니메이션·게임·코믹스·성우 라이브로 연결하는 미디어믹스 프로젝트.",
+        "genres":  [
+                       "학원",
+                       "음악",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니",
+                       "만화"
+                   ],
+        "officialUrl":  "https://bang-dream.com/",
+        "source":  "https://bang-dream.com/about/"
+    },
+    {
+        "slug":  "berserk",
+        "description":  "거대한 검과 의수를 지닌 검객 가츠가 사도와 운명에 맞서 복수와 생존의 길을 걷는 다크 판타지.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "호러",
+                       "고어"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://younganimal.com/berserk/",
+        "source":  "https://younganimal.com/berserk/"
+    },
+    {
+        "slug":  "bearbrick",
+        "description":  "곰 형태의 공통 바디에 예술가와 브랜드의 디자인을 입혀 다양한 크기로 전개하는 수집형 아트토이.",
+        "genres":  [
+                       "기타"
+                   ],
+        "ipType":  [
+                       "완구",
+                       "브랜드"
+                   ],
+        "officialUrl":  "https://www.medicomtoy.co.jp/",
+        "source":  "https://www.medicomtoy.tv/blog/?p=83503"
+    },
+    {
+        "slug":  "azur-lane",
+        "description":  "함선을 의인화한 소녀들로 함대를 편성해 해상 전투를 펼치는 횡스크롤 슈팅 모바일 RPG.",
+        "genres":  [
+                       "액션",
+                       "SF"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://azurlane.yo-star.com/",
+        "source":  "https://azurlane.yo-star.com/"
+    },
+    {
+        "slug":  "kirby",
+        "description":  "적을 빨아들이고 능력을 복사하는 분홍색 영웅 커비가 푸푸푸랜드와 여러 세계를 구하는 액션 게임 시리즈.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "캐릭터"
+                   ],
+        "officialUrl":  "https://www.nintendo.com/kr/character/kirby/",
+        "source":  "https://www.nintendo.com/kr/character/kirby/about/"
+    },
+    {
+        "slug":  "vocaloid",
+        "description":  "멜로디와 가사를 입력해 음성 라이브러리의 노랫소리를 만들고 편집하는 야마하의 노래 합성 기술·소프트웨어.",
+        "genres":  [
+                       "음악"
+                   ],
+        "ipType":  [
+                       "보컬로이드"
+                   ],
+        "officialUrl":  "https://www.vocaloid.com/",
+        "source":  "https://www.vocaloid.com/en/news/introduce/"
+    },
+    {
+        "slug":  "bocchi-the-rock",
+        "description":  "극심한 낯가림을 지닌 기타리스트 히토리가 결속 밴드에 합류하며 조금씩 세상과 연결되는 밴드 코미디.",
+        "genres":  [
+                       "학원",
+                       "일상",
+                       "음악",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://bocchi.rocks/",
+        "source":  "https://bocchi.rocks/tv/introduction/"
+    },
+    {
+        "slug":  "hokuto-no-ken",
+        "description":  "핵전쟁 뒤 폭력이 지배하는 황야에서 북두신권 전승자 켄시로가 강적과 싸우며 약자를 구하는 세기말 활극.",
+        "genres":  [
+                       "액션",
+                       "SF",
+                       "드라마",
+                       "소년물"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://hokuto-no-ken.jp/",
+        "source":  "https://hokuto-no-ken.jp/series/hokutonoken"
+    },
+    {
+        "slug":  "honkai-star-rail",
+        "description":  "기억을 잃고 스텔라론을 품은 개척자가 은하열차 동료들과 여러 세계를 누비는 턴제 우주 판타지 RPG.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "모험",
+                       "SF"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://hsr.hoyoverse.com/",
+        "source":  "https://hsr.hoyoverse.com/"
+    },
+    {
+        "slug":  "honkai-impact-3rd",
+        "description":  "인류 문명을 위협하는 붕괴에 맞서 발키리들이 세계의 운명과 소중한 사람을 지키기 위해 싸우는 액션 RPG.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "SF",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://honkaiimpact3.hoyoverse.com/",
+        "source":  "https://honkaiimpact3.hoyoverse.com/"
+    },
+    {
+        "slug":  "brown-dust-2",
+        "description":  "팩마다 서로 다른 시대와 세계를 오가며 용병을 모아 전략적인 전투와 이야기를 즐기는 콘솔풍 모바일 RPG.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://www.browndust2.com/",
+        "source":  "https://www.browndust2.com/"
+    }
+]

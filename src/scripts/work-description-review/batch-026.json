@@ -1,0 +1,13 @@
+[
+  {"slug":"haikyuu","description":"작은 거인에 매료된 히나타가 천재 세터 카게야마와 한 팀이 되어 전국 무대의 정상에 도전한다.","genres":["스포츠","학원","드라마","소년물"],"ipType":["만화","애니","영화","게임"],"officialUrl":"https://haikyu.jp/","source":"https://haikyu.jp/"},
+  {"slug":"hachiware","description":"치이카와의 다정하고 긍정적인 친구로 동굴에서 살며 말과 노래를 즐기는 파란 귀의 고양이 캐릭터.","genres":["일상","코미디","가족"],"ipType":["캐릭터"],"officialUrl":"https://www.anime-chiikawa.jp/","source":"https://www.anime-chiikawa.jp/"},
+  {"slug":"hangyodon","description":"사람을 웃기는 재주가 있지만 외로움을 타는 낭만적인 반어인으로 영웅을 꿈꾸며 늘 도전한다.","genres":["일상","코미디","가족"],"ipType":["캐릭터"],"officialUrl":"https://www.sanrio.co.jp/characters/hangyodon/","source":"https://www.sanrio.co.jp/characters/hangyodon/"},
+  {"slug":"kancolle","description":"함선의 혼을 지닌 칸무스들을 모아 함대를 편성하고 심해서함에 맞서 바다를 되찾는 육성 전략 게임.","genres":["액션","SF","모험"],"ipType":["게임","애니","만화"],"officialUrl":"https://www.kancolle.com/","source":"https://www.kancolle.com/"},
+  {"slug":"harry-potter","description":"마법사임을 알게 된 해리가 호그와트에서 친구들과 성장하며 어둠의 마법사 볼드모트에 맞선다.","genres":["판타지","모험","학원","드라마"],"ipType":["소설","영화","게임","캐릭터"],"officialUrl":"https://www.harrypotter.com/","source":"https://www.harrypotter.com/"},
+  {"slug":"hunter-x-hunter","description":"아버지처럼 헌터가 되려는 곤이 시험을 떠나 동료를 만나고 미지와 강적이 기다리는 세계를 모험한다.","genres":["모험","액션","판타지","소년물"],"ipType":["만화","애니","영화","게임"],"officialUrl":"https://www.ntv.co.jp/hunterhunter/","source":"https://www.ntv.co.jp/hunterhunter/story/001.html"},
+  {"slug":"hello-kitty","description":"밝고 다정하며 쿠키 만들기와 피아노를 좋아하는 런던 교외 출신의 소녀 키티 화이트.","genres":["일상","가족","음악"],"ipType":["캐릭터","애니","게임"],"officialUrl":"https://www.sanrio.co.jp/characters/hellokitty/","source":"https://www.sanrio.co.jp/characters/hellokitty/"},
+  {"slug":"horimiya","description":"학교와 집에서 전혀 다른 모습을 지닌 호리와 미야무라가 서로의 비밀을 알며 가까워지는 청춘 이야기.","genres":["로맨스","학원","일상","코미디","드라마"],"ipType":["웹툰","만화","애니"],"officialUrl":"https://horimiya-anime.com/","source":"https://horimiya-anime.com/1st/story/?id=01"},
+  {"slug":"hololive","description":"게임·노래·대화 방송과 3D 공연, 애니메이션을 펼치는 홀로라이브 프로덕션 산하 버튜버 그룹.","genres":["아이돌","음악","코미디","기타"],"ipType":["버튜버","브랜드"],"officialUrl":"https://hololive.hololivepro.com/","source":"https://hololive.hololivepro.com/about/"},
+  {"slug":"black-butler","description":"복수를 품은 소년 귀족 시엘과 완벽한 악마 집사 세바스찬이 여왕의 명을 받아 기묘한 사건을 해결한다.","genres":["판타지","추리","호러","드라마"],"ipType":["만화","애니","영화","게임"],"officialUrl":"https://www.kuroshitsuji.tv/","source":"https://www.kuroshitsuji.tv/introduction/"},
+  {"slug":"hypnosis-mic","description":"무기가 금지된 시대, 각 디비전의 남성 팀들이 정신에 간섭하는 마이크와 랩으로 영역을 겨룬다.","genres":["음악","액션","SF","드라마"],"ipType":["캐릭터","애니","게임"],"officialUrl":"https://hypnosismic.com/","source":"https://hypnosismic.com/"}
+]

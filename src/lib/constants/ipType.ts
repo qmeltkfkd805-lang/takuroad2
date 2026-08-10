@@ -1,11 +1,12 @@
 // 작품 유형(분류) 표준 목록 — 등록 폼과 필터가 같은 값을 쓴다.
-export const IP_TYPES = ['웹툰', '웹소설', '소설', '애니', '영화', '특촬', '만화', '버튜버', '캐릭터', '게임', '완구', '보컬로이드', '브랜드'] as const
+export const IP_TYPES = ['웹툰', '웹소설', '소설', '애니', '영화', '특촬', '만화', '버튜버', '캐릭터', '게임', '카드게임', '완구', '보컬로이드', '브랜드', '제작사'] as const
 export type IpType = (typeof IP_TYPES)[number]
 
 // 기존에 제각각 저장된 값(anime / 애니메이션 / 버추얼 등)을 표준 라벨로 정리한다.
 const ALIAS: Record<string, string> = {
   anime: '애니', 애니메이션: '애니', 애니메: '애니', animation: '애니',
   game: '게임', 게임: '게임',
+  tcg: '카드게임', 'trading-card-game': '카드게임', cardgame: '카드게임', 카드: '카드게임',
   vtuber: '버튜버', 버추얼: '버튜버', 'v-tuber': '버튜버', vtubers: '버튜버',
   character: '캐릭터', character_brand: '캐릭터', 캐릭터브랜드: '캐릭터',
   webtoon: '웹툰',
@@ -17,6 +18,7 @@ const ALIAS: Record<string, string> = {
   tokusatsu: '특촬',
   toy: '완구', toys: '완구',
   brand: '브랜드', company_brand: '브랜드',
+  studio: '제작사', production_company: '제작사', 제작회사: '제작사',
 }
 
 /** 원본 ip_type 값을 표준 라벨로 변환. 못 맞추면 원본을 그대로 돌려준다. */

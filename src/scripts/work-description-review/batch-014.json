@@ -1,0 +1,98 @@
+[
+  {
+    "slug": "shangri-la-frontier",
+    "description": "망작 게임을 섭렵한 선라쿠가 초대형 VR 게임에서 미지의 강적과 비밀에 도전하는 모험.",
+    "genres": ["액션", "판타지", "모험"],
+    "ipType": ["웹소설", "만화", "애니"],
+    "officialUrl": "https://anime.shangrilafrontier.com/",
+    "source": "https://anime.shangrilafrontier.com/en/"
+  },
+  {
+    "slug": "sailor-moon",
+    "description": "평범한 소녀 우사기가 세일러 문으로 각성해 동료들과 사랑과 정의를 지키는 이야기.",
+    "genres": ["액션", "판타지", "로맨스", "마법소녀"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://www.sailormoon-official.com/",
+    "source": "https://www.sailormoon-official.com/world/"
+  },
+  {
+    "slug": "sekiro",
+    "description": "전국시대 말기, 의수를 지닌 닌자가 납치된 주군을 되찾고 숙명을 거스르는 액션 모험.",
+    "genres": ["액션", "판타지", "모험", "고어"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.sekiro.jp/",
+    "source": "https://www.sekiro.jp/story.html"
+  },
+  {
+    "slug": "spirited-away",
+    "description": "신들의 세계에 들어선 치히로가 돼지로 변한 부모를 구하고 자신의 이름을 되찾는 여정.",
+    "genres": ["판타지", "모험", "드라마"],
+    "ipType": ["영화", "애니"],
+    "officialUrl": "https://www.ghibli.jp/works/chihiro/",
+    "source": "https://www.ghibli.jp/works/chihiro/"
+  },
+  {
+    "slug": "girls-frontline",
+    "description": "붕괴 후의 세계에서 지휘관이 전술인형 부대를 이끌며 전쟁 뒤의 음모를 추적한다.",
+    "genres": ["액션", "SF", "드라마"],
+    "ipType": ["게임", "애니"],
+    "officialUrl": "https://gf.sunborngame.com/",
+    "source": "https://gf.sunborngame.com/"
+  },
+  {
+    "slug": "girls-frontline-2",
+    "description": "그리폰을 떠난 지휘관이 오염 지대를 누비며 새로운 인형들과 의뢰와 음모에 맞선다.",
+    "genres": ["액션", "SF", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://gf2exilium.sunborngame.com/",
+    "source": "https://gf2exilium.sunborngame.com/"
+  },
+  {
+    "slug": "sonic-the-hedgehog",
+    "description": "초고속 고슴도치 소닉이 동료들과 세계를 누비며 닥터 에그맨의 야망을 저지하는 모험.",
+    "genres": ["액션", "판타지", "모험", "SF"],
+    "ipType": ["게임", "캐릭터", "애니", "영화"],
+    "officialUrl": "https://asia.sega.com/SonicTheHedgehog/en/",
+    "source": "https://asia.sega.com/SonicTheHedgehog/en/"
+  },
+  {
+    "slug": "sword-art-online",
+    "description": "VR 게임에 갇힌 키리토가 현실로 돌아가기 위해 죽음이 걸린 공략에 나선다.",
+    "genres": ["액션", "판타지", "모험", "로맨스"],
+    "ipType": ["소설", "만화", "애니", "게임"],
+    "officialUrl": "https://www.swordart-online.net/",
+    "source": "https://www.swordart-online.net/intro/index2.html"
+  },
+  {
+    "slug": "sugarbunnies",
+    "description": "바니즈필드의 천재 파티시에 쌍둥이 시로우사와 쿠로우사가 행복을 주는 과자를 만든다.",
+    "genres": ["판타지", "일상", "요리"],
+    "ipType": ["캐릭터", "애니"],
+    "officialUrl": "https://www.sanrio.co.jp/characters/sugarbunnies/",
+    "source": "https://www.sanrio.co.jp/characters/sugarbunnies/"
+  },
+  {
+    "slug": "steins-gate",
+    "description": "아키하바라의 연구 모임이 과거로 문자를 보내는 장치를 만들며 거대한 음모에 휘말린다.",
+    "genres": ["SF", "추리", "드라마"],
+    "ipType": ["게임", "만화", "애니"],
+    "officialUrl": "https://steinsgate.jp/",
+    "source": "https://steinsgate.jp/"
+  },
+  {
+    "slug": "Bakuga-Battle-Brawlers",
+    "description": "소년들이 변신 생명체 바쿠간과 힘을 합쳐 배틀을 벌이고 두 세계의 위기에 맞선다.",
+    "genres": ["액션", "판타지", "모험"],
+    "ipType": ["완구", "게임", "애니"],
+    "officialUrl": "https://intl2.bakugan.com/en/home",
+    "source": "https://intl2.bakugan.com/en/characters"
+  },
+  {
+    "slug": "super-mario",
+    "description": "마리오와 친구들이 버섯 왕국을 누비며 쿠파의 계략을 막고 피치 공주를 구하는 모험.",
+    "genres": ["액션", "판타지", "모험"],
+    "ipType": ["게임", "캐릭터", "영화"],
+    "officialUrl": "https://mario.nintendo.com/",
+    "source": "https://mario.nintendo.com/characters/"
+  }
+]

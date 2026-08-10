@@ -1,173 +1,176 @@
 [
-  {
-    "slug": "bungo-stray-dogs",
-    "description": "문호의 이름과 이능력을 지닌 무장탐정사 구성원들이 요코하마를 위협하는 범죄 조직과 맞서는 액션 미스터리.",
-    "genres": [
-      "액션",
-      "판타지",
-      "추리",
-      "드라마"
-    ],
-    "officialUrl": "https://bungosd.com/",
-    "source": "https://bungosd.com/introduction/",
-    "ipType": [
-      "만화",
-      "애니"
-    ]
-  },
-  {
-    "slug": "minions",
-    "description": "최고의 악당을 섬기고 싶은 작고 노란 미니언들이 엉뚱한 사고를 거듭하며 새 주인을 찾아 나서는 코미디.",
-    "genres": [
-      "판타지",
-      "코미디"
-    ],
-    "officialUrl": "https://www.illumination.com/movie/minions/",
-    "source": "https://www.illumination.com/movie/minions/",
-    "ipType": [
-      "영화",
-      "캐릭터",
-      "애니"
-    ]
-  },
-  {
-    "slug": "mickey-mouse",
-    "description": "낙천적이고 모험을 좋아하는 미키가 미니와 도널드, 구피 등 오랜 친구들과 펼치는 디즈니 캐릭터 세계.",
-    "genres": [
-      "판타지",
-      "일상",
-      "코미디"
-    ],
-    "officialUrl": "https://mickey.disney.com/mickey",
-    "source": "https://mickey.disney.com/mickey",
-    "ipType": [
-      "캐릭터",
-      "애니"
-    ]
-  },
-  {
-    "slug": "miffy",
-    "description": "호기심 많고 긍정적인 하얀 토끼 소녀 미피가 가족과 친구들 곁에서 새로운 경험을 만나는 그림책 세계.",
-    "genres": [
-      "일상"
-    ],
-    "officialUrl": "https://www.miffy.com/",
-    "source": "https://www.miffy.com/about-miffy",
-    "ipType": [
-      "캐릭터"
-    ]
-  },
-  {
-    "slug": "barbapapa",
-    "description": "어떤 모습으로든 변신할 수 있는 다정한 바바파파 가족이 상상력을 발휘해 이웃의 어려움을 해결한다.",
-    "genres": [
-      "판타지",
-      "일상",
-      "코미디"
-    ],
-    "officialUrl": "https://www.barbapapa.com/",
-    "source": "https://www.barbapapa.com/the-barbapa-family-en/",
-    "ipType": [
-      "캐릭터",
-      "애니"
-    ]
-  },
-  {
-    "slug": "weiss-schwarz",
-    "description": "다양한 인기 애니메이션과 게임의 캐릭터 카드를 모아 자신만의 덱을 만들고 2인이 대전하는 카드게임.",
-    "genres": [],
-    "officialUrl": "https://ws-tcg.com/",
-    "source": "https://ws-tcg.com/for-beginners/",
-    "ipType": [
-      "게임"
-    ]
-  },
-  {
-    "slug": "resident-evil",
-    "description": "생물재해가 일으킨 괴물과 음모 속에서 한정된 자원을 활용해 살아남는 서바이벌 호러 게임 시리즈.",
-    "genres": [
-      "액션",
-      "SF",
-      "호러",
-      "고어"
-    ],
-    "officialUrl": "https://game.capcom.com/residentevil/",
-    "source": "https://game.capcom.com/residentevil/en/",
-    "ipType": [
-      "게임"
-    ]
-  },
-  {
-    "slug": "violet-evergarden",
-    "description": "전쟁의 도구로 살아온 바이올렛이 편지를 대신 쓰는 일을 하며 ‘사랑해’라는 말과 감정을 배워간다.",
-    "genres": [
-      "판타지",
-      "로맨스",
-      "드라마"
-    ],
-    "officialUrl": "https://tv.violet-evergarden.jp/",
-    "source": "https://tv.violet-evergarden.jp/story/",
-    "ipType": [
-      "소설",
-      "애니"
-    ]
-  },
-  {
-    "slug": "bakuman",
-    "description": "그림에 재능 있는 마시로와 글을 잘 쓰는 타카기가 팀을 이뤄 프로 만화가의 꿈에 도전하는 청춘극.",
-    "genres": [
-      "학원",
-      "일상",
-      "로맨스",
-      "드라마"
-    ],
-    "officialUrl": "https://www.shueisha.co.jp/books/items/contents.html?isbn=978-4-08-874622-7",
-    "source": "https://www.shueisha.co.jp/books/items/contents.html?isbn=978-4-08-874622-7",
-    "ipType": [
-      "만화",
-      "애니"
-    ]
-  },
-  {
-    "slug": "valorant",
-    "description": "고유 능력을 갖춘 요원들이 정밀한 사격과 팀 전략을 결합해 공격과 방어를 겨루는 5대5 전술 슈팅 게임.",
-    "genres": [
-      "액션",
-      "SF"
-    ],
-    "officialUrl": "https://playvalorant.com/",
-    "source": "https://playvalorant.com/en-us/",
-    "ipType": [
-      "게임"
-    ]
-  },
-  {
-    "slug": "shield-hero",
-    "description": "이세계에 방패 용사로 소환된 나오후미가 배신으로 모든 것을 잃고 재앙의 파도에 맞서 다시 일어선다.",
-    "genres": [
-      "액션",
-      "판타지",
-      "드라마"
-    ],
-    "officialUrl": "https://shieldhero-anime.jp/",
-    "source": "https://shieldhero-anime.jp/1st/",
-    "ipType": [
-      "웹소설",
-      "만화",
-      "애니"
-    ]
-  },
-  {
-    "slug": "badtz-maru",
-    "description": "장난과 반항을 좋아하고 장래에는 사장이 되기를 꿈꾸는 심술궂지만 미워할 수 없는 펭귄 캐릭터.",
-    "genres": [
-      "일상",
-      "코미디"
-    ],
-    "officialUrl": "https://www.sanrio.co.jp/characters/badtzmaru/",
-    "source": "https://www.sanrio.co.jp/characters/badtzmaru/",
-    "ipType": [
-      "캐릭터"
-    ]
-  }
+    {
+        "slug":  "bungo-stray-dogs",
+        "description":  "문호의 이름과 이능력을 지닌 무장탐정사 구성원들이 요코하마를 위협하는 범죄 조직과 맞서는 액션 미스터리.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "추리",
+                       "드라마"
+                   ],
+        "officialUrl":  "https://bungosd.com/",
+        "source":  "https://bungosd.com/introduction/",
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ]
+    },
+    {
+        "slug":  "minions",
+        "description":  "최고의 악당을 섬기고 싶은 작고 노란 미니언들이 엉뚱한 사고를 거듭하며 새 주인을 찾아 나서는 코미디.",
+        "genres":  [
+                       "판타지",
+                       "코미디"
+                   ],
+        "officialUrl":  "https://www.illumination.com/movie/minions/",
+        "source":  "https://www.illumination.com/movie/minions/",
+        "ipType":  [
+                       "영화",
+                       "캐릭터",
+                       "애니"
+                   ]
+    },
+    {
+        "slug":  "mickey-mouse",
+        "description":  "낙천적이고 모험을 좋아하는 미키가 미니와 도널드, 구피 등 오랜 친구들과 펼치는 디즈니 캐릭터 세계.",
+        "genres":  [
+                       "판타지",
+                       "일상",
+                       "코미디"
+                   ],
+        "officialUrl":  "https://mickey.disney.com/mickey",
+        "source":  "https://mickey.disney.com/mickey",
+        "ipType":  [
+                       "캐릭터",
+                       "애니"
+                   ]
+    },
+    {
+        "slug":  "miffy",
+        "description":  "호기심 많고 긍정적인 하얀 토끼 소녀 미피가 가족과 친구들 곁에서 새로운 경험을 만나는 그림책 세계.",
+        "genres":  [
+                       "일상"
+                   ],
+        "officialUrl":  "https://www.miffy.com/",
+        "source":  "https://www.miffy.com/about-miffy",
+        "ipType":  [
+                       "캐릭터"
+                   ]
+    },
+    {
+        "slug":  "barbapapa",
+        "description":  "어떤 모습으로든 변신할 수 있는 다정한 바바파파 가족이 상상력을 발휘해 이웃의 어려움을 해결한다.",
+        "genres":  [
+                       "판타지",
+                       "일상",
+                       "코미디"
+                   ],
+        "officialUrl":  "https://www.barbapapa.com/",
+        "source":  "https://www.barbapapa.com/the-barbapa-family-en/",
+        "ipType":  [
+                       "캐릭터",
+                       "애니"
+                   ]
+    },
+    {
+        "slug":  "weiss-schwarz",
+        "description":  "다양한 인기 애니메이션과 게임의 캐릭터 카드를 모아 자신만의 덱을 만들고 2인이 대전하는 카드게임.",
+        "genres":  [
+                       "기타"
+                   ],
+        "officialUrl":  "https://ws-tcg.com/",
+        "source":  "https://ws-tcg.com/for-beginners/",
+        "ipType":  [
+                       "게임",
+                       "카드게임"
+                   ]
+    },
+    {
+        "slug":  "resident-evil",
+        "description":  "생물재해가 일으킨 괴물과 음모 속에서 한정된 자원을 활용해 살아남는 서바이벌 호러 게임 시리즈.",
+        "genres":  [
+                       "액션",
+                       "SF",
+                       "호러",
+                       "고어"
+                   ],
+        "officialUrl":  "https://game.capcom.com/residentevil/",
+        "source":  "https://game.capcom.com/residentevil/en/",
+        "ipType":  [
+                       "게임"
+                   ]
+    },
+    {
+        "slug":  "violet-evergarden",
+        "description":  "전쟁의 도구로 살아온 바이올렛이 편지를 대신 쓰는 일을 하며 ‘사랑해’라는 말과 감정을 배워간다.",
+        "genres":  [
+                       "판타지",
+                       "로맨스",
+                       "드라마"
+                   ],
+        "officialUrl":  "https://tv.violet-evergarden.jp/",
+        "source":  "https://tv.violet-evergarden.jp/story/",
+        "ipType":  [
+                       "소설",
+                       "애니"
+                   ]
+    },
+    {
+        "slug":  "bakuman",
+        "description":  "그림에 재능 있는 마시로와 글을 잘 쓰는 타카기가 팀을 이뤄 프로 만화가의 꿈에 도전하는 청춘극.",
+        "genres":  [
+                       "학원",
+                       "일상",
+                       "로맨스",
+                       "드라마"
+                   ],
+        "officialUrl":  "https://www.shueisha.co.jp/books/items/contents.html?isbn=978-4-08-874622-7",
+        "source":  "https://www.shueisha.co.jp/books/items/contents.html?isbn=978-4-08-874622-7",
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ]
+    },
+    {
+        "slug":  "valorant",
+        "description":  "고유 능력을 갖춘 요원들이 정밀한 사격과 팀 전략을 결합해 공격과 방어를 겨루는 5대5 전술 슈팅 게임.",
+        "genres":  [
+                       "액션",
+                       "SF"
+                   ],
+        "officialUrl":  "https://playvalorant.com/",
+        "source":  "https://playvalorant.com/en-us/",
+        "ipType":  [
+                       "게임"
+                   ]
+    },
+    {
+        "slug":  "shield-hero",
+        "description":  "이세계에 방패 용사로 소환된 나오후미가 배신으로 모든 것을 잃고 재앙의 파도에 맞서 다시 일어선다.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "드라마"
+                   ],
+        "officialUrl":  "https://shieldhero-anime.jp/",
+        "source":  "https://shieldhero-anime.jp/1st/",
+        "ipType":  [
+                       "웹소설",
+                       "만화",
+                       "애니"
+                   ]
+    },
+    {
+        "slug":  "badtz-maru",
+        "description":  "장난과 반항을 좋아하고 장래에는 사장이 되기를 꿈꾸는 심술궂지만 미워할 수 없는 펭귄 캐릭터.",
+        "genres":  [
+                       "일상",
+                       "코미디"
+                   ],
+        "officialUrl":  "https://www.sanrio.co.jp/characters/badtzmaru/",
+        "source":  "https://www.sanrio.co.jp/characters/badtzmaru/",
+        "ipType":  [
+                       "캐릭터"
+                   ]
+    }
 ]

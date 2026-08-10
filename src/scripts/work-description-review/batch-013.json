@@ -1,0 +1,188 @@
+[
+    {
+        "slug":  "black-clover",
+        "description":  "마법을 쓰지 못하는 소년 아스타가 반마법의 검과 동료들의 힘으로 마도사의 정점인 마법제를 꿈꾼다.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "모험",
+                       "소년물"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://bclover.jp/",
+        "source":  "https://bclover.jp/season1/story/"
+    },
+    {
+        "slug":  "black-cat",
+        "description":  "전설적인 암살자 ‘검은 고양이’였던 트레인이 자유로운 현상금 사냥꾼으로 살아가며 과거와 맞선다.",
+        "genres":  [
+                       "액션",
+                       "SF",
+                       "소년물"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.shueisha.co.jp/books/items/contents.html?isbn=4-08-618362-5",
+        "source":  "https://www.shueisha.co.jp/books/items/contents.html?isbn=4-08-618362-5"
+    },
+    {
+        "slug":  "blue-lock",
+        "description":  "일본 최고의 스트라이커를 만들기 위해 모인 고교생 공격수 300명이 블루 록에서 생존 경쟁을 벌인다.",
+        "genres":  [
+                       "학원",
+                       "스포츠",
+                       "드라마",
+                       "소년물"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://bluelock-pr.com/",
+        "source":  "https://tv.bluelock-pr.com/tv1st/"
+    },
+    {
+        "slug":  "blue-archive",
+        "description":  "학원도시 키보토스에 부임한 선생님이 학생들과 힘을 합쳐 도시 곳곳의 사건과 위기를 해결하는 학원 RPG.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "학원",
+                       "SF"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://bluearchive.nexon.com/",
+        "source":  "https://bluearchive.nexon.com/"
+    },
+    {
+        "slug":  "blue-period",
+        "description":  "무료한 우등생 야토라가 한 장의 그림에 매료되어 미술의 즐거움과 고통을 겪으며 미대 입시에 도전한다.",
+        "genres":  [
+                       "학원",
+                       "일상",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://blue-period.jp/",
+        "source":  "https://blue-period.jp/"
+    },
+    {
+        "slug":  "bleach",
+        "description":  "사신의 힘을 얻은 고교생 이치고가 악령 호로와 싸우고 소중한 사람들을 지키며 거대한 음모에 맞선다.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "모험",
+                       "소년물"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://bleach-anime.com/",
+        "source":  "https://bleach-anime.com/"
+    },
+    {
+        "slug":  "hyouka",
+        "description":  "에너지 절약을 신조로 삼는 호타로가 고전부 친구들과 학교와 일상 속 소소한 수수께끼를 풀어 간다.",
+        "genres":  [
+                       "학원",
+                       "일상",
+                       "추리",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "소설",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://kotenbu.com/",
+        "source":  "https://kotenbu.com/story/"
+    },
+    {
+        "slug":  "puyo-puyo",
+        "description":  "같은 색의 뿌요를 네 개 이상 이어 지우고 연쇄로 방해 뿌요를 보내 상대와 겨루는 액션 퍼즐 게임 시리즈.",
+        "genres":  [
+                       "판타지",
+                       "퍼즐",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "캐릭터"
+                   ],
+        "officialUrl":  "https://puyo.sega.jp/portal/",
+        "source":  "https://puyo.sega.jp/portal/series/Puyopuyo.html"
+    },
+    {
+        "slug":  "samurai-shodown",
+        "description":  "시대극 세계의 검객들이 각자의 무기를 들고 강력한 한 방과 긴장감 넘치는 승부를 펼치는 대전 격투 게임.",
+        "genres":  [
+                       "액션",
+                       "격투",
+                       "고어"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://www.snk-corp.co.jp/official/samuraispirits-portal/",
+        "source":  "https://www.snk-corp.co.jp/official/samuraispirits/"
+    },
+    {
+        "slug":  "sakamoto-days",
+        "description":  "전설의 킬러였던 사카모토가 가족과 평온한 일상을 지키기 위해 동료들과 자객들의 위협에 맞선다.",
+        "genres":  [
+                       "액션",
+                       "일상",
+                       "코미디",
+                       "소년물"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://sakamotodays.jp/",
+        "source":  "https://sakamotodays.jp/"
+    },
+    {
+        "slug":  "sakurasou-no-pet-na-kanojo",
+        "description":  "문제아 기숙사 사쿠라장에 사는 소라타가 천재 화가지만 생활에는 서툰 마시로를 돌보며 꿈과 사랑을 배운다.",
+        "genres":  [
+                       "학원",
+                       "일상",
+                       "로맨스",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "소설",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://sakurasou.tv/",
+        "source":  "https://sakurasou.tv/"
+    },
+    {
+        "slug":  "sanrio",
+        "description":  "헬로키티와 마이멜로디, 시나모롤 등 다양한 캐릭터를 통해 미소와 우정을 전하는 글로벌 엔터테인먼트 브랜드.",
+        "genres":  [
+                       "기타"
+                   ],
+        "ipType":  [
+                       "캐릭터",
+                       "브랜드"
+                   ],
+        "officialUrl":  "https://www.sanrio.co.jp/",
+        "source":  "https://corporate.sanrio.co.jp/corporate/business/"
+    }
+]

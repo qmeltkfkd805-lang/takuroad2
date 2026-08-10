@@ -1,173 +1,174 @@
 [
-  {
-    "slug": "madoka-magica",
-    "description": "평범한 중학생 마도카가 소원을 대가로 마법소녀가 되는 선택과 가혹한 운명을 마주하는 다크 판타지.",
-    "genres": [
-      "판타지",
-      "마법소녀",
-      "드라마",
-      "호러"
-    ],
-    "officialUrl": "https://www.madoka-magica.com/tv/",
-    "source": "https://www.madoka-magica.com/tv/youtube-streaming/story/?id=ep01",
-    "ipType": [
-      "만화",
-      "애니"
-    ]
-  },
-  {
-    "slug": "marvel",
-    "description": "수천 명의 영웅과 악당이 만화·영화·게임을 넘나들며 세계관을 확장하는 슈퍼히어로 프랜차이즈.",
-    "genres": [
-      "액션",
-      "판타지",
-      "SF"
-    ],
-    "officialUrl": "https://www.marvel.com/",
-    "source": "https://www.marvel.com/corporate/about",
-    "ipType": [
-      "브랜드",
-      "캐릭터"
-    ]
-  },
-  {
-    "slug": "mabinogi",
-    "description": "에린에서 전투와 모험은 물론 연주·요리·생산까지 자유롭게 즐기는 판타지 생활 MMORPG.",
-    "genres": [
-      "액션",
-      "판타지",
-      "일상"
-    ],
-    "officialUrl": "https://mabinogi.nexon.com/",
-    "source": "https://mabinogi.nexon.com/",
-    "ipType": [
-      "게임"
-    ]
-  },
-  {
-    "slug": "mashle",
-    "description": "마법을 쓰지 못하는 마슈가 압도적인 근력으로 마법학교의 정점인 신각자를 노리는 학원 코미디.",
-    "genres": [
-      "액션",
-      "판타지",
-      "학원",
-      "코미디"
-    ],
-    "officialUrl": "https://mashle.pw/",
-    "source": "https://mashle.pw/",
-    "ipType": [
-      "만화",
-      "애니"
-    ]
-  },
-  {
-    "slug": "my-melody",
-    "description": "밝고 다정하며 동생을 아끼는 토끼 소녀 마이멜로디와 메리랜드 친구들의 캐릭터 브랜드.",
-    "genres": [
-      "일상"
-    ],
-    "officialUrl": "https://www.sanrio.co.jp/characters/mymelody/",
-    "source": "https://www.sanrio.co.jp/characters/mymelody/",
-    "ipType": [
-      "캐릭터"
-    ]
-  },
-  {
-    "slug": "minecraft",
-    "description": "블록으로 이루어진 무한한 세계를 탐험하고 자원을 모아 무엇이든 건설하며 살아남는 샌드박스 게임.",
-    "genres": [
-      "액션",
-      "판타지"
-    ],
-    "officialUrl": "https://www.minecraft.net/",
-    "source": "https://www.minecraft.net/en-us/about-minecraft",
-    "ipType": [
-      "게임"
-    ]
-  },
-  {
-    "slug": "macross",
-    "description": "가변 전투기와 노래, 삼각관계를 축으로 우주 전쟁과 이문화의 만남을 그리는 SF 애니메이션 시리즈.",
-    "genres": [
-      "액션",
-      "SF",
-      "음악",
-      "로봇/메카"
-    ],
-    "officialUrl": "https://macross.jp/",
-    "source": "https://macross.jp/contents/series",
-    "ipType": [
-      "애니"
-    ]
-  },
-  {
-    "slug": "magic-the-gathering",
-    "description": "다중우주의 마법사 플레인즈워커가 주문과 생물 카드를 조합해 대결하는 전략 트레이딩 카드 게임.",
-    "genres": [
-      "액션",
-      "판타지"
-    ],
-    "officialUrl": "https://magic.wizards.com/",
-    "source": "https://magic.wizards.com/en/intro",
-    "ipType": [
-      "게임"
-    ]
-  },
-  {
-    "slug": "made-in-abyss",
-    "description": "탐굴가 소녀 리코와 로봇 소년 레그가 저주와 기괴한 생물이 도사리는 거대 심연을 내려가는 모험.",
-    "genres": [
-      "판타지",
-      "드라마",
-      "호러",
-      "고어"
-    ],
-    "officialUrl": "https://miabyss.com/",
-    "source": "https://miabyss.com/story.html",
-    "ipType": [
-      "만화",
-      "애니"
-    ]
-  },
-  {
-    "slug": "maplestory",
-    "description": "메이플 월드의 여러 지역을 탐험하며 개성적인 직업을 성장시키고 검은 마법사에 맞서는 온라인 RPG.",
-    "genres": [
-      "액션",
-      "판타지"
-    ],
-    "officialUrl": "https://maplestory.nexon.com/",
-    "source": "https://maplestory.nexon.com/",
-    "ipType": [
-      "게임"
-    ]
-  },
-  {
-    "slug": "metaphor-refantazio",
-    "description": "저주받은 왕자를 구하려는 소년이 국왕 선거에 뛰어들어 동료들과 왕국을 누비는 판타지 RPG.",
-    "genres": [
-      "액션",
-      "판타지",
-      "드라마"
-    ],
-    "officialUrl": "https://asia.sega.com/metaphor/kr/",
-    "source": "https://asia.sega.com/metaphor/kr/",
-    "ipType": [
-      "게임"
-    ]
-  },
-  {
-    "slug": "metroid",
-    "description": "은하계 현상금 사냥꾼 사무스 아란이 미지의 행성을 탐사하며 우주 위협과 맞서는 SF 액션 시리즈.",
-    "genres": [
-      "액션",
-      "SF",
-      "호러"
-    ],
-    "officialUrl": "https://metroid.nintendo.com/",
-    "source": "https://metroid.nintendo.com/dread/story/",
-    "ipType": [
-      "게임"
-    ]
-  }
+    {
+        "slug":  "madoka-magica",
+        "description":  "평범한 중학생 마도카가 소원을 대가로 마법소녀가 되는 선택과 가혹한 운명을 마주하는 다크 판타지.",
+        "genres":  [
+                       "판타지",
+                       "마법소녀",
+                       "드라마",
+                       "호러"
+                   ],
+        "officialUrl":  "https://www.madoka-magica.com/tv/",
+        "source":  "https://www.madoka-magica.com/tv/youtube-streaming/story/?id=ep01",
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ]
+    },
+    {
+        "slug":  "marvel",
+        "description":  "수천 명의 영웅과 악당이 만화·영화·게임을 넘나들며 세계관을 확장하는 슈퍼히어로 프랜차이즈.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "SF"
+                   ],
+        "officialUrl":  "https://www.marvel.com/",
+        "source":  "https://www.marvel.com/corporate/about",
+        "ipType":  [
+                       "브랜드",
+                       "캐릭터"
+                   ]
+    },
+    {
+        "slug":  "mabinogi",
+        "description":  "에린에서 전투와 모험은 물론 연주·요리·생산까지 자유롭게 즐기는 판타지 생활 MMORPG.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "일상"
+                   ],
+        "officialUrl":  "https://mabinogi.nexon.com/",
+        "source":  "https://mabinogi.nexon.com/",
+        "ipType":  [
+                       "게임"
+                   ]
+    },
+    {
+        "slug":  "mashle",
+        "description":  "마법을 쓰지 못하는 마슈가 압도적인 근력으로 마법학교의 정점인 신각자를 노리는 학원 코미디.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "학원",
+                       "코미디"
+                   ],
+        "officialUrl":  "https://mashle.pw/",
+        "source":  "https://mashle.pw/",
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ]
+    },
+    {
+        "slug":  "my-melody",
+        "description":  "밝고 다정하며 동생을 아끼는 토끼 소녀 마이멜로디와 메리랜드 친구들의 캐릭터 브랜드.",
+        "genres":  [
+                       "일상"
+                   ],
+        "officialUrl":  "https://www.sanrio.co.jp/characters/mymelody/",
+        "source":  "https://www.sanrio.co.jp/characters/mymelody/",
+        "ipType":  [
+                       "캐릭터"
+                   ]
+    },
+    {
+        "slug":  "minecraft",
+        "description":  "블록으로 이루어진 무한한 세계를 탐험하고 자원을 모아 무엇이든 건설하며 살아남는 샌드박스 게임.",
+        "genres":  [
+                       "액션",
+                       "판타지"
+                   ],
+        "officialUrl":  "https://www.minecraft.net/",
+        "source":  "https://www.minecraft.net/en-us/about-minecraft",
+        "ipType":  [
+                       "게임"
+                   ]
+    },
+    {
+        "slug":  "macross",
+        "description":  "가변 전투기와 노래, 삼각관계를 축으로 우주 전쟁과 이문화의 만남을 그리는 SF 애니메이션 시리즈.",
+        "genres":  [
+                       "액션",
+                       "SF",
+                       "음악",
+                       "로봇/메카"
+                   ],
+        "officialUrl":  "https://macross.jp/",
+        "source":  "https://macross.jp/contents/series",
+        "ipType":  [
+                       "애니"
+                   ]
+    },
+    {
+        "slug":  "magic-the-gathering",
+        "description":  "다중우주의 마법사 플레인즈워커가 주문과 생물 카드를 조합해 대결하는 전략 트레이딩 카드 게임.",
+        "genres":  [
+                       "액션",
+                       "판타지"
+                   ],
+        "officialUrl":  "https://magic.wizards.com/",
+        "source":  "https://magic.wizards.com/en/intro",
+        "ipType":  [
+                       "게임",
+                       "카드게임"
+                   ]
+    },
+    {
+        "slug":  "made-in-abyss",
+        "description":  "탐굴가 소녀 리코와 로봇 소년 레그가 저주와 기괴한 생물이 도사리는 거대 심연을 내려가는 모험.",
+        "genres":  [
+                       "판타지",
+                       "드라마",
+                       "호러",
+                       "고어"
+                   ],
+        "officialUrl":  "https://miabyss.com/",
+        "source":  "https://miabyss.com/story.html",
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ]
+    },
+    {
+        "slug":  "maplestory",
+        "description":  "메이플 월드의 여러 지역을 탐험하며 개성적인 직업을 성장시키고 검은 마법사에 맞서는 온라인 RPG.",
+        "genres":  [
+                       "액션",
+                       "판타지"
+                   ],
+        "officialUrl":  "https://maplestory.nexon.com/",
+        "source":  "https://maplestory.nexon.com/",
+        "ipType":  [
+                       "게임"
+                   ]
+    },
+    {
+        "slug":  "metaphor-refantazio",
+        "description":  "저주받은 왕자를 구하려는 소년이 국왕 선거에 뛰어들어 동료들과 왕국을 누비는 판타지 RPG.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "드라마"
+                   ],
+        "officialUrl":  "https://asia.sega.com/metaphor/kr/",
+        "source":  "https://asia.sega.com/metaphor/kr/",
+        "ipType":  [
+                       "게임"
+                   ]
+    },
+    {
+        "slug":  "metroid",
+        "description":  "은하계 현상금 사냥꾼 사무스 아란이 미지의 행성을 탐사하며 우주 위협과 맞서는 SF 액션 시리즈.",
+        "genres":  [
+                       "액션",
+                       "SF",
+                       "호러"
+                   ],
+        "officialUrl":  "https://metroid.nintendo.com/",
+        "source":  "https://metroid.nintendo.com/dread/story/",
+        "ipType":  [
+                       "게임"
+                   ]
+    }
 ]

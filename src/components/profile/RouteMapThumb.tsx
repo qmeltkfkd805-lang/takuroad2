@@ -9,7 +9,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { loadMaps } from '@/lib/map/provider'
-import { representativeStopIndices, type RouteMapVariant } from '@/components/route/routeMeta'
+import { type RouteMapVariant } from '@/components/route/routeMeta'
 
 type Stop = { lat: number; lng: number }
 
@@ -51,12 +51,14 @@ export default function RouteMapThumb({ stops, height = 118, labels, showEnds = 
       })
       try { map.setZoomable(false); map.setDraggable(false) } catch { /* noop */ }
 
+      // preview는 경로가 잘 보이도록 여백을 최소화해 최대한 확대
+      const pad = variant === 'preview' ? 10 : 28
       if (list.length > 1) {
         const bounds = new kakao.maps.LatLngBounds()
         list.forEach(p => bounds.extend(new kakao.maps.LatLng(p.lat, p.lng)))
-        map.setBounds(bounds, 28, 28, 28, 28)
+        map.setBounds(bounds, pad, pad, pad, pad)
       } else {
-        map.setLevel(4)
+        map.setLevel(variant === 'preview' ? 3 : 4)
       }
 
       const objs: any[] = []
@@ -68,32 +70,44 @@ export default function RouteMapThumb({ stops, height = 118, labels, showEnds = 
         const line = new kakao.maps.Polyline({ path, strokeWeight: 4, strokeColor: '#e8006f', strokeOpacity: 0.9, strokeStyle: 'shortdash' })
         line.setMap(map); objs.push(line)
       }
-      // 지도 크기에 따라 핀 크기 조절 (작은 썸네일에선 작게)
-      const pinSize = height < 90 ? 14 : height < 170 ? 16 : 22
-      const pinFont = height < 90 ? 8.5 : height < 170 ? 9.5 : 11
-      const pinPad = pinSize < 18 ? 2 : 6
-      const pinBw = height < 90 ? 1.5 : 2
-      // preview: 출발·도착 + 대표 스팟만 마커 (경로선은 전체 유지)
-      const showSet = variant === 'preview' ? new Set(representativeStopIndices(list.length)) : null
-      list.forEach((p, i) => {
-        if (showSet && !showSet.has(i)) return
-        const label = labels?.[i] ?? String(i + 1)
-        const isFirst = i === 0, isLast = i === list.length - 1
-        const wrap = document.createElement('div')
-        wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center'
-        const dot = document.createElement('div')
-        dot.style.cssText = `min-width:${pinSize}px;height:${pinSize}px;padding:0 ${pinPad}px;box-sizing:border-box;border-radius:${pinSize / 2}px;background:#e8006f;border:${pinBw}px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.35);color:#fff;font-weight:800;font-size:${pinFont}px;line-height:1;display:flex;align-items:center;justify-content:center;white-space:nowrap`
-        dot.textContent = label
-        wrap.appendChild(dot)
-        if (showEnds && list.length > 1 && (isFirst || isLast)) {
-          const tag = document.createElement('div')
-          tag.style.cssText = 'margin-top:2px;background:#fff;color:#e8006f;font-size:9px;font-weight:800;padding:1px 5px;border-radius:9999px;box-shadow:0 1px 2px rgba(0,0,0,.25);white-space:nowrap'
-          tag.textContent = isFirst ? '출발' : '도착'
-          wrap.appendChild(tag)
+      if (variant === 'preview') {
+        // 미니 미리보기: 번호·깃발 없이 출발·도착 텍스트 칩만 (경로선은 전체 유지)
+        const makeDot = (filled: boolean) => {
+          const div = document.createElement('div')
+          div.style.cssText = `width:13px;height:13px;border-radius:9999px;box-sizing:border-box;background:${filled ? '#FF5692' : '#fff'};border:3px solid ${filled ? '#fff' : '#FF5692'};box-shadow:0 1px 3px rgba(0,0,0,.3);pointer-events:none`
+          return div
         }
-        const ov = new kakao.maps.CustomOverlay({ position: new kakao.maps.LatLng(p.lat, p.lng), content: wrap, yAnchor: 0.5, xAnchor: 0.5, zIndex: (isFirst || isLast) ? 5 : 3 })
-        ov.setMap(map); objs.push(ov)
-      })
+        const drawDot = (p: { lat: number; lng: number }, filled: boolean) => {
+          const ov = new kakao.maps.CustomOverlay({ position: new kakao.maps.LatLng(p.lat, p.lng), content: makeDot(filled), yAnchor: 0.5, xAnchor: 0.5, zIndex: 6 })
+          ov.setMap(map); objs.push(ov)
+        }
+        drawDot(list[0], false)                                   // 출발: 속 빈 핑크 링
+        if (list.length > 1) drawDot(list[list.length - 1], true) // 도착: 핑크 채움
+      } else {
+        // 지도 크기에 따라 핀 크기 조절 (작은 썸네일에선 작게)
+        const pinSize = height < 90 ? 14 : height < 170 ? 16 : 22
+        const pinFont = height < 90 ? 8.5 : height < 170 ? 9.5 : 11
+        const pinPad = pinSize < 18 ? 2 : 6
+        const pinBw = height < 90 ? 1.5 : 2
+        list.forEach((p, i) => {
+          const label = labels?.[i] ?? String(i + 1)
+          const isFirst = i === 0, isLast = i === list.length - 1
+          const wrap = document.createElement('div')
+          wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center'
+          const dot = document.createElement('div')
+          dot.style.cssText = `min-width:${pinSize}px;height:${pinSize}px;padding:0 ${pinPad}px;box-sizing:border-box;border-radius:${pinSize / 2}px;background:#e8006f;border:${pinBw}px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.35);color:#fff;font-weight:800;font-size:${pinFont}px;line-height:1;display:flex;align-items:center;justify-content:center;white-space:nowrap`
+          dot.textContent = label
+          wrap.appendChild(dot)
+          if (showEnds && list.length > 1 && (isFirst || isLast)) {
+            const tag = document.createElement('div')
+            tag.style.cssText = 'margin-top:2px;background:#fff;color:#e8006f;font-size:9px;font-weight:800;padding:1px 5px;border-radius:9999px;box-shadow:0 1px 2px rgba(0,0,0,.25);white-space:nowrap'
+            tag.textContent = isFirst ? '출발' : '도착'
+            wrap.appendChild(tag)
+          }
+          const ov = new kakao.maps.CustomOverlay({ position: new kakao.maps.LatLng(p.lat, p.lng), content: wrap, yAnchor: 0.5, xAnchor: 0.5, zIndex: (isFirst || isLast) ? 5 : 3 })
+          ov.setMap(map); objs.push(ov)
+        })
+      }
       // 컨테이너 실제 크기에 맞춰 전체 스팟이 항상 보이도록 범위 재조정
       const refit = () => {
         try {
@@ -101,9 +115,9 @@ export default function RouteMapThumb({ stops, height = 118, labels, showEnds = 
           if (list.length > 1) {
             const b = new kakao.maps.LatLngBounds()
             list.forEach(p => b.extend(new kakao.maps.LatLng(p.lat, p.lng)))
-            map.setBounds(b, 30, 30, 30, 30)
+            map.setBounds(b, pad, pad, pad, pad)
           } else {
-            map.setLevel(4); map.setCenter(new kakao.maps.LatLng(list[0].lat, list[0].lng))
+            map.setLevel(variant === 'preview' ? 3 : 4); map.setCenter(new kakao.maps.LatLng(list[0].lat, list[0].lng))
           }
         } catch { /* noop */ }
       }
