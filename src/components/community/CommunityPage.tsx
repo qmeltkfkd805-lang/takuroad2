@@ -10,6 +10,7 @@ import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import { getAllTagsForSelect } from '@/services/routeService'
 import {
   getPosts, getNotices, getPopularPosts, getCommunityStats, getTrendingTags, getWorkSearchCounts,
+  getPopularPostsInWindow, getBoardCounts, getMyActivityCounts, type SearchField,
 } from '@/services/communityPostService'
 import {
   Board, BOARDS, BOARD_LABEL, COMMUNITY_NAV, CREATION_BOARDS, CommunityPost, PostSort,
@@ -37,7 +38,7 @@ function timeAgo(iso: string): string {
 }
 
 export default function CommunityPage() {
-  const { user } = useAuth()
+  const { user, profile } = useAuth()
   const router = useRouter()
   const isDesktop = useIsDesktop()
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -53,6 +54,7 @@ export default function CommunityPage() {
 
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
+  const [searchField, setSearchField] = useState<SearchField>('both')   // 검색 범위
   const [searchOpen, setSearchOpen] = useState(false)   // 📱 모바일 검색바 토글
   const [tagFilter, setTagFilter] = useState<Tag | null>(null)
   const [tagQuery, setTagQuery] = useState('')
@@ -67,6 +69,11 @@ export default function CommunityPage() {
   const [popular, setPopular] = useState<CommunityPost[]>([])
   const [tags, setTags] = useState<TrendingTag[]>([])
   const [stats, setStats] = useState<CommunityStats | null>(null)
+  const [cafePopular, setCafePopular] = useState<CommunityPost[]>([])   // 카페 인기글: 최근 30일
+  const [weeklyPopular, setWeeklyPopular] = useState<CommunityPost[]>([]) // 이번 주 인기글: 최근 7일
+  const [boardCounts, setBoardCounts] = useState<Record<string, number>>({})
+  const [myActivity, setMyActivity] = useState<{ posts: number; comments: number } | null>(null)
+  const [moreOpen, setMoreOpen] = useState(false)   // 게시판 메뉴 '더보기'
 
   const tabsRef = useRef<HTMLDivElement>(null)
   const [tabOverflow, setTabOverflow] = useState(false)
@@ -85,7 +92,7 @@ export default function CommunityPage() {
     if (scope === 'subscribed') {
       if (!user) { setPosts([]); setNotices([]); setLoading(false); setPage(1); return }
       const [all, ntc, followingIds] = await Promise.all([
-        getPosts(board, sort, user.id, { search, tagId: tagFilter?.id }),
+        getPosts(board, sort, user.id, { search, field: searchField, tagId: tagFilter?.id }),
         getNotices(board),
         getFollowingIds(user.id),
       ])
@@ -98,7 +105,7 @@ export default function CommunityPage() {
     if (scope === 'worksub') {
       if (!user) { setPosts([]); setNotices([]); setLoading(false); setPage(1); return }
       const [all, ntc, rels] = await Promise.all([
-        getPosts(board, sort, user.id, { search, tagId: tagFilter?.id }),
+        getPosts(board, sort, user.id, { search, field: searchField, tagId: tagFilter?.id }),
         getNotices(board),
         getMyWorkRelationships(user.id),
       ])
@@ -114,7 +121,7 @@ export default function CommunityPage() {
     // 인기글 = 종합 점수(좋아요·3 + 댓글·2 + 조회·0.1) 상위. 참여 있는 글만(점수 0 초과)
     if (scope === 'popular') {
       const [all, ntc] = await Promise.all([
-        getPosts(board, 'latest', user?.id, { search, tagId: tagFilter?.id }),
+        getPosts(board, 'latest', user?.id, { search, field: searchField, tagId: tagFilter?.id }),
         getNotices(board),
       ])
       const popScore = (p: CommunityPost) => p.likeCount * 3 + p.commentCount * 2 + p.viewCount * 0.1
@@ -125,7 +132,7 @@ export default function CommunityPage() {
     // 📱 모바일: 팬창작물(부모)을 보면 팬아트(세부) 글도 함께 — 창작게시판 전체. 팬아트 선택 시엔 팬아트만.
     if (!isDesktop && board === 'fancraft') {
       const [all, ntc] = await Promise.all([
-        getPosts('all', sort, user?.id, { mineOnly: scope === 'mine', search, tagId: tagFilter?.id }),
+        getPosts('all', sort, user?.id, { mineOnly: scope === 'mine', search, field: searchField, tagId: tagFilter?.id }),
         getNotices(board),
       ])
       setPosts(all.filter(p => p.board === 'fancraft' || p.board === 'fanart'))
@@ -139,7 +146,7 @@ export default function CommunityPage() {
       getNotices(board),
     ])
     setPosts(list); setNotices(ntc); setLoading(false); setPage(1)
-  }, [board, sort, scope, search, tagFilter?.id, user?.id, isDesktop])
+  }, [board, sort, scope, search, searchField, tagFilter?.id, user?.id, isDesktop])
 
   useEffect(() => { load() }, [load])
 
@@ -149,6 +156,9 @@ export default function CommunityPage() {
     getCommunityStats().then(setStats).catch(() => {})
     getAllTagsForSelect().then((t) => setAllTags(t as Tag[])).catch(() => {})
     getWorkSearchCounts().then(setSearchCounts).catch(() => {})
+    getPopularPostsInWindow(30, 6).then(setCafePopular).catch(() => {})   // 카페 인기글
+    getPopularPostsInWindow(7, 5).then(setWeeklyPopular).catch(() => {})  // 이번 주 인기글
+    getBoardCounts().then(setBoardCounts).catch(() => {})
   }, [])
 
   const reloadSidebar = () => {
@@ -156,8 +166,21 @@ export default function CommunityPage() {
     getCommunityStats().then(setStats).catch(() => {})
   }
 
+  useEffect(() => {
+    if (!user) { setMyActivity(null); return }
+    getMyActivityCounts(user.id).then(setMyActivity).catch(() => {})
+  }, [user])
+
   const totalPages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE))
   const paged = useMemo(() => posts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE), [posts, page])
+  const listTopRef = useRef<HTMLDivElement>(null)
+  const pageInitRef = useRef(true)
+  useEffect(() => {
+    if (pageInitRef.current) { pageInitRef.current = false; return }
+    listTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [page])
+  const isHot = (p: CommunityPost) => (p.likeCount + p.commentCount) >= 10
+  const isNew = (p: CommunityPost) => (Date.now() - new Date(p.createdAt).getTime()) < 86400000
   const openWrite = () => (user ? router.push('/community/write' + (board !== 'all' ? `?board=${board}` : '')) : router.push(ROUTES.login))
   const openPost = (p: CommunityPost) => router.push(`/community/${p.id}`)
 
@@ -337,9 +360,9 @@ export default function CommunityPage() {
   }
 
   return (
-    <div className="taku-comm-min" style={{ padding: '24px 32px 72px' }}>
+    <div className="taku-comm-min" style={{ maxWidth: 1180, margin: '0 auto', padding: '24px 24px 72px' }}>
       <style>{`
-        .taku-comm{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
+        .taku-comm{display:grid;grid-template-columns:minmax(0,3fr) 1fr;gap:24px;align-items:start}
         @media (hover:none) and (pointer:coarse) and (max-width:1024px){.taku-comm{grid-template-columns:1fr}.taku-comm-side{display:none}}
         .taku-noscroll::-webkit-scrollbar{display:none}.taku-noscroll{scrollbar-width:none}
                 .taku-prow:hover{background:var(--surface2)}
@@ -347,58 +370,65 @@ export default function CommunityPage() {
         @media (hover:none) and (pointer:coarse) and (max-width:1024px){.taku-comm-min{min-width:0}}
       `}</style>
 
-      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, marginBottom: 18, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, marginBottom: 14, flexWrap: 'wrap' }}>
         <div>
           <h1 style={{ fontSize: 26, fontWeight: 900, margin: '0 0 4px' }}>커뮤니티</h1>
-          <p style={{ fontSize: 14, color: 'var(--muted)', margin: 0 }}>타쿠들과 함께 정보도 나누고, 덕질도 즐겨요!</p>
+          <p style={{ fontSize: 14, color: 'var(--muted)', margin: 0 }}>타쿠들과 취향과 정보를 나눠보세요.</p>
         </div>
-        <button onClick={openWrite} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '11px 18px', borderRadius: 11, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>
+        <button onClick={openWrite} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '11px 18px', borderRadius: 11, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0 }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
-          게시글 작성
+          글쓰기
         </button>
       </div>
 
       <div className="taku-comm">
         <main style={{ minWidth: 0 }}>
-          {/* 상단 탭 */}
-          <div style={{ display: 'flex', alignItems: 'stretch', gap: 2, borderBottom: '1px solid var(--border)' }}>
-            {tabOverflow && <button onClick={() => scrollTabs(-1)} aria-label="이전" style={tabArrow}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg></button>}
-            <div ref={tabsRef} className="taku-noscroll" style={{ display: 'flex', gap: 4, overflowX: 'auto', flex: 1, minWidth: 0, scrollBehavior: 'smooth' }}>
-              <BoardTab label="전체" active={board === 'all'} onClick={() => setBoard('all')} />
-              {COMMUNITY_NAV.map((item, i) => item.type === 'board'
-                ? <BoardTab key={i} label={item.label} active={board === item.board} onClick={() => setBoard(item.board)} />
-                : <BoardTab key={i} label={item.label} active={CREATION_BOARDS.includes(board as Board)} onClick={() => setBoard(item.boards[0])} />)}
+          {/* 게시판 메뉴 */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 2, borderBottom: '1px solid var(--border)', marginBottom: 16 }}>
+            <BoardTab label="전체글" active={board === 'all' && scope !== 'mine'} onClick={() => { setBoard('all'); setScope('all') }} />
+            {(['free', 'promo', 'tips', 'goods', 'exchange'] as Board[]).map(b => (
+              <BoardTab key={b} label={BOARD_LABEL[b]} active={board === b} onClick={() => { setBoard(b); setScope('all') }} />
+            ))}
+            <div style={{ position: 'relative', marginLeft: 'auto' }}>
+              <button onClick={() => setMoreOpen(o => !o)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '11px 12px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, fontWeight: (['companion', 'fanart', 'fancraft'] as Board[]).includes(board as Board) ? 800 : 600, color: (['companion', 'fanart', 'fancraft'] as Board[]).includes(board as Board) ? 'var(--accent)' : 'var(--muted)' }}>
+                더보기
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="m6 9 6 6 6-6" /></svg>
+              </button>
+              {moreOpen && (
+                <div style={{ position: 'absolute', top: '100%', right: 0, zIndex: 20, marginTop: 2, minWidth: 150, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.12)', padding: 6 }}>
+                  {(['companion', 'fanart', 'fancraft'] as Board[]).map(b => (
+                    <button key={b} onClick={() => { setBoard(b); setScope('all'); setMoreOpen(false) }} style={{ display: 'block', width: '100%', textAlign: 'left', border: 'none', background: board === b ? 'var(--accent-l, rgba(232,0,111,.08))' : 'none', color: board === b ? 'var(--accent)' : 'var(--text)', padding: '9px 11px', borderRadius: 7, fontSize: 13.5, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>{BOARD_LABEL[b]}</button>
+                  ))}
+                </div>
+              )}
             </div>
-            {tabOverflow && <button onClick={() => scrollTabs(1)} aria-label="다음" style={tabArrow}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></button>}
           </div>
 
-          {/* 창작게시판 세부탭 */}
-          {inCreation && (
-            <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
-              {CREATION_BOARDS.map(b => (
-                <button key={b} onClick={() => setBoard(b)} style={{
-                  padding: '7px 15px', borderRadius: 9999, cursor: 'pointer', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700,
-                  border: `1.5px solid ${board === b ? 'var(--accent)' : 'var(--border)'}`,
-                  background: board === b ? 'var(--accent)' : 'var(--surface)',
-                  color: board === b ? '#fff' : 'var(--text)',
-                }}>{BOARD_LABEL[b]}</button>
-              ))}
+          {/* 목록 제목 + 정렬 */}
+          <div ref={listTopRef} style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 10, marginBottom: 10, flexWrap: 'wrap' }}>
+            <div style={{ fontSize: 16, fontWeight: 900 }}>{scope === 'mine' ? '내 게시글' : board === 'all' ? '전체글' : BOARD_LABEL[board]} <span style={{ color: 'var(--muted)', fontWeight: 700, fontSize: 13 }}>{posts.length.toLocaleString()}</span></div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <button onClick={() => { setScope('all'); setSort('latest') }} style={{ border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: (scope !== 'popular' && sort === 'latest') ? 800 : 600, color: (scope !== 'popular' && sort === 'latest') ? 'var(--accent)' : 'var(--muted)' }}>최신순</button>
+              <span style={{ color: 'var(--border)' }}>|</span>
+              <button onClick={() => setScope('popular')} style={{ border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: scope === 'popular' ? 800 : 600, color: scope === 'popular' ? 'var(--accent)' : 'var(--muted)' }}>인기글</button>
             </div>
-          )}
-
-          {/* 히어로 배너 */}
-          <div style={{ position: 'relative', borderRadius: 18, overflow: 'hidden', background: 'linear-gradient(100deg, #FFE3EF 0%, #FFD1E6 100%)', padding: '30px 34px', margin: '18px 0 20px', minHeight: 116, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <div style={{ fontSize: 20, fontWeight: 900, color: '#C41E6A', marginBottom: 6 }}>타쿠들의 자유로운 공간</div>
-            <div style={{ fontSize: 14, color: '#B84A7E' }}>즐거운 덕질 생활을 함께 나눠요!</div>
           </div>
 
-          {/* 검색 + 작품 필터 */}
-          <div style={{ display: 'flex', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', flex: 1, minWidth: 200, alignItems: 'center', gap: 8, padding: '9px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)' }}>
+          {/* 검색 바 */}
+          <div style={{ display: 'flex', gap: 8, marginBottom: 14, flexWrap: 'wrap' }}>
+            <select value={searchField} onChange={e => setSearchField(e.target.value as SearchField)} style={{ padding: '9px 10px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer', flexShrink: 0 }}>
+              <option value="title">제목</option>
+              <option value="both">제목+내용</option>
+              <option value="author">작성자</option>
+              <option value="tag">태그</option>
+              <option value="comment">댓글</option>
+            </select>
+            <div style={{ display: 'flex', flex: 1, minWidth: 180, alignItems: 'center', gap: 8, padding: '9px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
-              <input value={searchInput} onChange={e => setSearchInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && setSearch(searchInput.trim())} placeholder="제목·글쓴이·댓글 검색" style={{ flex: 1, border: 'none', background: 'none', outline: 'none', fontSize: 14, color: 'var(--text)', fontFamily: 'inherit' }} />
-              {search && <button onClick={() => { setSearchInput(''); setSearch('') }} style={{ border: 'none', background: 'none', color: 'var(--muted)', cursor: 'pointer', fontSize: 14 }}><AppIcon name="close" size={13} /></button>}
+              <input value={searchInput} onChange={e => setSearchInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && setSearch(searchInput.trim())} placeholder="검색어를 입력하세요" style={{ flex: 1, minWidth: 0, border: 'none', background: 'none', outline: 'none', fontSize: 14, color: 'var(--text)', fontFamily: 'inherit' }} />
+              {search && <button onClick={() => { setSearchInput(''); setSearch('') }} aria-label="지우기" style={{ border: 'none', background: 'none', color: 'var(--muted)', cursor: 'pointer', display: 'flex' }}><AppIcon name="close" size={13} /></button>}
             </div>
+            <button onClick={() => setSearch(searchInput.trim())} style={{ flexShrink: 0, border: 'none', background: 'var(--accent)', color: '#fff', borderRadius: 10, padding: '0 18px', fontSize: 13.5, fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit' }}>검색</button>
             <div style={{ position: 'relative' }}>
               <button onClick={() => setTagOpen(o => !o)} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 14px', borderRadius: 10, border: `1px solid ${tagFilter ? 'var(--accent)' : 'var(--border)'}`, background: 'var(--surface)', color: tagFilter ? 'var(--accent)' : 'var(--text)', fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
                 {tagFilter ? `# ${tagFilter.name}` : '작품 필터'}
@@ -419,67 +449,47 @@ export default function CommunityPage() {
             </div>
           </div>
 
-          {/* 필터 바 */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginBottom: 14, flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-              <select value={sort} onChange={e => setSort(e.target.value as PostSort)} style={{ padding: '8px 12px', borderRadius: 9, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontSize: 13.5, fontFamily: 'inherit', cursor: 'pointer' }}>
-                <option value="latest">최신순</option>
-                <option value="popular">인기순</option>
-              </select>
-              {(['all', 'popular', 'mine'] as Scope[]).map(sc => (
-                <button key={sc} onClick={() => setScope(sc)} style={{ padding: '7px 14px', borderRadius: 9999, cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 700, border: 'none', background: scope === sc ? 'var(--accent-l, rgba(232,0,111,.1))' : 'transparent', color: scope === sc ? 'var(--accent)' : 'var(--muted)' }}>{sc === 'all' ? '전체' : sc === 'popular' ? '인기글' : '내 게시글'}</button>
-              ))}
-            </div>
-            <div style={{ display: 'flex', gap: 4 }}>
-              <ViewBtn active={view === 'grid'} onClick={() => setView('grid')} kind="grid" />
-              <ViewBtn active={view === 'list'} onClick={() => setView('list')} kind="list" />
-            </div>
-          </div>
-
-          {/* 공지 */}
-          {notices.length > 0 && (
-            <div style={{ border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', marginBottom: 14 }}>
-              {notices.map(n => (
-                <div key={n.id} onClick={() => openPost(n)} className="taku-prow" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '11px 16px', borderBottom: '1px solid var(--border)', cursor: 'pointer', background: 'rgba(232,0,111,.04)' }}>
-                  <span style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', background: 'var(--surface)', border: '1px solid var(--accent)', padding: '2px 8px', borderRadius: 9999, flexShrink: 0 }}>공지</span>
-                  <span style={{ fontSize: 13.5, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{n.title || '(제목 없음)'}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* 목록 */}
+          {/* 목록 (공지 상단 고정 + 글) */}
           {loading ? (
-            <p style={{ color: 'var(--muted)', padding: '24px 0' }}>불러오는 중…</p>
-          ) : posts.length === 0 ? (
-            <div style={{ border: '1px dashed var(--border)', borderRadius: 16, padding: '48px 20px', textAlign: 'center', color: 'var(--muted)' }}>
-              <p style={{ margin: '0 0 16px', fontSize: 14 }}>{search || tagFilter ? '조건에 맞는 글이 없어요.' : '아직 글이 없어요. 첫 글을 남겨보세요!'}</p>
-              <button onClick={openWrite} style={{ padding: '11px 18px', borderRadius: 11, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>게시글 작성</button>
+            <div style={{ borderTop: '2px solid var(--text)' }}>
+              {Array.from({ length: 10 }).map((_, i) => <div key={i} style={{ height: 50, borderBottom: '1px solid var(--border)', background: i % 2 ? 'transparent' : 'rgba(0,0,0,.015)' }} />)}
             </div>
-          ) : view === 'grid' ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 16 }}>
-              {paged.map(p => <PostCard key={p.id} post={p} onOpen={openPost} showBoard />)}
+          ) : (notices.length === 0 && posts.length === 0) ? (
+            <div style={{ border: '1px dashed var(--border)', borderRadius: 14, padding: '48px 20px', textAlign: 'center', color: 'var(--muted)' }}>
+              <p style={{ margin: '0 0 16px', fontSize: 14 }}>{search || tagFilter ? '조건에 맞는 글이 없어요.' : scope === 'mine' ? '아직 작성한 글이 없어요.' : '아직 글이 없어요. 첫 글을 남겨보세요!'}</p>
+              <button onClick={openWrite} style={{ padding: '11px 18px', borderRadius: 11, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>글쓰기</button>
             </div>
           ) : (
-            <div style={{ border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: listCols, gap: 12, padding: '11px 16px', borderBottom: '1px solid var(--border)', fontSize: 12.5, fontWeight: 800, color: 'var(--muted)', background: 'var(--surface2)' }}>
-                {showCat && <span style={{ textAlign: 'center' }}>카테고리</span>}<span style={{ textAlign: 'center' }}>제목</span><span style={{ textAlign: 'center' }}>작성자</span><span style={{ textAlign: 'center' }}>작성일</span><span style={{ textAlign: 'center' }}>조회</span><span style={{ textAlign: 'center' }}>좋아요</span>
+            <div>
+              <div style={{ display: 'grid', gridTemplateColumns: COLS, gap: 10, padding: '10px 12px', borderTop: '2px solid var(--text)', borderBottom: '1px solid var(--border)', fontSize: 12.5, fontWeight: 800, color: 'var(--muted)' }}>
+                <span style={{ textAlign: 'center' }}>게시판</span><span>제목</span><span style={{ textAlign: 'center' }}>작성자</span><span style={{ textAlign: 'center' }}>작성일</span><span style={{ textAlign: 'center' }}>조회</span><span style={{ textAlign: 'center' }}>좋아요</span>
               </div>
+              {notices.map(n => (
+                <div key={n.id} className="taku-prow" onClick={() => openPost(n)} style={{ display: 'grid', gridTemplateColumns: COLS, gap: 10, padding: '12px', borderBottom: '1px solid var(--border)', alignItems: 'center', cursor: 'pointer', fontSize: 13.5, background: 'rgba(232,0,111,.04)' }}>
+                  <span style={{ textAlign: 'center' }}><span style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', border: '1px solid var(--accent)', padding: '1px 7px', borderRadius: 9999 }}>공지</span></span>
+                  <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 700 }}>{n.title || '(제목 없음)'}{n.commentCount > 0 && <span style={{ color: 'var(--accent)', fontWeight: 800, marginLeft: 6, fontSize: 12.5 }}>[{n.commentCount}]</span>}</span>
+                  <span style={cellMuted}>{n.author?.nickname ?? '운영자'}</span>
+                  <span style={cellMuted}>{timeAgo(n.createdAt)}</span>
+                  <span style={cellMuted}>{n.viewCount}</span>
+                  <span style={{ textAlign: 'center', color: '#FF4D6D', fontWeight: 700, fontSize: 12.5 }}>{n.likeCount}</span>
+                </div>
+              ))}
               {paged.map(p => (
-                <div key={p.id} className="taku-prow" onClick={() => openPost(p)} style={{ display: 'grid', gridTemplateColumns: listCols, gap: 12, padding: '11px 16px', borderBottom: '1px solid var(--border)', alignItems: 'center', cursor: 'pointer', fontSize: 13.5 }}>
-                  {showCat && <span style={{ color: 'var(--muted)', fontSize: 12.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{BOARD_LABEL[p.board]}</span>}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
-                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 600 }}>{p.flair && <span style={flairBadge}>{p.flair}</span>}{p.isSpoiler && <span style={spoilerBadge}>스포주의</span>}{p.title || '(제목 없음)'}{p.commentCount > 0 && <span style={{ color: 'var(--accent)', fontWeight: 800, marginLeft: 6, fontSize: 12.5 }}>[{p.commentCount}]</span>}</span>
-                    {p.images.length > 0 && (
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, flexShrink: 0, color: 'var(--muted)', fontSize: 12, fontWeight: 700 }}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="8.5" cy="9.5" r="1.5" /><path d="m4 17 4.5-4.5 3 3L16 11l4 4.5" /></svg>{p.images.length}
-                      </span>
-                    )}
+                <div key={p.id} className="taku-prow" onClick={() => openPost(p)} style={{ display: 'grid', gridTemplateColumns: COLS, gap: 10, padding: '12px', borderBottom: '1px solid var(--border)', alignItems: 'center', cursor: 'pointer', fontSize: 13.5 }}>
+                  <span style={{ textAlign: 'center', color: 'var(--muted)', fontSize: 12, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{BOARD_LABEL[p.board]}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+                    {p.flair && <span style={flairBadge}>{p.flair}</span>}
+                    {p.isSpoiler && <span style={spoilerBadge}>스포</span>}
+                    {p.visibility === 'private' && <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" style={{ flexShrink: 0 }}><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>}
+                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 600, minWidth: 0 }}>{p.title || '(제목 없음)'}{p.commentCount > 0 && <span style={{ color: 'var(--accent)', fontWeight: 800, marginLeft: 6, fontSize: 12.5 }}>[{p.commentCount}]</span>}</span>
+                    {p.images.length > 0 && <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="8.5" cy="9.5" r="1.5" /><path d="m4 17 4.5-4.5 3 3L16 11l4 4.5" /></svg>}
+                    {isNew(p) && <span style={newBadge}>N</span>}
+                    {isHot(p) && <span style={hotBadge}>HOT</span>}
                   </div>
-                  <span style={{ color: 'var(--muted)', fontSize: 12.5, textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.author?.nickname ?? '익명'}</span>
-                  <span style={{ textAlign: 'center', color: 'var(--muted)', fontSize: 12 }}>{timeAgo(p.createdAt)}</span>
-                  <span style={{ textAlign: 'center', color: 'var(--muted)', fontSize: 12.5 }}>{p.viewCount}</span>
-                  <span style={{ textAlign: 'center', color: '#FF4D6D', fontWeight: 700, fontSize: 12.5 }}>♥ {p.likeCount}</span>
+                  <span style={cellMuted}>{p.author?.nickname ?? '익명'}</span>
+                  <span style={cellMuted}>{timeAgo(p.createdAt)}</span>
+                  <span style={cellMuted}>{p.viewCount}</span>
+                  <span style={{ textAlign: 'center', color: '#FF4D6D', fontWeight: 700, fontSize: 12.5 }}>{p.likeCount}</span>
                 </div>
               ))}
             </div>
@@ -497,36 +507,28 @@ export default function CommunityPage() {
         </main>
 
         <aside className="taku-comm-side" style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-          <SideCard title="인기 게시글">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {/* 게시판 바로가기 */}
+          <SideCard title="게시판 바로가기">
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {(['free', 'promo', 'tips', 'goods', 'exchange', 'companion'] as Board[]).map((b, i) => (
+                <button key={b} onClick={() => { setBoard(b); setScope('all') }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, border: 'none', background: 'none', padding: '10px 2px', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left', borderTop: i === 0 ? 'none' : '1px solid var(--border)' }}>
+                  <span style={{ fontSize: 13.5, color: board === b ? 'var(--accent)' : 'var(--text)', fontWeight: board === b ? 800 : 600 }}>{BOARD_LABEL[b]}</span>
+                  <span style={{ fontSize: 12.5, color: 'var(--muted)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>{(boardCounts[b] ?? 0).toLocaleString()}<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="m9 18 6-6-6-6" /></svg></span>
+                </button>
+              ))}
+            </div>
+          </SideCard>
+
+          {/* 전체 인기글 */}
+          <SideCard title="전체 인기글">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
               {popular.slice(0, 5).map((p, i) => (
                 <div key={p.id} onClick={() => openPost(p)} style={{ display: 'flex', gap: 10, cursor: 'pointer', alignItems: 'center' }}>
-                  <span style={{ width: 22, textAlign: 'center', fontWeight: 900, fontSize: 14, color: i < 3 ? 'var(--accent)' : 'var(--muted)', flexShrink: 0 }}>{i + 1}</span>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1.35, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{p.isSpoiler && <span style={spoilerBadge}>스포</span>}{p.title || '(제목 없음)'}</div>
-                  </div>
-                  <span style={{ fontSize: 12, color: '#FF4D6D', fontWeight: 700, flexShrink: 0 }}>♥ {p.likeCount}</span>
+                  <span style={{ width: 18, textAlign: 'center', fontWeight: 900, fontSize: 13.5, color: i < 3 ? 'var(--accent)' : 'var(--muted)', flexShrink: 0 }}>{i + 1}</span>
+                  <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.title || '(제목 없음)'}{p.commentCount > 0 && <span style={{ color: 'var(--accent)', fontWeight: 800, marginLeft: 5, fontSize: 12 }}>[{p.commentCount}]</span>}</span>
                 </div>
               ))}
-              {popular.length === 0 && <div style={{ fontSize: 13, color: 'var(--muted)' }}>아직 없어요</div>}
-            </div>
-          </SideCard>
-
-          <SideCard title="실시간 인기 태그">
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
-              {tags.map(t => (
-                <button key={t.id} onClick={() => { const f = allTags.find(x => x.id === t.id); setTagFilter(f ?? { id: t.id, name: t.name, slug: t.slug ?? '' }) }} style={{ padding: '5px 11px', borderRadius: 9999, border: 'none', background: 'var(--surface2)', color: 'var(--accent)', fontSize: 12.5, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}># {t.name}</button>
-              ))}
-              {tags.length === 0 && <div style={{ fontSize: 13, color: 'var(--muted)' }}>아직 없어요</div>}
-            </div>
-          </SideCard>
-
-          <SideCard title="커뮤니티 통계">
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6 }}>
-              <Stat icon="doc" color="#FF5C8A" label="전체 게시글" value={stats?.totalPosts ?? 0} />
-              <Stat icon="calendar" color="#22C3A6" label="오늘 게시글" value={stats?.todayPosts ?? 0} />
-              <Stat icon="chat" color="#8B6BD9" label="오늘 댓글" value={stats?.todayComments ?? 0} />
-              <Stat icon="user" color="#3B9BE8" label="온라인 유저" value="—" />
+              {popular.length === 0 && <div style={{ fontSize: 13, color: 'var(--muted)' }}>아직 인기글이 없어요</div>}
             </div>
           </SideCard>
         </aside>
@@ -544,6 +546,16 @@ const flairBadge: React.CSSProperties = {
   display: 'inline-block', fontSize: 11, fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l, rgba(232,0,111,.12))',
   padding: '1px 7px', borderRadius: 5, marginRight: 6, verticalAlign: 'middle',
 }
+const hotBadge: React.CSSProperties = {
+  flexShrink: 0, fontSize: 10, fontWeight: 900, color: '#fff', background: 'var(--accent)', padding: '1px 5px', borderRadius: 4, letterSpacing: '.02em',
+}
+const newBadge: React.CSSProperties = {
+  flexShrink: 0, fontSize: 10, fontWeight: 900, color: 'var(--accent)', border: '1px solid var(--accent)', padding: '0 4px', borderRadius: 4,
+}
+const cellMuted: React.CSSProperties = {
+  textAlign: 'center', color: 'var(--muted)', fontSize: 12.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+}
+const COLS = '86px minmax(0,1fr) 84px 72px 48px 54px'
 
 /* ── 📱 모바일 팬톡 스타일 전용 ── */
 const iconBtn: React.CSSProperties = {

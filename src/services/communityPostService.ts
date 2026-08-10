@@ -347,9 +347,12 @@ export async function getPostAppeals(postId: string): Promise<PostAppeal[]> {
 }
 
 // ── 커뮤니티 홈: 통합 목록 (전체/board + 내 글 필터) ──
+export type SearchField = 'title' | 'both' | 'author' | 'tag' | 'comment'
+const NO_MATCH_ID = '00000000-0000-0000-0000-000000000000'
 export interface PostQuery {
   mineOnly?: boolean
-  search?: string    // 제목·내용·글쓴이(닉네임)·댓글 검색
+  search?: string    // 검색어
+  field?: SearchField // 검색 범위 (기본 both = 제목+내용)
   tagId?: string     // 작품(만화) 필터
 }
 export async function getPosts(
@@ -362,17 +365,26 @@ export async function getPosts(
   if (opts?.tagId) q = q.contains('tag_ids', [opts.tagId])
   if (opts?.search && opts.search.trim()) {
     const kw = opts.search.trim().replace(/[%,]/g, '')
-    // 제목·내용 + 작성자(닉네임) + 댓글 내용으로도 검색
-    const [{ data: authors }, { data: cmts }] = await Promise.all([
-      supabase.from('profiles').select('id').ilike('nickname', `%${kw}%`).limit(50),
-      supabase.from('post_comments').select('post_id').eq('status', 'active').ilike('content', `%${kw}%`).limit(300),
-    ])
-    const authorIds = (authors ?? []).map((a: any) => a.id)
-    const commentPostIds = Array.from(new Set((cmts ?? []).map((c: any) => c.post_id).filter(Boolean)))
-    const parts = [`title.ilike.%${kw}%`, `content.ilike.%${kw}%`]
-    if (authorIds.length) parts.push(`author_id.in.(${authorIds.join(',')})`)
-    if (commentPostIds.length) parts.push(`id.in.(${commentPostIds.join(',')})`)
-    q = q.or(parts.join(','))
+    const field = opts.field ?? 'both'
+    const parts: string[] = []
+    if (field === 'title' || field === 'both') parts.push(`title.ilike.%${kw}%`)
+    if (field === 'both') parts.push(`content.ilike.%${kw}%`)
+    if (field === 'author') {
+      const { data: authors } = await supabase.from('profiles').select('id').ilike('nickname', `%${kw}%`).limit(50)
+      const ids = (authors ?? []).map((a: any) => a.id)
+      parts.push(ids.length ? `author_id.in.(${ids.join(',')})` : `id.eq.${NO_MATCH_ID}`)
+    }
+    if (field === 'tag') {
+      const { data: tg } = await supabase.from('tags').select('id').ilike('name', `%${kw}%`).limit(50)
+      const ids = (tg ?? []).map((a: any) => a.id)
+      if (ids.length) q = q.overlaps('tag_ids', ids); else q = q.eq('id', NO_MATCH_ID)
+    }
+    if (field === 'comment') {
+      const { data: cmts } = await supabase.from('post_comments').select('post_id').eq('status', 'active').ilike('content', `%${kw}%`).limit(300)
+      const pids = Array.from(new Set((cmts ?? []).map((c: any) => c.post_id).filter(Boolean)))
+      parts.push(pids.length ? `id.in.(${pids.join(',')})` : `id.eq.${NO_MATCH_ID}`)
+    }
+    if (parts.length) q = q.or(parts.join(','))
   }
   const { data, error } = await q.order(sort === 'popular' ? 'like_count' : 'created_at', { ascending: false })
   if (error) console.error('[getPosts]', error.message, error.details ?? '', error.hint ?? '')
@@ -408,6 +420,41 @@ export async function getPopularPosts(limit = 5): Promise<CommunityPost[]> {
   return (data ?? []).map((r: any) => toPost(r, new Set()))
 }
 
+
+// ── 기간별 인기 게시글 (점수 = 좋아요×3 + 댓글×2 + 조회×0.1) ──
+export async function getPopularPostsInWindow(days: number, limit: number): Promise<CommunityPost[]> {
+  const supabase = createClient()
+  const since = new Date(Date.now() - days * 86400000).toISOString()
+  const { data } = await supabase
+    .from('community_posts').select(SELECT)
+    .eq('status', 'active').eq('visibility', 'public').eq('is_notice', false)
+    .gte('created_at', since)
+    .order('like_count', { ascending: false }).limit(200)
+  const rows = (data ?? []).map((r: any) => toPost(r, new Set()))
+  const score = (p: CommunityPost) => p.likeCount * 3 + p.commentCount * 2 + p.viewCount * 0.1
+  return rows.filter(p => score(p) > 0).sort((a, b) => score(b) - score(a)).slice(0, limit)
+}
+
+// ── 게시판별 글 수 (바로가기) ──
+export async function getBoardCounts(): Promise<Record<string, number>> {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('community_posts').select('board')
+    .eq('status', 'active').eq('visibility', 'public').eq('is_notice', false)
+  const m: Record<string, number> = {}
+  for (const r of (data ?? []) as any[]) { if (r.board) m[r.board] = (m[r.board] ?? 0) + 1 }
+  return m
+}
+
+// ── 내 활동 카운트 (작성 글·작성 댓글) ──
+export async function getMyActivityCounts(userId: string): Promise<{ posts: number; comments: number }> {
+  const supabase = createClient()
+  const [p, c] = await Promise.all([
+    supabase.from('community_posts').select('id', { count: 'exact', head: true }).eq('author_id', userId).eq('status', 'active'),
+    supabase.from('post_comments').select('id', { count: 'exact', head: true }).eq('author_id', userId).eq('status', 'active'),
+  ])
+  return { posts: p.count ?? 0, comments: c.count ?? 0 }
+}
 
 // ── 커뮤니티 통계 ──
 export async function getCommunityStats(): Promise<CommunityStats> {
