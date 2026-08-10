@@ -2,12 +2,14 @@
 
 import { useRef, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Shop } from '@/types/shop'
 import { HotMapData } from '@/lib/home/hotMap'
 import KakaoMap, { KakaoMapRef } from '@/components/map/KakaoMap'
 import { CATEGORIES } from '@/lib/constants/categories'
 import { getTodayStatus } from '@/lib/utils/date'
 import { useAuth } from '@/components/layout/AuthProvider'
+import { useSaved } from '@/hooks/useSaved'
 import { getUserShopContext } from '@/services/shopHomeService'
 import styles from './rail.module.css'
 import AppIcon from '@/components/tds/AppIcon'
@@ -51,6 +53,8 @@ function pickFeatured(shops: Shop[], n: number, savedIds: Set<string>): Shop[] {
 export default function MiniMapWidget({ shops, hotMap }: Props) {
   const { center, hotRegions } = hotMap
   const { user } = useAuth()
+  const router = useRouter()
+  const { isSaved, toggleSave } = useSaved()
   const mapRef = useRef<KakaoMapRef>(null)
   const [selectedCat, setSelectedCat] = useState('전체')
   const [selectedShop, setSelectedShop] = useState<Shop | null>(null)
@@ -77,50 +81,37 @@ export default function MiniMapWidget({ shops, hotMap }: Props) {
 
   const mapShops = useMemo(() => filteredShops.filter(onMap), [filteredShops])
 
-  // 최초 마운트: 미니맵 relayout + 핫맵 중심으로 이동
-  useEffect(() => {
-    if (!center) return
-    let n = 0
-    const id = setInterval(() => {
-      mapRef.current?.relayout()
-      if (selectedCat === '전체') mapRef.current?.moveCenter(center.lat, center.lng, 6)
-      if (++n >= 12) clearInterval(id)
-    }, 250)
-    return () => clearInterval(id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [center])
-
-  // 카테고리 선택 → 해당 샵들이 다 보이게 미니맵 이동
-  useEffect(() => {
-    mapRef.current?.relayout()
-    if (selectedCat === '전체') {
-      if (center) mapRef.current?.moveCenter(center.lat, center.lng, 6)
-      return
-    }
-    if (mapShops.length === 0) return
-    const lats = mapShops.map((s) => dispLat(s) as number)
-    const lngs = mapShops.map((s) => dispLng(s) as number)
-    const minLat = Math.min(...lats), maxLat = Math.max(...lats)
-    const minLng = Math.min(...lngs), maxLng = Math.max(...lngs)
-    const span = Math.max(maxLat - minLat, maxLng - minLng)
-    mapRef.current?.moveCenter(
-      (minLat + maxLat) / 2,
-      (minLng + maxLng) / 2,
-      mapShops.length === 1 ? 4 : levelForSpan(span),
-    )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCat, mapShops])
-
   const featured = useMemo(
     () => pickFeatured(filteredShops.filter((s) => s.id !== selectedShop?.id), 3, savedIds),
     [filteredShops, selectedShop, savedIds],
   )
+
+  // 지도 중심: 선택 샵 → 없으면 목록 맨 위 샵 → 없으면 지역 중심
+  const topShop = featured[0] ?? null
+  useEffect(() => {
+    const target = selectedShop ?? topShop
+    let n = 0
+    const iv = setInterval(() => {
+      mapRef.current?.relayout()
+      if (target) mapRef.current?.moveCenter(dispLat(target) as number, dispLng(target) as number, 5)
+      else if (center) mapRef.current?.moveCenter(center.lat, center.lng, 6)
+      if (++n >= 8) clearInterval(iv)
+    }, 250)
+    return () => clearInterval(iv)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedShop?.id, topShop?.id, center])
   const allHref = selectedCat === '전체' ? '/shops/all' : `/shops/all?cats=${encodeURIComponent(selectedCat)}`
+
+  const onHeart = (e: React.MouseEvent, shop: Shop) => {
+    e.preventDefault(); e.stopPropagation()
+    if (!user) { router.push('/login'); return }
+    toggleSave(shop.id)
+  }
 
   const renderCard = (shop: Shop, picked: boolean) => {
     const today = getTodayStatus(shop.hours)
     const dotColor = today.isOpen ? '#3ddc97' : '#ff8a8a'
-    const saved = savedIds.has(shop.id)
+    const saved = isSaved(shop.id)
     return (
       <Link key={shop.id} href={`/shop/${shop.slug}`} className={picked ? styles.mapShopCardOn : styles.mapShopCard}>
         <span className={styles.mapShopThumb}>
@@ -133,11 +124,8 @@ export default function MiniMapWidget({ shops, hotMap }: Props) {
               선택한 샵
             </span>
           )}
-          <span className={styles.mapShopName}>
-            {saved && <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style={{ verticalAlign: '-1px', marginRight: 4 }}><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1Z" /></svg>}
-            {shop.name}
-          </span>
-          <span className={styles.mapShopMeta} style={{ flexWrap: 'wrap' }}>
+          <span className={styles.mapShopName}>{shop.name}</span>
+          <span className={styles.mapShopMeta}>
             {today.label && (
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
                 <span style={{ width: 7, height: 7, borderRadius: 9999, background: dotColor, flexShrink: 0 }} />
@@ -145,11 +133,11 @@ export default function MiniMapWidget({ shops, hotMap }: Props) {
                 {today.todayHours && <span style={{ color: 'var(--muted)', fontWeight: 600 }}>· {today.todayHours}</span>}
               </span>
             )}
-            {shop.rating_count > 0 && (
-              <span className={styles.mapShopRating}>★ {shop.rating_avg.toFixed(1)} ({shop.rating_count})</span>
-            )}
           </span>
         </span>
+        <button className={styles.mapShopHeart} onClick={(e) => onHeart(e, shop)} aria-pressed={saved} aria-label={saved ? '저장 해제' : '저장'}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill={saved ? '#FF5692' : 'none'} stroke={saved ? '#FF5692' : 'var(--muted)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.5 4.04 3 5.5l7 7Z" /></svg>
+        </button>
       </Link>
     )
   }
@@ -159,26 +147,6 @@ export default function MiniMapWidget({ shops, hotMap }: Props) {
       <div className={styles.widgetHead}>
         <span className={styles.widgetTitle}>덕질 지도</span>
         <Link href="/map" className={styles.widgetMore}>전체 지도 보기</Link>
-      </div>
-
-      <div className={styles.miniMap}>
-        <span className={styles.miniMapInner}>
-          <KakaoMap
-            ref={mapRef}
-            shops={filteredShops}
-            activeShopId={selectedShop?.id ?? null}
-            myLocation={null}
-            onSelectShop={setSelectedShop}
-            onMapClick={() => setSelectedShop(null)}
-            onSelectGroup={(g) => setSelectedShop(g[0] ?? null)}
-          />
-        </span>
-        {selectedCat === '전체' && hotRegions.length > 0 && (
-          <span className={styles.hotBadge}>
-            <b>오늘 HOT</b>
-            <span>{hotRegions.join(' · ')}</span>
-          </span>
-        )}
       </div>
 
       <div className={styles.mapChips}>
@@ -199,6 +167,26 @@ export default function MiniMapWidget({ shops, hotMap }: Props) {
             {c.name}
           </button>
         ))}
+      </div>
+
+      <div className={styles.miniMap}>
+        <span className={styles.miniMapInner}>
+          <KakaoMap
+            ref={mapRef}
+            shops={filteredShops}
+            activeShopId={(selectedShop ?? topShop)?.id ?? null}
+            myLocation={null}
+            onSelectShop={setSelectedShop}
+            onMapClick={() => setSelectedShop(null)}
+            onSelectGroup={(g) => setSelectedShop(g[0] ?? null)}
+          />
+        </span>
+        {selectedCat === '전체' && hotRegions.length > 0 && (
+          <span className={styles.hotBadge}>
+            <b>오늘 HOT</b>
+            <span>{hotRegions.join(' · ')}</span>
+          </span>
+        )}
       </div>
 
       {selectedShop && renderCard(selectedShop, true)}

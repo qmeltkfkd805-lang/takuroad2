@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createWork, uploadWorkImage, findDuplicateWork, getWorkForEdit, updateWork, getPromotedGenres } from '@/services/workRegisterService'
 import { IP_TYPES, normIpType, ipTypeList } from '@/lib/constants/ipType'
 
-const GENRES =['액션', '판타지', '학원', '일상', 'SF', '추리', '로맨스', '코미디', '스포츠', '음악', '호러', '드라마', '마법소녀', '소년물', '로봇/메카', '19', '고어']
+const GENRES =['액션', '판타지', '모험', '학원', '일상', 'SF', '추리', '로맨스', 'BL', 'GL', '코미디', '스포츠', '음악', '아이돌', '요리', '호러', '드라마', '마법소녀', '소년물', '로봇/메카', '19', '고어']
 const FIXED_LINKS = ['홈페이지', 'X (트위터)', '유튜브', '팬클럽', '인스타그램']
 const STEPS = [
   { n: 1, label: '기본 정보' },

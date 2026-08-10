@@ -7,7 +7,7 @@
 .slide {
   position: relative; overflow: hidden;
   display: flex; align-items: center; justify-content: flex-start; gap: 16px;
-  min-height: 360px; padding: 32px 40px; border: 1px solid var(--border); border-radius: var(--r);
+  min-height: 320px; padding: 36px 48px; border: 1px solid var(--border); border-radius: var(--r);
 }
 
 .bgImage { position: absolute; inset: 0; z-index: 0; }
@@ -15,6 +15,7 @@
 .scrim { position: absolute; inset: 0; z-index: 0; background: linear-gradient(90deg, rgba(0,0,0,.55), rgba(0,0,0,.2) 55%, rgba(0,0,0,0) 85%); }
 
 .text { position: relative; z-index: 1; flex: 1 1 auto; min-width: 0; max-width: 620px; }
+.badge { display: inline-block; font-size: 13px; font-weight: 800; margin: 0 0 10px; opacity: .92; letter-spacing: -0.2px; }
 .title { font-size: 34px; font-weight: 900; margin: 0; line-height: 1.28; letter-spacing: -0.5px; }
 .subtitle { font-size: 16px; font-weight: 600; margin: 14px 0 0; opacity: .9; }
 
@@ -48,6 +49,7 @@
   .wrap { padding: 0 0 12px; }                       /* 위쪽 여백 제거 — 헤더 바로 아래 붙게 */
   .viewport { border-radius: 0; }
   .slide { min-height: 190px; padding: 20px; border: none; border-radius: 0; }  /* 좌우 꽉 차고 높이 줄인 히어로 */
+  .badge { font-size: 12px; margin-bottom: 6px; }
   .title { font-size: 21px; line-height: 1.25; }
   .subtitle { font-size: 13.5px; margin-top: 8px; }
   .ctaRow { margin-top: 14px; }

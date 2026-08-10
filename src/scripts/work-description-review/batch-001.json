@@ -1,0 +1,118 @@
+[
+  {
+    "slug": "100-girlfriends",
+    "description": "운명의 상대가 100명이라는 계시를 받은 렌타로와 연인들의 초다인수 러브 코미디.",
+    "officialUrl": "https://hyakkano.com/",
+    "source": "https://hyakkano.com/",
+    "genres": [
+      "로맨스",
+      "코미디",
+      "학원"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "5toubun-no-hanayome",
+    "description": "가난한 고등학생 후타로가 낙제 위기의 다섯 쌍둥이 자매를 가르치는 러브 코미디.",
+    "officialUrl": "https://www.tbs.co.jp/anime/5hanayome/",
+    "source": "https://www.tbs.co.jp/anime/5hanayome/",
+    "genres": [
+      "로맨스",
+      "코미디",
+      "학원",
+      "드라마"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "86-eighty-six",
+    "description": "공화국의 무인 병기 뒤에서 싸우는 에이티식스와 지휘관 레나의 전쟁과 연대를 그린 SF.",
+    "officialUrl": "https://anime-86.com/",
+    "source": "https://anime-86.com/story/?id=01",
+    "genres": [
+      "액션",
+      "SF",
+      "드라마",
+      "로봇/메카"
+    ],
+    "ipType": [
+      "소설",
+      "애니"
+    ]
+  },
+  {
+    "slug": "a3",
+    "description": "폐업 위기의 극단을 되살리기 위해 배우들을 육성하고 무대를 만드는 모바일 게임.",
+    "officialUrl": "https://www.a3-liber.jp/",
+    "source": "https://www.a3-liber.jp/",
+    "genres": [
+      "음악",
+      "드라마"
+    ],
+    "ipType": [
+      "게임",
+      "애니"
+    ]
+  },
+  {
+    "slug": "afk-journey",
+    "description": "에스페리아를 탐험하며 영웅을 모으고 전략 전투를 펼치는 판타지 방치형 RPG.",
+    "officialUrl": "https://afkjourney.farlightgames.com/",
+    "source": "https://www.lilith.com/news/7536aa233eec52b424ce5eaa90e81079/?locale=en_US",
+    "genres": [
+      "액션",
+      "판타지"
+    ],
+    "ipType": [
+      "게임"
+    ]
+  },
+  {
+    "slug": "air",
+    "description": "여름 바닷가 마을에서 인형사 유키토가 날개 달린 소녀의 전설을 좇는 비주얼 노벨.",
+    "officialUrl": "http://key.visualarts.gr.jp/product/air/",
+    "source": "http://key.visualarts.gr.jp/product/air/",
+    "genres": [
+      "로맨스",
+      "판타지",
+      "드라마"
+    ],
+    "ipType": [
+      "게임",
+      "애니"
+    ]
+  },
+  {
+    "slug": "aogiri-high-school",
+    "description": "무엇이든 도전하는 자유로운 콘텐츠를 내세운 일본의 여성 VTuber 그룹.",
+    "officialUrl": "https://vhs-city.com/aogirihighschool/",
+    "source": "https://vhs-city.com/aogirihighschool/about",
+    "genres": [
+      "일상",
+      "코미디",
+      "음악"
+    ],
+    "ipType": [
+      "버튜버"
+    ]
+  },
+  {
+    "slug": "bt21",
+    "description": "LINE FRIENDS와 BTS가 함께 만든 KOYA·RJ·TATA 등 8개 캐릭터 IP.",
+    "officialUrl": "https://www.bt21.com/",
+    "source": "https://www.bt21.com/about?lang=ko",
+    "genres": [
+      "일상",
+      "코미디"
+    ],
+    "ipType": [
+      "캐릭터"
+    ]
+  }
+]

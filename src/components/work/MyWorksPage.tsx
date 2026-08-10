@@ -17,7 +17,7 @@ import { IP_TYPES, normIpType, ipTypeList } from '@/lib/constants/ipType'
 type Work = { id: string; name: string; slug: string; cover_url?: string | null; banner_image?: string | null; english_name?: string | null; ip_type?: string | null; release_year?: number | null; genres?: any; description?: string | null }
 
 // 장르 필터 표시 순서 (작품 등록 화면과 동일)
-const GENRE_ORDER = ['액션', '판타지', '학원', '일상', 'SF', '추리', '로맨스', '코미디', '스포츠', '음악', '호러', '드라마', '마법소녀', '소년물', '로봇/메카', '19', '고어']
+const GENRE_ORDER = ['액션', '판타지', '모험', '학원', '일상', 'SF', '추리', '로맨스', 'BL', 'GL', '코미디', '스포츠', '음악', '아이돌', '요리', '호러', '드라마', '마법소녀', '소년물', '로봇/메카', '19', '고어']
 const genreList = (w: Work): string[] => Array.isArray(w.genres) ? w.genres.filter((g: any) => typeof g === 'string') : []
 
 function completeness(w: Work): number {

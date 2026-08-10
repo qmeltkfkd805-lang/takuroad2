@@ -170,8 +170,8 @@ export interface RecentActivity {
 const ACT_ICON: Partial<Record<ActivityType, string>> = {
   shop_visit: 'checkin', event_visit: 'event', route_completed: 'route',
   review: 'star', photo_upload: 'star', shop_register: 'shop',
-  event_submit: 'event', route_created: 'route', work_register: 'heart',
-  work_progress: 'heart', achievement_unlock: 'star',
+  event_submit: 'event', route_created: 'route', work_register: 'work',
+  work_progress: 'work', achievement_unlock: 'star',
 }
 
 function activityHref(type: ActivityType, s: ActivitySnapshot, relatedId: string | null): string | null {
@@ -196,28 +196,89 @@ function validDate(v: any): string | null {
   return Number.isNaN(t) ? null : v
 }
 
+/** 활동 종류별 사람이 읽는 라벨 — 이름이 없어도 "무슨 활동"인지 항상 드러낸다 */
+function activityLabel(type: ActivityType, s: ActivitySnapshot): string {
+  switch (type) {
+    case 'shop_visit':        return s.shop_name ? `${s.shop_name} 방문` : '샵 방문'
+    case 'event_visit':       return s.event_name ? `${s.event_name} 참여` : '이벤트 참여'
+    case 'route_completed':   return s.route_name ? `${s.route_name} 완주` : '루트 완주'
+    case 'review':            return (s.shop_name || s.event_name) ? `${s.shop_name || s.event_name} 후기 작성` : '후기 작성'
+    case 'photo_upload':      return `사진 ${s.photo_count ?? 1}장 등록`
+    case 'shop_register':     return s.shop_name ? `${s.shop_name} 등록` : '샵 등록'
+    case 'event_submit':      return s.event_name ? `${s.event_name} 제보` : '이벤트 제보'
+    case 'route_created':     return s.route_name ? `${s.route_name} 제작` : '루트 제작'
+    case 'work_register':     return s.work_name ? `${s.work_name} 작품 등록` : '작품 등록'
+    case 'work_progress':     return `${s.work_name ?? '작품'} ${s.pct ?? 0}% 달성`
+    case 'achievement_unlock':return s.achievement_name ? `${s.achievement_name} 달성` : '업적 달성'
+    default:                  return '활동'
+  }
+}
+
 export async function getMyRecentActivities(userId: string, limit = 5): Promise<RecentActivity[]> {
   const supabase = createClient()
-  // created_at 기준(occurred_at은 비어있는 행이 있어 연대기와 동일하게 created_at 사용)
-  const { data, error } = await supabase
+
+  // 1) 원장(activity_logs)
+  const logsRes = await supabase
     .from('activity_logs')
     .select('id, type, snapshot, title, related_id, occurred_at, created_at')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
-    .limit(limit)
-  if (error) { console.error('[getMyRecentActivities]', error.message); return [] }
-  return (data ?? []).map((r: any) => {
+    .limit(limit + 5)
+  if (logsRes.error) console.error('[getMyRecentActivities:logs]', logsRes.error.message)
+
+  const fromLogs: RecentActivity[] = (logsRes.data ?? []).map((r: any) => {
     const s = (r.snapshot ?? {}) as ActivitySnapshot
-    const when = validDate(r.created_at) ?? validDate(r.occurred_at)
+    const label = activityLabel(r.type, s)
     return {
       id: r.id,
       type: r.type,
-      title: (r.title && String(r.title).trim()) || buildLegacyTitle(r.type, s) || '활동',
+      title: label !== '활동' ? label : ((r.title && String(r.title).trim()) || '활동'),
       href: activityHref(r.type, s, r.related_id),
       icon: ACT_ICON[r.type as ActivityType] ?? 'star',
-      occurredAt: when ?? '',
+      occurredAt: validDate(r.created_at) ?? validDate(r.occurred_at) ?? '',
     }
   })
+
+  // 원장에 이미 있는 완주 route_id는 중복 제거
+  const loggedRouteIds = new Set(
+    (logsRes.data ?? [])
+      .filter((r: any) => r.type === 'route_completed')
+      .map((r: any) => r.related_id)
+      .filter(Boolean),
+  )
+
+  // 2) 루트 완주(route_completions) — GPS 실행 완주는 원장에 없어 합친다.
+  //    스키마 차이에 강하게: select('*') 후 루트 제목은 별도 조회.
+  let fromComp: RecentActivity[] = []
+  try {
+    const compRes = await supabase.from('route_completions').select('*').eq('user_id', userId).limit(limit + 10)
+    const comps = compRes.data ?? []
+    const routeIds = Array.from(new Set(comps.map((c: any) => c.route_id).filter(Boolean)))
+    const routeMap = new Map<string, any>()
+    if (routeIds.length) {
+      const { data: rts } = await supabase.from('routes').select('id, title, share_token').in('id', routeIds)
+      ;(rts ?? []).forEach((r: any) => routeMap.set(r.id, r))
+    }
+    fromComp = comps
+      .filter((c: any) => !loggedRouteIds.has(c.route_id))
+      .map((c: any) => {
+        const rt = routeMap.get(c.route_id)
+        return {
+          id: `comp-${c.id}`,
+          type: 'route_completed' as ActivityType,
+          title: rt?.title ? `${rt.title} 완주` : '루트 완주',
+          href: rt?.share_token ? `/route/${rt.share_token}` : null,
+          icon: 'route',
+          occurredAt: validDate(c.created_at) ?? validDate(c.completed_at) ?? validDate(c.inserted_at) ?? '',
+        }
+      })
+  } catch (e) {
+    console.error('[getMyRecentActivities:completions]', e)
+  }
+
+  return [...fromLogs, ...fromComp]
+    .sort((a, b) => new Date(b.occurredAt || 0).getTime() - new Date(a.occurredAt || 0).getTime())
+    .slice(0, limit)
 }
 
 /* ────────────────────────────────────────────────

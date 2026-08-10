@@ -1,0 +1,180 @@
+[
+  {
+    "slug": "arknights",
+    "description": "광석병과 재앙이 만연한 테라에서 로도스 아일랜드가 감염자 문제와 세력 간 분쟁에 맞서는 전략 RPG.",
+    "genres": [
+      "액션",
+      "판타지",
+      "SF",
+      "드라마"
+    ],
+    "officialUrl": "https://www.arknights.global/",
+    "source": "https://www.arknights.global/",
+    "ipType": [
+      "게임"
+    ]
+  },
+  {
+    "slug": "wuthering-waves",
+    "description": "대재앙 이후의 세계에서 기억을 잃은 방랑자가 공명자들과 만나 자신의 과거를 찾는 오픈월드 액션 RPG.",
+    "genres": [
+      "액션",
+      "판타지",
+      "SF"
+    ],
+    "officialUrl": "https://wutheringwaves.kurogames.com/",
+    "source": "https://wutheringwaves.kurogames.com/",
+    "ipType": [
+      "게임"
+    ]
+  },
+  {
+    "slug": "detective-conan",
+    "description": "독약으로 어린아이가 된 고교생 탐정 신이치가 코난이라는 이름으로 사건과 검은 조직의 비밀을 추적한다.",
+    "genres": [
+      "추리",
+      "드라마",
+      "소년물"
+    ],
+    "officialUrl": "https://www.conan-portal.com/",
+    "source": "https://www.conan-portal.com/",
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "momonga",
+    "description": "귀여움을 마음껏 뽐내고 주변의 관심을 요구하며 치이카와 세계를 종횡무진하는 자유분방한 캐릭터.",
+    "genres": [
+      "판타지",
+      "일상",
+      "코미디"
+    ],
+    "officialUrl": "https://www.chiikawaofficial.com/",
+    "source": "https://www.chiikawaofficial.com/characters/",
+    "ipType": [
+      "캐릭터"
+    ]
+  },
+  {
+    "slug": "mob-psycho-100",
+    "description": "평범하게 살고 싶은 강력한 초능력자 중학생 모브가 감정과 인간관계를 배우며 성장하는 청춘 이야기.",
+    "genres": [
+      "액션",
+      "학원",
+      "일상",
+      "코미디"
+    ],
+    "officialUrl": "https://mobpsycho100.com/",
+    "source": "https://mobpsycho100.com/2nd/",
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "moana",
+    "description": "바다의 부름을 받은 소녀 모아나가 반신 마우이와 항해하며 섬과 사람들을 구하는 뮤지컬 모험.",
+    "genres": [
+      "액션",
+      "판타지",
+      "음악",
+      "드라마"
+    ],
+    "officialUrl": "https://movies.disney.com/moana",
+    "source": "https://movies.disney.com/moana",
+    "ipType": [
+      "영화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "monster-strike",
+    "description": "몬스터를 당겨 발사하고 벽과 동료에게 반사시켜 강적을 쓰러뜨리는 협동형 모바일 액션 RPG.",
+    "genres": [
+      "액션",
+      "판타지"
+    ],
+    "officialUrl": "https://www.monster-strike.com/",
+    "source": "https://www.monster-strike.com/howto/",
+    "ipType": [
+      "게임",
+      "애니"
+    ]
+  },
+  {
+    "slug": "monsters-inc",
+    "description": "아이들의 비명을 모으는 설리와 마이크가 인간 소녀 부를 만나며 몬스터 세계의 소동에 휘말린다.",
+    "genres": [
+      "판타지",
+      "코미디",
+      "드라마"
+    ],
+    "officialUrl": "https://www.pixar.com/monsters-inc",
+    "source": "https://www.pixar.com/monsters-inc",
+    "ipType": [
+      "영화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "monster-hunter",
+    "description": "광대한 자연에서 거대 몬스터를 추적·수렵하고 소재를 모아 더 강한 장비를 만드는 헌팅 액션 시리즈.",
+    "genres": [
+      "액션",
+      "판타지"
+    ],
+    "officialUrl": "https://www.monsterhunter.com/",
+    "source": "https://www.capcom.com.tw/en/license/ip01/",
+    "ipType": [
+      "게임"
+    ]
+  },
+  {
+    "slug": "molang",
+    "description": "다정한 몰랑과 단짝 피우피우가 공감과 우정, 작은 행복을 나누는 포근한 캐릭터·애니메이션 브랜드.",
+    "genres": [
+      "일상",
+      "코미디"
+    ],
+    "officialUrl": "https://shop.molang.com/",
+    "source": "https://shop.molang.com/pages/about-us",
+    "ipType": [
+      "캐릭터",
+      "애니"
+    ]
+  },
+  {
+    "slug": "moomin",
+    "description": "무민 가족과 개성 넘치는 친구들이 무민 골짜기에서 겪는 모험을 통해 사랑과 삶의 지혜를 전한다.",
+    "genres": [
+      "판타지",
+      "일상",
+      "드라마"
+    ],
+    "officialUrl": "https://moomin.co.jp/",
+    "source": "https://moomin.co.jp/about",
+    "ipType": [
+      "소설",
+      "캐릭터",
+      "애니"
+    ]
+  },
+  {
+    "slug": "mushoku-tensei",
+    "description": "후회뿐인 삶을 마친 남자가 루데우스로 이세계에 환생해 이번 생은 진심으로 살겠다고 다짐하는 성장 판타지.",
+    "genres": [
+      "액션",
+      "판타지",
+      "드라마"
+    ],
+    "officialUrl": "https://mushokutensei.jp/",
+    "source": "https://mushokutensei.jp/introduction/",
+    "ipType": [
+      "웹소설",
+      "만화",
+      "애니"
+    ]
+  }
+]

@@ -1,0 +1,178 @@
+[
+  {
+    "slug": "dark-souls",
+    "description": "불이 꺼져 가는 저주받은 세계에서 망자가 되어 순례와 전투를 이어가는 고난도 액션 RPG.",
+    "officialUrl": "https://www.bandainamcoent.com/games/dark-souls-remastered",
+    "source": "https://www.bandainamcoent.com/games/dark-souls-remastered",
+    "genres": [
+      "액션",
+      "판타지",
+      "호러"
+    ],
+    "ipType": [
+      "게임"
+    ]
+  },
+  {
+    "slug": "dr-stone",
+    "description": "인류가 석화된 수천 년 뒤 깨어난 센쿠가 과학의 힘으로 문명과 사람들을 되살리는 모험.",
+    "officialUrl": "https://dr-stone.jp/",
+    "source": "https://dr-stone.jp/introduction/",
+    "genres": [
+      "SF",
+      "소년물"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "dandadan",
+    "description": "유령을 믿는 모모와 외계인을 믿는 오카룬이 괴이와 맞서며 가까워지는 오컬트 청춘물.",
+    "officialUrl": "https://anime-dandadan.com/",
+    "source": "https://anime-dandadan.com/en/",
+    "genres": [
+      "액션",
+      "판타지",
+      "로맨스",
+      "코미디"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "darling-in-the-franxx",
+    "description": "황폐한 지상에서 소년소녀들이 프랑크스에 함께 올라 규룡과 싸우는 SF 로봇 드라마.",
+    "officialUrl": "https://darli-fra.jp/",
+    "source": "https://darli-fra.jp/story/?no=intro",
+    "genres": [
+      "SF",
+      "로맨스",
+      "드라마",
+      "로봇/메카"
+    ],
+    "ipType": [
+      "애니"
+    ]
+  },
+  {
+    "slug": "king-of-fighters",
+    "description": "SNK의 인기 격투가들이 세 명씩 팀을 이루어 세계 규모의 격투 대회에 도전하는 대전 격투 시리즈.",
+    "officialUrl": "https://www.snk-corp.co.jp/kr/games/kof-portal/",
+    "source": "https://www.snk-corp.co.jp/kr/games/kof-portal/about/",
+    "genres": [
+      "액션"
+    ],
+    "ipType": [
+      "게임"
+    ]
+  },
+  {
+    "slug": "dungeon-fighter",
+    "description": "모험가가 되어 위기에 빠진 아라드 대륙을 누비며 던전과 강적에 맞서는 온라인 액션 RPG.",
+    "officialUrl": "https://df.nexon.com/",
+    "source": "https://df.nexon.com/",
+    "genres": [
+      "액션",
+      "판타지"
+    ],
+    "ipType": [
+      "게임"
+    ]
+  },
+  {
+    "slug": "danmachi",
+    "description": "모험가 지망생 벨이 여신 헤스티아를 만나 미궁도시 오라리오의 던전에 도전하는 성장 판타지.",
+    "officialUrl": "https://danmachi.com/",
+    "source": "https://danmachi.com/danmachi/story/introduction.html",
+    "genres": [
+      "액션",
+      "판타지",
+      "로맨스"
+    ],
+    "ipType": [
+      "소설",
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "devil-may-cry",
+    "description": "악마의 피를 이은 데빌 헌터 단테가 인간 세계를 위협하는 악마들을 사냥하는 스타일리시 액션 시리즈.",
+    "officialUrl": "https://www.devilmaycry.com/",
+    "source": "https://www.netflix.com/title/81506915",
+    "genres": [
+      "액션",
+      "판타지",
+      "호러"
+    ],
+    "ipType": [
+      "게임",
+      "애니"
+    ]
+  },
+  {
+    "slug": "death-note",
+    "description": "이름을 적으면 사람이 죽는 노트를 얻은 라이토와 명탐정 L이 벌이는 치밀한 두뇌 대결.",
+    "officialUrl": "https://www.ntv.co.jp/deathnote/",
+    "source": "https://www.ntv.co.jp/english/pc/2015/03/death-note.html",
+    "genres": [
+      "추리",
+      "드라마",
+      "호러"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "date-a-live",
+    "description": "재앙을 일으키는 정령을 구하기 위해 시도가 데이트로 마음을 열고 그 힘을 봉인하는 학원 판타지.",
+    "officialUrl": "https://date-a-live5th-anime.com/",
+    "source": "https://date-a-live5th-anime.com/",
+    "genres": [
+      "판타지",
+      "학원",
+      "로맨스",
+      "코미디"
+    ],
+    "ipType": [
+      "소설",
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "touken-ranbu",
+    "description": "명검이 인간의 모습으로 깨어난 도검남사들을 이끌고 과거로 출진해 역사의 변조를 막는 육성 게임.",
+    "officialUrl": "https://www.toukenranbu.jp/",
+    "source": "https://www.toukenranbu.jp/about/",
+    "genres": [
+      "액션",
+      "판타지"
+    ],
+    "ipType": [
+      "게임",
+      "애니"
+    ]
+  },
+  {
+    "slug": "doraemon",
+    "description": "미래에서 온 고양이형 로봇 도라에몽이 비밀도구로 노진구의 일상과 모험을 돕는 가족 코미디.",
+    "officialUrl": "https://dora-world.com/",
+    "source": "https://dora-world.com/",
+    "genres": [
+      "일상",
+      "SF",
+      "코미디"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  }
+]

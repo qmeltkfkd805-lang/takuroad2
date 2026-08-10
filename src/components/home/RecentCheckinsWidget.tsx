@@ -24,6 +24,7 @@ const ICON_STYLE: Record<string, { c: string; bg: string }> = {
   route:   { c: '#1FAE8C', bg: '#E1F7F2' },  // 완주·제작 — 민트
   event:   { c: '#E0952B', bg: '#FFF3DE' },  // 이벤트 — 앰버
   shop:    { c: '#8B7BE8', bg: '#EFECFD' },  // 샵 등록 — 바이올렛
+  work:    { c: '#5C6BC0', bg: '#ECEEFB' },  // 작품 등록 — 인디고(책갈피)
   heart:   { c: '#FF6B6B', bg: '#FFECEC' },  // 작품 — 레드
   star:    { c: '#FF5692', bg: '#FFEAF1' },  // 리뷰·업적 — 핑크
 }
@@ -38,6 +39,7 @@ function ActIcon({ kind }: { kind: string }) {
     case 'event': return <svg {...p}><rect x="3.5" y="5" width="17" height="15" rx="2.5" /><path d="M3.5 9.5h17M8 3v4M16 3v4" /></svg>
     case 'shop': return <svg {...p}><path d="M4 9l1-5h14l1 5M5 9v10h14V9M4 9h16" /></svg>
     case 'heart': return <svg {...p}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.5 4.04 3 5.5l7 7Z" /></svg>
+    case 'work': return <svg {...p}><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1Z" /></svg>
     default: return <svg {...p}><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 17.8 6.8 20l1-5.8L3.5 9.2l5.9-.9z" /></svg>
   }
 }

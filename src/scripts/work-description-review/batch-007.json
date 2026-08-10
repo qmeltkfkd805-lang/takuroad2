@@ -1,0 +1,175 @@
+[
+  {
+    "slug": "lala-sanrio",
+    "description": "꿈별구름의 배려별에서 태어나 훌륭한 별이 되기 위해 지구에 온 리틀 트윈 스타즈의 누나.",
+    "officialUrl": "https://www.sanrio.co.jp/specialsite/kikilala/",
+    "source": "https://corporate.sanrio.co.jp/news/assets/pdf/2025/20251111103009355s.pdf",
+    "genres": [
+      "일상",
+      "판타지"
+    ],
+    "ipType": [
+      "캐릭터"
+    ]
+  },
+  {
+    "slug": "line-friends",
+    "description": "모바일 메신저 스티커에서 출발한 브라운, 코니, 샐리와 친구들의 글로벌 캐릭터 브랜드.",
+    "officialUrl": "https://linefriends.com/",
+    "source": "https://linefriends.com/jp/characters-list/ip-linefriends",
+    "genres": [
+      "일상",
+      "코미디"
+    ],
+    "ipType": [
+      "캐릭터"
+    ]
+  },
+  {
+    "slug": "rako",
+    "description": "제주에서 종이봉투 작업복을 입고 당근과 여러 작물을 정성껏 키우는 열정적인 농부 토끼 캐릭터.",
+    "officialUrl": null,
+    "source": "https://inabooth.io/ja/ip/INB-0MOQ-MGUF",
+    "genres": [
+      "일상"
+    ],
+    "ipType": [
+      "캐릭터"
+    ]
+  },
+  {
+    "slug": "tangled",
+    "description": "마법의 긴 머리카락을 지닌 라푼젤이 도둑 플린과 탑을 나와 세상을 만나는 디즈니 뮤지컬 모험.",
+    "officialUrl": "https://movies.disney.com/tangled",
+    "source": "https://movies.disney.com/tangled",
+    "genres": [
+      "판타지",
+      "로맨스",
+      "코미디",
+      "음악"
+    ],
+    "ipType": [
+      "영화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "ranma-1-2",
+    "description": "찬물을 맞으면 여자로 변하는 무술가 란마와 약혼자 아카네 주변에서 벌어지는 격투 러브 코미디.",
+    "officialUrl": "https://ranma-pr.com/",
+    "source": "https://ranma-pr.com/",
+    "genres": [
+      "액션",
+      "학원",
+      "로맨스",
+      "코미디"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "love-and-deepspace",
+    "description": "심공 사냥꾼이 되어 괴물과 싸우고 특별한 능력을 지닌 남성들과 관계를 쌓는 3D 연애 액션 게임.",
+    "officialUrl": "https://loveanddeepspace.infoldgames.com/en-EN/home",
+    "source": "https://loveanddeepspace.infoldgames.com/en-EN/news/1",
+    "genres": [
+      "액션",
+      "SF",
+      "로맨스"
+    ],
+    "ipType": [
+      "게임"
+    ]
+  },
+  {
+    "slug": "love-live",
+    "description": "학교에서 활동하는 스쿨 아이돌들이 동료와 함께 꿈을 이루는 과정을 그리는 올미디어 프로젝트.",
+    "officialUrl": "https://www.lovelive-anime.jp/",
+    "source": "https://www.lovelive-anime.jp/sp_nextproject.html",
+    "genres": [
+      "학원",
+      "음악",
+      "아이돌",
+      "드라마"
+    ],
+    "ipType": [
+      "게임",
+      "애니"
+    ]
+  },
+  {
+    "slug": "log-horizon",
+    "description": "온라인 게임 세계에 갇힌 시로에와 플레이어들이 길드를 세우고 새로운 사회를 만들어 가는 판타지.",
+    "officialUrl": "https://tounomamare.com/log01",
+    "source": "https://tounomamare.com/log01",
+    "genres": [
+      "액션",
+      "판타지",
+      "드라마"
+    ],
+    "ipType": [
+      "소설",
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "lobotomy-corporation",
+    "description": "관리자가 되어 위험한 환상체를 통제하고 에너지를 생산하며 시설을 확장하는 괴물 관리 시뮬레이션.",
+    "officialUrl": null,
+    "source": "https://store.steampowered.com/app/568220/Lobotomy_Corporation__Monster_Management_Simulation/",
+    "genres": [
+      "SF",
+      "호러",
+      "고어"
+    ],
+    "ipType": [
+      "게임"
+    ]
+  },
+  {
+    "slug": "roblox",
+    "description": "이용자가 직접 3D 경험과 아이템을 만들고 배포하며 다른 사람과 함께 즐기는 창작 플랫폼.",
+    "officialUrl": "https://www.roblox.com/",
+    "source": "https://create.roblox.com/docs/what-is-roblox",
+    "genres": [
+      "액션",
+      "판타지"
+    ],
+    "ipType": [
+      "게임"
+    ]
+  },
+  {
+    "slug": "mega-man",
+    "description": "푸른 로봇 영웅 록맨이 적의 능력을 획득하며 다양한 로봇과 악의 세력에 맞서는 액션 게임 시리즈.",
+    "officialUrl": "https://megaman.capcom.com/",
+    "source": "https://megaman.capcom.com/",
+    "genres": [
+      "액션",
+      "SF",
+      "소년물"
+    ],
+    "ipType": [
+      "게임",
+      "애니"
+    ]
+  },
+  {
+    "slug": "lupin-the-third",
+    "description": "천재 괴도 루팡 3세와 동료들이 세계의 보물을 노리며 제니가타 경부의 추격을 따돌리는 범죄 활극.",
+    "officialUrl": "https://www.lupin-3rd.net/",
+    "source": "https://www.lupin-3rd.net/part6/introduction/",
+    "genres": [
+      "액션",
+      "추리",
+      "코미디"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  }
+]

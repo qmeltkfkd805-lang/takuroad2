@@ -98,6 +98,7 @@ function BannerSlide({ banner }: { banner: FeaturedBanner }) {
         </div>
       )}
       <div className={styles.text}>
+        {(banner as any).badge && <span className={styles.badge} style={{ color: banner.text_color }}>{(banner as any).badge}</span>}
         <h2 className={styles.title} style={{ color: banner.text_color }}>{banner.title}</h2>
         {banner.subtitle && <p className={styles.subtitle} style={{ color: banner.text_color }}>{banner.subtitle}</p>}
         {buttons.length > 0 && (

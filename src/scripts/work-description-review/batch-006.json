@@ -1,0 +1,176 @@
+[
+  {
+    "slug": "dorohedoro",
+    "description": "도마뱀 머리가 된 기억상실자 카이만이 니카이도와 함께 자신에게 마법을 건 자를 추적하는 다크 판타지.",
+    "officialUrl": "https://dorohedoro.net/",
+    "source": "https://dorohedoro.net/",
+    "genres": [
+      "액션",
+      "판타지",
+      "호러",
+      "고어"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "the-elusive-samurai",
+    "description": "가마쿠라 막부 멸망 뒤 살아남은 호조 도키유키가 뛰어난 도주 능력으로 난세를 헤쳐 가는 역사극.",
+    "officialUrl": "https://nigewaka.run/",
+    "source": "https://nigewaka.run/",
+    "genres": [
+      "액션",
+      "드라마",
+      "소년물"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "tokyo-revengers",
+    "description": "무너진 인생을 살던 타케미치가 과거로 돌아가 연인과 동료의 죽음을 막으려는 타임리프 서스펜스.",
+    "officialUrl": "https://www.tokyo-revengers-anime.com/",
+    "source": "https://www.tokyo-revengers-anime.com/",
+    "genres": [
+      "액션",
+      "SF",
+      "드라마"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "animal-crossing",
+    "description": "동물 이웃들과 교류하며 집과 마을을 꾸미고 계절의 변화를 즐기는 닌텐도의 생활 시뮬레이션 시리즈.",
+    "officialUrl": "https://www.nintendo.com/us/store/characters/animal-crossing/",
+    "source": "https://www.nintendo.com/us/store/characters/animal-crossing/",
+    "genres": [
+      "일상"
+    ],
+    "ipType": [
+      "게임",
+      "애니"
+    ]
+  },
+  {
+    "slug": "touhou-project",
+    "description": "환상향의 이변을 해결하는 소녀들과 화려한 탄막 대결을 중심으로 펼쳐지는 동인 슈팅 게임 시리즈.",
+    "officialUrl": "https://www16.big.or.jp/~zun/",
+    "source": "https://www16.big.or.jp/~zun/",
+    "genres": [
+      "액션",
+      "판타지"
+    ],
+    "ipType": [
+      "게임"
+    ]
+  },
+  {
+    "slug": "donkey-kong",
+    "description": "괴력의 고릴라 동키콩과 동료들이 정글과 여러 세계를 누비는 닌텐도의 액션 게임 시리즈.",
+    "officialUrl": "https://www.nintendo.com/us/store/characters/donkey-kong/",
+    "source": "https://www.nintendo.com/us/store/characters/donkey-kong/",
+    "genres": [
+      "액션",
+      "코미디"
+    ],
+    "ipType": [
+      "게임"
+    ]
+  },
+  {
+    "slug": "duel-masters",
+    "description": "다섯 문명의 크리처와 주문 카드를 조합해 상대의 실드를 돌파하는 대전 카드게임 중심의 미디어 IP.",
+    "officialUrl": "https://dm.takaratomy.co.jp/",
+    "source": "https://www.takaratomy.co.jp/products/brand/dm.html",
+    "genres": [
+      "액션",
+      "판타지",
+      "소년물"
+    ],
+    "ipType": [
+      "게임",
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "dragon-quest",
+    "description": "플레이어가 주인공이 되어 동료들과 성장하며 세계를 위협하는 마왕에 맞서는 일본 대표 RPG 시리즈.",
+    "officialUrl": "https://www.dragonquest.jp/",
+    "source": "https://www.dragonquest.jp/about/",
+    "genres": [
+      "액션",
+      "판타지"
+    ],
+    "ipType": [
+      "게임",
+      "애니"
+    ]
+  },
+  {
+    "slug": "dragon-ball",
+    "description": "손오공과 동료들이 드래곤볼을 찾아 모험하고 강적과 겨루며 성장하는 배틀 어드벤처 시리즈.",
+    "officialUrl": "https://dragon-ball-official.com/",
+    "source": "https://dragon-ball-official.com/about/",
+    "genres": [
+      "액션",
+      "판타지",
+      "소년물"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "disney",
+    "description": "애니메이션과 영화, 방송, 스트리밍, 테마파크를 아우르는 세계적인 가족 엔터테인먼트 기업과 브랜드.",
+    "officialUrl": "https://thewaltdisneycompany.com/",
+    "source": "https://thewaltdisneycompany.com/",
+    "genres": [
+      "판타지"
+    ],
+    "ipType": [
+      "브랜드"
+    ]
+  },
+  {
+    "slug": "digimon",
+    "description": "디지털 세계에 사는 생명체들이 파트너와 유대를 맺고 진화하며 모험하는 멀티미디어 프랜차이즈.",
+    "officialUrl": "https://digimon.net/",
+    "source": "https://digimon.net/profile/",
+    "genres": [
+      "액션",
+      "판타지",
+      "SF",
+      "소년물"
+    ],
+    "ipType": [
+      "게임",
+      "캐릭터",
+      "애니"
+    ]
+  },
+  {
+    "slug": "Yakitate!!-Japan",
+    "description": "태양의 손을 지닌 제빵사 아즈마 카즈마가 일본을 대표할 빵 ‘재빵’을 만들기 위해 도전하는 요리 만화.",
+    "officialUrl": "https://www.yakitate-japan.com/",
+    "source": "https://www.sunrise-inc.co.jp/work/detail.php?cid=260",
+    "genres": [
+      "코미디",
+      "소년물",
+      "요리"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  }
+]

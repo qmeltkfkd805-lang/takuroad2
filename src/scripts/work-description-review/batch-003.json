@@ -1,0 +1,180 @@
+[
+  {
+    "slug": "gundam",
+    "description": "우주 시대의 전쟁과 인간 군상을 모빌슈트라는 병기를 통해 그려 온 선라이즈의 SF 로봇 IP.",
+    "officialUrl": "https://www.gundam.info/",
+    "source": "https://en.gundam.info/about-gundam%20/s%C3%A9rie-pages/sorci%C3%A8re/mots/",
+    "genres": [
+      "액션",
+      "SF",
+      "드라마",
+      "로봇/메카"
+    ],
+    "ipType": [
+      "캐릭터",
+      "애니"
+    ]
+  },
+  {
+    "slug": "girls-band-cry",
+    "description": "상처와 좌절을 안은 니나와 소녀들이 밴드를 결성해 자신들의 목소리를 노래하는 청춘 드라마.",
+    "officialUrl": "https://www.toei-animation.com/catalog/girls-band-cry/",
+    "source": "https://www.toei-animation.com/catalog/girls-band-cry/",
+    "genres": [
+      "음악",
+      "드라마"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "girls-und-panzer",
+    "description": "전차도가 여성의 교양인 세계에서 미호와 오아라이 여학원 팀이 전국대회에 도전하는 학원 스포츠물.",
+    "officialUrl": "https://girls-und-panzer.jp/",
+    "source": "https://girls-und-panzer.jp/story-introduction/",
+    "genres": [
+      "액션",
+      "학원",
+      "스포츠"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "black-desert-online",
+    "description": "광대한 판타지 세계에서 모험과 전투, 생활 콘텐츠를 자유롭게 즐기는 펄어비스의 오픈월드 MMORPG.",
+    "officialUrl": "https://www.kr.playblackdesert.com/ko-KR/main/index",
+    "source": "https://www.pearlabyss.com/en-US/Company/About/Games",
+    "genres": [
+      "액션",
+      "판타지"
+    ],
+    "ipType": [
+      "게임"
+    ]
+  },
+  {
+    "slug": "yowamushi-pedal",
+    "description": "애니메이션을 좋아하던 오노다 사카미치가 자전거부 동료들과 로드레이서로 성장하는 스포츠 만화.",
+    "officialUrl": "https://yowapeda.com/",
+    "source": "https://yowapeda.com/intro/",
+    "genres": [
+      "학원",
+      "스포츠",
+      "드라마",
+      "소년물"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "frozen",
+    "description": "얼어붙은 아렌델을 구하기 위해 안나가 언니 엘사를 찾아 나서는 디즈니의 뮤지컬 판타지.",
+    "officialUrl": "https://movies.disney.com/frozen/",
+    "source": "https://movies.disney.com/frozen/",
+    "genres": [
+      "판타지",
+      "음악",
+      "드라마"
+    ],
+    "ipType": [
+      "영화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "godzilla",
+    "description": "1954년 영화에서 탄생해 핵과 재난의 공포를 상징하며 확장된 도호의 대표 괴수 프랜차이즈.",
+    "officialUrl": "https://godzilla.com/",
+    "source": "https://godzilla.com/blogs/news/godzilla-the-new-fan-guide",
+    "genres": [
+      "액션",
+      "SF",
+      "호러"
+    ],
+    "ipType": [
+      "영화"
+    ]
+  },
+  {
+    "slug": "winnie-the-pooh",
+    "description": "백 에이커 숲에서 푸와 피글렛, 티거 등 친구들이 소박한 모험을 나누는 캐릭터 이야기.",
+    "officialUrl": "https://winniethepooh.disney.com/characters",
+    "source": "https://winniethepooh.disney.com/characters",
+    "genres": [
+      "일상",
+      "코미디"
+    ],
+    "ipType": [
+      "소설",
+      "캐릭터"
+    ]
+  },
+  {
+    "slug": "kara-no-kyokai",
+    "description": "죽음의 선을 보는 료우기 시키와 고쿠토 미키야가 도시의 기이한 사건을 마주하는 전기 미스터리.",
+    "officialUrl": "https://www.aniplex.co.jp/lineup/karanokyoukai/",
+    "source": "https://www.aniplex.co.jp/lineup/karanokyoukai/",
+    "genres": [
+      "액션",
+      "판타지",
+      "추리",
+      "호러"
+    ],
+    "ipType": [
+      "소설",
+      "애니"
+    ]
+  },
+  {
+    "slug": "umineko",
+    "description": "고립된 롯켄지마에서 벌어진 연쇄 살인을 두고 마녀와 인간의 추리가 맞서는 사운드 노벨.",
+    "officialUrl": "https://www.07thexpansion.mangagamer.org/",
+    "source": "https://www.07thexpansion.mangagamer.org/",
+    "genres": [
+      "판타지",
+      "추리",
+      "호러",
+      "고어"
+    ],
+    "ipType": [
+      "게임"
+    ]
+  },
+  {
+    "slug": "kaiju-no-8",
+    "description": "괴수가 된 카프카가 정체를 숨긴 채 방위대에 입대해 오랜 꿈과 거대한 위협에 맞서는 이야기.",
+    "officialUrl": "https://kaiju-no8.net/",
+    "source": "https://kaiju-no8.net/en/index.html",
+    "genres": [
+      "액션",
+      "SF",
+      "소년물"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "mysterious-disappearances",
+    "description": "작가 지망생 스미레코와 수수께끼의 소년 렌이 도시의 괴이와 실종 사건을 추적하는 현대 괴담.",
+    "officialUrl": "https://totokami.com/",
+    "source": "https://totokami.com/story.html",
+    "genres": [
+      "판타지",
+      "추리",
+      "호러"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  }
+]

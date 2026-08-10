@@ -1,0 +1,181 @@
+[
+  {
+    "slug": "demon-slayer",
+    "description": "가족을 잃고 여동생 네즈코가 혈귀가 된 뒤, 탄지로가 그녀를 되돌리려 검을 드는 다크 판타지.",
+    "officialUrl": "https://demonslayer-anime.com/",
+    "source": "https://demonslayer-anime.com/sva/intro/",
+    "genres": [
+      "액션",
+      "판타지",
+      "소년물"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "my-dress-up-darling",
+    "description": "히나 인형 장인을 꿈꾸는 와카나가 코스프레를 사랑하는 마린의 의상 제작을 돕는 청춘 로맨스.",
+    "officialUrl": "https://bisquedoll-anime.com/",
+    "source": "https://www.aniplex.co.jp/lineup/bisquedoll-anime/story/",
+    "genres": [
+      "학원",
+      "로맨스",
+      "코미디"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "solo-leveling",
+    "description": "최약체 헌터 성진우가 자신만 볼 수 있는 시스템을 얻어 끝없이 성장하는 현대 판타지.",
+    "officialUrl": "https://sololeveling-anime.net/",
+    "source": "https://xyn.sony.net/en/case/sololeveling-anime",
+    "genres": [
+      "액션",
+      "판타지"
+    ],
+    "ipType": [
+      "웹소설",
+      "웹툰",
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "my-hero-academia",
+    "description": "무개성이던 데쿠가 힘을 이어받아 유에이 고교 친구들과 최고의 히어로를 향해 성장하는 이야기.",
+    "officialUrl": "https://heroaca.com/",
+    "source": "https://heroaca.com/introduction/",
+    "genres": [
+      "액션",
+      "학원",
+      "소년물"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "the-dangers-in-my-heart",
+    "description": "음침한 상상에 빠져 살던 이치카와가 자유분방한 야마다와 가까워지며 첫사랑을 알아가는 로맨스.",
+    "officialUrl": "https://bokuyaba-anime.com/",
+    "source": "https://bokuyaba-anime.com/",
+    "genres": [
+      "학원",
+      "로맨스",
+      "코미디"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "no-game-no-life",
+    "description": "무패의 천재 게이머 남매 소라와 시로가 모든 분쟁을 게임으로 정하는 이세계에 도전하는 판타지.",
+    "officialUrl": "https://ngnl.jp/",
+    "source": "https://ngnl.jp/tv/story/",
+    "genres": [
+      "판타지",
+      "코미디"
+    ],
+    "ipType": [
+      "소설",
+      "애니"
+    ]
+  },
+  {
+    "slug": "nisekoi",
+    "description": "야쿠자 후계자 라쿠와 갱단 두목의 딸 치토게가 조직 간 평화를 위해 가짜 연인이 되는 러브 코미디.",
+    "officialUrl": "https://www.nisekoi.jp/",
+    "source": "https://www.nisekoiusa.com/1st/story/01.html",
+    "genres": [
+      "학원",
+      "로맨스",
+      "코미디"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "nier-automata",
+    "description": "안드로이드 2B와 9S가 기계생명체에 빼앗긴 지구를 되찾으며 존재의 의미를 묻는 액션 RPG.",
+    "officialUrl": "https://na.store.square-enix-games.com/nier_-automata-game-of-the-yorha-edition",
+    "source": "https://na.store.square-enix-games.com/nier_-automata-game-of-the-yorha-edition",
+    "genres": [
+      "액션",
+      "SF",
+      "드라마"
+    ],
+    "ipType": [
+      "게임",
+      "애니"
+    ]
+  },
+  {
+    "slug": "nijisanji",
+    "description": "ANYCOLOR가 운영하며 다양한 버추얼 라이버의 방송과 음악·공연 활동을 전개하는 VTuber 프로젝트.",
+    "officialUrl": "https://www.nijisanji.jp/",
+    "source": "https://www.anycolor.co.jp/about",
+    "genres": [
+      "일상",
+      "코미디",
+      "음악"
+    ],
+    "ipType": [
+      "버튜버"
+    ]
+  },
+  {
+    "slug": "UFO-Baby",
+    "description": "중학생 미유와 카나타가 초능력을 지닌 외계 아기 루우를 몰래 돌보며 벌어지는 육아 코미디.",
+    "officialUrl": null,
+    "source": "https://web.archive.org/web/20070222130127/http://www3.nhk.or.jp/anime/daa/daa.html",
+    "genres": [
+      "일상",
+      "SF",
+      "코미디"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  },
+  {
+    "slug": "tamagotchi",
+    "description": "알 모양 휴대기기 속 디지털 생물을 먹이고 돌보며 성장시키는 반다이의 가상 반려동물 IP.",
+    "officialUrl": "https://tamagotchi-official.com/",
+    "source": "https://www.bandai.co.jp/character/tamagotchi.php",
+    "genres": [
+      "일상",
+      "코미디"
+    ],
+    "ipType": [
+      "완구",
+      "게임",
+      "캐릭터"
+    ]
+  },
+  {
+    "slug": "diamond-no-ace",
+    "description": "투수 사와무라 에이준이 야구 명문 세이도 고교에 입학해 에이스와 고시엔을 노리는 스포츠 만화.",
+    "officialUrl": "https://diaace.com/",
+    "source": "https://www.tv-tokyo.co.jp/anime/diaace/sp/story/index.html",
+    "genres": [
+      "학원",
+      "스포츠",
+      "소년물"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ]
+  }
+]
