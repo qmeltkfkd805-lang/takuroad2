@@ -156,6 +156,71 @@ function buildLegacyTitle(type: ActivityType, s: ActivitySnapshot): string {
 }
 
 /* ────────────────────────────────────────────────
+   읽기 — 내 최근 활동 (홈 우측 레일 등)
+   ──────────────────────────────────────────────── */
+export interface RecentActivity {
+  id: string
+  type: ActivityType
+  title: string
+  href: string | null
+  icon: string
+  occurredAt: string
+}
+
+const ACT_ICON: Partial<Record<ActivityType, string>> = {
+  shop_visit: 'checkin', event_visit: 'event', route_completed: 'route',
+  review: 'star', photo_upload: 'star', shop_register: 'shop',
+  event_submit: 'event', route_created: 'route', work_register: 'heart',
+  work_progress: 'heart', achievement_unlock: 'star',
+}
+
+function activityHref(type: ActivityType, s: ActivitySnapshot, relatedId: string | null): string | null {
+  switch (type) {
+    case 'shop_visit': case 'review': case 'shop_register':
+      return s.shop_slug ? `/shop/${s.shop_slug}` : null
+    case 'event_visit': case 'event_submit':
+      return relatedId ? `/event/${relatedId}` : null
+    case 'route_completed': case 'route_created':
+      return s.route_token ? `/route/${s.route_token}` : null
+    case 'work_register': case 'work_progress':
+      return s.work_slug ? `/work/${s.work_slug}` : null
+    default: return null
+  }
+}
+
+/** 내 최근 활동 — activity_logs 원장 기준(방문·완주·리뷰·사진·루트제작·샵/작품등록·업적).
+ *  좋아요·댓글은 원장에 없어 제외된다. */
+function validDate(v: any): string | null {
+  if (!v) return null
+  const t = new Date(v).getTime()
+  return Number.isNaN(t) ? null : v
+}
+
+export async function getMyRecentActivities(userId: string, limit = 5): Promise<RecentActivity[]> {
+  const supabase = createClient()
+  // created_at 기준(occurred_at은 비어있는 행이 있어 연대기와 동일하게 created_at 사용)
+  const { data, error } = await supabase
+    .from('activity_logs')
+    .select('id, type, snapshot, title, related_id, occurred_at, created_at')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+    .limit(limit)
+  if (error) { console.error('[getMyRecentActivities]', error.message); return [] }
+  return (data ?? []).map((r: any) => {
+    const s = (r.snapshot ?? {}) as ActivitySnapshot
+    const when = validDate(r.created_at) ?? validDate(r.occurred_at)
+    return {
+      id: r.id,
+      type: r.type,
+      title: (r.title && String(r.title).trim()) || buildLegacyTitle(r.type, s) || '활동',
+      href: activityHref(r.type, s, r.related_id),
+      icon: ACT_ICON[r.type as ActivityType] ?? 'star',
+      occurredAt: when ?? '',
+    }
+  })
+}
+
+/* ────────────────────────────────────────────────
    다녀온 기록 (연대기에 뜬다)
    ──────────────────────────────────────────────── */
 

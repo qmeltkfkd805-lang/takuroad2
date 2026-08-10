@@ -1,4 +1,4 @@
-﻿.homeLayout { width: 100%; padding: 0 24px; }
+.homeLayout { width: 100%; padding: 0 24px; }
 .rail { display: flex; flex-direction: column; gap: 14px; padding: 16px; }
 
 /* 📱 모바일(터치 기기)에서는 좌우 여백 없이 화면 꽉 차게 */
@@ -56,6 +56,13 @@
 .mapChip { flex-shrink: 0; padding: 5px 11px; border-radius: 9999px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; cursor: pointer; font-family: inherit; }
 .mapChip:hover { border-color: var(--accent); color: var(--accent); }
 .mapChipOn { flex-shrink: 0; padding: 5px 11px; border-radius: 9999px; border: 1px solid var(--accent); background: var(--accent); color: #fff; font-size: 12px; font-weight: 800; white-space: nowrap; cursor: pointer; font-family: inherit; }
+
+/* 내 주변 덕질 — 위치 안내(임의 좌표 대신) */
+.mapLocPrompt { margin-top: 10px; padding: 12px; border-radius: var(--r-sm); background: var(--surface2); text-align: center; }
+.mapLocPrompt p { margin: 0 0 10px; font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+.mapLocBtns { display: flex; justify-content: center; gap: 8px; }
+.mapLocBtn { border: none; background: var(--accent); color: #fff; border-radius: 9px; padding: 8px 14px; font-size: 12.5px; font-weight: 800; cursor: pointer; font-family: inherit; }
+.mapLocGhost { display: inline-flex; align-items: center; border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 9px; padding: 8px 14px; font-size: 12.5px; font-weight: 800; text-decoration: none; }
 
 /* 덕질 지도 — 샵 전체보기 버튼 */
 .mapAllBtn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin-top: 10px; padding: 11px; border-radius: var(--r-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 13px; font-weight: 800; text-decoration: none; }

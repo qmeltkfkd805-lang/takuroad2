@@ -1,4 +1,4 @@
-﻿import { getShops } from '@/services/shopService'
+import { getShops } from '@/services/shopService'
 import { getPublicRoutes } from '@/services/routeService'
 import { getActiveWorks } from '@/services/activeWorksService'
 import { getActiveBanners } from '@/services/featuredBannerService'
