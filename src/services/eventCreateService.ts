@@ -41,6 +41,8 @@ export interface EventFormData {
   sourceUrls: string[]
   /** 예매·예약 페이지 */
   ticketUrls: string[]
+  /** 예매 버튼명. ticketUrls와 같은 순서로 저장된다. */
+  ticketLabels: string[]
 }
 
 export const EMPTY_EVENT_FORM: EventFormData = {
@@ -48,11 +50,18 @@ export const EMPTY_EVENT_FORM: EventFormData = {
   reserveStart: '', reserveEnd: '',
   shopId: null, placeId: null, placeName: '', placeAddr: '', placeLat: null, placeLng: null, placeDetail: '',
   parking: null, parkingNote: '',
-  hours: null, hoursInfo: '', entryInfo: '', description: '', sourceUrls: [''], ticketUrls: [''],
+  hours: null, hoursInfo: '', entryInfo: '', description: '', sourceUrls: [''], ticketUrls: [''], ticketLabels: [''],
 }
 
 const nn = (s: string) => (s.trim() ? s.trim() : null)
 const cleanLinks = (arr: string[] | undefined) => (arr ?? []).map(s => s.trim()).filter(Boolean)
+const cleanTicketLinks = (urls: string[] | undefined, labels: string[] | undefined) =>
+  (urls ?? []).flatMap((rawUrl, index) => {
+    const url = rawUrl.trim()
+    if (!url) return []
+    const label = labels?.[index]?.trim() ?? ''
+    return [label ? { url, label } : url]
+  })
 
 /** 2단계 완료 시 — events 행을 만들고 id를 돌려준다 */
 export async function createEventDraft(form: EventFormData, userId: string): Promise<{ id: string | null; message?: string }> {
@@ -127,7 +136,7 @@ export async function saveEventExtra(eventId: string, form: EventFormData, userI
       place_lat: form.shopId ? null : form.placeLat,
       place_lng: form.shopId ? null : form.placeLng,
       source_urls: cleanLinks(form.sourceUrls),
-      ticket_urls: cleanLinks(form.ticketUrls),
+      ticket_urls: cleanTicketLinks(form.ticketUrls, form.ticketLabels),
       // 누가 마지막으로 고쳤는지 — 위키라서 남겨둔다
       updated_by: userId,
       updated_at: new Date().toISOString(),
@@ -193,6 +202,7 @@ export async function loadEventForm(eventId: string): Promise<{ form: EventFormD
       description: ev.description ?? '',
       sourceUrls: ev.sourceUrls.length > 0 ? ev.sourceUrls : [''],
       ticketUrls: ev.ticketUrls.length > 0 ? ev.ticketUrls : [''],
+      ticketLabels: ev.ticketUrls.length > 0 ? ev.ticketLabels : [''],
     },
   }
 }

@@ -1,0 +1,2262 @@
+{
+  "mode": "dry-run",
+  "before": 1140,
+  "rows": [
+    {
+      "name": "가비지타임",
+      "slug": "garbage-time-webtoon",
+      "english_name": null,
+      "aliases": [
+        "갑타"
+      ],
+      "ip_type": "웹툰",
+      "description": "낙오자만 남은 지상고 농구부가 새 감독과 함께 전국 무대에 도전하며 팀으로 성장한다.",
+      "genres": [
+        "스포츠",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=703844",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=703844"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "호랑이형님",
+      "slug": "tiger-brother-webtoon",
+      "english_name": null,
+      "aliases": [
+        "호형"
+      ],
+      "ip_type": "웹툰",
+      "description": "괴물 호랑이 빠르와 가우리가 신비한 힘을 지닌 아이를 노리는 흰눈썹에 맞선다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=650305",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=650305"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "쿠베라",
+      "slug": "kubera-webtoon",
+      "english_name": "Kubera",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "마을을 잃은 소녀 쿠베라 리즈가 신과 수라, 마법사들의 거대한 갈등에 휘말린다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "드라마",
+        "로맨스"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=131385",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=131385"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "덴마",
+      "slug": "denma-webtoon",
+      "english_name": "Denma",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "특수 능력자 덴마가 어린아이의 몸에 갇힌 채 우주 택배원이 되어 기묘한 모험을 겪는다.",
+      "genres": [
+        "SF",
+        "판타지",
+        "모험",
+        "액션"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=119874",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=119874"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "어글리후드",
+      "slug": "uglyhood-webtoon",
+      "english_name": "Uglyhood",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "외계인이 유일신으로 군림하는 세계에서 엘사 브라이언트가 사탄을 자처해 체제에 저항한다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "SF",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=703630",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=703630"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "냐한남자",
+      "slug": "meow-man-webtoon",
+      "english_name": "Meow Man",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "길고양이 춘배를 데려온 보미 앞에 고양이 왕국 출신의 남자가 나타나 기묘한 동거를 시작한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=708452",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=708452"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "독립일기",
+      "slug": "independent-diary-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "처음 자기 집을 얻은 자까가 집안일과 식사, 이웃 문제를 겪으며 홀로서기를 배운다.",
+      "genres": [
+        "일상",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=748105",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=748105"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "모죠의 일지",
+      "slug": "mojos-diary-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "내성적이고 취향이 뚜렷한 집순이 모죠가 평범한 일상에서 마주한 웃긴 순간을 기록한다.",
+      "genres": [
+        "일상",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=728015",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=728015"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "가우스전자",
+      "slug": "gaus-electronics-webtoon",
+      "english_name": "Gaus Electronics",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "가우스전자 마케팅3부 직원들이 회사의 모순과 사내 관계를 웃음으로 버텨 낸다.",
+      "genres": [
+        "일상",
+        "코미디",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=799793",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=799793"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "놓지마 정신줄",
+      "slug": "dont-lose-your-mind-webtoon",
+      "english_name": null,
+      "aliases": [
+        "놓정줄"
+      ],
+      "ip_type": "웹툰",
+      "description": "정신과 정주리 남매를 비롯한 독특한 인물들이 상식을 벗어난 소동을 끊임없이 벌인다.",
+      "genres": [
+        "코미디",
+        "일상",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=81482",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=81482"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "이말년씨리즈",
+      "slug": "lee-mal-nyeon-series-webtoon",
+      "english_name": null,
+      "aliases": [
+        "이말년 시리즈"
+      ],
+      "ip_type": "웹툰",
+      "description": "역사와 일상, 대중문화를 엉뚱한 상상과 황당한 설정으로 뒤튼 옴니버스 개그극이다.",
+      "genres": [
+        "코미디",
+        "일상",
+        "기타"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=103759",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=103759"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "선천적 얼간이들",
+      "slug": "natural-born-idiots-webtoon",
+      "english_name": "Natural Born Idiots",
+      "aliases": [
+        "선얼"
+      ],
+      "ip_type": "웹툰",
+      "description": "가스파드와 개성 강한 친구들이 여행과 군대, 학교에서 겪은 황당한 실화를 풀어낸다.",
+      "genres": [
+        "코미디",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=478261",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=478261"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "전자오락수호대",
+      "slug": "guardians-of-the-video-game-webtoon",
+      "english_name": null,
+      "aliases": [
+        "전오수"
+      ],
+      "ip_type": "웹툰",
+      "description": "게임을 몰래 운영하는 수호대의 최고 요원 패치가 조난 뒤 무너진 게임 세계를 헤쳐 나간다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "코미디",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=637931",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=637931"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "레사",
+      "slug": "lessa-webtoon",
+      "english_name": "Lessa",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "사람을 디맨으로 바꾸는 재앙 속에서 동생을 찾는 레이널드와 깨어난 신 레사가 맞선다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=478262",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=478262"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "목욕의 신",
+      "slug": "god-of-bath-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "빚에 쫓기던 허세가 금자탕에서 때밀이 재능을 발견하고 최고의 목욕관리사에 도전한다.",
+      "genres": [
+        "드라마",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=697681",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=697681"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "쌉니다 천리마마트",
+      "slug": "pegasus-market-webtoon",
+      "english_name": null,
+      "aliases": [
+        "천리마마트"
+      ],
+      "ip_type": "웹툰",
+      "description": "좌천된 정복동이 망한 천리마마트를 더 망치려 하지만 기상천외한 경영이 오히려 성공을 부른다.",
+      "genres": [
+        "코미디",
+        "일상",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=697679",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=697679"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "역전! 야매요리",
+      "slug": "wild-cooking-webtoon",
+      "english_name": null,
+      "aliases": [
+        "야매요리"
+      ],
+      "ip_type": "웹툰",
+      "description": "야매토끼가 실패를 두려워하지 않고 독특한 재료와 방식으로 요리에 도전하는 포토툰이다.",
+      "genres": [
+        "코미디",
+        "요리",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=409630",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=409630"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "신과함께",
+      "slug": "along-with-the-gods-webtoon",
+      "english_name": "Along with the Gods",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "평범한 회사원 김자홍이 죽은 뒤 저승에서 49일 동안 일곱 번의 재판을 받는다.",
+      "genres": [
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=697685",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=697685"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "무한동력",
+      "slug": "infinite-power-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "취업 준비생 장선재가 무한동력 기관을 만드는 하숙집 주인과 만나 꿈의 의미를 돌아본다.",
+      "genres": [
+        "드라마",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=500944",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=500944"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "질풍기획",
+      "slug": "zephyr-planning-webtoon",
+      "english_name": null,
+      "aliases": [
+        "들어는 보았나! 질풍기획!"
+      ],
+      "ip_type": "웹툰",
+      "description": "광고대행사 질풍기획 제3기획팀 직원들이 평범한 업무를 열혈 승부처럼 헤쳐 나간다.",
+      "genres": [
+        "코미디",
+        "일상",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=256855",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=256855"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "헬퍼",
+      "slug": "hellper-webtoon",
+      "english_name": "Hellper",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "가드 트라이브 대장 장광남이 의문의 사고로 죽은 뒤 저승에서 자신의 죽음과 세계의 비밀을 좇는다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=389848",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=389848"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "싸우자 귀신아",
+      "slug": "lets-fight-ghost-webtoon",
+      "english_name": null,
+      "aliases": [
+        "싸귀",
+        "싸우자귀신아"
+      ],
+      "ip_type": "웹툰",
+      "description": "귀신을 보는 퇴마사 박봉팔이 기억을 잃은 귀신 김현지와 함께 각종 원혼을 상대한다.",
+      "genres": [
+        "판타지",
+        "호러",
+        "액션",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=23182",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=23182"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "슈퍼 시크릿",
+      "slug": "super-secret-webtoon",
+      "english_name": "Super Secret",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "평범한 대학생 은호가 소꿉친구 견우와 이웃들이 숨겨 온 늑대인간과 요괴의 비밀을 알아 간다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "일상",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=650304",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=650304"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "윌유메리미",
+      "slug": "will-you-marry-me-webtoon",
+      "english_name": "Will You Marry Me?",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "서울 남자 윌과 부산 여자 메리가 열두 살 나이 차와 장거리 연애를 지나 부부로 살아가는 일상기다.",
+      "genres": [
+        "일상",
+        "로맨스",
+        "코미디",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=616239",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=616239"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "인어를 위한 수영교실",
+      "slug": "swimming-lessons-for-a-mermaid-webtoon",
+      "english_name": "Swimming Lessons for a Mermaid",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "헤엄치지 못하는 인어 초아가 수영부 우두식에게 수영을 배우며 그리운 바다로 돌아갈 꿈을 키운다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "학원",
+        "스포츠"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=728900",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=728900"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "나노리스트",
+      "slug": "nano-list-webtoon",
+      "english_name": "Nano List",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "안드로이드 나노가 안도진에게 찾아오면서 누나의 죽음과 나노머신 기술에 얽힌 비밀이 드러난다.",
+      "genres": [
+        "SF",
+        "액션",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=670150",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=670150"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "AI가 세상을 지배한다면",
+      "slug": "if-ai-ruled-the-world-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "최첨단 인공지능이 지도자가 된 100년 뒤의 사회와 인간성을 여러 사건으로 비추는 SF 옴니버스다.",
+      "genres": [
+        "SF",
+        "드라마",
+        "판타지"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=755674",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=755674"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "닭강정",
+      "slug": "chicken-nugget-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "의문의 기계로 닭강정이 된 민아를 되돌리려는 아버지와 고백중이 기계의 비밀을 추적한다.",
+      "genres": [
+        "코미디",
+        "추리",
+        "SF",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=734008",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=734008"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "물위의 우리",
+      "slug": "our-water-world-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "해수면이 상승한 지구에서 호주가 딸 한별과 20년 만에 고향으로 돌아가 수상한 사건을 마주한다.",
+      "genres": [
+        "드라마",
+        "SF",
+        "모험",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=780404",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=780404"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "같은 학교 친구",
+      "slug": "same-school-friend-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "같은 반 짝이 된 요한과 겨울이 서툰 호기심과 설렘을 나누며 첫사랑에 가까워진다.",
+      "genres": [
+        "로맨스",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=774832",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=774832"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "똑 닮은 딸",
+      "slug": "like-mother-like-daughter-webtoon",
+      "english_name": null,
+      "aliases": [
+        "똑닮딸"
+      ],
+      "ip_type": "웹툰",
+      "description": "동생의 죽음 뒤 엄마를 살인자로 의심한 길소명이 완벽한 딸의 삶에서 벗어나려 한다.",
+      "genres": [
+        "추리",
+        "호러",
+        "드라마",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=774866",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=774866"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "꼬리잡기",
+      "slug": "chasing-tails-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "붕괴한 건물에서 구조된 대학생 다섯 명의 증언을 따라 수사팀이 매몰지의 살인자를 추적한다.",
+      "genres": [
+        "추리",
+        "호러",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=758666",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=758666"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "겟백",
+      "slug": "get-back-webtoon",
+      "english_name": "Get Back",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "타고난 능력을 지닌 다정과 그 재능을 질투한 언니 은정의 뒤바뀐 운명이 비극으로 치닫는다.",
+      "genres": [
+        "드라마",
+        "액션",
+        "추리"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=727798",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=727798"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "여고생 드래곤",
+      "slug": "teenage-dragon-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "평범한 여고생 김민지가 판타지 세계의 드래곤 몸에서 깨어나 원래 세계로 돌아갈 길을 찾는다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "코미디",
+        "액션"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=783056",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=783056"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "순정빌런",
+      "slug": "pure-villain-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "최강 특수경찰 한도령을 사랑하는 능력자 박로사가 마음을 전하려다 최악의 빌런으로 오해받는다.",
+      "genres": [
+        "로맨스",
+        "액션",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=797731",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=797731"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "오로지 너를 이기고 싶어",
+      "slug": "want-to-beat-you-webtoon",
+      "english_name": null,
+      "aliases": [
+        "오너이"
+      ],
+      "ip_type": "웹툰",
+      "description": "한 번도 져본 적 없는 이기고가 자신을 처음 이긴 오로지와 온갖 내기를 벌이며 가까워진다.",
+      "genres": [
+        "로맨스",
+        "학원",
+        "코미디",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=730657",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=730657"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "대학원 탈출일지",
+      "slug": "graduate-student-diary-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "연구의 꿈을 품은 병아리 요다가 무관심한 교수와 경직된 연구실 문화 속에서 대학원을 버틴다.",
+      "genres": [
+        "일상",
+        "코미디",
+        "학원"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=790713",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=790713"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "백수세끼",
+      "slug": "three-meals-for-a-jobless-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "백수 재호가 매 끼니의 음식에 얽힌 연애와 이별의 기억을 되짚으며 삶을 이어 간다.",
+      "genres": [
+        "드라마",
+        "요리",
+        "로맨스",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=733074",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=733074"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "1초",
+      "slug": "one-second-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "긴장하면 미래를 보는 소방관 호수가 찰나의 예지로 재난 현장의 생명을 구한다.",
+      "genres": [
+        "드라마",
+        "액션",
+        "판타지"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=725586",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=725586"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아빠같은 남자",
+      "slug": "a-man-like-dad-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "본성을 숨긴 로펌 대표 묘인준이 자신과 닮은 딸의 연인을 경계하며 위험한 대결을 시작한다.",
+      "genres": [
+        "드라마",
+        "추리",
+        "호러",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=774451",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=774451"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "호랑이 들어와요",
+      "slug": "tiger-coming-in-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "숲속에서 사는 젊은 부부에게 정체불명의 호랑이 아이 랑아와 호야가 찾아와 가족이 된다.",
+      "genres": [
+        "판타지",
+        "가족",
+        "일상",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=757904",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=757904"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "환생동물학교",
+      "slug": "animal-reincarnation-school-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "동물들이 인간으로 환생하기 전 습성을 버리고 세상에 적응하는 법을 배우는 학교 이야기다.",
+      "genres": [
+        "판타지",
+        "학원",
+        "드라마",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=700139",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=700139"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "오늘도 형제는 평화롭다",
+      "slug": "peaceful-brothers-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "서로를 놀리고 챙기는 두 형제가 매번 사건의 중심에서 엉뚱한 소동을 벌인다.",
+      "genres": [
+        "코미디",
+        "일상",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=692510",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=692510"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "나는 귀머거리다",
+      "slug": "i-am-deaf-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "청각장애인 라일라가 대한민국에서 공부하고 일하며 겪는 소통과 편견의 현실을 그린다.",
+      "genres": [
+        "일상",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=659934",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=659934"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "웰캄투실버라이프",
+      "slug": "welcome-to-silver-life-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "손녀가 할아버지와 할머니의 활기찬 황혼 일상을 함께 보내며 세대 간 소통을 배운다.",
+      "genres": [
+        "일상",
+        "가족",
+        "코미디",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=749456",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=749456"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "닥터앤닥터 육아일기",
+      "slug": "doctor-and-doctor-parenting-diary-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "산부인과 의사 엄마와 공학박사 아빠가 지식만으로 풀 수 없는 임신과 육아를 겪는다.",
+      "genres": [
+        "일상",
+        "가족",
+        "코미디",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=732955",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=732955"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "노곤하개",
+      "slug": "doggedly-lazy-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "홍끼가 여러 강아지와 고양이를 돌보며 겪는 산책과 병원, 사고투성이 집사 생활을 담는다.",
+      "genres": [
+        "일상",
+        "가족",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=702672",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=702672"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "자취로운 생활",
+      "slug": "joyful-solo-living-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "츄카피가 빨래와 청소, 혼밥과 이웃 문제를 헤쳐 나가며 원룸 자취 생활을 이어 간다.",
+      "genres": [
+        "일상",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=714834",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=714834"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "먹는 인생",
+      "slug": "life-of-eating-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "홍끼가 라면죽부터 여행 음식까지 먹고 싶은 메뉴를 찾아다니며 맛과 추억을 기록한다.",
+      "genres": [
+        "일상",
+        "요리",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=784255",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=784255"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "크레이지 가드너",
+      "slug": "crazy-gardener-webtoon",
+      "english_name": "Crazy Gardener",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "마일로가 식물 금손을 꿈꾸며 과습과 곰팡이, 해충에 맞서 끝없는 식물 생활을 이어 간다.",
+      "genres": [
+        "일상",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=838709",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=838709"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "프리드로우",
+      "slug": "free-draw-webtoon",
+      "english_name": "Free Draw",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "문제아 한태성이 새 학교에서 친구들과 부딪치며 만화가의 꿈과 자신의 길을 찾아가는 학원 이야기다.",
+      "genres": [
+        "학원",
+        "액션",
+        "코미디",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=597447",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=597447"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "랜덤채팅의 그녀!",
+      "slug": "girl-from-random-chatting-webtoon",
+      "english_name": "The Girl from Random Chatting!",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "학교에서는 외톨이인 최준우가 랜덤채팅에서 만난 같은 반 소녀와 얽히며 변화하는 학원 드라마다.",
+      "genres": [
+        "학원",
+        "로맨스",
+        "드라마",
+        "액션"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=702608",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=702608"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "참교육",
+      "slug": "true-education-webtoon",
+      "english_name": "The Real Lesson",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "교권보호국 감독관 나화진이 무너진 학교 현장에 파견되어 폭력과 부조리에 맞서는 학원 액션이다.",
+      "genres": [
+        "학원",
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=758037",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=758037"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "퀘스트지상주의",
+      "slug": "quest-supremacy-webtoon",
+      "english_name": "Questism",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "학교폭력에 시달리던 김수현이 현실의 퀘스트 창을 얻어 성장하며 학교의 세력 다툼에 뛰어든다.",
+      "genres": [
+        "학원",
+        "액션",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=783052",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=783052"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "세상은 돈과 권력",
+      "slug": "world-is-money-and-power-webtoon",
+      "english_name": "The World Is Money and Power",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "재벌 자녀들이 돈과 권력으로 지배하는 학교에 전학생 단건우가 맞서 두뇌 싸움을 벌인다.",
+      "genres": [
+        "학원",
+        "드라마",
+        "액션"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=710747",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=710747"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "김부장",
+      "slug": "manager-kim-webtoon",
+      "english_name": "Manager Kim",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "전직 특수요원 김부장이 사라진 딸 민지를 찾기 위해 감춰온 실력을 드러내고 거대한 적과 맞선다.",
+      "genres": [
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=783053",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=783053"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "캐슬",
+      "slug": "castle-webtoon",
+      "english_name": "Castle",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "킬러 김신이 스승의 원수를 갚기 위해 대한민국 암흑가의 거대 조직 캐슬을 무너뜨리려 한다.",
+      "genres": [
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=736744",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=736744"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "광장",
+      "slug": "plaza-webtoon",
+      "english_name": "Plaza Wars",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "조직을 떠났던 남기준이 동생의 죽음 뒤 15년 만에 돌아와 진실을 좇고 복수에 나선다.",
+      "genres": [
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=753509",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=753509"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "촉법소년",
+      "slug": "juvenile-offender-webtoon",
+      "english_name": "Juvenile Offender",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "법망을 이용해 자신을 지옥으로 몰아넣은 가해자들에게 한 소년이 치밀한 복수를 시작한다.",
+      "genres": [
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=808198",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=808198"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "킬러 배드로",
+      "slug": "killer-peter-webtoon",
+      "english_name": "Killer Peter",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "조직에 배신당한 노인 킬러 배드로가 젊은 몸으로 돌아와 자신의 힘을 숨긴 채 복수를 준비한다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=816798",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=816798"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "원주민 공포만화",
+      "slug": "native-horror-comics-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "평범한 일상에서 시작된 사건이 예상을 뒤엎는 공포로 번지는 여러 이야기를 그린 옴니버스다.",
+      "genres": [
+        "호러",
+        "드라마",
+        "고어"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=698918",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=698918"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "극야",
+      "slug": "polar-night-webtoon",
+      "english_name": "Polar Night",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "해가 뜨지 않는 남극 겨울에 고립된 연구원들이 정체불명의 감염체와 혹한을 견디며 생존한다.",
+      "genres": [
+        "호러",
+        "액션",
+        "드라마",
+        "고어"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=721463",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=721463"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "안개무덤",
+      "slug": "foggy-tomb-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "실종된 가족을 찾는 수사가 벌레와 부적이 뒤덮인 초자연적 사건으로 이어지는 공포 스릴러다.",
+      "genres": [
+        "호러",
+        "추리",
+        "드라마",
+        "고어"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=731930",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=731930"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "먹이",
+      "slug": "prey-webtoon",
+      "english_name": "Prey",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "귀신을 볼 수 있는 아이들이 현실로 넘어온 불길한 존재들과 맞닥뜨리는 악몽 같은 이야기다.",
+      "genres": [
+        "호러",
+        "판타지",
+        "드라마",
+        "고어"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=724274",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=724274"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "귀곡의 문",
+      "slug": "door-of-phantom-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "귀신 소굴로 악명 높은 삼도천동의 흉가에서 평범하지 않은 세입자들이 함께 살아간다.",
+      "genres": [
+        "호러",
+        "코미디",
+        "일상",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=718020",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=718020"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "관계의 종말",
+      "slug": "end-of-a-relationship-webtoon",
+      "english_name": "The End of a Relationship",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "여자친구와 외딴 펜션으로 휴가를 떠난 남자가 불쾌한 주인과 기괴한 방문객들 때문에 파국에 몰린다.",
+      "genres": [
+        "호러",
+        "드라마",
+        "고어"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=752803",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=752803"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "거미",
+      "slug": "spider-webtoon",
+      "english_name": "Spider",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "거대한 거미 떼가 섬마을을 뒤덮자 주민들이 서로를 의심하는 가운데 한 여자가 탈출구를 찾는다.",
+      "genres": [
+        "호러",
+        "액션",
+        "드라마",
+        "고어"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=739112",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=739112"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "#살인스타그램",
+      "slug": "killstagram-webtoon",
+      "english_name": "#Killstagram",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "SNS 스타 도레미가 자신을 노리는 연쇄살인범의 표적이 되면서 온라인의 시선과 공포에 갇힌다.",
+      "genres": [
+        "호러",
+        "드라마",
+        "고어"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=726095",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=726095"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "조의 영역",
+      "slug": "realm-of-the-sea-webtoon",
+      "english_name": "The Tide",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "물이 차오른 도시에서 거대 물고기들이 인간을 위협하자 생존자들이 무너진 세계를 헤쳐 나간다.",
+      "genres": [
+        "SF",
+        "호러",
+        "액션",
+        "드라마",
+        "고어"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=675554",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=675554"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "행성인간",
+      "slug": "planetary-human-webtoon",
+      "english_name": "Planetary Human",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "몸속에 작은 행성을 품은 인간들이 기이한 능력과 변이를 겪으며 서로 얽히는 SF 스릴러다.",
+      "genres": [
+        "SF",
+        "호러",
+        "액션",
+        "드라마",
+        "고어"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=733079",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=733079"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "걸어서 30분",
+      "slug": "thirty-minutes-with-you-webtoon",
+      "english_name": "30 Minutes With You",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "은하학원의 위성은과 지구봉이 매일 함께 걷는 30분의 귀갓길에서 천천히 가까워진다.",
+      "genres": [
+        "학원",
+        "로맨스",
+        "일상",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=700844",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=700844"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "사내연애 사절!",
+      "slug": "no-office-romance-webtoon",
+      "english_name": "No Office Romance!",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "어른이 되어 직장 동료로 다시 만난 첫사랑 두 사람이 친구와 연인 사이의 감정을 마주한다.",
+      "genres": [
+        "로맨스",
+        "일상",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=814512",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=814512"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아홉수 우리들",
+      "slug": "our-nineteen-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "스물아홉 동갑내기 세 친구가 일과 사랑, 불안한 미래를 견디며 각자의 서른을 향해 나아간다.",
+      "genres": [
+        "일상",
+        "로맨스",
+        "드라마",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=724815",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=724815"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "동트는 로맨스",
+      "slug": "romance-at-dawn-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "술에 취해 기억을 잃은 대학생이 짝사랑하던 후배와 그날 밤 무슨 일이 있었는지 알아간다.",
+      "genres": [
+        "로맨스",
+        "일상",
+        "코미디",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=746285",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=746285"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "가타부타타",
+      "slug": "gatabutata-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "스무 살 대학생이 옆집에서 중학생 때 헤어진 첫사랑과 재회하며 서툰 연애를 다시 시작한다.",
+      "genres": [
+        "로맨스",
+        "일상",
+        "코미디",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=729040",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=729040"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "미혼남녀의 효율적 만남",
+      "slug": "efficient-dating-for-singles-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "서른세 살 직장인 이의영이 소개팅에서 만난 두 남자 사이에서 사랑과 조건을 함께 고민한다.",
+      "genres": [
+        "로맨스",
+        "일상",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=774868",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=774868"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "좋아하는 부분",
+      "slug": "the-part-you-like-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "뚜렷한 남자 취향을 지닌 소우주가 자신의 기준에 맞는 사랑을 찾아 고군분투한다.",
+      "genres": [
+        "로맨스",
+        "일상",
+        "코미디",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=699659",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=699659"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "수호하는 너에게",
+      "slug": "to-you-who-protects-me-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "무당인 할머니의 보호 속에 살던 대학생이 자유를 찾아 나선 뒤 수호신을 지닌 남자와 얽힌다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=783106",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=783106"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아는 여자애",
+      "slug": "back-to-you-webtoon",
+      "english_name": "Back to You",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "첫사랑의 죽음을 후회하던 하영이 열여덟 살로 돌아가 정헌의 운명을 바꾸려 한다.",
+      "genres": [
+        "학원",
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=738143",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=738143"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "가짜 동맹",
+      "slug": "our-secret-alliance-webtoon",
+      "english_name": "Our Secret Alliance",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "서로의 부모를 안심시키려던 소꿉친구가 가짜 연애를 시작하며 감춰온 마음을 알아간다.",
+      "genres": [
+        "학원",
+        "로맨스",
+        "코미디",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=786978",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=786978"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "탑코너",
+      "slug": "top-corner-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "수학 천재 안시준이 숨겨진 축구 재능을 발견하고 위기에 빠진 광진고 축구부에 합류한다.",
+      "genres": [
+        "스포츠",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=732021",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=732021"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "골레이로",
+      "slug": "goleiro-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "작은 키 때문에 축구부를 떠난 골키퍼 백승원이 풋살팀 고라니즈를 만나 새로운 도전을 시작한다.",
+      "genres": [
+        "스포츠",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=824700",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=824700"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "위닝샷!",
+      "slug": "winning-shot-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "패전조 투수 안시윤이 포수 백태오를 만나 고교야구 정상에 도전하며 자신의 가능성을 증명한다.",
+      "genres": [
+        "스포츠",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=778578",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=778578"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "펜홀더",
+      "slug": "penholder-webtoon",
+      "english_name": "Penholder",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "모든 운동에 천재적인 한이연이 탁구 고수에게 처음 패한 뒤 펜홀더 라켓으로 설욕에 도전한다.",
+      "genres": [
+        "스포츠",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=814587",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=814587"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "낫오버",
+      "slug": "not-over-webtoon",
+      "english_name": "Not Over",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "서로 다른 이유로 공을 던지는 노을과 다빈이 대장고 야구부에서 만나 전국대회 우승을 노린다.",
+      "genres": [
+        "스포츠",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=826440",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=826440"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "인피니티",
+      "slug": "infinity-fencing-webtoon",
+      "english_name": "Infinity",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "공을 두려워해 축구를 포기한 다민이 뛰어난 반사신경을 인정받아 펜싱 선수로 새롭게 출발한다.",
+      "genres": [
+        "스포츠",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=775140",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=775140"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "파도를 찾아라!",
+      "slug": "find-the-waves-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "시골 소년 강파도가 국가대표 수영선수를 꿈꾸며 서울에서 훈련과 경쟁을 헤쳐 나간다.",
+      "genres": [
+        "스포츠",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=703836",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=703836"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "업셋",
+      "slug": "upset-basketball-webtoon",
+      "english_name": "Upset",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "명문고에서 벤치에 머문 진건이 전국 최하위 시운고로 전학해 농구부의 첫 승리에 도전한다.",
+      "genres": [
+        "스포츠",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=835019",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=835019"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "티키타카",
+      "slug": "tiki-taka-futsal-webtoon",
+      "english_name": "Tiki-Taka",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "어깨 부상으로 핸드볼을 그만둔 하랑이 여자 풋살에 도전해 전국대회 우승을 꿈꾼다.",
+      "genres": [
+        "스포츠",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=833244",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=833244"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "훕스(Hoops)",
+      "slug": "hoops-webtoon",
+      "english_name": "Hoops",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "불의의 사고로 농구를 떠났던 선수가 코트로 돌아와 다시 경쟁하고 진정한 경기의 즐거움을 찾는다.",
+      "genres": [
+        "스포츠",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=838922",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=838922"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "존 웹스터 도난 사건",
+      "slug": "john-webster-theft-case-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "언니의 꿈을 잇고 싶은 바이올린 전공생 예지가 콩쿠르를 위해 고가의 악기를 되찾는 모험에 나선다.",
+      "genres": [
+        "음악",
+        "모험",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=836353",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=836353"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "우리 오빠는 아이돌",
+      "slug": "my-brother-is-an-idol-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "열성 팬 남다름이 좋아하는 아이돌의 소속사에 취직하면서 일과 덕질 사이에서 분투한다.",
+      "genres": [
+        "아이돌",
+        "로맨스",
+        "코미디",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=700843",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=700843"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "성공한 덕후",
+      "slug": "successful-fan-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "좋아하는 스타를 한 번 보고 싶었던 팬이 뜻밖의 계기로 그의 곁에서 일하며 성덕이 된다.",
+      "genres": [
+        "아이돌",
+        "일상",
+        "드라마",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=703628",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=703628"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "별빛 커튼콜",
+      "slug": "starlight-curtain-call-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "집안이 몰락한 인플루언서 문유별이 외할아버지의 유산을 받으려 성월에서 새 삶을 시작한다.",
+      "genres": [
+        "로맨스",
+        "일상",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=793410",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=793410"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "조선롹스타",
+      "slug": "joseon-rockstar-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "현대의 록 보컬이 조선의 악공에게 빙의하고, 상금을 타기 위해 최초의 록 밴드를 결성한다.",
+      "genres": [
+        "음악",
+        "코미디",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=833397",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=833397"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아이돌리",
+      "slug": "idolly-webtoon",
+      "english_name": "Idolly",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "동물들이 인간처럼 사는 시대에 고양이 돌리가 오디션과 무대를 거쳐 디바로 성장한다.",
+      "genres": [
+        "아이돌",
+        "음악",
+        "코미디",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=840875",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=840875"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "음악의 참견",
+      "slug": "music-intervention-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "일상과 영화, 역사와 공연 속에서 만나는 여러 음악과 그 뒷이야기를 유쾌하게 소개한다.",
+      "genres": [
+        "음악",
+        "일상",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=850486",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=850486"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "사랑하는 여배우들",
+      "slug": "beloved-actresses-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "여배우 차유진의 혼령을 보게 된 대학생 초원이 그녀의 도움으로 배우의 길에 들어선다.",
+      "genres": [
+        "판타지",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=794644",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=794644"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "슈퍼스타 천대리",
+      "slug": "superstar-assistant-manager-cheon-webtoon",
+      "english_name": null,
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "평범한 직장인 천호연이 과거 슈퍼스타의 아우라를 받아 동료들과 밴드 오디션에 도전한다.",
+      "genres": [
+        "음악",
+        "일상",
+        "코미디",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=785749",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=785749"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "기프트",
+      "slug": "gift-music-webtoon",
+      "english_name": "Gift",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "재능의 벽에 좌절한 강무재가 청각장애인 진유성의 음악적 천재성을 만나 치열한 경쟁에 뛰어든다.",
+      "genres": [
+        "음악",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://comic.naver.com/webtoon/list?titleId=840287",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://comic.naver.com/webtoon/list?titleId=840287"
+        }
+      ],
+      "created_by": null
+    }
+  ]
+}

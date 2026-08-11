@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "master-detective-archives-rain-code-plus",
+    "name": "초탐정사건부 레인 코드 플러스",
+    "englishName": "Master Detective Archives: Rain Code Plus",
+    "aliases": ["超探偵事件簿 レインコード プラス", "레인 코드 플러스"],
+    "description": "기억을 잃은 탐정 유마가 사시닝과 카나이구의 미해결 사건을 수수께끼 미궁에서 푼다.",
+    "genres": ["추리", "판타지", "액션"],
+    "ipType": ["게임", "만화"],
+    "officialUrl": "https://www.spike-chunsoft.co.jp/pages/raincode/plus/",
+    "source": "https://www.spike-chunsoft.co.jp/pages/raincode/plus/"
+  },
+  {
+    "slug": "anonymous-code",
+    "name": "어나니머스;코드",
+    "englishName": "ANONYMOUS;CODE",
+    "aliases": ["アノニマス・コード"],
+    "description": "해커 폴론이 현실을 저장하고 불러오는 능력으로 세계를 뒤흔드는 사건에 맞선다.",
+    "genres": ["SF", "추리", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://anonymouscode.jp/",
+    "source": "https://anonymouscode.jp/"
+  },
+  {
+    "slug": "428-shibuya-scramble",
+    "name": "428 봉쇄된 시부야에서",
+    "englishName": "428: Shibuya Scramble",
+    "aliases": ["428 封鎖された渋谷で", "428"],
+    "description": "시부야 납치사건을 둘러싼 다섯 인물의 선택이 서로 영향을 주며 하나의 진실로 모인다.",
+    "genres": ["추리", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.spike-chunsoft.co.jp/pages/428/",
+    "source": "https://www.spike-chunsoft.co.jp/pages/428/"
+  },
+  {
+    "slug": "famicom-detective-club-remakes",
+    "name": "패미컴 탐정 클럽 사라진 후계자·뒤에 서 있는 소녀",
+    "englishName": "Famicom Detective Club: The Two-Case Collection",
+    "aliases": ["ファミコン探偵倶楽部 消えた後継者・うしろに立つ少女", "패미컴 탐정 클럽"],
+    "description": "탐정 조수인 주인공이 재벌가 상속 사건과 학교에 전해지는 소녀 괴담의 진상을 밝힌다.",
+    "genres": ["추리", "호러", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.nintendo.com/jp/switch/aw3ca/",
+    "source": "https://www.nintendo.com/jp/switch/aw3ca/"
+  },
+  {
+    "slug": "buddy-mission-bond",
+    "name": "버디 미션 본드",
+    "englishName": "Buddy Mission BOND",
+    "aliases": ["バディミッション BOND"],
+    "description": "서로 다른 능력을 지닌 네 남자가 팀을 꾸려 섬나라 미카구라에서 암약하는 조직을 좇는다.",
+    "genres": ["액션", "추리", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.nintendo.com/jp/switch/aq2fa/",
+    "source": "https://www.nintendo.com/jp/switch/aq2fa/"
+  },
+  {
+    "slug": "another-code-recollection",
+    "name": "어나더 코드 리컬렉션: 2개의 기억/기억의 문",
+    "englishName": "Another Code: Recollection",
+    "aliases": ["アナザーコード リコレクション：２つの記憶 / 記憶の扉", "어나더 코드 리컬렉션"],
+    "description": "애슐리가 외딴섬과 호숫가를 탐색하며 가족에게 얽힌 두 시기의 기억과 진실을 맞춘다.",
+    "genres": ["추리", "퍼즐", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.nintendo.com/kr/switch/a9rwa/",
+    "source": "https://www.nintendo.com/kr/switch/a9rwa/"
+  },
+  {
+    "slug": "emio-the-smiling-man",
+    "name": "패미컴 탐정 클럽 에미오 웃는 남자",
+    "englishName": "Emio – The Smiling Man: Famicom Detective Club",
+    "aliases": ["ファミコン探偵倶楽部 笑み男", "에미오 웃는 남자"],
+    "description": "종이봉투를 쓴 소년의 시신이 발견되자 탐정들이 웃는 남자 괴담과 사건의 연결을 좇는다.",
+    "genres": ["추리", "호러", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.nintendo.com/jp/switch/a7lqa/",
+    "source": "https://www.nintendo.com/jp/switch/a7lqa/"
+  },
+  {
+    "slug": "the-centennial-case-a-shijima-story",
+    "name": "백 년의 봄날은 가고",
+    "englishName": "The Centennial Case: A Shijima Story",
+    "aliases": ["春ゆきてレトロチカ"],
+    "description": "미스터리 작가 하루카가 시지마 일가에서 백 년에 걸쳐 벌어진 네 살인사건을 추리한다.",
+    "genres": ["추리", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.jp.square-enix.com/retrotica/",
+    "source": "https://www.jp.square-enix.com/retrotica/"
+  },
+  {
+    "slug": "the-diofield-chronicle",
+    "name": "디올필드 크로니클",
+    "englishName": "The DioField Chronicle",
+    "aliases": ["ディオフィールド クロニクル"],
+    "description": "용병단 블루 폭스가 전란에 휩싸인 디올필드 섬에서 각자의 신념과 야망을 좇는다.",
+    "genres": ["판타지", "드라마", "액션"],
+    "ipType": ["게임", "만화"],
+    "officialUrl": "https://www.jp.square-enix.com/diofieldchronicle/",
+    "source": "https://www.jp.square-enix.com/diofieldchronicle/"
+  },
+  {
+    "slug": "oninaki",
+    "name": "오니나키",
+    "englishName": "Oninaki",
+    "aliases": ["鬼ノ哭ク邦"],
+    "description": "윤회전생을 지키는 감시자 카가치가 현세와 유계 사이에서 헤매는 영혼을 구한다.",
+    "genres": ["액션", "판타지", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.jp.square-enix.com/oninaki/",
+    "source": "https://www.jp.square-enix.com/oninaki/"
+  }
+]

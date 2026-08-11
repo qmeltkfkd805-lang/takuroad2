@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "noblesse-webtoon",
+    "name": "노블레스",
+    "englishName": "Noblesse",
+    "aliases": [],
+    "description": "820년 만에 깨어난 귀족 라이제르가 고등학교에 들어가 인간 친구들과 비밀 조직의 위협에 맞선다.",
+    "genres": ["액션", "판타지", "학원", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/action/noblesse/list?title_no=87",
+    "source": "https://www.webtoons.com/en/action/noblesse/list?title_no=87"
+  },
+  {
+    "slug": "the-god-of-high-school-webtoon",
+    "name": "갓 오브 하이스쿨",
+    "englishName": "The God of High School",
+    "aliases": ["갓오하"],
+    "description": "태권도 소년 진모리가 소원을 건 고교생 격투 대회에 참가하며 신과 세계를 둘러싼 음모에 휘말린다.",
+    "genres": ["액션", "격투", "판타지", "학원"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/action/the-god-of-high-school/list?title_no=66",
+    "source": "https://www.webtoons.com/en/action/the-god-of-high-school/list?title_no=66"
+  },
+  {
+    "slug": "gosu-webtoon",
+    "name": "고수",
+    "englishName": "GOSU",
+    "aliases": [],
+    "description": "스승의 원수를 갚으려 은거 수련을 마친 강룡이 이미 죽은 배신자들의 흔적과 강호의 사건을 좇는다.",
+    "genres": ["액션", "격투", "코미디", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/action/gosu/list?title_no=1099",
+    "source": "https://www.webtoons.com/en/action/gosu/list?title_no=1099"
+  },
+  {
+    "slug": "nano-machine-webtoon",
+    "name": "나노마신",
+    "englishName": "Nano Machine",
+    "aliases": [],
+    "description": "마교의 사생아 천여운이 미래에서 온 나노머신을 몸에 받아 후계 경쟁과 무림의 위기를 돌파한다.",
+    "genres": ["액션", "판타지", "SF", "격투"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://www.webtoons.com/en/action/nano-machine/list?title_no=4344",
+    "source": "https://www.webtoons.com/en/action/nano-machine/list?title_no=4344"
+  },
+  {
+    "slug": "im-the-max-level-newbie-webtoon",
+    "name": "나 혼자 만렙 뉴비",
+    "englishName": "I'm the Max-Level Newbie",
+    "aliases": [],
+    "description": "유일하게 게임의 탑을 끝낸 강진혁이 현실에 나타난 시련의 탑에서 공략 지식을 무기로 생존한다.",
+    "genres": ["액션", "판타지", "모험"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://www.webtoons.com/en/action/im-the-max-level-newbie/list?title_no=3915",
+    "source": "https://www.webtoons.com/en/action/im-the-max-level-newbie/list?title_no=3915"
+  },
+  {
+    "slug": "the-remarried-empress-webtoon",
+    "name": "재혼 황후",
+    "englishName": "The Remarried Empress",
+    "aliases": [],
+    "description": "황제에게 이혼을 요구받은 완벽한 황후 나비에가 다른 황제와 재혼을 선언하며 운명을 되찾는다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://www.webtoons.com/en/fantasy/the-remarried-empress/list?title_no=2135",
+    "source": "https://www.webtoons.com/en/fantasy/the-remarried-empress/list?title_no=2135"
+  },
+  {
+    "slug": "after-school-lessons-for-unripe-apples-webtoon",
+    "name": "세기말 풋사과 보습학원",
+    "englishName": "After School Lessons for Unripe Apples",
+    "aliases": [],
+    "description": "1990년대 중학생 미애 앞에 어린 시절 알던 철이가 전학 오며 서툰 우정과 첫사랑이 시작된다.",
+    "genres": ["로맨스", "학원", "일상", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/drama/after-school-lessons-for-unripe-apples/list?title_no=3093",
+    "source": "https://www.webtoons.com/en/drama/after-school-lessons-for-unripe-apples/list?title_no=3093"
+  },
+  {
+    "slug": "see-you-in-my-19th-life-webtoon",
+    "name": "이번 생도 잘 부탁해",
+    "englishName": "See You in My 19th Life",
+    "aliases": ["이생잘"],
+    "description": "전생을 모두 기억하는 반지음이 열여덟 번째 삶에서 남겨 둔 인연을 다시 만나 사랑을 이어 간다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/romance/see-you-in-my-19th-life/list?title_no=1266",
+    "source": "https://www.webtoons.com/en/romance/see-you-in-my-19th-life/list?title_no=1266"
+  },
+  {
+    "slug": "jeongnyeon-webtoon",
+    "name": "정년이",
+    "englishName": "Jeongnyeon",
+    "aliases": [],
+    "description": "타고난 소리꾼 윤정년이 여성 국극단에 들어가 무대의 주역을 꿈꾸며 경쟁과 성장을 겪는다.",
+    "genres": ["드라마", "음악"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=726214",
+    "source": "https://comic.naver.com/webtoon/list?titleId=726214"
+  },
+  {
+    "slug": "cheese-in-the-trap-webtoon",
+    "name": "치즈인더트랩",
+    "englishName": "Cheese in the Trap",
+    "aliases": ["치인트"],
+    "description": "대학에 복학한 홍설이 완벽해 보이지만 속을 알 수 없는 선배 유정과 얽히며 관계의 이면을 마주한다.",
+    "genres": ["로맨스", "학원", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/drama/cheese-in-the-trap/list?title_no=99",
+    "source": "https://www.webtoons.com/en/drama/cheese-in-the-trap/list?title_no=99"
+  }
+]

@@ -526,7 +526,10 @@ export default function ShopFormWizard({ mode, shop }: Props) {
                 ))}
               </div>
               {form.parking !== null && (
-                <input value={form.parking_note ?? ''} onChange={e => set('parking_note', e.target.value)} placeholder="주차 메모 (예: 건물 내 2시간 무료)" style={{ ...inp, marginTop: 8 }} />
+                <>
+                  <textarea value={form.parking_note ?? ''} onChange={e => set('parking_note', e.target.value)} rows={4} placeholder={'주차 메모 (줄바꿈으로 여러 줄 입력 가능)\n예)\n무료주차 : 30분\n1~3만원 : 1시간\n3~5만원 : 2시간'} style={{ ...inp, marginTop: 8, minHeight: 96, lineHeight: 1.6, resize: 'vertical', whiteSpace: 'pre-wrap' }} />
+                  <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>Enter로 줄을 바꾸면 입력한 그대로 보여져요.</div>
+                </>
               )}
             </Field>
 

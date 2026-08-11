@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "maquia-when-the-promised-flower-blooms",
+    "name": "이별의 아침에 약속의 꽃을 장식하자",
+    "englishName": "Maquia: When the Promised Flower Blooms",
+    "aliases": ["さよならの朝に約束の花をかざろう", "사요아사"],
+    "description": "늙지 않는 소녀 마키아가 부모를 잃은 인간 아리엘을 키우며 시간과 이별을 배운다.",
+    "genres": ["판타지", "드라마", "가족"],
+    "ipType": ["영화"],
+    "officialUrl": "https://sayoasa.jp/",
+    "source": "https://sayoasa.jp/"
+  },
+  {
+    "slug": "belle-2021",
+    "name": "용과 주근깨 공주",
+    "englishName": "Belle",
+    "aliases": ["竜とそばかすの姫", "벨 2021"],
+    "description": "노래를 잃은 소녀 스즈가 가상세계 U의 가수 벨이 되어 외로운 용의 비밀에 다가간다.",
+    "genres": ["SF", "음악", "드라마", "로맨스"],
+    "ipType": ["영화"],
+    "officialUrl": "https://ryu-to-sobakasu-no-hime.jp/",
+    "source": "https://ryu-to-sobakasu-no-hime.jp/intro/"
+  },
+  {
+    "slug": "sing-a-bit-of-harmony",
+    "name": "아이의 노랫소리를 들려줘",
+    "englishName": "Sing a Bit of Harmony",
+    "aliases": ["アイの歌声を聴かせて", "아이우타"],
+    "description": "전학생으로 위장한 실험용 AI 시온이 노래로 사토미와 친구들을 행복하게 만들려 한다.",
+    "genres": ["SF", "음악", "학원", "드라마"],
+    "ipType": ["영화"],
+    "officialUrl": "https://www.ainouta.jp/",
+    "source": "https://www.ainouta.jp/"
+  },
+  {
+    "slug": "colorful-2010",
+    "name": "컬러풀",
+    "englishName": "Colorful",
+    "aliases": ["カラフル", "컬러풀 2010"],
+    "description": "죽은 영혼이 자살한 소년 마코토의 몸에서 다시 살며 자신의 죄와 가족을 돌아본다.",
+    "genres": ["드라마", "판타지", "학원"],
+    "ipType": ["소설", "영화"],
+    "officialUrl": "https://www.aniplex.co.jp/lineup/colorful/",
+    "source": "https://www.aniplex.co.jp/lineup/colorful/"
+  },
+  {
+    "slug": "patema-inverted",
+    "name": "거꾸로 된 파테마",
+    "englishName": "Patema Inverted",
+    "aliases": ["サカサマのパテマ", "Sakasama no Patema"],
+    "description": "중력이 반대인 지하 소녀 파테마와 지상 소년 에이지가 두 세계의 비밀을 파헤친다.",
+    "genres": ["SF", "모험", "로맨스"],
+    "ipType": ["영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "giovannis-island",
+    "name": "조반니의 섬",
+    "englishName": "Giovanni's Island",
+    "aliases": ["ジョバンニの島"],
+    "description": "종전 뒤 소련군이 들어온 색단섬에서 일본인 형제와 러시아 소녀가 우정을 나눈다.",
+    "genres": ["드라마", "가족"],
+    "ipType": ["영화"],
+    "officialUrl": "https://wwws.warnerbros.co.jp/giovanni/",
+    "source": "https://www.production-ig.co.jp/works/giovanni/index.html"
+  },
+  {
+    "slug": "hal-2013",
+    "name": "하루",
+    "englishName": "Hal",
+    "aliases": ["ハル", "하루 2013"],
+    "description": "사고로 연인을 잃은 쿠루미를 돕기 위해 인간의 모습을 한 로봇 하루가 곁을 지킨다.",
+    "genres": ["SF", "로맨스", "드라마"],
+    "ipType": ["만화", "영화"],
+    "officialUrl": "https://www.dlas.jp/works/hal/",
+    "source": "https://www.dlas.jp/works/hal/"
+  },
+  {
+    "slug": "her-blue-sky",
+    "name": "하늘의 푸르름을 아는 사람이여",
+    "englishName": "Her Blue Sky",
+    "aliases": ["空の青さを知る人よ", "소라아오"],
+    "description": "음악을 꿈꾸는 아오이가 언니의 옛 연인과 과거 모습의 그를 동시에 만나게 된다.",
+    "genres": ["로맨스", "음악", "드라마", "판타지"],
+    "ipType": ["영화"],
+    "officialUrl": "https://soraaoproject.jp/",
+    "source": "https://www.aniplex.co.jp/lineup/soraao/"
+  },
+  {
+    "slug": "josee-the-tiger-and-the-fish-2020",
+    "name": "조제, 호랑이 그리고 물고기들",
+    "englishName": "Josee, the Tiger and the Fish",
+    "aliases": ["ジョゼと虎と魚たち", "조제와 호랑이와 물고기들", "조제 2020"],
+    "description": "휠체어를 타는 조제와 대학생 츠네오가 서로의 꿈과 바깥세계를 향해 나아간다.",
+    "genres": ["로맨스", "드라마"],
+    "ipType": ["소설", "만화", "영화"],
+    "officialUrl": "https://joseetora.jp/",
+    "source": "https://joseetora.jp/"
+  },
+  {
+    "slug": "ride-your-wave",
+    "name": "너와 파도를 탈 수 있다면",
+    "englishName": "Ride Your Wave",
+    "aliases": ["きみと、波にのれたら", "키미나미"],
+    "description": "서퍼 히나코가 세상을 떠난 연인 미나토를 노래와 물결 속에서 다시 만나게 된다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["영화"],
+    "officialUrl": "https://sciencesaru.com/works/kimito_namini_noretara",
+    "source": "https://sciencesaru.com/works/kimito_namini_noretara"
+  }
+]

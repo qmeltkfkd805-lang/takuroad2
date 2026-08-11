@@ -1,0 +1,201 @@
+[
+  {
+    "slug": "allison-and-lillia-anime",
+    "name": "앨리슨과 리리아",
+    "englishName": "Allison & Lillia",
+    "aliases": [
+      "アリソンとリリア",
+      "알리슨과 리리아"
+    ],
+    "description": "전쟁 중인 두 연방을 하나로 만들 보물을 찾는 앨리슨과 빌의 모험이 다음 세대 리리아에게 이어진다.",
+    "genres": [
+      "모험",
+      "드라마",
+      "로맨스"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_arison/",
+    "source": "https://madhouse.co.jp/works/tv_arison/"
+  },
+  {
+    "slug": "mokke-anime",
+    "name": "모케",
+    "englishName": "Mokke",
+    "aliases": [
+      "もっけ"
+    ],
+    "description": "요괴를 보는 시즈루와 쉽게 씌는 미즈키 자매가 시골에서 요괴와 공존하는 법을 배운다.",
+    "genres": [
+      "일상",
+      "판타지",
+      "가족",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_mokke/",
+    "source": "https://madhouse.co.jp/works/tv_mokke/"
+  },
+  {
+    "slug": "pumpkin-scissors-anime",
+    "name": "펌프킨 시저스",
+    "englishName": "Pumpkin Scissors",
+    "aliases": [
+      "パンプキン・シザーズ"
+    ],
+    "description": "정전 뒤 전쟁 피해를 복구하는 육군 정보부 3과가 부패와 빈곤 속에서 민중을 돕는다.",
+    "genres": [
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.gonzo.co.jp/works/pumpkin-scissors/index.html",
+    "source": "https://www.gonzo.co.jp/works/pumpkin-scissors/index.html"
+  },
+  {
+    "slug": "red-garden-anime",
+    "name": "레드 가든",
+    "englishName": "Red Garden",
+    "aliases": [],
+    "description": "기억이 끊긴 뉴욕의 여학생 네 명이 자신들이 죽었다는 말을 듣고 밤마다 괴물과 싸운다.",
+    "genres": [
+      "호러",
+      "액션",
+      "추리",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.gonzo.co.jp/works/redgarden/",
+    "source": "https://www.gonzo.co.jp/works/redgarden/"
+  },
+  {
+    "slug": "glass-fleet-anime",
+    "name": "유리 함대",
+    "englishName": "Glass Fleet",
+    "aliases": [
+      "ガラスの艦隊",
+      "가라스의 함대"
+    ],
+    "description": "우주 제국에 맞선 미셸이 유리 전함을 이끄는 클레오와 만나 자유를 되찾기 위한 전쟁에 나선다.",
+    "genres": [
+      "SF",
+      "액션",
+      "모험",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.gonzo.co.jp/works/garakan/index.html",
+    "source": "https://www.gonzo.co.jp/works/garakan/index.html"
+  },
+  {
+    "slug": "reideen-2007-anime",
+    "name": "라이딘 2007",
+    "englishName": "Reideen",
+    "aliases": [
+      "ライディーン"
+    ],
+    "description": "실종된 아버지의 유품을 받은 준키가 거대 로봇 라이딘과 만나 외계 위협에 맞선다.",
+    "genres": [
+      "SF",
+      "로봇/메카",
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://production-ig.co.jp/works/reideen/index.html",
+    "source": "https://production-ig.co.jp/works/reideen/index.html"
+  },
+  {
+    "slug": "sisters-of-wellber-anime",
+    "name": "웰베르 이야기",
+    "englishName": "Sisters of Wellber",
+    "aliases": [
+      "ウエルベールの物語 ～Sisters of Wellber～",
+      "웰베르의 이야기"
+    ],
+    "description": "왕녀 리타와 여도적 티나가 전쟁을 막을 서신을 전하고 복수의 상대를 찾으며 함께 여행한다.",
+    "genres": [
+      "판타지",
+      "모험",
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.production-ig.co.jp/works/sisters-of-wellber/",
+    "source": "https://www.production-ig.co.jp/works/sisters-of-wellber/"
+  },
+  {
+    "slug": "romeo-x-juliet-anime",
+    "name": "로미오×줄리엣",
+    "englishName": "Romeo x Juliet",
+    "aliases": [
+      "ロミオ×ジュリエット",
+      "로미오와 줄리엣 애니"
+    ],
+    "description": "공중도시 네오 베로나에서 원수 가문의 후계자 로미오와 줄리엣이 운명을 넘어 사랑한다.",
+    "genres": [
+      "판타지",
+      "로맨스",
+      "드라마",
+      "액션"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.gonzo.co.jp/works/romio/",
+    "source": "https://www.gonzo.co.jp/works/romio/"
+  },
+  {
+    "slug": "kiba-anime",
+    "name": "키바",
+    "englishName": "Kiba",
+    "aliases": [
+      "牙 -KIBA-"
+    ],
+    "description": "답답한 일상을 보내던 제드가 이세계로 넘어가 마력을 다루는 전사들의 전쟁에 뛰어든다.",
+    "genres": [
+      "판타지",
+      "액션",
+      "모험",
+      "소년물"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_kiba/",
+    "source": "https://madhouse.co.jp/works/tv_kiba/"
+  },
+  {
+    "slug": "shion-no-ou-anime",
+    "name": "시온의 왕",
+    "englishName": "Shion no Ou",
+    "aliases": [
+      "しおんの王",
+      "Shion's King"
+    ],
+    "description": "부모를 잃고 말을 하지 못하게 된 시온이 여류 장기 기사로 성장하며 살인사건의 진실에 다가간다.",
+    "genres": [
+      "스포츠",
+      "추리",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_shion/",
+    "source": "https://madhouse.co.jp/works/tv_shion/"
+  }
+]

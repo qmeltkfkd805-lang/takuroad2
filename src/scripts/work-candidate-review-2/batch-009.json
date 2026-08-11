@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "another",
+    "name": "어나더",
+    "englishName": "Another",
+    "aliases": ["アナザー"],
+    "description": "전학생 코이치가 저주받은 3학년 3반의 비밀과 이어지는 죽음의 연쇄를 추적한다.",
+    "genres": ["추리", "호러", "학원", "고어", "19"],
+    "ipType": ["소설", "만화", "애니"],
+    "officialUrl": "https://www.pa-works.jp/works/another/",
+    "source": "https://www.pa-works.jp/works/another/"
+  },
+  {
+    "slug": "shiki",
+    "name": "시키",
+    "englishName": "Shiki",
+    "aliases": ["屍鬼"],
+    "description": "외딴 소토바 마을에서 연속 사망 사건이 벌어지며 주민과 시귀의 생존이 충돌한다.",
+    "genres": ["호러", "추리", "드라마", "고어", "19"],
+    "ipType": ["소설", "만화", "애니"],
+    "officialUrl": "https://www.aniplex.co.jp/lineup/shiki/",
+    "source": "https://www.aniplex.co.jp/lineup/shiki/"
+  },
+  {
+    "slug": "corpse-party",
+    "name": "콥스 파티",
+    "englishName": "Corpse Party",
+    "aliases": ["コープスパーティー"],
+    "description": "우정 의식을 치른 학생들이 폐교의 이공간에 갇혀 참극의 진상과 탈출구를 찾는다.",
+    "genres": ["호러", "추리", "고어", "19"],
+    "ipType": ["게임", "만화", "애니"],
+    "officialUrl": "https://corpse.jp/",
+    "source": "https://corpse.jp/"
+  },
+  {
+    "slug": "paranoia-agent",
+    "name": "망상대리인",
+    "englishName": "Paranoia Agent",
+    "aliases": ["妄想代理人"],
+    "description": "소년 배트의 연쇄 습격을 쫓는 가운데 피해자들의 불안과 망상이 도시로 번져간다.",
+    "genres": ["추리", "드라마", "호러"],
+    "ipType": ["애니"],
+    "officialUrl": "https://madhouse.co.jp/works/tv_mousou/",
+    "source": "https://madhouse.co.jp/works/tv_mousou/"
+  },
+  {
+    "slug": "mononoke",
+    "name": "모노노케",
+    "englishName": "Mononoke",
+    "aliases": ["モノノ怪"],
+    "description": "약장수가 괴이의 형상과 진실, 까닭을 밝혀 퇴마의 검으로 모노노케를 벤다.",
+    "genres": ["추리", "호러", "판타지"],
+    "ipType": ["애니", "영화", "만화"],
+    "officialUrl": "https://www.tv-tokyo.co.jp/anime/bakeneko-mononoke/",
+    "source": "https://www.tv-tokyo.co.jp/anime/bakeneko-mononoke/"
+  },
+  {
+    "slug": "ghost-hunt",
+    "name": "고스트 헌트",
+    "englishName": "Ghost Hunt",
+    "aliases": ["ゴーストハント"],
+    "description": "마이가 심령 조사소 SPR과 함께 각지의 괴이 현상을 조사하고 숨은 원인을 밝힌다.",
+    "genres": ["추리", "호러", "판타지"],
+    "ipType": ["소설", "만화", "애니"],
+    "officialUrl": "https://www.kodansha.co.jp/titles/1000001195",
+    "source": "https://www.kodansha.co.jp/titles/1000001195"
+  },
+  {
+    "slug": "from-the-new-world",
+    "name": "신세계에서",
+    "englishName": "From the New World",
+    "aliases": ["新世界より", "Shinsekai Yori"],
+    "description": "초능력을 쓰는 미래 사회에서 사키와 친구들이 공동체가 감춘 잔혹한 질서를 파헤친다.",
+    "genres": ["SF", "판타지", "추리", "드라마", "19"],
+    "ipType": ["소설", "만화", "애니"],
+    "officialUrl": "https://www.asahi.co.jp/anime/shinsekaiyori/",
+    "source": "https://www.asahi.co.jp/anime/shinsekaiyori/"
+  },
+  {
+    "slug": "dark-gathering",
+    "name": "다크 개더링",
+    "englishName": "Dark Gathering",
+    "aliases": ["ダークギャザリング"],
+    "description": "영매 체질의 케이타로가 천재 소녀 야요이와 위험한 악령을 수집하며 원수를 쫓는다.",
+    "genres": ["호러", "추리", "액션"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://darkgathering.jp/",
+    "source": "https://darkgathering.jp/"
+  },
+  {
+    "slug": "mieruko-chan",
+    "name": "미에루코짱",
+    "englishName": "Mieruko-chan",
+    "aliases": ["見える子ちゃん"],
+    "description": "괴물이 보이기 시작한 여고생 미코가 들키지 않으려 철저히 못 본 척하며 일상을 버틴다.",
+    "genres": ["호러", "코미디", "일상", "학원"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://mierukochan.jp/",
+    "source": "https://mierukochan.jp/"
+  },
+  {
+    "slug": "shadows-house",
+    "name": "섀도 하우스",
+    "englishName": "Shadows House",
+    "aliases": ["シャドーハウス"],
+    "description": "얼굴 없는 섀도와 살아 있는 인형들이 기묘한 저택의 규율과 비밀에 맞선다.",
+    "genres": ["추리", "판타지", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://shadowshouse-anime.com/",
+    "source": "https://shadowshouse-anime.com/"
+  }
+]

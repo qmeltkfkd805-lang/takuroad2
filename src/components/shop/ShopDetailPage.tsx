@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { Shop } from '@/types/shop'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import { getTodayStatus, formatBusinessHours, getPopupStatus } from '@/lib/utils/date'
+import { parseParkingRows } from '@/lib/utils/parkingNote'
 import { ROUTES } from '@/lib/constants/routes'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useSaved } from '@/hooks/useSaved'
@@ -95,13 +96,37 @@ export default function ShopDetailPage({ shop }: Props) {
                 <span style={{ color: shop.parking ? 'var(--text)' : 'var(--muted)' }}>
                   {shop.parking ? '주차 가능' : '주차 불가'}
                 </span>
-                {shop.parking_note && (
+                {shop.parking_note && !/\r?\n/.test(shop.parking_note) && parseParkingRows(shop.parking_note).length <= 1 && (
                   <span style={{ color: 'var(--muted)', fontWeight: 400 }}>· {shop.parking_note}</span>
                 )}
               </span>
             )}
           </div>
         )}
+        {shop.parking_note && /\r?\n/.test(shop.parking_note) ? (
+          <div style={{
+            margin: '10px 0 0', padding: '10px 12px', background: 'var(--surface2)', borderRadius: 10,
+            fontSize: '13px', lineHeight: 1.6, color: 'var(--text)', whiteSpace: 'pre-line',
+            wordBreak: 'keep-all', overflowWrap: 'anywhere',
+          }}>
+            {shop.parking_note}
+          </div>
+        ) : shop.parking_note && parseParkingRows(shop.parking_note).length > 1 ? (
+          <ul style={{
+            listStyle: 'none', margin: '10px 0 0', padding: '10px 12px',
+            background: 'var(--surface2)', borderRadius: 10,
+            display: 'flex', flexDirection: 'column', gap: 5,
+          }}>
+            {parseParkingRows(shop.parking_note).map((r, i) => (
+              <li key={i} style={{ display: 'flex', gap: 10, fontSize: 13, lineHeight: 1.5, alignItems: 'baseline' }}>
+                {r.label != null && (
+                  <span style={{ color: 'var(--muted)', minWidth: 72, flexShrink: 0, wordBreak: 'keep-all' }}>{r.label}</span>
+                )}
+                <span style={{ color: 'var(--text)', fontWeight: 600, wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>{r.value}</span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
         {/* === ActionBar (체크인 + 길찾기 + 저장) === */}
         <div style={{ marginTop: '20px' }}>
 

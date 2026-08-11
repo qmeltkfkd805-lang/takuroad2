@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "land-of-the-lustrous",
+    "name": "보석의 나라",
+    "englishName": "Land of the Lustrous",
+    "aliases": ["宝石の国", "Houseki no Kuni"],
+    "description": "불사의 몸을 지닌 보석들이 달에서 오는 월인과 싸우며 자신의 역할과 존재를 찾아간다.",
+    "genres": ["판타지", "액션", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://land-of-the-lustrous.com/",
+    "source": "https://land-of-the-lustrous.com/story/works.html"
+  },
+  {
+    "slug": "baccano",
+    "name": "바카노!",
+    "englishName": "Baccano!",
+    "aliases": ["BACCANO! -バッカーノ-", "バッカーノ!"],
+    "description": "불사자와 마피아, 도둑들이 여러 시대와 장소에서 얽히며 하나의 소동을 완성한다.",
+    "genres": ["액션", "판타지", "추리", "코미디"],
+    "ipType": ["소설", "만화", "애니", "게임"],
+    "officialUrl": "https://www.baccano.jp/",
+    "source": "https://www.aniplex.co.jp/lineup/baccano/"
+  },
+  {
+    "slug": "durarara",
+    "name": "듀라라라!!",
+    "englishName": "Durarara!!",
+    "aliases": ["デュラララ!!", "DRRR!!"],
+    "description": "이케부쿠로에 모인 학생과 정보상, 폭력배와 도시전설의 이해관계가 복잡하게 얽힌다.",
+    "genres": ["액션", "추리", "판타지", "드라마"],
+    "ipType": ["소설", "만화", "애니", "게임"],
+    "officialUrl": "https://www.durarara.com/",
+    "source": "https://www.durarara.com/introduction/"
+  },
+  {
+    "slug": "ergo-proxy",
+    "name": "에르고 프록시",
+    "englishName": "Ergo Proxy",
+    "aliases": ["エルゴプラクシー"],
+    "description": "돔 도시의 수사관 릴이 자아를 얻은 로봇과 수수께끼의 존재 프록시를 추적한다.",
+    "genres": ["SF", "추리", "드라마"],
+    "ipType": ["애니", "만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "texhnolyze",
+    "name": "테크노라이즈",
+    "englishName": "Texhnolyze",
+    "aliases": ["텍스놀라이즈"],
+    "description": "지하도시 루크스에서 의수와 의족을 얻은 이치세가 도시 세력들의 붕괴에 휘말린다.",
+    "genres": ["SF", "액션", "드라마", "19"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "serial-experiments-lain",
+    "name": "시리얼 익스페리먼츠 레인",
+    "englishName": "serial experiments lain",
+    "aliases": ["シリアルエクスペリメンツレイン"],
+    "description": "중학생 이와쿠라 레인이 와이어드에 깊이 접속하며 현실과 자아의 경계를 마주한다.",
+    "genres": ["SF", "추리", "드라마", "호러"],
+    "ipType": ["애니", "게임"],
+    "officialUrl": "https://www.serial-experiments-lain.com/",
+    "source": "https://www.serial-experiments-lain.com/"
+  },
+  {
+    "slug": "girls-last-tour",
+    "name": "소녀종말여행",
+    "englishName": "Girls' Last Tour",
+    "aliases": ["少女終末旅行", "Shoujo Shuumatsu Ryokou"],
+    "description": "문명이 사라진 거대 도시에서 치토와 유리가 케텐크라트를 타고 생존 여행을 이어간다.",
+    "genres": ["SF", "모험", "일상", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://girls-last-tour.com/",
+    "source": "https://girls-last-tour.com/story/intro.html"
+  },
+  {
+    "slug": "kinos-journey",
+    "name": "키노의 여행",
+    "englishName": "Kino's Journey",
+    "aliases": ["キノの旅", "Kino no Tabi"],
+    "description": "여행자 키노와 말하는 모터라드 에르메스가 사흘씩 여러 나라에 머물며 삶을 관찰한다.",
+    "genres": ["모험", "판타지", "드라마"],
+    "ipType": ["소설", "만화", "애니", "영화", "게임"],
+    "officialUrl": "https://www.kinonotabi-anime.com/",
+    "source": "https://www.kinonotabi-anime.com/"
+  },
+  {
+    "slug": "spice-and-wolf",
+    "name": "늑대와 향신료",
+    "englishName": "Spice and Wolf",
+    "aliases": ["狼と香辛料", "늑향"],
+    "description": "행상인 로렌스와 현랑 호로가 교역과 화폐의 함정을 헤쳐 고향을 향해 여행한다.",
+    "genres": ["판타지", "로맨스", "모험", "드라마"],
+    "ipType": ["소설", "만화", "애니", "게임"],
+    "officialUrl": "https://spice-and-wolf.com/",
+    "source": "https://spice-and-wolf.com/"
+  },
+  {
+    "slug": "devilman-crybaby",
+    "name": "데빌맨 크라이베이비",
+    "englishName": "Devilman Crybaby",
+    "aliases": ["デビルマン crybaby"],
+    "description": "악마의 힘과 인간의 마음을 얻은 아키라가 데몬의 위협과 인간 사회의 광기에 맞선다.",
+    "genres": ["액션", "호러", "드라마", "고어", "19"],
+    "ipType": ["애니"],
+    "officialUrl": "https://devilman-crybaby.com/",
+    "source": "https://devilman-crybaby.com/introduction-and-story/"
+  }
+]

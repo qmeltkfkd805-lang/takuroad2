@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "unicorn-overlord",
+    "name": "유니콘 오버로드",
+    "englishName": "Unicorn Overlord",
+    "aliases": ["ユニコーンオーバーロード"],
+    "description": "망국의 왕자 아레인이 해방군을 이끌고 동료를 모아 제노이라 제국에 맞선다.",
+    "genres": ["판타지", "모험", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://unicorn-overlord.com/",
+    "source": "https://unicorn-overlord.com/"
+  },
+  {
+    "slug": "odin-sphere-leifthrasir",
+    "name": "오딘 스피어 레이브스라시르",
+    "englishName": "Odin Sphere Leifthrasir",
+    "aliases": ["オーディンスフィア レイヴスラシル"],
+    "description": "다섯 주인공의 운명이 마법 대국 간 전쟁과 세계 종말의 예언 속에서 교차한다.",
+    "genres": ["액션", "판타지", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://atlus-vanillaware.jp/osl/",
+    "source": "https://atlus-vanillaware.jp/osl/"
+  },
+  {
+    "slug": "dragons-crown-pro",
+    "name": "드래곤즈 크라운 프로",
+    "englishName": "Dragon's Crown Pro",
+    "aliases": ["ドラゴンズクラウン・プロ", "드래곤즈 크라운 PRO"],
+    "description": "여섯 모험가 중 하나가 되어 하이드랜드를 누비며 전설의 왕관과 고대룡을 추적한다.",
+    "genres": ["액션", "판타지", "모험"],
+    "ipType": ["게임"],
+    "officialUrl": "https://dragons-crown.com/",
+    "source": "https://dragons-crown.com/original/"
+  },
+  {
+    "slug": "sakuna-of-rice-and-ruin",
+    "name": "천수의 사쿠나히메",
+    "englishName": "Sakuna: Of Rice and Ruin",
+    "aliases": ["天穂のサクナヒメ", "사쿠나히메"],
+    "description": "추방된 풍요신 사쿠나가 히노에섬에서 벼농사를 지으며 귀신을 물리치고 성장한다.",
+    "genres": ["액션", "판타지", "요리"],
+    "ipType": ["게임", "애니"],
+    "officialUrl": "https://www.marv.jp/special/game/sakuna/",
+    "source": "https://www.marv.jp/special/game/sakuna/"
+  },
+  {
+    "slug": "paranormasight-file23",
+    "name": "파라노마사이트 FILE23 혼조 7대 불가사의",
+    "englishName": "Paranormasight: The Seven Mysteries of Honjo",
+    "aliases": ["パラノマサイト FILE23 本所七不思議", "파라노마사이트"],
+    "description": "쇼와 시대 혼조에서 저주의 힘을 얻은 사람들이 소생의 비술을 두고 서로 얽힌다.",
+    "genres": ["추리", "호러", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.jp.square-enix.com/paranormasight/",
+    "source": "https://www.jp.square-enix.com/paranormasight/"
+  },
+  {
+    "slug": "the-world-ends-with-you-final-remix",
+    "name": "멋진 이 세계 파이널 리믹스",
+    "englishName": "The World Ends with You: Final Remix",
+    "aliases": ["すばらしきこのせかい -Final Remix-", "멋진 이 세계"],
+    "description": "시부야에서 깨어난 네쿠가 파트너와 사신의 게임에 참가해 자신의 기억과 삶을 되찾는다.",
+    "genres": ["액션", "판타지", "드라마"],
+    "ipType": ["게임", "애니"],
+    "officialUrl": "https://www.jp.square-enix.com/subarashiki-final-remix/",
+    "source": "https://www.jp.square-enix.com/subarashiki-final-remix/"
+  },
+  {
+    "slug": "neo-the-world-ends-with-you",
+    "name": "신 멋진 이 세계",
+    "englishName": "NEO: The World Ends with You",
+    "aliases": ["新すばらしきこのせかい"],
+    "description": "린도와 동료들이 시부야의 사신 게임에서 팀을 꾸려 소멸을 피하고 도시의 운명을 건다.",
+    "genres": ["액션", "판타지", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.jp.square-enix.com/shinsubarashiki/",
+    "source": "https://www.jp.square-enix.com/shinsubarashiki/overview/"
+  },
+  {
+    "slug": "triangle-strategy",
+    "name": "트라이앵글 스트래티지",
+    "englishName": "Triangle Strategy",
+    "aliases": ["トライアングルストラテジー"],
+    "description": "세 나라가 대립하는 노젤리아에서 세레노아가 신념에 따른 선택으로 전쟁의 향방을 바꾼다.",
+    "genres": ["판타지", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.jp.square-enix.com/trianglestrategy/",
+    "source": "https://www.jp.square-enix.com/trianglestrategy/"
+  },
+  {
+    "slug": "harvestella",
+    "name": "하베스텔라",
+    "englishName": "Harvestella",
+    "aliases": ["ハーヴェステラ"],
+    "description": "죽음의 계절에 쓰러진 주인공이 농사와 모험을 병행하며 세계와 재앙의 비밀을 좇는다.",
+    "genres": ["판타지", "일상", "모험"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.jp.square-enix.com/harvestella/",
+    "source": "https://www.jp.square-enix.com/harvestella/"
+  },
+  {
+    "slug": "live-a-live-hd2d",
+    "name": "라이브 어 라이브",
+    "englishName": "Live A Live",
+    "aliases": ["ライブアライブ"],
+    "description": "시대와 주인공, 전투 방식이 다른 일곱 이야기가 하나의 거대한 운명으로 이어진다.",
+    "genres": ["판타지", "SF", "모험", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.jp.square-enix.com/lal/",
+    "source": "https://www.jp.square-enix.com/lal/"
+  }
+]

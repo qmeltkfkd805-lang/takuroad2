@@ -17,14 +17,14 @@ import ReportedShopsTab from './ReportedShopsTab'
 import PostReportsTab from './PostReportsTab'
 import AdminDashboardPage from './AdminDashboardPage'
 import WorkAdminTab from './WorkAdminTab'
-import BannerAdminTab from './BannerAdminTab'
+import HeroAdminTab from './HeroAdminTab'
 import MemberAdminTab from './MemberAdminTab'
 import ShopAdminTab from './ShopAdminTab'
 import PlaceAdminTab from './PlaceAdminTab'
 import ContactAdminTab from './ContactAdminTab'
 import styles from './admin.module.css'
 
-type Tab = 'dashboard' | 'shops' | 'shopmanage' | 'works' | 'banners' | 'members' | 'verify' | 'routes' | 'events' | 'reported' | 'postreports' | 'places' | 'contacts' | 'partners'
+type Tab = 'dashboard' | 'hero' | 'shops' | 'shopmanage' | 'works' | 'members' | 'verify' | 'routes' | 'events' | 'reported' | 'postreports' | 'places' | 'contacts' | 'partners'
 
 export default function AdminPage() {
   const router = useRouter()
@@ -102,6 +102,9 @@ export default function AdminPage() {
           <TabButton active={tab === 'dashboard'} onClick={() => setTab('dashboard')}>
             🏠 대시보드
           </TabButton>
+          <TabButton active={tab === 'hero'} onClick={() => setTab('hero')}>
+            🌟 홈 히어로 관리
+          </TabButton>
           <TabButton active={tab === 'shops'} onClick={() => setTab('shops')}>
             샵 승인 {pendingShops.length > 0 && `(${pendingShops.length})`}
           </TabButton>
@@ -113,9 +116,6 @@ export default function AdminPage() {
           </TabButton>
           <TabButton active={tab === 'places'} onClick={() => setTab('places')}>
             장소(Place)
-          </TabButton>
-          <TabButton active={tab === 'banners'} onClick={() => setTab('banners')}>
-            🖼️ 배너
           </TabButton>
           <TabButton active={tab === 'members'} onClick={() => setTab('members')}>
             👥 회원
@@ -146,6 +146,7 @@ export default function AdminPage() {
 
       <div className={styles.content}>
       {tab === 'dashboard' && <AdminDashboardPage onNavigate={(t) => setTab(t as Tab)} />}
+      {tab === 'hero' && <HeroAdminTab />}
   
       {tab === 'shops' && (
         <div>
@@ -289,7 +290,6 @@ export default function AdminPage() {
       {tab === 'shopmanage' && <ShopAdminTab />}
       {tab === 'works' && <WorkAdminTab />}
       {tab === 'places' && <PlaceAdminTab />}
-      {tab === 'banners' && <BannerAdminTab />}
       {tab === 'members' && <MemberAdminTab />}
       {tab === 'reported' && <ReportedShopsTab />}
       {tab === 'postreports' && <PostReportsTab />}

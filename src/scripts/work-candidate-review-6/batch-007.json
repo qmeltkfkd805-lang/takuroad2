@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "divine-gate-anime",
+    "name": "디바인 게이트 애니메이션",
+    "englishName": "Divine Gate: The Animation",
+    "aliases": ["ディバインゲート アニメ"],
+    "description": "성스러운 문이 열린 세계에서 선택받은 소년소녀들이 각자의 소원을 품고 문을 향해 나아간다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/",
+    "source": "https://pierrot.jp/archive/2015/"
+  },
+  {
+    "slug": "onigiri-anime",
+    "name": "오니기리 애니메이션",
+    "englishName": "Onigiri: The Animation",
+    "aliases": ["鬼斬 アニメ"],
+    "description": "신화와 민담이 뒤섞인 이국 일본에서 소녀들이 신을 노리는 괴물 카미쿠이를 막기 위해 여행한다.",
+    "genres": ["판타지", "액션", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/tv10_29.html",
+    "source": "https://pierrot.jp/archive/2015/tv10_29.html"
+  },
+  {
+    "slug": "morose-mononokean-anime",
+    "name": "불쾌한 모노노케안",
+    "englishName": "The Morose Mononokean",
+    "aliases": ["不機嫌なモノノケ庵", "불쾌한 모노노케 암자"],
+    "description": "요괴에 씐 고교생 아시야가 빚을 갚기 위해 아베가 운영하는 모노노케안에서 요괴 퇴치를 돕는다.",
+    "genres": ["판타지", "학원", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/tv10_21.html",
+    "source": "https://pierrot.jp/archive/2015/tv10_21.html"
+  },
+  {
+    "slug": "morose-mononokean-ii-anime",
+    "name": "불쾌한 모노노케안 속",
+    "englishName": "The Morose Mononokean II",
+    "aliases": ["不機嫌なモノノケ庵 續"],
+    "description": "아시야와 아베가 새로운 요괴의 고민을 해결하며 은세를 다스리는 삼권신의 의뢰와 비밀에 다가간다.",
+    "genres": ["판타지", "학원", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/tv10_38.html",
+    "source": "https://pierrot.jp/archive/2015/tv10_38.html"
+  },
+  {
+    "slug": "eldlive-anime",
+    "name": "엘드라이브 애니메이션",
+    "englishName": "elDLIVE",
+    "aliases": ["エルドライブ", "ēlDLIVE"],
+    "description": "남에게 들리지 않는 목소리를 듣던 츄타가 공생생물 돌루와 우주경찰 엘드라이브에서 근무한다.",
+    "genres": ["SF", "액션", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/tv10_25.html",
+    "source": "https://pierrot.jp/archive/2015/tv10_25.html"
+  },
+  {
+    "slug": "konbini-kareshi-anime",
+    "name": "편의점 남자친구",
+    "englishName": "Convenience Store Boy Friends",
+    "aliases": ["コンビニカレシ", "콘비니 카레시"],
+    "description": "고교생 하루키와 토와를 비롯한 학생들이 학교 앞 편의점을 오가며 서툰 사랑을 키워 간다.",
+    "genres": ["학원", "일상", "로맨스"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/tv10_27.html",
+    "source": "https://pierrot.jp/archive/2015/tv10_27.html"
+  },
+  {
+    "slug": "puzzle-and-dragons-x-anime",
+    "name": "퍼즐앤드래곤 크로스 애니메이션",
+    "englishName": "Puzzle & Dragons X: The Animation",
+    "aliases": ["パズドラクロス アニメ", "파즈도라 크로스"],
+    "description": "드래고자 섬의 에이스가 몬스터 타마조와 만나 용환사가 되어 드롭의 힘으로 위기에 맞선다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/tv10_29.html",
+    "source": "https://pierrot.jp/archive/2015/tv10_29.html"
+  },
+  {
+    "slug": "tsukiuta-animation-anime",
+    "name": "츠키우타 THE ANIMATION",
+    "englishName": "TSUKIUTA. The Animation",
+    "aliases": ["ツキウタ。THE ANIMATION", "츠키아니"],
+    "description": "두 아이돌 유닛 식스 그래비티와 프로셀라룸의 열두 멤버가 숙소와 무대를 오가며 성장한다.",
+    "genres": ["아이돌", "음악", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/tv10_29.html",
+    "source": "https://pierrot.jp/archive/2015/tv10_29.html"
+  },
+  {
+    "slug": "soul-buster-anime",
+    "name": "시령연무 장성란",
+    "englishName": "Soul Buster",
+    "aliases": ["侍霊演武:将星乱", "사무라이 소울 버스터"],
+    "description": "역사를 싫어하는 고교생 손신이 삼국지 영웅의 혼이 봉인된 카드 전쟁에 휘말린다.",
+    "genres": ["판타지", "액션", "소년물"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/tv10_16.html",
+    "source": "https://pierrot.jp/archive/2015/tv10_16.html"
+  },
+  {
+    "slug": "damepri-anime-caravan",
+    "name": "다메프리 ANIME CARAVAN",
+    "englishName": "DamePri Anime Caravan",
+    "aliases": ["ダメプリ ANIME CARAVAN"],
+    "description": "약소국 공주 아니가 외교 임무에서 만난 결점투성이 왕자들을 상대하며 나라의 미래를 지킨다.",
+    "genres": ["판타지", "로맨스", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/tv10_30.html",
+    "source": "https://pierrot.jp/archive/2015/tv10_30.html"
+  }
+]

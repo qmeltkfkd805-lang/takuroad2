@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Shop } from '@/types/shop'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import { getTodayStatus, getPopupStatus } from '@/lib/utils/date'
+import { parseParkingRows } from '@/lib/utils/parkingNote'
 import { ROUTES } from '@/lib/constants/routes'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useSaved } from '@/hooks/useSaved'
@@ -439,7 +440,10 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                     <InfoItem label="주차" value={
                       shop.parking === null && !shop.parking_note
                         ? <span style={{ color: 'var(--muted)' }}>정보 없음</span>
-                        : <span>{shop.parking === null ? <span style={{ color: 'var(--muted)' }}>정보 없음</span> : shop.parking ? '주차 가능' : '주차 불가'}{shop.parking_note && <><br /><span style={{ color: 'var(--muted)', fontSize: 13 }}>{shop.parking_note}</span></>}</span>
+                        : <span>
+                            {shop.parking === null ? <span style={{ color: 'var(--muted)' }}>정보 없음</span> : shop.parking ? '주차 가능' : '주차 불가'}
+                            {shop.parking_note && <ParkingNote note={shop.parking_note} />}
+                          </span>
                     } />
                   </div>
                   {holidayClosed && (
@@ -916,8 +920,40 @@ function InfoItem({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
       <div style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 700, marginBottom: 4 }}>{label}</div>
-      <div style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--text)', wordBreak: 'break-all' }}>{value}</div>
+      <div style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--text)', wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>{value}</div>
     </div>
+  )
+}
+
+// 주차 메모를 조건 : 값 형태의 깔끔한 목록으로
+function ParkingNote({ note }: { note: string }) {
+  // 사장님이 줄바꿈으로 입력했다면 그 줄바꿈 그대로 보여준다
+  if (/\r?\n/.test(note)) {
+    return (
+      <div style={{ marginTop: 6, color: 'var(--text)', fontSize: 13, lineHeight: 1.6, whiteSpace: 'pre-line', wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>
+        {note}
+      </div>
+    )
+  }
+  const rows = parseParkingRows(note)
+  if (rows.length <= 1) {
+    return (
+      <div style={{ marginTop: 4, color: 'var(--muted)', fontSize: 13, lineHeight: 1.5, wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>
+        {rows[0]?.value ?? note}
+      </div>
+    )
+  }
+  return (
+    <ul style={{ listStyle: 'none', margin: '8px 0 0', padding: 0, display: 'flex', flexDirection: 'column', gap: 5 }}>
+      {rows.map((r, i) => (
+        <li key={i} style={{ display: 'flex', gap: 10, fontSize: 13, lineHeight: 1.5, alignItems: 'baseline' }}>
+          {r.label != null && (
+            <span style={{ color: 'var(--muted)', minWidth: 76, flexShrink: 0, wordBreak: 'keep-all' }}>{r.label}</span>
+          )}
+          <span style={{ color: 'var(--text)', fontWeight: 600, wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>{r.value}</span>
+        </li>
+      ))}
+    </ul>
   )
 }
 

@@ -1,0 +1,192 @@
+[
+    {
+        "slug":  "hakuoki-sekkaroku-anime",
+        "name":  "박앵귀 설화록",
+        "englishName":  "Hakuoki: A Memory of Snow Flowers",
+        "aliases":  [
+                        "薄桜鬼 雪華録"
+                    ],
+        "description":  "신선조가 가장 활약한 교토 시기를 각 대원과 지즈루의 교류를 중심으로 다시 비춘다.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "로맨스",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/hakuouki-setsu",
+        "source":  "https://www.deen.co.jp/works-archives/hakuouki-setsu"
+    },
+    {
+        "slug":  "hakuoki-reimeiroku-anime",
+        "name":  "박앵귀 여명록",
+        "englishName":  "Hakuoki: Dawn of the Shinsengumi",
+        "aliases":  [
+                        "薄桜鬼 黎明録"
+                    ],
+        "description":  "무사를 싫어하는 이부키 류노스케가 낭사조에 머물며 신선조 탄생기의 갈등을 지켜본다.",
+        "genres":  [
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/hakuouki-rei",
+        "source":  "https://www.deen.co.jp/works-archives/hakuouki-rei"
+    },
+    {
+        "slug":  "sekaiichi-hatsukoi-anime",
+        "name":  "세계 제일의 첫사랑 애니메이션",
+        "englishName":  "The World\u0027s Greatest First Love",
+        "aliases":  [
+                        "世界一初恋"
+                    ],
+        "description":  "출판사에 이직한 오노데라 리쓰가 첫사랑 상대였던 편집장 다카노와 다시 마주한다.",
+        "genres":  [
+                       "BL",
+                       "로맨스",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/sekaiichi",
+        "source":  "https://www.deen.co.jp/works-archives/sekaiichi"
+    },
+    {
+        "slug":  "nurarihyon-grandson-anime",
+        "name":  "누라리횬의 손자 애니메이션",
+        "englishName":  "Nura: Rise of the Yokai Clan",
+        "aliases":  [
+                        "ぬらりひょんの孫"
+                    ],
+        "description":  "인간과 요괴의 피를 이은 리쿠오가 누라구미 후계자로서 동료를 지키고 적대 요괴와 맞선다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "소년물"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/nuramago",
+        "source":  "https://www.deen.co.jp/works-archives/nuramago"
+    },
+    {
+        "slug":  "giant-killing-anime",
+        "name":  "자이언트 킬링 애니메이션",
+        "englishName":  "Giant Killing",
+        "aliases":  [
+
+                    ],
+        "description":  "파격적인 감독 다쓰미 다케시가 침체된 프로축구팀 ETU를 맡아 강호들을 상대로 반전을 노린다.",
+        "genres":  [
+                       "스포츠",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/g-killing",
+        "source":  "https://www.deen.co.jp/works-archives/g-killing"
+    },
+    {
+        "slug":  "umineko-when-they-cry-anime",
+        "name":  "괭이갈매기 울 적에 애니메이션",
+        "englishName":  "Umineko: When They Cry",
+        "aliases":  [
+                        "うみねこのなく頃に"
+                    ],
+        "description":  "태풍으로 고립된 롯켄섬에서 우시로미야 일가의 상속 회의가 연쇄 살인과 마녀의 수수께끼로 변한다.",
+        "genres":  [
+                       "추리",
+                       "호러",
+                       "판타지",
+                       "고어"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/umineko",
+        "source":  "https://www.deen.co.jp/works-archives/umineko"
+    },
+    {
+        "slug":  "maria-watches-over-us-season-4-anime",
+        "name":  "마리아님이 보고 계셔 4기",
+        "englishName":  "Maria Watches Over Us Season 4",
+        "aliases":  [
+                        "マリア様がみてる 4thシーズン"
+                    ],
+        "description":  "리리안 여학원의 유미가 자신의 여동생 후보를 고민하며 산백합회 친구들과 성장한다.",
+        "genres":  [
+                       "GL",
+                       "학원",
+                       "드라마",
+                       "로맨스"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/maria-4",
+        "source":  "https://www.deen.co.jp/works-archives/maria-4"
+    },
+    {
+        "slug":  "student-council-discretion-anime",
+        "name":  "학생회의 일존 애니메이션",
+        "englishName":  "Student Council\u0027s Discretion",
+        "aliases":  [
+                        "生徒会の一存"
+                    ],
+        "description":  "미소녀 위원들 사이에 들어간 스기사키 켄이 사립 헤키요 학원 학생회에서 떠들썩한 나날을 보낸다.",
+        "genres":  [
+                       "학원",
+                       "코미디",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/seitokai",
+        "source":  "https://www.deen.co.jp/works-archives/seitokai"
+    },
+    {
+        "slug":  "hetalia-axis-powers-anime",
+        "name":  "헤타리아 Axis Powers",
+        "englishName":  "Hetalia: Axis Powers",
+        "aliases":  [
+                        "ヘタリア Axis Powers"
+                    ],
+        "description":  "이탈리아와 독일, 일본 등 나라를 의인화한 인물들이 세계사의 사건을 짧은 희극으로 펼친다.",
+        "genres":  [
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/hetalia",
+        "source":  "https://www.deen.co.jp/works-archives/hetalia"
+    },
+    {
+        "slug":  "higurashi-rei-anime",
+        "name":  "쓰르라미 울 적에 례",
+        "englishName":  "Higurashi When They Cry Rei",
+        "aliases":  [
+                        "ひぐらしのなく頃に礼"
+                    ],
+        "description":  "운명의 싸움 뒤 리카가 새로운 비극과 선택을 마주하고 히나미자와 친구들의 별도 사건도 펼쳐진다.",
+        "genres":  [
+                       "호러",
+                       "추리",
+                       "드라마",
+                       "고어"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/higurashi-rei",
+        "source":  "https://www.deen.co.jp/works-archives/higurashi-rei"
+    }
+]

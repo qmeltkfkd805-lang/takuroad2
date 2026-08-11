@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "bismarck-anime",
+    "name": "성총사 비스마르크",
+    "englishName": "Saber Rider and the Star Sheriffs",
+    "aliases": ["星銃士ビスマルク", "세이쥬시 비스마르크"],
+    "description": "네 젊은 전사가 변형 로봇 비스마르크를 타고 태양계를 다시 침공한 데스큘라군과 싸운다.",
+    "genres": ["SF", "액션", "로봇/메카"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1980/tv80_09.html",
+    "source": "https://pierrot.jp/archive/1980/tv80_09.html"
+  },
+  {
+    "slug": "chikkun-takkun-anime",
+    "name": "치쿤 타쿤",
+    "englishName": "Chikkun Takkun",
+    "aliases": ["チックン タックン"],
+    "description": "외계 왕자 치쿤과 신하 타쿤이 악행 대사전을 훔친 닥터 벨을 쫓아 지구에서 활약한다.",
+    "genres": ["SF", "가족", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1980/tv80_07.html",
+    "source": "https://pierrot.jp/archive/1980/tv80_07.html"
+  },
+  {
+    "slug": "magical-fairy-persia-anime",
+    "name": "마법의 요정 페르샤",
+    "englishName": "Persia, the Magic Fairy",
+    "aliases": ["魔法の妖精 ペルシャ", "마법의 요정 페르시아"],
+    "description": "아프리카에서 자란 페르샤가 요정의 나라를 구할 사랑 에너지를 모으기 위해 마법을 쓴다.",
+    "genres": ["마법소녀", "판타지", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1980/tv80_08.html",
+    "source": "https://pierrot.jp/archive/1980/tv80_08.html"
+  },
+  {
+    "slug": "magical-emi-anime",
+    "name": "마법의 스타 매지컬 에미",
+    "englishName": "Magical Emi, the Magic Star",
+    "aliases": ["魔法のスター マジカルエミ", "마법의 스타 마법소녀 에미"],
+    "description": "마술사를 꿈꾸는 마이가 마법으로 매지컬 에미가 되어 무대에 서며 자신의 꿈을 키워 간다.",
+    "genres": ["마법소녀", "판타지", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/magicalgirls/title03.html",
+    "source": "https://pierrot.jp/magicalgirls/title03.html"
+  },
+  {
+    "slug": "pastel-yumi-anime",
+    "name": "마법의 아이돌 파스텔 유미",
+    "englishName": "Pastel Yumi, the Magic Idol",
+    "aliases": ["魔法のアイドル パステルユーミ"],
+    "description": "그림을 좋아하는 유미가 꽃의 요정에게 받은 지팡이로 그린 것을 잠시 현실로 만든다.",
+    "genres": ["마법소녀", "판타지", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1985/tv80_12.html",
+    "source": "https://pierrot.jp/archive/1985/tv80_12.html"
+  },
+  {
+    "slug": "anmitsu-hime-anime",
+    "name": "앙미츠 공주",
+    "englishName": "Anmitsu Hime",
+    "aliases": ["あんみつ姫", "안미츠 공주"],
+    "description": "호기심 많고 정의로운 앙미츠 공주가 성과 마을을 오가며 기묘한 사건과 소동을 해결한다.",
+    "genres": ["가족", "모험", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1985/tv80_13.html",
+    "source": "https://pierrot.jp/archive/1985/tv80_13.html"
+  },
+  {
+    "slug": "ganbare-kickers-anime",
+    "name": "힘내라! 킥커즈",
+    "englishName": "Fight! Kickers",
+    "aliases": ["がんばれ！キッカーズ", "간바레 킥커즈"],
+    "description": "축구 소년 쇼가 약체 기타하라 킥커즈에 합류해 동료들과 승리를 향해 성장한다.",
+    "genres": ["스포츠", "소년물", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1985/tv80_14.html",
+    "source": "https://pierrot.jp/archive/1985/tv80_14.html"
+  },
+  {
+    "slug": "norakuro-kun-anime",
+    "name": "노라쿠로 군",
+    "englishName": "Norakuro-kun",
+    "aliases": ["のらくろクン"],
+    "description": "강아지 노라쿠로가 혈기왕성한 할아버지의 탐정사무소를 도우며 온갖 진기한 사건에 나선다.",
+    "genres": ["가족", "추리", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1985/tv80_16.html",
+    "source": "https://pierrot.jp/archive/1985/tv80_16.html"
+  },
+  {
+    "slug": "moeru-oniisan-anime",
+    "name": "불타라! 오빠",
+    "englishName": "Burn! Brother",
+    "aliases": ["燃える！お兄さん", "모에루 오니상"],
+    "description": "산에서 자란 야생 소년 켄이치가 친가족을 찾아 도시로 내려와 학교와 사회의 상식을 배운다.",
+    "genres": ["학원", "격투", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1985/tv80_18.html",
+    "source": "https://pierrot.jp/archive/1985/tv80_18.html"
+  },
+  {
+    "slug": "magical-hat-anime",
+    "name": "매지컬 햇",
+    "englishName": "Magical Hat",
+    "aliases": ["まじかるハット", "마지카루 햇"],
+    "description": "마계에 떨어진 소년 햇이 전설의 용사 후손임을 알고 동료들과 마왕의 세력에 맞선다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1985/tv80_19.html",
+    "source": "https://pierrot.jp/archive/1985/tv80_19.html"
+  }
+]

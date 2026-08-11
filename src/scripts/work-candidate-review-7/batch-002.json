@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "rilu-rilu-fairilu-fairy-door-anime",
+    "name": "리루리루 페어리루 요정의 문",
+    "englishName": "Rilu Rilu Fairilu: The Fairy's Door",
+    "aliases": ["リルリルフェアリル〜妖精のドア〜"],
+    "description": "씨앗에서 태어난 요정 리프와 친구들이 자신만의 페어리루 도어를 찾으며 꿈을 키운다.",
+    "genres": ["판타지", "가족", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/rilurilu",
+    "source": "https://www.deen.co.jp/works-archives/rilurilu"
+  },
+  {
+    "slug": "rilu-rilu-fairilu-magic-mirror-anime",
+    "name": "리루리루 페어리루 마법의 거울",
+    "englishName": "Rilu Rilu Fairilu: Magic Mirror",
+    "aliases": ["リルリルフェアリル～魔法の鏡～"],
+    "description": "리프와 플라워 페어리루들이 인간 파트너와 힘을 합쳐 각자의 꿈을 향해 성장한다.",
+    "genres": ["판타지", "가족", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/rilurilu-2",
+    "source": "https://www.deen.co.jp/works-archives/rilurilu-2"
+  },
+  {
+    "slug": "oshiete-mahou-pendulum-fairilu-anime",
+    "name": "가르쳐줘 마법의 펜듈럼 리루리루 페어리루",
+    "englishName": null,
+    "aliases": ["おしえて魔法のペンデュラム～リルリルフェアリル～"],
+    "description": "고민 많은 중학생 아리스가 마법의 펜듈럼으로 요정 세계에 이끌려 마음의 답을 찾는다.",
+    "genres": ["판타지", "가족", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/rilurilu-3",
+    "source": "https://www.deen.co.jp/works-archives/rilurilu-3"
+  },
+  {
+    "slug": "reikenzan-stardust-banquet-anime",
+    "name": "영검산 별가루들의 잔치",
+    "englishName": "Reikenzan: Hoshikuzu-tachi no Utage",
+    "aliases": ["霊剣山 星屑たちの宴"],
+    "description": "천년에 한 번 나오는 공영근을 지닌 왕륙이 영검파 입문 시험에 도전해 선인의 길을 걷는다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/reikenzan",
+    "source": "https://www.deen.co.jp/works-archives/reikenzan"
+  },
+  {
+    "slug": "reikenzan-eichi-qualification-anime",
+    "name": "영검산 예지로의 자격",
+    "englishName": "Reikenzan: Eichi e no Shikaku",
+    "aliases": ["霊剣山 叡智への資格"],
+    "description": "영검파 수행 2년째인 왕륙이 속세로 내려가 자신만의 방식으로 사람들을 이끌고 시험받는다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/reikenzan2",
+    "source": "https://www.deen.co.jp/works-archives/reikenzan2"
+  },
+  {
+    "slug": "xuan-yuan-sword-luminary-anime",
+    "name": "헌원검 푸른 빛의 검",
+    "englishName": "Xuan Yuan Sword Luminary",
+    "aliases": ["軒轅剣・蒼き曜"],
+    "description": "전쟁으로 헤어진 세 사람이 전설의 헌원검과 기계 병기를 둘러싸고 적으로 다시 만난다.",
+    "genres": ["판타지", "액션", "모험", "로봇/메카"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/kenenken",
+    "source": "https://www.deen.co.jp/works-archives/kenenken"
+  },
+  {
+    "slug": "kochoki-wakaki-nobunaga-anime",
+    "name": "호접기 젊은 노부나가",
+    "englishName": "Kochoki: Wakaki Nobunaga",
+    "aliases": ["胡蝶綺 ～若き信長～"],
+    "description": "젊은 오다 노부나가가 가문 계승 다툼과 배신을 겪으며 전국시대의 무장으로 성장한다.",
+    "genres": ["액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/kochoki",
+    "source": "https://www.deen.co.jp/works-archives/kochoki"
+  },
+  {
+    "slug": "nameko-sekai-no-tomodachi-anime",
+    "name": "나메코 세계의 친구들",
+    "englishName": null,
+    "aliases": ["なめこ〜せかいのともだち〜"],
+    "description": "나메코가 숲의 안내단 NUR을 꾸려 세계 각지에서 찾아오는 개성 강한 친구들을 맞이한다.",
+    "genres": ["가족", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/nameko",
+    "source": "https://www.deen.co.jp/works-archives/nameko"
+  },
+  {
+    "slug": "pupa-anime",
+    "name": "pupa 애니메이션",
+    "englishName": "Pupa",
+    "aliases": ["ピューパ"],
+    "description": "괴물로 변해 사람을 먹는 여동생 유메를 위해 오빠 우츠츠가 재생하는 자신의 몸을 내어준다.",
+    "genres": ["호러", "고어", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/pupa",
+    "source": "https://www.deen.co.jp/works-archives/pupa"
+  },
+  {
+    "slug": "kabukibu-anime",
+    "name": "카부키부! 애니메이션",
+    "englishName": "Kabukibu!",
+    "aliases": ["カブキブ！"],
+    "description": "가부키를 사랑하는 고교생 쿠로고가 학교에 가부키부를 만들기 위해 동료를 모은다.",
+    "genres": ["학원", "드라마", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/kabukibu",
+    "source": "https://www.deen.co.jp/works-archives/kabukibu"
+  }
+]

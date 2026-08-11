@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "ooku-inner-chambers-anime",
+    "name": "오오쿠 애니메이션",
+    "englishName": "Ooku: The Inner Chambers",
+    "aliases": ["大奥"],
+    "description": "남성 인구가 급감한 에도에서 여성 쇼군과 남성들로 이루어진 오오쿠의 역사를 파헤친다.",
+    "genres": ["로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/oooku",
+    "source": "https://www.deen.co.jp/works/oooku"
+  },
+  {
+    "slug": "junji-ito-maniac-anime",
+    "name": "이토 준지 매니악",
+    "englishName": "Junji Ito Maniac: Japanese Tales of the Macabre",
+    "aliases": ["伊藤潤二『マニアック』"],
+    "description": "토미에와 소이치, 목매다는 기구 등 이토 준지의 공포 단편 스무 편을 옴니버스로 그린다.",
+    "genres": ["호러", "고어", "추리"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/itojun-m",
+    "source": "https://www.deen.co.jp/works/itojun-m"
+  },
+  {
+    "slug": "sorcerous-stabber-orphen-2020-anime",
+    "name": "마술사 오펜 뜻밖의 여행",
+    "englishName": "Sorcerous Stabber Orphen",
+    "aliases": ["魔術士オーフェンはぐれ旅"],
+    "description": "과거를 버린 마술사 오펜이 괴물로 변한 의자매 아자리의 행방과 구원의 방법을 찾는다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/orphen",
+    "source": "https://www.deen.co.jp/works/orphen"
+  },
+  {
+    "slug": "orphen-battle-of-kimluck-anime",
+    "name": "마술사 오펜 뜻밖의 여행 킴라크편",
+    "englishName": "Sorcerous Stabber Orphen: Battle of Kimluck",
+    "aliases": ["魔術士オーフェンはぐれ旅 キムラック編"],
+    "description": "오펜 일행이 아자리의 말을 따라 마술사를 적대하는 성도 킴라크와 죽음의 교사들에 맞선다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/orphen2",
+    "source": "https://www.deen.co.jp/works/orphen2"
+  },
+  {
+    "slug": "orphen-chaos-in-urbanrama-anime",
+    "name": "마술사 오펜 뜻밖의 여행 어번라마편",
+    "englishName": "Sorcerous Stabber Orphen: Chaos in Urbanrama",
+    "aliases": ["魔術士オーフェンはぐれ旅 アーバンラマ編"],
+    "description": "아자리를 찾던 오펜 일행이 여검사 로테샤와 만나 마검을 둘러싼 싸움에 휘말린다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/orphen3",
+    "source": "https://www.deen.co.jp/works/orphen3"
+  },
+  {
+    "slug": "orphen-sanctuary-arc-anime",
+    "name": "마술사 오펜 뜻밖의 여행 성역편",
+    "englishName": "Sorcerous Stabber Orphen: Sanctuary Arc",
+    "aliases": ["魔術士オーフェンはぐれ旅 聖域編"],
+    "description": "오펜 일행이 성역과 최접근령의 전쟁 속에서 대륙 멸망을 막고 아자리의 비밀과 마주한다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/orphen4",
+    "source": "https://www.deen.co.jp/works/orphen4"
+  },
+  {
+    "slug": "muhyo-roji-season-2-anime",
+    "name": "무효와 로지의 마법률상담사무소 2기",
+    "englishName": "Muhyo & Roji's Bureau of Supernatural Investigation Season 2",
+    "aliases": ["ムヒョとロージーの魔法律相談事務所 第2期"],
+    "description": "무효와 로지가 일상을 되찾은 뒤 새로운 집행인 고료의 등장으로 또 다른 마법률 싸움에 나선다.",
+    "genres": ["판타지", "호러", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/muhyoroji",
+    "source": "https://www.deen.co.jp/works-archives/muhyoroji"
+  },
+  {
+    "slug": "log-horizon-destruction-round-table-anime",
+    "name": "로그 호라이즌 원탁붕괴",
+    "englishName": "Log Horizon: Destruction of the Round Table",
+    "aliases": ["ログ・ホライズン 円卓崩壊"],
+    "description": "아키바를 이끌던 원탁회의가 내부 갈등과 정치적 위기에 흔들리자 시로에가 해법을 모색한다.",
+    "genres": ["판타지", "모험", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/loghorizon3",
+    "source": "https://www.deen.co.jp/works/loghorizon3"
+  },
+  {
+    "slug": "outburst-dreamer-boys-anime",
+    "name": "중병격발 보이 애니메이션",
+    "englishName": "Outburst Dreamer Boys",
+    "aliases": ["厨病激発ボーイ"],
+    "description": "평온을 원하는 전학생 미즈키가 각자 중2병에 빠진 히어로부 소년들의 소동에 휘말린다.",
+    "genres": ["학원", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/chubyou",
+    "source": "https://www.deen.co.jp/works/chubyou"
+  },
+  {
+    "slug": "sekaiichi-hatsukoi-proposal-movie",
+    "name": "세계 제일의 첫사랑 프로포즈편",
+    "englishName": "Sekai Ichi Hatsukoi: Propose-hen",
+    "aliases": ["世界一初恋～プロポーズ編～"],
+    "description": "결혼식 이차회에 초대된 마루카와 서점 편집자들을 중심으로 네 커플의 약속을 그린다.",
+    "genres": ["BL", "로맨스", "코미디"],
+    "ipType": ["영화"],
+    "officialUrl": "https://www.deen.co.jp/works/sekaiichi_propose",
+    "source": "https://www.deen.co.jp/works/sekaiichi_propose"
+  }
+]

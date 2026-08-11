@@ -1,0 +1,191 @@
+[
+    {
+        "slug":  "rampo-kitan-game-of-laplace",
+        "name":  "란포 기담 Game of Laplace",
+        "englishName":  "Rampo Kitan: Game of Laplace",
+        "aliases":  [
+                        "乱歩奇譚 Game of Laplace"
+                    ],
+        "description":  "중학생 코바야시가 탐정 아케치의 조수가 되어 에도가와 란포의 기괴한 세계를 닮은 사건을 푼다.",
+        "genres":  [
+                       "추리",
+                       "호러",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.rampokitan.com/",
+        "source":  "https://www.aniplex.co.jp/lineup/ranpokitan/"
+    },
+    {
+        "slug":  "ghost-hound-anime",
+        "name":  "신령사냥/GHOST HOUND",
+        "englishName":  "Ghost Hound",
+        "aliases":  [
+                        "神霊狩/GHOST HOUND"
+                    ],
+        "description":  "각자 지울 수 없는 과거를 지닌 세 소년이 영혼이 빠져나가는 유세와 현실의 침식을 마주한다.",
+        "genres":  [
+                       "호러",
+                       "SF",
+                       "추리",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.production-ig.co.jp/works/ghost-hound/",
+        "source":  "https://www.production-ig.co.jp/works/ghost-hound/"
+    },
+    {
+        "slug":  "joker-game-anime",
+        "name":  "조커 게임",
+        "englishName":  "Joker Game",
+        "aliases":  [
+                        "ジョーカー・ゲーム"
+                    ],
+        "description":  "세계대전 전야 일본 육군의 비밀기관 D기관 소속 스파이들이 각국에서 목숨을 건 정보전을 펼친다.",
+        "genres":  [
+                       "추리",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://jokergame.jp/",
+        "source":  "https://kadokawa-animation.jp/lineup/jokergame"
+    },
+    {
+        "slug":  "vatican-miracle-examiner-anime",
+        "name":  "바티칸 기적 조사관",
+        "englishName":  "Vatican Miracle Examiner",
+        "aliases":  [
+                        "バチカン奇跡調査官"
+                    ],
+        "description":  "두 신부 히라가와 로베르토가 세계 각지의 기적을 과학과 고문서로 검증하며 숨은 범죄를 밝힌다.",
+        "genres":  [
+                       "추리",
+                       "호러",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://kisekichosakan.jp/",
+        "source":  "https://kisekichosakan.jp/about/"
+    },
+    {
+        "slug":  "woodpecker-detectives-office",
+        "name":  "딱따구리 탐정처",
+        "englishName":  "Woodpecker Detective\u0027s Office",
+        "aliases":  [
+                        "啄木鳥探偵處"
+                    ],
+        "description":  "메이지 시대 도쿄에서 시인 이시카와 다쿠보쿠가 친구 긴다이치와 탐정업을 하며 기묘한 사건을 푼다.",
+        "genres":  [
+                       "추리",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://kimikoe.com/kitsutsuki/",
+        "source":  "https://kimikoe.com/kitsutsuki/"
+    },
+    {
+        "slug":  "ikebukuro-west-gate-park-anime",
+        "name":  "이케부쿠로 웨스트 게이트 파크",
+        "englishName":  "Ikebukuro West Gate Park",
+        "aliases":  [
+                        "池袋ウエストゲートパーク"
+                    ],
+        "description":  "조직에 속하지 않은 해결사 마코토가 이케부쿠로의 범죄와 청년 갱단 사이에서 어려운 의뢰를 푼다.",
+        "genres":  [
+                       "액션",
+                       "추리",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://iwgp-anime.com/",
+        "source":  "https://iwgp-anime.com/"
+    },
+    {
+        "slug":  "night-head-2041-anime",
+        "name":  "나이트 헤드 2041",
+        "englishName":  "Night Head 2041",
+        "aliases":  [
+
+                    ],
+        "description":  "초능력이 금지된 2041년, 능력자 키리하라 형제와 이들을 추적하는 쿠로키 형제가 세계의 변동에 휘말린다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://nighthead2041.jp/",
+        "source":  "https://nighthead2041.jp/"
+    },
+    {
+        "slug":  "mars-red-anime",
+        "name":  "마스 레드",
+        "englishName":  "Mars Red",
+        "aliases":  [
+
+                    ],
+        "description":  "다이쇼 시대 일본에서 뱀파이어가 된 군인들로 구성된 제16특무대가 인공 혈액과 음모를 추적한다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://marsred.tv/",
+        "source":  "https://marsred.tv/"
+    },
+    {
+        "slug":  "revenger-anime-2023",
+        "name":  "리벤저",
+        "englishName":  "Revenger",
+        "aliases":  [
+
+                    ],
+        "description":  "배신으로 약혼자 가족을 잃은 무사 라이조가 나가사키의 복수 대행자들과 악을 처단한다.",
+        "genres":  [
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://sh-anime.shochiku.co.jp/revenger/",
+        "source":  "https://sh-anime.shochiku.co.jp/revenger/"
+    },
+    {
+        "slug":  "marginal-service-anime",
+        "name":  "더 마지널 서비스",
+        "englishName":  "The Marginal Service",
+        "aliases":  [
+
+                    ],
+        "description":  "전직 형사 브라이언이 비밀기관 마지널 서비스에 합류해 인간 사회에 숨은 경계인의 범죄를 단속한다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://marginalservice.com/",
+        "source":  "https://marginalservice.com/introduction/"
+    }
+]

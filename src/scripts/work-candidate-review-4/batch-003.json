@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "tsuritama",
+    "name": "츠리타마",
+    "englishName": "Tsuritama",
+    "aliases": ["つり球"],
+    "description": "사람과 어울리기 힘든 유키가 에노시마에서 자칭 외계인 하루를 만나 낚시와 우정, 지구의 위기에 뛰어든다.",
+    "genres": ["SF", "학원", "일상", "스포츠", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.tsuritama.com/",
+    "source": "https://www.tsuritama.com/"
+  },
+  {
+    "slug": "princess-jellyfish-anime",
+    "name": "해파리 공주",
+    "englishName": "Princess Jellyfish",
+    "aliases": ["海月姫"],
+    "description": "해파리를 사랑하는 오타쿠 츠키미가 여장 남자 쿠라노스케를 만나 아마미즈관과 자신의 삶을 지키려 한다.",
+    "genres": ["일상", "로맨스", "코미디", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://kuragehime.net/",
+    "source": "https://kuragehime.net/introduction.html"
+  },
+  {
+    "slug": "house-of-five-leaves",
+    "name": "납치사 고요",
+    "englishName": "House of Five Leaves",
+    "aliases": ["さらい屋五葉"],
+    "description": "소심한 낭인 마사노스케가 야이치의 호위를 맡았다가 납치 조직 고요에 들어가 구성원들의 사연을 알아간다.",
+    "genres": ["드라마", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.fujitv.co.jp/b_hp/saraiya/index.html",
+    "source": "https://www.fujitv.co.jp/b_hp/saraiya/index.html"
+  },
+  {
+    "slug": "michiko-and-hatchin",
+    "name": "미치코와 핫친",
+    "englishName": "Michiko & Hatchin",
+    "aliases": ["ミチコとハッチン"],
+    "description": "탈옥수 미치코가 학대받던 소녀 핫친을 데리고 가상의 남미를 달리며 두 사람과 이어진 남자를 추적한다.",
+    "genres": ["액션", "모험", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.fujitv.co.jp/b_hp/michikotohatchin/index.html",
+    "source": "https://www.fujitv.co.jp/b_hp/michikotohatchin/index.html"
+  },
+  {
+    "slug": "gankutsuou",
+    "name": "암굴왕",
+    "englishName": "Gankutsuou",
+    "aliases": ["巌窟王"],
+    "description": "미래 파리의 귀족 청년 알베르가 몬테크리스토 백작을 만나며 부모 세대를 겨눈 치밀한 복수극에 휘말린다.",
+    "genres": ["SF", "드라마", "추리"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.gonzo.co.jp/works/gankutsuou/index.html",
+    "source": "https://www.gonzo.co.jp/works/gankutsuou/index.html"
+  },
+  {
+    "slug": "last-exile",
+    "name": "라스트 엑자일",
+    "englishName": "Last Exile",
+    "aliases": [],
+    "description": "비행선 운반업자 클라우스와 라비가 소녀 알비스를 전함 실바나에 데려가며 하늘의 전쟁에 휘말린다.",
+    "genres": ["SF", "모험", "액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.gonzo.co.jp/works/lastexile/index.html",
+    "source": "https://www.jvcmusic.co.jp/flyingdog/-/Animedata/Z0785.html"
+  },
+  {
+    "slug": "simoun-anime",
+    "name": "시문",
+    "englishName": "Simoun",
+    "aliases": ["シムーン"],
+    "description": "성별을 선택하기 전의 무녀들이 비행정 시문을 몰며 전쟁에 맞서고 사랑과 미래의 선택을 고민한다.",
+    "genres": ["SF", "로봇/메카", "드라마", "GL"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.simoun.tv/",
+    "source": "https://www.simoun.tv/introduction/index.html"
+  },
+  {
+    "slug": "haibane-renmei",
+    "name": "회색날개 연맹",
+    "englishName": "Haibane Renmei",
+    "aliases": ["灰羽連盟"],
+    "description": "벽으로 둘러싸인 도시에서 깨어난 라카가 회색 날개들과 살아가며 자신의 탄생과 죄, 떠남의 의미를 찾는다.",
+    "genres": ["판타지", "일상", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.nbcuni.co.jp/rondorobe/anime/haibane/",
+    "source": "https://www.nbcuni.co.jp/rondorobe/anime/haibane/"
+  },
+  {
+    "slug": "noein-to-your-other-self",
+    "name": "노에인: 또 하나의 너에게",
+    "englishName": "Noein: To Your Other Self",
+    "aliases": ["ノエイン もうひとりの君へ"],
+    "description": "하루카와 유우가 평행세계에서 온 전사들과 만나 미래의 자신들, 시공을 삼키는 위협에 맞선다.",
+    "genres": ["SF", "액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "kemonozume",
+    "name": "케모노즈메",
+    "englishName": "Kemonozume",
+    "aliases": ["ケモノヅメ"],
+    "description": "식인귀를 사냥하는 토시히코가 식인귀 여성 유카와 사랑에 빠져 양쪽 세계의 추적과 음모에 맞선다.",
+    "genres": ["액션", "호러", "로맨스", "고어"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

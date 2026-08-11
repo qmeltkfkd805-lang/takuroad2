@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "girls-of-the-wilds-webtoon",
+    "name": "소녀더와일즈",
+    "englishName": "Girls of the Wild's",
+    "aliases": [],
+    "description": "여성을 두려워하는 송재구가 격투 특성화 여고의 유일한 남학생이 되어 강한 소녀들과 성장한다.",
+    "genres": ["액션", "격투", "학원", "로맨스"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/action/girls-of-the-wilds/list?title_no=93",
+    "source": "https://www.webtoons.com/en/action/girls-of-the-wilds/list?title_no=93"
+  },
+  {
+    "slug": "hanlim-gym-webtoon",
+    "name": "한림체육관",
+    "englishName": "Hanlim Gym",
+    "aliases": [],
+    "description": "싸움의 강함에 취한 전영하가 최강자 강수호에게 패한 뒤 PVP 무대에 들어가 진짜 강함을 배운다.",
+    "genres": ["스포츠", "격투", "액션", "학원"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/sports/hanlim-gym/list?title_no=2850",
+    "source": "https://www.webtoons.com/en/sports/hanlim-gym/list?title_no=2850"
+  },
+  {
+    "slug": "no-scope-webtoon",
+    "name": "노스코프",
+    "englishName": "No Scope",
+    "aliases": [],
+    "description": "게임 최상위권 강수호가 숨은 재능을 지닌 이도윤을 만나 온라인 슈팅 게임의 프로 무대에 도전한다.",
+    "genres": ["스포츠", "액션", "학원", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/sports/no-scope/list?title_no=1572",
+    "source": "https://www.webtoons.com/en/sports/no-scope/list?title_no=1572"
+  },
+  {
+    "slug": "the-build-up-webtoon",
+    "name": "빌드업",
+    "englishName": "The Build Up",
+    "aliases": [],
+    "description": "축구에 빠진 평범한 고등학생 강마루가 약체라는 평가를 딛고 뛰어난 선수라는 목표에 도전한다.",
+    "genres": ["스포츠", "학원", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/sports/the-build-up/list?title_no=2712",
+    "source": "https://www.webtoons.com/en/sports/the-build-up/list?title_no=2712"
+  },
+  {
+    "slug": "hive-webtoon",
+    "name": "하이브",
+    "englishName": "HIVE",
+    "aliases": [],
+    "description": "거대 곤충이 서울을 뒤덮자 평범한 회사원 이은성이 무너진 도시를 헤치며 가족을 찾아 나선다.",
+    "genres": ["호러", "액션", "SF", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/thriller/hive/list?title_no=65",
+    "source": "https://www.webtoons.com/en/thriller/hive/list?title_no=65"
+  },
+  {
+    "slug": "distant-sky-webtoon",
+    "name": "심연의 하늘",
+    "englishName": "Distant Sky",
+    "aliases": [],
+    "description": "어둠에 잠긴 강남의 시체 더미에서 깨어난 소년이 생존자를 찾으며 도시를 덮친 재난의 비밀을 좇는다.",
+    "genres": ["호러", "SF", "액션", "추리"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/horror/distant-sky/list?title_no=75",
+    "source": "https://www.webtoons.com/en/horror/distant-sky/list?title_no=75"
+  },
+  {
+    "slug": "pigpen-webtoon",
+    "name": "돼지우리",
+    "englishName": "PIGPEN",
+    "aliases": [],
+    "description": "기억을 잃고 외딴 해변에서 깨어난 남자가 수상한 가족의 집에 머물며 자신의 과거와 섬의 진실을 찾는다.",
+    "genres": ["호러", "추리", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/thriller/pigpen/list?title_no=2275",
+    "source": "https://www.webtoons.com/en/thriller/pigpen/list?title_no=2275"
+  },
+  {
+    "slug": "tales-of-the-unusual-webtoon",
+    "name": "기기괴괴",
+    "englishName": "Tales of the Unusual",
+    "aliases": [],
+    "description": "도시괴담과 오래된 설화 속 기이한 현상을 통해 인간의 욕망과 공포를 다룬 옴니버스 이야기다.",
+    "genres": ["호러", "추리", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/horror/tales-of-the-unusual/list?title_no=68",
+    "source": "https://www.webtoons.com/en/horror/tales-of-the-unusual/list?title_no=68"
+  },
+  {
+    "slug": "ghost-teller-webtoon",
+    "name": "귀전구담",
+    "englishName": "Ghost Teller",
+    "aliases": [],
+    "description": "귀신들이 모여 자신들을 두렵게 만든 인간의 잔혹하고 슬픈 사연을 들려주는 공포 옴니버스다.",
+    "genres": ["호러", "드라마", "추리"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/horror/ghost-teller/list?title_no=1307",
+    "source": "https://www.webtoons.com/en/horror/ghost-teller/list?title_no=1307"
+  },
+  {
+    "slug": "dr-frost-webtoon",
+    "name": "닥터 프로스트",
+    "englishName": "Dr. Frost",
+    "aliases": [],
+    "description": "감정을 거의 느끼지 못하는 심리학자 프로스트가 상담과 관찰로 사람들의 마음에 얽힌 문제를 풀어낸다.",
+    "genres": ["추리", "드라마", "학원"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/mystery/dr-frost/list?title_no=371",
+    "source": "https://www.webtoons.com/en/mystery/dr-frost/list?title_no=371"
+  }
+]

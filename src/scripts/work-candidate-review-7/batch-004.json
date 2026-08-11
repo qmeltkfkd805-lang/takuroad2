@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "tadaima-okaeri-anime",
+    "name": "다녀왔어, 어서 와 애니메이션",
+    "englishName": "Tadaima, Okaeri",
+    "aliases": ["ただいま、おかえり"],
+    "description": "마사키와 남편 히로시, 아들 히카리가 편견과 불안을 넘어 더 단단한 가족이 되어 간다.",
+    "genres": ["BL", "가족", "로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/tadaoka",
+    "source": "https://www.deen.co.jp/works/tadaoka"
+  },
+  {
+    "slug": "twilight-out-of-focus-anime",
+    "name": "황혼 아웃 포커스",
+    "englishName": "Twilight Out of Focus",
+    "aliases": ["黄昏アウトフォーカス"],
+    "description": "남자고교 영화부를 무대로 세 쌍의 소년들이 촬영과 갈등 속에서 서로를 사랑하게 된다.",
+    "genres": ["BL", "학원", "로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/tasogare",
+    "source": "https://www.deen.co.jp/works/tasogare"
+  },
+  {
+    "slug": "days-with-my-stepsister-anime",
+    "name": "의매생활 애니메이션",
+    "englishName": "Days with My Stepsister",
+    "aliases": ["義妹生活"],
+    "description": "부모의 재혼으로 남매가 된 유타와 사키가 적절한 거리를 찾으며 천천히 서로를 이해한다.",
+    "genres": ["학원", "로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/gimai",
+    "source": "https://www.deen.co.jp/works/gimai"
+  },
+  {
+    "slug": "banished-former-hero-lives-pleases-anime",
+    "name": "실패작이라 불린 전 영웅은 집에서 추방되어 자유롭게 살기로 했다",
+    "englishName": "The Banished Former Hero Lives as He Pleases",
+    "aliases": ["出来損ないと呼ばれた元英雄は、実家から追放されたので好き勝手に生きることにした"],
+    "description": "공작가에서 추방된 전생의 영웅 알렌이 평온을 바라지만 또다시 사람들을 구하는 싸움에 나선다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/dekisoko",
+    "source": "https://www.deen.co.jp/works/dekisoko"
+  },
+  {
+    "slug": "magic-maker-anime",
+    "name": "매직 메이커 이세계 마법을 만드는 법",
+    "englishName": "Magic Maker: How to Make Magic in Another World",
+    "aliases": ["マジック・メイカー ～異世界魔法の作り方～"],
+    "description": "마법이 없는 이세계에 환생한 시온이 누나 마리와 신비한 현상을 연구해 마법을 만들어 간다.",
+    "genres": ["판타지", "모험", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/magicmaker",
+    "source": "https://www.deen.co.jp/works/magicmaker"
+  },
+  {
+    "slug": "noble-brink-ruin-mastering-magic-anime",
+    "name": "몰락 예정 귀족이지만 한가해서 마법을 익혀봤다",
+    "englishName": "I'm a Noble on the Brink of Ruin, So I Might as Well Try Mastering Magic",
+    "aliases": ["没落予定の貴族だけど、暇だったから魔法を極めてみた"],
+    "description": "귀족의 오남 리암이 된 남자가 마법을 연마해 가문에서 독립하고 뛰어난 마술사로 성장한다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/botsurakukizoku",
+    "source": "https://www.deen.co.jp/works/botsurakukizoku"
+  },
+  {
+    "slug": "cute-high-earth-defense-club-haikara-anime",
+    "name": "미남고교 지구방위부 하이카라!",
+    "englishName": "Cute High Earth Defense Club Haikara!",
+    "aliases": ["美男高校地球防衛部ハイカラ！"],
+    "description": "다이쇼 시대의 남학생 다섯 명이 고양이 과학으로 변신해 지구 정복 세력과 맞선다.",
+    "genres": ["학원", "판타지", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/boueibu",
+    "source": "https://www.deen.co.jp/works/boueibu"
+  },
+  {
+    "slug": "gag-manga-biyori-go-anime",
+    "name": "개그만화 보기 좋은 날 GO",
+    "englishName": "Gag Manga Biyori GO",
+    "aliases": ["増田こうすけ劇場 ギャグマンガ日和GO"],
+    "description": "쇼토쿠 태자와 마쓰오 바쇼 등 익숙한 인물들이 초현실적인 단편 소동을 연이어 벌인다.",
+    "genres": ["코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/gagmanga_biyorigo",
+    "source": "https://www.deen.co.jp/works/gagmanga_biyorigo"
+  },
+  {
+    "slug": "power-of-hope-precure-full-bloom-anime",
+    "name": "희망의 힘 어른 프리큐어 23",
+    "englishName": "Power of Hope: Precure Full Bloom",
+    "aliases": ["キボウノチカラ～オトナプリキュア’２３～"],
+    "description": "어른이 된 노조미와 동료들이 현실의 고민과 새로운 위기 앞에서 다시 희망을 선택한다.",
+    "genres": ["판타지", "액션", "마법소녀", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/otonaprecure",
+    "source": "https://www.deen.co.jp/works/otonaprecure"
+  },
+  {
+    "slug": "re-monster-anime",
+    "name": "Re:Monster 애니메이션",
+    "englishName": "Re:Monster",
+    "aliases": ["リ・モンスター"],
+    "description": "최약체 고블린으로 환생한 고브로가 먹은 대상의 힘을 얻으며 무리를 이끌고 진화한다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/re-monster",
+    "source": "https://www.deen.co.jp/works/re-monster"
+  }
+]

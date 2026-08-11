@@ -92,7 +92,7 @@
 .metaValue { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; }
 
 /* 핵심 정보 타일 */
-.tiles { display: grid; grid-template-columns: repeat(4, minmax(max-content, 1fr)); gap: 10px; overflow-x: auto; scrollbar-width: none; }
+.tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 .tile { background: #FFF4F8; border-radius: 14px; padding: 14px 16px; text-align: center; }
 .tile:nth-child(2) { background: #F3F0FF; }
 .tile:nth-child(3) { background: #FFF1F4; }
@@ -101,7 +101,7 @@
   display: flex; align-items: center; justify-content: center; gap: 5px;
   font-size: 12px; font-weight: 800; color: var(--muted); margin-bottom: 10px;
 }
-.tileLine { font-size: 12.5px; font-weight: 700; color: var(--text); line-height: 1.5; white-space: nowrap; }
+.tileLine { font-size: 12.5px; font-weight: 700; color: var(--text); line-height: 1.5; white-space: pre-line; word-break: keep-all; overflow-wrap: anywhere; }
 
 /* 장소 */
 .shopName { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
@@ -173,14 +173,16 @@
   color: var(--muted); font-size: 15px;
 }
 
-/* no-wrap-4 : 좁은 화면에서도 4칸 한 줄 유지, 대신 가로 스크롤 */
+/* no-wrap-4 : 좁은 화면에서도 4칸 한 줄 유지, 대신 가로 스크롤 (metaGrid만) */
 @media (hover: none) and (pointer: coarse) and (max-width: 720px) {
-  .metaGrid, .tiles {
+  .metaGrid {
     grid-template-columns: repeat(4, minmax(max-content, 1fr));
     overflow-x: auto;
     scrollbar-width: none;
   }
-  .metaGrid::-webkit-scrollbar, .tiles::-webkit-scrollbar { display: none; }
+  .metaGrid::-webkit-scrollbar { display: none; }
+  /* 핵심 정보 요약: 좁은 화면에서도 2개씩, 글자 길어도 안 잘림 */
+  .tiles { grid-template-columns: repeat(2, 1fr); }
 }
 /* 히어로 우측 상단 ... 메뉴 */
 .heroMenu { position: absolute; top: 16px; right: 16px; z-index: 3; }
@@ -267,7 +269,7 @@
   display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
   margin: 12px 0 4px; font-size: 13px; font-weight: 700; color: var(--text);
 }
-.parkingNote { font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.parkingNote { flex-basis: 100%; white-space: pre-line; word-break: keep-all; overflow-wrap: anywhere; font-size: 12.5px; font-weight: 600; color: var(--muted); line-height: 1.55; }
 /* 사진이 히어로 전체를 덮는다 (WorkHomePage·HeroCarousel과 같은 방식) */
 .hero { display: block; min-height: 340px; }
 @media (min-width: 768px), (hover: hover) and (pointer: fine) { .hero { grid-template-columns: none; } }

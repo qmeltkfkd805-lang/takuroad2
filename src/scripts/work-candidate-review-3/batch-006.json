@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "catherine-full-body",
+    "name": "캐서린 풀 보디",
+    "englishName": "Catherine: Full Body",
+    "aliases": ["キャサリン・フルボディ", "캐서린 풀바디"],
+    "description": "결혼을 망설이는 빈센트가 세 사람과 얽힌 현실과 악몽의 퍼즐 사이에서 선택한다.",
+    "genres": ["퍼즐", "로맨스", "호러", "19"],
+    "ipType": ["게임"],
+    "officialUrl": "https://asia.sega.com/fullbody/kr/",
+    "source": "https://asia.sega.com/fullbody/kr/"
+  },
+  {
+    "slug": "gravity-rush",
+    "name": "그래비티 러시",
+    "englishName": "Gravity Rush",
+    "aliases": ["GRAVITY DAZE", "重力的眩暈", "그라비티 러시"],
+    "description": "기억을 잃은 소녀 캣이 중력의 방향을 바꾸는 힘으로 공중도시의 위기에 맞선다.",
+    "genres": ["액션", "판타지", "모험"],
+    "ipType": ["게임"],
+    "officialUrl": "https://store.playstation.com/ja-jp/concept/226357",
+    "source": "https://store.playstation.com/ja-jp/concept/226357"
+  },
+  {
+    "slug": "scarlet-nexus",
+    "name": "스칼렛 넥서스",
+    "englishName": "Scarlet Nexus",
+    "aliases": ["スカーレットネクサス"],
+    "description": "초뇌능력자 유이토와 카사네가 괴이와 싸우며 두 시점으로 세계의 비밀을 밝힌다.",
+    "genres": ["액션", "SF", "드라마"],
+    "ipType": ["게임", "애니"],
+    "officialUrl": "https://www.bandainamcostudios.com/products/scarlet-nexus.html",
+    "source": "https://www.bandainamcostudios.com/products/scarlet-nexus.html"
+  },
+  {
+    "slug": "code-vein",
+    "name": "코드 베인",
+    "englishName": "Code Vein",
+    "aliases": ["コードヴェイン"],
+    "description": "붕괴한 세계의 흡혈귀가 동료와 위험한 던전을 탐색하며 잃어버린 과거를 찾는다.",
+    "genres": ["액션", "판타지", "호러", "19"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.bandainamcostudios.com/products/code-vein.html",
+    "source": "https://www.bandainamcostudios.com/products/code-vein.html"
+  },
+  {
+    "slug": "god-eater",
+    "name": "갓 이터",
+    "englishName": "God Eater",
+    "aliases": ["ゴッドイーター"],
+    "description": "신을 포식하는 생명체 아라가미에 맞서 신기를 든 전사들이 인류의 생존을 지킨다.",
+    "genres": ["액션", "SF", "드라마"],
+    "ipType": ["게임", "애니", "만화"],
+    "officialUrl": "https://www.godeater.jp/",
+    "source": "https://www.godeater.jp/about/"
+  },
+  {
+    "slug": "valkyria-chronicles-remastered",
+    "name": "전장의 발큐리아 리마스터",
+    "englishName": "Valkyria Chronicles Remastered",
+    "aliases": ["戦場のヴァルキュリア リマスター", "전장의 발키리아 리마스터"],
+    "description": "소국 갈리아의 의용군 제7소대가 제국군의 침공에 맞서 고향과 사람들을 지킨다.",
+    "genres": ["액션", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://portal.valkyria.jp/vc1/",
+    "source": "https://portal.valkyria.jp/vc1/world/index.html"
+  },
+  {
+    "slug": "professor-layton-curious-village-exhd",
+    "name": "레이튼 교수와 이상한 마을 EXHD",
+    "englishName": "Professor Layton and the Curious Village EXHD",
+    "aliases": ["レイトン教授と不思議な町 EXHD", "레이튼 교수와 이상한 마을"],
+    "description": "레이튼 교수와 루크가 황금과수의 수수께끼를 풀기 위해 기묘한 마을을 조사한다.",
+    "genres": ["추리", "퍼즐", "모험"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.level5.co.jp/products/layton/fushigi-app.html",
+    "source": "https://www.level5.co.jp/products/layton/fushigi-app.html"
+  },
+  {
+    "slug": "etrian-odyssey-origins-collection",
+    "name": "세계수의 미궁 I·II·III HD 리마스터",
+    "englishName": "Etrian Odyssey Origins Collection",
+    "aliases": ["世界樹の迷宮I・II・III HD REMASTER", "세계수의 미궁 HD 리마스터"],
+    "description": "모험가 길드를 꾸린 플레이어가 직접 지도를 그리며 세 거대한 미궁의 심층을 탐험한다.",
+    "genres": ["판타지", "모험"],
+    "ipType": ["게임"],
+    "officialUrl": "https://sq-atlus.jp/sq123/",
+    "source": "https://sq-atlus.jp/sq123/"
+  },
+  {
+    "slug": "rune-factory-5",
+    "name": "룬 팩토리 5",
+    "englishName": "Rune Factory 5",
+    "aliases": ["ルーンファクトリー5", "RF5"],
+    "description": "기억을 잃은 주인공이 리그버스의 경비대원이 되어 농사와 모험, 주민과의 교류를 즐긴다.",
+    "genres": ["판타지", "일상", "모험", "로맨스"],
+    "ipType": ["게임"],
+    "officialUrl": "https://runefactory.marv.jp/series/rf5/",
+    "source": "https://runefactory.marv.jp/series/rf5/product/"
+  },
+  {
+    "slug": "bravely-default-flying-fairy-hd-remaster",
+    "name": "브레이블리 디폴트 플라잉 페어리 HD 리마스터",
+    "englishName": "Bravely Default Flying Fairy HD Remaster",
+    "aliases": ["ブレイブリーデフォルト フライングフェアリー HDリマスター", "브레이블리 디폴트 HD 리마스터"],
+    "description": "크리스털의 빛을 되찾으려는 네 전사가 잡과 브레이브·디폴트 전술로 세계를 순례한다.",
+    "genres": ["판타지", "모험", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.jp.square-enix.com/bdffhd/",
+    "source": "https://www.jp.square-enix.com/bdffhd/"
+  }
+]

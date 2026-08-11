@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "kakegurui",
+    "name": "카케구루이",
+    "englishName": "Kakegurui",
+    "aliases": ["賭ケグルイ"],
+    "description": "도박 실력이 계급을 가르는 명문 사립학교에 전학 온 쟈바미 유메코가 위험한 승부를 즐긴다.",
+    "genres": ["학원", "추리", "드라마", "19"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://kakegurui-anime.com/",
+    "source": "https://kakegurui-anime.com/"
+  },
+  {
+    "slug": "beastars",
+    "name": "비스타즈",
+    "englishName": "BEASTARS",
+    "aliases": ["ビースターズ"],
+    "description": "육식동물과 초식동물이 함께 사는 세계에서 회색늑대 레고시가 본능과 사랑 사이에서 성장한다.",
+    "genres": ["드라마", "로맨스", "학원", "19"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://bst-animation.com/",
+    "source": "https://www.akitashoten.co.jp/comics/4253227546"
+  },
+  {
+    "slug": "tomo-chan-is-a-girl",
+    "name": "토모 짱은 여자아이!",
+    "englishName": "Tomo-chan Is a Girl!",
+    "aliases": ["トモちゃんは女の子！"],
+    "description": "보이시한 여고생 토모가 자신을 남자 친구처럼 대하는 소꿉친구 준에게 마음을 전하려 분투한다.",
+    "genres": ["로맨스", "코미디", "학원"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://tomo-chan.jp/",
+    "source": "https://tomo-chan.jp/"
+  },
+  {
+    "slug": "my-love-story-with-yamada-kun-at-lv999",
+    "name": "야마다 군과 Lv999의 사랑을 하다",
+    "englishName": "My Love Story with Yamada-kun at Lv999",
+    "aliases": ["山田くんとLv999の恋をする"],
+    "description": "온라인 게임에서 만난 대학생 아카네와 무뚝뚝한 고등학생 프로게이머 야마다의 사랑이 시작된다.",
+    "genres": ["로맨스", "코미디"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://yamadalv999.net/",
+    "source": "https://www.aniplex.co.jp/lineup/yamada999/"
+  },
+  {
+    "slug": "yakuza-fiance-raise-wa-tanin-ga-ii",
+    "name": "내세에는 남남이 좋겠어",
+    "englishName": "Yakuza Fiancé: Raise wa Tanin ga Ii",
+    "aliases": ["来世は他人がいい", "Raise wa Tanin ga Ii"],
+    "description": "야쿠자 집안의 손녀 요시노가 정략 약혼으로 만난 키리시마와 위험하고 뒤틀린 관계를 이어 간다.",
+    "genres": ["로맨스", "드라마", "19"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://raisewataningaii.com/",
+    "source": "https://raisewataningaii.com/"
+  },
+  {
+    "slug": "kubo-wont-let-me-be-invisible",
+    "name": "쿠보 양은 나를 내버려두지 않아",
+    "englishName": "Kubo Won't Let Me Be Invisible",
+    "aliases": ["久保さんは僕を許さない"],
+    "description": "존재감이 희미한 시라이시와 유독 그를 잘 찾아내 장난을 거는 쿠보의 풋풋한 교실 로맨스.",
+    "genres": ["로맨스", "코미디", "학원", "일상"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://kubosan-anime.jp/",
+    "source": "https://kubosan-anime.jp/story/"
+  },
+  {
+    "slug": "komi-cant-communicate",
+    "name": "코미 양은 커뮤증입니다",
+    "englishName": "Komi Can't Communicate",
+    "aliases": ["古見さんは、コミュ症です。"],
+    "description": "사람과 말하기 어려운 코미가 평범한 타다노의 도움을 받아 친구 백 명 만들기에 도전한다.",
+    "genres": ["학원", "코미디", "일상", "로맨스"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://komisan-official.com/",
+    "source": "https://www.tv-tokyo.co.jp/anime/komisan/story/"
+  },
+  {
+    "slug": "my-clueless-first-friend",
+    "name": "사정을 모르는 전학생이 거침없이 다가온다",
+    "englishName": "My Clueless First Friend",
+    "aliases": ["事情を知らない転校生がグイグイくる。"],
+    "description": "반에서 놀림받는 니시무라에게 사정을 모르는 전학생 타카다가 거리낌 없이 다가오며 일상이 변한다.",
+    "genres": ["학원", "일상", "코미디"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://guiguikuru.com/",
+    "source": "https://orig-magazine.jp.square-enix.com/top/anime/detail/zizyou/"
+  },
+  {
+    "slug": "skip-beat",
+    "name": "스킵 비트!",
+    "englishName": "Skip Beat!",
+    "aliases": ["スキップ・ビート！"],
+    "description": "배신당한 쿄코가 복수를 위해 연예계에 뛰어들어 배우로서 재능과 자신만의 꿈을 찾아간다.",
+    "genres": ["로맨스", "코미디", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://hanayume.com/skipbeat/",
+    "source": "https://hanayume.com/skipbeat/"
+  },
+  {
+    "slug": "nodame-cantabile",
+    "name": "노다메 칸타빌레",
+    "englishName": "Nodame Cantabile",
+    "aliases": ["のだめカンタービレ"],
+    "description": "완벽주의 음대생 치아키와 자유분방한 피아노 천재 노다메가 음악과 사랑을 통해 성장한다.",
+    "genres": ["음악", "로맨스", "코미디", "드라마"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://www.kodansha.co.jp/titles/1000000056",
+    "source": "https://www.kodansha.co.jp/titles/1000000056"
+  }
+]

@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "sweet-home-webtoon",
+    "name": "스위트홈",
+    "englishName": "Sweet Home",
+    "aliases": [],
+    "description": "은둔형 고등학생 차현수가 괴물화 사태가 벌어진 아파트에서 주민들과 함께 생존을 모색한다.",
+    "genres": ["호러", "액션", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/thriller/sweethome/list?title_no=1285",
+    "source": "https://www.webtoons.com/en/thriller/sweethome/list?title_no=1285"
+  },
+  {
+    "slug": "bastard-webtoon",
+    "name": "후레자식",
+    "englishName": "Bastard",
+    "aliases": [],
+    "description": "연쇄살인범 아버지의 범행을 돕던 고등학생 진선이 다음 표적이 된 친구를 지키려 저항한다.",
+    "genres": ["호러", "추리", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/thriller/bastard/list?title_no=485",
+    "source": "https://www.webtoons.com/en/thriller/bastard/list?title_no=485"
+  },
+  {
+    "slug": "the-boxer-webtoon",
+    "name": "더 복서",
+    "englishName": "The Boxer",
+    "aliases": [],
+    "description": "감정을 잃은 듯한 천재 복서 유가 전설적인 트레이너 K를 만나 링 위에서 삶과 인간성을 마주한다.",
+    "genres": ["스포츠", "격투", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/sports/the-boxer/list?title_no=2027",
+    "source": "https://www.webtoons.com/en/sports/the-boxer/list?title_no=2027"
+  },
+  {
+    "slug": "dice-webtoon",
+    "name": "다이스",
+    "englishName": "DICE",
+    "aliases": [],
+    "description": "학교 최하위 동태가 능력과 외모를 바꾸는 주사위를 얻으며 욕망이 지배하는 게임에 뛰어든다.",
+    "genres": ["판타지", "학원", "액션", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/fantasy/dice/list?title_no=64",
+    "source": "https://www.webtoons.com/en/fantasy/dice/list?title_no=64"
+  },
+  {
+    "slug": "unholy-blood-webtoon",
+    "name": "화이트 블러드",
+    "englishName": "Unholy Blood",
+    "aliases": [],
+    "description": "평범한 삶을 꿈꾸던 순혈 뱀파이어 박하얀이 경찰 황은태와 함께 세상을 장악한 뱀파이어를 추적한다.",
+    "genres": ["액션", "판타지", "로맨스", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/supernatural/unholy-blood/list?title_no=1262",
+    "source": "https://www.webtoons.com/en/supernatural/unholy-blood/list?title_no=1262"
+  },
+  {
+    "slug": "seasons-of-blossom-webtoon",
+    "name": "청춘 블라썸",
+    "englishName": "Seasons of Blossom",
+    "aliases": [],
+    "description": "사계절을 따라 여러 청춘의 사랑과 우정, 상처와 회복이 서로 이어지는 학원 옴니버스 이야기다.",
+    "genres": ["로맨스", "학원", "드라마", "일상"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/romance/seasonsofblossom/list?title_no=2509",
+    "source": "https://www.webtoons.com/en/romance/seasonsofblossom/list?title_no=2509"
+  },
+  {
+    "slug": "romance-101-webtoon",
+    "name": "바른연애 길잡이",
+    "englishName": "Romance 101",
+    "aliases": [],
+    "description": "계획대로 사는 대학생 정바름이 프로그래밍 동아리에 들어가 예측할 수 없는 연애와 성장을 배운다.",
+    "genres": ["로맨스", "코미디", "학원", "일상"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/romance/romance-101/list?title_no=2406",
+    "source": "https://www.webtoons.com/en/romance/romance-101/list?title_no=2406"
+  },
+  {
+    "slug": "marry-my-husband-webtoon",
+    "name": "내 남편과 결혼해줘",
+    "englishName": "Marry My Husband",
+    "aliases": ["내남결"],
+    "description": "남편과 친구의 배신으로 죽은 강지원이 10년 전으로 돌아가 자신의 비극을 두 사람에게 돌려준다.",
+    "genres": ["로맨스", "드라마", "판타지"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://www.webtoons.com/en/romance/marry-my-husband/list?title_no=4572",
+    "source": "https://www.webtoons.com/en/romance/marry-my-husband/list?title_no=4572"
+  },
+  {
+    "slug": "a-good-day-to-be-a-dog-webtoon",
+    "name": "오늘도 사랑스럽개",
+    "englishName": "A Good Day to be a Dog",
+    "aliases": ["오사개"],
+    "description": "첫 키스 뒤 개로 변하는 저주에 걸린 한해나가 개를 두려워하는 진서원과 저주를 풀려 한다.",
+    "genres": ["로맨스", "판타지", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/romance/a-good-day-tobe-a-dog/list?title_no=1390",
+    "source": "https://www.webtoons.com/en/romance/a-good-day-tobe-a-dog/list?title_no=1390"
+  },
+  {
+    "slug": "annarasumanara-webtoon",
+    "name": "안나라수마나라",
+    "englishName": "The Sound of Magic: Annarasumanara",
+    "aliases": [],
+    "description": "가난 때문에 꿈을 잃은 고등학생 윤아이가 폐허의 마술사를 만나 다시 자신의 소망을 바라본다.",
+    "genres": ["드라마", "판타지", "학원"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/drama/the-sound-of-magic-annarasumanara/list?title_no=77",
+    "source": "https://www.webtoons.com/en/drama/the-sound-of-magic-annarasumanara/list?title_no=77"
+  }
+]

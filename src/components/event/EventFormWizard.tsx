@@ -342,13 +342,17 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
                   ))}
                 </div>
                 {form.parking !== null && (
-                  <input
-                    value={form.parkingNote ?? ''}
-                    onChange={e => set('parkingNote', e.target.value)}
-                    maxLength={60}
-                    placeholder={form.parking ? '예: 건물 주차장 2시간 무료, 이후 10분당 500원' : '예: 인근 공영주차장 이용'}
-                    style={{ ...inp, marginTop: 8 }}
-                  />
+                  <>
+                    <textarea
+                      value={form.parkingNote ?? ''}
+                      onChange={e => set('parkingNote', e.target.value)}
+                      rows={4}
+                      maxLength={200}
+                      placeholder={form.parking ? '예)\n무료주차 : 30분\n1~3만원 : 1시간\n(줄바꿈으로 여러 줄 입력 가능)' : '예: 인근 공영주차장 이용'}
+                      style={{ ...inp, marginTop: 8, minHeight: 92, lineHeight: 1.6, resize: 'vertical', whiteSpace: 'pre-wrap' }}
+                    />
+                    <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>Enter로 줄을 바꾸면 입력한 그대로 보여져요.</div>
+                  </>
                 )}
               </Field>
 
@@ -460,9 +464,10 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
 
               <LinkList
                 label="예매·예약 링크"
-                hint="예매 페이지가 있으면 넣어주세요. 상세 화면에 '예매하러 가기' 버튼이 생겨요."
+                hint="예매 페이지와 버튼명을 함께 넣어주세요. 예: 팝업 예매하기"
                 links={form.ticketUrls ?? ['']}
-                onChange={v => set('ticketUrls', v)}
+                linkLabels={form.ticketLabels ?? ['']}
+                onChange={(v, labels) => { set('ticketUrls', v); set('ticketLabels', labels ?? form.ticketLabels) }}
               />
             </>
           )}
@@ -679,34 +684,37 @@ const linkCount = (arr: string[] | undefined) => {
 
 /** 링크 여러 개 입력 — 공식 사이트·예매 링크가 같은 UI를 쓴다 */
 function LinkList({
-  label, hint, links, onChange,
+  label, hint, links, linkLabels, onChange,
 }: {
   label: string
   hint: string
   links: string[]
-  onChange: (v: string[]) => void
+  linkLabels?: string[]
+  onChange: (v: string[], labels?: string[]) => void
 }) {
   const rows = links.length > 0 ? links : ['']
+  const labels = rows.map((_, index) => linkLabels?.[index] ?? '')
   return (
     <Field label={label} hint={hint}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {rows.map((link, i) => (
-          <div key={i} style={{ display: 'flex', gap: 6 }}>
+          <div key={i} style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+            {linkLabels && <input value={labels[i]} onChange={e => { const next = [...labels]; next[i] = e.target.value; onChange(rows, next) }} placeholder="버튼명 (예: 팝업 예매하기)" maxLength={40} style={{ ...inp, flex: '1 1 180px' }} />}
             <input
               type="url"
               value={link}
-              onChange={e => { const next = [...rows]; next[i] = e.target.value; onChange(next) }}
+              onChange={e => { const next = [...rows]; next[i] = e.target.value; onChange(next, labels) }}
               placeholder="https://"
               style={{ ...inp, flex: 1 }}
             />
             {rows.length > 1 && (
-              <button onClick={() => onChange(rows.filter((_, j) => j !== i))} aria-label="삭제" style={delBtn}>
+              <button onClick={() => onChange(rows.filter((_, j) => j !== i), labels.filter((_, j) => j !== i))} aria-label="삭제" style={delBtn}>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
               </button>
             )}
           </div>
         ))}
-        <button onClick={() => onChange([...rows, ''])} style={addLinkBtn}>+ 링크 추가</button>
+        <button onClick={() => onChange([...rows, ''], [...labels, ''])} style={addLinkBtn}>+ 링크 추가</button>
       </div>
     </Field>
   )

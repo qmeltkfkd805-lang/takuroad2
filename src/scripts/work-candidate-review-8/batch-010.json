@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "your-throne-webtoon",
+    "name": "하루만 네가 되고 싶어",
+    "englishName": "Your Throne",
+    "aliases": ["하네되"],
+    "description": "황태자비 자리를 빼앗긴 메데이아가 프시케와 몸이 뒤바뀐 뒤 황실의 음모에 맞선다.",
+    "genres": ["판타지", "드라마", "로맨스"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/fantasy/your-throne/list?title_no=2009",
+    "source": "https://www.webtoons.com/en/fantasy/your-throne/list?title_no=2009"
+  },
+  {
+    "slug": "operation-true-love-webtoon",
+    "name": "작전명 순정",
+    "englishName": "Operation: True Love",
+    "aliases": [],
+    "description": "사랑받지 못하는 수애가 사랑의 양을 측정하는 휴대전화를 얻으며 복잡한 관계에 휘말린다.",
+    "genres": ["로맨스", "학원", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/romance/operation-true-love/list?title_no=4465",
+    "source": "https://www.webtoons.com/en/romance/operation-true-love/list?title_no=4465"
+  },
+  {
+    "slug": "trapped-webtoon-haemuri",
+    "name": "올가미",
+    "englishName": "Trapped",
+    "aliases": [],
+    "description": "전과자 한채아가 뱀파이어 박윤수의 협박에 맞서며 목숨을 건 추격과 심리전을 벌인다.",
+    "genres": ["로맨스", "호러", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/thriller/trapped/list?title_no=4635",
+    "source": "https://www.webtoons.com/en/thriller/trapped/list?title_no=4635"
+  },
+  {
+    "slug": "my-gently-raised-beast-webtoon",
+    "name": "곱게 키웠더니, 짐승",
+    "englishName": "My Gently Raised Beast",
+    "aliases": [],
+    "description": "황녀 블론디나가 신비한 신수 아몬과 우정을 쌓으며 인간과 신수 사이의 갈등을 마주한다.",
+    "genres": ["판타지", "로맨스", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://www.webtoons.com/en/romance/my-gently-raised-beast/list?title_no=2606",
+    "source": "https://www.webtoons.com/en/romance/my-gently-raised-beast/list?title_no=2606"
+  },
+  {
+    "slug": "dreaming-freedom-webtoon",
+    "name": "꿈에서 자유로",
+    "englishName": "Dreaming Freedom",
+    "aliases": [],
+    "description": "학교 폭력에 시달리는 정민이 자각몽에서 만난 의문의 남자와 함께 복수를 꿈꾼다.",
+    "genres": ["로맨스", "학원", "판타지", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/romance/dreaming-freedom/list?title_no=4180",
+    "source": "https://www.webtoons.com/en/romance/dreaming-freedom/list?title_no=4180"
+  },
+  {
+    "slug": "my-reason-to-die-webtoon",
+    "name": "내가 죽기로 결심한 것은",
+    "englishName": "My Reason to Die",
+    "aliases": ["내죽결"],
+    "description": "태권도 국가대표 선발을 앞두고 다친 지오가 위험한 분위기의 소년 결을 만나 끌리기 시작한다.",
+    "genres": ["로맨스", "학원", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/romance/my-reason-to-die/list?title_no=3993",
+    "source": "https://www.webtoons.com/en/romance/my-reason-to-die/list?title_no=3993"
+  },
+  {
+    "slug": "the-ki-sisters-webtoon",
+    "name": "기기괴괴 기기자매",
+    "englishName": "The Ki Sisters",
+    "aliases": ["기기자매"],
+    "description": "세상과 떨어져 자란 네 자매 중 막내 제니가 소설로만 배운 사랑을 직접 찾아 나선다.",
+    "genres": ["코미디", "가족", "일상", "로맨스"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/comedy/the-ki-sisters/list?title_no=6675",
+    "source": "https://www.webtoons.com/en/comedy/the-ki-sisters/list?title_no=6675"
+  },
+  {
+    "slug": "college-diary-webtoon",
+    "name": "대학일기",
+    "englishName": "",
+    "aliases": [],
+    "description": "캠퍼스의 환상 대신 수강 신청과 시험, 과제와 식사를 현실적으로 그린 대학 생활 일기다.",
+    "genres": ["코미디", "일상", "학원"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=679519",
+    "source": "https://comic.naver.com/webtoon/list?titleId=679519"
+  },
+  {
+    "slug": "couple-breaker-webtoon",
+    "name": "커플브레이커",
+    "englishName": "Couple Breaker",
+    "aliases": [],
+    "description": "연인에게 배신당한 태린과 기석이 커플 예능에서 파트너가 되어 사랑과 복수를 겨룬다.",
+    "genres": ["로맨스", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/drama/couple-breaker/list?title_no=5383",
+    "source": "https://www.webtoons.com/en/drama/couple-breaker/list?title_no=5383"
+  },
+  {
+    "slug": "muse-on-fame-webtoon",
+    "name": "뮤즈 온 유명",
+    "englishName": "Muse on Fame",
+    "aliases": [],
+    "description": "생계를 위해 청소 일을 하는 무명 배우 유명은 과거 자신의 사진을 찍은 전시를 발견한다.",
+    "genres": ["드라마", "로맨스"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/drama/muse-on-fame/list?title_no=5172",
+    "source": "https://www.webtoons.com/en/drama/muse-on-fame/list?title_no=5172"
+  }
+]

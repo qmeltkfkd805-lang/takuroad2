@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "ayashi-no-ceres-anime",
+    "name": "선녀전설 세레스",
+    "englishName": "Ceres, Celestial Legend",
+    "aliases": ["妖しのセレス", "아야시노 세레스"],
+    "description": "열여섯 살 생일에 천녀 세레스의 힘을 깨운 아야가 자신을 없애려는 가문과 맞선다.",
+    "genres": ["판타지", "로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2000/tv00_03.html",
+    "source": "https://pierrot.jp/archive/2000/tv00_03.html"
+  },
+  {
+    "slug": "kogepan-anime",
+    "name": "코게빵 애니메이션",
+    "englishName": "Kogepan",
+    "aliases": ["こげぱん", "그을린 빵"],
+    "description": "오븐에서 타 버린 코게빵이 빵집 한구석에서 다른 빵들과 씁쓸하고 느긋한 일상을 보낸다.",
+    "genres": ["일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2000/tv00_08.html",
+    "source": "https://pierrot.jp/archive/2000/tv00_08.html"
+  },
+  {
+    "slug": "hajime-ningen-gon-anime",
+    "name": "최초인간 곤",
+    "englishName": "First Human Gon",
+    "aliases": ["はじめ人間ゴン", "하지메 닌겐 곤"],
+    "description": "원시시대 소년 곤이 가족과 고릴라 도테친과 함께 맘모스를 쫓으며 신나는 모험을 벌인다.",
+    "genres": ["가족", "모험", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1995/tv90_13.html",
+    "source": "https://pierrot.jp/archive/1995/tv90_13.html"
+  },
+  {
+    "slug": "kaze-no-yojimbo-anime",
+    "name": "바람의 요짐보",
+    "englishName": "Kaze no Yojimbo",
+    "aliases": ["旋風の用心棒", "선풍의 용심봉"],
+    "description": "떠돌이 죠지가 황폐한 마을 키나시로 들어가 두 세력의 대립과 오래된 비밀을 파헤친다.",
+    "genres": ["액션", "추리", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2000/tv00_06.html",
+    "source": "https://pierrot.jp/archive/2000/tv00_06.html"
+  },
+  {
+    "slug": "hyper-police-anime",
+    "name": "하이퍼 폴리스",
+    "englishName": "Hyper Police",
+    "aliases": ["はいぱーぽりす", "ハイパーポリス"],
+    "description": "인간과 요괴가 공존하는 신주쿠에서 고양이 수인 나츠키가 현상금 사냥꾼으로 사건을 해결한다.",
+    "genres": ["SF", "액션", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1995/tv90_15.html",
+    "source": "https://pierrot.jp/archive/1995/tv90_15.html"
+  },
+  {
+    "slug": "power-stone-anime",
+    "name": "파워 스톤 TV 애니메이션",
+    "englishName": "Power Stone",
+    "aliases": ["パワーストーン", "파워스톤 애니메이션"],
+    "description": "격투가 포커가 신비한 마석 파워 스톤을 둘러싼 세계 각지의 전투와 모험에 뛰어든다.",
+    "genres": ["액션", "격투", "모험", "판타지"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1995/tv90_24.html",
+    "source": "https://pierrot.jp/archive/1995/tv90_24.html"
+  },
+  {
+    "slug": "oh-super-milk-chan-anime",
+    "name": "오! 슈퍼 밀크짱",
+    "englishName": "Oh! Super Milk-Chan",
+    "aliases": ["OH！スーパーミルクチャン", "슈퍼 밀크 찬"],
+    "description": "독설가 소녀 요원 밀크가 대통령의 황당한 지령을 로봇 테츠코와 제멋대로 해결한다.",
+    "genres": ["코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2000/tv00_01.html",
+    "source": "https://pierrot.jp/archive/2000/tv00_01.html"
+  },
+  {
+    "slug": "super-gals-kotobuki-ran-anime",
+    "name": "슈퍼갤즈 코토부키 란",
+    "englishName": "Super GALS! Kotobuki Ran",
+    "aliases": ["超GALS！寿蘭", "슈퍼갤즈"],
+    "description": "시부야의 카리스마 갸루 란이 친구들과 우정과 사랑의 문제를 특유의 정의감으로 돌파한다.",
+    "genres": ["일상", "코미디", "로맨스"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2000/tv00_05.html",
+    "source": "https://pierrot.jp/archive/2000/tv00_05.html"
+  },
+  {
+    "slug": "tokyo-underground-anime",
+    "name": "도쿄 언더그라운드 애니메이션",
+    "englishName": "Tokyo Underground",
+    "aliases": ["東京アンダーグラウンド"],
+    "description": "루미나가 지하세계에서 탈출한 루리와 첼시를 만나 능력자 집단의 추격전에 휘말린다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://news.pierrot.jp/tug-streaming/",
+    "source": "https://news.pierrot.jp/tug-streaming/"
+  },
+  {
+    "slug": "ghost-stories-school-anime",
+    "name": "학교괴담 TV 애니메이션",
+    "englishName": "Ghost Stories",
+    "aliases": ["学校の怪談", "학교의 괴담"],
+    "description": "전학 온 사츠키와 친구들이 낡은 교사에 봉인됐던 요괴들을 어머니의 일기로 다시 봉인한다.",
+    "genres": ["호러", "학원", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2000/tv00_04.html",
+    "source": "https://pierrot.jp/archive/2000/tv00_04.html"
+  }
+]

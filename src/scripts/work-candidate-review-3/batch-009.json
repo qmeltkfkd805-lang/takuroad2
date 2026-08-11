@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "jack-jeanne",
+    "name": "잭 잔느",
+    "englishName": "Jack Jeanne",
+    "aliases": ["ジャックジャンヌ"],
+    "description": "키사는 여성임을 숨기고 남학생만 다니는 유니베일 가극학교에서 배우의 꿈에 도전한다.",
+    "genres": ["학원", "음악", "로맨스", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://jackjeanne.com/",
+    "source": "https://jackjeanne.com/"
+  },
+  {
+    "slug": "bustafellows",
+    "name": "버스타펠로우즈",
+    "englishName": "Bustafellows",
+    "aliases": ["バスタフェロウズ"],
+    "description": "시간을 거슬러 타인에게 빙의하는 기자 테우타가 범죄도시의 다섯 남자와 사건을 좇는다.",
+    "genres": ["로맨스", "추리", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://joqrextend.co.jp/extend/bustafellows/",
+    "source": "https://joqrextend.co.jp/extend/bustafellows/"
+  },
+  {
+    "slug": "even-if-tempest",
+    "name": "이븐 이프 템페스트",
+    "englishName": "even if TEMPEST",
+    "aliases": ["even if TEMPEST 宵闇にかく語りき魔女"],
+    "description": "비극적으로 죽은 아나스타샤가 회귀의 힘을 얻어 마녀재판과 자신의 운명을 바꾼다.",
+    "genres": ["판타지", "로맨스", "추리", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://products.voltage.co.jp/tempest/",
+    "source": "https://products.voltage.co.jp/tempest/"
+  },
+  {
+    "slug": "virche-evermore-error-salvation",
+    "name": "종원의 뷔르슈 에러 살베이션",
+    "englishName": "Virche Evermore -ErroR: Salvation-",
+    "aliases": ["終遠のヴィルシュ -ErroR:salvation-", "종원의 뷔르슈"],
+    "description": "죽음의 저주가 내려진 섬에서 사신이라 불리는 세레스가 사람들의 죽음과 구원을 마주한다.",
+    "genres": ["판타지", "로맨스", "추리", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.otomate.jp/virche/",
+    "source": "https://www.otomate.jp/virche/story/"
+  },
+  {
+    "slug": "hashihime-of-the-old-book-town",
+    "name": "고서점가의 하시히메",
+    "englishName": "Hashihime of the Old Book Town",
+    "aliases": ["古書店街の橋姫"],
+    "description": "다이쇼 시대 진보초에서 타마모리가 친구의 죽음과 반복되는 사흘의 진상을 파헤친다.",
+    "genres": ["BL", "추리", "판타지", "19"],
+    "ipType": ["게임"],
+    "officialUrl": "https://adeltaz1.wixsite.com/hashihime",
+    "source": "https://adeltaz1.wixsite.com/hashihime"
+  },
+  {
+    "slug": "slow-damage",
+    "name": "슬로우 데미지",
+    "englishName": "Slow Damage",
+    "aliases": ["スロウ・ダメージ"],
+    "description": "특별행정구 신코우미에서 화가 토와가 타인의 욕망과 상처를 작품으로 끌어낸다.",
+    "genres": ["BL", "추리", "드라마", "19"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.nitrochiral.com/game/slow-damage/",
+    "source": "https://www.nitrochiral.com/game/slow-damage/"
+  },
+  {
+    "slug": "dramatical-murder",
+    "name": "드라마티컬 머더",
+    "englishName": "DRAMAtical Murder",
+    "aliases": ["ドラマティカルマーダー"],
+    "description": "미도리섬에 사는 아오바가 전뇌 게임과 거대기업의 음모에 휘말려 자신의 힘을 깨닫는다.",
+    "genres": ["BL", "SF", "드라마", "19"],
+    "ipType": ["게임", "애니"],
+    "officialUrl": "https://www.nitrochiral.com/game/dmmd/",
+    "source": "https://www.nitrochiral.com/game/dmmd/"
+  },
+  {
+    "slug": "flowers-les-quatre-saisons",
+    "name": "플라워즈 사계",
+    "englishName": "Flowers -Les quatre saisons-",
+    "aliases": ["FLOWERS 四季", "플라워즈"],
+    "description": "기숙학교에 입학한 시라하네 스오가 사계절 동안 소녀들과 관계를 맺고 교내 수수께끼를 푼다.",
+    "genres": ["GL", "학원", "로맨스", "추리"],
+    "ipType": ["게임"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-house-in-fata-morgana",
+    "name": "파타 모르가나의 저택",
+    "englishName": "The House in Fata Morgana",
+    "aliases": ["ファタモルガーナの館"],
+    "description": "기억을 잃은 영혼이 저택의 문들을 열어 시대마다 반복된 비극과 자신의 정체를 마주한다.",
+    "genres": ["호러", "추리", "로맨스", "드라마"],
+    "ipType": ["게임", "소설", "만화"],
+    "officialUrl": "https://novect.net/fatamorgana/",
+    "source": "https://novect.net/fatamorgana/"
+  },
+  {
+    "slug": "lamento-beyond-the-void",
+    "name": "라멘토 비욘드 더 보이드",
+    "englishName": "Lamento -BEYOND THE VOID-",
+    "aliases": ["ラメント ビヨンド ザ ヴォイド", "Lamento"],
+    "description": "고양이 종족 청년 코노에가 몸에 나타난 저주를 풀기 위해 쇠퇴하는 세계를 여행한다.",
+    "genres": ["BL", "판타지", "드라마", "19"],
+    "ipType": ["게임", "소설"],
+    "officialUrl": "https://www.nitrochiral.com/pc/software/lamento/",
+    "source": "https://www.nitrochiral.com/pc/software/lamento/"
+  }
+]

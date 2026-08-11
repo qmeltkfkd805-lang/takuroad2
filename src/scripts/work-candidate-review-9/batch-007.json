@@ -1,0 +1,181 @@
+[
+  {
+    "slug": "native-horror-comics-webtoon",
+    "name": "원주민 공포만화",
+    "englishName": "",
+    "aliases": [],
+    "description": "평범한 일상에서 시작된 사건이 예상을 뒤엎는 공포로 번지는 여러 이야기를 그린 옴니버스다.",
+    "genres": [
+      "호러",
+      "드라마",
+      "고어"
+    ],
+    "ipType": [
+      "웹툰"
+    ],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=698918",
+    "source": "https://comic.naver.com/webtoon/list?titleId=698918"
+  },
+  {
+    "slug": "polar-night-webtoon",
+    "name": "극야",
+    "englishName": "Polar Night",
+    "aliases": [],
+    "description": "해가 뜨지 않는 남극 겨울에 고립된 연구원들이 정체불명의 감염체와 혹한을 견디며 생존한다.",
+    "genres": [
+      "호러",
+      "액션",
+      "드라마",
+      "고어"
+    ],
+    "ipType": [
+      "웹툰"
+    ],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=721463",
+    "source": "https://comic.naver.com/webtoon/list?titleId=721463"
+  },
+  {
+    "slug": "foggy-tomb-webtoon",
+    "name": "안개무덤",
+    "englishName": "",
+    "aliases": [],
+    "description": "실종된 가족을 찾는 수사가 벌레와 부적이 뒤덮인 초자연적 사건으로 이어지는 공포 스릴러다.",
+    "genres": [
+      "호러",
+      "추리",
+      "드라마",
+      "고어"
+    ],
+    "ipType": [
+      "웹툰"
+    ],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=731930",
+    "source": "https://comic.naver.com/webtoon/list?titleId=731930"
+  },
+  {
+    "slug": "prey-webtoon",
+    "name": "먹이",
+    "englishName": "Prey",
+    "aliases": [],
+    "description": "귀신을 볼 수 있는 아이들이 현실로 넘어온 불길한 존재들과 맞닥뜨리는 악몽 같은 이야기다.",
+    "genres": [
+      "호러",
+      "판타지",
+      "드라마",
+      "고어"
+    ],
+    "ipType": [
+      "웹툰"
+    ],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=724274",
+    "source": "https://comic.naver.com/webtoon/list?titleId=724274"
+  },
+  {
+    "slug": "door-of-phantom-webtoon",
+    "name": "귀곡의 문",
+    "englishName": "",
+    "aliases": [],
+    "description": "귀신 소굴로 악명 높은 삼도천동의 흉가에서 평범하지 않은 세입자들이 함께 살아간다.",
+    "genres": [
+      "호러",
+      "코미디",
+      "일상",
+      "드라마"
+    ],
+    "ipType": [
+      "웹툰"
+    ],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=718020",
+    "source": "https://comic.naver.com/webtoon/list?titleId=718020"
+  },
+  {
+    "slug": "end-of-a-relationship-webtoon",
+    "name": "관계의 종말",
+    "englishName": "The End of a Relationship",
+    "aliases": [],
+    "description": "여자친구와 외딴 펜션으로 휴가를 떠난 남자가 불쾌한 주인과 기괴한 방문객들 때문에 파국에 몰린다.",
+    "genres": [
+      "호러",
+      "드라마",
+      "고어"
+    ],
+    "ipType": [
+      "웹툰"
+    ],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=752803",
+    "source": "https://comic.naver.com/webtoon/list?titleId=752803"
+  },
+  {
+    "slug": "spider-webtoon",
+    "name": "거미",
+    "englishName": "Spider",
+    "aliases": [],
+    "description": "거대한 거미 떼가 섬마을을 뒤덮자 주민들이 서로를 의심하는 가운데 한 여자가 탈출구를 찾는다.",
+    "genres": [
+      "호러",
+      "액션",
+      "드라마",
+      "고어"
+    ],
+    "ipType": [
+      "웹툰"
+    ],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=739112",
+    "source": "https://comic.naver.com/webtoon/list?titleId=739112"
+  },
+  {
+    "slug": "killstagram-webtoon",
+    "name": "#살인스타그램",
+    "englishName": "#Killstagram",
+    "aliases": [],
+    "description": "SNS 스타 도레미가 자신을 노리는 연쇄살인범의 표적이 되면서 온라인의 시선과 공포에 갇힌다.",
+    "genres": [
+      "호러",
+      "드라마",
+      "고어"
+    ],
+    "ipType": [
+      "웹툰"
+    ],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=726095",
+    "source": "https://comic.naver.com/webtoon/list?titleId=726095"
+  },
+  {
+    "slug": "realm-of-the-sea-webtoon",
+    "name": "조의 영역",
+    "englishName": "The Tide",
+    "aliases": [],
+    "description": "물이 차오른 도시에서 거대 물고기들이 인간을 위협하자 생존자들이 무너진 세계를 헤쳐 나간다.",
+    "genres": [
+      "SF",
+      "호러",
+      "액션",
+      "드라마",
+      "고어"
+    ],
+    "ipType": [
+      "웹툰"
+    ],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=675554",
+    "source": "https://comic.naver.com/webtoon/list?titleId=675554"
+  },
+  {
+    "slug": "planetary-human-webtoon",
+    "name": "행성인간",
+    "englishName": "Planetary Human",
+    "aliases": [],
+    "description": "몸속에 작은 행성을 품은 인간들이 기이한 능력과 변이를 겪으며 서로 얽히는 SF 스릴러다.",
+    "genres": [
+      "SF",
+      "호러",
+      "액션",
+      "드라마",
+      "고어"
+    ],
+    "ipType": [
+      "웹툰"
+    ],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=733079",
+    "source": "https://comic.naver.com/webtoon/list?titleId=733079"
+  }
+]

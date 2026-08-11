@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "anohana-the-flower-we-saw-that-day",
+    "name": "아노하나",
+    "englishName": "Anohana: The Flower We Saw That Day",
+    "aliases": ["그날 본 꽃의 이름을 우리는 아직 모른다", "아노하나", "あの日見た花の名前を僕達はまだ知らない。"],
+    "description": "은둔하던 진타 앞에 세상을 떠난 멘마가 나타나고, 멀어진 소꿉친구들이 그녀의 소원을 위해 모인다.",
+    "genres": ["드라마", "판타지", "로맨스"],
+    "ipType": ["애니", "영화", "만화"],
+    "officialUrl": "https://www.anohana.jp/",
+    "source": "https://www.aniplex.co.jp/lineup/anohana/"
+  },
+  {
+    "slug": "masamune-kuns-revenge",
+    "name": "마사무네의 리벤지",
+    "englishName": "Masamune-kun's Revenge",
+    "aliases": ["政宗くんのリベンジ"],
+    "description": "어릴 적 자신을 거절한 아키에게 복수하려 변신한 마사무네가 그녀를 반하게 만들 계획을 세운다.",
+    "genres": ["학원", "로맨스", "코미디"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://masamune-tv.com/",
+    "source": "https://masamune-tv.com/1st/books/"
+  },
+  {
+    "slug": "a-sign-of-affection",
+    "name": "손끝과 연연",
+    "englishName": "A Sign of Affection",
+    "aliases": ["ゆびさきと恋々", "Yubisaki to Renren"],
+    "description": "청각장애가 있는 대학생 유키가 여행을 좋아하는 선배 이츠오미를 만나 새로운 세계와 사랑을 알아간다.",
+    "genres": ["로맨스", "드라마", "일상"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://yubisaki-pr.com/",
+    "source": "https://yubisaki-pr.com/"
+  },
+  {
+    "slug": "a-condition-called-love",
+    "name": "하나노이 군과 상사병",
+    "englishName": "A Condition Called Love",
+    "aliases": ["花野井くんと恋の病"],
+    "description": "사랑을 잘 모르는 호타루가 애정이 지나치게 깊은 하나노이의 고백을 받아 시험 교제를 시작한다.",
+    "genres": ["학원", "로맨스", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://hananoikun-pr.com/",
+    "source": "https://hananoikun-pr.com/"
+  },
+  {
+    "slug": "my-love-story-ore-monogatari",
+    "name": "내 이야기!!",
+    "englishName": "My Love Story!!",
+    "aliases": ["俺物語!!", "Ore Monogatari!!"],
+    "description": "거대한 체격과 따뜻한 마음을 지닌 타케오가 자신이 구해 준 야마토와 처음으로 사랑을 키운다.",
+    "genres": ["학원", "로맨스", "코미디"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://www.vap.co.jp/anime-ore/",
+    "source": "https://www.vap.co.jp/anime-ore/"
+  },
+  {
+    "slug": "after-the-rain",
+    "name": "사랑은 비가 갠 뒤처럼",
+    "englishName": "After the Rain",
+    "aliases": ["恋は雨上がりのように", "Koi wa Ameagari no You ni"],
+    "description": "부상으로 육상을 그만둔 고등학생 아키라가 아르바이트 가게의 중년 점장에게 마음을 품는다.",
+    "genres": ["로맨스", "드라마", "일상"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://www.koiame-anime.com/",
+    "source": "https://www.koiame-anime.com/"
+  },
+  {
+    "slug": "tamako-market",
+    "name": "타마코 마켓",
+    "englishName": "Tamako Market",
+    "aliases": ["たまこまーけっと"],
+    "description": "떡집 딸 타마코가 말을 하는 새 데라와 만나 활기찬 우사기야마 상점가에서 특별한 일상을 보낸다.",
+    "genres": ["일상", "코미디", "로맨스"],
+    "ipType": ["애니", "영화", "소설"],
+    "officialUrl": "https://tamakomarket.com/",
+    "source": "https://tamakomarket.com/story/"
+  },
+  {
+    "slug": "just-because",
+    "name": "Just Because!",
+    "englishName": "Just Because!",
+    "aliases": ["저스트 비코즈"],
+    "description": "졸업을 앞둔 고등학교에 전학생 에이타가 돌아오면서 멈춰 있던 다섯 청춘의 감정이 다시 움직인다.",
+    "genres": ["학원", "로맨스", "드라마"],
+    "ipType": ["애니", "소설"],
+    "officialUrl": "https://justbecause.jp/",
+    "source": "https://justbecause.jp/"
+  },
+  {
+    "slug": "relife",
+    "name": "ReLIFE",
+    "englishName": "ReLIFE",
+    "aliases": ["리라이프", "リライフ"],
+    "description": "스물일곱 무직자 카이자키가 약으로 고등학생 모습이 되어 일 년간 사회 복귀 실험에 참여한다.",
+    "genres": ["학원", "드라마", "로맨스", "코미디"],
+    "ipType": ["웹툰", "애니", "영화"],
+    "officialUrl": "https://relife-anime.com/",
+    "source": "https://relife-anime.com/sp/story/introduction.html"
+  },
+  {
+    "slug": "plastic-memories",
+    "name": "플라스틱 메모리즈",
+    "englishName": "Plastic Memories",
+    "aliases": ["プラスティック・メモリーズ"],
+    "description": "수명이 정해진 안드로이드를 회수하는 츠카사가 파트너 아이라와 남은 시간을 함께 보낸다.",
+    "genres": ["SF", "로맨스", "드라마"],
+    "ipType": ["애니", "만화", "게임"],
+    "officialUrl": "https://www.plastic-memories.jp/",
+    "source": "https://www.plastic-memories.jp/story/"
+  }
+]

@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "hellper-webtoon",
+    "name": "헬퍼",
+    "englishName": "Hellper",
+    "aliases": [],
+    "description": "가드 트라이브 대장 장광남이 의문의 사고로 죽은 뒤 저승에서 자신의 죽음과 세계의 비밀을 좇는다.",
+    "genres": ["액션", "판타지", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=389848",
+    "source": "https://comic.naver.com/webtoon/list?titleId=389848"
+  },
+  {
+    "slug": "lets-fight-ghost-webtoon",
+    "name": "싸우자 귀신아",
+    "englishName": "",
+    "aliases": ["싸귀", "싸우자귀신아"],
+    "description": "귀신을 보는 퇴마사 박봉팔이 기억을 잃은 귀신 김현지와 함께 각종 원혼을 상대한다.",
+    "genres": ["판타지", "호러", "액션", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=23182",
+    "source": "https://comic.naver.com/webtoon/list?titleId=23182"
+  },
+  {
+    "slug": "super-secret-webtoon",
+    "name": "슈퍼 시크릿",
+    "englishName": "Super Secret",
+    "aliases": [],
+    "description": "평범한 대학생 은호가 소꿉친구 견우와 이웃들이 숨겨 온 늑대인간과 요괴의 비밀을 알아 간다.",
+    "genres": ["로맨스", "판타지", "일상", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=650304",
+    "source": "https://comic.naver.com/webtoon/list?titleId=650304"
+  },
+  {
+    "slug": "will-you-marry-me-webtoon",
+    "name": "윌유메리미",
+    "englishName": "Will You Marry Me?",
+    "aliases": [],
+    "description": "서울 남자 윌과 부산 여자 메리가 열두 살 나이 차와 장거리 연애를 지나 부부로 살아가는 일상기다.",
+    "genres": ["일상", "로맨스", "코미디", "가족"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=616239",
+    "source": "https://comic.naver.com/webtoon/list?titleId=616239"
+  },
+  {
+    "slug": "swimming-lessons-for-a-mermaid-webtoon",
+    "name": "인어를 위한 수영교실",
+    "englishName": "Swimming Lessons for a Mermaid",
+    "aliases": [],
+    "description": "헤엄치지 못하는 인어 초아가 수영부 우두식에게 수영을 배우며 그리운 바다로 돌아갈 꿈을 키운다.",
+    "genres": ["로맨스", "판타지", "학원", "스포츠"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=728900",
+    "source": "https://comic.naver.com/webtoon/list?titleId=728900"
+  },
+  {
+    "slug": "nano-list-webtoon",
+    "name": "나노리스트",
+    "englishName": "Nano List",
+    "aliases": [],
+    "description": "안드로이드 나노가 안도진에게 찾아오면서 누나의 죽음과 나노머신 기술에 얽힌 비밀이 드러난다.",
+    "genres": ["SF", "액션", "판타지", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=670150",
+    "source": "https://comic.naver.com/webtoon/list?titleId=670150"
+  },
+  {
+    "slug": "if-ai-ruled-the-world-webtoon",
+    "name": "AI가 세상을 지배한다면",
+    "englishName": "",
+    "aliases": [],
+    "description": "최첨단 인공지능이 지도자가 된 100년 뒤의 사회와 인간성을 여러 사건으로 비추는 SF 옴니버스다.",
+    "genres": ["SF", "드라마", "판타지"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=755674",
+    "source": "https://comic.naver.com/webtoon/list?titleId=755674"
+  },
+  {
+    "slug": "chicken-nugget-webtoon",
+    "name": "닭강정",
+    "englishName": "",
+    "aliases": [],
+    "description": "의문의 기계로 닭강정이 된 민아를 되돌리려는 아버지와 고백중이 기계의 비밀을 추적한다.",
+    "genres": ["코미디", "추리", "SF", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=734008",
+    "source": "https://comic.naver.com/webtoon/list?titleId=734008"
+  },
+  {
+    "slug": "our-water-world-webtoon",
+    "name": "물위의 우리",
+    "englishName": "",
+    "aliases": [],
+    "description": "해수면이 상승한 지구에서 호주가 딸 한별과 20년 만에 고향으로 돌아가 수상한 사건을 마주한다.",
+    "genres": ["드라마", "SF", "모험", "가족"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=780404",
+    "source": "https://comic.naver.com/webtoon/list?titleId=780404"
+  },
+  {
+    "slug": "same-school-friend-webtoon",
+    "name": "같은 학교 친구",
+    "englishName": "",
+    "aliases": [],
+    "description": "같은 반 짝이 된 요한과 겨울이 서툰 호기심과 설렘을 나누며 첫사랑에 가까워진다.",
+    "genres": ["로맨스", "학원", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=774832",
+    "source": "https://comic.naver.com/webtoon/list?titleId=774832"
+  }
+]

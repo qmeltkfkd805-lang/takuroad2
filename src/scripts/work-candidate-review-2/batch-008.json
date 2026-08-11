@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "decadence",
+    "name": "데카당스",
+    "englishName": "Deca-Dence",
+    "aliases": ["デカダンス"],
+    "description": "괴생명체가 지배한 미래에서 전사를 꿈꾸는 나츠메와 수리공 카부라기가 세계의 비밀에 맞선다.",
+    "genres": ["SF", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://decadence-anime.com/",
+    "source": "https://decadence-anime.com/"
+  },
+  {
+    "slug": "vivy-fluorite-eyes-song",
+    "name": "비비 -플로라이트 아이즈 송-",
+    "englishName": "Vivy -Fluorite Eye's Song-",
+    "aliases": ["Vivy", "ヴィヴィ -フローライトアイズソング-"],
+    "description": "노래하는 인공지능 비비가 백 년 뒤의 전쟁을 막기 위해 미래에서 온 마츠모토와 역사를 바꾼다.",
+    "genres": ["SF", "액션", "음악", "드라마"],
+    "ipType": ["애니", "소설", "만화"],
+    "officialUrl": "https://vivy-portal.com/",
+    "source": "https://vivy-anime.com/story/"
+  },
+  {
+    "slug": "akudama-drive",
+    "name": "아쿠다마 드라이브",
+    "englishName": "Akudama Drive",
+    "aliases": ["アクダマドライブ"],
+    "description": "평범한 여성이 범죄자 아쿠다마로 몰려 개성 강한 악당들과 위험한 운송 작전에 휘말린다.",
+    "genres": ["SF", "액션", "19", "고어"],
+    "ipType": ["애니", "만화"],
+    "officialUrl": "https://www.akudama-drive.com/",
+    "source": "https://www.akudama-drive.com/"
+  },
+  {
+    "slug": "great-pretender",
+    "name": "그레이트 프리텐더",
+    "englishName": "Great Pretender",
+    "aliases": ["GREAT PRETENDER"],
+    "description": "일본 최고의 사기꾼을 자처한 에다마메가 로랑 일행에게 끌려 세계적인 사기극에 뛰어든다.",
+    "genres": ["액션", "코미디", "드라마"],
+    "ipType": ["애니", "만화"],
+    "officialUrl": "https://www.greatpretender.jp/",
+    "source": "https://www.greatpretender.jp/"
+  },
+  {
+    "slug": "terror-in-resonance",
+    "name": "잔향의 테러",
+    "englishName": "Terror in Resonance",
+    "aliases": ["残響のテロル", "Zankyou no Terror"],
+    "description": "도쿄에서 폭탄 테러를 벌이는 소년 나인과 트웰브가 수수께끼 영상을 남기며 과거를 폭로한다.",
+    "genres": ["추리", "드라마", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "https://terror-in-tokyo.com/",
+    "source": "https://terror-in-tokyo.com/story.html"
+  },
+  {
+    "slug": "astra-lost-in-space",
+    "name": "카나타의 아스트라",
+    "englishName": "Astra Lost in Space",
+    "aliases": ["彼方のアストラ", "Kanata no Astra"],
+    "description": "행성 캠프 중 우주로 내던져진 학생 아홉 명이 우주선 아스트라를 타고 고향으로 돌아간다.",
+    "genres": ["SF", "모험", "추리", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://astra-anime.com/",
+    "source": "https://astra-anime.com/"
+  },
+  {
+    "slug": "sakugan",
+    "name": "사쿠간",
+    "englishName": "Sakugan",
+    "aliases": ["サクガン"],
+    "description": "천재 소녀 메멘푸와 아버지 가간바가 변형 메카를 타고 위험한 지하 미개척지를 탐사한다.",
+    "genres": ["로봇/메카", "SF", "모험", "액션", "가족"],
+    "ipType": ["소설", "애니"],
+    "officialUrl": "https://sakugan-anime.com/",
+    "source": "https://sakugan-anime.com/topics/2012031900.html"
+  },
+  {
+    "slug": "estab-life-great-escape",
+    "name": "에스타브 라이프",
+    "englishName": "Estab-Life: Great Escape",
+    "aliases": ["エスタブライフ グレイトエスケープ", "Estab Life"],
+    "description": "인공지능이 구획별 삶을 관리하는 미래 도쿄에서 다섯 명의 탈출업자가 의뢰인을 다른 구역으로 옮긴다.",
+    "genres": ["SF", "액션", "모험"],
+    "ipType": ["애니", "영화"],
+    "officialUrl": "https://establife.tokyo/",
+    "source": "https://establife.tokyo/"
+  },
+  {
+    "slug": "appare-ranman",
+    "name": "천청난만!",
+    "englishName": "Appare-Ranman!",
+    "aliases": ["天晴爛漫！", "Appare-Ranman!"],
+    "description": "메이지 시대의 발명가 앗파레와 무사 코사메가 미국 대륙 횡단 자동차 경주에 출전한다.",
+    "genres": ["모험", "액션", "코미디"],
+    "ipType": ["애니", "만화"],
+    "officialUrl": "https://appareranman.com/",
+    "source": "https://appareranman.com/news.html"
+  },
+  {
+    "slug": "princess-principal",
+    "name": "프린세스 프린서플",
+    "englishName": "Princess Principal",
+    "aliases": ["プリンセス・プリンシパル"],
+    "description": "동서로 분단된 런던에서 명문학교 학생으로 위장한 다섯 소녀가 첩보와 잠입 임무를 수행한다.",
+    "genres": ["액션", "추리", "SF", "드라마"],
+    "ipType": ["애니", "영화", "게임"],
+    "officialUrl": "https://pripri-anime.jp/",
+    "source": "https://pripri-anime.jp/tv/story.php"
+  }
+]

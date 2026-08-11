@@ -1,0 +1,189 @@
+[
+    {
+        "slug":  "platinum-end-anime",
+        "name":  "플래티넘 엔드 애니메이션",
+        "englishName":  "Platinum End",
+        "aliases":  [
+                        "プラチナエンド"
+                    ],
+        "description":  "삶을 포기하려던 미라이가 천사에게 날개와 화살을 받아 차기 신 후보들의 경쟁에 뛰어든다.",
+        "genres":  [
+                       "판타지",
+                       "추리",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2020/tv20_08.html",
+        "source":  "https://pierrot.jp/archive/2020/tv20_08.html"
+    },
+    {
+        "slug":  "my-master-has-no-tail-anime",
+        "name":  "우리 스승님은 꼬리가 없다",
+        "englishName":  "My Master Has No Tail",
+        "aliases":  [
+                        "うちの師匠はしっぽがない"
+                    ],
+        "description":  "사람을 홀리고 싶은 너구리 마메다가 오사카에서 라쿠고 명인 분코의 제자가 되려 한다.",
+        "genres":  [
+                       "판타지",
+                       "코미디",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2020/tv20_11.html",
+        "source":  "https://pierrot.jp/archive/2020/tv20_11.html"
+    },
+    {
+        "slug":  "little-lies-we-all-tell-anime",
+        "name":  "4명은 각자 거짓말을 한다",
+        "englishName":  "The Little Lies We All Tell",
+        "aliases":  [
+                        "4人はそれぞれウソをつく"
+                    ],
+        "description":  "외계인과 닌자, 초능력자와 여장 남학생이 정체를 숨긴 채 평범한 학교생활을 꿈꾼다.",
+        "genres":  [
+                       "학원",
+                       "SF",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2020/tv20_14.html",
+        "source":  "https://pierrot.jp/archive/2020/tv20_14.html"
+    },
+    {
+        "slug":  "mr-osomatsu-season-4-anime",
+        "name":  "오소마츠상 4기",
+        "englishName":  "Mr. Osomatsu Season 4",
+        "aliases":  [
+                        "おそ松さん 第4期"
+                    ],
+        "description":  "어른이 된 여섯 쌍둥이가 변함없는 무직 생활 속에서 또다시 예측 불가한 소동을 벌인다.",
+        "genres":  [
+                       "일상",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2020/tv20_26.html",
+        "source":  "https://pierrot.jp/archive/2020/tv20_26.html"
+    },
+    {
+        "slug":  "mr-osomatsu-season-3-anime",
+        "name":  "오소마츠상 3기",
+        "englishName":  "Mr. Osomatsu Season 3",
+        "aliases":  [
+                        "おそ松さん 第3期"
+                    ],
+        "description":  "어른이 된 여섯 쌍둥이가 여전히 무직인 채 새로운 소동과 황당한 일상을 벌인다.",
+        "genres":  [
+                       "일상",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2020/tv20_06.html",
+        "source":  "https://pierrot.jp/archive/2020/tv20_06.html"
+    },
+    {
+        "slug":  "mezzo-dsa-anime",
+        "name":  "MEZZO 메조",
+        "englishName":  "Mezzo DSA",
+        "aliases":  [
+                        "MEZZO -メゾ-"
+                    ],
+        "description":  "위험 대행업 DSA의 세 사람이 근미래 도쿄에서 합법과 불법을 넘나드는 의뢰를 해결한다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2000/tv00_17.html",
+        "source":  "https://pierrot.jp/archive/2000/tv00_17.html"
+    },
+    {
+        "slug":  "saiyuki-reload-anime",
+        "name":  "최유기 RELOAD 애니메이션",
+        "englishName":  "Saiyuki Reload",
+        "aliases":  [
+                        "最遊記RELOAD"
+                    ],
+        "description":  "삼장과 오공, 오정, 팔계가 우마왕 부활을 막기 위해 다시 천축을 향한 여행에 오른다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2000/tv00_16.html",
+        "source":  "https://pierrot.jp/archive/2000/tv00_16.html"
+    },
+    {
+        "slug":  "saiyuki-reload-gunlock-anime",
+        "name":  "최유기 RELOAD GUNLOCK 애니메이션",
+        "englishName":  "Saiyuki Reload Gunlock",
+        "aliases":  [
+                        "最遊記RELOAD GUNLOCK"
+                    ],
+        "description":  "천축으로 향하던 삼장 일행이 서방에서 온 헤이젤 일행과 만나 새로운 대립에 휘말린다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2000/tv00_18.html",
+        "source":  "https://pierrot.jp/archive/2000/tv00_18.html"
+    },
+    {
+        "slug":  "midori-days-anime",
+        "name":  "미도리의 나날",
+        "englishName":  "Midori Days",
+        "aliases":  [
+                        "美鳥の日々"
+                    ],
+        "description":  "싸움꾼 세이지의 오른손이 자신을 짝사랑하던 미도리로 변하며 비밀스러운 동거가 시작된다.",
+        "genres":  [
+                       "학원",
+                       "로맨스",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2000/tv00_19.html",
+        "source":  "https://pierrot.jp/archive/2000/tv00_19.html"
+    },
+    {
+        "slug":  "hikaru-no-go-hokuto-cup-special",
+        "name":  "히카루의 바둑 스페셜 북두배로 가는 길",
+        "englishName":  "Hikaru no Go: Journey to the North Star Cup",
+        "aliases":  [
+                        "ヒカルの碁スペシャル 北斗杯への道"
+                    ],
+        "description":  "히카루가 한중일 주니어 단체전 북두배의 일본 대표 자리를 두고 선발전에 도전한다.",
+        "genres":  [
+                       "스포츠",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2000/tvs_06.html",
+        "source":  "https://pierrot.jp/archive/2000/tvs_06.html"
+    }
+]

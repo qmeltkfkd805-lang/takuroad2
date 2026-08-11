@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback, RefObject } from 'react'
 import { Shop } from '@/types/shop'
 import { MapEvent } from '@/services/mapEventService'
-import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
+import { catColor } from '@/lib/constants/categories'
 import { loadMaps, createMap, createOverlay, MapInstance, OverlayHandle } from '@/lib/map/provider'
 
 // Place 소속 샵은 place 좌표로 접어서 표시한다 (저장 좌표 lat/lng 은 안 건드림)
@@ -41,9 +41,7 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
   ) => {
     if (!mapRef.current) return
 
-    const catName = (shop as any).cat ?? (shop.cats && shop.cats[0])
-    const catInfo: any = CATEGORY_NAME_MAP[catName] ?? { color: '#e8006f', slug: 'goods' }
-    const color = catInfo.color ?? '#e8006f'
+    const color = catColor((shop as any).cat ?? (shop.cats && shop.cats[0]))
 
     const el = document.createElement('div')
     el.style.cssText = 'cursor:pointer;position:relative;width:16px;height:21px'
@@ -68,8 +66,7 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
   ) => {
     if (!mapRef.current) return
     const first = shops[0]
-    const catName = (first as any).cat ?? (first.cats && first.cats[0])
-    const color = CATEGORY_NAME_MAP[catName]?.color ?? '#e8006f'
+    const color = catColor((first as any).cat ?? (first.cats && first.cats[0]))
 
     const el = document.createElement('div')
     el.style.cssText = 'cursor:pointer;position:relative;width:24px;height:30px'

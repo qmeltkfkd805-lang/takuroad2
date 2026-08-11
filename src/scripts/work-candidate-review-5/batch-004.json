@@ -1,0 +1,207 @@
+[
+  {
+    "slug": "mars-daybreak-anime",
+    "name": "현란무답제 더 마즈 데이브레이크",
+    "englishName": "Mars Daybreak",
+    "aliases": [
+      "絢爛舞踏祭 ザ・マーズ・デイブレイク",
+      "Kenran Butoh Sai"
+    ],
+    "description": "바다로 뒤덮인 화성에서 청년 그람이 잠수함 해적선에 합류해 지구 정부군과 맞선다.",
+    "genres": [
+      "SF",
+      "로봇/메카",
+      "액션",
+      "모험"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.bones.co.jp/work/kenranbutohsai/",
+    "source": "https://www.bones.co.jp/work/kenranbutohsai/"
+  },
+  {
+    "slug": "getsumento-heiki-mina-anime",
+    "name": "월면토병기 미나",
+    "englishName": "Getsumen To Heiki Mina",
+    "aliases": [
+      "月面兎兵器ミーナ",
+      "월면토끼병기 미나"
+    ],
+    "description": "고교생 아나운서 미나가 우주인의 스포츠 개입을 막는 토끼 전사로 각성해 이중생활을 시작한다.",
+    "genres": [
+      "SF",
+      "액션",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.gonzo.co.jp/works/mina/index.html",
+    "source": "https://www.gonzo.co.jp/works/mina/index.html"
+  },
+  {
+    "slug": "casshern-sins-anime",
+    "name": "캐샨 Sins",
+    "englishName": "Casshern Sins",
+    "aliases": [
+      "キャシャーンSins",
+      "캐산 Sins"
+    ],
+    "description": "로봇들이 부식해 죽어가는 세계에서 기억을 잃은 캐샨이 자신이 불러온 멸망의 원인을 찾아간다.",
+    "genres": [
+      "SF",
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_casshern-sins/",
+    "source": "https://madhouse.co.jp/works/tv_casshern-sins/"
+  },
+  {
+    "slug": "needless-anime",
+    "name": "니들리스",
+    "englishName": "Needless",
+    "aliases": [
+      "ニードレス"
+    ],
+    "description": "전쟁 뒤 오염 구역에서 초능력자 니들리스들이 거대 제약회사의 지배에 맞서 격돌한다.",
+    "genres": [
+      "SF",
+      "액션",
+      "코미디",
+      "소년물"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_needless/",
+    "source": "https://madhouse.co.jp/works/tv_needless/"
+  },
+  {
+    "slug": "ghost-slayers-ayashi-anime",
+    "name": "천보이문 아야카시 아야시",
+    "englishName": "Ghost Slayers Ayashi",
+    "aliases": [
+      "天保異聞 妖奇士",
+      "천보이문 요괴사"
+    ],
+    "description": "천보 시대 에도에서 특수한 힘을 지닌 기인들이 이계에서 넘어온 괴수 요이를 퇴치한다.",
+    "genres": [
+      "판타지",
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.bones.co.jp/work/ayashi/",
+    "source": "https://www.bones.co.jp/work/ayashi/"
+  },
+  {
+    "slug": "kurozuka-anime",
+    "name": "쿠로즈카",
+    "englishName": "Kurozuka",
+    "aliases": [
+      "黒塚-KUROZUKA-",
+      "흑총"
+    ],
+    "description": "도망자 구로가 불사의 여인 구로미쓰를 사랑하게 되며 수백 년을 가로지르는 피의 싸움에 빠진다.",
+    "genres": [
+      "SF",
+      "판타지",
+      "액션",
+      "고어",
+      "19"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_kurozuka/",
+    "source": "https://madhouse.co.jp/works/tv_kurozuka/"
+  },
+  {
+    "slug": "dragonaut-resonance-anime",
+    "name": "드래고너츠 더 레조넌스",
+    "englishName": "Dragonaut: The Resonance",
+    "aliases": [
+      "ドラゴノーツ -ザ・レゾナンス-",
+      "드래고노츠"
+    ],
+    "description": "우주에서 다가오는 위협 속에서 소년 진이 소녀 토아와 만나 드래곤을 둘러싼 운명에 휘말린다.",
+    "genres": [
+      "SF",
+      "액션",
+      "로맨스",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.gonzo.co.jp/works/dragonaut/index.html",
+    "source": "https://www.gonzo.co.jp/works/dragonaut/index.html"
+  },
+  {
+    "slug": "blassreiter-anime",
+    "name": "블라스라이터",
+    "englishName": "Blassreiter",
+    "aliases": [
+      "ブラスレイター"
+    ],
+    "description": "근미래 독일에서 인간과 기계를 융합한 이형들이 각자의 목적을 품고 생존을 건 싸움을 벌인다.",
+    "genres": [
+      "SF",
+      "액션",
+      "호러",
+      "19"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.gonzo.co.jp/works/blassreiter/index.html",
+    "source": "https://www.gonzo.co.jp/works/blassreiter/index.html"
+  },
+  {
+    "slug": "ultraviolet-code-044-anime",
+    "name": "울트라바이올렛 코드 044",
+    "englishName": "Ultraviolet: Code 044",
+    "aliases": [
+      "ウルトラヴァイオレット Code044"
+    ],
+    "description": "유전자 조작으로 강해진 전사 044가 흡혈귀 군단의 청년 루카를 만나 정부의 명령을 거스른다.",
+    "genres": [
+      "SF",
+      "액션",
+      "드라마",
+      "19"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_uvcode044/",
+    "source": "https://madhouse.co.jp/works/tv_uvcode044/"
+  },
+  {
+    "slug": "jyu-oh-sei-anime",
+    "name": "수왕성",
+    "englishName": "Jyu-Oh-Sei",
+    "aliases": [
+      "獣王星",
+      "Juu Ou Sei"
+    ],
+    "description": "부모를 잃고 사형 행성 키마이라에 버려진 쌍둥이 형제가 생존과 탈출을 위해 수왕을 노린다.",
+    "genres": [
+      "SF",
+      "액션",
+      "모험",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.bones.co.jp/old/jyuohsei/",
+    "source": "https://www.bones.co.jp/old/jyuohsei/"
+  }
+]

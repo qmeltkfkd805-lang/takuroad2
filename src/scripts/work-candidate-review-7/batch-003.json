@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "meganebu-anime",
+    "name": "메가네부! 애니메이션",
+    "englishName": "Meganebu!",
+    "aliases": ["メガネブ！"],
+    "description": "안경을 사랑하는 남고생 다섯 명이 안경부에서 기상천외한 발명과 청춘 소동을 벌인다.",
+    "genres": ["학원", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/meganebu",
+    "source": "https://www.deen.co.jp/works-archives/meganebu"
+  },
+  {
+    "slug": "gifuu-doudou-kanetsugu-keiji-anime",
+    "name": "의풍당당 가네츠구와 게이지",
+    "englishName": "Gifuu Doudou!! Kanetsugu to Keiji",
+    "aliases": ["義風堂々!! 兼続と慶次"],
+    "description": "나오에 가네츠구와 마에다 게이지가 술잔을 나누며 의리로 헤쳐 온 전국시대를 회상한다.",
+    "genres": ["액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/gifuu",
+    "source": "https://www.deen.co.jp/works-archives/gifuu"
+  },
+  {
+    "slug": "dynamic-venus-anime",
+    "name": "다이내믹 비너스",
+    "englishName": "Dynamic Venus",
+    "aliases": ["ダイナミックヴィーナス"],
+    "description": "불행한 주부 시바요가 기묘한 조건으로 변신하는 영웅이 되어 혼란에 빠진 일본을 지킨다.",
+    "genres": ["SF", "액션", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/d-venus",
+    "source": "https://www.deen.co.jp/works-archives/d-venus"
+  },
+  {
+    "slug": "maido-urayasu-tekkin-kazoku-anime",
+    "name": "매번! 우라야스 철근가족",
+    "englishName": "Everyday! Urayasu Tekkin Kazoku",
+    "aliases": ["毎度！浦安鉄筋家族"],
+    "description": "우라야스의 오사와기 가족과 이웃들이 상식을 뛰어넘는 과격하고 황당한 일상을 펼친다.",
+    "genres": ["가족", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/urayasu",
+    "source": "https://www.deen.co.jp/works-archives/urayasu"
+  },
+  {
+    "slug": "bakumatsu-rock-anime",
+    "name": "막말 Rock 애니메이션",
+    "englishName": "Samurai Jam: Bakumatsu Rock",
+    "aliases": ["幕末Rock"],
+    "description": "막부가 노래를 통제하는 시대에 사카모토 료마가 로큰롤로 사람들의 마음을 해방하려 한다.",
+    "genres": ["음악", "액션", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/b-rock",
+    "source": "https://www.deen.co.jp/works-archives/b-rock"
+  },
+  {
+    "slug": "gurazeni-anime",
+    "name": "그라제니 애니메이션",
+    "englishName": "Gurazeni: Money Pitch",
+    "aliases": ["グラゼニ"],
+    "description": "프로야구 중간계투 본다 나츠노스케가 연봉과 생존을 의식하며 냉혹한 선수 생활을 버틴다.",
+    "genres": ["스포츠", "드라마", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/gurazeni",
+    "source": "https://www.deen.co.jp/works-archives/gurazeni"
+  },
+  {
+    "slug": "hakkenden-eight-dogs-east-anime",
+    "name": "팔견전 동방팔견이문",
+    "englishName": "Hakkenden: Eight Dogs of the East",
+    "aliases": ["八犬伝 ―東方八犬異聞―"],
+    "description": "재앙에서 살아남은 시노와 소스케가 여덟 구슬의 주인들과 만나 피할 수 없는 운명을 좇는다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/hakkennden",
+    "source": "https://www.deen.co.jp/works-archives/hakkennden"
+  },
+  {
+    "slug": "hatenkou-yugi-anime",
+    "name": "파천황유희 애니메이션",
+    "englishName": "Hatenkou Yugi",
+    "aliases": ["破天荒遊戯"],
+    "description": "마법사 소녀 라젤이 복수를 좇는 알제이드와 동행하며 상처와 비밀이 얽힌 여행을 한다.",
+    "genres": ["판타지", "모험", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/hatenko",
+    "source": "https://www.deen.co.jp/works-archives/hatenko"
+  },
+  {
+    "slug": "touka-gettan-anime",
+    "name": "도화월탄 애니메이션",
+    "englishName": "Touka Gettan",
+    "aliases": ["桃華月憚"],
+    "description": "신화가 살아 숨 쉬는 카미츠미하라에서 모모카다이 학원과 카미아즈마 가문의 인연이 얽힌다.",
+    "genres": ["판타지", "로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/t-gettan",
+    "source": "https://www.deen.co.jp/works-archives/t-gettan"
+  },
+  {
+    "slug": "shining-tears-x-wind-anime",
+    "name": "샤이닝 티어즈 크로스 윈드",
+    "englishName": "Shining Tears X Wind",
+    "aliases": ["シャイニング・ティアーズ・クロス・ウィンド"],
+    "description": "이세계로 간 소마가 마음을 검으로 만드는 힘을 얻고 옛 친구와 국가 간 전쟁에서 맞선다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/s-tears",
+    "source": "https://www.deen.co.jp/works-archives/s-tears"
+  }
+]

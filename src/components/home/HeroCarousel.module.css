@@ -1,5 +1,6 @@
-﻿.wrap { position: relative; padding: 16px 0; }
-.viewport { overflow: hidden; border-radius: var(--r); cursor: grab; user-select: none; }
+.wrap { position: relative; padding: 16px 0; }
+.viewport { overflow: hidden; border-radius: var(--r); cursor: grab; user-select: none; outline: none; }
+.viewport:focus-visible { box-shadow: 0 0 0 3px var(--accent-l, #FFD6E5); }
 .viewport:active { cursor: grabbing; }
 .track { display: flex; }
 
@@ -9,15 +10,25 @@
   display: flex; align-items: center; justify-content: flex-start; gap: 16px;
   min-height: 320px; padding: 36px 48px; border: 1px solid var(--border); border-radius: var(--r);
 }
+/* 이미지 있는 슬라이드 = 흰 글자, 이미지 없는 슬라이드 = 분류별 연한 배경 + 진한 글자 */
+.slideImage { color: #fff; }
+.tint_event  { background: linear-gradient(120deg, #FBE9F1, #FFF6FA 72%); color: #20202D; }
+.tint_shop   { background: linear-gradient(120deg, #E7F1FB, #F6FAFF 72%); color: #20202D; }
+.tint_notice { background: linear-gradient(120deg, #FBEFE6, #FFF8F2 72%); color: #20202D; }
 
 .bgImage { position: absolute; inset: 0; z-index: 0; }
 .bgImage img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.scrim { position: absolute; inset: 0; z-index: 0; background: linear-gradient(90deg, rgba(0,0,0,.55), rgba(0,0,0,.2) 55%, rgba(0,0,0,0) 85%); }
+.scrim { position: absolute; inset: 0; z-index: 0; background: linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.24) 55%, rgba(0,0,0,0) 85%); }
 
 .text { position: relative; z-index: 1; flex: 1 1 auto; min-width: 0; max-width: 620px; }
-.badge { display: inline-block; font-size: 13px; font-weight: 800; margin: 0 0 10px; opacity: .92; letter-spacing: -0.2px; }
+
+.badgeRow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.label { display: inline-block; font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: var(--r-full); background: rgba(0,0,0,.42); color: #fff; letter-spacing: -0.2px; backdrop-filter: blur(2px); }
+.startChip { display: inline-block; font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: var(--r-full); background: #fff; color: var(--accent); border: 1px solid var(--accent); }
+
 .title { font-size: 34px; font-weight: 900; margin: 0; line-height: 1.28; letter-spacing: -0.5px; }
-.subtitle { font-size: 16px; font-weight: 600; margin: 14px 0 0; opacity: .9; }
+.meta { font-size: 14px; font-weight: 700; margin: 12px 0 0; opacity: .92; }
+.subtitle { font-size: 16px; font-weight: 600; margin: 8px 0 0; opacity: .9; }
 
 .ctaRow { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
 .ctaPrimary, .ctaSecondary {
@@ -25,9 +36,17 @@
   padding: 12px 24px; font-size: 15px; font-weight: 800;
   border-radius: var(--r-sm); text-decoration: none; white-space: nowrap;
 }
-.ctaPrimary { background: var(--primary); color: #fff; box-shadow: var(--sh-sm); }
+/* 이벤트 페이지 히어로의 상세 보기 버튼과 동일 — 흰 알약 + 핑크 글자 + 화살표 */
+.ctaPrimary {
+  gap: 5px; border-radius: 9999px; background: #fff; color: var(--accent);
+  border: 1px solid var(--border); box-shadow: 0 3px 10px rgba(0,0,0,.06);
+  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+}
+.ctaPrimary svg { transition: transform .14s ease; }
+.ctaPrimary:hover { transform: translateY(-1px); border-color: var(--accent); box-shadow: 0 6px 16px rgba(0,0,0,.09); }
+.ctaPrimary:hover svg { transform: translateX(2px); }
 .ctaSecondary { background: #fff; color: var(--text); border: 1px solid rgba(0,0,0,.08); }
-.ctaSolo { padding: 15px 34px; font-size: 16px; }
+.ctaSolo { padding: 13px 24px; font-size: 15px; }
 
 .arrow {
   position: absolute; top: 50%; transform: translateY(-50%);
@@ -41,24 +60,32 @@
 .prev { left: 26px; }
 .next { right: 26px; }
 
-.dots { position: absolute; bottom: 20px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 2; }
-.dot { width: 7px; height: 7px; border-radius: var(--r-full); border: none; background: rgba(0,0,0,.2); cursor: pointer; padding: 0; }
+/* 하단 바: 분류 라벨 · dots · 일시정지 · i/N */
+.bottomBar { position: absolute; left: 0; right: 0; bottom: 16px; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; pointer-events: none; }
+.catLabel { pointer-events: auto; font-size: 12px; font-weight: 800; color: #fff; background: rgba(0,0,0,.4); padding: 4px 11px; border-radius: var(--r-full); }
+.bottomRight { pointer-events: auto; display: flex; align-items: center; gap: 8px; }
+.counter { font-size: 12px; font-weight: 800; color: #fff; background: rgba(0,0,0,.4); padding: 4px 11px; border-radius: var(--r-full); font-variant-numeric: tabular-nums; }
+.playBtn { width: 26px; height: 26px; border-radius: var(--r-full); border: none; background: rgba(0,0,0,.4); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
+.playBtn svg { width: 13px; height: 13px; fill: #fff; }
+
+.dots { pointer-events: auto; display: flex; justify-content: center; gap: 6px; position: absolute; left: 50%; transform: translateX(-50%); }
+.dot { width: 7px; height: 7px; border-radius: var(--r-full); border: none; background: rgba(255,255,255,.55); cursor: pointer; padding: 0; }
 .dotActive { background: #fff; width: 18px; }
 
 @media (hover: none) and (pointer: coarse) and (max-width: 640px) {
-  .wrap { padding: 0 0 12px; }                       /* 위쪽 여백 제거 — 헤더 바로 아래 붙게 */
+  .wrap { padding: 0 0 12px; }
   .viewport { border-radius: 0; }
-  .slide { min-height: 190px; padding: 20px; border: none; border-radius: 0; }  /* 좌우 꽉 차고 높이 줄인 히어로 */
-  .badge { font-size: 12px; margin-bottom: 6px; }
+  .slide { min-height: 200px; padding: 20px; border: none; border-radius: 0; }
+  .label, .startChip { font-size: 11px; padding: 3px 8px; }
+  .badgeRow { margin-bottom: 8px; }
   .title { font-size: 21px; line-height: 1.25; }
-  .subtitle { font-size: 13.5px; margin-top: 8px; }
+  .meta { font-size: 12.5px; margin-top: 8px; }
+  .subtitle { font-size: 13.5px; }
   .ctaRow { margin-top: 14px; }
   .arrow { display: none; }
-  .ctaPrimary, .ctaSecondary { padding: 10px 16px; font-size: 13.5px; }
-  .ctaSolo { padding: 11px 22px; font-size: 14px; }
-  .dots { bottom: 12px; }
+  .ctaPrimary, .ctaSecondary { padding: 11px 20px; font-size: 14px; }
+  .ctaSolo { padding: 12px 24px; font-size: 14px; }
+  .bottomBar { bottom: 12px; padding: 0 14px; }
+  .catLabel { font-size: 11px; }
+  .counter { font-size: 11px; }
 }
-
-
-
-

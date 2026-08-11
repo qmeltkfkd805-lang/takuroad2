@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "collar-x-malice-deep-cover-movie",
+    "name": "극장판 Collar×Malice deep cover",
+    "englishName": "Collar x Malice: Deep Cover",
+    "aliases": ["劇場版 Collar×Malice -deep cover-"],
+    "description": "독이 든 목걸이를 찬 경찰관 호시노 이치카가 동료들과 X-Day 사건 뒤의 새 음모를 추적한다.",
+    "genres": ["추리", "액션", "로맨스", "드라마"],
+    "ipType": ["영화"],
+    "officialUrl": "https://www.deen.co.jp/works/collarmalice-m",
+    "source": "https://www.deen.co.jp/works/collarmalice-m"
+  },
+  {
+    "slug": "sasaki-miyano-graduation-movie",
+    "name": "영화 사사키와 미야노 졸업편",
+    "englishName": "Sasaki and Miyano: Graduation",
+    "aliases": ["映画 佐々木と宮野 卒業編"],
+    "description": "연인이 된 사사키와 미야노가 입시와 졸업을 앞두고 함께할 시간과 다가올 변화를 마주한다.",
+    "genres": ["BL", "로맨스", "학원", "일상"],
+    "ipType": ["영화"],
+    "officialUrl": "https://www.deen.co.jp/works/sasamiya-movie",
+    "source": "https://www.deen.co.jp/works/sasamiya-movie"
+  },
+  {
+    "slug": "sailor-moon-cosmos-movie",
+    "name": "극장판 미소녀 전사 세일러 문 Cosmos",
+    "englishName": "Pretty Guardian Sailor Moon Cosmos The Movie",
+    "aliases": ["劇場版 美少女戦士セーラームーンCosmos"],
+    "description": "세일러 문과 전사들이 동료를 노리는 섀도 갤럭티카에 맞서 마지막 싸움에 나선다.",
+    "genres": ["마법소녀", "액션", "판타지", "로맨스"],
+    "ipType": ["영화"],
+    "officialUrl": "https://www.deen.co.jp/works/sm-cosmos",
+    "source": "https://www.deen.co.jp/works/sm-cosmos"
+  },
+  {
+    "slug": "sailor-moon-eternal-movie",
+    "name": "극장판 미소녀 전사 세일러 문 Eternal",
+    "englishName": "Pretty Guardian Sailor Moon Eternal The Movie",
+    "aliases": ["劇場版 美少女戦士セーラームーンEternal"],
+    "description": "개기일식 날 나타난 데드 문이 지구를 위협하자 우사기와 세일러 전사들이 꿈과 사명을 지키려 싸운다.",
+    "genres": ["마법소녀", "액션", "판타지", "로맨스"],
+    "ipType": ["영화"],
+    "officialUrl": "https://www.deen.co.jp/works/sailormoon-m",
+    "source": "https://www.deen.co.jp/works/sailormoon-m"
+  },
+  {
+    "slug": "seven-deadly-sins-cursed-by-light-movie",
+    "name": "극장판 일곱 개의 대죄 빛에 저주받은 자들",
+    "englishName": "The Seven Deadly Sins: Cursed by Light",
+    "aliases": ["劇場版 七つの大罪 光に呪われし者たち"],
+    "description": "성전 뒤의 평화를 깨고 요정족과 거인족 군세가 나타나자 일곱 개의 대죄가 다시 싸움에 나선다.",
+    "genres": ["판타지", "액션", "모험", "소년물"],
+    "ipType": ["영화"],
+    "officialUrl": "https://www.deen.co.jp/works/7taizai-m",
+    "source": "https://www.deen.co.jp/works/7taizai-m"
+  },
+  {
+    "slug": "hetalia-world-stars-anime",
+    "name": "헤타리아 World Stars",
+    "englishName": "Hetalia: World Stars",
+    "aliases": ["ヘタリア World★Stars"],
+    "description": "나라를 의인화한 개성 강한 인물들이 세계 각지의 역사와 문화를 느슨한 희극으로 펼친다.",
+    "genres": ["코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/hetalia-ws",
+    "source": "https://www.deen.co.jp/works/hetalia-ws"
+  },
+  {
+    "slug": "sasaki-miyano-anime",
+    "name": "사사키와 미야노 애니메이션",
+    "englishName": "Sasaki and Miyano",
+    "aliases": ["佐々木と宮野"],
+    "description": "BL 만화를 좋아하는 미야노와 불량해 보이는 선배 사사키가 책을 빌려주며 가까워진다.",
+    "genres": ["BL", "로맨스", "학원", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/sasamiya",
+    "source": "https://www.deen.co.jp/works/sasamiya"
+  },
+  {
+    "slug": "hakuoki-2021-ova-anime",
+    "name": "박앵귀 2021 OVA",
+    "englishName": "Hakuoki OVA",
+    "aliases": ["OVA 薄桜鬼"],
+    "description": "신선조를 사칭한 도적과 라세쓰 탈주가 겹치자 지즈루와 대원들이 쇼군 암살 음모를 추적한다.",
+    "genres": ["액션", "판타지", "로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works/hakuouki-ova",
+    "source": "https://www.deen.co.jp/works/hakuouki-ova"
+  },
+  {
+    "slug": "junji-ito-collection-anime",
+    "name": "이토 준지 컬렉션",
+    "englishName": "Junji Ito Collection",
+    "aliases": ["伊藤潤二 コレクション"],
+    "description": "이토 준지의 걸작 단편들에 등장하는 기이한 존재와 뒤틀린 욕망이 불러오는 공포를 옴니버스로 그린다.",
+    "genres": ["호러", "고어", "추리"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/itojun",
+    "source": "https://www.deen.co.jp/works-archives/itojun"
+  },
+  {
+    "slug": "hozukis-coolheadedness-season-2-part-2-anime",
+    "name": "호오즈키의 냉철 2기 두 번째",
+    "englishName": "Hozuki's Coolheadedness Season 2 Part 2",
+    "aliases": ["鬼灯の冷徹 第弐期その弐"],
+    "description": "염라대왕의 제1보좌관 호오즈키가 새로운 요괴와 악마까지 얽힌 지옥의 소동을 냉정하게 처리한다.",
+    "genres": ["판타지", "코미디", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/hozukino-reitetsu2",
+    "source": "https://www.deen.co.jp/works-archives/hozukino-reitetsu2"
+  }
+]

@@ -1,0 +1,201 @@
+[
+    {
+        "slug":  "gatchaman-crowds",
+        "name":  "갓챠맨 크라우즈",
+        "englishName":  "Gatchaman Crowds",
+        "aliases":  [
+                        "ガッチャマン クラウズ"
+                    ],
+        "description":  "신입 갓챠맨 하지메가 이형의 존재와 SNS 크라우즈가 뒤흔드는 타치카와의 위기에 맞선다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.ntv.co.jp/GATCHAMAN_Crowds/",
+        "source":  "https://www.ntv.co.jp/GATCHAMAN_Crowds/"
+    },
+    {
+        "slug":  "occultic-nine-anime",
+        "name":  "오컬틱 나인",
+        "englishName":  "Occultic;Nine",
+        "aliases":  [
+                        "Occultic;Nine -オカルティック・ナイン-"
+                    ],
+        "description":  "오컬트 블로그 운영자 유타와 기묘한 아홉 인물이 대규모 익사 사건에 얽힌 초자연적 진실을 쫓는다.",
+        "genres":  [
+                       "추리",
+                       "SF",
+                       "호러",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://occultic9.jp/product/anime/",
+        "source":  "https://occultic9.jp/product/anime/"
+    },
+    {
+        "slug":  "planet-with-anime",
+        "name":  "플래닛 위드",
+        "englishName":  "Planet With",
+        "aliases":  [
+                        "プラネット・ウィズ"
+                    ],
+        "description":  "기억을 잃은 소야가 지구를 지키는 일곱 영웅과 싸우라는 명령을 받고 자신의 과거를 찾아간다.",
+        "genres":  [
+                       "SF",
+                       "로봇/메카",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://planet-with.com/",
+        "source":  "https://planet-with.com/story/introduction/"
+    },
+    {
+        "slug":  "fairy-gone-anime",
+        "name":  "페어리 곤",
+        "englishName":  "Fairy Gone",
+        "aliases":  [
+                        "Fairy gone フェアリーゴーン"
+                    ],
+        "description":  "전쟁이 끝난 뒤 요정병 마리야가 불법 요정 단속기관에 들어가 테러와 전우들의 상처를 마주한다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.fairygone.com/",
+        "source":  "https://www.fairygone.com/introduction/"
+    },
+    {
+        "slug":  "sirius-the-jaeger",
+        "name":  "천랑: 시리우스 더 예거",
+        "englishName":  "Sirius the Jaeger",
+        "aliases":  [
+                        "天狼 Sirius the Jaeger"
+                    ],
+        "description":  "일족을 잃은 유리가 흡혈귀 사냥꾼 예거가 되어 도쿄에서 성궤를 둘러싼 싸움에 뛰어든다.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "호러",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://sirius-the-jaeger.com/",
+        "source":  "https://sirius-the-jaeger.com/"
+    },
+    {
+        "slug":  "rolling-girls-anime",
+        "name":  "롤링☆걸즈",
+        "englishName":  "The Rolling Girls",
+        "aliases":  [
+                        "ローリング☆ガールズ",
+                        "롤링 걸즈"
+                    ],
+        "description":  "지역마다 독립한 일본에서 평범한 네 소녀가 오토바이를 타고 사람들의 의뢰를 해결하는 여행에 나선다.",
+        "genres":  [
+                       "모험",
+                       "액션",
+                       "코미디",
+                       "음악"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://rollinggirls.com/",
+        "source":  "https://rollinggirls.com/"
+    },
+    {
+        "slug":  "granbelm-anime",
+        "name":  "그란벨름",
+        "englishName":  "Granbelm",
+        "aliases":  [
+                        "グランベルム"
+                    ],
+        "description":  "평범한 소녀 만게츠가 마법인형 아르마녹스를 타고 유일한 마술사를 정하는 결투에 뛰어든다.",
+        "genres":  [
+                       "판타지",
+                       "로봇/메카",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://granbelm.com/",
+        "source":  "https://granbelm.com/"
+    },
+    {
+        "slug":  "classroom-crisis-anime",
+        "name":  "클래스룸 크라이시스",
+        "englishName":  "Classroom Crisis",
+        "aliases":  [
+                        "Classroom☆Crisis",
+                        "クラスルーム☆クライシス"
+                    ],
+        "description":  "화성의 학생 엔지니어 반 A-TEC이 신형 우주선 개발과 대기업 내부의 폐과 압력에 맞선다.",
+        "genres":  [
+                       "SF",
+                       "학원",
+                       "드라마",
+                       "로맨스"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.classroom-crisis.com/",
+        "source":  "https://www.classroom-crisis.com/"
+    },
+    {
+        "slug":  "listeners-anime",
+        "name":  "리스너즈",
+        "englishName":  "Listeners",
+        "aliases":  [
+                        "LISTENERS リスナーズ"
+                    ],
+        "description":  "음악이 사라진 세계에서 소년 에코와 기억 잃은 플레이어 뮤가 앰프형 메카를 타고 여행한다.",
+        "genres":  [
+                       "SF",
+                       "음악",
+                       "로봇/메카",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://listeners.rocks/",
+        "source":  "https://listeners.rocks/"
+    },
+    {
+        "slug":  "kado-the-right-answer",
+        "name":  "정답을 맞히는 카도",
+        "englishName":  "KADO: The Right Answer",
+        "aliases":  [
+                        "正解するカド"
+                    ],
+        "description":  "거대 입방체 카도에서 온 이방 존재와 외교관 신도가 인류의 미래를 걸고 교섭을 시작한다.",
+        "genres":  [
+                       "SF",
+                       "드라마",
+                       "추리"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://seikaisuru-kado.com/",
+        "source":  "https://lineup.toei-anim.co.jp/ja/tv/seikaisuru-kado/story/"
+    }
+]

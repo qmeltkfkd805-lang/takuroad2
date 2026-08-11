@@ -32,6 +32,10 @@ function hostOf(url: string): string {
   try { return new URL(url).hostname.replace(/^www\./, '') } catch { return '바로가기' }
 }
 
+function ticketButtonLabel(event: EventDetail, index: number, fallback: string): string {
+  return event.ticketLabels[index]?.trim() || fallback
+}
+
 const fmtFull = (s: string | null) => {
   if (!s) return ''
   const d = new Date(s)
@@ -264,7 +268,7 @@ export default function EventDetailPage() {
                     rel="noreferrer"
                   >
                     <EventIcon name="ticket" size={16} />
-                    {reserveOpen ? '사전예약 하기' : '예매하기'}
+                    {ticketButtonLabel(event, 0, reserveOpen ? '사전예약 하기' : '예매하기')}
                   </a>
                 )}
                 <EventVisitButton eventId={event.id} eventTitle={event.title} ended={ended} />
@@ -531,10 +535,10 @@ export default function EventDetailPage() {
               {reserveOpen && event.reserveEnd && (
                 <p className={styles.ticketNote}>{fmtFull(event.reserveEnd)}까지 예약할 수 있어요.</p>
               )}
-              {(event.ticketUrls ?? []).map(u => (
+              {(event.ticketUrls ?? []).map((u, index) => (
                 <a key={u} className={styles.ticketBtn} href={u} target="_blank" rel="noreferrer">
                   <EventIcon name="ticket" size={16} />
-                  {reserveOpen ? '사전예약 하러 가기' : '예매하러 가기'}
+                  {ticketButtonLabel(event, index, reserveOpen ? '사전예약 하러 가기' : '예매하러 가기')}
                   {(event.ticketUrls ?? []).length > 1 && <span className={styles.ticketHost}>{hostOf(u)}</span>}
                 </a>
               ))}

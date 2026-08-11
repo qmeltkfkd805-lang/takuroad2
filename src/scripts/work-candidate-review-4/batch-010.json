@@ -1,0 +1,196 @@
+[
+    {
+        "slug":  "cestvs-roman-fighter",
+        "name":  "세스타스 -The Roman Fighter-",
+        "englishName":  "Cestvs: The Roman Fighter",
+        "aliases":  [
+                        "セスタス -The Roman Fighter-"
+                    ],
+        "description":  "고대 로마의 소년 노예 세스타스가 자유를 얻기 위해 가혹한 권투 시합에서 살아남고 성장한다.",
+        "genres":  [
+                       "스포츠",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://cestvs-anime.com/",
+        "source":  "https://cestvs-anime.com/"
+    },
+    {
+        "slug":  "megaton-musashi-anime",
+        "name":  "메가톤급 무사시",
+        "englishName":  "Megaton Musashi",
+        "aliases":  [
+                        "メガトン級ムサシ"
+                    ],
+        "description":  "외계 세력에 지구가 점령된 뒤 기억을 조작당한 소년들이 거대 로봇 무사시를 타고 인류를 지킨다.",
+        "genres":  [
+                       "SF",
+                       "로봇/메카",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.megaton-musashi.jp/portal/anime/",
+        "source":  "https://www.megaton-musashi.jp/portal/anime/story/"
+    },
+    {
+        "slug":  "kaina-great-snow-sea",
+        "name":  "대설해의 카이나",
+        "englishName":  "Kaina of the Great Snow Sea",
+        "aliases":  [
+                        "大雪海のカイナ"
+                    ],
+        "description":  "천막 위에서 살던 카이나가 설해의 왕녀 리리하를 만나 멸망해 가는 세계를 구할 단서를 찾아간다.",
+        "genres":  [
+                       "SF",
+                       "판타지",
+                       "모험",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://ooyukiumi.net/",
+        "source":  "https://ooyukiumi.net/introduction/index_tvanime.php"
+    },
+    {
+        "slug":  "fire-hunter-anime",
+        "name":  "불사냥의 왕",
+        "englishName":  "The Fire Hunter",
+        "aliases":  [
+                        "火狩りの王"
+                    ],
+        "description":  "불에 가까이 가면 발화하는 세계에서 소녀 토코와 소년 코시가 천년혜성과 세계의 비밀에 다가간다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://hikarinoou-anime.com/",
+        "source":  "https://hikarinoou-anime.com/"
+    },
+    {
+        "slug":  "synduality-noir-anime",
+        "name":  "신듀얼리티 느와르",
+        "englishName":  "Synduality Noir",
+        "aliases":  [
+
+                    ],
+        "description":  "독성비가 내린 미래에서 드리프터를 꿈꾸는 카나타가 기억 잃은 메이거스 느와르와 폐허를 탐사한다.",
+        "genres":  [
+                       "SF",
+                       "로봇/메카",
+                       "액션",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://synduality-noir.com/",
+        "source":  "https://www.tv-tokyo.co.jp/anime/synduality-noir/"
+    },
+    {
+        "slug":  "overtake-anime",
+        "name":  "오버테이크!",
+        "englishName":  "Overtake!",
+        "aliases":  [
+                        "オーバーテイク！"
+                    ],
+        "description":  "사진을 찍지 못하게 된 포토그래퍼 코야가 고교생 F4 드라이버 하루카의 도전을 응원하며 다시 일어선다.",
+        "genres":  [
+                       "스포츠",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://komaki-motors.com/",
+        "source":  "https://komaki-motors.com/"
+    },
+    {
+        "slug":  "orbital-children-anime",
+        "name":  "지구 밖 소년소녀",
+        "englishName":  "The Orbital Children",
+        "aliases":  [
+                        "地球外少年少女"
+                    ],
+        "description":  "2045년 우주정거장에서 사고를 겪은 다섯 아이가 제한된 통신과 인공지능을 이용해 생환을 시도한다.",
+        "genres":  [
+                       "SF",
+                       "모험",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://chikyugai.com/",
+        "source":  "https://chikyugai.com/"
+    },
+    {
+        "slug":  "good-night-world-anime",
+        "name":  "굿 나이트 월드",
+        "englishName":  "Good Night World",
+        "aliases":  [
+                        "グッド・ナイト・ワールド"
+                    ],
+        "description":  "붕괴한 현실의 가족이 서로의 정체를 모른 채 온라인게임에서 최강의 가족 길드로 함께한다.",
+        "genres":  [
+                       "SF",
+                       "판타지",
+                       "액션",
+                       "가족"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://gnw-anime.com/",
+        "source":  "https://gnw-anime.com/"
+    },
+    {
+        "slug":  "takt-op-destiny-anime",
+        "name":  "택트 오퍼스 데스티니",
+        "englishName":  "takt op.Destiny",
+        "aliases":  [
+                        "takt op.Destiny タクトオーパス"
+                    ],
+        "description":  "음악이 금지된 세계에서 지휘자 택트와 운명이라는 무지카트가 괴물 D2를 피해 뉴욕으로 향한다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "음악",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://anime.takt-op.jp/",
+        "source":  "https://anime.takt-op.jp/"
+    },
+    {
+        "slug":  "revue-starlight-movie",
+        "name":  "극장판 소녀☆가극 레뷰 스타라이트",
+        "englishName":  "Revue Starlight: The Movie",
+        "aliases":  [
+                        "劇場版 少女☆歌劇 レヴュースタァライト"
+                    ],
+        "description":  "졸업을 앞둔 무대소녀들이 각자의 다음 무대를 선택하며 마지막이자 새로운 레뷰에 오른다.",
+        "genres":  [
+                       "음악",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "영화"
+                   ],
+        "officialUrl":  "https://revuestarlight.com/animation/movie/",
+        "source":  "https://revuestarlight.com/animation/movie/"
+    }
+]

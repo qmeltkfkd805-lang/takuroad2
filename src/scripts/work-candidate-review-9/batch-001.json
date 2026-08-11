@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "garbage-time-webtoon",
+    "name": "가비지타임",
+    "englishName": "",
+    "aliases": ["갑타"],
+    "description": "낙오자만 남은 지상고 농구부가 새 감독과 함께 전국 무대에 도전하며 팀으로 성장한다.",
+    "genres": ["스포츠", "학원", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=703844",
+    "source": "https://comic.naver.com/webtoon/list?titleId=703844"
+  },
+  {
+    "slug": "tiger-brother-webtoon",
+    "name": "호랑이형님",
+    "englishName": "",
+    "aliases": ["호형"],
+    "description": "괴물 호랑이 빠르와 가우리가 신비한 힘을 지닌 아이를 노리는 흰눈썹에 맞선다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=650305",
+    "source": "https://comic.naver.com/webtoon/list?titleId=650305"
+  },
+  {
+    "slug": "kubera-webtoon",
+    "name": "쿠베라",
+    "englishName": "Kubera",
+    "aliases": [],
+    "description": "마을을 잃은 소녀 쿠베라 리즈가 신과 수라, 마법사들의 거대한 갈등에 휘말린다.",
+    "genres": ["판타지", "모험", "드라마", "로맨스"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=131385",
+    "source": "https://comic.naver.com/webtoon/list?titleId=131385"
+  },
+  {
+    "slug": "denma-webtoon",
+    "name": "덴마",
+    "englishName": "Denma",
+    "aliases": [],
+    "description": "특수 능력자 덴마가 어린아이의 몸에 갇힌 채 우주 택배원이 되어 기묘한 모험을 겪는다.",
+    "genres": ["SF", "판타지", "모험", "액션"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=119874",
+    "source": "https://comic.naver.com/webtoon/list?titleId=119874"
+  },
+  {
+    "slug": "uglyhood-webtoon",
+    "name": "어글리후드",
+    "englishName": "Uglyhood",
+    "aliases": [],
+    "description": "외계인이 유일신으로 군림하는 세계에서 엘사 브라이언트가 사탄을 자처해 체제에 저항한다.",
+    "genres": ["판타지", "액션", "SF", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=703630",
+    "source": "https://comic.naver.com/webtoon/list?titleId=703630"
+  },
+  {
+    "slug": "meow-man-webtoon",
+    "name": "냐한남자",
+    "englishName": "Meow Man",
+    "aliases": [],
+    "description": "길고양이 춘배를 데려온 보미 앞에 고양이 왕국 출신의 남자가 나타나 기묘한 동거를 시작한다.",
+    "genres": ["로맨스", "판타지", "코미디", "일상"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=708452",
+    "source": "https://comic.naver.com/webtoon/list?titleId=708452"
+  },
+  {
+    "slug": "independent-diary-webtoon",
+    "name": "독립일기",
+    "englishName": "",
+    "aliases": [],
+    "description": "처음 자기 집을 얻은 자까가 집안일과 식사, 이웃 문제를 겪으며 홀로서기를 배운다.",
+    "genres": ["일상", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=748105",
+    "source": "https://comic.naver.com/webtoon/list?titleId=748105"
+  },
+  {
+    "slug": "mojos-diary-webtoon",
+    "name": "모죠의 일지",
+    "englishName": "",
+    "aliases": [],
+    "description": "내성적이고 취향이 뚜렷한 집순이 모죠가 평범한 일상에서 마주한 웃긴 순간을 기록한다.",
+    "genres": ["일상", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=728015",
+    "source": "https://comic.naver.com/webtoon/list?titleId=728015"
+  },
+  {
+    "slug": "gaus-electronics-webtoon",
+    "name": "가우스전자",
+    "englishName": "Gaus Electronics",
+    "aliases": [],
+    "description": "가우스전자 마케팅3부 직원들이 회사의 모순과 사내 관계를 웃음으로 버텨 낸다.",
+    "genres": ["일상", "코미디", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=799793",
+    "source": "https://comic.naver.com/webtoon/list?titleId=799793"
+  },
+  {
+    "slug": "dont-lose-your-mind-webtoon",
+    "name": "놓지마 정신줄",
+    "englishName": "",
+    "aliases": ["놓정줄"],
+    "description": "정신과 정주리 남매를 비롯한 독특한 인물들이 상식을 벗어난 소동을 끊임없이 벌인다.",
+    "genres": ["코미디", "일상", "가족"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=81482",
+    "source": "https://comic.naver.com/webtoon/list?titleId=81482"
+  }
+]

@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "perfect-blue-1997",
+    "name": "퍼펙트 블루",
+    "englishName": "Perfect Blue",
+    "aliases": ["パーフェクトブルー", "퍼펙트 블루 1997"],
+    "description": "아이돌을 그만두고 배우가 된 미마가 연쇄 사건과 무너지는 현실 감각에 시달린다.",
+    "genres": ["추리", "호러", "드라마", "19"],
+    "ipType": ["소설", "영화"],
+    "officialUrl": "https://madhouse.co.jp/works/movie_perfectblue/",
+    "source": "https://www.madhouse.co.jp/works/1999-1997/works_movie_perfectblue.html"
+  },
+  {
+    "slug": "mind-game-2004",
+    "name": "마인드 게임",
+    "englishName": "Mind Game",
+    "aliases": ["マインド・ゲーム", "마인드 게임 2004"],
+    "description": "죽음 뒤 신을 만난 니시가 삶을 되찾고 연인과 함께 고래 뱃속에서 탈출을 꿈꾼다.",
+    "genres": ["판타지", "모험", "코미디", "드라마"],
+    "ipType": ["만화", "영화"],
+    "officialUrl": "https://mindgame.studio4c.co.jp/",
+    "source": "https://mindgame.studio4c.co.jp/introduction/"
+  },
+  {
+    "slug": "tekkonkinkreet",
+    "name": "철콘 근크리트",
+    "englishName": "Tekkonkinkreet",
+    "aliases": ["鉄コン筋クリート"],
+    "description": "보물마을을 지키는 고아 쿠로와 시로가 재개발 세력과 폭력 조직에 맞선다.",
+    "genres": ["액션", "드라마", "판타지"],
+    "ipType": ["만화", "영화"],
+    "officialUrl": "https://www.studio4c.co.jp/works/en/pages/23.html",
+    "source": "https://www.studio4c.co.jp/works/en/pages/23.html"
+  },
+  {
+    "slug": "night-is-short-walk-on-girl",
+    "name": "밤은 짧아 걸어 아가씨야",
+    "englishName": "The Night Is Short, Walk on Girl",
+    "aliases": ["夜は短し歩けよ乙女", "밤은 짧아 걸어 아가씨여"],
+    "description": "교토의 밤을 누비는 검은 머리 아가씨와 우연을 꾸며 뒤쫓는 선배의 하루가 겹친다.",
+    "genres": ["로맨스", "코미디", "판타지"],
+    "ipType": ["소설", "만화", "영화"],
+    "officialUrl": "https://kurokaminootome.com/",
+    "source": "https://kurokaminootome.com/sp/"
+  },
+  {
+    "slug": "castle-of-cagliostro",
+    "name": "루팡 3세 칼리오스트로의 성",
+    "englishName": "Lupin III: The Castle of Cagliostro",
+    "aliases": ["ルパン三世 カリオストロの城", "칼리오스트로의 성"],
+    "description": "위조지폐를 쫓던 루팡이 칼리오스트로 공국의 성에 잠입해 붙잡힌 클라리스를 구한다.",
+    "genres": ["모험", "액션", "코미디"],
+    "ipType": ["영화"],
+    "officialUrl": "https://www.tms-e.co.jp/alltitles/lupin/010302.html",
+    "source": "https://www.tms-e.co.jp/alltitles/lupin/010302.html"
+  },
+  {
+    "slug": "promare",
+    "name": "프로메어",
+    "englishName": "Promare",
+    "aliases": ["プロメア"],
+    "description": "소방대원 갈로와 버니시 리더 리오가 불꽃을 둘러싼 도시 통치자의 계획에 맞선다.",
+    "genres": ["액션", "SF", "로봇/메카"],
+    "ipType": ["영화"],
+    "officialUrl": "https://promare-movie.com/",
+    "source": "https://promare-movie.com/"
+  },
+  {
+    "slug": "bubble-2022",
+    "name": "버블",
+    "englishName": "Bubble",
+    "aliases": ["バブル", "버블 2022"],
+    "description": "중력이 무너진 도쿄에서 파쿠르 소년 히비키가 신비한 소녀 우타와 도시의 비밀을 좇는다.",
+    "genres": ["SF", "액션", "로맨스"],
+    "ipType": ["영화"],
+    "officialUrl": "https://wwws.warnerbros.co.jp/bubble-moviejp/",
+    "source": "https://wwws.warnerbros.co.jp/bubble-moviejp/introduction/"
+  },
+  {
+    "slug": "drifting-home",
+    "name": "표류단지",
+    "englishName": "Drifting Home",
+    "aliases": ["雨を告げる漂流団地", "비를 알리는 표류단지"],
+    "description": "철거 직전 단지에 들어간 아이들이 건물째 바다로 표류하며 함께 돌아갈 길을 찾는다.",
+    "genres": ["모험", "판타지", "가족", "드라마"],
+    "ipType": ["영화"],
+    "officialUrl": "https://www.hyoryu-danchi.com/",
+    "source": "https://www.hyoryu-danchi.com/"
+  },
+  {
+    "slug": "children-of-the-sea",
+    "name": "해수의 아이",
+    "englishName": "Children of the Sea",
+    "aliases": ["海獣の子供", "바다짐승의 아이"],
+    "description": "소녀 루카가 바다에서 자란 형제 우미와 소라를 만나 생명과 우주의 축제를 목격한다.",
+    "genres": ["판타지", "모험", "드라마"],
+    "ipType": ["만화", "영화"],
+    "officialUrl": "https://kaijunokodomo.studio4c.co.jp/",
+    "source": "https://kaijunokodomo.studio4c.co.jp/"
+  },
+  {
+    "slug": "penguin-highway",
+    "name": "펭귄 하이웨이",
+    "englishName": "Penguin Highway",
+    "aliases": ["ペンギン・ハイウェイ"],
+    "description": "초등학생 아오야마가 마을에 나타난 펭귄과 치과 누나를 잇는 기묘한 현상을 연구한다.",
+    "genres": ["SF", "판타지", "모험", "가족"],
+    "ipType": ["소설", "만화", "영화"],
+    "officialUrl": "https://penguin-highway.com/",
+    "source": "https://penguin-highway.com/"
+  }
+]

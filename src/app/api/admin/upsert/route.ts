@@ -7,6 +7,7 @@ const ALLOWED: Record<string, string[]> = {
   tags: ['name', 'english_name', 'slug', 'ip_type', 'release_year', 'genres', 'description', 'cover_url', 'banner_image'],
   featured_banners: ['title', 'subtitle', 'image_url', 'cta_label', 'cta_href', 'cta_label2', 'cta_href2', 'bg_color', 'text_color', 'sort_order', 'is_active'],
   places: ['name', 'cover_image', 'place_type', 'addr'],
+  home_hero_slots: ['source_type', 'source_id', 'label', 'custom_headline', 'custom_description', 'custom_image_url', 'cta_text', 'cta_href', 'starts_at', 'ends_at', 'slot_position', 'priority', 'is_pinned', 'status'],
 }
 
 export async function POST(request: NextRequest) {
@@ -32,6 +33,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true })
     }
     if (action === 'insert') {
+      if (table === 'home_hero_slots') clean.created_by = user.id   // 작성자 서버에서 주입 (스푸핑 방지)
       const { data, error } = await admin.from(table).insert(clean).select().single()
       if (error) throw error
       return NextResponse.json({ success: true, row: data })

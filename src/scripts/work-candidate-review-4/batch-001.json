@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "keep-your-hands-off-eizouken",
+    "name": "영상연에는 손대지 마!",
+    "englishName": "Keep Your Hands Off Eizouken!",
+    "aliases": ["영상연"],
+    "description": "아사쿠사·미즈사키·카나모리가 영상연을 만들고 각자의 재능을 모아 상상 속 애니메이션을 현실로 옮긴다.",
+    "genres": ["학원", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://eizouken-anime.com/",
+    "source": "https://shogakukan-comic.jp/news/22656"
+  },
+  {
+    "slug": "ping-pong-the-animation",
+    "name": "핑퐁 THE ANIMATION",
+    "englishName": "Ping Pong the Animation",
+    "aliases": ["핑퐁 디 애니메이션"],
+    "description": "소꿉친구 페코와 스마일이 탁구대 위에서 재능과 좌절을 마주하며 각자의 경기 방식을 찾아간다.",
+    "genres": ["스포츠", "학원", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.pingpong-anime.tv/",
+    "source": "https://www.pingpong-anime.tv/"
+  },
+  {
+    "slug": "the-eccentric-family",
+    "name": "유정천 가족",
+    "englishName": "The Eccentric Family",
+    "aliases": ["有頂天家族"],
+    "description": "교토에 사는 너구리 야사부로와 시모가모 형제들이 인간·텐구 사이를 오가며 아버지 죽음의 진실을 마주한다.",
+    "genres": ["판타지", "가족", "코미디", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://uchoten-anime.com/season1/",
+    "source": "https://uchoten-anime.com/season1/story/"
+  },
+  {
+    "slug": "kaiba-anime",
+    "name": "카이바",
+    "englishName": "Kaiba",
+    "aliases": ["カイバ"],
+    "description": "기억을 저장하고 몸을 바꿀 수 있는 세계에서 기억을 잃은 카이바가 자신의 과거와 사랑을 찾아 여행한다.",
+    "genres": ["SF", "모험", "로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "dennou-coil",
+    "name": "전뇌 코일",
+    "englishName": "Dennou Coil",
+    "aliases": ["電脳コイル"],
+    "description": "증강현실 안경이 보편화된 도시에서 야사코와 아이들이 사라진 전뇌 생명체와 공간의 비밀을 추적한다.",
+    "genres": ["SF", "추리", "모험", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "planetes-anime",
+    "name": "플라네테스",
+    "englishName": "Planetes",
+    "aliases": ["プラネテス"],
+    "description": "우주 쓰레기 회수원 하치마키가 동료들과 궤도에서 일하며 꿈과 생존, 우주 개발의 현실을 고민한다.",
+    "genres": ["SF", "일상", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.sunrise-inc.co.jp/work/detail.php?cid=154",
+    "source": "https://www.sunrise-inc.co.jp/work/detail.php?cid=154"
+  },
+  {
+    "slug": "showa-genroku-rakugo-shinju",
+    "name": "쇼와 겐로쿠 라쿠고 심중",
+    "englishName": "Showa Genroku Rakugo Shinju",
+    "aliases": ["라쿠고 심중", "昭和元禄落語心中"],
+    "description": "형무소에서 나온 요타로가 명인 야쿠모에게 입문하고, 라쿠고와 얽힌 스승 세대의 사랑과 비극을 듣는다.",
+    "genres": ["드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.mbs.jp/rakugo-shinju/",
+    "source": "https://www.mbs.jp/rakugo-shinju/"
+  },
+  {
+    "slug": "the-heike-story",
+    "name": "헤이케모노가타리",
+    "englishName": "The Heike Story",
+    "aliases": ["平家物語"],
+    "description": "미래를 보는 소녀 비와가 헤이케 일족과 함께 지내며 권세의 절정부터 피할 수 없는 몰락까지 지켜본다.",
+    "genres": ["드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://heike-anime.asmik-ace.co.jp/",
+    "source": "https://heike-anime.asmik-ace.co.jp/"
+  },
+  {
+    "slug": "sarazanmai",
+    "name": "사라잔마이",
+    "englishName": "Sarazanmai",
+    "aliases": ["さらざんまい"],
+    "description": "아사쿠사의 세 소년이 갓파로 변해 욕망에서 태어난 좀비와 싸우며 서로 감춘 비밀과 관계를 드러낸다.",
+    "genres": ["판타지", "코미디", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://sarazanmai.com/",
+    "source": "https://www.fujitv.co.jp/b_hp/sarazanmai/"
+  },
+  {
+    "slug": "undead-murder-farce",
+    "name": "언데드 걸 머더 파르스",
+    "englishName": "Undead Murder Farce",
+    "aliases": ["언데드 걸 머더 패르스"],
+    "description": "몸을 빼앗긴 불사 탐정 린도 아야가 반인반귀 츠가루와 유럽을 돌며 괴물 관련 사건을 해결한다.",
+    "genres": ["추리", "판타지", "액션", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://undeadgirl.jp/",
+    "source": "https://undeadgirl.jp/"
+  }
+]

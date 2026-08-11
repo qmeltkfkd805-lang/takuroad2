@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "hakuoki-kyoto-ranbu-movie",
+    "name": "극장판 박앵귀 제1장 교토난무",
+    "englishName": "Hakuoki: Demon of the Fleeting Blossom - Wild Dance of Kyoto",
+    "aliases": ["劇場版 薄桜鬼 第一章 京都乱舞"],
+    "description": "아버지를 찾아 교토에 온 지즈루가 신선조와 만나 그들의 어둠과 자신의 출생 비밀을 좇는다.",
+    "genres": ["액션", "판타지", "로맨스", "드라마"],
+    "ipType": ["영화"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/hakuouki-movie1",
+    "source": "https://www.deen.co.jp/works-archives/hakuouki-movie1"
+  },
+  {
+    "slug": "hakuoki-shikon-sokyu-movie",
+    "name": "극장판 박앵귀 제2장 사혼창궁",
+    "englishName": "Hakuoki: Demon of the Fleeting Blossom - Warrior Spirit of the Blue Sky",
+    "aliases": ["劇場版 薄桜鬼 第二章 士魂蒼穹"],
+    "description": "전황이 악화되는 가운데 지즈루와 신선조가 북쪽으로 전전하며 마지막 신념과 결전을 마주한다.",
+    "genres": ["액션", "판타지", "로맨스", "드라마"],
+    "ipType": ["영화"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/hakuouki-movie-2",
+    "source": "https://www.deen.co.jp/works-archives/hakuouki-movie-2"
+  },
+  {
+    "slug": "sankarea-anime",
+    "name": "산카레아 애니메이션",
+    "englishName": "Sankarea: Undying Love",
+    "aliases": ["さんかれあ"],
+    "description": "좀비를 좋아하는 지히로가 삶에 억눌린 소녀 레아와 만나 되살리는 약을 함께 만든다.",
+    "genres": ["로맨스", "코미디", "호러"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/sankarea",
+    "source": "https://www.deen.co.jp/works-archives/sankarea"
+  },
+  {
+    "slug": "hiiro-no-kakera-anime",
+    "name": "비색의 조각 애니메이션",
+    "englishName": "Hiiro no Kakera: The Tamayori Princess Saga",
+    "aliases": ["緋色の欠片"],
+    "description": "마을로 불려온 다마키가 다마요리히메의 사명을 깨닫고 수호자들과 오니키리마루를 봉인한다.",
+    "genres": ["판타지", "로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/hiiro",
+    "source": "https://www.deen.co.jp/works-archives/hiiro"
+  },
+  {
+    "slug": "rurouni-kenshin-new-kyoto-arc-anime",
+    "name": "바람의 검심 신교토편",
+    "englishName": "Rurouni Kenshin: New Kyoto Arc",
+    "aliases": ["るろうに剣心 明治剣客浪漫譚 新京都編"],
+    "description": "마키마치 미사오의 시선으로 교토에서 벌어지는 겐신과 시시오 일파의 격돌을 새롭게 그린다.",
+    "genres": ["액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/kenshin",
+    "source": "https://www.deen.co.jp/works-archives/kenshin"
+  },
+  {
+    "slug": "is-this-a-zombie-of-the-dead-anime",
+    "name": "이것은 좀비입니까? 오브 더 데드",
+    "englishName": "Is This a Zombie? of the Dead",
+    "aliases": ["これはゾンビですか？オブ・ザ・デッド"],
+    "description": "좀비이자 마장소녀인 아이카와 아유무가 동료들과 기묘하고 소란스러운 학원생활을 이어간다.",
+    "genres": ["판타지", "코미디", "액션", "학원"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/?p=706",
+    "source": "https://www.deen.co.jp/?p=706"
+  },
+  {
+    "slug": "nurarihyon-grandson-demon-capital-anime",
+    "name": "누라리횬의 손자 천년마경",
+    "englishName": "Nura: Rise of the Yokai Clan - Demon Capital",
+    "aliases": ["ぬらりひょんの孫 千年魔京"],
+    "description": "누라구미 후계자 리쿠오가 교토를 장악한 하고로모기쓰네와 요괴 세력에 맞서 백귀야행을 이끈다.",
+    "genres": ["판타지", "액션", "소년물"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/nuramago-makyo",
+    "source": "https://www.deen.co.jp/works-archives/nuramago-makyo"
+  },
+  {
+    "slug": "higurashi-kira-anime",
+    "name": "쓰르라미 울 적에 황",
+    "englishName": "Higurashi When They Cry Kira",
+    "aliases": ["ひぐらしのなく頃に煌"],
+    "description": "히나미자와의 인물들이 벌칙게임과 마법소녀 소동 등 네 편의 색다른 이야기를 펼친다.",
+    "genres": ["코미디", "판타지", "호러"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/higurashi-kira",
+    "source": "https://www.deen.co.jp/works-archives/higurashi-kira"
+  },
+  {
+    "slug": "starry-sky-anime",
+    "name": "스타리 스카이 애니메이션",
+    "englishName": "Starry Sky",
+    "aliases": ["Starry☆Sky"],
+    "description": "천문학을 배우는 세이게쓰 학원의 유일한 여학생이 열두 별자리의 성격을 지닌 소년들과 교류한다.",
+    "genres": ["학원", "로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/s-sky",
+    "source": "https://www.deen.co.jp/works-archives/s-sky"
+  },
+  {
+    "slug": "dragon-crisis-anime",
+    "name": "드래곤 크라이시스 애니메이션",
+    "englishName": "Dragon Crisis!",
+    "aliases": ["ドラゴンクライシス！"],
+    "description": "고등학생 류지가 드래곤 소녀 로즈를 구한 뒤 유물을 노리는 조직과 위험한 전투에 휘말린다.",
+    "genres": ["판타지", "액션", "로맨스"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.deen.co.jp/works-archives/d-crisis",
+    "source": "https://www.deen.co.jp/works-archives/d-crisis"
+  }
+]

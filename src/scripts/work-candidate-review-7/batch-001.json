@@ -1,0 +1,190 @@
+[
+    {
+        "slug":  "aooni-the-animation-tv",
+        "name":  "아오오니 디 애니메이션",
+        "englishName":  "Aooni The Animation",
+        "aliases":  [
+                        "あおおに ～じ・あにめぇしょん～"
+                    ],
+        "description":  "히로시와 친구들이 괴물 아오오니가 나타나는 저택에서 엉뚱한 탈출 소동을 벌인다.",
+        "genres":  [
+                       "호러",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/aooni_tv",
+        "source":  "https://www.deen.co.jp/works-archives/aooni_tv"
+    },
+    {
+        "slug":  "aguu-genius-dolls-anime",
+        "name":  "악우 천재인형",
+        "englishName":  "Aguu: Genius Dolls",
+        "aliases":  [
+                        "悪偶 -天才人形-"
+                    ],
+        "description":  "평범한 무용수 아이가 천재의 재능을 빼앗아 만든 인형 악우의 비밀과 맞선다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/aguu",
+        "source":  "https://www.deen.co.jp/works-archives/aguu"
+    },
+    {
+        "slug":  "the-reflection-anime",
+        "name":  "더 리플렉션 애니메이션",
+        "englishName":  "The Reflection",
+        "aliases":  [
+                        "THE REFLECTION ザ・リフレクション"
+                    ],
+        "description":  "대재앙 리플렉션 뒤 초능력을 얻은 이들이 영웅과 악당으로 갈려 세계 곳곳에서 충돌한다.",
+        "genres":  [
+                       "SF",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/the-reflection",
+        "source":  "https://www.deen.co.jp/works-archives/the-reflection"
+    },
+    {
+        "slug":  "code-e-anime",
+        "name":  "CODE-E 애니메이션",
+        "englishName":  "Code-E",
+        "aliases":  [
+
+                    ],
+        "description":  "감정이 격해지면 전자기기를 망가뜨리는 치나미가 과학 소년 코타로와 학교생활을 시작한다.",
+        "genres":  [
+                       "SF",
+                       "학원",
+                       "로맨스",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/code-e",
+        "source":  "https://www.deen.co.jp/works-archives/code-e"
+    },
+    {
+        "slug":  "mission-e-anime",
+        "name":  "Mission-E 애니메이션",
+        "englishName":  "Mission-E",
+        "aliases":  [
+
+                    ],
+        "description":  "TYPE-E 능력자 마오리와 치나미가 능력자의 격리와 공존을 둘러싼 세력에 맞선다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/mission-e",
+        "source":  "https://www.deen.co.jp/works-archives/mission-e"
+    },
+    {
+        "slug":  "animal-conference-on-environment-anime",
+        "name":  "동물 환경 회의",
+        "englishName":  "Animal Conference on the Environment",
+        "aliases":  [
+                        "動物かんきょう会議"
+                    ],
+        "description":  "세계 각지의 동물들이 서로 다른 관점으로 지구 환경 문제를 토론하고 행동을 모색한다.",
+        "genres":  [
+                       "가족",
+                       "기타"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/a-conference",
+        "source":  "https://www.deen.co.jp/works-archives/a-conference"
+    },
+    {
+        "slug":  "yume-wo-kanaeru-zou-anime",
+        "name":  "꿈을 이루어주는 코끼리 애니메이션",
+        "englishName":  null,
+        "aliases":  [
+                        "夢をかなえるゾウ"
+                    ],
+        "description":  "인생을 비관하던 후미오가 코끼리 신 가네샤의 수상하고 사소한 과제를 하나씩 실천한다.",
+        "genres":  [
+                       "판타지",
+                       "일상",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/yumezo",
+        "source":  "https://www.deen.co.jp/works-archives/yumezo"
+    },
+    {
+        "slug":  "amatsuki-anime",
+        "name":  "아마츠키 애니메이션",
+        "englishName":  "Amatsuki",
+        "aliases":  [
+                        "あまつき"
+                    ],
+        "description":  "박물관 체험 중 이세계 아마츠키로 떨어진 토키도키가 사람과 요괴 사이의 운명을 마주한다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/amatsuki",
+        "source":  "https://www.deen.co.jp/works-archives/amatsuki"
+    },
+    {
+        "slug":  "fantastic-detective-labyrinth-anime",
+        "name":  "멋진 탐정 라비린스",
+        "englishName":  "Fantastic Detective Labyrinth",
+        "aliases":  [
+                        "素敵探偵ラビリンス"
+                    ],
+        "description":  "황폐한 구도 도쿄에서 소년 탐정 마유키가 신비한 힘 신치로 기괴한 사건을 해결한다.",
+        "genres":  [
+                       "추리",
+                       "판타지",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/labyrinth",
+        "source":  "https://www.deen.co.jp/works-archives/labyrinth"
+    },
+    {
+        "slug":  "music-girls-tv-anime",
+        "name":  "음악소녀 TV 애니메이션",
+        "englishName":  "Music Girls",
+        "aliases":  [
+                        "音楽少女"
+                    ],
+        "description":  "팔리지 않는 아이돌 유닛 음악소녀가 하나코를 만나 성공을 향한 새로운 도전을 시작한다.",
+        "genres":  [
+                       "음악",
+                       "아이돌",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/ongakushoujo",
+        "source":  "https://www.deen.co.jp/works-archives/ongakushoujo"
+    }
+]

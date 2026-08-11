@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "tiger-coming-in-webtoon",
+    "name": "호랑이 들어와요",
+    "englishName": "",
+    "aliases": [],
+    "description": "숲속에서 사는 젊은 부부에게 정체불명의 호랑이 아이 랑아와 호야가 찾아와 가족이 된다.",
+    "genres": ["판타지", "가족", "일상", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=757904",
+    "source": "https://comic.naver.com/webtoon/list?titleId=757904"
+  },
+  {
+    "slug": "animal-reincarnation-school-webtoon",
+    "name": "환생동물학교",
+    "englishName": "",
+    "aliases": [],
+    "description": "동물들이 인간으로 환생하기 전 습성을 버리고 세상에 적응하는 법을 배우는 학교 이야기다.",
+    "genres": ["판타지", "학원", "드라마", "가족"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=700139",
+    "source": "https://comic.naver.com/webtoon/list?titleId=700139"
+  },
+  {
+    "slug": "peaceful-brothers-webtoon",
+    "name": "오늘도 형제는 평화롭다",
+    "englishName": "",
+    "aliases": [],
+    "description": "서로를 놀리고 챙기는 두 형제가 매번 사건의 중심에서 엉뚱한 소동을 벌인다.",
+    "genres": ["코미디", "일상", "가족"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=692510",
+    "source": "https://comic.naver.com/webtoon/list?titleId=692510"
+  },
+  {
+    "slug": "i-am-deaf-webtoon",
+    "name": "나는 귀머거리다",
+    "englishName": "",
+    "aliases": [],
+    "description": "청각장애인 라일라가 대한민국에서 공부하고 일하며 겪는 소통과 편견의 현실을 그린다.",
+    "genres": ["일상", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=659934",
+    "source": "https://comic.naver.com/webtoon/list?titleId=659934"
+  },
+  {
+    "slug": "welcome-to-silver-life-webtoon",
+    "name": "웰캄투실버라이프",
+    "englishName": "",
+    "aliases": [],
+    "description": "손녀가 할아버지와 할머니의 활기찬 황혼 일상을 함께 보내며 세대 간 소통을 배운다.",
+    "genres": ["일상", "가족", "코미디", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=749456",
+    "source": "https://comic.naver.com/webtoon/list?titleId=749456"
+  },
+  {
+    "slug": "doctor-and-doctor-parenting-diary-webtoon",
+    "name": "닥터앤닥터 육아일기",
+    "englishName": "",
+    "aliases": [],
+    "description": "산부인과 의사 엄마와 공학박사 아빠가 지식만으로 풀 수 없는 임신과 육아를 겪는다.",
+    "genres": ["일상", "가족", "코미디", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=732955",
+    "source": "https://comic.naver.com/webtoon/list?titleId=732955"
+  },
+  {
+    "slug": "doggedly-lazy-webtoon",
+    "name": "노곤하개",
+    "englishName": "",
+    "aliases": [],
+    "description": "홍끼가 여러 강아지와 고양이를 돌보며 겪는 산책과 병원, 사고투성이 집사 생활을 담는다.",
+    "genres": ["일상", "가족", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=702672",
+    "source": "https://comic.naver.com/webtoon/list?titleId=702672"
+  },
+  {
+    "slug": "joyful-solo-living-webtoon",
+    "name": "자취로운 생활",
+    "englishName": "",
+    "aliases": [],
+    "description": "츄카피가 빨래와 청소, 혼밥과 이웃 문제를 헤쳐 나가며 원룸 자취 생활을 이어 간다.",
+    "genres": ["일상", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=714834",
+    "source": "https://comic.naver.com/webtoon/list?titleId=714834"
+  },
+  {
+    "slug": "life-of-eating-webtoon",
+    "name": "먹는 인생",
+    "englishName": "",
+    "aliases": [],
+    "description": "홍끼가 라면죽부터 여행 음식까지 먹고 싶은 메뉴를 찾아다니며 맛과 추억을 기록한다.",
+    "genres": ["일상", "요리", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=784255",
+    "source": "https://comic.naver.com/webtoon/list?titleId=784255"
+  },
+  {
+    "slug": "crazy-gardener-webtoon",
+    "name": "크레이지 가드너",
+    "englishName": "Crazy Gardener",
+    "aliases": [],
+    "description": "마일로가 식물 금손을 꿈꾸며 과습과 곰팡이, 해충에 맞서 끝없는 식물 생활을 이어 간다.",
+    "genres": ["일상", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=838709",
+    "source": "https://comic.naver.com/webtoon/list?titleId=838709"
+  }
+]

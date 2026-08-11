@@ -283,8 +283,16 @@ export default function RouteDetailPage({ route }: { route: any }) {
                   <Link href={`/shop/${shop.slug}`} target="_blank" className={styles.stopName} onClick={e => e.stopPropagation()}>{shop.name}</Link>
                   {st && <span className={styles.statusPill} data-tone={st.tone}>{st.text}</span>}
                 </div>
-                {shop.addr && <div className={styles.stopAddr}>{shop.addr}</div>}
-                {(() => { const fl = shop.floor_info || [shop.floor, shop.unit].filter(Boolean).join(' '); return fl ? <div className={styles.stopFloor}>{fl}</div> : null })()}
+                {(() => {
+                  const fl = shop.floor_info || [shop.floor, shop.unit].filter(Boolean).join(' ')
+                  if (!shop.addr && !fl) return null
+                  return (
+                    <div className={styles.stopAddrRow}>
+                      {shop.addr && <span className={styles.stopAddr}>{shop.addr}</span>}
+                      {fl && <span className={styles.stopFloor}>{fl}</span>}
+                    </div>
+                  )
+                })()}
                 {cats.length > 0 && (
                   <div className={styles.stopTags}>
                     {cats.slice(0, 2).map(c => { const ci = CATEGORY_NAME_MAP[c]; return <span key={c} className={styles.stopTag} style={ci ? { color: ci.color, background: ci.bgColor } : undefined}>{c}</span> })}

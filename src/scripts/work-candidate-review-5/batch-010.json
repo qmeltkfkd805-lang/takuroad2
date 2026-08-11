@@ -1,0 +1,191 @@
+[
+    {
+        "slug":  "hanada-shonen-shi-anime",
+        "name":  "하나다 소년사",
+        "englishName":  "Hanada Shonen-shi",
+        "aliases":  [
+                        "花田少年史",
+                        "하나다 소년 이야기"
+                    ],
+        "description":  "사고 뒤 유령을 보게 된 장난꾸러기 이치로가 망자들의 부탁을 들어주며 성장한다.",
+        "genres":  [
+                       "판타지",
+                       "가족",
+                       "코미디",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_hanadashounen/",
+        "source":  "https://madhouse.co.jp/works/tv_hanadashounen/"
+    },
+    {
+        "slug":  "pita-ten-anime",
+        "name":  "피타텐",
+        "englishName":  "Pita-Ten",
+        "aliases":  [
+                        "ぴたテン"
+                    ],
+        "description":  "초등학생 코타로의 옆집에 견습 천사 미샤가 이사 오면서 따뜻하고 엉뚱한 일상이 시작된다.",
+        "genres":  [
+                       "판타지",
+                       "일상",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.madhouse.co.jp/works/2002-2001/works_tv_pitaten.html",
+        "source":  "https://www.madhouse.co.jp/works/2002-2001/works_tv_pitaten.html"
+    },
+    {
+        "slug":  "a-spirit-of-the-sun-anime",
+        "name":  "태양의 묵시록",
+        "englishName":  "A Spirit of the Sun",
+        "aliases":  [
+                        "太陽の黙示録"
+                    ],
+        "description":  "대지진으로 분단된 일본에서 겐이치로가 난민과 강대국의 갈등 속 재통합의 길을 찾는다.",
+        "genres":  [
+                       "SF",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/ova_taiyounomokushiroku/",
+        "source":  "https://madhouse.co.jp/works/ova_taiyounomokushiroku/"
+    },
+    {
+        "slug":  "otogi-jushi-akazukin-ova-anime",
+        "name":  "동화총사 빨간망토 OVA",
+        "englishName":  "Fairy Musketeer Akazukin OVA",
+        "aliases":  [
+                        "おとぎ銃士 赤ずきん",
+                        "오토기쥬시 아카즈킨 OVA"
+                    ],
+        "description":  "이세계에서 온 빨간망토가 봉인의 열쇠를 지닌 소타를 마녀 산드리용에게서 지킨다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/ova_akazukin/",
+        "source":  "https://madhouse.co.jp/works/ova_akazukin/"
+    },
+    {
+        "slug":  "kamen-no-maid-guy-anime",
+        "name":  "가면의 메이드가이",
+        "englishName":  "Kamen no Maid Guy",
+        "aliases":  [
+                        "仮面のメイドガイ"
+                    ],
+        "description":  "막대한 유산을 물려받을 나에카 앞에 수상한 남성 메이드 코가라시가 호위로 나타난다.",
+        "genres":  [
+                       "액션",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_maidguy/",
+        "source":  "https://madhouse.co.jp/works/tv_maidguy/"
+    },
+    {
+        "slug":  "jubei-chan-2-anime",
+        "name":  "쥬베이짱 2 시베리아 야규의 역습",
+        "englishName":  "Jubei-chan 2: The Counterattack of Siberia Yagyu",
+        "aliases":  [
+                        "十兵衛ちゃん2 シベリア柳生の逆襲"
+                    ],
+        "description":  "평범한 생활로 돌아간 지유 앞에 시베리아 야규의 자객이 나타나 다시 러블리 안대를 쓰게 된다.",
+        "genres":  [
+                       "액션",
+                       "코미디",
+                       "판타지"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_jyubeichan2/",
+        "source":  "https://madhouse.co.jp/works/tv_jyubeichan2/"
+    },
+    {
+        "slug":  "chance-pop-session-anime",
+        "name":  "찬스 트라이앵글 세션",
+        "englishName":  "Chance Pop Session",
+        "aliases":  [
+                        "チャンス トライアングルセッション"
+                    ],
+        "description":  "서로 다른 삶을 살던 아카리와 유키와 노조미가 만나 가수로서 음악계 정상에 도전한다.",
+        "genres":  [
+                       "음악",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.madhouse.co.jp/works/2001-2000/works_tv_chance.html",
+        "source":  "https://www.madhouse.co.jp/works/2001-2000/works_tv_chance.html"
+    },
+    {
+        "slug":  "tokyo-tribe-2-anime",
+        "name":  "도쿄 트라이브 2 애니메이션",
+        "englishName":  "Tokyo Tribe 2",
+        "aliases":  [
+
+                    ],
+        "description":  "여러 트라이브가 나뉘어 사는 도쿄에서 우정의 파국이 도시 전체의 거대한 항쟁으로 번진다.",
+        "genres":  [
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.madhouse.co.jp/news/news_2006_10.html",
+        "source":  "https://www.madhouse.co.jp/news/news_2006_10.html"
+    },
+    {
+        "slug":  "aquarian-age-sign-for-evolution-anime",
+        "name":  "아쿠에리안 에이지 Sign for Evolution",
+        "englishName":  "Aquarian Age: Sign for Evolution",
+        "aliases":  [
+                        "アクエリアンエイジ Sign for Evolution"
+                    ],
+        "description":  "밴드 데뷔를 앞둔 쿄우타가 초능력 세력들의 전쟁과 자신에게 깃든 힘을 마주한다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.madhouse.co.jp/works/2002-2001/works_tv_aquarianage.html",
+        "source":  "https://www.madhouse.co.jp/works/2002-2001/works_tv_aquarianage.html"
+    },
+    {
+        "slug":  "rizelmine-anime",
+        "name":  "리젤마인",
+        "englishName":  "Rizelmine",
+        "aliases":  [
+                        "りぜるまいん"
+                    ],
+        "description":  "중학생 토모노리가 정부 명령으로 인공생명체 리젤과 결혼하며 소동 가득한 신혼을 시작한다.",
+        "genres":  [
+                       "SF",
+                       "로맨스",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.madhouse.co.jp/works/2002-2001/works_tv_rizelmine.html",
+        "source":  "https://www.madhouse.co.jp/works/2002-2001/works_tv_rizelmine.html"
+    }
+]

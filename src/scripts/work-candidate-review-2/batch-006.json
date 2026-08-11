@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "school-live-gakkou-gurashi",
+    "name": "학교생활!",
+    "englishName": "School-Live!",
+    "aliases": ["がっこうぐらし！", "Gakkou Gurashi!"],
+    "description": "학교에서 즐겁게 지낸다고 믿는 유키와 학원생활부 친구들이 좀비로 무너진 현실에서 살아남는다.",
+    "genres": ["학원", "호러", "드라마"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://gakkougurashi.com/",
+    "source": "https://gakkougurashi.com/"
+  },
+  {
+    "slug": "miss-kobayashis-dragon-maid",
+    "name": "코바야시네 메이드래곤",
+    "englishName": "Miss Kobayashi's Dragon Maid",
+    "aliases": ["小林さんちのメイドラゴン"],
+    "description": "회사원 코바야시의 집에 인간 모습의 드래곤 토르가 메이드로 찾아오며 소란스러운 동거가 시작된다.",
+    "genres": ["판타지", "일상", "코미디", "가족"],
+    "ipType": ["만화", "애니", "영화", "게임"],
+    "officialUrl": "https://maidragon.jp/",
+    "source": "https://www.futabasha.co.jp/maidragon/introduction/"
+  },
+  {
+    "slug": "the-demon-girl-next-door",
+    "name": "마치카도 마족",
+    "englishName": "The Demon Girl Next Door",
+    "aliases": ["길모퉁이 마족", "まちカドまぞく"],
+    "description": "마족으로 각성한 허약한 여고생 샤미코가 집안의 저주를 풀기 위해 마법소녀 모모에게 도전한다.",
+    "genres": ["마법소녀", "판타지", "코미디", "일상"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://www.tbs.co.jp/anime/machikado/",
+    "source": "https://www.tbs.co.jp/anime/machikado/1st/"
+  },
+  {
+    "slug": "non-non-biyori",
+    "name": "논논비요리",
+    "englishName": "Non Non Biyori",
+    "aliases": ["のんのんびより"],
+    "description": "시골 분교에 다니는 렌게와 친구들이 자연 속에서 계절마다 느긋하고 따뜻한 일상을 보낸다.",
+    "genres": ["일상", "코미디", "학원"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://nonnontv.com/",
+    "source": "https://nonnontv.com/"
+  },
+  {
+    "slug": "laid-back-camp",
+    "name": "유루캠△",
+    "englishName": "Laid-Back Camp",
+    "aliases": ["유루캠", "ゆるキャン△"],
+    "description": "혼자 캠핑을 즐기는 린과 활기찬 나데시코가 친구들과 일본의 자연과 야외 생활을 만끽한다.",
+    "genres": ["일상", "모험", "코미디"],
+    "ipType": ["만화", "애니", "영화", "게임"],
+    "officialUrl": "https://yurucamp.jp/",
+    "source": "https://yurucamp.jp/first/introduction/"
+  },
+  {
+    "slug": "how-to-keep-a-mummy",
+    "name": "미이라 사육법",
+    "englishName": "How to Keep a Mummy",
+    "aliases": ["ミイラの飼い方"],
+    "description": "고등학생 소라가 아버지가 보낸 손바닥만 한 미라 미이군을 돌보며 신비한 생물들과 지낸다.",
+    "genres": ["판타지", "일상", "코미디"],
+    "ipType": ["웹툰", "애니", "게임"],
+    "officialUrl": "https://www.tbs.co.jp/anime/miira/",
+    "source": "https://bs.tbs.co.jp/anime/miira/"
+  },
+  {
+    "slug": "hanayamata",
+    "name": "하나야마타",
+    "englishName": "Hanayamata",
+    "aliases": ["ハナヤマタ"],
+    "description": "평범한 중학생 나루가 미국에서 온 하나를 만나 친구들과 요사코이 동아리를 만들어 무대에 선다.",
+    "genres": ["학원", "일상", "음악", "드라마"],
+    "ipType": ["만화", "애니", "게임"],
+    "officialUrl": "https://hanayamata.com/",
+    "source": "https://hanayamata.com/"
+  },
+  {
+    "slug": "love-and-lies",
+    "name": "사랑과 거짓말",
+    "englishName": "Love and Lies",
+    "aliases": ["恋と嘘", "Koi to Uso"],
+    "description": "정부가 결혼 상대를 정하는 사회에서 네지마가 통지된 약혼과 오랜 첫사랑 사이에서 갈등한다.",
+    "genres": ["학원", "로맨스", "드라마"],
+    "ipType": ["웹툰", "애니", "영화"],
+    "officialUrl": "https://koiuso-anime.com/",
+    "source": "https://koiuso-anime.com/caststaff/"
+  },
+  {
+    "slug": "rascal-does-not-dream-of-bunny-girl-senpai",
+    "name": "청춘 돼지는 바니걸 선배의 꿈을 꾸지 않는다",
+    "englishName": "Rascal Does Not Dream of Bunny Girl Senpai",
+    "aliases": ["청춘돼지", "청돼", "青春ブタ野郎はバニーガール先輩の夢を見ない"],
+    "description": "사쿠타가 사람들에게 보이지 않는 배우 마이를 만나 사춘기 증후군의 기이한 현상을 풀어 간다.",
+    "genres": ["학원", "로맨스", "판타지", "드라마"],
+    "ipType": ["소설", "만화", "애니", "영화"],
+    "officialUrl": "https://ao-buta.com/",
+    "source": "https://ao-buta.com/tv/introduction/"
+  },
+  {
+    "slug": "back-arrow",
+    "name": "백 애로우",
+    "englishName": "Back Arrow",
+    "aliases": ["バック・アロウ"],
+    "description": "벽으로 둘러싸인 링가린드에 기억을 잃은 백 애로우가 나타나 벽 너머로 돌아가려 싸운다.",
+    "genres": ["로봇/메카", "액션", "판타지", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://back-arrow.com/",
+    "source": "https://www.asahi.co.jp/anime/back-arrow/"
+  }
+]

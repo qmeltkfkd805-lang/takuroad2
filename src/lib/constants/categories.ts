@@ -25,6 +25,21 @@ export const CATEGORY_NAME_MAP = Object.fromEntries(
   CATEGORIES.map(c => [c.name, c])
 )
 
+// 과거/변형 표기 → 현재 이름
+const CATEGORY_ALIAS: Record<string, string> = {
+  '온라인샵': '온라인숍',
+}
+
+// 저장된 값이 이름이든 슬러그든 별칭이든 카테고리 정보를 찾아준다 (마커·태그 색 지정용)
+export function catInfoOf(value?: string | null) {
+  if (!value) return undefined
+  const v = CATEGORY_ALIAS[value] ?? value
+  return (CATEGORY_NAME_MAP as Record<string, any>)[v] ?? (CATEGORY_MAP as Record<string, any>)[v]
+}
+export function catColor(value?: string | null): string {
+  return catInfoOf(value)?.color ?? '#e8006f'
+}
+
 // 샵 상태 라벨
 export const SHOP_STATUS_LABEL: Record<string, string> = {
   pending:          '승인 대기',

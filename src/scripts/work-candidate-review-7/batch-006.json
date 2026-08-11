@@ -1,0 +1,191 @@
+[
+    {
+        "slug":  "shonen-onmyoji-anime",
+        "name":  "소년 음양사 애니메이션",
+        "englishName":  "Shonen Onmyoji",
+        "aliases":  [
+                        "少年陰陽師"
+                    ],
+        "description":  "반푼이 음양사 마사히로가 식신 모쿠룬과 함께 헤이안쿄를 위협하는 요괴에 맞선다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/onmyoji",
+        "source":  "https://www.deen.co.jp/works-archives/onmyoji"
+    },
+    {
+        "slug":  "hybrid-child-anime",
+        "name":  "하이브리드 차일드 애니메이션",
+        "englishName":  "Hybrid Child",
+        "aliases":  [
+                        "ハイブリッド チャイルド"
+                    ],
+        "description":  "주인의 애정을 받아 성장하는 인형 하이브리드 차일드와 주인들의 애틋한 사랑을 그린다.",
+        "genres":  [
+                       "BL",
+                       "로맨스",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/h-child",
+        "source":  "https://www.deen.co.jp/works-archives/h-child"
+    },
+    {
+        "slug":  "07-ghost-anime",
+        "name":  "세븐 고스트 애니메이션",
+        "englishName":  "07-Ghost",
+        "aliases":  [
+                        "セブンゴースト"
+                    ],
+        "description":  "멸망한 왕국의 왕자 테이토가 잃어버린 기억과 사명을 좇으며 제국의 음모에 맞선다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/07-ghost",
+        "source":  "https://www.deen.co.jp/works-archives/07-ghost"
+    },
+    {
+        "slug":  "kyo-kara-maoh-season-3-anime",
+        "name":  "오늘부터 마왕 3기",
+        "englishName":  "Kyo Kara Maoh! Season 3",
+        "aliases":  [
+                        "今日からマ王！ 第3シリーズ"
+                    ],
+        "description":  "마왕 유리가 평화를 향해 나아가는 나라들과 소시마론의 소년왕 사라레기의 계략을 마주한다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/maoh-3",
+        "source":  "https://www.deen.co.jp/works-archives/maoh-3"
+    },
+    {
+        "slug":  "bakumatsu-crisis-anime",
+        "name":  "BAKUMATSU 크라이시스",
+        "englishName":  "BAKUMATSU Crisis",
+        "aliases":  [
+                        "BAKUMATSUクライシス"
+                    ],
+        "description":  "다카스기 신사쿠와 가쓰라 고고로가 의지를 얻어 폭주하는 시진의를 막으려 싸운다.",
+        "genres":  [
+                       "액션",
+                       "SF",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/bakumatsu",
+        "source":  "https://www.deen.co.jp/works-archives/bakumatsu"
+    },
+    {
+        "slug":  "luger-code-1951-anime",
+        "name":  "루거 코드 1951",
+        "englishName":  "Luger Code 1951",
+        "aliases":  [
+                        "ルガーコード1951"
+                    ],
+        "description":  "언어 천재 테스타가 인류에 선전포고한 인랑의 암호를 풀기 위해 늑대 소녀와 만난다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/luger_code",
+        "source":  "https://www.deen.co.jp/works-archives/luger_code"
+    },
+    {
+        "slug":  "naze-ikiru-rennyo-movie",
+        "name":  "왜 사는가 렌뇨 스님과 요시자키 화재",
+        "englishName":  "Why We Live: The Priest Rennyo and the Fire at Yoshizaki",
+        "aliases":  [
+                        "なぜ生きる 蓮如上人と吉崎炎上"
+                    ],
+        "description":  "전란의 시대에 삶의 이유를 찾아 나선 이들과 정토진종 승려 렌뇨의 여정을 그린다.",
+        "genres":  [
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "영화"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/nazeikiru-movie",
+        "source":  "https://www.deen.co.jp/works-archives/nazeikiru-movie"
+    },
+    {
+        "slug":  "sekaiichi-hatsukoi-yokozawa-movie",
+        "name":  "극장판 세계 제일의 첫사랑 요코자와 타카후미의 경우",
+        "englishName":  "The World\u0027s Greatest First Love: The Case of Takafumi Yokozawa",
+        "aliases":  [
+                        "劇場版 世界一初恋 横澤隆史の場合"
+                    ],
+        "description":  "실연한 출판사 영업사원 요코자와가 소년지 편집장 기리시마와 뜻밖의 인연을 맺는다.",
+        "genres":  [
+                       "BL",
+                       "로맨스",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "영화"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/sekaiichi-movie",
+        "source":  "https://www.deen.co.jp/works-archives/sekaiichi-movie"
+    },
+    {
+        "slug":  "cooking-idol-ai-mai-main-anime",
+        "name":  "쿠킹 아이돌 아이 마이 마인",
+        "englishName":  "Cooking Idol Ai! Mai! Main!",
+        "aliases":  [
+                        "クッキンアイドル アイ！マイ！まいん！"
+                    ],
+        "description":  "아이돌을 꿈꾸는 초등학생 마인이 요리 프로그램 진행자가 되어 음식과 성장을 배운다.",
+        "genres":  [
+                       "요리",
+                       "아이돌",
+                       "가족",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/works-archives/mine",
+        "source":  "https://www.deen.co.jp/works-archives/mine"
+    },
+    {
+        "slug":  "meiji-tokyo-renka-crescent-movie",
+        "name":  "극장판 메이지 도쿄 연가 현월의 소야곡",
+        "englishName":  "Meiji Tokyo Renka: Yumihari no Serenade",
+        "aliases":  [
+                        "劇場版 明治東亰恋伽 弦月の小夜曲"
+                    ],
+        "description":  "메이지 시대로 시간 이동한 여고생 메이가 역사적 인물들과 만나 사랑과 괴이한 사건을 겪는다.",
+        "genres":  [
+                       "로맨스",
+                       "판타지",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "영화"
+                   ],
+        "officialUrl":  "https://www.deen.co.jp/news/20150507",
+        "source":  "https://www.deen.co.jp/news/20150507"
+    }
+]

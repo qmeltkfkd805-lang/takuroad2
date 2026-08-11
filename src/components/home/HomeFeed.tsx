@@ -10,12 +10,12 @@ import { pickHeroRelationship } from '@/lib/home/pickHeroRelationship'
 import HeroSlot from './HeroSlot'
 import { getProductsByTag } from '@/services/shopProductService'
 import { getShopsByTag } from '@/services/shopService'
-import { ShopCard } from '@/components/tds'
 import { useSaved } from '@/hooks/useSaved'
 import { useDragScroll } from '@/hooks/useDragScroll'
 import { useSlider } from '@/hooks/useSlider'
-import { useRouter } from 'next/navigation'
 import type { Shop } from '@/types/shop'
+import { ShopCard } from '@/components/tds'
+import { useRouter } from 'next/navigation'
 import { ROUTES } from '@/lib/constants/routes'
 import RouteThumb from '@/components/route/RouteThumb'
 import { rtStops, rtRegions, fmtDur } from '@/components/route/routeMeta'
@@ -27,10 +27,9 @@ import { pickWorkNews } from '@/lib/home/pickWorkNews'
 import { FeedItem, FeedKind } from '@/lib/feed/types'
 import { WorkIcon } from '@/components/tds/WorkIcon'
 import HomeFeedCard from './HomeFeedCard'
-import { SectionHeader, Icon } from '@/components/tds'
+import { Icon } from '@/components/tds'
 import styles from './HomeFeed.module.css'
 import RankList from './RankList'
-import { EventCard } from '@/components/tds'
 
 const PALETTE = [
   { bg: '#EEEDFE', fg: '#3C3489' }, { bg: '#E1F5EE', fg: '#0F6E56' },
@@ -125,6 +124,55 @@ function RouteSlideCard({ r, saved, onToggleSave }: { r: any; saved: boolean; on
   )
 }
 
+// 이벤트 날짜/상태
+function evDateFull(s?: string | null, e?: string | null): string | null {
+  const f = (d: string, withYear: boolean) =>
+    withYear ? `${d.slice(0, 4)}.${d.slice(5, 7)}.${d.slice(8, 10)}` : `${d.slice(5, 7)}.${d.slice(8, 10)}`
+  if (!s) return null
+  if (!e) return f(s, true)
+  // 시안처럼 시작일만 연도 표기, 종료일은 월.일로 짧게 (한 줄 유지)
+  return `${f(s, true)} ~ ${f(e, false)}`
+}
+function evStatus(s?: string | null, e?: string | null): { label: string; color: string } | null {
+  const now = Date.now()
+  const start = s ? new Date(s + 'T00:00:00').getTime() : null
+  const end = e ? new Date(e + 'T23:59:59').getTime() : null
+  if (start && now < start) { const d = Math.ceil((start - now) / 864e5); return { label: d <= 0 ? '오늘 시작' : `D-${d}`, color: '#3B9BE8' } }
+  if (end && now > end) return null
+  if (end) { const d = Math.floor((end - now) / 864e5); if (d <= 7) return { label: d <= 0 ? '오늘 종료' : `${d}일 남음`, color: 'var(--red)' } }
+  return { label: '진행 중', color: 'var(--green)' }
+}
+
+const EvCal = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2" /><path d="M3 9.5h18M8 2.5v4M16 2.5v4" /></svg>
+)
+const EvPin = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21c-4.3-5.2-6.4-9-6.4-12A6.4 6.4 0 0 1 18.4 9c0 3-2.1 6.8-6.4 12z" /><circle cx="12" cy="9" r="2.2" /></svg>
+)
+
+function EventSlideCard({ ev }: { ev: any }) {
+  const date = evDateFull(ev.startDate, ev.endDate)
+  const status = evStatus(ev.startDate, ev.endDate)
+  return (
+    <Link href={`/event/${ev.id}`} className={styles.routeSlideLink}>
+      <div className={`${styles.routeSlide} ${styles.evCard}`}>
+        <div className={styles.routeThumb}>
+          {ev.coverUrl
+            ? <img src={ev.coverUrl} alt="" draggable={false} />
+            : <Icon name="colorevent" size={30} />}
+          {status && <span className={styles.evBadge} style={{ background: status.color }}>{status.label}</span>}
+        </div>
+        <div className={styles.evBody}>
+          <div className={styles.evTitle}>{ev.title}</div>
+          {ev.workName && <div className={styles.evWork}>{ev.workName}</div>}
+          {date && <div className={styles.evRow}><EvCal /><span className={styles.evRowText}>{date}</span></div>}
+          {ev.place && <div className={styles.evRow}><EvPin /><span className={styles.evRowText}>{ev.place}</span></div>}
+        </div>
+      </div>
+    </Link>
+  )
+}
+
 interface HomeFeedProps {
   popularShops: any[]
   routes: any[]
@@ -140,7 +188,7 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
   // 가로 슬라이드 — 최애 새소식·추천 루트는 공용 useSlider(컨테이너 동작), 이벤트·샵은 단순 드래그
   const newsSlider = useSlider(260)
   const routeSlider = useSlider(320)
-  const eventsDrag = useDragScroll()
+  const eventSlider = useSlider(320)
   const shopsDrag = useDragScroll()
   const [rels, setRels] = useState<WorkRelationship[]>([])
   const [loading, setLoading] = useState(true)
@@ -264,7 +312,7 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
         <section className={styles.routeSection}>
           <div className={styles.routeHead}>
             <div className={styles.routeHeadLeft}>
-              <span className={styles.routeHeadTitle}>오늘 가볼 만한 루트</span>
+              <span className={styles.routeHeadTitle}>성지순례</span>
               <span className={styles.routeHeadCount}>{routes.length}개 코스</span>
             </div>
             <button className={styles.routeMore} onClick={() => { window.location.href = ROUTES.routes }}>전체 보기 ›</button>
@@ -277,34 +325,27 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
         </section>
       )}
 
-      {/* 🏪 많이 찾는 굿즈샵 */}
+      {/* 🎉 지금 가볼 만한 이벤트 — 가로 슬라이드 */}
       {eventCards.length > 0 && (
-        <section className={routes.length > 0 ? styles.sectionCard + ' ' + styles.tightTop : styles.sectionCard}>
-          <SectionHeader
-            title="지금 가볼 만한 이벤트"
-            plainIcon
-            icon={<Icon name="colorevent" size={28} />}
-            actionLabel="전체 보기"
-            onAction={() => { window.location.href = '/events' }}
-          />
-          <div className={styles.eventRow} {...eventsDrag}>
+        <section className={styles.routeSection}>
+          <div className={styles.routeHead}>
+            <div className={styles.routeHeadLeft}>
+              <span className={styles.routeHeadTitle}>덕질 이벤트</span>
+              <span className={styles.routeHeadCount}>{eventCards.length}건</span>
+            </div>
+            <button className={styles.routeMore} onClick={() => { window.location.href = '/events' }}>전체 보기 ›</button>
+          </div>
+          <div className={styles.routeRail} {...eventSlider.railProps}>
             {eventCards.map((ev: any) => (
-              <div key={ev.id} className={styles.eventItem}>
-                <EventCard
-                  event={{
-                    id: ev.id,
-                    title: ev.title ?? '이벤트',
-                    type: ev.type,
-                    workName: ev.workName,
-                    place: ev.placeName ?? ev.shopName,
-                    startDate: ev.startDate,
-                    endDate: ev.endDate,
-                    coverUrl: ev.coverUrl ?? null,
-                  }}
-                  now={new Date()}
-                  onClick={() => { window.location.href = `/event/${ev.id}` }}
-                />
-              </div>
+              <EventSlideCard key={ev.id} ev={{
+                id: ev.id,
+                title: ev.title ?? '이벤트',
+                workName: ev.workName,
+                place: ev.placeName ?? ev.shopName,
+                startDate: ev.startDate,
+                endDate: ev.endDate,
+                coverUrl: ev.coverUrl ?? null,
+              }} />
             ))}
           </div>
         </section>
@@ -312,7 +353,11 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
 
       {popularShops.length > 0 && (
         <section className={styles.sectionCard}>
-          <SectionHeader title="샵 둘러보기" plainIcon icon={<Icon name="colorshop" size={28} />} />
+          <div className={styles.routeHead}>
+            <div className={styles.routeHeadLeft}>
+              <span className={styles.routeHeadTitle}>굿즈샵 탐방</span>
+            </div>
+          </div>
           {/* 지도 바텀시트와 같은 가로 줄 (200x280 카드) */}
           <div className={styles.shopRow} {...shopsDrag}>
             {popularShops.map(shop => (

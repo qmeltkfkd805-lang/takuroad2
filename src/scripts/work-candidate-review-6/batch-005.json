@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "emma-victorian-romance-anime",
+    "name": "영국 사랑 이야기 엠마",
+    "englishName": "Emma: A Victorian Romance",
+    "aliases": ["英國戀物語エマ", "엠마 빅토리안 로맨스"],
+    "description": "19세기 런던의 메이드 엠마와 상류층 청년 윌리엄이 신분의 벽을 넘어 서로에게 끌린다.",
+    "genres": ["로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2005/tv00_21.html",
+    "source": "https://pierrot.jp/archive/2005/tv00_21.html"
+  },
+  {
+    "slug": "emma-victorian-romance-second-act-anime",
+    "name": "영국 사랑 이야기 엠마 제2막",
+    "englishName": "Emma: A Victorian Romance Second Act",
+    "aliases": ["英國戀物語エマ 第二幕"],
+    "description": "런던을 떠난 엠마가 새 저택에서 일하는 동안 윌리엄도 이별의 상처 속에서 자신의 선택을 마주한다.",
+    "genres": ["로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2005/tv00_25.html",
+    "source": "https://pierrot.jp/archive/2005/tv00_25.html"
+  },
+  {
+    "slug": "sugar-sugar-rune-anime",
+    "name": "슈가슈가룬",
+    "englishName": "Sugar Sugar Rune",
+    "aliases": ["シュガシュガルーン"],
+    "description": "마녀 쇼콜라와 바닐라가 차기 여왕 자리를 놓고 인간들의 마음 결정체를 모으는 시험에 나선다.",
+    "genres": ["마법소녀", "판타지", "로맨스"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2005/tv00_22.html",
+    "source": "https://pierrot.jp/archive/2005/tv00_22.html"
+  },
+  {
+    "slug": "blue-dragon-tv-anime",
+    "name": "블루 드래곤 TV 애니메이션",
+    "englishName": "Blue Dragon: The Animation",
+    "aliases": ["BLUE DRAGON アニメ", "블루드래곤 애니메이션"],
+    "description": "소년 슈가 전설의 그림자 블루 드래곤을 깨워 동료들과 세계를 위협하는 네네에 맞선다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2005/",
+    "source": "https://pierrot.jp/archive/2005/"
+  },
+  {
+    "slug": "blue-dragon-seven-shadows-anime",
+    "name": "블루 드래곤 천계의 일곱 용",
+    "englishName": "Blue Dragon: Trials of the Seven Shadows",
+    "aliases": ["BLUE DRAGON 天界の七竜"],
+    "description": "어둠과의 결전에서 2년 뒤, 슈와 동료들이 천계의 용들이 내린 새로운 시련에 맞선다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2005/",
+    "source": "https://pierrot.jp/archive/2005/"
+  },
+  {
+    "slug": "hanasakeru-seishonen-anime",
+    "name": "꽃 피우는 청소년",
+    "englishName": "Hanasakeru Seishonen",
+    "aliases": ["花咲ける青少年", "하나사케루 세이쇼넨"],
+    "description": "재벌가 외동딸 카지카가 아버지가 정한 세 남자 중 배우자를 고르는 게임과 왕실 비밀에 얽힌다.",
+    "genres": ["로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2005/tv00_27.html",
+    "source": "https://pierrot.jp/archive/2005/tv00_27.html"
+  },
+  {
+    "slug": "tegami-bachi-anime",
+    "name": "테가미바치",
+    "englishName": "Tegami Bachi: Letter Bee",
+    "aliases": ["テガミバチ", "레터 비"],
+    "description": "밤이 끝나지 않는 땅에서 라그가 사람들의 마음을 담은 편지를 배달하는 테가미바치로 성장한다.",
+    "genres": ["판타지", "모험", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2005/tv00_28.html",
+    "source": "https://pierrot.jp/archive/2005/tv00_28.html"
+  },
+  {
+    "slug": "tegami-bachi-reverse-anime",
+    "name": "테가미바치 REVERSE",
+    "englishName": "Tegami Bachi Reverse",
+    "aliases": ["テガミバチREVERSE"],
+    "description": "라그가 기억을 잃은 고슈와 재회하고 편지를 빼앗는 반정부 조직 리버스의 목적을 추적한다.",
+    "genres": ["판타지", "모험", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2010/tv10_01.html",
+    "source": "https://pierrot.jp/archive/2010/tv10_01.html"
+  },
+  {
+    "slug": "yumeiro-patissiere-anime",
+    "name": "꿈빛 파티시엘",
+    "englishName": "Yumeiro Patissiere",
+    "aliases": ["夢色パティシエール"],
+    "description": "케이크를 좋아하는 이치고가 제과학교에 입학해 스위트 요정과 친구들의 도움으로 파티시에를 꿈꾼다.",
+    "genres": ["학원", "요리", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2005/",
+    "source": "https://pierrot.jp/archive/2005/"
+  },
+  {
+    "slug": "yumeiro-patissiere-sp-professional-anime",
+    "name": "꿈빛 파티시엘 SP 프로페셔널",
+    "englishName": "Yumeiro Patissiere SP Professional",
+    "aliases": ["夢色パティシエールSP プロフェッショナル"],
+    "description": "파리 유학을 마친 이치고가 고등부로 진학해 다시 뭉친 동료들과 전문 파티시에에 도전한다.",
+    "genres": ["학원", "요리", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2010/tv10_04.html",
+    "source": "https://pierrot.jp/archive/2010/tv10_04.html"
+  }
+]

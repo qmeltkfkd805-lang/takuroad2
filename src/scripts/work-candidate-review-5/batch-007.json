@@ -1,0 +1,207 @@
+[
+  {
+    "slug": "alderamin-on-sky-anime",
+    "name": "태엽 감는 정령전기 천경의 알데라민",
+    "englishName": "Alderamin on the Sky",
+    "aliases": [
+      "ねじ巻き精霊戦記 天鏡のアルデラミン",
+      "천경의 알데라민"
+    ],
+    "description": "게으른 청년 이쿠타가 전쟁에 휘말려 과학적 지략으로 동료와 제국군의 위기를 돌파한다.",
+    "genres": [
+      "판타지",
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_alderamin/",
+    "source": "https://madhouse.co.jp/works/tv_alderamin/"
+  },
+  {
+    "slug": "young-innkeeper-tv-anime",
+    "name": "젊은 여관주인은 초등학생! TV",
+    "englishName": "Okko's Inn TV",
+    "aliases": [
+      "若おかみは小学生！ TV",
+      "와카오카미와 쇼가쿠세이"
+    ],
+    "description": "부모를 잃은 초등학생 옷코가 온천 여관에서 유령 친구들의 도움을 받아 손님을 맞는다.",
+    "genres": [
+      "일상",
+      "가족",
+      "판타지",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_waka-okami/",
+    "source": "https://madhouse.co.jp/works/tv_waka-okami/"
+  },
+  {
+    "slug": "photo-kano-anime",
+    "name": "포토카노",
+    "englishName": "Photo Kano",
+    "aliases": [
+      "フォトカノ"
+    ],
+    "description": "카메라를 물려받은 고교생 카즈야가 사진부 활동을 시작하며 여러 소녀와 관계를 쌓는다.",
+    "genres": [
+      "학원",
+      "로맨스",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_photokano/",
+    "source": "https://madhouse.co.jp/works/tv_photokano/"
+  },
+  {
+    "slug": "afterlost-anime",
+    "name": "소멸도시 애니메이션",
+    "englishName": "Afterlost",
+    "aliases": [
+      "消滅都市",
+      "Shoumetsu Toshi"
+    ],
+    "description": "운반책 타쿠야와 유일한 생존자 유키가 사라진 도시 로스트로 향하며 음모와 기억을 추적한다.",
+    "genres": [
+      "SF",
+      "액션",
+      "추리",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_shoumetsutoshi/",
+    "source": "https://madhouse.co.jp/works/tv_shoumetsutoshi/"
+  },
+  {
+    "slug": "marvel-anime-blade",
+    "name": "블레이드 애니메이션",
+    "englishName": "Marvel Anime: Blade",
+    "aliases": [
+      "BLADE マーベルアニメ",
+      "마블 애니메이션 블레이드"
+    ],
+    "description": "흡혈귀 사냥꾼 블레이드가 일본에서 어머니의 원수 프로스트와 비밀 조직을 추적한다.",
+    "genres": [
+      "액션",
+      "호러",
+      "판타지",
+      "19"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_blade/",
+    "source": "https://madhouse.co.jp/works/tv_blade/"
+  },
+  {
+    "slug": "prince-of-stride-alternative-anime",
+    "name": "프린스 오브 스트라이드 얼터너티브",
+    "englishName": "Prince of Stride: Alternative",
+    "aliases": [
+      "プリンス・オブ・ストライド オルタナティブ",
+      "프리스트"
+    ],
+    "description": "폐부 직전의 고교 스트라이드부가 새 부원을 모아 도시를 질주하는 전국 대회에 도전한다.",
+    "genres": [
+      "스포츠",
+      "학원",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_posa/",
+    "source": "https://madhouse.co.jp/works/tv_posa/"
+  },
+  {
+    "slug": "magical-warfare-anime",
+    "name": "마법전쟁",
+    "englishName": "Magical Warfare",
+    "aliases": [
+      "魔法戦争",
+      "Mahou Sensou"
+    ],
+    "description": "평범한 고교생 타케시가 마법사 소녀를 구한 뒤 두 세계와 마법사 세력의 전쟁에 휘말린다.",
+    "genres": [
+      "판타지",
+      "액션",
+      "학원",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/2014-2013/works_tv_mahousensou.html",
+    "source": "https://madhouse.co.jp/works/2014-2013/works_tv_mahousensou.html"
+  },
+  {
+    "slug": "azuki-chan-anime",
+    "name": "쫑아는 사춘기",
+    "englishName": "Azuki-chan",
+    "aliases": [
+      "あずきちゃん",
+      "아즈키짱"
+    ],
+    "description": "평범한 초등학생 아즈사가 전학생 유노스케를 좋아하게 되며 친구들과 첫사랑의 고민을 나눈다.",
+    "genres": [
+      "일상",
+      "학원",
+      "로맨스",
+      "가족"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_azukichan/",
+    "source": "https://madhouse.co.jp/works/tv_azukichan/"
+  },
+  {
+    "slug": "saiunkoku-monogatari-anime",
+    "name": "채운국 이야기",
+    "englishName": "The Story of Saiunkoku",
+    "aliases": [
+      "彩雲国物語",
+      "Saiunkoku Monogatari"
+    ],
+    "description": "가난한 명문가의 딸 슈레이가 무기력한 왕의 교육을 맡으며 관료의 꿈과 궁정 정치에 도전한다.",
+    "genres": [
+      "판타지",
+      "로맨스",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_saiunkoku/",
+    "source": "https://madhouse.co.jp/works/tv_saiunkoku/"
+  },
+  {
+    "slug": "btooom-anime",
+    "name": "브툼!",
+    "englishName": "Btooom!",
+    "aliases": [
+      "BTOOOM！",
+      "ブトゥーム"
+    ],
+    "description": "게임 랭커 료타가 외딴섬에서 폭탄을 든 참가자들과 현실판 생존 게임을 벌인다.",
+    "genres": [
+      "액션",
+      "드라마",
+      "19",
+      "고어"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_btooom/",
+    "source": "https://madhouse.co.jp/works/tv_btooom/"
+  }
+]

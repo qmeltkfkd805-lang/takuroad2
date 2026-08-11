@@ -1,0 +1,192 @@
+[
+    {
+        "slug":  "galaxy-angel-tv-anime",
+        "name":  "갤럭시 엔젤 TV 애니메이션",
+        "englishName":  "Galaxy Angel",
+        "aliases":  [
+                        "ギャラクシーエンジェル",
+                        "갤럭시 엔젤"
+                    ],
+        "description":  "은하제국의 엔젤대가 로스트 테크놀로지를 찾는 임무에서 엉뚱한 소동을 벌인다.",
+        "genres":  [
+                       "SF",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_galaxyange/",
+        "source":  "https://madhouse.co.jp/works/tv_galaxyange/"
+    },
+    {
+        "slug":  "kaiji-anime",
+        "name":  "역경무뢰 카이지",
+        "englishName":  "Kaiji: Ultimate Survivor",
+        "aliases":  [
+                        "逆境無頼カイジ",
+                        "카이지 애니메이션"
+                    ],
+        "description":  "빚을 떠안은 카이지가 호화선 에스포와르에서 목숨과 자유를 건 도박에 뛰어든다.",
+        "genres":  [
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_kaiji/",
+        "source":  "https://madhouse.co.jp/works/tv_kaiji/"
+    },
+    {
+        "slug":  "petshop-of-horrors-anime",
+        "name":  "펫숍 오브 호러스",
+        "englishName":  "Pet Shop of Horrors",
+        "aliases":  [
+                        "ペットショップ・オブ・ホラーズ"
+                    ],
+        "description":  "차이나타운의 수수께끼 펫숍에서 상처받은 손님들이 기묘한 동물과 위험한 계약을 맺는다.",
+        "genres":  [
+                       "판타지",
+                       "추리",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_petshop/",
+        "source":  "https://madhouse.co.jp/works/tv_petshop/"
+    },
+    {
+        "ipType":  [
+                       "애니"
+                   ],
+        "slug":  "ninja-scroll-series-anime",
+        "description":  "떠돌이 검객 쥬베이가 용보옥을 지닌 소녀 시구레를 지키며 닌자 세력의 음모와 맞선다.",
+        "source":  "https://madhouse.co.jp/works/tv_jyubei/",
+        "aliases":  [
+                        "獣兵衛忍風帖 龍宝玉篇",
+                        "수병위인풍첩 용보옥편"
+                    ],
+        "englishName":  "Ninja Scroll: The Series",
+        "name":  "무사 쥬베이 용보옥편",
+        "officialUrl":  "https://madhouse.co.jp/works/tv_jyubei/",
+        "genres":  [
+                       "액션",
+                       "모험",
+                       "판타지"
+                   ]
+    },
+    {
+        "ipType":  [
+                       "애니"
+                   ],
+        "slug":  "neuro-anime",
+        "description":  "수수께끼를 먹는 마인 네우로가 아버지를 잃은 야코와 탐정 사무소를 꾸려 기괴한 사건을 푼다.",
+        "source":  "https://madhouse.co.jp/works/tv_neuro/",
+        "aliases":  [
+                        "魔人探偵 脳噛ネウロ",
+                        "마인탐정 노우가미 네우로"
+                    ],
+        "englishName":  "Neuro: Supernatural Detective",
+        "name":  "마인탐정 네우로",
+        "officialUrl":  "https://madhouse.co.jp/works/tv_neuro/",
+        "genres":  [
+                       "추리",
+                       "판타지",
+                       "코미디"
+                   ]
+    },
+    {
+        "ipType":  [
+                       "애니"
+                   ],
+        "slug":  "sweet-valerian-anime",
+        "description":  "카노코와 친구들이 발레리안 전사로 변신해 사람들을 괴롭히는 스트레스단과 싸운다.",
+        "source":  "https://madhouse.co.jp/works/tv_valerian/",
+        "aliases":  [
+                        "スウィート・ヴァレリアン"
+                    ],
+        "englishName":  "Sweet Valerian",
+        "name":  "스위트 발레리안",
+        "officialUrl":  "https://madhouse.co.jp/works/tv_valerian/",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "코미디"
+                   ]
+    },
+    {
+        "slug":  "akagi-anime",
+        "name":  "투패전설 아카기",
+        "englishName":  "Akagi",
+        "aliases":  [
+                        "闘牌伝説アカギ",
+                        "아카기 애니메이션"
+                    ],
+        "description":  "천재적인 승부 감각을 지닌 소년 아카기가 목숨을 건 마작판에서 전설의 작사로 떠오른다.",
+        "genres":  [
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_akagi/",
+        "source":  "https://madhouse.co.jp/works/tv_akagi/"
+    },
+    {
+        "ipType":  [
+                       "애니"
+                   ],
+        "slug":  "dragon-drive-anime",
+        "description":  "매사에 의욕 없던 레이지가 가상현실 드래곤 게임에서 치비와 만나 함께 성장하고 싸운다.",
+        "source":  "https://madhouse.co.jp/works/tv_dragondrive/",
+        "aliases":  [
+                        "ドラゴンドライブ"
+                    ],
+        "englishName":  "Dragon Drive",
+        "name":  "드래곤 드라이브",
+        "officialUrl":  "https://madhouse.co.jp/works/tv_dragondrive/",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험"
+                   ]
+    },
+    {
+        "slug":  "middle-manager-tonegawa-anime",
+        "name":  "중간관리록 토네가와",
+        "englishName":  "Mr. Tonegawa: Middle Management Blues",
+        "aliases":  [
+                        "中間管理録トネガワ",
+                        "토네가와 애니메이션"
+                    ],
+        "description":  "제애그룹 간부 토네가와가 회장의 변덕과 부하들의 사정 사이에서 죽음의 게임을 기획한다.",
+        "genres":  [
+                       "코미디",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_tonegawa/",
+        "source":  "https://madhouse.co.jp/works/tv_tonegawa/"
+    },
+    {
+        "slug":  "marvel-future-avengers-anime",
+        "name":  "마블 퓨처 어벤져스",
+        "englishName":  "Marvel Future Avengers",
+        "aliases":  [
+                        "マーベル フューチャー・アベンジャーズ"
+                    ],
+        "description":  "히드라에게 개조된 소년 전사들이 어벤져스의 제자가 되어 진정한 영웅으로 성장한다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_future_avengers/",
+        "source":  "https://madhouse.co.jp/works/tv_future_avengers/"
+    }
+]

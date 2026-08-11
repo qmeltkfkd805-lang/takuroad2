@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "lee-mal-nyeon-series-webtoon",
+    "name": "이말년씨리즈",
+    "englishName": "",
+    "aliases": ["이말년 시리즈"],
+    "description": "역사와 일상, 대중문화를 엉뚱한 상상과 황당한 설정으로 뒤튼 옴니버스 개그극이다.",
+    "genres": ["코미디", "일상", "기타"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=103759",
+    "source": "https://comic.naver.com/webtoon/list?titleId=103759"
+  },
+  {
+    "slug": "natural-born-idiots-webtoon",
+    "name": "선천적 얼간이들",
+    "englishName": "Natural Born Idiots",
+    "aliases": ["선얼"],
+    "description": "가스파드와 개성 강한 친구들이 여행과 군대, 학교에서 겪은 황당한 실화를 풀어낸다.",
+    "genres": ["코미디", "일상"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=478261",
+    "source": "https://comic.naver.com/webtoon/list?titleId=478261"
+  },
+  {
+    "slug": "guardians-of-the-video-game-webtoon",
+    "name": "전자오락수호대",
+    "englishName": "",
+    "aliases": ["전오수"],
+    "description": "게임을 몰래 운영하는 수호대의 최고 요원 패치가 조난 뒤 무너진 게임 세계를 헤쳐 나간다.",
+    "genres": ["판타지", "모험", "코미디", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=637931",
+    "source": "https://comic.naver.com/webtoon/list?titleId=637931"
+  },
+  {
+    "slug": "lessa-webtoon",
+    "name": "레사",
+    "englishName": "Lessa",
+    "aliases": [],
+    "description": "사람을 디맨으로 바꾸는 재앙 속에서 동생을 찾는 레이널드와 깨어난 신 레사가 맞선다.",
+    "genres": ["판타지", "액션", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=478262",
+    "source": "https://comic.naver.com/webtoon/list?titleId=478262"
+  },
+  {
+    "slug": "god-of-bath-webtoon",
+    "name": "목욕의 신",
+    "englishName": "",
+    "aliases": [],
+    "description": "빚에 쫓기던 허세가 금자탕에서 때밀이 재능을 발견하고 최고의 목욕관리사에 도전한다.",
+    "genres": ["드라마", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=697681",
+    "source": "https://comic.naver.com/webtoon/list?titleId=697681"
+  },
+  {
+    "slug": "pegasus-market-webtoon",
+    "name": "쌉니다 천리마마트",
+    "englishName": "",
+    "aliases": ["천리마마트"],
+    "description": "좌천된 정복동이 망한 천리마마트를 더 망치려 하지만 기상천외한 경영이 오히려 성공을 부른다.",
+    "genres": ["코미디", "일상", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=697679",
+    "source": "https://comic.naver.com/webtoon/list?titleId=697679"
+  },
+  {
+    "slug": "wild-cooking-webtoon",
+    "name": "역전! 야매요리",
+    "englishName": "",
+    "aliases": ["야매요리"],
+    "description": "야매토끼가 실패를 두려워하지 않고 독특한 재료와 방식으로 요리에 도전하는 포토툰이다.",
+    "genres": ["코미디", "요리", "일상"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=409630",
+    "source": "https://comic.naver.com/webtoon/list?titleId=409630"
+  },
+  {
+    "slug": "along-with-the-gods-webtoon",
+    "name": "신과함께",
+    "englishName": "Along with the Gods",
+    "aliases": [],
+    "description": "평범한 회사원 김자홍이 죽은 뒤 저승에서 49일 동안 일곱 번의 재판을 받는다.",
+    "genres": ["판타지", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=697685",
+    "source": "https://comic.naver.com/webtoon/list?titleId=697685"
+  },
+  {
+    "slug": "infinite-power-webtoon",
+    "name": "무한동력",
+    "englishName": "",
+    "aliases": [],
+    "description": "취업 준비생 장선재가 무한동력 기관을 만드는 하숙집 주인과 만나 꿈의 의미를 돌아본다.",
+    "genres": ["드라마", "일상"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=500944",
+    "source": "https://comic.naver.com/webtoon/list?titleId=500944"
+  },
+  {
+    "slug": "zephyr-planning-webtoon",
+    "name": "질풍기획",
+    "englishName": "",
+    "aliases": ["들어는 보았나! 질풍기획!"],
+    "description": "광고대행사 질풍기획 제3기획팀 직원들이 평범한 업무를 열혈 승부처럼 헤쳐 나간다.",
+    "genres": ["코미디", "일상", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=256855",
+    "source": "https://comic.naver.com/webtoon/list?titleId=256855"
+  }
+]

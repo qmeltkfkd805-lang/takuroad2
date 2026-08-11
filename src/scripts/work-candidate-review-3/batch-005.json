@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "ghost-trick-phantom-detective",
+    "name": "고스트 트릭",
+    "englishName": "Ghost Trick: Phantom Detective",
+    "aliases": ["ゴースト トリック", "Ghost Trick"],
+    "description": "죽은 남자 시셀이 영혼의 힘으로 사물에 깃들어 자신의 죽음과 정체를 추적한다.",
+    "genres": ["추리", "퍼즐", "판타지"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.capcom-games.com/ghosttrick/ja-jp/",
+    "source": "https://www.capcom-games.com/ghosttrick/ja-jp/"
+  },
+  {
+    "slug": "13-sentinels-aegis-rim",
+    "name": "13기병방위권",
+    "englishName": "13 Sentinels: Aegis Rim",
+    "aliases": ["十三機兵防衛圏"],
+    "description": "서로 다른 시대를 사는 열세 소년소녀가 기병에 올라 멸망의 진상을 추적한다.",
+    "genres": ["SF", "추리", "드라마", "로봇/메카"],
+    "ipType": ["게임"],
+    "officialUrl": "https://13sar.jp/",
+    "source": "https://13sar.jp/"
+  },
+  {
+    "slug": "ai-the-somnium-files",
+    "name": "AI: 솜니움 파일",
+    "englishName": "AI: The Somnium Files",
+    "aliases": ["AI：ソムニウム ファイル", "AI 소무니움 파일"],
+    "description": "형사 다테가 용의자의 꿈속에 잠입해 연쇄살인의 단서와 잃어버린 기억을 좇는다.",
+    "genres": ["추리", "SF", "퍼즐", "19"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.spike-chunsoft.co.jp/pages/ai/",
+    "source": "https://www.spike-chunsoft.co.jp/pages/ai/"
+  },
+  {
+    "slug": "zero-escape",
+    "name": "제로 이스케이프",
+    "englishName": "Zero Escape",
+    "aliases": ["極限脱出", "극한탈출"],
+    "description": "밀실에 갇힌 참가자들이 목숨을 건 퍼즐과 선택을 거치며 배후의 진실에 다가간다.",
+    "genres": ["추리", "퍼즐", "SF", "호러"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.spike-chunsoft.co.jp/pages/zeroescape/portal/",
+    "source": "https://www.spike-chunsoft.co.jp/pages/zeroescape/portal/"
+  },
+  {
+    "slug": "danganronpa",
+    "name": "단간론파",
+    "englishName": "Danganronpa",
+    "aliases": ["ダンガンロンパ"],
+    "description": "궁극의 재능을 지닌 학생들이 살인사건의 범인을 가리는 학급재판에서 생존을 건다.",
+    "genres": ["추리", "학원", "퍼즐", "호러"],
+    "ipType": ["게임", "애니", "만화"],
+    "officialUrl": "https://www.danganronpa.com/",
+    "source": "https://www.danganronpa.com/"
+  },
+  {
+    "slug": "xenoblade-chronicles-definitive-edition",
+    "name": "제노블레이드 크로니클스 디피니티브 에디션",
+    "englishName": "Xenoblade Chronicles: Definitive Edition",
+    "aliases": ["Xenoblade Definitive Edition", "ゼノブレイド ディフィニティブ・エディション", "제노블레이드 DE"],
+    "description": "신검 모나도를 얻은 슈르크가 기신병에 맞서 복수와 세계 창조의 비밀을 좇는다.",
+    "genres": ["판타지", "SF", "모험", "액션"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.nintendo.com/jp/switch/aubqa/index.html",
+    "source": "https://www.nintendo.com/jp/switch/aubqa/index.html"
+  },
+  {
+    "slug": "fire-emblem-three-houses",
+    "name": "파이어 엠블렘 풍화설월",
+    "englishName": "Fire Emblem: Three Houses",
+    "aliases": ["ファイアーエムブレム 風花雪月"],
+    "description": "사관학교 교사가 세 학급 중 하나를 이끌고 전쟁으로 갈라진 포드라의 운명을 선택한다.",
+    "genres": ["판타지", "학원", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.nintendo.com/jp/switch/anvya/index.html",
+    "source": "https://www.nintendo.com/jp/switch/anvya/index.html"
+  },
+  {
+    "slug": "octopath-traveler",
+    "name": "옥토패스 트래블러",
+    "englishName": "Octopath Traveler",
+    "aliases": ["オクトパストラベラー"],
+    "description": "서로 다른 목적을 품은 여덟 여행자가 오르스테라 대륙에서 각자의 길을 걷는다.",
+    "genres": ["판타지", "모험", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.jp.square-enix.com/octopathtraveler/",
+    "source": "https://www.jp.square-enix.com/octopathtraveler/"
+  },
+  {
+    "slug": "astral-chain",
+    "name": "애스트럴 체인",
+    "englishName": "Astral Chain",
+    "aliases": ["アストラルチェイン"],
+    "description": "특수경찰 주인공이 생체병기 레기온과 연계해 이계 생물로부터 도시 아크를 지킨다.",
+    "genres": ["SF", "액션", "추리"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.nintendo.com/jp/switch/ab48a/index.html",
+    "source": "https://www.nintendo.com/jp/switch/ab48a/index.html"
+  },
+  {
+    "slug": "bayonetta",
+    "name": "베요네타",
+    "englishName": "Bayonetta",
+    "aliases": ["ベヨネッタ"],
+    "description": "기억을 잃은 마녀 베요네타가 천사들과 싸우며 자신의 과거와 세계의 비밀을 되찾는다.",
+    "genres": ["액션", "판타지", "19"],
+    "ipType": ["게임", "영화"],
+    "officialUrl": "https://www.platinumgames.co.jp/works/bayonetta",
+    "source": "https://www.platinumgames.co.jp/works/bayonetta"
+  }
+]

@@ -1,0 +1,193 @@
+[
+    {
+        "slug":  "master-keaton-anime",
+        "name":  "마스터 키튼",
+        "englishName":  "Master Keaton",
+        "aliases":  [
+                        "MASTERキートン"
+                    ],
+        "description":  "고고학 강사이자 보험 조사원인 키튼이 세계 각지의 사건을 지식과 특수부대 경험으로 해결한다.",
+        "genres":  [
+                       "추리",
+                       "모험",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_masterkeaton/",
+        "source":  "https://madhouse.co.jp/works/tv_masterkeaton/"
+    },
+    {
+        "slug":  "gokusen-anime",
+        "name":  "고쿠센 애니메이션",
+        "englishName":  "Gokusen",
+        "aliases":  [
+                        "ごくせん",
+                        "애니 고쿠센"
+                    ],
+        "description":  "야쿠자 가문의 후계자 야마구치 쿠미코가 불량 학생 반의 담임이 되어 의리와 열정으로 가르친다.",
+        "genres":  [
+                       "학원",
+                       "코미디",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_gokusen/",
+        "source":  "https://madhouse.co.jp/works/tv_gokusen/"
+    },
+    {
+        "slug":  "hidamari-no-ki-anime",
+        "name":  "양지의 나무",
+        "englishName":  "Hidamari no Ki",
+        "aliases":  [
+                        "陽だまりの樹"
+                    ],
+        "description":  "막부 말기, 강직한 하급 무사 만지로와 난방의 료안이 격변 속에서 각자의 길을 걷는다.",
+        "genres":  [
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_hidamari/",
+        "source":  "https://madhouse.co.jp/works/tv_hidamari/"
+    },
+    {
+        "slug":  "gakuen-senki-muryou-anime",
+        "name":  "학원전기 무료",
+        "englishName":  "Gakuen Senki Muryou",
+        "aliases":  [
+                        "学園戦記ムリョウ"
+                    ],
+        "description":  "우주인이 공개적으로 나타난 시대, 전학생 무료와 중학생 하지메가 학교와 우주의 비밀을 마주한다.",
+        "genres":  [
+                       "SF",
+                       "학원",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_muryo/",
+        "source":  "https://madhouse.co.jp/works/tv_muryo/"
+    },
+    {
+        "slug":  "kazemakase-tsukikage-ran-anime",
+        "name":  "바람부는 대로 츠키카게 란",
+        "englishName":  "Kazemakase Tsukikage Ran",
+        "aliases":  [
+                        "風まかせ月影蘭"
+                    ],
+        "description":  "떠돌이 여검객 란과 묘권사 미야오가 여행지마다 악당을 혼내 주며 길을 이어간다.",
+        "genres":  [
+                       "액션",
+                       "모험",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_kazemakase/",
+        "source":  "https://madhouse.co.jp/works/tv_kazemakase/"
+    },
+    {
+        "slug":  "oh-edo-rocket-anime",
+        "name":  "대에도 로켓",
+        "englishName":  "Oh! Edo Rocket",
+        "aliases":  [
+                        "大江戸ロケット"
+                    ],
+        "description":  "사치가 금지된 에도에서 불꽃 장인 세이키치가 수수께끼 소녀를 달로 보낼 로켓 제작에 나선다.",
+        "genres":  [
+                       "SF",
+                       "코미디",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_ooedorocket/",
+        "source":  "https://madhouse.co.jp/works/tv_ooedorocket/"
+    },
+    {
+        "slug":  "chis-sweet-home-anime",
+        "name":  "치즈 스위트 홈",
+        "englishName":  "Chi\u0027s Sweet Home",
+        "aliases":  [
+                        "チーズスイートホーム",
+                        "치이즈 스위트 홈"
+                    ],
+        "description":  "산책 중 길을 잃은 아기 고양이 치가 야마다 가족에게 입양되어 따뜻한 일상을 보낸다.",
+        "genres":  [
+                       "일상",
+                       "가족",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_chissweethome/",
+        "source":  "https://madhouse.co.jp/works/tv_chissweethome/"
+    },
+    {
+        "slug":  "kobato-anime",
+        "name":  "코바토.",
+        "englishName":  "Kobato.",
+        "aliases":  [
+                        "こばと。"
+                    ],
+        "description":  "소원을 이루려는 코바토가 상처받은 사람들의 마음을 치유해 병에 별사탕을 모은다.",
+        "genres":  [
+                       "판타지",
+                       "일상",
+                       "로맨스",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_kobato/",
+        "source":  "https://madhouse.co.jp/works/tv_kobato/"
+    },
+    {
+        "slug":  "marvel-anime-iron-man",
+        "name":  "아이언맨 마블 애니메이션",
+        "englishName":  "Marvel Anime: Iron Man",
+        "aliases":  [
+                        "IRON MAN アイアンマン"
+                    ],
+        "description":  "토니 스타크가 일본에서 새 동력로를 공개하려다 조디악의 음모와 기계 병기에 맞선다.",
+        "genres":  [
+                       "SF",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_ironman/",
+        "source":  "https://madhouse.co.jp/works/tv_ironman/"
+    },
+    {
+        "slug":  "police-in-a-pod-anime",
+        "name":  "하코즈메 파출소 여자들의 역습",
+        "englishName":  "Police in a Pod",
+        "aliases":  [
+                        "ハコヅメ～交番女子の逆襲～"
+                    ],
+        "description":  "경찰을 그만두려던 신입 카와이가 전직 형사 후지와 한 조가 되어 교번의 현실을 배운다.",
+        "genres":  [
+                       "일상",
+                       "코미디",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://madhouse.co.jp/works/tv_hakozume-anime/",
+        "source":  "https://madhouse.co.jp/works/tv_hakozume-anime/"
+    }
+]

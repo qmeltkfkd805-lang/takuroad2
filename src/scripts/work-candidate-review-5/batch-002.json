@@ -1,0 +1,204 @@
+[
+  {
+    "slug": "shigurui-anime",
+    "name": "시구루이",
+    "englishName": "Shigurui: Death Frenzy",
+    "aliases": [
+      "シグルイ"
+    ],
+    "description": "에도 초기 어전시합에서 외팔 검객 후지키와 맹인 검객 이라코가 잔혹한 과거와 결투로 다시 마주한다.",
+    "genres": [
+      "액션",
+      "드라마",
+      "고어",
+      "19"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_shigurui/",
+    "source": "https://madhouse.co.jp/works/tv_shigurui/"
+  },
+  {
+    "slug": "aoi-bungaku-series-anime",
+    "name": "푸른 문학 시리즈",
+    "englishName": "Aoi Bungaku Series",
+    "aliases": [
+      "青い文学シリーズ"
+    ],
+    "description": "인간 실격과 마음 등 일본 근대문학 여섯 작품을 서로 다른 연출과 화풍으로 재해석한 옴니버스다.",
+    "genres": [
+      "드라마",
+      "호러",
+      "19"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_aoibungaku/",
+    "source": "https://madhouse.co.jp/works/tv_aoibungaku/"
+  },
+  {
+    "slug": "mouryou-no-hako-anime",
+    "name": "망량의 상자",
+    "englishName": "Mouryou no Hako",
+    "aliases": [
+      "魍魎の匣"
+    ],
+    "description": "소녀 실종과 연쇄 토막살인, 수상한 종교와 상자형 건물이 얽힌 사건을 교고쿠도 일행이 파헤친다.",
+    "genres": [
+      "추리",
+      "호러",
+      "드라마",
+      "19"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_mouryou/",
+    "source": "https://madhouse.co.jp/works/tv_mouryou/"
+  },
+  {
+    "slug": "le-chevalier-deon-anime",
+    "name": "슈발리에",
+    "englishName": "Le Chevalier D'Eon",
+    "aliases": [
+      "シュヴァリエ",
+      "슈바리에"
+    ],
+    "description": "18세기 프랑스의 기사 데옹이 죽은 누이의 영혼과 함께 왕명을 수행하며 왕가의 음모를 추적한다.",
+    "genres": [
+      "판타지",
+      "액션",
+      "추리",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.production-ig.co.jp/works/chevalier/",
+    "source": "https://www.production-ig.co.jp/works/chevalier/staff-cast-info.html"
+  },
+  {
+    "slug": "otogi-zoshi-anime",
+    "name": "오토기조시",
+    "englishName": "Otogi Zoshi",
+    "aliases": [
+      "お伽草子"
+    ],
+    "description": "헤이안 시대의 히카루가 수도를 구할 곡옥을 찾아 나서고, 이야기는 천 년 뒤 도쿄로 이어진다.",
+    "genres": [
+      "판타지",
+      "액션",
+      "모험",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.production-ig.co.jp/works/otogizoushi/",
+    "source": "https://www.production-ig.co.jp/works/otogizoushi/"
+  },
+  {
+    "slug": "kuchu-buranko-anime",
+    "name": "공중그네",
+    "englishName": "Kuuchuu Buranko",
+    "aliases": [
+      "空中ブランコ"
+    ],
+    "description": "기묘한 정신과 의사 이라부가 저마다 강박과 불안을 안고 찾아온 환자들을 독특한 방식으로 진료한다.",
+    "genres": [
+      "코미디",
+      "드라마",
+      "19"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.toei-anim.co.jp/tv/kuchu_buranko/",
+    "source": "https://www.toei-anim.co.jp/tv/kuchu_buranko/"
+  },
+  {
+    "slug": "windy-tales-anime",
+    "name": "풍인이야기",
+    "englishName": "Windy Tales",
+    "aliases": [
+      "風人物語",
+      "바람 이야기"
+    ],
+    "description": "사진부 중학생 나오가 하늘을 나는 고양이를 만나고 바람을 다루는 사람들과 특별한 일상을 보낸다.",
+    "genres": [
+      "일상",
+      "판타지",
+      "학원",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.production-ig.co.jp/works/fuujin-monogatari/",
+    "source": "https://www.production-ig.co.jp/works/fuujin-monogatari/"
+  },
+  {
+    "slug": "xamd-lost-memories-anime",
+    "name": "망념의 잠드",
+    "englishName": "Xam'd: Lost Memories",
+    "aliases": [
+      "亡念のザムド",
+      "Bounen no Xamdou"
+    ],
+    "description": "폭발 사건으로 잠드가 된 아키유키가 비행선 잔바니호에 올라 자신의 힘과 전쟁의 진실을 마주한다.",
+    "genres": [
+      "SF",
+      "판타지",
+      "액션",
+      "모험"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.bones.co.jp/works/",
+    "source": "https://www.bones.co.jp/works/"
+  },
+  {
+    "slug": "himitsu-top-secret-anime",
+    "name": "비밀 The Revelation",
+    "englishName": "Himitsu: The Revelation",
+    "aliases": [
+      "秘密 ～The Revelation～",
+      "비밀 톱 시크릿"
+    ],
+    "description": "죽은 사람의 뇌에 남은 기억을 영상화하는 수사관들이 난제를 풀며 타인의 비밀이 남긴 고통을 견딘다.",
+    "genres": [
+      "SF",
+      "추리",
+      "드라마",
+      "19"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_himitsu/",
+    "source": "https://madhouse.co.jp/works/tv_himitsu/"
+  },
+  {
+    "slug": "rideback-anime",
+    "name": "라이드백",
+    "englishName": "Rideback",
+    "aliases": [
+      "ライドバック"
+    ],
+    "description": "부상으로 발레를 그만둔 린이 인간형 이륜 로봇 라이드백을 만나 정치적 격변과 전투에 휘말린다.",
+    "genres": [
+      "SF",
+      "로봇/메카",
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://madhouse.co.jp/works/tv_rideback/",
+    "source": "https://madhouse.co.jp/works/tv_rideback/"
+  }
+]

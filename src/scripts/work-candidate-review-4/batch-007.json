@@ -1,0 +1,198 @@
+[
+    {
+        "slug":  "kokkoku-anime",
+        "name":  "각각",
+        "englishName":  "Kokkoku",
+        "aliases":  [
+                        "刻刻"
+                    ],
+        "description":  "가족을 구하려 시간을 멈춘 세계 지계에 들어간 주리가 그곳을 노리는 교단과 기괴한 존재에 맞선다.",
+        "genres":  [
+                       "SF",
+                       "추리",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "",
+        "source":  ""
+    },
+    {
+        "slug":  "boogiepop-and-others-2019",
+        "name":  "부기팝은 웃지 않는다",
+        "englishName":  "Boogiepop and Others",
+        "aliases":  [
+                        "ブギーポップは笑わない"
+                    ],
+        "description":  "도시전설 부기팝이 소녀 미야시타의 몸을 빌려 학교와 도시를 잠식하는 기이한 위협을 제거한다.",
+        "genres":  [
+                       "추리",
+                       "판타지",
+                       "호러",
+                       "학원"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://boogiepop-anime.com/",
+        "source":  "https://boogiepop-anime.com/"
+    },
+    {
+        "slug":  "rokka-braves-six-flowers",
+        "name":  "육화의 용사",
+        "englishName":  "Rokka: Braves of the Six Flowers",
+        "aliases":  [
+                        "六花の勇者"
+                    ],
+        "description":  "마신을 쓰러뜨릴 여섯 용사가 일곱 명 모이자 아들렛과 동료들이 결계 속 가짜를 찾아 나선다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "액션",
+                       "추리"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://rokka-anime.jp/",
+        "source":  "https://rokka-anime.jp/story/01/"
+    },
+    {
+        "slug":  "pet-anime-2020",
+        "name":  "펫",
+        "englishName":  "pet",
+        "aliases":  [
+                        "ペット"
+                    ],
+        "description":  "타인의 기억에 들어가 마음을 조종하는 히로키와 츠카사가 조직의 명령과 서로의 유대 사이에서 흔들린다.",
+        "genres":  [
+                       "SF",
+                       "추리",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pet-anime.com/",
+        "source":  "https://pet-anime.com/"
+    },
+    {
+        "slug":  "inuyashiki-anime",
+        "name":  "이누야시키",
+        "englishName":  "Inuyashiki Last Hero",
+        "aliases":  [
+                        "いぬやしき"
+                    ],
+        "description":  "기계 몸과 초능력을 얻은 노인 이누야시키와 소년 시시가미가 같은 힘으로 정반대의 길을 걷는다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.inuyashiki-project.com/",
+        "source":  "https://www.inuyashiki-project.com/introduction.html"
+    },
+    {
+        "slug":  "gleipnir-anime",
+        "name":  "글레이프니르",
+        "englishName":  "Gleipnir",
+        "aliases":  [
+                        "グレイプニル"
+                    ],
+        "description":  "괴물 인형으로 변하는 슈이치가 클레어와 한 몸이 되어 외계인의 코인을 둘러싼 생존전에 뛰어든다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "추리",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://gleipnir-anime.com/",
+        "source":  "https://gleipnir-anime.com/"
+    },
+    {
+        "slug":  "kabukicho-sherlock-anime",
+        "name":  "가부키초 셜록",
+        "englishName":  "Case File No. 221: Kabukicho",
+        "aliases":  [
+                        "歌舞伎町シャーロック"
+                    ],
+        "description":  "신주쿠 가부키초의 탐정들이 낙어를 사랑하는 셜록을 중심으로 연쇄살인범 잭의 사건을 추적한다.",
+        "genres":  [
+                       "추리",
+                       "코미디",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pipecat-kabukicho.jp/",
+        "source":  "https://www.production-ig.co.jp/works/pipecat-kabukicho/"
+    },
+    {
+        "slug":  "kemurikusa-tv",
+        "name":  "케무리쿠사",
+        "englishName":  "Kemurikusa",
+        "aliases":  [
+                        "ケムリクサ"
+                    ],
+        "description":  "붉은 안개와 벌레가 뒤덮은 폐허에서 린 자매와 와카바가 물과 생존의 단서를 찾아 여행한다.",
+        "genres":  [
+                       "SF",
+                       "모험",
+                       "액션",
+                       "추리"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://kemurikusa.com/",
+        "source":  "https://kemurikusa.com/intro.html"
+    },
+    {
+        "slug":  "caligula-anime",
+        "name":  "칼리굴라",
+        "englishName":  "Caligula",
+        "aliases":  [
+                        "Caligula -カリギュラ-"
+                    ],
+        "description":  "고교생 리츠가 가상 낙원 뫼비우스의 진실을 깨닫고 현실로 돌아가기 위해 귀가부와 싸운다.",
+        "genres":  [
+                       "SF",
+                       "학원",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://caligula-anime.com/",
+        "source":  "https://caligula-anime.com/"
+    },
+    {
+        "slug":  "mayoiga-anime",
+        "name":  "마요이가",
+        "englishName":  "The Lost Village",
+        "aliases":  [
+                        "迷家-マヨイガ-"
+                    ],
+        "description":  "인생을 다시 시작하려는 서른 명이 수상한 버스 투어로 환상의 마을 나나키무라에 들어간다.",
+        "genres":  [
+                       "추리",
+                       "호러",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://mayoiga.tv/",
+        "source":  "https://www.mbs.jp/mayoiga/"
+    }
+]

@@ -1,0 +1,240 @@
+[
+    {
+        "slug":  "cowboy-bebop",
+        "name":  "카우보이 비밥",
+        "englishName":  "Cowboy Bebop",
+        "aliases":  [
+                        "COWBOY BEBOP",
+                        "カウボーイビバップ"
+                    ],
+        "description":  "태양계의 현상금 사냥꾼 스파이크와 비밥호 동료들이 각자의 과거를 안고 범죄자를 추적한다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "모험",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니",
+                       "영화",
+                       "만화",
+                       "게임"
+                   ],
+        "officialUrl":  "https://www.cowboy-bebop.net/",
+        "source":  "https://www.cowboy-bebop.net/story/"
+    },
+    {
+        "slug":  "suzume",
+        "name":  "스즈메의 문단속",
+        "englishName":  "Suzume",
+        "aliases":  [
+                        "스즈메",
+                        "Suzume no Tojimari",
+                        "すずめの戸締まり"
+                    ],
+        "description":  "소녀 스즈메가 재앙을 부르는 문을 닫는 청년 소타와 일본 각지를 돌며 상처와 기억을 마주한다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "드라마",
+                       "로맨스"
+                   ],
+        "ipType":  [
+                       "영화",
+                       "애니",
+                       "소설",
+                       "만화"
+                   ],
+        "officialUrl":  "https://suzume-tojimari-movie.jp/",
+        "source":  "https://suzume-tojimari-movie.jp/index.html"
+    },
+    {
+        "slug":  "your-name",
+        "name":  "너의 이름은.",
+        "englishName":  "Your Name.",
+        "aliases":  [
+                        "Kimi no Na wa.",
+                        "君の名は。"
+                    ],
+        "description":  "시골 소녀 미츠하와 도쿄 소년 타키가 꿈속에서 몸이 뒤바뀌며 시간과 거리를 넘어 서로를 찾아간다.",
+        "genres":  [
+                       "로맨스",
+                       "판타지",
+                       "드라마",
+                       "학원"
+                   ],
+        "ipType":  [
+                       "영화",
+                       "애니",
+                       "소설",
+                       "만화"
+                   ],
+        "officialUrl":  "https://kiminona.com/",
+        "source":  "https://kiminona.com/"
+    },
+    {
+        "slug":  "weathering-with-you",
+        "name":  "날씨의 아이",
+        "englishName":  "Weathering with You",
+        "aliases":  [
+                        "날아",
+                        "Tenki no Ko",
+                        "天気の子"
+                    ],
+        "description":  "가출 소년 호다카가 날씨를 맑게 하는 소녀 히나를 만나 끝없는 비 속에서 중요한 선택을 내린다.",
+        "genres":  [
+                       "로맨스",
+                       "판타지",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "영화",
+                       "애니",
+                       "소설",
+                       "만화"
+                   ],
+        "officialUrl":  "https://tenkinoko.com/",
+        "source":  "https://tenkinoko.com/"
+    },
+    {
+        "slug":  "castle-in-the-sky",
+        "name":  "천공의 성 라퓨타",
+        "englishName":  "Castle in the Sky",
+        "aliases":  [
+                        "라퓨타",
+                        "Laputa: Castle in the Sky",
+                        "天空の城ラピュタ"
+                    ],
+        "description":  "신비한 비행석을 지닌 시타와 광산 소년 파즈가 군대와 해적을 피해 전설의 하늘섬 라퓨타를 찾는다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "액션",
+                       "가족"
+                   ],
+        "ipType":  [
+                       "영화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.ghibli.jp/works/laputa/",
+        "source":  "https://www.ghibli.jp/works/laputa/"
+    },
+    {
+        "slug":  "princess-mononoke",
+        "name":  "모노노케 히메",
+        "englishName":  "Princess Mononoke",
+        "aliases":  [
+                        "Mononoke Hime",
+                        "もののけ姫",
+                        "원령공주"
+                    ],
+        "description":  "저주받은 아시타카가 숲을 지키는 산과 철을 만드는 인간들 사이에서 공존의 길을 모색한다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "영화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.ghibli.jp/works/mononoke/",
+        "source":  "https://www.ghibli.jp/works/mononoke/"
+    },
+    {
+        "slug":  "ponyo",
+        "name":  "벼랑 위의 포뇨",
+        "englishName":  "Ponyo",
+        "aliases":  [
+                        "포뇨",
+                        "Ponyo on the Cliff by the Sea",
+                        "崖の上のポニョ"
+                    ],
+        "description":  "바다를 벗어나 인간이 되고 싶은 물고기 소녀 포뇨가 다섯 살 소스케와 약속하며 큰 파도를 일으킨다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "가족",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "영화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.ghibli.jp/works/ponyo/",
+        "source":  "https://www.ghibli.jp/works/ponyo/"
+    },
+    {
+        "slug":  "whisper-of-the-heart",
+        "name":  "귀를 기울이면",
+        "englishName":  "Whisper of the Heart",
+        "aliases":  [
+                        "Mimi wo Sumaseba",
+                        "耳をすませば"
+                    ],
+        "description":  "책을 좋아하는 중학생 시즈쿠가 바이올린 장인을 꿈꾸는 세이지를 만나 자신의 이야기와 진로를 찾는다.",
+        "genres":  [
+                       "로맨스",
+                       "학원",
+                       "일상",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "영화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.ghibli.jp/works/mimi/",
+        "source":  "https://www.ghibli.jp/works/mimi/"
+    },
+    {
+        "slug":  "wolf-children",
+        "name":  "늑대아이",
+        "englishName":  "Wolf Children",
+        "aliases":  [
+                        "Wolf Children: Ame and Yuki",
+                        "おおかみこどもの雨と雪"
+                    ],
+        "description":  "인간 하나가 늑대인간의 두 아이 유키와 아메를 홀로 키우며 각자가 살아갈 세계를 찾도록 돕는다.",
+        "genres":  [
+                       "판타지",
+                       "가족",
+                       "드라마",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "영화",
+                       "애니",
+                       "소설",
+                       "만화"
+                   ],
+        "officialUrl":  "https://www.ookamikodomo.jp/",
+        "source":  "https://www.ookamikodomo.jp/explanation/index.html"
+    },
+    {
+        "slug":  "the-girl-who-leapt-through-time",
+        "name":  "시간을 달리는 소녀",
+        "englishName":  "The Girl Who Leapt Through Time",
+        "aliases":  [
+                        "시달소",
+                        "Toki wo Kakeru Shoujo",
+                        "時をかける少女"
+                    ],
+        "description":  "고등학생 마코토가 시간을 되돌리는 능력을 사소한 일에 쓰다가 선택과 관계의 소중함을 깨닫는다.",
+        "genres":  [
+                       "SF",
+                       "로맨스",
+                       "학원",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "소설",
+                       "영화",
+                       "애니",
+                       "만화"
+                   ],
+        "officialUrl":  "https://studiochizu.jp/works/tokiwokakerusyoujyo",
+        "source":  "https://studiochizu.jp/works/tokiwokakerusyoujyo"
+    }
+]

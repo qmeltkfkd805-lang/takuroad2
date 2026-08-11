@@ -1,0 +1,195 @@
+[
+    {
+        "slug":  "revisions-anime",
+        "name":  "리비전즈",
+        "englishName":  "Revisions",
+        "aliases":  [
+                        "revisions リヴィジョンズ"
+                    ],
+        "description":  "시부야가 300년 뒤 미래로 전송되자 고교생 다이스케와 친구들이 인형병기에 올라 괴물과 싸운다.",
+        "genres":  [
+                       "SF",
+                       "로봇/메카",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://revisions.jp/anime/index.php",
+        "source":  "https://revisions.jp/anime/index.php"
+    },
+    {
+        "slug":  "ingress-the-animation",
+        "name":  "인그레스: 디 애니메이션",
+        "englishName":  "Ingress: The Animation",
+        "aliases":  [
+                        "イングレス"
+                    ],
+        "description":  "물체의 기억을 읽는 마코토가 미지 물질 XM을 둘러싼 두 세력과 거대 기업의 음모에 휘말린다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "추리"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://ingressanime.com/en/",
+        "source":  "https://www.fujitv.com/animation/ingress-the-animation/"
+    },
+    {
+        "slug":  "bem-2019-anime",
+        "name":  "요괴인간 벰 BEM",
+        "englishName":  "BEM",
+        "aliases":  [
+                        "妖怪人間ベム"
+                    ],
+        "description":  "인간이 되길 바라는 요괴인간 벰·베라·베로가 부패한 도시 리브라시티에서 악과 맞선다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "호러",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "",
+        "source":  ""
+    },
+    {
+        "slug":  "deep-insanity-lost-child",
+        "name":  "딥 인새니티 더 로스트 차일드",
+        "englishName":  "Deep Insanity: The Lost Child",
+        "aliases":  [
+                        "Deep Insanity THE LOST CHILD"
+                    ],
+        "description":  "남극 지하의 거대 공간 어사일럼에서 병과 괴물이 퍼지자 신입 병사 시구레가 탐사대에 합류한다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "호러"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.jp.square-enix.com/deepinsanity/anime/",
+        "source":  "https://www.jp.square-enix.com/deepinsanity/anime/"
+    },
+    {
+        "slug":  "fena-pirate-princess",
+        "name":  "해적왕녀",
+        "englishName":  "Fena: Pirate Princess",
+        "aliases":  [
+                        "海賊王女"
+                    ],
+        "description":  "섬에서 탈출한 페나가 유키마루와 사무라이 일행을 만나 아버지가 남긴 에덴의 수수께끼를 쫓는다.",
+        "genres":  [
+                       "모험",
+                       "액션",
+                       "로맨스",
+                       "판타지"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://fena-pirate-princess.com/",
+        "source":  "https://fena-pirate-princess.com/"
+    },
+    {
+        "slug":  "tesla-note-anime",
+        "name":  "테슬라 노트",
+        "englishName":  "Tesla Note",
+        "aliases":  [
+                        "テスラノート"
+                    ],
+        "description":  "닌자 후예 보탄과 첩보원 쿠루마가 세계를 파괴할 힘을 지닌 테슬라의 조각을 회수하는 임무에 나선다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "추리"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://teslanote.net/",
+        "source":  "https://s.mxtv.jp/anime/teslanote/"
+    },
+    {
+        "slug":  "yurei-deco-anime",
+        "name":  "유레이데코",
+        "englishName":  "Yurei Deco",
+        "aliases":  [
+                        "ユーレイデコ"
+                    ],
+        "description":  "평가 수치 러브가 지배하는 정보도시에서 베리와 유령 탐정단이 괴인 0과 데이터 조작의 진실을 쫓는다.",
+        "genres":  [
+                       "SF",
+                       "모험",
+                       "추리"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://yureideco.com/",
+        "source":  "https://yureideco.com/"
+    },
+    {
+        "slug":  "bullbuster-anime",
+        "name":  "불버스터",
+        "englishName":  "Bullbuster",
+        "aliases":  [
+                        "ブルバスター"
+                    ],
+        "description":  "젊은 기술자 오키노가 로봇 불버스터와 함께 영세 해수 구제 회사에서 거대 생물과 비용 문제에 맞선다.",
+        "genres":  [
+                       "SF",
+                       "로봇/메카",
+                       "액션",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://bullbuster.jp/",
+        "source":  "https://bullbuster.jp/"
+    },
+    {
+        "slug":  "gene-of-ai-anime",
+        "name":  "AI의 유전자",
+        "englishName":  "The Gene of AI",
+        "aliases":  [
+                        "AIの遺電子"
+                    ],
+        "description":  "인간과 휴머노이드가 공존하는 미래에서 의사 스도 히카루가 인공지능 환자들의 마음과 질병을 진료한다.",
+        "genres":  [
+                       "SF",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://ai-no-idenshi.com/",
+        "source":  "https://ai-no-idenshi.com/story/"
+    },
+    {
+        "slug":  "shikizakura-anime",
+        "name":  "시키자쿠라",
+        "englishName":  "Shikizakura",
+        "aliases":  [
+                        "シキザクラ"
+                    ],
+        "description":  "고교생 카케루가 고대 비술과 기술이 결합된 요로이 슈트를 입고 무녀 오카를 지키며 오니와 싸운다.",
+        "genres":  [
+                       "SF",
+                       "판타지",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://shikizakura-anime.com/",
+        "source":  "https://shikizakura-anime.com/"
+    }
+]

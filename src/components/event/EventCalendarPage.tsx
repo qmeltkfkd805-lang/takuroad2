@@ -1,458 +1,460 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { EventHomeItem, getEventHomeItems, getPastEventItems } from '@/services/eventHomeService'
+import { useIsDesktop } from '@/hooks/useIsDesktop'
+import { Icon } from '@/components/tds'
+import { EventHomeItem, getEventHomeItems, getPastEventItems, getMyAffinityTagIds } from '@/services/eventHomeService'
 import { getMySavedEventIds, saveEvent, unsaveEvent, saveEventsBulk } from '@/services/eventSaveService'
-import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
-import { monthCells, ymd, addDays, WEEKDAY_KO, EV_TYPE_NAME } from '@/lib/event/calendar'
+import { getEventStatus } from '@/lib/utils/eventStatus'
+import { daysUntil } from '@/lib/event/rankEvents'
+import { monthCells, ymd, WEEKDAY_KO, eventOnDay } from '@/lib/event/calendar'
+import styles from './EventCalendarPage.module.css'
 
-const TEAL = '#22bcc9'   // 시안 느낌 — 토요일 강조색
-const PINK = '#f0568f'   // 일요일 강조색
-const dowColor = (dow: number) => dow === 0 ? PINK : dow === 6 ? TEAL : 'var(--muted)'
-const DISPLAY_FONT = "'Jua', system-ui, sans-serif"   // 둥근 볼드 (캘린더 제목용)
-function typeColor(type: string): string { return CATEGORY_NAME_MAP[EV_TYPE_NAME[type] ?? '']?.color ?? 'var(--accent)' }
-function typeBg(type: string): string { return CATEGORY_NAME_MAP[EV_TYPE_NAME[type] ?? '']?.bgColor ?? 'rgba(232,0,111,.1)' }
-const fmt = (s: string | null) => s ? `${Number(s.slice(5, 7))}.${s.slice(8, 10)}` : ''
-const fmtFull = (s: string | null) => {
-  if (!s) return ''
-  const dow = WEEKDAY_KO[new Date(Number(s.slice(0, 4)), Number(s.slice(5, 7)) - 1, Number(s.slice(8, 10))).getDay()]
-  return `${Number(s.slice(5, 7))}.${s.slice(8, 10)} (${dow})`
+const PINK = '#F0568F', BLUE = '#3B82C4'
+const TL_TOP = 24, TL_TRACK = 26, TL_MAXTRACK = 3
+
+type Filter = 'all' | 'popup' | 'exhibition' | 'collab_cafe' | 'saved'
+const FILTERS: { k: Filter; label: string }[] = [
+  { k: 'all', label: '전체' }, { k: 'popup', label: '팝업·행사' }, { k: 'exhibition', label: '전시' },
+  { k: 'collab_cafe', label: '콜라보 카페' }, { k: 'saved', label: '저장 이벤트' },
+]
+
+interface Cat { bg: string; dot: string; label: string }
+function catOf(type: string): Cat {
+  if (type === 'collab_cafe') return { bg: '#FFF7E8', dot: '#F5A623', label: '콜라보 카페' }
+  if (type === 'exhibition') return { bg: '#EEF7FF', dot: '#5B9BD5', label: '전시' }
+  return { bg: '#FFF1F5', dot: '#FF6FA3', label: '팝업·행사' }
+}
+function matchesFilter(ev: EventHomeItem, f: Filter, saved: Set<string>): boolean {
+  if (f === 'all') return true
+  if (f === 'saved') return saved.has(ev.id)
+  if (f === 'popup') return ev.type === 'popup' || ev.type === 'official_event'
+  if (f === 'exhibition') return ev.type === 'exhibition'
+  if (f === 'collab_cafe') return ev.type === 'collab_cafe'
+  return true
+}
+function catIconOf(type: string): string {
+  return type === 'collab_cafe' ? 'cafe' : type === 'exhibition' ? 'exhibition' : 'event'
 }
 
-type StatusKey = 'reserve' | 'ongoing' | 'starts_today' | 'ending_soon' | 'ended'
-const STATUS_META: Record<StatusKey, { label: string; color: string }> = {
-  reserve: { label: '사전예약', color: '#f59e0b' },
-  ongoing: { label: '진행중', color: '#16a34a' },
-  starts_today: { label: '오늘 시작', color: '#2563eb' },
-  ending_soon: { label: '종료임박', color: '#e0397f' },
-  ended: { label: '종료', color: '#9ca3af' },
+const md = (s: string | null) => (s ? `${Number(s.slice(5, 7))}.${s.slice(8, 10)}` : '')
+const periodText = (s: string | null, e: string | null) => [md(s), md(e)].filter(Boolean).join(' ~ ')
+const fmtSelected = (day: string) => {
+  const d = new Date(Number(day.slice(0, 4)), Number(day.slice(5, 7)) - 1, Number(day.slice(8, 10)))
+  return `${Number(day.slice(5, 7))}월 ${Number(day.slice(8, 10))}일 (${WEEKDAY_KO[d.getDay()]})`
 }
-const STATUS_ORDER: StatusKey[] = ['reserve', 'ongoing', 'starts_today', 'ending_soon', 'ended']
-
-const inRange = (day: string, start: string | null, end: string | null) => !!start && day >= start.slice(0, 10) && day <= (end ?? start).slice(0, 10)
-
-// 어떤 이벤트가 특정 날짜에 캘린더에 뜨는지 + 그 날의 성격(사전예약/진행 상태)
-interface DayEv { ev: EventHomeItem; isReserve: boolean; status: StatusKey }
-function dayEvents(evs: EventHomeItem[], day: string, today: string): DayEv[] {
-  const out: DayEv[] = []
-  for (const ev of evs) {
-    const onRun = inRange(day, ev.startDate, ev.endDate)
-    const onRes = inRange(day, ev.reserveStart, ev.reserveEnd)
-    if (!onRun && !onRes) continue
-    if (onRes && !onRun) { out.push({ ev, isReserve: true, status: 'reserve' }); continue }
-    // 진행 기간 — 오늘 기준 상태
-    const e = (ev.endDate ?? ev.startDate)!.slice(0, 10)
-    const s = ev.startDate!.slice(0, 10)
-    let status: StatusKey = 'ongoing'
-    if (e < today) status = 'ended'
-    else if (s === today) status = 'starts_today'
-    else if (e === today || e === addDays(today, 1)) status = 'ending_soon'
-    out.push({ ev, isReserve: false, status })
+function dayDiff(a: string, b: string): number {
+  const [ay, am, ad] = a.split('-').map(Number), [by, bm, bd] = b.split('-').map(Number)
+  return Math.round((Date.UTC(by, bm - 1, bd) - Date.UTC(ay, am - 1, ad)) / 86400000)
+}
+// 6주 × 7일 (앞뒤 달 포함, inMonth 플래그) — 타임라인 위치 계산용
+function monthMatrix(y: number, m0: number): { date: string; inMonth: boolean }[][] {
+  const first = new Date(y, m0, 1)
+  const start = new Date(y, m0, 1 - first.getDay())
+  const weeks: { date: string; inMonth: boolean }[][] = []
+  for (let w = 0; w < 6; w++) {
+    const row: { date: string; inMonth: boolean }[] = []
+    for (let d = 0; d < 7; d++) {
+      const dt = new Date(start.getFullYear(), start.getMonth(), start.getDate() + w * 7 + d)
+      row.push({ date: ymd(dt), inMonth: dt.getMonth() === m0 })
+    }
+    weeks.push(row)
   }
-  return out
+  return weeks
 }
-const TYPE_ORDER = ['popup', 'collab_cafe', 'exhibition', 'official_event']
-// 하루 배지: 사전예약(주황)은 'reserve' 그룹, 진행 이벤트는 종류별로. [key, color, count]
-function dayBadges(list: DayEv[]): { key: string; color: string; count: number }[] {
-  const m = new Map<string, number>()
-  for (const d of list) {
-    const key = d.isReserve ? 'reserve' : d.ev.type
-    m.set(key, (m.get(key) ?? 0) + 1)
-  }
-  const order = [...TYPE_ORDER, 'reserve']
-  return [...m.entries()]
-    .sort((a, b) => (order.indexOf(a[0]) < 0 ? 99 : order.indexOf(a[0])) - (order.indexOf(b[0]) < 0 ? 99 : order.indexOf(b[0])))
-    .map(([key, count]) => ({ key, count, color: key === 'reserve' ? STATUS_META.reserve.color : typeColor(key) }))
-}
+
+const CELL_MAX = 3
 
 export default function EventCalendarPage() {
   const router = useRouter()
   const { user } = useAuth()
+  const isDesktop = useIsDesktop()
   const now = new Date()
-
-  const [year, setYear] = useState(now.getFullYear())
-  const [month0, setMonth0] = useState(now.getMonth())
-  const [items, setItems] = useState<EventHomeItem[]>([])
-  const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
-  const [loading, setLoading] = useState(true)
-  const [selected, setSelected] = useState<string | null>(ymd(now))
-  const [mode, setMode] = useState<'all' | 'saved'>('all')
-  const [workFilter, setWorkFilter] = useState<string>('')
-
   const todayStr = ymd(now)
 
-  useEffect(() => {
-    Promise.all([getEventHomeItems(), getPastEventItems(100)])
-      .then(([cur, past]) => {
-        const map = new Map<string, EventHomeItem>()
-        for (const e of [...cur, ...past]) map.set(e.id, e)
-        setItems([...map.values()])
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false))
-  }, [])
+  const [view, setView] = useState({ y: now.getFullYear(), m: now.getMonth() })
+  const [items, setItems] = useState<EventHomeItem[]>([])
+  const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
+  const [favTagIds, setFavTagIds] = useState<Set<string>>(new Set())
+  const [loading, setLoading] = useState(true)
+  const [selected, setSelected] = useState<string>(todayStr)
+  const [filter, setFilter] = useState<Filter>('all')
+  const [workQuery, setWorkQuery] = useState('')
+  const [selectedWorkId, setSelectedWorkId] = useState<string | null>(null)
+  const [ddOpen, setDdOpen] = useState(false)
+  const [savingAll, setSavingAll] = useState(false)
+  const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!user) { setSavedIds(new Set()); return }
+    Promise.all([getEventHomeItems(), getPastEventItems(100)]).then(([cur, past]) => {
+      const map = new Map<string, EventHomeItem>()
+      for (const e of [...cur, ...past]) map.set(e.id, e)
+      setItems([...map.values()])
+    }).catch(() => {}).finally(() => setLoading(false))
+  }, [])
+  useEffect(() => {
+    if (!user) { setSavedIds(new Set()); setFavTagIds(new Set()); return }
     getMySavedEventIds(user.id).then(ids => setSavedIds(new Set(ids))).catch(() => {})
+    getMyAffinityTagIds(user.id).then(({ favorites }) => setFavTagIds(new Set(favorites))).catch(() => {})
   }, [user])
 
-  const cells = useMemo(() => monthCells(year, month0), [year, month0])
+  // 작품 목록(선택용) + 검색 매칭
+  const works = useMemo(() => {
+    const m = new Map<string, { id: string; name: string; cover: string | null }>()
+    for (const i of items) if (i.tagId && i.workName && !m.has(i.tagId)) m.set(i.tagId, { id: i.tagId, name: i.workName, cover: i.coverUrl })
+    return [...m.values()].sort((a, b) => a.name.localeCompare(b.name, 'ko'))
+  }, [items])
+  const selWork = selectedWorkId ? works.find(w => w.id === selectedWorkId) ?? null : null
+  const workMatches = useMemo(() => {
+    const q = workQuery.trim().toLowerCase()
+    return (q ? works.filter(w => w.name.toLowerCase().includes(q)) : works).slice(0, 20)
+  }, [works, workQuery])
 
-  const modeItems = useMemo(
-    () => mode === 'saved' ? items.filter(i => savedIds.has(i.id)) : items,
-    [items, mode, savedIds],
-  )
-  const workOptions = useMemo(() => {
-    const map = new Map<string, string>()
-    for (const i of modeItems) if (i.tagId && i.workName) map.set(i.tagId, i.workName)
-    return [...map.entries()].map(([id, name]) => ({ id, name })).sort((a, b) => a.name.localeCompare(b.name, 'ko'))
-  }, [modeItems])
-  const filtered = useMemo(
-    () => workFilter ? modeItems.filter(i => i.tagId === workFilter) : modeItems,
-    [modeItems, workFilter],
-  )
+  // 작품 정확히 1개 선택 → 상세(타임라인) 모드
+  const isSingleWorkMode = !!selectedWorkId
+  // base: 선택 작품이 있으면 그 작품 이벤트만 → 우측 패널·개수·전체저장이 자동으로 작품 기준이 됨
+  const base = useMemo(() => selectedWorkId ? items.filter(i => i.tagId === selectedWorkId) : items, [items, selectedWorkId])
 
-  const eventsByDay = useMemo(() => {
-    const map = new Map<string, DayEv[]>()
-    for (const c of cells) {
-      if (!c) continue
-      const on = dayEvents(filtered, c, todayStr)
-      if (on.length) map.set(c, on)
+  const cells = useMemo(() => monthCells(view.y, view.m), [view])
+  const matrix = useMemo(() => monthMatrix(view.y, view.m), [view])
+  const monthStr = useMemo(() => ymd(new Date(view.y, view.m, 1)), [view])
+
+  // 종료 날짜가 빠른 순(곧 끝나는 이벤트 먼저), 종료일 같으면 시작일 순. 종료일 없으면 맨 뒤.
+  const dayListSorted = (day: string): EventHomeItem[] =>
+    base.filter(ev => eventOnDay(ev.startDate, ev.endDate, day) && matchesFilter(ev, filter, savedIds))
+      .sort((a, b) => {
+        const ea = (a.endDate ?? a.startDate)?.slice(0, 10) ?? '9999-99-99'
+        const eb = (b.endDate ?? b.startDate)?.slice(0, 10) ?? '9999-99-99'
+        if (ea !== eb) return ea.localeCompare(eb)
+        return (a.startDate ?? '').localeCompare(b.startDate ?? '')
+      })
+
+  const selList = useMemo(() => dayListSorted(selected), [base, filter, savedIds, favTagIds, selected])
+  const selCounts = useMemo(() => {
+    let ongoing = 0, upcoming = 0, ending = 0
+    for (const ev of selList) {
+      const k = getEventStatus(ev).kind
+      if (k === 'upcoming') upcoming++
+      else if (k === 'ending_soon' || k === 'ends_today') ending++
+      else if (k !== 'ended' && k !== 'unknown') ongoing++
     }
-    return map
-  }, [cells, filtered, todayStr])
+    return { total: selList.length, ongoing, upcoming, ending }
+  }, [selList])
 
-  const selectedEvents = useMemo(
-    () => selected ? dayEvents(filtered, selected, todayStr).sort((a, b) => (a.ev.startDate ?? '').localeCompare(b.ev.startDate ?? '')) : [],
-    [filtered, selected, todayStr],
-  )
-  const statusCounts = useMemo(() => {
-    const c: Record<StatusKey, number> = { reserve: 0, ongoing: 0, starts_today: 0, ending_soon: 0, ended: 0 }
-    for (const d of selectedEvents) c[d.status]++
-    return c
-  }, [selectedEvents])
+  const timelineEvents = useMemo(() => base.filter(ev => matchesFilter(ev, filter, savedIds)), [base, filter, savedIds])
 
-  const prevMonth = () => { const m = month0 - 1; if (m < 0) { setYear(y => y - 1); setMonth0(11) } else setMonth0(m) }
-  const nextMonth = () => { const m = month0 + 1; if (m > 11) { setYear(y => y + 1); setMonth0(0) } else setMonth0(m) }
-  const goToday = () => { setYear(now.getFullYear()); setMonth0(now.getMonth()); setSelected(todayStr) }
-  const resetFilters = () => { setMode('all'); setWorkFilter('') }
-
-  async function toggleSave(eventId: string) {
-    if (!user) { router.push('/login?redirect=/events/calendar'); return }
-    const next = new Set(savedIds)
-    if (next.has(eventId)) { next.delete(eventId); setSavedIds(next); await unsaveEvent(user.id, eventId) }
-    else { next.add(eventId); setSavedIds(next); await saveEvent(user.id, eventId) }
+  const selectDay = (day: string) => {
+    setSelected(day)
+    if (!isDesktop) setTimeout(() => panelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30)
   }
-  async function saveAll() {
-    if (!user) { router.push('/login?redirect=/events/calendar'); return }
-    const ids = selectedEvents.map(d => d.ev.id)
-    const next = new Set(savedIds); ids.forEach(id => next.add(id)); setSavedIds(next)
-    await saveEventsBulk(user.id, ids)
+  const shiftMonth = (delta: number) => setView(v => { const d = new Date(v.y, v.m + delta, 1); return { y: d.getFullYear(), m: d.getMonth() } })
+  const goToday = () => { setView({ y: now.getFullYear(), m: now.getMonth() }); setSelected(todayStr) }
+  const resetFilters = () => { setFilter('all'); setSelectedWorkId(null); setWorkQuery('') }  // 월은 유지
+
+  const toggleSave = (e: React.MouseEvent, id: string) => {
+    e.preventDefault(); e.stopPropagation()
+    if (!user) { router.push('/login'); return }
+    const was = savedIds.has(id)
+    setSavedIds(prev => { const n = new Set(prev); was ? n.delete(id) : n.add(id); return n })
+    ;(was ? unsaveEvent(user.id, id) : saveEvent(user.id, id)).catch(() => {
+      setSavedIds(prev => { const n = new Set(prev); was ? n.add(id) : n.delete(id); return n })
+    })
+  }
+  const allSaved = selList.length > 0 && selList.every(ev => savedIds.has(ev.id))
+  const saveAll = async () => {
+    if (!user) { router.push('/login'); return }
+    if (savingAll || allSaved || selList.length === 0) return
+    setSavingAll(true)
+    const ids = selList.map(ev => ev.id)
+    setSavedIds(prev => { const n = new Set(prev); ids.forEach(i => n.add(i)); return n })
+    try { await saveEventsBulk(user.id, ids) } finally { setSavingAll(false) }
+  }
+
+  const panelStatus = (ev: EventHomeItem): { label: string; color: string } => {
+    const k = getEventStatus(ev).kind
+    if (k === 'upcoming') return { label: '오픈 예정', color: '#2563eb' }
+    if (k === 'ending_soon' || k === 'ends_today') return { label: '종료 임박', color: '#E0397F' }
+    if (k === 'ended') return { label: '종료', color: '#9ca3af' }
+    return { label: '진행 중', color: '#16a34a' }
   }
 
   return (
-    <div style={{ maxWidth: 1400, margin: '0 auto', padding: '20px 24px 40px' }}>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap" />
-      <style>{`.evcal-wrap{display:flex;gap:24px;align-items:flex-start}.evcal-cal{flex:1;min-width:0}.evcal-side{width:400px;flex-shrink:0}@media (hover:none) and (pointer:coarse) and (max-width:980px){.evcal-wrap{flex-direction:column}.evcal-side{width:100%}}`}</style>
-
-      {/* 상단: 작품 검색 + 초기화 (전체/저장 탭은 달력 헤더로 이동) */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 18 }}>
-        <div style={{ flex: 1 }} />
-        <WorkSearch options={workOptions} value={workFilter} onChange={setWorkFilter} />
-        <button onClick={resetFilters} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '11px 14px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--muted)', fontSize: 13.5, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54z" /></svg>
-          필터 초기화
-        </button>
+    <div className={styles.page}>
+      {/* 월 이동 헤더 */}
+      <div className={styles.topHead}>
+        <div className={styles.monthNav}>
+          <button className={styles.navBtn} onClick={() => shiftMonth(-1)} aria-label="이전 달"><Chevron d="left" /></button>
+          <span className={styles.monthTitle}>{view.y}년 {view.m + 1}월</span>
+          <button className={styles.navBtn} onClick={() => shiftMonth(1)} aria-label="다음 달"><Chevron d="right" /></button>
+          <button className={styles.todayBtn} onClick={goToday}>오늘</button>
+        </div>
+        <div className={styles.headRight}>
+          {selWork ? (
+            <div className={styles.workChip}>
+              <span className={styles.workChipName}>{selWork.name}</span>
+              <button className={styles.workChipX} onClick={() => setSelectedWorkId(null)} aria-label="작품 필터 해제">×</button>
+            </div>
+          ) : (
+            <div className={styles.workSearch} style={{ position: 'relative' }}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3-3" /></svg>
+              <input placeholder="작품 검색" value={workQuery} onChange={e => { setWorkQuery(e.target.value); setDdOpen(true) }} onFocus={() => setDdOpen(true)} />
+              {ddOpen && workMatches.length > 0 && (
+                <>
+                  <div className={styles.ddBackdrop} onClick={() => setDdOpen(false)} />
+                  <div className={styles.workDd}>
+                    {workMatches.map(w => (
+                      <button key={w.id} className={styles.workDdItem} onClick={() => { setSelectedWorkId(w.id); setWorkQuery(''); setDdOpen(false) }}>
+                        {w.cover ? <img className={styles.workDdImg} src={w.cover} alt="" /> : <span className={styles.workDdImg} />}
+                        <span className={styles.workDdName}>{w.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+          {(filter !== 'all' || selectedWorkId) && (
+            <button className={styles.resetBtn} onClick={resetFilters}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 4v4h4" /></svg>
+              필터 초기화
+            </button>
+          )}
+        </div>
       </div>
 
-      <div className="evcal-wrap">
-        {/* ===== 달력 ===== */}
-        <div className="evcal-cal">
-          <div style={{ marginBottom: 16 }}>
-            <h1 style={{ fontFamily: DISPLAY_FONT, fontSize: 44, margin: 0, lineHeight: 1, display: 'inline-flex', alignItems: 'baseline', gap: 10 }}>
-              <span style={{ color: '#F5A524' }}>{year}</span>
-              <span style={{ color: 'var(--muted)', fontSize: 32 }}>.</span>
-              <span style={{ color: 'var(--text)' }}>{String(month0 + 1).padStart(2, '0')}</span>
-            </h1>
-            {/* 전체/저장 탭 + < > 오늘 (같은 라인) */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 12, borderBottom: '1px solid var(--border)' }}>
-              <div style={{ display: 'flex', gap: 20 }}>
-                <Tab active={mode === 'all'} onClick={() => { setMode('all'); setWorkFilter('') }} label="전체" icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>} />
-                <Tab active={mode === 'saved'} onClick={() => { setMode('saved'); setWorkFilter('') }} label="저장 이벤트" icon={<svg width="16" height="16" viewBox="0 0 24 24" fill={mode === 'saved' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" /></svg>} />
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingBottom: 8 }}>
-                <button onClick={prevMonth} style={navBtn} aria-label="이전 달"><Chev dir="left" /></button>
-                <button onClick={nextMonth} style={navBtn} aria-label="다음 달"><Chev dir="right" /></button>
-                <button onClick={goToday} style={{ ...navBtn, width: 'auto', padding: '0 15px', fontSize: 13, fontWeight: 800 }}>오늘</button>
-              </div>
-            </div>
-          </div>
+      {/* 필터 탭 + 범례 */}
+      <div className={styles.filterRow}>
+        <div className={styles.tabs}>
+          {FILTERS.map(f => (
+            <button key={f.k} className={filter === f.k ? `${styles.tab} ${styles.tabOn}` : styles.tab} onClick={() => setFilter(f.k)}>{f.label}</button>
+          ))}
+        </div>
+        <div className={styles.legend}>
+          <span className={styles.legendItem}><span className={styles.legendDot} style={{ background: '#FF6FA3' }} />팝업·행사</span>
+          <span className={styles.legendItem}><span className={styles.legendDot} style={{ background: '#F5A623' }} />콜라보 카페</span>
+          <span className={styles.legendItem}><span className={styles.legendDot} style={{ background: '#5B9BD5' }} />전시</span>
+        </div>
+      </div>
 
-          {loading ? (
-            <div style={{ height: 620, borderRadius: 16, background: 'var(--surface2)' }} />
-          ) : (
-            <>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', paddingBottom: 12, borderBottom: '1.5px solid var(--border)', marginBottom: 8 }}>
-                {WEEKDAY_KO.map((w, i) => (
-                  <div key={w} style={{ textAlign: 'left', paddingLeft: 6, fontSize: 13, fontWeight: 800, letterSpacing: 0.5, color: dowColor(i) }}>{w}</div>
+      <div className={styles.layout}>
+        {loading ? <div className={styles.skelCal} /> : (
+          <div className={styles.cal}>
+            <div className={styles.dowRow}>
+              {WEEKDAY_KO.map((w, i) => (
+                <div key={w} className={styles.dow} style={{ color: i === 0 ? PINK : i === 6 ? BLUE : 'var(--muted)' }}>{w}</div>
+              ))}
+            </div>
+
+            {isSingleWorkMode ? (
+              <div className={styles.weeks}>
+                {matrix.map((week, wi) => (
+                  <TimelineWeek key={wi} week={week} events={timelineEvents} selected={selected} todayStr={todayStr} monthStr={monthStr} onSelectDay={selectDay} onOpen={id => router.push(`/event/${id}`)} />
                 ))}
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
+            ) : (
+              <div className={styles.grid}>
                 {cells.map((c, i) => {
-                  const lastCol = i % 7 === 6
-                  const lastRow = i >= cells.length - 7
-                  const cellBorders: React.CSSProperties = {
-                    borderRight: lastCol ? 'none' : '1px solid var(--border)',
-                    borderBottom: lastRow ? 'none' : '1px solid var(--border)',
-                  }
-                  if (!c) return <div key={`e${i}`} style={{ minHeight: 90, ...cellBorders }} />
+                  if (!c) return <div key={`e${i}`} className={`${styles.cell} ${styles.cellOut}`} />
                   const day = Number(c.slice(8, 10))
-                  const dow = i % 7
                   const isToday = c === todayStr
                   const isSel = c === selected
-                  const evs = eventsByDay.get(c) ?? []
+                  const dow = i % 7
+                  const list = dayListSorted(c)
+                  const shown = list.slice(0, CELL_MAX)
+                  const rest = list.length - shown.length
                   return (
-                    <button
-                      key={c}
-                      onClick={() => setSelected(c)}
-                      style={{
-                        minHeight: 90, padding: '7px 7px', cursor: 'pointer', border: 'none', ...cellBorders,
-                        background: isSel ? `${TEAL}16` : 'transparent',
-                        boxShadow: isSel ? `inset 0 0 0 2px ${TEAL}` : 'none',
-                        display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6, fontFamily: 'inherit',
-                      }}
-                    >
-                      <span style={{ fontFamily: DISPLAY_FONT, fontSize: 15, color: dowColor(dow), paddingLeft: 1, opacity: isToday ? 1 : 0.92 }}>{day}</span>
-                      {evs.length > 0 && (
-                        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 4, flexWrap: 'wrap', width: '100%' }}>
-                          {dayBadges(evs).map(b => (
-                            <span key={b.key} style={{
-                              minWidth: 20, height: 20, padding: '0 5px', borderRadius: 9999,
-                              background: b.color, color: '#fff', fontSize: 12.5, fontFamily: DISPLAY_FONT,
-                              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            }}>{b.count}</span>
-                          ))}
-                        </span>
-                      )}
+                    <button key={c} className={`${styles.cell}${isSel ? ' ' + styles.cellSel : ''}`} onClick={() => selectDay(c)}>
+                      <div className={styles.cellTop}>
+                        <span className={styles.dayNum} style={{ color: isToday ? undefined : dow === 0 ? PINK : dow === 6 ? BLUE : 'var(--text)' }}>{day}</span>
+                        {isToday && <span className={styles.todayTag}>오늘</span>}
+                      </div>
+                      <div className={styles.cellEvents}>
+                        {shown.map(ev => {
+                          const cat = catOf(ev.type)
+                          const dEnd = ev.endDate ? daysUntil(ev.endDate) : 99
+                          const soon = dEnd >= 0 && dEnd <= 2
+                          return (
+                            <span key={ev.id} className={styles.evPill} style={{ background: cat.bg }} title={ev.title} aria-label={`${cat.label}: ${ev.title}`}>
+                              <span className={styles.evName}>{ev.title}</span>
+                              {soon && <span className={styles.evDday}>D-{dEnd}</span>}
+                            </span>
+                          )
+                        })}
+                        {rest > 0 && <span className={styles.moreLink}>+{rest}개 더보기</span>}
+                      </div>
                     </button>
                   )
                 })}
               </div>
-            </>
+            )}
+          </div>
+        )}
+
+        {/* 선택 날짜 패널 — 구조/스타일 동일, 데이터는 base(작품 필터) 기준 */}
+        <div className={styles.panel} ref={panelRef}>
+          <div className={styles.panelHead}>
+            <div className={styles.panelDate}>{fmtSelected(selected)}</div>
+            <div className={styles.panelCounts}>
+              <span>전체 <b>{selCounts.total}</b></span>
+              {selCounts.ongoing > 0 && <span className={styles.pcOngoing}>진행 중 {selCounts.ongoing}</span>}
+              {selCounts.upcoming > 0 && <span className={styles.pcUpcoming}>오픈 예정 {selCounts.upcoming}</span>}
+              {selCounts.ending > 0 && <span className={styles.pcEnding}>종료 임박 {selCounts.ending}</span>}
+            </div>
+          </div>
+          <div className={styles.panelBody}>
+            {selList.length === 0 ? (
+              <div className={styles.panelEmpty}>이날 등록된 이벤트가 없어요<br />다른 날짜를 선택해보세요.</div>
+            ) : selList.map(ev => {
+              const st = panelStatus(ev)
+              const saved = savedIds.has(ev.id)
+              return (
+                <div key={ev.id} className={styles.pRow} onClick={() => router.push(`/event/${ev.id}`)}>
+                  <span className={styles.pThumb}>
+                    {ev.coverUrl ? <PanelImg src={ev.coverUrl} type={ev.type} /> : <Icon name={catIconOf(ev.type)} size={22} style={{ opacity: .4 }} />}
+                  </span>
+                  <span className={styles.pBody}>
+                    <span className={styles.pStatus} style={{ color: st.color }}><span className={styles.pStatusDot} style={{ background: st.color }} />{st.label}</span>
+                    <span className={styles.pName}>{ev.title}</span>
+                    <span className={styles.pMeta}>{[periodText(ev.startDate, ev.endDate), ev.placeName ?? ev.shopName].filter(Boolean).join(' · ')}</span>
+                  </span>
+                  <button className={styles.pHeart} onClick={e => toggleSave(e, ev.id)} aria-pressed={saved} aria-label={saved ? '저장 해제' : '저장'}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill={saved ? PINK : 'none'} stroke={saved ? PINK : '#8A857C'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20C5 15 3.5 10.5 5.5 7.8 7.1 5.9 10.2 6.1 12 8.4 13.8 6.1 16.9 5.9 18.5 7.8 20.5 10.5 19 15 12 20Z" /></svg>
+                  </button>
+                </div>
+              )
+            })}
+          </div>
+          {selList.length > 0 && (
+            <div className={styles.panelFoot}>
+              <button className={styles.saveAllBtn} onClick={saveAll} disabled={allSaved || savingAll}>
+                {allSaved ? '모두 저장됨' : '이 날짜의 이벤트 전체 저장'}
+              </button>
+            </div>
           )}
-
-          {/* 범례 */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 22, alignItems: 'center', marginTop: 18, padding: '14px 16px', border: '1px solid var(--border)', borderRadius: 14, background: 'var(--surface)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--muted)' }}>이벤트 종류</span>
-              {(['popup', 'collab_cafe', 'exhibition', 'official_event'] as const).map(t => (
-                <span key={t} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, color: 'var(--text)', fontWeight: 700 }}>
-                  <span style={{ width: 9, height: 9, borderRadius: 9999, background: typeColor(t) }} />{EV_TYPE_NAME[t]}
-                </span>
-              ))}
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--muted)' }}>상태 안내</span>
-              {STATUS_ORDER.map(k => (
-                <span key={k} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 800, color: STATUS_META[k].color }}>
-                  <span style={{ width: 8, height: 8, borderRadius: 9999, background: STATUS_META[k].color }} />{STATUS_META[k].label}
-                </span>
-              ))}
-            </div>
-          </div>
         </div>
+      </div>
+    </div>
+  )
+}
 
-        {/* ===== 상세 패널 ===== */}
-        <aside className="evcal-side">
-          <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 18, padding: '18px 18px 16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-              <h2 style={{ fontSize: 18, fontWeight: 900, margin: 0, display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
-                {selected ? fmtFull(selected) : '날짜 선택'}
-              </h2>
-              {selected && (
-                <button onClick={() => setSelected(null)} aria-label="닫기" style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--muted)', padding: 2 }}>
-                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
-                </button>
-              )}
-            </div>
+// 카테고리 색 (기간선·점 공통)
+const catColor = (type: string) => type === 'collab_cafe' ? '#F5A623' : type === 'exhibition' ? '#5B9BD5' : '#FF6FA3'
 
-            {/* 상태 요약 칩 */}
-            {selected && selectedEvents.length > 0 && (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 14 }}>
-                {STATUS_ORDER.map(k => (
-                  <span key={k} style={{ fontSize: 11.5, fontWeight: 800, padding: '4px 10px', borderRadius: 9999, background: `${STATUS_META[k].color}18`, color: STATUS_META[k].color }}>
-                    {STATUS_META[k].label} {statusCounts[k]}
-                  </span>
-                ))}
-              </div>
-            )}
+/* ── 작품 상세: 한 주의 기간선 ── */
+const clamp06 = (n: number) => Math.max(0, Math.min(6, n))
+interface Bar { ev: EventHomeItem; startCol: number; endCol: number; nameCol: number | null; endHere: boolean; reservedEnd: number }
 
-            {!selected ? (
-              <p style={{ fontSize: 13, color: 'var(--muted)', padding: '10px 0' }}>달력에서 날짜를 선택하세요.</p>
-            ) : selectedEvents.length === 0 ? (
-              <p style={{ fontSize: 13, color: 'var(--muted)', padding: '10px 0' }}>이 날 진행되는 이벤트가 없어요.</p>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {selectedEvents.map(d => {
-                  const ev = d.ev
-                  const meta = STATUS_META[d.status]
-                  const saved = savedIds.has(ev.id)
-                  return (
-                    <div key={ev.id} style={{ position: 'relative', border: '1px solid var(--border)', borderLeft: `4px solid ${meta.color}`, borderRadius: 14, padding: 12, background: 'var(--surface)' }}>
-                      <button onClick={() => toggleSave(ev.id)} aria-label="저장" style={{ position: 'absolute', top: 10, right: 10, border: 'none', background: 'none', cursor: 'pointer', padding: 2 }}>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill={saved ? 'var(--accent)' : 'none'} stroke={saved ? 'var(--accent)' : 'var(--muted)'} strokeWidth="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" /></svg>
-                      </button>
-                      <div style={{ display: 'flex', gap: 12, alignItems: 'stretch' }}>
-                        <span style={{ alignSelf: 'stretch', width: 58, flexShrink: 0, borderRadius: 10, overflow: 'hidden', background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          {ev.coverUrl ? <img src={ev.coverUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} /> : null}
-                        </span>
-                        <div style={{ minWidth: 0, flex: 1, paddingRight: 22 }}>
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 800, color: meta.color, marginBottom: 4 }}>
-                            <span style={{ width: 7, height: 7, borderRadius: 9999, background: meta.color }} />{meta.label}
-                          </span>
-                          <div
-                            onClick={() => ev.tagId && ev.workName ? setWorkFilter(ev.tagId) : router.push(`/event/${ev.id}`)}
-                            title={ev.tagId && ev.workName ? `${ev.workName} 일정만 보기` : ev.title}
-                            style={{ fontSize: 14.5, fontWeight: 800, cursor: 'pointer', lineHeight: 1.3, marginBottom: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
-                          >{ev.title || EV_TYPE_NAME[ev.type]}</div>
-                          {d.isReserve ? (
-                            <div style={{ fontSize: 12, color: STATUS_META.reserve.color, fontWeight: 700, marginBottom: 2 }}>
-                              사전예약 {fmt(ev.reserveStart)}{ev.reserveEnd && ev.reserveEnd !== ev.reserveStart ? ` ~ ${fmt(ev.reserveEnd)}` : ''}
-                            </div>
-                          ) : (
-                            <div style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 2 }}>
-                              {fmt(ev.startDate)}{ev.endDate && ev.endDate !== ev.startDate ? ` ~ ${fmt(ev.endDate)}` : ''}
-                            </div>
-                          )}
-                          {(ev.placeName ?? ev.shopName) && (
-                            <div style={{ fontSize: 12, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ev.placeName ?? ev.shopName}</div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )
+function TimelineWeek({ week, events, selected, todayStr, monthStr, onSelectDay, onOpen }: {
+  week: { date: string; inMonth: boolean }[]
+  events: EventHomeItem[]
+  selected: string; todayStr: string; monthStr: string
+  onSelectDay: (d: string) => void; onOpen: (id: string) => void
+}) {
+  const weekStart = week[0].date, weekEnd = week[6].date
+  const monthStartInWeek = monthStr >= weekStart && monthStr <= weekEnd
+
+  const raw: Bar[] = []
+  for (const ev of events) {
+    const s = ev.startDate?.slice(0, 10)
+    const e = (ev.endDate ?? ev.startDate)?.slice(0, 10)
+    if (!s || !e || s > weekEnd || e < weekStart) continue
+    const startCol = clamp06(dayDiff(weekStart, s))
+    const endCol = clamp06(dayDiff(weekStart, e))
+    const startInWeek = s >= weekStart && s <= weekEnd
+    // 이름 위치: 시작 주는 시작일, 단 시작이 이전 달(패딩)이고 이번 달로 이어지면 그 달 1일에 표시
+    let nameCol: number | null = null
+    if (startInWeek) nameCol = startCol
+    if (monthStartInWeek && s < monthStr && e >= monthStr && (nameCol == null || !week[nameCol].inMonth)) {
+      nameCol = clamp06(dayDiff(weekStart, monthStr))
+    }
+    const endHere = e <= weekEnd
+    const reservedEnd = clamp06(Math.max(endCol, nameCol != null ? nameCol + 3 : endCol))
+    raw.push({ ev, startCol, endCol, nameCol, endHere, reservedEnd })
+  }
+  raw.sort((a, b) => a.startCol - b.startCol || a.reservedEnd - b.reservedEnd)
+
+  const trackEnds: number[] = []
+  const placed: { b: Bar; track: number }[] = []
+  let overflow = 0
+  for (const b of raw) {
+    let t = 0
+    while (trackEnds[t] !== undefined && trackEnds[t] >= b.startCol) t++
+    if (t >= TL_MAXTRACK) { overflow++; continue }
+    trackEnds[t] = b.reservedEnd
+    placed.push({ b, track: t })
+  }
+
+  return (
+    <div className={styles.weekRow}>
+      <div className={styles.weekCells}>
+        {week.map((d, di) => {
+          const isToday = d.date === todayStr, isSel = d.date === selected
+          const num = Number(d.date.slice(8, 10))
+          return (
+            <button key={di} className={`${styles.tlCell}${!d.inMonth ? ' ' + styles.tlCellOut : ''}${isSel ? ' ' + styles.tlCellSel : ''}`} onClick={() => onSelectDay(d.date)}>
+              <span className={styles.cellTop}>
+                <span className={styles.dayNum} style={{ opacity: d.inMonth ? 1 : .4, color: isToday ? undefined : di === 0 ? PINK : di === 6 ? BLUE : 'var(--text)' }}>{num}</span>
+                {isToday && <span className={styles.todayTag}>오늘</span>}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+      <div className={styles.weekBars}>
+        {placed.map(({ b, track }, i) => {
+          const top = TL_TOP + track * TL_TRACK
+          const color = catColor(b.ev.type)
+          const span = b.endCol - b.startCol + 1
+          const lineLeft = b.startCol / 7 * 100
+          const lineW = span / 7 * 100
+          // 월 경계로 선 분할 — 이번 달이 아닌 칸 위 구간은 흐리게
+          const segs: { from: number; to: number; faded: boolean }[] = []
+          let c = b.startCol
+          while (c <= b.endCol) {
+            const faded = !week[c].inMonth
+            let t = c
+            while (t + 1 <= b.endCol && (!week[t + 1].inMonth) === faded) t++
+            segs.push({ from: c, to: t, faded }); c = t + 1
+          }
+          return (
+            <Fragment key={i}>
+              <div className={styles.bar} style={{ left: `${lineLeft}%`, width: `${lineW}%`, top }}
+                onClick={e => { e.stopPropagation(); onOpen(b.ev.id) }}
+                title={`${b.ev.title} (${md(b.ev.startDate)} ~ ${md(b.ev.endDate)})`}>
+                {segs.map((sg, si) => {
+                  const l = (sg.from - b.startCol) / span * 100
+                  const w = (sg.to - sg.from + 1) / span * 100
+                  const inset = `${si === 0 ? 4 : 0}px`
+                  const insetR = `${si === segs.length - 1 ? 5 : 0}px`
+                  return <span key={si} className={styles.barLine} style={{ left: `calc(${l}% + ${inset})`, width: `calc(${w}% - ${inset} - ${insetR})`, background: color, opacity: sg.faded ? .32 : 1 }} />
                 })}
-
-                {/* 이 날짜 모두 저장 */}
-                <button onClick={saveAll} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, padding: '13px 16px', borderRadius: 14, border: '1px solid var(--accent)', background: 'var(--accent-l, rgba(232,0,111,.07))', color: 'var(--accent)', fontWeight: 800, fontSize: 13.5, cursor: 'pointer', fontFamily: 'inherit' }}>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="var(--accent)" stroke="none"><path d="M12 17.3 6.2 21l1.6-6.7L2.6 9.8l6.9-.6L12 2.9l2.5 6.3 6.9.6-5.2 4.5 1.6 6.7z" /></svg>
-                    이 날짜의 이벤트 모두 저장
-                  </span>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>{selectedEvents.length}개 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="m9 6 6 6-6 6" /></svg></span>
-                </button>
+                {b.endHere && <span className={styles.barDot} style={{ background: color, opacity: week[b.endCol].inMonth ? 1 : .32 }} />}
               </div>
-            )}
-          </div>
-        </aside>
-      </div>
-
-      {/* ===== 하단 안내 카드 ===== */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 12, marginTop: 22 }}>
-        <Guide icon="calendar" title="숫자/배지 안내" desc="색깔 점 안 숫자는 그 종류의 이벤트 개수예요. (예: 전시 2개)" />
-        <Guide icon="dots" title="색상 안내" desc="점 색은 종류(팝업·콜라보·전시·행사), 주황색은 사전예약일이에요." />
-        <Guide icon="cursor" title="상세 보기" desc="날짜를 클릭하면 해당 날짜의 이벤트를 볼 수 있어요." />
-        <Guide icon="heart" title="저장하기" desc="이벤트 카드의 ♡를 눌러 내 저장 이벤트에 추가하세요." />
-      </div>
-    </div>
-  )
-}
-
-// 작품 검색 콤보박스 — 타이핑하면 실시간으로 목록이 좁혀지고, 클릭하면 그 작품만 필터
-function WorkSearch({ options, value, onChange }: { options: { id: string; name: string }[]; value: string; onChange: (id: string) => void }) {
-  const [query, setQuery] = useState('')
-  const [open, setOpen] = useState(false)
-  const wrapRef = useRef<HTMLDivElement>(null)
-  const selectedName = options.find(o => o.id === value)?.name ?? ''
-
-  useEffect(() => {
-    if (!open) return
-    const onDoc = (e: MouseEvent) => { if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false) }
-    document.addEventListener('mousedown', onDoc)
-    return () => document.removeEventListener('mousedown', onDoc)
-  }, [open])
-
-  const q = query.trim().toLowerCase()
-  const list = q ? options.filter(o => o.name.toLowerCase().includes(q)) : options
-
-  const pick = (id: string) => { onChange(id); setQuery(''); setOpen(false) }
-  const clear = () => { onChange(''); setQuery(''); setOpen(false) }
-
-  const optStyle = (on: boolean): React.CSSProperties => ({
-    display: 'block', width: '100%', textAlign: 'left', padding: '9px 12px', borderRadius: 9,
-    border: 'none', background: on ? 'var(--accent-l, rgba(232,0,111,.08))' : 'transparent',
-    color: on ? 'var(--accent)' : 'var(--text)', fontSize: 13.5, fontWeight: on ? 800 : 600,
-    cursor: 'pointer', fontFamily: 'inherit',
-  })
-
-  return (
-    <div ref={wrapRef} style={{ position: 'relative', minWidth: 260 }}>
-      <input
-        value={open ? query : selectedName}
-        onChange={e => { setQuery(e.target.value); if (!open) setOpen(true) }}
-        onFocus={() => { setOpen(true); setQuery('') }}
-        placeholder="작품 검색"
-        style={{ width: '100%', padding: '11px 38px 11px 38px', borderRadius: 12, border: `1px solid ${open ? 'var(--accent)' : 'var(--border)'}`, background: 'var(--surface)', color: 'var(--text)', fontSize: 14, fontWeight: 700, fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }}
-      />
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
-      {value ? (
-        <button onClick={clear} aria-label="작품 필터 해제" style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', border: 'none', background: 'none', cursor: 'pointer', color: 'var(--muted)', padding: 3, display: 'inline-flex' }}>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
-        </button>
-      ) : (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}><path d="m6 9 6 6 6-6" /></svg>
-      )}
-      {open && (
-        <div style={{ position: 'absolute', zIndex: 30, top: 'calc(100% + 6px)', left: 0, right: 0, maxHeight: 300, overflowY: 'auto', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 10px 30px rgba(0,0,0,.14)', padding: 6 }}>
-          <button onClick={() => pick('')} style={optStyle(value === '')}>작품 전체</button>
-          {list.length === 0 ? (
-            <div style={{ padding: '10px 12px', fontSize: 13, color: 'var(--muted)' }}>검색 결과가 없어요.</div>
-          ) : list.map(o => (
-            <button key={o.id} onClick={() => pick(o.id)} style={optStyle(o.id === value)}>{o.name}</button>
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
-
-function Tab({ active, onClick, icon, label }: { active: boolean; onClick: () => void; icon: React.ReactNode; label: string }) {
-  return (
-    <button onClick={onClick} style={{
-      display: 'inline-flex', alignItems: 'center', gap: 6, padding: '2px 2px 10px', marginBottom: -1,
-      border: 'none', borderBottom: `2.5px solid ${active ? 'var(--accent)' : 'transparent'}`,
-      background: 'none', cursor: 'pointer', fontFamily: 'inherit',
-      fontSize: 15.5, fontWeight: active ? 800 : 600, color: active ? 'var(--accent)' : 'var(--muted)',
-    }}>{icon}{label}</button>
-  )
-}
-
-function Guide({ icon, title, desc }: { icon: string; title: string; desc: string }) {
-  return (
-    <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', padding: '16px 16px', border: '1px solid var(--border)', borderRadius: 14, background: 'var(--surface)' }}>
-      <span style={{ width: 42, height: 42, borderRadius: 12, flexShrink: 0, background: 'var(--accent-l, rgba(232,0,111,.08))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}>
-        <GuideIcon name={icon} />
-      </span>
-      <div>
-        <div style={{ fontSize: 13.5, fontWeight: 900, marginBottom: 3 }}>{title}</div>
-        <div style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>{desc}</div>
+              {b.nameCol != null && (
+                <span className={styles.barName}
+                  style={{ left: `${b.nameCol / 7 * 100}%`, width: `${(b.reservedEnd - b.nameCol + 1) / 7 * 100}%`, top }}
+                  onClick={e => { e.stopPropagation(); onOpen(b.ev.id) }}
+                  title={`${b.ev.title} (${md(b.ev.startDate)} ~ ${md(b.ev.endDate)})`}>
+                  <span className={styles.barNameDot} style={{ background: color }} />
+                  <span className={styles.barNameText}>{b.ev.title}</span>
+                </span>
+              )}
+            </Fragment>
+          )
+        })}
+        {overflow > 0 && <span className={styles.tlMore} style={{ top: TL_TOP + TL_MAXTRACK * TL_TRACK - 4 }}>+{overflow}개</span>}
       </div>
     </div>
   )
 }
-function GuideIcon({ name }: { name: string }) {
-  const p: any = { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }
-  if (name === 'calendar') return <svg {...p}><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
-  if (name === 'dots') return <svg {...p} fill="currentColor" stroke="none"><circle cx="7" cy="10" r="3" /><circle cx="16" cy="8" r="3" /><circle cx="12" cy="16" r="3" /></svg>
-  if (name === 'cursor') return <svg {...p}><path d="m3 3 7 18 2-8 8-2z" /></svg>
-  return <svg {...p} fill="currentColor" stroke="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" /></svg>
-}
 
-const navBtn: React.CSSProperties = { width: 38, height: 38, borderRadius: 9999, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'inherit' }
-function Chev({ dir }: { dir: 'left' | 'right' }) {
-  return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">{dir === 'left' ? <path d="m15 18-6-6 6-6" /> : <path d="m9 6 6 6-6 6" />}</svg>
+function PanelImg({ src, type }: { src: string; type: string }) {
+  const [err, setErr] = useState(false)
+  if (err) return <Icon name={catIconOf(type)} size={22} style={{ opacity: .4 }} />
+  return <img src={src} alt="" onError={() => setErr(true)} />
 }
+const Chevron = ({ d }: { d: 'left' | 'right' }) => (
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">{d === 'left' ? <path d="m15 18-6-6 6-6" /> : <path d="m9 18 6-6-6-6" />}</svg>
+)

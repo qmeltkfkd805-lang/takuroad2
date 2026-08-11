@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "omori",
+    "name": "오모리",
+    "englishName": "OMORI",
+    "aliases": ["オモリ"],
+    "description": "소년 써니와 꿈속 인격 오모리가 다채로운 세계를 여행하며 잊힌 과거와 진실을 마주한다.",
+    "genres": ["호러", "판타지", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.omocat.com/omori",
+    "source": "https://www.omocat.com/omori"
+  },
+  {
+    "slug": "doki-doki-literature-club-plus",
+    "name": "두근두근 문예부 플러스!",
+    "englishName": "Doki Doki Literature Club Plus!",
+    "aliases": ["DDLC Plus", "두근두근 문예부 플러스"],
+    "description": "문예부에 가입한 주인공이 네 소녀와 시를 나누다 게임 세계의 불안한 이면을 발견한다.",
+    "genres": ["학원", "로맨스", "호러", "고어", "19"],
+    "ipType": ["게임"],
+    "officialUrl": "https://teamsalvato.com/games",
+    "source": "https://teamsalvato.com/news/announcing-doki-doki-literature-club-plus/"
+  },
+  {
+    "slug": "coffee-talk",
+    "name": "커피 토크",
+    "englishName": "Coffee Talk",
+    "aliases": [],
+    "description": "비 내리는 시애틀의 심야 카페에서 바리스타가 따뜻한 음료를 건네며 손님들의 사연을 듣는다.",
+    "genres": ["일상", "판타지", "드라마", "로맨스"],
+    "ipType": ["게임"],
+    "officialUrl": "https://togeproductions.itch.io/coffee-talk",
+    "source": "https://togeproductions.itch.io/coffee-talk"
+  },
+  {
+    "slug": "va-11-hall-a",
+    "name": "VA-11 HALL-A",
+    "englishName": "VA-11 Hall-A: Cyberpunk Bartender Action",
+    "aliases": ["발할라", "VA11 HALLA"],
+    "description": "기업이 지배하는 글리치 시티의 바텐더 질이 칵테일을 만들며 다양한 손님의 삶을 듣는다.",
+    "genres": ["SF", "일상", "드라마"],
+    "ipType": ["게임"],
+    "officialUrl": "https://sukeban.moe/press/sheet.php?p=Cyberpunk_Bartender_Action+VA-11+HALL-A",
+    "source": "https://sukeban.moe/press/sheet.php?p=Cyberpunk_Bartender_Action+VA-11+HALL-A"
+  },
+  {
+    "slug": "needy-girl-overdose",
+    "name": "니디 걸 오버도즈",
+    "englishName": "NEEDY GIRL OVERDOSE",
+    "aliases": ["NEEDY STREAMER OVERLOAD"],
+    "description": "플레이어가 아메의 연인 겸 프로듀서가 되어 방송과 일상을 관리하며 여러 결말을 만든다.",
+    "genres": ["일상", "드라마", "호러"],
+    "ipType": ["게임", "애니"],
+    "officialUrl": "https://whysoserious.jp/needy/kr/",
+    "source": "https://whysoserious.jp/needy/kr/"
+  },
+  {
+    "slug": "ib-remake",
+    "name": "이브",
+    "englishName": "Ib",
+    "aliases": ["イヴ"],
+    "description": "미술관에서 홀로 남은 소녀 이브가 살아 움직이는 작품들을 피해 기묘한 공간을 탈출한다.",
+    "genres": ["호러", "퍼즐", "판타지"],
+    "ipType": ["게임"],
+    "officialUrl": "https://kouri.kuchinawa.com/",
+    "source": "https://playism.com/game/ib/"
+  },
+  {
+    "slug": "the-witchs-house-mv",
+    "name": "마녀의 집 MV",
+    "englishName": "The Witch's House MV",
+    "aliases": ["魔女の家 MV", "마녀의 집"],
+    "description": "소녀 비올라가 끊임없이 구조가 변하는 마녀의 저택에서 함정을 피하고 출구를 찾는다.",
+    "genres": ["호러", "퍼즐", "고어"],
+    "ipType": ["게임"],
+    "officialUrl": "https://witchshousemv.dangenentertainment.co.jp/",
+    "source": "https://witchshousemv.dangenentertainment.co.jp/"
+  },
+  {
+    "slug": "slay-the-princess-pristine-cut",
+    "name": "슬레이 더 프린세스 프리스틴 컷",
+    "englishName": "Slay the Princess – The Pristine Cut",
+    "aliases": ["Slay the Princess", "슬레이 더 프린세스"],
+    "description": "세계의 종말을 막으라는 목소리를 따라 주인공이 오두막의 공주와 반복되는 선택을 마주한다.",
+    "genres": ["호러", "로맨스", "드라마", "고어"],
+    "ipType": ["게임"],
+    "officialUrl": "https://www.slaytheprincess.com/",
+    "source": "https://blacktabbygames.com/press-stp"
+  },
+  {
+    "slug": "world-of-horror",
+    "name": "월드 오브 호러",
+    "englishName": "World of Horror",
+    "aliases": ["恐怖の世界"],
+    "description": "일본 해안 마을에서 조사자들이 기괴한 사건을 해결하며 깨어나는 고대신에 맞선다.",
+    "genres": ["호러", "추리", "고어"],
+    "ipType": ["게임"],
+    "officialUrl": "https://wohgame.com/",
+    "source": "https://wohgame.com/"
+  },
+  {
+    "slug": "oneshot-world-machine-edition",
+    "name": "원샷 월드 머신 에디션",
+    "englishName": "OneShot: World Machine Edition",
+    "aliases": ["OneShot", "원샷"],
+    "description": "니코가 꺼져가는 세계에 태양을 되돌리기 위해 화면 밖 플레이어와 소통하며 퍼즐을 푼다.",
+    "genres": ["퍼즐", "모험", "판타지", "SF"],
+    "ipType": ["게임"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

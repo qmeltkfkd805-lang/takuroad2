@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "weak-hero-webtoon",
+    "name": "약한영웅",
+    "englishName": "Weak Hero",
+    "aliases": [],
+    "description": "작고 왜소한 모범생 연시은이 치밀한 판단과 도구를 활용한 싸움으로 학교 폭력의 질서에 맞선다.",
+    "genres": ["액션", "격투", "학원", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/action/weakhero/list?title_no=1726",
+    "source": "https://www.webtoons.com/en/action/weakhero/list?title_no=1726"
+  },
+  {
+    "slug": "teenage-mercenary-webtoon",
+    "name": "입학용병",
+    "englishName": "Teenage Mercenary",
+    "aliases": [],
+    "description": "어린 시절 용병으로 살아남은 유이진이 가족에게 돌아와 고등학교라는 새로운 전장에서 평범한 삶을 지킨다.",
+    "genres": ["액션", "학원", "격투", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/action/teenage-mercenary/list?title_no=2677",
+    "source": "https://www.webtoons.com/en/action/teenage-mercenary/list?title_no=2677"
+  },
+  {
+    "slug": "jungle-juice-webtoon",
+    "name": "정글쥬스",
+    "englishName": "Jungle Juice",
+    "aliases": [],
+    "description": "곤충 날개가 생긴 대학생 장수찬이 정체를 들킨 뒤 곤충 인간들의 비밀 사회에서 생존 경쟁에 뛰어든다.",
+    "genres": ["액션", "판타지", "학원", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/action/jungle-juice/list?title_no=2480",
+    "source": "https://www.webtoons.com/en/action/jungle-juice/list?title_no=2480"
+  },
+  {
+    "slug": "hero-killer-webtoon",
+    "name": "히어로 킬러",
+    "englishName": "Hero Killer",
+    "aliases": [],
+    "description": "초능력자들의 전쟁이 이어지는 세계에서 이화가 언니의 죽음과 부패한 영웅들의 진실을 좇아 복수한다.",
+    "genres": ["액션", "판타지", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/action/hero-killer/list?title_no=2745",
+    "source": "https://www.webtoons.com/en/action/hero-killer/list?title_no=2745"
+  },
+  {
+    "slug": "study-group-webtoon",
+    "name": "스터디그룹",
+    "englishName": "Study Group",
+    "aliases": [],
+    "description": "공부는 못하지만 싸움에 강한 윤가민이 최악의 공고에서 대학 진학을 위한 스터디그룹을 만든다.",
+    "genres": ["액션", "학원", "격투", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/action/study-group/list?title_no=3595",
+    "source": "https://www.webtoons.com/en/action/study-group/list?title_no=3595"
+  },
+  {
+    "slug": "the-greatest-estate-developer-webtoon",
+    "name": "역대급 영지 설계사",
+    "englishName": "The Greatest Estate Developer",
+    "aliases": [],
+    "description": "토목공학도 김수호가 빚더미 귀족 로이드로 깨어나 공학 지식과 마법으로 영지의 미래를 다시 설계한다.",
+    "genres": ["판타지", "코미디", "모험", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://www.webtoons.com/en/fantasy/the-greatest-estate-developer/list?title_no=3596",
+    "source": "https://www.webtoons.com/en/fantasy/the-greatest-estate-developer/list?title_no=3596"
+  },
+  {
+    "slug": "my-s-class-hunters-webtoon",
+    "name": "내가 키운 S급들",
+    "englishName": "My S-Class Hunters",
+    "aliases": ["내스급"],
+    "description": "동생을 잃고 회귀한 F급 헌터 한유진이 강자를 키우는 능력으로 새로운 관계와 미래를 만들어 간다.",
+    "genres": ["액션", "판타지", "모험", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://www.webtoons.com/en/action/my-s-class-hunters/list?title_no=3963",
+    "source": "https://www.webtoons.com/en/action/my-s-class-hunters/list?title_no=3963"
+  },
+  {
+    "slug": "the-world-after-the-fall-webtoon",
+    "name": "멸망 이후의 세계",
+    "englishName": "The World After the Fall",
+    "aliases": ["멸이세"],
+    "description": "회귀를 거부한 탑의 전사 재환이 멸망한 원래 세계에 남아 탑과 세계를 둘러싼 비밀을 파헤친다.",
+    "genres": ["액션", "판타지", "모험", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://www.webtoons.com/en/action/the-world-after-the-fall/list?title_no=4011",
+    "source": "https://www.webtoons.com/en/action/the-world-after-the-fall/list?title_no=4011"
+  },
+  {
+    "slug": "doom-breaker-webtoon",
+    "name": "투신전생기",
+    "englishName": "Doom Breaker",
+    "aliases": [],
+    "description": "인류 최후의 전사 제피르가 신들의 유희로 10년 전 노예 시절에 돌아가 파멸의 신에게 복수한다.",
+    "genres": ["액션", "판타지", "모험", "로맨스"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/action/doom-breaker/list?title_no=3197",
+    "source": "https://www.webtoons.com/en/action/doom-breaker/list?title_no=3197"
+  },
+  {
+    "slug": "the-gamer-webtoon",
+    "name": "더 게이머",
+    "englishName": "The Gamer",
+    "aliases": [],
+    "description": "평범한 고등학생 한지한이 현실을 게임처럼 보는 능력을 얻고 숨겨진 초능력 세계에서 성장한다.",
+    "genres": ["액션", "판타지", "학원", "모험"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/action/the-gamer/list?title_no=88",
+    "source": "https://www.webtoons.com/en/action/the-gamer/list?title_no=88"
+  }
+]

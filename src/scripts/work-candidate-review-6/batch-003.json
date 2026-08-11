@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "gatten-tasuke-anime",
+    "name": "에도 소년 갓텐 타스케",
+    "englishName": "Edokko Boy Gatten Tasuke",
+    "aliases": ["江戸っ子ボーイ がってん太助"],
+    "description": "23세기 오에도 시티의 타스케가 최고의 형사를 꿈꾸며 친구들과 온갖 사건에 뛰어든다.",
+    "genres": ["SF", "학원", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1990/tv90_03.html",
+    "source": "https://pierrot.jp/archive/1990/tv90_03.html"
+  },
+  {
+    "slug": "little-ghosts-anime",
+    "name": "꼬마 유령 앗치 콧치 솟치",
+    "englishName": "Little Ghosts, There, Here, and Where",
+    "aliases": ["ちいさなおばけ アッチ・コッチ・ソッチ"],
+    "description": "요리사 앗치와 이발사 콧치와 초등학생 솟치가 사람들과 어울려 따뜻한 일상을 보낸다.",
+    "genres": ["가족", "판타지", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1990/tv90_05.html",
+    "source": "https://pierrot.jp/archive/1990/tv90_05.html"
+  },
+  {
+    "slug": "marude-dameo-anime",
+    "name": "마루데 다메오",
+    "englishName": "Marude Dameo",
+    "aliases": ["丸出だめ夫"],
+    "description": "공부와 운동에는 서툴지만 착한 다메오가 가사 로봇 보롯과 함께 소박한 소동을 헤쳐 간다.",
+    "genres": ["가족", "SF", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1990/tv90_06.html",
+    "source": "https://pierrot.jp/archive/1990/tv90_06.html"
+  },
+  {
+    "slug": "karakuri-kengouden-musashi-road-anime",
+    "name": "카라쿠리 검호전 무사시 로드",
+    "englishName": "Musashi, the Samurai Lord",
+    "aliases": ["からくり剣豪伝ムサシロード", "무사시 로드"],
+    "description": "기계 무사 무사시가 지팡구 최고의 검호가 되기 위해 각지의 강자와 겨루며 수행 여행을 떠난다.",
+    "genres": ["액션", "모험", "로봇/메카"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1990/tv90_02.html",
+    "source": "https://pierrot.jp/archive/1990/tv90_02.html"
+  },
+  {
+    "slug": "ninja-senshi-tobikage-anime",
+    "name": "닌자전사 토비카게",
+    "englishName": "Ninja Robots",
+    "aliases": ["忍者戦士 飛影", "닌자전사 비영"],
+    "description": "화성 소년 죠가 외계의 로미나 공주와 만나 로봇 흑사자를 몰고 자붐군에 맞선다.",
+    "genres": ["SF", "액션", "로봇/메카"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1985/tv80_11.html",
+    "source": "https://pierrot.jp/archive/1985/tv80_11.html"
+  },
+  {
+    "slug": "heisei-tensai-bakabon-anime",
+    "name": "헤이세이 천재 바카본",
+    "englishName": "Heisei Tensai Bakabon",
+    "aliases": ["平成天才バカボン"],
+    "description": "바카본 아빠의 터무니없는 행동이 가족과 이웃 모두를 끌어들이며 매번 큰 소동으로 번진다.",
+    "genres": ["가족", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1990/tv90_01.html",
+    "source": "https://pierrot.jp/archive/1990/tv90_01.html"
+  },
+  {
+    "slug": "like-the-clouds-like-the-wind-anime",
+    "name": "구름처럼 바람처럼",
+    "englishName": "Like the Clouds, Like the Wind",
+    "aliases": ["雲のように風のように"],
+    "description": "명랑한 시골 소녀 긴가가 새 황제의 비 후보로 궁에 들어가 권력 다툼과 전란을 겪는다.",
+    "genres": ["드라마", "로맨스"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1990/tv90_01.html",
+    "source": "https://pierrot.jp/archive/1990/tv90_01.html"
+  },
+  {
+    "slug": "beyond-the-time-anime-special",
+    "name": "차오르는 시간의 저편에",
+    "englishName": "Beyond the Time",
+    "aliases": ["満ちてくる時のむこうに"],
+    "description": "여러 시대에 걸쳐 다시 태어난 두 연인이 엇갈린 기억과 운명을 넘어 서로를 찾아간다.",
+    "genres": ["판타지", "로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1990/tv90_06.html",
+    "source": "https://pierrot.jp/archive/1990/tv90_06.html"
+  },
+  {
+    "slug": "nontan-to-issho-anime",
+    "name": "논탄과 함께",
+    "englishName": "Nontan to Issho",
+    "aliases": ["ノンタンといっしょ"],
+    "description": "호기심 많고 장난기 넘치는 아기 고양이 논탄이 동물 친구들과 놀이와 생활을 배운다.",
+    "genres": ["가족", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1990/tv90_06.html",
+    "source": "https://pierrot.jp/archive/1990/tv90_06.html"
+  },
+  {
+    "slug": "ore-wa-chokkaku-anime",
+    "name": "나는 촉카쿠",
+    "englishName": "Ore wa Chokkaku",
+    "aliases": ["おれは直角", "오레와 촉카쿠"],
+    "description": "막부 말기 무사 소년 촉카쿠가 명문학교 메이린칸에서 곧은 무사도를 고집하며 소동을 벌인다.",
+    "genres": ["학원", "코미디", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/1990/tv90_04.html",
+    "source": "https://pierrot.jp/archive/1990/tv90_04.html"
+  }
+]

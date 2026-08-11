@@ -1,0 +1,201 @@
+[
+    {
+        "slug":  "neo-ranga-anime",
+        "name":  "남해기황 네오랑가",
+        "englishName":  "Neo Ranga",
+        "aliases":  [
+                        "南海奇皇",
+                        "네오 랑가"
+                    ],
+        "description":  "시마바라 세 자매가 남국의 왕위와 수호신 네오랑가를 물려받아 거대한 음모에 휘말린다.",
+        "genres":  [
+                       "SF",
+                       "로봇/메카",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/1995/tv90_20.html",
+        "source":  "https://pierrot.jp/archive/1995/tv90_20.html"
+    },
+    {
+        "slug":  "dokkiri-doctor-anime",
+        "name":  "두근두근 닥터",
+        "englishName":  "Dokkiri Doctor",
+        "aliases":  [
+                        "どっきりドクター",
+                        "깜짝 닥터"
+                    ],
+        "description":  "천재 과학자 하루카 선생의 엉뚱한 발명품이 나나호시 초등학교에 매일 새로운 소동을 일으킨다.",
+        "genres":  [
+                       "학원",
+                       "SF",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/1995/tv90_21.html",
+        "source":  "https://pierrot.jp/archive/1995/tv90_21.html"
+    },
+    {
+        "slug":  "microman-anime",
+        "name":  "작은 거인 미크로맨",
+        "englishName":  "Microman",
+        "aliases":  [
+                        "小さな巨人 ミクロマン",
+                        "작은 거인 마이크로맨"
+                    ],
+        "description":  "소년 코헤이와 손바닥 크기의 전사 미크로맨들이 지구를 노리는 아크로이어 군단과 싸운다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "로봇/메카"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/1995/tv90_23.html",
+        "source":  "https://pierrot.jp/archive/1995/tv90_23.html"
+    },
+    {
+        "slug":  "es-otherwise-anime",
+        "name":  "에스 어더와이즈",
+        "englishName":  "E\u0027S Otherwise",
+        "aliases":  [
+                        "エス・アザーワイズ"
+                    ],
+        "description":  "초능력 부대원 카이가 임무 중 버려진 도시 갈드에 남겨져 조직 아슈람의 진실을 알게 된다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2000/tv00_14.html",
+        "source":  "https://pierrot.jp/archive/2000/tv00_14.html"
+    },
+    {
+        "slug":  "fancy-lala-anime",
+        "name":  "마법의 스테이지 팬시 라라",
+        "englishName":  "Fancy Lala",
+        "aliases":  [
+                        "魔法のステージ ファンシーララ",
+                        "팬시라라"
+                    ],
+        "description":  "아홉 살 미호가 마법으로 성장한 라라가 되어 모델과 가수 활동을 시작한다.",
+        "genres":  [
+                       "마법소녀",
+                       "아이돌",
+                       "일상",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/1995/tv90_19.html",
+        "source":  "https://pierrot.jp/archive/1995/tv90_19.html"
+    },
+    {
+        "slug":  "tenshi-ni-narumon-anime",
+        "name":  "천사가 될 거야!",
+        "englishName":  "I\u0027m Gonna Be an Angel!",
+        "aliases":  [
+                        "天使になるもんっ！",
+                        "텐시니 나루몽"
+                    ],
+        "description":  "마계 소녀 노엘이 우연히 입맞춘 유스케의 천사가 되겠다며 기묘한 가족과 인간계에 눌러앉는다.",
+        "genres":  [
+                       "판타지",
+                       "로맨스",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/1995/tv90_25.html",
+        "source":  "https://pierrot.jp/archive/1995/tv90_25.html"
+    },
+    {
+        "slug":  "clamp-school-detectives-anime",
+        "name":  "CLAMP 학원 탐정단",
+        "englishName":  "CLAMP School Detectives",
+        "aliases":  [
+                        "CLAMP学園探偵団",
+                        "클램프 학원 탐정단"
+                    ],
+        "description":  "CLAMP 학원 초등부 학생회 삼인방이 재능과 행동력을 모아 여성들의 여러 고민과 사건을 해결한다.",
+        "genres":  [
+                       "학원",
+                       "추리",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/1995/tv90_16.html",
+        "source":  "https://pierrot.jp/archive/1995/tv90_16.html"
+    },
+    {
+        "slug":  "midori-no-makibao-anime",
+        "name":  "미도리의 마키바오",
+        "englishName":  "Midori no Makibao",
+        "aliases":  [
+                        "みどりのマキバオー",
+                        "미도리노 마키바오"
+                    ],
+        "description":  "작고 우스꽝스러운 경주마 마키바오가 동료와 라이벌을 만나 최고의 서러브레드에 도전한다.",
+        "genres":  [
+                       "스포츠",
+                       "코미디",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/1995/",
+        "source":  "https://pierrot.jp/archive/1995/"
+    },
+    {
+        "slug":  "yoiko-anime",
+        "name":  "요이코 애니메이션",
+        "englishName":  "Yoiko",
+        "aliases":  [
+                        "よいこ"
+                    ],
+        "description":  "어른처럼 성숙한 외모를 지닌 초등학생 후카가 학교와 동네에서 엉뚱한 오해와 소동을 겪는다.",
+        "genres":  [
+                       "학원",
+                       "일상",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/1995/",
+        "source":  "https://pierrot.jp/archive/1995/"
+    },
+    {
+        "slug":  "takoyaki-mantoman-anime",
+        "name":  "타코야키 맨트맨",
+        "englishName":  "Takoyaki Mantoman",
+        "aliases":  [
+                        "たこやきマントマン",
+                        "문어빵 맨트맨"
+                    ],
+        "description":  "다섯 타코야키 영웅이 각자의 능력과 팀워크로 마을 사람들을 위협하는 악당을 물리친다.",
+        "genres":  [
+                       "가족",
+                       "액션",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/1995/",
+        "source":  "https://pierrot.jp/archive/1995/"
+    }
+]

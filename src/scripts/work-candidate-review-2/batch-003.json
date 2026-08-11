@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "monthly-girls-nozaki-kun",
+    "name": "월간순정 노자키 군",
+    "englishName": "Monthly Girls' Nozaki-kun",
+    "aliases": ["월간순정 노자키군", "노자키군", "月刊少女野崎くん"],
+    "description": "사쿠라 치요가 짝사랑하는 노자키에게 고백했다가 그의 순정만화 어시스턴트가 되며 벌어지는 코미디.",
+    "genres": ["학원", "코미디", "로맨스", "일상"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://orig-magazine.jp.square-enix.com/top/anime/detail/nozaki/",
+    "source": "https://orig-magazine.jp.square-enix.com/top/anime/detail/nozaki/"
+  },
+  {
+    "slug": "my-little-monster",
+    "name": "옆자리 괴물군",
+    "englishName": "My Little Monster",
+    "aliases": ["となりの怪物くん"],
+    "description": "공부밖에 모르던 시즈쿠가 거칠지만 솔직한 문제아 하루와 만나 서툰 우정과 사랑을 배운다.",
+    "genres": ["학원", "로맨스", "코미디", "드라마"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://www.tk-anime.info/",
+    "source": "https://www.tv-tokyo.co.jp/anime/tonarinokaibutsukun/"
+  },
+  {
+    "slug": "you-and-me-kimi-to-boku",
+    "name": "너와 나",
+    "englishName": "You and Me",
+    "aliases": ["君と僕。", "Kimi to Boku"],
+    "description": "어릴 때부터 함께한 남고생 네 명과 전학생 치즈루가 보내는 느긋하고 소소한 청춘의 나날.",
+    "genres": ["학원", "일상", "코미디", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://www.kimiboku.tv/",
+    "source": "https://www.tv-tokyo.co.jp/anime/kimiboku/"
+  },
+  {
+    "slug": "tanaka-kun-is-always-listless",
+    "name": "타나카 군은 항상 나른해",
+    "englishName": "Tanaka-kun Is Always Listless",
+    "aliases": ["田中くんはいつもけだるげ"],
+    "description": "언제나 나른한 타나카와 그를 묵묵히 챙기는 오오타가 친구들과 느긋한 학교생활을 보낸다.",
+    "genres": ["학원", "일상", "코미디"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://tanakakun.tv/",
+    "source": "https://www.mbs.jp/tanakakun/"
+  },
+  {
+    "slug": "the-tatami-galaxy",
+    "name": "다다미 넉 장 반 세계일주",
+    "englishName": "The Tatami Galaxy",
+    "aliases": ["四畳半神話大系", "Yojouhan Shinwa Taikei"],
+    "description": "불만뿐인 대학생이 동아리 선택이 달랐던 여러 평행세계의 캠퍼스 생활을 되풀이한다.",
+    "genres": ["코미디", "드라마", "판타지", "일상"],
+    "ipType": ["소설", "애니"],
+    "officialUrl": "https://www.kadokawa.co.jp/product/200874000345/",
+    "source": "https://www.kadokawa.co.jp/product/200874000345/"
+  },
+  {
+    "slug": "happy-sugar-life",
+    "name": "해피 슈가 라이프",
+    "englishName": "Happy Sugar Life",
+    "aliases": ["ハッピーシュガーライフ"],
+    "description": "소녀 시오와의 생활을 사랑이라 믿는 사토가 그 행복을 지키기 위해 범죄도 마다하지 않는다.",
+    "genres": ["호러", "추리", "드라마", "19"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://www.mbs.jp/happysugarlife/",
+    "source": "https://www.mbs.jp/happysugarlife/"
+  },
+  {
+    "slug": "scums-wish",
+    "name": "쓰레기의 본망",
+    "englishName": "Scum's Wish",
+    "aliases": ["クズの本懐"],
+    "description": "각자 다른 사람을 짝사랑하는 하나비와 무기가 서로의 외로움을 달래는 가짜 연인이 된다.",
+    "genres": ["로맨스", "드라마", "학원", "19"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://magazine.jp.square-enix.com/top/comics/detail/9784757552005/",
+    "source": "https://magazine.jp.square-enix.com/top/comics/detail/9784757552005/"
+  },
+  {
+    "slug": "blue-spring-ride",
+    "name": "아오하라이드",
+    "englishName": "Blue Spring Ride",
+    "aliases": ["アオハライド", "Ao Haru Ride"],
+    "description": "고교생 후타바가 달라진 모습으로 돌아온 첫사랑 코우와 재회해 멈췄던 관계를 다시 잇는다.",
+    "genres": ["학원", "로맨스", "드라마"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://aoha-anime.com/",
+    "source": "https://aoha-anime.com/"
+  },
+  {
+    "slug": "wolf-girl-and-black-prince",
+    "name": "늑대소녀와 흑왕자",
+    "englishName": "Wolf Girl and Black Prince",
+    "aliases": ["オオカミ少女と黒王子"],
+    "description": "허세로 남자친구가 있다고 거짓말한 에리카가 같은 학교의 사타에게 연인 행세를 부탁한다.",
+    "genres": ["학원", "로맨스", "코미디"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://www.vap.co.jp/ookamishojo-anime/",
+    "source": "https://www.ytv.co.jp/ookamishojo/"
+  },
+  {
+    "slug": "orange-takano-ichigo",
+    "name": "오렌지",
+    "englishName": "Orange",
+    "aliases": ["orange", "オレンジ"],
+    "description": "고교생 나호가 미래의 자신이 보낸 편지를 받고 전학생 카케루에게 닥칠 비극을 막으려 한다.",
+    "genres": ["학원", "로맨스", "드라마", "SF"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://orange-anime.com/",
+    "source": "https://orange-anime.com/staffcast/"
+  }
+]

@@ -74,6 +74,7 @@ export default function CommunityPage() {
   const [boardCounts, setBoardCounts] = useState<Record<string, number>>({})
   const [myActivity, setMyActivity] = useState<{ posts: number; comments: number } | null>(null)
   const [moreOpen, setMoreOpen] = useState(false)   // 게시판 메뉴 '더보기'
+  const [sideCreationOpen, setSideCreationOpen] = useState(false)   // 사이드 바로가기: 창작게시판 펼침
 
   const tabsRef = useRef<HTMLDivElement>(null)
   const [tabOverflow, setTabOverflow] = useState(false)
@@ -395,9 +396,13 @@ export default function CommunityPage() {
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="m6 9 6 6 6-6" /></svg>
               </button>
               {moreOpen && (
-                <div style={{ position: 'absolute', top: '100%', right: 0, zIndex: 20, marginTop: 2, minWidth: 150, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.12)', padding: 6 }}>
-                  {(['companion', 'fanart', 'fancraft'] as Board[]).map(b => (
-                    <button key={b} onClick={() => { setBoard(b); setScope('all'); setMoreOpen(false) }} style={{ display: 'block', width: '100%', textAlign: 'left', border: 'none', background: board === b ? 'var(--accent-l, rgba(232,0,111,.08))' : 'none', color: board === b ? 'var(--accent)' : 'var(--text)', padding: '9px 11px', borderRadius: 7, fontSize: 13.5, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>{BOARD_LABEL[b]}</button>
+                <div style={{ position: 'absolute', top: '100%', right: 0, zIndex: 20, marginTop: 2, minWidth: 160, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.12)', padding: 6 }}>
+                  {/* 덕메게시판 */}
+                  <button onClick={() => { setBoard('companion'); setScope('all'); setMoreOpen(false) }} style={{ display: 'block', width: '100%', textAlign: 'left', border: 'none', background: board === 'companion' ? 'var(--accent-l, rgba(232,0,111,.08))' : 'none', color: board === 'companion' ? 'var(--accent)' : 'var(--text)', padding: '9px 11px', borderRadius: 7, fontSize: 13.5, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>{BOARD_LABEL['companion']}</button>
+                  {/* 창작게시판 (그룹) → 세부: 팬아트 · 팬창작물 */}
+                  <div style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--muted)', padding: '8px 11px 4px' }}>창작게시판</div>
+                  {(['fanart', 'fancraft'] as Board[]).map(b => (
+                    <button key={b} onClick={() => { setBoard(b); setScope('all'); setMoreOpen(false) }} style={{ display: 'block', width: '100%', textAlign: 'left', border: 'none', background: board === b ? 'var(--accent-l, rgba(232,0,111,.08))' : 'none', color: board === b ? 'var(--accent)' : 'var(--text)', padding: '9px 11px 9px 20px', borderRadius: 7, fontSize: 13.5, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>{BOARD_LABEL[b]}</button>
                   ))}
                 </div>
               )}
@@ -516,6 +521,25 @@ export default function CommunityPage() {
                   <span style={{ fontSize: 12.5, color: 'var(--muted)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>{(boardCounts[b] ?? 0).toLocaleString()}<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="m9 18 6-6-6-6" /></svg></span>
                 </button>
               ))}
+              {/* 창작게시판 — 펼치면 팬아트·팬창작물 */}
+              {(() => {
+                const inCreation = board === 'fanart' || board === 'fancraft'
+                const creationCount = (boardCounts['fanart'] ?? 0) + (boardCounts['fancraft'] ?? 0)
+                return (
+                  <>
+                    <button onClick={() => setSideCreationOpen(o => !o)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, border: 'none', background: 'none', padding: '10px 2px', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left', borderTop: '1px solid var(--border)' }}>
+                      <span style={{ fontSize: 13.5, color: inCreation ? 'var(--accent)' : 'var(--text)', fontWeight: inCreation ? 800 : 600 }}>창작게시판</span>
+                      <span style={{ fontSize: 12.5, color: 'var(--muted)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>{creationCount.toLocaleString()}<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ transform: sideCreationOpen ? 'rotate(90deg)' : 'none', transition: 'transform .15s' }}><path d="m9 18 6-6-6-6" /></svg></span>
+                    </button>
+                    {sideCreationOpen && (['fanart', 'fancraft'] as Board[]).map(b => (
+                      <button key={b} onClick={() => { setBoard(b); setScope('all') }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, border: 'none', background: 'none', padding: '9px 2px 9px 14px', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left', borderTop: '1px solid var(--border)' }}>
+                        <span style={{ fontSize: 13, color: board === b ? 'var(--accent)' : 'var(--text)', fontWeight: board === b ? 800 : 600 }}>· {BOARD_LABEL[b]}</span>
+                        <span style={{ fontSize: 12, color: 'var(--muted)' }}>{(boardCounts[b] ?? 0).toLocaleString()}</span>
+                      </button>
+                    ))}
+                  </>
+                )
+              })()}
             </div>
           </SideCard>
 

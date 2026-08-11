@@ -16,7 +16,7 @@ import { ROUTES } from '@/lib/constants/routes'
 import { shopRegion, shopDistrict } from '@/lib/utils/region'
 import styles from './MapPage.module.css'
 import fab from './MapFab.module.css'
-import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
+import { CATEGORY_NAME_MAP, catInfoOf } from '@/lib/constants/categories'
 import MapBottomSheet from './MapBottomSheet'
 import MapPinModal from './MapPinModal'
 import { getOngoingMapEvents, MapEvent } from '@/services/mapEventService'
@@ -363,8 +363,13 @@ export default function MapPage() {
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontWeight: 700, fontSize: '14px' }}>{shop.name}</div>
-                      <div style={{ fontSize: '12px', color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {shop.cats.join(', ')}
+                      <div style={{ display: 'flex', gap: '5px', marginTop: '3px', overflow: 'hidden' }}>
+                        {shop.cats.slice(0, 3).map(c => {
+                          const info = catInfoOf(c)
+                          return (
+                            <span key={c} style={{ fontSize: '11px', fontWeight: 700, whiteSpace: 'nowrap', padding: '1px 7px', borderRadius: '6px', color: info?.color ?? 'var(--muted)', background: info?.bgColor ?? 'var(--surface2)' }}>{c}</span>
+                          )
+                        })}
                       </div>
                     </div>
                   </div>

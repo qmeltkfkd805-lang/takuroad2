@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "barakamon",
+    "name": "바라카몬",
+    "englishName": "Barakamon",
+    "aliases": ["ばらかもん"],
+    "description": "문제를 일으킨 서예가 한다가 외딴 섬으로 내려가 자유분방한 나루와 주민들을 만나 변화한다.",
+    "genres": ["일상", "코미디", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://www.vap.co.jp/barakamon/",
+    "source": "https://magazine.jp.square-enix.com/top/anime/detail/barakamon/"
+  },
+  {
+    "slug": "silver-spoon",
+    "name": "은수저",
+    "englishName": "Silver Spoon",
+    "aliases": ["은수저 Silver Spoon", "銀の匙 Silver Spoon"],
+    "description": "입시 경쟁에서 벗어나 농업고에 진학한 하치켄이 생명과 노동, 자신의 진로를 새롭게 배운다.",
+    "genres": ["학원", "일상", "드라마", "코미디", "요리"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://www.ginsaji-anime.com/",
+    "source": "https://www.ginsaji-anime.com/"
+  },
+  {
+    "slug": "bunny-drop",
+    "name": "토끼 드롭스",
+    "englishName": "Bunny Drop",
+    "aliases": ["우사기 드롭", "うさぎドロップ"],
+    "description": "독신 회사원 다이키치가 할아버지의 어린 딸 린을 맡아 서툴지만 따뜻한 가족이 되어 간다.",
+    "genres": ["가족", "일상", "드라마"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://usagi-drop.tv/",
+    "source": "https://usagi-drop.tv/index.html"
+  },
+  {
+    "slug": "kakushigoto",
+    "name": "카쿠시고토",
+    "englishName": "Kakushigoto",
+    "aliases": ["かくしごと"],
+    "description": "저질 개그 만화가 카쿠시가 딸 히메에게 자신의 직업을 숨기려고 온갖 소동을 벌인다.",
+    "genres": ["가족", "코미디", "일상", "드라마"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://kakushigoto-anime.com/",
+    "source": "https://kakushigoto-anime.com/tv/story/"
+  },
+  {
+    "slug": "deaimon-recipe-for-happiness",
+    "name": "데아이몬",
+    "englishName": "Deaimon: Recipe for Happiness",
+    "aliases": ["であいもん"],
+    "description": "교토의 본가 화과자점으로 돌아온 나고무가 가게의 후계자로 기대받는 소녀 이츠카와 가까워진다.",
+    "genres": ["가족", "일상", "드라마", "요리"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://deaimon.jp/",
+    "source": "https://deaimon.jp/"
+  },
+  {
+    "slug": "pocos-udon-world",
+    "name": "우동나라의 황금색 털뭉치",
+    "englishName": "Poco's Udon World",
+    "aliases": ["うどんの国の金色毛鞠"],
+    "description": "고향 가가와로 돌아온 소타가 아이로 변신한 너구리 포코를 만나 가족 같은 시간을 보낸다.",
+    "genres": ["가족", "일상", "판타지", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://www.vap.co.jp/udonnokuni-anime/",
+    "source": "https://www.vap.co.jp/udonnokuni-anime/story/intro.html"
+  },
+  {
+    "slug": "sweetness-and-lightning",
+    "name": "달콤달콤 & 짜릿짜릿",
+    "englishName": "Sweetness and Lightning",
+    "aliases": ["달콤달콤 짜릿짜릿", "甘々と稲妻"],
+    "description": "아내를 잃은 교사 코헤이가 딸 츠무기와 제자 코토리와 함께 요리를 배우며 식탁의 온기를 되찾는다.",
+    "genres": ["가족", "요리", "일상", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://www.amaama.jp/",
+    "source": "https://www.toei-video.co.jp/special/amaama/"
+  },
+  {
+    "slug": "somali-and-the-forest-spirit",
+    "name": "소말리와 숲의 신",
+    "englishName": "Somali and the Forest Spirit",
+    "aliases": ["ソマリと森の神様"],
+    "description": "인간이 거의 사라진 세계에서 숲의 골렘이 인간 소녀 소말리의 부모를 찾아 함께 여행한다.",
+    "genres": ["판타지", "모험", "가족", "드라마"],
+    "ipType": ["웹툰", "애니"],
+    "officialUrl": "https://www.satelight.co.jp/works/%E3%82%BD%E3%83%9E%E3%83%AA%E3%81%A8%E6%A3%AE%E3%81%AE%E7%A5%9E%E6%A7%98/",
+    "source": "https://www.satelight.co.jp/works/%E3%82%BD%E3%83%9E%E3%83%AA%E3%81%A8%E6%A3%AE%E3%81%AE%E7%A5%9E%E6%A7%98/"
+  },
+  {
+    "slug": "buddy-daddies",
+    "name": "버디 대디스",
+    "englishName": "Buddy Daddies",
+    "aliases": ["Buddy Daddies", "バディ・ダディズ"],
+    "description": "두 킬러 카즈키와 레이가 네 살 미리를 맡게 되면서 위험한 일과 육아를 함께 감당한다.",
+    "genres": ["가족", "코미디", "액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://buddy-animeproject.com/",
+    "source": "https://buddy-animeproject.com/"
+  },
+  {
+    "slug": "hinamatsuri",
+    "name": "히나마츠리",
+    "englishName": "Hinamatsuri",
+    "aliases": ["ヒナまつり"],
+    "description": "야쿠자 닛타의 집에 초능력 소녀 히나가 나타나 강제로 동거하며 기묘한 가족 생활이 시작된다.",
+    "genres": ["코미디", "일상", "가족", "SF"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://hina-matsuri.net/",
+    "source": "https://hina-matsuri.net/"
+  }
+]

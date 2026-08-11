@@ -1,0 +1,2408 @@
+{
+  "mode": "dry-run",
+  "before": 939,
+  "rows": [
+    {
+      "name": "아오오니 디 애니메이션",
+      "slug": "aooni-the-animation-tv",
+      "english_name": "Aooni The Animation",
+      "aliases": [
+        "あおおに ～じ・あにめぇしょん～"
+      ],
+      "ip_type": "애니",
+      "description": "히로시와 친구들이 괴물 아오오니가 나타나는 저택에서 엉뚱한 탈출 소동을 벌인다.",
+      "genres": [
+        "호러",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/aooni_tv",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/aooni_tv"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "악우 천재인형",
+      "slug": "aguu-genius-dolls-anime",
+      "english_name": "Aguu: Genius Dolls",
+      "aliases": [
+        "悪偶 -天才人形-"
+      ],
+      "ip_type": "애니",
+      "description": "평범한 무용수 아이가 천재의 재능을 빼앗아 만든 인형 악우의 비밀과 맞선다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/aguu",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/aguu"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "더 리플렉션 애니메이션",
+      "slug": "the-reflection-anime",
+      "english_name": "The Reflection",
+      "aliases": [
+        "THE REFLECTION ザ・リフレクション"
+      ],
+      "ip_type": "애니",
+      "description": "대재앙 리플렉션 뒤 초능력을 얻은 이들이 영웅과 악당으로 갈려 세계 곳곳에서 충돌한다.",
+      "genres": [
+        "SF",
+        "액션"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/the-reflection",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/the-reflection"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "CODE-E 애니메이션",
+      "slug": "code-e-anime",
+      "english_name": "Code-E",
+      "aliases": [],
+      "ip_type": "애니",
+      "description": "감정이 격해지면 전자기기를 망가뜨리는 치나미가 과학 소년 코타로와 학교생활을 시작한다.",
+      "genres": [
+        "SF",
+        "학원",
+        "로맨스",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/code-e",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/code-e"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "Mission-E 애니메이션",
+      "slug": "mission-e-anime",
+      "english_name": "Mission-E",
+      "aliases": [],
+      "ip_type": "애니",
+      "description": "TYPE-E 능력자 마오리와 치나미가 능력자의 격리와 공존을 둘러싼 세력에 맞선다.",
+      "genres": [
+        "SF",
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/mission-e",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/mission-e"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "동물 환경 회의",
+      "slug": "animal-conference-on-environment-anime",
+      "english_name": "Animal Conference on the Environment",
+      "aliases": [
+        "動物かんきょう会議"
+      ],
+      "ip_type": "애니",
+      "description": "세계 각지의 동물들이 서로 다른 관점으로 지구 환경 문제를 토론하고 행동을 모색한다.",
+      "genres": [
+        "가족",
+        "기타"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/a-conference",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/a-conference"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "꿈을 이루어주는 코끼리 애니메이션",
+      "slug": "yume-wo-kanaeru-zou-anime",
+      "english_name": null,
+      "aliases": [
+        "夢をかなえるゾウ"
+      ],
+      "ip_type": "애니",
+      "description": "인생을 비관하던 후미오가 코끼리 신 가네샤의 수상하고 사소한 과제를 하나씩 실천한다.",
+      "genres": [
+        "판타지",
+        "일상",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/yumezo",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/yumezo"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아마츠키 애니메이션",
+      "slug": "amatsuki-anime",
+      "english_name": "Amatsuki",
+      "aliases": [
+        "あまつき"
+      ],
+      "ip_type": "애니",
+      "description": "박물관 체험 중 이세계 아마츠키로 떨어진 토키도키가 사람과 요괴 사이의 운명을 마주한다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/amatsuki",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/amatsuki"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "멋진 탐정 라비린스",
+      "slug": "fantastic-detective-labyrinth-anime",
+      "english_name": "Fantastic Detective Labyrinth",
+      "aliases": [
+        "素敵探偵ラビリンス"
+      ],
+      "ip_type": "애니",
+      "description": "황폐한 구도 도쿄에서 소년 탐정 마유키가 신비한 힘 신치로 기괴한 사건을 해결한다.",
+      "genres": [
+        "추리",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/labyrinth",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/labyrinth"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "음악소녀 TV 애니메이션",
+      "slug": "music-girls-tv-anime",
+      "english_name": "Music Girls",
+      "aliases": [
+        "音楽少女"
+      ],
+      "ip_type": "애니",
+      "description": "팔리지 않는 아이돌 유닛 음악소녀가 하나코를 만나 성공을 향한 새로운 도전을 시작한다.",
+      "genres": [
+        "음악",
+        "아이돌",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/ongakushoujo",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/ongakushoujo"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "리루리루 페어리루 요정의 문",
+      "slug": "rilu-rilu-fairilu-fairy-door-anime",
+      "english_name": "Rilu Rilu Fairilu: The Fairy's Door",
+      "aliases": [
+        "リルリルフェアリル〜妖精のドア〜"
+      ],
+      "ip_type": "애니",
+      "description": "씨앗에서 태어난 요정 리프와 친구들이 자신만의 페어리루 도어를 찾으며 꿈을 키운다.",
+      "genres": [
+        "판타지",
+        "가족",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/rilurilu",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/rilurilu"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "리루리루 페어리루 마법의 거울",
+      "slug": "rilu-rilu-fairilu-magic-mirror-anime",
+      "english_name": "Rilu Rilu Fairilu: Magic Mirror",
+      "aliases": [
+        "リルリルフェアリル～魔法の鏡～"
+      ],
+      "ip_type": "애니",
+      "description": "리프와 플라워 페어리루들이 인간 파트너와 힘을 합쳐 각자의 꿈을 향해 성장한다.",
+      "genres": [
+        "판타지",
+        "가족",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/rilurilu-2",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/rilurilu-2"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "가르쳐줘 마법의 펜듈럼 리루리루 페어리루",
+      "slug": "oshiete-mahou-pendulum-fairilu-anime",
+      "english_name": null,
+      "aliases": [
+        "おしえて魔法のペンデュラム～リルリルフェアリル～"
+      ],
+      "ip_type": "애니",
+      "description": "고민 많은 중학생 아리스가 마법의 펜듈럼으로 요정 세계에 이끌려 마음의 답을 찾는다.",
+      "genres": [
+        "판타지",
+        "가족",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/rilurilu-3",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/rilurilu-3"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "영검산 별가루들의 잔치",
+      "slug": "reikenzan-stardust-banquet-anime",
+      "english_name": "Reikenzan: Hoshikuzu-tachi no Utage",
+      "aliases": [
+        "霊剣山 星屑たちの宴"
+      ],
+      "ip_type": "애니",
+      "description": "천년에 한 번 나오는 공영근을 지닌 왕륙이 영검파 입문 시험에 도전해 선인의 길을 걷는다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/reikenzan",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/reikenzan"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "영검산 예지로의 자격",
+      "slug": "reikenzan-eichi-qualification-anime",
+      "english_name": "Reikenzan: Eichi e no Shikaku",
+      "aliases": [
+        "霊剣山 叡智への資格"
+      ],
+      "ip_type": "애니",
+      "description": "영검파 수행 2년째인 왕륙이 속세로 내려가 자신만의 방식으로 사람들을 이끌고 시험받는다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/reikenzan2",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/reikenzan2"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "헌원검 푸른 빛의 검",
+      "slug": "xuan-yuan-sword-luminary-anime",
+      "english_name": "Xuan Yuan Sword Luminary",
+      "aliases": [
+        "軒轅剣・蒼き曜"
+      ],
+      "ip_type": "애니",
+      "description": "전쟁으로 헤어진 세 사람이 전설의 헌원검과 기계 병기를 둘러싸고 적으로 다시 만난다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험",
+        "로봇/메카"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/kenenken",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/kenenken"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "호접기 젊은 노부나가",
+      "slug": "kochoki-wakaki-nobunaga-anime",
+      "english_name": "Kochoki: Wakaki Nobunaga",
+      "aliases": [
+        "胡蝶綺 ～若き信長～"
+      ],
+      "ip_type": "애니",
+      "description": "젊은 오다 노부나가가 가문 계승 다툼과 배신을 겪으며 전국시대의 무장으로 성장한다.",
+      "genres": [
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/kochoki",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/kochoki"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "나메코 세계의 친구들",
+      "slug": "nameko-sekai-no-tomodachi-anime",
+      "english_name": null,
+      "aliases": [
+        "なめこ〜せかいのともだち〜"
+      ],
+      "ip_type": "애니",
+      "description": "나메코가 숲의 안내단 NUR을 꾸려 세계 각지에서 찾아오는 개성 강한 친구들을 맞이한다.",
+      "genres": [
+        "가족",
+        "일상",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/nameko",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/nameko"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "pupa 애니메이션",
+      "slug": "pupa-anime",
+      "english_name": "Pupa",
+      "aliases": [
+        "ピューパ"
+      ],
+      "ip_type": "애니",
+      "description": "괴물로 변해 사람을 먹는 여동생 유메를 위해 오빠 우츠츠가 재생하는 자신의 몸을 내어준다.",
+      "genres": [
+        "호러",
+        "고어",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/pupa",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/pupa"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "카부키부! 애니메이션",
+      "slug": "kabukibu-anime",
+      "english_name": "Kabukibu!",
+      "aliases": [
+        "カブキブ！"
+      ],
+      "ip_type": "애니",
+      "description": "가부키를 사랑하는 고교생 쿠로고가 학교에 가부키부를 만들기 위해 동료를 모은다.",
+      "genres": [
+        "학원",
+        "드라마",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/kabukibu",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/kabukibu"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "메가네부! 애니메이션",
+      "slug": "meganebu-anime",
+      "english_name": "Meganebu!",
+      "aliases": [
+        "メガネブ！"
+      ],
+      "ip_type": "애니",
+      "description": "안경을 사랑하는 남고생 다섯 명이 안경부에서 기상천외한 발명과 청춘 소동을 벌인다.",
+      "genres": [
+        "학원",
+        "일상",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/meganebu",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/meganebu"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "의풍당당 가네츠구와 게이지",
+      "slug": "gifuu-doudou-kanetsugu-keiji-anime",
+      "english_name": "Gifuu Doudou!! Kanetsugu to Keiji",
+      "aliases": [
+        "義風堂々!! 兼続と慶次"
+      ],
+      "ip_type": "애니",
+      "description": "나오에 가네츠구와 마에다 게이지가 술잔을 나누며 의리로 헤쳐 온 전국시대를 회상한다.",
+      "genres": [
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/gifuu",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/gifuu"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "다이내믹 비너스",
+      "slug": "dynamic-venus-anime",
+      "english_name": "Dynamic Venus",
+      "aliases": [
+        "ダイナミックヴィーナス"
+      ],
+      "ip_type": "애니",
+      "description": "불행한 주부 시바요가 기묘한 조건으로 변신하는 영웅이 되어 혼란에 빠진 일본을 지킨다.",
+      "genres": [
+        "SF",
+        "액션",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/d-venus",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/d-venus"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "매번! 우라야스 철근가족",
+      "slug": "maido-urayasu-tekkin-kazoku-anime",
+      "english_name": "Everyday! Urayasu Tekkin Kazoku",
+      "aliases": [
+        "毎度！浦安鉄筋家族"
+      ],
+      "ip_type": "애니",
+      "description": "우라야스의 오사와기 가족과 이웃들이 상식을 뛰어넘는 과격하고 황당한 일상을 펼친다.",
+      "genres": [
+        "가족",
+        "일상",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/urayasu",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/urayasu"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "막말 Rock 애니메이션",
+      "slug": "bakumatsu-rock-anime",
+      "english_name": "Samurai Jam: Bakumatsu Rock",
+      "aliases": [
+        "幕末Rock"
+      ],
+      "ip_type": "애니",
+      "description": "막부가 노래를 통제하는 시대에 사카모토 료마가 로큰롤로 사람들의 마음을 해방하려 한다.",
+      "genres": [
+        "음악",
+        "액션",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/b-rock",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/b-rock"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "그라제니 애니메이션",
+      "slug": "gurazeni-anime",
+      "english_name": "Gurazeni: Money Pitch",
+      "aliases": [
+        "グラゼニ"
+      ],
+      "ip_type": "애니",
+      "description": "프로야구 중간계투 본다 나츠노스케가 연봉과 생존을 의식하며 냉혹한 선수 생활을 버틴다.",
+      "genres": [
+        "스포츠",
+        "드라마",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/gurazeni",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/gurazeni"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "팔견전 동방팔견이문",
+      "slug": "hakkenden-eight-dogs-east-anime",
+      "english_name": "Hakkenden: Eight Dogs of the East",
+      "aliases": [
+        "八犬伝 ―東方八犬異聞―"
+      ],
+      "ip_type": "애니",
+      "description": "재앙에서 살아남은 시노와 소스케가 여덟 구슬의 주인들과 만나 피할 수 없는 운명을 좇는다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/hakkennden",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/hakkennden"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "파천황유희 애니메이션",
+      "slug": "hatenkou-yugi-anime",
+      "english_name": "Hatenkou Yugi",
+      "aliases": [
+        "破天荒遊戯"
+      ],
+      "ip_type": "애니",
+      "description": "마법사 소녀 라젤이 복수를 좇는 알제이드와 동행하며 상처와 비밀이 얽힌 여행을 한다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/hatenko",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/hatenko"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "도화월탄 애니메이션",
+      "slug": "touka-gettan-anime",
+      "english_name": "Touka Gettan",
+      "aliases": [
+        "桃華月憚"
+      ],
+      "ip_type": "애니",
+      "description": "신화가 살아 숨 쉬는 카미츠미하라에서 모모카다이 학원과 카미아즈마 가문의 인연이 얽힌다.",
+      "genres": [
+        "판타지",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/t-gettan",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/t-gettan"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "샤이닝 티어즈 크로스 윈드",
+      "slug": "shining-tears-x-wind-anime",
+      "english_name": "Shining Tears X Wind",
+      "aliases": [
+        "シャイニング・ティアーズ・クロス・ウィンド"
+      ],
+      "ip_type": "애니",
+      "description": "이세계로 간 소마가 마음을 검으로 만드는 힘을 얻고 옛 친구와 국가 간 전쟁에서 맞선다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/s-tears",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/s-tears"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "다녀왔어, 어서 와 애니메이션",
+      "slug": "tadaima-okaeri-anime",
+      "english_name": "Tadaima, Okaeri",
+      "aliases": [
+        "ただいま、おかえり"
+      ],
+      "ip_type": "애니",
+      "description": "마사키와 남편 히로시, 아들 히카리가 편견과 불안을 넘어 더 단단한 가족이 되어 간다.",
+      "genres": [
+        "BL",
+        "가족",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/tadaoka",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/tadaoka"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "황혼 아웃 포커스",
+      "slug": "twilight-out-of-focus-anime",
+      "english_name": "Twilight Out of Focus",
+      "aliases": [
+        "黄昏アウトフォーカス"
+      ],
+      "ip_type": "애니",
+      "description": "남자고교 영화부를 무대로 세 쌍의 소년들이 촬영과 갈등 속에서 서로를 사랑하게 된다.",
+      "genres": [
+        "BL",
+        "학원",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/tasogare",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/tasogare"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "의매생활 애니메이션",
+      "slug": "days-with-my-stepsister-anime",
+      "english_name": "Days with My Stepsister",
+      "aliases": [
+        "義妹生活"
+      ],
+      "ip_type": "애니",
+      "description": "부모의 재혼으로 남매가 된 유타와 사키가 적절한 거리를 찾으며 천천히 서로를 이해한다.",
+      "genres": [
+        "학원",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/gimai",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/gimai"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "실패작이라 불린 전 영웅은 집에서 추방되어 자유롭게 살기로 했다",
+      "slug": "banished-former-hero-lives-pleases-anime",
+      "english_name": "The Banished Former Hero Lives as He Pleases",
+      "aliases": [
+        "出来損ないと呼ばれた元英雄は、実家から追放されたので好き勝手に生きることにした"
+      ],
+      "ip_type": "애니",
+      "description": "공작가에서 추방된 전생의 영웅 알렌이 평온을 바라지만 또다시 사람들을 구하는 싸움에 나선다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/dekisoko",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/dekisoko"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "매직 메이커 이세계 마법을 만드는 법",
+      "slug": "magic-maker-anime",
+      "english_name": "Magic Maker: How to Make Magic in Another World",
+      "aliases": [
+        "マジック・メイカー ～異世界魔法の作り方～"
+      ],
+      "ip_type": "애니",
+      "description": "마법이 없는 이세계에 환생한 시온이 누나 마리와 신비한 현상을 연구해 마법을 만들어 간다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/magicmaker",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/magicmaker"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "몰락 예정 귀족이지만 한가해서 마법을 익혀봤다",
+      "slug": "noble-brink-ruin-mastering-magic-anime",
+      "english_name": "I'm a Noble on the Brink of Ruin, So I Might as Well Try Mastering Magic",
+      "aliases": [
+        "没落予定の貴族だけど、暇だったから魔法を極めてみた"
+      ],
+      "ip_type": "애니",
+      "description": "귀족의 오남 리암이 된 남자가 마법을 연마해 가문에서 독립하고 뛰어난 마술사로 성장한다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/botsurakukizoku",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/botsurakukizoku"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "미남고교 지구방위부 하이카라!",
+      "slug": "cute-high-earth-defense-club-haikara-anime",
+      "english_name": "Cute High Earth Defense Club Haikara!",
+      "aliases": [
+        "美男高校地球防衛部ハイカラ！"
+      ],
+      "ip_type": "애니",
+      "description": "다이쇼 시대의 남학생 다섯 명이 고양이 과학으로 변신해 지구 정복 세력과 맞선다.",
+      "genres": [
+        "학원",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/boueibu",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/boueibu"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "개그만화 보기 좋은 날 GO",
+      "slug": "gag-manga-biyori-go-anime",
+      "english_name": "Gag Manga Biyori GO",
+      "aliases": [
+        "増田こうすけ劇場 ギャグマンガ日和GO"
+      ],
+      "ip_type": "애니",
+      "description": "쇼토쿠 태자와 마쓰오 바쇼 등 익숙한 인물들이 초현실적인 단편 소동을 연이어 벌인다.",
+      "genres": [
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/gagmanga_biyorigo",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/gagmanga_biyorigo"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "희망의 힘 어른 프리큐어 23",
+      "slug": "power-of-hope-precure-full-bloom-anime",
+      "english_name": "Power of Hope: Precure Full Bloom",
+      "aliases": [
+        "キボウノチカラ～オトナプリキュア’２３～"
+      ],
+      "ip_type": "애니",
+      "description": "어른이 된 노조미와 동료들이 현실의 고민과 새로운 위기 앞에서 다시 희망을 선택한다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "마법소녀",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/otonaprecure",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/otonaprecure"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "Re:Monster 애니메이션",
+      "slug": "re-monster-anime",
+      "english_name": "Re:Monster",
+      "aliases": [
+        "リ・モンスター"
+      ],
+      "ip_type": "애니",
+      "description": "최약체 고블린으로 환생한 고브로가 먹은 대상의 힘을 얻으며 무리를 이끌고 진화한다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/re-monster",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/re-monster"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "오오쿠 애니메이션",
+      "slug": "ooku-inner-chambers-anime",
+      "english_name": "Ooku: The Inner Chambers",
+      "aliases": [
+        "大奥"
+      ],
+      "ip_type": "애니",
+      "description": "남성 인구가 급감한 에도에서 여성 쇼군과 남성들로 이루어진 오오쿠의 역사를 파헤친다.",
+      "genres": [
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/oooku",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/oooku"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "이토 준지 매니악",
+      "slug": "junji-ito-maniac-anime",
+      "english_name": "Junji Ito Maniac: Japanese Tales of the Macabre",
+      "aliases": [
+        "伊藤潤二『マニアック』"
+      ],
+      "ip_type": "애니",
+      "description": "토미에와 소이치, 목매다는 기구 등 이토 준지의 공포 단편 스무 편을 옴니버스로 그린다.",
+      "genres": [
+        "호러",
+        "고어",
+        "추리"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/itojun-m",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/itojun-m"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "마술사 오펜 뜻밖의 여행",
+      "slug": "sorcerous-stabber-orphen-2020-anime",
+      "english_name": "Sorcerous Stabber Orphen",
+      "aliases": [
+        "魔術士オーフェンはぐれ旅"
+      ],
+      "ip_type": "애니",
+      "description": "과거를 버린 마술사 오펜이 괴물로 변한 의자매 아자리의 행방과 구원의 방법을 찾는다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/orphen",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/orphen"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "마술사 오펜 뜻밖의 여행 킴라크편",
+      "slug": "orphen-battle-of-kimluck-anime",
+      "english_name": "Sorcerous Stabber Orphen: Battle of Kimluck",
+      "aliases": [
+        "魔術士オーフェンはぐれ旅 キムラック編"
+      ],
+      "ip_type": "애니",
+      "description": "오펜 일행이 아자리의 말을 따라 마술사를 적대하는 성도 킴라크와 죽음의 교사들에 맞선다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/orphen2",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/orphen2"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "마술사 오펜 뜻밖의 여행 어번라마편",
+      "slug": "orphen-chaos-in-urbanrama-anime",
+      "english_name": "Sorcerous Stabber Orphen: Chaos in Urbanrama",
+      "aliases": [
+        "魔術士オーフェンはぐれ旅 アーバンラマ編"
+      ],
+      "ip_type": "애니",
+      "description": "아자리를 찾던 오펜 일행이 여검사 로테샤와 만나 마검을 둘러싼 싸움에 휘말린다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/orphen3",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/orphen3"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "마술사 오펜 뜻밖의 여행 성역편",
+      "slug": "orphen-sanctuary-arc-anime",
+      "english_name": "Sorcerous Stabber Orphen: Sanctuary Arc",
+      "aliases": [
+        "魔術士オーフェンはぐれ旅 聖域編"
+      ],
+      "ip_type": "애니",
+      "description": "오펜 일행이 성역과 최접근령의 전쟁 속에서 대륙 멸망을 막고 아자리의 비밀과 마주한다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/orphen4",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/orphen4"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "무효와 로지의 마법률상담사무소 2기",
+      "slug": "muhyo-roji-season-2-anime",
+      "english_name": "Muhyo & Roji's Bureau of Supernatural Investigation Season 2",
+      "aliases": [
+        "ムヒョとロージーの魔法律相談事務所 第2期"
+      ],
+      "ip_type": "애니",
+      "description": "무효와 로지가 일상을 되찾은 뒤 새로운 집행인 고료의 등장으로 또 다른 마법률 싸움에 나선다.",
+      "genres": [
+        "판타지",
+        "호러",
+        "액션"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/muhyoroji",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/muhyoroji"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "로그 호라이즌 원탁붕괴",
+      "slug": "log-horizon-destruction-round-table-anime",
+      "english_name": "Log Horizon: Destruction of the Round Table",
+      "aliases": [
+        "ログ・ホライズン 円卓崩壊"
+      ],
+      "ip_type": "애니",
+      "description": "아키바를 이끌던 원탁회의가 내부 갈등과 정치적 위기에 흔들리자 시로에가 해법을 모색한다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/loghorizon3",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/loghorizon3"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "중병격발 보이 애니메이션",
+      "slug": "outburst-dreamer-boys-anime",
+      "english_name": "Outburst Dreamer Boys",
+      "aliases": [
+        "厨病激発ボーイ"
+      ],
+      "ip_type": "애니",
+      "description": "평온을 원하는 전학생 미즈키가 각자 중2병에 빠진 히어로부 소년들의 소동에 휘말린다.",
+      "genres": [
+        "학원",
+        "일상",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/chubyou",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/chubyou"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "세계 제일의 첫사랑 프로포즈편",
+      "slug": "sekaiichi-hatsukoi-proposal-movie",
+      "english_name": "Sekai Ichi Hatsukoi: Propose-hen",
+      "aliases": [
+        "世界一初恋～プロポーズ編～"
+      ],
+      "ip_type": "영화",
+      "description": "결혼식 이차회에 초대된 마루카와 서점 편집자들을 중심으로 네 커플의 약속을 그린다.",
+      "genres": [
+        "BL",
+        "로맨스",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/sekaiichi_propose",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/sekaiichi_propose"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "소년 음양사 애니메이션",
+      "slug": "shonen-onmyoji-anime",
+      "english_name": "Shonen Onmyoji",
+      "aliases": [
+        "少年陰陽師"
+      ],
+      "ip_type": "애니",
+      "description": "반푼이 음양사 마사히로가 식신 모쿠룬과 함께 헤이안쿄를 위협하는 요괴에 맞선다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/onmyoji",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/onmyoji"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "하이브리드 차일드 애니메이션",
+      "slug": "hybrid-child-anime",
+      "english_name": "Hybrid Child",
+      "aliases": [
+        "ハイブリッド チャイルド"
+      ],
+      "ip_type": "애니",
+      "description": "주인의 애정을 받아 성장하는 인형 하이브리드 차일드와 주인들의 애틋한 사랑을 그린다.",
+      "genres": [
+        "BL",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/h-child",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/h-child"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "세븐 고스트 애니메이션",
+      "slug": "07-ghost-anime",
+      "english_name": "07-Ghost",
+      "aliases": [
+        "セブンゴースト"
+      ],
+      "ip_type": "애니",
+      "description": "멸망한 왕국의 왕자 테이토가 잃어버린 기억과 사명을 좇으며 제국의 음모에 맞선다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/07-ghost",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/07-ghost"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "오늘부터 마왕 3기",
+      "slug": "kyo-kara-maoh-season-3-anime",
+      "english_name": "Kyo Kara Maoh! Season 3",
+      "aliases": [
+        "今日からマ王！ 第3シリーズ"
+      ],
+      "ip_type": "애니",
+      "description": "마왕 유리가 평화를 향해 나아가는 나라들과 소시마론의 소년왕 사라레기의 계략을 마주한다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/maoh-3",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/maoh-3"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "BAKUMATSU 크라이시스",
+      "slug": "bakumatsu-crisis-anime",
+      "english_name": "BAKUMATSU Crisis",
+      "aliases": [
+        "BAKUMATSUクライシス"
+      ],
+      "ip_type": "애니",
+      "description": "다카스기 신사쿠와 가쓰라 고고로가 의지를 얻어 폭주하는 시진의를 막으려 싸운다.",
+      "genres": [
+        "액션",
+        "SF",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/bakumatsu",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/bakumatsu"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "루거 코드 1951",
+      "slug": "luger-code-1951-anime",
+      "english_name": "Luger Code 1951",
+      "aliases": [
+        "ルガーコード1951"
+      ],
+      "ip_type": "애니",
+      "description": "언어 천재 테스타가 인류에 선전포고한 인랑의 암호를 풀기 위해 늑대 소녀와 만난다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/luger_code",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/luger_code"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "왜 사는가 렌뇨 스님과 요시자키 화재",
+      "slug": "naze-ikiru-rennyo-movie",
+      "english_name": "Why We Live: The Priest Rennyo and the Fire at Yoshizaki",
+      "aliases": [
+        "なぜ生きる 蓮如上人と吉崎炎上"
+      ],
+      "ip_type": "영화",
+      "description": "전란의 시대에 삶의 이유를 찾아 나선 이들과 정토진종 승려 렌뇨의 여정을 그린다.",
+      "genres": [
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/nazeikiru-movie",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/nazeikiru-movie"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "극장판 세계 제일의 첫사랑 요코자와 타카후미의 경우",
+      "slug": "sekaiichi-hatsukoi-yokozawa-movie",
+      "english_name": "The World's Greatest First Love: The Case of Takafumi Yokozawa",
+      "aliases": [
+        "劇場版 世界一初恋 横澤隆史の場合"
+      ],
+      "ip_type": "영화",
+      "description": "실연한 출판사 영업사원 요코자와가 소년지 편집장 기리시마와 뜻밖의 인연을 맺는다.",
+      "genres": [
+        "BL",
+        "로맨스",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/sekaiichi-movie",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/sekaiichi-movie"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "쿠킹 아이돌 아이 마이 마인",
+      "slug": "cooking-idol-ai-mai-main-anime",
+      "english_name": "Cooking Idol Ai! Mai! Main!",
+      "aliases": [
+        "クッキンアイドル アイ！マイ！まいん！"
+      ],
+      "ip_type": "애니",
+      "description": "아이돌을 꿈꾸는 초등학생 마인이 요리 프로그램 진행자가 되어 음식과 성장을 배운다.",
+      "genres": [
+        "요리",
+        "아이돌",
+        "가족",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/mine",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/mine"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "극장판 메이지 도쿄 연가 현월의 소야곡",
+      "slug": "meiji-tokyo-renka-crescent-movie",
+      "english_name": "Meiji Tokyo Renka: Yumihari no Serenade",
+      "aliases": [
+        "劇場版 明治東亰恋伽 弦月の小夜曲"
+      ],
+      "ip_type": "영화",
+      "description": "메이지 시대로 시간 이동한 여고생 메이가 역사적 인물들과 만나 사랑과 괴이한 사건을 겪는다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/news/20150507",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/news/20150507"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "극장판 박앵귀 제1장 교토난무",
+      "slug": "hakuoki-kyoto-ranbu-movie",
+      "english_name": "Hakuoki: Demon of the Fleeting Blossom - Wild Dance of Kyoto",
+      "aliases": [
+        "劇場版 薄桜鬼 第一章 京都乱舞"
+      ],
+      "ip_type": "영화",
+      "description": "아버지를 찾아 교토에 온 지즈루가 신선조와 만나 그들의 어둠과 자신의 출생 비밀을 좇는다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/hakuouki-movie1",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/hakuouki-movie1"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "극장판 박앵귀 제2장 사혼창궁",
+      "slug": "hakuoki-shikon-sokyu-movie",
+      "english_name": "Hakuoki: Demon of the Fleeting Blossom - Warrior Spirit of the Blue Sky",
+      "aliases": [
+        "劇場版 薄桜鬼 第二章 士魂蒼穹"
+      ],
+      "ip_type": "영화",
+      "description": "전황이 악화되는 가운데 지즈루와 신선조가 북쪽으로 전전하며 마지막 신념과 결전을 마주한다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/hakuouki-movie-2",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/hakuouki-movie-2"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "산카레아 애니메이션",
+      "slug": "sankarea-anime",
+      "english_name": "Sankarea: Undying Love",
+      "aliases": [
+        "さんかれあ"
+      ],
+      "ip_type": "애니",
+      "description": "좀비를 좋아하는 지히로가 삶에 억눌린 소녀 레아와 만나 되살리는 약을 함께 만든다.",
+      "genres": [
+        "로맨스",
+        "코미디",
+        "호러"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/sankarea",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/sankarea"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "비색의 조각 애니메이션",
+      "slug": "hiiro-no-kakera-anime",
+      "english_name": "Hiiro no Kakera: The Tamayori Princess Saga",
+      "aliases": [
+        "緋色の欠片"
+      ],
+      "ip_type": "애니",
+      "description": "마을로 불려온 다마키가 다마요리히메의 사명을 깨닫고 수호자들과 오니키리마루를 봉인한다.",
+      "genres": [
+        "판타지",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/hiiro",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/hiiro"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "바람의 검심 신교토편",
+      "slug": "rurouni-kenshin-new-kyoto-arc-anime",
+      "english_name": "Rurouni Kenshin: New Kyoto Arc",
+      "aliases": [
+        "るろうに剣心 明治剣客浪漫譚 新京都編"
+      ],
+      "ip_type": "애니",
+      "description": "마키마치 미사오의 시선으로 교토에서 벌어지는 겐신과 시시오 일파의 격돌을 새롭게 그린다.",
+      "genres": [
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/kenshin",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/kenshin"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "이것은 좀비입니까? 오브 더 데드",
+      "slug": "is-this-a-zombie-of-the-dead-anime",
+      "english_name": "Is This a Zombie? of the Dead",
+      "aliases": [
+        "これはゾンビですか？オブ・ザ・デッド"
+      ],
+      "ip_type": "애니",
+      "description": "좀비이자 마장소녀인 아이카와 아유무가 동료들과 기묘하고 소란스러운 학원생활을 이어간다.",
+      "genres": [
+        "판타지",
+        "코미디",
+        "액션",
+        "학원"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/?p=706",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/?p=706"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "누라리횬의 손자 천년마경",
+      "slug": "nurarihyon-grandson-demon-capital-anime",
+      "english_name": "Nura: Rise of the Yokai Clan - Demon Capital",
+      "aliases": [
+        "ぬらりひょんの孫 千年魔京"
+      ],
+      "ip_type": "애니",
+      "description": "누라구미 후계자 리쿠오가 교토를 장악한 하고로모기쓰네와 요괴 세력에 맞서 백귀야행을 이끈다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "소년물"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/nuramago-makyo",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/nuramago-makyo"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "쓰르라미 울 적에 황",
+      "slug": "higurashi-kira-anime",
+      "english_name": "Higurashi When They Cry Kira",
+      "aliases": [
+        "ひぐらしのなく頃に煌"
+      ],
+      "ip_type": "애니",
+      "description": "히나미자와의 인물들이 벌칙게임과 마법소녀 소동 등 네 편의 색다른 이야기를 펼친다.",
+      "genres": [
+        "코미디",
+        "판타지",
+        "호러"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/higurashi-kira",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/higurashi-kira"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "스타리 스카이 애니메이션",
+      "slug": "starry-sky-anime",
+      "english_name": "Starry Sky",
+      "aliases": [
+        "Starry☆Sky"
+      ],
+      "ip_type": "애니",
+      "description": "천문학을 배우는 세이게쓰 학원의 유일한 여학생이 열두 별자리의 성격을 지닌 소년들과 교류한다.",
+      "genres": [
+        "학원",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/s-sky",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/s-sky"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "드래곤 크라이시스 애니메이션",
+      "slug": "dragon-crisis-anime",
+      "english_name": "Dragon Crisis!",
+      "aliases": [
+        "ドラゴンクライシス！"
+      ],
+      "ip_type": "애니",
+      "description": "고등학생 류지가 드래곤 소녀 로즈를 구한 뒤 유물을 노리는 조직과 위험한 전투에 휘말린다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "로맨스"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/d-crisis",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/d-crisis"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "박앵귀 설화록",
+      "slug": "hakuoki-sekkaroku-anime",
+      "english_name": "Hakuoki: A Memory of Snow Flowers",
+      "aliases": [
+        "薄桜鬼 雪華録"
+      ],
+      "ip_type": "애니",
+      "description": "신선조가 가장 활약한 교토 시기를 각 대원과 지즈루의 교류를 중심으로 다시 비춘다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/hakuouki-setsu",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/hakuouki-setsu"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "박앵귀 여명록",
+      "slug": "hakuoki-reimeiroku-anime",
+      "english_name": "Hakuoki: Dawn of the Shinsengumi",
+      "aliases": [
+        "薄桜鬼 黎明録"
+      ],
+      "ip_type": "애니",
+      "description": "무사를 싫어하는 이부키 류노스케가 낭사조에 머물며 신선조 탄생기의 갈등을 지켜본다.",
+      "genres": [
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/hakuouki-rei",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/hakuouki-rei"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "세계 제일의 첫사랑 애니메이션",
+      "slug": "sekaiichi-hatsukoi-anime",
+      "english_name": "The World's Greatest First Love",
+      "aliases": [
+        "世界一初恋"
+      ],
+      "ip_type": "애니",
+      "description": "출판사에 이직한 오노데라 리쓰가 첫사랑 상대였던 편집장 다카노와 다시 마주한다.",
+      "genres": [
+        "BL",
+        "로맨스",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/sekaiichi",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/sekaiichi"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "누라리횬의 손자 애니메이션",
+      "slug": "nurarihyon-grandson-anime",
+      "english_name": "Nura: Rise of the Yokai Clan",
+      "aliases": [
+        "ぬらりひょんの孫"
+      ],
+      "ip_type": "애니",
+      "description": "인간과 요괴의 피를 이은 리쿠오가 누라구미 후계자로서 동료를 지키고 적대 요괴와 맞선다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "소년물"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/nuramago",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/nuramago"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "자이언트 킬링 애니메이션",
+      "slug": "giant-killing-anime",
+      "english_name": "Giant Killing",
+      "aliases": [],
+      "ip_type": "애니",
+      "description": "파격적인 감독 다쓰미 다케시가 침체된 프로축구팀 ETU를 맡아 강호들을 상대로 반전을 노린다.",
+      "genres": [
+        "스포츠",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/g-killing",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/g-killing"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "괭이갈매기 울 적에 애니메이션",
+      "slug": "umineko-when-they-cry-anime",
+      "english_name": "Umineko: When They Cry",
+      "aliases": [
+        "うみねこのなく頃に"
+      ],
+      "ip_type": "애니",
+      "description": "태풍으로 고립된 롯켄섬에서 우시로미야 일가의 상속 회의가 연쇄 살인과 마녀의 수수께끼로 변한다.",
+      "genres": [
+        "추리",
+        "호러",
+        "판타지",
+        "고어"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/umineko",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/umineko"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "마리아님이 보고 계셔 4기",
+      "slug": "maria-watches-over-us-season-4-anime",
+      "english_name": "Maria Watches Over Us Season 4",
+      "aliases": [
+        "マリア様がみてる 4thシーズン"
+      ],
+      "ip_type": "애니",
+      "description": "리리안 여학원의 유미가 자신의 여동생 후보를 고민하며 산백합회 친구들과 성장한다.",
+      "genres": [
+        "GL",
+        "학원",
+        "드라마",
+        "로맨스"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/maria-4",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/maria-4"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "학생회의 일존 애니메이션",
+      "slug": "student-council-discretion-anime",
+      "english_name": "Student Council's Discretion",
+      "aliases": [
+        "生徒会の一存"
+      ],
+      "ip_type": "애니",
+      "description": "미소녀 위원들 사이에 들어간 스기사키 켄이 사립 헤키요 학원 학생회에서 떠들썩한 나날을 보낸다.",
+      "genres": [
+        "학원",
+        "코미디",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/seitokai",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/seitokai"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "헤타리아 Axis Powers",
+      "slug": "hetalia-axis-powers-anime",
+      "english_name": "Hetalia: Axis Powers",
+      "aliases": [
+        "ヘタリア Axis Powers"
+      ],
+      "ip_type": "애니",
+      "description": "이탈리아와 독일, 일본 등 나라를 의인화한 인물들이 세계사의 사건을 짧은 희극으로 펼친다.",
+      "genres": [
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/hetalia",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/hetalia"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "쓰르라미 울 적에 례",
+      "slug": "higurashi-rei-anime",
+      "english_name": "Higurashi When They Cry Rei",
+      "aliases": [
+        "ひぐらしのなく頃に礼"
+      ],
+      "ip_type": "애니",
+      "description": "운명의 싸움 뒤 리카가 새로운 비극과 선택을 마주하고 히나미자와 친구들의 별도 사건도 펼쳐진다.",
+      "genres": [
+        "호러",
+        "추리",
+        "드라마",
+        "고어"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/higurashi-rei",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/higurashi-rei"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "박앵귀 애니메이션",
+      "slug": "hakuoki-anime",
+      "english_name": "Hakuoki: Demon of the Fleeting Blossom",
+      "aliases": [
+        "薄桜鬼"
+      ],
+      "ip_type": "애니",
+      "description": "사라진 아버지를 찾아 교토에 온 지즈루가 신선조의 비밀을 알게 되어 그들과 운명을 함께한다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/hakuouki",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/hakuouki"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "박앵귀 벽혈록",
+      "slug": "hakuoki-hekketsuroku-anime",
+      "english_name": "Hakuoki: Record of the Jade Blood",
+      "aliases": [
+        "薄桜鬼 碧血録"
+      ],
+      "ip_type": "애니",
+      "description": "보신전쟁에 뛰어든 신선조와 지즈루가 새 시대의 격랑 속에서도 각자의 신념을 지키려 싸운다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/hakuouki-heki",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/hakuouki-heki"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "극장판 Fate/stay night UNLIMITED BLADE WORKS",
+      "slug": "fate-stay-night-ubw-2010-movie",
+      "english_name": "Fate/stay night: Unlimited Blade Works",
+      "aliases": [
+        "劇場版 Fate/stay night UNLIMITED BLADE WORKS"
+      ],
+      "ip_type": "영화",
+      "description": "에미야 시로가 성배전쟁에 휘말려 도사카 린과 협력하며 자신의 이상과 마주한다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/fateubw-movie",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/fateubw-movie"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "쓰르라미 울 적에 애니메이션",
+      "slug": "higurashi-when-they-cry-anime",
+      "english_name": "Higurashi When They Cry",
+      "aliases": [
+        "ひぐらしのなく頃に"
+      ],
+      "ip_type": "애니",
+      "description": "히나미자와로 이사한 게이이치가 와타나가시 축제를 둘러싼 연속 괴사와 마을의 비밀에 다가간다.",
+      "genres": [
+        "호러",
+        "추리",
+        "고어",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/higurashi",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/higurashi"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "쓰르라미 울 적에 해",
+      "slug": "higurashi-kai-anime",
+      "english_name": "Higurashi When They Cry Kai",
+      "aliases": [
+        "ひぐらしのなく頃に解"
+      ],
+      "ip_type": "애니",
+      "description": "리카와 친구들이 반복되는 히나미자와의 참극에서 벗어나기 위해 사건의 진상과 운명에 맞선다.",
+      "genres": [
+        "호러",
+        "추리",
+        "고어",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/higurashi-kai",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/higurashi-kai"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "지옥소녀 2기",
+      "slug": "hell-girl-two-mirrors-anime",
+      "english_name": "Hell Girl: Two Mirrors",
+      "aliases": [
+        "地獄少女 二籠"
+      ],
+      "ip_type": "애니",
+      "description": "엔마 아이와 동료들이 지옥통신에 쌓인 새로운 원한을 받아 복수의 대가를 묻는다.",
+      "genres": [
+        "호러",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/jigoku-2",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/jigoku-2"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "지옥소녀 3기",
+      "slug": "hell-girl-three-vessels-anime",
+      "english_name": "Hell Girl: Three Vessels",
+      "aliases": [
+        "地獄少女 三鼎"
+      ],
+      "ip_type": "애니",
+      "description": "사라졌던 엔마 아이가 여고생 미카게 유즈키에게 깃들어 다시 지옥통신의 의뢰를 수행한다.",
+      "genres": [
+        "호러",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/jigoku-3",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/jigoku-3"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "남쪽 섬의 작은 비행기 버디",
+      "slug": "little-airplane-birdy-anime",
+      "english_name": "The Little Airplane on a Southern Island: Birdy",
+      "aliases": [
+        "南の島の小さな飛行機バーディー"
+      ],
+      "ip_type": "애니",
+      "description": "남쪽 섬에서 일하는 새내기 소형 비행기 버디가 친구들과 비행 일을 배우며 활약한다.",
+      "genres": [
+        "가족",
+        "일상",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/birdy",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/birdy"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "마리아님이 보고 계셔 애니메이션",
+      "slug": "maria-watches-over-us-anime",
+      "english_name": "Maria Watches Over Us",
+      "aliases": [
+        "マリア様がみてる"
+      ],
+      "ip_type": "애니",
+      "description": "리리안 여학원의 유미가 선배 사치코와 자매를 맺으며 산백합회 소녀들과 관계를 쌓아간다.",
+      "genres": [
+        "GL",
+        "학원",
+        "드라마",
+        "로맨스"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/maria",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/maria"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "지옥소녀 4기",
+      "slug": "hell-girl-fourth-twilight-anime",
+      "english_name": "Hell Girl: Fourth Twilight",
+      "aliases": [
+        "地獄少女 宵伽"
+      ],
+      "ip_type": "애니",
+      "description": "엔마 아이 일행 앞에 정체불명의 소녀 미치루가 나타나며 새로운 원한과 지옥 보내기가 이어진다.",
+      "genres": [
+        "호러",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/jigoku-4",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/jigoku-4"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "극장판 Collar×Malice deep cover",
+      "slug": "collar-x-malice-deep-cover-movie",
+      "english_name": "Collar x Malice: Deep Cover",
+      "aliases": [
+        "劇場版 Collar×Malice -deep cover-"
+      ],
+      "ip_type": "영화",
+      "description": "독이 든 목걸이를 찬 경찰관 호시노 이치카가 동료들과 X-Day 사건 뒤의 새 음모를 추적한다.",
+      "genres": [
+        "추리",
+        "액션",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/collarmalice-m",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/collarmalice-m"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "영화 사사키와 미야노 졸업편",
+      "slug": "sasaki-miyano-graduation-movie",
+      "english_name": "Sasaki and Miyano: Graduation",
+      "aliases": [
+        "映画 佐々木と宮野 卒業編"
+      ],
+      "ip_type": "영화",
+      "description": "연인이 된 사사키와 미야노가 입시와 졸업을 앞두고 함께할 시간과 다가올 변화를 마주한다.",
+      "genres": [
+        "BL",
+        "로맨스",
+        "학원",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/sasamiya-movie",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/sasamiya-movie"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "극장판 미소녀 전사 세일러 문 Cosmos",
+      "slug": "sailor-moon-cosmos-movie",
+      "english_name": "Pretty Guardian Sailor Moon Cosmos The Movie",
+      "aliases": [
+        "劇場版 美少女戦士セーラームーンCosmos"
+      ],
+      "ip_type": "영화",
+      "description": "세일러 문과 전사들이 동료를 노리는 섀도 갤럭티카에 맞서 마지막 싸움에 나선다.",
+      "genres": [
+        "마법소녀",
+        "액션",
+        "판타지",
+        "로맨스"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/sm-cosmos",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/sm-cosmos"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "극장판 미소녀 전사 세일러 문 Eternal",
+      "slug": "sailor-moon-eternal-movie",
+      "english_name": "Pretty Guardian Sailor Moon Eternal The Movie",
+      "aliases": [
+        "劇場版 美少女戦士セーラームーンEternal"
+      ],
+      "ip_type": "영화",
+      "description": "개기일식 날 나타난 데드 문이 지구를 위협하자 우사기와 세일러 전사들이 꿈과 사명을 지키려 싸운다.",
+      "genres": [
+        "마법소녀",
+        "액션",
+        "판타지",
+        "로맨스"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/sailormoon-m",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/sailormoon-m"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "극장판 일곱 개의 대죄 빛에 저주받은 자들",
+      "slug": "seven-deadly-sins-cursed-by-light-movie",
+      "english_name": "The Seven Deadly Sins: Cursed by Light",
+      "aliases": [
+        "劇場版 七つの大罪 光に呪われし者たち"
+      ],
+      "ip_type": "영화",
+      "description": "성전 뒤의 평화를 깨고 요정족과 거인족 군세가 나타나자 일곱 개의 대죄가 다시 싸움에 나선다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험",
+        "소년물"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/7taizai-m",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/7taizai-m"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "헤타리아 World Stars",
+      "slug": "hetalia-world-stars-anime",
+      "english_name": "Hetalia: World Stars",
+      "aliases": [
+        "ヘタリア World★Stars"
+      ],
+      "ip_type": "애니",
+      "description": "나라를 의인화한 개성 강한 인물들이 세계 각지의 역사와 문화를 느슨한 희극으로 펼친다.",
+      "genres": [
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/hetalia-ws",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/hetalia-ws"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "사사키와 미야노 애니메이션",
+      "slug": "sasaki-miyano-anime",
+      "english_name": "Sasaki and Miyano",
+      "aliases": [
+        "佐々木と宮野"
+      ],
+      "ip_type": "애니",
+      "description": "BL 만화를 좋아하는 미야노와 불량해 보이는 선배 사사키가 책을 빌려주며 가까워진다.",
+      "genres": [
+        "BL",
+        "로맨스",
+        "학원",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/sasamiya",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/sasamiya"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "박앵귀 2021 OVA",
+      "slug": "hakuoki-2021-ova-anime",
+      "english_name": "Hakuoki OVA",
+      "aliases": [
+        "OVA 薄桜鬼"
+      ],
+      "ip_type": "애니",
+      "description": "신선조를 사칭한 도적과 라세쓰 탈주가 겹치자 지즈루와 대원들이 쇼군 암살 음모를 추적한다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works/hakuouki-ova",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works/hakuouki-ova"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "이토 준지 컬렉션",
+      "slug": "junji-ito-collection-anime",
+      "english_name": "Junji Ito Collection",
+      "aliases": [
+        "伊藤潤二 コレクション"
+      ],
+      "ip_type": "애니",
+      "description": "이토 준지의 걸작 단편들에 등장하는 기이한 존재와 뒤틀린 욕망이 불러오는 공포를 옴니버스로 그린다.",
+      "genres": [
+        "호러",
+        "고어",
+        "추리"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/itojun",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/itojun"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "호오즈키의 냉철 2기 두 번째",
+      "slug": "hozukis-coolheadedness-season-2-part-2-anime",
+      "english_name": "Hozuki's Coolheadedness Season 2 Part 2",
+      "aliases": [
+        "鬼灯の冷徹 第弐期その弐"
+      ],
+      "ip_type": "애니",
+      "description": "염라대왕의 제1보좌관 호오즈키가 새로운 요괴와 악마까지 얽힌 지옥의 소동을 냉정하게 처리한다.",
+      "genres": [
+        "판타지",
+        "코미디",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://www.deen.co.jp/works-archives/hozukino-reitetsu2",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.deen.co.jp/works-archives/hozukino-reitetsu2"
+        }
+      ],
+      "created_by": null
+    }
+  ]
+}

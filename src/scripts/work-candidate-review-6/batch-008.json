@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "re-kan-anime",
+    "name": "레칸!",
+    "englishName": "Re-Kan!",
+    "aliases": ["レーカン！", "영감!"],
+    "description": "유령을 볼 수 있는 여고생 히비키가 사람과 영혼 모두에게 다정하게 대하며 친구들과 일상을 보낸다.",
+    "genres": ["학원", "판타지", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/tv10_16.html",
+    "source": "https://pierrot.jp/archive/2015/tv10_16.html"
+  },
+  {
+    "slug": "dynamic-chord-anime",
+    "name": "DYNAMIC CHORD 애니메이션",
+    "englishName": "Dynamic Chord: The Animation",
+    "aliases": ["DYNAMIC CHORD アニメ", "다이나믹 코드 애니"],
+    "description": "음악사 다이나믹 코드 소속 네 록 밴드의 멤버들이 공연을 준비하며 갈등과 우정을 겪는다.",
+    "genres": ["음악", "아이돌", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/tv10_31.html",
+    "source": "https://pierrot.jp/archive/2015/tv10_31.html"
+  },
+  {
+    "slug": "sanrio-boys-anime",
+    "name": "산리오 남자 애니메이션",
+    "englishName": "Sanrio Boys",
+    "aliases": ["サンリオ男子", "산리오 단시"],
+    "description": "산리오 캐릭터를 좋아한다는 말을 숨기던 코타가 같은 취향의 남학생들과 만나 자신감을 얻는다.",
+    "genres": ["학원", "일상", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/tv10_32.html",
+    "source": "https://pierrot.jp/archive/2015/tv10_32.html"
+  },
+  {
+    "slug": "hero-mask-anime",
+    "name": "히어로 마스크",
+    "englishName": "Hero Mask",
+    "aliases": ["히어로 마스크 애니메이션"],
+    "description": "형사 제임스 블러드가 연속 괴사 사건을 수사하며 초인적인 힘을 주는 수수께끼 가면을 쫓는다.",
+    "genres": ["SF", "액션", "추리"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/tv10_37.html",
+    "source": "https://pierrot.jp/archive/2015/tv10_37.html"
+  },
+  {
+    "slug": "magmel-of-the-sea-blue-anime",
+    "name": "군청의 마그멜",
+    "englishName": "Ultramarine Magmell",
+    "aliases": ["群青のマグメル"],
+    "description": "신대륙 마그멜에서 구조업자 인요가 위험한 생물과 탐욕에 휩쓸린 탐험가들을 구한다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/tv10_37.html",
+    "source": "https://pierrot.jp/archive/2015/tv10_37.html"
+  },
+  {
+    "slug": "late-night-genius-bakabon-anime",
+    "name": "심야! 천재 바카본",
+    "englishName": "Late Night! The Genius Bakabon",
+    "aliases": ["深夜！天才バカボン"],
+    "description": "현대에 돌아온 바카본 아빠와 가족들이 형식과 상식을 무시하는 자유분방한 소동을 벌인다.",
+    "genres": ["일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2015/tv10_36.html",
+    "source": "https://pierrot.jp/archive/2015/tv10_36.html"
+  },
+  {
+    "slug": "number24-anime",
+    "name": "number24",
+    "englishName": null,
+    "aliases": ["ナンバー・トゥーフォー", "넘버24"],
+    "description": "사고로 럭비를 할 수 없게 된 나츠사가 매니저가 되어 상처 입은 동료들과 팀을 다시 세운다.",
+    "genres": ["스포츠", "학원", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2020/tv20_05.html",
+    "source": "https://pierrot.jp/archive/2020/tv20_05.html"
+  },
+  {
+    "slug": "oda-cinnamon-nobunaga-anime",
+    "name": "오다 시나몬 노부나가",
+    "englishName": "Oda Cinnamon Nobunaga",
+    "aliases": ["織田シナモン信長"],
+    "description": "오다 노부나가와 전국시대 무장들이 현대 일본의 반려견으로 환생해 개다운 일상을 보낸다.",
+    "genres": ["일상", "가족", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2020/tv20_05.html",
+    "source": "https://pierrot.jp/archive/2020/tv20_05.html"
+  },
+  {
+    "slug": "on-air-dekinai-anime",
+    "name": "온에어할 수 없어!",
+    "englishName": "On Air Dekinai!",
+    "aliases": ["オンエアできない！"],
+    "description": "신입 AD 마후네코가 예측불허 방송 현장에서 촬영 준비와 돌발 사고에 치이며 성장한다.",
+    "genres": ["일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2020/tv20_09.html",
+    "source": "https://pierrot.jp/archive/2020/tv20_09.html"
+  },
+  {
+    "slug": "play-it-cool-guys-anime",
+    "name": "쿨하고 바보 같은 남자",
+    "englishName": "Play It Cool, Guys",
+    "aliases": ["クールドジ男子", "쿨도지 남자"],
+    "description": "겉보기엔 멋지지만 자꾸 실수하는 남자들이 각자의 방식으로 민망함을 넘기며 가까워진다.",
+    "genres": ["일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://pierrot.jp/archive/2020/tv20_10.html",
+    "source": "https://pierrot.jp/archive/2020/tv20_10.html"
+  }
+]

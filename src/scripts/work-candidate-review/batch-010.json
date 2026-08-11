@@ -1,0 +1,203 @@
+[
+    {
+        "slug":  "nu-carnival",
+        "name":  "NU: 카니발",
+        "englishName":  "NU: Carnival",
+        "aliases":  [
+                        "뉴카니",
+                        "뉴 카니발"
+                    ],
+        "description":  "마력이 사라진 세계에 소환된 에이트가 대마법사의 권속들과 계약하고 재앙을 막기 위한 여정에 나선다.",
+        "genres":  [
+                       "BL",
+                       "판타지",
+                       "모험",
+                       "19"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://nucarnival.com/",
+        "source":  "https://nucarnival.com/ja-JP/index.html"
+    },
+    {
+        "slug":  "tears-of-themis",
+        "name":  "미해결사건부",
+        "englishName":  "Tears of Themis",
+        "aliases":  [
+                        "Tears of Themis"
+                    ],
+        "description":  "신입 변호사가 네 명의 남성과 미림시의 사건을 조사하며 배후의 거대한 음모와 진실을 밝혀간다.",
+        "genres":  [
+                       "로맨스",
+                       "추리",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://tot.hoyoverse.com/ko-kr/",
+        "source":  "https://tot.hoyoverse.com/ko-kr/"
+    },
+    {
+        "slug":  "love-and-producer",
+        "name":  "러브앤프로듀서",
+        "englishName":  "Love and Producer",
+        "aliases":  [
+                        "럽프듀",
+                        "Mr Love: Queen\u0027s Choice"
+                    ],
+        "description":  "방송사를 물려받은 프로듀서가 특별한 능력을 지닌 네 남자와 만나 도시를 둘러싼 비밀에 다가간다.",
+        "genres":  [
+                       "로맨스",
+                       "드라마",
+                       "SF"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.papegames.cn/en/",
+        "source":  "https://www.papegames.cn/en/"
+    },
+    {
+        "slug":  "stellive",
+        "name":  "스텔라이브",
+        "englishName":  "STELLIVE",
+        "aliases":  [
+                        "스텔",
+                        "STELLIVE"
+                    ],
+        "description":  "서로 다른 개성과 음악적 색깔을 지닌 멤버들이 방송과 노래, 공연으로 활동하는 버추얼 그룹이다.",
+        "genres":  [
+                       "아이돌",
+                       "음악"
+                   ],
+        "ipType":  [
+                       "버튜버"
+                   ],
+        "officialUrl":  "https://stellive.me/",
+        "source":  "https://stellive.me/?category=250\u0026mid=news"
+    },
+    {
+        "slug":  "plave",
+        "name":  "PLAVE",
+        "englishName":  "PLAVE",
+        "aliases":  [
+                        "플레이브"
+                    ],
+        "description":  "예준·노아·밤비·은호·하민 다섯 멤버가 작사와 작곡, 안무에 참여하며 활동하는 버추얼 보이그룹이다.",
+        "genres":  [
+                       "아이돌",
+                       "음악"
+                   ],
+        "ipType":  [
+                       "버튜버"
+                   ],
+        "officialUrl":  "https://www.vlast.co.kr/plave",
+        "source":  "https://www.vlast.co.kr/plave"
+    },
+    {
+        "slug":  "yume-100",
+        "name":  "꿈왕국과 잠자는 100명의 왕자님",
+        "englishName":  "100 Sleeping Princes and the Kingdom of Dreams",
+        "aliases":  [
+                        "꿈100",
+                        "꿈왕국"
+                    ],
+        "description":  "꿈세계로 불려간 공주가 꿈을 먹는 유메쿠이에게 봉인된 여러 나라의 왕자들을 깨우며 여행한다.",
+        "genres":  [
+                       "로맨스",
+                       "판타지",
+                       "모험",
+                       "퍼즐"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.yume-100.com/",
+        "source":  "https://yume-100-anime.com/"
+    },
+    {
+        "slug":  "light-and-night",
+        "name":  "빛과 밤의 사랑",
+        "englishName":  "Light and Night",
+        "aliases":  [
+                        "빛밤",
+                        "Light and Night"
+                    ],
+        "description":  "신입 패션 디자이너가 광계시에서 자신의 길을 개척하며 다섯 남자와 얽힌 선택과 비밀을 마주한다.",
+        "genres":  [
+                       "로맨스",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "",
+        "source":  ""
+    },
+    {
+        "slug":  "break-my-case",
+        "name":  "브레이크 마이 케이스",
+        "englishName":  "Break My Case",
+        "aliases":  [
+                        "브레마이",
+                        "Break My Case"
+                    ],
+        "description":  "멀티 대행 서비스 카페 아포리아의 직원이 되어 개성 강한 동료들과 손님의 특별한 의뢰를 해결한다.",
+        "genres":  [
+                       "드라마",
+                       "추리",
+                       "퍼즐",
+                       "음악"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://breakmycase.com/",
+        "source":  "https://colyinc.com/0513-2/"
+    },
+    {
+        "slug":  "obey-me",
+        "name":  "Obey Me!",
+        "englishName":  "Obey Me!",
+        "aliases":  [
+                        "오베이미",
+                        "오베이 미"
+                    ],
+        "description":  "인간 교환학생이 마계의 학교에 들어가 일곱 악마 형제와 계약하고 위험한 학교생활과 관계를 헤쳐 나간다.",
+        "genres":  [
+                       "로맨스",
+                       "판타지",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://shallwedate.jp/obeyme/en/",
+        "source":  "https://www.nttsolmare.com/e/press/2021/e1126.html"
+    },
+    {
+        "slug":  "18trip",
+        "name":  "18TRIP",
+        "englishName":  "18TRIP",
+        "aliases":  [
+                        "에이트리",
+                        "에이틴트립"
+                    ],
+        "description":  "여행사 하마 투어즈의 주임이 되어 개성 강한 구청장들과 HAMA 18구의 관광 산업을 되살린다.",
+        "genres":  [
+                       "드라마",
+                       "음악",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://18trip.jp/",
+        "source":  "https://liberent.co.jp/service/"
+    }
+]

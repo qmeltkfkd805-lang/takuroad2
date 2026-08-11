@@ -32,6 +32,33 @@ function stripSpaces(s: string): string {
   return (s ?? '').toLowerCase().replace(/\s+/g, '')
 }
 
+type TagSearchRow = { id: string; name: string; slug: string }
+
+async function searchTags(query: string): Promise<TagSearchRow[]> {
+  const supabase = createClient()
+  const terms = parseSearchTerms(query)
+  const select = 'id, name, slug'
+
+  let byName = supabase.from('tags').select(select)
+  let byEnglishName = supabase.from('tags').select(select)
+  for (const term of terms) {
+    byName = byName.ilike('name', `%${term}%`)
+    byEnglishName = byEnglishName.ilike('english_name', `%${term}%`)
+  }
+
+  const results = await Promise.all([
+    byName.limit(5),
+    byEnglishName.limit(5),
+    supabase.from('tags').select(select).contains('aliases', [query.trim()]).limit(5),
+  ])
+  const unique = new Map<string, TagSearchRow>()
+  for (const result of results) {
+    if (result.error) continue
+    for (const row of result.data ?? []) unique.set(row.id, row as TagSearchRow)
+  }
+  return [...unique.values()].slice(0, 5)
+}
+
 export async function globalSearch(query: string, userId?: string | null, anonymousId?: string): Promise<GlobalSearchResult> {
   const supabase = createClient()
   const terms = parseSearchTerms(query)
@@ -50,12 +77,7 @@ export async function globalSearch(query: string, userId?: string | null, anonym
 
   // 2. 작품(tags) 매칭 — 띄어쓰기 무시 (공백 떼고 첫 단어 포함). "가정교사히트맨리본"도 "가정교사 히트맨 리본" 매칭
   const term0 = stripSpaces(terms[0])
-  const { data: allTagsData } = await supabase
-    .from('tags')
-    .select('id, name, slug')
-  const tagsData = (allTagsData ?? [])
-    .filter((t: any) => stripSpaces(t.name).includes(term0))
-    .slice(0, 5)
+  const tagsData = await searchTags(query)
 
   // 3. 캐릭터 매칭
   const { data: charactersData } = await supabase

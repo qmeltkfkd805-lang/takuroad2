@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "moriarty-the-patriot",
+    "name": "모리어티 더 패트리어트",
+    "englishName": "Moriarty the Patriot",
+    "aliases": ["憂国のモリアーティ", "우국의 모리어티"],
+    "description": "계급제에 맞서는 모리어티 형제와 그들을 추적하는 셜록 홈즈의 두뇌전이 펼쳐진다.",
+    "genres": ["추리", "드라마", "액션"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://moriarty-anime.com/",
+    "source": "https://moriarty-anime.com/"
+  },
+  {
+    "slug": "millionaire-detective-balance-unlimited",
+    "name": "부호형사 Balance:UNLIMITED",
+    "englishName": "The Millionaire Detective Balance:UNLIMITED",
+    "aliases": ["富豪刑事 Balance:UNLIMITED", "부호형사 밸런스 언리미티드"],
+    "description": "막대한 재력을 쓰는 형사 칸베 다이스케와 원칙파 카토 하루가 난사건을 해결한다.",
+    "genres": ["추리", "액션", "코미디"],
+    "ipType": ["소설", "애니"],
+    "officialUrl": "https://fugoukeiji-bul.com/",
+    "source": "https://www.aniplex.co.jp/lineup/fugoukeiji-bul/"
+  },
+  {
+    "slug": "the-perfect-insider",
+    "name": "모든 것이 F가 된다",
+    "englishName": "The Perfect Insider",
+    "aliases": ["すべてがFになる THE PERFECT INSIDER", "Subete ga F ni Naru"],
+    "description": "사이카와와 모에가 고립된 연구소에서 벌어진 밀실 살인의 논리와 진상을 푼다.",
+    "genres": ["추리", "드라마"],
+    "ipType": ["소설", "만화", "애니"],
+    "officialUrl": "https://www.f-noitamina.com/",
+    "source": "https://www.aniplex.co.jp/lineup/allf/story/"
+  },
+  {
+    "slug": "babylon-nozaki-mado",
+    "name": "바빌론",
+    "englishName": "Babylon",
+    "aliases": ["バビロン", "Babylon by Mado Nozaki"],
+    "description": "검사 세이자키 젠이 수사 중 발견한 음모와 자살을 둘러싼 거대한 악에 맞선다.",
+    "genres": ["추리", "드라마", "호러"],
+    "ipType": ["소설", "만화", "애니"],
+    "officialUrl": "https://babylon-anime.com/",
+    "source": "https://babylon-anime.com/introduction/"
+  },
+  {
+    "slug": "talentless-nana",
+    "name": "무능한 나나",
+    "englishName": "Talentless Nana",
+    "aliases": ["無能なナナ", "Munou na Nana"],
+    "description": "능력자 학교에 전학 온 나나가 정체를 감춘 채 학생들과 치밀한 심리전을 벌인다.",
+    "genres": ["추리", "학원", "액션", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://munounanana.com/",
+    "source": "https://munounanana.com/story/"
+  },
+  {
+    "slug": "in-spectre",
+    "name": "허구추리",
+    "englishName": "In/Spectre",
+    "aliases": ["虚構推理", "Kyokou Suiri"],
+    "description": "괴이의 지혜의 신 코토코가 허구를 엮어 인간과 요괴 사이의 기묘한 사건을 해결한다.",
+    "genres": ["추리", "판타지", "로맨스"],
+    "ipType": ["소설", "만화", "애니"],
+    "officialUrl": "https://kyokousuiri.jp/",
+    "source": "https://kyokousuiri.jp/introduction/"
+  },
+  {
+    "slug": "beautiful-bones-sakurakos-investigation",
+    "name": "사쿠라코 씨의 발밑에는 시체가 묻혀 있다",
+    "englishName": "Beautiful Bones: Sakurako's Investigation",
+    "aliases": ["櫻子さんの足下には死体が埋まっている", "사쿠라코 씨"],
+    "description": "뼈를 사랑하는 표본사 사쿠라코와 고교생 쇼타로가 유골에 얽힌 사건을 추리한다.",
+    "genres": ["추리", "드라마"],
+    "ipType": ["소설", "만화", "애니"],
+    "officialUrl": "https://sakurakosan.jp/",
+    "source": "https://sakurakosan.jp/"
+  },
+  {
+    "slug": "gosick",
+    "name": "GOSICK",
+    "englishName": "Gosick",
+    "aliases": ["GOSICK -ゴシック-", "고식"],
+    "description": "유학생 카즈야와 천재 소녀 빅토리카가 유럽의 소국에서 기묘한 사건들을 풀어간다.",
+    "genres": ["추리", "로맨스", "드라마"],
+    "ipType": ["소설", "만화", "애니"],
+    "officialUrl": "https://www.kadokawa.co.jp/product/200905000136/",
+    "source": "https://www.kadokawa.co.jp/product/200905000136/"
+  },
+  {
+    "slug": "hakata-tonkotsu-ramens",
+    "name": "하카타 돈코츠 라멘즈",
+    "englishName": "Hakata Tonkotsu Ramens",
+    "aliases": ["博多豚骨ラーメンズ"],
+    "description": "범죄가 들끓는 하카타에서 탐정과 살인청부업자 등 뒷세계 인물들이 충돌한다.",
+    "genres": ["액션", "추리", "드라마"],
+    "ipType": ["소설", "만화", "애니"],
+    "officialUrl": "https://promo.kadokawa.co.jp/mwbunko/title/sp09/",
+    "source": "https://promo.kadokawa.co.jp/mwbunko/title/sp09/"
+  },
+  {
+    "slug": "un-go",
+    "name": "언고",
+    "englishName": "UN-GO",
+    "aliases": ["UN-GO", "アンゴ"],
+    "description": "패전 뒤 미래 도쿄에서 탐정 유키 신주로와 수수께끼의 인가가 난사건을 밝힌다.",
+    "genres": ["추리", "SF", "드라마"],
+    "ipType": ["애니", "영화", "만화"],
+    "officialUrl": "https://www.un-go.com/",
+    "source": "https://www.fujitv.co.jp/b_hp/un-go/"
+  }
+]

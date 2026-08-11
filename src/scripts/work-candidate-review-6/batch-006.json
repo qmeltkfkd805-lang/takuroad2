@@ -1,0 +1,199 @@
+[
+    {
+        "slug":  "beelzebub-anime",
+        "name":  "벨제바브 애니메이션",
+        "englishName":  "Beelzebub",
+        "aliases":  [
+                        "べるぜバブ",
+                        "벨제바브 TV 애니"
+                    ],
+        "description":  "최강 불량학생 오가가 인류를 멸망시킬 마왕의 아기 벨을 떠맡아 학교와 마계를 오간다.",
+        "genres":  [
+                       "학원",
+                       "액션",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2010/tv10_03.html",
+        "source":  "https://pierrot.jp/archive/2010/tv10_03.html"
+    },
+    {
+        "slug":  "level-e-anime",
+        "name":  "레벨 E 애니메이션",
+        "englishName":  "Level E",
+        "aliases":  [
+                        "レベルE",
+                        "레벨E 애니"
+                    ],
+        "description":  "수백 종 외계인이 숨어 사는 지구에서 고교생 유키타카가 장난기 많은 외계 왕자에게 휘말린다.",
+        "genres":  [
+                       "SF",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2010/tv10_04.html",
+        "source":  "https://pierrot.jp/archive/2010/tv10_04.html"
+    },
+    {
+        "slug":  "polar-bear-cafe-anime",
+        "name":  "백곰 카페",
+        "englishName":  "Polar Bear Cafe",
+        "aliases":  [
+                        "しろくまカフェ",
+                        "시로쿠마 카페"
+                    ],
+        "description":  "말장난을 좋아하는 백곰이 운영하는 카페에서 판다와 펭귄 등 단골들이 느긋한 일상을 나눈다.",
+        "genres":  [
+                       "일상",
+                       "가족",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2010/tv10_06.html",
+        "source":  "https://pierrot.jp/archive/2010/tv10_06.html"
+    },
+    {
+        "slug":  "kingdom-tv-anime",
+        "name":  "킹덤 TV 애니메이션",
+        "englishName":  "Kingdom: The Animation",
+        "aliases":  [
+                        "キングダム アニメ",
+                        "킹덤 애니"
+                    ],
+        "description":  "전쟁고아 신이 천하대장군을 꿈꾸며 진나라 왕 영정과 함께 중화 통일의 전장에 선다.",
+        "genres":  [
+                       "액션",
+                       "소년물",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2010/",
+        "source":  "https://pierrot.jp/archive/2010/"
+    },
+    {
+        "slug":  "wizard-barristers-anime",
+        "name":  "위저드 배리스터즈 변마사 세실",
+        "englishName":  "Wizard Barristers",
+        "aliases":  [
+                        "ウィザード・バリスターズ 弁魔士セシル",
+                        "변마사 세실"
+                    ],
+        "description":  "마술사가 존재하는 도쿄에서 신입 변마사 세실이 마법 관련 범죄 피고인의 변호를 맡는다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2010/tv10_09.html",
+        "source":  "https://pierrot.jp/archive/2010/tv10_09.html"
+    },
+    {
+        "slug":  "world-is-still-beautiful-anime",
+        "name":  "그래도 세계는 아름답다",
+        "englishName":  "The World Is Still Beautiful",
+        "aliases":  [
+                        "それでも世界は美しい"
+                    ],
+        "description":  "비를 부르는 공주 니케가 어린 태양왕 리비에게 시집가 반목을 넘어 서로의 상처를 이해한다.",
+        "genres":  [
+                       "판타지",
+                       "로맨스",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2010/tv10_10.html",
+        "source":  "https://pierrot.jp/archive/2010/tv10_10.html"
+    },
+    {
+        "slug":  "baby-steps-anime",
+        "name":  "베이비 스텝",
+        "englishName":  "Baby Steps",
+        "aliases":  [
+                        "ベイビーステップ"
+                    ],
+        "description":  "모범생 에이이치로가 운동 부족을 계기로 테니스를 시작해 분석력과 꾸준한 연습으로 프로에 도전한다.",
+        "genres":  [
+                       "스포츠",
+                       "학원",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2010/tv10_11.html",
+        "source":  "https://pierrot.jp/archive/2010/tv10_11.html"
+    },
+    {
+        "slug":  "sabagebu-anime",
+        "name":  "서바게부!",
+        "englishName":  "Sabagebu!",
+        "aliases":  [
+                        "さばげぶっ！",
+                        "사바게부"
+                    ],
+        "description":  "모모카가 개성 강한 여학생들로 가득한 서바이벌 게임부에 붙잡히듯 입부해 난장판을 벌인다.",
+        "genres":  [
+                       "학원",
+                       "액션",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2010/tv10_13.html",
+        "source":  "https://pierrot.jp/archive/2010/tv10_13.html"
+    },
+    {
+        "slug":  "gaist-crusher-tv-anime",
+        "name":  "가이스트 크러셔 TV 애니메이션",
+        "englishName":  "Gaist Crusher: The Animation",
+        "aliases":  [
+                        "ガイストクラッシャー アニメ",
+                        "가이스트 크러셔 애니"
+                    ],
+        "description":  "소년 렛카가 금속 생명체 가이스트의 습격을 계기로 장갑을 두른 가이스트 크러셔가 된다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "소년물"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2010/tv10_08.html",
+        "source":  "https://pierrot.jp/archive/2010/tv10_08.html"
+    },
+    {
+        "slug":  "rock-lee-full-power-ninja-chronicles-anime",
+        "name":  "록 리의 청춘 풀파워 닌자전",
+        "englishName":  "Rock Lee \u0026 His Ninja Pals",
+        "aliases":  [
+                        "ロック・リーの青春フルパワー忍伝",
+                        "록리 SD"
+                    ],
+        "description":  "인술을 쓰지 못하는 록 리가 체술과 뜨거운 노력으로 동료들과 기상천외한 임무와 수련에 나선다.",
+        "genres":  [
+                       "액션",
+                       "소년물",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://pierrot.jp/archive/2010/",
+        "source":  "https://pierrot.jp/archive/2010/"
+    }
+]

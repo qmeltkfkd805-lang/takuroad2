@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "paprika-2006",
+    "name": "파프리카",
+    "englishName": "Paprika",
+    "aliases": ["パプリカ", "Paprika 2006"],
+    "description": "꿈에 들어가는 장치가 도난당하자 연구원 아츠코가 꿈 탐정 파프리카로 범인을 쫓는다.",
+    "genres": ["SF", "추리", "호러", "드라마"],
+    "ipType": ["소설", "만화", "영화"],
+    "officialUrl": "https://www.sonypictures.jp/he/815804",
+    "source": "https://www.sonypictures.jp/he/815804"
+  },
+  {
+    "slug": "steamboy",
+    "name": "스팀보이",
+    "englishName": "Steamboy",
+    "aliases": ["スチームボーイ"],
+    "description": "소년 발명가 레이가 막대한 힘을 품은 스팀볼을 지키며 거대 재단의 야망에 맞선다.",
+    "genres": ["SF", "모험", "액션"],
+    "ipType": ["영화"],
+    "officialUrl": "https://www.steamboy.net/",
+    "source": "https://www.steamboy.net/aboutfilm/introduction/"
+  },
+  {
+    "slug": "time-of-eve",
+    "name": "이브의 시간",
+    "englishName": "Time of Eve",
+    "aliases": ["イヴの時間", "Eve no Jikan"],
+    "description": "인간과 안드로이드를 구분하지 않는 카페에서 리쿠오가 마음과 관계의 경계를 돌아본다.",
+    "genres": ["SF", "드라마", "일상"],
+    "ipType": ["애니", "영화", "만화"],
+    "officialUrl": "https://studio-rikka.com/timeofeve/",
+    "source": "https://studio-rikka.com/timeofeve/"
+  },
+  {
+    "slug": "expelled-from-paradise",
+    "name": "낙원추방",
+    "englishName": "Expelled from Paradise",
+    "aliases": ["楽園追放 -Expelled from Paradise-", "라쿠엔 츠이호"],
+    "description": "전뇌 세계의 수사관 안젤라가 지상 요원 딩고와 해커 프런티어 세터를 추적한다.",
+    "genres": ["SF", "액션", "드라마"],
+    "ipType": ["영화"],
+    "officialUrl": "https://rakuen-tsuiho.com/",
+    "source": "https://www.aniplex.co.jp/lineup/rakuentsuihou/"
+  },
+  {
+    "slug": "jin-roh-the-wolf-brigade",
+    "name": "인랑",
+    "englishName": "Jin-Roh: The Wolf Brigade",
+    "aliases": ["人狼 JIN-ROH", "진로"],
+    "description": "수도경 특기대원 후세가 자폭 사건에서 만난 소녀의 언니와 가까워지며 음모에 휘말린다.",
+    "genres": ["액션", "드라마", "로맨스", "19"],
+    "ipType": ["영화"],
+    "officialUrl": "https://www.production-ig.co.jp/hotnews/2012/020401.html",
+    "source": "https://www.production-ig.co.jp/hotnews/2012/020401.html"
+  },
+  {
+    "slug": "metropolis-2001",
+    "name": "메트로폴리스",
+    "englishName": "Metropolis",
+    "aliases": ["メトロポリス", "Osamu Tezuka's Metropolis", "메트로폴리스 2001"],
+    "description": "거대 도시에서 소년 켄이치와 로봇 티마가 권력자의 계획과 인간·로봇 갈등에 맞선다.",
+    "genres": ["SF", "액션", "드라마"],
+    "ipType": ["만화", "영화"],
+    "officialUrl": "https://tezukaosamu.net/jp/anime/129.html",
+    "source": "https://tezukaosamu.net/jp/anime/129.html"
+  },
+  {
+    "slug": "redline-2009",
+    "name": "레드라인",
+    "englishName": "Redline",
+    "aliases": ["レッドライン", "레드라인 2009"],
+    "description": "레이서 JP가 무기 사용도 허용되는 우주 최고의 자동차 경주 레드라인에 도전한다.",
+    "genres": ["SF", "스포츠", "액션"],
+    "ipType": ["영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "memories-1995",
+    "name": "메모리즈",
+    "englishName": "Memories",
+    "aliases": ["メモリーズ", "메모리즈 1995"],
+    "description": "우주 괴담과 생물 재난, 대포 도시를 서로 다른 화풍으로 담은 세 편의 옴니버스다.",
+    "genres": ["SF", "호러", "드라마"],
+    "ipType": ["만화", "영화"],
+    "officialUrl": "https://www.studio4c.co.jp/works/pages/01.html",
+    "source": "https://www.studio4c.co.jp/works/pages/01.html"
+  },
+  {
+    "slug": "tokyo-godfathers",
+    "name": "도쿄 갓파더즈",
+    "englishName": "Tokyo Godfathers",
+    "aliases": ["東京ゴッドファーザーズ"],
+    "description": "크리스마스의 도쿄에서 노숙인 세 명이 버려진 아기의 부모를 찾아 밤거리를 누빈다.",
+    "genres": ["드라마", "코미디", "가족"],
+    "ipType": ["영화"],
+    "officialUrl": "https://www.madhouse.co.jp/tokyogodfathers/",
+    "source": "https://www.madhouse.co.jp/tokyogodfathers/"
+  },
+  {
+    "slug": "millennium-actress",
+    "name": "천년여우",
+    "englishName": "Millennium Actress",
+    "aliases": ["千年女優", "천년여우 2001"],
+    "description": "은퇴한 배우 치요코가 평생 쫓은 남자의 기억을 들려주며 현실과 영화가 하나로 겹친다.",
+    "genres": ["드라마", "로맨스"],
+    "ipType": ["영화"],
+    "officialUrl": "",
+    "source": "https://www.bandainamco.co.jp/files/pr20140219_sennnennjyoyu_hp.pdf"
+  }
+]

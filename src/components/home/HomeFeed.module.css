@@ -32,18 +32,18 @@
 .newsRail:active { cursor: grabbing; }
 .newsRail img { pointer-events: none; -webkit-user-drag: none; }
 
-.newsSlideLink { flex: 0 0 clamp(210px, 31%, 300px); scroll-snap-align: start; text-decoration: none; color: inherit; user-select: none; -webkit-user-select: none; }
-.newsSlide { display: flex; align-items: center; gap: 12px; height: 80px; padding: 0 12px 0 0; border: 1px solid var(--border); border-radius: var(--r-sm); overflow: hidden; background: var(--surface); transition: border-color .12s ease, box-shadow .12s ease; }
+.newsSlideLink { flex: 0 0 clamp(240px, 34%, 330px); scroll-snap-align: start; text-decoration: none; color: inherit; user-select: none; -webkit-user-select: none; }
+.newsSlide { display: flex; align-items: center; gap: 12px; height: 96px; padding: 0 12px 0 0; border: 1px solid var(--border); border-radius: var(--r-sm); overflow: hidden; background: var(--surface); transition: border-color .12s ease, box-shadow .12s ease; }
 .newsSlideLink:hover .newsSlide { border-color: var(--accent); box-shadow: 0 4px 12px rgba(0,0,0,.05); }
-.newsSlideThumb { position: relative; width: 76px; height: 100%; flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--surface2); }
+.newsSlideThumb { position: relative; width: 92px; height: 100%; flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--surface2); }
 .newsSlideThumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .newsSlideBody { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .newsSlideTop { display: flex; align-items: center; gap: 5px; min-width: 0; }
-.newsSlideWork { font-size: 12px; font-weight: 700; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.newsSlideWork { font-size: 12.5px; font-weight: 700; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .newsNewDot { width: 5px; height: 5px; border-radius: 9999px; background: var(--accent); flex-shrink: 0; margin-left: 2px; }
 .newsNew { font-size: 11px; font-weight: 800; color: var(--accent); flex-shrink: 0; }
-.newsSlideTitle { font-size: 14px; font-weight: 800; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.newsSlideMeta { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.newsSlideTitle { font-size: 15px; font-weight: 800; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.newsSlideMeta { font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .newsChev { color: var(--muted); flex-shrink: 0; }
 
 @media (hover: none) and (pointer: coarse) {
@@ -76,6 +76,15 @@
 .routeThumb { position: relative; width: 44%; max-width: 165px; height: 100%; flex-shrink: 0; overflow: hidden; background: var(--surface2); }
 .routeThumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .routeCount { position: absolute; top: 5px; left: 5px; z-index: 2; padding: 2px 6px; border-radius: 9999px; background: rgba(255,255,255,.62); color: var(--text); font-size: 9.5px; font-weight: 800; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.evBadge { position: absolute; top: 6px; left: 6px; z-index: 2; padding: 2px 8px; border-radius: 9999px; background: var(--accent); color: #fff; font-size: 10.5px; font-weight: 800; box-shadow: 0 1px 4px rgba(0,0,0,.15); }
+/* 이벤트 카드 — 정보가 많아 루트 카드보다 살짝 높게, 정보 아이콘 행 */
+.evCard { height: 158px; }
+.evBody { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 12px 14px; justify-content: center; gap: 4px; }
+.evTitle { font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.evWork { font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 1px; }
+.evRow { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--muted); min-width: 0; }
+.evRow svg { flex-shrink: 0; }
+.evRowText { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .routeHeart { position: absolute; top: 7px; right: 7px; z-index: 2; width: 28px; height: 28px; border: none; border-radius: 9999px; background: rgba(255,255,255,.92); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
 .routeBody { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 11px 14px; justify-content: center; gap: 4px; }
 .routeName { font-size: 14px; font-weight: 800; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

@@ -1,0 +1,203 @@
+[
+    {
+        "slug":  "granblue-fantasy",
+        "name":  "그랑블루 판타지",
+        "englishName":  "Granblue Fantasy",
+        "aliases":  [
+                        "그랑블루",
+                        "グランブルーファンタジー"
+                    ],
+        "description":  "기공사가 동료들과 비공정을 타고 전설의 섬 이스타르시아를 향해 광대한 하늘 세계를 모험한다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니",
+                       "만화"
+                   ],
+        "officialUrl":  "https://granbluefantasy.jp/",
+        "source":  "https://magazine.cygames.co.jp/kr/archives/3336"
+    },
+    {
+        "slug":  "eversoul",
+        "name":  "에버소울",
+        "englishName":  "Eversoul",
+        "aliases":  [
+                        "EVERSOUL"
+                    ],
+        "description":  "정령의 부름을 받은 구원자가 다양한 정령들과 교감하며 침략자에게서 에덴을 지킨다.",
+        "genres":  [
+                       "판타지",
+                       "로맨스",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://www.kakaogamescorp.com/news/press/detail/1779?page=22",
+        "source":  "https://www.kakaogamescorp.com/news/press/detail/1779?page=22"
+    },
+    {
+        "slug":  "reverse-1999",
+        "name":  "리버스: 1999",
+        "englishName":  "Reverse: 1999",
+        "aliases":  [
+                        "Reverse: 1999",
+                        "重返未来：1999"
+                    ],
+        "description":  "시간을 되감는 폭풍에 면역인 타임키퍼 버틴이 여러 시대의 신비학자들과 역사의 진실을 추적한다.",
+        "genres":  [
+                       "판타지",
+                       "SF",
+                       "드라마",
+                       "추리"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://re1999.bluepoch.com/en/home/",
+        "source":  "https://re1999.bluepoch.com/en/home/"
+    },
+    {
+        "slug":  "heaven-burns-red",
+        "name":  "헤븐 번즈 레드",
+        "englishName":  "Heaven Burns Red",
+        "aliases":  [
+                        "헤번레",
+                        "ヘブンバーンズレッド"
+                    ],
+        "description":  "외계 생명체 캔서에게 쫓긴 인류의 마지막 희망이 된 소녀 부대가 세라프를 들고 싸운다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://heaven-burns-red.com/",
+        "source":  "https://heaven-burns-red.com/"
+    },
+    {
+        "slug":  "path-to-nowhere",
+        "name":  "무기미도",
+        "englishName":  "Path to Nowhere",
+        "aliases":  [
+                        "無期迷途"
+                    ],
+        "description":  "미노스 위기관리국 국장이 특수 능력을 지닌 수감자들을 지휘해 디스시티의 재앙과 음모를 쫓는다.",
+        "genres":  [
+                       "SF",
+                       "판타지",
+                       "추리",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://ptn.aisnogames.com/",
+        "source":  "https://ptn.aisnogames.com/"
+    },
+    {
+        "slug":  "neural-cloud",
+        "name":  "뉴럴 클라우드",
+        "englishName":  "Neural Cloud",
+        "aliases":  [
+                        "Project Neural Cloud",
+                        "少女前線：ニューラルクラウド"
+                    ],
+        "description":  "뉴럴 클라우드 계획의 책임자가 가상 세계에 흩어진 인형들을 모아 추방자를 결성하고 탈출구를 찾는다.",
+        "genres":  [
+                       "SF",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://42lab-us.sunborngame.com/",
+        "source":  "https://play.google.com/store/apps/details?id=com.sunborn.neuralcloud.jp"
+    },
+    {
+        "slug":  "cat-fantasy",
+        "name":  "캣 판타지",
+        "englishName":  "Cat Fantasy",
+        "aliases":  [
+                        "Cat Fantasy",
+                        "猫之城"
+                    ],
+        "description":  "조사관이 사람으로 변하는 고양이들과 캣 라운지를 운영하며 도시를 파멸의 운명에서 구한다.",
+        "genres":  [
+                       "판타지",
+                       "SF",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://jp.catfantasygame.com/PClandingpage1LD/",
+        "source":  "https://jp.catfantasygame.com/PClandingpage1LD/"
+    },
+    {
+        "slug":  "starseed-asnia-trigger",
+        "name":  "스타시드: 아스니아 트리거",
+        "englishName":  "Starseed: Asnia Trigger",
+        "aliases":  [
+                        "스타시드",
+                        "STARSEED"
+                    ],
+        "description":  "인류 멸망을 막기 위해 가상 세계로 뛰어든 플레이어가 AI 소녀 프록시안들과 함께 싸운다.",
+        "genres":  [
+                       "SF",
+                       "판타지",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://starseed.com2us.com/",
+        "source":  "https://on.com2us.com/press/%EC%BB%B4%ED%88%AC%EC%8A%A4-%EC%8B%A0%EC%9E%91-%EC%8A%A4%ED%83%80%EC%8B%9C%EB%93%9C-%EC%95%84%EC%8A%A4%EB%8B%88%EC%95%84-%ED%8A%B8%EB%A6%AC%EA%B1%B0-%EA%B5%AD%EB%82%B4-%EC%84%9C%EB%B9%84/"
+    },
+    {
+        "slug":  "trickcal-revive",
+        "name":  "트릭컬 리바이브",
+        "englishName":  "Trickcal Revive",
+        "aliases":  [
+                        "트릭컬",
+                        "TRICKCAL RE:VIVE"
+                    ],
+        "description":  "세계수 교단의 교주가 볼이 말랑한 사도들과 엘리아스에서 벌어지는 엉뚱한 사건들을 해결한다.",
+        "genres":  [
+                       "판타지",
+                       "코미디",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://www.trickcal.com/",
+        "source":  "https://www.trickcal.com/"
+    },
+    {
+        "slug":  "witchspring",
+        "name":  "마녀의 샘",
+        "englishName":  "WitchSpring",
+        "aliases":  [
+                        "WitchSpring",
+                        "魔女之泉"
+                    ],
+        "description":  "숨어 사는 어린 마녀를 수련시키고 마법과 재료를 모으며 인간과 마녀의 갈등 속에서 운명을 개척한다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "게임"
+                   ],
+        "officialUrl":  "https://www.witchspring.net/",
+        "source":  "https://www.witchspring.net/ko/journey-of-witchspring"
+    }
+]

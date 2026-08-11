@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "free-draw-webtoon",
+    "name": "프리드로우",
+    "englishName": "Free Draw",
+    "aliases": [],
+    "description": "문제아 한태성이 새 학교에서 친구들과 부딪치며 만화가의 꿈과 자신의 길을 찾아가는 학원 이야기다.",
+    "genres": ["학원", "액션", "코미디", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=597447",
+    "source": "https://comic.naver.com/webtoon/list?titleId=597447"
+  },
+  {
+    "slug": "girl-from-random-chatting-webtoon",
+    "name": "랜덤채팅의 그녀!",
+    "englishName": "The Girl from Random Chatting!",
+    "aliases": [],
+    "description": "학교에서는 외톨이인 최준우가 랜덤채팅에서 만난 같은 반 소녀와 얽히며 변화하는 학원 드라마다.",
+    "genres": ["학원", "로맨스", "드라마", "액션"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=702608",
+    "source": "https://comic.naver.com/webtoon/list?titleId=702608"
+  },
+  {
+    "slug": "true-education-webtoon",
+    "name": "참교육",
+    "englishName": "The Real Lesson",
+    "aliases": [],
+    "description": "교권보호국 감독관 나화진이 무너진 학교 현장에 파견되어 폭력과 부조리에 맞서는 학원 액션이다.",
+    "genres": ["학원", "액션", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=758037",
+    "source": "https://comic.naver.com/webtoon/list?titleId=758037"
+  },
+  {
+    "slug": "quest-supremacy-webtoon",
+    "name": "퀘스트지상주의",
+    "englishName": "Questism",
+    "aliases": [],
+    "description": "학교폭력에 시달리던 김수현이 현실의 퀘스트 창을 얻어 성장하며 학교의 세력 다툼에 뛰어든다.",
+    "genres": ["학원", "액션", "판타지", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=783052",
+    "source": "https://comic.naver.com/webtoon/list?titleId=783052"
+  },
+  {
+    "slug": "world-is-money-and-power-webtoon",
+    "name": "세상은 돈과 권력",
+    "englishName": "The World Is Money and Power",
+    "aliases": [],
+    "description": "재벌 자녀들이 돈과 권력으로 지배하는 학교에 전학생 단건우가 맞서 두뇌 싸움을 벌인다.",
+    "genres": ["학원", "드라마", "액션"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=710747",
+    "source": "https://comic.naver.com/webtoon/list?titleId=710747"
+  },
+  {
+    "slug": "manager-kim-webtoon",
+    "name": "김부장",
+    "englishName": "Manager Kim",
+    "aliases": [],
+    "description": "전직 특수요원 김부장이 사라진 딸 민지를 찾기 위해 감춰온 실력을 드러내고 거대한 적과 맞선다.",
+    "genres": ["액션", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=783053",
+    "source": "https://comic.naver.com/webtoon/list?titleId=783053"
+  },
+  {
+    "slug": "castle-webtoon",
+    "name": "캐슬",
+    "englishName": "Castle",
+    "aliases": [],
+    "description": "킬러 김신이 스승의 원수를 갚기 위해 대한민국 암흑가의 거대 조직 캐슬을 무너뜨리려 한다.",
+    "genres": ["액션", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=736744",
+    "source": "https://comic.naver.com/webtoon/list?titleId=736744"
+  },
+  {
+    "slug": "plaza-webtoon",
+    "name": "광장",
+    "englishName": "Plaza Wars",
+    "aliases": [],
+    "description": "조직을 떠났던 남기준이 동생의 죽음 뒤 15년 만에 돌아와 진실을 좇고 복수에 나선다.",
+    "genres": ["액션", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=753509",
+    "source": "https://comic.naver.com/webtoon/list?titleId=753509"
+  },
+  {
+    "slug": "juvenile-offender-webtoon",
+    "name": "촉법소년",
+    "englishName": "Juvenile Offender",
+    "aliases": [],
+    "description": "법망을 이용해 자신을 지옥으로 몰아넣은 가해자들에게 한 소년이 치밀한 복수를 시작한다.",
+    "genres": ["액션", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=808198",
+    "source": "https://comic.naver.com/webtoon/list?titleId=808198"
+  },
+  {
+    "slug": "killer-peter-webtoon",
+    "name": "킬러 배드로",
+    "englishName": "Killer Peter",
+    "aliases": [],
+    "description": "조직에 배신당한 노인 킬러 배드로가 젊은 몸으로 돌아와 자신의 힘을 숨긴 채 복수를 준비한다.",
+    "genres": ["액션", "판타지", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://comic.naver.com/webtoon/list?titleId=816798",
+    "source": "https://comic.naver.com/webtoon/list?titleId=816798"
+  }
+]

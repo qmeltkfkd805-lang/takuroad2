@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "omniscient-readers-viewpoint-webtoon",
+    "name": "전지적 독자 시점",
+    "englishName": "Omniscient Reader",
+    "aliases": ["전독시"],
+    "description": "완독한 웹소설이 현실이 되자 유일하게 결말을 아는 김독자가 이야기와 세계의 운명을 바꾼다.",
+    "genres": ["판타지", "액션", "모험", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://www.webtoons.com/en/action/omniscient-reader/list?title_no=2154",
+    "source": "https://www.webtoons.com/en/action/omniscient-reader/list?title_no=2154"
+  },
+  {
+    "slug": "return-of-the-mount-hua-sect-webtoon",
+    "name": "화산귀환",
+    "englishName": "Return of the Blossoming Blade",
+    "aliases": [],
+    "description": "천마를 쓰러뜨리고 죽은 청명이 백 년 뒤 아이로 깨어나 몰락한 화산파의 재건에 나선다.",
+    "genres": ["액션", "판타지", "코미디", "모험"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://www.webtoons.com/en/action/return-of-the-blossoming-blade/list?title_no=2849",
+    "source": "https://www.webtoons.com/en/action/return-of-the-blossoming-blade/list?title_no=2849"
+  },
+  {
+    "slug": "lookism-webtoon",
+    "name": "외모지상주의",
+    "englishName": "Lookism",
+    "aliases": ["외지주"],
+    "description": "괴롭힘받던 박형석이 완벽한 외모의 두 번째 몸을 얻으며 학교와 사회의 폭력적인 이면을 겪는다.",
+    "genres": ["액션", "학원", "드라마", "격투"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/drama/lookism/list?title_no=1049",
+    "source": "https://www.webtoons.com/en/drama/lookism/list?title_no=1049"
+  },
+  {
+    "slug": "tower-of-god-webtoon",
+    "name": "신의 탑",
+    "englishName": "Tower of God",
+    "aliases": [],
+    "description": "밤이 라헬을 따라 소원을 이룰 수 있다는 거대한 탑에 들어가 동료들과 위험한 시험을 오른다.",
+    "genres": ["판타지", "액션", "모험", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/fantasy/tower-of-god/list?title_no=95",
+    "source": "https://www.webtoons.com/en/fantasy/tower-of-god/list?title_no=95"
+  },
+  {
+    "slug": "true-beauty-webtoon",
+    "name": "여신강림",
+    "englishName": "True Beauty",
+    "aliases": [],
+    "description": "화장으로 외모와 학교생활을 바꾼 임주경이 민낯을 아는 이수호와 만나 사랑과 자존감을 배운다.",
+    "genres": ["로맨스", "학원", "드라마", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/romance/truebeauty/list?title_no=1436",
+    "source": "https://www.webtoons.com/en/romance/truebeauty/list?title_no=1436"
+  },
+  {
+    "slug": "yumis-cells-webtoon",
+    "name": "유미의 세포들",
+    "englishName": "Yumi's Cells",
+    "aliases": [],
+    "description": "평범한 직장인 유미의 일상과 연애를 머릿속 세포들의 분주한 활동과 함께 그린다.",
+    "genres": ["로맨스", "일상", "코미디", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/slice-of-life/yumi-cell/list?title_no=478",
+    "source": "https://www.webtoons.com/en/slice-of-life/yumi-cell/list?title_no=478"
+  },
+  {
+    "slug": "love-revolution-webtoon",
+    "name": "연애혁명",
+    "englishName": "Love Revolution",
+    "aliases": [],
+    "description": "공주영이 무심한 왕자림에게 첫눈에 반해 다가가며 친구들과 함께 사랑과 성장의 시간을 보낸다.",
+    "genres": ["로맨스", "학원", "코미디", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/id/romance/love-revolution/list?title_no=748",
+    "source": "https://www.webtoons.com/id/romance/love-revolution/list?title_no=748"
+  },
+  {
+    "slug": "sound-of-your-heart-webtoon",
+    "name": "마음의 소리",
+    "englishName": "The Sound of Your Heart",
+    "aliases": [],
+    "description": "만화가 조석과 가족, 연인 애봉이가 현실의 상식을 뛰어넘는 황당한 일상 소동을 벌인다.",
+    "genres": ["코미디", "일상", "가족"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/comedy/the-sound-of-your-heart/list?title_no=269",
+    "source": "https://www.webtoons.com/en/comedy/the-sound-of-your-heart/list?title_no=269"
+  },
+  {
+    "slug": "viral-hit-webtoon",
+    "name": "싸움독학",
+    "englishName": "Viral Hit",
+    "aliases": [],
+    "description": "왜소한 고등학생 유호빈이 비밀 영상의 격투법을 익혀 강자들과 싸우고 방송으로 돈을 번다.",
+    "genres": ["액션", "격투", "학원", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/action/viral-hit/list?title_no=2268",
+    "source": "https://www.webtoons.com/en/action/viral-hit/list?title_no=2268"
+  },
+  {
+    "slug": "eleceed-webtoon",
+    "name": "일렉시드",
+    "englishName": "Eleceed",
+    "aliases": [],
+    "description": "빠른 능력을 숨긴 서지우와 고양이 몸에 갇힌 각성자 카이든이 악한 세력에 함께 맞선다.",
+    "genres": ["액션", "판타지", "학원", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/action/eleceed/list?title_no=1571",
+    "source": "https://www.webtoons.com/en/action/eleceed/list?title_no=1571"
+  }
+]

@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "blue-giant",
+    "name": "블루 자이언트",
+    "englishName": "Blue Giant",
+    "aliases": ["BLUE GIANT", "ブルージャイアント"],
+    "description": "재즈에 매료된 미야모토 다이가 세계 최고의 색소폰 연주자를 꿈꾸며 동료들과 무대에 오른다.",
+    "genres": ["음악", "드라마"],
+    "ipType": ["만화", "영화"],
+    "officialUrl": "https://bluegiant-movie.jp/",
+    "source": "https://bluegiant-movie.jp/"
+  },
+  {
+    "slug": "forest-of-piano",
+    "name": "피아노의 숲",
+    "englishName": "Forest of Piano",
+    "aliases": ["ピアノの森", "Piano no Mori"],
+    "description": "숲의 버려진 피아노를 친구 삼아 자란 카이가 정식 교육을 받은 슈헤이와 만나 음악가로 성장한다.",
+    "genres": ["음악", "드라마"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://piano-anime.jp/",
+    "source": "https://piano-anime.jp/"
+  },
+  {
+    "slug": "kids-on-the-slope",
+    "name": "언덕길의 아폴론",
+    "englishName": "Kids on the Slope",
+    "aliases": ["坂道のアポロン", "Sakamichi no Apollon"],
+    "description": "전학생 카오루가 거친 센타로와 재즈를 연주하며 우정과 첫사랑으로 가득한 청춘을 보낸다.",
+    "genres": ["음악", "학원", "드라마", "로맨스"],
+    "ipType": ["만화", "애니", "영화"],
+    "officialUrl": "https://www.noitamina-apollon.com/",
+    "source": "https://www.noitamina-apollon.com/"
+  },
+  {
+    "slug": "hanebado",
+    "name": "하네배드!",
+    "englishName": "Hanebado!",
+    "aliases": ["はねバド！"],
+    "description": "배드민턴을 피하던 천재 아야노와 패배의 상처를 안은 나기사가 전국 대회를 향해 코트에서 맞선다.",
+    "genres": ["스포츠", "학원", "드라마"],
+    "ipType": ["만화", "애니", "소설"],
+    "officialUrl": "https://hanebad.com/",
+    "source": "https://hanebad.com/intro/"
+  },
+  {
+    "slug": "kono-oto-tomare-sounds-of-life",
+    "name": "이 소리에 모여!",
+    "englishName": "Kono Oto Tomare! Sounds of Life",
+    "aliases": ["この音とまれ！", "Kono Oto Tomare!"],
+    "description": "폐부 위기의 고교 고토부에 불량학생 치카와 천재 연주자 사토와가 합류해 전국 무대를 꿈꾼다.",
+    "genres": ["음악", "학원", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://konooto-anime.jp/",
+    "source": "https://konooto-anime.jp/story/"
+  },
+  {
+    "slug": "dance-dance-danseur",
+    "name": "댄스 댄스 당쇠르",
+    "englishName": "Dance Dance Danseur",
+    "aliases": ["ダンス・ダンス・ダンスール"],
+    "description": "남자다움을 좇아 발레를 포기했던 준페이가 미야코를 만나 억눌렀던 무용의 열정을 다시 펼친다.",
+    "genres": ["스포츠", "드라마", "학원"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://danseur-anime.com/",
+    "source": "https://danseur-anime.com/staff"
+  },
+  {
+    "slug": "welcome-to-the-ballroom",
+    "name": "볼룸에 오신 것을 환영합니다",
+    "englishName": "Welcome to the Ballroom",
+    "aliases": ["ボールルームへようこそ"],
+    "description": "목표 없이 지내던 타타라가 사교댄스를 접하고 파트너들과 경쟁하며 댄서로 성장한다.",
+    "genres": ["스포츠", "드라마", "학원"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "",
+    "source": "https://www.bs11.jp/anime/ballroom/"
+  },
+  {
+    "slug": "salarymans-club",
+    "name": "리맨즈 클럽",
+    "englishName": "Salaryman's Club",
+    "aliases": ["リーマンズクラブ", "Ryman's Club"],
+    "description": "실업팀에서 방출된 미코토가 새 회사에서 영업 업무와 배드민턴 복식에 다시 도전한다.",
+    "genres": ["스포츠", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://rymansclub.com/",
+    "source": "https://rymansclub.com/intro/"
+  },
+  {
+    "slug": "birdie-wing-golf-girls-story",
+    "name": "버디 윙",
+    "englishName": "BIRDIE WING -Golf Girls' Story-",
+    "aliases": ["BIRDIE WING", "バーディーウイング"],
+    "description": "도박 골프로 살아가는 이브가 정통파 선수 아오이와 만나 서로를 자극하며 세계 무대를 향한다.",
+    "genres": ["스포츠", "드라마", "액션"],
+    "ipType": ["애니", "게임"],
+    "officialUrl": "https://www.birdie-wing.net/",
+    "source": "https://www.birdie-wing.net/introduction/"
+  },
+  {
+    "slug": "run-with-the-wind",
+    "name": "바람이 강하게 불고 있다",
+    "englishName": "Run with the Wind",
+    "aliases": ["風が強く吹いている", "Kaze ga Tsuyoku Fuiteiru"],
+    "description": "하이지가 기숙사 주민 아홉 명과 천재 러너 카케루를 모아 하코네 역전경주 출전을 준비한다.",
+    "genres": ["스포츠", "드라마"],
+    "ipType": ["소설", "만화", "애니", "영화"],
+    "officialUrl": "https://kazetsuyo-anime.com/",
+    "source": "https://kazetsuyo-anime.com/sp/introduction/"
+  }
+]

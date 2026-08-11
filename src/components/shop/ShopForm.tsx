@@ -407,13 +407,16 @@ export default function ShopForm({ mode, shop }: Props) {
                 ))}
               </div>
               {form.parking !== null && (
-                <input
-                  type="text"
-                  value={form.parking_note}
-                  onChange={e => set('parking_note', e.target.value)}
-                  placeholder="주차 관련 메모 (예: 건물 내 2시간 무료)"
-                  style={{ ...inputStyle, marginTop: '8px' }}
-                />
+                <>
+                  <textarea
+                    value={form.parking_note}
+                    onChange={e => set('parking_note', e.target.value)}
+                    rows={4}
+                    placeholder={'주차 관련 메모 (줄바꿈으로 여러 줄 입력 가능)\n예)\n무료주차 : 30분\n1~3만원 : 1시간\n3~5만원 : 2시간'}
+                    style={{ ...inputStyle, marginTop: '8px', minHeight: '96px', lineHeight: 1.6, resize: 'vertical', whiteSpace: 'pre-wrap' }}
+                  />
+                  <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '4px' }}>Enter로 줄을 바꾸면 입력한 그대로 보여져요.</div>
+                </>
               )}
             </Field>
 

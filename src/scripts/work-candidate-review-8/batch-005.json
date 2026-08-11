@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "odd-girl-out-webtoon",
+    "name": "소녀의 세계",
+    "englishName": "Odd Girl Out",
+    "aliases": [],
+    "description": "새 학기를 맞은 오나리가 눈에 띄는 세 친구와 가까워지며 우정과 자존감, 사랑의 문제를 헤쳐 간다.",
+    "genres": ["학원", "일상", "드라마", "로맨스"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/drama/odd-girl-out/list?title_no=1420",
+    "source": "https://www.webtoons.com/en/drama/odd-girl-out/list?title_no=1420"
+  },
+  {
+    "slug": "spirit-fingers-webtoon",
+    "name": "스피릿 핑거스",
+    "englishName": "Spirit Fingers",
+    "aliases": [],
+    "description": "자신감 없는 고등학생 송우연이 개성 넘치는 그림 모임에 들어가 자신만의 색과 사랑을 찾아간다.",
+    "genres": ["드라마", "로맨스", "코미디", "일상"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/drama/spirit-fingers/list?title_no=1577",
+    "source": "https://www.webtoons.com/en/drama/spirit-fingers/list?title_no=1577"
+  },
+  {
+    "slug": "your-letter-webtoon",
+    "name": "연의 편지",
+    "englishName": "Your Letter",
+    "aliases": [],
+    "description": "학교 폭력으로 전학한 소리가 교실에 숨겨진 편지를 따라가며 익명의 친구와 새로운 인연을 발견한다.",
+    "genres": ["드라마", "학원", "추리", "일상"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/drama/your-letter/list?title_no=1540",
+    "source": "https://www.webtoons.com/en/drama/your-letter/list?title_no=1540"
+  },
+  {
+    "slug": "whale-star-webtoon",
+    "name": "고래별",
+    "englishName": "Whale Star: The Gyeongseong Mermaid",
+    "aliases": [],
+    "description": "1926년 식민지 조선의 하녀 허수아가 부상당한 독립운동가를 구한 뒤 경성의 격랑에 휘말린다.",
+    "genres": ["드라마", "로맨스"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/drama/whale-star-the-gyeongseong-mermaid/list?title_no=3237",
+    "source": "https://www.webtoons.com/en/drama/whale-star-the-gyeongseong-mermaid/list?title_no=3237"
+  },
+  {
+    "slug": "pyramid-game-webtoon",
+    "name": "피라미드 게임",
+    "englishName": "Pyramid Game",
+    "aliases": [],
+    "description": "전학생 성수지가 인기 투표로 계급과 폭력이 결정되는 반에서 잔혹한 피라미드 질서를 무너뜨리려 한다.",
+    "genres": ["학원", "추리", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/drama/pyramid-game/list?title_no=2277",
+    "source": "https://www.webtoons.com/en/drama/pyramid-game/list?title_no=2277"
+  },
+  {
+    "slug": "deaths-game-webtoon",
+    "name": "이제 곧 죽습니다",
+    "englishName": "Death's Game",
+    "aliases": [],
+    "description": "삶을 포기한 최이재가 죽음의 벌로 곧 죽을 열두 사람의 몸을 거치며 생존의 기회를 찾는다.",
+    "genres": ["드라마", "판타지", "액션"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/drama/deaths-game/list?title_no=1265",
+    "source": "https://www.webtoons.com/en/drama/deaths-game/list?title_no=1265"
+  },
+  {
+    "slug": "tomorrow-webtoon",
+    "name": "내일",
+    "englishName": "Tomorrow",
+    "aliases": [],
+    "description": "취업준비생 최준웅이 저승 위기관리팀의 사자가 되어 삶을 포기하려는 사람들의 내일을 지킨다.",
+    "genres": ["드라마", "판타지", "일상"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/drama/tomorrow/list?title_no=3913",
+    "source": "https://www.webtoons.com/en/drama/tomorrow/list?title_no=3913"
+  },
+  {
+    "slug": "duty-after-school-webtoon",
+    "name": "방과 후 전쟁활동",
+    "englishName": "Duty After School",
+    "aliases": [],
+    "description": "정체불명의 구체가 지구를 침공하자 평범한 고등학생들이 군사 훈련을 받고 전쟁에 동원된다.",
+    "genres": ["SF", "학원", "액션", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/sf/duty-after-school/list?title_no=370",
+    "source": "https://www.webtoons.com/en/sf/duty-after-school/list?title_no=370"
+  },
+  {
+    "slug": "hellbound-webtoon",
+    "name": "지옥",
+    "englishName": "Hellbound",
+    "aliases": [],
+    "description": "죽을 시간을 고지하는 천사와 지옥의 시연이 나타난 서울에서 형사와 종교 집단이 진실을 다툰다.",
+    "genres": ["호러", "추리", "드라마", "판타지"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/thriller/hellbound/list?title_no=3598",
+    "source": "https://www.webtoons.com/en/thriller/hellbound/list?title_no=3598"
+  },
+  {
+    "slug": "shotgun-boy-webtoon",
+    "name": "엽총소년",
+    "englishName": "Shotgun Boy",
+    "aliases": [],
+    "description": "괴롭힘을 피해 숲으로 달아난 한규환이 엽총을 주운 뒤 뇌를 먹는 괴물에게 습격당한 반으로 돌아온다.",
+    "genres": ["호러", "액션", "학원", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://www.webtoons.com/en/thriller/shotgun-boy/list?title_no=2534",
+    "source": "https://www.webtoons.com/en/thriller/shotgun-boy/list?title_no=2534"
+  }
+]

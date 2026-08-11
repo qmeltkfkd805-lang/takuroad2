@@ -1,18 +1,11 @@
 'use client'
 import { CSSProperties } from 'react'
 import { Shop } from '@/types/shop'
+import { catInfoOf } from '@/lib/constants/categories'
 import { formatDistance } from '@/hooks/useCurrentLocation'
 import { Icon } from './Icon'
 import { StatusBadge } from './StatusBadge'
 import { Chip } from './Chip'
-
-type ChipTone = 'coral' | 'lavender' | 'mint' | 'blue' | 'yellow' | 'gray'
-
-const CAT_TONE: Record<string, ChipTone> = {
-  '굿즈샵': 'coral', '서점': 'blue', '카드/TCG': 'yellow', '중고샵': 'mint',
-  '콜라보카페': 'coral', '팝업스토어': 'blue', '게임샵': 'lavender',
-  '온라인샵': 'mint', '가챠/쿠지': 'coral', '전시': 'lavender',
-}
 
 const BADGE_STYLE: Record<string, { bg: string; fg: string; label: string }> = {
   recommend: { bg: '#E1F7F2', fg: '#0E7A63', label: '추천' },
@@ -105,9 +98,10 @@ export function ShopCard({ shop, meta = 'region', badge, onClick, onToggleSave, 
 
         {shop.cats?.length > 0 && (
           <div className="shopcard-cats" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-            {shop.cats.slice(0, 2).map((c) => (
-              <Chip key={c} tone={CAT_TONE[c] ?? 'gray'}>{c}</Chip>
-            ))}
+            {shop.cats.slice(0, 2).map((c) => {
+              const info = catInfoOf(c)
+              return <Chip key={c} tone="gray" style={info ? { background: info.bgColor, color: info.color } : undefined}>{c}</Chip>
+            })}
           </div>
         )}
       </div>

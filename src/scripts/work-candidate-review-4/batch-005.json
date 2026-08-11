@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "sonny-boy-anime",
+    "name": "써니 보이",
+    "englishName": "Sonny Boy",
+    "aliases": ["サニーボーイ"],
+    "description": "학교와 함께 이차원으로 표류한 학생들이 초능력과 낯선 세계의 규칙 속에서 귀환할 길을 찾는다.",
+    "genres": ["SF", "판타지", "학원", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://sh-anime.shochiku.co.jp/sonny-boy/",
+    "source": "https://sh-anime.shochiku.co.jp/sonny-boy/"
+  },
+  {
+    "slug": "wonder-egg-priority",
+    "name": "원더 에그 프라이어리티",
+    "englishName": "Wonder Egg Priority",
+    "aliases": ["ワンダーエッグ・プライオリティ"],
+    "description": "은둔하던 소녀 아이가 신비한 에그를 깨고, 상처 입은 소녀들을 구하며 친구의 죽음과 마주한다.",
+    "genres": ["판타지", "액션", "학원", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://wonder-egg-priority.com/",
+    "source": "https://wonder-egg-priority.com/"
+  },
+  {
+    "slug": "flip-flappers",
+    "name": "플립 플래퍼즈",
+    "englishName": "Flip Flappers",
+    "aliases": ["フリップフラッパーズ"],
+    "description": "코코나와 파피카가 소원을 이룰 조각을 찾아 무한한 가능성의 세계 퓨어 일루전에 뛰어든다.",
+    "genres": ["판타지", "모험", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.hakuhodody-map.jp/lineup/animation/map-3148",
+    "source": "https://www.hakuhodody-map.jp/lineup/animation/map-3148"
+  },
+  {
+    "slug": "kyousougiga-tv",
+    "name": "쿄소기가",
+    "englishName": "Kyousougiga",
+    "aliases": ["京騒戯画"],
+    "description": "사람과 요괴가 공존하는 거울도시 교토에 소녀 코토가 나타나 흩어진 가족의 재회를 뒤흔든다.",
+    "genres": ["판타지", "액션", "가족", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.toei-anim.co.jp/sp/kyousogiga/kyousogiga/",
+    "source": "https://www.toei-anim.co.jp/sp/kyousogiga/kyousogiga/"
+  },
+  {
+    "slug": "revue-starlight-tv",
+    "name": "소녀☆가극 레뷰 스타라이트",
+    "englishName": "Revue Starlight",
+    "aliases": ["少女☆歌劇 レヴュースタァライト"],
+    "description": "무대 배우를 꿈꾸는 아홉 소녀가 빛나는 주역 자리를 놓고 비밀스러운 오디션 레뷰에 선다.",
+    "genres": ["음악", "학원", "액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://revuestarlight.com/animation/tv/",
+    "source": "https://revuestarlight.com/animation/tv/"
+  },
+  {
+    "slug": "yurikuma-arashi",
+    "name": "유리쿠마 아라시",
+    "englishName": "Yurikuma Arashi",
+    "aliases": ["ユリ熊嵐"],
+    "description": "인간과 곰이 벽으로 갈라진 세계에서 쿠레하와 두 곰 소녀가 사랑을 둘러싼 배제에 맞선다.",
+    "genres": ["판타지", "GL", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.yurikuma.jp/",
+    "source": "https://www.yurikuma.jp/"
+  },
+  {
+    "slug": "penguindrum-tv",
+    "name": "돌아가는 펭귄드럼",
+    "englishName": "Penguindrum",
+    "aliases": ["輪るピングドラム", "핀드라"],
+    "description": "죽음에서 돌아온 여동생을 살리려는 형제가 세 펭귄과 함께 운명을 바꿀 펭귄드럼을 쫓는다.",
+    "genres": ["판타지", "추리", "가족", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": "https://www.bs11.jp/anime/post-66/"
+  },
+  {
+    "slug": "concrete-revolutio",
+    "name": "콘크리트 레볼루티오: 초인환상",
+    "englishName": "Concrete Revolutio",
+    "aliases": ["コンクリート・レボルティオ～超人幻想～"],
+    "description": "괴수와 초인이 실재하는 또 다른 일본에서 초인과 소속 관리기관의 신념이 격돌한다.",
+    "genres": ["SF", "액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://concreterevolutio.com/",
+    "source": "https://concreterevolutio.com/"
+  },
+  {
+    "slug": "punch-line-anime",
+    "name": "펀치라인",
+    "englishName": "Punch Line",
+    "aliases": ["パンチライン"],
+    "description": "유령이 된 유타가 지구 멸망을 막고 몸을 되찾으려 기숙사에서 성전과 동료들의 비밀을 쫓는다.",
+    "genres": ["코미디", "SF", "액션", "추리"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.punchline.jp/",
+    "source": "https://www.punchline.jp/"
+  },
+  {
+    "slug": "kiznaiver-anime",
+    "name": "키즈나이버",
+    "englishName": "Kiznaiver",
+    "aliases": ["キズナイーバー"],
+    "description": "성격이 다른 고교생들이 고통을 공유하는 키즈나 시스템에 묶여 서로의 상처를 알아간다.",
+    "genres": ["SF", "학원", "드라마", "로맨스"],
+    "ipType": ["애니"],
+    "officialUrl": "https://kiznaiver.jp/",
+    "source": "https://kiznaiver.jp/"
+  }
+]

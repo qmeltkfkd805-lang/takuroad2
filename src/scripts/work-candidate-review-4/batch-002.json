@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "91-days",
+    "name": "91 데이즈",
+    "englishName": "91 Days",
+    "aliases": [],
+    "description": "금주법 시대, 가족을 잃은 아빌리오가 복수를 위해 마피아 바네티 가문에 접근해 신뢰와 배신을 거듭한다.",
+    "genres": ["액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://sh-anime.shochiku.co.jp/91days/",
+    "source": "https://sh-anime.shochiku.co.jp/91days/intro/"
+  },
+  {
+    "slug": "acca-13-territory-inspection-dept",
+    "name": "ACCA 13구 감찰과",
+    "englishName": "ACCA: 13-Territory Inspection Dept.",
+    "aliases": ["ACCA 13"],
+    "description": "13개 자치구를 둔 왕국에서 감찰과 부과장 진 오터스가 시찰을 돌며 쿠데타 소문의 중심에 놓인다.",
+    "genres": ["추리", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://acca-anime.com/",
+    "source": "https://acca-anime.com/story/"
+  },
+  {
+    "slug": "megalobox",
+    "name": "메갈로 복스",
+    "englishName": "MEGALOBOX",
+    "aliases": ["메갈로박스"],
+    "description": "불법 링의 복서 정크독이 기어 없이 조라는 이름으로 최정상 대회 메갈로니아에 도전한다.",
+    "genres": ["격투", "스포츠", "SF", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://megalobox.com/megalobox/",
+    "source": "https://www.tbs.co.jp/anime/megalobox/"
+  },
+  {
+    "slug": "sakura-quest",
+    "name": "사쿠라 퀘스트",
+    "englishName": "Sakura Quest",
+    "aliases": ["サクラクエスト"],
+    "description": "취업에 지친 요시노가 쇠퇴한 마노야마의 관광대사 국왕이 되어 동료들과 마을 재생에 나선다.",
+    "genres": ["일상", "코미디", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://sakura-quest.com/",
+    "source": "https://sakura-quest.com/sp/story/about.html"
+  },
+  {
+    "slug": "hakumei-and-mikochi",
+    "name": "하쿠메이와 미코치",
+    "englishName": "Hakumei and Mikochi",
+    "aliases": ["하쿠미코"],
+    "description": "키 9센티미터인 하쿠메이와 미코치가 숲속 나무집에서 일하고 요리하며 작은 이웃들과 살아간다.",
+    "genres": ["일상", "판타지", "요리"],
+    "ipType": ["애니"],
+    "officialUrl": "https://hakumiko.com/",
+    "source": "https://hakumiko.com/"
+  },
+  {
+    "slug": "hanasaku-iroha",
+    "name": "하나사쿠 이로하",
+    "englishName": "Hanasaku Iroha",
+    "aliases": ["花咲くいろは"],
+    "description": "도쿄 소녀 오하나가 할머니의 온천 여관 킷스이소에서 일하며 동료들과 자신의 꿈을 찾아간다.",
+    "genres": ["일상", "드라마", "로맨스"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.hanasakuiroha.jp/",
+    "source": "https://www.ytv.co.jp/hanasakuiroha/"
+  },
+  {
+    "slug": "shirobako-tv",
+    "name": "시로바코",
+    "englishName": "SHIROBAKO",
+    "aliases": ["白箱"],
+    "description": "제작진행 미야모리 아오이와 친구들이 애니메이션 업계 각자의 자리에서 시행착오를 겪으며 꿈을 좇는다.",
+    "genres": ["일상", "코미디", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://shirobako-anime.com/",
+    "source": "https://shirobako-anime.com/"
+  },
+  {
+    "slug": "moribito-guardian-of-the-spirit",
+    "name": "정령의 수호자",
+    "englishName": "Moribito: Guardian of the Spirit",
+    "aliases": ["精霊の守り人"],
+    "description": "창술사 발사가 정령의 알을 품은 황자 차금을 암살자들에게서 지키며 재앙의 진실을 찾아간다.",
+    "genres": ["액션", "판타지", "모험", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.production-ig.co.jp/works/moribito/",
+    "source": "https://www.production-ig.co.jp/works/moribito/"
+  },
+  {
+    "slug": "the-twelve-kingdoms-anime",
+    "name": "십이국기",
+    "englishName": "The Twelve Kingdoms",
+    "aliases": ["十二国記"],
+    "description": "평범한 고교생 요코가 열두 나라의 이세계로 끌려가 배신과 전란을 거치며 자신의 왕위를 받아들인다.",
+    "genres": ["판타지", "모험", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "a-place-further-than-the-universe",
+    "name": "우주보다 먼 곳",
+    "englishName": "A Place Further than the Universe",
+    "aliases": ["宇宙よりも遠い場所"],
+    "description": "고교생 마리와 시라세가 두 친구와 함께 각자의 이유를 품고 민간 관측대에 합류해 남극으로 향한다.",
+    "genres": ["학원", "모험", "일상", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://yorimoi.com/",
+    "source": "https://yorimoi.com/?ep=story"
+  }
+]

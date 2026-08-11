@@ -84,9 +84,10 @@
 /* ── 타임라인 ── */
 .timeline { list-style: none; margin: 0; padding: 0; }
 .stop { position: relative; }
-.travel { display: inline-flex; align-items: center; gap: 5px; margin: 0 0 6px 44px; font-size: 12px; color: var(--muted); font-weight: 600; }
+.travel { display: flex; width: fit-content; align-items: center; gap: 5px; margin: 0 0 6px 44px; font-size: 12px; color: var(--muted); font-weight: 600; }
 .travelTip { display: inline-block; margin: 0 0 8px 44px; padding: 7px 11px; font-size: 12px; color: var(--accent); font-weight: 700; line-height: 1.45; background: var(--accent-l); border-radius: 9px; }
-.stopFloor { display: inline-block; margin-top: 4px; font-size: 11.5px; font-weight: 700; color: var(--text); background: var(--surface2); border-radius: 6px; padding: 1px 8px; }
+.stopAddrRow { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+.stopFloor { display: inline-block; font-size: 11.5px; font-weight: 700; color: var(--text); background: var(--surface2); border-radius: 6px; padding: 1px 8px; flex-shrink: 0; }
 
 /* 완주 축하 모달 */
 .completeOverlay { position: fixed; inset: 0; z-index: 300; background: rgba(20,20,25,.5); display: flex; align-items: center; justify-content: center; padding: 20px; animation: fadeIn .18s ease; }
@@ -120,7 +121,7 @@
 .statusPill[data-tone="soon"] { background: #ea580c; }
 .statusPill[data-tone="before"] { background: #6b7280; }
 .statusPill[data-tone="off"] { background: rgba(30,30,35,.55); }
-.stopAddr { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+.stopAddr { font-size: 12.5px; color: var(--muted); }
 .stopTags { display: flex; gap: 5px; margin-top: 7px; }
 .stopTag { padding: 3px 8px; border-radius: 7px; font-size: 11px; font-weight: 700; background: var(--accent-l); color: var(--accent); }
 .stopActions { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 10px; flex-shrink: 0; align-self: stretch; }

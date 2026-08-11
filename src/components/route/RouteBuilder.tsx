@@ -16,9 +16,9 @@ const DIFF = [
 ]
 const THEMES = ['카페', '굿즈', '사진명소', '가족', '커플', '혼자', '실내', '비오는날', '친구', '가챠', '쿠지', '전시', '팝업', '게임', '만화카페']
 const STEPS = [
-  { n: 1, label: '샵 불러오기' },
+  { n: 1, label: '이름 & 샵' },
   { n: 2, label: '코스 담기' },
-  { n: 3, label: '루트 정보' },
+  { n: 3, label: '대표 작품' },
   { n: 4, label: '테마 & 추천' },
   { n: 5, label: '확인 & 저장' },
 ]
@@ -77,6 +77,8 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   const [shareBusy, setShareBusy] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
   const [showExit, setShowExit] = useState(false)   // 나가기 확인 다이얼로그
+  const [publishAsk, setPublishAsk] = useState<{ id: string; shareToken: string } | null>(null) // 저장 직후 공개 여부 묻기
+  const [publishBusy, setPublishBusy] = useState(false)
   const [guideOpen, setGuideOpen] = useState(false)  // '좋은 루트 만드는 법' 접기/펼치기
 
   useEffect(() => { getAllTagsFull().then(setTags).catch(() => {}) }, [])
@@ -235,7 +237,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
 
   async function save() {
     if (!user) return
-    if (!title.trim()) { setMsg('루트 이름을 입력하세요'); setStep(3); return }
+    if (!title.trim()) { setMsg('루트 이름을 입력하세요'); setStep(1); return }
     if (added.length < 2) { setMsg('샵을 2개 이상 담아주세요'); setStep(2); return }
     setSaving(true); setMsg(null)
     const shopInput = added.map((s, i) => ({ shopId: s.id, lat: s.lat as number, lng: s.lng as number, moveTip: i < added.length - 1 ? (moveTips[s.id] ?? null) : null }))
@@ -258,7 +260,18 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
     if (!res) { setSaving(false); setMsg('루트 생성 실패'); return }
     await updateRouteMeta(res.id, meta)
     setSaving(false)
-    router.push(`/route/${res.shareToken}`)
+    // 저장 완료 → 공개 여부를 물어본 뒤 '내 루트'로 이동
+    setPublishAsk({ id: res.id, shareToken: res.shareToken })
+  }
+
+  // 저장 직후 공개/비공개 선택 → 내 루트 화면으로
+  async function finishPublish(makePublic: boolean) {
+    if (!user || !publishAsk || publishBusy) return
+    setPublishBusy(true)
+    if (makePublic) {
+      await toggleRouteShare(publishAsk.id, user.id, true)
+    }
+    router.push('/profile?tab=routes')
   }
 
   async function toggleShared() {
@@ -285,12 +298,12 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   const diffMeta = DIFF.find((d) => d.v === difficulty)!
   // 단계별 완료 조건 + 미완료 사유
   function stepIssue(n: number): string | null {
-    if (n === 1) return added.length >= 2 ? null : '샵을 2곳 이상 담아주세요'
-    if (n === 2) return added.length >= 2 ? null : '샵을 2곳 이상 담아야 루트가 돼요'
-    if (n === 3) {
+    if (n === 1) {
       if (!title.trim()) return '루트 이름을 입력해주세요'
-      return null
+      return added.length >= 2 ? null : '샵을 2곳 이상 담아주세요'
     }
+    if (n === 2) return added.length >= 2 ? null : '샵을 2곳 이상 담아야 루트가 돼요'
+    if (n === 3) return null
     if (n === 4) return themes.length >= 1 ? null : '테마를 1개 이상 선택해주세요'
     return null
   }
@@ -349,27 +362,23 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
           {/* STEP 1 — 샵 불러오기 */}
           {step === 1 && (
             <>
-              <StepHead icon={<MaskIcon name="shop" size={20} color="var(--accent)" />} title="어디서 샵을 가져올까요?" sub="작품을 정하고, 샵 검색·저장한 샵에서 골라 담아요." />
+              <StepHead icon={<Svg size={20} color="var(--accent)"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" /></Svg>} title="루트 이름을 정해요" sub="루트 이름을 정하고, 샵을 골라 담아요." />
 
-              {/* 작품 선택 — 샵 소스와 별개로, 루트의 대표 작품을 지정 (선택) */}
-              <Label>작품 선택 <span style={{ fontWeight: 600, color: 'var(--muted)' }}>· 선택</span></Label>
-              {selectedTag ? (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 18 }}>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontWeight: 800 }}><MaskIcon name="star" size={15} color="var(--accent)" />{selectedTag.name}</span>
-                  <button onClick={() => { setSelectedTag(null); setPrimaryTagId(null) }} style={smallBtn}>변경</button>
+              {/* 루트 이름 — 직접 입력하거나 추천을 눌러 채우기 */}
+              <Label>루트 이름</Label>
+              <input value={title} onChange={(e) => setTitle(e.target.value)} maxLength={50} placeholder="예: 홍대 원피스 굿즈 투어" style={{ ...inp, marginBottom: 8 }} />
+              <div style={{ marginBottom: 18 }}>
+                <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--muted)', marginBottom: 6 }}>추천 제목 <span style={{ fontWeight: 600 }}>· 클릭하면 입력돼요</span></div>
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  {suggestions.map((sug) => (
+                    <button key={sug} onClick={() => setTitle(sug)} style={{ padding: '7px 12px', borderRadius: 9999, border: '1px dashed var(--accent)', background: 'var(--surface)', color: 'var(--accent)', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>{sug}</button>
+                  ))}
                 </div>
-              ) : (
-                <div style={{ position: 'relative', marginBottom: 18 }}>
-                  <input value={tagQuery} onChange={(e) => setTagQuery(e.target.value)} placeholder="작품 이름 검색" style={inp} />
-                  {tagMatches.length > 0 && (
-                    <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 10, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, marginTop: 4, overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,.12)' }}>
-                      {tagMatches.map((t) => (
-                        <button key={t.id} onClick={() => pickTag(t)} style={{ display: 'block', width: '100%', textAlign: 'left', minHeight: 44, padding: '10px 12px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, color: 'var(--text)' }}>{t.name}</button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
+              </div>
+
+              {/* 한 줄 소개 */}
+              <Label>한 줄 소개</Label>
+              <textarea value={desc} onChange={(e) => setDesc(e.target.value)} maxLength={80} placeholder="이 루트를 한 줄로 소개해보세요! (선택)" style={{ ...inp, minHeight: 60, marginBottom: 18, resize: 'vertical' }} />
 
               {/* 샵 불러오기 — 샵 검색 / 저장한 샵 */}
               <Label>샵 불러오기</Label>
@@ -454,19 +463,27 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
           {/* STEP 3 — 루트 정보 */}
           {step === 3 && (
             <>
-              <StepHead icon={<Svg size={20} color="var(--accent)"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" /></Svg>} title="루트 정보를 채워요" sub="제목은 직접 지어도 되고, 추천을 눌러 채워도 돼요." />
-              <Label>루트 이름</Label>
-              <input value={title} onChange={(e) => setTitle(e.target.value)} maxLength={50} placeholder="예: 홍대 원피스 굿즈 투어" style={{ ...inp, marginBottom: 8 }} />
-              <div style={{ marginBottom: 16 }}>
-                <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--muted)', marginBottom: 6 }}>추천 제목 <span style={{ fontWeight: 600 }}>· 클릭하면 입력돼요</span></div>
-                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                  {suggestions.map((sug) => (
-                    <button key={sug} onClick={() => setTitle(sug)} style={{ padding: '7px 12px', borderRadius: 9999, border: '1px dashed var(--accent)', background: 'var(--surface)', color: 'var(--accent)', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>{sug}</button>
-                  ))}
+              <StepHead icon={<Svg size={20} color="var(--accent)"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" /></Svg>} title="대표 작품을 골라요" sub="이 루트를 대표하는 작품을 지정해요. (선택)" />
+
+              {/* 작품 선택 — 루트의 대표 작품을 지정 (선택) */}
+              <Label>작품 선택 <span style={{ fontWeight: 600, color: 'var(--muted)' }}>· 선택</span></Label>
+              {selectedTag ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 18 }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontWeight: 800 }}><MaskIcon name="star" size={15} color="var(--accent)" />{selectedTag.name}</span>
+                  <button onClick={() => { setSelectedTag(null); setPrimaryTagId(null) }} style={smallBtn}>변경</button>
                 </div>
-              </div>
-              <Label>한 줄 소개</Label>
-              <textarea value={desc} onChange={(e) => setDesc(e.target.value)} maxLength={80} placeholder="이 루트를 한 줄로 소개해보세요! (선택)" style={{ ...inp, minHeight: 60, marginBottom: 16, resize: 'vertical' }} />
+              ) : (
+                <div style={{ position: 'relative', marginBottom: 18 }}>
+                  <input value={tagQuery} onChange={(e) => setTagQuery(e.target.value)} placeholder="작품 이름 검색" style={inp} />
+                  {tagMatches.length > 0 && (
+                    <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 10, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, marginTop: 4, overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,.12)' }}>
+                      {tagMatches.map((t) => (
+                        <button key={t.id} onClick={() => pickTag(t)} style={{ display: 'block', width: '100%', textAlign: 'left', minHeight: 44, padding: '10px 12px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, color: 'var(--text)' }}>{t.name}</button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </>
           )}
 
@@ -568,6 +585,23 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
             <div style={{ display: 'flex', gap: 10 }}>
               <button onClick={() => setShowExit(false)} style={{ flex: 1, minHeight: 48, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 800, fontSize: 14.5, cursor: 'pointer', fontFamily: 'inherit' }}>계속 작성</button>
               <button onClick={doExit} style={{ flex: 1, minHeight: 48, borderRadius: 12, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14.5, cursor: 'pointer', fontFamily: 'inherit' }}>나가기</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 저장 완료 — 전체 공개 여부 확인 */}
+      {publishAsk && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 4000, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+          <div style={{ width: '100%', maxWidth: 360, background: 'var(--surface)', borderRadius: 18, padding: '24px 20px 18px', textAlign: 'center' }}>
+            <div style={{ width: 52, height: 52, borderRadius: 9999, background: 'var(--accent-l, #FFE6EF)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' }}>
+              <Svg size={26} color="var(--accent)"><path d="M20 6 9 17l-5-5" /></Svg>
+            </div>
+            <div style={{ fontSize: 17, fontWeight: 900, marginBottom: 8 }}>루트를 저장했어요!</div>
+            <div style={{ fontSize: 13.5, color: 'var(--muted)', lineHeight: 1.6, marginBottom: 20 }}>이 루트를 전체보기에 공개할까요?<br />공개하면 다른 사람도 둘러볼 수 있어요.<br />나중에 내 루트에서 언제든 바꿀 수 있어요.</div>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button onClick={() => finishPublish(false)} disabled={publishBusy} style={{ flex: 1, minHeight: 48, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 800, fontSize: 14.5, cursor: publishBusy ? 'default' : 'pointer', fontFamily: 'inherit' }}>비공개로 저장</button>
+              <button onClick={() => finishPublish(true)} disabled={publishBusy} style={{ flex: 1, minHeight: 48, borderRadius: 12, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14.5, cursor: publishBusy ? 'default' : 'pointer', fontFamily: 'inherit' }}>{publishBusy ? '처리 중…' : '네, 공개할게요'}</button>
             </div>
           </div>
         </div>

@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "gungrave-anime",
+    "name": "건그레이브",
+    "englishName": "Gungrave",
+    "aliases": [],
+    "description": "절친 브랜드와 해리가 범죄조직 밀레니온에서 성장하고, 배신으로 갈라진 두 사람의 운명이 복수로 이어진다.",
+    "genres": ["액션", "SF", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://madhouse.co.jp/works/tv_gungrave/",
+    "source": "https://madhouse.co.jp/works/tv_gungrave/"
+  },
+  {
+    "slug": "wolfs-rain",
+    "name": "울프스 레인",
+    "englishName": "Wolf's Rain",
+    "aliases": [],
+    "description": "멸망해 가는 세계에서 인간으로 위장한 늑대 키바와 동료들이 전설 속 낙원을 찾아 긴 여정을 떠난다.",
+    "genres": ["판타지", "모험", "SF", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.fujitv.co.jp/b_hp/wolfrain/",
+    "source": "https://www.fujitv.co.jp/b_hp/wolfrain/"
+  },
+  {
+    "slug": "rahxephon-tv",
+    "name": "라제폰",
+    "englishName": "RahXephon",
+    "aliases": ["ラーゼフォン"],
+    "description": "도쿄에 갇혀 살던 아야토가 거대 존재 라제폰과 동조하고 바깥 세계에서 자신의 시간과 정체를 마주한다.",
+    "genres": ["SF", "로봇/메카", "액션", "로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.bones.co.jp/work/rahxephon/",
+    "source": "https://www.bones.co.jp/work/rahxephon/"
+  },
+  {
+    "slug": "scrapped-princess-anime",
+    "name": "스크랩드 프린세스",
+    "englishName": "Scrapped Princess",
+    "aliases": ["스테프리"],
+    "description": "세계를 멸망시킬 예언의 공주 퍼시피카가 의붓남매와 도망치며 예언과 세계를 지배하는 체제의 진실을 밝힌다.",
+    "genres": ["판타지", "모험", "SF", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.bones.co.jp/work/scrapped-princess/",
+    "source": "https://www.bones.co.jp/work/scrapped-princess/"
+  },
+  {
+    "slug": "fantastic-children",
+    "name": "판타스틱 칠드런",
+    "englishName": "Fantastic Children",
+    "aliases": ["ファンタジックチルドレン"],
+    "description": "수백 년 동안 같은 모습으로 환생한 베포르의 아이들과 고아 헬가가 잃어버린 고향과 기억의 비밀을 찾아간다.",
+    "genres": ["SF", "판타지", "모험", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.nippon-animation.co.jp/work/1843/",
+    "source": "https://www.nippon-animation.co.jp/work/1843/"
+  },
+  {
+    "slug": "infinite-ryvius",
+    "name": "무한의 리바이어스",
+    "englishName": "Infinite Ryvius",
+    "aliases": ["無限のリヴァイアス"],
+    "description": "조난된 훈련생 수백 명이 우주선 리바이어스에서 구조를 기다리며 권력투쟁과 생존의 압박에 휩싸인다.",
+    "genres": ["SF", "로봇/메카", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.sunrise-inc.co.jp/ryvius/",
+    "source": "https://www.sunrise-inc.co.jp/work/detail.php?cid=143"
+  },
+  {
+    "slug": "now-and-then-here-and-there",
+    "name": "지금, 거기에 있는 나",
+    "englishName": "Now and Then, Here and There",
+    "aliases": ["今、そこにいる僕"],
+    "description": "소년 슈가 물 부족과 전쟁에 시달리는 이세계로 끌려가 소녀 라라루를 지키며 폭력에 맞선다.",
+    "genres": ["SF", "판타지", "모험", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "bokurano-anime",
+    "name": "우리들의",
+    "englishName": "Bokurano",
+    "aliases": ["보쿠라노", "ぼくらの"],
+    "description": "열다섯 아이가 거대 로봇 지어스의 조종 계약을 맺고 세계를 지키는 대가로 자신의 생명을 내놓는다.",
+    "genres": ["SF", "로봇/메카", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.gonzo.co.jp/works/bokurano/index.html",
+    "source": "https://www.gonzo.co.jp/works/bokurano/index.html"
+  },
+  {
+    "slug": "zegapain-tv",
+    "name": "제가페인",
+    "englishName": "Zegapain",
+    "aliases": ["ゼーガペイン"],
+    "description": "고교생 쿄가 반복되는 일상에서 거대 병기 제가페인을 조종하며 자신과 세계가 놓인 현실을 깨닫는다.",
+    "genres": ["SF", "로봇/메카", "액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.zegapain.net/",
+    "source": "https://www.zegapain.net/"
+  },
+  {
+    "slug": "gasaraki",
+    "name": "가사라키",
+    "englishName": "Gasaraki",
+    "aliases": ["ガサラキ"],
+    "description": "능악을 계승한 유시로가 전술갑주 실험과 고대 존재 가사라키를 둘러싼 가문·국가의 음모에 휘말린다.",
+    "genres": ["SF", "로봇/메카", "액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.gasaraki.net/",
+    "source": "https://www.sunrise-world.net/titles/titles.php?id=43"
+  }
+]

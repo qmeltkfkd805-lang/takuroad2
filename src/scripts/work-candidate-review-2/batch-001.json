@@ -1,0 +1,220 @@
+[
+    {
+        "slug":  "hells-paradise-jigokuraku",
+        "name":  "지옥락",
+        "englishName":  "Hell\u0027s Paradise: Jigokuraku",
+        "aliases":  [
+                        "Hell\u0027s Paradise",
+                        "地獄楽"
+                    ],
+        "description":  "사형수 닌자 가비마루가 무죄 방면을 위해 사형 집행인 사기리와 불로불사의 선약이 있다는 섬으로 향한다.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "호러",
+                       "고어",
+                       "19"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.jigokuraku.com/",
+        "source":  "https://www.jigokuraku.com/story/"
+    },
+    {
+        "slug":  "ajin-demi-human",
+        "name":  "아인",
+        "englishName":  "Ajin: Demi-Human",
+        "aliases":  [
+                        "亜人",
+                        "AJIN"
+                    ],
+        "description":  "교통사고 뒤 되살아나 불사의 신인류 아인임이 드러난 고교생 나가이 케이가 정부와 테러리스트에게 쫓긴다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "추리",
+                       "호러"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니",
+                       "영화"
+                   ],
+        "officialUrl":  "https://www.ajin.net/",
+        "source":  "https://www.ajin.net/intro/"
+    },
+    {
+        "slug":  "to-your-eternity",
+        "name":  "불멸의 그대에게",
+        "englishName":  "To Your Eternity",
+        "aliases":  [
+                        "不滅のあなたへ"
+                    ],
+        "description":  "자극받은 존재의 모습으로 변하고 죽어도 되살아나는 불사가 다양한 생명과 만나 인간의 감정을 배운다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.anime-fumetsunoanatae.com/",
+        "source":  "https://www.anime-fumetsunoanatae.com/1st/story/?l=ja"
+    },
+    {
+        "slug":  "odd-taxi",
+        "name":  "오드 택시",
+        "englishName":  "ODDTAXI",
+        "aliases":  [
+                        "오드택시",
+                        "オッドタクシー"
+                    ],
+        "description":  "과묵한 택시 기사 오도카와가 수상한 승객들과 나눈 대화를 통해 한 소녀의 실종 사건에 얽힌다.",
+        "genres":  [
+                       "추리",
+                       "드라마",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니",
+                       "영화"
+                   ],
+        "officialUrl":  "https://oddtaxi.jp/",
+        "source":  "https://oddtaxi.jp/anime/movie/717/"
+    },
+    {
+        "slug":  "heavenly-delusion",
+        "name":  "천국대마경",
+        "englishName":  "Heavenly Delusion",
+        "aliases":  [
+                        "Tengoku Daimakyo",
+                        "天国大魔境"
+                    ],
+        "description":  "괴물이 배회하는 폐허에서 마루와 키루코가 천국을 찾아 여행하고 시설의 아이들은 바깥세계를 의심한다.",
+        "genres":  [
+                       "SF",
+                       "모험",
+                       "추리",
+                       "호러"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://tdm-anime.com/",
+        "source":  "https://tdm-anime.com/"
+    },
+    {
+        "slug":  "summer-time-rendering",
+        "name":  "서머타임 렌더",
+        "englishName":  "Summer Time Rendering",
+        "aliases":  [
+                        "サマータイムレンダ"
+                    ],
+        "description":  "소꿉친구 우시오의 장례로 섬에 돌아온 신페이가 죽음과 시간을 반복하며 그림자 괴물의 비밀을 추적한다.",
+        "genres":  [
+                       "추리",
+                       "SF",
+                       "호러",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://summertime-anime.com/",
+        "source":  "https://summertime-anime.com/story/"
+    },
+    {
+        "slug":  "golden-kamuy",
+        "name":  "골든 카무이",
+        "englishName":  "Golden Kamuy",
+        "aliases":  [
+                        "골카",
+                        "ゴールデンカムイ"
+                    ],
+        "description":  "불사신이라 불린 군인 스기모토와 아이누 소녀 아시리파가 죄수들의 문신을 단서로 금괴를 쫓는다.",
+        "genres":  [
+                       "모험",
+                       "액션",
+                       "드라마",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니",
+                       "영화"
+                   ],
+        "officialUrl":  "https://kamuy-anime.com/",
+        "source":  "https://kamuy-anime.com/story/01.html"
+    },
+    {
+        "slug":  "blood-blockade-battlefront",
+        "name":  "혈계전선",
+        "englishName":  "Blood Blockade Battlefront",
+        "aliases":  [
+                        "血界戦線",
+                        "Kekkai Sensen"
+                    ],
+        "description":  "이계와 이어진 도시 헬살렘즈 로트에서 비밀결사 라이브라가 세계의 균형을 지키며 초상 사건과 싸운다.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "SF",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://kekkaisensen.com/",
+        "source":  "https://kekkaisensen.com/1st/story/introduction.html"
+    },
+    {
+        "slug":  "noragami",
+        "name":  "노라가미",
+        "englishName":  "Noragami",
+        "aliases":  [
+                        "ノラガミ"
+                    ],
+        "description":  "신사도 없는 무명신 야토가 반요가 된 히요리와 신기 유키네를 만나 요괴를 물리치며 인연을 쌓는다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "코미디",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.noragami-anime.net/",
+        "source":  "https://www.noragami-anime.net/story.html"
+    },
+    {
+        "slug":  "seraph-of-the-end",
+        "name":  "종말의 세라프",
+        "englishName":  "Seraph of the End",
+        "aliases":  [
+                        "終わりのセラフ",
+                        "Owari no Seraph"
+                    ],
+        "description":  "바이러스로 어른들이 사라진 세계에서 뱀파이어에게 가족을 잃은 유이치로가 복수를 위해 군에 들어간다.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "드라마",
+                       "소년물"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "",
+        "source":  ""
+    }
+]
