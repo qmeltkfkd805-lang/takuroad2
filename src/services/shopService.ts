@@ -465,13 +465,20 @@ export async function getTagBySlug(slug: string) {
 
 export async function getAllTags() {
   const supabase = createClient()
-  const { data } = await supabase
-    .from('tags')
-    .select('id, name, slug, cover_url, banner_image, english_name, ip_type, release_year, genres, description, created_at')
-    .order('name')
-  return data ?? []
+  const rows: any[] = []
+  const pageSize = 1000
+  for (let from = 0; ; from += pageSize) {
+    const { data, error } = await supabase
+      .from('tags')
+      .select('id, name, slug, cover_url, banner_image, english_name, ip_type, release_year, genres, description, created_at')
+      .order('name')
+      .range(from, from + pageSize - 1)
+    if (error) throw error
+    rows.push(...(data ?? []))
+    if ((data?.length ?? 0) < pageSize) break
+  }
+  return rows
 }
-
 export async function requestShopVerify(
   shopId: string,
   userId: string,

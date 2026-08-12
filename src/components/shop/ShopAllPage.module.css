@@ -65,6 +65,8 @@
 .chevDown, .chevUp { transition: transform .15s ease; opacity: .6; }
 .chevUp { transform: rotate(180deg); }
 
+.filterBtns { display: inline-flex; align-items: center; gap: 10px; }
+
 .resetInline { border: none; background: none; cursor: pointer; font-family: inherit; font-size: 12.5px; font-weight: 700; color: var(--accent); padding: 0 4px; }
 
 .toolbarRight { display: inline-flex; align-items: center; gap: 10px; margin-left: auto; }
@@ -81,6 +83,7 @@
   background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 6px;
 }
+.popMenuRight { left: auto; right: 0; }
 .popList { display: flex; flex-direction: column; }
 .popItem, .popItemOn {
   display: flex; align-items: center; gap: 8px; width: 100%; text-align: left;
@@ -148,5 +151,19 @@
   .title { font-size: 22px; }
   .toolbarRight { margin-left: 0; width: 100%; justify-content: space-between; }
   .search { max-width: none; flex-basis: 100%; }
+
+  /* 지역·카테고리·영업 중·상세 필터 — 줄바꿈 없이 한 줄, 폭을 균등하게 줄여서 배치 */
+  .filterBtns { display: flex; width: 100%; gap: 7px; }
+  .filterBtns > .pop { flex: 1 1 0; min-width: 0; }
+  .filterBtns > .detailBtn, .filterBtns > .detailBtnOn { flex: 1 1 0; min-width: 0; }
+  .filterBtns .popBtn, .filterBtns .popBtnOn { width: 100%; }
+  .filterBtns .popBtn, .filterBtns .popBtnOn,
+  .filterBtns > .detailBtn, .filterBtns > .detailBtnOn {
+    justify-content: center; padding: 0 6px; gap: 3px; font-size: 12.5px;
+    white-space: nowrap; overflow: hidden;
+  }
+
+  /* 정렬 메뉴: 모바일에선 정렬 버튼이 왼쪽에 있으므로 좌측 정렬로 되돌린다 */
+  .popMenuRight { left: 0; right: auto; }
 }
 @media (max-width: 420px) { .grid { grid-template-columns: 1fr; } }

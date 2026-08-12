@@ -11,7 +11,7 @@ import { CSSProperties, ReactNode } from 'react'
 const PNG_ICONS = new Set([
   'shop', 'event', 'goods', 'book', 'tcg', 'secondhand', 'cafe', 'popup', 'game', 'onlineshop',
   'box', 'calendar', 'photo', 'news', 'bell', 'heart', 'star', 'gift', 'fire',
-  'coin', 'receipt', 'people', 'search', 'map', 'route', 'work', 'collection', 'activity',
+  'coin', 'receipt', 'people', 'search', 'map', 'work', 'collection', 'activity',
   'price', 'parcel', 'staff', 'service', 'wifi', 'parking', 'restroom', 'elevator',
   'exchange', 'exhibition', 'gacha', 'premium', 'new', 'checkin', 'card', 'cash', 'lv',
   'homepage', 'kakao', 'instargram',
@@ -64,6 +64,7 @@ const SVG_ICONS: Record<string, ReactNode> = {
   pencil: <><path d="m4 20 .9-3.7L16.4 4.8a2 2 0 0 1 2.8 2.8L7.7 19.1z" /><path d="m14.5 6.7 2.8 2.8" /></>,
   eye: <><path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" /></>,
   road: <><path d="M8 3 5 21M16 3l3 18" /><path d="M12 4v3M12 10.5v3M12 17v3" /></>,
+  route: <><circle cx="6" cy="19" r="2.4" /><circle cx="18" cy="5" r="2.4" /><path d="M8.4 19H14a3.5 3.5 0 0 0 0-7h-4a3.5 3.5 0 0 1 0-7h5.6" /></>,
   flag: <><path d="M6 21V4" /><path d="M6 4.5h11l-2 3.5 2 3.5H6z" /></>,
   crown: <path d="m4 17 1-9 4.5 3.5L12 5l2.5 6.5L19 8l1 9z" />,
   medal: <><circle cx="12" cy="14.5" r="5" /><path d="M8.5 9.5 6 3h12l-2.5 6.5" /></>,

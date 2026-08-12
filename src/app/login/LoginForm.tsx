@@ -20,8 +20,8 @@ export default function LoginForm() {
         redirectTo: redirectUrl,
         // 구글: 계정 선택 화면 강제
         ...(provider === 'google' ? { queryParams: { prompt: 'select_account' } } : {}),
-        // 카카오: 닉네임·프로필 사진만 요청. (이메일은 비즈 앱 전환 후 'account_email' 추가하면 계정 자동 연결까지 됨)
-        ...(provider === 'kakao' ? { scopes: 'profile_nickname profile_image' } : {}),
+        // 카카오: 닉네임·프로필 사진 + 이메일 요청. (카카오 개발자 콘솔에서 'account_email' 동의항목을 켜야 실제로 수집됨)
+        ...(provider === 'kakao' ? { scopes: 'profile_nickname profile_image account_email' } : {}),
       },
     })
     // 성공하면 페이지가 리다이렉트되므로, 여기 도달하는 건 실패한 경우 → 버튼 복구

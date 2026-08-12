@@ -14,6 +14,7 @@ import { getRelatedRoutes, RelatedRoute } from '@/services/routeRelatedService'
 import { getVisitedShopIds, setShopVisited } from '@/services/routeVisitService'
 import styles from './RouteDetailPage.module.css'
 
+import AppIcon from '@/components/tds/AppIcon'
 import RouteThumb from './RouteThumb'
 import { rtStops } from './routeMeta'
 
@@ -263,7 +264,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
         return (
           <li key={rs.id} className={styles.stop}>
             {!first && !singleSpot && (walkMin != null || walkM != null) && (
-              <div className={styles.travel}><MaskIcon name="route" size={12} color="var(--muted)" />도보{walkMin != null ? ` ${walkMin}분` : ''}{walkM != null ? ` · ${formatDistance(walkM)}` : ''}</div>
+              <div className={styles.travel}><AppIcon name="route" size={12} color="var(--muted)" />도보{walkMin != null ? ` ${walkMin}분` : ''}{walkM != null ? ` · ${formatDistance(walkM)}` : ''}</div>
             )}
             {!first && !singleSpot && sortedStops[i - 1]?.move_tip && (
               <div className={styles.travelTip}>{sortedStops[i - 1].move_tip}</div>
@@ -388,7 +389,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
           <div className={styles.mStats}>
             <span><MaskIcon name="shop" size={15} color="var(--accent)" />{spotCount}곳</span>
             {fmtDur(route.total_duration_min) && <span><MaskIcon name="clock" size={15} color="var(--accent)" />{fmtDur(route.total_duration_min)}</span>}
-            {!singleSpot && route.total_distance_m ? <span><MaskIcon name="route" size={15} color="var(--accent)" />도보 {formatDistance(route.total_distance_m)}</span> : null}
+            {!singleSpot && route.total_distance_m ? <span><AppIcon name="route" size={15} color="var(--accent)" />도보 {formatDistance(route.total_distance_m)}</span> : null}
           </div>
         </div>
 
@@ -533,7 +534,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
                 {region && <span className={styles.metaItem}><MaskIcon name="map" size={14} color="var(--accent)" />{region}</span>}
                 <span className={styles.metaItem}><MaskIcon name="shop" size={14} color="var(--accent)" />{spotCount}곳</span>
                 {fmtDur(route.total_duration_min) && <span className={styles.metaItem}><MaskIcon name="clock" size={14} color="var(--accent)" />{fmtDur(route.total_duration_min)}</span>}
-                {!singleSpot && route.total_distance_m ? <span className={styles.metaItem}><MaskIcon name="route" size={14} color="var(--accent)" />도보 {formatDistance(route.total_distance_m)}</span> : null}
+                {!singleSpot && route.total_distance_m ? <span className={styles.metaItem}><AppIcon name="route" size={14} color="var(--accent)" />도보 {formatDistance(route.total_distance_m)}</span> : null}
               </div>
               <div className={styles.actionRow}>
                 <button className={styles.btnPrimary} onClick={handleStart}><PinIcon size={16} color="#fff" />루트 시작하기</button>
@@ -647,7 +648,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
             <div className={styles.summaryRows}>
               <div className={styles.summaryRow}><span className={styles.summaryLabel}><MaskIcon name="shop" size={15} color="var(--muted)" />장소</span><b>{spotCount}곳</b></div>
               {fmtDur(route.total_duration_min) && <div className={styles.summaryRow}><span className={styles.summaryLabel}><MaskIcon name="clock" size={15} color="var(--muted)" />소요 시간</span><b>{fmtDur(route.total_duration_min)}</b></div>}
-              {!singleSpot && route.total_distance_m ? <div className={styles.summaryRow}><span className={styles.summaryLabel}><MaskIcon name="route" size={15} color="var(--muted)" />이동 거리</span><b>도보 {formatDistance(route.total_distance_m)}</b></div> : null}
+              {!singleSpot && route.total_distance_m ? <div className={styles.summaryRow}><span className={styles.summaryLabel}><AppIcon name="route" size={15} color="var(--muted)" />이동 거리</span><b>도보 {formatDistance(route.total_distance_m)}</b></div> : null}
               {diff && <div className={styles.summaryRow}><span className={styles.summaryLabel}><MaskIcon name="fire" size={15} color={diff.color} />난이도</span><b style={{ color: diff.color }}>{diff.label}</b></div>}
             </div>
           </div>

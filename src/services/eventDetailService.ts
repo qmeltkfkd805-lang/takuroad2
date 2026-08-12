@@ -31,8 +31,6 @@ export interface EventDetail {
   sourceUrls: string[]
   /** 예매·예약 페이지 */
   ticketUrls: string[]
-  /** 예매·예약 버튼명. 같은 순서의 ticketUrls와 짝을 이룬다. */
-  ticketLabels: string[]
   placeDetail: string | null
   /** 샵으로 연결되지 않은 이벤트의 장소 (이름·주소·좌표) */
   placeSnapshot: string | null
@@ -120,12 +118,7 @@ export async function getEventDetail(eventId: string): Promise<EventDetail | nul
     } : null,
     description: e.description ?? null,
     sourceUrls: Array.isArray(e.source_urls) ? (e.source_urls as string[]) : [],
-    ticketUrls: Array.isArray(e.ticket_urls)
-      ? e.ticket_urls.map((item: any) => typeof item === 'string' ? item : item?.url).filter(Boolean)
-      : [],
-    ticketLabels: Array.isArray(e.ticket_urls)
-      ? e.ticket_urls.map((item: any) => typeof item === 'string' ? '' : String(item?.label ?? ''))
-      : [],
+    ticketUrls: Array.isArray(e.ticket_urls) ? (e.ticket_urls as string[]) : [],
     placeDetail: e.place_detail ?? null,
     placeSnapshot: e.place_name ?? null,
     placeId: e.place_id ?? null,

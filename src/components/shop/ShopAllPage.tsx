@@ -26,6 +26,13 @@ const PAGE_SIZE = 12
 const norm = (s: string) => s.toLowerCase().replace(/\s+/g, '')
 type Tab = 'shop' | 'event'
 
+const SORT_OPTIONS: { v: ShopFilters['sort']; label: string }[] = [
+  { v: 'hot', label: '인기순' },
+  { v: 'reviews', label: '후기 많은순' },
+  { v: 'saves', label: '찜 많은순' },
+  { v: 'recent', label: '최근 등록순' },
+]
+
 export default function ShopAllPage() {
   const router = useRouter()
   const params = useSearchParams()
@@ -242,57 +249,66 @@ export default function ShopAllPage() {
           {q && <button className={styles.searchClear} onClick={() => setQ('')} aria-label="검색어 지우기"><AppIcon name="close" size={13} /></button>}
         </div>
 
-        <Popover label="지역" value={filters.region ?? undefined}>
-          {close => (
-            <div className={styles.popList} role="listbox">
-              <button className={!filters.region ? styles.popItemOn : styles.popItem} onClick={() => { apply({ ...filters, region: null, district: null }); close() }}>전체 지역</button>
-              {SIDO.map(s => (
-                <button key={s} className={filters.region === s ? styles.popItemOn : styles.popItem}
-                  onClick={() => { apply({ ...filters, region: s, district: null }); close() }}>{s}</button>
-              ))}
-            </div>
-          )}
-        </Popover>
+        <div className={styles.filterBtns}>
+          <Popover label="지역" value={filters.region ?? undefined}>
+            {close => (
+              <div className={styles.popList} role="listbox">
+                <button className={!filters.region ? styles.popItemOn : styles.popItem} onClick={() => { apply({ ...filters, region: null, district: null }); close() }}>전체 지역</button>
+                {SIDO.map(s => (
+                  <button key={s} className={filters.region === s ? styles.popItemOn : styles.popItem}
+                    onClick={() => { apply({ ...filters, region: s, district: null }); close() }}>{s}</button>
+                ))}
+              </div>
+            )}
+          </Popover>
 
-        <Popover label="카테고리" count={filters.cats.length}>
-          {() => (
-            <div className={styles.popChips}>
-              {CATEGORIES.filter(c => c.slug !== 'online').map(c => {
-                const on = filters.cats.includes(c.name)
-                return (
-                  <button key={c.slug} className={on ? styles.popChipOn : styles.popChip}
-                    onClick={() => apply({ ...filters, cats: on ? filters.cats.filter(x => x !== c.name) : [...filters.cats, c.name] })}>
-                    {on && '✓ '}{c.name}
-                  </button>
-                )
-              })}
-            </div>
-          )}
-        </Popover>
+          <Popover label="카테고리" count={filters.cats.length}>
+            {() => (
+              <div className={styles.popChips}>
+                {CATEGORIES.filter(c => c.slug !== 'online').map(c => {
+                  const on = filters.cats.includes(c.name)
+                  return (
+                    <button key={c.slug} className={on ? styles.popChipOn : styles.popChip}
+                      onClick={() => apply({ ...filters, cats: on ? filters.cats.filter(x => x !== c.name) : [...filters.cats, c.name] })}>
+                      {on && '✓ '}{c.name}
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          </Popover>
 
-        <Popover label="영업 중" count={[filters.openNow, filters.excludeClosedToday].filter(Boolean).length}>
-          {() => (
-            <div className={styles.popList}>
-              <CheckRow label="지금 영업 중" on={filters.openNow} onClick={() => apply({ ...filters, openNow: !filters.openNow })} />
-              <CheckRow label="오늘 휴무 제외" on={filters.excludeClosedToday} onClick={() => apply({ ...filters, excludeClosedToday: !filters.excludeClosedToday })} />
-            </div>
-          )}
-        </Popover>
+          <Popover label="영업 중" count={[filters.openNow, filters.excludeClosedToday].filter(Boolean).length}>
+            {() => (
+              <div className={styles.popList}>
+                <CheckRow label="지금 영업 중" on={filters.openNow} onClick={() => apply({ ...filters, openNow: !filters.openNow })} />
+                <CheckRow label="오늘 휴무 제외" on={filters.excludeClosedToday} onClick={() => apply({ ...filters, excludeClosedToday: !filters.excludeClosedToday })} />
+              </div>
+            )}
+          </Popover>
 
-        <button className={detailCount ? styles.detailBtnOn : styles.detailBtn} onClick={() => setFilterOpen(true)}>
-          <SlidersIcon />상세 필터{detailCount ? ` ${detailCount}` : ''}
-        </button>
+          <button className={detailCount ? styles.detailBtnOn : styles.detailBtn} onClick={() => setFilterOpen(true)}>
+            <SlidersIcon />상세 필터{detailCount ? ` ${detailCount}` : ''}
+          </button>
+        </div>
 
         {dirty && <button className={styles.resetInline} onClick={() => apply(EMPTY_FILTERS)}>초기화</button>}
 
         <div className={styles.toolbarRight}>
-          <select className={styles.sort} value={filters.sort}
-            onChange={e => apply({ ...filters, sort: e.target.value as ShopFilters['sort'] })} aria-label="정렬">
-            <option value="hot">인기순</option>
-            <option value="reviews">후기 많은순</option>
-            <option value="saves">찜 많은순</option>
-            <option value="recent">최근 등록순</option>
-          </select>
+          <Popover
+            label={SORT_OPTIONS.find(o => o.v === filters.sort)?.label ?? '정렬'}
+            value={filters.sort !== 'hot' ? SORT_OPTIONS.find(o => o.v === filters.sort)?.label : undefined}
+            align="right"
+          >
+            {close => (
+              <div className={styles.popList} role="listbox">
+                {SORT_OPTIONS.map(o => (
+                  <button key={o.v} className={filters.sort === o.v ? styles.popItemOn : styles.popItem}
+                    onClick={() => { apply({ ...filters, sort: o.v }); close() }}>{o.label}</button>
+                ))}
+              </div>
+            )}
+          </Popover>
           <div className={styles.viewToggle} role="group" aria-label="보기 방식">
             <button className={view === 'grid' ? styles.viewOn : styles.viewBtn} aria-pressed={view === 'grid'} aria-label="그리드 보기" onClick={() => go({ view: 'grid' })}><GridIcon /></button>
             <button className={view === 'list' ? styles.viewOn : styles.viewBtn} aria-pressed={view === 'list'} aria-label="리스트 보기" onClick={() => go({ view: 'list' })}><ListIcon /></button>
@@ -388,8 +404,8 @@ function pageNumbers(cur: number, total: number): (number | '…')[] {
 }
 
 /* ───────── 팝오버 ───────── */
-function Popover({ label, value, count, children }: {
-  label: string; value?: string; count?: number; children: (close: () => void) => React.ReactNode
+function Popover({ label, value, count, align, children }: {
+  label: string; value?: string; count?: number; align?: 'left' | 'right'; children: (close: () => void) => React.ReactNode
 }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -406,7 +422,7 @@ function Popover({ label, value, count, children }: {
         {value ?? label}{count ? ` ${count}` : ''}
         <svg className={open ? styles.chevUp : styles.chevDown} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M6 9l6 6 6-6" /></svg>
       </button>
-      {open && <div className={styles.popMenu}>{children(() => setOpen(false))}</div>}
+      {open && <div className={align === 'right' ? `${styles.popMenu} ${styles.popMenuRight}` : styles.popMenu}>{children(() => setOpen(false))}</div>}
     </div>
   )
 }

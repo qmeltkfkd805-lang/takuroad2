@@ -1,4 +1,4 @@
-﻿import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 import {
   WorkRelationship, FavoriteTier, RelationshipState,
 } from '@/types/work-relationship'
@@ -22,19 +22,24 @@ export async function getAffinitiesForTags(
 ): Promise<Record<string, FavoriteTier>> {
   if (tagIds.length === 0) return {}
   const supabase = createClient()
-  const { data } = await supabase
-    .from('user_favorite_tags')
-    .select('tag_id, tier')
-    .eq('user_id', userId)
-    .in('tag_id', tagIds)
-
   const map: Record<string, FavoriteTier> = {}
-  for (const row of data ?? []) {
-    map[(row as any).tag_id] = (row as any).tier
+  const chunkSize = 200
+
+  for (let from = 0; from < tagIds.length; from += chunkSize) {
+    const chunk = tagIds.slice(from, from + chunkSize)
+    const { data, error } = await supabase
+      .from('user_favorite_tags')
+      .select('tag_id, tier')
+      .eq('user_id', userId)
+      .in('tag_id', chunk)
+
+    if (error) throw error
+    for (const row of data ?? []) {
+      map[(row as any).tag_id] = (row as any).tier
+    }
   }
   return map
 }
-
 // 이 작품의 현재 관계 상태(볼예정/보는중/완료/보류/없음) 하나만 조회
 export async function getRelationshipState(userId: string, tagId: string): Promise<RelationshipState | null> {
   const supabase = createClient()

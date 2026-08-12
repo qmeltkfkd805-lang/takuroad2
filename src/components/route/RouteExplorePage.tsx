@@ -6,6 +6,7 @@ import { getPublicRoutes, toggleRouteSave, getMySavedRouteIds, getSavedRoutes } 
 import { getMyFavoriteTagIds } from '@/services/shopHomeService'
 import { formatDistance, calcDistance, useCurrentLocation } from '@/hooks/useCurrentLocation'
 import { useIsDesktop } from '@/hooks/useIsDesktop'
+import AppIcon from '@/components/tds/AppIcon'
 import RouteThumb from './RouteThumb'
 import RouteResultCard, { HeartIcon } from './RouteResultCard'
 import { rtStops, rtRegions, fmtDur, metaShort } from './routeMeta'
@@ -197,7 +198,7 @@ export default function RouteExplorePage() {
                     {rtRegions(hero)[0] && <span><MaskIcon name="map" size={14} color="var(--accent)" />{rtRegions(hero)[0]}</span>}
                     <span><MaskIcon name="shop" size={14} color="var(--accent)" />{hero.route_shops?.length ?? 0}곳</span>
                     {fmtDur(hero.total_duration_min) && <span><MaskIcon name="clock" size={14} color="var(--accent)" />{fmtDur(hero.total_duration_min)}</span>}
-                    {hero.total_distance_m ? <span><MaskIcon name="route" size={14} color="var(--accent)" />{formatDistance(hero.total_distance_m)}</span> : null}
+                    {hero.total_distance_m ? <span><AppIcon name="route" size={14} color="var(--accent)" />{formatDistance(hero.total_distance_m)}</span> : null}
                   </div>
                   <div className={styles.mheroBtns}>
                     <button className={styles.mheroPrimary} onClick={() => go(hero)}>루트 보기 <ChevR /></button>
@@ -312,7 +313,7 @@ export default function RouteExplorePage() {
                     {rtRegions(hero)[0] && <span><MaskIcon name="map" size={15} color="var(--accent)" />{rtRegions(hero)[0]}</span>}
                     <span><MaskIcon name="shop" size={15} color="var(--accent)" />{hero.route_shops?.length ?? 0}곳</span>
                     {fmtDur(hero.total_duration_min) && <span title="스팟 간 도보 이동 시간이에요. 방문 체류 시간은 별도예요."><MaskIcon name="clock" size={15} color="var(--accent)" />이동 {fmtDur(hero.total_duration_min)}</span>}
-                    {hero.total_distance_m ? <span title="스팟 간 직선 거리 합계예요."><MaskIcon name="route" size={15} color="var(--accent)" />{formatDistance(hero.total_distance_m)}</span> : null}
+                    {hero.total_distance_m ? <span title="스팟 간 직선 거리 합계예요."><AppIcon name="route" size={15} color="var(--accent)" />{formatDistance(hero.total_distance_m)}</span> : null}
                   </div>
                   <div className={styles.heroBtns}>
                     <button className={styles.heroPrimary} onClick={() => go(hero)}>루트 보기 <ChevR /></button>

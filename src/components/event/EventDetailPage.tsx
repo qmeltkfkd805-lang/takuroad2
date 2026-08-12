@@ -19,7 +19,7 @@ import EventQnaTab from './EventQnaTab'
 import EventGoodsTab from './EventGoodsTab'
 import dynamic from 'next/dynamic'
 const EventMiniMap = dynamic(() => import('./EventMiniMap'), { ssr: false })
-import { summarizeHours, hoursRows, closedDaysLabel } from '@/lib/event/eventHours'
+import { summarizeHoursLines, hoursRows, closedDaysLabel } from '@/lib/event/eventHours'
 import { getEventReviewSummary } from '@/services/eventReviewService'
 import { getEventQnaCount } from '@/services/eventQnaService'
 import { EventIcon, EventIconName, snsMeta } from './EventIcon'
@@ -33,7 +33,7 @@ function hostOf(url: string): string {
 }
 
 function ticketButtonLabel(event: EventDetail, index: number, fallback: string): string {
-  return event.ticketLabels[index]?.trim() || fallback
+  return (event as any).ticketLabels?.[index]?.trim() || fallback
 }
 
 const fmtFull = (s: string | null) => {
@@ -344,7 +344,7 @@ export default function EventDetailPage() {
                 <h2 className={styles.cardTitle}><EventIcon name="sparkle" size={18} color="var(--accent)" />핵심 정보 요약</h2>
                 <div className={styles.tiles}>
                   <Tile icon="calendar" label="기간" lines={[`${fmtFull(event.startDate).slice(0, 10)} ~ ${fmtFull(event.endDate).slice(5, 10)}`]} />
-                  <Tile icon="clock" label="운영 시간" lines={[summarizeHours(event.hours) ?? '등록된 정보 없음', closedDaysLabel(event.hours) ?? '']} />
+                  <Tile icon="clock" label="운영 시간" lines={[...(summarizeHoursLines(event.hours).length ? summarizeHoursLines(event.hours) : ['등록된 정보 없음']), closedDaysLabel(event.hours) ?? '']} />
                   <Tile icon="pin" label="장소" lines={[place ?? '미정', event.placeDetail ?? '']} />
                   <Tile icon="ticket" label="입장 방법" lines={[event.entryInfo ?? '등록된 정보 없음']} />
                 </div>
@@ -539,7 +539,6 @@ export default function EventDetailPage() {
                 <a key={u} className={styles.ticketBtn} href={u} target="_blank" rel="noreferrer">
                   <EventIcon name="ticket" size={16} />
                   {ticketButtonLabel(event, index, reserveOpen ? '사전예약 하러 가기' : '예매하러 가기')}
-                  {(event.ticketUrls ?? []).length > 1 && <span className={styles.ticketHost}>{hostOf(u)}</span>}
                 </a>
               ))}
             </section>

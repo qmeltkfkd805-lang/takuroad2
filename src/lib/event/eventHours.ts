@@ -71,6 +71,12 @@ export function summarizeHours(h: BusinessHours | null): string | null {
     .join(', ')
 }
 
+/** summarizeHours를 그룹(평일/주말 등)별로 한 줄씩 끊어 돌려준다 — 타일에서 여러 줄로 보여줄 때 */
+export function summarizeHoursLines(h: BusinessHours | null): string[] {
+  const s = summarizeHours(h)
+  return s ? s.split(', ') : []
+}
+
 /** 휴무 요일 안내 — "휴무: 월·화" / 공휴일 휴무 포함. 없으면 null */
 export function closedDaysLabel(h: BusinessHours | null): string | null {
   if (!h) return null

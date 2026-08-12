@@ -88,10 +88,10 @@ export default function MyWorksPage() {
   // 유형은 표준 라벨로 정리(anime/애니메이션 → 애니 등)해 중복 없이. 표준 순서 먼저, 그 외는 뒤에
   const normedTypes = [...new Set(works.flatMap(w => ipTypeList(w.ip_type)))]
   const availableTypes = [...IP_TYPES.filter(t => normedTypes.includes(t)), ...normedTypes.filter(t => !(IP_TYPES as readonly string[]).includes(t))]
-  // 선택한 장르를 "모두" 가진 작품 + (모바일) 유형(하나라도 일치)·연도 필터 AND
+  // 선택한 유형·장르를 "모두" 만족하는 작품만 (유형·장르 모두 every) + 연도 AND
   const filtered = works.filter(w =>
     (selectedGenres.length === 0 || selectedGenres.every(g => genreList(w).includes(g))) &&
-    (selectedTypes.length === 0 || ipTypeList(w.ip_type).some(t => selectedTypes.includes(t))) &&
+    (selectedTypes.length === 0 || selectedTypes.every(t => ipTypeList(w.ip_type).includes(t))) &&
     (selectedYears.length === 0 || (!!w.release_year && selectedYears.includes(w.release_year)))
   )
 
@@ -269,7 +269,7 @@ export default function MyWorksPage() {
                   </div>
                 </>
               )}
-              <div style={{ fontSize: 13, color: 'var(--text)', fontWeight: 800, marginBottom: 8 }}>장르 <span style={{ fontSize: 11.5, fontWeight: 600, color: 'var(--muted)' }}>(선택 시 모두 포함)</span></div>
+              <div style={{ fontSize: 13, color: 'var(--text)', fontWeight: 800, marginBottom: 8 }}>장르</div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 {availableGenres.map(g => {
                   const on = selectedGenres.includes(g)

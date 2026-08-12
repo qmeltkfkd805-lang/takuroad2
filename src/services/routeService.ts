@@ -260,11 +260,19 @@ export async function getAllSeriesTags() {
 // ?묓뭹 ?좏깮????id源뚯? ?④퍡. (getAllSeriesTags???대쫫留?以섏꽌 ?쒕낫??遺議?
 export async function getAllTagsForSelect(): Promise<{ id: string; name: string; slug: string }[]> {
   const supabase = createClient()
-  const { data } = await supabase
-    .from('tags')
-    .select('id, name, slug')
-    .order('name')
-  return (data ?? []) as any
+  const rows: { id: string; name: string; slug: string }[] = []
+  const pageSize = 1000
+  for (let from = 0; ; from += pageSize) {
+    const { data, error } = await supabase
+      .from('tags')
+      .select('id, name, slug')
+      .order('name')
+      .range(from, from + pageSize - 1)
+    if (error) throw error
+    rows.push(...((data ?? []) as { id: string; name: string; slug: string }[]))
+    if ((data?.length ?? 0) < pageSize) break
+  }
+  return rows
 }
 export async function getRouteForEdit(routeId: string) {
   const supabase = createClient()

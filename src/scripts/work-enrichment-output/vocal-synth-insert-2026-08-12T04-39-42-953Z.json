@@ -1,0 +1,1269 @@
+{
+  "mode": "apply",
+  "before": 1240,
+  "inserted": 39,
+  "after": 1279,
+  "existingChanged": [],
+  "failed": [],
+  "backupPath": "C:\\dev\\takuroad\\src\\scripts\\work-enrichment-output\\pre-vocal-synth-insert-2026-08-12T04-39-42-953Z.json",
+  "insertedRows": [
+    {
+      "id": "3d34cd12-b711-4326-a4ad-3f4177254a35",
+      "name": "카가미네 린",
+      "slug": "kagamine-rin",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Kagamine Rin",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "밝고 힘찬 소녀 음색을 지닌 크립톤의 피아프로 캐릭터이자 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://piapro.net/intl/en_character.html",
+      "created_by": null,
+      "aliases": [
+        "鏡音リン"
+      ],
+      "links": [
+        {
+          "url": "https://piapro.net/intl/en_character.html",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "06c4ceb2-b848-492e-8108-8fe9b3f67cd9",
+      "name": "카가미네 렌",
+      "slug": "kagamine-len",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Kagamine Len",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "선명하고 활기찬 소년 음색을 지닌 크립톤의 피아프로 캐릭터이자 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://piapro.net/intl/en_character.html",
+      "created_by": null,
+      "aliases": [
+        "鏡音レン"
+      ],
+      "links": [
+        {
+          "url": "https://piapro.net/intl/en_character.html",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "523f414c-7710-4f50-b4b2-ec63413ed2dd",
+      "name": "메구리네 루카",
+      "slug": "megurine-luka",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Megurine Luka",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "차분하고 성숙한 음색으로 일본어와 영어 노래를 소화하는 피아프로 캐릭터.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://piapro.net/intl/en_character.html",
+      "created_by": null,
+      "aliases": [
+        "巡音ルカ"
+      ],
+      "links": [
+        {
+          "url": "https://piapro.net/intl/en_character.html",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "fe925125-c3aa-43cd-afa1-222618bb00b0",
+      "name": "MEIKO",
+      "slug": "meiko-vocal-synth",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "MEIKO",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "힘 있고 따뜻한 여성 보컬을 표현하는 크립톤의 피아프로 캐릭터.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://piapro.net/intl/en_character.html",
+      "created_by": null,
+      "aliases": [
+        "메이코"
+      ],
+      "links": [
+        {
+          "url": "https://piapro.net/intl/en_character.html",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "ac92c97f-e945-4505-a3c5-427d9fe7c72e",
+      "name": "KAITO",
+      "slug": "kaito-vocal-synth",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "KAITO",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "부드럽고 맑은 남성 보컬을 표현하는 크립톤의 피아프로 캐릭터.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://piapro.net/intl/en_character.html",
+      "created_by": null,
+      "aliases": [
+        "카이토"
+      ],
+      "links": [
+        {
+          "url": "https://piapro.net/intl/en_character.html",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "572dbe28-4bc4-43e9-ba5d-ac2a49da5292",
+      "name": "GUMI",
+      "slug": "gumi-megpoid",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "GUMI",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "풍부하고 자연스러운 음색으로 폭넓은 장르를 노래하는 Megpoid의 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://www6.ssw.co.jp/characters/",
+      "created_by": null,
+      "aliases": [
+        "구미",
+        "Megpoid"
+      ],
+      "links": [
+        {
+          "url": "https://www6.ssw.co.jp/characters/",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "eb53b97a-2966-4582-b9da-1468277c17aa",
+      "name": "카무이 가쿠포",
+      "slug": "kamui-gakupo",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Kamui Gakupo",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "힘찬 저음과 독특한 비브라토를 지닌 Gackpoid의 남성 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://www6.ssw.co.jp/characters/",
+      "created_by": null,
+      "aliases": [
+        "神威がくぽ",
+        "Gackpoid",
+        "가쿠포"
+      ],
+      "links": [
+        {
+          "url": "https://www6.ssw.co.jp/characters/",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "e8cc530a-9934-4d58-8eea-8b9dc0485d5b",
+      "name": "Lily",
+      "slug": "lily-vocaloid",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Lily",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "록과 댄스 음악에 어울리는 강하고 선명한 여성 음색의 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://www6.ssw.co.jp/characters/",
+      "created_by": null,
+      "aliases": [
+        "릴리"
+      ],
+      "links": [
+        {
+          "url": "https://www6.ssw.co.jp/characters/",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "d053830e-e882-46ae-bf81-323339dde1b2",
+      "name": "가챠포이드",
+      "slug": "gachapoid",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Gachapoid",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "가챠핀을 모티프로 한 밝고 개성적인 소년 음색의 VOCALOID 캐릭터.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://www6.ssw.co.jp/characters/",
+      "created_by": null,
+      "aliases": [
+        "ガチャッポイド",
+        "류토"
+      ],
+      "links": [
+        {
+          "url": "https://www6.ssw.co.jp/characters/",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "f14f39db-5fa7-4ace-823c-92f20e5d7dc6",
+      "name": "오토마치 우나",
+      "slug": "otomachi-una",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Otomachi Una",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "귀여운 Sugar와 힘찬 Spicy 음색을 함께 지닌 장어 모티프의 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://otomachiuna.jp/",
+      "created_by": null,
+      "aliases": [
+        "音街ウナ",
+        "우나"
+      ],
+      "links": [
+        {
+          "url": "https://otomachiuna.jp/",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "260d55bd-6bb9-4e41-abc3-13ce30f34c76",
+      "name": "SF-A2 개발코드 miki",
+      "slug": "sf-a2-miki",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "SF-A2 miki",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "선명한 고음과 독특한 발음이 특징인 AHS의 여성 VOCALOID 캐릭터.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://www.ah-soft.com/vocaloid/miki/",
+      "created_by": null,
+      "aliases": [
+        "SF-A2 開発コード miki",
+        "미키"
+      ],
+      "links": [
+        {
+          "url": "https://www.ah-soft.com/vocaloid/miki/",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "3865145a-3eae-4021-b232-80c1a61b1b81",
+      "name": "카아이 유키",
+      "slug": "kaai-yuki",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Kaai Yuki",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "실제 어린이의 목소리를 바탕으로 한 순수하고 앳된 음색의 보컬로이드 소학생.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://www.ah-soft.com/vocaloid/yuki/",
+      "created_by": null,
+      "aliases": [
+        "歌愛ユキ"
+      ],
+      "links": [
+        {
+          "url": "https://www.ah-soft.com/vocaloid/yuki/",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "22c44813-ad6f-430c-a732-fca5eeb67bbf",
+      "name": "히야마 키요테루",
+      "slug": "hiyama-kiyoteru",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Hiyama Kiyoteru",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "넓은 음역과 힘찬 록 보컬을 표현하는 교사 콘셉트의 남성 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://www.ah-soft.com/vocaloid/kiyoteru/",
+      "created_by": null,
+      "aliases": [
+        "氷山キヨテル"
+      ],
+      "links": [
+        {
+          "url": "https://www.ah-soft.com/vocaloid/kiyoteru/",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "efd22769-cfa7-46c2-b511-994f5eab0064",
+      "name": "네코무라 이로하",
+      "slug": "nekomura-iroha",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Nekomura Iroha",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "헬로키티를 좋아하는 설정과 힘찬 저음이 특징인 AHS의 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://www.ah-soft.com/vocaloid/iroha/",
+      "created_by": null,
+      "aliases": [
+        "猫村いろは"
+      ],
+      "links": [
+        {
+          "url": "https://www.ah-soft.com/vocaloid/iroha/",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "513e4c76-7ab4-476d-b010-e3edd9eeb686",
+      "name": "유즈키 유카리",
+      "slug": "yuzuki-yukari",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Yuzuki Yukari",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "감정적인 여운과 차분한 음색을 지닌 보컬로마켓 감수의 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://www.ah-soft.com/vocaloid/yukari/",
+      "created_by": null,
+      "aliases": [
+        "結月ゆかり",
+        "유카리"
+      ],
+      "links": [
+        {
+          "url": "https://www.ah-soft.com/vocaloid/yukari/",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "e2e59f0f-3476-45a5-aecd-616daf59485b",
+      "name": "키즈나 아카리",
+      "slug": "kizuna-akari",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Kizuna Akari",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "밝고 힘찬 음색과 매화 모티프를 지닌 VOCALOMAKETS의 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://www.ah-soft.com/vocaloid/akari/",
+      "created_by": null,
+      "aliases": [
+        "紲星あかり",
+        "아카리"
+      ],
+      "links": [
+        {
+          "url": "https://www.ah-soft.com/vocaloid/akari/",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "887d27d9-9137-4b0d-a9b4-c553b37e000c",
+      "name": "도호쿠 즌코",
+      "slug": "tohoku-zunko",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Tohoku Zunko",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "도호쿠 지역 응원 캐릭터에서 출발해 노래와 음성 합성으로 활동하는 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://zunko.jp/",
+      "created_by": null,
+      "aliases": [
+        "東北ずん子",
+        "즌코"
+      ],
+      "links": [
+        {
+          "url": "https://zunko.jp/",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "8b455ba3-a50f-400e-addb-df1f15e86a84",
+      "name": "하루노 소라",
+      "slug": "haruno-sora",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Haruno Sora",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "부드러운 Natural과 힘찬 Cool 음색을 지닌 성숙한 여성 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://www.ah-soft.com/vocaloid/sora/",
+      "created_by": null,
+      "aliases": [
+        "桜乃そら"
+      ],
+      "links": [
+        {
+          "url": "https://www.ah-soft.com/vocaloid/sora/",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "5f28eb19-367b-446f-a925-f0bd969cea0a",
+      "name": "IA",
+      "slug": "ia-aria-on-the-planetes",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "IA -ARIA ON THE PLANETES-",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "맑고 투명한 크리스털 보이스를 내세운 1st PLACE의 버추얼 아티스트.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://ia-aria.com/",
+      "created_by": null,
+      "aliases": [
+        "이아"
+      ],
+      "links": [
+        {
+          "url": "https://ia-aria.com/",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "566db785-e836-4d68-9d9f-8734253a92e4",
+      "name": "v flower",
+      "slug": "v-flower",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "v flower",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "강한 록 사운드에서도 또렷한 중성적 음색을 내는 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "flower",
+        "플라워",
+        "ブイフラワ"
+      ],
+      "links": []
+    },
+    {
+      "id": "5a174f1e-2c4c-4662-b215-a7e4f8e54d7a",
+      "name": "MAYU",
+      "slug": "mayu-vocaloid",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "MAYU",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "고딕 로리타풍 외형과 부드럽고 귀여운 여성 음색을 지닌 VOCALOID 캐릭터.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "마유"
+      ],
+      "links": []
+    },
+    {
+      "id": "e334a521-3cb3-4d26-9d7e-4df9ec771fb9",
+      "name": "Mew",
+      "slug": "mew-vocaloid",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Mew",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "차분하고 성숙한 여성 음색으로 발라드와 섬세한 표현에 어울리는 보컬로이드.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "뮤"
+      ],
+      "links": []
+    },
+    {
+      "id": "fe2798d0-5635-4279-ab9b-24b15a2d2932",
+      "name": "CUL",
+      "slug": "cul-vocaloid",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "CUL",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "붉은 머리와 힘차고 선명한 여성 음색이 특징인 VOCALOID 캐릭터.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "컬"
+      ],
+      "links": []
+    },
+    {
+      "id": "e93e2c95-092a-4bb7-a685-a1d492d96038",
+      "name": "아오키 라피스",
+      "slug": "aoki-lapis",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Aoki Lapis",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "푸른 보석과 작은 요정을 모티프로 한 맑고 귀여운 음색의 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "蒼姫ラピス"
+      ],
+      "links": []
+    },
+    {
+      "id": "67a74e13-20b0-4322-859d-35f623ecac4f",
+      "name": "메를리",
+      "slug": "merli-vocaloid",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Merli",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "아오키 라피스와 대조되는 검은 요정 콘셉트와 힘찬 저음을 지닌 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "メルリ",
+        "MERLI"
+      ],
+      "links": []
+    },
+    {
+      "id": "72a71de3-b1a4-4bb4-b5a7-9802849a4653",
+      "name": "Rana",
+      "slug": "rana-vocaloid",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Rana",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "무지개빛 디자인과 밝고 또렷한 여성 음색을 지닌 VOCALOID 캐릭터.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "라나"
+      ],
+      "links": []
+    },
+    {
+      "id": "7c298923-701f-4426-bca6-66160dcb36e3",
+      "name": "미라이 코마치",
+      "slug": "mirai-komachi",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Mirai Komachi",
+      "release_year": null,
+      "genres": [
+        "음악",
+        "아이돌"
+      ],
+      "description": "기술로 세상에 웃음을 전하려는 미래형 아이돌 콘셉트의 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://www.vocaloid.com/en/voicebank-01/",
+      "created_by": null,
+      "aliases": [
+        "ミライ小町"
+      ],
+      "links": [
+        {
+          "url": "https://www.vocaloid.com/en/voicebank-01/",
+          "label": "공식 사이트"
+        }
+      ]
+    },
+    {
+      "id": "e8149a2d-db5e-4a3e-b884-17ecdfe706e1",
+      "name": "SeeU",
+      "slug": "seeu-vocaloid",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "SeeU",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "한국어와 일본어 노래를 지원하는 최초의 한국어 VOCALOID 캐릭터.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "시유",
+        "SV01 SeeU"
+      ],
+      "links": []
+    },
+    {
+      "id": "0a253697-1b38-448c-ae09-1ab697ae12c4",
+      "name": "UNI",
+      "slug": "uni-vocaloid",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "UNI",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "부드럽고 맑은 한국어 여성 음색을 지닌 한국의 VOCALOID 캐릭터.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "유니"
+      ],
+      "links": []
+    },
+    {
+      "id": "e9a7f584-49e2-48b6-9dd4-b343d6e23e89",
+      "name": "ZOLA PROJECT YUU",
+      "slug": "zola-project-yuu",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "ZOLA PROJECT YUU",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "ZOLA PROJECT의 부드럽고 감성적인 음색을 담당하는 남성 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "YUU",
+        "유우"
+      ],
+      "links": []
+    },
+    {
+      "id": "43eb2645-f0ed-48c9-a6c4-e7d6b1987444",
+      "name": "ZOLA PROJECT KYO",
+      "slug": "zola-project-kyo",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "ZOLA PROJECT KYO",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "ZOLA PROJECT의 밝고 힘찬 음색을 담당하는 남성 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "KYO",
+        "쿄"
+      ],
+      "links": []
+    },
+    {
+      "id": "7049d934-4dc7-4b91-9137-801bcef27b66",
+      "name": "ZOLA PROJECT WIL",
+      "slug": "zola-project-wil",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "ZOLA PROJECT WIL",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "ZOLA PROJECT의 낮고 성숙한 음색을 담당하는 남성 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "WIL",
+        "윌"
+      ],
+      "links": []
+    },
+    {
+      "id": "0bc38100-d48f-4736-844b-bee0b5c19c83",
+      "name": "토네 리온",
+      "slug": "tone-rion",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Tone Rion",
+      "release_year": null,
+      "genres": [
+        "음악",
+        "아이돌"
+      ],
+      "description": "미래의 아키하바라에서 온 메이드 아이돌 콘셉트의 귀여운 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "兎眠りおん"
+      ],
+      "links": []
+    },
+    {
+      "id": "60832ca2-926a-45f6-b53a-3597cf196ef4",
+      "name": "유메미 네무",
+      "slug": "yumemi-nemu",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Yumemi Nemu",
+      "release_year": null,
+      "genres": [
+        "음악",
+        "아이돌"
+      ],
+      "description": "아이돌 유메미 네무의 목소리를 바탕으로 제작된 부드러운 여성 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "夢眠ネム"
+      ],
+      "links": []
+    },
+    {
+      "id": "46d55155-907b-46cc-9dd0-3b2cd3bc9650",
+      "name": "galaco",
+      "slug": "galaco-vocaloid",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "galaco",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "은하를 연상시키는 외형과 차분한 여성 음색을 지닌 VOCALOID 캐릭터.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "갤러코",
+        "ギャラ子"
+      ],
+      "links": []
+    },
+    {
+      "id": "2cd1ca98-d3b8-4eca-91a3-575dc74eee2e",
+      "name": "Macne Nana",
+      "slug": "macne-nana",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Macne Nana",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "맥용 음성 소재에서 출발해 VOCALOID로 확장된 밝고 귀여운 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "마쿠네 나나",
+        "マクネナナ"
+      ],
+      "links": []
+    },
+    {
+      "id": "5c2be9d4-759b-4d7f-8d66-a1b4a69d87a6",
+      "name": "kokone",
+      "slug": "kokone-vocaloid",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "kokone",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "넓은 음역과 자연스러운 비브라토로 감성적인 노래에 어울리는 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "코코네"
+      ],
+      "links": []
+    },
+    {
+      "id": "dc075940-f9d3-4811-a02d-a7fe5081fb8d",
+      "name": "Chika",
+      "slug": "chika-vocaloid",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Chika",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "힘 있고 자연스러운 일본어 여성 음색과 폭넓은 표현력을 지닌 버추얼 싱어.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": null,
+      "created_by": null,
+      "aliases": [
+        "치카"
+      ],
+      "links": []
+    },
+    {
+      "id": "e7cb14d7-b982-417d-b1ca-23fe43cd5532",
+      "name": "카사네 테토",
+      "slug": "kasane-teto",
+      "created_at": "2026-08-12T04:39:44.346948+00:00",
+      "ip_type": "캐릭터",
+      "ip_type_id": null,
+      "cover_url": null,
+      "banner_image": null,
+      "english_name": "Kasane Teto",
+      "release_year": null,
+      "genres": [
+        "음악"
+      ],
+      "description": "UTAU에서 출발해 Synthesizer V로 확장된 트윈드릴의 싱어블 캐릭터.",
+      "keywords": [],
+      "status": null,
+      "original_type": null,
+      "accent_color": null,
+      "homepage_url": null,
+      "twitter_url": null,
+      "youtube_url": null,
+      "official_url": "https://kasaneteto.jp/",
+      "created_by": null,
+      "aliases": [
+        "重音テト",
+        "테토"
+      ],
+      "links": [
+        {
+          "url": "https://kasaneteto.jp/",
+          "label": "공식 사이트"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+[
+    {
+        "slug":  "kafu-musical-isotope",
+        "name":  "카후",
+        "englishName":  "KAFU",
+        "aliases":  [
+                        "可不",
+                        "음악적 동위체 카후"
+                    ],
+        "description":  "버추얼 싱어 카후의 목소리를 바탕으로 탄생한 KAMITSUBAKI의 음악적 동위체.",
+        "genres":  [
+                       "음악"
+                   ],
+        "ipType":  [
+                       "캐릭터"
+                   ],
+        "officialUrl":  "https://musical-isotope.kamitsubaki.jp/",
+        "source":  "https://musical-isotope.kamitsubaki.jp/"
+    },
+    {
+        "slug":  "sekai-musical-isotope",
+        "name":  "세카이",
+        "englishName":  "SEKAI",
+        "aliases":  [
+                        "星界",
+                        "음악적 동위체 세카이"
+                    ],
+        "description":  "버추얼 싱어 이세계정서의 목소리를 바탕으로 탄생한 음악적 동위체.",
+        "genres":  [
+                       "음악"
+                   ],
+        "ipType":  [
+                       "캐릭터"
+                   ],
+        "officialUrl":  "https://musical-isotope.kamitsubaki.jp/",
+        "source":  "https://musical-isotope.kamitsubaki.jp/"
+    },
+    {
+        "slug":  "rime-musical-isotope",
+        "name":  "리메",
+        "englishName":  "RIME",
+        "aliases":  [
+                        "裏命",
+                        "음악적 동위체 리메"
+                    ],
+        "description":  "버추얼 싱어 리메의 목소리를 바탕으로 탄생한 KAMITSUBAKI의 음악적 동위체.",
+        "genres":  [
+                       "음악"
+                   ],
+        "ipType":  [
+                       "캐릭터"
+                   ],
+        "officialUrl":  "https://musical-isotope.kamitsubaki.jp/",
+        "source":  "https://musical-isotope.kamitsubaki.jp/"
+    },
+    {
+        "slug":  "coko-musical-isotope",
+        "name":  "음악적 동위체 코코",
+        "englishName":  "COKO",
+        "aliases":  [
+                        "狐子"
+                    ],
+        "description":  "버추얼 싱어 코코의 목소리를 바탕으로 탄생한 KAMITSUBAKI의 음악적 동위체.",
+        "genres":  [
+                       "음악"
+                   ],
+        "ipType":  [
+                       "캐릭터"
+                   ],
+        "officialUrl":  "https://musical-isotope.kamitsubaki.jp/",
+        "source":  "https://musical-isotope.kamitsubaki.jp/"
+    },
+    {
+        "slug":  "haru-musical-isotope",
+        "name":  "음악적 동위체 하루",
+        "englishName":  "HARU",
+        "aliases":  [
+                        "羽累"
+                    ],
+        "description":  "버추얼 싱어 하루사루히의 목소리를 바탕으로 탄생한 음악적 동위체.",
+        "genres":  [
+                       "음악"
+                   ],
+        "ipType":  [
+                       "캐릭터"
+                   ],
+        "officialUrl":  "https://musical-isotope.kamitsubaki.jp/",
+        "source":  "https://musical-isotope.kamitsubaki.jp/"
+    }
+]
