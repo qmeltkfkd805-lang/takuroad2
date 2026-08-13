@@ -26,24 +26,23 @@ import MyCommentsTab from './MyCommentsTab'
 import MyPostsTab from './MyPostsTab'
 import MyShopsTab from './MyShopsTab'
 import VerifyStatusTab from './VerifyStatusTab'
-import AccountSettingsTab from './AccountSettingsTab'
 import styles from './ProfileDesktop.module.css'
 
 type Sub =
   | 'saved' | 'savedroutes' | 'routes' | 'completed' | 'visited'
   | 'posts' | 'comments' | 'reviews' | 'shops' | 'verify'
-  | 'badges' | 'growth' | 'chronicle' | 'collection' | 'settings'
+  | 'badges' | 'growth' | 'chronicle' | 'collection'
 
 const SUB_SET = new Set<Sub>([
   'saved', 'savedroutes', 'routes', 'completed', 'visited',
   'posts', 'comments', 'reviews', 'shops', 'verify',
-  'badges', 'growth', 'chronicle', 'collection', 'settings',
+  'badges', 'growth', 'chronicle', 'collection',
 ])
 
 const SUB_TITLE: Record<Sub, string> = {
   saved: '저장한 샵', savedroutes: '저장한 루트', routes: '내 루트', completed: '완주한 루트', visited: '방문 기록',
   posts: '작성한 글', comments: '내 댓글', reviews: '내 후기', shops: '등록한 샵', verify: '인증 현황',
-  badges: '배지', growth: '성장센터', chronicle: '연대기', collection: '컬렉션', settings: '계정 설정',
+  badges: '배지', growth: '성장센터', chronicle: '연대기', collection: '컬렉션',
 }
 
 const STAT_TINT = ['rgba(255,86,146,.12)', 'rgba(247,169,40,.16)', 'rgba(34,197,94,.14)', 'rgba(59,155,232,.14)']
@@ -119,6 +118,15 @@ export default function ProfileDesktop({ passport, userId }: Props) {
       if (valid.length) setQuickKeys(valid)
     }).catch(() => {})
   }, [userId])
+
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const m = window.matchMedia('(max-width: 640px)')
+    const on = () => setIsMobile(m.matches)
+    on()
+    m.addEventListener('change', on)
+    return () => m.removeEventListener('change', on)
+  }, [])
 
   function runQuick(item: QuickItem) {
     if (item.view) setView(item.view)
@@ -230,10 +238,10 @@ export default function ProfileDesktop({ passport, userId }: Props) {
   const expLabel = expSpan ? `EXP ${expCur} / ${expSpan}` : `EXP ${levelInfo?.totalExp ?? 0}`
 
   const stats = [
-    { icon: 'colorshop', label: '방문한 샵', value: passport?.visitedShopCount ?? 0, go: () => setView('visited') },
-    { icon: 'colorstar', label: '작성한 리뷰', value: passport?.reviewCount ?? 0, go: () => setView('reviews') },
-    { icon: 'colorcollection', label: '획득 배지', value: passport?.totalBadgeCount ?? 0, go: () => setView('badges') },
-    { icon: 'colorroute', label: '완주한 루트', value: passport?.pilgrimageCount ?? 0, go: () => setView('completed') },
+    { icon: 'shop', label: '방문한 샵', value: passport?.visitedShopCount ?? 0, go: () => setView('visited') },
+    { icon: 'pencil', label: '작성 리뷰', value: passport?.reviewCount ?? 0, go: () => setView('reviews') },
+    { icon: 'medal', label: '획득 배지', value: passport?.totalBadgeCount ?? 0, go: () => setView('badges') },
+    { icon: 'flag', label: '완주 루트', value: passport?.pilgrimageCount ?? 0, go: () => setView('completed') },
   ]
 
   const quickItems = quickKeys.map(k => QUICK_BY_KEY.get(k)).filter(Boolean) as QuickItem[]
@@ -270,7 +278,6 @@ export default function ProfileDesktop({ passport, userId }: Props) {
           {view === 'growth' && <GrowthPage />}
           {view === 'chronicle' && <ChroniclePage />}
           {view === 'collection' && <CollectionTab userId={userId} />}
-          {view === 'settings' && <AccountSettingsTab />}
         </div>
       </div>
     )
@@ -285,7 +292,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
         <section className={styles.profileCard}>
           <div className={styles.profileMain}>
             <span className={styles.avatarWrap}>
-              <UserAvatar userId={userId} src={avatarUrl} name={nickname} size={96} />
+              <UserAvatar userId={userId} src={avatarUrl} name={nickname} size={isMobile ? 68 : 96} />
             </span>
             <div className={styles.info}>
               <div className={styles.nameRow}>
@@ -304,21 +311,22 @@ export default function ProfileDesktop({ passport, userId }: Props) {
               </div>
             </div>
             <div className={styles.actions}>
-              <button className={styles.editBtn} onClick={() => setView('settings')}>
+              <button className={styles.editBtn} onClick={() => router.push('/profile/settings')}>
                 <AppIcon name="pencil" size={14} />프로필 편집
               </button>
-              <button className={styles.iconBtn} aria-label="설정" onClick={() => setView('settings')}>
+              <button className={styles.iconBtn} aria-label="설정" onClick={() => router.push('/profile/settings')}>
                 <AppIcon name="gear" size={18} />
               </button>
             </div>
           </div>
+        </section>
 
-          <div className={styles.divider} />
-
+        {/* 활동 통계 — 별도 카드, 가로 4칸 */}
+        <section className={`${styles.card} ${styles.statsCard}`}>
           <div className={styles.stats}>
-            {stats.map((s, i) => (
+            {stats.map(s => (
               <button key={s.label} className={styles.stat} onClick={s.go}>
-                <span className={styles.statIcon} style={{ background: STAT_TINT[i] }}><Icon name={s.icon} size={26} /></span>
+                <span className={styles.statIcon}><AppIcon name={s.icon} size={24} color="var(--accent)" /></span>
                 <span className={styles.statText}>
                   <span className={styles.statLabel}>{s.label}</span>
                   <span className={styles.statValue}>{s.value}</span>
@@ -333,7 +341,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
           {/* 왼쪽 */}
           <div className={styles.colLeft}>
             {/* 빠른 메뉴 */}
-            <section className={styles.card}>
+            <section className={`${styles.card} ${styles.quickCard}`}>
               <div className={styles.cardHead}>
                 <span className={styles.cardTitle}>빠른 메뉴</span>
                 <button className={styles.editLink} onClick={openMenuEditor}>
@@ -355,7 +363,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
             </section>
 
             {/* 최근 활동 */}
-            <section className={styles.card}>
+            <section className={`${styles.card} ${styles.recentCard}`}>
               <div className={styles.cardHead}>
                 <span className={styles.cardTitle}>최근 활동</span>
                 <button className={styles.moreLink} onClick={() => setView('chronicle')}>전체 보기 ›</button>
@@ -370,7 +378,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
                   <div className={styles.empty}>아직 활동 기록이 없어요.</div>
                 ) : (
                   <div className={styles.actList}>
-                    {activities.map(a => (
+                    {activities.slice(0, isMobile ? 3 : 8).map(a => (
                       <button key={a.id} className={styles.actRow} onClick={() => a.href && router.push(a.href)} disabled={!a.href}>
                         <span className={styles.actIcon}><AppIcon name={ACT_ICON[a.icon] ?? 'sparkle'} size={18} color={ACT_COLOR[a.icon] ?? 'var(--accent)'} /></span>
                         <span className={styles.actBody}><span className={styles.actTitle}>{a.title}</span></span>
@@ -384,7 +392,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
                   <div className={styles.empty}>{follow.following > 0 ? '팔로우한 유저의 새 소식이 아직 없어요.' : '유저를 팔로우하면 새 소식이 여기에 모여요.'}</div>
                 ) : (
                   <div className={styles.actList}>
-                    {feed.map(f => (
+                    {feed.slice(0, isMobile ? 3 : 8).map(f => (
                       <button key={f.id} className={styles.actRow} onClick={() => router.push(f.href)}>
                         <span className={styles.actIcon}><AppIcon name={f.kind === 'route' ? 'route' : 'pencil'} size={18} color={f.kind === 'route' ? '#FF5692' : '#3B9BE8'} /></span>
                         <span className={styles.actBody}>
@@ -402,8 +410,40 @@ export default function ProfileDesktop({ passport, userId }: Props) {
 
           {/* 오른쪽 */}
           <div className={styles.colRight}>
+            {isMobile ? (
+              /* 모바일: 내 컬렉션 + 대표 배지를 한 장의 카드에 */
+              <section className={`${styles.card} ${styles.collBadgeMobile}`}>
+                <div className={styles.cardHead}>
+                  <span className={styles.cardTitle}>내 컬렉션</span>
+                  <button className={styles.moreLink} onClick={() => setView('collection')}>전체 보기 ›</button>
+                </div>
+                <div className={styles.mCollRow}>
+                  {collection ? (
+                    <button className={styles.mColl} onClick={() => collection.slug && router.push(`/tag/${collection.slug}`)}>
+                      {collection.cover
+                        ? <img className={styles.mCollThumb} src={collection.cover} alt="" />
+                        : <span className={styles.mCollThumbPh}><Icon name="colorcollection" size={22} /></span>}
+                      <span className={styles.mCollName}>{collection.name}</span>
+                    </button>
+                  ) : (
+                    <span className={styles.mCollEmpty}>아직 컬렉션이 없어요.</span>
+                  )}
+                  {featuredBadges.length > 0 && (
+                    <div className={styles.mBadges}>
+                      {featuredBadges.map((b, i) => (
+                        <button key={i} className={styles.mBadge} onClick={() => setView('badges')}>
+                          <span className={styles.mBadgeIcon}>{b.iconUrl ? <img src={b.iconUrl} alt="" /> : <Icon name="colorcollection" size={22} />}</span>
+                          <span className={styles.mBadgeName}>{b.name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </section>
+            ) : (
+            <div className={styles.collBadgeWrap}>
             {/* 나의 컬렉션 */}
-            <section className={styles.card}>
+            <section className={`${styles.card} ${styles.collCard}`}>
               <div className={styles.cardHead}>
                 <span className={styles.cardTitle}>나의 컬렉션</span>
                 <button className={styles.moreLink} onClick={() => setView('collection')}>전체 보기 ›</button>
@@ -428,7 +468,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
             </section>
 
             {/* 대표 배지 */}
-            <section className={styles.card}>
+            <section className={`${styles.card} ${styles.badgeCard}`}>
               <div className={styles.cardHead}>
                 <span className={styles.cardTitle}>대표 배지</span>
                 <button className={styles.moreLink} onClick={() => setView('badges')}>전체 보기 ›</button>
@@ -436,30 +476,39 @@ export default function ProfileDesktop({ passport, userId }: Props) {
               {featuredBadges.length > 0 ? (
                 <div className={styles.badgeRow}>
                   {featuredBadges.map((b, i) => (
-                    <div key={i} className={styles.badgeItem}>
+                    <button key={i} className={styles.badgeItem} onClick={() => setView('badges')}>
                       <span className={styles.badgeIcon}>
                         {b.iconUrl ? <img src={b.iconUrl} alt="" /> : <Icon name="colorcollection" size={28} />}
                       </span>
                       <span className={styles.badgeName}>{b.name}</span>
-                    </div>
+                    </button>
                   ))}
                 </div>
               ) : (
                 <div className={styles.empty}>대표 배지를 골라보세요.</div>
               )}
             </section>
+            </div>
+            )}
 
             {/* 계정 메뉴 */}
-            <section className={styles.card}>
+            <section className={`${styles.card} ${styles.accountCard}`}>
               <div className={styles.acctList}>
-                <button className={styles.acctRow} onClick={() => setView('settings')}>
+                <button className={styles.acctRow} onClick={() => router.push('/profile/settings')}>
                   <span className={styles.acctIcon}><AppIcon name="gear" size={17} /></span>
                   <span className={styles.acctLabel}>계정 설정</span>
                   <AppIcon name="chevron-right" size={15} color="var(--muted)" />
                 </button>
-                <button className={styles.acctRow} onClick={() => setView('settings')}>
+                <button className={styles.acctRow} onClick={() => router.push('/profile/settings')}>
                   <span className={styles.acctIcon}><AppIcon name="bell" size={17} /></span>
                   <span className={styles.acctLabel}>알림 설정</span>
+                  <AppIcon name="chevron-right" size={15} color="var(--muted)" />
+                </button>
+                <button className={styles.acctRow} onClick={() => router.push('/profile/settings')}>
+                  <span className={styles.acctIcon}>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2" /><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" /></svg>
+                  </span>
+                  <span className={styles.acctLabel}>공개 범위</span>
                   <AppIcon name="chevron-right" size={15} color="var(--muted)" />
                 </button>
                 {isAdmin && (

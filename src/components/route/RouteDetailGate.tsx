@@ -8,10 +8,10 @@ export default function RouteDetailGate({ route }: { route: any }) {
   const { user, loading } = useAuth()
 
   const isAuthor = !!user && user.id === route.user_id
-  const shared = !!route.is_shared
+  const viewable = !!route.is_shared || !!route.is_official
 
   // 비공개 루트인데 작성자도 아니면 접근 차단
-  if (!shared && !isAuthor) {
+  if (!viewable && !isAuthor) {
     if (loading) return <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
     return (
       <div style={{ padding: '80px 20px', textAlign: 'center', color: 'var(--muted)', maxWidth: 480, margin: '0 auto' }}>

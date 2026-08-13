@@ -1,0 +1,215 @@
+[
+    {
+        "slug":  "eternal-boys-anime",
+        "name":  "영구소년 Eternal Boys",
+        "englishName":  "Eternal Boys",
+        "aliases":  [
+                        "永久少年 Eternal Boys"
+                    ],
+        "description":  "인생의 위기를 맞은 여섯 중년 남성이 아이돌 그룹 영구소년을 결성해 새로운 꿈과 무대에 도전한다.",
+        "genres":  [
+                       "음악",
+                       "코미디",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니",
+                       "영화"
+                   ],
+        "officialUrl":  "https://eternalboys.jp/",
+        "source":  "https://eternalboys.jp/"
+    },
+    {
+        "slug":  "management-of-a-novice-alchemist-anime",
+        "name":  "신참 연금술사의 점포경영",
+        "englishName":  "Management of a Novice Alchemist",
+        "aliases":  [
+                        "新米錬金術師の店舗経営"
+                    ],
+        "description":  "연금술 학교를 졸업한 사라사가 변방의 낡은 가게를 맡아 재료 채집과 마물 퇴치, 점포 경영에 도전한다.",
+        "genres":  [
+                       "판타지",
+                       "일상",
+                       "모험",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://shinmai-renkin.com/",
+        "source":  "https://shinmai-renkin.com/story/"
+    },
+    {
+        "slug":  "sugar-apple-fairy-tale-anime",
+        "name":  "슈거 애플 페어리 테일",
+        "englishName":  "Sugar Apple Fairy Tale",
+        "aliases":  [
+                        "シュガーアップル・フェアリーテイル"
+                    ],
+        "description":  "은설탕사가 되려는 앤이 전사 요정 샬을 호위로 고용해 설탕 과자 품평회로 향하며 서로를 이해한다.",
+        "genres":  [
+                       "판타지",
+                       "로맨스",
+                       "모험",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://sugarapple-anime.com/",
+        "source":  "https://sugarapple-anime.com/story/"
+    },
+    {
+        "slug":  "chillin-in-my-30s-after-getting-fired-anime",
+        "name":  "해고당한 암흑병사(30대)의 슬로우한 세컨드 라이프",
+        "englishName":  "Chillin\u0027 in My 30s After Getting Fired from the Demon King\u0027s Army",
+        "aliases":  [
+                        "解雇された暗黒兵士（30代）のスローなセカンドライフ"
+                    ],
+        "description":  "마왕군에서 해고된 다리엘이 인간 마을에 정착해 자신의 출생과 숨겨진 전투 능력을 알아간다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "코미디",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://ankokuheishi-anime.com/",
+        "source":  "https://ankokuheishi-anime.com/introduction/"
+    },
+    {
+        "slug":  "reborn-to-master-the-blade-anime",
+        "name":  "영웅왕, 극한의 무를 위해 전생하다",
+        "englishName":  "Reborn to Master the Blade: From Hero-King to Extraordinary Squire",
+        "aliases":  [
+                        "英雄王、武を極めるため転生す",
+                        "영웅왕, 극한의 무를 위해 전생하다 ~그리고 세계 최강의 견습기사가 되다♀~"
+                    ],
+        "description":  "영웅왕 잉그리스가 무예를 극한까지 닦기 위해 소녀로 전생해 견습기사의 길을 걷는다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험",
+                       "학원"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://auo-anime.com/",
+        "source":  "https://www.tv-tokyo.co.jp/anime/auo/"
+    },
+    {
+        "slug":  "trails-of-cold-steel-northern-war-anime",
+        "name":  "영웅전설 섬의 궤적 Northern War",
+        "englishName":  "The Legend of Heroes: Trails of Cold Steel – Northern War",
+        "aliases":  [
+                        "The Legend of Heroes 閃の軌跡 Northern War"
+                    ],
+        "description":  "북방엽병 소녀 라비가 조국 노던브리아를 지키기 위해 제국의 영웅을 정찰하는 임무에 나선다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://sen-anime.jp/",
+        "source":  "https://sen-anime.jp/episodes_01.html"
+    },
+    {
+        "slug":  "uniteup-anime",
+        "name":  "유나이트업!",
+        "englishName":  "UniteUp!",
+        "aliases":  [
+                        "UniteUp!"
+                    ],
+        "description":  "노래 영상을 올리던 아키라가 연예기획사에 발탁돼 두 동료와 아이돌 그룹 프로토스타로 데뷔한다.",
+        "genres":  [
+                       "음악",
+                       "드라마",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://uniteup.info/",
+        "source":  "https://uniteup.info/"
+    },
+    {
+        "slug":  "ippon-again-anime",
+        "name":  "한판 더!",
+        "englishName":  "Ippon Again!",
+        "aliases":  [
+                        "もういっぽん！"
+                    ],
+        "description":  "중학교 마지막 시합 뒤 유도를 그만두려던 미치가 친구들과 다시 유도부를 꾸려 전국 대회를 향한다.",
+        "genres":  [
+                       "스포츠",
+                       "학원",
+                       "드라마",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://ipponagain.com/",
+        "source":  "https://ipponagain.com/"
+    },
+    {
+        "slug":  "the-iceblade-sorcerer-shall-rule-the-world-anime",
+        "name":  "빙검의 마술사가 세계를 다스린다",
+        "englishName":  "The Iceblade Sorcerer Shall Rule the World",
+        "aliases":  [
+                        "冰剣の魔術師が世界を統べる"
+                    ],
+        "description":  "전쟁의 상처를 숨긴 최강 마술사 레이가 평민 신분으로 마술 학원에 입학해 친구들과 음모에 맞선다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "학원",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.tbs.co.jp/anime/hyouken/",
+        "source":  "https://www.tbs.co.jp/anime/hyouken/introduction/"
+    },
+    {
+        "slug":  "my-life-as-inukai-sans-dog-anime",
+        "name":  "개가 되었더니 좋아하는 사람이 날 주웠다",
+        "englishName":  "My Life as Inukai-san\u0027s Dog",
+        "aliases":  [
+                        "犬になったら好きな人に拾われた。"
+                    ],
+        "description":  "갑자기 개가 된 소년이 짝사랑하던 이누카이에게 포치타로 길러지며 인간으로 돌아갈 방법을 찾는다.",
+        "genres":  [
+                       "코미디",
+                       "로맨스",
+                       "학원",
+                       "19"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://inuhiro-anime.com/",
+        "source":  "https://inuhiro-anime.com/story/introduction.html"
+    }
+]

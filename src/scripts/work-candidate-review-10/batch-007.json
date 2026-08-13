@@ -1,0 +1,215 @@
+[
+    {
+        "slug":  "my-tiny-senpai-anime",
+        "name":  "우리 회사의 작은 선배 이야기",
+        "englishName":  "My Tiny Senpai",
+        "aliases":  [
+                        "うちの会社の小さい先輩の話"
+                    ],
+        "description":  "신입 사원 시노자키가 작고 다정한 선배 시오리의 세심한 배려에 설레며 가까워지는 사내 연애 이야기다.",
+        "genres":  [
+                       "로맨스",
+                       "코미디",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://chiisaisenpai.com/",
+        "source":  "https://chiisaisenpai.com/"
+    },
+    {
+        "slug":  "the-girl-i-like-forgot-her-glasses-anime",
+        "name":  "좋아하는 애가 안경을 깜빡했다",
+        "englishName":  "The Girl I Like Forgot Her Glasses",
+        "aliases":  [
+                        "好きな子がめがねを忘れた"
+                    ],
+        "description":  "코무라는 자주 안경을 잊어 가까이 다가오는 짝꿍 미에를 도와주며 두근거리는 학교생활을 보낸다.",
+        "genres":  [
+                       "로맨스",
+                       "코미디",
+                       "학원",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://sh-anime.shochiku.co.jp/sukimega/",
+        "source":  "https://sh-anime.shochiku.co.jp/sukimega/"
+    },
+    {
+        "slug":  "am-i-actually-the-strongest-anime",
+        "name":  "사실은 나, 최강이었다?",
+        "englishName":  "Am I Actually the Strongest?",
+        "aliases":  [
+                        "実は俺、最強でした？"
+                    ],
+        "description":  "은둔형 청년이 압도적인 마력을 지닌 왕자로 환생하지만 버려진 뒤 새 가족과 평온한 삶을 꿈꾼다.",
+        "genres":  [
+                       "판타지",
+                       "코미디",
+                       "액션",
+                       "학원"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://jitsuhaoresaikyo-anime.com/",
+        "source":  "https://jitsuhaoresaikyo-anime.com/"
+    },
+    {
+        "slug":  "the-most-heretical-last-boss-queen-anime",
+        "name":  "비극의 원흉이 되는 최강 외도 라스트 보스 여왕은 국민을 위해 헌신합니다",
+        "englishName":  "The Most Heretical Last Boss Queen: From Villainess to Savior",
+        "aliases":  [
+                        "悲劇の元凶となる最強外道ラスボス女王は民の為に尽くします。"
+                    ],
+        "description":  "게임 속 잔혹한 여왕 프라이드로 전생한 소녀가 예정된 비극을 막고 국민을 지키기 위해 힘을 쓴다.",
+        "genres":  [
+                       "판타지",
+                       "로맨스",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://lastame.com/",
+        "source":  "https://lastame.com/"
+    },
+    {
+        "slug":  "the-great-cleric-anime",
+        "name":  "성자무쌍",
+        "englishName":  "The Great Cleric",
+        "aliases":  [
+                        "聖者無双",
+                        "성자무쌍 ~샐러리맨이 이세계에서 살아남기 위해 걷는 길~"
+                    ],
+        "description":  "샐러리맨이 치유사 루시엘로 전생해 혹독한 훈련을 견디며 이세계에서 살아남을 힘을 기른다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "코미디",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.tbs.co.jp/anime/seija/",
+        "source":  "https://www.tbs.co.jp/anime/seija/"
+    },
+    {
+        "slug":  "classroom-for-heroes-anime",
+        "name":  "영웅교실",
+        "englishName":  "Classroom for Heroes",
+        "aliases":  [
+                        "英雄教室"
+                    ],
+        "description":  "마왕을 쓰러뜨리고 힘을 잃은 전 용사 블레이드가 평범한 학생을 꿈꾸며 영웅 학교에 입학한다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "학원",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://eiyukyoushitsu-anime.com/",
+        "source":  "https://eiyukyoushitsu-anime.com/"
+    },
+    {
+        "slug":  "sweet-reincarnation-anime",
+        "name":  "이상한 전생",
+        "englishName":  "Sweet Reincarnation",
+        "aliases":  [
+                        "おかしな転生"
+                    ],
+        "description":  "천재 파티시에가 가난한 영주의 아들 페이스트리로 전생해 과자 왕국을 만들며 영지를 성장시킨다.",
+        "genres":  [
+                       "판타지",
+                       "일상",
+                       "모험",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://okashinatensei-pr.com/",
+        "source":  "https://okashinatensei-pr.com/"
+    },
+    {
+        "slug":  "too-cute-crisis-anime",
+        "name":  "너무 귀여운 크라이시스",
+        "englishName":  "Too Cute Crisis",
+        "aliases":  [
+                        "カワイスギクライシス"
+                    ],
+        "description":  "지구를 조사하러 온 외계인 리자가 고양이의 압도적인 귀여움에 충격받아 행성 멸망 계획을 다시 생각한다.",
+        "genres":  [
+                       "SF",
+                       "코미디",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://kawaisugi.com/",
+        "source":  "https://kawaisugi.com/story/introduction"
+    },
+    {
+        "slug":  "level-1-demon-lord-and-one-room-hero-anime",
+        "name":  "Lv1 마왕과 원룸 용사",
+        "englishName":  "Level 1 Demon Lord and One Room Hero",
+        "aliases":  [
+                        "Lv1魔王とワンルーム勇者"
+                    ],
+        "description":  "어린 모습으로 부활한 마왕이 복수하려 찾아갔다가 몰락해 원룸에 사는 전 용사 맥스와 재회한다.",
+        "genres":  [
+                       "판타지",
+                       "코미디",
+                       "액션",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://lv1room.com/",
+        "source":  "https://lv1room.com/story/01.html"
+    },
+    {
+        "slug":  "the-legendary-hero-is-dead-anime",
+        "name":  "용사가 죽었다!",
+        "englishName":  "The Legendary Hero Is Dead!",
+        "aliases":  [
+                        "勇者が死んだ！"
+                    ],
+        "description":  "농부 토우카의 함정에 용사가 죽자 사령술사가 그의 정신을 용사의 시체에 넣어 마왕군과 싸우게 한다.",
+        "genres":  [
+                       "판타지",
+                       "코미디",
+                       "액션",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://heroisdead.com/",
+        "source":  "https://heroisdead.com/"
+    }
+]

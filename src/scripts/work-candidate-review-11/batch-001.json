@@ -1,0 +1,206 @@
+[
+    {
+        "slug":  "do-it-yourself-anime",
+        "name":  "Do It Yourself!!",
+        "englishName":  "Do It Yourself!!",
+        "aliases":  [
+                        "Do It Yourself!! -どぅー・いっと・ゆあせるふ-",
+                        "두 잇 유어셀프!!"
+                    ],
+        "description":  "느긋한 세루후가 학교 DIY부에 들어가 친구들과 직접 가구와 비밀 아지트를 만들며 성장한다.",
+        "genres":  [
+                       "일상",
+                       "학원",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.diy-anime.com/",
+        "source":  "https://www.diy-anime.com/"
+    },
+    {
+        "slug":  "bibliophile-princess-anime",
+        "name":  "책벌레 공주",
+        "englishName":  "Bibliophile Princess",
+        "aliases":  [
+                        "虫かぶり姫"
+                    ],
+        "description":  "책을 사랑하는 영애 엘리아나가 왕궁 서고를 이용하려 왕자와 명목상 약혼했다가 진정한 사랑을 깨닫는다.",
+        "genres":  [
+                       "로맨스",
+                       "판타지",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://mushikaburihime.com/",
+        "source":  "https://mushikaburihime.com/"
+    },
+    {
+        "slug":  "raven-of-the-inner-palace-anime",
+        "name":  "후궁의 까마귀",
+        "englishName":  "Raven of the Inner Palace",
+        "aliases":  [
+                        "後宮の烏"
+                    ],
+        "description":  "밤 시중을 들지 않는 특별한 비 오비가 황제의 의뢰를 받아 후궁에 얽힌 괴이와 죽은 자의 한을 푼다.",
+        "genres":  [
+                       "판타지",
+                       "추리",
+                       "드라마",
+                       "로맨스"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "애니"
+                   ],
+        "officialUrl":  "https://kokyu-anime.com/",
+        "source":  "https://kokyu-anime.com/"
+    },
+    {
+        "slug":  "beast-tamer-anime",
+        "name":  "용사 파티에서 추방된 비스트 테이머, 최강종의 고양이귀 소녀와 만나다",
+        "englishName":  "Beast Tamer",
+        "aliases":  [
+                        "勇者パーティーを追放されたビーストテイマー、最強種の猫耳少女と出会う"
+                    ],
+        "description":  "용사 파티에서 추방된 레인이 최강종 고양이령족 카나데와 계약하고 새로운 동료들과 모험을 시작한다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://beasttamer.jp/",
+        "source":  "https://beasttamer.jp/"
+    },
+    {
+        "slug":  "reincarnated-as-a-sword-anime",
+        "name":  "전생했더니 검이었습니다",
+        "englishName":  "Reincarnated as a Sword",
+        "aliases":  [
+                        "転生したら剣でした"
+                    ],
+        "description":  "지성을 지닌 검으로 전생한 스승이 노예였던 고양이족 소녀 프란과 만나 그녀의 진화를 돕는다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://tenken-anime.com/s1/",
+        "source":  "https://tenken-anime.com/s1/"
+    },
+    {
+        "slug":  "shinobi-no-ittoki-anime",
+        "name":  "닌자의 잇토키",
+        "englishName":  "Shinobi no Ittoki",
+        "aliases":  [
+                        "忍の一時"
+                    ],
+        "description":  "평범한 고등학생 잇토키가 이가 닌자의 후계자임을 알게 되고 코가의 습격 속에서 닌자 학교에 들어간다.",
+        "genres":  [
+                       "액션",
+                       "학원",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://ninja-ittoki.com/",
+        "source":  "https://ninja-ittoki.com/"
+    },
+    {
+        "slug":  "love-flops-anime",
+        "name":  "연애 플롭스",
+        "englishName":  "Love Flops",
+        "aliases":  [
+                        "恋愛フロップス"
+                    ],
+        "description":  "평범한 학생 아사히가 전학생 다섯 명과 잇달아 운명적인 사건을 겪으며 감춰진 세계의 진실에 다가간다.",
+        "genres":  [
+                       "로맨스",
+                       "코미디",
+                       "학원",
+                       "SF"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://loveflops.com/",
+        "source":  "https://loveflops.com/intro.html"
+    },
+    {
+        "slug":  "more-than-a-married-couple-but-not-lovers-anime",
+        "name":  "부부 이상, 연인 미만.",
+        "englishName":  "More Than a Married Couple, But Not Lovers",
+        "aliases":  [
+                        "夫婦以上、恋人未満。"
+                    ],
+        "description":  "서로 다른 짝을 좋아하는 지로와 아카리가 학교 부부 실습에서 한 조가 되어 진짜 부부처럼 생활한다.",
+        "genres":  [
+                       "로맨스",
+                       "코미디",
+                       "학원",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://fuukoi-anime.com/",
+        "source":  "https://fuukoi-anime.com/story/"
+    },
+    {
+        "slug":  "immoral-guild-anime",
+        "name":  "부덕의 길드",
+        "englishName":  "Immoral Guild",
+        "aliases":  [
+                        "不徳のギルド"
+                    ],
+        "description":  "은퇴하고 싶은 사냥꾼 키클이 엉뚱한 신입 모험가들을 후계자로 키우려다 아찔한 사건에 계속 휘말린다.",
+        "genres":  [
+                       "판타지",
+                       "코미디",
+                       "액션",
+                       "19"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://futoku-no-anime.com/",
+        "source":  "https://futoku-no-anime.com/story/"
+    },
+    {
+        "slug":  "akiba-maid-war-anime",
+        "name":  "아키바 메이드 전쟁",
+        "englishName":  "Akiba Maid War",
+        "aliases":  [
+                        "アキバ冥途戦争"
+                    ],
+        "description":  "메이드를 꿈꾸던 나고미가 아키하바라의 카페에 취직해 점포 간 세력 다툼과 총격전에 휘말린다.",
+        "genres":  [
+                       "액션",
+                       "코미디",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://akibamaidwar.com/",
+        "source":  "https://akibamaidwar.com/"
+    }
+]

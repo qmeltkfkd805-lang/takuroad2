@@ -29,7 +29,7 @@ export async function getReviews(shopId: string): Promise<Review[]> {
   const supabase = createClient()
 
   const { data, error } = await supabase
-    .from('reviews')
+    .from('reviews_visible')
     .select(`
       id, shop_id, user_id,
       stars, content, likes,

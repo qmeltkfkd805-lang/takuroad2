@@ -1,0 +1,213 @@
+[
+    {
+        "slug":  "technoroid-overmind-anime",
+        "name":  "테크노로이드 오버마인드",
+        "englishName":  "Technoroid Overmind",
+        "aliases":  [
+                        "テクノロイド オーバーマインド"
+                    ],
+        "description":  "기온 상승으로 물에 잠긴 미래에서 네 안드로이드가 노래와 춤의 무대 바벨 정상에 도전한다.",
+        "genres":  [
+                       "SF",
+                       "음악",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://techno-roid.com/anime",
+        "source":  "https://www.tv-tokyo.co.jp/anime/techno-roid/story/"
+    },
+    {
+        "slug":  "giant-beasts-of-ars-anime",
+        "name":  "아르스의 거수",
+        "englishName":  "Giant Beasts of Ars",
+        "aliases":  [
+                        "アルスの巨獣"
+                    ],
+        "description":  "거수를 사냥하는 지로가 제국의 실험장에서 탈출한 쿠미와 만나 거대한 음모를 피해 여행한다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://ars-giant.com/",
+        "source":  "https://ars-giant.com/story/ep01/"
+    },
+    {
+        "slug":  "the-ice-guy-and-his-cool-female-colleague-anime",
+        "name":  "빙속성 남자와 쿨한 동료 여자",
+        "englishName":  "The Ice Guy and His Cool Female Colleague",
+        "aliases":  [
+                        "氷属性男子とクールな同僚女子"
+                    ],
+        "description":  "긴장하면 눈보라를 일으키는 설녀의 후예 히무로가 다정한 동료 후유츠키를 좋아하며 가까워진다.",
+        "genres":  [
+                       "로맨스",
+                       "일상",
+                       "코미디",
+                       "판타지"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://icpc-anime.com/",
+        "source":  "https://icpc-anime.com/"
+    },
+    {
+        "slug":  "apparently-disillusioned-adventurers-will-save-the-world-anime",
+        "name":  "인간 불신 모험가들이 세계를 구하는 듯합니다",
+        "englishName":  "Apparently, Disillusioned Adventurers Will Save the World",
+        "aliases":  [
+                        "人間不信の冒険者たちが世界を救うようです"
+                    ],
+        "description":  "믿었던 이들에게 배신당한 네 모험가가 서로를 의심하면서도 파티를 꾸려 던전과 각자의 상처에 맞선다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.ningenfushin-anime.jp/",
+        "source":  "https://www.ningenfushin-anime.jp/story/detail"
+    },
+    {
+        "slug":  "handyman-saitou-in-another-world-anime",
+        "name":  "만능 잡역부 사이토 씨, 이세계에 가다",
+        "englishName":  "Handyman Saitou in Another World",
+        "aliases":  [
+                        "便利屋斎藤さん、異世界に行く"
+                    ],
+        "description":  "이세계로 간 잡역부 사이토가 자물쇠 따기와 수리 기술로 개성 강한 모험가 동료들에게 필요한 존재가 된다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "코미디",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://saitou-anime.com/",
+        "source":  "https://saitou-anime.com/story/"
+    },
+    {
+        "slug":  "farming-life-in-another-world-anime",
+        "name":  "이세계 유유자적 농가",
+        "englishName":  "Farming Life in Another World",
+        "aliases":  [
+                        "異世界のんびり農家"
+                    ],
+        "description":  "병으로 생을 마친 히라쿠가 건강한 몸과 만능 농기구를 받아 이세계 숲에서 농장과 마을을 일군다.",
+        "genres":  [
+                       "판타지",
+                       "일상",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://nonbiri-nouka.com/",
+        "source":  "https://nonbiri-nouka.com/"
+    },
+    {
+        "slug":  "saving-80000-gold-in-another-world-anime",
+        "name":  "노후를 대비해 이세계에서 금화 8만 개를 모읍니다",
+        "englishName":  "Saving 80,000 Gold in Another World for My Retirement",
+        "aliases":  [
+                        "老後に備えて異世界で8万枚の金貨を貯めます"
+                    ],
+        "description":  "두 세계를 오갈 수 있게 된 미츠하가 일본 물건을 이세계에 팔아 노후 자금 금화 8만 개를 모은다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "코미디",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://roukin8-anime.com/",
+        "source":  "https://roukin8-anime.com/"
+    },
+    {
+        "slug":  "malevolent-spirits-mononogatari-anime",
+        "name":  "모노노가타리",
+        "englishName":  "Malevolent Spirits: Mononogatari",
+        "aliases":  [
+                        "もののがたり"
+                    ],
+        "description":  "츠쿠모가미를 증오하는 효마가 그들과 가족처럼 사는 보탄의 집에 머물며 인간과 물건의 인연을 배운다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "드라마",
+                       "로맨스"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://mononogatari-pr.com/",
+        "source":  "https://mononogatari-pr.com/"
+    },
+    {
+        "slug":  "endo-and-kobayashi-live-anime",
+        "name":  "츤데레 악역 영애 리젤로테와 실황의 엔도 군과 해설의 코바야시 양",
+        "englishName":  "Endo and Kobayashi Live! The Latest on Tsundere Villainess Lieselotte",
+        "aliases":  [
+                        "ツンデレ悪役令嬢リーゼロッテと実況の遠藤くんと解説の小林さん",
+                        "츤리제"
+                    ],
+        "description":  "게임을 하던 엔도와 코바야시의 목소리가 왕자에게 전달되자 두 사람은 리젤로테의 파멸을 막으려 한다.",
+        "genres":  [
+                       "판타지",
+                       "로맨스",
+                       "코미디",
+                       "학원"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://tsunlise-pr.com/",
+        "source":  "https://tsunlise-pr.com/"
+    },
+    {
+        "slug":  "the-tale-of-the-outcasts-anime",
+        "name":  "노케모노들의 밤",
+        "englishName":  "The Tale of the Outcasts",
+        "aliases":  [
+                        "ノケモノたちの夜"
+                    ],
+        "description":  "19세기 영국에서 고독한 소녀 위스테리아와 불사의 대악마 마르바스가 함께 있을 곳을 찾아 여행한다.",
+        "genres":  [
+                       "판타지",
+                       "드라마",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://nokemono-anime.com/",
+        "source":  "https://nokemono-anime.com/"
+    }
+]

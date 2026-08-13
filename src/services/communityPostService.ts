@@ -98,7 +98,7 @@ export async function createPost(userId: string, input: NewPost): Promise<string
 export async function getPostsByBoard(board: Board, sort: PostSort = 'latest', userId?: string | null): Promise<CommunityPost[]> {
   const supabase = createClient()
   const { data } = await supabase
-    .from('community_posts')
+    .from('community_posts_visible')   // 차단 작성자 제외 뷰 (카나리)
     .select(SELECT)
     .eq('board', board)
     .eq('status', 'active')
@@ -112,7 +112,7 @@ export async function getPostsByBoard(board: Board, sort: PostSort = 'latest', u
 export async function getWorkPosts(tagId: string, board: Board, sort: PostSort = 'popular', userId?: string | null): Promise<CommunityPost[]> {
   const supabase = createClient()
   const { data } = await supabase
-    .from('community_posts')
+    .from('community_posts_visible')
     .select(SELECT)
     .contains('tag_ids', [tagId])
     .eq('board', board)
@@ -128,7 +128,7 @@ export async function getWorkPosts(tagId: string, board: Board, sort: PostSort =
 export async function getWorkAllPosts(tagId: string, userId?: string | null, limit = 6): Promise<CommunityPost[]> {
   const supabase = createClient()
   const { data } = await supabase
-    .from('community_posts')
+    .from('community_posts_visible')
     .select(SELECT)
     .contains('tag_ids', [tagId])
     .eq('status', 'active')
@@ -145,7 +145,7 @@ export async function getWorkAllPosts(tagId: string, userId?: string | null, lim
 export async function getRepresentativeFanArt(tagId: string, userId?: string | null): Promise<CommunityPost | null> {
   const supabase = createClient()
   const { data } = await supabase
-    .from('community_posts')
+    .from('community_posts_visible')
     .select(SELECT)
     .contains('tag_ids', [tagId])
     .eq('board', 'fanart')
@@ -163,7 +163,7 @@ export async function getRepresentativeFanArt(tagId: string, userId?: string | n
 // ── 단일 조회 ──
 export async function getPost(id: string, userId?: string | null): Promise<CommunityPost | null> {
   const supabase = createClient()
-  const { data } = await supabase.from('community_posts').select(SELECT).eq('id', id).maybeSingle()
+  const { data } = await supabase.from('community_posts_visible').select(SELECT).eq('id', id).maybeSingle()
   if (!data) return null
   const likedSet = await likedSetFor([id], userId)
   return toPost(data, likedSet)
@@ -205,7 +205,7 @@ export async function incrementPostView(postId: string): Promise<void> {
 export async function getComments(postId: string, userId?: string | null): Promise<PostComment[]> {
   const supabase = createClient()
   const { data } = await supabase
-    .from('post_comments')
+    .from('post_comments_visible')
     .select('id, content, created_at, parent_id, like_count, profiles!post_comments_author_id_fkey ( id, nickname, avatar_url )')
     .eq('post_id', postId)
     .eq('status', 'active')
@@ -359,7 +359,7 @@ export async function getPosts(
   board: Board | 'all', sort: PostSort = 'latest', userId?: string | null, opts?: PostQuery,
 ): Promise<CommunityPost[]> {
   const supabase = createClient()
-  let q = supabase.from('community_posts').select(SELECT).eq('status', 'active').eq('visibility', 'public').eq('is_notice', false)
+  let q = supabase.from('community_posts_visible').select(SELECT).eq('status', 'active').eq('visibility', 'public').eq('is_notice', false)
   if (board !== 'all') q = q.eq('board', board)
   if (opts?.mineOnly && userId) q = q.eq('author_id', userId)
   if (opts?.tagId) q = q.contains('tag_ids', [opts.tagId])
@@ -396,7 +396,7 @@ export async function getPosts(
 // 공지 (상단 고정)
 export async function getNotices(board?: Board | 'all'): Promise<CommunityPost[]> {
   const supabase = createClient()
-  let q = supabase.from('community_posts').select(SELECT).eq('status', 'active').eq('visibility', 'public').eq('is_notice', true)
+  let q = supabase.from('community_posts_visible').select(SELECT).eq('status', 'active').eq('visibility', 'public').eq('is_notice', true)
   if (board && board !== 'all') q = q.or(`board.eq.${board},notice_all.eq.true`)
   else q = q.eq('notice_all', true)
   const { data, error } = await q.order('notice_all', { ascending: false }).order('created_at', { ascending: false })
@@ -415,7 +415,7 @@ export async function setNotice(id: string, isNotice: boolean): Promise<boolean>
 export async function getPopularPosts(limit = 5): Promise<CommunityPost[]> {
   const supabase = createClient()
   const { data } = await supabase
-    .from('community_posts').select(SELECT).eq('status', 'active').eq('visibility', 'public').eq('is_notice', false)
+    .from('community_posts_visible').select(SELECT).eq('status', 'active').eq('visibility', 'public').eq('is_notice', false)
     .order('like_count', { ascending: false }).order('created_at', { ascending: false }).limit(limit)
   return (data ?? []).map((r: any) => toPost(r, new Set()))
 }
@@ -426,7 +426,7 @@ export async function getPopularPostsInWindow(days: number, limit: number): Prom
   const supabase = createClient()
   const since = new Date(Date.now() - days * 86400000).toISOString()
   const { data } = await supabase
-    .from('community_posts').select(SELECT)
+    .from('community_posts_visible').select(SELECT)
     .eq('status', 'active').eq('visibility', 'public').eq('is_notice', false)
     .gte('created_at', since)
     .order('like_count', { ascending: false }).limit(200)

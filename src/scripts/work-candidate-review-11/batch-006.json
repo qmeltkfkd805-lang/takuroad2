@@ -1,0 +1,208 @@
+[
+    {
+        "slug":  "miss-kuroitsu-from-the-monster-development-department-anime",
+        "name":  "괴인 개발부의 쿠로이츠 씨",
+        "englishName":  "Miss Kuroitsu from the Monster Development Department",
+        "aliases":  [
+                        "怪人開発部の黒井津さん"
+                    ],
+        "description":  "악의 조직 괴인개발부 연구원 쿠로이츠가 예산과 상사의 변덕에 시달리며 히어로를 쓰러뜨릴 괴인을 만든다.",
+        "genres":  [
+                       "코미디",
+                       "판타지",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://kuroitsusan-anime.com/",
+        "source":  "https://kuroitsusan-anime.com/story/"
+    },
+    {
+        "slug":  "she-professed-herself-pupil-of-the-wise-man-anime",
+        "name":  "현자의 제자를 자칭하는 현자",
+        "englishName":  "She Professed Herself Pupil of the Wise Man",
+        "aliases":  [
+                        "賢者の弟子を名乗る賢者"
+                    ],
+        "description":  "노련한 소환술사 덤블프가 게임과 닮은 세계에서 소녀 미라의 모습으로 깨어나 현자의 제자라 자칭한다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://kendeshi-anime.com/",
+        "source":  "https://kendeshi-anime.com/"
+    },
+    {
+        "slug":  "the-strongest-sage-with-the-weakest-crest-anime",
+        "name":  "실격문장의 최강 현자",
+        "englishName":  "The Strongest Sage with the Weakest Crest",
+        "aliases":  [
+                        "失格紋の最強賢者"
+                    ],
+        "description":  "원하는 문장을 얻으려 전생한 최강 현자 마티아스가 실격 취급받는 힘으로 잘못된 마법 상식을 뒤집는다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "학원"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니",
+                       "게임"
+                   ],
+        "officialUrl":  "https://www.shikkakumon.com/",
+        "source":  "https://www.shikkakumon.com/"
+    },
+    {
+        "slug":  "the-genius-princes-guide-to-raising-a-nation-out-of-debt-anime",
+        "name":  "천재 왕자의 적자국가 재생술",
+        "englishName":  "The Genius Prince\u0027s Guide to Raising a Nation Out of Debt",
+        "aliases":  [
+                        "天才王子の赤字国家再生術"
+                    ],
+        "description":  "약소국 왕자 웨인이 나라를 팔고 은퇴하려 내놓은 계책마다 성공해 오히려 국력이 커지는 소동을 그린다.",
+        "genres":  [
+                       "판타지",
+                       "코미디",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://tensaiouji-anime.com/",
+        "source":  "https://tensaiouji-anime.com/"
+    },
+    {
+        "slug":  "in-the-land-of-leadale-anime",
+        "name":  "리아데일의 대지에서",
+        "englishName":  "In the Land of Leadale",
+        "aliases":  [
+                        "リアデイルの大地にて"
+                    ],
+        "description":  "생명유지장치가 멈춘 케이나가 200년 뒤의 게임 세계에서 하이엘프 케나로 깨어나 새 삶을 시작한다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://leadale.net/",
+        "source":  "https://leadale.net/"
+    },
+    {
+        "slug":  "tribe-nine-anime",
+        "name":  "트라이브 나인",
+        "englishName":  "Tribe Nine",
+        "aliases":  [
+                        "TRIBE NINE",
+                        "トライブナイン"
+                    ],
+        "description":  "네오 도쿄의 청년 부족들이 배트와 공을 든 격투 야구 익스트림 베이스볼로 서로의 긍지를 건 승부를 벌인다.",
+        "genres":  [
+                       "스포츠",
+                       "액션",
+                       "SF"
+                   ],
+        "ipType":  [
+                       "애니",
+                       "게임"
+                   ],
+        "officialUrl":  "https://archive.tribenine.tokyo/anime/",
+        "source":  "https://archive.tribenine.tokyo/anime/"
+    },
+    {
+        "slug":  "akebis-sailor-uniform-anime",
+        "name":  "아케비의 세일러복",
+        "englishName":  "Akebi\u0027s Sailor Uniform",
+        "aliases":  [
+                        "明日ちゃんのセーラー服"
+                    ],
+        "description":  "동경하던 세일러복을 입고 명문 여학교에 입학한 아케비 코미치가 반 친구들과 처음 만나는 학교생활을 즐긴다.",
+        "genres":  [
+                       "학원",
+                       "일상",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://akebi-chan.jp/",
+        "source":  "https://www.aniplex.co.jp/lineup/akebi-chan/"
+    },
+    {
+        "slug":  "futsal-boys-anime",
+        "name":  "풋살 보이즈!!!!!",
+        "englishName":  "Futsal Boys!!!!!",
+        "aliases":  [
+                        "フットサルボーイズ!!!!!"
+                    ],
+        "description":  "U-18 대표 선수에게 매료된 야마토 하루가 고요학원 풋살부에 입부해 새 동료들과 전국 무대에 도전한다.",
+        "genres":  [
+                       "스포츠",
+                       "학원",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://futsalboys.com/anime",
+        "source":  "https://futsalboys.com/anime"
+    },
+    {
+        "slug":  "sabikui-bisco-anime",
+        "name":  "녹을 먹는 비스코",
+        "englishName":  "Sabikui Bisco",
+        "aliases":  [
+                        "錆喰いビスコ"
+                    ],
+        "description":  "모든 것을 녹슬게 하는 바람이 부는 일본에서 비스코와 의사 미로가 녹을 없애는 영약 버섯을 찾아 나선다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://sabikuibisco.jp/",
+        "source":  "https://sabikuibisco.jp/"
+    },
+    {
+        "slug":  "cue-anime",
+        "name":  "CUE!",
+        "englishName":  "CUE!",
+        "aliases":  [
+                        "큐!"
+                    ],
+        "description":  "신생 성우 사무소에 모인 열여섯 명의 신인 성우가 각자의 개성과 고민을 안고 꿈꾸던 무대를 향해 성장한다.",
+        "genres":  [
+                       "드라마",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://cue-animation.jp/",
+        "source":  "https://cue-animation.jp/"
+    }
+]

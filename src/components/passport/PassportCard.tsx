@@ -14,6 +14,7 @@ import { UserAvatar } from '@/components/cosmetic/UserFace'
 import { bgStyle, fxClass } from '@/lib/cosmetics/style'
 import styles from './PassportCard.module.css'
 import FollowButton from '@/components/cosmetic/FollowButton'
+import BlockButton from '@/components/cosmetic/BlockButton'
 
 /* 오타쿠 여권 — 프로필의 얼굴
 
@@ -130,6 +131,7 @@ export default function PassportCard({ passport, isOwner, showFollow, onCustomiz
       </div>
 
       {showFollow && <FollowButton targetUserId={passport.userId} />}
+      {showFollow && <BlockButton targetUserId={passport.userId} />}
 
       {/* 기록 도장 */}
       <div className={styles.stats}>

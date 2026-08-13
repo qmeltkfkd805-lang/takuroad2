@@ -1,0 +1,47 @@
+/* ===== 설정 세부화면 공용 컨트롤 (토글/세그먼트/차단행) ===== */
+
+.sectionDesc { font-size: 13px; color: var(--muted); margin: 2px 4px 14px; line-height: 1.55; }
+.groupTitle { font-size: 12.5px; font-weight: 800; color: var(--muted); margin: 18px 4px 8px; }
+.cardList { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+
+/* 공개범위 행 (라벨 + 세그먼트) */
+.prow { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-top: 1px solid var(--border); }
+.prow:first-child { border-top: none; }
+.pbody { flex: 1; min-width: 0; }
+.plabel { font-size: 14.5px; font-weight: 700; color: var(--text); }
+.pdesc { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+
+.seg { display: inline-flex; background: var(--surface2); border-radius: 9px; padding: 3px; gap: 2px; flex-shrink: 0; }
+.segBtn { border: none; background: none; cursor: pointer; font-family: inherit; font-size: 12.5px; font-weight: 700; color: var(--muted); padding: 6px 11px; border-radius: 7px; white-space: nowrap; }
+.segBtn:disabled { opacity: .5; cursor: default; }
+.segBtnActive { background: var(--surface); color: var(--accent); box-shadow: 0 1px 2px rgba(0, 0, 0, .06); }
+
+/* 토글 행 */
+.trow { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 8px 16px; border-top: 1px solid var(--border); }
+.trow:first-child { border-top: none; }
+
+/* 스위치 */
+.switch { position: relative; width: 44px; height: 26px; border-radius: 9999px; border: none; background: var(--border); cursor: pointer; flex-shrink: 0; transition: background .15s; padding: 0; }
+.switchOn { background: var(--accent); }
+.switch:disabled { opacity: .5; cursor: default; }
+.knob { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 9999px; background: #fff; transition: transform .15s; box-shadow: 0 1px 2px rgba(0, 0, 0, .2); }
+.switchOn .knob { transform: translateX(18px); }
+
+/* 차단 목록 */
+.blockRow { display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 10px 16px; border-top: 1px solid var(--border); }
+.blockRow:first-child { border-top: none; }
+.bAvatar { width: 40px; height: 40px; border-radius: 9999px; object-fit: cover; background: var(--surface2); flex-shrink: 0; }
+.bAvatarPh { width: 40px; height: 40px; border-radius: 9999px; flex-shrink: 0; background: var(--accent); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; }
+.bName { flex: 1; font-size: 14.5px; font-weight: 700; color: var(--text); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.unblockBtn { flex-shrink: 0; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: inherit; font-size: 13px; font-weight: 700; padding: 7px 14px; border-radius: 9px; cursor: pointer; }
+.unblockBtn:disabled { opacity: .5; cursor: default; }
+.unblockBtn:hover:not(:disabled) { background: var(--surface2); }
+
+.empty { text-align: center; color: var(--muted); font-size: 13.5px; padding: 40px 0; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; }
+
+/* 모바일: 세그먼트를 라벨 아래 전폭으로 (PC 레이아웃은 그대로) */
+@media (hover: none) and (pointer: coarse) {
+  .prow { flex-direction: column; align-items: stretch; gap: 10px; }
+  .seg { width: 100%; }
+  .segBtn { flex: 1; text-align: center; }
+}

@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "orient-anime",
+    "name": "오리엔트",
+    "englishName": "Orient",
+    "aliases": ["オリエント"],
+    "description": "귀신이 지배하는 시대, 무사시와 코지로가 무사단을 이루어 귀신을 쓰러뜨리는 꿈을 향해 나아간다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://orient-anime.jp/",
+    "source": "https://orient-anime.jp/story/"
+  },
+  {
+    "slug": "the-yakuzas-guide-to-babysitting-anime",
+    "name": "조직의 보스와 돌보미",
+    "englishName": "The Yakuza's Guide to Babysitting",
+    "aliases": ["組長娘と世話係"],
+    "description": "폭력으로 일을 해결하던 야쿠자 키리시마가 보스의 어린 딸 야에카를 돌보며 다정한 일상을 배워간다.",
+    "genres": ["일상", "코미디", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://kumichomusume.com/",
+    "source": "https://kumichomusume.com/"
+  },
+  {
+    "slug": "lucifer-and-the-biscuit-hammer-anime",
+    "name": "별의 사미다레",
+    "englishName": "Lucifer and the Biscuit Hammer",
+    "aliases": ["惑星のさみだれ"],
+    "description": "평범한 대학생 유히가 도마뱀 기사로 선택되고, 지구를 부수려는 공주 사미다레의 계획에 가담한다.",
+    "genres": ["판타지", "액션", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://hoshinosamidare.jp/",
+    "source": "https://hoshinosamidare.jp/"
+  },
+  {
+    "slug": "when-will-ayumu-make-his-move-anime",
+    "name": "그래도 아유무는 다가온다",
+    "englishName": "When Will Ayumu Make His Move?",
+    "aliases": ["それでも歩は寄せてくる"],
+    "description": "장기 초보 아유무가 선배 우루시에게 반해 장기부에 들어가고, 이긴 뒤 고백하려 승부를 이어간다.",
+    "genres": ["로맨스", "코미디", "학원", "일상"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://soreayu.com/",
+    "source": "https://www.tbs.co.jp/anime/soreayu/"
+  },
+  {
+    "slug": "phantom-of-the-idol-anime",
+    "name": "신 쓰레기 아이돌",
+    "englishName": "Phantom of the Idol",
+    "aliases": ["神クズ☆アイドル"],
+    "description": "의욕 없는 아이돌 니요도가 세상을 떠난 인기 아이돌 아사히의 유령과 손잡고 무대의 정상을 노린다.",
+    "genres": ["음악", "코미디", "판타지"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://kami-kuzu.com/home/",
+    "source": "https://kami-kuzu.com/home/"
+  },
+  {
+    "slug": "teppen-anime",
+    "name": "텟펜!!!!!!!!!!!!!!!",
+    "englishName": "Teppen!!!!!!!!!!!!!!! Laughing 'til You Cry",
+    "aliases": ["てっぺんっ!!!!!!!!!!!!!!!"],
+    "description": "전국에서 모인 다섯 개 여고생 코미디 트리오가 시련을 통과하며 웃음의 정상에 도전한다.",
+    "genres": ["코미디", "학원", "일상"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://teppen-anime.com/",
+    "source": "https://teppen-anime.com/"
+  },
+  {
+    "slug": "the-maid-i-hired-recently-is-mysterious-anime",
+    "name": "최근 고용한 메이드가 수상하다",
+    "englishName": "The Maid I Hired Recently Is Mysterious",
+    "aliases": ["最近雇ったメイドが怪しい"],
+    "description": "소년 유리가 갑자기 찾아온 메이드 리리스의 행동을 의심하고, 솔직한 말로 오히려 그녀를 당황하게 한다.",
+    "genres": ["로맨스", "코미디", "일상"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://maid-ga-ayashii.com/",
+    "source": "https://maid-ga-ayashii.com/"
+  },
+  {
+    "slug": "shoot-goal-to-the-future-anime",
+    "name": "슛! Goal to the Future",
+    "englishName": "Shoot! Goal to the Future",
+    "aliases": ["シュート！Goal to the Future"],
+    "description": "축구를 포기한 츠지 히데토가 전설적인 선수 카미야 아츠시와 만나 다시 카케가와고의 그라운드에 선다.",
+    "genres": ["스포츠", "학원", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://shoot-anime.com/",
+    "source": "https://shoot-anime.com/"
+  },
+  {
+    "slug": "shine-post-anime",
+    "name": "샤인포스트",
+    "englishName": "Shine Post",
+    "aliases": ["シャインポスト"],
+    "description": "성과를 내지 못한 아이돌 유닛 TiNgS가 특별한 능력을 지닌 매니저 나오키와 정상급 아이돌을 꿈꾼다.",
+    "genres": ["음악", "드라마", "일상"],
+    "ipType": ["라이트노벨", "게임", "애니"],
+    "officialUrl": "https://anime.shinepost.jp/",
+    "source": "https://anime.shinepost.jp/"
+  },
+  {
+    "slug": "engage-kiss-anime",
+    "name": "Engage Kiss",
+    "englishName": "Engage Kiss",
+    "aliases": ["인게이지 키스"],
+    "description": "악마 재해가 벌어지는 도시에서 슈가 악마 키사라와 계약해 힘을 빌리는 대신 소중한 기억을 잃어간다.",
+    "genres": ["액션", "판타지", "로맨스", "드라마"],
+    "ipType": ["애니", "게임", "만화"],
+    "officialUrl": "https://engage-kiss.com/",
+    "source": "https://engage-kiss.com/story/"
+  }
+]

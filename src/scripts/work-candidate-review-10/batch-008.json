@@ -1,0 +1,213 @@
+[
+    {
+        "slug":  "magical-destroyers-anime",
+        "name":  "마법소녀 매지컬 디스트로이어즈",
+        "englishName":  "Magical Destroyers",
+        "aliases":  [
+                        "魔法少女マジカルデストロイヤーズ"
+                    ],
+        "description":  "오타쿠 문화가 탄압받는 일본에서 오타쿠 히어로와 세 마법소녀가 자유를 되찾기 위한 혁명을 벌인다.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "SF",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://magical-mad.com/",
+        "source":  "https://magical-mad.com/"
+    },
+    {
+        "slug":  "otaku-elf-anime",
+        "name":  "에도마에 엘프",
+        "englishName":  "Otaku Elf",
+        "aliases":  [
+                        "江戸前エルフ"
+                    ],
+        "description":  "무녀 코이토가 수백 년째 신사에 모셔진 은둔형 오타쿠 엘프 엘다를 돌보며 동네 사람들과 어울린다.",
+        "genres":  [
+                       "일상",
+                       "코미디",
+                       "판타지"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://edomae-elf.com/",
+        "source":  "https://edomae-elf.com/"
+    },
+    {
+        "slug":  "kawagoe-boys-sing-anime",
+        "name":  "카와고에 보이즈 싱",
+        "englishName":  "Kawagoe Boys Sing",
+        "aliases":  [
+                        "川越ボーイズ・シング"
+                    ],
+        "description":  "사람 앞에서 노래하지 못하는 텐시가 괴짜 지휘자에게 이끌려 남성 합창부에서 전국 대회 우승에 도전한다.",
+        "genres":  [
+                       "음악",
+                       "학원",
+                       "드라마",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://boys-sing.com/",
+        "source":  "https://boys-sing.com/story/introduction.html"
+    },
+    {
+        "slug":  "summoned-to-another-world-for-a-second-time-anime",
+        "name":  "이세계 소환은 두 번째입니다",
+        "englishName":  "Summoned to Another World for a Second Time",
+        "aliases":  [
+                        "異世界召喚は二度目です"
+                    ],
+        "description":  "한 번 이세계를 구했던 세츠가 고등학생으로 다시 소환되어 전쟁을 막고 옛 동료들을 만나러 떠난다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "액션",
+                       "로맨스"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://isenido.com/",
+        "source":  "https://isenido.com/story/"
+    },
+    {
+        "slug":  "the-aristocrats-otherworldly-adventure-anime",
+        "name":  "전생귀족의 이세계 모험록",
+        "englishName":  "The Aristocrat\u0027s Otherworldly Adventure",
+        "aliases":  [
+                        "転生貴族の異世界冒険録",
+                        "전생귀족의 이세계 모험록 ~자중할 줄 모르는 신들의 사도~"
+                    ],
+        "description":  "귀족 소년 카인으로 전생한 청년이 신들의 과도한 가호와 능력을 숨기려다 계속 소동에 휘말린다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "코미디",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.tensei-kizoku.jp/",
+        "source":  "https://www.tensei-kizoku.jp/"
+    },
+    {
+        "slug":  "my-one-hit-kill-sister-anime",
+        "name":  "이세계 원턴킬 누나",
+        "englishName":  "My One-Hit Kill Sister",
+        "aliases":  [
+                        "異世界ワンターンキル姉さん",
+                        "이세계 원턴킬 누나 ~누나 동반 이세계 생활 시작했습니다~"
+                    ],
+        "description":  "이세계에 떨어진 아사히가 뒤따라온 최강의 누나 마야에게 도움받으며 약한 능력으로 모험을 이어간다.",
+        "genres":  [
+                       "판타지",
+                       "코미디",
+                       "모험",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "소설",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://onekillsister.com/",
+        "source":  "https://onekillsister.com/"
+    },
+    {
+        "slug":  "i-got-a-cheat-skill-in-another-world-anime",
+        "name":  "이세계에서 치트 능력을 손에 넣은 나는, 현실 세계에서도 무쌍한다",
+        "englishName":  "I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too",
+        "aliases":  [
+                        "異世界でチート能力を手にした俺は、現実世界をも無双する",
+                        "이세레베"
+                    ],
+        "description":  "괴롭힘받던 유야가 이세계로 이어지는 문과 강력한 능력을 얻어 두 세계를 오가며 인생을 바꾼다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "학원",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.iseleve.com/",
+        "source":  "https://www.iseleve.com/"
+    },
+    {
+        "slug":  "rokudos-bad-girls-anime",
+        "name":  "육도의 악녀들",
+        "englishName":  "Rokudo\u0027s Bad Girls",
+        "aliases":  [
+                        "六道の悪女たち"
+                    ],
+        "description":  "괴롭힘받던 로쿠도가 악녀에게만 사랑받는 힘을 얻고 불량 소녀들과 얽히며 강한 마음을 키운다.",
+        "genres":  [
+                       "학원",
+                       "액션",
+                       "코미디",
+                       "로맨스"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.rokudo-akujo.com/",
+        "source":  "https://www.rokudo-akujo.com/"
+    },
+    {
+        "slug":  "opus-colors-anime",
+        "name":  "Opus.COLORs",
+        "englishName":  "Opus.COLORs",
+        "aliases":  [
+                        "오퍼스 컬러즈"
+                    ],
+        "description":  "몰입형 디지털 예술을 배우는 카즈야가 예술 학교에서 멀어진 소꿉친구 히비키와 관계 회복을 시도한다.",
+        "genres":  [
+                       "학원",
+                       "드라마",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://opus-colors.com/",
+        "source":  "https://opus-colors.com/introduction/"
+    },
+    {
+        "slug":  "world-dai-star-anime",
+        "name":  "월드 다이 스타",
+        "englishName":  "World Dai Star",
+        "aliases":  [
+                        "ワールドダイスター"
+                    ],
+        "description":  "배우의 정점 월드 다이 스타를 꿈꾸는 코코나가 극단 시리우스에 들어가 무대 위에서 재능을 펼친다.",
+        "genres":  [
+                       "드라마",
+                       "음악",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://world-dai-star.com/anime",
+        "source":  "https://world-dai-star.com/anime"
+    }
+]

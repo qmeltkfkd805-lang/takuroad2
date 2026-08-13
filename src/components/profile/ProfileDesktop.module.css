@@ -10,7 +10,7 @@
   box-sizing: border-box;
 }
 .dash {
-  max-width: 1160px;
+  max-width: 1040px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -69,21 +69,20 @@
 
 .divider { height: 1px; background: var(--border); margin: 22px 0; }
 
-/* ── 활동 통계 4칸 ── */
+/* ── 활동 통계 4칸 (별도 카드, 아이콘 위·값 아래) ── */
+.statsCard { padding: 16px 10px; }
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); }
 .stat {
-  display: flex; align-items: center; gap: 14px;
-  padding: 4px 6px; justify-content: center;
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  padding: 4px 6px; text-align: center;
+  border: none; background: none; cursor: pointer; font-family: inherit;
   border-left: 1px solid var(--border);
 }
 .stat:first-child { border-left: none; }
-.statIcon {
-  width: 46px; height: 46px; border-radius: 9999px; flex-shrink: 0;
-  display: inline-flex; align-items: center; justify-content: center;
-}
-.statText { display: flex; flex-direction: column; gap: 2px; }
+.statIcon { display: inline-flex; align-items: center; justify-content: center; color: var(--accent); }
+.statText { display: flex; flex-direction: column; gap: 3px; align-items: center; }
 .statLabel { font-size: 12.5px; color: var(--muted); font-weight: 600; }
-.statValue { font-size: 22px; font-weight: 900; color: var(--text); line-height: 1; }
+.statValue { font-size: 20px; font-weight: 900; color: var(--text); line-height: 1; }
 
 /* ── 2열 레이아웃 ── */
 .cols { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 20px; align-items: start; }
@@ -157,7 +156,21 @@
 
 /* ── 대표 배지 ── */
 .badgeRow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.badgeItem { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.badgeItem { display: flex; flex-direction: column; align-items: center; gap: 8px; border: none; background: none; padding: 0; cursor: pointer; font-family: inherit; }
+.collBadgeWrap { display: contents; }
+
+/* ── 모바일: 내 컬렉션 + 대표배지 한 카드 ── */
+.mCollRow { display: flex; align-items: center; gap: 12px; }
+.mColl { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; border: none; background: none; padding: 0; cursor: pointer; font-family: inherit; }
+.mCollThumb, .mCollThumbPh { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: var(--surface2); }
+.mCollThumbPh { display: inline-flex; align-items: center; justify-content: center; color: var(--muted); }
+.mCollName { font-size: 14px; font-weight: 800; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mCollEmpty { flex: 1; font-size: 13px; color: var(--muted); }
+.mBadges { display: flex; gap: 10px; flex-shrink: 0; }
+.mBadge { display: flex; flex-direction: column; align-items: center; gap: 4px; border: none; background: none; padding: 0; cursor: pointer; font-family: inherit; width: 52px; }
+.mBadgeIcon { width: 40px; height: 40px; border-radius: 9999px; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; border: 2px solid var(--accent); background: var(--surface); }
+.mBadgeIcon img { width: 100%; height: 100%; object-fit: cover; }
+.mBadgeName { font-size: 10px; font-weight: 700; color: var(--muted); text-align: center; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .badgeIcon {
   width: 60px; height: 60px; border-radius: 9999px; overflow: hidden;
   display: inline-flex; align-items: center; justify-content: center;
@@ -288,4 +301,42 @@
 /* ── 반응형 (태블릿 이하에서 1열) ── */
 @media (max-width: 1023px) {
   .cols { grid-template-columns: 1fr; }
+}
+
+/* ── 모바일 (≤640px): 시안에 맞춰 압축 + 순서 재배치 ── */
+@media (max-width: 640px) {
+  .wrap { padding: 14px 12px 92px; }
+  .dash { gap: 14px; }
+
+  /* 프로필 카드 압축 */
+  .profileCard { padding: 16px; }
+  .profileMain { gap: 14px; }
+  .name { font-size: 20px; }
+  .titleChip { font-size: 12px; padding: 3px 10px; }
+  .tagline { font-size: 13px; margin-top: 6px; }
+  .followRow { margin-top: 10px; }
+  .expRow { margin-top: 12px; max-width: none; }
+  .editBtn { padding: 8px 12px; font-size: 13px; }
+  .actions .iconBtn { display: none; }   /* 설정은 하단 계정 메뉴/앱 헤더에 있음 */
+  .divider { margin: 16px 0; }
+
+  /* 통계 4칸 — 세로 아이콘/값으로 압축 */
+  .stat { flex-direction: column; gap: 6px; justify-content: flex-start; padding: 2px; }
+  .statIcon { width: 38px; height: 38px; }
+  .statText { align-items: center; text-align: center; }
+  .statValue { font-size: 18px; }
+  .statLabel { font-size: 11.5px; }
+
+  /* 단일 컬럼 + 시안 순서(빠른메뉴 → 컬렉션 → 배지 → 최근활동 → 계정) */
+  .cols { display: flex; flex-direction: column; gap: 14px; }
+  .colLeft, .colRight { display: contents; }
+  .quickCard { order: 1; }
+  .collBadgeMobile { order: 2; }
+  .recentCard { order: 3; }
+  .accountCard { order: 4; }
+
+  .card { padding: 16px; }
+  .cardTitle { font-size: 15px; }
+  .quickGrid { gap: 8px; }
+  .quickItem { padding: 13px 6px; }
 }

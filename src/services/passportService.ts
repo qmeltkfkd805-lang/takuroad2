@@ -243,6 +243,13 @@ export async function getPublicPassport(nickname: string): Promise<OtakuPassport
     .maybeSingle()
 
   if (!profile) return null
+
+  // 차단 관계면 비공개와 '동일한' 응답(null)으로 접근 차단.
+  // is_blocked_between 은 대칭 boolean → 차단한 쪽/당한 쪽 응답이 같아 방향이 노출되지 않음.
+  // (비로그인은 auth.uid() null → false → 공개 프로필 정상 조회)
+  const { data: blocked } = await supabase.rpc('is_blocked_between', { target: profile.id })
+  if (blocked === true) return null
+
   if (!profile.is_profile_public) return null
 
   return getMyPassport(profile.id)

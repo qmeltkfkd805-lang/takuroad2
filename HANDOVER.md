@@ -1,7 +1,35 @@
 # 타쿠로드 인수인계 (HANDOVER)
 
 > 새 채팅에서 이 파일을 읽고 **바로 이어서** 작업하기 위한 문서.
-> 마지막 갱신: 2026-08 / 진행자: 사용자(박지현) + Claude
+> 마지막 갱신: 2026-08-13 / 진행자: 사용자(박지현) + Claude
+
+---
+
+## ⚡ 최근 (2026-08-13) — 마이페이지/설정 Phase 2 + 보안 패치
+
+### 🔒 보안 (적용·검증 완료)
+- **profiles 권한상승(자가승격) 취약점 폐쇄.** 발견: `authenticated` 가 profiles 전 컬럼 UPDATE 권한 + UPDATE 정책 `profiles_update_own` 의 WITH CHECK 부재 → 일반 사용자가 REST(`PATCH /rest/v1/profiles?id=eq.<본인>`)로 자기 `role='admin'` **자가승격 가능**했음(admin API 전체 개방으로 이어짐).
+  - 조치: profiles **테이블단위 UPDATE 를 authenticated·anon 에서 REVOKE** → 앱이 실제 쓰는 **7컬럼만 컬럼단위 GRANT**(`nickname, avatar_url, bio, equipped, is_profile_public, selected_title_id, selected_title_type`). `role·status·suspended_until·is_beta·admin_note·id` 등은 직접 UPDATE 불가. `service_role`(관리자 API) 무손상.
+  - 검증: `has_column_privilege` 매트릭스 통과(민감컬럼 false / 허용컬럼 true), 혼합 payload 는 문 전체 거부.
+  - ⚠️ **앞으로 profiles 에 "클라이언트가 직접 저장할" 컬럼을 추가하면 반드시 `grant update(<col>) on public.profiles to authenticated` 를 함께** 실행할 것(안 하면 저장이 조용히 실패). 민감 컬럼은 grant 금지(서버 RPC/서비스롤로만).
+- **`/api/admin/*` 게이트 감사: 이상 없음.** 8개 라우트 전부 `getUser()` 서버검증 + DB `profiles.role` 기준 admin 판정. `SUPABASE_SERVICE_ROLE_KEY` 서버 라우트에서만 사용(클라 번들·`.env` 추적·하드코딩 없음).
+- **`/api/admin/shop-field` 하드닝(적용됨).** 변경 되돌리기(rollback) 전용. 테이블·필드 화이트리스트 + 필드별 타입/enum/URL(http·https만)/hours 스키마/길이 검증. 허용: shops 8필드(name,description,addr,hours,parking,parking_note,shop_link,floor_info) + shop_products.availability(enum 6: unknown/not_sold/sold_out/few/normal/many). 그 외 field·`shop_events`·잘못된 값은 400. (빌드·스모크 통과)
+- 선택 심층방어(미적용): auth 쿠키 `Secure` 확인, admin 라우트 공통 Origin 체크.
+
+### 마이페이지/설정 Phase 2 (진행중)
+- 저장구조: profiles JSONB 3개(`privacy_settings`/`notification_settings`/`app_settings`) + 별도 `user_blocks` 테이블.
+- **STEP A(적용됨):** JSONB 3컬럼 추가, `user_blocks`(PK blocker+blocked, 자기차단 방지 CHECK) + RLS(본인 blocker 만 select/insert/delete) + `user_blocks_blocked_idx`, `grant update(app_settings) to authenticated`. privacy/notification 은 직접 UPDATE 불가 → RPC 전용.
+- **STEP B(적용됨):** `update_privacy`/`update_notif`/`set_marketing_consent` SECURITY DEFINER RPC(search_path 고정, auth.uid() 방어, 키·enum·타입·크기 검증, PUBLIC/anon EXECUTE 회수, 마케팅 시각 서버 now()). 런타임 검증 통과.
+- **서비스·화면(적용됨, 빌드 통과):** `privacyService`/`notificationPrefService`/`blockService`/`appSettingsService`(읽고-병합, 쓰기는 RPC 또는 직접UPDATE) + 설정 세부화면 3종 `/profile/settings/{privacy,notifications,blocked}` (공용 `SettingsSubShell` + `settingsControls.module.css`) + 설정 홈 "개인정보·알림" 메뉴 연결.
+- **차단(user_blocks) 반영 — 적용·검증 완료(양방향 동작 확인):**
+  - DB 코어: `are_blocked(a,b)`·`is_blocked_between(target)`·`blocked_user_ids()` 검사함수, `block_user`/`unblock_user`(트랜잭션 RPC — 차단 시 양방향 팔로우 삭제, 해제 시 복원 안 함), `prevent_follow_if_blocked` 트리거(팔로우 원천 차단, 직접 INSERT/REST 모두 방어), `user_blocks` 직접 insert/delete GRANT 회수(RPC 전용, select만 유지).
+  - 목록 숨김: `community_posts_visible`/`post_comments_visible`/`review_comments_visible`/`reviews_visible` 뷰(security_invoker, 작성자 차단쌍 제외). 서비스가 원본 대신 이 뷰 사용(관리자·집계·내 글·쓰기는 원본 유지). 평점 집계(shops.rating_avg)는 원본 기준 유지.
+  - 공유 루트: `app/route/[token]/page.tsx`(서버)에서 `is_shared`/`is_official`/본인만 접근 허용(비공개·공유해제 완전 차단=버그수정), 차단쌍이면 작성자를 **서버에서 제거**('사용자의 루트'). ⚠️ `get_shared_route` RPC는 만들었으나 서버 게이트로 대체돼 **미사용**(drop 가능).
+  - 알림: 사용자 행동 알림 트리거 6개(`notify_followers_on_post/route`·`notify_review_comment`·`notify_route_saved`·`notify_shop_owner_comment/review`)에 차단쌍 수신 제외. 시스템 알림 5개·과거 알림은 미변경.
+  - 진입점: 공개 프로필(PassportCard)의 팔로우 아래 **"차단하기"** 버튼(`BlockButton`), 해제는 설정>차단관리. `getPublicPassport`는 차단 시 null(비공개와 동일 응답, 방향 비노출).
+- **남은 후속(별도 단계·미적용):** ① **커뮤니티 글에서 작성자 차단 메뉴**(글 상세 작성자/신고 메뉴 옆). ② **actor_id 알림 하드닝** — notifications에 actor_id 추가해 과거 알림도 양방향 필터(현재는 미래 알림만 차단, 과거 유지). ③ **프로필 딥-RLS 하드닝** — profiles 공개 SELECT 정책 4개 정리 + 공개컬럼 뷰/RPC(role·status·admin_note 직접노출 차단). 현재 차단은 앱 게이트 수준이라 REST 직접조회는 여전히 가능(문서화됨). ④ **privacy_settings 실제 조회 반영**(팔로우목록/활동/방문샵/완주루트/관심작품/컬렉션 — 저장·화면은 됐고 조회 적용만 남음). ⑤ app_settings(테마/지역) UI. ⑥ 프로필 편집 전용 화면(결정 5-A). ⑦ 선택 심층방어: auth 쿠키 Secure·admin Origin 체크.
+- `manager` 역할: 현재 API 층에서 권한 없음(모든 admin 라우트가 `role==='admin'` 만 통과) — 취약점 아님, 향후 세분화 시 게이트 확장.
+- 작업 원칙: **DB 변경은 SQL/RLS 를 먼저 보여주고 승인 후 사용자가 Supabase에서 실행.** 관련 SQL 파일은 세션 산출물로 전달됨.
 
 ---
 

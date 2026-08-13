@@ -27,7 +27,7 @@ function toComment(raw: any): ReviewComment {
 export async function getComments(reviewId: string): Promise<ReviewComment[]> {
   const supabase = createClient()
   const { data, error } = await supabase
-    .from('review_comments')
+    .from('review_comments_visible')
     .select('id, review_id, user_id, content, created_at, profiles ( id, nickname, avatar_url )')
     .eq('review_id', reviewId)
     .eq('is_deleted', false)

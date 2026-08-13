@@ -1,0 +1,208 @@
+[
+    {
+        "slug":  "the-masterful-cat-is-depressed-again-today-anime",
+        "name":  "야무진 고양이는 오늘도 우울",
+        "englishName":  "The Masterful Cat Is Depressed Again Today",
+        "aliases":  [
+                        "デキる猫は今日も憂鬱"
+                    ],
+        "description":  "생활 능력이 부족한 회사원 사쿠를 거대한 검은 고양이 유키치가 요리와 집안일로 살뜰히 돌본다.",
+        "genres":  [
+                       "일상",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://dekineko-anime.com/",
+        "source":  "https://dekineko-anime.com/introduction/"
+    },
+    {
+        "slug":  "helck-anime",
+        "name":  "헬크",
+        "englishName":  "Helck",
+        "aliases":  [
+
+                    ],
+        "description":  "새 마왕을 뽑는 대회에 인간 용사 헬크가 참가하자 사천왕 바밀리오는 그의 진짜 목적을 의심한다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.helck-anime.com/",
+        "source":  "https://www.helck-anime.com/"
+    },
+    {
+        "slug":  "liar-liar-anime",
+        "name":  "라이어 라이어",
+        "englishName":  "Liar, Liar",
+        "aliases":  [
+                        "ライアー・ライアー"
+                    ],
+        "description":  "학생들이 게임으로 서열을 정하는 학원섬에서 히로토가 거짓말과 속임수로 최강의 자리를 지킨다.",
+        "genres":  [
+                       "학원",
+                       "로맨스",
+                       "코미디",
+                       "추리"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "애니"
+                   ],
+        "officialUrl":  "https://liar-liar-anime.com/",
+        "source":  "https://liar-liar-anime.com/introduction"
+    },
+    {
+        "slug":  "saint-cecilia-and-pastor-lawrence-anime",
+        "name":  "백성녀와 흑목사",
+        "englishName":  "Saint Cecilia and Pastor Lawrence",
+        "aliases":  [
+                        "白聖女と黒牧師"
+                    ],
+        "description":  "평소엔 늘어지는 성녀 세실리아가 둔감하고 과보호하는 목사 로렌스와 교회에서 다정한 일상을 보낸다.",
+        "genres":  [
+                       "로맨스",
+                       "코미디",
+                       "일상",
+                       "판타지"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://shiroseijyo-anime.com/",
+        "source":  "https://shiroseijyo-anime.com/"
+    },
+    {
+        "slug":  "the-dreaming-boy-is-a-realist-anime",
+        "name":  "꿈꾸는 남자는 현실주의자",
+        "englishName":  "The Dreaming Boy Is a Realist",
+        "aliases":  [
+                        "夢見る男子は現実主義者"
+                    ],
+        "description":  "아이카를 열렬히 따라다니던 와타루가 갑자기 거리를 두면서 두 사람의 착각과 엇갈림이 시작된다.",
+        "genres":  [
+                       "로맨스",
+                       "학원",
+                       "코미디",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "애니"
+                   ],
+        "officialUrl":  "https://yumemirudanshi.com/",
+        "source":  "https://yumemirudanshi.com/"
+    },
+    {
+        "slug":  "reborn-as-a-vending-machine-anime",
+        "name":  "자동판매기로 다시 태어난 나는 미궁을 방랑한다",
+        "englishName":  "Reborn as a Vending Machine, I Now Wander the Dungeon",
+        "aliases":  [
+                        "自動販売機に生まれ変わった俺は迷宮を彷徨う"
+                    ],
+        "description":  "자판기 마니아가 던전의 자판기 핫콘으로 환생해 괴력 소녀 랏미스와 이동하며 사람들을 돕는다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "코미디",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "애니"
+                   ],
+        "officialUrl":  "https://jihanki-anime.com/",
+        "source":  "https://jihanki-anime.com/1st/"
+    },
+    {
+        "slug":  "tenpuru-anime",
+        "name":  "템플",
+        "englishName":  "TenPuru: No One Can Live on Loneliness",
+        "aliases":  [
+                        "てんぷる"
+                    ],
+        "description":  "여자를 멀리하려 절에 들어간 아케미츠가 미녀들만 사는 비구니 절에서 수행과 공동생활을 시작한다.",
+        "genres":  [
+                       "코미디",
+                       "로맨스",
+                       "일상",
+                       "19"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://temple-anime.com/",
+        "source":  "https://temple-anime.com/"
+    },
+    {
+        "slug":  "my-unique-skill-makes-me-op-even-at-level-1-anime",
+        "name":  "레벨 1이지만 유니크 스킬로 최강입니다",
+        "englishName":  "My Unique Skill Makes Me OP Even at Level 1",
+        "aliases":  [
+                        "レベル1だけどユニークスキルで最強です"
+                    ],
+        "description":  "이세계 던전에 떨어진 료타가 레벨은 1로 고정됐지만 모든 아이템 드롭 능력이 최고임을 알게 된다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "액션",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "애니"
+                   ],
+        "officialUrl":  "https://level1-anime.com/",
+        "source":  "https://level1-anime.com/"
+    },
+    {
+        "slug":  "reign-of-the-seven-spellblades-anime",
+        "name":  "일곱 개의 마검이 지배한다",
+        "englishName":  "Reign of the Seven Spellblades",
+        "aliases":  [
+                        "七つの魔剣が支配する"
+                    ],
+        "description":  "올리버가 학생마저 삼키는 킴벌리 마법학교에 입학해 동료들과 위험한 비밀과 복수에 다가간다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "학원",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "애니"
+                   ],
+        "officialUrl":  "https://nanatsuma-pr.com/",
+        "source":  "https://nanatsuma-pr.com/"
+    },
+    {
+        "slug":  "ayaka-anime",
+        "name":  "AYAKA -아야카-",
+        "englishName":  "AYAKA",
+        "aliases":  [
+                        "AYAKA ‐あやか‐"
+                    ],
+        "description":  "고아로 자란 유키토가 아버지의 제자를 따라 고향 아야카 섬으로 돌아가 용과 미타마의 비밀을 마주한다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://ayaka-project.com/",
+        "source":  "https://ayaka-project.com/"
+    }
+]

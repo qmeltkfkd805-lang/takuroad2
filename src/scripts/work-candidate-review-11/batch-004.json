@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "harem-in-the-labyrinth-of-another-world-anime",
+    "name": "이세계 미궁에서 하렘을",
+    "englishName": "Harem in the Labyrinth of Another World",
+    "aliases": ["異世界迷宮でハーレムを"],
+    "description": "수상한 게임을 통해 이세계에 도착한 미치오가 능력치를 재설정하는 힘으로 미궁을 공략하며 살아간다.",
+    "genres": ["판타지", "모험", "액션", "19"],
+    "ipType": ["라이트노벨", "만화", "애니"],
+    "officialUrl": "https://isekai-harem.com/",
+    "source": "https://isekai-harem.com/"
+  },
+  {
+    "slug": "my-stepmoms-daughter-is-my-ex-anime",
+    "name": "새 엄마가 데려온 딸이 전 여친이었다",
+    "englishName": "My Stepmom's Daughter Is My Ex",
+    "aliases": ["継母の連れ子が元カノだった"],
+    "description": "헤어진 미즈토와 유메가 부모의 재혼으로 한집에 사는 남매가 되어 과거의 감정과 다시 마주한다.",
+    "genres": ["로맨스", "코미디", "학원"],
+    "ipType": ["라이트노벨", "만화", "애니"],
+    "officialUrl": "https://tsurekano-anime.com/",
+    "source": "https://tsurekano-anime.com/"
+  },
+  {
+    "slug": "musashino-anime",
+    "name": "무사시노!",
+    "englishName": "Musashino!",
+    "aliases": ["むさしの！"],
+    "description": "사이타마의 여러 도시를 대표하는 여고생들이 지역의 명예를 걸고 다양한 승부와 소동을 벌인다.",
+    "genres": ["일상", "코미디", "학원"],
+    "ipType": ["애니", "만화"],
+    "officialUrl": "https://www.musasi-no.com/",
+    "source": "https://www.musasi-no.com/"
+  },
+  {
+    "slug": "hanabi-chan-is-often-late-anime",
+    "name": "하나비 양은 늑장쟁이",
+    "englishName": "Hanabi-chan Is Often Late",
+    "aliases": ["ハナビちゃんは遅れがち"],
+    "description": "파치슬롯 기계에서 소녀로 변한 하나비와 동료들이 폐점 위기의 가게를 되살리려 좌충우돌한다.",
+    "genres": ["코미디", "일상"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://hanabichan.com/",
+    "source": "https://hanabichan.com/"
+  },
+  {
+    "slug": "nights-with-a-cat-anime",
+    "name": "밤은 고양이와 함께",
+    "englishName": "Nights with a Cat",
+    "aliases": ["夜は猫といっしょ"],
+    "description": "고양이를 길러본 적 없는 후타가 여동생과 함께 온 고양이 큐르가의 엉뚱하고 사랑스러운 행동을 지켜본다.",
+    "genres": ["일상", "코미디"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://yoruneko-pr.com/",
+    "source": "https://yoruneko-pr.com/"
+  },
+  {
+    "slug": "chimimo-anime",
+    "name": "치미모",
+    "englishName": "Chimimo",
+    "aliases": ["ちみも"],
+    "description": "세 자매의 집에 지옥 씨와 열두 마리 치미모가 얹혀살며 인간계를 지옥으로 만들려다 일상에 녹아든다.",
+    "genres": ["코미디", "일상", "판타지"],
+    "ipType": ["애니"],
+    "officialUrl": "https://sh-anime.shochiku.co.jp/chimimo/",
+    "source": "https://sh-anime.shochiku.co.jp/chimimo/story.html"
+  },
+  {
+    "slug": "fuuto-pi-anime",
+    "name": "후토탐정",
+    "englishName": "Fuuto PI",
+    "aliases": ["風都探偵"],
+    "description": "탐정 쇼타로와 필립이 수수께끼의 여성 토키메와 만나 바람의 도시 후토에서 벌어지는 괴사건을 해결한다.",
+    "genres": ["액션", "추리", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://www.kamen-rider-official.com/fuuto/",
+    "source": "https://www.kamen-rider-official.com/fuuto/"
+  },
+  {
+    "slug": "utawarerumono-mask-of-truth-anime",
+    "name": "칭송받는 자: 두 명의 백황",
+    "englishName": "Utawarerumono: Mask of Truth",
+    "aliases": ["うたわれるもの 二人の白皇"],
+    "description": "오슈토르의 이름과 가면을 이어받은 하쿠가 동료들을 지키고 야마토의 내란을 끝내기 위해 싸운다.",
+    "genres": ["판타지", "액션", "드라마"],
+    "ipType": ["게임", "애니"],
+    "officialUrl": "https://utawarerumono.jp/",
+    "source": "https://utawarerumono.jp/"
+  },
+  {
+    "slug": "luminous-witches-anime",
+    "name": "연맹공군 항공마법음악대 루미너스 위치스",
+    "englishName": "Luminous Witches",
+    "aliases": ["連盟空軍航空魔法音楽隊 ルミナスウィッチーズ"],
+    "description": "전투 대신 노래와 음악으로 사람들의 미소를 지키는 항공마법음악대 소녀들이 세계 각지를 순회한다.",
+    "genres": ["판타지", "음악", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.w-witch.jp/luminous/",
+    "source": "https://www.w-witch.jp/luminous/"
+  },
+  {
+    "slug": "caressing-my-hibernating-bear-anime",
+    "name": "숲의 곰 씨, 동면 중.",
+    "englishName": "Caressing My Hibernating Bear",
+    "aliases": ["森のくまさん、冬眠中。"],
+    "description": "곰 노와가 어린 시절 거둔 강아지 아이리와 재회한 뒤 서로를 향한 연심을 확인한다.",
+    "genres": ["BL", "로맨스", "19"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://morikuma.af-original.com/",
+    "source": "https://morikuma.af-original.com/"
+  }
+]

@@ -1,0 +1,200 @@
+[
+    {
+        "slug":  "visual-prison-anime",
+        "name":  "비주얼 프리즌",
+        "englishName":  "Visual Prison",
+        "aliases":  [
+                        "ヴィジュアルプリズン"
+                    ],
+        "description":  "외로운 소년 앙주는 뱀파이어 음악가들의 축제 비주얼 프리즌을 목격하고 노래의 세계에 뛰어든다.",
+        "genres":  [
+                       "음악",
+                       "판타지",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://visualprison.com/",
+        "source":  "https://visualprison.com/"
+    },
+    {
+        "slug":  "puraore-pride-of-orange-anime",
+        "name":  "프라오레! ~PRIDE OF ORANGE~",
+        "englishName":  "PuraOre! Pride of Orange",
+        "aliases":  [
+                        "プラオレ！～PRIDE OF ORANGE～",
+                        "프라오레"
+                    ],
+        "description":  "아이스하키 체험 교실에 참가한 아이카와 친구들이 드림 몽키즈에 합류해 함께 성장한다.",
+        "genres":  [
+                       "스포츠",
+                       "드라마",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://puraore.com/",
+        "source":  "https://puraore.com/"
+    },
+    {
+        "slug":  "onipan-anime",
+        "name":  "오니판!",
+        "englishName":  "Onipan!",
+        "aliases":  [
+                        "おにぱん！"
+                    ],
+        "description":  "오니의 이미지를 개선하려 도쿄로 온 세 소녀가 신비한 오니 팬티의 힘으로 학교생활과 임무에 도전한다.",
+        "genres":  [
+                       "코미디",
+                       "판타지",
+                       "학원"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://onipan.com/",
+        "source":  "https://onipan.com/"
+    },
+    {
+        "slug":  "build-divide-code-black-anime",
+        "name":  "빌디바이드 -#000000- 코드 블랙",
+        "englishName":  "Build-Divide -#000000- Code Black",
+        "aliases":  [
+                        "ビルディバイド -#000000- コードブラック",
+                        "빌디바이드"
+                    ],
+        "description":  "모든 것이 카드 배틀로 결정되는 신교토에서 테루토는 왕에게 도전하고 소원을 이루려 한다.",
+        "genres":  [
+                       "액션",
+                       "판타지"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://anime.build-divide.com/",
+        "source":  "https://anime.build-divide.com/"
+    },
+    {
+        "slug":  "insect-land-anime",
+        "name":  "인섹트 랜드",
+        "englishName":  "Insect Land",
+        "aliases":  [
+                        "インセクトランド"
+                    ],
+        "description":  "작은 곤충들이 사는 숲에서 아담과 친구들이 자연을 배우고 서로 도우며 날마다 새로운 경험을 한다.",
+        "genres":  [
+                       "일상",
+                       "판타지",
+                       "가족"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://insect-land.com/anime/",
+        "source":  "https://insect-land.com/anime/"
+    },
+    {
+        "slug":  "waccha-primagi-anime",
+        "name":  "왓챠 프리마지!",
+        "englishName":  "Waccha PriMagi!",
+        "aliases":  [
+                        "ワッチャプリマジ！",
+                        "프리마지"
+                    ],
+        "description":  "마법과 노래, 춤이 어우러진 프리마지를 동경하던 마츠리는 마법사 먀무와 짝을 이뤄 무대에 선다.",
+        "genres":  [
+                       "음악",
+                       "마법소녀",
+                       "아이돌"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://primagi.jp/",
+        "source":  "https://primagi.jp/"
+    },
+    {
+        "slug":  "can-i-make-your-ears-happy-in-180-seconds-anime",
+        "name":  "180초로 네 귀를 행복하게 해줄 수 있을까?",
+        "englishName":  "Can I Make Your Ears Happy in 180 Seconds?",
+        "aliases":  [
+                        "180秒で君の耳を幸せにできるか？",
+                        "180초 ASMR"
+                    ],
+        "description":  "게코가 소꿉친구의 관심을 끌기 위해 바이노럴 마이크로 다양한 ASMR 녹음에 도전한다.",
+        "genres":  [
+                       "일상"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://180-kimimimi.jp/",
+        "source":  "https://180-kimimimi.jp/"
+    },
+    {
+        "slug":  "deji-meets-girl-anime",
+        "name":  "데지 미츠 걸",
+        "englishName":  "Deji Meets Girl",
+        "aliases":  [
+                        "でーじミーツガール"
+                    ],
+        "description":  "오키나와 호텔에서 일하는 마이세는 도쿄에서 온 이치로를 만나 기묘한 여름 사건들을 겪는다.",
+        "genres":  [
+                       "판타지",
+                       "일상",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://dejimeetsgirl.okinawa/",
+        "source":  "https://dejimeetsgirl.okinawa/"
+    },
+    {
+        "slug":  "ganbare-douki-chan-anime",
+        "name":  "힘내라 동기짱",
+        "englishName":  "Ganbare Douki-chan",
+        "aliases":  [
+                        "がんばれ同期ちゃん",
+                        "동기짱"
+                    ],
+        "description":  "회사 동료를 짝사랑하는 동기짱이 적극적인 후배와 선배 사이에서 마음을 전하려 애쓴다.",
+        "genres":  [
+                       "로맨스",
+                       "코미디",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://doukichan.com/",
+        "source":  "https://doukichan.com/"
+    },
+    {
+        "slug":  "tawawa-on-monday-two-anime",
+        "name":  "월요일의 타와와 2",
+        "englishName":  "Tawawa on Monday 2",
+        "aliases":  [
+                        "月曜日のたわわ2",
+                        "타와와 2"
+                    ],
+        "description":  "월요일마다 만나는 아이와 회사원 등 여러 인물의 관계를 짧은 일상 에피소드로 그린다.",
+        "genres":  [
+                       "일상",
+                       "로맨스",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://tawawa2-anime.com/",
+        "source":  "https://tawawa2-anime.com/"
+    }
+]

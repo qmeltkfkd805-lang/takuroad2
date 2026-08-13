@@ -1,0 +1,204 @@
+[
+    {
+        "slug":  "tokyo-24th-ward-anime",
+        "name":  "도쿄 24구",
+        "englishName":  "Tokyo 24th Ward",
+        "aliases":  [
+                        "東京24区"
+                    ],
+        "description":  "인공섬 24구에서 자란 세 친구가 죽은 동료에게서 걸려 온 전화로 미래의 선택을 강요받고 도시를 지키려 한다.",
+        "genres":  [
+                       "SF",
+                       "드라마",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://tokyo24project.com/",
+        "source":  "https://tokyo24project.com/"
+    },
+    {
+        "slug":  "requiem-of-the-rose-king-anime",
+        "name":  "장미왕의 장례 행렬",
+        "englishName":  "Requiem of the Rose King",
+        "aliases":  [
+                        "薔薇王の葬列"
+                    ],
+        "description":  "장미전쟁 시대 잉글랜드에서 요크가의 리처드가 왕위를 둘러싼 음모와 자신의 운명에 휘말린다.",
+        "genres":  [
+                       "드라마",
+                       "액션",
+                       "판타지"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://baraou-anime.com/",
+        "source":  "https://baraou-anime.com/story/"
+    },
+    {
+        "slug":  "irina-the-vampire-cosmonaut-anime",
+        "name":  "달과 라이카와 흡혈공주",
+        "englishName":  "Irina: The Vampire Cosmonaut",
+        "aliases":  [
+                        "月とライカと吸血姫"
+                    ],
+        "description":  "우주 경쟁 시대, 후보생 레프가 인간보다 먼저 우주로 보내질 흡혈귀 소녀 이리나의 훈련을 맡는다.",
+        "genres":  [
+                       "SF",
+                       "로맨스",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://tsuki-laika-nosferatu.com/",
+        "source":  "https://tsuki-laika-nosferatu.com/"
+    },
+    {
+        "slug":  "taisho-otome-fairy-tale-anime",
+        "name":  "다이쇼 소녀 전래동화",
+        "englishName":  "Taisho Otome Fairy Tale",
+        "aliases":  [
+                        "大正オトメ御伽話",
+                        "大正処女御伽話"
+                    ],
+        "description":  "사고로 모든 것을 잃고 시골에 버려진 타마히코가 아내로 보내진 유즈키의 다정함에 마음을 연다.",
+        "genres":  [
+                       "로맨스",
+                       "드라마",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니",
+                       "소설"
+                   ],
+        "officialUrl":  "https://taisho-otome.com/",
+        "source":  "https://taisho-otome.com/"
+    },
+    {
+        "slug":  "selection-project-anime",
+        "name":  "SELECTION PROJECT",
+        "englishName":  "Selection Project",
+        "aliases":  [
+                        "셀렉션 프로젝트"
+                    ],
+        "description":  "아이돌을 꿈꾸는 아홉 소녀가 전국 오디션 프로그램에 참가해 시청자의 응원을 얻고 데뷔하기 위해 경쟁한다.",
+        "genres":  [
+                       "음악",
+                       "드라마",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "애니",
+                       "만화"
+                   ],
+        "officialUrl":  "https://pjselection.com/",
+        "source":  "https://pjselection.com/"
+    },
+    {
+        "slug":  "kimi-to-fit-boxing-anime",
+        "name":  "너와 피트 복싱",
+        "englishName":  "Kimi to Fit Boxing",
+        "aliases":  [
+                        "キミとフィットボクシング"
+                    ],
+        "description":  "피트 복싱 게임 속 인스트럭터들이 수업 뒤에도 웃고 고민하며 서로를 격려하는 일상을 그린 짧은 코미디다.",
+        "genres":  [
+                       "스포츠",
+                       "일상",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://fitboxing.net/anime/index.php",
+        "source":  "https://www.imagineer.co.jp/news/article.php?id=1611"
+    },
+    {
+        "slug":  "rumble-garanndoll-anime",
+        "name":  "역전세계의 전지소녀",
+        "englishName":  "Rumble Garanndoll",
+        "aliases":  [
+                        "逆転世界ノ電池少女"
+                    ],
+        "description":  "평행세계 군대에 점령된 일본에서 호소미치가 전지소녀들의 열정으로 움직이는 거대 병기와 함께 싸운다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://denchi-project.com/",
+        "source":  "https://www.ytv.co.jp/denchi/"
+    },
+    {
+        "slug":  "the-faraway-paladin-anime",
+        "name":  "변경의 팔라딘",
+        "englishName":  "The Faraway Paladin",
+        "aliases":  [
+                        "最果てのパラディン"
+                    ],
+        "description":  "죽은 자의 도시에서 세 언데드에게 길러진 윌이 신과 맹세를 맺고 자신의 과거와 세상을 알기 위한 길을 떠난다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://farawaypaladin.com/",
+        "source":  "https://farawaypaladin.com/"
+    },
+    {
+        "slug":  "the-vampire-dies-in-no-time-anime",
+        "name":  "흡혈귀는 툭하면 죽는다",
+        "englishName":  "The Vampire Dies in No Time",
+        "aliases":  [
+                        "吸血鬼すぐ死ぬ"
+                    ],
+        "description":  "흡혈귀 사냥꾼 로널드가 아주 쉽게 재가 되는 흡혈귀 드라루크와 한집에서 기묘한 의뢰를 해결한다.",
+        "genres":  [
+                       "코미디",
+                       "판타지",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://sugushinu-anime.jp/season1/",
+        "source":  "https://sugushinu-anime.jp/season1/"
+    },
+    {
+        "slug":  "muteking-the-dancing-hero-anime",
+        "name":  "MUTEKING THE Dancing HERO",
+        "englishName":  "MUTEKING THE Dancing HERO",
+        "aliases":  [
+                        "무테킹 더 댄싱 히어로"
+                    ],
+        "description":  "네오 샌프란시스코로 온 무테키가 DJ의 힘으로 댄싱 히어로 무테킹으로 변신해 노래와 춤으로 괴물과 싸운다.",
+        "genres":  [
+                       "SF",
+                       "액션",
+                       "음악",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://muteking.jp/",
+        "source":  "https://tatsunoko.co.jp/works/muteking-the-dancing-hero/"
+    }
+]

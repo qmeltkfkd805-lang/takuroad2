@@ -86,7 +86,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
   const authorNotes: string[] = useMemo(() => route.tips ? String(route.tips).split('\n').map((l: string) => l.replace(/^\s*[-•*]\s*/, '').trim()).filter(Boolean) : [], [route])
   const diff = route.official_difficulty ? OFFICIAL_DIFF[route.official_difficulty] : null
   const likes = route.likes ?? 0
-  const author = route.profiles?.nickname
+  const author = route.author_blocked ? '사용자' : route.profiles?.nickname
   const now = useMemo(() => new Date(), [])
 
   const [saved, setSaved] = useState(false)

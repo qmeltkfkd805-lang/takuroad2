@@ -1,0 +1,202 @@
+[
+    {
+        "slug":  "orb-on-the-movements-of-the-earth-anime",
+        "name":  "지. -지구의 운동에 대하여-",
+        "englishName":  "Orb: On the Movements of the Earth",
+        "aliases":  [
+                        "チ。―地球の運動について―"
+                    ],
+        "description":  "15세기 유럽을 닮은 세계에서 금지된 지동설의 진실을 잇기 위해 사람들이 목숨을 건다.",
+        "genres":  [
+                       "드라마",
+                       "추리"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://anime-chi.jp/",
+        "source":  "https://anime-chi.jp/"
+    },
+    {
+        "slug":  "witch-watch-anime",
+        "name":  "위치 워치",
+        "englishName":  "WITCH WATCH",
+        "aliases":  [
+                        "ウィッチウォッチ"
+                    ],
+        "description":  "귀신의 힘을 지닌 모리히토가 덜렁이 마녀 니코의 사역마가 되어 예언된 재앙에서 그녀를 지킨다.",
+        "genres":  [
+                       "판타지",
+                       "코미디",
+                       "학원",
+                       "로맨스"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://witchwatch-anime.com/",
+        "source":  "https://witchwatch-anime.com/intro/"
+    },
+    {
+        "slug":  "red-cat-ramen-anime",
+        "name":  "라멘 아카네코",
+        "englishName":  "Red Cat Ramen",
+        "aliases":  [
+                        "ラーメン赤猫"
+                    ],
+        "description":  "고양이들이 운영하는 라멘집에 인간 타마코가 고용되어 고양이 직원들을 돌보며 손님을 맞는다.",
+        "genres":  [
+                       "일상",
+                       "코미디",
+                       "요리"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://ramenakaneko.com/",
+        "source":  "https://ramenakaneko.com/"
+    },
+    {
+        "slug":  "jellyfish-cant-swim-in-the-night-anime",
+        "name":  "밤의 해파리는 헤엄칠 수 없어",
+        "englishName":  "Jellyfish Can\u0027t Swim in the Night",
+        "aliases":  [
+                        "夜のクラゲは泳げない"
+                    ],
+        "description":  "시부야에서 방황하던 네 소녀가 익명 창작 그룹을 결성해 음악과 그림으로 자신을 표현한다.",
+        "genres":  [
+                       "음악",
+                       "드라마",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://yorukura-anime.com/",
+        "source":  "https://yorukura-anime.com/"
+    },
+    {
+        "slug":  "train-to-the-end-of-the-world-anime",
+        "name":  "종말 트레인은 어디로 향하나?",
+        "englishName":  "Train to the End of the World",
+        "aliases":  [
+                        "終末トレインどこへいく？"
+                    ],
+        "description":  "세상이 기이하게 변한 뒤 시즈루와 친구들이 실종된 친구를 찾아 전철을 타고 이케부쿠로로 향한다.",
+        "genres":  [
+                       "SF",
+                       "모험",
+                       "드라마",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://shumatsu-train.com/",
+        "source":  "https://shumatsu-train.com/"
+    },
+    {
+        "slug":  "makeine-too-many-losing-heroines-anime",
+        "name":  "패배 히로인이 너무 많아!",
+        "englishName":  "Makeine: Too Many Losing Heroines!",
+        "aliases":  [
+                        "負けヒロインが多すぎる！"
+                    ],
+        "description":  "평범한 고교생 누쿠미즈가 사랑에 실패한 소녀들과 얽히며 뜻밖의 청춘을 보낸다.",
+        "genres":  [
+                       "로맨스",
+                       "코미디",
+                       "학원"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "애니"
+                   ],
+        "officialUrl":  "https://makeine-anime.com/",
+        "source":  "https://makeine-anime.com/"
+    },
+    {
+        "slug":  "shoshimin-how-to-become-ordinary-anime",
+        "name":  "소시민 시리즈",
+        "englishName":  "SHOSHIMIN: How to Become Ordinary",
+        "aliases":  [
+                        "小市民シリーズ"
+                    ],
+        "description":  "평온한 소시민을 꿈꾸는 고바토와 오사나이가 일상 속 수수께끼와 사건에 계속 휘말린다.",
+        "genres":  [
+                       "추리",
+                       "학원",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "소설",
+                       "애니"
+                   ],
+        "officialUrl":  "https://shoshimin-anime.com/",
+        "source":  "https://shoshimin-anime.com/"
+    },
+    {
+        "slug":  "alya-sometimes-hides-her-feelings-in-russian-anime",
+        "name":  "가끔씩 툭하고 러시아어로 부끄러워하는 옆자리의 아랴 양",
+        "englishName":  "Alya Sometimes Hides Her Feelings in Russian",
+        "aliases":  [
+                        "時々ボソッとロシア語でデレる隣のアーリャさん"
+                    ],
+        "description":  "러시아어로 호감을 숨기는 아랴와 그 말을 알아듣는 마사치카가 학생회에서 가까워진다.",
+        "genres":  [
+                       "로맨스",
+                       "코미디",
+                       "학원"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "애니"
+                   ],
+        "officialUrl":  "https://roshidere.com/",
+        "source":  "https://roshidere.com/"
+    },
+    {
+        "slug":  "demon-lord-2099-anime",
+        "name":  "마왕 2099",
+        "englishName":  "Demon Lord 2099",
+        "aliases":  [
+                        "魔王2099"
+                    ],
+        "description":  "오백 년 만에 부활한 마왕 벨토르가 마법과 기술이 융합된 미래 도시 신주쿠에서 재기를 꾀한다.",
+        "genres":  [
+                       "판타지",
+                       "SF",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "애니"
+                   ],
+        "officialUrl":  "https://2099.world/",
+        "source":  "https://www.aniplex.co.jp/lineup/maou2099/"
+    },
+    {
+        "slug":  "go-go-loser-ranger-anime",
+        "name":  "전대대실격",
+        "englishName":  "Go! Go! Loser Ranger!",
+        "aliases":  [
+                        "戦隊大失格"
+                    ],
+        "description":  "매주 패배를 연기하던 괴인 전투원 D가 영웅 행세를 하는 대전대에 잠입해 체제를 무너뜨리려 한다.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "소년물",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://sh-anime.shochiku.co.jp/anime-sentai-daishikkaku/index.html",
+        "source":  "https://sh-anime.shochiku.co.jp/anime-sentai-daishikkaku/index.html"
+    }
+]

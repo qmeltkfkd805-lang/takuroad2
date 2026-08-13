@@ -1,0 +1,207 @@
+[
+    {
+        "slug":  "oblivion-battery-anime",
+        "name":  "망각 배터리",
+        "englishName":  "Oblivion Battery",
+        "aliases":  [
+                        "忘却バッテリー"
+                    ],
+        "description":  "기억을 잃은 천재 포수 카나메와 냉철한 투수 키요미네가 무명 고교에서 다시 야구를 시작한다.",
+        "genres":  [
+                       "스포츠",
+                       "학원",
+                       "코미디",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://boukyaku-battery.com/",
+        "source":  "https://boukyaku-battery.com/"
+    },
+    {
+        "slug":  "the-fable-anime",
+        "name":  "더 페이블",
+        "englishName":  "The Fable",
+        "aliases":  [
+                        "ザ・ファブル"
+                    ],
+        "description":  "천재 킬러 아키라가 일 년간 아무도 죽이지 말라는 명령을 받고 평범한 시민으로 살아간다.",
+        "genres":  [
+                       "액션",
+                       "코미디",
+                       "드라마",
+                       "19"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.vap.co.jp/the-fable-anime/",
+        "source":  "https://www.vap.co.jp/the-fable-anime/"
+    },
+    {
+        "slug":  "grandpa-and-grandma-turn-young-again-anime",
+        "name":  "할아버지 할머니 회춘하다",
+        "englishName":  "Grandpa and Grandma Turn Young Again",
+        "aliases":  [
+                        "じいさんばあさん若返る"
+                    ],
+        "description":  "오랫동안 함께 산 노부부 쇼조와 이네가 갑자기 젊어져 가족과 새로운 일상을 즐긴다.",
+        "genres":  [
+                       "일상",
+                       "코미디",
+                       "로맨스",
+                       "가족"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://jisanbasan.com/",
+        "source":  "https://jisanbasan.com/"
+    },
+    {
+        "slug":  "the-many-sides-of-voice-actor-radio-anime",
+        "name":  "성우 라디오의 속사정",
+        "englishName":  "The Many Sides of Voice Actor Radio",
+        "aliases":  [
+                        "声優ラジオのウラオモテ"
+                    ],
+        "description":  "같은 학교에 다니는 두 신인 성우가 라디오에서는 절친을 연기하고 무대 뒤에서는 티격태격한다.",
+        "genres":  [
+                       "일상",
+                       "코미디",
+                       "학원",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "애니"
+                   ],
+        "officialUrl":  "https://seiyuradio-anime.com/",
+        "source":  "https://seiyuradio-anime.com/"
+    },
+    {
+        "slug":  "astro-note-anime",
+        "name":  "아스트로 노트",
+        "englishName":  "Astro Note",
+        "aliases":  [
+                        "アストロノオト"
+                    ],
+        "description":  "요리사 타쿠미가 하숙집 아스트로장의 관리인 미라에게 반하지만 그녀에게는 외계인의 비밀이 있다.",
+        "genres":  [
+                       "로맨스",
+                       "코미디",
+                       "SF",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://sh-anime.shochiku.co.jp/astro-note/",
+        "source":  "https://sh-anime.shochiku.co.jp/astro-note/"
+    },
+    {
+        "slug":  "bartender-glass-of-god-anime",
+        "name":  "바텐더 신의 글라스",
+        "englishName":  "BARTENDER Glass of God",
+        "aliases":  [
+                        "バーテンダー 神のグラス"
+                    ],
+        "description":  "천재 바텐더 사사쿠라 류가 손님에게 꼭 맞는 한 잔을 내어 주며 마음의 상처를 어루만진다.",
+        "genres":  [
+                       "드라마",
+                       "일상",
+                       "요리"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://bartender-anime.com/",
+        "source":  "https://bartender-anime.com/"
+    },
+    {
+        "slug":  "tonbo-anime",
+        "name":  "오이! 톤보",
+        "englishName":  "Tonbo!",
+        "aliases":  [
+                        "オーイ！とんぼ"
+                    ],
+        "description":  "외딴 섬에서 자유롭게 골프를 익힌 소녀 톤보가 코치와 라이벌을 만나 더 큰 무대에 도전한다.",
+        "genres":  [
+                       "스포츠",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://tonbo-anime.com/",
+        "source":  "https://tonbo-anime.com/"
+    },
+    {
+        "slug":  "studio-apartment-good-lighting-angel-included-anime",
+        "name":  "원룸, 햇볕 보통, 천사 딸림.",
+        "englishName":  "Studio Apartment, Good Lighting, Angel Included",
+        "aliases":  [
+                        "ワンルーム、日当たり普通、天使つき。"
+                    ],
+        "description":  "혼자 사는 고교생 모리타로의 베란다에 천사 토와가 나타나 함께 순수한 동거 생활을 시작한다.",
+        "genres":  [
+                       "로맨스",
+                       "코미디",
+                       "판타지",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://tenshitsuki.com/",
+        "source":  "https://tenshitsuki.com/"
+    },
+    {
+        "slug":  "unnamed-memory-anime",
+        "name":  "언네임드 메모리",
+        "englishName":  "Unnamed Memory",
+        "aliases":  [
+                        "アンネームドメモリー"
+                    ],
+        "description":  "저주로 후손을 얻지 못하는 왕태자 오스카가 강대한 마녀 티나샤와 계약하며 운명에 맞선다.",
+        "genres":  [
+                       "판타지",
+                       "로맨스",
+                       "모험",
+                       "액션"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "애니"
+                   ],
+        "officialUrl":  "https://unnamedmemory.com/",
+        "source":  "https://unnamedmemory.com/"
+    },
+    {
+        "slug":  "the-new-gate-anime",
+        "name":  "THE NEW GATE",
+        "englishName":  "THE NEW GATE",
+        "aliases":  [
+                        "더 뉴 게이트"
+                    ],
+        "description":  "데스게임을 끝낸 최강자 신이 현실이 된 오백 년 뒤의 게임 세계로 전이되어 새 모험을 시작한다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "애니"
+                   ],
+        "officialUrl":  "https://the-new-gate-pr.com/",
+        "source":  "https://the-new-gate-pr.com/"
+    }
+]

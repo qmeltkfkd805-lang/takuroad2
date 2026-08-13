@@ -1,0 +1,206 @@
+[
+    {
+        "slug":  "arp-backstage-pass-anime",
+        "name":  "ARP Backstage Pass",
+        "englishName":  "ARP Backstage Pass",
+        "aliases":  [
+                        "ARP 백스테이지 패스",
+                        "ARP Backstage Pass"
+                    ],
+        "description":  "첨단 AR 기술로 무대에 서는 댄스 보컬 그룹 ARP 네 멤버의 만남과 성장, 공연 뒤 이야기를 그린다.",
+        "genres":  [
+                       "음악",
+                       "아이돌",
+                       "드라마"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://arp-anime.com/",
+        "source":  "https://arp-anime.com/"
+    },
+    {
+        "slug":  "extra-olympia-kyklos-anime",
+        "name":  "별책 올림피아 키클로스",
+        "englishName":  "Extra Olympia Kyklos",
+        "aliases":  [
+                        "別冊オリンピア・キュクロス",
+                        "올림피아 키클로스"
+                    ],
+        "description":  "고대 그리스의 소심한 청년 데메트리오스가 1964년 도쿄로 시간 이동해 현대 스포츠를 배운다.",
+        "genres":  [
+                       "코미디",
+                       "스포츠",
+                       "판타지"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://bessatsu-olympia-kyklos.com/",
+        "source":  "https://bessatsu-olympia-kyklos.com/"
+    },
+    {
+        "slug":  "tamayomi-anime",
+        "name":  "타마요미",
+        "englishName":  "Tamayomi: The Baseball Girls",
+        "aliases":  [
+                        "球詠"
+                    ],
+        "description":  "야구를 그만두려던 요미가 소꿉친구 타마키와 재회해 신코시가야 고교 여자 야구부의 부활에 나선다.",
+        "genres":  [
+                       "스포츠",
+                       "학원",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://tamayomi.com/",
+        "source":  "https://tamayomi.com/"
+    },
+    {
+        "slug":  "shachibato-anime",
+        "name":  "사장님, 배틀 시간입니다!",
+        "englishName":  "Shachibato! President, It\u0027s Time for Battle!",
+        "aliases":  [
+                        "社長、バトルの時間です！",
+                        "샤치바토"
+                    ],
+        "description":  "키보는 실종된 아버지가 세운 모험 회사의 사장이 되어 사원들과 던전의 보물을 찾아 나선다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://shachibato-anime.com/",
+        "source":  "https://shachibato-anime.com/"
+    },
+    {
+        "slug":  "new-sakura-wars-the-animation",
+        "name":  "신 사쿠라 대전 the Animation",
+        "englishName":  "Sakura Wars the Animation",
+        "aliases":  [
+                        "新サクラ大戦 the Animation",
+                        "신 사쿠라 대전 애니메이션"
+                    ],
+        "description":  "카미야마가 자리를 비운 제국화격단 화조가 수수께끼의 소녀 클라라를 지키며 새로운 위협과 싸운다.",
+        "genres":  [
+                       "액션",
+                       "판타지",
+                       "로봇/메카"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://sakura-taisen-theanimation.com/",
+        "source":  "https://sakura-taisen-theanimation.com/"
+    },
+    {
+        "slug":  "shironeko-project-zero-chronicle-anime",
+        "name":  "하얀고양이 프로젝트 ZERO CHRONICLE",
+        "englishName":  "Shironeko Project: Zero Chronicle",
+        "aliases":  [
+                        "白猫プロジェクト ZERO CHRONICLE",
+                        "백묘 프로젝트 제로 크로니클"
+                    ],
+        "description":  "빛과 어둠의 세계가 대립하는 가운데 어둠의 왕자와 빛의 왕 아이리스가 만나 세계의 운명에 맞선다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://colopl.co.jp/shironekoproject/animation/zero_chronicle/",
+        "source":  "https://colopl.co.jp/shironekoproject/animation/zero_chronicle/"
+    },
+    {
+        "slug":  "wave-listen-to-me-anime",
+        "name":  "파도여 들어다오",
+        "englishName":  "Wave, Listen to Me!",
+        "aliases":  [
+                        "波よ聞いてくれ"
+                    ],
+        "description":  "술자리에서 연애 푸념을 늘어놓은 미나레는 녹음된 목소리가 방송되며 라디오 진행자의 길에 들어선다.",
+        "genres":  [
+                       "드라마",
+                       "코미디",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니",
+                       "드라마"
+                   ],
+        "officialUrl":  "https://namiyo-anime.com/",
+        "source":  "https://namiyo-anime.com/"
+    },
+    {
+        "slug":  "gal-and-dinosaur-anime",
+        "name":  "갸루와 공룡",
+        "englishName":  "Gal \u0026 Dino",
+        "aliases":  [
+                        "ギャルと恐竜",
+                        "갈과 공룡"
+                    ],
+        "description":  "갸루 카에데가 술에 취해 데려온 공룡과 함께 살며 친구와 이웃을 만나는 엉뚱한 일상을 보낸다.",
+        "genres":  [
+                       "코미디",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니",
+                       "드라마"
+                   ],
+        "officialUrl":  "https://galkyo.com/",
+        "source":  "https://galkyo.com/"
+    },
+    {
+        "slug":  "arte-anime",
+        "name":  "아르테",
+        "englishName":  "Arte",
+        "aliases":  [
+                        "アルテ"
+                    ],
+        "description":  "르네상스 시대 피렌체의 귀족 아가씨 아르테가 관습에 맞서 화가의 제자가 되어 꿈을 좇는다.",
+        "genres":  [
+                       "드라마",
+                       "로맨스"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://arte-anime.com/",
+        "source":  "https://arte-anime.com/"
+    },
+    {
+        "slug":  "the-gymnastics-samurai-anime",
+        "name":  "체조 사무라이",
+        "englishName":  "The Gymnastics Samurai",
+        "aliases":  [
+                        "体操ザムライ"
+                    ],
+        "description":  "은퇴를 권유받은 체조 선수 조타로가 딸 레이와 수수께끼 청년 레오의 응원 속에서 재기에 도전한다.",
+        "genres":  [
+                       "스포츠",
+                       "드라마",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://taiso-samurai.com/",
+        "source":  "https://taiso-samurai.com/"
+    }
+]

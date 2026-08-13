@@ -1,0 +1,210 @@
+[
+    {
+        "slug":  "kaginado-anime",
+        "name":  "카기나도",
+        "englishName":  "Kaginado",
+        "aliases":  [
+                        "かぎなど"
+                    ],
+        "description":  "Key 작품의 인물들이 한 학교에 모여, 작품의 경계를 넘나드는 소동과 익숙한 장면을 펼친다.",
+        "genres":  [
+                       "코미디",
+                       "학원",
+                       "판타지"
+                   ],
+        "ipType":  [
+                       "게임",
+                       "애니"
+                   ],
+        "officialUrl":  "https://kaginado.com/",
+        "source":  "https://kaginado.com/"
+    },
+    {
+        "slug":  "worlds-finest-assassin-anime",
+        "name":  "세계 최고의 암살자, 이세계 귀족으로 전생하다",
+        "englishName":  "The World\u0027s Finest Assassin Gets Reincarnated in Another World as an Aristocrat",
+        "aliases":  [
+                        "世界最高の暗殺者、異世界貴族に転生する",
+                        "암살귀족"
+                    ],
+        "description":  "최고의 암살자가 이세계 귀족 루그로 환생해, 여신에게 받은 용사 암살 임무를 준비한다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://ansatsu-kizoku.jp/",
+        "source":  "https://ansatsu-kizoku.jp/"
+    },
+    {
+        "slug":  "fruit-of-evolution-anime",
+        "name":  "진화의 열매 ~모르는 사이 성공한 인생~",
+        "englishName":  "The Fruit of Evolution: Before I Knew It, My Life Had It Made",
+        "aliases":  [
+                        "進化の実～知らないうちに勝ち組人生～",
+                        "진화의 열매"
+                    ],
+        "description":  "학교째 이세계로 전이된 세이이치는 진화의 열매를 먹고, 고릴라 사리아와 모험을 시작한다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.tv-tokyo.co.jp/anime/shinkanomi/",
+        "source":  "https://www.tv-tokyo.co.jp/anime/shinkanomi/"
+    },
+    {
+        "slug":  "banished-from-heros-party-anime",
+        "name":  "진정한 동료가 아니라고 용사 파티에서 쫓겨났기 때문에, 변경에서 슬로 라이프를 보내기로 했습니다",
+        "englishName":  "Banished from the Hero\u0027s Party, I Decided to Live a Quiet Life in the Countryside",
+        "aliases":  [
+                        "真の仲間じゃないと勇者のパーティーを追い出されたので、辺境でスローライフすることにしました",
+                        "진정한 동료"
+                    ],
+        "description":  "용사 파티에서 쫓겨난 레드는 변경에서 약초점을 열고, 리트와 평온한 새 삶을 시작한다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "로맨스"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://shinnonakama.com/",
+        "source":  "https://shinnonakama.com/"
+    },
+    {
+        "slug":  "the-dungeon-of-black-company-anime",
+        "name":  "미궁 블랙 컴퍼니",
+        "englishName":  "The Dungeon of Black Company",
+        "aliases":  [
+                        "迷宮ブラックカンパニー"
+                    ],
+        "description":  "일하지 않고 살던 킨지는 이세계 광산으로 전이돼, 가혹한 노동에서 벗어날 계략을 꾸민다.",
+        "genres":  [
+                       "판타지",
+                       "모험",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://meikyubc-anime.com/",
+        "source":  "https://meikyubc-anime.com/"
+    },
+    {
+        "slug":  "drugstore-in-another-world-anime",
+        "name":  "치트 약사의 슬로 라이프 ~이세계에 만들자 드러그 스토어~",
+        "englishName":  "Drugstore in Another World: The Slow Life of a Cheat Pharmacist",
+        "aliases":  [
+                        "チート薬師のスローライフ～異世界に作ろうドラッグストア～",
+                        "치트 약사"
+                    ],
+        "description":  "이세계에 온 레이지는 약 제조 능력을 살려 가게를 열고, 주민들의 고민을 특제 약으로 해결한다.",
+        "genres":  [
+                       "판타지",
+                       "일상",
+                       "코미디"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://www.cheat-kusushi.jp/",
+        "source":  "https://www.cheat-kusushi.jp/"
+    },
+    {
+        "slug":  "mother-of-goddess-dormitory-anime",
+        "name":  "여신 기숙사의 사감 군",
+        "englishName":  "Mother of the Goddess\u0027 Dormitory",
+        "aliases":  [
+                        "女神寮の寮母くん。"
+                    ],
+        "description":  "집을 잃은 중학생 코시는 개성 강한 여대생들이 사는 여신 기숙사의 사감으로 일하게 된다.",
+        "genres":  [
+                       "코미디",
+                       "로맨스",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://megamiryou.com/",
+        "source":  "https://megamiryou.com/"
+    },
+    {
+        "slug":  "remake-our-life-anime",
+        "name":  "우리들의 리메이크",
+        "englishName":  "Remake Our Life!",
+        "aliases":  [
+                        "ぼくたちのリメイク"
+                    ],
+        "description":  "좌절한 게임 디렉터 쿄우야가 10년 전으로 돌아가 예술대에 진학하고 창작 인생을 다시 만든다.",
+        "genres":  [
+                       "드라마",
+                       "로맨스",
+                       "학원"
+                   ],
+        "ipType":  [
+                       "라이트노벨",
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://bokurema.com/",
+        "source":  "https://bokurema.com/"
+    },
+    {
+        "slug":  "peach-boy-riverside-anime",
+        "name":  "피치 보이 리버사이드",
+        "englishName":  "Peach Boy Riverside",
+        "aliases":  [
+                        "ピーチボーイリバーサイド"
+                    ],
+        "description":  "바깥세상을 동경한 공주 샐리는 귀인을 쓰러뜨리는 힘을 얻고 미코토를 찾아 여행한다.",
+        "genres":  [
+                       "판타지",
+                       "액션",
+                       "모험"
+                   ],
+        "ipType":  [
+                       "만화",
+                       "애니"
+                   ],
+        "officialUrl":  "https://peachboyriverside.com/",
+        "source":  "https://peachboyriverside.com/"
+    },
+    {
+        "slug":  "aquatope-on-white-sand-anime",
+        "name":  "하얀 모래의 아쿠아톱",
+        "englishName":  "The Aquatope on White Sand",
+        "aliases":  [
+                        "白い砂のアクアトープ",
+                        "아쿠아톱"
+                    ],
+        "description":  "꿈을 접은 전직 아이돌 후카는 오키나와 수족관에서 관장 대리 쿠쿠루를 만나 새 길을 찾는다.",
+        "genres":  [
+                       "드라마",
+                       "일상"
+                   ],
+        "ipType":  [
+                       "애니"
+                   ],
+        "officialUrl":  "https://aquatope-anime.com/",
+        "source":  "https://aquatope-anime.com/"
+    }
+]

@@ -41,7 +41,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function RouteSharePage({ params }: Props) {
   const { token } = await params
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
   const route = await fetchRoute(token)
   if (!route) notFound()
+
+  // 자격검사: 공유(is_shared)·공식(is_official) 루트이거나 본인 것만. (비공개/공유해제 → 완전 차단)
+  const isAuthor = !!user && user.id === route.user_id
+  if (!route.is_shared && !route.is_official && !isAuthor) notFound()
+
+  // 차단 관계면 작성자를 '서버에서' 제거 → 클라로 개인정보(닉네임)가 아예 안 감.
+  if (user && !isAuthor && route.user_id) {
+    const { data: blocked } = await supabase.rpc('is_blocked_between', { target: route.user_id })
+    if (blocked === true) {
+      route.profiles = null
+      route.author_blocked = true
+    }
+  }
+
   return <RouteDetailGate route={route} />
 }
