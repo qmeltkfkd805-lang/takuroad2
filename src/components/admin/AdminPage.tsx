@@ -22,9 +22,10 @@ import MemberAdminTab from './MemberAdminTab'
 import ShopAdminTab from './ShopAdminTab'
 import PlaceAdminTab from './PlaceAdminTab'
 import ContactAdminTab from './ContactAdminTab'
+import SuggestionAdminTab from './SuggestionAdminTab'
 import styles from './admin.module.css'
 
-type Tab = 'dashboard' | 'hero' | 'shops' | 'shopmanage' | 'works' | 'members' | 'verify' | 'routes' | 'events' | 'reported' | 'postreports' | 'places' | 'contacts' | 'partners'
+type Tab = 'dashboard' | 'hero' | 'shops' | 'shopmanage' | 'works' | 'members' | 'verify' | 'routes' | 'events' | 'reported' | 'postreports' | 'places' | 'contacts' | 'partners' | 'suggestions'
 
 export default function AdminPage() {
   const router = useRouter()
@@ -134,6 +135,9 @@ export default function AdminPage() {
         </TabButton>
         <TabButton active={tab === 'partners'} onClick={() => setTab('partners')}>
           🤝 제휴 문의
+        </TabButton>
+        <TabButton active={tab === 'suggestions'} onClick={() => setTab('suggestions')}>
+          💡 제안 관리
         </TabButton>
           <TabButton active={tab === 'routes'} onClick={() => setTab('routes')}>
             추천 루트
@@ -295,6 +299,7 @@ export default function AdminPage() {
       {tab === 'postreports' && <PostReportsTab />}
       {tab === 'contacts' && <ContactAdminTab excludeType="partner" />}
       {tab === 'partners' && <ContactAdminTab onlyType="partner" />}
+      {tab === 'suggestions' && <SuggestionAdminTab />}
       {tab === 'routes' && <OfficialRouteTab />}
       {tab === 'events' && <SeasonalEventTab />}
       </div>

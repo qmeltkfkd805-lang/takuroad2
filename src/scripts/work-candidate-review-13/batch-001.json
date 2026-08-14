@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "northern-duke-webtoon",
+    "name": "북부 대공",
+    "englishName": "The Northern Duke",
+    "aliases": [],
+    "description": "로판 속 북부 대공을 연기하는 배우와 작품 세계에 얽힌 주인공이 정해진 서사를 벗어나려 한다.",
+    "genres": ["로맨스", "판타지", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://webtoon.kakao.com/content/북부-대공/4046",
+    "source": "https://webtoon.kakao.com/content/북부-대공/4046"
+  },
+  {
+    "slug": "top-100-lady-webtoon",
+    "name": "TOP 100 영애",
+    "englishName": "TOP 100 Lady",
+    "aliases": [],
+    "description": "랭킹 시스템이 존재하는 세계에서 영애가 최상위권을 목표로 경쟁과 로맨스를 헤쳐 나간다.",
+    "genres": ["로맨스", "판타지", "코미디"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/TOP-100-영애/4458",
+    "source": "https://webtoon.kakao.com/content/TOP-100-영애/4458"
+  },
+  {
+    "slug": "empress-wi-mokhwa-webtoon",
+    "name": "황후 위목화",
+    "englishName": "Empress Wi Mokhwa",
+    "aliases": [],
+    "description": "황궁에 들어간 위목화가 권력 다툼과 음모 속에서 자신의 자리와 사랑을 지키려 한다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/황후-위목화/2688",
+    "source": "https://webtoon.kakao.com/content/황후-위목화/2688"
+  },
+  {
+    "slug": "s-rank-terminally-ill-lady-of-the-dungeon-webtoon",
+    "name": "그 던전의 S급 시한부 영애",
+    "englishName": "The Dungeon's S-Rank Terminally Ill Lady",
+    "aliases": [],
+    "description": "시한부 영애가 던전과 능력이 존재하는 세계에서 살아남기 위해 자신의 힘과 운명을 개척한다.",
+    "genres": ["로맨스", "판타지", "액션"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/그-던전의-S급-시한부-영애/3756",
+    "source": "https://webtoon.kakao.com/content/그-던전의-S급-시한부-영애/3756"
+  },
+  {
+    "slug": "contract-marriage-because-im-terminally-ill-webtoon",
+    "name": "시한부니까 계약 결혼 합니다",
+    "englishName": "A Contract Marriage Because I'm Terminally Ill",
+    "aliases": [],
+    "description": "남은 시간이 짧다고 믿는 영애가 목적을 이루기 위해 계약 결혼을 제안하며 관계가 시작된다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/시한부니까-계약-결혼-합니다/3897",
+    "source": "https://webtoon.kakao.com/content/시한부니까-계약-결혼-합니다/3897"
+  },
+  {
+    "slug": "divorce-strategy-webtoon",
+    "name": "이혼 전략",
+    "englishName": "Divorce Strategy",
+    "aliases": [],
+    "description": "불행한 결혼을 끝내려는 주인공이 치밀한 이혼 계획을 세우지만 배우자와의 관계가 예상 밖으로 변한다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/이혼-전략/4104",
+    "source": "https://webtoon.kakao.com/content/이혼-전략/4104"
+  },
+  {
+    "slug": "duchess-ashileans-contract-marriage-webtoon",
+    "name": "아쉴레앙 공작의 계약 결혼",
+    "englishName": "Duchess Ashilean's Contract Marriage",
+    "aliases": [],
+    "description": "강한 공작 아쉴레앙과 사정 많은 남자가 계약 결혼으로 얽혀 서로의 삶과 마음을 바꾼다.",
+    "genres": ["로맨스", "판타지", "코미디"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/아쉴레앙-공작의-계약-결혼/3156",
+    "source": "https://webtoon.kakao.com/content/아쉴레앙-공작의-계약-결혼/3156"
+  },
+  {
+    "slug": "ducal-couples-divorce-circumstances-webtoon",
+    "name": "공작 부부의 이혼 사정",
+    "englishName": "The Ducal Couple's Divorce Circumstances",
+    "aliases": [],
+    "description": "이혼을 원하는 공작 부부가 각자의 사정과 감춰진 진심을 마주하며 관계를 다시 돌아본다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/공작-부부의-이혼-사정/4043",
+    "source": "https://webtoon.kakao.com/content/공작-부부의-이혼-사정/4043"
+  },
+  {
+    "slug": "azelda-spirit-masters-contract-marriage-webtoon",
+    "name": "아젤다: 정령사의 계약 결혼",
+    "englishName": "Azelda: The Spirit Master's Contract Marriage",
+    "aliases": [],
+    "description": "정령사 아젤다가 자신의 목적을 위해 계약 결혼을 선택하며 새로운 관계와 사건에 뛰어든다.",
+    "genres": ["로맨스", "판타지", "코미디"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/아젤다-정령사의-계약-결혼/4292",
+    "source": "https://webtoon.kakao.com/content/아젤다-정령사의-계약-결혼/4292"
+  },
+  {
+    "slug": "stalker-princess-webtoon",
+    "name": "스토커 공녀",
+    "englishName": "Stalker Princess",
+    "aliases": [],
+    "description": "공녀가 한 인물을 쫓게 된 사연과 오해 속에서 예상하지 못한 로맨스와 진실을 마주한다.",
+    "genres": ["로맨스", "판타지", "코미디"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/스토커-공녀/4755",
+    "source": "https://webtoon.kakao.com/content/스토커-공녀/4755"
+  }
+]

@@ -238,10 +238,10 @@ export default function ProfileDesktop({ passport, userId }: Props) {
   const expLabel = expSpan ? `EXP ${expCur} / ${expSpan}` : `EXP ${levelInfo?.totalExp ?? 0}`
 
   const stats = [
-    { icon: 'shop', label: '방문한 샵', value: passport?.visitedShopCount ?? 0, go: () => setView('visited') },
-    { icon: 'pencil', label: '작성 리뷰', value: passport?.reviewCount ?? 0, go: () => setView('reviews') },
-    { icon: 'medal', label: '획득 배지', value: passport?.totalBadgeCount ?? 0, go: () => setView('badges') },
-    { icon: 'flag', label: '완주 루트', value: passport?.pilgrimageCount ?? 0, go: () => setView('completed') },
+    { img: '/icons/colorshop.png', label: '방문한 샵', value: passport?.visitedShopCount ?? 0, go: () => setView('visited') },
+    { img: '/icons/colorstar.png', label: '작성 리뷰', value: passport?.reviewCount ?? 0, go: () => setView('reviews') },
+    { img: '/icons/colorcollection.png', label: '획득 배지', value: passport?.totalBadgeCount ?? 0, go: () => setView('badges') },
+    { img: '/icons/colorroute.png', label: '완주 루트', value: passport?.pilgrimageCount ?? 0, go: () => setView('completed') },
   ]
 
   const quickItems = quickKeys.map(k => QUICK_BY_KEY.get(k)).filter(Boolean) as QuickItem[]
@@ -311,7 +311,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
               </div>
             </div>
             <div className={styles.actions}>
-              <button className={styles.editBtn} onClick={() => router.push('/profile/settings')}>
+              <button className={styles.editBtn} onClick={() => router.push('/profile/settings/profile')}>
                 <AppIcon name="pencil" size={14} />프로필 편집
               </button>
               <button className={styles.iconBtn} aria-label="설정" onClick={() => router.push('/profile/settings')}>
@@ -326,7 +326,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
           <div className={styles.stats}>
             {stats.map(s => (
               <button key={s.label} className={styles.stat} onClick={s.go}>
-                <span className={styles.statIcon}><AppIcon name={s.icon} size={24} color="var(--accent)" /></span>
+                <span className={styles.statIcon}><img src={s.img} alt="" /></span>
                 <span className={styles.statText}>
                   <span className={styles.statLabel}>{s.label}</span>
                   <span className={styles.statValue}>{s.value}</span>
@@ -499,12 +499,12 @@ export default function ProfileDesktop({ passport, userId }: Props) {
                   <span className={styles.acctLabel}>계정 설정</span>
                   <AppIcon name="chevron-right" size={15} color="var(--muted)" />
                 </button>
-                <button className={styles.acctRow} onClick={() => router.push('/profile/settings')}>
+                <button className={styles.acctRow} onClick={() => router.push('/profile/settings/notifications')}>
                   <span className={styles.acctIcon}><AppIcon name="bell" size={17} /></span>
                   <span className={styles.acctLabel}>알림 설정</span>
                   <AppIcon name="chevron-right" size={15} color="var(--muted)" />
                 </button>
-                <button className={styles.acctRow} onClick={() => router.push('/profile/settings')}>
+                <button className={styles.acctRow} onClick={() => router.push('/profile/settings/privacy')}>
                   <span className={styles.acctIcon}>
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2" /><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" /></svg>
                   </span>

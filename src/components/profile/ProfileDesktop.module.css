@@ -80,6 +80,7 @@
 }
 .stat:first-child { border-left: none; }
 .statIcon { display: inline-flex; align-items: center; justify-content: center; color: var(--accent); }
+.statIcon img { width: 30px; height: 30px; object-fit: contain; display: block; }
 .statText { display: flex; flex-direction: column; gap: 3px; align-items: center; }
 .statLabel { font-size: 12.5px; color: var(--muted); font-weight: 600; }
 .statValue { font-size: 20px; font-weight: 900; color: var(--text); line-height: 1; }
@@ -168,15 +169,14 @@
 .mCollEmpty { flex: 1; font-size: 13px; color: var(--muted); }
 .mBadges { display: flex; gap: 10px; flex-shrink: 0; }
 .mBadge { display: flex; flex-direction: column; align-items: center; gap: 4px; border: none; background: none; padding: 0; cursor: pointer; font-family: inherit; width: 52px; }
-.mBadgeIcon { width: 40px; height: 40px; border-radius: 9999px; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; border: 2px solid var(--accent); background: var(--surface); }
-.mBadgeIcon img { width: 100%; height: 100%; object-fit: cover; }
+.mBadgeIcon { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; }
+.mBadgeIcon img { width: 100%; height: 100%; object-fit: contain; }
 .mBadgeName { font-size: 10px; font-weight: 700; color: var(--muted); text-align: center; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .badgeIcon {
-  width: 60px; height: 60px; border-radius: 9999px; overflow: hidden;
+  width: 60px; height: 60px;
   display: inline-flex; align-items: center; justify-content: center;
-  border: 2px solid var(--accent); background: var(--surface);
 }
-.badgeIcon img { width: 100%; height: 100%; object-fit: cover; }
+.badgeIcon img { width: 100%; height: 100%; object-fit: contain; }
 .badgeName { font-size: 12px; font-weight: 700; color: var(--text); text-align: center; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ── 계정 메뉴 ── */
@@ -305,8 +305,12 @@
 
 /* ── 모바일 (≤640px): 시안에 맞춰 압축 + 순서 재배치 ── */
 @media (max-width: 640px) {
-  .wrap { padding: 14px 12px 92px; }
-  .dash { gap: 14px; }
+  .wrap { padding: 14px 12px 92px; overflow-x: hidden; }
+  .dash { gap: 14px; width: 100%; min-width: 0; }
+
+  /* 모든 카드 폭을 화면 폭에 강제 통일 — 내부 콘텐츠가 카드를 넘겨 폭이 제각각 되는 것 방지 */
+  .profileCard, .statsCard, .card { width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; }
+  .profileMain, .stats, .mCollRow, .info, .quickGrid, .cols { min-width: 0; }
 
   /* 프로필 카드 압축 */
   .profileCard { padding: 16px; }
@@ -321,8 +325,9 @@
   .divider { margin: 16px 0; }
 
   /* 통계 4칸 — 세로 아이콘/값으로 압축 */
-  .stat { flex-direction: column; gap: 6px; justify-content: flex-start; padding: 2px; }
+  .stat { flex-direction: column; gap: 6px; justify-content: flex-start; padding: 2px; min-width: 0; }
   .statIcon { width: 38px; height: 38px; }
+  .statIcon img { width: 32px; height: 32px; }
   .statText { align-items: center; text-align: center; }
   .statValue { font-size: 18px; }
   .statLabel { font-size: 11.5px; }

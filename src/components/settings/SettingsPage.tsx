@@ -24,6 +24,7 @@ const IconLogout = () => <svg {...svgProps}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2
 const IconUserX = () => <svg {...svgProps}><circle cx="9" cy="8" r="3.2" /><path d="M4 20a5 5 0 0 1 10 0" /><path d="m17 9 4 4m0-4-4 4" /></svg>
 const IconLock = () => <svg {...svgProps}><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
 const IconBell = () => <svg {...svgProps}><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6" /><path d="M10.5 20a2 2 0 0 0 3 0" /></svg>
+const IconBulb = () => <svg {...svgProps}><path d="M9 18h6M10 21h4" /><path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.3 1 2.5h6c0-1.2.3-1.8 1-2.5A6 6 0 0 0 12 3z" /></svg>
 const Chevron = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
 const CheckMini = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m5 13 4 4L19 7" /></svg>
 
@@ -75,6 +76,7 @@ export default function SettingsPage() {
       rows: [
         { icon: <IconNotice />, label: '공지사항 · 자주 묻는 질문', href: '/support/notice' },
         { icon: <IconChat />, label: '문의하기', href: '/support/contact' },
+        { icon: <IconBulb />, label: '제안하기', href: '/support/suggest' },
         { icon: <IconDoc />, label: '약관 및 개인정보처리방침', href: '/policies/terms' },
       ],
     },
@@ -101,8 +103,8 @@ export default function SettingsPage() {
       </div>
 
       <div className={styles.container}>
-        {/* 계정 요약 */}
-        <button className={styles.summary} onClick={() => router.push('/profile')}>
+        {/* 계정 요약 — 누르면 프로필 편집으로 */}
+        <button className={styles.summary} onClick={() => router.push('/profile/settings/profile')}>
           {profile.avatar_url
             ? <img className={styles.summaryAvatar} src={profile.avatar_url} alt="" />
             : <span className={styles.summaryAvatarPh}>{profile.nickname?.[0] ?? '?'}</span>}

@@ -56,6 +56,7 @@ export default function Sidebar() {
       <nav className={styles.foot}>
         <Link href="/support/notice">공지사항</Link>
         <Link href="/support/contact">문의하기</Link>
+        <Link href="/support/suggest">제안하기</Link>
         <Link href="/support/partnership">제휴 문의</Link>
         <Link href="/policies/terms">이용약관</Link>
         <Link href="/policies/privacy">개인정보처리방침</Link>

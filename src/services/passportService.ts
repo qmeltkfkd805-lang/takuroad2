@@ -80,7 +80,7 @@ export async function getMyPassport(userId: string): Promise<OtakuPassport | nul
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('nickname, avatar_url, passport_number, created_at, is_profile_public, selected_title_id, equipped')
+    .select('nickname, avatar_url, passport_number, created_at, is_profile_public, bio, selected_title_id, equipped')
     .eq('id', userId)
     .maybeSingle()
 
@@ -206,10 +206,16 @@ export async function getMyPassport(userId: string): Promise<OtakuPassport | nul
     .order('created_at', { ascending: false })
     .limit(10)
 
+  /* 소개글 단일 기준 = profiles.bio.
+     bio가 있으면 bio, 비어 있고 옛 equipped.tagline이 있으면 임시 fallback(마이그레이션 전 호환),
+     둘 다 없으면 덕질 DNA 자동 문구. (쓰기는 새 프로필 편집이 bio에만 한다) */
+  const bioText = (profile as any).bio
   const customTagline = (profile as any).equipped?.tagline
-  const tagline = (typeof customTagline === 'string' && customTagline.trim())
-    ? customTagline
-    : generateTagline(topRegion, topSeries[0]?.name ?? null, titleBadgeName)
+  const tagline = (typeof bioText === 'string' && bioText.trim())
+    ? bioText.trim()
+    : (typeof customTagline === 'string' && customTagline.trim())
+      ? customTagline
+      : generateTagline(topRegion, topSeries[0]?.name ?? null, titleBadgeName)
 
   return {
     nickname: profile.nickname,

@@ -19,6 +19,8 @@
   border: none; background: none; cursor: pointer; color: var(--text);
 }
 .title { font-size: 17px; font-weight: 800; color: var(--text); }
+/* 헤더 우측 액션 슬롯 (모바일 "저장" 등) — 우측 끝으로 밀어붙인다 */
+.headerRight { margin-left: auto; display: inline-flex; align-items: center; }
 
 .container { max-width: 800px; margin: 0 auto; padding: 16px 16px 0; }
 

@@ -12,6 +12,8 @@ interface AuthContextType {
   loading: boolean
   isAdmin: boolean
   signOut: () => Promise<void>
+  /** 현재 로그인 유저의 프로필을 다시 읽어 전역 상태를 갱신한다(저장 후 즉시 반영용). */
+  refreshProfile: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -20,6 +22,7 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   isAdmin: false,
   signOut: async () => {},
+  refreshProfile: async () => {},
 })
 
 // 프로필 없이도 머무를 수 있는 경로 (닉네임 설정 강제 이동 제외)
@@ -95,6 +98,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfileLoaded(true)
   }
 
+  // 저장 후 전역 프로필 즉시 반영 — 현재 유저가 있을 때만 다시 읽는다(없으면 무해한 no-op)
+  async function refreshProfile() {
+    const { data: { user: cur } } = await supabase.auth.getUser()
+    if (!cur) return
+    await loadProfile(cur.id)
+  }
+
   return (
     <AuthContext.Provider value={{
       user,
@@ -102,6 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loading,
       isAdmin: profile?.role === 'admin',
       signOut,
+      refreshProfile,
     }}>
       {children}
     </AuthContext.Provider>

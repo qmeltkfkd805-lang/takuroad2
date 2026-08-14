@@ -288,16 +288,17 @@
 .heroPhoto .shareBtn:hover { background: rgba(255,255,255,.28); }
 .heroPhoto .menuBtn { background: rgba(0,0,0,.35); color: #fff; }
 .heroPhoto .menuBtn:hover { background: rgba(0,0,0,.5); }
-/* 높이는 사진 비율이 정한다 (사진 없으면 기존 그대로) */
-.heroPhoto { height: 340px; min-height: 340px; }
+/* 4:5 세로 포스터 프레임으로 고정 + 폭을 제한해 크기를 줄인다(가운데 정렬).
+   모든 이벤트가 같은 4:5 크기 → 크기 통일 + 세로 포스터 느낌. */
+.heroPhoto {
+  width: 100%; max-width: 640px; margin-inline: auto;
+  aspect-ratio: 4 / 5; height: auto; min-height: 0;
+}
 .heroPhoto .heroBg {
   position: absolute; inset: 0;
   display: block; width: 100%; height: 100%;
-  min-height: 0; max-height: none;
+  max-height: none;
   object-fit: cover; object-position: center;
-}
-@media (hover: none) and (pointer: coarse) and (max-width: 720px) {
-  .heroPhoto { height: 420px; min-height: 420px; }
 }
 /* 전체 스크림은 상단만 — 우측 상단 ··· 버튼 대비용 */
 .heroPhoto .heroScrim {

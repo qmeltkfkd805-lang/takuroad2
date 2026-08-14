@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "im-the-queen-in-this-life-webtoon",
+    "name": "언니, 이번 생엔 내가 왕비야",
+    "englishName": "I'm the Queen in This Life",
+    "aliases": ["언니내왕"],
+    "description": "배신당해 죽은 아리아드네가 과거로 돌아가 왕비의 자리를 향해 운명을 바꾸는 회귀 로맨스다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://series.naver.com/comic/detail.series?productNo=8757112",
+    "source": "https://series.naver.com/comic/detail.series?productNo=8757112"
+  },
+  {
+    "slug": "men-of-the-harem-webtoon",
+    "name": "하렘의 남자들",
+    "englishName": "Men of the Harem",
+    "aliases": [],
+    "description": "황제 라틸이 황권을 지키기 위해 여러 후궁을 들이며 궁정의 음모와 사랑을 마주한다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://series.naver.com/comic/detail.series?productNo=5677625",
+    "source": "https://series.naver.com/comic/detail.series?productNo=5677625"
+  },
+  {
+    "slug": "surviving-as-an-illegitimate-princess-webtoon",
+    "name": "사생아 공주로 살아남기",
+    "englishName": "Surviving as an Illegitimate Princess",
+    "aliases": [],
+    "description": "여러 번의 죽음과 회귀를 겪은 어린 공주가 황궁에서 살아남기 위해 가족과 운명을 바꾼다.",
+    "genres": ["로맨스", "판타지", "가족"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/사생아-공주로-살아남기/2966",
+    "source": "https://webtoon.kakao.com/content/사생아-공주로-살아남기/2966"
+  },
+  {
+    "slug": "villainous-princess-wants-to-live-in-a-gingerbread-house-webtoon",
+    "name": "악역 황녀님은 과자집에서 살고 싶어",
+    "englishName": "The Villainous Princess Wants to Live in a Gingerbread House",
+    "aliases": [],
+    "description": "비극을 맞는 황녀로 환생한 아샤가 뛰어난 제과 실력으로 사람들의 마음과 미래를 바꾼다.",
+    "genres": ["로맨스", "판타지", "요리"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/악역-황녀님은-과자집에서-살고-싶어/2721",
+    "source": "https://webtoon.kakao.com/content/악역-황녀님은-과자집에서-살고-싶어/2721"
+  },
+  {
+    "slug": "villainous-emperor-of-a-novel-webtoon",
+    "name": "소설 속 악녀 황제가 되었다",
+    "englishName": "I Became the Villainous Emperor of a Novel",
+    "aliases": [],
+    "description": "폭군 황제의 몸에 빙의한 주인공이 망가진 제국을 바로잡고 예정된 죽음을 피하려 한다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/소설-속-악녀-황제가-되었다/2404",
+    "source": "https://webtoon.kakao.com/content/소설-속-악녀-황제가-되었다/2404"
+  },
+  {
+    "slug": "lady-chef-royale-webtoon",
+    "name": "로열 셰프 영애님",
+    "englishName": "Lady Chef Royale",
+    "aliases": [],
+    "description": "불행한 삶을 마친 뒤 귀족 영애로 환생한 세나가 요리 재능으로 새 삶과 가족을 얻는다.",
+    "genres": ["로맨스", "판타지", "요리"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/로열-셰프-영애님/2401",
+    "source": "https://webtoon.kakao.com/content/로열-셰프-영애님/2401"
+  },
+  {
+    "slug": "your-ultimate-love-rival-webtoon",
+    "name": "남주의 연적이 되어 버렸다",
+    "englishName": "Your Ultimate Love Rival",
+    "aliases": [],
+    "description": "소설 속 조연으로 빙의한 이레네가 친구를 지키려다 남주들의 연적이자 마법사의 관심 대상이 된다.",
+    "genres": ["로맨스", "판타지", "코미디"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/남주의-연적이-되어-버렸다/2791",
+    "source": "https://webtoon.kakao.com/content/남주의-연적이-되어-버렸다/2791"
+  },
+  {
+    "slug": "villainess-blind-date-is-too-perfect-webtoon",
+    "name": "악녀의 맞선남이 너무 완벽하다",
+    "englishName": "The Villainess's Blind Date Is Too Perfect",
+    "aliases": [],
+    "description": "악녀로 빙의한 주인공이 파혼을 위한 맞선에서 예상과 달리 완벽한 상대를 만나 계획이 꼬인다.",
+    "genres": ["로맨스", "판타지", "코미디"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/악녀의-맞선남이-너무-완벽하다/3652",
+    "source": "https://webtoon.kakao.com/content/악녀의-맞선남이-너무-완벽하다/3652"
+  },
+  {
+    "slug": "not-your-typical-reincarnation-story-webtoon",
+    "name": "흔한 빙의물인 줄 알았다",
+    "englishName": "Not Your Typical Reincarnation Story",
+    "aliases": ["흔빙물"],
+    "description": "악녀 에디트로 빙의한 주인공이 원작의 강제력과 죽음의 운명에 맞서 자신의 삶을 개척한다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://series.naver.com/comic/detail.series?productNo=9578281",
+    "source": "https://series.naver.com/comic/detail.series?productNo=9578281"
+  },
+  {
+    "slug": "one-husband-is-enough-webtoon",
+    "name": "남편은 한 명으로 족하다",
+    "englishName": "One Husband Is Enough",
+    "aliases": [],
+    "description": "연애 게임 속에 갇힌 주인공이 과도한 매력 수치로 뒤틀린 공략 대상들 사이에서 탈출을 노린다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://series.naver.com/comic/detail.series?productNo=11004208",
+    "source": "https://series.naver.com/comic/detail.series?productNo=11004208"
+  }
+]

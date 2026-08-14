@@ -33,7 +33,7 @@ function hostOf(url: string): string {
 }
 
 function ticketButtonLabel(event: EventDetail, index: number, fallback: string): string {
-  return (event as any).ticketLabels?.[index]?.trim() || fallback
+  return event.ticketLabels[index]?.trim() || fallback
 }
 
 const fmtFull = (s: string | null) => {
@@ -249,7 +249,9 @@ export default function EventDetailPage() {
                 </div>
               )}
 
-              {event.description && <p className={styles.heroDesc}>{event.description}</p>}
+              {event.description && (
+                <p className={styles.heroDesc}>{event.description.split(/\n\s*\n/)[0]}</p>
+              )}
 
               {event.work && (
                 <div className={styles.tags}>

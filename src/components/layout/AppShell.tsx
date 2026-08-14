@@ -23,7 +23,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const isRouteBuilder = pathname === '/route/new' || (pathname.startsWith('/route/') && pathname.endsWith('/edit'))
   // 계정 설정 전용 레이아웃: 전역 헤더·좌측 사이드바 없이 자체 헤더만. 모바일 하단 네비는 유지.
   const isSettings = pathname === '/profile/settings' || pathname.startsWith('/profile/settings/')
-  const hideBottomNav = pathname === '/community/write' || isRouteBuilder   // 글쓰기·루트작성: 하단 네비 숨김
+  // 글쓰기·루트작성·프로필 편집(전용 저장 헤더): 하단 네비 숨김
+  const isProfileEdit = pathname === '/profile/settings/profile'
+  const hideBottomNav = pathname === '/community/write' || isRouteBuilder || isProfileEdit
   // 모바일 전역 상단바: 홈·지도·작품에서만 노출, 그 외 화면은 모두 숨김
   // (커뮤니티는 자체 헤더+검색이 있어 전역 상단바 제외)
   const showHeaderMobile = pathname === '/' || pathname === '/map'

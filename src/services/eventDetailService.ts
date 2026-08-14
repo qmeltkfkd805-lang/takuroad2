@@ -31,6 +31,8 @@ export interface EventDetail {
   sourceUrls: string[]
   /** 예매·예약 페이지 */
   ticketUrls: string[]
+  /** ticketUrls와 같은 순서의 버튼명 */
+  ticketLabels: string[]
   placeDetail: string | null
   /** 샵으로 연결되지 않은 이벤트의 장소 (이름·주소·좌표) */
   placeSnapshot: string | null
@@ -94,6 +96,17 @@ export async function getEventDetail(eventId: string): Promise<EventDetail | nul
   const shop: any = shopRes.data
   const editor: any = editorRes.data
 
+  const rawTicketLinks = Array.isArray(e.ticket_urls) ? e.ticket_urls : []
+  const validTicketLinks = rawTicketLinks.filter((item: unknown) =>
+    typeof item === 'string' ? item.trim() : String((item as any)?.url ?? '').trim(),
+  )
+  const ticketUrls = validTicketLinks.map((item: unknown) =>
+    typeof item === 'string' ? item.trim() : String((item as any).url).trim(),
+  )
+  const ticketLabels = validTicketLinks.map((item: unknown) =>
+    typeof item === 'object' && item !== null ? String((item as any).label ?? '').trim() : '',
+  )
+
   return {
     id: e.id,
     type: e.type,
@@ -118,7 +131,8 @@ export async function getEventDetail(eventId: string): Promise<EventDetail | nul
     } : null,
     description: e.description ?? null,
     sourceUrls: Array.isArray(e.source_urls) ? (e.source_urls as string[]) : [],
-    ticketUrls: Array.isArray(e.ticket_urls) ? (e.ticket_urls as string[]) : [],
+    ticketUrls,
+    ticketLabels,
     placeDetail: e.place_detail ?? null,
     placeSnapshot: e.place_name ?? null,
     placeId: e.place_id ?? null,

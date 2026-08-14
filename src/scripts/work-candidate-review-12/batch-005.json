@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "a-stepmothers-marchen-webtoon",
+    "name": "어떤 계모님의 메르헨",
+    "englishName": "A Stepmother's Märchen",
+    "aliases": ["어계메"],
+    "description": "남편 사후 가문을 지키다 버려진 슈리가 과거로 돌아가 네 의붓자녀와 가족의 미래를 다시 만든다.",
+    "genres": ["로맨스", "판타지", "가족"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/어떤-계모님의-메르헨/4478",
+    "source": "https://webtoon.kakao.com/content/어떤-계모님의-메르헨/4478"
+  },
+  {
+    "slug": "i-raised-cinderella-preciously-webtoon",
+    "name": "신데렐라를 곱게 키웠습니다",
+    "englishName": "I Raised Cinderella Preciously",
+    "aliases": ["신곱키"],
+    "description": "신데렐라의 계모가 된 밀드레드가 세 딸을 지키고 키우며 정해진 동화와 다른 삶을 만들어 간다.",
+    "genres": ["로맨스", "판타지", "가족"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/신데렐라를-곱게-키웠습니다/2419",
+    "source": "https://webtoon.kakao.com/content/신데렐라를-곱게-키웠습니다/2419"
+  },
+  {
+    "slug": "not-sew-wicked-stepmom-webtoon",
+    "name": "계모인데, 딸이 너무 귀여워",
+    "englishName": "Not-Sew-Wicked Stepmom",
+    "aliases": ["계딸귀"],
+    "description": "백설공주의 계모로 환생한 아비게일이 사랑스러운 의붓딸을 아끼며 냉랭한 왕실 가족을 바꿔 간다.",
+    "genres": ["로맨스", "판타지", "가족"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/계모인데-딸이-너무-귀여워/2487",
+    "source": "https://webtoon.kakao.com/content/계모인데-딸이-너무-귀여워/2487"
+  },
+  {
+    "slug": "the-male-leads-little-lion-daughter-webtoon",
+    "name": "남주의 입양딸이 되었습니다",
+    "englishName": "The Male Lead's Little Lion Daughter",
+    "aliases": ["남입딸"],
+    "description": "고아원에서 대공에게 입양된 레오니아가 닮은꼴 아버지와 티격태격하며 가문의 비밀과 자신의 힘을 알아간다.",
+    "genres": ["로맨스", "판타지", "가족"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/남주의-입양딸이-되었습니다/2664",
+    "source": "https://webtoon.kakao.com/content/남주의-입양딸이-되었습니다/2664"
+  },
+  {
+    "slug": "what-it-takes-to-be-a-villainess-webtoon",
+    "name": "악녀의 정의",
+    "englishName": "What It Takes to Be a Villainess",
+    "aliases": [],
+    "description": "물에 빠진 뒤 공작 영애 샤티로 깨어난 주인공이 황후 자리를 둘러싼 경쟁과 궁정의 음모에 맞선다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/악녀의-정의/2318",
+    "source": "https://webtoon.kakao.com/content/악녀의-정의/2318"
+  },
+  {
+    "slug": "a-villainess-no-more-webtoon",
+    "name": "악녀는 변화한다",
+    "englishName": "A Villainess No More",
+    "aliases": [],
+    "description": "악녀라는 오명을 쓴 엘자가 정략결혼으로 북부에 향해 자신을 믿어 주는 공작과 새 삶을 시작한다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/악녀는-변화한다/2800",
+    "source": "https://webtoon.kakao.com/content/악녀는-변화한다/2800"
+  },
+  {
+    "slug": "the-villainess-stationery-shop-webtoon",
+    "name": "악녀의 문구점에 오지 마세요!",
+    "englishName": "The Villainess's Stationery Shop",
+    "aliases": ["악문오"],
+    "description": "소설 속 악녀 멜데니크가 착취하던 가족을 떠나 아이들을 위한 문구점을 열고 독립을 시작한다.",
+    "genres": ["로맨스", "판타지", "코미디"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/악녀의-문구점에-오지-마세요/2873",
+    "source": "https://webtoon.kakao.com/content/악녀의-문구점에-오지-마세요/2873"
+  },
+  {
+    "slug": "the-villainess-captured-the-grand-duke-webtoon",
+    "name": "악녀는 대공을 사로잡았다",
+    "englishName": "The Villainess Captured the Grand Duke",
+    "aliases": [],
+    "description": "소설 속 악녀로 빙의한 셰이리아가 최애인 북부 대공을 구하기 위해 먼저 청혼하고 그의 마음을 두드린다.",
+    "genres": ["로맨스", "판타지", "코미디"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/악녀는-대공을-사로잡았다/3941",
+    "source": "https://webtoon.kakao.com/content/악녀는-대공을-사로잡았다/3941"
+  },
+  {
+    "slug": "how-to-hide-the-emperors-child-webtoon",
+    "name": "황제의 아이를 숨기는 방법",
+    "englishName": "How to Hide the Emperor's Child",
+    "aliases": ["황아숨"],
+    "description": "이혼당한 아스텔이 황제의 아이를 홀로 키우다 다시 황실과 얽히며 아들의 정체를 지키려 한다.",
+    "genres": ["로맨스", "판타지", "가족"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/황제의-아이를-숨기는-방법/2881",
+    "source": "https://webtoon.kakao.com/content/황제의-아이를-숨기는-방법/2881"
+  },
+  {
+    "slug": "the-perks-of-being-a-villainess-webtoon",
+    "name": "악녀라서 편하고 좋은데요?",
+    "englishName": "The Perks of Being a Villainess",
+    "aliases": ["악편좋"],
+    "description": "호구처럼 살다 악녀 데보라로 빙의한 주인공이 현대 지식과 당당한 태도로 가문과 사교계를 장악한다.",
+    "genres": ["로맨스", "판타지", "코미디"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/악녀라서-편하고-좋은데요/3100",
+    "source": "https://webtoon.kakao.com/content/악녀라서-편하고-좋은데요/3100"
+  }
+]

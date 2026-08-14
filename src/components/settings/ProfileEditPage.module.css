@@ -1,0 +1,153 @@
+/* ===== 프로필 편집 (PC·모바일 공용, 설정 전용 셸 내부) ===== */
+.wrap { padding-bottom: 40px; }
+
+/* 아바타 */
+.avatarSec { display: flex; flex-direction: column; align-items: center; padding: 10px 0 22px; }
+.avatarWrap { position: relative; width: 96px; height: 96px; }
+.avatar {
+  width: 96px; height: 96px; border-radius: 9999px; overflow: hidden;
+  background: var(--accent); color: #fff; display: inline-flex; align-items: center; justify-content: center;
+  font-size: 40px; font-weight: 900;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.camBtn {
+  position: absolute; right: -2px; bottom: -2px;
+  width: 30px; height: 30px; border-radius: 9999px; border: 3px solid var(--surface2);
+  background: var(--accent); color: #fff; display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.avatarActions { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+.avatarAct { border: none; background: none; font-family: inherit; font-size: 13.5px; font-weight: 800; color: var(--accent); cursor: pointer; padding: 4px 2px; }
+.avatarAct.muted { color: var(--muted); font-weight: 700; }
+.avatarSep { width: 1px; height: 12px; background: var(--border); }
+.avatarHint { font-size: 12px; color: var(--muted); margin-top: 8px; }
+.avatarNotice {
+  margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--muted);
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 9999px; padding: 5px 12px;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+
+/* 그룹 */
+.group { margin-bottom: 20px; }
+.groupLabel { font-size: 12.5px; font-weight: 800; color: var(--muted); margin: 0 4px 8px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+
+/* 필드 행 — PC: 라벨 좌 / 컨트롤 우, 모바일: 세로 스택 */
+.row { padding: 16px; border-top: 1px solid var(--border); }
+.row:first-child { border-top: none; }
+.rowTop { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.label { font-size: 13.5px; font-weight: 800; color: var(--text); }
+.count { font-size: 12px; color: var(--muted); flex-shrink: 0; }
+.inputWrap { display: flex; align-items: center; gap: 8px; }
+.input {
+  flex: 1; min-width: 0; height: 44px; padding: 0 14px;
+  border: 1px solid var(--border); border-radius: 10px; background: var(--surface);
+  font-family: inherit; font-size: 14px; color: var(--text);
+}
+.input:focus { outline: none; border-color: var(--accent); }
+.textarea {
+  width: 100%; min-height: 76px; padding: 12px 14px; resize: vertical;
+  border: 1px solid var(--border); border-radius: 10px; background: var(--surface);
+  font-family: inherit; font-size: 14px; color: var(--text); line-height: 1.6;
+}
+.textarea:focus { outline: none; border-color: var(--accent); }
+.dupBtn {
+  flex-shrink: 0; height: 44px; padding: 0 14px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer; white-space: nowrap;
+}
+.dupBtn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.dupBtn:disabled { color: var(--muted); cursor: default; }
+.hint { font-size: 12px; margin-top: 6px; color: var(--muted); }
+.hintOk { color: #10b981; }
+.hintErr { color: var(--red, #e5484d); }
+
+/* 선택형 행(칭호·최애작품·대표배지) */
+.pickRow {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  padding: 16px; border-top: 1px solid var(--border);
+  background: none; border-left: none; border-right: none; border-bottom: none;
+  font-family: inherit; cursor: pointer;
+}
+.pickRow:first-child { border-top: none; }
+.pickRow:hover { background: var(--surface2); }
+.pickLabel { font-size: 13.5px; font-weight: 800; color: var(--text); flex-shrink: 0; }
+.pickValue { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; justify-content: flex-end; color: var(--muted); }
+.pickValText { font-size: 14px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pickPlaceholder { font-size: 14px; color: var(--muted); }
+.workThumb { width: 34px; height: 34px; border-radius: 8px; object-fit: cover; background: var(--surface2); flex-shrink: 0; }
+.badgeMini { display: inline-flex; gap: 6px; }
+.badgeMini img { width: 28px; height: 28px; object-fit: contain; }
+.chev { color: var(--muted); flex-shrink: 0; }
+.changeBtn {
+  flex-shrink: 0; height: 34px; padding: 0 14px; border-radius: 9px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.changeBtn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* PC 하단 버튼 */
+.footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 26px; }
+.cancelBtn {
+  height: 46px; padding: 0 26px; border-radius: 10px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font-family: inherit; font-weight: 800; font-size: 14px; cursor: pointer;
+}
+.saveBtn {
+  height: 46px; padding: 0 30px; border-radius: 10px; border: none;
+  background: var(--accent); color: #fff; font-family: inherit; font-weight: 800; font-size: 14px; cursor: pointer;
+}
+.saveBtn:disabled { background: var(--accent-l); color: var(--accent); cursor: default; }
+
+/* 모바일 헤더 저장 버튼 */
+.saveTop { border: none; background: none; font-family: inherit; font-size: 15px; font-weight: 800; color: var(--accent); cursor: pointer; padding: 6px 4px; }
+.saveTop:disabled { color: var(--muted); cursor: default; }
+
+/* 토스트 */
+.toast {
+  position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+  background: var(--text); color: #fff; font-size: 13.5px; font-weight: 700;
+  padding: 12px 20px; border-radius: 10px; z-index: 80; box-shadow: 0 6px 20px rgba(0,0,0,.22);
+}
+.formErr { color: var(--red, #e5484d); font-size: 13px; text-align: center; margin-top: 14px; }
+
+/* ── 선택 모달 (칭호·최애작품·대표배지) ── */
+.modalOverlay { position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.modal { width: 100%; max-width: 420px; max-height: 80vh; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+.modalHead { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid var(--border); }
+.modalTitle { font-size: 15.5px; font-weight: 800; color: var(--text); }
+.modalClose { border: none; background: none; cursor: pointer; color: var(--muted); font-size: 20px; line-height: 1; padding: 4px; }
+.modalBody { overflow-y: auto; padding: 8px; }
+.modalFoot { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+.modalDone { flex: 1; height: 44px; border: none; border-radius: 10px; background: var(--accent); color: #fff; font-family: inherit; font-weight: 800; cursor: pointer; }
+.modalClear { height: 44px; padding: 0 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); font-family: inherit; font-weight: 700; cursor: pointer; }
+
+.optRow { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 12px; border-radius: 10px; border: none; background: none; font-family: inherit; cursor: pointer; }
+.optRow:hover { background: var(--surface2); }
+.optRow.on { background: var(--accent-l); }
+.optRow.locked { opacity: .5; cursor: default; }
+.optRow.locked:hover { background: none; }
+.optThumb { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; background: var(--surface2); flex-shrink: 0; }
+.optBadgeIcon { width: 40px; height: 40px; object-fit: contain; flex-shrink: 0; }
+.optTitlePill { display: inline-flex; align-items: center; padding: 5px 12px; border-radius: 9999px; background: var(--accent-l); color: var(--accent); font-size: 13px; font-weight: 800; }
+.optBody { flex: 1; min-width: 0; }
+.optName { font-size: 14px; font-weight: 700; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.optSub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.optCheck { flex-shrink: 0; color: var(--accent); }
+.optEmpty { padding: 34px 10px; text-align: center; color: var(--muted); font-size: 13.5px; line-height: 1.6; }
+
+/* PC: 라벨 좌 / 컨트롤 우 정렬 */
+@media (min-width: 641px) {
+  .saveTop { display: none; }   /* PC는 하단 저장하기 버튼만 사용 */
+  .row { display: grid; grid-template-columns: 120px 1fr; align-items: start; gap: 16px; }
+  .rowTop { margin-bottom: 0; }
+  .row .rowTop { grid-column: 1; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .row .fieldMain { grid-column: 2; }
+  .avatar, .avatarWrap { width: 104px; height: 104px; }
+}
+
+/* 모바일: 세로 스택(라벨+카운트 상단, 입력 하단) */
+@media (max-width: 640px) {
+  .avatarWrap, .avatar { width: 88px; height: 88px; }
+  .avatar { font-size: 36px; }
+  .footer { display: none; }
+}
