@@ -1,0 +1,18 @@
+2026-08-15 07:59:01.844: [INFO] CurrentProfilePath: C:\dev\takuroad\src\tmp\edge-gintama\Default
+2026-08-15 07:59:01.844: [INFO] Profiles total count: 1
+2026-08-15 07:59:01.845: [INFO] Profile: name=프로필 1 path=C:\dev\takuroad\src\tmp\edge-gintama\Default lastActive=2026-08-15T07:59:01.812Z
+2026-08-15 07:59:01.845: [INFO] LastUsedProfileDir: C:\dev\takuroad\src\tmp\edge-gintama\Default
+2026-08-15 07:59:01.845: [INFO] MostRecentlyActiveProfile: name=프로필 1 path=C:\dev\takuroad\src\tmp\edge-gintama\Default lastActive=2026-08-15T07:59:01.812Z
+2026-08-15 07:59:01.845: [INFO] OnDoneLoading sync enabled: 0
+2026-08-15 07:59:01.845: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-15 07:59:01.845: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-15 07:59:01.845: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-15 07:59:02.118: [INFO] VisibilityChanged: 0
+2026-08-15 07:59:02.183: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-08-15 07:59:02.840: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-08-15 07:59:02.844: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-08-15 07:59:02.845: [INFO] Primary account changed.
+2026-08-15 07:59:02.845: [INFO] OnPrimaryAccountChanged PrimaryAccountChangeEvent::Type::kSet
+2026-08-15 07:59:02.851: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-08-15 07:59:02.862: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-08-15 07:59:09.254: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1

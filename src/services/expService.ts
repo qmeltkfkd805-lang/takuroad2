@@ -217,6 +217,20 @@ export async function getMyLevelInfo(userId: string): Promise<LevelInfo> {
   }
 }
 
+/** 특정 기간(월) 획득 EXP 합계 — exp_logs가 authoritative(배지·미션·조정 포함).
+ *  해당 월 행만 DB단에서 걸러오므로 크지 않음. 음수(차감)도 그대로 합산. */
+export async function getMonthlyExpTotal(userId: string, startUtc: string, endUtc: string): Promise<number> {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('exp_logs')
+    .select('amount')
+    .eq('user_id', userId)
+    .gte('created_at', startUtc)
+    .lt('created_at', endUtc)
+  if (error) { console.error('[getMonthlyExpTotal]', error.message); return 0 }
+  return (data ?? []).reduce((sum: number, r: any) => sum + (Number(r.amount) || 0), 0)
+}
+
 // EXP 로그 히스토리 (내 활동 페이지용)
 export async function getExpLogs(userId: string) {
   const supabase = createClient()

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { XP_RULES, WORK_PROGRESS_XP } from './expService'
 
 /* ============================================================
    Activity 시스템 — 타쿠로드의 덕질 기록 원장
@@ -608,4 +609,203 @@ export async function checkWorkMilestone(userId: string, workId: string): Promis
     workName: (tag as any)?.name ?? '작품',
     pct: current,
   })
+}
+
+
+/* ============================================================
+   내 활동 기록 페이지(/profile/activity) 전용 조회
+   ⭐ 원장(activity_logs)만 읽는다 = 내가 한 행동. 배지·미션·관리자조정 같은
+      "활동 아닌 EXP 변동"은 여기 안 들어온다(월 합계 EXP엔 반영됨).
+   ⭐ 코드→문구·아이콘·분류·링크·EXP를 이 한 곳에서만 매핑한다(JSX 조건문 금지).
+   ============================================================ */
+
+export type ActivityCategory = 'visit' | 'register' | 'route' | 'community' | 'etc'
+
+export const ACTIVITY_CATEGORIES: { key: ActivityCategory | 'all'; label: string }[] = [
+  { key: 'all', label: '전체' },
+  { key: 'visit', label: '방문' },
+  { key: 'register', label: '등록' },
+  { key: 'route', label: '루트' },
+  { key: 'community', label: '커뮤니티' },
+  { key: 'etc', label: '기타' },
+]
+
+const ACTIVITY_CATEGORY: Record<string, ActivityCategory> = {
+  shop_visit: 'visit', event_visit: 'visit',
+  shop_register: 'register', work_register: 'register', event_submit: 'register',
+  route_created: 'route', route_completed: 'route',
+  review: 'community', photo_upload: 'community',
+  work_progress: 'etc', achievement_unlock: 'etc',
+}
+
+// 이름과 무관한 "무엇을 했는지" 문장 (행 윗줄)
+const ACTIVITY_SENTENCE: Record<string, string> = {
+  shop_visit: '굿즈샵 방문을 인증했어요',
+  event_visit: '이벤트에 다녀왔어요',
+  shop_register: '새로운 샵을 등록했어요',
+  work_register: '새로운 작품을 등록했어요',
+  event_submit: '이벤트 제보가 채택됐어요',
+  route_created: '새 루트를 만들었어요',
+  route_completed: '루트를 완주했어요',
+  review: '후기를 남겼어요',
+  photo_upload: '사진을 등록했어요',
+  work_progress: '작품 감상을 기록했어요',
+  achievement_unlock: '업적을 달성했어요',
+}
+
+// 아이콘 키 (페이지에서 인라인 SVG로 렌더)
+const ACTIVITY_ICON: Record<string, string> = {
+  shop_visit: 'shopCheck', event_visit: 'event',
+  shop_register: 'shopPlus', work_register: 'bookmark', event_submit: 'megaphone',
+  route_created: 'routePin', route_completed: 'flag',
+  review: 'star', photo_upload: 'photo',
+  work_progress: 'bookmark', achievement_unlock: 'medal',
+}
+
+function activityTargetName(type: string, s: ActivitySnapshot): string | null {
+  switch (type) {
+    case 'shop_visit': case 'shop_register': return s.shop_name ?? s.place_name ?? null
+    case 'event_visit': case 'event_submit': return s.event_name ?? null
+    case 'route_completed': case 'route_created': return s.route_name ?? null
+    case 'work_register': case 'work_progress': return s.work_name ?? null
+    case 'review': return s.shop_name ?? s.event_name ?? null
+    case 'achievement_unlock': return s.achievement_name ?? null
+    default: return null
+  }
+}
+
+function activityExp(type: string, s: ActivitySnapshot): number {
+  if (type === 'work_progress') return (s.pct != null ? WORK_PROGRESS_XP[s.pct] : 0) ?? 0
+  return XP_RULES[type]?.baseXp ?? 0
+}
+
+export interface ActivityLogRow {
+  id: string
+  type: string
+  sentence: string
+  name: string | null
+  href: string | null
+  icon: string
+  exp: number
+  occurredAt: string
+  category: ActivityCategory
+  /** 대상이 실제 존재해 클릭 가능한지 (markClickable로 채움) */
+  clickable?: boolean
+}
+
+function mapActivityRow(r: any): ActivityLogRow {
+  const s = (r.snapshot ?? {}) as ActivitySnapshot
+  const type = String(r.type)
+  if (!ACTIVITY_SENTENCE[type] && process.env.NODE_ENV !== 'production') {
+    console.warn('[활동기록] 알 수 없는 활동 코드:', type)
+  }
+  return {
+    id: r.id,
+    type,
+    sentence: ACTIVITY_SENTENCE[type] ?? '활동으로 경험치를 획득했어요',
+    name: activityTargetName(type, s),
+    href: activityHref(type as ActivityType, s, r.related_id),
+    icon: ACTIVITY_ICON[type] ?? 'spark',
+    exp: activityExp(type, s),
+    occurredAt: validDate(r.occurred_at) ?? validDate(r.created_at) ?? '',
+    category: ACTIVITY_CATEGORY[type] ?? 'etc',
+  }
+}
+
+/** 활동 기록 조회 — 월·분류 DB단 필터 + (occurred_at,id) 커서 페이지네이션. */
+export async function getMyActivityLog(opts: {
+  userId: string
+  startUtc: string
+  endUtc: string
+  category?: ActivityCategory | 'all'
+  cursor?: { occurredAt: string; id: string } | null
+  limit?: number
+}): Promise<{ rows: ActivityLogRow[]; nextCursor: { occurredAt: string; id: string } | null }> {
+  const supabase = createClient()
+  const limit = opts.limit ?? 25
+
+  let q = supabase
+    .from('activity_logs')
+    .select('id, type, snapshot, related_id, occurred_at, created_at')
+    .eq('user_id', opts.userId)
+    .gte('occurred_at', opts.startUtc)
+    .lt('occurred_at', opts.endUtc)
+    .order('occurred_at', { ascending: false })
+    .order('id', { ascending: false })
+    .limit(limit + 1)
+
+  if (opts.category && opts.category !== 'all') {
+    const types = Object.keys(ACTIVITY_CATEGORY).filter(t => ACTIVITY_CATEGORY[t] === opts.category)
+    q = q.in('type', types.length ? types : ['__none__'])
+  }
+  if (opts.cursor) {
+    // (occurred_at, id) < cursor  → 중복·누락 없는 keyset
+    q = q.or(`occurred_at.lt.${opts.cursor.occurredAt},and(occurred_at.eq.${opts.cursor.occurredAt},id.lt.${opts.cursor.id})`)
+  }
+
+  const { data, error } = await q
+  if (error) { console.error('[getMyActivityLog]', error.message); throw new Error(error.message) }
+
+  const raw = (data ?? []) as any[]
+  const hasMore = raw.length > limit
+  const page = hasMore ? raw.slice(0, limit) : raw
+  const rows = page.map(mapActivityRow)
+  const last = page[page.length - 1]
+  const nextCursor = hasMore && last ? { occurredAt: last.occurred_at, id: last.id } : null
+  return { rows, nextCursor }
+}
+
+/** 이번 달 활동 횟수 (전체 행을 가져오지 않고 count head). */
+export async function getActivityCount(userId: string, startUtc: string, endUtc: string): Promise<number> {
+  const supabase = createClient()
+  const { count } = await supabase
+    .from('activity_logs')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', userId)
+    .gte('occurred_at', startUtc)
+    .lt('occurred_at', endUtc)
+  return count ?? 0
+}
+
+/** 로드된 페이지의 대상이 실제 존재하는지 배치 확인 → 클릭 가능한 행 id 집합.
+ *  (삭제된 대상은 링크하지 않고 스냅샷 이름만 보여주기 위함) */
+export async function markClickable(rows: ActivityLogRow[]): Promise<Set<string>> {
+  const shops = new Set<string>(), routes = new Set<string>(), works = new Set<string>(), events = new Set<string>()
+  const kindOf = (href: string): [string, string] | null => {
+    if (href.startsWith('/shop/')) return ['shop', href.slice(6)]
+    if (href.startsWith('/route/')) return ['route', href.slice(7)]
+    if (href.startsWith('/work/')) return ['work', href.slice(6)]
+    if (href.startsWith('/event/')) return ['event', href.slice(7)]
+    return null
+  }
+  for (const r of rows) {
+    if (!r.href) continue
+    const k = kindOf(r.href); if (!k) continue
+    if (k[0] === 'shop') shops.add(k[1])
+    else if (k[0] === 'route') routes.add(k[1])
+    else if (k[0] === 'work') works.add(k[1])
+    else if (k[0] === 'event') events.add(k[1])
+  }
+  const supabase = createClient()
+  const [sh, rt, wk, ev] = await Promise.all([
+    shops.size ? supabase.from('shops').select('slug').in('slug', [...shops]) : Promise.resolve({ data: [] as any[] }),
+    routes.size ? supabase.from('routes').select('share_token').in('share_token', [...routes]) : Promise.resolve({ data: [] as any[] }),
+    works.size ? supabase.from('tags').select('slug').in('slug', [...works]) : Promise.resolve({ data: [] as any[] }),
+    events.size ? supabase.from('events').select('id').in('id', [...events]) : Promise.resolve({ data: [] as any[] }),
+  ])
+  const okShop = new Set((sh.data ?? []).map((x: any) => x.slug))
+  const okRoute = new Set((rt.data ?? []).map((x: any) => x.share_token))
+  const okWork = new Set((wk.data ?? []).map((x: any) => x.slug))
+  const okEvent = new Set((ev.data ?? []).map((x: any) => String(x.id)))
+  const clickable = new Set<string>()
+  for (const r of rows) {
+    if (!r.href) continue
+    const k = kindOf(r.href); if (!k) continue
+    const ok = k[0] === 'shop' ? okShop.has(k[1])
+      : k[0] === 'route' ? okRoute.has(k[1])
+        : k[0] === 'work' ? okWork.has(k[1])
+          : k[0] === 'event' ? okEvent.has(k[1]) : false
+    if (ok) clickable.add(r.id)
+  }
+  return clickable
 }
