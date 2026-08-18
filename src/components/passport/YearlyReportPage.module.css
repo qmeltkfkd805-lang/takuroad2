@@ -1,0 +1,21 @@
+/* ===== 연간 리포트 (설정 전용 셸 내부) — 내 활동 기록과 통일 ===== */
+.wrap { padding-bottom: 40px; }
+.desc { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin: 2px 2px 18px; }
+
+/* 헤더 우측 연도 선택 */
+.yearSelect {
+  padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--surface2); color: var(--text);
+  font-size: 13px; font-family: inherit; cursor: pointer;
+}
+
+/* 로딩 / 빈 상태 */
+.loading { text-align: center; padding: 56px 20px; color: var(--muted); font-size: 13.5px; }
+.state { text-align: center; padding: 56px 20px; }
+.stateTitle { font-size: 15px; font-weight: 800; color: var(--text); }
+.stateDesc { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin-top: 8px; }
+.stateBtn {
+  margin-top: 16px; border: none; background: var(--accent); color: #fff;
+  font-family: inherit; font-size: 13.5px; font-weight: 800; cursor: pointer;
+  padding: 11px 22px; border-radius: 10px;
+}
