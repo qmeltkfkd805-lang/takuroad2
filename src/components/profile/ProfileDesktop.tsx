@@ -12,6 +12,7 @@ import { getMyLevelInfo, LevelInfo } from '@/services/expService'
 import { getFollowCounts, getFollowers, getFollowing, getFollowFeed, FollowUser, FollowFeedItem } from '@/services/followService'
 import { getMyRecentActivities, RecentActivity } from '@/services/activityService'
 import { getQuickMenu, setQuickMenu } from '@/services/quickMenuService'
+import MyGoodsSection from '@/components/goods/MyGoodsSection'
 import GrowthPage from '@/components/growth/GrowthPage'
 import ChroniclePage from '@/components/collection/ChroniclePage'
 import BadgesTab from './BadgesTab'
@@ -335,6 +336,9 @@ export default function ProfileDesktop({ passport, userId }: Props) {
             ))}
           </div>
         </section>
+
+        {/* 나의 굿즈 보관함 (주요 콘텐츠 영역) */}
+        <MyGoodsSection />
 
         {/* 2열 */}
         <div className={styles.cols}>

@@ -22,8 +22,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   // 루트 만들기/수정: 작성 전용 화면 (/route/new, /route/[token]/edit)
   const isRouteBuilder = pathname === '/route/new' || (pathname.startsWith('/route/') && pathname.endsWith('/edit'))
   // 계정 설정 전용 레이아웃: 전역 헤더·좌측 사이드바 없이 자체 헤더만.
-  // /profile/activity(내 활동 기록), /profile/report/*(연간 리포트)도 같은 설정 전용 레이아웃을 쓴다.
-  const isBareProfile = pathname === '/profile/activity' || pathname.startsWith('/profile/report/')
+  // /profile/activity(내 활동 기록), /profile/report/*(연간 리포트), /profile/goods·/profile/collections(굿즈)도 같은 설정 전용 레이아웃을 쓴다.
+  const isBareProfile = pathname === '/profile/activity'
+    || pathname.startsWith('/profile/report/')
+    || pathname === '/profile/goods' || pathname.startsWith('/profile/goods/')
+    || pathname === '/profile/collections' || pathname.startsWith('/profile/collections/')
   const isSettings = pathname === '/profile/settings' || pathname.startsWith('/profile/settings/') || isBareProfile
   // 글쓰기·루트작성·프로필 편집·내 활동 기록: 하단 네비 숨김
   const isProfileEdit = pathname === '/profile/settings/profile'
