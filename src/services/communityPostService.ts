@@ -169,6 +169,29 @@ export async function getPost(id: string, userId?: string | null): Promise<Commu
   return toPost(data, likedSet)
 }
 
+// ── 이전/다음 글 (같은 게시판, active·공개·공지 제외, 작성일 기준) ──
+export interface PostNeighbor { id: string; title: string | null; createdAt: string }
+export async function getAdjacentPosts(current: { id: string; board: Board; createdAt: string }): Promise<{ prev: PostNeighbor | null; next: PostNeighbor | null }> {
+  const supabase = createClient()
+  const base = () => supabase
+    .from('community_posts_visible')
+    .select('id, title, created_at')
+    .eq('board', current.board)
+    .eq('status', 'active')
+    .eq('visibility', 'public')
+    .eq('is_notice', false)
+  // 이전 글 = 더 과거(작성일이 현재보다 작은 것 중 가장 최신), 다음 글 = 더 최신(작성일이 현재보다 큰 것 중 가장 오래된)
+  const [prevRes, nextRes] = await Promise.all([
+    base().lt('created_at', current.createdAt).order('created_at', { ascending: false }).limit(1),
+    base().gt('created_at', current.createdAt).order('created_at', { ascending: true }).limit(1),
+  ])
+  const map = (rows: any[] | null): PostNeighbor | null => {
+    const r = rows?.[0]
+    return r ? { id: r.id, title: r.title ?? null, createdAt: r.created_at } : null
+  }
+  return { prev: map(prevRes.data), next: map(nextRes.data) }
+}
+
 // ── 내 글 (숨김 포함) ──
 export async function getMyPosts(userId: string): Promise<CommunityPost[]> {
   const supabase = createClient()

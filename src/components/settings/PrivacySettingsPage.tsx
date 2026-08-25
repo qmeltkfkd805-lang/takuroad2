@@ -16,6 +16,7 @@ const TARGET_LABEL: Record<PrivacyTarget, { label: string; desc: string }> = {
   completed_routes: { label: '완주한 루트', desc: '성지순례 완주 기록' },
   liked_works:      { label: '관심 작품', desc: '최애·관심 등록 작품' },
   collections:      { label: '컬렉션', desc: '수집 현황' },
+  goods:            { label: '굿즈', desc: '내 굿즈 목록' },
 }
 
 const LEVELS: { value: PrivacyLevel; label: string }[] = [

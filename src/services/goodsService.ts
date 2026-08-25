@@ -475,7 +475,7 @@ export async function createGoods(input: GoodsInput, files: File[]): Promise<str
   }))
   const { error: imgErr } = await supabase.from('goods_item_images').insert(imgRows)
   if (imgErr) {
-    await supabase.from('goods_items').delete().eq('id', row.id).catch(() => {})
+    try { await supabase.from('goods_items').delete().eq('id', row.id) } catch { /* 롤백 실패 무시 */ }
     await supabase.storage.from('goods-images').remove(paths).catch(() => {})
     throw imgErr
   }

@@ -10,6 +10,7 @@ import UserLevelBadge from '@/components/cosmetic/UserLevelBadge'
 import {
   togglePostLike, incrementPostView, getComments, addComment, deleteComment, toggleCommentLike,
   reportPost, hidePost, deletePost, setPostVisibility, getWorkPosts,
+  getAdjacentPosts, type PostNeighbor,
 } from '@/services/communityPostService'
 import { CommunityPost, PostComment, ReportReason, REPORT_REASONS, BOARD_LABEL, Poll } from '@/types/community-post'
 import { getPollByPost, votePoll } from '@/services/pollService'
@@ -117,6 +118,16 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
   }, [post.id, isGoodsBoard, post.work?.id, post.author?.id, user?.id])
 
   useEffect(() => { incrementPostView(post.id) }, [post.id])
+
+  // 이전/다음 글 (페이지 + 일반 게시글만)
+  const [neighbors, setNeighbors] = useState<{ prev: PostNeighbor | null; next: PostNeighbor | null }>({ prev: null, next: null })
+  useEffect(() => {
+    if (variant !== 'page' || post.board === 'goods') return
+    let alive = true
+    getAdjacentPosts({ id: post.id, board: post.board, createdAt: post.createdAt })
+      .then(r => { if (alive) setNeighbors(r) }).catch(() => {})
+    return () => { alive = false }
+  }, [post.id, post.board, post.createdAt, variant])
 
   const loadComments = useCallback(async () => setComments(await getComments(post.id, user?.id)), [post.id, user?.id])
   useEffect(() => { loadComments() }, [loadComments])
@@ -251,7 +262,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
     </div>
   )
 
-  const tagRow = (extra?: React.ReactNode) => (
+  const tagRow = (extra?: React.ReactNode, showKebab = true) => (
     <div style={{ display: 'flex', gap: 7, marginBottom: 8, flexWrap: 'wrap', alignItems: 'center' }}>
       <span style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--accent)' }}>{BOARD_LABEL[post.board]}</span>
       {post.work && (
@@ -261,7 +272,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
       )}
       {post.featured && <FeaturedTag kind={post.featured} inline />}
       {extra}
-      {kebab}
+      {showKebab && kebab}
     </div>
   )
 
@@ -352,21 +363,26 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
         </div>
       )}
       <div style={{ padding: isPage ? '18px 0 24px' : '16px 18px 20px' }}>
-        {tagRow()}
+        {tagRow(undefined, false)}
         {post.title && <h3 style={{ fontSize: 19, fontWeight: 800, margin: '0 0 8px' }}>{post.flair && <span style={{ ...flairBadge, fontSize: 13 }}>{post.flair}</span>}{post.title}</h3>}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: 'var(--muted)', paddingBottom: 14, marginBottom: 16, borderBottom: '1px solid var(--border)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: 'var(--muted)', paddingBottom: 14, marginBottom: 16, borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
           {authorLink}
           <UserLevelBadge userId={post.author?.id} />
+          <span>· {fmtDate(post.createdAt)}</span>
           <span>· 조회 {post.viewCount}</span>
+          {kebab}
         </div>
-        {post.content && (isHtml
-          ? <div className="taku-post-body" style={{ fontSize: 14.5, lineHeight: 1.65, margin: '0 0 16px', wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
-          : <p style={{ fontSize: 14.5, lineHeight: 1.65, whiteSpace: 'pre-wrap', margin: '0 0 16px' }}>{post.content}</p>)}
+        <div style={{ minHeight: isPage ? 56 : undefined, marginBottom: isPage ? 20 : 16 }}>
+          {post.content && (isHtml
+            ? <div className="taku-post-body" style={{ fontSize: 14.5, lineHeight: 1.65, margin: 0, wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
+            : <p style={{ fontSize: 14.5, lineHeight: 1.65, whiteSpace: 'pre-wrap', margin: 0 }}>{post.content}</p>)}
+        </div>
 
         {poll && <PollView poll={poll} userId={user?.id ?? null} onChanged={loadPoll} onRequireLogin={() => router.push(ROUTES.login)} />}
 
         {actionsBar}
         {commentsBlock}
+        {isPage && <PrevNextNav prev={neighbors.prev} next={neighbors.next} onOpen={id => router.push(`/community/${id}`)} />}
       </div>
     </>
   )
@@ -533,6 +549,29 @@ function fmtDate(iso: string): string {
   const d = new Date(iso)
   const p = (n: number) => String(n).padStart(2, '0')
   return `${d.getFullYear()}.${p(d.getMonth() + 1)}.${p(d.getDate())}`
+}
+
+// ── 이전 글 / 다음 글 (댓글 아래, 얇은 2줄 목록) ──
+function PrevNextNav({ prev, next, onOpen }: { prev: PostNeighbor | null; next: PostNeighbor | null; onOpen: (id: string) => void }) {
+  const row = (label: string, p: PostNeighbor | null) => (
+    <div
+      onClick={p ? () => onOpen(p.id) : undefined}
+      style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '13px 2px', borderBottom: '1px solid var(--border)', cursor: p ? 'pointer' : 'default' }}
+    >
+      <span style={{ flex: '0 0 52px', fontSize: 12.5, fontWeight: 800, color: 'var(--muted)' }}>{label}</span>
+      <span style={{ flex: 1, minWidth: 0, fontSize: 13.5, color: p ? 'var(--text)' : 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        {p ? (p.title || '제목 없음') : `${label}이 없어요`}
+      </span>
+      {p && <span className="pn-date" style={{ flexShrink: 0, fontSize: 12, color: 'var(--muted)' }}>{fmtDate(p.createdAt)}</span>}
+    </div>
+  )
+  return (
+    <div style={{ marginTop: 22, borderTop: '1px solid var(--border)' }}>
+      <style>{`@media (max-width:640px){ .pn-date{ display:none } }`}</style>
+      {row('이전 글', prev)}
+      {row('다음 글', next)}
+    </div>
+  )
 }
 
 // ── 굿즈자랑 상세: 굿즈 정보 카드(흰색 가로형) ──

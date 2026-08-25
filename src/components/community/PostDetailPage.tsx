@@ -32,7 +32,8 @@ export default function PostDetailPage() {
 
   const isGoods = post.board === 'goods'
   return (
-    <div style={{ padding: '20px 48px 72px' }}>
+    <div className="post-detail-wrap" style={{ paddingTop: 20, paddingBottom: 72 }}>
+      <style>{`.post-detail-wrap{padding-left:48px;padding-right:48px}@media (max-width:640px){.post-detail-wrap{padding-left:16px;padding-right:16px}}`}</style>
       <div style={{ maxWidth: isGoods ? 1120 : 820, margin: '0 auto', minWidth: 0 }}>
         <PostDetailModal post={post} variant="page" onClose={() => router.back()} onChanged={load} />
       </div>
