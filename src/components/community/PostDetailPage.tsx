@@ -30,9 +30,10 @@ export default function PostDetailPage() {
     </div>
   )
 
+  const isGoods = post.board === 'goods'
   return (
     <div style={{ padding: '20px 48px 72px' }}>
-      <div style={{ maxWidth: 820, margin: '0 auto', minWidth: 0 }}>
+      <div style={{ maxWidth: isGoods ? 1120 : 820, margin: '0 auto', minWidth: 0 }}>
         <PostDetailModal post={post} variant="page" onClose={() => router.back()} onChanged={load} />
       </div>
     </div>

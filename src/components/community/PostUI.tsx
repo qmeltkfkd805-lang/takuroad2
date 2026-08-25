@@ -9,10 +9,11 @@ import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import UserLevelBadge from '@/components/cosmetic/UserLevelBadge'
 import {
   togglePostLike, incrementPostView, getComments, addComment, deleteComment, toggleCommentLike,
-  reportPost, hidePost, deletePost, setPostVisibility,
+  reportPost, hidePost, deletePost, setPostVisibility, getWorkPosts,
 } from '@/services/communityPostService'
 import { CommunityPost, PostComment, ReportReason, REPORT_REASONS, BOARD_LABEL, Poll } from '@/types/community-post'
 import { getPollByPost, votePoll } from '@/services/pollService'
+import { getPostGoods, getGoodsDetail, type GoodsDetail } from '@/services/goodsService'
 import AppIcon from '@/components/tds/AppIcon'
 
 // ── 대표 팬아트 배지 ──
@@ -86,6 +87,35 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
   const loadPoll = useCallback(async () => { setPoll(await getPollByPost(post.id, user?.id)) }, [post.id, user?.id])
   useEffect(() => { loadPoll() }, [loadPoll])
 
+  // ── 굿즈자랑 전용(연결 굿즈 존재 시) ──
+  const isGoodsBoard = post.board === 'goods'
+  const [goodsLoading, setGoodsLoading] = useState(isGoodsBoard)
+  const [hasGoods, setHasGoods] = useState(false)
+  const [goodsDetail, setGoodsDetail] = useState<GoodsDetail | null>(null)
+  const [relatedPosts, setRelatedPosts] = useState<CommunityPost[]>([])
+  useEffect(() => {
+    if (!isGoodsBoard) { setGoodsLoading(false); return }
+    let alive = true
+    setGoodsLoading(true)
+    ;(async () => {
+      try {
+        const linked = await getPostGoods(post.id)
+        if (!alive) return
+        if (linked.length === 0) { setHasGoods(false); return }
+        setHasGoods(true)
+        const [detail, related] = await Promise.all([
+          getGoodsDetail(linked[0].id).catch(() => null),
+          post.work?.id ? getWorkPosts(post.work.id, 'goods', 'latest', user?.id).catch(() => [] as CommunityPost[]) : Promise.resolve([] as CommunityPost[]),
+        ])
+        if (!alive) return
+        setGoodsDetail(detail)
+        setRelatedPosts(related.filter(p => p.id !== post.id && p.visibility === 'public'))
+      } finally { if (alive) setGoodsLoading(false) }
+    })()
+    return () => { alive = false }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [post.id, isGoodsBoard, post.work?.id, post.author?.id, user?.id])
+
   useEffect(() => { incrementPostView(post.id) }, [post.id])
 
   const loadComments = useCallback(async () => setComments(await getComments(post.id, user?.id)), [post.id, user?.id])
@@ -145,6 +175,201 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
   const isHtml = /<[a-z][\s\S]*>/i.test(html)
   const showCarousel = images.length > 0 && !hasInlineImg
   const isPage = variant === 'page'
+  const isGoods = isGoodsBoard && hasGoods
+  // 굿즈 정보 블록(data-gm)만 제거하고 본문 이미지는 인라인 그대로 표시
+  const goodsHtml = (post.content ?? '').replace(/<div data-gm="1"[\s\S]*?<\/div>/gi, '')
+  const goodsIsHtml = /<[a-z][\s\S]*>/i.test(goodsHtml)
+  const goodsHasInlineImg = /<img/i.test(goodsHtml)
+
+  // ── 공용 조각 ──
+  const kebab = isAuthor ? (
+    <div style={{ marginLeft: 'auto', position: 'relative' }}>
+      <button onClick={() => setMenuOpen(o => !o)} aria-label="더보기" style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--muted)', padding: 4, display: 'flex' }}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6" /><circle cx="12" cy="12" r="1.6" /><circle cx="12" cy="19" r="1.6" /></svg>
+      </button>
+      {menuOpen && (
+        <div style={{ position: 'absolute', top: '100%', right: 0, zIndex: 30, marginTop: 4, minWidth: 140, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.14)', overflow: 'hidden' }}>
+          <button onClick={() => { setMenuOpen(false); router.push(`/community/write?edit=${post.id}`) }} style={menuItem}>수정하기</button>
+          <button onClick={togglePrivate} style={menuItem}>{post.visibility === 'private' ? '전체 공개' : '나만보기'}</button>
+          <button onClick={() => { setMenuOpen(false); onDelete() }} style={{ ...menuItem, color: '#e04343' }}>삭제하기</button>
+        </div>
+      )}
+    </div>
+  ) : null
+
+  const actionsBar = (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, paddingBottom: 14, borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+        <button onClick={like} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, color: post.likedByMe ? '#FF4D6D' : 'var(--muted)' }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill={post.likedByMe ? '#FF4D6D' : 'none'} stroke={post.likedByMe ? '#FF4D6D' : 'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" /></svg>
+          좋아요 {post.likeCount}
+        </button>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700, color: 'var(--muted)' }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>
+          댓글 {post.commentCount}
+        </span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <button onClick={share} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, color: 'var(--muted)' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7" /><path d="M16 6l-4-4-4 4" /><path d="M12 2v13" /></svg>
+          공유
+        </button>
+        {user && (
+          <>
+            <span style={{ color: 'var(--border)' }}>|</span>
+            <button onClick={() => setReporting(true)} style={{ border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, color: 'var(--muted)' }}>신고</button>
+          </>
+        )}
+      </div>
+    </div>
+  )
+
+  const commentsBlock = (
+    <div style={{ marginTop: 14 }}>
+      <div style={{ fontSize: 13.5, fontWeight: 800, marginBottom: 10 }}>댓글 {post.commentCount}</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 14 }}>
+        {comments.map(c => (
+          <div key={c.id} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <CommentRow c={c} highlight={c.id === highlightId} user={user} isAdmin={isAdmin} onLike={likeComment} onReply={(id) => { setReplyTo(replyTo === id ? null : id); setReplyText('') }} onDelete={removeComment} />
+            {c.replies.map(r => (
+              <CommentRow key={r.id} c={r} highlight={r.id === highlightId} isReply user={user} isAdmin={isAdmin} onLike={likeComment} onDelete={removeComment} />
+            ))}
+            {replyTo === c.id && user && (
+              <div style={{ display: 'flex', gap: 8, marginLeft: 28 }}>
+                <input value={replyText} onChange={e => setReplyText(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitReply(c.id)} placeholder="답글 달기" style={{ flex: 1, padding: '8px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontSize: 13.5, fontFamily: 'inherit' }} />
+                <button onClick={() => submitReply(c.id)} style={{ padding: '8px 14px', borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0 }}>등록</button>
+              </div>
+            )}
+          </div>
+        ))}
+        {comments.length === 0 && <div style={{ fontSize: 13, color: 'var(--muted)' }}>첫 댓글을 남겨보세요.</div>}
+      </div>
+      <div style={{ display: 'flex', gap: 8 }}>
+        <input value={commentText} onChange={e => setCommentText(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitComment()} placeholder="댓글 달기" style={{ flex: 1, padding: '10px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontSize: 14, fontFamily: 'inherit' }} />
+        <button onClick={submitComment} style={{ padding: '10px 16px', borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 13.5, cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0 }}>등록</button>
+      </div>
+    </div>
+  )
+
+  const tagRow = (extra?: React.ReactNode) => (
+    <div style={{ display: 'flex', gap: 7, marginBottom: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+      <span style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--accent)' }}>{BOARD_LABEL[post.board]}</span>
+      {post.work && (
+        <button onClick={() => post.work?.slug ? router.push(`/work/${encodeURIComponent(post.work.slug)}`) : router.push(`/work/${post.work?.id}`)} style={{ fontSize: 11.5, fontWeight: 700, color: 'var(--muted)', background: 'var(--surface2)', border: 'none', padding: '3px 9px', borderRadius: 9999, cursor: 'pointer', fontFamily: 'inherit' }}>
+          {post.work.name} ›
+        </button>
+      )}
+      {post.featured && <FeaturedTag kind={post.featured} inline />}
+      {extra}
+      {kebab}
+    </div>
+  )
+
+  const authorLink = (
+    <Link
+      href={post.author?.nickname ? '/user/' + encodeURIComponent(post.author.nickname) : '#'}
+      onClick={e => e.stopPropagation()}
+      style={{ display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none', color: 'inherit' }}
+    >
+      <UserAvatar userId={post.author?.id} src={post.author?.avatarUrl} name={post.author?.nickname} size={30} />
+      <span style={{ fontWeight: 700, color: 'var(--text)' }}>{post.author?.nickname ?? '익명'}</span>
+    </Link>
+  )
+
+  const visBadge = post.visibility === 'private'
+    ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: 11, fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l, rgba(232,0,111,.08))', border: '1px solid var(--accent, #ff5692)', padding: '2px 8px', borderRadius: 9999 }}>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>나만보기
+      </span>
+    : null
+
+  // ── 굿즈자랑 전용 본문 ──
+  const goodsBody = (
+    <div style={{ padding: isPage ? '18px 0 24px' : '16px 18px 20px' }}>
+      <style>{`
+        .gd-grid{display:grid;gap:22px;grid-template-columns:1fr;grid-template-areas:"main" "aside" "comments"}
+        @media (min-width:920px){ .gd-grid{grid-template-columns:minmax(0,1fr) 264px;column-gap:28px;row-gap:22px;grid-template-areas:"main aside" "comments aside";align-items:start} }
+        .gd-main{grid-area:main;min-width:0}
+        .gd-aside{grid-area:aside;min-width:0;display:flex;flex-direction:column;gap:16px}
+        .gd-comments{grid-area:comments;min-width:0}
+      `}</style>
+      <div className="gd-grid">
+        <div className="gd-main">
+          {!goodsHasInlineImg && images.length > 0 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 14 }}>
+              {images.map((src, i) => (
+                <img key={i} src={src} alt={`${post.title || '굿즈'} 사진 ${i + 1}`} loading={i === 0 ? 'eager' : 'lazy'} style={{ width: '100%', borderRadius: 14, display: 'block', background: 'var(--surface2)' }} />
+              ))}
+            </div>
+          )}
+          {tagRow()}
+          {post.title && <h3 style={{ fontSize: 21, fontWeight: 800, margin: '0 0 10px' }}>{post.flair && <span style={{ ...flairBadge, fontSize: 13 }}>{post.flair}</span>}{post.title}</h3>}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: 'var(--muted)', paddingBottom: 14, marginBottom: 16, borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
+            {authorLink}
+            <UserLevelBadge userId={post.author?.id} />
+            <span>· {fmtDate(post.createdAt)}</span>
+            <span>· 조회 {post.viewCount}</span>
+            {visBadge}
+          </div>
+          {goodsHtml && (goodsIsHtml
+            ? <div className="taku-post-body" style={{ fontSize: 14.5, lineHeight: 1.7, margin: '0 0 16px', wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(goodsHtml) }} />
+            : <p style={{ fontSize: 14.5, lineHeight: 1.7, whiteSpace: 'pre-wrap', margin: '0 0 16px' }}>{goodsHtml}</p>)}
+          <GoodsInfoCard
+            detail={goodsDetail}
+            coverUrl={goodsDetail?.images?.[0]?.url ?? null}
+            onView={() => {
+              if (isAuthor) router.push(post.work?.id ? `/profile/collections/${post.work.id}` : '/profile/goods')
+              else if (post.author?.nickname) router.push(`/user/${encodeURIComponent(post.author.nickname)}`)
+            }}
+          />
+          {poll && <PollView poll={poll} userId={user?.id ?? null} onChanged={loadPoll} onRequireLogin={() => router.push(ROUTES.login)} />}
+          {actionsBar}
+        </div>
+        <div className="gd-aside">
+          <RelatedGoodsCard
+            posts={relatedPosts}
+            onOpen={id => router.push(`/community/${id}`)}
+            onMore={() => router.push(`/community?board=goods${post.work?.id ? `&tag=${post.work.id}` : ''}`)}
+          />
+        </div>
+        <div className="gd-comments">{commentsBlock}</div>
+      </div>
+    </div>
+  )
+
+  // ── 일반 게시글 본문 ──
+  const genericBody = (
+    <>
+      {showCarousel && (
+        <div style={{ position: 'relative', background: '#000' }}>
+          <img src={images[imgIdx]} alt="" style={{ width: '100%', maxHeight: '52vh', objectFit: 'contain', display: 'block' }} />
+          {images.length > 1 && (
+            <>
+              <button onClick={() => setImgIdx(i => (i - 1 + images.length) % images.length)} style={navBtn('left')}>‹</button>
+              <button onClick={() => setImgIdx(i => (i + 1) % images.length)} style={navBtn('right')}>›</button>
+              <div style={{ position: 'absolute', bottom: 8, left: 0, right: 0, textAlign: 'center', color: '#fff', fontSize: 12 }}>{imgIdx + 1} / {images.length}</div>
+            </>
+          )}
+        </div>
+      )}
+      <div style={{ padding: isPage ? '18px 0 24px' : '16px 18px 20px' }}>
+        {tagRow()}
+        {post.title && <h3 style={{ fontSize: 19, fontWeight: 800, margin: '0 0 8px' }}>{post.flair && <span style={{ ...flairBadge, fontSize: 13 }}>{post.flair}</span>}{post.title}</h3>}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: 'var(--muted)', paddingBottom: 14, marginBottom: 16, borderBottom: '1px solid var(--border)' }}>
+          {authorLink}
+          <UserLevelBadge userId={post.author?.id} />
+          <span>· 조회 {post.viewCount}</span>
+        </div>
+        {post.content && (isHtml
+          ? <div className="taku-post-body" style={{ fontSize: 14.5, lineHeight: 1.65, margin: '0 0 16px', wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
+          : <p style={{ fontSize: 14.5, lineHeight: 1.65, whiteSpace: 'pre-wrap', margin: '0 0 16px' }}>{post.content}</p>)}
+
+        {poll && <PollView poll={poll} userId={user?.id ?? null} onChanged={loadPoll} onRequireLogin={() => router.push(ROUTES.login)} />}
+
+        {actionsBar}
+        {commentsBlock}
+      </div>
+    </>
+  )
 
   return (
     <div onClick={isPage ? undefined : onClose} style={isPage ? { width: '100%' } : { position: 'fixed', inset: 0, background: 'rgba(0,0,0,.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000, padding: 16 }}>
@@ -158,112 +383,9 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
           </div>
         )}
         <style>{`.taku-post-body img{max-width:100%;border-radius:10px}.taku-post-body video{max-width:100%;border-radius:10px}.taku-post-body blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}.taku-post-body a{color:var(--accent)}`}</style>
-        {showCarousel && (
-          <div style={{ position: 'relative', background: '#000' }}>
-            <img src={images[imgIdx]} alt="" style={{ width: '100%', maxHeight: '52vh', objectFit: 'contain', display: 'block' }} />
-            {images.length > 1 && (
-              <>
-                <button onClick={() => setImgIdx(i => (i - 1 + images.length) % images.length)} style={navBtn('left')}>‹</button>
-                <button onClick={() => setImgIdx(i => (i + 1) % images.length)} style={navBtn('right')}>›</button>
-                <div style={{ position: 'absolute', bottom: 8, left: 0, right: 0, textAlign: 'center', color: '#fff', fontSize: 12 }}>{imgIdx + 1} / {images.length}</div>
-              </>
-            )}
-          </div>
-        )}
-        <div style={{ padding: isPage ? '18px 0 24px' : '16px 18px 20px' }}>
-          <div style={{ display: 'flex', gap: 7, marginBottom: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-            <span style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--accent)' }}>{BOARD_LABEL[post.board]}</span>
-            {post.work && (
-              <button onClick={() => post.work?.slug ? router.push(`/work/${encodeURIComponent(post.work.slug)}`) : router.push(`/work/${post.work?.id}`)} style={{ fontSize: 11.5, fontWeight: 700, color: 'var(--muted)', background: 'var(--surface2)', border: 'none', padding: '3px 9px', borderRadius: 9999, cursor: 'pointer', fontFamily: 'inherit' }}>
-                {post.work.name} ›
-              </button>
-            )}
-            {post.featured && <FeaturedTag kind={post.featured} inline />}
-            {isAuthor && (
-              <div style={{ marginLeft: 'auto', position: 'relative' }}>
-                <button onClick={() => setMenuOpen(o => !o)} aria-label="더보기" style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--muted)', padding: 4, display: 'flex' }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6" /><circle cx="12" cy="12" r="1.6" /><circle cx="12" cy="19" r="1.6" /></svg>
-                </button>
-                {menuOpen && (
-                  <div style={{ position: 'absolute', top: '100%', right: 0, zIndex: 30, marginTop: 4, minWidth: 140, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.14)', overflow: 'hidden' }}>
-                    <button onClick={() => { setMenuOpen(false); router.push(`/community/write?edit=${post.id}`) }} style={menuItem}>수정하기</button>
-                    <button onClick={togglePrivate} style={menuItem}>{post.visibility === 'private' ? '전체 공개' : '나만보기'}</button>
-                    <button onClick={() => { setMenuOpen(false); onDelete() }} style={{ ...menuItem, color: '#e04343' }}>삭제하기</button>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-          {post.title && <h3 style={{ fontSize: 19, fontWeight: 800, margin: '0 0 8px' }}>{post.flair && <span style={{ ...flairBadge, fontSize: 13 }}>{post.flair}</span>}{post.title}</h3>}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: 'var(--muted)', paddingBottom: 14, marginBottom: 16, borderBottom: '1px solid var(--border)' }}>
-            <Link
-              href={post.author?.nickname ? '/user/' + encodeURIComponent(post.author.nickname) : '#'}
-              onClick={e => e.stopPropagation()}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none', color: 'inherit' }}
-            >
-              <UserAvatar userId={post.author?.id} src={post.author?.avatarUrl} name={post.author?.nickname} size={30} />
-              <span style={{ fontWeight: 700, color: 'var(--text)' }}>{post.author?.nickname ?? '익명'}</span>
-            </Link>
-            <UserLevelBadge userId={post.author?.id} />
-            <span>· 조회 {post.viewCount}</span>
-          </div>
-          {post.content && (isHtml
-            ? <div className="taku-post-body" style={{ fontSize: 14.5, lineHeight: 1.65, margin: '0 0 16px', wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
-            : <p style={{ fontSize: 14.5, lineHeight: 1.65, whiteSpace: 'pre-wrap', margin: '0 0 16px' }}>{post.content}</p>)}
-
-          {poll && <PollView poll={poll} userId={user?.id ?? null} onChanged={loadPoll} onRequireLogin={() => router.push(ROUTES.login)} />}
-
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, paddingBottom: 14, borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-              <button onClick={like} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, color: post.likedByMe ? '#FF4D6D' : 'var(--muted)' }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill={post.likedByMe ? '#FF4D6D' : 'none'} stroke={post.likedByMe ? '#FF4D6D' : 'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" /></svg>
-                좋아요 {post.likeCount}
-              </button>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700, color: 'var(--muted)' }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>
-                댓글 {post.commentCount}
-              </span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <button onClick={share} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, color: 'var(--muted)' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7" /><path d="M16 6l-4-4-4 4" /><path d="M12 2v13" /></svg>
-                공유
-              </button>
-              {user && (
-                <>
-                  <span style={{ color: 'var(--border)' }}>|</span>
-                  <button onClick={() => setReporting(true)} style={{ border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, color: 'var(--muted)' }}>신고</button>
-                </>
-              )}
-            </div>
-          </div>
-
-          {/* 댓글 */}
-          <div style={{ marginTop: 14 }}>
-            <div style={{ fontSize: 13.5, fontWeight: 800, marginBottom: 10 }}>댓글 {post.commentCount}</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 14 }}>
-              {comments.map(c => (
-                <div key={c.id} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <CommentRow c={c} highlight={c.id === highlightId} user={user} isAdmin={isAdmin} onLike={likeComment} onReply={(id) => { setReplyTo(replyTo === id ? null : id); setReplyText('') }} onDelete={removeComment} />
-                  {c.replies.map(r => (
-                    <CommentRow key={r.id} c={r} highlight={r.id === highlightId} isReply user={user} isAdmin={isAdmin} onLike={likeComment} onDelete={removeComment} />
-                  ))}
-                  {replyTo === c.id && user && (
-                    <div style={{ display: 'flex', gap: 8, marginLeft: 28 }}>
-                      <input value={replyText} onChange={e => setReplyText(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitReply(c.id)} placeholder="답글 달기" style={{ flex: 1, padding: '8px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontSize: 13.5, fontFamily: 'inherit' }} />
-                      <button onClick={() => submitReply(c.id)} style={{ padding: '8px 14px', borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0 }}>등록</button>
-                    </div>
-                  )}
-                </div>
-              ))}
-              {comments.length === 0 && <div style={{ fontSize: 13, color: 'var(--muted)' }}>첫 댓글을 남겨보세요.</div>}
-            </div>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <input value={commentText} onChange={e => setCommentText(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitComment()} placeholder="댓글 달기" style={{ flex: 1, padding: '10px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontSize: 14, fontFamily: 'inherit' }} />
-              <button onClick={submitComment} style={{ padding: '10px 16px', borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 13.5, cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0 }}>등록</button>
-            </div>
-          </div>
-        </div>
+        {isGoodsBoard && goodsLoading
+          ? <div style={{ padding: '56px 0', textAlign: 'center', color: 'var(--muted)', fontSize: 14 }}>불러오는 중…</div>
+          : isGoods ? goodsBody : genericBody}
       </div>
 
       {reporting && <ReportModal postId={post.id} onClose={() => setReporting(false)} />}
@@ -407,6 +529,103 @@ function fmtDateTime(iso: string): string {
   const p = (n: number) => String(n).padStart(2, '0')
   return `${d.getFullYear()}.${p(d.getMonth() + 1)}.${p(d.getDate())}. ${p(d.getHours())}:${p(d.getMinutes())}`
 }
+function fmtDate(iso: string): string {
+  const d = new Date(iso)
+  const p = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}.${p(d.getMonth() + 1)}.${p(d.getDate())}`
+}
+
+// ── 굿즈자랑 상세: 굿즈 정보 카드(흰색 가로형) ──
+const GI = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.9, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
+function GoodsInfoCard({ detail, coverUrl, onView, viewLabel = '컬렉션 보기' }: {
+  detail: GoodsDetail | null; coverUrl: string | null; onView?: () => void; viewLabel?: string
+}) {
+  if (!detail) return null
+  const chars = (detail.characterName ?? '').split(',').map(s => s.trim()).filter(Boolean)
+  const types = Array.isArray(detail.tags) ? detail.tags.filter(Boolean) : []
+  const metas: string[] = []
+  if (detail.store) metas.push(detail.store)
+  if (detail.purchasedOn) metas.push(`${fmtDate(detail.purchasedOn)} 구매`)
+  if (detail.price != null) metas.push(`가격 ${detail.price.toLocaleString('ko-KR')}원`)
+  const title = detail.name || '내 굿즈'
+  const hasBody = chars.length > 0 || types.length > 0 || metas.length > 0
+  const pill = (bg: string, fg: string, bd: string): React.CSSProperties => ({
+    fontSize: 11.5, fontWeight: 700, padding: '2px 9px', borderRadius: 9999, color: fg, background: bg, border: `1px solid ${bd}`, lineHeight: 1.5,
+  })
+  return (
+    <div style={{ border: '1px solid var(--border)', borderRadius: 14, background: 'var(--surface)', padding: '12px 14px', margin: '4px 0 18px' }}>
+      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 800, color: 'var(--accent)', marginBottom: 10 }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" {...GI}><path d="M20 7h-3.6a2.4 2.4 0 1 0-4.4 0M8 7H4.4M4 7h16v13H4zM12 7v13M4 12h16" /></svg>
+        굿즈 정보
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 13, flexWrap: 'wrap' }}>
+        <span style={{ width: 60, height: 60, borderRadius: 11, overflow: 'hidden', flexShrink: 0, background: 'var(--surface2)', display: 'block' }}>
+          {coverUrl
+            ? <img src={coverUrl} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            : <span style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--border)' }}><svg width="22" height="22" viewBox="0 0 24 24" {...GI}><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="9" cy="11" r="2" /><path d="m5 19 5-4 3 2 3-3 3 3" /></svg></span>}
+        </span>
+        <div style={{ flex: '1 1 180px', minWidth: 0 }}>
+          <div style={{ fontSize: 14.5, fontWeight: 800, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginBottom: hasBody ? 6 : 0 }}>{title}</div>
+          {hasBody && (
+            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6, fontSize: 12, color: 'var(--muted)' }}>
+              {chars.map((c, i) => <span key={'c' + i} style={pill('var(--accent-l, rgba(232,0,111,.08))', 'var(--accent)', 'var(--accent, #ff5692)')}>{c}</span>)}
+              {types.map((t, i) => <span key={'t' + i} style={pill('var(--surface2)', 'var(--text)', 'var(--border)')}>{t}</span>)}
+              {metas.length > 0 && <span style={{ color: 'var(--muted)' }}>{(chars.length > 0 || types.length > 0) ? '· ' : ''}{metas.join(' · ')}</span>}
+            </div>
+          )}
+        </div>
+        {onView && (
+          <button onClick={onView} style={{ flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 5, padding: '9px 14px', borderRadius: 10, border: '1px solid var(--accent, #ff5692)', background: 'var(--surface)', color: 'var(--accent)', fontWeight: 800, fontSize: 12.5, cursor: 'pointer', fontFamily: 'inherit' }}>
+            {viewLabel}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ── 굿즈자랑 상세 우측: 같은 작품의 굿즈 자랑 ──
+function RelatedGoodsCard({ posts, onOpen, onMore }: { posts: CommunityPost[]; onOpen: (id: string) => void; onMore?: () => void }) {
+  const shown = posts.slice(0, 3)
+  const hasMore = posts.length > 3
+  return (
+    <div style={{ border: '1px solid var(--border)', borderRadius: 14, background: 'var(--surface)', padding: posts.length ? '15px 15px 8px' : '15px 15px' }}>
+      <div style={{ fontSize: 13.5, fontWeight: 800, color: 'var(--text)', marginBottom: 10 }}>같은 작품의 굿즈 자랑</div>
+      {posts.length === 0 && (
+        <div style={{ fontSize: 12.5, color: 'var(--muted)', lineHeight: 1.6, padding: '4px 0 8px' }}>아직 같은 작품의 굿즈 자랑이 없어요.</div>
+      )}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {shown.map(p => (
+          <button key={p.id} onClick={() => onOpen(p.id)} style={{ display: 'flex', gap: 11, alignItems: 'center', padding: '10px 0', border: 'none', borderTop: '1px solid var(--border)', background: 'none', cursor: 'pointer', textAlign: 'left', fontFamily: 'inherit', width: '100%' }}>
+            <span style={{ width: 60, height: 60, borderRadius: 10, overflow: 'hidden', flexShrink: 0, background: 'var(--surface2)', display: 'block' }}>
+              {p.images[0]
+                ? <img src={p.images[0]} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                : <span style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--border)' }}><svg width="24" height="24" viewBox="0 0 24 24" {...GI}><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="9" cy="11" r="2" /><path d="m5 19 5-4 3 2 3-3 3 3" /></svg></span>}
+            </span>
+            <span style={{ flex: 1, minWidth: 0 }}>
+              <span style={{ display: 'block', fontSize: 13, fontWeight: 700, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.title || '굿즈 자랑'}</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11.5, color: 'var(--muted)', marginTop: 2 }}>
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 100 }}>{p.author?.nickname ?? '익명'}</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, flexShrink: 0 }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" /></svg>
+                  {p.likeCount}
+                </span>
+              </span>
+            </span>
+          </button>
+        ))}
+      </div>
+      {hasMore && onMore && (
+        <button onClick={onMore} style={{ width: '100%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 4, padding: '11px 0 8px', border: 'none', borderTop: '1px solid var(--border)', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 12.5, fontWeight: 800, color: 'var(--muted)' }}>
+          더 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+      )}
+    </div>
+  )
+}
+
 
 function CommentRow({ c, isReply, highlight, user, isAdmin, onLike, onReply, onDelete }: {
   c: PostComment; isReply?: boolean; highlight?: boolean; user: { id: string } | null; isAdmin: boolean;

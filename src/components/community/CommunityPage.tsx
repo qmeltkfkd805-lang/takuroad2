@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { ROUTES } from '@/lib/constants/routes'
@@ -40,6 +40,7 @@ function timeAgo(iso: string): string {
 export default function CommunityPage() {
   const { user, profile } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const isDesktop = useIsDesktop()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [creationOpen, setCreationOpen] = useState(false)   // 서랍: 창작게시판 아코디언
@@ -150,6 +151,26 @@ export default function CommunityPage() {
   }, [board, sort, scope, search, searchField, tagFilter?.id, user?.id, isDesktop])
 
   useEffect(() => { load() }, [load])
+
+  // URL 파라미터로 게시판/작품 필터 초기화 (?board=goods&tag=<workId>) — 최초 1회
+  const urlAppliedRef = useRef(false)
+  useEffect(() => {
+    if (urlAppliedRef.current) return
+    const b = searchParams.get('board')
+    if (b && b !== 'all' && BOARDS.some(x => x.value === b)) { setBoard(b as Sel); setScope('all') }
+    urlAppliedRef.current = true
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const tagAppliedRef = useRef(false)
+  useEffect(() => {
+    if (tagAppliedRef.current) return
+    const tagId = searchParams.get('tag')
+    if (!tagId) { tagAppliedRef.current = true; return }
+    if (allTags.length === 0) return   // 태그 목록 로드 대기
+    const t = allTags.find(x => x.id === tagId)
+    if (t) setTagFilter(t)
+    tagAppliedRef.current = true
+  }, [allTags, searchParams])
 
   useEffect(() => {
     getPopularPostsInWindow(3650, 5).then(setPopular).catch(() => {})   // 전체 인기글 — 메인 인기글과 같은 종합점수(좋아요·3+댓글·2+조회·0.1)
