@@ -1,11 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { getMyGoodsCounts } from '@/services/goodsService'
+import { getExhibitCount } from '@/services/exhibitService'
 
 /* 마이페이지 "나의 굿즈 보관함" 진입 배너 (활동 통계 아래, 주요 콘텐츠 영역).
-   내 굿즈 / 작품별 컬렉션 / 전시관 개수 표시. PC·모바일 공용. 전시관은 Phase 5(준비 중). */
+   내 굿즈 / 작품별 컬렉션 / 전시관 개수 표시. PC·모바일 공용. */
 
 const P = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
 
@@ -22,20 +23,22 @@ function IconExhibit() {
 export default function MyGoodsSection() {
   const router = useRouter()
   const [counts, setCounts] = useState<{ goodsCount: number; collectionCount: number } | null>(null)
+  const [exhibitCount, setExhibitCount] = useState(0)
 
   useEffect(() => {
     let alive = true
     getMyGoodsCounts()
       .then(c => { if (alive) setCounts(c) })
       .catch(() => { if (alive) setCounts({ goodsCount: 0, collectionCount: 0 }) })
+    getExhibitCount().then(n => { if (alive) setExhibitCount(n) }).catch(() => {})
     return () => { alive = false }
   }, [])
 
   const loading = counts === null
-  const tiles = [
+  const tiles: { key: string; label: string; value: number; icon: ReactNode; onClick: () => void; soon?: boolean }[] = [
     { key: 'goods', label: '내 굿즈', value: counts?.goodsCount ?? 0, icon: <IconGoods />, onClick: () => router.push('/profile/goods') },
     { key: 'coll', label: '작품별 컬렉션', value: counts?.collectionCount ?? 0, icon: <IconCollection />, onClick: () => router.push('/profile/collections') },
-    { key: 'exhibit', label: '전시관', value: 0, icon: <IconExhibit />, soon: true as const },
+    { key: 'exhibit', label: '전시관', value: exhibitCount, icon: <IconExhibit />, onClick: () => router.push('/profile/exhibit') },
   ]
 
   return (
@@ -48,7 +51,7 @@ export default function MyGoodsSection() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
         <span style={{ fontSize: 17, fontWeight: 800, color: 'var(--text)' }}>나의 굿즈 보관함</span>
         <button
-          onClick={() => router.push('/profile/goods')}
+          onClick={() => router.push('/community/write?board=goods')}
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 5, border: 'none', cursor: 'pointer',
             background: 'var(--accent)', color: '#fff', fontFamily: 'inherit', fontSize: 13, fontWeight: 800,

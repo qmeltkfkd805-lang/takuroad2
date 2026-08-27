@@ -1,0 +1,10 @@
+/* Cafe24 써라운드 — 연간 리포트 전용 폰트.
+   ⭐ globals.css를 건드리지 않기 위해 여기서만 @font-face 선언(리포트 컴포넌트가 import).
+   상업용 무료(OFL). 라이선스·출처: /public/fonts/Cafe24Ssurround.LICENSE.txt
+   ⚠️ 폰트 파일(public/fonts/Cafe24Ssurround.woff2)이 없으면 기본 폰트로 대체될 뿐, 다른 화면엔 영향 없음. */
+@font-face {
+  font-family: 'Cafe24Ssurround';
+  src: url('/fonts/Cafe24Ssurround.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}

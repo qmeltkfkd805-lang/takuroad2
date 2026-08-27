@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "akane-banashi-manga",
+    "name": "아카네바나시",
+    "englishName": "Akane-banashi",
+    "aliases": ["아카네 이야기", "あかね噺"],
+    "description": "라쿠고가인 아버지의 한을 풀기 위해 아카네가 진타의 제자가 되어 진타류 승급에 도전한다.",
+    "genres": ["드라마", "소년물"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "show-ha-shoten-manga",
+    "name": "쇼하쇼텐!",
+    "englishName": "Show-ha Shoten!",
+    "aliases": ["쇼하 쇼텐!", "ショーハショーテン!"],
+    "description": "개그 대본에 재능 있는 아즈마와 무대 경험이 풍부한 타이요가 만담 정상에 도전한다.",
+    "genres": ["코미디", "학원", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "dogsred-manga",
+    "name": "DOGSRED",
+    "englishName": "Dogsred",
+    "aliases": ["도그스레드", "ドッグスレッド"],
+    "description": "피겨 선수 자격을 잃은 로우가 홋카이도에서 아이스하키를 만나 새로운 승부를 시작한다.",
+    "genres": ["스포츠", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "green-green-greens-manga",
+    "name": "그린 그린 그린즈",
+    "englishName": "Green Green Greens",
+    "aliases": ["グリーングリーングリーンズ"],
+    "description": "목표 없이 지내던 고교생 하쿠가 골프에 몰두하는 오가와를 만나 처음으로 열정을 품는다.",
+    "genres": ["스포츠", "학원", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "real-takehiko-inoue-manga",
+    "name": "REAL",
+    "englishName": "Real",
+    "aliases": ["리얼", "リアル"],
+    "description": "휠체어 농구를 중심으로 서로 다른 상처를 지닌 세 청년이 삶과 스포츠에 다시 도전한다.",
+    "genres": ["스포츠", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "vagabond-manga",
+    "name": "배가본드",
+    "englishName": "Vagabond",
+    "aliases": ["バガボンド"],
+    "description": "미야모토 무사시가 수많은 검객과 겨루며 천하무쌍의 의미와 자신의 삶을 탐구한다.",
+    "genres": ["액션", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-climber-manga",
+    "name": "고고한 사람",
+    "englishName": "The Climber",
+    "aliases": ["코코우노 히토", "孤高の人"],
+    "description": "고독한 고교생 모리가 등반을 시작해 위험한 고봉과 자신의 한계에 집착한다.",
+    "genres": ["스포츠", "모험", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-catcher-in-the-ballpark-manga",
+    "name": "볼파크에서 붙잡아줘!",
+    "englishName": "The Catcher in the Ballpark!",
+    "aliases": ["ボールパークでつかまえて!"],
+    "description": "지친 회사원 무라타가 야구장의 맥주 판매원 루리코와 만나 구장 사람들의 일상에 스며든다.",
+    "genres": ["스포츠", "일상", "코미디"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "draft-king-manga",
+    "name": "드래프트 킹",
+    "englishName": "Draft King",
+    "aliases": ["ドラフトキング"],
+    "description": "프로야구 스카우트 고하라가 숨은 재능을 찾아 선수들의 가능성과 구단의 미래를 판단한다.",
+    "genres": ["스포츠", "드라마"],
+    "ipType": ["만화", "드라마"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "smoking-behind-the-supermarket-with-you-manga",
+    "name": "슈퍼 뒤에서 담배 피우는 두 사람",
+    "englishName": "Smoking Behind the Supermarket with You",
+    "aliases": ["슈퍼 뒤에서 담배 피우는 두 명", "スーパーの裏でヤニ吸うふたり"],
+    "description": "회사원 사사키가 슈퍼 점원 야마다를 좋아하면서도 담배 친구 타야가 같은 사람임을 모른다.",
+    "genres": ["로맨스", "일상", "코미디"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

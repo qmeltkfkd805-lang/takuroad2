@@ -227,14 +227,22 @@ export async function resolveGoodsItemCovers(itemIds: string[]): Promise<Record<
   return out
 }
 
-// 대표 이미지 지정(upsert) — RLS: 본인 굿즈 + 같은 작품만
+// 대표 이미지 지정 — RLS: 본인 굿즈 + 같은 작품만.
+// (owner_id, work_id) 유니크 제약 유무와 무관하게 동작하도록 update→없으면 insert 방식.
 export async function setCollectionCover(workId: string, coverItemId: string): Promise<void> {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('로그인이 필요해요')
-  const { error } = await supabase.from('goods_collection_covers')
-    .upsert({ owner_id: user.id, work_id: workId, cover_item_id: coverItemId }, { onConflict: 'owner_id,work_id' })
-  if (error) throw error
+  const { data: updated, error: upErr } = await supabase.from('goods_collection_covers')
+    .update({ cover_item_id: coverItemId })
+    .eq('owner_id', user.id).eq('work_id', workId)
+    .select('work_id')
+  if (upErr) throw upErr
+  if (!updated || updated.length === 0) {
+    const { error: insErr } = await supabase.from('goods_collection_covers')
+      .insert({ owner_id: user.id, work_id: workId, cover_item_id: coverItemId })
+    if (insErr) throw insErr
+  }
 }
 
 /* ── 프로필 굿즈 카운트(굿즈 수·컬렉션 수) ── */
@@ -271,7 +279,8 @@ export async function getPostGoods(postId: string): Promise<PostGoods[]> {
   }))
 }
 
-/* 이 굿즈가 연결된 커뮤니티 글 id (post_goods_links, RLS 본인 굿즈만). 없으면 null */
+/* 이 굿즈가 연결된 커뮤니티 글 id (post_goods_links, RLS 본인 굿즈만). 없으면 null.
+   (연결 글이 삭제됐거나 직접 등록한 굿즈면 null → 호출부에서 편집 화면으로 폴백) */
 export async function getGoodsPostId(goodsItemId: string): Promise<string | null> {
   const supabase = createClient()
   const { data } = await supabase
@@ -607,6 +616,16 @@ export async function linkPostToGoods(
     if (error) throw error
   }
   return goodsId
+}
+
+/* 기존 굿즈에 새 커뮤니티 글 연결(post_goods_links insert만) — 새 goods_items·이미지 행 생성 없음.
+   RLS: 본인 글 + 본인 굿즈. 실패 시 throw → 호출부에서 글 보상 삭제. */
+export async function linkExistingGoodsToPost(postId: string, goodsItemId: string): Promise<void> {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('로그인이 필요해요')
+  const { error } = await supabase.from('post_goods_links').insert({ post_id: postId, goods_item_id: goodsItemId })
+  if (error) throw error
 }
 
 /* 상세 조회(편집 프리필용) */

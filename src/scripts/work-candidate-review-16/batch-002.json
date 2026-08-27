@@ -1,0 +1,197 @@
+[
+  {
+    "slug": "squid-girl",
+    "name": "침략! 오징어 소녀",
+    "englishName": "Squid Girl",
+    "aliases": [
+      "오징어 소녀",
+      "侵略!イカ娘"
+    ],
+    "description": "바다를 오염시킨 인간을 정복하려던 오징어 소녀가 해변 식당에서 일하게 된다.",
+    "genres": [
+      "코미디",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "tokyo-magnitude-8-0",
+    "name": "도쿄 매그니튜드 8.0",
+    "englishName": "Tokyo Magnitude 8.0",
+    "aliases": [
+      "東京マグニチュード8.0"
+    ],
+    "description": "대지진으로 무너진 도쿄에서 미라이와 유키 남매가 집으로 돌아가기 위해 길을 나선다.",
+    "genres": [
+      "드라마",
+      "가족"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "gabriel-dropout",
+    "name": "가브릴 드롭아웃",
+    "englishName": "Gabriel DropOut",
+    "aliases": [
+      "가브드롭",
+      "ガヴリールドロップアウト"
+    ],
+    "description": "모범 천사 가브릴이 인간계의 온라인 게임에 빠져 게으른 생활을 시작한다.",
+    "genres": [
+      "코미디",
+      "일상",
+      "학원"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "blend-s",
+    "name": "블렌드 S",
+    "englishName": "Blend S",
+    "aliases": [
+      "블렌드 에스",
+      "ブレンド・S"
+    ],
+    "description": "마이카가 손님에게 특정 속성을 연기하는 카페 스틸레에서 아르바이트를 시작한다.",
+    "genres": [
+      "코미디",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "new-game",
+    "name": "NEW GAME!",
+    "englishName": "New Game!",
+    "aliases": [
+      "뉴 게임!",
+      "ニューゲーム!"
+    ],
+    "description": "신입 그래픽 디자이너 아오바가 게임 회사 이글 점프에서 동료들과 신작을 만든다.",
+    "genres": [
+      "일상",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "azumanga-daioh",
+    "name": "아즈망가 대왕",
+    "englishName": "Azumanga Daioh",
+    "aliases": [
+      "아즈망가대왕",
+      "あずまんが大王"
+    ],
+    "description": "개성 강한 여고생들과 담임 교사들이 보내는 엉뚱하고 따뜻한 학교생활을 그린다.",
+    "genres": [
+      "학원",
+      "일상",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "lucky-star",
+    "name": "러키☆스타",
+    "englishName": "Lucky Star",
+    "aliases": [
+      "럭키 스타",
+      "러키 스타",
+      "らき☆すた"
+    ],
+    "description": "오타쿠 여고생 코나타와 친구들이 학교와 취미에 관한 평범한 대화를 나눈다.",
+    "genres": [
+      "학원",
+      "일상",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "cells-at-work",
+    "name": "일하는 세포",
+    "englishName": "Cells at Work!",
+    "aliases": [
+      "はたらく細胞"
+    ],
+    "description": "인체 속에서 적혈구와 백혈구를 비롯한 세포들이 생명을 지키기 위해 쉬지 않고 일한다.",
+    "genres": [
+      "코미디",
+      "액션"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "code-geass-akito-the-exiled",
+    "name": "코드 기아스: 망국의 아키토",
+    "englishName": "Code Geass: Akito the Exiled",
+    "aliases": [
+      "망국의 아키토",
+      "コードギアス 亡国のアキト"
+    ],
+    "description": "유럽 전선의 일본인 부대 와이번이 아키토와 레일라를 중심으로 브리타니아군에 맞선다.",
+    "genres": [
+      "로봇/메카",
+      "액션",
+      "SF",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "school-rumble",
+    "name": "스쿨럼블",
+    "englishName": "School Rumble",
+    "aliases": [
+      "스쿨 럼블",
+      "スクールランブル"
+    ],
+    "description": "텐마와 하리마가 각자의 짝사랑을 이루려다 엇갈리며 학교에서 소동을 벌인다.",
+    "genres": [
+      "학원",
+      "코미디",
+      "로맨스"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  }
+]

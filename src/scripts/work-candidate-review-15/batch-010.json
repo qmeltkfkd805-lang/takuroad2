@@ -1,0 +1,203 @@
+[
+  {
+    "slug": "arifureta",
+    "name": "흔해빠진 직업으로 세계최강",
+    "englishName": "Arifureta: From Commonplace to World's Strongest",
+    "aliases": [
+      "흔직세",
+      "ありふれた職業で世界最強"
+    ],
+    "description": "무능한 연성사 하지메가 던전 심연에 추락한 뒤 살아남기 위해 힘을 얻고 원래 세계로 돌아가려 한다.",
+    "genres": [
+      "판타지",
+      "액션",
+      "모험"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://arifureta.com/",
+    "source": "https://arifureta.com/"
+  },
+  {
+    "slug": "isekai-quartet",
+    "name": "이세계 콰르텟",
+    "englishName": "Isekai Quartet",
+    "aliases": [
+      "이세콰르",
+      "異世界かるてっと"
+    ],
+    "description": "서로 다른 이세계 작품의 주인공들이 수수께끼의 버튼으로 한 교실에 모여 학교생활을 한다.",
+    "genres": [
+      "판타지",
+      "학원",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "http://isekai-quartet.com/",
+    "source": "http://isekai-quartet.com/"
+  },
+  {
+    "slug": "tsukimichi-moonlit-fantasy",
+    "name": "달이 이끄는 이세계 여행",
+    "englishName": "Tsukimichi: Moonlit Fantasy",
+    "aliases": [
+      "츠키미치",
+      "月が導く異世界道中"
+    ],
+    "description": "여신에게 버림받은 마코토가 이세계의 변방에서 강대한 힘과 마물 동료를 얻어 길을 개척한다.",
+    "genres": [
+      "판타지",
+      "모험",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://tsukimichi.com/",
+    "source": "https://tsukimichi.com/"
+  },
+  {
+    "slug": "cautious-hero",
+    "name": "이 용사가 ZZANG센 주제에 너무 신중하다",
+    "englishName": "Cautious Hero: The Hero Is Overpowered but Overly Cautious",
+    "aliases": [
+      "신중용사",
+      "慎重勇者"
+    ],
+    "description": "여신 리스타가 구세계를 구하기 위해 강하지만 지나치게 신중한 용사 세이야를 소환한다.",
+    "genres": [
+      "판타지",
+      "모험",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "http://shincho-yusha.jp/",
+    "source": "http://shincho-yusha.jp/"
+  },
+  {
+    "slug": "so-im-a-spider-so-what",
+    "name": "거미입니다만, 문제라도?",
+    "englishName": "So I'm a Spider, So What?",
+    "aliases": [
+      "거미문제",
+      "蜘蛛ですが、なにか？"
+    ],
+    "description": "이세계 던전의 거미 마물로 환생한 여고생이 생존을 위해 끊임없이 싸우고 진화한다.",
+    "genres": [
+      "판타지",
+      "모험",
+      "액션"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://kumo-anime.com/",
+    "source": "https://kumo-anime.com/"
+  },
+  {
+    "slug": "the-eminence-in-shadow",
+    "name": "어둠의 실력자가 되고 싶어서!",
+    "englishName": "The Eminence in Shadow",
+    "aliases": [
+      "어실주",
+      "陰の実力者になりたくて！"
+    ],
+    "description": "배후의 실력자를 동경한 소년이 이세계의 시드로 환생해 꾸며낸 설정을 실제 음모로 착각한다.",
+    "genres": [
+      "판타지",
+      "액션",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://shadow-garden.jp/",
+    "source": "https://shadow-garden.jp/"
+  },
+  {
+    "slug": "sleepy-princess-in-the-demon-castle",
+    "name": "마왕성에서 잘 자요",
+    "englishName": "Sleepy Princess in the Demon Castle",
+    "aliases": [
+      "마왕성 숙면",
+      "魔王城でおやすみ"
+    ],
+    "description": "마왕에게 납치된 스야리스 공주가 탈출보다 쾌적한 숙면을 위해 마왕성을 헤집고 다닌다.",
+    "genres": [
+      "판타지",
+      "코미디",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://maoujo-anime.com/",
+    "source": "https://maoujo-anime.com/"
+  },
+  {
+    "slug": "the-vision-of-escaflowne",
+    "name": "천공의 에스카플로네",
+    "englishName": "The Vision of Escaflowne",
+    "aliases": [
+      "에스카플로네",
+      "天空のエスカフローネ"
+    ],
+    "description": "점술을 좋아하는 소녀 히토미가 이세계 가이아로 이동해 왕자 반과 거대 갑주 에스카플로네를 만난다.",
+    "genres": [
+      "판타지",
+      "모험",
+      "로맨스",
+      "로봇/메카"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "goblin-slayer",
+    "name": "고블린 슬레이어",
+    "englishName": "Goblin Slayer",
+    "aliases": [
+      "고슬",
+      "ゴブリンスレイヤー"
+    ],
+    "description": "고블린만을 집요하게 사냥하는 모험가가 신입 신관과 동료들을 만나 위험한 의뢰에 나선다.",
+    "genres": [
+      "판타지",
+      "액션",
+      "모험"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://goblinslayer.jp/",
+    "source": "https://goblinslayer.jp/"
+  },
+  {
+    "slug": "slayers-anime",
+    "name": "슬레이어즈",
+    "englishName": "Slayers",
+    "aliases": [
+      "スレイヤーズ"
+    ],
+    "description": "천재 마도사 리나 인버스가 검사 가우리와 함께 보물과 사건을 좇아 대륙을 여행한다.",
+    "genres": [
+      "판타지",
+      "모험",
+      "액션",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  }
+]

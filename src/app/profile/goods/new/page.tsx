@@ -1,19 +1,25 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import SettingsSubShell from '@/components/settings/SettingsSubShell'
-import { EmptyState } from '@/components/tds'
+import { Suspense, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
-// Phase 1 임시: 굿즈 등록 폼은 Phase 2에서 구현. 링크 404 방지용 안내 화면.
-export default function Page() {
+// 굿즈 등록은 커뮤니티 굿즈자랑 글쓰기 화면(/community/write?board=goods)을 그대로 사용
+function NewGoodsRedirect() {
   const router = useRouter()
+  const sp = useSearchParams()
+  useEffect(() => {
+    const work = sp.get('work')
+    const q = new URLSearchParams({ board: 'goods' })
+    if (work) { q.set('tag', work); q.set('lockTag', '1') }
+    router.replace(`/community/write?${q.toString()}`)
+  }, [router, sp])
+  return null
+}
+
+export default function Page() {
   return (
-    <SettingsSubShell title="새 굿즈 올리기" onBack={() => router.back()}>
-      <EmptyState
-        title="굿즈 등록은 곧 열려요"
-        description="사진과 작품만으로 간편하게 올리는 등록 화면을 준비하고 있어요."
-        action={{ label: '내 굿즈로 돌아가기', onClick: () => router.replace('/profile/goods') }}
-      />
-    </SettingsSubShell>
+    <Suspense fallback={null}>
+      <NewGoodsRedirect />
+    </Suspense>
   )
 }

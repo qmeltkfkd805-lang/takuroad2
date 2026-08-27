@@ -1,0 +1,71 @@
+{
+  "id": "452ecf4d-45cf-4e4d-a9f9-a76b33afd3aa",
+  "tag_id": "5f39c94e-4c5a-4606-8bb1-78dbc4132b18",
+  "type": "collab_cafe",
+  "shop_id": null,
+  "title": "에픽세븐 8주년 × SMG CAFE 콜라보 카페",
+  "created_at": "2026-08-26T04:06:58.651418+00:00",
+  "start_date": "2026-08-29",
+  "end_date": "2026-09-30",
+  "entry_info": "사전예약 후 입장\n자율 입장 가능 시간 운영",
+  "hours_info": "매일 10:30~22:00\n예약 회차 11:00~21:20",
+  "created_by": null,
+  "reserve_start": "2026-08-25",
+  "reserve_end": null,
+  "hours": {
+    "fri": {
+      "open": "10:30",
+      "close": "22:00"
+    },
+    "mon": {
+      "open": "10:30",
+      "close": "22:00"
+    },
+    "sat": {
+      "open": "10:30",
+      "close": "22:00"
+    },
+    "sun": {
+      "open": "10:30",
+      "close": "22:00"
+    },
+    "thu": {
+      "open": "10:30",
+      "close": "22:00"
+    },
+    "tue": {
+      "open": "10:30",
+      "close": "22:00"
+    },
+    "wed": {
+      "open": "10:30",
+      "close": "22:00"
+    }
+  },
+  "cover_url": null,
+  "parking": true,
+  "parking_note": "주차 가능(유료)\n최초 30분 무료, 초과 시 10분당 1,000원\n3만원 이상 구매 시 1시간, 5만원 이상 2시간, 10만원 이상 3시간 무료\n30만원 이상 구매 시 당일 무료",
+  "description": "「에픽세븐」 8주년을 기념하는 공식 콜라보 카페입니다.\n\n실낙원 시즌 한정 메뉴는 테이크아웃할 수 없습니다. 메뉴 구매 특전 코스터는 일부 제외 메뉴가 있으며 준비 수량 소진 시 종료됩니다.",
+  "place_name": "현대백화점유플렉스 신촌점",
+  "place_addr": "서울 서대문구 연세로 13",
+  "place_lat": 37.5567377794133,
+  "place_lng": 126.936617302453,
+  "place_detail": "지하 2층 SMG CAFE",
+  "source_urls": [
+    "https://x.com/smgcafe_kr/status/2092173264995123676",
+    "https://x.com/smgcafe_kr/status/2091769637990215784",
+    "https://x.com/smgcafe_kr/status/2092154825899462995",
+    "https://ehyundai.com/newPortal/uplex/DP/WC/WC000000_V.do?branchCd=B00127100",
+    "https://x.com/smgcafe_kr/status/2092477822053011674"
+  ],
+  "ticket_urls": [
+    {
+      "url": "https://booking.naver.com/booking/12/bizes/1521753",
+      "label": "콜라보 카페 예약하기"
+    }
+  ],
+  "updated_by": null,
+  "updated_at": "2026-08-26T04:07:43.28+00:00",
+  "place_id": "e5915b03-9aad-4b68-866b-cb6cdc42bbf8",
+  "video_url": null
+}

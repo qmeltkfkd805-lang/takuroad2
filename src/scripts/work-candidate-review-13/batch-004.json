@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "the-cooking-wizard-webtoon",
+    "name": "요리하는 마법사",
+    "englishName": "The Cooking Wizard",
+    "aliases": [],
+    "description": "마법 세계에 떨어진 주인공이 요리 실력과 새로운 마법을 활용해 사람들의 마음과 자신의 길을 찾는다.",
+    "genres": ["로맨스", "판타지", "요리"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/요리하는-마법사/3426",
+    "source": "https://webtoon.kakao.com/content/요리하는-마법사/3426"
+  },
+  {
+    "slug": "the-wicked-knight-webtoon",
+    "name": "악한 기사",
+    "englishName": "The Wicked Knight",
+    "aliases": [],
+    "description": "냉혹한 기사와 그를 둘러싼 인물들이 욕망과 배신이 얽힌 귀족 사회에서 위험한 관계를 이어 간다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://webtoon.kakao.com/content/악한-기사/2152",
+    "source": "https://webtoon.kakao.com/content/악한-기사/2152"
+  },
+  {
+    "slug": "baby-demon-king-is-tired-of-the-hero-dads-webtoon",
+    "name": "아기 마왕님은 용사 아빠들이 너무 귀찮아",
+    "englishName": "The Baby Demon King Is Tired of the Hero Dads",
+    "aliases": [],
+    "description": "아기 마왕으로 다시 태어난 주인공이 자신을 돌보겠다는 여러 용사 아빠들과 뜻밖의 가족이 된다.",
+    "genres": ["로맨스", "판타지", "가족"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/아기-마왕님은-용사-아빠들이-너무-귀찮아/4408",
+    "source": "https://webtoon.kakao.com/content/아기-마왕님은-용사-아빠들이-너무-귀찮아/4408"
+  },
+  {
+    "slug": "ice-flower-knight-webtoon",
+    "name": "얼음꽃 기사",
+    "englishName": "The Ice Flower Knight",
+    "aliases": [],
+    "description": "편견과 상처를 딛고 검을 든 여주인공이 얼음처럼 냉정한 기사로 성장하며 사랑과 명예를 얻는다.",
+    "genres": ["로맨스", "판타지", "액션"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/얼음꽃-기사/2860",
+    "source": "https://webtoon.kakao.com/content/얼음꽃-기사/2860"
+  },
+  {
+    "slug": "demon-king-princess-webtoon",
+    "name": "마왕 왕녀님",
+    "englishName": "Demon King Princess",
+    "aliases": [],
+    "description": "마왕의 힘을 지닌 왕녀가 왕국의 음모와 자신의 정체에 맞서며 운명과 사랑을 선택한다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/마왕-왕녀님/4495",
+    "source": "https://webtoon.kakao.com/content/마왕-왕녀님/4495"
+  },
+  {
+    "slug": "how-to-live-with-a-wizard-webtoon",
+    "name": "마법사와 사는 법",
+    "englishName": "How to Live with a Wizard",
+    "aliases": [],
+    "description": "게임에서 나온 마법사 라이언과 취업 준비생 라일락이 회사 생활과 각자의 퀘스트를 함께 해결한다.",
+    "genres": ["로맨스", "판타지", "코미디"],
+    "ipType": ["웹툰"],
+    "officialUrl": "https://series.naver.com/comic/detail.series?productNo=2410196",
+    "source": "https://series.naver.com/comic/detail.series?productNo=2410196"
+  },
+  {
+    "slug": "masca-the-kings-webtoon",
+    "name": "마스카(MASCA): 열왕기",
+    "englishName": "MASCA: The Kings",
+    "aliases": ["마스카 열왕기"],
+    "description": "기억을 잃은 마왕 카이넨과 그를 기다린 마법사 아사렐라가 다시 만나기 위한 여정을 이어 간다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "https://series.naver.com/comic/detail.series?productNo=4980420",
+    "source": "https://series.naver.com/comic/detail.series?productNo=4980420"
+  },
+  {
+    "slug": "i-will-become-the-heros-mother-webtoon",
+    "name": "용사의 어머니가 되겠습니다",
+    "englishName": "I Will Become the Hero's Mother",
+    "aliases": [],
+    "description": "세계를 구할 용사를 낳기 위해 결혼을 결심한 여주인공이 저주받은 공작과 가까워진다.",
+    "genres": ["로맨스", "판타지", "가족"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/용사의-어머니가-되겠습니다/3391",
+    "source": "https://webtoon.kakao.com/content/용사의-어머니가-되겠습니다/3391"
+  },
+  {
+    "slug": "when-the-witchs-daughter-lifts-the-male-leads-curse-webtoon",
+    "name": "마녀의 딸이 남주의 저주를 풀면",
+    "englishName": "When the Witch's Daughter Lifts the Male Lead's Curse",
+    "aliases": [],
+    "description": "마녀의 딸이 저주받은 남주를 만나 자신의 힘으로 저주와 예정된 비극을 풀어 가려 한다.",
+    "genres": ["로맨스", "판타지", "드라마"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/마녀의-딸이-남주의-저주를-풀면/3702",
+    "source": "https://webtoon.kakao.com/content/마녀의-딸이-남주의-저주를-풀면/3702"
+  },
+  {
+    "slug": "the-tyrant-brother-is-a-bonus-webtoon",
+    "name": "폭군 오빠는 덤입니다",
+    "englishName": "The Tyrant Brother Is a Bonus",
+    "aliases": [],
+    "description": "황실의 아이로 살아가게 된 주인공이 폭군으로 불리는 오빠와 관계를 맺으며 자신의 미래를 바꾼다.",
+    "genres": ["로맨스", "판타지", "가족"],
+    "ipType": ["웹툰", "웹소설"],
+    "officialUrl": "https://webtoon.kakao.com/content/폭군-오빠는-덤입니다/4825",
+    "source": "https://webtoon.kakao.com/content/폭군-오빠는-덤입니다/4825"
+  }
+]

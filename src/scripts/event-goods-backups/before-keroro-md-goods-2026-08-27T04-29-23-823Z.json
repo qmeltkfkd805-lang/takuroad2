@@ -1,0 +1,41 @@
+[
+  {
+    "id": "389e753f-8b5d-4f24-89ee-ddd6b13f9a02",
+    "event_id": "c0920feb-0d05-49c9-b247-e7fa73257378",
+    "name": "스페셜 MD 구매 특전 안내",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/c0920feb-0d05-49c9-b247-e7fa73257378/official-instagram-keroro-benefit-780127525.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-26T13:43:43.901667+00:00",
+    "updated_at": "2026-08-26T13:43:43.901667+00:00"
+  },
+  {
+    "id": "a4099735-d3ca-4404-ad25-23bde72d18f7",
+    "event_id": "c0920feb-0d05-49c9-b247-e7fa73257378",
+    "name": "스페셜 MD 구매 특전 상세 1",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/c0920feb-0d05-49c9-b247-e7fa73257378/official-instagram-keroro-benefit-779787481.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-26T13:43:44.300948+00:00",
+    "updated_at": "2026-08-26T13:43:44.300948+00:00"
+  },
+  {
+    "id": "2afd3e3e-9d8c-4eed-881f-aeb0eee0b0d9",
+    "event_id": "c0920feb-0d05-49c9-b247-e7fa73257378",
+    "name": "스페셜 MD 구매 특전 상세 2",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/c0920feb-0d05-49c9-b247-e7fa73257378/official-instagram-keroro-benefit-783509296.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-26T13:43:44.715454+00:00",
+    "updated_at": "2026-08-26T13:43:44.715454+00:00"
+  }
+]

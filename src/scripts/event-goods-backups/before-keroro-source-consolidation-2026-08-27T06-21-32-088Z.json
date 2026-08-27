@@ -1,0 +1,66 @@
+{
+  "id": "c0920feb-0d05-49c9-b247-e7fa73257378",
+  "tag_id": "41e73c70-0c1c-4950-9a01-4c0fd75820c5",
+  "type": "popup",
+  "shop_id": null,
+  "title": "개구리 중사 케로로 × SUB.ST 팝업스토어 (용산점)",
+  "created_at": "2026-08-18T12:55:08.106849+00:00",
+  "start_date": "2026-08-28",
+  "end_date": "2026-09-14",
+  "entry_info": "현장 입장",
+  "hours_info": "월~목·일 10:30~20:30\n금·토 10:30~21:00",
+  "created_by": null,
+  "reserve_start": null,
+  "reserve_end": null,
+  "hours": {
+    "fri": {
+      "open": "10:30",
+      "close": "21:00"
+    },
+    "mon": {
+      "open": "10:30",
+      "close": "20:30"
+    },
+    "sat": {
+      "open": "10:30",
+      "close": "21:00"
+    },
+    "sun": {
+      "open": "10:30",
+      "close": "20:30"
+    },
+    "thu": {
+      "open": "10:30",
+      "close": "20:30"
+    },
+    "tue": {
+      "open": "10:30",
+      "close": "20:30"
+    },
+    "wed": {
+      "open": "10:30",
+      "close": "20:30"
+    }
+  },
+  "cover_url": "https://cdn.popga.co.kr/spot/8501/main/f21a5583-06db-4dde-9833-e52b37ea2c16_1786618599301_thumbnail_MAIN_W480.webp",
+  "parking": null,
+  "parking_note": null,
+  "description": "개구리 중사 케로로와 SUB.ST가 함께 선보이는 팝업스토어입니다.\n작품을 활용한 공식 굿즈를 만날 수 있습니다.\n작품의 캐릭터와 분위기를 활용한 공간 연출도 함께 마련되어 팬들이 현장에서 작품의 매력을 즐길 수 있습니다.",
+  "place_name": "아이파크몰 용산점",
+  "place_addr": "서울 용산구 한강대로23길 55",
+  "place_lat": 37.5288166772537,
+  "place_lng": 126.964532769945,
+  "place_detail": "리빙파크 6층 모애쿠 옆 서브스트릿 스페이스",
+  "source_urls": [
+    "https://www.instagram.com/p/Db-Y8_Lo8r2/",
+    "https://www.hdc-iparkmall.com/main/webrender.do",
+    "https://www.instagram.com/p/DccshNDoz5U/",
+    "https://www.instagram.com/p/DccscGsIyRu/",
+    "https://www.instagram.com/p/DccsWOkI3Vv/"
+  ],
+  "ticket_urls": [],
+  "updated_by": null,
+  "updated_at": "2026-08-25T05:40:41.538+00:00",
+  "place_id": "045ed3e4-9d81-4f68-a4c7-e6815f0ccadc",
+  "video_url": null
+}

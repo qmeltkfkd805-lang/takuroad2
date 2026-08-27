@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "blast-of-tempest",
+    "name": "절원의 템페스트",
+    "englishName": "Blast of Tempest",
+    "aliases": ["絶園のテンペスト"],
+    "description": "여동생의 죽음을 추적하는 마히로와 친구 요시노가 마법사 일족의 세계적 분쟁에 휘말린다.",
+    "genres": ["판타지", "액션", "추리", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.zetsuen.net/",
+    "source": "https://www.zetsuen.net/"
+  },
+  {
+    "slug": "k-project-anime",
+    "name": "K 프로젝트",
+    "englishName": "K Project",
+    "aliases": ["K 애니메이션", "K PROJECT"],
+    "description": "평범한 학생 시로가 살인사건 용의자로 쫓기며 일곱 왕과 클랜의 능력자 분쟁에 뛰어든다.",
+    "genres": ["액션", "판타지", "추리"],
+    "ipType": ["애니"],
+    "officialUrl": "https://k-project.jpn.com/",
+    "source": "https://k-project.jpn.com/"
+  },
+  {
+    "slug": "mushishi",
+    "name": "충사",
+    "englishName": "Mushishi",
+    "aliases": ["蟲師"],
+    "description": "생명의 근원에 가까운 존재 벌레를 연구하는 긴코가 각지를 여행하며 기이한 현상을 해결한다.",
+    "genres": ["판타지", "추리", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.mushishi-anime.com/",
+    "source": "https://www.mushishi-anime.com/"
+  },
+  {
+    "slug": "xxxholic-anime",
+    "name": "xxxHOLiC",
+    "englishName": "xxxHolic",
+    "aliases": ["홀릭", "XXXHOLiC", "×××HOLiC"],
+    "description": "요괴를 보는 와타누키가 소원을 이루어 주는 가게의 주인 유코 밑에서 일하며 기이한 사건을 겪는다.",
+    "genres": ["판타지", "추리", "호러"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "rurouni-kenshin",
+    "name": "바람의 검심",
+    "englishName": "Rurouni Kenshin",
+    "aliases": ["るろうに剣心", "루로우니 켄신"],
+    "description": "막부 말 전설의 칼잡이 켄신이 불살을 맹세하고 역날검으로 새로운 시대의 사람들을 지킨다.",
+    "genres": ["액션", "모험", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://rurouni-kenshin.com/",
+    "source": "https://rurouni-kenshin.com/"
+  },
+  {
+    "slug": "kinnikuman-anime",
+    "name": "근육맨",
+    "englishName": "Kinnikuman",
+    "aliases": ["キン肉マン"],
+    "description": "덜렁대는 초인 근육맨이 동료들과 우정을 쌓으며 수많은 초인 레슬링 대회와 악당에 맞선다.",
+    "genres": ["격투", "스포츠", "코미디", "소년물"],
+    "ipType": ["애니"],
+    "officialUrl": "https://kin29man-anime.com/",
+    "source": "https://kin29man-anime.com/"
+  },
+  {
+    "slug": "captain-tsubasa",
+    "name": "캡틴 츠바사",
+    "englishName": "Captain Tsubasa",
+    "aliases": ["キャプテン翼"],
+    "description": "축구를 사랑하는 소년 오오조라 츠바사가 동료와 라이벌을 만나 세계 최고의 선수를 꿈꾼다.",
+    "genres": ["스포츠", "드라마", "소년물"],
+    "ipType": ["애니"],
+    "officialUrl": "https://ball-ha-tomodachi.com/",
+    "source": "https://ball-ha-tomodachi.com/"
+  },
+  {
+    "slug": "inu-x-boku-secret-service",
+    "name": "이누×보쿠 시크릿 서비스",
+    "englishName": "Inu x Boku SS",
+    "aliases": ["이누보쿠", "妖狐×僕SS"],
+    "description": "요괴의 피를 이은 리리치요가 고급 아파트 아야카시관에서 전속 경호원 소우시와 만난다.",
+    "genres": ["판타지", "로맨스", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.inuboku.tv/",
+    "source": "https://www.inuboku.tv/"
+  },
+  {
+    "slug": "maid-sama",
+    "name": "회장님은 메이드 사마!",
+    "englishName": "Maid Sama!",
+    "aliases": ["회장님은 메이드님", "会長はメイド様！"],
+    "description": "엄격한 학생회장 미사키가 메이드 카페에서 일하는 비밀을 인기남 우스이에게 들킨다.",
+    "genres": ["로맨스", "학원", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.tbs.co.jp/anime/maidsama/",
+    "source": "https://www.tbs.co.jp/anime/maidsama/"
+  },
+  {
+    "slug": "amagami-ss",
+    "name": "아마가미 SS",
+    "englishName": "Amagami SS",
+    "aliases": ["아마가미", "アマガミSS"],
+    "description": "연애에 상처받은 준이치가 여러 여학생과 만나 각기 다른 가능성의 사랑을 이루어 간다.",
+    "genres": ["로맨스", "학원", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.tbs.co.jp/anime/amagami/",
+    "source": "https://www.tbs.co.jp/anime/amagami/"
+  }
+]

@@ -1,0 +1,80 @@
+[
+  {
+    "id": "67cdb6de-5aff-4646-9773-8d1cbf7f54e8",
+    "event_id": "f87c2365-dd99-4b48-bd15-7cb05b9d44ff",
+    "name": "토미에 × 헬로키티 미니 티셔츠 (화이트)",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/f87c2365-dd99-4b48-bd15-7cb05b9d44ff/official-musinsa-01.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-26T13:34:26.91011+00:00",
+    "updated_at": "2026-08-26T13:34:26.91011+00:00"
+  },
+  {
+    "id": "566d2e1b-4536-45f5-95d8-1c605bd87e61",
+    "event_id": "f87c2365-dd99-4b48-bd15-7cb05b9d44ff",
+    "name": "토미에 × 헬로키티 리본 티셔츠 (블랙)",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/f87c2365-dd99-4b48-bd15-7cb05b9d44ff/official-musinsa-02.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-26T13:34:27.413425+00:00",
+    "updated_at": "2026-08-26T13:34:27.413425+00:00"
+  },
+  {
+    "id": "d43b771f-15fb-4fa8-a683-891566bcc53d",
+    "event_id": "f87c2365-dd99-4b48-bd15-7cb05b9d44ff",
+    "name": "토미에 × 헬로키티 티셔츠 (화이트)",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/f87c2365-dd99-4b48-bd15-7cb05b9d44ff/official-musinsa-03.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-26T13:34:27.962107+00:00",
+    "updated_at": "2026-08-26T13:34:27.962107+00:00"
+  },
+  {
+    "id": "a0d9567f-398f-4062-9524-b073dd2ca2c9",
+    "event_id": "f87c2365-dd99-4b48-bd15-7cb05b9d44ff",
+    "name": "토미에 × 폼폼푸린 긴팔 티셔츠 (옐로)",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/f87c2365-dd99-4b48-bd15-7cb05b9d44ff/official-musinsa-04.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-26T13:34:29.208545+00:00",
+    "updated_at": "2026-08-26T13:34:29.208545+00:00"
+  },
+  {
+    "id": "9801099c-8a0a-4778-949d-344a7ef81cac",
+    "event_id": "f87c2365-dd99-4b48-bd15-7cb05b9d44ff",
+    "name": "토미에 × 마이멜로디 미니 티셔츠 (핑크)",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/f87c2365-dd99-4b48-bd15-7cb05b9d44ff/official-musinsa-05.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-26T13:34:29.834553+00:00",
+    "updated_at": "2026-08-26T13:34:29.834553+00:00"
+  },
+  {
+    "id": "60013f8a-7d45-4cb8-9f19-045d047d199d",
+    "event_id": "f87c2365-dd99-4b48-bd15-7cb05b9d44ff",
+    "name": "이토 준지 × 산리오캐릭터즈 빅빅 티셔츠 (그레이)",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/f87c2365-dd99-4b48-bd15-7cb05b9d44ff/official-musinsa-06.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-26T13:34:30.847013+00:00",
+    "updated_at": "2026-08-26T13:34:30.847013+00:00"
+  }
+]

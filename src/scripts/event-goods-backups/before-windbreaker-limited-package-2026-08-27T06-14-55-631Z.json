@@ -1,0 +1,71 @@
+{
+  "event": {
+    "id": "6b31a946-237c-4ffc-a093-dab1344ffa10",
+    "tag_id": "b37823d6-9a15-4ee7-8f43-2517ecd385c1",
+    "type": "exhibition",
+    "shop_id": null,
+    "title": "WIND BREAKER 5th ANNIVERSARY EXHIBITION",
+    "created_at": "2026-08-19T12:53:42.636446+00:00",
+    "start_date": "2026-07-09",
+    "end_date": "2026-08-23",
+    "entry_info": "티켓 구매 후 입장",
+    "hours_info": "월~금 11:00~22:00\n토·일·공휴일 10:30~22:00\n입장 마감 21:00",
+    "created_by": null,
+    "reserve_start": "2026-05-29",
+    "reserve_end": null,
+    "hours": {
+      "fri": {
+        "open": "11:00",
+        "close": "22:00"
+      },
+      "mon": {
+        "open": "11:00",
+        "close": "22:00"
+      },
+      "sat": {
+        "open": "10:30",
+        "close": "22:00"
+      },
+      "sun": {
+        "open": "10:30",
+        "close": "22:00"
+      },
+      "thu": {
+        "open": "11:00",
+        "close": "22:00"
+      },
+      "tue": {
+        "open": "11:00",
+        "close": "22:00"
+      },
+      "wed": {
+        "open": "11:00",
+        "close": "22:00"
+      }
+    },
+    "cover_url": "https://pbs.twimg.com/media/HIFj9sCakAAFC55.jpg?name=orig",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 2,000원\n이후 10분당 1,000원\n1만원 구매 시 1시간 무료\n3만원 구매 시 2시간 무료\n5만원 구매 시 3시간 무료",
+    "description": "니이 사토루의 만화 「WIND BREAKER」 연재 5주년을 기념하는 원화전입니다.\n작품의 주요 장면과 캐릭터를 담은 원화를 관람하고 전시 기념 상품을 만날 수 있습니다.\n마지막 입장은 운영 종료 1시간 전까지 가능합니다.",
+    "place_name": "AK플라자 홍대",
+    "place_addr": "서울 마포구 양화로 188",
+    "place_lat": 37.5578085490102,
+    "place_lng": 126.926407838298,
+    "place_detail": "3층 Space Galleria 서울 홍대",
+    "source_urls": [
+      "https://x.com/SpaceGalleriaKR/status/2054033831305572824",
+      "https://www.popcondplay.com/ip/news/view/525"
+    ],
+    "ticket_urls": [
+      {
+        "url": "https://ticket.melon.com/performance/index.htm?prodId=213312",
+        "label": "전시 예매하기"
+      }
+    ],
+    "updated_by": null,
+    "updated_at": "2026-08-25T05:40:36.567+00:00",
+    "place_id": "6c9bad49-7a5b-43d3-b2df-405a2e5df390",
+    "video_url": null
+  },
+  "goods": []
+}

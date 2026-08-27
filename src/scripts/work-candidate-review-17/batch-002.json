@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "robo-no-fujii-manga",
+    "name": "길가의 후지이",
+    "englishName": "Robo no Fujii",
+    "aliases": ["도로변의 후지이", "路傍のフジイ"],
+    "description": "회사에서 존재감 없이 지내는 후지이의 흔들리지 않는 삶이 주변 사람들의 가치관을 바꾼다.",
+    "genres": ["일상", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "magus-of-the-library-manga",
+    "name": "도서관의 대마술사",
+    "englishName": "Magus of the Library",
+    "aliases": ["도서관의 대마법사", "図書館の大魔術師"],
+    "description": "책을 사랑하지만 차별받던 소년 시오가 사서와 만나 세계 최대 도서관을 향해 성장한다.",
+    "genres": ["판타지", "모험", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "onna-no-sono-no-hoshi-manga",
+    "name": "여학교의 별",
+    "englishName": "Onna no Sono no Hoshi",
+    "aliases": ["女の園の星"],
+    "description": "여고 교사 호시와 코바야시가 개성 강한 학생들의 엉뚱한 행동에 휘말리며 일상을 보낸다.",
+    "genres": ["학원", "일상", "코미디"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "this-world-is-worth-fighting-for-manga",
+    "name": "이 세상은 싸울 가치가 있다",
+    "englishName": "This World Is Worth Fighting For",
+    "aliases": ["この世は戦う価値がある"],
+    "description": "직장과 연인에게 억눌리던 키리가 자신의 인생을 되찾기 위한 결산을 시작한다.",
+    "genres": ["드라마", "일상"],
+    "ipType": ["만화"],
+    "officialUrl": "https://e-comi.shogakukan.co.jp/books/098625350000d0000000",
+    "source": "https://e-comi.shogakukan.co.jp/books/098625350000d0000000"
+  },
+  {
+    "slug": "re-living-my-life-with-my-ex-manga",
+    "name": "죽음으로 돌아가 마법학교 생활을, 전 연인과 프롤로그부터",
+    "englishName": "Re-Living My Life with My Ex-Boyfriend in a Magic School",
+    "aliases": ["死に戻りの魔法学校生活を、元恋人とプロローグから"],
+    "description": "죽음 뒤 어린 시절로 돌아온 오리아나가 전생에서 함께 죽은 연인을 구하려 한다.",
+    "genres": ["판타지", "로맨스", "학원", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-darwin-incident-manga",
+    "name": "다윈 사변",
+    "englishName": "The Darwin Incident",
+    "aliases": ["ダーウィン事変"],
+    "description": "인간과 침팬지 사이에서 태어난 찰리가 학교와 사회에서 편견과 테러 조직에 맞선다.",
+    "genres": ["SF", "드라마", "액션"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "a-witchs-life-in-mongol-manga",
+    "name": "천막의 자드갈",
+    "englishName": "A Witch's Life in Mongol",
+    "aliases": ["텐마쿠의 자드갈", "天幕のジャードゥーガル"],
+    "description": "노예로 팔린 지식 많은 소녀 파티마가 몽골 제국의 궁정에서 자신의 길을 개척한다.",
+    "genres": ["드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "diamond-no-kouzai-manga",
+    "name": "다이아몬드의 공죄",
+    "englishName": "The Days of Diamond",
+    "aliases": ["ダイヤモンドの功罪"],
+    "description": "압도적인 운동 재능을 지닌 아야세가 소년 야구에 들어가며 재능이 만든 갈등을 겪는다.",
+    "genres": ["스포츠", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "spacewalking-with-you-manga",
+    "name": "너와 우주를 걷기 위해",
+    "englishName": "Spacewalking with You",
+    "aliases": ["君と宇宙を歩くために"],
+    "description": "일상에 어려움을 겪는 고교생 코바야시가 전학생 우노와 만나 서로의 방식을 배운다.",
+    "genres": ["학원", "일상", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "https://afternoon.kodansha.co.jp/comics/2024/10/0000398866.html",
+    "source": "https://afternoon.kodansha.co.jp/comics/2024/10/0000398866.html"
+  },
+  {
+    "slug": "you-and-i-are-polar-opposites-manga",
+    "name": "정반대의 너와 나",
+    "englishName": "You and I Are Polar Opposites",
+    "aliases": ["正反対な君と僕"],
+    "description": "주변의 시선을 의식하는 스즈키가 솔직한 타니에게 고백하며 친구들과 사랑을 키운다.",
+    "genres": ["로맨스", "학원", "코미디"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

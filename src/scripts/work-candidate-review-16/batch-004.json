@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "strawberry-marshmallow",
+    "name": "딸기 마시마로",
+    "englishName": "Strawberry Marshmallow",
+    "aliases": ["이치고 마시마로", "苺ましまろ"],
+    "description": "노부에와 네 명의 초등학생이 장난과 소동으로 가득한 느긋한 일상을 보낸다.",
+    "genres": ["일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "sketchbook-full-colors",
+    "name": "스케치북 ~full color's~",
+    "englishName": "Sketchbook ~full color's~",
+    "aliases": ["스케치북 풀 컬러즈", "スケッチブック 〜full color's〜"],
+    "description": "말수가 적은 소라가 미술부 친구들과 그림을 그리고 고양이를 만나며 일상을 관찰한다.",
+    "genres": ["학원", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "ga-geijutsuka-art-design-class",
+    "name": "GA 예술과 아트 디자인 클래스",
+    "englishName": "GA: Geijutsuka Art Design Class",
+    "aliases": ["GA 예술과", "GA 芸術科アートデザインクラス"],
+    "description": "예술과 학생 다섯 명이 수업과 과제를 함께하며 미술 지식과 엉뚱한 일상을 나눈다.",
+    "genres": ["학원", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "kin-iro-mosaic",
+    "name": "금빛 모자이크",
+    "englishName": "KINMOZA!",
+    "aliases": ["킨모자", "きんいろモザイク"],
+    "description": "영국을 좋아하는 시노부와 일본으로 유학 온 앨리스가 친구들과 고교생활을 즐긴다.",
+    "genres": ["학원", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "a-channel",
+    "name": "A채널",
+    "englishName": "A-Channel",
+    "aliases": ["A Channel", "에이 채널", "Aチャンネル"],
+    "description": "토오루가 소꿉친구 룬과 같은 고등학교에 진학해 유코, 나기와 함께 지낸다.",
+    "genres": ["학원", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "yuyushiki",
+    "name": "유유시키",
+    "englishName": "Yuyushiki",
+    "aliases": ["유유식", "ゆゆ式"],
+    "description": "유즈코와 유카리, 유이가 정보처리부에서 관심 가는 주제를 검색하며 수다를 나눈다.",
+    "genres": ["학원", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "sansha-sanyou",
+    "name": "삼자삼엽",
+    "englishName": "Three Leaves, Three Colors",
+    "aliases": ["Sansha Sanyou", "三者三葉"],
+    "description": "이름에 잎 엽 자가 들어가는 성격 다른 세 여고생이 만나 친구가 되어 일상을 보낸다.",
+    "genres": ["학원", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "comic-girls",
+    "name": "코믹 걸즈",
+    "englishName": "Comic Girls",
+    "aliases": ["こみっくがーるず"],
+    "description": "신인 만화가 카오스가 여성 만화가 기숙사에 들어가 동료들과 창작 생활을 시작한다.",
+    "genres": ["일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "hidamari-sketch",
+    "name": "히다마리 스케치",
+    "englishName": "Hidamari Sketch",
+    "aliases": ["ひだまりスケッチ"],
+    "description": "미술고에 입학한 유노가 히다마리장 이웃들과 그림을 배우며 따뜻한 일상을 보낸다.",
+    "genres": ["학원", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "kill-me-baby",
+    "name": "킬 미 베이비",
+    "englishName": "Kill Me Baby",
+    "aliases": ["키르미 베이베", "キルミーベイベー"],
+    "description": "평범한 학생 야스나가 암살자 소냐와 닌자를 자칭하는 아기리에게 끊임없이 장난친다.",
+    "genres": ["학원", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

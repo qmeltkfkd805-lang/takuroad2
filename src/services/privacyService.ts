@@ -10,12 +10,12 @@ import { createClient } from '@/lib/supabase/client'
 
 export type PrivacyTarget =
   | 'follows' | 'activity' | 'visited_shops'
-  | 'completed_routes' | 'liked_works' | 'collections'
+  | 'completed_routes' | 'liked_works' | 'collections' | 'goods'
 
 export type PrivacyLevel = 'public' | 'followers' | 'private'
 
 export const PRIVACY_TARGETS: PrivacyTarget[] = [
-  'follows', 'activity', 'visited_shops', 'completed_routes', 'liked_works', 'collections',
+  'follows', 'activity', 'visited_shops', 'completed_routes', 'liked_works', 'collections', 'goods',
 ]
 export const PRIVACY_LEVELS: PrivacyLevel[] = ['public', 'followers', 'private']
 

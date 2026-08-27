@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "excel-saga",
+    "name": "엑셀 사가",
+    "englishName": "Excel Saga",
+    "aliases": ["エクセル・サーガ"],
+    "description": "비밀결사 아크로스의 열혈 요원 엑셀이 도시 정복을 위해 황당한 임무에 도전한다.",
+    "genres": ["코미디", "SF"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "pani-poni-dash",
+    "name": "파니포니 대쉬!",
+    "englishName": "Pani Poni Dash!",
+    "aliases": ["파니포니", "ぱにぽにだっしゅ!"],
+    "description": "열한 살 천재 교사 베키가 개성 넘치는 학생들을 맡아 예측하기 어려운 수업을 진행한다.",
+    "genres": ["학원", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "sayonara-zetsubou-sensei",
+    "name": "안녕, 절망선생",
+    "englishName": "Sayonara, Zetsubou-Sensei",
+    "aliases": ["절망선생", "さよなら絶望先生"],
+    "description": "매사를 부정적으로 보는 교사 이토시키 노조무가 특이한 학생들과 사회 풍자를 펼친다.",
+    "genres": ["학원", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "genshiken",
+    "name": "현시연",
+    "englishName": "Genshiken",
+    "aliases": ["현대 시각 문화 연구회", "げんしけん"],
+    "description": "대학생 사사하라가 오타쿠 동아리 현시연에 들어가 회원들과 취미 생활을 즐긴다.",
+    "genres": ["일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "watamote",
+    "name": "내가 인기 없는 건 아무리 생각해도 너희들 탓이야!",
+    "englishName": "WataMote",
+    "aliases": ["와타모테", "私がモテないのはどう考えてもお前らが悪い!"],
+    "description": "대인관계가 서툰 토모코가 인기 있는 고교생활을 꿈꾸며 여러 방법을 시도한다.",
+    "genres": ["학원", "코미디", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "wataten-an-angel-flew-down-to-me",
+    "name": "나에게 천사가 내려왔다!",
+    "englishName": "WATATEN!: an Angel Flew Down to Me",
+    "aliases": ["와타텐", "私に天使が舞い降りた!"],
+    "description": "낯을 가리는 대학생 미야코가 여동생의 친구 하나와 친해지기 위해 노력한다.",
+    "genres": ["일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "mitsudomoe",
+    "name": "미츠도모에",
+    "englishName": "Mitsudomoe",
+    "aliases": ["쓰리몬", "みつどもえ"],
+    "description": "성격이 전혀 다른 마루이 세 자매가 담임 야베와 반 친구들을 끊임없는 소동에 빠뜨린다.",
+    "genres": ["학원", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "ben-to",
+    "name": "도시락 전쟁",
+    "englishName": "Ben-To",
+    "aliases": ["벤토", "ベン・トー"],
+    "description": "학생 사토가 마트의 반값 도시락을 차지하려는 싸움에 뛰어들어 강자들과 맞선다.",
+    "genres": ["액션", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "shakugan-no-shana",
+    "name": "작안의 샤나",
+    "englishName": "Shakugan no Shana",
+    "aliases": ["灼眼のシャナ"],
+    "description": "평범한 학생 유지가 이세계 존재와 싸우는 플레임헤이즈 샤나를 만나 운명을 알게 된다.",
+    "genres": ["판타지", "액션", "로맨스"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "baka-and-test",
+    "name": "바보와 시험과 소환수",
+    "englishName": "Baka and Test",
+    "aliases": ["바시소", "バカとテストと召喚獣"],
+    "description": "성적 최하위 F반 학생들이 시험 성적으로 움직이는 소환수를 이용해 상위 반에 도전한다.",
+    "genres": ["학원", "코미디", "판타지"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

@@ -1,0 +1,68 @@
+{
+  "event": {
+    "id": "752c61f4-b190-433b-974f-cc2d35fd909d",
+    "tag_id": "139de424-929b-42fd-a6f5-0ad3b37fc042",
+    "type": "popup",
+    "shop_id": null,
+    "title": "무민 팝업 IN 신세계 강남 센트럴",
+    "created_at": "2026-08-11T14:36:00.211137+00:00",
+    "start_date": "2026-08-07",
+    "end_date": "2026-08-17",
+    "entry_info": "사전예약 후 입장\n현장 선착순 입장",
+    "hours_info": "매일 10:00~22:00",
+    "created_by": null,
+    "reserve_start": "2026-08-11",
+    "reserve_end": "2026-08-17",
+    "hours": {
+      "fri": {
+        "open": "10:00",
+        "close": "22:00"
+      },
+      "mon": {
+        "open": "10:00",
+        "close": "22:00"
+      },
+      "sat": {
+        "open": "10:00",
+        "close": "22:00"
+      },
+      "sun": {
+        "open": "10:00",
+        "close": "22:00"
+      },
+      "thu": {
+        "open": "10:00",
+        "close": "22:00"
+      },
+      "tue": {
+        "open": "10:00",
+        "close": "22:00"
+      },
+      "wed": {
+        "open": "10:00",
+        "close": "22:00"
+      }
+    },
+    "cover_url": "https://cdn.popcondplay.com/booking_goods/20260727170119_6a67104f0c104.png",
+    "parking": true,
+    "parking_note": "신세계 강남점 지하·센트럴시티·경부 사잇길 주차장 이용 가능. \n10분당 1,000원\n5만원 이상 1시간\n10만원 이상 2시간\n15만원 이상 3시간 무료(구매 영수증 필요).",
+    "description": "무민 골짜기의 여름을 테마로 신규 굿즈와 다양한 상품을 선보이는 팝업스토어입니다.\n여름 분위기로 꾸며진 공간에서 무민 캐릭터 상품을 만날 수 있습니다.\n예약 1건당 최대 2인까지 입장할 수 있습니다.\n럭키드로우 1회 참여 혜택은 사전예약자에게만 제공됩니다.",
+    "place_name": "신세계백화점 강남점",
+    "place_addr": "서울 서초구 신반포로 176",
+    "place_lat": 37.505305732082,
+    "place_lng": 127.004320329245,
+    "place_detail": "센트럴시티 1층 오픈스테이지",
+    "source_urls": [
+      "https://www.popcondplay.com/ip/news/37",
+      "https://www.instagram.com/moominshop_kr/"
+    ],
+    "ticket_urls": [
+      "https://www.popcondplay.com/reserve/view/80"
+    ],
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_at": "2026-08-25T05:40:38.261+00:00",
+    "place_id": "d8e1ebbf-d08f-483d-896e-1c1ca6046135",
+    "video_url": null
+  },
+  "goods": []
+}

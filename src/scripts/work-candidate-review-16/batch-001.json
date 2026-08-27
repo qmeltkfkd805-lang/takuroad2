@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "record-of-lodoss-war",
+    "name": "로도스도 전기",
+    "englishName": "Record of Lodoss War",
+    "aliases": ["ロードス島戦記"],
+    "description": "기사 파른과 동료들이 저주받은 섬 로도스의 전쟁과 마신의 위협에 맞서 모험한다.",
+    "genres": ["판타지", "모험", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "outlaw-star",
+    "name": "성방무협 아웃로 스타",
+    "englishName": "Outlaw Star",
+    "aliases": ["아웃로 스타", "星方武侠アウトロースター"],
+    "description": "진 스타윈드와 동료들이 우주선 아웃로 스타를 타고 은하의 보물을 찾아 나선다.",
+    "genres": ["SF", "모험", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "s-cry-ed",
+    "name": "스크라이드",
+    "englishName": "s-CRY-ed",
+    "aliases": ["Scryed", "スクライド"],
+    "description": "특수 능력 앨터를 지닌 카즈마가 격리된 로스트 그라운드에서 지배 세력과 충돌한다.",
+    "genres": ["액션", "SF", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "welcome-to-the-nhk",
+    "name": "NHK에 어서 오세요!",
+    "englishName": "Welcome to the N.H.K.",
+    "aliases": ["N・H・Kにようこそ!", "NHK에 어서오세요"],
+    "description": "은둔형 외톨이 사토가 자신을 구해 주겠다는 미사키를 만나 세상 밖으로 나가려 애쓴다.",
+    "genres": ["드라마", "코미디", "로맨스"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "cromartie-high-school",
+    "name": "돌격! 크로마티 고교",
+    "englishName": "Cromartie High School",
+    "aliases": ["크로마티 고교", "魁!!クロマティ高校"],
+    "description": "평범한 학생 카미야마가 불량배와 로봇, 고릴라까지 모인 크로마티 고교에 입학한다.",
+    "genres": ["코미디", "학원"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "detroit-metal-city",
+    "name": "디트로이트 메탈 시티",
+    "englishName": "Detroit Metal City",
+    "aliases": ["DMC", "デトロイト・メタル・シティ"],
+    "description": "팝 가수를 꿈꾸는 네기시가 데스메탈 밴드의 악마적 보컬 크라우저로 활동한다.",
+    "genres": ["코미디", "음악"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "my-bride-is-a-mermaid",
+    "name": "세토의 신부",
+    "englishName": "My Bride Is a Mermaid",
+    "aliases": ["瀬戸の花嫁"],
+    "description": "물에 빠진 나가스미가 인어 산에게 구조된 뒤 인어 조직의 규칙 때문에 결혼하게 된다.",
+    "genres": ["코미디", "로맨스", "학원"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "minami-ke",
+    "name": "미나미가",
+    "englishName": "Minami-ke",
+    "aliases": ["미나미 家", "みなみけ"],
+    "description": "하루카, 카나, 치아키 세 자매와 주변 사람들이 보내는 소소하고 유쾌한 일상을 그린다.",
+    "genres": ["일상", "코미디", "학원"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "working",
+    "name": "WORKING!!",
+    "englishName": "Wagnaria!!",
+    "aliases": ["워킹!!", "ワーキング!!"],
+    "description": "패밀리 레스토랑 와그나리아에서 개성 강한 직원들이 함께 일하며 소동을 벌인다.",
+    "genres": ["코미디", "일상", "로맨스"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "arakawa-under-the-bridge",
+    "name": "아라카와 언더 더 브리지",
+    "englishName": "Arakawa Under the Bridge",
+    "aliases": ["荒川アンダー ザ ブリッジ"],
+    "description": "빚지는 일을 견디지 못하는 코우가 자신을 구한 니노와 아라카와 강변에서 살기 시작한다.",
+    "genres": ["코미디", "로맨스", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

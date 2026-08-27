@@ -1,0 +1,206 @@
+[
+  {
+    "slug": "oreimo",
+    "name": "내 여동생이 이렇게 귀여울 리가 없어",
+    "englishName": "Oreimo",
+    "aliases": [
+      "내여귀",
+      "오레이모",
+      "俺の妹がこんなに可愛いわけがない"
+    ],
+    "description": "평범한 고교생 쿄스케가 완벽한 여동생 키리노의 숨겨진 오타쿠 취미를 알게 되며 상담역이 된다.",
+    "genres": [
+      "로맨스",
+      "코미디",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.oreimo-anime.com/",
+    "source": "https://www.oreimo-anime.com/"
+  },
+  {
+    "slug": "school-days-anime",
+    "name": "스쿨 데이즈",
+    "englishName": "School Days",
+    "aliases": [
+      "School Days",
+      "スクールデイズ"
+    ],
+    "description": "마코토와 코토노하, 세카이의 관계가 어긋나며 평범한 학원 연애가 파국으로 치닫는다.",
+    "genres": [
+      "로맨스",
+      "학원",
+      "드라마",
+      "호러"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "white-album-2",
+    "name": "WHITE ALBUM 2",
+    "englishName": "White Album 2",
+    "aliases": [
+      "화이트 앨범 2",
+      "WA2",
+      "ホワイトアルバム2"
+    ],
+    "description": "학원제 무대를 준비하는 하루키와 세츠나, 카즈사가 음악으로 가까워지며 삼각관계에 빠진다.",
+    "genres": [
+      "음악",
+      "로맨스",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "ef-a-tale-of-memories",
+    "name": "ef - a tale of memories.",
+    "englishName": "ef: A Tale of Memories",
+    "aliases": [
+      "ef 메모리즈",
+      "エフ ア テイル オブ メモリーズ"
+    ],
+    "description": "오토와를 무대로 상처와 비밀을 품은 청춘들이 각자의 사랑과 기억을 마주한다.",
+    "genres": [
+      "로맨스",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "zombie-land-saga",
+    "name": "좀비 랜드 사가",
+    "englishName": "Zombie Land Saga",
+    "aliases": [
+      "좀비랜드사가",
+      "좀랜사",
+      "ゾンビランドサガ"
+    ],
+    "description": "죽은 뒤 좀비로 깨어난 사쿠라가 시대가 다른 소녀들과 아이돌 그룹을 결성해 사가를 살린다.",
+    "genres": [
+      "아이돌",
+      "음악",
+      "코미디",
+      "판타지"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://zombielandsaga.com/",
+    "source": "https://zombielandsaga.com/"
+  },
+  {
+    "slug": "carole-and-tuesday",
+    "name": "캐롤 앤 튜즈데이",
+    "englishName": "Carole & Tuesday",
+    "aliases": [
+      "캐롤과 튜즈데이",
+      "CAROLE & TUESDAY"
+    ],
+    "description": "화성에서 만난 캐롤과 튜즈데이가 듀오를 결성해 인공지능 음악이 지배하는 시대에 도전한다.",
+    "genres": [
+      "음악",
+      "드라마",
+      "SF"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "http://caroleandtuesday.com/",
+    "source": "http://caroleandtuesday.com/"
+  },
+  {
+    "slug": "beck-mongolian-chop-squad",
+    "name": "BECK",
+    "englishName": "Beck: Mongolian Chop Squad",
+    "aliases": [
+      "벡",
+      "ベック"
+    ],
+    "description": "평범한 소년 코유키가 기타리스트 류스케를 만나 록 밴드 BECK의 멤버로 성장한다.",
+    "genres": [
+      "음악",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "banana-fish",
+    "name": "BANANA FISH",
+    "englishName": "Banana Fish",
+    "aliases": [
+      "바나나 피쉬",
+      "バナナフィッシュ"
+    ],
+    "description": "뉴욕 갱단의 소년 애쉬가 형을 망가뜨린 수수께끼의 말 바나나 피쉬의 정체를 추적한다.",
+    "genres": [
+      "액션",
+      "추리",
+      "드라마",
+      "BL"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://bananafish.tv/",
+    "source": "https://bananafish.tv/"
+  },
+  {
+    "slug": "chihayafuru",
+    "name": "치하야후루",
+    "englishName": "Chihayafuru",
+    "aliases": [
+      "ちはやふる"
+    ],
+    "description": "치하야가 아라타와의 만남을 계기로 경기 카루타의 세계에 뛰어들어 퀸을 목표로 한다.",
+    "genres": [
+      "스포츠",
+      "학원",
+      "드라마",
+      "로맨스"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.ntv.co.jp/chihayafuru/",
+    "source": "https://www.ntv.co.jp/chihayafuru/"
+  },
+  {
+    "slug": "paradise-kiss-anime",
+    "name": "파라다이스 키스",
+    "englishName": "Paradise Kiss",
+    "aliases": [
+      "파라키스",
+      "Paradise Kiss",
+      "パラダイス・キス"
+    ],
+    "description": "입시에 매달리던 유카리가 패션 전공 학생 조지와 동료들을 만나 모델과 사랑의 세계에 들어선다.",
+    "genres": [
+      "로맨스",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.fujitv.co.jp/b_hp/parakiss/",
+    "source": "https://www.fujitv.co.jp/b_hp/parakiss/"
+  }
+]

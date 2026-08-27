@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "aldnoah-zero",
+    "name": "알드노아. 제로",
+    "englishName": "Aldnoah.Zero",
+    "aliases": ["알드노아 제로", "ALDNOAH.ZERO", "アルドノア・ゼロ"],
+    "description": "화성 제국의 지구 침공 속에서 고교생 이나호와 화성 기사 슬레인이 서로 다른 길을 걷는다.",
+    "genres": ["SF", "액션", "드라마", "로봇/메카"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.aldnoahzero.com/",
+    "source": "https://www.aldnoahzero.com/"
+  },
+  {
+    "slug": "guilty-crown",
+    "name": "길티 크라운",
+    "englishName": "Guilty Crown",
+    "aliases": ["GUILTY CROWN", "ギルティクラウン"],
+    "description": "타인의 마음에서 무기를 꺼내는 힘을 얻은 슈가 저항조직 장의사와 일본의 운명을 건 싸움에 나선다.",
+    "genres": ["SF", "액션", "드라마", "로맨스"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.guilty-crown.jp/",
+    "source": "https://www.guilty-crown.jp/"
+  },
+  {
+    "slug": "kabaneri-of-the-iron-fortress",
+    "name": "갑철성의 카바네리",
+    "englishName": "Kabaneri of the Iron Fortress",
+    "aliases": ["카바네리", "甲鉄城のカバネリ"],
+    "description": "불사의 괴물 카바네가 창궐한 세계에서 이코마가 인간과 괴물 사이의 카바네리가 되어 싸운다.",
+    "genres": ["액션", "판타지", "호러", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://kabaneri.com/",
+    "source": "https://kabaneri.com/"
+  },
+  {
+    "slug": "juni-taisen-zodiac-war",
+    "name": "십이대전",
+    "englishName": "Juni Taisen: Zodiac War",
+    "aliases": ["十二大戦"],
+    "description": "십이지를 대표하는 열두 전사가 단 하나의 소원을 얻기 위해 목숨을 건 배틀로얄을 벌인다.",
+    "genres": ["액션", "판타지", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://12taisen.com/",
+    "source": "https://12taisen.com/"
+  },
+  {
+    "slug": "rage-of-bahamut-genesis",
+    "name": "신격의 바하무트 GENESIS",
+    "englishName": "Rage of Bahamut: Genesis",
+    "aliases": ["바하무트 제네시스", "神撃のバハムート GENESIS"],
+    "description": "현상금 사냥꾼 파바로가 수수께끼의 소녀 아미라와 만나 봉인된 바하무트의 위기에 휘말린다.",
+    "genres": ["판타지", "모험", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "https://shingekinobahamut-genesis.jp/",
+    "source": "https://shingekinobahamut-genesis.jp/"
+  },
+  {
+    "slug": "the-saga-of-tanya-the-evil",
+    "name": "유녀전기",
+    "englishName": "The Saga of Tanya the Evil",
+    "aliases": ["幼女戦記", "Youjo Senki"],
+    "description": "냉혹한 회사원이 전쟁 중인 이세계의 소녀 타냐로 환생해 마도 장교로 살아남으려 한다.",
+    "genres": ["판타지", "액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://youjo-senki.jp/",
+    "source": "https://youjo-senki.jp/"
+  },
+  {
+    "slug": "isekai-izakaya-nobu",
+    "name": "이세계 주점 노부",
+    "englishName": "Isekai Izakaya: Japanese Food From Another World",
+    "aliases": ["이세계 이자카야 노부", "異世界居酒屋〜古都アイテーリアの居酒屋のぶ〜"],
+    "description": "교토의 주점 노부가 이세계 고도 아이테리아와 연결되며 손님들에게 일본 요리를 선보인다.",
+    "genres": ["판타지", "요리", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "https://r.gnavi.co.jp/nobu/",
+    "source": "https://r.gnavi.co.jp/nobu/"
+  },
+  {
+    "slug": "grimgar-ashes-and-illusions",
+    "name": "재와 환상의 그림갈",
+    "englishName": "Grimgar of Fantasy and Ash",
+    "aliases": ["그림갈", "灰と幻想のグリムガル"],
+    "description": "기억을 잃고 이세계에서 깨어난 하루히로 일행이 의용병이 되어 생존과 상실을 겪는다.",
+    "genres": ["판타지", "모험", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://grimgar.com/",
+    "source": "https://grimgar.com/"
+  },
+  {
+    "slug": "problem-children-are-coming-from-another-world-arent-they",
+    "name": "문제아들이 이세계에서 온다는 모양인데요?",
+    "englishName": "Problem Children Are Coming from Another World, Aren't They?",
+    "aliases": ["문제아 시리즈", "問題児たちが異世界から来るそうですよ？"],
+    "description": "강력한 능력을 지닌 세 문제아가 이세계 모형정원에 소환돼 공동체를 되살릴 기프트 게임에 도전한다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-misfit-of-demon-king-academy",
+    "name": "마왕학원의 부적합자",
+    "englishName": "The Misfit of Demon King Academy",
+    "aliases": ["마왕학원", "魔王学院の不適合者"],
+    "description": "폭정의 마왕 아노스가 이천 년 뒤 환생해 자신의 힘을 알아보지 못하는 마왕학원에 입학한다.",
+    "genres": ["판타지", "액션", "학원"],
+    "ipType": ["애니"],
+    "officialUrl": "https://maohgakuin.com/",
+    "source": "https://maohgakuin.com/"
+  }
+]

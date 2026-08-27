@@ -1,0 +1,2361 @@
+{
+  "mode": "dry-run",
+  "before": 1692,
+  "rows": [
+    {
+      "name": "코드 기아스: 반역의 를르슈",
+      "slug": "code-geass-lelouch-of-the-rebellion",
+      "english_name": "Code Geass: Lelouch of the Rebellion",
+      "aliases": [
+        "코드 기아스",
+        "コードギアス 反逆のルルーシュ"
+      ],
+      "ip_type": "애니",
+      "description": "신성 브리타니아 제국에 맞서 기아스의 힘을 얻은 를르슈가 가면의 반역자 제로가 된다.",
+      "genres": [
+        "액션",
+        "SF",
+        "드라마",
+        "로봇/메카"
+      ],
+      "keywords": [],
+      "official_url": "https://geass.jp/first/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://geass.jp/first/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "PSYCHO-PASS 사이코패스",
+      "slug": "psycho-pass",
+      "english_name": "Psycho-Pass",
+      "aliases": [
+        "사이코패스",
+        "PSYCHO-PASS",
+        "サイコパス"
+      ],
+      "ip_type": "애니",
+      "description": "범죄 가능성을 수치화하는 사회에서 신임 감시관 아카네가 공안국 형사들과 사건을 추적한다.",
+      "genres": [
+        "SF",
+        "추리",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://psycho-pass.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://psycho-pass.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "스즈미야 하루히의 우울",
+      "slug": "the-melancholy-of-haruhi-suzumiya",
+      "english_name": "The Melancholy of Haruhi Suzumiya",
+      "aliases": [
+        "하루히",
+        "涼宮ハルヒの憂鬱"
+      ],
+      "ip_type": "애니",
+      "description": "평범한 인간에 관심 없는 하루히가 SOS단을 만들며 쿈의 일상이 초현실적 사건으로 변한다.",
+      "genres": [
+        "학원",
+        "SF",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://kadokawa-animation.jp/lineup/haruhi",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://kadokawa-animation.jp/lineup/haruhi"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "GTO",
+      "slug": "great-teacher-onizuka",
+      "english_name": "Great Teacher Onizuka",
+      "aliases": [
+        "반항하지마",
+        "그레이트 티처 오니즈카",
+        "グレート・ティーチャー・オニヅカ"
+      ],
+      "ip_type": "애니",
+      "description": "전직 폭주족 오니즈카가 교사가 되어 학생들과 정면으로 부딪치며 학교의 문제를 해결한다.",
+      "genres": [
+        "학원",
+        "코미디",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "청의 엑소시스트",
+      "slug": "blue-exorcist",
+      "english_name": "Blue Exorcist",
+      "aliases": [
+        "청엑",
+        "青の祓魔師"
+      ],
+      "ip_type": "애니",
+      "description": "사탄의 아들 린이 자신의 운명에 맞서 엑소시스트가 되기 위해 정십자학원에서 수련한다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "학원"
+      ],
+      "keywords": [],
+      "official_url": "https://www.ao-ex.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.ao-ex.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "마기",
+      "slug": "magi-the-labyrinth-of-magic",
+      "english_name": "Magi: The Labyrinth of Magic",
+      "aliases": [
+        "マギ"
+      ],
+      "ip_type": "애니",
+      "description": "신비한 소년 알라딘이 알리바바와 함께 던전을 공략하며 세계를 뒤흔드는 운명에 맞선다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "액션"
+      ],
+      "keywords": [],
+      "official_url": "https://www.project-magi.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.project-magi.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "킬라킬",
+      "slug": "kill-la-kill",
+      "english_name": "Kill la Kill",
+      "aliases": [
+        "KILL la KILL",
+        "キルラキル"
+      ],
+      "ip_type": "애니",
+      "description": "아버지의 죽음을 추적하는 류코가 생명섬유 교복을 입고 혼노지 학원의 지배자 사츠키와 맞선다.",
+      "genres": [
+        "액션",
+        "학원",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.kill-la-kill.jp/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.kill-la-kill.jp/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아카메가 벤다!",
+      "slug": "akame-ga-kill",
+      "english_name": "Akame ga Kill!",
+      "aliases": [
+        "아카메가 킬",
+        "アカメが斬る！"
+      ],
+      "ip_type": "애니",
+      "description": "제국의 부패를 목격한 타츠미가 암살 조직 나이트레이드에 합류해 혁명을 위해 싸운다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://akame.tv/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://akame.tv/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "미래일기",
+      "slug": "future-diary",
+      "english_name": "The Future Diary",
+      "aliases": [
+        "미래 일기",
+        "未来日記",
+        "Mirai Nikki"
+      ],
+      "ip_type": "애니",
+      "description": "미래를 기록하는 일기를 얻은 유키테루가 신의 자리를 건 생존 게임에 휘말린다.",
+      "genres": [
+        "액션",
+        "추리",
+        "호러"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "몬스터",
+      "slug": "monster-anime",
+      "english_name": "Monster",
+      "aliases": [
+        "MONSTER",
+        "モンスター"
+      ],
+      "ip_type": "애니",
+      "description": "의사 텐마가 자신이 살린 소년 요한이 연쇄 살인의 중심임을 알고 그의 흔적을 추적한다.",
+      "genres": [
+        "추리",
+        "드라마",
+        "호러"
+      ],
+      "keywords": [],
+      "official_url": "https://www.vap.co.jp/monster/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.vap.co.jp/monster/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "블랙 라군",
+      "slug": "black-lagoon",
+      "english_name": "Black Lagoon",
+      "aliases": [
+        "BLACK LAGOON",
+        "ブラック・ラグーン"
+      ],
+      "ip_type": "애니",
+      "description": "회사에 버림받은 일본인 회사원 로크가 라군 상회에 합류해 범죄도시 로아나푸라를 살아간다.",
+      "genres": [
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://blacklagoon.jp/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://blacklagoon.jp/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "사무라이 참프루",
+      "slug": "samurai-champloo",
+      "english_name": "Samurai Champloo",
+      "aliases": [
+        "サムライチャンプルー"
+      ],
+      "ip_type": "애니",
+      "description": "검사 무겐과 진이 소녀 후우와 함께 해바라기 향이 나는 사무라이를 찾아 에도를 여행한다.",
+      "genres": [
+        "액션",
+        "모험",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.fujitv.co.jp/b_hp/samuraichamploo/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.fujitv.co.jp/b_hp/samuraichamploo/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "트라이건",
+      "slug": "trigun",
+      "english_name": "Trigun",
+      "aliases": [
+        "トライガン"
+      ],
+      "ip_type": "애니",
+      "description": "막대한 현상금이 걸린 총잡이 밧슈가 불살의 신념을 지키며 황야의 행성을 떠돈다.",
+      "genres": [
+        "액션",
+        "SF",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "킹덤",
+      "slug": "kingdom-anime",
+      "english_name": "Kingdom",
+      "aliases": [
+        "キングダム"
+      ],
+      "ip_type": "애니",
+      "description": "전쟁고아 신이 천하대장군을 꿈꾸며 훗날 진시황이 될 영정과 중국 통일의 길을 걷는다.",
+      "genres": [
+        "액션",
+        "모험",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://kingdom-anime.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://kingdom-anime.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "엘펜리트",
+      "slug": "elfen-lied",
+      "english_name": "Elfen Lied",
+      "aliases": [
+        "エルフェンリート"
+      ],
+      "ip_type": "애니",
+      "description": "특수한 힘을 지닌 루시가 연구시설을 탈출해 기억을 잃고 코우타와 만나며 비극이 시작된다.",
+      "genres": [
+        "액션",
+        "SF",
+        "호러",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "메이저",
+      "slug": "major-anime",
+      "english_name": "Major",
+      "aliases": [
+        "MAJOR",
+        "メジャー"
+      ],
+      "ip_type": "애니",
+      "description": "야구선수 아버지를 동경한 고로가 수많은 시련을 넘어 메이저리그를 향해 성장한다.",
+      "genres": [
+        "스포츠",
+        "드라마",
+        "소년물"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "4월은 너의 거짓말",
+      "slug": "your-lie-in-april",
+      "english_name": "Your Lie in April",
+      "aliases": [
+        "사구라",
+        "四月は君の嘘"
+      ],
+      "ip_type": "애니",
+      "description": "피아노를 칠 수 없게 된 공생이 자유로운 바이올리니스트 카오리를 만나 다시 음악을 시작한다.",
+      "genres": [
+        "음악",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.kimiuso.jp/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.kimiuso.jp/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "DARKER THAN BLACK -흑의 계약자-",
+      "slug": "darker-than-black",
+      "english_name": "Darker than Black",
+      "aliases": [
+        "흑의 계약자",
+        "DARKER THAN BLACK",
+        "DARKER THAN BLACK -黒の契約者-"
+      ],
+      "ip_type": "애니",
+      "description": "초능력자 계약자들이 암약하는 도쿄에서 가면을 쓴 요원 헤이가 비밀 임무를 수행한다.",
+      "genres": [
+        "액션",
+        "SF",
+        "추리"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "NANA",
+      "slug": "nana-anime",
+      "english_name": "Nana",
+      "aliases": [
+        "나나",
+        "ナナ"
+      ],
+      "ip_type": "애니",
+      "description": "같은 이름을 가진 두 여성 나나가 도쿄행 열차에서 만나 사랑과 꿈을 함께 겪는다.",
+      "genres": [
+        "음악",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.ntv.co.jp/nana/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.ntv.co.jp/nana/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "몬스터 아가씨가 있는 일상",
+      "slug": "monster-musume",
+      "english_name": "Monster Musume: Everyday Life with Monster Girls",
+      "aliases": [
+        "몬무스",
+        "モンスター娘のいる日常"
+      ],
+      "ip_type": "애니",
+      "description": "아인종 교류법 시행 뒤 평범한 청년 김히토의 집에 여러 몬스터 소녀가 함께 살게 된다.",
+      "genres": [
+        "판타지",
+        "로맨스",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://monmusu.tv/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://monmusu.tv/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "골든 타임",
+      "slug": "golden-time-anime",
+      "english_name": "Golden Time",
+      "aliases": [
+        "ゴールデンタイム"
+      ],
+      "ip_type": "애니",
+      "description": "사고로 고교 시절 기억을 잃은 대학생 반리가 코코와 만나 새로운 사랑과 과거 사이에서 흔들린다.",
+      "genres": [
+        "로맨스",
+        "드라마",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "사카모토입니다만?",
+      "slug": "havent-you-heard-im-sakamoto",
+      "english_name": "Haven't You Heard? I'm Sakamoto",
+      "aliases": [
+        "坂本ですが？"
+      ],
+      "ip_type": "애니",
+      "description": "모든 행동을 세련되게 해내는 고등학생 사카모토가 괴롭힘과 난처한 상황을 완벽하게 해결한다.",
+      "genres": [
+        "학원",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.tbs.co.jp/anime/sakamoto/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.tbs.co.jp/anime/sakamoto/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "남자 고교생의 일상",
+      "slug": "daily-lives-of-high-school-boys",
+      "english_name": "Daily Lives of High School Boys",
+      "aliases": [
+        "男子高校生の日常"
+      ],
+      "ip_type": "애니",
+      "description": "타다쿠니와 히데노리, 요시타케를 중심으로 남고생들의 엉뚱하고 과장된 일상을 그린다.",
+      "genres": [
+        "학원",
+        "일상",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "아소비 아소바세",
+      "slug": "asobi-asobase",
+      "english_name": "Asobi Asobase",
+      "aliases": [
+        "즐겁게 놀아보세",
+        "あそびあそばせ"
+      ],
+      "ip_type": "애니",
+      "description": "올리비아와 카스미, 하나코가 놀이인 연구회를 만들며 기상천외한 학교생활을 벌인다.",
+      "genres": [
+        "학원",
+        "일상",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "http://asobiasobase.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "http://asobiasobase.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "사이키 쿠스오의 재난",
+      "slug": "the-disastrous-life-of-saiki-k",
+      "english_name": "The Disastrous Life of Saiki K.",
+      "aliases": [
+        "사이키 쿠스오",
+        "斉木楠雄のΨ難"
+      ],
+      "ip_type": "애니",
+      "description": "막강한 초능력을 숨기고 평범하게 살고 싶은 사이키가 개성 강한 친구들 때문에 매일 소동을 겪는다.",
+      "genres": [
+        "학원",
+        "SF",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.saikikusuo.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.saikikusuo.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "왕님의 랭킹",
+      "slug": "ranking-of-kings",
+      "english_name": "Ranking of Kings",
+      "aliases": [
+        "王様ランキング"
+      ],
+      "ip_type": "애니",
+      "description": "듣지 못하고 힘도 약한 왕자 봇지가 친구 카게와 함께 진정한 왕이 되기 위한 여정을 시작한다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://osama-ranking.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://osama-ranking.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아키라",
+      "slug": "akira-anime-film",
+      "english_name": "Akira",
+      "aliases": [
+        "AKIRA",
+        "アキラ"
+      ],
+      "ip_type": "애니,영화",
+      "description": "네오 도쿄의 폭주족 카네다가 초능력에 각성한 친구 테츠오를 둘러싼 거대한 음모와 맞선다.",
+      "genres": [
+        "SF",
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "공각기동대",
+      "slug": "ghost-in-the-shell-film",
+      "english_name": "Ghost in the Shell",
+      "aliases": [
+        "攻殻機動隊",
+        "고스트 인 더 쉘"
+      ],
+      "ip_type": "애니,영화",
+      "description": "전뇌화와 의체가 보편화된 미래에서 쿠사나기 소령이 이끄는 공안 9과가 사이버 범죄를 추적한다.",
+      "genres": [
+        "SF",
+        "액션",
+        "추리"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "초속 5센티미터",
+      "slug": "five-centimeters-per-second",
+      "english_name": "5 Centimeters per Second",
+      "aliases": [
+        "秒速5センチメートル"
+      ],
+      "ip_type": "애니,영화",
+      "description": "멀리 떨어지게 된 타카키와 아카리의 관계를 시간과 거리 속 세 편의 이야기로 그린다.",
+      "genres": [
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.cwfilms.jp/5cm/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.cwfilms.jp/5cm/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "주문은 토끼입니까?",
+      "slug": "is-the-order-a-rabbit",
+      "english_name": "Is the Order a Rabbit?",
+      "aliases": [
+        "주문토끼",
+        "ご注文はうさぎですか？"
+      ],
+      "ip_type": "애니",
+      "description": "카페 래빗 하우스에서 지내게 된 코코아가 치노와 친구들을 만나 따뜻한 일상을 보낸다.",
+      "genres": [
+        "일상",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://gochiusa.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://gochiusa.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "마크로스 프론티어",
+      "slug": "macross-frontier",
+      "english_name": "Macross Frontier",
+      "aliases": [
+        "마크로스 F",
+        "マクロスF"
+      ],
+      "ip_type": "애니",
+      "description": "이민선단 프론티어에서 파일럿 알토와 두 가수 쉐릴, 란카가 바즈라와의 전쟁에 휘말린다.",
+      "genres": [
+        "SF",
+        "액션",
+        "음악",
+        "로봇/메카"
+      ],
+      "keywords": [],
+      "official_url": "https://macross.jp/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://macross.jp/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "리틀 위치 아카데미아",
+      "slug": "little-witch-academia",
+      "english_name": "Little Witch Academia",
+      "aliases": [
+        "리틀위치",
+        "リトルウィッチアカデミア"
+      ],
+      "ip_type": "애니",
+      "description": "마녀 샤리오를 동경하는 앗코가 루나 노바 마법학교에 입학해 친구들과 성장한다.",
+      "genres": [
+        "판타지",
+        "학원",
+        "모험",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://littlewitchacademia.jp/tv1st/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://littlewitchacademia.jp/tv1st/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "프린세스 츄츄",
+      "slug": "princess-tutu",
+      "english_name": "Princess Tutu",
+      "aliases": [
+        "プリンセスチュチュ"
+      ],
+      "ip_type": "애니",
+      "description": "오리 아히루가 프린세스 츄츄로 변신해 산산이 흩어진 왕자의 마음 조각을 되찾는다.",
+      "genres": [
+        "마법소녀",
+        "판타지",
+        "로맨스",
+        "음악"
+      ],
+      "keywords": [],
+      "official_url": "https://king-cr.jp/special/tutu/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://king-cr.jp/special/tutu/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "소녀혁명 우테나",
+      "slug": "revolutionary-girl-utena",
+      "english_name": "Revolutionary Girl Utena",
+      "aliases": [
+        "우테나",
+        "少女革命ウテナ"
+      ],
+      "ip_type": "애니",
+      "description": "왕자님이 되기를 꿈꾸는 우테나가 장미의 신부 안시를 둘러싼 결투에 뛰어든다.",
+      "genres": [
+        "학원",
+        "판타지",
+        "드라마",
+        "GL"
+      ],
+      "keywords": [],
+      "official_url": "https://www.kingrecords.co.jp/cs/artist/artist.aspx?artist=13842",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.kingrecords.co.jp/cs/artist/artist.aspx?artist=13842"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "마법기사 레이어스",
+      "slug": "magic-knight-rayearth",
+      "english_name": "Magic Knight Rayearth",
+      "aliases": [
+        "레이어스",
+        "魔法騎士レイアース"
+      ],
+      "ip_type": "애니",
+      "description": "도쿄타워에서 이세계 세피로로 소환된 세 소녀가 마법기사로서 세계를 구하려 한다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "로봇/메카",
+        "마법소녀"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "신비한 바다의 나디아",
+      "slug": "nadia-the-secret-of-blue-water",
+      "english_name": "Nadia: The Secret of Blue Water",
+      "aliases": [
+        "나디아",
+        "ふしぎの海のナディア"
+      ],
+      "ip_type": "애니",
+      "description": "발명 소년 장과 신비한 보석을 지닌 나디아가 네모 선장과 함께 세계를 위협하는 세력에 맞선다.",
+      "genres": [
+        "모험",
+        "SF",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "톱을 노려라!",
+      "slug": "gunbuster",
+      "english_name": "Gunbuster",
+      "aliases": [
+        "건버스터",
+        "トップをねらえ！"
+      ],
+      "ip_type": "애니",
+      "description": "우주 파일럿을 꿈꾸는 노리코가 혹독한 훈련을 거쳐 인류를 위협하는 우주괴수와 싸운다.",
+      "genres": [
+        "SF",
+        "액션",
+        "로봇/메카",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "풀 메탈 패닉!",
+      "slug": "full-metal-panic",
+      "english_name": "Full Metal Panic!",
+      "aliases": [
+        "풀메탈패닉",
+        "フルメタル・パニック！"
+      ],
+      "ip_type": "애니",
+      "description": "용병 소스케가 특수한 힘을 지닌 여고생 카나메를 지키기 위해 학교에 잠입한다.",
+      "genres": [
+        "액션",
+        "SF",
+        "학원",
+        "로봇/메카"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "창궁의 파프너",
+      "slug": "fafner-in-the-azure",
+      "english_name": "Fafner in the Azure",
+      "aliases": [
+        "파프너",
+        "蒼穹のファフナー"
+      ],
+      "ip_type": "애니",
+      "description": "평화로운 섬의 소년들이 인류를 습격한 페스툼에 맞서 거대 병기 파프너에 탑승한다.",
+      "genres": [
+        "SF",
+        "액션",
+        "로봇/메카",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://fafner.jp/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://fafner.jp/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "기동전함 나데시코",
+      "slug": "martian-successor-nadesico",
+      "english_name": "Martian Successor Nadesico",
+      "aliases": [
+        "나데시코",
+        "機動戦艦ナデシコ"
+      ],
+      "ip_type": "애니",
+      "description": "화성의 생존자 아키토가 민간 전함 나데시코에 승선해 목성 도마뱀과의 전쟁에 뛰어든다.",
+      "genres": [
+        "SF",
+        "액션",
+        "코미디",
+        "로봇/메카"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "THE 빅오",
+      "slug": "the-big-o",
+      "english_name": "The Big O",
+      "aliases": [
+        "빅오",
+        "THEビッグオー"
+      ],
+      "ip_type": "애니",
+      "description": "기억을 잃은 도시 패러다임 시티에서 협상가 로저 스미스가 거대 로봇 빅오를 움직인다.",
+      "genres": [
+        "SF",
+        "액션",
+        "추리",
+        "로봇/메카"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "기동경찰 패트레이버",
+      "slug": "mobile-police-patlabor",
+      "english_name": "Mobile Police Patlabor",
+      "aliases": [
+        "패트레이버",
+        "機動警察パトレイバー"
+      ],
+      "ip_type": "애니",
+      "description": "레이버 범죄를 담당하는 특차2과 대원들이 패트레이버를 운용하며 도시의 사건을 해결한다.",
+      "genres": [
+        "SF",
+        "액션",
+        "코미디",
+        "로봇/메카"
+      ],
+      "keywords": [],
+      "official_url": "https://patlabor.tokyo/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://patlabor.tokyo/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "데스 퍼레이드",
+      "slug": "death-parade",
+      "english_name": "Death Parade",
+      "aliases": [
+        "デス・パレード"
+      ],
+      "ip_type": "애니",
+      "description": "죽은 이들이 도착하는 바에서 심판자 데킴이 게임을 통해 인간의 본성과 삶의 무게를 판정한다.",
+      "genres": [
+        "판타지",
+        "추리",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.death-parade.jp/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.death-parade.jp/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "이니셜 D",
+      "slug": "initial-d",
+      "english_name": "Initial D",
+      "aliases": [
+        "INITIAL D",
+        "頭文字D"
+      ],
+      "ip_type": "애니",
+      "description": "두부 배달로 운전 실력을 익힌 타쿠미가 AE86을 몰고 고갯길 레이서들과 승부한다.",
+      "genres": [
+        "스포츠",
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://avex.jp/initial-d/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://avex.jp/initial-d/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "완간 미드나이트",
+      "slug": "wangan-midnight",
+      "english_name": "Wangan Midnight",
+      "aliases": [
+        "湾岸ミッドナイト"
+      ],
+      "ip_type": "애니",
+      "description": "아키오가 악마의 Z라 불리는 튜닝카를 손에 넣고 수도고속도로의 최고속 레이스에 빠져든다.",
+      "genres": [
+        "스포츠",
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "제로의 사역마",
+      "slug": "the-familiar-of-zero",
+      "english_name": "The Familiar of Zero",
+      "aliases": [
+        "제로마",
+        "ゼロの使い魔"
+      ],
+      "ip_type": "애니",
+      "description": "마법에 서툰 루이즈가 일본인 소년 사이토를 사역마로 소환하며 이세계 생활을 시작한다.",
+      "genres": [
+        "판타지",
+        "학원",
+        "로맨스",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "어떤 마술의 금서목록",
+      "slug": "a-certain-magical-index",
+      "english_name": "A Certain Magical Index",
+      "aliases": [
+        "어마금",
+        "とある魔術の禁書目録"
+      ],
+      "ip_type": "애니",
+      "description": "모든 이능을 지우는 오른손을 가진 토우마가 마도서의 지식을 품은 인덱스와 만난다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "SF",
+        "학원"
+      ],
+      "keywords": [],
+      "official_url": "https://toaru-project.com/index_3/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://toaru-project.com/index_3/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "어떤 과학의 초전자포",
+      "slug": "a-certain-scientific-railgun",
+      "english_name": "A Certain Scientific Railgun",
+      "aliases": [
+        "어과초",
+        "とある科学の超電磁砲"
+      ],
+      "ip_type": "애니",
+      "description": "학원도시의 레벨 5 능력자 미코토와 친구들이 도시 곳곳의 사건과 음모를 해결한다.",
+      "genres": [
+        "액션",
+        "SF",
+        "학원"
+      ],
+      "keywords": [],
+      "official_url": "https://toaru-project.com/railgun_t/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://toaru-project.com/railgun_t/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "클레이모어",
+      "slug": "claymore-anime",
+      "english_name": "Claymore",
+      "aliases": [
+        "CLAYMORE",
+        "クレイモア"
+      ],
+      "ip_type": "애니",
+      "description": "요마를 사냥하는 반인반요 전사 클레어가 소년 라키와 여행하며 조직과 자신의 운명에 맞선다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "드라마",
+        "호러"
+      ],
+      "keywords": [],
+      "official_url": "https://www.ntv.co.jp/claymore/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.ntv.co.jp/claymore/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "데드맨 원더랜드",
+      "slug": "deadman-wonderland",
+      "english_name": "Deadman Wonderland",
+      "aliases": [
+        "デッドマン・ワンダーランド"
+      ],
+      "ip_type": "애니",
+      "description": "학급 몰살의 누명을 쓴 간타가 교도소형 놀이공원에서 피를 무기로 쓰는 생존전에 휘말린다.",
+      "genres": [
+        "액션",
+        "SF",
+        "호러"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "절원의 템페스트",
+      "slug": "blast-of-tempest",
+      "english_name": "Blast of Tempest",
+      "aliases": [
+        "絶園のテンペスト"
+      ],
+      "ip_type": "애니",
+      "description": "여동생의 죽음을 추적하는 마히로와 친구 요시노가 마법사 일족의 세계적 분쟁에 휘말린다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "추리",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.zetsuen.net/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.zetsuen.net/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "K 프로젝트",
+      "slug": "k-project-anime",
+      "english_name": "K Project",
+      "aliases": [
+        "K 애니메이션",
+        "K PROJECT"
+      ],
+      "ip_type": "애니",
+      "description": "평범한 학생 시로가 살인사건 용의자로 쫓기며 일곱 왕과 클랜의 능력자 분쟁에 뛰어든다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "추리"
+      ],
+      "keywords": [],
+      "official_url": "https://k-project.jpn.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://k-project.jpn.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "충사",
+      "slug": "mushishi",
+      "english_name": "Mushishi",
+      "aliases": [
+        "蟲師"
+      ],
+      "ip_type": "애니",
+      "description": "생명의 근원에 가까운 존재 벌레를 연구하는 긴코가 각지를 여행하며 기이한 현상을 해결한다.",
+      "genres": [
+        "판타지",
+        "추리",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.mushishi-anime.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.mushishi-anime.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "xxxHOLiC",
+      "slug": "xxxholic-anime",
+      "english_name": "xxxHolic",
+      "aliases": [
+        "홀릭",
+        "XXXHOLiC",
+        "×××HOLiC"
+      ],
+      "ip_type": "애니",
+      "description": "요괴를 보는 와타누키가 소원을 이루어 주는 가게의 주인 유코 밑에서 일하며 기이한 사건을 겪는다.",
+      "genres": [
+        "판타지",
+        "추리",
+        "호러"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "바람의 검심",
+      "slug": "rurouni-kenshin",
+      "english_name": "Rurouni Kenshin",
+      "aliases": [
+        "るろうに剣心",
+        "루로우니 켄신"
+      ],
+      "ip_type": "애니",
+      "description": "막부 말 전설의 칼잡이 켄신이 불살을 맹세하고 역날검으로 새로운 시대의 사람들을 지킨다.",
+      "genres": [
+        "액션",
+        "모험",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://rurouni-kenshin.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://rurouni-kenshin.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "근육맨",
+      "slug": "kinnikuman-anime",
+      "english_name": "Kinnikuman",
+      "aliases": [
+        "キン肉マン"
+      ],
+      "ip_type": "애니",
+      "description": "덜렁대는 초인 근육맨이 동료들과 우정을 쌓으며 수많은 초인 레슬링 대회와 악당에 맞선다.",
+      "genres": [
+        "격투",
+        "스포츠",
+        "코미디",
+        "소년물"
+      ],
+      "keywords": [],
+      "official_url": "https://kin29man-anime.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://kin29man-anime.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "캡틴 츠바사",
+      "slug": "captain-tsubasa",
+      "english_name": "Captain Tsubasa",
+      "aliases": [
+        "キャプテン翼"
+      ],
+      "ip_type": "애니",
+      "description": "축구를 사랑하는 소년 오오조라 츠바사가 동료와 라이벌을 만나 세계 최고의 선수를 꿈꾼다.",
+      "genres": [
+        "스포츠",
+        "드라마",
+        "소년물"
+      ],
+      "keywords": [],
+      "official_url": "https://ball-ha-tomodachi.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://ball-ha-tomodachi.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "이누×보쿠 시크릿 서비스",
+      "slug": "inu-x-boku-secret-service",
+      "english_name": "Inu x Boku SS",
+      "aliases": [
+        "이누보쿠",
+        "妖狐×僕SS"
+      ],
+      "ip_type": "애니",
+      "description": "요괴의 피를 이은 리리치요가 고급 아파트 아야카시관에서 전속 경호원 소우시와 만난다.",
+      "genres": [
+        "판타지",
+        "로맨스",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.inuboku.tv/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.inuboku.tv/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "회장님은 메이드 사마!",
+      "slug": "maid-sama",
+      "english_name": "Maid Sama!",
+      "aliases": [
+        "회장님은 메이드님",
+        "会長はメイド様！"
+      ],
+      "ip_type": "애니",
+      "description": "엄격한 학생회장 미사키가 메이드 카페에서 일하는 비밀을 인기남 우스이에게 들킨다.",
+      "genres": [
+        "로맨스",
+        "학원",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://www.tbs.co.jp/anime/maidsama/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.tbs.co.jp/anime/maidsama/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아마가미 SS",
+      "slug": "amagami-ss",
+      "english_name": "Amagami SS",
+      "aliases": [
+        "아마가미",
+        "アマガミSS"
+      ],
+      "ip_type": "애니",
+      "description": "연애에 상처받은 준이치가 여러 여학생과 만나 각기 다른 가능성의 사랑을 이루어 간다.",
+      "genres": [
+        "로맨스",
+        "학원",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://www.tbs.co.jp/anime/amagami/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.tbs.co.jp/anime/amagami/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "내 여동생이 이렇게 귀여울 리가 없어",
+      "slug": "oreimo",
+      "english_name": "Oreimo",
+      "aliases": [
+        "내여귀",
+        "오레이모",
+        "俺の妹がこんなに可愛いわけがない"
+      ],
+      "ip_type": "애니",
+      "description": "평범한 고교생 쿄스케가 완벽한 여동생 키리노의 숨겨진 오타쿠 취미를 알게 되며 상담역이 된다.",
+      "genres": [
+        "로맨스",
+        "코미디",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://www.oreimo-anime.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.oreimo-anime.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "스쿨 데이즈",
+      "slug": "school-days-anime",
+      "english_name": "School Days",
+      "aliases": [
+        "School Days",
+        "スクールデイズ"
+      ],
+      "ip_type": "애니",
+      "description": "마코토와 코토노하, 세카이의 관계가 어긋나며 평범한 학원 연애가 파국으로 치닫는다.",
+      "genres": [
+        "로맨스",
+        "학원",
+        "드라마",
+        "호러"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "WHITE ALBUM 2",
+      "slug": "white-album-2",
+      "english_name": "White Album 2",
+      "aliases": [
+        "화이트 앨범 2",
+        "WA2",
+        "ホワイトアルバム2"
+      ],
+      "ip_type": "애니",
+      "description": "학원제 무대를 준비하는 하루키와 세츠나, 카즈사가 음악으로 가까워지며 삼각관계에 빠진다.",
+      "genres": [
+        "음악",
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "ef - a tale of memories.",
+      "slug": "ef-a-tale-of-memories",
+      "english_name": "ef: A Tale of Memories",
+      "aliases": [
+        "ef 메모리즈",
+        "エフ ア テイル オブ メモリーズ"
+      ],
+      "ip_type": "애니",
+      "description": "오토와를 무대로 상처와 비밀을 품은 청춘들이 각자의 사랑과 기억을 마주한다.",
+      "genres": [
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "좀비 랜드 사가",
+      "slug": "zombie-land-saga",
+      "english_name": "Zombie Land Saga",
+      "aliases": [
+        "좀비랜드사가",
+        "좀랜사",
+        "ゾンビランドサガ"
+      ],
+      "ip_type": "애니",
+      "description": "죽은 뒤 좀비로 깨어난 사쿠라가 시대가 다른 소녀들과 아이돌 그룹을 결성해 사가를 살린다.",
+      "genres": [
+        "아이돌",
+        "음악",
+        "코미디",
+        "판타지"
+      ],
+      "keywords": [],
+      "official_url": "https://zombielandsaga.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://zombielandsaga.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "캐롤 앤 튜즈데이",
+      "slug": "carole-and-tuesday",
+      "english_name": "Carole & Tuesday",
+      "aliases": [
+        "캐롤과 튜즈데이",
+        "CAROLE & TUESDAY"
+      ],
+      "ip_type": "애니",
+      "description": "화성에서 만난 캐롤과 튜즈데이가 듀오를 결성해 인공지능 음악이 지배하는 시대에 도전한다.",
+      "genres": [
+        "음악",
+        "드라마",
+        "SF"
+      ],
+      "keywords": [],
+      "official_url": "http://caroleandtuesday.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "http://caroleandtuesday.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "BECK",
+      "slug": "beck-mongolian-chop-squad",
+      "english_name": "Beck: Mongolian Chop Squad",
+      "aliases": [
+        "벡",
+        "ベック"
+      ],
+      "ip_type": "애니",
+      "description": "평범한 소년 코유키가 기타리스트 류스케를 만나 록 밴드 BECK의 멤버로 성장한다.",
+      "genres": [
+        "음악",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "BANANA FISH",
+      "slug": "banana-fish",
+      "english_name": "Banana Fish",
+      "aliases": [
+        "바나나 피쉬",
+        "バナナフィッシュ"
+      ],
+      "ip_type": "애니",
+      "description": "뉴욕 갱단의 소년 애쉬가 형을 망가뜨린 수수께끼의 말 바나나 피쉬의 정체를 추적한다.",
+      "genres": [
+        "액션",
+        "추리",
+        "드라마",
+        "BL"
+      ],
+      "keywords": [],
+      "official_url": "https://bananafish.tv/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://bananafish.tv/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "치하야후루",
+      "slug": "chihayafuru",
+      "english_name": "Chihayafuru",
+      "aliases": [
+        "ちはやふる"
+      ],
+      "ip_type": "애니",
+      "description": "치하야가 아라타와의 만남을 계기로 경기 카루타의 세계에 뛰어들어 퀸을 목표로 한다.",
+      "genres": [
+        "스포츠",
+        "학원",
+        "드라마",
+        "로맨스"
+      ],
+      "keywords": [],
+      "official_url": "https://www.ntv.co.jp/chihayafuru/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.ntv.co.jp/chihayafuru/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "파라다이스 키스",
+      "slug": "paradise-kiss-anime",
+      "english_name": "Paradise Kiss",
+      "aliases": [
+        "파라키스",
+        "Paradise Kiss",
+        "パラダイス・キス"
+      ],
+      "ip_type": "애니",
+      "description": "입시에 매달리던 유카리가 패션 전공 학생 조지와 동료들을 만나 모델과 사랑의 세계에 들어선다.",
+      "genres": [
+        "로맨스",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.fujitv.co.jp/b_hp/parakiss/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.fujitv.co.jp/b_hp/parakiss/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "더 파이팅",
+      "slug": "fighting-spirit",
+      "english_name": "Hajime no Ippo",
+      "aliases": [
+        "하지메노 잇포",
+        "はじめの一歩"
+      ],
+      "ip_type": "애니",
+      "description": "괴롭힘을 당하던 고교생 잇포가 복싱을 만나 강함의 의미를 찾으며 프로 선수로 성장한다.",
+      "genres": [
+        "스포츠",
+        "격투",
+        "드라마",
+        "소년물"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "내일의 죠",
+      "slug": "ashita-no-joe",
+      "english_name": "Tomorrow's Joe",
+      "aliases": [
+        "허리케인 죠",
+        "あしたのジョー"
+      ],
+      "ip_type": "애니",
+      "description": "거리의 문제아 야부키 죠가 복싱 지도자 단페이를 만나 링 위에서 자신의 모든 것을 불태운다.",
+      "genres": [
+        "스포츠",
+        "격투",
+        "드라마",
+        "소년물"
+      ],
+      "keywords": [],
+      "official_url": "https://www.tms-e.co.jp/alltitles/1970s/005101.html",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.tms-e.co.jp/alltitles/1970s/005101.html"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "터치",
+      "slug": "touch-anime",
+      "english_name": "Touch",
+      "aliases": [
+        "タッチ"
+      ],
+      "ip_type": "애니",
+      "description": "쌍둥이 형제 타츠야와 카즈야, 소꿉친구 미나미의 사랑과 고시엔을 향한 꿈을 그린다.",
+      "genres": [
+        "스포츠",
+        "로맨스",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "크로스 게임",
+      "slug": "cross-game",
+      "english_name": "Cross Game",
+      "aliases": [
+        "クロスゲーム"
+      ],
+      "ip_type": "애니",
+      "description": "야구에 재능을 숨긴 코우와 투수 아오바가 소중한 사람의 꿈인 고시엔을 향해 나아간다.",
+      "genres": [
+        "스포츠",
+        "로맨스",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.tv-tokyo.co.jp/anime/crossgame/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.tv-tokyo.co.jp/anime/crossgame/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "김전일 소년의 사건부",
+      "slug": "kindaichi-case-files",
+      "english_name": "The Kindaichi Case Files",
+      "aliases": [
+        "소년탐정 김전일",
+        "金田一少年の事件簿"
+      ],
+      "ip_type": "애니",
+      "description": "명탐정의 손자 김전일이 소꿉친구 미유키와 함께 불가능해 보이는 살인사건의 진상을 밝힌다.",
+      "genres": [
+        "추리",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.toei-anim.co.jp/tv/kindaichi/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.toei-anim.co.jp/tv/kindaichi/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "바니타스의 수기",
+      "slug": "the-case-study-of-vanitas",
+      "english_name": "The Case Study of Vanitas",
+      "aliases": [
+        "바니타스의 카르테",
+        "ヴァニタスの手記"
+      ],
+      "ip_type": "애니",
+      "description": "흡혈귀 노에가 저주받은 흡혈귀를 치료한다는 인간 의사 바니타스와 파리의 사건을 쫓는다.",
+      "genres": [
+        "판타지",
+        "추리",
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://vanitas-anime.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://vanitas-anime.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "탐정학원 Q",
+      "slug": "detective-school-q",
+      "english_name": "Detective School Q",
+      "aliases": [
+        "探偵学園Q"
+      ],
+      "ip_type": "애니",
+      "description": "탐정을 꿈꾸는 큐가 단 탐정학원에 입학해 개성 강한 동료들과 어려운 사건을 해결한다.",
+      "genres": [
+        "추리",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "스파이럴 추리의 띠",
+      "slug": "spiral-bonds-of-reasoning",
+      "english_name": "Spiral: The Bonds of Reasoning",
+      "aliases": [
+        "스파이럴",
+        "スパイラル ～推理の絆～"
+      ],
+      "ip_type": "애니",
+      "description": "형의 실종을 좇는 아유무가 블레이드 칠드런이라 불리는 이들과 연속되는 수수께끼를 풀어간다.",
+      "genres": [
+        "추리",
+        "학원",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "드리프터즈",
+      "slug": "drifters-anime",
+      "english_name": "Drifters",
+      "aliases": [
+        "DRIFTERS",
+        "ドリフターズ"
+      ],
+      "ip_type": "애니",
+      "description": "세키가하라에서 죽을 위기에 처한 시마즈 토요히사가 이세계로 보내져 역사적 영웅들과 싸운다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://www.nbcuni.co.jp/rondorobe/anime/drifters/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.nbcuni.co.jp/rondorobe/anime/drifters/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아르슬란 전기",
+      "slug": "the-heroic-legend-of-arslan",
+      "english_name": "The Heroic Legend of Arslan",
+      "aliases": [
+        "アルスラーン戦記"
+      ],
+      "ip_type": "애니",
+      "description": "나라를 빼앗긴 왕자 아르슬란이 충신 다륜과 동료들을 모아 왕도를 되찾기 위한 원정에 나선다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://arslan.jp/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://arslan.jp/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "알드노아. 제로",
+      "slug": "aldnoah-zero",
+      "english_name": "Aldnoah.Zero",
+      "aliases": [
+        "알드노아 제로",
+        "ALDNOAH.ZERO",
+        "アルドノア・ゼロ"
+      ],
+      "ip_type": "애니",
+      "description": "화성 제국의 지구 침공 속에서 고교생 이나호와 화성 기사 슬레인이 서로 다른 길을 걷는다.",
+      "genres": [
+        "SF",
+        "액션",
+        "드라마",
+        "로봇/메카"
+      ],
+      "keywords": [],
+      "official_url": "https://www.aldnoahzero.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.aldnoahzero.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "길티 크라운",
+      "slug": "guilty-crown",
+      "english_name": "Guilty Crown",
+      "aliases": [
+        "GUILTY CROWN",
+        "ギルティクラウン"
+      ],
+      "ip_type": "애니",
+      "description": "타인의 마음에서 무기를 꺼내는 힘을 얻은 슈가 저항조직 장의사와 일본의 운명을 건 싸움에 나선다.",
+      "genres": [
+        "SF",
+        "액션",
+        "드라마",
+        "로맨스"
+      ],
+      "keywords": [],
+      "official_url": "https://www.guilty-crown.jp/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://www.guilty-crown.jp/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "갑철성의 카바네리",
+      "slug": "kabaneri-of-the-iron-fortress",
+      "english_name": "Kabaneri of the Iron Fortress",
+      "aliases": [
+        "카바네리",
+        "甲鉄城のカバネリ"
+      ],
+      "ip_type": "애니",
+      "description": "불사의 괴물 카바네가 창궐한 세계에서 이코마가 인간과 괴물 사이의 카바네리가 되어 싸운다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "호러",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://kabaneri.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://kabaneri.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "십이대전",
+      "slug": "juni-taisen-zodiac-war",
+      "english_name": "Juni Taisen: Zodiac War",
+      "aliases": [
+        "十二大戦"
+      ],
+      "ip_type": "애니",
+      "description": "십이지를 대표하는 열두 전사가 단 하나의 소원을 얻기 위해 목숨을 건 배틀로얄을 벌인다.",
+      "genres": [
+        "액션",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://12taisen.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://12taisen.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "신격의 바하무트 GENESIS",
+      "slug": "rage-of-bahamut-genesis",
+      "english_name": "Rage of Bahamut: Genesis",
+      "aliases": [
+        "바하무트 제네시스",
+        "神撃のバハムート GENESIS"
+      ],
+      "ip_type": "애니",
+      "description": "현상금 사냥꾼 파바로가 수수께끼의 소녀 아미라와 만나 봉인된 바하무트의 위기에 휘말린다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "액션"
+      ],
+      "keywords": [],
+      "official_url": "https://shingekinobahamut-genesis.jp/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://shingekinobahamut-genesis.jp/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "유녀전기",
+      "slug": "the-saga-of-tanya-the-evil",
+      "english_name": "The Saga of Tanya the Evil",
+      "aliases": [
+        "幼女戦記",
+        "Youjo Senki"
+      ],
+      "ip_type": "애니",
+      "description": "냉혹한 회사원이 전쟁 중인 이세계의 소녀 타냐로 환생해 마도 장교로 살아남으려 한다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://youjo-senki.jp/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://youjo-senki.jp/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "이세계 주점 노부",
+      "slug": "isekai-izakaya-nobu",
+      "english_name": "Isekai Izakaya: Japanese Food From Another World",
+      "aliases": [
+        "이세계 이자카야 노부",
+        "異世界居酒屋〜古都アイテーリアの居酒屋のぶ〜"
+      ],
+      "ip_type": "애니",
+      "description": "교토의 주점 노부가 이세계 고도 아이테리아와 연결되며 손님들에게 일본 요리를 선보인다.",
+      "genres": [
+        "판타지",
+        "요리",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://r.gnavi.co.jp/nobu/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://r.gnavi.co.jp/nobu/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "재와 환상의 그림갈",
+      "slug": "grimgar-ashes-and-illusions",
+      "english_name": "Grimgar of Fantasy and Ash",
+      "aliases": [
+        "그림갈",
+        "灰と幻想のグリムガル"
+      ],
+      "ip_type": "애니",
+      "description": "기억을 잃고 이세계에서 깨어난 하루히로 일행이 의용병이 되어 생존과 상실을 겪는다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://grimgar.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://grimgar.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "문제아들이 이세계에서 온다는 모양인데요?",
+      "slug": "problem-children-are-coming-from-another-world-arent-they",
+      "english_name": "Problem Children Are Coming from Another World, Aren't They?",
+      "aliases": [
+        "문제아 시리즈",
+        "問題児たちが異世界から来るそうですよ？"
+      ],
+      "ip_type": "애니",
+      "description": "강력한 능력을 지닌 세 문제아가 이세계 모형정원에 소환돼 공동체를 되살릴 기프트 게임에 도전한다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "마왕학원의 부적합자",
+      "slug": "the-misfit-of-demon-king-academy",
+      "english_name": "The Misfit of Demon King Academy",
+      "aliases": [
+        "마왕학원",
+        "魔王学院の不適合者"
+      ],
+      "ip_type": "애니",
+      "description": "폭정의 마왕 아노스가 이천 년 뒤 환생해 자신의 힘을 알아보지 못하는 마왕학원에 입학한다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "학원"
+      ],
+      "keywords": [],
+      "official_url": "https://maohgakuin.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://maohgakuin.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "흔해빠진 직업으로 세계최강",
+      "slug": "arifureta",
+      "english_name": "Arifureta: From Commonplace to World's Strongest",
+      "aliases": [
+        "흔직세",
+        "ありふれた職業で世界最強"
+      ],
+      "ip_type": "애니",
+      "description": "무능한 연성사 하지메가 던전 심연에 추락한 뒤 살아남기 위해 힘을 얻고 원래 세계로 돌아가려 한다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://arifureta.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://arifureta.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "이세계 콰르텟",
+      "slug": "isekai-quartet",
+      "english_name": "Isekai Quartet",
+      "aliases": [
+        "이세콰르",
+        "異世界かるてっと"
+      ],
+      "ip_type": "애니",
+      "description": "서로 다른 이세계 작품의 주인공들이 수수께끼의 버튼으로 한 교실에 모여 학교생활을 한다.",
+      "genres": [
+        "판타지",
+        "학원",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "http://isekai-quartet.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "http://isekai-quartet.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "달이 이끄는 이세계 여행",
+      "slug": "tsukimichi-moonlit-fantasy",
+      "english_name": "Tsukimichi: Moonlit Fantasy",
+      "aliases": [
+        "츠키미치",
+        "月が導く異世界道中"
+      ],
+      "ip_type": "애니",
+      "description": "여신에게 버림받은 마코토가 이세계의 변방에서 강대한 힘과 마물 동료를 얻어 길을 개척한다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://tsukimichi.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://tsukimichi.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "이 용사가 ZZANG센 주제에 너무 신중하다",
+      "slug": "cautious-hero",
+      "english_name": "Cautious Hero: The Hero Is Overpowered but Overly Cautious",
+      "aliases": [
+        "신중용사",
+        "慎重勇者"
+      ],
+      "ip_type": "애니",
+      "description": "여신 리스타가 구세계를 구하기 위해 강하지만 지나치게 신중한 용사 세이야를 소환한다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "http://shincho-yusha.jp/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "http://shincho-yusha.jp/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "거미입니다만, 문제라도?",
+      "slug": "so-im-a-spider-so-what",
+      "english_name": "So I'm a Spider, So What?",
+      "aliases": [
+        "거미문제",
+        "蜘蛛ですが、なにか？"
+      ],
+      "ip_type": "애니",
+      "description": "이세계 던전의 거미 마물로 환생한 여고생이 생존을 위해 끊임없이 싸우고 진화한다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "액션"
+      ],
+      "keywords": [],
+      "official_url": "https://kumo-anime.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://kumo-anime.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "어둠의 실력자가 되고 싶어서!",
+      "slug": "the-eminence-in-shadow",
+      "english_name": "The Eminence in Shadow",
+      "aliases": [
+        "어실주",
+        "陰の実力者になりたくて！"
+      ],
+      "ip_type": "애니",
+      "description": "배후의 실력자를 동경한 소년이 이세계의 시드로 환생해 꾸며낸 설정을 실제 음모로 착각한다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://shadow-garden.jp/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://shadow-garden.jp/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "마왕성에서 잘 자요",
+      "slug": "sleepy-princess-in-the-demon-castle",
+      "english_name": "Sleepy Princess in the Demon Castle",
+      "aliases": [
+        "마왕성 숙면",
+        "魔王城でおやすみ"
+      ],
+      "ip_type": "애니",
+      "description": "마왕에게 납치된 스야리스 공주가 탈출보다 쾌적한 숙면을 위해 마왕성을 헤집고 다닌다.",
+      "genres": [
+        "판타지",
+        "코미디",
+        "일상"
+      ],
+      "keywords": [],
+      "official_url": "https://maoujo-anime.com/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://maoujo-anime.com/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "천공의 에스카플로네",
+      "slug": "the-vision-of-escaflowne",
+      "english_name": "The Vision of Escaflowne",
+      "aliases": [
+        "에스카플로네",
+        "天空のエスカフローネ"
+      ],
+      "ip_type": "애니",
+      "description": "점술을 좋아하는 소녀 히토미가 이세계 가이아로 이동해 왕자 반과 거대 갑주 에스카플로네를 만난다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "로맨스",
+        "로봇/메카"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    },
+    {
+      "name": "고블린 슬레이어",
+      "slug": "goblin-slayer",
+      "english_name": "Goblin Slayer",
+      "aliases": [
+        "고슬",
+        "ゴブリンスレイヤー"
+      ],
+      "ip_type": "애니",
+      "description": "고블린만을 집요하게 사냥하는 모험가가 신입 신관과 동료들을 만나 위험한 의뢰에 나선다.",
+      "genres": [
+        "판타지",
+        "액션",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://goblinslayer.jp/",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://goblinslayer.jp/"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "슬레이어즈",
+      "slug": "slayers-anime",
+      "english_name": "Slayers",
+      "aliases": [
+        "スレイヤーズ"
+      ],
+      "ip_type": "애니",
+      "description": "천재 마도사 리나 인버스가 검사 가우리와 함께 보물과 사건을 좇아 대륙을 여행한다.",
+      "genres": [
+        "판타지",
+        "모험",
+        "액션",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": null,
+      "links": [],
+      "created_by": null
+    }
+  ]
+}

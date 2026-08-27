@@ -1,0 +1,67 @@
+{
+  "event": {
+    "id": "df97a040-eb90-4680-adf3-a83c44051dd4",
+    "tag_id": "34b220ee-d7fc-42cc-95c3-ae259e76a192",
+    "type": "collab_cafe",
+    "shop_id": null,
+    "title": "얼굴만으론 좋아할 수 없어요 × SMG CAFE 콜라보 카페",
+    "created_at": "2026-08-19T12:57:26.67095+00:00",
+    "start_date": "2026-07-31",
+    "end_date": "2026-08-26",
+    "entry_info": "현장 선착순 입장",
+    "hours_info": "매일 10:30~22:00",
+    "created_by": null,
+    "reserve_start": null,
+    "reserve_end": null,
+    "hours": {
+      "fri": {
+        "open": "10:30",
+        "close": "22:00"
+      },
+      "mon": {
+        "open": "10:30",
+        "close": "22:00"
+      },
+      "sat": {
+        "open": "10:30",
+        "close": "22:00"
+      },
+      "sun": {
+        "open": "10:30",
+        "close": "22:00"
+      },
+      "thu": {
+        "open": "10:30",
+        "close": "22:00"
+      },
+      "tue": {
+        "open": "10:30",
+        "close": "22:00"
+      },
+      "wed": {
+        "open": "10:30",
+        "close": "22:00"
+      }
+    },
+    "cover_url": "https://media.orings.co.kr/static/place/2026-07-23/cf44ecd2-ab8e-4a60-bb2d-bf8a8cd80675.webp",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 초과 시 10분당 1,000원\n3만원 이상 구매 시 1시간, 5만원 이상 2시간, 10만원 이상 3시간 무료\n30만원 이상 구매 시 당일 무료",
+    "description": "만화 「얼굴만으론 좋아할 수 없어요」를 테마로 한 공식 콜라보 카페입니다.\n캐릭터 메뉴와 공식 상품, 메뉴 구매 특전을 만날 수 있습니다.\n작품의 분위기를 담은 공간 연출과 일러스트를 함께 감상하며 캐릭터별 요소를 찾아보는 재미가 있습니다.",
+    "place_name": "현대백화점유플렉스 신촌점",
+    "place_addr": "서울 서대문구 연세로 13",
+    "place_lat": 37.5567377794133,
+    "place_lng": 126.936617302453,
+    "place_detail": "지하 2층 SMG CAFE",
+    "source_urls": [
+      "https://www.instagram.com/p/Da_szDgE-HR/",
+      "https://x.com/smgcafe_kr",
+      "https://ehyundai.com/newPortal/uplex/DP/WC/WC000000_V.do?branchCd=B00127100"
+    ],
+    "ticket_urls": [],
+    "updated_by": null,
+    "updated_at": "2026-08-25T05:40:37.521+00:00",
+    "place_id": "e5915b03-9aad-4b68-866b-cb6cdc42bbf8",
+    "video_url": null
+  },
+  "goods": []
+}

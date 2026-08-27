@@ -1,0 +1,15 @@
+[
+  {
+    "id": "18e12e2c-9fe5-469f-aee6-a4968a1c6845",
+    "event_id": "7efae8dd-3ee6-40d1-aff3-b2b42fff8d8d",
+    "name": "한국 전시 오리지널 MD 목록",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/7efae8dd-3ee6-40d1-aff3-b2b42fff8d8d/official-instagram-original-md-list-1.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-25T14:44:55.088789+00:00",
+    "updated_at": "2026-08-25T14:44:55.088789+00:00"
+  }
+]

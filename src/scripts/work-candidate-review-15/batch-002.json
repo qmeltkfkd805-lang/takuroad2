@@ -1,0 +1,199 @@
+[
+  {
+    "slug": "black-lagoon",
+    "name": "블랙 라군",
+    "englishName": "Black Lagoon",
+    "aliases": [
+      "BLACK LAGOON",
+      "ブラック・ラグーン"
+    ],
+    "description": "회사에 버림받은 일본인 회사원 로크가 라군 상회에 합류해 범죄도시 로아나푸라를 살아간다.",
+    "genres": [
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://blacklagoon.jp/",
+    "source": "https://blacklagoon.jp/"
+  },
+  {
+    "slug": "samurai-champloo",
+    "name": "사무라이 참프루",
+    "englishName": "Samurai Champloo",
+    "aliases": [
+      "サムライチャンプルー"
+    ],
+    "description": "검사 무겐과 진이 소녀 후우와 함께 해바라기 향이 나는 사무라이를 찾아 에도를 여행한다.",
+    "genres": [
+      "액션",
+      "모험",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.fujitv.co.jp/b_hp/samuraichamploo/",
+    "source": "https://www.fujitv.co.jp/b_hp/samuraichamploo/"
+  },
+  {
+    "slug": "trigun",
+    "name": "트라이건",
+    "englishName": "Trigun",
+    "aliases": [
+      "トライガン"
+    ],
+    "description": "막대한 현상금이 걸린 총잡이 밧슈가 불살의 신념을 지키며 황야의 행성을 떠돈다.",
+    "genres": [
+      "액션",
+      "SF",
+      "모험"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "kingdom-anime",
+    "name": "킹덤",
+    "englishName": "Kingdom",
+    "aliases": [
+      "キングダム"
+    ],
+    "description": "전쟁고아 신이 천하대장군을 꿈꾸며 훗날 진시황이 될 영정과 중국 통일의 길을 걷는다.",
+    "genres": [
+      "액션",
+      "모험",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://kingdom-anime.com/",
+    "source": "https://kingdom-anime.com/"
+  },
+  {
+    "slug": "elfen-lied",
+    "name": "엘펜리트",
+    "englishName": "Elfen Lied",
+    "aliases": [
+      "エルフェンリート"
+    ],
+    "description": "특수한 힘을 지닌 루시가 연구시설을 탈출해 기억을 잃고 코우타와 만나며 비극이 시작된다.",
+    "genres": [
+      "액션",
+      "SF",
+      "호러",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "major-anime",
+    "name": "메이저",
+    "englishName": "Major",
+    "aliases": [
+      "MAJOR",
+      "メジャー"
+    ],
+    "description": "야구선수 아버지를 동경한 고로가 수많은 시련을 넘어 메이저리그를 향해 성장한다.",
+    "genres": [
+      "스포츠",
+      "드라마",
+      "소년물"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "your-lie-in-april",
+    "name": "4월은 너의 거짓말",
+    "englishName": "Your Lie in April",
+    "aliases": [
+      "사구라",
+      "四月は君の嘘"
+    ],
+    "description": "피아노를 칠 수 없게 된 공생이 자유로운 바이올리니스트 카오리를 만나 다시 음악을 시작한다.",
+    "genres": [
+      "음악",
+      "로맨스",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.kimiuso.jp/",
+    "source": "https://www.kimiuso.jp/"
+  },
+  {
+    "slug": "darker-than-black",
+    "name": "DARKER THAN BLACK -흑의 계약자-",
+    "englishName": "Darker than Black",
+    "aliases": [
+      "흑의 계약자",
+      "DARKER THAN BLACK",
+      "DARKER THAN BLACK -黒の契約者-"
+    ],
+    "description": "초능력자 계약자들이 암약하는 도쿄에서 가면을 쓴 요원 헤이가 비밀 임무를 수행한다.",
+    "genres": [
+      "액션",
+      "SF",
+      "추리"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "nana-anime",
+    "name": "NANA",
+    "englishName": "Nana",
+    "aliases": [
+      "나나",
+      "ナナ"
+    ],
+    "description": "같은 이름을 가진 두 여성 나나가 도쿄행 열차에서 만나 사랑과 꿈을 함께 겪는다.",
+    "genres": [
+      "음악",
+      "로맨스",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.ntv.co.jp/nana/",
+    "source": "https://www.ntv.co.jp/nana/"
+  },
+  {
+    "slug": "monster-musume",
+    "name": "몬스터 아가씨가 있는 일상",
+    "englishName": "Monster Musume: Everyday Life with Monster Girls",
+    "aliases": [
+      "몬무스",
+      "モンスター娘のいる日常"
+    ],
+    "description": "아인종 교류법 시행 뒤 평범한 청년 김히토의 집에 여러 몬스터 소녀가 함께 살게 된다.",
+    "genres": [
+      "판타지",
+      "로맨스",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://monmusu.tv/",
+    "source": "https://monmusu.tv/"
+  }
+]

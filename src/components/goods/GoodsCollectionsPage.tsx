@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import SettingsSubShell from '@/components/settings/SettingsSubShell'
+import GoodsPageShell from './GoodsPageShell'
 import { EmptyState } from '@/components/tds'
 import { getMyGoodsCollections, type GoodsCollection } from '@/services/goodsService'
 import styles from './Goods.module.css'
@@ -43,7 +43,7 @@ export default function GoodsCollectionsPage() {
   })
 
   return (
-    <SettingsSubShell title="작품별 컬렉션" onBack={() => router.back()}>
+    <GoodsPageShell crumbs={[{ label: '마이', href: '/profile' }, { label: '내 굿즈', href: '/profile/goods' }, { label: '컬렉션' }]} title="작품별 컬렉션">
       <div className={styles.wrap}>
         <p className={styles.desc}>굿즈에 연결한 작품 기준으로 자동으로 묶여요. 폴더를 따로 만들 필요가 없어요.</p>
 
@@ -77,6 +77,6 @@ export default function GoodsCollectionsPage() {
           </div>
         )}
       </div>
-    </SettingsSubShell>
+    </GoodsPageShell>
   )
 }

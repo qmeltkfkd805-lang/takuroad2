@@ -1,0 +1,141 @@
+{
+  "events": [
+    {
+      "id": "d7af2161-436f-448d-b922-8bcd900c14ad",
+      "tag_id": "45099d3a-435b-4940-9fff-15546e0a58fd",
+      "type": "collab_cafe",
+      "shop_id": null,
+      "title": "물가의 밤 The Animation × 애니플러스 콜라보 카페 (서울 합정점)",
+      "created_at": "2026-08-13T04:06:50.634846+00:00",
+      "start_date": "2026-07-02",
+      "end_date": "2026-08-16",
+      "entry_info": "사전예약 후 입장\n현장예약 가능",
+      "hours_info": "매일 10:00~22:00\n설·추석 당일 휴무",
+      "created_by": null,
+      "reserve_start": null,
+      "reserve_end": null,
+      "hours": {
+        "fri": {
+          "open": "10:00",
+          "close": "22:00"
+        },
+        "mon": {
+          "open": "10:00",
+          "close": "22:00"
+        },
+        "sat": {
+          "open": "10:00",
+          "close": "22:00"
+        },
+        "sun": {
+          "open": "10:00",
+          "close": "22:00"
+        },
+        "thu": {
+          "open": "10:00",
+          "close": "22:00"
+        },
+        "tue": {
+          "open": "10:00",
+          "close": "22:00"
+        },
+        "wed": {
+          "open": "10:00",
+          "close": "22:00"
+        }
+      },
+      "cover_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/covers/aniplus-water-2026-clean-v2.png",
+      "parking": true,
+      "parking_note": "마포한강2차 푸르지오 지하주차장 이용 가능\n1만원 구매 시마다 30분 할인\n최대 4시간 할인",
+      "description": "물가의 밤 애니메이션을 테마로 한 메뉴와 공식 굿즈를 만나는 콜라보 카페입니다.\n작품의 분위기와 캐릭터를 담은 한정 메뉴와 상품을 즐길 수 있습니다.\n만 19세 이상만 카페를 이용할 수 있으며 예약자와 동반자 모두 신분증을 확인합니다.\n예약 1건당 최대 2인까지 입장할 수 있고, 예약 후 30분 안에 방문하지 않으면 노쇼 처리됩니다.\n미성년자는 굿즈 구매만 가능합니다.",
+      "place_name": "애니플러스샵 서울1호합정점",
+      "place_addr": "서울 마포구 월드컵로3길 14",
+      "place_lat": 37.5510351582633,
+      "place_lng": 126.912345619688,
+      "place_detail": "딜라이트 스퀘어 B101-105",
+      "source_urls": [
+        "https://shop.aniplustv.com/offline-shop/collabo-cafe?collaboId=109",
+        "https://x.com/ANIPLUS_SHOP"
+      ],
+      "ticket_urls": [
+        {
+          "url": "https://booking.naver.com/booking/12/bizes/445544/items/7759161",
+          "label": "콜라보 카페 예약하기"
+        }
+      ],
+      "updated_by": null,
+      "updated_at": "2026-08-25T05:40:35.978+00:00",
+      "place_id": "6cb9a43e-56e9-401c-82d0-1e22617e9735",
+      "video_url": null
+    },
+    {
+      "id": "6b5856e7-8b7c-4f0a-b8ae-a78c752ecba9",
+      "tag_id": "45099d3a-435b-4940-9fff-15546e0a58fd",
+      "type": "collab_cafe",
+      "shop_id": null,
+      "title": "물가의 밤 The Animation × 애니플러스 콜라보 카페 (부산 서면점)",
+      "created_at": "2026-08-13T04:06:50.834034+00:00",
+      "start_date": "2026-07-02",
+      "end_date": "2026-08-16",
+      "entry_info": "사전예약 후 입장\n현장예약 가능",
+      "hours_info": "매일 11:00~22:00\n연중무휴",
+      "created_by": null,
+      "reserve_start": null,
+      "reserve_end": null,
+      "hours": {
+        "fri": {
+          "open": "11:00",
+          "close": "22:00"
+        },
+        "mon": {
+          "open": "11:00",
+          "close": "22:00"
+        },
+        "sat": {
+          "open": "11:00",
+          "close": "22:00"
+        },
+        "sun": {
+          "open": "11:00",
+          "close": "22:00"
+        },
+        "thu": {
+          "open": "11:00",
+          "close": "22:00"
+        },
+        "tue": {
+          "open": "11:00",
+          "close": "22:00"
+        },
+        "wed": {
+          "open": "11:00",
+          "close": "22:00"
+        }
+      },
+      "cover_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/covers/aniplus-water-2026-clean-v2.png",
+      "parking": true,
+      "parking_note": "삼정타워 지하주차장 이용 가능\n애니플러스 구매 금액에 따라 최대 5시간 무료",
+      "description": "물가의 밤 애니메이션을 테마로 한 메뉴와 공식 굿즈를 만나는 콜라보 카페입니다.\n작품의 분위기와 캐릭터를 담은 한정 메뉴와 상품을 즐길 수 있습니다.\n만 19세 이상만 카페를 이용할 수 있으며 예약자와 동반자 모두 신분증을 확인합니다.\n예약 1건당 최대 2인까지 입장할 수 있고, 예약 후 30분 안에 방문하지 않으면 노쇼 처리됩니다.\n미성년자는 굿즈 구매만 가능합니다.",
+      "place_name": "애니플러스샵 부산서면점",
+      "place_addr": "부산 부산진구 중앙대로 672",
+      "place_lat": 35.1528125701021,
+      "place_lng": 129.059658823729,
+      "place_detail": "삼정타워 9층",
+      "source_urls": [
+        "https://shop.aniplustv.com/offline-shop/collabo-cafe?collaboId=109",
+        "https://x.com/ANIPLUS_SHOP"
+      ],
+      "ticket_urls": [
+        {
+          "url": "https://booking.naver.com/booking/12/bizes/619683/items/7759188",
+          "label": "콜라보 카페 예약하기"
+        }
+      ],
+      "updated_by": null,
+      "updated_at": "2026-08-25T05:40:35.745+00:00",
+      "place_id": "e59bb204-dd86-4559-af53-b7399fe2f01f",
+      "video_url": null
+    }
+  ],
+  "goods": []
+}

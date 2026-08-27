@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "homunculus-manga",
+    "name": "호문쿨루스",
+    "englishName": "Homunculus",
+    "aliases": ["ホムンクルス"],
+    "description": "차에서 생활하는 나코시가 두개골 천공 수술을 받은 뒤 사람들의 뒤틀린 내면을 보게 된다.",
+    "genres": ["호러", "드라마", "19"],
+    "ipType": ["만화", "영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "i-am-a-hero-manga",
+    "name": "아이 엠 어 히어로",
+    "englishName": "I Am a Hero",
+    "aliases": ["I AM A HERO", "アイアムアヒーロー"],
+    "description": "무명 만화가 어시스턴트 히데오가 감염자 사태 속에서 총을 들고 살아남으려 한다.",
+    "genres": ["호러", "액션", "드라마", "19"],
+    "ipType": ["만화", "영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "my-home-hero-manga",
+    "name": "마이 홈 히어로",
+    "englishName": "My Home Hero",
+    "aliases": ["マイホームヒーロー"],
+    "description": "평범한 아버지 테츠오가 딸을 지키려 살인을 저지르고 범죄 조직의 추적에 맞선다.",
+    "genres": ["추리", "드라마", "19"],
+    "ipType": ["만화", "애니", "드라마", "영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "usogui-manga",
+    "name": "도박마",
+    "englishName": "Usogui",
+    "aliases": ["우소구이", "嘘喰い"],
+    "description": "천재 도박꾼 바쿠가 비밀 조직 카케로의 입회 아래 목숨을 건 도박에 도전한다.",
+    "genres": ["추리", "액션", "드라마", "19"],
+    "ipType": ["만화", "영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "liar-game-manga",
+    "name": "라이어 게임",
+    "englishName": "Liar Game",
+    "aliases": ["LIAR GAME", "ライアーゲーム"],
+    "description": "정직한 나오가 거액을 빼앗는 심리 게임에 초대돼 천재 사기꾼 아키야마와 협력한다.",
+    "genres": ["추리", "드라마"],
+    "ipType": ["만화", "드라마", "영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "20th-century-boys-manga",
+    "name": "20세기 소년",
+    "englishName": "20th Century Boys",
+    "aliases": ["20世紀少年"],
+    "description": "켄지가 어린 시절 친구들과 만든 예언이 현실이 되자 수수께끼의 친구를 추적한다.",
+    "genres": ["추리", "SF", "드라마"],
+    "ipType": ["만화", "영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "billy-bat-manga",
+    "name": "빌리 배트",
+    "englishName": "Billy Bat",
+    "aliases": ["BILLY BAT"],
+    "description": "만화가 케빈이 자신이 그린 박쥐 캐릭터의 기원을 좇으며 거대한 역사적 음모에 휘말린다.",
+    "genres": ["추리", "드라마", "SF"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "sanctuary-manga",
+    "name": "생츄어리",
+    "englishName": "Sanctuary",
+    "aliases": ["サンクチュアリ"],
+    "description": "난민촌에서 살아남은 호조와 아사미가 일본을 바꾸기 위해 야쿠자와 정치의 정상에 도전한다.",
+    "genres": ["액션", "드라마", "19"],
+    "ipType": ["만화", "영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "prophecy-manga",
+    "name": "예고범",
+    "englishName": "Prophecy",
+    "aliases": ["Yokokuhan", "予告犯"],
+    "description": "신문지 가면을 쓴 남자가 인터넷으로 범죄를 예고하고 사이버범죄수사과가 뒤를 쫓는다.",
+    "genres": ["추리", "드라마"],
+    "ipType": ["만화", "영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "museum-manga",
+    "name": "뮤지엄",
+    "englishName": "Museum: The Serial Killer Is Laughing in the Rain",
+    "aliases": ["ミュージアム"],
+    "description": "형사 사와무라가 비 오는 날 나타나는 개구리 가면 연쇄살인범에게 가족을 위협받는다.",
+    "genres": ["추리", "호러", "드라마", "19"],
+    "ipType": ["만화", "영화"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

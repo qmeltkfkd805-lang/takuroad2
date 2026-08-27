@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "fighting-spirit",
+    "name": "더 파이팅",
+    "englishName": "Hajime no Ippo",
+    "aliases": ["하지메노 잇포", "はじめの一歩"],
+    "description": "괴롭힘을 당하던 고교생 잇포가 복싱을 만나 강함의 의미를 찾으며 프로 선수로 성장한다.",
+    "genres": ["스포츠", "격투", "드라마", "소년물"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "ashita-no-joe",
+    "name": "내일의 죠",
+    "englishName": "Tomorrow's Joe",
+    "aliases": ["허리케인 죠", "あしたのジョー"],
+    "description": "거리의 문제아 야부키 죠가 복싱 지도자 단페이를 만나 링 위에서 자신의 모든 것을 불태운다.",
+    "genres": ["스포츠", "격투", "드라마", "소년물"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.tms-e.co.jp/alltitles/1970s/005101.html",
+    "source": "https://www.tms-e.co.jp/alltitles/1970s/005101.html"
+  },
+  {
+    "slug": "touch-anime",
+    "name": "터치",
+    "englishName": "Touch",
+    "aliases": ["タッチ"],
+    "description": "쌍둥이 형제 타츠야와 카즈야, 소꿉친구 미나미의 사랑과 고시엔을 향한 꿈을 그린다.",
+    "genres": ["스포츠", "로맨스", "학원", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "cross-game",
+    "name": "크로스 게임",
+    "englishName": "Cross Game",
+    "aliases": ["クロスゲーム"],
+    "description": "야구에 재능을 숨긴 코우와 투수 아오바가 소중한 사람의 꿈인 고시엔을 향해 나아간다.",
+    "genres": ["스포츠", "로맨스", "학원", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.tv-tokyo.co.jp/anime/crossgame/",
+    "source": "https://www.tv-tokyo.co.jp/anime/crossgame/"
+  },
+  {
+    "slug": "kindaichi-case-files",
+    "name": "김전일 소년의 사건부",
+    "englishName": "The Kindaichi Case Files",
+    "aliases": ["소년탐정 김전일", "金田一少年の事件簿"],
+    "description": "명탐정의 손자 김전일이 소꿉친구 미유키와 함께 불가능해 보이는 살인사건의 진상을 밝힌다.",
+    "genres": ["추리", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.toei-anim.co.jp/tv/kindaichi/",
+    "source": "https://www.toei-anim.co.jp/tv/kindaichi/"
+  },
+  {
+    "slug": "the-case-study-of-vanitas",
+    "name": "바니타스의 수기",
+    "englishName": "The Case Study of Vanitas",
+    "aliases": ["바니타스의 카르테", "ヴァニタスの手記"],
+    "description": "흡혈귀 노에가 저주받은 흡혈귀를 치료한다는 인간 의사 바니타스와 파리의 사건을 쫓는다.",
+    "genres": ["판타지", "추리", "액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://vanitas-anime.com/",
+    "source": "https://vanitas-anime.com/"
+  },
+  {
+    "slug": "detective-school-q",
+    "name": "탐정학원 Q",
+    "englishName": "Detective School Q",
+    "aliases": ["探偵学園Q"],
+    "description": "탐정을 꿈꾸는 큐가 단 탐정학원에 입학해 개성 강한 동료들과 어려운 사건을 해결한다.",
+    "genres": ["추리", "학원", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "spiral-bonds-of-reasoning",
+    "name": "스파이럴 추리의 띠",
+    "englishName": "Spiral: The Bonds of Reasoning",
+    "aliases": ["스파이럴", "スパイラル ～推理の絆～"],
+    "description": "형의 실종을 좇는 아유무가 블레이드 칠드런이라 불리는 이들과 연속되는 수수께끼를 풀어간다.",
+    "genres": ["추리", "학원", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "drifters-anime",
+    "name": "드리프터즈",
+    "englishName": "Drifters",
+    "aliases": ["DRIFTERS", "ドリフターズ"],
+    "description": "세키가하라에서 죽을 위기에 처한 시마즈 토요히사가 이세계로 보내져 역사적 영웅들과 싸운다.",
+    "genres": ["액션", "판타지", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.nbcuni.co.jp/rondorobe/anime/drifters/",
+    "source": "https://www.nbcuni.co.jp/rondorobe/anime/drifters/"
+  },
+  {
+    "slug": "the-heroic-legend-of-arslan",
+    "name": "아르슬란 전기",
+    "englishName": "The Heroic Legend of Arslan",
+    "aliases": ["アルスラーン戦記"],
+    "description": "나라를 빼앗긴 왕자 아르슬란이 충신 다륜과 동료들을 모아 왕도를 되찾기 위한 원정에 나선다.",
+    "genres": ["판타지", "모험", "액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://arslan.jp/",
+    "source": "https://arslan.jp/"
+  }
+]

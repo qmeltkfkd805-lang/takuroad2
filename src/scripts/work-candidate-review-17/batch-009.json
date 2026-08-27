@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "oishinbo-manga",
+    "name": "맛의 달인",
+    "englishName": "Oishinbo",
+    "aliases": ["오이신보", "美味しんぼ"],
+    "description": "미식에 해박한 기자 지로가 최고의 메뉴를 만들며 아버지 유잔과 음식 철학으로 대립한다.",
+    "genres": ["요리", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "shota-no-sushi-manga",
+    "name": "미스터 초밥왕",
+    "englishName": "Shota no Sushi",
+    "aliases": ["쇼타의 초밥", "将太の寿司"],
+    "description": "초밥집 아들 쇼타가 도쿄의 명점에서 수련하며 전국 초밥 장인 대회에 도전한다.",
+    "genres": ["요리", "드라마", "소년물"],
+    "ipType": ["만화", "드라마"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "midnight-diner-manga",
+    "name": "심야식당",
+    "englishName": "Midnight Diner",
+    "aliases": ["深夜食堂"],
+    "description": "자정부터 아침까지 문을 여는 작은 식당에서 주인과 손님들의 음식에 얽힌 사연이 펼쳐진다.",
+    "genres": ["요리", "일상", "드라마"],
+    "ipType": ["만화", "드라마", "영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "solitary-gourmet-manga",
+    "name": "고독한 미식가",
+    "englishName": "The Solitary Gourmet",
+    "aliases": ["孤独のグルメ"],
+    "description": "수입 잡화상 고로가 일을 마친 뒤 낯선 동네의 식당을 찾아 혼자 식사를 즐긴다.",
+    "genres": ["요리", "일상"],
+    "ipType": ["만화", "드라마", "영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "wakakozake-manga",
+    "name": "와카코와 술",
+    "englishName": "Wakakozake",
+    "aliases": ["와카코자케", "ワカコ酒"],
+    "description": "직장인 와카코가 하루를 마친 뒤 혼자 술집을 찾아 음식과 술의 조합을 음미한다.",
+    "genres": ["요리", "일상"],
+    "ipType": ["만화", "애니", "드라마"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "what-did-you-eat-yesterday-manga",
+    "name": "어제 뭐 먹었어?",
+    "englishName": "What Did You Eat Yesterday?",
+    "aliases": ["키노 나니 타베타", "きのう何食べた?"],
+    "description": "변호사 시로가 연인 켄지와 함께 살며 알뜰하게 차린 저녁 식사와 일상을 나눈다.",
+    "genres": ["BL", "요리", "일상", "드라마"],
+    "ipType": ["만화", "드라마", "영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "ramen-hakken-den-manga",
+    "name": "라면요리왕",
+    "englishName": "Ramen Hakken-den",
+    "aliases": ["라멘 핫켄덴", "ラーメン発見伝"],
+    "description": "식품회사 직원 후지모토가 라면 가게 개업을 꿈꾸며 업계의 장인과 경영 문제에 도전한다.",
+    "genres": ["요리", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "cooking-papa-manga",
+    "name": "아빠는 요리사",
+    "englishName": "Cooking Papa",
+    "aliases": ["쿠킹 파파", "クッキングパパ"],
+    "description": "회사원 아라이와가 뛰어난 요리 솜씨로 가족과 동료에게 따뜻한 식사를 만들어 준다.",
+    "genres": ["요리", "가족", "일상"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "sleepeeer-hit-manga",
+    "name": "중쇄를 찍자!",
+    "englishName": "Sleepeeer Hit!",
+    "aliases": ["重版出来!"],
+    "description": "유도 선수 출신 코코로가 만화 편집자가 되어 작가와 영업부 사이에서 히트작을 만든다.",
+    "genres": ["드라마", "일상"],
+    "ipType": ["만화", "드라마"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "tokyo-salad-bowl-manga",
+    "name": "도쿄 샐러드 볼",
+    "englishName": "Tokyo Salad Bowl",
+    "aliases": ["東京サラダボウル"],
+    "description": "국제수사 담당 형사 마리와 중국어 통역인 료가 도쿄의 외국인 관련 사건을 해결한다.",
+    "genres": ["추리", "드라마"],
+    "ipType": ["만화", "드라마"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

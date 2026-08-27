@@ -16,7 +16,7 @@ const addDays = (day: string, n: number) => {
   return d.toISOString().slice(0, 10)
 }
 
-interface Keyed { key: string; card: HeroCard }
+interface Keyed { key: string; card: HeroCard; tagId?: string | null }
 
 export async function getHeroSlots(): Promise<HeroCard[]> {
   // home_hero_slots 는 생성된 Database 타입에 아직 없어 any 로 다룬다 (빌드 타입체크 우회)
@@ -49,9 +49,29 @@ export async function getHeroSlots(): Promise<HeroCard[]> {
     ? await buildAutoEvents(supabase, { userId, today, manualEventIds, want: remaining })
     : []
 
-  // 3) 병합 (수동 우선, key 중복 제거, 최대 5)
+  // 3) 병합 (수동 우선, key 중복 제거)
   const merged = mergeToMax<Keyed>(manual, auto, (x) => x.key, MAX)
-  return merged.map((m) => m.card)
+
+  // 4) 같은 작품(tag) 이벤트는 히어로에 하나만 — 지점만 다른 것/같은 콜라보 중복 방지.
+  //    tag 없으면 제목(끝 지역 괄호 제거)으로 폴백. 먼저 온 것(수동 우선) 유지.
+  const seenWork = new Set<string>()
+  const seenTitle = new Set<string>()
+  const deduped: Keyed[] = []
+  for (const m of merged) {
+    if (m.card.category === 'event') {
+      const workKey = m.tagId ? `work:${m.tagId}` : null
+      const t = (m.card.headline ?? '')
+        .replace(/[\(（][^)）]*[\)）]\s*$/u, '')   // 끝의 (○○점) 제거
+        .trim().replace(/\s+/g, ' ').toLowerCase()
+      const titleKey = t ? `title:${t}` : null
+      if (workKey && seenWork.has(workKey)) continue
+      if (titleKey && seenTitle.has(titleKey)) continue
+      if (workKey) seenWork.add(workKey)
+      if (titleKey) seenTitle.add(titleKey)
+    }
+    deduped.push(m)
+  }
+  return deduped.map((m) => m.card)
 }
 
 /* ---------- 수동 슬롯 하이드레이트 + 유효성 검사 ---------- */
@@ -77,6 +97,7 @@ async function hydrateManual(supabase: any, slots: any[]): Promise<Keyed[]> {
       if (!img || !headline) continue                     // 불완전 → 제외
       out.push({
         key: `event:${s.source_id}`,
+        tagId: ev.tagId ?? null,
         card: {
           id: s.id, category: 'event', origin: 'manual',
           label: s.label ?? '관리자 추천 이벤트',
@@ -205,6 +226,7 @@ async function buildAutoEvents(
     const fav = isFavoriteCand(c, opts)
     return {
       key: `event:${c.eventId}`,
+      tagId: c.tagId ?? null,
       card: {
         id: `auto:event:${c.eventId}`,
         category: 'event' as const,
@@ -242,6 +264,7 @@ async function fetchEvents(supabase: any, ids: string[]) {
     const tag = e.tag_id ? tagMap.get(e.tag_id) : null
     map.set(e.id, {
       title: e.title,
+      tagId: e.tag_id ?? null,
       startDate: e.start_date ?? null,
       image: resolveEventCover({ eventCoverUrl: e.cover_url ?? null, workCoverUrl: tag?.cover_url ?? null }),
       workName: tag?.name ?? null,

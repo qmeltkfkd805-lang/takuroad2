@@ -44,4 +44,4 @@ const result = {
   officialBlank: candidates.filter((row) => !row.officialUrl).map((row) => row.name),
 }
 console.log(JSON.stringify(result, null, 2))
-if (existing.length !== 1580 || result.liveConflicts.length || result.candidateValueDuplicates.length || result.candidateSlugDuplicates.length || result.badGenres.length || result.badTypes.length || result.over80.length) process.exitCode = 1
+if (existing.length !== 1587 || result.liveConflicts.length || result.candidateValueDuplicates.length || result.candidateSlugDuplicates.length || result.badGenres.length || result.badTypes.length || result.over80.length) process.exitCode = 1

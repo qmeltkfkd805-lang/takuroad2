@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "kaidan-restaurant",
+    "name": "괴담 레스토랑",
+    "englishName": "Kaidan Restaurant",
+    "aliases": ["怪談レストラン"],
+    "description": "초등학생 쇼우와 친구들이 마을 곳곳에서 겪는 기묘한 사건을 괴담 코스처럼 소개한다.",
+    "genres": ["호러", "추리", "가족"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "yamishibai-japanese-ghost-stories",
+    "name": "어둠의 인형극",
+    "englishName": "Yamishibai: Japanese Ghost Stories",
+    "aliases": ["야미시바이", "闇芝居"],
+    "description": "정체불명의 노인이 종이 인형극 형식으로 일본의 짧고 섬뜩한 도시괴담을 들려준다.",
+    "genres": ["호러"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-mystic-archives-of-dantalian",
+    "name": "단탈리안의 서가",
+    "englishName": "The Mystic Archives of Dantalian",
+    "aliases": ["ダンタリアンの書架"],
+    "description": "휴이가 악마의 서가를 관리하는 소녀 다리안과 함께 환서가 일으키는 사건을 해결한다.",
+    "genres": ["판타지", "추리", "호러"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "kamisama-dolls",
+    "name": "신의 인형",
+    "englishName": "Kamisama Dolls",
+    "aliases": ["神様ドォルズ"],
+    "description": "고향을 떠난 쿄헤이가 신의 인형 카카시를 둘러싼 마을의 비밀과 과거에 휘말린다.",
+    "genres": ["판타지", "액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "occult-academy",
+    "name": "세기말 오컬트 학원",
+    "englishName": "Occult Academy",
+    "aliases": ["오컬트 학원", "世紀末オカルト学院"],
+    "description": "오컬트를 싫어하는 마야와 미래에서 온 문명이 세계 멸망의 열쇠를 찾는다.",
+    "genres": ["판타지", "추리", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "corpse-princess",
+    "name": "시카바네 히메",
+    "englishName": "Corpse Princess",
+    "aliases": ["데드 프린세스", "屍姫"],
+    "description": "죽은 뒤 시카바네 히메가 된 마키나가 계약 승려와 함께 되살아난 시체들을 사냥한다.",
+    "genres": ["호러", "액션", "판타지"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "dance-in-the-vampire-bund",
+    "name": "댄스 인 더 뱀파이어 번드",
+    "englishName": "Dance in the Vampire Bund",
+    "aliases": ["ダンス イン ザ ヴァンパイアバンド"],
+    "description": "뱀파이어 여왕 미나가 일본에 자치구를 세우고 늑대인간 아키라와 음모에 맞선다.",
+    "genres": ["판타지", "액션", "로맨스"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "hell-girl",
+    "name": "지옥소녀",
+    "englishName": "Hell Girl",
+    "aliases": ["Jigoku Shoujo", "地獄少女"],
+    "description": "원한을 품은 사람이 지옥통신에 이름을 적으면 엔마 아이가 상대를 지옥으로 보낸다.",
+    "genres": ["호러", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "selector-infected-wixoss",
+    "name": "selector infected WIXOSS",
+    "englishName": "Selector Infected WIXOSS",
+    "aliases": ["셀렉터 인펙티드 위크로스", "セレクター インフェクテッド ウィクロス"],
+    "description": "루우코가 소원을 이뤄 준다는 카드 배틀의 셀렉터가 되어 잔혹한 규칙을 알게 된다.",
+    "genres": ["판타지", "드라마", "추리"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "magical-girl-raising-project",
+    "name": "마법소녀 육성계획",
+    "englishName": "Magical Girl Raising Project",
+    "aliases": ["마소육", "魔法少女育成計画"],
+    "description": "게임을 통해 진짜 마법소녀가 된 이들이 인원 감축 통보를 받고 생존 경쟁에 내몰린다.",
+    "genres": ["마법소녀", "판타지", "호러", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

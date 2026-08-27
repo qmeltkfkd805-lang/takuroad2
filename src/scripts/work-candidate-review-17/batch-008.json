@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "glass-mask-manga",
+    "name": "유리가면",
+    "englishName": "Glass Mask",
+    "aliases": ["ガラスの仮面"],
+    "description": "연기에 천재적인 재능을 지닌 마야가 전설의 배역 홍천녀를 두고 아유미와 경쟁한다.",
+    "genres": ["드라마", "로맨스"],
+    "ipType": ["만화", "애니", "드라마"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "boys-over-flowers-manga",
+    "name": "꽃보다 남자",
+    "englishName": "Boys Over Flowers",
+    "aliases": ["하나 요리 당고", "花より男子"],
+    "description": "서민 학생 츠쿠시가 명문 학교를 지배하는 F4에 맞서며 츠카사와 사랑에 빠진다.",
+    "genres": ["로맨스", "학원", "드라마"],
+    "ipType": ["만화", "애니", "드라마", "영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "mars-fuyumi-soryo-manga",
+    "name": "MARS",
+    "englishName": "Mars",
+    "aliases": ["마르스", "マース"],
+    "description": "내성적인 화가 키라와 위험한 오토바이 선수 레이가 서로의 상처를 이해하며 가까워진다.",
+    "genres": ["로맨스", "학원", "드라마"],
+    "ipType": ["만화", "드라마"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "tokyo-tarareba-girls-manga",
+    "name": "도쿄 타라레바 아가씨",
+    "englishName": "Tokyo Tarareba Girls",
+    "aliases": ["東京タラレバ娘"],
+    "description": "서른세 살 각본가 린코가 친구들과 연애의 가정을 늘어놓다 자신의 삶을 바꾸려 한다.",
+    "genres": ["로맨스", "코미디", "드라마"],
+    "ipType": ["만화", "드라마"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "somethings-wrong-with-us-manga",
+    "name": "우리들은 미쳤다",
+    "englishName": "Something's Wrong with Us",
+    "aliases": ["私たちはどうかしている"],
+    "description": "화과자 장인 나오가 어머니의 누명을 밝히기 위해 첫사랑 츠바키와 계약 결혼한다.",
+    "genres": ["로맨스", "추리", "드라마"],
+    "ipType": ["만화", "드라마"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "hotaru-no-hikari-manga",
+    "name": "호타루의 빛",
+    "englishName": "Hotaru no Hikari",
+    "aliases": ["ホタルノヒカリ"],
+    "description": "집에서는 늘어져 지내는 직장인 호타루가 상사 타카노와 한집에 살며 연애를 다시 배운다.",
+    "genres": ["로맨스", "코미디", "일상"],
+    "ipType": ["만화", "드라마", "영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "kodocha-manga",
+    "name": "아이들의 장난감",
+    "englishName": "Kodocha: Sana's Stage",
+    "aliases": ["코도챠", "こどものおもちゃ"],
+    "description": "아역 배우 사나가 교실을 어지럽히는 하야마와 맞서다 그의 상처를 알게 된다.",
+    "genres": ["학원", "로맨스", "코미디", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "basara-manga",
+    "name": "바사라",
+    "englishName": "Basara",
+    "aliases": ["バサラ"],
+    "description": "폭군이 지배하는 미래 일본에서 사라사가 죽은 쌍둥이 오빠를 대신해 반란을 이끈다.",
+    "genres": ["판타지", "액션", "로맨스", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "please-save-my-earth-manga",
+    "name": "나의 지구를 지켜줘",
+    "englishName": "Please Save My Earth",
+    "aliases": ["나의 지구를 지켜 줘", "ぼくの地球を守って"],
+    "description": "전생의 달 기지 연구원 기억을 공유하는 학생들이 과거의 사랑과 갈등을 되짚는다.",
+    "genres": ["SF", "로맨스", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-poe-clan-manga",
+    "name": "포의 일족",
+    "englishName": "The Poe Clan",
+    "aliases": ["ポーの一族"],
+    "description": "영원히 소년의 모습으로 사는 뱀파넬 에드거가 여러 시대를 떠돌며 만남과 이별을 겪는다.",
+    "genres": ["판타지", "호러", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

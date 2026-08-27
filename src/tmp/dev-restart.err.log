@@ -1,0 +1,9 @@
+⚠ Port 3000 is in use by process 26276, using available port 3001 instead.
+⨯ Another next dev server is already running.
+
+- Local:        http://localhost:3000
+- PID:          26276
+- Dir:          C:\dev\takuroad
+- Log:          .next\dev\logs\next-development.log
+
+Run taskkill /PID 26276 /F to stop it.

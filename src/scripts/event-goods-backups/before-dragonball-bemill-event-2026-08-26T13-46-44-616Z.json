@@ -1,0 +1,67 @@
+{
+  "id": "fa848fda-a8cd-4275-8293-d4c3dc2051f1",
+  "tag_id": "c7c8efb0-41d2-4935-b0e6-5f9f59b2bc9e",
+  "type": "exhibition",
+  "shop_id": null,
+  "title": "드래곤볼 히어로즈 라이즈 아시아 투어 인 서울",
+  "created_at": "2026-08-24T06:29:06.653782+00:00",
+  "start_date": "2026-08-22",
+  "end_date": "2026-11-15",
+  "entry_info": "예매 후 입장",
+  "hours_info": "매일 11:00~21:00",
+  "created_by": null,
+  "reserve_start": "2026-08-03",
+  "reserve_end": null,
+  "hours": {
+    "fri": {
+      "open": "11:00",
+      "close": "21:00"
+    },
+    "mon": {
+      "open": "11:00",
+      "close": "21:00"
+    },
+    "sat": {
+      "open": "11:00",
+      "close": "21:00"
+    },
+    "sun": {
+      "open": "11:00",
+      "close": "21:00"
+    },
+    "thu": {
+      "open": "11:00",
+      "close": "21:00"
+    },
+    "tue": {
+      "open": "11:00",
+      "close": "21:00"
+    },
+    "wed": {
+      "open": "11:00",
+      "close": "21:00"
+    }
+  },
+  "cover_url": "https://media.orings.co.kr/static/place/2026-08-24/45ed688f-4401-4e38-b7f0-54507105b369.jpg",
+  "parking": false,
+  "parking_note": "주차 불가\n인근 공영주차장을 이용해 주세요.",
+  "description": "「드래곤볼」의 명장면과 캐릭터를 실감 미디어, 인터랙티브 게임, 실물 크기 스태츄로 만나는 체험형 전시입니다.\n얼리버드 판매는 종료됐지만 일반 티켓 예매는 가능합니다.\n재입장은 불가합니다.\n캐릭터와 이야기의 흐름을 따라가며 작품을 입체적으로 돌아볼 수 있도록 구성된 행사입니다.",
+  "place_name": "스테이지엑스 성수403",
+  "place_addr": "서울 성동구 뚝섬로 403",
+  "place_lat": 37.5388361402204,
+  "place_lng": 127.055628202494,
+  "place_detail": null,
+  "source_urls": [
+    "https://www.instagram.com/db_heroes_kr/"
+  ],
+  "ticket_urls": [
+    {
+      "url": "https://be-mill.com/products/view/0QCAEPMDAE",
+      "label": "전시 예매하기"
+    }
+  ],
+  "updated_by": null,
+  "updated_at": "2026-08-25T05:40:40.818+00:00",
+  "place_id": "09864612-dbb0-4535-b733-bb816112619c",
+  "video_url": null
+}

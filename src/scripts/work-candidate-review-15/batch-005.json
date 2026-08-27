@@ -1,0 +1,204 @@
+[
+  {
+    "slug": "the-big-o",
+    "name": "THE 빅오",
+    "englishName": "The Big O",
+    "aliases": [
+      "빅오",
+      "THEビッグオー"
+    ],
+    "description": "기억을 잃은 도시 패러다임 시티에서 협상가 로저 스미스가 거대 로봇 빅오를 움직인다.",
+    "genres": [
+      "SF",
+      "액션",
+      "추리",
+      "로봇/메카"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "mobile-police-patlabor",
+    "name": "기동경찰 패트레이버",
+    "englishName": "Mobile Police Patlabor",
+    "aliases": [
+      "패트레이버",
+      "機動警察パトレイバー"
+    ],
+    "description": "레이버 범죄를 담당하는 특차2과 대원들이 패트레이버를 운용하며 도시의 사건을 해결한다.",
+    "genres": [
+      "SF",
+      "액션",
+      "코미디",
+      "로봇/메카"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://patlabor.tokyo/",
+    "source": "https://patlabor.tokyo/"
+  },
+  {
+    "slug": "death-parade",
+    "name": "데스 퍼레이드",
+    "englishName": "Death Parade",
+    "aliases": [
+      "デス・パレード"
+    ],
+    "description": "죽은 이들이 도착하는 바에서 심판자 데킴이 게임을 통해 인간의 본성과 삶의 무게를 판정한다.",
+    "genres": [
+      "판타지",
+      "추리",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.death-parade.jp/",
+    "source": "https://www.death-parade.jp/"
+  },
+  {
+    "slug": "initial-d",
+    "name": "이니셜 D",
+    "englishName": "Initial D",
+    "aliases": [
+      "INITIAL D",
+      "頭文字D"
+    ],
+    "description": "두부 배달로 운전 실력을 익힌 타쿠미가 AE86을 몰고 고갯길 레이서들과 승부한다.",
+    "genres": [
+      "스포츠",
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://avex.jp/initial-d/",
+    "source": "https://avex.jp/initial-d/"
+  },
+  {
+    "slug": "wangan-midnight",
+    "name": "완간 미드나이트",
+    "englishName": "Wangan Midnight",
+    "aliases": [
+      "湾岸ミッドナイト"
+    ],
+    "description": "아키오가 악마의 Z라 불리는 튜닝카를 손에 넣고 수도고속도로의 최고속 레이스에 빠져든다.",
+    "genres": [
+      "스포츠",
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-familiar-of-zero",
+    "name": "제로의 사역마",
+    "englishName": "The Familiar of Zero",
+    "aliases": [
+      "제로마",
+      "ゼロの使い魔"
+    ],
+    "description": "마법에 서툰 루이즈가 일본인 소년 사이토를 사역마로 소환하며 이세계 생활을 시작한다.",
+    "genres": [
+      "판타지",
+      "학원",
+      "로맨스",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "a-certain-magical-index",
+    "name": "어떤 마술의 금서목록",
+    "englishName": "A Certain Magical Index",
+    "aliases": [
+      "어마금",
+      "とある魔術の禁書目録"
+    ],
+    "description": "모든 이능을 지우는 오른손을 가진 토우마가 마도서의 지식을 품은 인덱스와 만난다.",
+    "genres": [
+      "액션",
+      "판타지",
+      "SF",
+      "학원"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://toaru-project.com/index_3/",
+    "source": "https://toaru-project.com/index_3/"
+  },
+  {
+    "slug": "a-certain-scientific-railgun",
+    "name": "어떤 과학의 초전자포",
+    "englishName": "A Certain Scientific Railgun",
+    "aliases": [
+      "어과초",
+      "とある科学の超電磁砲"
+    ],
+    "description": "학원도시의 레벨 5 능력자 미코토와 친구들이 도시 곳곳의 사건과 음모를 해결한다.",
+    "genres": [
+      "액션",
+      "SF",
+      "학원"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://toaru-project.com/railgun_t/",
+    "source": "https://toaru-project.com/railgun_t/"
+  },
+  {
+    "slug": "claymore-anime",
+    "name": "클레이모어",
+    "englishName": "Claymore",
+    "aliases": [
+      "CLAYMORE",
+      "クレイモア"
+    ],
+    "description": "요마를 사냥하는 반인반요 전사 클레어가 소년 라키와 여행하며 조직과 자신의 운명에 맞선다.",
+    "genres": [
+      "액션",
+      "판타지",
+      "드라마",
+      "호러"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.ntv.co.jp/claymore/",
+    "source": "https://www.ntv.co.jp/claymore/"
+  },
+  {
+    "slug": "deadman-wonderland",
+    "name": "데드맨 원더랜드",
+    "englishName": "Deadman Wonderland",
+    "aliases": [
+      "デッドマン・ワンダーランド"
+    ],
+    "description": "학급 몰살의 누명을 쓴 간타가 교도소형 놀이공원에서 피를 무기로 쓰는 생존전에 휘말린다.",
+    "genres": [
+      "액션",
+      "SF",
+      "호러"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  }
+]

@@ -1,0 +1,62 @@
+{
+  "id": "fcbf6b47-31c7-467e-b1e9-0b404fd6552c",
+  "tag_id": "8e67bb8d-b3d2-4f70-abf7-d0d4df4a2bfd",
+  "type": "popup",
+  "shop_id": null,
+  "title": "이토 준지 × 산리오 캐릭터즈 × 나이스고스트클럽 팝업 (명동)",
+  "created_at": "2026-08-23T08:16:12.4697+00:00",
+  "start_date": "2026-08-18",
+  "end_date": "2026-08-31",
+  "entry_info": "현장 선착순 입장",
+  "hours_info": "매일 11:00~23:00",
+  "created_by": null,
+  "reserve_start": null,
+  "reserve_end": null,
+  "hours": {
+    "fri": {
+      "open": "11:00",
+      "close": "23:00"
+    },
+    "mon": {
+      "open": "11:00",
+      "close": "23:00"
+    },
+    "sat": {
+      "open": "11:00",
+      "close": "23:00"
+    },
+    "sun": {
+      "open": "11:00",
+      "close": "23:00"
+    },
+    "thu": {
+      "open": "11:00",
+      "close": "23:00"
+    },
+    "tue": {
+      "open": "11:00",
+      "close": "23:00"
+    },
+    "wed": {
+      "open": "11:00",
+      "close": "23:00"
+    }
+  },
+  "cover_url": "https://media.orings.co.kr/static/place/2026-08-19/fdc2f697-bd14-400c-821b-3ff5516d5f71.png",
+  "parking": null,
+  "parking_note": null,
+  "description": "이토 준지와 산리오 캐릭터즈, 나이스고스트클럽의 협업 상품을 선보이는 팝업입니다.\n7만원 이상 구매 특전은 준비 수량 소진 시 종료됩니다.\n작품의 캐릭터와 분위기를 활용한 공간 연출도 함께 마련되어 팬들이 현장에서 작품의 매력을 즐길 수 있습니다.",
+  "place_name": "무신사 스토어 명동점",
+  "place_addr": "서울 중구 명동길 13",
+  "place_lat": 37.563832703829,
+  "place_lng": 126.983022093658,
+  "place_detail": "무신사 스토어 명동점",
+  "source_urls": [
+    "https://www.instagram.com/p/Dbpol_NvhE5/"
+  ],
+  "ticket_urls": [],
+  "updated_by": null,
+  "updated_at": "2026-08-25T05:40:40.173+00:00",
+  "place_id": "b0e0a581-2995-44bc-81f0-cf6d8aaaef15",
+  "video_url": null
+}

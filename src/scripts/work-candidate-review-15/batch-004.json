@@ -1,0 +1,210 @@
+[
+  {
+    "slug": "macross-frontier",
+    "name": "마크로스 프론티어",
+    "englishName": "Macross Frontier",
+    "aliases": [
+      "마크로스 F",
+      "マクロスF"
+    ],
+    "description": "이민선단 프론티어에서 파일럿 알토와 두 가수 쉐릴, 란카가 바즈라와의 전쟁에 휘말린다.",
+    "genres": [
+      "SF",
+      "액션",
+      "음악",
+      "로봇/메카"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://macross.jp/",
+    "source": "https://macross.jp/"
+  },
+  {
+    "slug": "little-witch-academia",
+    "name": "리틀 위치 아카데미아",
+    "englishName": "Little Witch Academia",
+    "aliases": [
+      "리틀위치",
+      "リトルウィッチアカデミア"
+    ],
+    "description": "마녀 샤리오를 동경하는 앗코가 루나 노바 마법학교에 입학해 친구들과 성장한다.",
+    "genres": [
+      "판타지",
+      "학원",
+      "모험",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://littlewitchacademia.jp/tv1st/",
+    "source": "https://littlewitchacademia.jp/tv1st/"
+  },
+  {
+    "slug": "princess-tutu",
+    "name": "프린세스 츄츄",
+    "englishName": "Princess Tutu",
+    "aliases": [
+      "プリンセスチュチュ"
+    ],
+    "description": "오리 아히루가 프린세스 츄츄로 변신해 산산이 흩어진 왕자의 마음 조각을 되찾는다.",
+    "genres": [
+      "마법소녀",
+      "판타지",
+      "로맨스",
+      "음악"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://king-cr.jp/special/tutu/",
+    "source": "https://king-cr.jp/special/tutu/"
+  },
+  {
+    "slug": "revolutionary-girl-utena",
+    "name": "소녀혁명 우테나",
+    "englishName": "Revolutionary Girl Utena",
+    "aliases": [
+      "우테나",
+      "少女革命ウテナ"
+    ],
+    "description": "왕자님이 되기를 꿈꾸는 우테나가 장미의 신부 안시를 둘러싼 결투에 뛰어든다.",
+    "genres": [
+      "학원",
+      "판타지",
+      "드라마",
+      "GL"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.kingrecords.co.jp/cs/artist/artist.aspx?artist=13842",
+    "source": "https://www.kingrecords.co.jp/cs/artist/artist.aspx?artist=13842"
+  },
+  {
+    "slug": "magic-knight-rayearth",
+    "name": "마법기사 레이어스",
+    "englishName": "Magic Knight Rayearth",
+    "aliases": [
+      "레이어스",
+      "魔法騎士レイアース"
+    ],
+    "description": "도쿄타워에서 이세계 세피로로 소환된 세 소녀가 마법기사로서 세계를 구하려 한다.",
+    "genres": [
+      "판타지",
+      "모험",
+      "로봇/메카",
+      "마법소녀"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "nadia-the-secret-of-blue-water",
+    "name": "신비한 바다의 나디아",
+    "englishName": "Nadia: The Secret of Blue Water",
+    "aliases": [
+      "나디아",
+      "ふしぎの海のナディア"
+    ],
+    "description": "발명 소년 장과 신비한 보석을 지닌 나디아가 네모 선장과 함께 세계를 위협하는 세력에 맞선다.",
+    "genres": [
+      "모험",
+      "SF",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "gunbuster",
+    "name": "톱을 노려라!",
+    "englishName": "Gunbuster",
+    "aliases": [
+      "건버스터",
+      "トップをねらえ！"
+    ],
+    "description": "우주 파일럿을 꿈꾸는 노리코가 혹독한 훈련을 거쳐 인류를 위협하는 우주괴수와 싸운다.",
+    "genres": [
+      "SF",
+      "액션",
+      "로봇/메카",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "full-metal-panic",
+    "name": "풀 메탈 패닉!",
+    "englishName": "Full Metal Panic!",
+    "aliases": [
+      "풀메탈패닉",
+      "フルメタル・パニック！"
+    ],
+    "description": "용병 소스케가 특수한 힘을 지닌 여고생 카나메를 지키기 위해 학교에 잠입한다.",
+    "genres": [
+      "액션",
+      "SF",
+      "학원",
+      "로봇/메카"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "fafner-in-the-azure",
+    "name": "창궁의 파프너",
+    "englishName": "Fafner in the Azure",
+    "aliases": [
+      "파프너",
+      "蒼穹のファフナー"
+    ],
+    "description": "평화로운 섬의 소년들이 인류를 습격한 페스툼에 맞서 거대 병기 파프너에 탑승한다.",
+    "genres": [
+      "SF",
+      "액션",
+      "로봇/메카",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://fafner.jp/",
+    "source": "https://fafner.jp/"
+  },
+  {
+    "slug": "martian-successor-nadesico",
+    "name": "기동전함 나데시코",
+    "englishName": "Martian Successor Nadesico",
+    "aliases": [
+      "나데시코",
+      "機動戦艦ナデシコ"
+    ],
+    "description": "화성의 생존자 아키토가 민간 전함 나데시코에 승선해 목성 도마뱀과의 전쟁에 뛰어든다.",
+    "genres": [
+      "SF",
+      "액션",
+      "코미디",
+      "로봇/메카"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  }
+]

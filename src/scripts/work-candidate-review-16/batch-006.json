@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "horizon-in-the-middle-of-nowhere",
+    "name": "경계선상의 호라이즌",
+    "englishName": "Horizon in the Middle of Nowhere",
+    "aliases": ["경호라", "境界線上のホライゾン"],
+    "description": "인류가 하늘의 도시선으로 밀려난 세계에서 토리가 호라이즌을 되찾기 위해 움직인다.",
+    "genres": ["SF", "판타지", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "rental-magica",
+    "name": "렌탈 마법사",
+    "englishName": "Rental Magica",
+    "aliases": ["レンタルマギカ"],
+    "description": "이츠키가 아버지의 마법사 파견 회사 아스트랄을 물려받아 여러 마법 사건을 해결한다.",
+    "genres": ["판타지", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "pandora-hearts",
+    "name": "판도라 하츠",
+    "englishName": "Pandora Hearts",
+    "aliases": ["판도라하츠", "PandoraHearts"],
+    "description": "성인식 날 어비스에 떨어진 오즈가 체인 앨리스와 계약하고 자신의 죄와 과거를 추적한다.",
+    "genres": ["판타지", "추리", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "buso-renkin",
+    "name": "무장연금",
+    "englishName": "Buso Renkin",
+    "aliases": ["武装錬金"],
+    "description": "괴물에게 죽었던 카즈키가 연금술의 핵으로 되살아나 전사 토키코와 호문쿨루스에 맞선다.",
+    "genres": ["액션", "판타지", "소년물"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "chrome-shelled-regios",
+    "name": "강각의 레기오스",
+    "englishName": "Chrome Shelled Regios",
+    "aliases": ["鋼殻のレギオス"],
+    "description": "오염된 세계의 이동도시에서 레이폰이 소대에 들어가 오염수와 도시 간 전투에 나선다.",
+    "genres": ["판타지", "SF", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "campione",
+    "name": "캄피오네!",
+    "englishName": "Campione!",
+    "aliases": ["캄피오네", "カンピオーネ!"],
+    "description": "신을 쓰러뜨려 권능을 얻은 고도가 마왕 캄피오네가 되어 신들과 싸운다.",
+    "genres": ["판타지", "액션", "로맨스"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-legend-of-the-legendary-heroes",
+    "name": "전설의 용자의 전설",
+    "englishName": "The Legend of the Legendary Heroes",
+    "aliases": ["전용전", "伝説の勇者の伝説"],
+    "description": "복사안을 지닌 라이너가 검사 페리스와 함께 전설의 용자 유물을 찾아 여러 나라를 여행한다.",
+    "genres": ["판타지", "모험", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "broken-blade",
+    "name": "브레이크 블레이드",
+    "englishName": "Broken Blade",
+    "aliases": ["브로큰 블레이드", "ブレイク ブレイド"],
+    "description": "마력을 쓰지 못하는 라이가트가 고대 골렘을 움직여 왕국 사이의 전쟁에 뛰어든다.",
+    "genres": ["로봇/메카", "판타지", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-sacred-blacksmith",
+    "name": "성검의 블랙스미스",
+    "englishName": "The Sacred Blacksmith",
+    "aliases": ["성검의 도공", "聖剣の刀鍛冶"],
+    "description": "기사 세실리가 대장장이 루크를 만나 악마 계약으로 만들어진 무기와 싸운다.",
+    "genres": ["판타지", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "lord-marksman-and-vanadis",
+    "name": "마탄의 왕과 바나디스",
+    "englishName": "Lord Marksman and Vanadis",
+    "aliases": ["魔弾の王と戦姫"],
+    "description": "궁수 티글이 적국의 전희 엘레오놀라에게 포로가 된 뒤 고향을 지키기 위한 전쟁에 나선다.",
+    "genres": ["판타지", "액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

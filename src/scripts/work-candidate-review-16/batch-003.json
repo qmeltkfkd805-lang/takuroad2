@@ -1,0 +1,192 @@
+[
+  {
+    "slug": "seitokai-yakuindomo",
+    "name": "학생회 임원들",
+    "englishName": "Seitokai Yakuindomo",
+    "aliases": [
+      "生徒会役員共"
+    ],
+    "description": "남녀공학으로 바뀐 오사이 학원에서 츠다가 개성 강한 학생회 임원들과 활동한다.",
+    "genres": [
+      "학원",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "aharen-san-wa-hakarenai",
+    "name": "아하렌 양은 알 수가 없어",
+    "englishName": "Aharen-san wa Hakarenai",
+    "aliases": [
+      "아하렌 양",
+      "阿波連さんははかれない"
+    ],
+    "description": "거리 감각이 서툰 아하렌과 표정이 무뚝뚝한 라이도가 가까워지며 학교생활을 보낸다.",
+    "genres": [
+      "학원",
+      "코미디",
+      "로맨스"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "life-lessons-with-uramichi-oniisan",
+    "name": "우라미치 선생님",
+    "englishName": "Life Lessons with Uramichi Oniisan",
+    "aliases": [
+      "うらみちお兄さん"
+    ],
+    "description": "어린이 방송의 체조 선생님 우라미치가 밝은 미소 뒤로 어른의 고단함을 드러낸다.",
+    "genres": [
+      "코미디",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "hitoribocchi-no-marumaru-seikatsu",
+    "name": "히토리 봇치의 ○○생활",
+    "englishName": "Hitoribocchi no Marumaru Seikatsu",
+    "aliases": [
+      "히토리 봇치",
+      "ひとりぼっちの○○生活"
+    ],
+    "description": "낯가림이 심한 봇치가 중학교 반 친구 모두와 친구가 되겠다는 목표에 도전한다.",
+    "genres": [
+      "학원",
+      "일상",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "flying-witch",
+    "name": "플라잉 위치",
+    "englishName": "Flying Witch",
+    "aliases": [
+      "ふらいんぐうぃっち"
+    ],
+    "description": "수습 마녀 마코토가 아오모리의 친척 집에 머물며 마법과 자연이 어우러진 일상을 보낸다.",
+    "genres": [
+      "판타지",
+      "일상",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "iroduku-the-world-in-colors",
+    "name": "물드는 세계의 내일로부터",
+    "englishName": "Iroduku: The World in Colors",
+    "aliases": [
+      "色づく世界の明日から"
+    ],
+    "description": "색을 볼 수 없는 마법사 소녀 히토미가 과거로 보내져 젊은 시절의 할머니와 친구들을 만난다.",
+    "genres": [
+      "판타지",
+      "로맨스",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "diary-of-our-days-at-the-breakwater",
+    "name": "방과 후 제방 일지",
+    "englishName": "Diary of Our Days at the Breakwater",
+    "aliases": [
+      "放課後ていぼう日誌"
+    ],
+    "description": "도시에서 이사 온 히나가 제방부에 가입해 바다낚시와 해산물 손질을 배운다.",
+    "genres": [
+      "일상",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "interviews-with-monster-girls",
+    "name": "데미는 이야기하고 싶어",
+    "englishName": "Interviews with Monster Girls",
+    "aliases": [
+      "亜人ちゃんは語りたい"
+    ],
+    "description": "생물 교사 타카하시가 뱀파이어와 듀라한 등 데미 학생들의 고민을 듣고 돕는다.",
+    "genres": [
+      "판타지",
+      "학원",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "tari-tari",
+    "name": "TARI TARI",
+    "englishName": "Tari Tari",
+    "aliases": [
+      "타리 타리"
+    ],
+    "description": "음악을 포기할 수 없는 고교생들이 합창부를 만들며 각자의 꿈과 고민을 마주한다.",
+    "genres": [
+      "음악",
+      "학원",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "nagi-asu-a-lull-in-the-sea",
+    "name": "잔잔한 내일로부터",
+    "englishName": "Nagi-Asu: A Lull in the Sea",
+    "aliases": [
+      "나기노 아스카라",
+      "凪のあすから"
+    ],
+    "description": "바다 마을의 네 학생이 지상 학교로 전학하며 두 세계의 갈등과 엇갈린 마음을 겪는다.",
+    "genres": [
+      "판타지",
+      "로맨스",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  }
+]

@@ -1,0 +1,67 @@
+{
+  "id": "68482db1-ad67-4bf0-b766-e5527be2a504",
+  "tag_id": "e3f9dbfd-e491-4433-9af1-6c0b146f5746",
+  "type": "exhibition",
+  "shop_id": null,
+  "title": "귀멸의 칼날 : 전집중展",
+  "created_at": "2026-08-23T08:16:14.118632+00:00",
+  "start_date": "2026-06-27",
+  "end_date": "2026-09-27",
+  "entry_info": "예매 후 입장\n현장 구매 가능",
+  "hours_info": "매일 11:00~21:00\n입장 마감 20:00\n8월 15일 휴관",
+  "created_by": null,
+  "reserve_start": "2026-06-01",
+  "reserve_end": "2026-09-27",
+  "hours": {
+    "fri": {
+      "open": "11:00",
+      "close": "21:00"
+    },
+    "mon": {
+      "open": "11:00",
+      "close": "21:00"
+    },
+    "sat": {
+      "open": "11:00",
+      "close": "21:00"
+    },
+    "sun": {
+      "open": "11:00",
+      "close": "21:00"
+    },
+    "thu": {
+      "open": "11:00",
+      "close": "21:00"
+    },
+    "tue": {
+      "open": "11:00",
+      "close": "21:00"
+    },
+    "wed": {
+      "open": "11:00",
+      "close": "21:00"
+    }
+  },
+  "cover_url": "https://media.orings.co.kr/static/place/2026-05-26/9c8c5403-83a9-421d-b2fd-50972147b2b8.jpg",
+  "parking": false,
+  "parking_note": "주차 불가\n인근 공영주차장을 이용해 주세요.",
+  "description": "「귀멸의 칼날」 주요 장면과 공간을 재현한 몰입형 전시입니다.\n입장 마감은 20:00이며, 8월 15일은 휴관입니다.\n입장 후 재입장과 환불은 불가합니다.\n작품의 주요 장면과 설정을 다양한 전시 연출과 콘텐츠로 천천히 살펴볼 수 있습니다.",
+  "place_name": "에스팩토리",
+  "place_addr": "서울 성동구 연무장15길 11",
+  "place_lat": 37.5426445439481,
+  "place_lng": 127.059573316959,
+  "place_detail": "D동 1층",
+  "source_urls": [
+    "https://www.instagram.com/kimetsu_ex_kr/"
+  ],
+  "ticket_urls": [
+    {
+      "url": "https://feverup.com/m/653974",
+      "label": "전시 예매하기"
+    }
+  ],
+  "updated_by": null,
+  "updated_at": "2026-08-25T05:40:35.654+00:00",
+  "place_id": "11f86ff9-2c65-4e57-86c5-4ffe7be6d447",
+  "video_url": null
+}

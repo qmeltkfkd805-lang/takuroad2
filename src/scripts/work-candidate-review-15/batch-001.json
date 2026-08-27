@@ -1,0 +1,205 @@
+[
+  {
+    "slug": "code-geass-lelouch-of-the-rebellion",
+    "name": "코드 기아스: 반역의 를르슈",
+    "englishName": "Code Geass: Lelouch of the Rebellion",
+    "aliases": [
+      "코드 기아스",
+      "コードギアス 反逆のルルーシュ"
+    ],
+    "description": "신성 브리타니아 제국에 맞서 기아스의 힘을 얻은 를르슈가 가면의 반역자 제로가 된다.",
+    "genres": [
+      "액션",
+      "SF",
+      "드라마",
+      "로봇/메카"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://geass.jp/first/",
+    "source": "https://geass.jp/first/"
+  },
+  {
+    "slug": "psycho-pass",
+    "name": "PSYCHO-PASS 사이코패스",
+    "englishName": "Psycho-Pass",
+    "aliases": [
+      "사이코패스",
+      "PSYCHO-PASS",
+      "サイコパス"
+    ],
+    "description": "범죄 가능성을 수치화하는 사회에서 신임 감시관 아카네가 공안국 형사들과 사건을 추적한다.",
+    "genres": [
+      "SF",
+      "추리",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://psycho-pass.com/",
+    "source": "https://psycho-pass.com/"
+  },
+  {
+    "slug": "the-melancholy-of-haruhi-suzumiya",
+    "name": "스즈미야 하루히의 우울",
+    "englishName": "The Melancholy of Haruhi Suzumiya",
+    "aliases": [
+      "하루히",
+      "涼宮ハルヒの憂鬱"
+    ],
+    "description": "평범한 인간에 관심 없는 하루히가 SOS단을 만들며 쿈의 일상이 초현실적 사건으로 변한다.",
+    "genres": [
+      "학원",
+      "SF",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://kadokawa-animation.jp/lineup/haruhi",
+    "source": "https://kadokawa-animation.jp/lineup/haruhi"
+  },
+  {
+    "slug": "great-teacher-onizuka",
+    "name": "GTO",
+    "englishName": "Great Teacher Onizuka",
+    "aliases": [
+      "반항하지마",
+      "그레이트 티처 오니즈카",
+      "グレート・ティーチャー・オニヅカ"
+    ],
+    "description": "전직 폭주족 오니즈카가 교사가 되어 학생들과 정면으로 부딪치며 학교의 문제를 해결한다.",
+    "genres": [
+      "학원",
+      "코미디",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "blue-exorcist",
+    "name": "청의 엑소시스트",
+    "englishName": "Blue Exorcist",
+    "aliases": [
+      "청엑",
+      "青の祓魔師"
+    ],
+    "description": "사탄의 아들 린이 자신의 운명에 맞서 엑소시스트가 되기 위해 정십자학원에서 수련한다.",
+    "genres": [
+      "액션",
+      "판타지",
+      "학원"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.ao-ex.com/",
+    "source": "https://www.ao-ex.com/"
+  },
+  {
+    "slug": "magi-the-labyrinth-of-magic",
+    "name": "마기",
+    "englishName": "Magi: The Labyrinth of Magic",
+    "aliases": [
+      "マギ"
+    ],
+    "description": "신비한 소년 알라딘이 알리바바와 함께 던전을 공략하며 세계를 뒤흔드는 운명에 맞선다.",
+    "genres": [
+      "판타지",
+      "모험",
+      "액션"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.project-magi.com/",
+    "source": "https://www.project-magi.com/"
+  },
+  {
+    "slug": "kill-la-kill",
+    "name": "킬라킬",
+    "englishName": "Kill la Kill",
+    "aliases": [
+      "KILL la KILL",
+      "キルラキル"
+    ],
+    "description": "아버지의 죽음을 추적하는 류코가 생명섬유 교복을 입고 혼노지 학원의 지배자 사츠키와 맞선다.",
+    "genres": [
+      "액션",
+      "학원",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.kill-la-kill.jp/",
+    "source": "https://www.kill-la-kill.jp/"
+  },
+  {
+    "slug": "akame-ga-kill",
+    "name": "아카메가 벤다!",
+    "englishName": "Akame ga Kill!",
+    "aliases": [
+      "아카메가 킬",
+      "アカメが斬る！"
+    ],
+    "description": "제국의 부패를 목격한 타츠미가 암살 조직 나이트레이드에 합류해 혁명을 위해 싸운다.",
+    "genres": [
+      "액션",
+      "판타지",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://akame.tv/",
+    "source": "https://akame.tv/"
+  },
+  {
+    "slug": "future-diary",
+    "name": "미래일기",
+    "englishName": "The Future Diary",
+    "aliases": [
+      "미래 일기",
+      "未来日記",
+      "Mirai Nikki"
+    ],
+    "description": "미래를 기록하는 일기를 얻은 유키테루가 신의 자리를 건 생존 게임에 휘말린다.",
+    "genres": [
+      "액션",
+      "추리",
+      "호러"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "monster-anime",
+    "name": "몬스터",
+    "englishName": "Monster",
+    "aliases": [
+      "MONSTER",
+      "モンスター"
+    ],
+    "description": "의사 텐마가 자신이 살린 소년 요한이 연쇄 살인의 중심임을 알고 그의 흔적을 추적한다.",
+    "genres": [
+      "추리",
+      "드라마",
+      "호러"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "https://www.vap.co.jp/monster/",
+    "source": "https://www.vap.co.jp/monster/"
+  }
+]

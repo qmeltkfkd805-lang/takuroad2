@@ -1,0 +1,2212 @@
+{
+  "mode": "dry-run",
+  "before": 1587,
+  "rows": [
+    {
+      "name": "북부 대공",
+      "slug": "northern-duke-webtoon",
+      "english_name": "The Northern Duke",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "로판 속 북부 대공을 연기하는 배우와 작품 세계에 얽힌 주인공이 정해진 서사를 벗어나려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/북부-대공/4046",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/북부-대공/4046"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "TOP 100 영애",
+      "slug": "top-100-lady-webtoon",
+      "english_name": "TOP 100 Lady",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "랭킹 시스템이 존재하는 세계에서 영애가 최상위권을 목표로 경쟁과 로맨스를 헤쳐 나간다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/TOP-100-영애/4458",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/TOP-100-영애/4458"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "황후 위목화",
+      "slug": "empress-wi-mokhwa-webtoon",
+      "english_name": "Empress Wi Mokhwa",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "황궁에 들어간 위목화가 권력 다툼과 음모 속에서 자신의 자리와 사랑을 지키려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/황후-위목화/2688",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/황후-위목화/2688"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "그 던전의 S급 시한부 영애",
+      "slug": "s-rank-terminally-ill-lady-of-the-dungeon-webtoon",
+      "english_name": "The Dungeon's S-Rank Terminally Ill Lady",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "시한부 영애가 던전과 능력이 존재하는 세계에서 살아남기 위해 자신의 힘과 운명을 개척한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "액션"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/그-던전의-S급-시한부-영애/3756",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/그-던전의-S급-시한부-영애/3756"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "시한부니까 계약 결혼 합니다",
+      "slug": "contract-marriage-because-im-terminally-ill-webtoon",
+      "english_name": "A Contract Marriage Because I'm Terminally Ill",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "남은 시간이 짧다고 믿는 영애가 목적을 이루기 위해 계약 결혼을 제안하며 관계가 시작된다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/시한부니까-계약-결혼-합니다/3897",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/시한부니까-계약-결혼-합니다/3897"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "이혼 전략",
+      "slug": "divorce-strategy-webtoon",
+      "english_name": "Divorce Strategy",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "불행한 결혼을 끝내려는 주인공이 치밀한 이혼 계획을 세우지만 배우자와의 관계가 예상 밖으로 변한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/이혼-전략/4104",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/이혼-전략/4104"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아쉴레앙 공작의 계약 결혼",
+      "slug": "duchess-ashileans-contract-marriage-webtoon",
+      "english_name": "Duchess Ashilean's Contract Marriage",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "강한 공작 아쉴레앙과 사정 많은 남자가 계약 결혼으로 얽혀 서로의 삶과 마음을 바꾼다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/아쉴레앙-공작의-계약-결혼/3156",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/아쉴레앙-공작의-계약-결혼/3156"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "공작 부부의 이혼 사정",
+      "slug": "ducal-couples-divorce-circumstances-webtoon",
+      "english_name": "The Ducal Couple's Divorce Circumstances",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "이혼을 원하는 공작 부부가 각자의 사정과 감춰진 진심을 마주하며 관계를 다시 돌아본다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/공작-부부의-이혼-사정/4043",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/공작-부부의-이혼-사정/4043"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아젤다: 정령사의 계약 결혼",
+      "slug": "azelda-spirit-masters-contract-marriage-webtoon",
+      "english_name": "Azelda: The Spirit Master's Contract Marriage",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "정령사 아젤다가 자신의 목적을 위해 계약 결혼을 선택하며 새로운 관계와 사건에 뛰어든다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/아젤다-정령사의-계약-결혼/4292",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/아젤다-정령사의-계약-결혼/4292"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "스토커 공녀",
+      "slug": "stalker-princess-webtoon",
+      "english_name": "Stalker Princess",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "공녀가 한 인물을 쫓게 된 사연과 오해 속에서 예상하지 못한 로맨스와 진실을 마주한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/스토커-공녀/4755",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/스토커-공녀/4755"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "시한부 여주의 동생이 되었다",
+      "slug": "became-terminally-ill-heroines-younger-sister-webtoon",
+      "english_name": "I Became the Terminally Ill Heroine's Younger Sister",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "소설 속 시한부 여주의 동생으로 빙의한 주인공이 언니의 죽음을 막고 가족의 미래를 바꾸려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/시한부-여주의-동생이-되었다/3658",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/시한부-여주의-동생이-되었다/3658"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "시한부 엑스트라의 시간",
+      "slug": "the-time-of-the-terminally-ill-extra-webtoon",
+      "english_name": "The Time of the Terminally Ill Extra",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "가족에게 외면받고 시한부를 선고받은 카리나가 남은 시간을 위해 집을 떠나 자신의 삶을 찾는다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/시한부-엑스트라의-시간/2746",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/시한부-엑스트라의-시간/2746"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "폭군 오빠가 셋이래요",
+      "slug": "three-tyrant-brothers-webtoon",
+      "english_name": "Three Tyrant Brothers",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "고아로 자란 클로이가 황실의 잃어버린 공주로 밝혀져 세 황자 오빠와 새로운 가족이 된다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/폭군-오빠가-셋이래요/2493",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/폭군-오빠가-셋이래요/2493"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "시한부 남편인 줄 알았습니다만?",
+      "slug": "terminally-ill-husband-or-so-i-thought-webtoon",
+      "english_name": "I Thought My Husband Was Terminally Ill",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "곧 죽을 남편과 계약 결혼했다고 믿은 주인공이 예상과 달리 건강하고 집착하는 배우자를 마주한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/시한부-남편인-줄-알았습니다만/3987",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/시한부-남편인-줄-알았습니다만/3987"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "후회 남주의 시한부 누나가 되었다",
+      "slug": "became-regretful-male-leads-terminally-ill-sister-webtoon",
+      "english_name": "I Became the Regretful Male Lead's Terminally Ill Sister",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "소설 속 후회 남주의 시한부 누나로 빙의한 주인공이 동생을 보살피며 정해진 비극을 바꾸려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/후회-남주의-시한부-누나가-되었다/3246",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/후회-남주의-시한부-누나가-되었다/3246"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "시한부 황제의 주치의입니다",
+      "slug": "physician-to-the-terminally-ill-emperor-webtoon",
+      "english_name": "I Am the Terminally Ill Emperor's Physician",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "의술을 지닌 주인공이 죽음을 앞둔 황제의 주치의가 되어 병의 비밀과 황궁의 음모를 파헤친다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/시한부-황제의-주치의입니다/4329",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/시한부-황제의-주치의입니다/4329"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "시한부 악녀가 복수하는 방법",
+      "slug": "how-a-terminally-ill-villainess-gets-revenge-webtoon",
+      "english_name": "How a Terminally Ill Villainess Gets Revenge",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "죽음을 앞둔 악녀가 자신을 몰락시킨 이들에게 남은 시간을 걸고 치밀한 복수를 시작한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/시한부-악녀가-복수하는-방법/3131",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/시한부-악녀가-복수하는-방법/3131"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "폭군의 시한부 아내가 되었는데",
+      "slug": "became-the-tyrants-terminally-ill-wife-webtoon",
+      "english_name": "I Became the Tyrant's Terminally Ill Wife",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "폭군의 시한부 아내가 된 주인공이 죽을 운명을 피하려 하지만 남편의 관심과 황궁 사건에 얽힌다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/폭군의-시한부-아내가-되었는데/4309",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/폭군의-시한부-아내가-되었는데/4309"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "시한부 악녀는 입양을 거절합니다",
+      "slug": "terminally-ill-villainess-refuses-adoption-webtoon",
+      "english_name": "The Terminally Ill Villainess Refuses Adoption",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "시한부 악녀로 빙의한 주인공이 입양과 원작의 파멸을 거부하고 짧은 삶을 스스로 선택하려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/시한부-악녀는-입양을-거절합니다/4052",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/시한부-악녀는-입양을-거절합니다/4052"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "시한부 대공자비의 꽃길 라이프",
+      "slug": "terminally-ill-grand-duchess-flower-road-life-webtoon",
+      "english_name": "The Terminally Ill Grand Duchess's Flower Road Life",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "시한부 대공자비가 된 주인공이 남은 생을 행복하게 보내려 하며 가족과 관계를 새로 만들어 간다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/시한부-대공자비의-꽃길-라이프/3270",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/시한부-대공자비의-꽃길-라이프/3270"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "그 아빠에 그 딸",
+      "slug": "like-father-like-daughter-webtoon",
+      "english_name": "Like Father, Like Daughter",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "서로 닮은 성격과 능력을 지닌 아버지와 딸이 황실과 귀족 사회의 사건을 함께 헤쳐 나간다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/그-아빠에-그-딸/4433",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/그-아빠에-그-딸/4433"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "나는 황제의 잃어버린 딸",
+      "slug": "i-am-the-emperors-lost-daughter-webtoon",
+      "english_name": "I Am the Emperor's Lost Daughter",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "평범하게 살던 소녀가 황제의 잃어버린 딸로 밝혀지며 황실 가족과 새로운 운명을 마주한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/나는-황제의-잃어버린-딸/4010",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/나는-황제의-잃어버린-딸/4010"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "얘 우리 딸 아니에요!",
+      "slug": "shes-not-our-daughter-webtoon",
+      "english_name": "She's Not Our Daughter!",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "뜻밖에 아이를 맡게 된 인물들이 서로 얽힌 비밀을 풀며 진짜 가족에 가까워지는 로맨스 판타지다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/얘-우리-딸-아니에요/4268",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/얘-우리-딸-아니에요/4268"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "시한부 아기 의원이 천재인 걸 안 숨김",
+      "slug": "terminally-ill-baby-doctor-doesnt-hide-her-genius-webtoon",
+      "english_name": "The Terminally Ill Baby Doctor Doesn't Hide Her Genius",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "시한부 어린아이로 다시 태어난 천재 의원이 의술을 숨기지 않고 자신과 주변 사람들의 운명을 고친다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/시한부-아기-의원이-천재인-걸-안-숨김/4719",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/시한부-아기-의원이-천재인-걸-안-숨김/4719"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아기 황후님",
+      "slug": "baby-empress-webtoon",
+      "english_name": "The Baby Empress",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "어린 나이에 황후가 된 주인공이 낯선 황궁에서 자신을 지키고 주변 인물들과 관계를 쌓는다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/아기-황후님/2899",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/아기-황후님/2899"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아기 요정은 악당",
+      "slug": "baby-fairy-is-a-villain-webtoon",
+      "english_name": "The Baby Fairy Is a Villain",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "악당이 되겠다고 다짐한 아기 요정이 특별한 힘과 사랑스러운 행동으로 가족과 세계를 변화시킨다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/아기-요정은-악당/4436",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/아기-요정은-악당/4436"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아기 남편의 흑막 아내입니다",
+      "slug": "blackhearted-wife-of-the-baby-husband-webtoon",
+      "english_name": "I Am the Blackhearted Wife of the Baby Husband",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "어린 남편과 정략결혼한 주인공이 흑막을 자처하며 남편과 가문을 위협하는 미래를 바꾸려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/아기-남편의-흑막-아내입니다/4627",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/아기-남편의-흑막-아내입니다/4627"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아기 약사 황녀님",
+      "slug": "baby-pharmacist-princess-webtoon",
+      "english_name": "The Baby Pharmacist Princess",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "약학 지식을 지닌 아기 황녀가 약을 만들고 사람들을 치료하며 황실 안에서 자신의 자리를 찾는다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/아기-약사-황녀님/3542",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/아기-약사-황녀님/3542"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아기 다람쥐가 다 잘해요",
+      "slug": "the-baby-squirrel-can-do-anything-webtoon",
+      "english_name": "The Baby Squirrel Can Do Anything",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "다람쥐 수인 소녀가 가족에게 돌아가 특별한 재능을 펼치며 자신을 둘러싼 위기와 편견을 이겨 낸다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/아기-다람쥐가-다-잘해요/3138",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/아기-다람쥐가-다-잘해요/3138"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아기 용태자비는 미친놈들을 길들인다",
+      "slug": "baby-dragon-crown-princess-tames-the-madmen-webtoon",
+      "english_name": "The Baby Dragon Crown Princess Tames the Madmen",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "어린 용태자비가 된 주인공이 위험한 황실 인물들을 상대하며 자신의 가족과 미래를 지켜 낸다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/아기-용태자비는-미친놈들을-길들인다/3474",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/아기-용태자비는-미친놈들을-길들인다/3474"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "요리하는 마법사",
+      "slug": "the-cooking-wizard-webtoon",
+      "english_name": "The Cooking Wizard",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "마법 세계에 떨어진 주인공이 요리 실력과 새로운 마법을 활용해 사람들의 마음과 자신의 길을 찾는다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "요리"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/요리하는-마법사/3426",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/요리하는-마법사/3426"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "악한 기사",
+      "slug": "the-wicked-knight-webtoon",
+      "english_name": "The Wicked Knight",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "냉혹한 기사와 그를 둘러싼 인물들이 욕망과 배신이 얽힌 귀족 사회에서 위험한 관계를 이어 간다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/악한-기사/2152",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/악한-기사/2152"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아기 마왕님은 용사 아빠들이 너무 귀찮아",
+      "slug": "baby-demon-king-is-tired-of-the-hero-dads-webtoon",
+      "english_name": "The Baby Demon King Is Tired of the Hero Dads",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "아기 마왕으로 다시 태어난 주인공이 자신을 돌보겠다는 여러 용사 아빠들과 뜻밖의 가족이 된다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/아기-마왕님은-용사-아빠들이-너무-귀찮아/4408",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/아기-마왕님은-용사-아빠들이-너무-귀찮아/4408"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "얼음꽃 기사",
+      "slug": "ice-flower-knight-webtoon",
+      "english_name": "The Ice Flower Knight",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "편견과 상처를 딛고 검을 든 여주인공이 얼음처럼 냉정한 기사로 성장하며 사랑과 명예를 얻는다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "액션"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/얼음꽃-기사/2860",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/얼음꽃-기사/2860"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "마왕 왕녀님",
+      "slug": "demon-king-princess-webtoon",
+      "english_name": "Demon King Princess",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "마왕의 힘을 지닌 왕녀가 왕국의 음모와 자신의 정체에 맞서며 운명과 사랑을 선택한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/마왕-왕녀님/4495",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/마왕-왕녀님/4495"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "마법사와 사는 법",
+      "slug": "how-to-live-with-a-wizard-webtoon",
+      "english_name": "How to Live with a Wizard",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "게임에서 나온 마법사 라이언과 취업 준비생 라일락이 회사 생활과 각자의 퀘스트를 함께 해결한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://series.naver.com/comic/detail.series?productNo=2410196",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://series.naver.com/comic/detail.series?productNo=2410196"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "마스카(MASCA): 열왕기",
+      "slug": "masca-the-kings-webtoon",
+      "english_name": "MASCA: The Kings",
+      "aliases": [
+        "마스카 열왕기"
+      ],
+      "ip_type": "만화",
+      "description": "기억을 잃은 마왕 카이넨과 그를 기다린 마법사 아사렐라가 다시 만나기 위한 여정을 이어 간다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://series.naver.com/comic/detail.series?productNo=4980420",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://series.naver.com/comic/detail.series?productNo=4980420"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "용사의 어머니가 되겠습니다",
+      "slug": "i-will-become-the-heros-mother-webtoon",
+      "english_name": "I Will Become the Hero's Mother",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "세계를 구할 용사를 낳기 위해 결혼을 결심한 여주인공이 저주받은 공작과 가까워진다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/용사의-어머니가-되겠습니다/3391",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/용사의-어머니가-되겠습니다/3391"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "마녀의 딸이 남주의 저주를 풀면",
+      "slug": "when-the-witchs-daughter-lifts-the-male-leads-curse-webtoon",
+      "english_name": "When the Witch's Daughter Lifts the Male Lead's Curse",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "마녀의 딸이 저주받은 남주를 만나 자신의 힘으로 저주와 예정된 비극을 풀어 가려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/마녀의-딸이-남주의-저주를-풀면/3702",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/마녀의-딸이-남주의-저주를-풀면/3702"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "폭군 오빠는 덤입니다",
+      "slug": "the-tyrant-brother-is-a-bonus-webtoon",
+      "english_name": "The Tyrant Brother Is a Bonus",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "황실의 아이로 살아가게 된 주인공이 폭군으로 불리는 오빠와 관계를 맺으며 자신의 미래를 바꾼다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/폭군-오빠는-덤입니다/4825",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/폭군-오빠는-덤입니다/4825"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "회귀한 김에 복수하겠습니다",
+      "slug": "ill-take-revenge-since-i-regressed-webtoon",
+      "english_name": "I'll Take Revenge Since I Regressed",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "배신 끝에 죽음을 맞은 영애가 과거로 돌아가 자신을 몰락시킨 이들에게 계획적인 복수를 시작한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/회귀한-김에-복수하겠습니다/3346",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/회귀한-김에-복수하겠습니다/3346"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "이번 생, 끝까지 살아남겠습니다",
+      "slug": "ill-survive-to-the-end-in-this-life-webtoon",
+      "english_name": "In This Life, I'll Survive to the End",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "비극적인 삶을 다시 시작한 주인공이 과거의 기억을 이용해 이번에는 끝까지 살아남으려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/이번-생-끝까지-살아남겠습니다/3903",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/이번-생-끝까지-살아남겠습니다/3903"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "회귀한 악녀는 순결서약 합니다",
+      "slug": "regressed-villainess-takes-a-vow-of-chastity-webtoon",
+      "english_name": "The Regressed Villainess Takes a Vow of Chastity",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "과거로 돌아온 악녀가 이전 생의 파멸을 피하기 위해 순결서약을 하고 새로운 삶을 설계한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/회귀한-악녀는-순결서약-합니다/4698",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/회귀한-악녀는-순결서약-합니다/4698"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "회귀한 영애에게 용서란 없습니다",
+      "slug": "no-forgiveness-for-the-regressed-lady-webtoon",
+      "english_name": "There Is No Forgiveness for the Regressed Lady",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "억울하게 모든 것을 잃은 영애가 회귀한 뒤 자신을 배신한 이들을 용서하지 않고 응징한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/회귀한-영애에게-용서란-없습니다/4124",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/회귀한-영애에게-용서란-없습니다/4124"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "메리지 B",
+      "slug": "marriage-b-webtoon",
+      "english_name": "Marriage B",
+      "aliases": [
+        "메리지비"
+      ],
+      "ip_type": "웹툰,웹소설",
+      "description": "회귀한 영애가 가문의 원수와 결혼을 선택하며 복수와 생존을 위한 위험한 동맹을 맺는다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/메리지-B/3203",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/메리지-B/3203"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "회귀한 영애는 디저트 가게를 연다",
+      "slug": "regressed-lady-opens-a-dessert-shop-webtoon",
+      "english_name": "The Regressed Lady Opens a Dessert Shop",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "과거로 돌아온 영애가 디저트 가게를 열고 요리 실력으로 독립과 행복, 새로운 사랑을 찾아간다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "요리"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/회귀한-영애는-디저트-가게를-연다/3565",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/회귀한-영애는-디저트-가게를-연다/3565"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "아기 마님은 복수 메이커",
+      "slug": "baby-madam-is-a-revenge-maker-webtoon",
+      "english_name": "The Baby Madam Is a Revenge Maker",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "어린 마님이 된 주인공이 자신과 가족을 해친 이들에게 귀여운 모습 뒤 치밀한 복수를 준비한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/아기-마님은-복수-메이커/3927",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/아기-마님은-복수-메이커/3927"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "나쁜 시녀들",
+      "slug": "the-bad-maids-webtoon",
+      "english_name": "The Bad Maids",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "황태자에게 배신당한 시녀가 궁정의 비밀과 권력관계를 이용해 자신만의 복수를 실행한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/나쁜-시녀들/4048",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/나쁜-시녀들/4048"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "오만한 후회",
+      "slug": "arrogant-regret-webtoon",
+      "english_name": "Arrogant Regret",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "오만한 선택으로 사랑을 잃은 남자가 뒤늦게 잘못을 깨닫고 무너진 관계를 되돌리려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/오만한-후회/4654",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/오만한-후회/4654"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "공작님, 회개해주세요!",
+      "slug": "duke-please-repent-webtoon",
+      "english_name": "Duke, Please Repent!",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "악행을 일삼는 공작과 얽힌 주인공이 그의 행동을 바로잡고 예정된 파멸을 막으려 분투한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/공작님-회개해주세요/3245",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/공작님-회개해주세요/3245"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "베이비 드래곤",
+      "slug": "baby-dragon-webtoon",
+      "english_name": "Baby Dragon",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "어린 드래곤으로 태어난 주인공이 자신의 힘과 출생의 비밀을 알아가며 새로운 가족을 만난다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/베이비-드래곤/3383",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/베이비-드래곤/3383"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "로판을 모르면 죽습니다",
+      "slug": "youll-die-if-you-dont-know-romance-fantasy-webtoon",
+      "english_name": "You'll Die If You Don't Know Romance Fantasy",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "로맨스 판타지의 규칙이 현실이 된 세계에서 주인공이 장르 지식을 이용해 죽음의 조건을 피한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/로판을-모르면-죽습니다/4158",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/로판을-모르면-죽습니다/4158"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "너의 의미",
+      "slug": "the-meaning-of-you-webtoon",
+      "english_name": "The Meaning of You",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "낯선 세계에 소환되어 무기력해진 주인공이 황제와 가까워지며 삶의 의미와 자신의 자리를 찾아간다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/너의-의미/2449",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/너의-의미/2449"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "사랑받는 막내는 처음이라",
+      "slug": "its-my-first-time-being-a-loved-youngest-child-webtoon",
+      "english_name": "It's My First Time Being a Loved Youngest Child",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "여러 삶에서 상처받은 주인공이 귀족가의 막내로 다시 태어나 처음으로 가족의 사랑을 받는다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/사랑받는-막내는-처음이라/3835",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/사랑받는-막내는-처음이라/3835"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "가짜를 위한 장소는 없다",
+      "slug": "there-is-no-place-for-fakes-webtoon",
+      "english_name": "There Is No Place for Fakes",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "가짜 황녀라는 미래를 알게 된 필로멜이 궁을 떠날 준비를 하며 자신의 삶과 진실을 찾아 나선다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/가짜를-위한-장소는-없다/3281",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/가짜를-위한-장소는-없다/3281"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "시한부 악녀의 해피엔딩",
+      "slug": "happy-ending-for-the-terminally-ill-villainess-webtoon",
+      "english_name": "Happy Ending for the Terminally Ill Villainess",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "시한부 악녀로 빙의한 주인공이 살아남기 위한 계약을 맺고 정해진 결말을 행복하게 바꾸려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/시한부-악녀의-해피엔딩/2894",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/시한부-악녀의-해피엔딩/2894"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "악녀 황후님이 날 너무 좋아해",
+      "slug": "the-villainous-empress-likes-me-too-much-webtoon",
+      "english_name": "The Villainous Empress Likes Me Too Much",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "황궁의 조연으로 빙의한 주인공이 악녀로 알려진 황후의 총애를 받으며 원작과 다른 관계를 만든다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/악녀-황후님이-날-너무-좋아해/3229",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/악녀-황후님이-날-너무-좋아해/3229"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "죽어 줘, 라는 말을 들었다",
+      "slug": "i-was-told-to-die-webtoon",
+      "english_name": "I Was Told to Die",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "가장 믿었던 사람에게 죽음을 요구받은 주인공이 배신의 진실을 밝히고 자신의 운명을 되찾으려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/죽어-줘-라는-말을-들었다/4275",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/죽어-줘-라는-말을-들었다/4275"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "친구는 소중히 대해 주세요",
+      "slug": "please-treat-your-friends-preciously-webtoon",
+      "english_name": "Please Treat Your Friends Preciously",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "소설 속 인물과 친구가 된 주인공이 관계를 지키려다 원작의 남주들과 예상 밖으로 가까워진다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/친구는-소중히-대해-주세요/3553",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/친구는-소중히-대해-주세요/3553"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "막내 공녀의 총애를 독차지했더니, 모두 내게 집착한다",
+      "slug": "everyone-obsesses-after-i-monopolized-the-youngest-princesss-favor-webtoon",
+      "english_name": "Everyone Obsessively Loves Me After I Won the Youngest Princess's Favor",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "막내 공녀의 마음을 얻은 주인공이 공작가 사람들의 관심까지 받으며 원작과 다른 가족이 된다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/막내-공녀의-총애를-독차지했더니-모두-내게-집착한다/4427",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/막내-공녀의-총애를-독차지했더니-모두-내게-집착한다/4427"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "흑막 남편과의 이혼에 실패한 것 같다",
+      "slug": "failed-to-divorce-the-blackhearted-husband-webtoon",
+      "english_name": "I Think I Failed to Divorce My Blackhearted Husband",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "흑막이 될 남편과 헤어지려던 주인공이 계속되는 오해와 애정 때문에 이혼 계획에 실패한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/흑막-남편과의-이혼에-실패한-것-같다/3471",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/흑막-남편과의-이혼에-실패한-것-같다/3471"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "흑막 범고래 아기님",
+      "slug": "blackhearted-baby-orca-webtoon",
+      "english_name": "The Blackhearted Baby Orca",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "범고래 수인 아기로 다시 태어난 주인공이 위험한 가족 속에서 사랑받으며 자신의 힘을 키운다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/흑막-범고래-아기님/4128",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/흑막-범고래-아기님/4128"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "흑막 공작의 못난이 부인",
+      "slug": "the-blackhearted-dukes-ugly-wife-webtoon",
+      "english_name": "The Blackhearted Duke's Ugly Wife",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "못난이 부인으로 불리던 주인공이 흑막 공작과의 결혼 생활에서 자신감을 찾고 운명을 바꾼다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/흑막-공작의-못난이-부인/4365",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/흑막-공작의-못난이-부인/4365"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "흑막 도련님이 엉덩이 맴매에 집착한다",
+      "slug": "young-blackheart-obsesses-over-spankings-webtoon",
+      "english_name": "The Young Blackheart Is Obsessed with Spankings",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "미래의 흑막 도련님을 바르게 키우려던 주인공이 예상과 다른 그의 애착과 집착에 휘말린다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/흑막-도련님이-엉덩이-맴매에-집착한다/4368",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/흑막-도련님이-엉덩이-맴매에-집착한다/4368"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "흑막 대공님의 집착은 싫어요",
+      "slug": "i-dont-want-the-blackhearted-grand-dukes-obsession-webtoon",
+      "english_name": "I Don't Want the Blackhearted Grand Duke's Obsession",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "흑막 대공을 피해 조용히 살려던 주인공이 그의 관심을 받으며 원작과 다른 관계에 빠진다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/흑막-대공님의-집착은-싫어요/3398",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/흑막-대공님의-집착은-싫어요/3398"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "흑막 공작님의 가족이 되려 합니다",
+      "slug": "trying-to-become-the-blackhearted-dukes-family-webtoon",
+      "english_name": "I Am Trying to Become the Blackhearted Duke's Family",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "살아남기 위해 흑막 공작의 가족이 되려는 주인공이 차가운 가문 사람들의 마음을 열어 간다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/흑막-공작님의-가족이-되려-합니다/4747",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/흑막-공작님의-가족이-되려-합니다/4747"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "공작가의 흑막 영애님",
+      "slug": "the-ducal-familys-blackhearted-lady-webtoon",
+      "english_name": "The Ducal Family's Blackhearted Lady",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "공작가의 영애로 돌아온 주인공이 자신을 해친 이들을 상대하며 가문의 진짜 흑막으로 성장한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/공작가의-흑막-영애님/3235",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/공작가의-흑막-영애님/3235"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "흑막 남주의 시한부 유모입니다",
+      "slug": "terminally-ill-nanny-of-the-blackhearted-male-lead-webtoon",
+      "english_name": "I Am the Blackhearted Male Lead's Terminally Ill Nanny",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "시한부 유모가 된 주인공이 어린 남주를 돌보며 그의 흑화를 막고 자신의 죽음도 피하려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/흑막-남주의-시한부-유모입니다/3917",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/흑막-남주의-시한부-유모입니다/3917"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "흑막 약혼자가 내 꽃길을 방해한다",
+      "slug": "blackhearted-fiance-interferes-with-my-happy-path-webtoon",
+      "english_name": "My Blackhearted Fiancé Interferes with My Happy Path",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "꽃길을 걷기 위해 파혼하려는 주인공이 흑막 약혼자의 방해와 예상 밖의 애정에 부딪힌다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/흑막-약혼자가-내-꽃길을-방해한다/3957",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/흑막-약혼자가-내-꽃길을-방해한다/3957"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "도망친 백작 부인이 돌아왔다",
+      "slug": "the-runaway-countess-has-returned-webtoon",
+      "english_name": "The Runaway Countess Has Returned",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "결혼 생활에서 도망쳤던 백작 부인이 돌아와 남편과 과거의 오해, 감춰진 진실을 마주한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/도망친-백작-부인이-돌아왔다/4613",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/도망친-백작-부인이-돌아왔다/4613"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "번데기 속 고양이",
+      "slug": "the-cat-in-the-chrysalis-webtoon",
+      "english_name": "The Cat in the Chrysalis",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "고양이와 관련된 특별한 모습으로 살아가던 주인공이 자신의 정체와 저주를 풀 단서를 찾아 나선다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/번데기-속-고양이/3520",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/번데기-속-고양이/3520"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "결혼도 안 했는데 무슨 이혼인가요, 폐하",
+      "slug": "how-can-we-divorce-when-we-havent-even-married-your-majesty-webtoon",
+      "english_name": "How Can We Divorce When We Haven't Even Married, Your Majesty?",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "결혼도 하지 않은 황제에게 이혼을 요구받은 주인공이 기묘한 미래와 관계의 비밀을 파헤친다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/결혼도-안-했는데-무슨-이혼인가요-폐하/4165",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/결혼도-안-했는데-무슨-이혼인가요-폐하/4165"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "대공님의 애완 수인",
+      "slug": "the-grand-dukes-pet-beastkin-webtoon",
+      "english_name": "The Grand Duke's Pet Beastkin",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "수인의 모습으로 대공에게 거둬진 주인공이 인간으로서의 정체를 감춘 채 그와 가까워진다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/대공님의-애완-수인/3555",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/대공님의-애완-수인/3555"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "대공가의 여우 황녀님",
+      "slug": "the-fox-princess-of-the-grand-ducal-family-webtoon",
+      "english_name": "The Fox Princess of the Grand Ducal Family",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "여우의 모습이 된 황녀가 대공가에 머물며 자신의 몸과 지위를 되찾고 새 가족을 만들어 간다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/대공가의-여우-황녀님/3773",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/대공가의-여우-황녀님/3773"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "늑대 대공의 반려인간",
+      "slug": "the-wolf-grand-dukes-human-mate-webtoon",
+      "english_name": "The Wolf Grand Duke's Human Mate",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "늑대 대공에게 반려동물처럼 거둬진 인간 아델이 그의 진짜 반려로서 관계를 키워 간다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/늑대-대공의-반려인간/2778",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/늑대-대공의-반려인간/2778"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "늑대 저택의 사랑받는 새아가",
+      "slug": "the-beloved-new-bride-of-the-wolf-mansion-webtoon",
+      "english_name": "The Beloved New Bride of the Wolf Mansion",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "늑대 수인 가문에 어린 새아가로 들어간 주인공이 가족의 사랑을 받으며 저택의 상처를 치유한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/늑대-저택의-사랑받는-새아가/4250",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/늑대-저택의-사랑받는-새아가/4250"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "꽃을 문 짐승",
+      "slug": "the-beast-with-a-flower-webtoon",
+      "english_name": "The Beast with a Flower",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "짐승처럼 거칠게 살아온 남자와 그의 마음을 움직인 여인이 위험한 궁정에서 서로를 지켜 낸다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/꽃을-문-짐승/2564",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/꽃을-문-짐승/2564"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "악녀가 길들인 짐승",
+      "slug": "the-beast-tamed-by-the-villainess-webtoon",
+      "english_name": "The Beast Tamed by the Villainess",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "악녀에게 길들여진 남자를 놓아준 주인공이 시간이 흐른 뒤 권력을 얻은 그의 집착과 마주한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/악녀가-길들인-짐승/3418",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/악녀가-길들인-짐승/3418"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "흑표 가문의 설표 아기님",
+      "slug": "the-snow-leopard-baby-of-the-black-panther-family-webtoon",
+      "english_name": "The Snow Leopard Baby of the Black Panther Family",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "사랑받지 못한 설표 아기가 흑표 가문에 들어가 새로운 가족의 보호와 애정을 받으며 성장한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/흑표-가문의-설표-아기님/4380",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/흑표-가문의-설표-아기님/4380"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "피폐 역하렘 남주들의 막내 처제가 되었다",
+      "slug": "became-the-youngest-sister-in-law-of-the-tragic-reverse-harem-leads-webtoon",
+      "english_name": "I Became the Youngest Sister-in-Law of the Tragic Reverse Harem Leads",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "피폐한 역하렘 소설 속 막내 처제가 된 주인공이 언니와 남주들의 비극을 막으려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/피폐-역하렘-남주들의-막내-처제가-되었다/4372",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/피폐-역하렘-남주들의-막내-처제가-되었다/4372"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "황자의 보모, 특기는 암살입니다",
+      "slug": "the-princes-nanny-specialty-is-assassination-webtoon",
+      "english_name": "The Prince's Nanny Specializes in Assassination",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "암살에 능한 여인이 황자의 보모가 되어 아이를 지키며 황궁의 음모와 새로운 관계에 맞선다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "액션"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/황자의-보모-특기는-암살입니다/4874",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/황자의-보모-특기는-암살입니다/4874"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "육아 예능 찍는 막내님은 사랑스러워",
+      "slug": "the-youngest-child-on-the-parenting-show-is-adorable-webtoon",
+      "english_name": "The Youngest Child on the Parenting Show Is Adorable",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "특별한 사연을 지닌 막내가 육아 예능에 출연하며 가족과 시청자들의 사랑을 받게 된다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/육아-예능-찍는-막내님은-사랑스러워/4831",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/육아-예능-찍는-막내님은-사랑스러워/4831"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "반란군의 돌팔이 의사",
+      "slug": "the-rebel-armys-quack-doctor-webtoon",
+      "english_name": "The Rebel Army's Quack Doctor",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "의사로 오해받아 반란군에 들어간 주인공이 부족한 지식과 기지로 부상자와 자신의 목숨을 구한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/반란군의-돌팔이-의사/4765",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/반란군의-돌팔이-의사/4765"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "하녀, 여왕이 되다",
+      "slug": "the-maid-becomes-queen-webtoon",
+      "english_name": "The Maid Becomes Queen",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "낮은 신분의 하녀가 궁정의 권력 다툼을 헤쳐 나가며 자신의 능력으로 여왕의 자리에 도전한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/하녀-여왕이-되다/3390",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/하녀-여왕이-되다/3390"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "제국의 시녀",
+      "slug": "maid-of-the-empire-webtoon",
+      "english_name": "Maid of the Empire",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "제국의 시녀가 된 주인공이 황궁의 비밀과 음모 속에서 살아남으며 자신의 영향력을 키워 간다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/제국의-시녀/4412",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/제국의-시녀/4412"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "애완 시녀",
+      "slug": "the-pet-maid-webtoon",
+      "english_name": "The Pet Maid",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "애완 시녀라 불리는 처지에 놓인 주인공이 주인과의 위험한 관계에서 자유와 존엄을 되찾으려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/애완-시녀/3409",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/애완-시녀/3409"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "힘을 숨기고 즐기는 평화로운 하녀 생활",
+      "slug": "peaceful-maid-life-while-hiding-my-power-webtoon",
+      "english_name": "A Peaceful Maid Life While Hiding My Power",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "강한 힘을 숨긴 주인공이 평범한 하녀 생활을 바라지만 저택의 사건과 인물들이 평화를 방해한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/힘을-숨기고-즐기는-평화로운-하녀-생활/4820",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/힘을-숨기고-즐기는-평화로운-하녀-생활/4820"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "손만 잡고 잘게",
+      "slug": "ill-only-hold-your-hand-and-sleep-webtoon",
+      "english_name": "I'll Only Hold Your Hand and Sleep",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "잠과 관련된 특별한 능력 때문에 만난 두 사람이 서로의 문제를 해결하며 계약 이상의 감정을 키운다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/손만-잡고-잘게/3155",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/손만-잡고-잘게/3155"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "무림 흑막의 막내 제자입니다",
+      "slug": "youngest-disciple-of-the-murim-blackheart-webtoon",
+      "english_name": "I Am the Youngest Disciple of the Murim Blackheart",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "무림 세계의 흑막에게 막내 제자로 거둬진 주인공이 무공을 익히며 정해진 비극을 바꾸려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "액션"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/무림-흑막의-막내-제자입니다/4924",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/무림-흑막의-막내-제자입니다/4924"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "철벽의 영애",
+      "slug": "the-iron-walled-lady-webtoon",
+      "english_name": "The Iron-Walled Lady",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "사랑과 결혼을 경계하는 철벽의 영애가 끈질기게 다가오는 상대와 만나 조금씩 마음을 열어 간다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/철벽의-영애/3605",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/철벽의-영애/3605"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "엔딩 후 악역을 돈으로 구원했습니다",
+      "slug": "saved-the-villain-with-money-after-the-ending-webtoon",
+      "english_name": "I Saved the Villain with Money After the Ending",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "이야기가 끝난 뒤 몰락한 악역을 발견한 주인공이 자신의 재산과 행동으로 그의 삶을 구하려 한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/엔딩-후-악역을-돈으로-구원했습니다/4336",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/엔딩-후-악역을-돈으로-구원했습니다/4336"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "파혼한 영애는 엔딩 외엔 집착하지 않는다",
+      "slug": "the-broken-engagement-lady-only-cares-about-the-ending-webtoon",
+      "english_name": "The Broken Engagement Lady Only Cares About the Ending",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "파혼한 영애가 된 주인공이 주변 인물보다 생존 엔딩에 집중하지만 남주들의 관심을 받게 된다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/파혼한-영애는-엔딩-외엔-집착하지-않는다/3840",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/파혼한-영애는-엔딩-외엔-집착하지-않는다/3840"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "동화 속 악역의 완벽한 엔딩 플랜",
+      "slug": "the-fairy-tale-villains-perfect-ending-plan-webtoon",
+      "english_name": "The Fairy-Tale Villain's Perfect Ending Plan",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "동화 속 악역이 된 주인공이 어린 주인공을 지키고 모두의 비극을 막을 완벽한 결말을 계획한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/동화-속-악역의-완벽한-엔딩-플랜/2867",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/동화-속-악역의-완벽한-엔딩-플랜/2867"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "프린세스 플레이어",
+      "slug": "princess-player-webtoon",
+      "english_name": "Princess Player",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "게임 같은 규칙이 존재하는 세계에서 공주가 된 주인공이 선택지와 능력을 활용해 살아남는다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "모험"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/프린세스-플레이어/4021",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/프린세스-플레이어/4021"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "역하렘 게임 속 메이드는 퇴사하고 싶습니다",
+      "slug": "the-maid-in-the-reverse-harem-game-wants-to-quit-webtoon",
+      "english_name": "The Maid in the Reverse Harem Game Wants to Quit",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "역하렘 게임 속 메이드로 살아온 주인공이 저택을 떠나려 하지만 공략 대상들이 퇴사를 막는다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/역하렘-게임-속-메이드는-퇴사하고-싶습니다/3153",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/역하렘-게임-속-메이드는-퇴사하고-싶습니다/3153"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "미연시 게임 속 하찮은 엑스트라",
+      "slug": "a-trivial-extra-in-a-dating-sim-webtoon",
+      "english_name": "A Trivial Extra in a Dating Sim",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "미연시 게임의 하찮은 엑스트라에 빙의한 주인공이 죽음의 사건을 피해 독립을 준비한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "코미디"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/미연시-게임-속-하찮은-엑스트라/3801",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/미연시-게임-속-하찮은-엑스트라/3801"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "후궁공략",
+      "slug": "concubine-walkthrough-webtoon",
+      "english_name": "Concubine Walkthrough",
+      "aliases": [],
+      "ip_type": "웹툰",
+      "description": "가상현실 게임에 갇힌 주인공이 현실로 돌아가기 위해 황후 엔딩을 목표로 궁중 암투를 공략한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "SF"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/후궁공략/1986",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/후궁공략/1986"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "악당 가문의 상속녀입니다",
+      "slug": "heiress-of-the-villain-family-webtoon",
+      "english_name": "I Am the Heiress of the Villain Family",
+      "aliases": [
+        "악가상"
+      ],
+      "ip_type": "웹툰,웹소설",
+      "description": "열 살 아이가 악당 가문의 상속녀가 되어 막대한 재산과 위험한 가족 사이에서 자신의 자리를 만든다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "가족"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/악당-가문의-상속녀입니다/3936",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/악당-가문의-상속녀입니다/3936"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "소공녀는 파혼을 기다린다",
+      "slug": "the-little-princess-waits-for-the-broken-engagement-webtoon",
+      "english_name": "The Little Princess Waits for the Broken Engagement",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "정해진 파혼을 기다리며 조용히 살려던 소공녀가 약혼자와 주변 인물들의 변화에 휘말린다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/소공녀는-파혼을-기다린다/3537",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/소공녀는-파혼을-기다린다/3537"
+        }
+      ],
+      "created_by": null
+    },
+    {
+      "name": "시한부 흑막이 내 파혼을 후원한다",
+      "slug": "terminally-ill-blackheart-sponsors-my-broken-engagement-webtoon",
+      "english_name": "The Terminally Ill Blackheart Sponsors My Broken Engagement",
+      "aliases": [],
+      "ip_type": "웹툰,웹소설",
+      "description": "파혼을 원하는 주인공이 시한부 흑막의 후원을 받으며 약혼과 가문을 둘러싼 문제를 해결한다.",
+      "genres": [
+        "로맨스",
+        "판타지",
+        "드라마"
+      ],
+      "keywords": [],
+      "official_url": "https://webtoon.kakao.com/content/시한부-흑막이-내-파혼을-후원한다/4163",
+      "links": [
+        {
+          "label": "공식 사이트",
+          "url": "https://webtoon.kakao.com/content/시한부-흑막이-내-파혼을-후원한다/4163"
+        }
+      ],
+      "created_by": null
+    }
+  ]
+}

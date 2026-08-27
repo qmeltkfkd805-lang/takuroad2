@@ -144,22 +144,23 @@ export default function GoodsListPage() {
       const pid = await getGoodsPostId(it.id)
       if (pid) { router.push(`/community/${pid}`); return }
     } catch { /* fallback below */ }
-    router.push(`/profile/goods/${it.id}/edit`)
+    router.push(`/profile/goods/${it.id}`)   // 연결 글 없으면 읽기 전용 굿즈 보기
   }
 
-  // 수정 → 연결된 커뮤니티 글쓰기(편집) 화면(없으면 굿즈 편집 화면 fallback)
+  // 수정 → 항상 굿즈 자랑 글쓰기 화면. 연결 글 있으면 편집, 없으면 기존 굿즈로 새 글 작성
   async function editGoods(it: GoodsListItem) {
     try {
       const pid = await getGoodsPostId(it.id)
       if (pid) { router.push(`/community/write?edit=${pid}`); return }
     } catch { /* fallback below */ }
-    router.push(`/profile/goods/${it.id}/edit`)
+    router.push(`/community/write?goodsId=${it.id}`)
   }
 
-  async function onChangeVisibility(it: GoodsListItem, v: GoodsVisibility) {
-    setMenu(null)
+  // 공개 범위 저장 — 낙관적 반영, 실패 시 이전 값으로 복구. 메뉴는 닫지 않음.
+  async function saveVisibility(it: GoodsListItem, v: GoodsVisibility, prevV: GoodsVisibility): Promise<boolean> {
     setItems(prev => prev.map(x => x.id === it.id ? { ...x, visibility: v } : x))
-    try { await setGoodsVisibility(it.id, v) } catch { setItems(prev => prev.map(x => x.id === it.id ? { ...x, visibility: it.visibility } : x)) }
+    try { await setGoodsVisibility(it.id, v); return true }
+    catch { setItems(prev => prev.map(x => x.id === it.id ? { ...x, visibility: prevV } : x)); return false }
   }
 
   async function onDelete() {
@@ -181,7 +182,7 @@ export default function GoodsListPage() {
   )
 
   return (
-    <GoodsPageShell crumbs={[{ label: '마이', href: '/profile' }, { label: '내 굿즈' }]} title="내 굿즈" right={addBtn}>
+    <GoodsPageShell crumbs={[{ label: '마이', href: '/profile' }, { label: '내 굿즈' }]} title="내 굿즈">
       <div className={styles.wrap}>
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 12 }}>
           <p className={styles.desc} style={{ margin: 0 }}>내가 모은 굿즈를 한곳에서 기록하고 작품별로 모아보세요.</p>
@@ -324,29 +325,17 @@ export default function GoodsListPage() {
         )}
       </div>
 
-      {/* 더보기 메뉴 (카드 밖 고정 위치, 아래 공간 부족 시 위로) */}
-      {menu && (() => {
-        const MENU_H = 224
-        const vh = typeof window !== 'undefined' ? window.innerHeight : 800
-        const up = menu.bottom + MENU_H > vh
-        const pos: React.CSSProperties = up
-          ? { position: 'fixed', bottom: vh - menu.top + 6, left: Math.max(8, menu.x - 148), width: 148, zIndex: 3000 }
-          : { position: 'fixed', top: menu.bottom + 6, left: Math.max(8, menu.x - 148), width: 148, zIndex: 3000 }
-        return (
-        <>
-          <div onClick={() => setMenu(null)} style={{ position: 'fixed', inset: 0, zIndex: 2999 }} />
-          <div className={styles.menuPop} style={pos}>
-            <button className={styles.menuItem} onClick={() => { const it = menu.item; setMenu(null); editGoods(it) }}>수정</button>
-            <div className={styles.menuHead}>공개 범위</div>
-            {VIS.map(v => (
-              <button key={v.key} className={styles.menuItem} style={menu.item.visibility === v.key ? { color: 'var(--accent)' } : undefined}
-                onClick={() => { const it = menu.item; setMenu(null); onChangeVisibility(it, v.key) }}>{v.label}</button>
-            ))}
-            <button className={`${styles.menuItem} ${styles.menuDanger}`} onClick={() => { const it = menu.item; setMenu(null); setDelTarget(it) }}>삭제</button>
-          </div>
-        </>
-        )
-      })()}
+      {/* 더보기 메뉴 (팝오버 / 좁으면 하단 시트) */}
+      {menu && (
+        <GoodsMoreMenu
+          menu={menu}
+          onClose={() => setMenu(null)}
+          onEdit={it => { setMenu(null); editGoods(it) }}
+          onEditInfo={it => { setMenu(null); router.push(`/profile/goods/${it.id}/edit`) }}
+          onDelete={it => { setMenu(null); setDelTarget(it) }}
+          saveVisibility={saveVisibility}
+        />
+      )}
 
       {/* 삭제 확인 모달 */}
       {delTarget && (
@@ -362,6 +351,90 @@ export default function GoodsListPage() {
         </div>
       )}
     </GoodsPageShell>
+  )
+}
+
+/* ── 더보기 메뉴 (팝오버 / 좁은 화면 하단 시트) ── */
+const SEG: { key: GoodsVisibility; label: string }[] = [
+  { key: 'public', label: '전체 공개' }, { key: 'followers', label: '팔로워' }, { key: 'private', label: '나만' },
+]
+function GoodsMoreMenu({ menu, onClose, onEdit, onEditInfo, onDelete, saveVisibility }: {
+  menu: { item: GoodsListItem; x: number; top: number; bottom: number }
+  onClose: () => void
+  onEdit: (it: GoodsListItem) => void
+  onEditInfo: (it: GoodsListItem) => void
+  onDelete: (it: GoodsListItem) => void
+  saveVisibility: (it: GoodsListItem, v: GoodsVisibility, prevV: GoodsVisibility) => Promise<boolean>
+}) {
+  const [vis, setVis] = useState<GoodsVisibility>(menu.item.visibility)
+  const firstRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', onKey)
+    const t = setTimeout(() => firstRef.current?.focus(), 0)
+    return () => { window.removeEventListener('keydown', onKey); clearTimeout(t) }
+  }, [onClose])
+
+  const pick = async (v: GoodsVisibility) => {
+    if (v === vis) return
+    const prev = vis
+    setVis(v)
+    const ok = await saveVisibility(menu.item, v, prev)
+    if (!ok) { setVis(prev); window.alert('공개 범위 변경에 실패했어요. 잠시 후 다시 시도해주세요.') }
+  }
+
+  const W = 260
+  const vw = typeof window !== 'undefined' ? window.innerWidth : 1024
+  const vh = typeof window !== 'undefined' ? window.innerHeight : 800
+  const isSheet = vw < 420   // 너무 좁으면 하단 시트
+  const EST_H = 210
+  const up = menu.bottom + EST_H + 12 > vh
+  const left = Math.min(Math.max(8, menu.x - W), vw - W - 8)
+  const pos: React.CSSProperties = isSheet
+    ? {}
+    : up
+      ? { position: 'fixed', bottom: Math.max(8, vh - menu.top + 6), left, width: W, zIndex: 3000 }
+      : { position: 'fixed', top: menu.bottom + 6, left, width: W, zIndex: 3000 }
+
+  const body = (
+    <>
+      <button ref={firstRef} className={styles.menuRow} role="menuitem" onClick={() => onEdit(menu.item)}>
+        <svg width="17" height="17" viewBox="0 0 24 24" {...P}><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>
+        수정
+      </button>
+      <button className={styles.menuRow} role="menuitem" onClick={() => onEditInfo(menu.item)}>
+        <svg width="17" height="17" viewBox="0 0 24 24" {...P}><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="9" cy="11" r="2" /><path d="m5 19 5-4 3 2 3-3 3 3" /></svg>
+        굿즈 정보 수정
+      </button>
+      <div className={styles.menuDivider} />
+      <div className={styles.menuSection}>
+        <div className={styles.menuLabel}>공개 범위</div>
+        <div className={styles.seg} role="group" aria-label="공개 범위">
+          {SEG.map(s => (
+            <button key={s.key} type="button" aria-pressed={vis === s.key}
+              className={`${styles.segBtn} ${vis === s.key ? styles.segBtnOn : ''}`} onClick={() => pick(s.key)}>
+              {vis === s.key && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>}
+              {s.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className={styles.menuDivider} />
+      <button className={`${styles.menuRow} ${styles.menuRowDanger}`} role="menuitem" onClick={() => onDelete(menu.item)}>
+        <svg width="17" height="17" viewBox="0 0 24 24" {...P}><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13" /></svg>
+        삭제
+      </button>
+    </>
+  )
+
+  return (
+    <>
+      <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 2999, background: isSheet ? 'rgba(0,0,0,.35)' : 'transparent' }} />
+      {isSheet
+        ? <div className={styles.moreSheet} role="menu" aria-label="굿즈 메뉴">{body}</div>
+        : <div className={styles.morePop} style={pos} role="menu" aria-label="굿즈 메뉴">{body}</div>}
+    </>
   )
 }
 

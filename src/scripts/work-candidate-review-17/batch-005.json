@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "kindergarten-wars-manga",
+    "name": "유치원 WARS",
+    "englishName": "Kindergarten Wars",
+    "aliases": ["유치원 워즈", "幼稚園WARS"],
+    "description": "전직 암살자 리타가 감형을 조건으로 세계 요인의 자녀가 다니는 유치원에서 아이들을 지킨다.",
+    "genres": ["액션", "코미디", "로맨스"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://www.youchienwars.com/",
+    "source": "https://www.youchienwars.com/"
+  },
+  {
+    "slug": "marriage-toxin-manga",
+    "name": "마리지 톡신",
+    "englishName": "Marriage Toxin",
+    "aliases": ["マリッジトキシン"],
+    "description": "독술사 게로가 가문을 잇기 위한 결혼 상대를 찾고자 사기꾼 키노사키와 협력한다.",
+    "genres": ["액션", "로맨스", "코미디"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "centuria-manga",
+    "name": "센츄리아",
+    "englishName": "Centuria",
+    "aliases": ["켄타우리아", "ケントゥリア"],
+    "description": "노예선에 숨어든 율리안이 동료들의 희생으로 백 명의 힘을 얻어 아이를 지킨다.",
+    "genres": ["판타지", "액션", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "tokyo-aliens-manga",
+    "name": "도쿄 에일리언즈",
+    "englishName": "Tokyo Aliens",
+    "aliases": ["東京エイリアンズ"],
+    "description": "고교생 아키라가 외계인 사건에 휘말려 아버지가 일했던 비밀 조직의 진실을 좇는다.",
+    "genres": ["SF", "액션", "판타지"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "nine-peaks-manga",
+    "name": "NINE PEAKS",
+    "englishName": "Nine Peaks",
+    "aliases": ["나인 피크스", "ナインピークス"],
+    "description": "불량 고교생 가쿠가 과거로 이동해 자신과 같은 나이였던 아버지와 만나 싸움에 휘말린다.",
+    "genres": ["액션", "학원", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "ichi-the-witch-manga",
+    "name": "마남 이치",
+    "englishName": "Ichi the Witch",
+    "aliases": ["이치 더 위치", "魔男のイチ"],
+    "description": "마법을 사냥해 습득하는 세계에서 산 소년 이치가 최초의 남성 마녀가 되어 모험한다.",
+    "genres": ["판타지", "모험", "액션", "소년물"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "shinobi-undercover-manga",
+    "name": "시노비 언더커버",
+    "englishName": "Shinobi Undercover",
+    "aliases": ["시노비고토", "しのびごと"],
+    "description": "대인관계가 서툰 닌자 요다카가 호위 대상 학생을 지키기 위해 학교에 잠입한다.",
+    "genres": ["액션", "학원", "코미디"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "dead-account-manga",
+    "name": "데드 어카운트",
+    "englishName": "Dead Account",
+    "aliases": ["デッドアカウント"],
+    "description": "염상 방송인 소지로가 죽은 자의 SNS 계정에서 태어난 디지털 유령과 싸운다.",
+    "genres": ["액션", "판타지", "학원"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "https://dead-account.com/",
+    "source": "https://dead-account.com/"
+  },
+  {
+    "slug": "kill-blue-manga",
+    "name": "킬 블루",
+    "englishName": "Kill Blue",
+    "aliases": ["KILL BLUE", "キルアオ"],
+    "description": "전설적인 암살자 오가미가 벌에 쏘여 중학생 몸이 된 뒤 학교에 잠입한다.",
+    "genres": ["액션", "학원", "코미디"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "nues-exorcist-manga",
+    "name": "누에의 음양사",
+    "englishName": "Nue's Exorcist",
+    "aliases": ["鵺の陰陽師"],
+    "description": "영혼을 볼 수 있는 가쿠로가 학교에 봉인된 영물 누에와 만나 환요 퇴치에 나선다.",
+    "genres": ["액션", "판타지", "학원", "소년물"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

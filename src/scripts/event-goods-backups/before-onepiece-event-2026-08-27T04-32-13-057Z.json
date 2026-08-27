@@ -1,0 +1,66 @@
+{
+  "id": "57e9a311-c69c-4d16-9b5b-e94abb60fc63",
+  "tag_id": "c80c180f-4b11-4a6b-8a7f-ec4b412ecf42",
+  "type": "exhibition",
+  "shop_id": null,
+  "title": "원피스 대해적시대 아시아 투어",
+  "created_at": "2026-07-08T08:03:04.598886+00:00",
+  "start_date": "2026-07-04",
+  "end_date": "2027-01-03",
+  "entry_info": "사전예매 후 입장",
+  "hours_info": "매일 10:00~20:00 · 입장 마감 19:00",
+  "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+  "reserve_start": "2026-06-15",
+  "reserve_end": "2026-06-28",
+  "hours": {
+    "fri": {
+      "open": "10:00",
+      "close": "20:00"
+    },
+    "mon": {
+      "open": "10:00",
+      "close": "20:00"
+    },
+    "sat": {
+      "open": "10:00",
+      "close": "20:00"
+    },
+    "sun": {
+      "open": "10:00",
+      "close": "20:00"
+    },
+    "thu": {
+      "open": "10:00",
+      "close": "20:00"
+    },
+    "tue": {
+      "open": "10:00",
+      "close": "20:00"
+    },
+    "wed": {
+      "open": "10:00",
+      "close": "20:00"
+    }
+  },
+  "cover_url": "https://api.cdn.visitjeju.net/photomng/imgpath/202606/10/a222138a-bb7d-4d44-9828-604d9f22427d.PNG",
+  "parking": true,
+  "parking_note": "주차 가능\n주차요금 무료",
+  "description": "밀짚모자 일당의 긴 여정과 원피스의 세계관을 대형 공간에서 체험하는 아시아 투어 전시입니다.\n작품의 주요 이야기와 항해의 순간들을 다양한 전시 콘텐츠로 만날 수 있습니다.\n캐릭터와 이야기의 흐름을 따라가며 작품을 입체적으로 돌아볼 수 있도록 구성된 행사입니다.",
+  "place_name": "워터월드 제주",
+  "place_addr": "제주특별자치도 서귀포시 월드컵로 33",
+  "place_lat": 33.2452950894401,
+  "place_lng": 126.50869807187,
+  "place_detail": "제주월드컵경기장 내",
+  "source_urls": [
+    "https://one-piece.com/news/79925/index.html",
+    "https://www.visitjeju.net/en/festival/view?contentsid=CNTS_300000000014403",
+    "https://www.instagram.com/waterworld_jeju"
+  ],
+  "ticket_urls": [
+    "https://be-mill.com/products/view/9EAZU3FKHL"
+  ],
+  "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+  "updated_at": "2026-08-25T05:40:36.33+00:00",
+  "place_id": "7dd6f72b-5f8c-4456-8788-77f87e03d787",
+  "video_url": null
+}

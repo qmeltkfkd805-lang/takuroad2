@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "big-windup",
+    "name": "크게 휘두르며",
+    "englishName": "Big Windup!",
+    "aliases": ["오오키쿠 후리카붓테", "おおきく振りかぶって"],
+    "description": "자신감 없는 투수 미하시가 새 야구부의 포수 아베와 호흡을 맞추며 성장한다.",
+    "genres": ["스포츠", "학원", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "burning-kabaddi",
+    "name": "작열 카바디",
+    "englishName": "Burning Kabaddi",
+    "aliases": ["灼熱カバディ"],
+    "description": "스포츠를 싫어하던 전 축구선수 타츠야가 카바디부에 들어가 격렬한 경기에 매료된다.",
+    "genres": ["스포츠", "학원", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "clean-freak-aoyama-kun",
+    "name": "결벽남자! 아오야마 군",
+    "englishName": "Clean Freak! Aoyama-kun",
+    "aliases": ["클린 프릭 아오야마 군", "潔癖男子!青山くん"],
+    "description": "결벽증이 심한 축구 천재 아오야마가 몸싸움을 피하면서도 팀을 승리로 이끈다.",
+    "genres": ["스포츠", "학원", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "harukana-receive",
+    "name": "하루카나 리시브",
+    "englishName": "Harukana Receive",
+    "aliases": ["はるかなレシーブ"],
+    "description": "오키나와로 이사 온 하루카가 사촌 카나타와 한 팀이 되어 비치발리볼에 도전한다.",
+    "genres": ["스포츠", "학원", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "anima-yell",
+    "name": "아니마 옐!",
+    "englishName": "Anima Yell!",
+    "aliases": ["アニマエール!"],
+    "description": "남을 응원하기 좋아하는 코하네가 고등학교에서 친구들과 치어리딩부를 만든다.",
+    "genres": ["스포츠", "학원", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "those-snow-white-notes",
+    "name": "마시로의 소리",
+    "englishName": "Those Snow White Notes",
+    "aliases": ["ましろのおと"],
+    "description": "할아버지를 잃은 샤미센 연주자 세츠가 도쿄로 와 자신만의 소리를 찾아 나선다.",
+    "genres": ["음악", "학원", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "keijo",
+    "name": "경녀!!!!!!!!",
+    "englishName": "Keijo!!!!!!!!",
+    "aliases": ["케이죠", "競女!!!!!!!!"],
+    "description": "노조미가 수상 경기장 위에서 엉덩이와 가슴만으로 상대를 밀어내는 경녀 선수가 된다.",
+    "genres": ["스포츠", "액션", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "iwakakeru-sport-climbing-girls",
+    "name": "이와카케루! -Sport Climbing Girls-",
+    "englishName": "Iwakakeru: Sport Climbing Girls",
+    "aliases": ["이와카케루", "いわかける!"],
+    "description": "퍼즐에 강한 코노미가 고교 클라이밍부에 들어가 스포츠 클라이밍의 벽에 도전한다.",
+    "genres": ["스포츠", "학원"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "long-riders",
+    "name": "롱 라이더스!",
+    "englishName": "Long Riders!",
+    "aliases": ["ろんぐらいだぁす!"],
+    "description": "대학생 아미가 접이식 자전거를 산 뒤 친구들과 장거리 라이딩의 즐거움을 배운다.",
+    "genres": ["스포츠", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "blue-orchestra",
+    "name": "푸른 오케스트라",
+    "englishName": "Blue Orchestra",
+    "aliases": ["아오노 오케스트라", "青のオーケストラ"],
+    "description": "바이올린을 그만뒀던 하지메가 리츠코를 만나 명문 고교 오케스트라부에 들어간다.",
+    "genres": ["음악", "학원", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

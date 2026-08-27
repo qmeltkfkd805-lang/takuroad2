@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "golden-time-anime",
+    "name": "골든 타임",
+    "englishName": "Golden Time",
+    "aliases": ["ゴールデンタイム"],
+    "description": "사고로 고교 시절 기억을 잃은 대학생 반리가 코코와 만나 새로운 사랑과 과거 사이에서 흔들린다.",
+    "genres": ["로맨스", "드라마", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "havent-you-heard-im-sakamoto",
+    "name": "사카모토입니다만?",
+    "englishName": "Haven't You Heard? I'm Sakamoto",
+    "aliases": ["坂本ですが？"],
+    "description": "모든 행동을 세련되게 해내는 고등학생 사카모토가 괴롭힘과 난처한 상황을 완벽하게 해결한다.",
+    "genres": ["학원", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.tbs.co.jp/anime/sakamoto/",
+    "source": "https://www.tbs.co.jp/anime/sakamoto/"
+  },
+  {
+    "slug": "daily-lives-of-high-school-boys",
+    "name": "남자 고교생의 일상",
+    "englishName": "Daily Lives of High School Boys",
+    "aliases": ["男子高校生の日常"],
+    "description": "타다쿠니와 히데노리, 요시타케를 중심으로 남고생들의 엉뚱하고 과장된 일상을 그린다.",
+    "genres": ["학원", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "asobi-asobase",
+    "name": "아소비 아소바세",
+    "englishName": "Asobi Asobase",
+    "aliases": ["즐겁게 놀아보세", "あそびあそばせ"],
+    "description": "올리비아와 카스미, 하나코가 놀이인 연구회를 만들며 기상천외한 학교생활을 벌인다.",
+    "genres": ["학원", "일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "http://asobiasobase.com/",
+    "source": "http://asobiasobase.com/"
+  },
+  {
+    "slug": "the-disastrous-life-of-saiki-k",
+    "name": "사이키 쿠스오의 재난",
+    "englishName": "The Disastrous Life of Saiki K.",
+    "aliases": ["사이키 쿠스오", "斉木楠雄のΨ難"],
+    "description": "막강한 초능력을 숨기고 평범하게 살고 싶은 사이키가 개성 강한 친구들 때문에 매일 소동을 겪는다.",
+    "genres": ["학원", "SF", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://www.saikikusuo.com/",
+    "source": "https://www.saikikusuo.com/"
+  },
+  {
+    "slug": "ranking-of-kings",
+    "name": "왕님의 랭킹",
+    "englishName": "Ranking of Kings",
+    "aliases": ["王様ランキング"],
+    "description": "듣지 못하고 힘도 약한 왕자 봇지가 친구 카게와 함께 진정한 왕이 되기 위한 여정을 시작한다.",
+    "genres": ["판타지", "모험", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "https://osama-ranking.com/",
+    "source": "https://osama-ranking.com/"
+  },
+  {
+    "slug": "akira-anime-film",
+    "name": "아키라",
+    "englishName": "Akira",
+    "aliases": ["AKIRA", "アキラ"],
+    "description": "네오 도쿄의 폭주족 카네다가 초능력에 각성한 친구 테츠오를 둘러싼 거대한 음모와 맞선다.",
+    "genres": ["SF", "액션", "드라마"],
+    "ipType": ["애니", "영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "ghost-in-the-shell-film",
+    "name": "공각기동대",
+    "englishName": "Ghost in the Shell",
+    "aliases": ["攻殻機動隊", "고스트 인 더 쉘"],
+    "description": "전뇌화와 의체가 보편화된 미래에서 쿠사나기 소령이 이끄는 공안 9과가 사이버 범죄를 추적한다.",
+    "genres": ["SF", "액션", "추리"],
+    "ipType": ["애니", "영화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "five-centimeters-per-second",
+    "name": "초속 5센티미터",
+    "englishName": "5 Centimeters per Second",
+    "aliases": ["秒速5センチメートル"],
+    "description": "멀리 떨어지게 된 타카키와 아카리의 관계를 시간과 거리 속 세 편의 이야기로 그린다.",
+    "genres": ["로맨스", "드라마"],
+    "ipType": ["애니", "영화"],
+    "officialUrl": "https://www.cwfilms.jp/5cm/",
+    "source": "https://www.cwfilms.jp/5cm/"
+  },
+  {
+    "slug": "is-the-order-a-rabbit",
+    "name": "주문은 토끼입니까?",
+    "englishName": "Is the Order a Rabbit?",
+    "aliases": ["주문토끼", "ご注文はうさぎですか？"],
+    "description": "카페 래빗 하우스에서 지내게 된 코코아가 치노와 친구들을 만나 따뜻한 일상을 보낸다.",
+    "genres": ["일상", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "https://gochiusa.com/",
+    "source": "https://gochiusa.com/"
+  }
+]

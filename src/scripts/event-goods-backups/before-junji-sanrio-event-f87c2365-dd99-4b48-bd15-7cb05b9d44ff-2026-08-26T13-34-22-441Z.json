@@ -1,0 +1,62 @@
+{
+  "id": "f87c2365-dd99-4b48-bd15-7cb05b9d44ff",
+  "tag_id": "8e67bb8d-b3d2-4f70-abf7-d0d4df4a2bfd",
+  "type": "popup",
+  "shop_id": null,
+  "title": "이토 준지 × 산리오 캐릭터즈 × 나이스고스트클럽 팝업 (성수)",
+  "created_at": "2026-08-23T08:16:12.145132+00:00",
+  "start_date": "2026-08-18",
+  "end_date": "2026-09-17",
+  "entry_info": "현장 선착순 입장",
+  "hours_info": "매일 11:00~20:00",
+  "created_by": null,
+  "reserve_start": null,
+  "reserve_end": null,
+  "hours": {
+    "fri": {
+      "open": "11:00",
+      "close": "20:00"
+    },
+    "mon": {
+      "open": "11:00",
+      "close": "20:00"
+    },
+    "sat": {
+      "open": "11:00",
+      "close": "20:00"
+    },
+    "sun": {
+      "open": "11:00",
+      "close": "20:00"
+    },
+    "thu": {
+      "open": "11:00",
+      "close": "20:00"
+    },
+    "tue": {
+      "open": "11:00",
+      "close": "20:00"
+    },
+    "wed": {
+      "open": "11:00",
+      "close": "20:00"
+    }
+  },
+  "cover_url": "https://media.orings.co.kr/static/place/2026-08-19/fdc2f697-bd14-400c-821b-3ff5516d5f71.png",
+  "parking": null,
+  "parking_note": null,
+  "description": "이토 준지와 산리오 캐릭터즈, 나이스고스트클럽의 협업 상품을 선보이는 팝업입니다.\n7만원 이상 구매 특전은 준비 수량 소진 시 종료됩니다.\n작품의 캐릭터와 분위기를 활용한 공간 연출도 함께 마련되어 팬들이 현장에서 작품의 매력을 즐길 수 있습니다.",
+  "place_name": "나이스고스트클럽 성수플래그십스토어",
+  "place_addr": "서울 성동구 성수이로7길 38",
+  "place_lat": 37.5425006030077,
+  "place_lng": 127.053468556449,
+  "place_detail": "성수 플래그십스토어",
+  "source_urls": [
+    "https://www.instagram.com/p/Dbpol_NvhE5/"
+  ],
+  "ticket_urls": [],
+  "updated_by": null,
+  "updated_at": "2026-08-25T05:40:39.921+00:00",
+  "place_id": "9fc2b81c-969d-46a9-979a-16d3ec9e5251",
+  "video_url": null
+}

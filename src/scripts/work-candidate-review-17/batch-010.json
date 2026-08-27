@@ -1,0 +1,192 @@
+[
+  {
+    "slug": "a-brides-story-manga",
+    "name": "신부 이야기",
+    "englishName": "A Bride's Story",
+    "aliases": [
+      "오토요메가타리",
+      "乙嫁語り"
+    ],
+    "description": "19세기 중앙아시아에서 스무 살 신부 아미르가 어린 신랑 카르르크의 가족과 살아간다.",
+    "genres": [
+      "로맨스",
+      "일상",
+      "드라마"
+    ],
+    "ipType": [
+      "만화"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "historie-manga",
+    "name": "히스토리에",
+    "englishName": "Historie",
+    "aliases": [
+      "ヒストリエ"
+    ],
+    "description": "고대 그리스의 에우메네스가 노예와 방랑 생활을 거쳐 마케도니아의 서기관으로 성장한다.",
+    "genres": [
+      "모험",
+      "드라마",
+      "액션"
+    ],
+    "ipType": [
+      "만화"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "ad-astra-scipio-to-hannibal-manga",
+    "name": "아드 아스트라",
+    "englishName": "Ad Astra: Scipio to Hannibal",
+    "aliases": [
+      "アド・アストラ スキピオとハンニバル"
+    ],
+    "description": "제2차 포에니 전쟁에서 한니발과 스키피오가 서로 다른 전략으로 지중해의 패권을 겨룬다.",
+    "genres": [
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "만화"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "cesare-il-creatore-che-ha-distrutto-manga",
+    "name": "체사레",
+    "englishName": "Cesare: Il Creatore che ha distrutto",
+    "aliases": [
+      "체사레 파괴의 창조자",
+      "チェーザレ 破壊の創造者"
+    ],
+    "description": "르네상스 시대 피사의 대학생 안젤로가 체사레 보르자와 만나 권력과 종교의 세계를 본다.",
+    "genres": [
+      "드라마"
+    ],
+    "ipType": [
+      "만화"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "isabella-bird-in-wonderland-manga",
+    "name": "이사벨라 버드의 일본 기행",
+    "englishName": "Isabella Bird in Wonderland",
+    "aliases": [
+      "ふしぎの国のバード"
+    ],
+    "description": "영국 여행가 이사벨라 버드가 통역 이토와 함께 메이지 초기의 일본 오지를 여행한다.",
+    "genres": [
+      "모험",
+      "드라마"
+    ],
+    "ipType": [
+      "만화"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "blissful-land-manga",
+    "name": "천수의 나라",
+    "englishName": "Blissful Land",
+    "aliases": [
+      "テンジュの国"
+    ],
+    "description": "18세기 티베트의 의사 견습생 칸 시바가 약혼자 모시 라티와 가족의 삶을 꾸린다.",
+    "genres": [
+      "로맨스",
+      "일상",
+      "드라마"
+    ],
+    "ipType": [
+      "만화"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "shut-hell-manga",
+    "name": "슈토헬",
+    "englishName": "Shut Hell",
+    "aliases": [
+      "シュトヘル"
+    ],
+    "description": "몽골 제국 시대에 복수자 슈토헬과 소년 유르르가 서하 문자를 지키기 위해 도망친다.",
+    "genres": [
+      "액션",
+      "모험",
+      "드라마"
+    ],
+    "ipType": [
+      "만화"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "innocent-manga",
+    "name": "이노센트",
+    "englishName": "Innocent",
+    "aliases": [
+      "イノサン"
+    ],
+    "description": "프랑스 혁명 전야에 처형인 가문의 샤를 앙리 상송이 운명과 인간의 존엄 사이에서 고뇌한다.",
+    "genres": [
+      "드라마",
+      "19"
+    ],
+    "ipType": [
+      "만화"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "yokohama-kaidashi-kikou-manga",
+    "name": "카페 알파",
+    "englishName": "Yokohama Kaidashi Kikou",
+    "aliases": [
+      "요코하마 매물기행",
+      "ヨコハマ買い出し紀行"
+    ],
+    "description": "해수면이 높아진 미래에 로봇 알파가 외딴 카페를 지키며 사람들과 느린 일상을 보낸다.",
+    "genres": [
+      "SF",
+      "일상",
+      "드라마"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "drifting-dragons-manga",
+    "name": "공정 드래곤즈",
+    "englishName": "Drifting Dragons",
+    "aliases": [
+      "空挺ドラゴンズ"
+    ],
+    "description": "비행선 퀸 자자 호의 선원들이 하늘의 용을 사냥하며 식재료와 생계를 얻는다.",
+    "genres": [
+      "판타지",
+      "모험",
+      "요리"
+    ],
+    "ipType": [
+      "만화",
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  }
+]

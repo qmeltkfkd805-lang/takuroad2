@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "in-the-clear-moonlit-dusk-manga",
+    "name": "아름다운 초저녁달",
+    "englishName": "In the Clear Moonlit Dusk",
+    "aliases": ["우루와시노 요이노츠키", "うるわしの宵の月"],
+    "description": "왕자님이라 불리는 여고생 요이가 또 다른 왕자님 이치무라 선배를 만나 사랑을 알아 간다.",
+    "genres": ["로맨스", "학원", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "spring-storm-and-monster-manga",
+    "name": "봄의 폭풍과 몬스터",
+    "englishName": "Spring Storm and Monster",
+    "aliases": ["하루몬", "春の嵐とモンスター"],
+    "description": "조용한 학교생활을 원하는 란코가 어머니의 재혼으로 위험한 의붓동생 카야와 살게 된다.",
+    "genres": ["로맨스", "학원", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "tamons-b-side-manga",
+    "name": "타몬 군 지금 어느 쪽?!",
+    "englishName": "Tamon's B-Side",
+    "aliases": ["타몬 군 지금 어느 쪽", "多聞くん今どっち!?"],
+    "description": "아이돌 타몬의 팬 우타게가 가사도우미로 그의 집에 가서 무대 밖의 소심한 모습을 알게 된다.",
+    "genres": ["로맨스", "아이돌", "코미디"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "how-i-met-my-soulmate-manga",
+    "name": "운명의 사람을 만나는 이야기",
+    "englishName": "How I Met My Soulmate",
+    "aliases": ["運命の人に出会う話"],
+    "description": "도쿄에서 외로움을 느끼던 대학생 유키가 친구와 간 클럽에서 이오리를 만난다.",
+    "genres": ["로맨스", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "pink-and-habanero-manga",
+    "name": "핑크와 하바네로",
+    "englishName": "Pink & Habanero",
+    "aliases": ["핑크 앤 하바네로", "ピンクとハバネロ"],
+    "description": "연애 경험이 없는 무기와 무뚝뚝한 케이가 비밀 아르바이트를 계기로 가까워진다.",
+    "genres": ["로맨스", "학원", "코미디"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "yanos-ordinary-days-manga",
+    "name": "야노 군의 평범한 나날",
+    "englishName": "Yano-kun's Ordinary Days",
+    "aliases": ["矢野くんの普通の日々"],
+    "description": "늘 다쳐 오는 야노를 걱정하는 반장 요시다가 그의 불운한 일상을 돌보며 가까워진다.",
+    "genres": ["로맨스", "학원", "코미디"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "fudari-kettari-aishitari-manga",
+    "name": "밟고, 차고, 사랑하고",
+    "englishName": "Stomp, Kick, Love",
+    "aliases": ["밟고 차고 사랑하고", "踏んだり、蹴ったり、愛したり"],
+    "description": "회사원 카호가 단골 술집에서 만나는 아키라와 티격태격하며 어른의 연애를 시작한다.",
+    "genres": ["로맨스", "코미디", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "fall-in-love-you-false-angels-manga",
+    "name": "사랑하라, 거짓된 천사들이여",
+    "englishName": "Fall in Love, You False Angels",
+    "aliases": ["사랑하라 거짓 천사들이여", "恋せよまやかし天使ども"],
+    "description": "완벽한 우등생을 연기하는 오토기와 토키가 서로의 숨겨진 본모습을 알게 된다.",
+    "genres": ["로맨스", "학원", "코미디"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "studio-cabana-manga",
+    "name": "스튜디오 카바나",
+    "englishName": "Studio Cabana",
+    "aliases": ["スタジオカバナ"],
+    "description": "성실한 유스케가 밴드 활동을 하는 문제아 유카리의 노래와 상처에 끌린다.",
+    "genres": ["로맨스", "음악", "학원", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "tomorrow-ill-be-someones-girlfriend-manga",
+    "name": "내일, 나는 누군가의 여자친구",
+    "englishName": "Tomorrow, I'll Be Someone's Girlfriend",
+    "aliases": ["아스카노", "明日、私は誰かのカノジョ"],
+    "description": "각기 다른 상처와 욕망을 지닌 여성들이 연애 대행과 유흥의 세계에서 살아간다.",
+    "genres": ["로맨스", "드라마", "19"],
+    "ipType": ["만화", "드라마"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

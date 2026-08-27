@@ -1,0 +1,67 @@
+[
+  {
+    "id": "18e12e2c-9fe5-469f-aee6-a4968a1c6845",
+    "event_id": "7efae8dd-3ee6-40d1-aff3-b2b42fff8d8d",
+    "name": "한국 전시 오리지널 MD 목록",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/7efae8dd-3ee6-40d1-aff3-b2b42fff8d8d/official-instagram-original-md-list-1.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-25T14:44:55.088789+00:00",
+    "updated_at": "2026-08-25T14:44:55.088789+00:00"
+  },
+  {
+    "id": "34454ba2-0439-4369-bd0b-1b023225c601",
+    "event_id": "7efae8dd-3ee6-40d1-aff3-b2b42fff8d8d",
+    "name": "1·2차 MD 구매 특전 안내 1",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/7efae8dd-3ee6-40d1-aff3-b2b42fff8d8d/official-x-purchase-benefit-0.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-25T15:31:13.679906+00:00",
+    "updated_at": "2026-08-25T15:31:13.679906+00:00"
+  },
+  {
+    "id": "2dfcc8bb-d534-4198-944b-e44f8c30693c",
+    "event_id": "7efae8dd-3ee6-40d1-aff3-b2b42fff8d8d",
+    "name": "1·2차 MD 구매 특전 안내 2",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/7efae8dd-3ee6-40d1-aff3-b2b42fff8d8d/official-x-purchase-benefit-1.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-25T15:31:14.236036+00:00",
+    "updated_at": "2026-08-25T15:31:14.236036+00:00"
+  },
+  {
+    "id": "731ce3e9-b751-4594-ae16-bff995d7bf0a",
+    "event_id": "7efae8dd-3ee6-40d1-aff3-b2b42fff8d8d",
+    "name": "1·2차 MD 구매 특전 안내 3",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/7efae8dd-3ee6-40d1-aff3-b2b42fff8d8d/official-x-purchase-benefit-2.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-25T15:31:14.809466+00:00",
+    "updated_at": "2026-08-25T15:31:14.809466+00:00"
+  },
+  {
+    "id": "48429f19-037c-4f39-8630-9b73a7e604a2",
+    "event_id": "7efae8dd-3ee6-40d1-aff3-b2b42fff8d8d",
+    "name": "1·2차 MD 구매 특전 안내 4",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/7efae8dd-3ee6-40d1-aff3-b2b42fff8d8d/official-x-purchase-benefit-3.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-25T15:31:15.320019+00:00",
+    "updated_at": "2026-08-25T15:31:15.320019+00:00"
+  }
+]

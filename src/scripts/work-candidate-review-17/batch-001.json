@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "kagurabachi-manga",
+    "name": "카구라바치",
+    "englishName": "Kagurabachi",
+    "aliases": ["カグラバチ"],
+    "description": "도공의 아들 치히로가 아버지가 만든 요도를 되찾기 위해 범죄 조직과 술사들에게 맞선다.",
+    "genres": ["액션", "판타지", "소년물"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "gokurakugai-manga",
+    "name": "극락가",
+    "englishName": "Gokurakugai",
+    "aliases": ["極楽街"],
+    "description": "해결사 타오와 알마가 극락가에서 실종과 괴물 사건을 맡으며 마가의 비밀을 추적한다.",
+    "genres": ["액션", "판타지", "추리"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "firefly-wedding-manga",
+    "name": "반딧불이의 혼례",
+    "englishName": "Firefly Wedding",
+    "aliases": ["호타루의 혼례", "ホタルの嫁入り"],
+    "description": "병약한 영애 사토코가 납치된 상황에서 살아남기 위해 암살자 신페이에게 청혼한다.",
+    "genres": ["로맨스", "드라마", "액션"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-fragrant-flower-blooms-with-dignity-manga",
+    "name": "향기로운 꽃은 늠름하게 핀다",
+    "englishName": "The Fragrant Flower Blooms with Dignity",
+    "aliases": ["카오루하나", "薫る花は凛と咲く"],
+    "description": "험상궂어 보이는 린타로와 명문 여고생 카오루코가 학교의 벽을 넘어 가까워진다.",
+    "genres": ["로맨스", "학원", "드라마"],
+    "ipType": ["만화", "애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "choujin-x-manga",
+    "name": "초인 X",
+    "englishName": "Choujin X",
+    "aliases": ["초인 엑스", "超人X"],
+    "description": "소년 토키오가 초인의 힘을 얻은 뒤 변해 버린 몸과 초인 사회의 갈등을 마주한다.",
+    "genres": ["액션", "판타지", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "cosmos-tamura-manga",
+    "name": "COSMOS",
+    "englishName": "COSMOS",
+    "aliases": ["코스모스", "COSMOS 코스모스"],
+    "description": "거짓말을 감지하는 고교생 카에데가 외계인 전문 보험 조사원 린과 사건을 해결한다.",
+    "genres": ["SF", "액션", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "shimazaki-in-the-land-of-peace-manga",
+    "name": "평화의 나라의 시마자키에게",
+    "englishName": "Dear Shimazaki in the Peaceful Land",
+    "aliases": ["平和の国の島崎へ"],
+    "description": "어린 시절 납치돼 전투원이 된 시마자키가 일본으로 돌아와 평범한 삶에 적응한다.",
+    "genres": ["액션", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "ruri-dragon-manga",
+    "name": "루리 드래곤",
+    "englishName": "RuriDragon",
+    "aliases": ["Ruri Dragon", "ルリドラゴン"],
+    "description": "평범한 여고생 루리에게 갑자기 뿔이 돋고 드래곤의 특성이 나타나며 일상이 달라진다.",
+    "genres": ["판타지", "학원", "일상", "코미디"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "girl-meets-rock-manga",
+    "name": "보통의 경음부",
+    "englishName": "Girl Meets Rock!",
+    "aliases": ["ふつうの軽音部"],
+    "description": "기타를 시작한 고교생 하토노가 경음부에 들어가 밴드 활동과 복잡한 인간관계를 겪는다.",
+    "genres": ["음악", "학원", "드라마"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "dokagui-daisuki-mochizuki-san-manga",
+    "name": "폭식 너무 좋아! 모치즈키 씨",
+    "englishName": "Dokagui Daisuki! Mochizuki-san",
+    "aliases": ["도카구이 다이스키! 모치즈키 씨", "ドカ食いダイスキ! もちづきさん"],
+    "description": "회사원 모치즈키가 건강의 경고를 외면한 채 엄청난 양의 고열량 음식을 탐닉한다.",
+    "genres": ["요리", "코미디", "일상"],
+    "ipType": ["만화"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

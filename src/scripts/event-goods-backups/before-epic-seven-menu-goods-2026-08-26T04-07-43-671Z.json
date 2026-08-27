@@ -1,0 +1,28 @@
+[
+  {
+    "id": "04e43c5d-969a-4900-af96-4858fba352c8",
+    "event_id": "452ecf4d-45cf-4e4d-a9f9-a76b33afd3aa",
+    "name": "실낙원 시즌 드링크 메뉴",
+    "kind": "menu",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/452ecf4d-45cf-4e4d-a9f9-a76b33afd3aa/official-x-img-6.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-26T04:06:59.559334+00:00",
+    "updated_at": "2026-08-26T04:06:59.559334+00:00"
+  },
+  {
+    "id": "92e1d1e3-bd2c-40ba-b522-30dc4724e96d",
+    "event_id": "452ecf4d-45cf-4e4d-a9f9-a76b33afd3aa",
+    "name": "실낙원 시즌 푸드·디저트 메뉴",
+    "kind": "menu",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/452ecf4d-45cf-4e4d-a9f9-a76b33afd3aa/official-x-img-7.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-26T04:07:00.161079+00:00",
+    "updated_at": "2026-08-26T04:07:00.161079+00:00"
+  }
+]

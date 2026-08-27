@@ -11,14 +11,14 @@ const SWIPE_THRESHOLD = 50
 export default function HeroCarousel({ slots }: { slots: HeroCard[] }) {
   const [idx, setIdx] = useState(0)
   const [paused, setPaused] = useState(false)      // hover/포커스/드래그 등 일시 정지
-  const [stopped, setStopped] = useState(false)    // 사용자가 일시정지 버튼으로 끔
   const dragX = useRef(0)
   const dragging = useRef(false)
+  const moved = useRef(false)        // 드래그/스와이프 발생 시 클릭 네비 억제
   const [dragOffset, setDragOffset] = useState(0)
 
   const count = slots.length
   const multi = count > 1
-  const frozen = paused || stopped
+  const frozen = paused
 
   const go = useCallback((next: number) => { setIdx((next + count) % count) }, [count])
 
@@ -33,8 +33,8 @@ export default function HeroCarousel({ slots }: { slots: HeroCard[] }) {
 
   if (count === 0) return null
 
-  function onDown(clientX: number) { dragging.current = true; dragX.current = clientX; setPaused(true) }
-  function onMove(clientX: number) { if (!dragging.current) return; setDragOffset(clientX - dragX.current) }
+  function onDown(clientX: number) { dragging.current = true; moved.current = false; dragX.current = clientX; setPaused(true) }
+  function onMove(clientX: number) { if (!dragging.current) return; const d = clientX - dragX.current; if (Math.abs(d) > 6) moved.current = true; setDragOffset(d) }
   function onUp() {
     if (!dragging.current) return
     dragging.current = false
@@ -76,7 +76,7 @@ export default function HeroCarousel({ slots }: { slots: HeroCard[] }) {
             transition: dragging.current ? 'none' : 'transform .4s ease',
           }}
         >
-          {slots.map(s => (<HeroSlide key={s.id} card={s} />))}
+          {slots.map(s => (<HeroSlide key={s.id} card={s} guard={moved} />))}
         </div>
       </div>
 
@@ -89,9 +89,8 @@ export default function HeroCarousel({ slots }: { slots: HeroCard[] }) {
             <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" /></svg>
           </button>
 
-          {/* 하단 바: 분류 라벨 · dots · (일시정지) · i/N 카운터 */}
+          {/* 하단 바: dots */}
           <div className={styles.bottomBar}>
-            <span />{/* 좌측 여백 유지용 — 하단 분류 라벨 제거 */}
             <div className={styles.dots}>
               {slots.map((_, i) => (
                 <button
@@ -103,20 +102,6 @@ export default function HeroCarousel({ slots }: { slots: HeroCard[] }) {
                 />
               ))}
             </div>
-            <div className={styles.bottomRight}>
-              <button
-                className={styles.playBtn}
-                onClick={() => setStopped(s => !s)}
-                aria-label={stopped ? '자동 넘김 재생' : '자동 넘김 정지'}
-              >
-                {stopped ? (
-                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                ) : (
-                  <svg viewBox="0 0 24 24"><path d="M7 5h3v14H7zM14 5h3v14h-3z" /></svg>
-                )}
-              </button>
-              <span className={styles.counter}>{idx + 1} / {count}</span>
-            </div>
           </div>
         </>
       )}
@@ -124,12 +109,12 @@ export default function HeroCarousel({ slots }: { slots: HeroCard[] }) {
   )
 }
 
-function HeroSlide({ card }: { card: HeroCard }) {
+function HeroSlide({ card, guard }: { card: HeroCard; guard: React.MutableRefObject<boolean> }) {
   const hasImage = !!card.imageUrl
   const slideClass = styles.slide + ' ' + (hasImage ? styles.slideImage : styles[`tint_${card.category}`])
 
   return (
-    <div className={slideClass}>
+    <div className={slideClass} style={{ position: 'relative' }}>
       {hasImage && (
         <div className={styles.bgImage}>
           <img src={card.imageUrl!} alt="" draggable={false} />
@@ -144,13 +129,15 @@ function HeroSlide({ card }: { card: HeroCard }) {
         <h2 className={styles.title}>{card.headline}</h2>
         {card.meta && <p className={styles.meta}>{card.meta}</p>}
         {card.description && <p className={styles.subtitle}>{card.description}</p>}
-        <div className={styles.ctaRow}>
-          <Link href={card.ctaHref || '#'} className={styles.ctaPrimary + ' ' + styles.ctaSolo} draggable={false}>
-            {card.ctaText || '자세히 보기'}
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-          </Link>
-        </div>
       </div>
+      {/* 카드 전체 클릭 → 이동 (드래그/스와이프 시엔 이동 억제) */}
+      <Link
+        href={card.ctaHref || '#'}
+        aria-label={card.headline}
+        draggable={false}
+        onClick={e => { if (guard.current) e.preventDefault() }}
+        style={{ position: 'absolute', inset: 0, zIndex: 3 }}
+      />
     </div>
   )
 }

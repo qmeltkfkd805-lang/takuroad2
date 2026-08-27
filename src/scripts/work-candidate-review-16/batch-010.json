@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "gun-x-sword",
+    "name": "건×소드",
+    "englishName": "Gun x Sword",
+    "aliases": ["건 소드", "ガン×ソード"],
+    "description": "복수자 반이 신부를 죽인 갈고리 손의 남자를 찾아 갑주 단과 함께 황야를 여행한다.",
+    "genres": ["로봇/메카", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "blue-gender",
+    "name": "블루 젠더",
+    "englishName": "Blue Gender",
+    "aliases": ["BLUE GENDER"],
+    "description": "냉동 수면에서 깨어난 유지가 곤충형 생명체 블루에게 점령된 지구에서 생존을 위해 싸운다.",
+    "genres": ["SF", "액션", "호러"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "vandread",
+    "name": "반드레드",
+    "englishName": "Vandread",
+    "aliases": ["ヴァンドレッド"],
+    "description": "남녀가 서로 다른 행성에 사는 시대에 히비키가 여성 해적선에 휘말려 공동의 적과 싸운다.",
+    "genres": ["로봇/메카", "SF", "모험", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "heroic-age",
+    "name": "히로익 에이지",
+    "englishName": "Heroic Age",
+    "aliases": ["ヒロイック・エイジ"],
+    "description": "인류의 왕녀 디아네이라가 황금의 종족이 예언한 영웅 에이지를 찾아 우주 전쟁에 나선다.",
+    "genres": ["SF", "로봇/메카", "액션", "모험"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "toward-the-terra",
+    "name": "지구로...",
+    "englishName": "Toward the Terra",
+    "aliases": ["테라로", "地球へ…"],
+    "description": "컴퓨터가 인류를 관리하는 시대에 초능력 종족 뮤가 고향 지구로 돌아가기 위해 싸운다.",
+    "genres": ["SF", "드라마", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-cockpit-fairy-yukikaze",
+    "name": "전투요정 유키카제",
+    "englishName": "The Cockpit Fairy Yukikaze",
+    "aliases": ["Sentou Yousei Yukikaze", "戦闘妖精雪風"],
+    "description": "조종사 레이가 전투기 유키카제를 몰고 이계 행성 페어리에서 정체불명의 잼과 싸운다.",
+    "genres": ["SF", "액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "crest-of-the-stars",
+    "name": "성계의 문장",
+    "englishName": "Crest of the Stars",
+    "aliases": ["星界の紋章"],
+    "description": "지상인 귀족 진트가 아브 제국의 왕녀 라피르와 만나 성간전쟁 속에서 탈출을 시도한다.",
+    "genres": ["SF", "모험", "로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "banner-of-the-stars",
+    "name": "성계의 전기",
+    "englishName": "Banner of the Stars",
+    "aliases": ["星界の戦旗"],
+    "description": "진트와 라피르가 아브 제국의 함대에 복무하며 인류통합체와의 성간전쟁을 헤쳐 나간다.",
+    "genres": ["SF", "액션", "로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "kiddy-grade",
+    "name": "키디 그레이드",
+    "englishName": "Kiddy Grade",
+    "aliases": ["キディ・グレイド"],
+    "description": "은하통상관세기구의 특수요원 에크렐과 류미에르가 행성 간 분쟁과 조직의 비밀을 추적한다.",
+    "genres": ["SF", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "stellvia-of-the-universe",
+    "name": "우주의 스텔비아",
+    "englishName": "Stellvia of the Universe",
+    "aliases": ["우주학원 스텔비아", "宇宙のステルヴィア"],
+    "description": "소녀 시마가 우주학원 스텔비아에 입학해 동료들과 지구를 지킬 기술을 배우고 성장한다.",
+    "genres": ["SF", "학원", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

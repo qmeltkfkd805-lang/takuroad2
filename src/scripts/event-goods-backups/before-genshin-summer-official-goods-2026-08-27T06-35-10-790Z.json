@@ -1,0 +1,65 @@
+{
+  "event": {
+    "id": "d8c2a9e5-50bf-4528-a27b-52ef02153ec0",
+    "tag_id": "49f4d824-0ef6-4926-80ea-8dd5f930000e",
+    "type": "popup",
+    "shop_id": null,
+    "title": "원신 한여름 파티 팝업 스토어",
+    "created_at": "2026-08-23T08:16:11.422743+00:00",
+    "start_date": "2026-08-21",
+    "end_date": "2026-08-30",
+    "entry_info": "현장 선착순 입장",
+    "hours_info": "일~목 11:00~22:00\n금·토 11:00~22:30",
+    "created_by": null,
+    "reserve_start": null,
+    "reserve_end": null,
+    "hours": {
+      "fri": {
+        "open": "11:00",
+        "close": "22:30"
+      },
+      "mon": {
+        "open": "11:00",
+        "close": "22:00"
+      },
+      "sat": {
+        "open": "11:00",
+        "close": "22:30"
+      },
+      "sun": {
+        "open": "11:00",
+        "close": "22:00"
+      },
+      "thu": {
+        "open": "11:00",
+        "close": "22:00"
+      },
+      "tue": {
+        "open": "11:00",
+        "close": "22:00"
+      },
+      "wed": {
+        "open": "11:00",
+        "close": "22:00"
+      }
+    },
+    "cover_url": "https://media.orings.co.kr/static/place/2026-08-19/df2afe54-2011-4ea9-a59b-fdfb91e26d82.jpg",
+    "parking": null,
+    "parking_note": null,
+    "description": "「원신」 한여름 파티 테마의 공식 상품과 콘텐츠를 만나는 부산 팝업스토어입니다.\n작품의 캐릭터와 분위기를 활용한 공간 연출도 함께 마련되어 팬들이 현장에서 작품의 매력을 즐길 수 있습니다.",
+    "place_name": "삼정타워",
+    "place_addr": "부산 부산진구 중앙대로 672",
+    "place_lat": 35.1530135123952,
+    "place_lng": 129.059606833427,
+    "place_detail": "7층",
+    "source_urls": [
+      "https://www.instagram.com/p/Db2pH93sLDe/"
+    ],
+    "ticket_urls": [],
+    "updated_by": null,
+    "updated_at": "2026-08-25T05:40:40.733+00:00",
+    "place_id": "6a3e3e01-c868-4948-b8a6-942678852eeb",
+    "video_url": null
+  },
+  "goods": []
+}

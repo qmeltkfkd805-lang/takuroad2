@@ -8,7 +8,7 @@
 .slide {
   position: relative; overflow: hidden;
   display: flex; align-items: center; justify-content: flex-start; gap: 16px;
-  min-height: 320px; padding: 36px 48px; border: 1px solid var(--border); border-radius: var(--r);
+  min-height: 360px; padding: 36px 48px; border: 1px solid var(--border); border-radius: var(--r);
 }
 /* 이미지 있는 슬라이드 = 흰 글자, 이미지 없는 슬라이드 = 분류별 연한 배경 + 진한 글자 */
 .slideImage { color: #fff; }
@@ -61,21 +61,21 @@
 .next { right: 26px; }
 
 /* 하단 바: 분류 라벨 · dots · 일시정지 · i/N */
-.bottomBar { position: absolute; left: 0; right: 0; bottom: 16px; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; pointer-events: none; }
+.bottomBar { position: absolute; left: 0; right: 0; bottom: 34px; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; pointer-events: none; }
 .catLabel { pointer-events: auto; font-size: 12px; font-weight: 800; color: #fff; background: rgba(0,0,0,.4); padding: 4px 11px; border-radius: var(--r-full); }
 .bottomRight { pointer-events: auto; display: flex; align-items: center; gap: 8px; }
 .counter { font-size: 12px; font-weight: 800; color: #fff; background: rgba(0,0,0,.4); padding: 4px 11px; border-radius: var(--r-full); font-variant-numeric: tabular-nums; }
 .playBtn { width: 26px; height: 26px; border-radius: var(--r-full); border: none; background: rgba(0,0,0,.4); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
 .playBtn svg { width: 13px; height: 13px; fill: #fff; }
 
-.dots { pointer-events: auto; display: flex; justify-content: center; gap: 6px; position: absolute; left: 50%; transform: translateX(-50%); }
-.dot { width: 7px; height: 7px; border-radius: var(--r-full); border: none; background: rgba(255,255,255,.55); cursor: pointer; padding: 0; }
+.dots { pointer-events: auto; display: flex; align-items: center; justify-content: center; gap: 6px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); line-height: 1; }
+.dot { width: 7px; height: 7px; border-radius: var(--r-full); border: none; background: rgba(255,255,255,.7); cursor: pointer; padding: 0; box-shadow: 0 1px 3px rgba(0,0,0,.4); }
 .dotActive { background: #fff; width: 18px; }
 
 @media (hover: none) and (pointer: coarse) and (max-width: 640px) {
   .wrap { padding: 0 0 12px; }
   .viewport { border-radius: 0; }
-  .slide { min-height: 200px; padding: 20px; border: none; border-radius: 0; }
+  .slide { min-height: 224px; padding: 20px; border: none; border-radius: 0; }
   .label, .startChip { font-size: 11px; padding: 3px 8px; }
   .badgeRow { margin-bottom: 8px; }
   .title { font-size: 21px; line-height: 1.25; }
@@ -85,7 +85,7 @@
   .arrow { display: none; }
   .ctaPrimary, .ctaSecondary { padding: 11px 20px; font-size: 14px; }
   .ctaSolo { padding: 12px 24px; font-size: 14px; }
-  .bottomBar { bottom: 12px; padding: 0 14px; }
+  .bottomBar { bottom: 26px; padding: 0 14px; }
   .catLabel { font-size: 11px; }
   .counter { font-size: 11px; }
 }

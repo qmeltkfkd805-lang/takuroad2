@@ -38,9 +38,11 @@ export default function PostWritePage() {
   const sp = useSearchParams()
   const lockTag = sp.get('lockTag') === '1'
   const editId = sp.get('edit')
+  const goodsIdParam = sp.get('goodsId')   // 기존 굿즈로 새 자랑 글 작성 모드
   const editorRef = useRef<HTMLDivElement>(null)
   const tagBoxRef = useRef<HTMLDivElement>(null)
   const boardRef = useRef<HTMLDivElement>(null)
+  const workLaneRef = useRef<HTMLDivElement>(null)
 
   const [board, setBoard] = useState<Board>((sp.get('board') as Board) || 'free')
   const [tags, setTags] = useState<Tag[]>([])
@@ -69,6 +71,17 @@ export default function PostWritePage() {
   const [settingsOpen, setSettingsOpen] = useState(false)   // 모바일: 등록 시 옵션 선택 모달
   const [pollData, setPollData] = useState<NewPoll | null>(null)
   const [moreOpen, setMoreOpen] = useState(false)           // 모바일: 툴바 "더보기" 패널
+  const [addToCollection, setAddToCollection] = useState(true)  // 굿즈자랑: 내 컬렉션에도 담기
+  const [existingGoodsId, setExistingGoodsId] = useState<string | null>(null)   // 기존 굿즈로 새 글 작성 시 연결할 굿즈
+  const [prefillNotice, setPrefillNotice] = useState<string | null>(null)       // 비공개 이미지 안내
+  const [goodsChars, setGoodsChars] = useState<string[]>([])   // 굿즈자랑: 캐릭터(여러 명, 칩)
+  const [goodsCharInput, setGoodsCharInput] = useState('')
+  const [goodsTypeList, setGoodsTypeList] = useState<string[]>([])  // 굿즈자랑: 굿즈 종류(직접 입력, 여러 개)
+  const [goodsTypeInput, setGoodsTypeInput] = useState('')
+  const [goodsStore, setGoodsStore] = useState('')             // 굿즈자랑: 구입처
+  const [goodsPrice, setGoodsPrice] = useState('')             // 굿즈자랑: 가격
+  const [goodsId, setGoodsId] = useState<string | null>(null)  // 편집 중인 글에 연결된 굿즈 id
+  const goodsCharStr = goodsChars.join(', ')                    // character_name 저장용(쉼표 join, ≤60자)
   const [routePickOpen, setRoutePickOpen] = useState(false) // 내 루트 공유 — 루트 선택 모달
   const [myRoutes, setMyRoutes] = useState<{ id: string; title: string; share_token: string; cover_image_url: string | null; shopCount: number }[]>([])
 
@@ -94,6 +107,7 @@ export default function PostWritePage() {
   const toggleTag = (id: string) => setTagIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
   const isFanart = board === 'fanart' || board === 'fancraft'
   const allAgreed = !isFanart || agree.every(Boolean)
+  const isGoods = board === 'goods'
 
   useEffect(() => { getAllTagsForSelect().then((t) => setTags(t as Tag[])).catch(() => setTags([])) }, [])
   useEffect(() => {
@@ -113,9 +127,52 @@ export default function PostWritePage() {
     getPost(editId, user.id).then(pp => {
       if (!pp) return
       setBoard(pp.board); setTagIds(pp.tagIds?.length ? pp.tagIds : (pp.tagId ? [pp.tagId] : [])); setTitle(pp.title ?? ''); setImages(pp.images ?? []); setSpoiler(pp.isSpoiler); setFlair(pp.flair ?? null)
-      if (editorRef.current) editorRef.current.innerHTML = pp.content ?? ''
+      if (editorRef.current) editorRef.current.innerHTML = (pp.content ?? '').replace(/<div data-gm="1"[\s\S]*?<\/div>/gi, '')
+      // 굿즈자랑 글이면 연결된 굿즈의 캐릭터·태그 프리필
+      if (pp.board === 'goods') {
+        import('@/services/goodsService').then(async ({ getPostGoodsId, getGoodsDetail }) => {
+          const gid = await getPostGoodsId(editId)
+          if (!gid) return
+          setGoodsId(gid)
+          const d = await getGoodsDetail(gid)
+          if (d) {
+            setGoodsChars(d.characterName ? d.characterName.split(',').map(s => s.trim()).filter(Boolean) : [])
+            setGoodsTypeList((d.tags ?? []).filter(Boolean))
+            setGoodsStore(d.store ?? '')
+            setGoodsPrice(d.price != null ? String(d.price) : '')
+          }
+        }).catch(() => {})
+      }
     }).catch(() => {})
   }, [editId, user?.id])
+  // 기존 굿즈로 새 자랑 글 작성 모드 — 텍스트 프리필 + 공개 이미지만 프리필(비공개 goods-images 제외)
+  useEffect(() => {
+    if (editId || !goodsIdParam || !user) return
+    setBoard('goods')
+    setAddToCollection(false)   // 새 굿즈 생성 경로(linkPostToGoods) 차단
+    import('@/services/goodsService').then(async ({ getGoodsDetail }) => {
+      const d = await getGoodsDetail(goodsIdParam)
+      if (!d) return
+      setExistingGoodsId(goodsIdParam)
+      setTagIds(d.workId ? [d.workId] : [])
+      setTitle(d.name ?? '')
+      setGoodsChars(d.characterName ? d.characterName.split(',').map(s => s.trim()).filter(Boolean) : [])
+      setGoodsTypeList((d.tags ?? []).filter(Boolean))
+      setGoodsStore(d.store ?? '')
+      setGoodsPrice(d.price != null ? String(d.price) : '')
+      // 공개 URL만 재사용: community(shop-images 공개) / external(https). goods(비공개 서명 URL)은 저장 금지 → 제외
+      const usable = (d.images ?? []).filter(im => im.url && (im.storageOwner === 'community' || (im.storageOwner === 'external' && !!im.external && im.external.startsWith('https://'))))
+      const hasPrivate = (d.images ?? []).some(im => im.storageOwner === 'goods')
+      const urls = usable.map(im => im.url as string)
+      setImages(urls)
+      if (editorRef.current) {
+        editorRef.current.innerHTML = urls.map(u => `<p><img src="${u}" style="max-width:100%;border-radius:10px;" /></p>`).join('') + '<p><br/></p>'
+      }
+      if (hasPrivate) setPrefillNotice('비공개로 보관된 사진은 게시글에 자동으로 가져올 수 없어요. 공개할 사진을 다시 첨부해주세요.')
+    }).catch(() => {})
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editId, goodsIdParam, user?.id])
+
   useEffect(() => {
     if (!tagOpen) return
     const onDown = (e: MouseEvent) => { if (tagBoxRef.current && !tagBoxRef.current.contains(e.target as Node)) setTagOpen(false) }
@@ -261,19 +318,52 @@ export default function PostWritePage() {
   }
   const clearDraft = () => { try { localStorage.removeItem(DRAFT_KEY) } catch { /* noop */ }; setHasDraft(false); setShowDraftBanner(false) }
 
+  const addGoodsType = (raw: string) => {
+    const t = raw.trim().replace(/\s+/g, ' ')
+    if (!t || t.length > 30) { setGoodsTypeInput(''); return }
+    setGoodsTypeList(prev => (prev.some(x => x.toLowerCase() === t.toLowerCase()) || prev.length >= 20) ? prev : [...prev, t])
+    setGoodsTypeInput('')
+  }
+
+  const addGoodsChar = (raw: string) => {
+    const t = raw.trim().replace(/\s+/g, ' ')
+    if (!t) { setGoodsCharInput(''); return }
+    setGoodsChars(prev => {
+      if (prev.some(x => x.toLowerCase() === t.toLowerCase())) return prev
+      // character_name 컬럼 상한(60자)에 맞춰 join 길이 초과 시 거부
+      if ([...prev, t].join(', ').length > 60) return prev
+      return [...prev, t]
+    })
+    setGoodsCharInput('')
+  }
+
   const filteredTags = tagQuery.trim()
     ? tags.filter(t => t.name.toLowerCase().includes(tagQuery.trim().toLowerCase())).slice(0, 40)
     : tags.slice(0, 40)
 
+  // 굿즈자랑: 발행 글 하단에 붙는 "굿즈 정보" 블록(편집기엔 미표시). 저장 시 재생성.
+  const buildGoodsMetaHtml = () => {
+    const rows: string[] = []
+    if (goodsTypeList.length) rows.push(`종류 · ${goodsTypeList.join(', ')}`)
+    if (goodsChars.length) rows.push(`캐릭터 · ${goodsChars.join(', ')}`)
+    if (goodsStore.trim()) rows.push(`구입처 · ${goodsStore.trim()}`)
+    if (goodsPrice.trim()) rows.push(`가격 · ${Number(goodsPrice).toLocaleString()}원`)
+    if (!rows.length) return ''
+    const inner = rows.map(r => escapeHtml(r)).join('<br>')
+    return `<div data-gm="1" style="margin-top:16px;padding:13px 15px;background:var(--accent-l,#fff2f8);border:1px solid var(--accent,#ff5692);border-radius:12px;font-size:14px;line-height:1.9;color:var(--text,#333)"><strong style="color:var(--accent,#ff5692)">굿즈 정보</strong><br>${inner}</div>`
+  }
+  const stripGoodsMeta = (h: string) => h.replace(/<div data-gm="1"[\s\S]*?<\/div>/gi, '')
+
   const submit = async () => {
     if (!user) { router.push(ROUTES.login); return }
-    const html = editorRef.current?.innerHTML ?? ''
+    let html = stripGoodsMeta(editorRef.current?.innerHTML ?? '')
     const plain = (editorRef.current?.innerText ?? '').trim()
     const imgs = collectImages(html)
+    if (isGoods) { const meta = buildGoodsMetaHtml(); if (meta) html = html + meta }
     const notice = isAdmin && isNotice
     if (!notice) {
       if (workRequired && tagIds.length === 0) { setErr(`${meta.label}은(는) 작품을 최소 1개 선택해야 해요.`); window.scrollTo({ top: 0, behavior: 'smooth' }); return }
-      if (meta.imageRequired && imgs.length === 0) { setErr('이미지를 1장 이상 첨부해주세요.'); window.scrollTo({ top: 0, behavior: 'smooth' }); return }
+      if ((meta.imageRequired || isGoods) && imgs.length === 0) { setErr(isGoods ? '굿즈 사진을 1장 이상 첨부해주세요.' : '이미지를 1장 이상 첨부해주세요.'); window.scrollTo({ top: 0, behavior: 'smooth' }); return }
     }
     if (!title.trim() && !plain && imgs.length === 0 && !pollData) { setErr('제목이나 내용을 입력해주세요.'); return }
     if (isFanart && !notice && !allAgreed) { setErr('업로드 전 확인 항목에 모두 동의해주세요.'); return }
@@ -282,16 +372,47 @@ export default function PostWritePage() {
     const finalBoard: Board = (notice && noticeScope !== 'all') ? noticeScope : board
     if (editId) {
       const ok = await updatePost(editId, { board: finalBoard, tagIds, title, content: html, images: imgs, showOnWork, spoiler, flair: BOARD_FLAIRS[finalBoard] ? flair : null })
+      // 굿즈자랑 글이면 연결된 굿즈의 이름·캐릭터·태그도 함께 갱신
+      if (ok && finalBoard === 'goods' && goodsId) {
+        try {
+          const { updateGoodsMeta } = await import('@/services/goodsService')
+          await updateGoodsMeta(goodsId, { name: title, characterName: goodsCharStr || null, store: goodsStore || null, price: goodsPrice ? Number(goodsPrice) : null, tags: goodsTypeList })
+        } catch (e) { console.error('[굿즈 갱신 실패]', e) }
+      }
       setSaving(false)
       if (ok) { clearDraft(); router.push(`/community/${editId}`) } else setErr('수정에 실패했어요.')
       return
     }
     const payload: NewPost = { board: finalBoard, tagIds, title, content: html, images: imgs, showOnWork, isNotice: notice, noticeAll: notice && noticeScope === 'all', spoiler, flair: BOARD_FLAIRS[finalBoard] ? flair : null }
     const id = await createPost(user.id, payload)
-    if (id && pollData) { await createPoll(id, pollData) }
+    if (!id) { setSaving(false); setErr('등록에 실패했어요. 잠시 후 다시 시도해주세요.'); return }
+    if (pollData) { await createPoll(id, pollData) }
+
+    if (finalBoard === 'goods' && !notice && existingGoodsId) {
+      // 기존 굿즈로 새 글 작성: 새 굿즈 생성 없이 post_goods_links만 연결
+      try {
+        const { linkExistingGoodsToPost, updateGoodsMeta } = await import('@/services/goodsService')
+        await linkExistingGoodsToPost(id, existingGoodsId)
+        // 사용자가 굿즈 정보를 바꿨으면 기존 굿즈만 안전 갱신(새 행 생성 금지)
+        try { await updateGoodsMeta(existingGoodsId, { name: title, characterName: goodsCharStr || null, store: goodsStore || null, price: goodsPrice ? Number(goodsPrice) : null, tags: goodsTypeList }) } catch (e) { console.error('[굿즈 갱신 실패]', e) }
+      } catch (e) {
+        // 링크 실패 → 방금 만든 글 보상 삭제(연결 안 된 고아 글 방지)
+        console.error('[기존 굿즈 연결 실패]', e)
+        try { const { deletePost } = await import('@/services/communityPostService'); await deletePost(id) } catch { /* 보상 삭제 실패 무시 */ }
+        setSaving(false); setErr('굿즈 연결에 실패했어요. 잠시 후 다시 시도해주세요.'); return
+      }
+      setSaving(false); clearDraft(); router.push(`/community/${id}`); return
+    }
+
+    // 굿즈자랑 새 글은 내 굿즈·컬렉션에도 자동 등록 (실패해도 글 자체는 유지)
+    if (finalBoard === 'goods' && !notice && addToCollection) {
+      try {
+        const { linkPostToGoods } = await import('@/services/goodsService')
+        await linkPostToGoods(id, { workId: tagIds[0] ?? null, imageUrls: imgs, name: title, characterName: goodsCharStr || null, store: goodsStore || null, price: goodsPrice ? Number(goodsPrice) : null, tags: goodsTypeList })
+      } catch (e) { console.error('[굿즈 연동 실패]', e) }
+    }
     setSaving(false)
-    if (id) { clearDraft(); router.push('/community') }
-    else setErr('등록에 실패했어요. 잠시 후 다시 시도해주세요.')
+    clearDraft(); router.push('/community')
   }
 
   const standaloneBoards = BOARDS.filter(b => !CREATION_BOARDS.includes(b.value))
@@ -330,6 +451,54 @@ export default function PostWritePage() {
     </>
   )
 
+  // 굿즈자랑 전용: 캐릭터·태그 (PC는 우측 사이드바, 모바일은 등록 모달)
+  const goodsMetaFields = (
+    <>
+      <div>
+        <div style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 700, marginBottom: 6 }}>캐릭터 이름 <span style={{ fontWeight: 600 }}>(여러 명 가능)</span></div>
+        {goodsChars.length > 0 && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 8 }}>
+            {goodsChars.map(c => (
+              <span key={c} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '6px 11px', borderRadius: 9999, background: 'var(--surface2)', color: 'var(--text)', fontWeight: 700, fontSize: 13 }}>
+                {c}
+                <button type="button" onClick={() => setGoodsChars(prev => prev.filter(x => x !== c))} style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--muted)', fontSize: 15, lineHeight: 1, padding: 0, fontFamily: 'inherit' }}>×</button>
+              </span>
+            ))}
+          </div>
+        )}
+        <input value={goodsCharInput} onChange={e => setGoodsCharInput(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addGoodsChar(goodsCharInput) } else if (e.key === 'Backspace' && !goodsCharInput && goodsChars.length) { setGoodsChars(prev => prev.slice(0, -1)) } }}
+          onBlur={() => { if (goodsCharInput.trim()) addGoodsChar(goodsCharInput) }}
+          maxLength={40} placeholder="캐릭터 입력 후 Enter" style={{ ...selectStyle, width: '100%', boxSizing: 'border-box' }} />
+      </div>
+      <div>
+        <div style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 700, marginBottom: 6 }}>굿즈 종류 <span style={{ fontWeight: 600 }}>(여러 개 가능)</span></div>
+        {goodsTypeList.length > 0 && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 8 }}>
+            {goodsTypeList.map(ty => (
+              <span key={ty} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '6px 11px', borderRadius: 9999, background: 'var(--surface2)', color: 'var(--text)', fontWeight: 700, fontSize: 13 }}>
+                {ty}
+                <button type="button" onClick={() => setGoodsTypeList(prev => prev.filter(x => x !== ty))} style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--muted)', fontSize: 15, lineHeight: 1, padding: 0, fontFamily: 'inherit' }}>×</button>
+              </span>
+            ))}
+          </div>
+        )}
+        <input value={goodsTypeInput} onChange={e => setGoodsTypeInput(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addGoodsType(goodsTypeInput) } else if (e.key === 'Backspace' && !goodsTypeInput && goodsTypeList.length) { setGoodsTypeList(prev => prev.slice(0, -1)) } }}
+          onBlur={() => { if (goodsTypeInput.trim()) addGoodsType(goodsTypeInput) }}
+          maxLength={30} placeholder="종류 입력 후 Enter (예: 아크릴 스탠드)" style={{ ...selectStyle, width: '100%', boxSizing: 'border-box' }} />
+      </div>
+      <div>
+        <div style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 700, marginBottom: 6 }}>구입처 <span style={{ fontWeight: 600 }}>(선택)</span></div>
+        <input value={goodsStore} onChange={e => setGoodsStore(e.target.value)} maxLength={80} placeholder="예: 애니메이트" style={{ ...selectStyle, width: '100%', boxSizing: 'border-box' }} />
+      </div>
+      <div>
+        <div style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 700, marginBottom: 6 }}>가격 <span style={{ fontWeight: 600 }}>(선택)</span></div>
+        <input value={goodsPrice} onChange={e => setGoodsPrice(e.target.value.replace(/[^0-9]/g, ''))} inputMode="numeric" maxLength={12} placeholder="예: 25000" style={{ ...selectStyle, width: '100%', boxSizing: 'border-box' }} />
+      </div>
+    </>
+  )
+
   // 팬아트 등록 동의 체크박스 — PC는 본문 아래 인라인, 모바일은 등록 모달에서 재사용
   const fanartAgreeFields = FANART_AGREE.map((label, i) => (
     <label key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 9, fontSize: 13, lineHeight: 1.45, cursor: 'pointer' }}>
@@ -348,6 +517,8 @@ export default function PostWritePage() {
         .taku-write-grid{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:24px}
         .tb-btn{width:34px;height:34px;border:none;background:none;border-radius:7px;cursor:pointer;color:var(--text);display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
         .tb-btn:hover{background:var(--surface2)}
+        .pw-worklane{scrollbar-width:none}
+        .pw-worklane::-webkit-scrollbar{display:none}
         @media (hover:none) and (pointer:coarse) and (max-width:900px){
           .taku-write-grid{grid-template-columns:1fr}
           .pw-body{ padding: 4px 16px 150px !important; }
@@ -376,13 +547,13 @@ export default function PostWritePage() {
               ? <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
               : <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12" /></svg>}
           </button>
-          {isDesktop && <span style={{ fontSize: 19, fontWeight: 900 }}>{editId ? '글 수정' : '글쓰기'}</span>}
+          {isDesktop && <span style={{ fontSize: 19, fontWeight: 900 }}>{editId ? '글 수정' : (existingGoodsId ? '굿즈 자랑 글쓰기' : '글쓰기')}</span>}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <button onClick={saveDraft} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '9px 16px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>
             임시저장 <span style={{ color: 'var(--muted)', fontWeight: 800 }}>{hasDraft ? 1 : 0}</span>
           </button>
-          <button onClick={() => { if (isDesktop) submit(); else setSettingsOpen(true) }} disabled={saving || (isDesktop && isFanart && !allAgreed)} style={{ padding: '9px 22px', borderRadius: 10, border: 'none', background: (saving || (isDesktop && isFanart && !allAgreed)) ? 'var(--border)' : 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: (saving || (isDesktop && isFanart && !allAgreed)) ? 'default' : 'pointer', fontFamily: 'inherit' }}>{saving ? (editId ? '수정 중…' : '등록 중…') : (editId ? '수정' : '등록')}</button>
+          <button onClick={() => { if (isDesktop) submit(); else setSettingsOpen(true) }} disabled={saving || (isDesktop && isFanart && !allAgreed)} style={{ padding: '9px 22px', borderRadius: 10, border: 'none', background: (saving || (isDesktop && isFanart && !allAgreed)) ? 'var(--border)' : 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: (saving || (isDesktop && isFanart && !allAgreed)) ? 'default' : 'pointer', fontFamily: 'inherit' }}>{saving ? (editId ? '수정 중…' : '등록 중…') : (editId ? '수정' : (existingGoodsId ? '게시글 등록' : '등록'))}</button>
         </div>
       </div>
 
@@ -398,11 +569,25 @@ export default function PostWritePage() {
         )}
         {err && <div style={{ fontSize: 14, color: '#c0392b', background: 'rgba(239,90,90,.08)', borderRadius: 10, padding: '11px 14px', marginBottom: 16 }}>{err}</div>}
 
+        {existingGoodsId && (
+          <div style={{ fontSize: 13.5, lineHeight: 1.6, color: 'var(--text)', background: 'var(--accent-l, #fff2f8)', border: '1px solid var(--accent, #ff5692)', borderRadius: 12, padding: '11px 14px', marginBottom: 16 }}>
+            보관함에 등록된 굿즈로 새 자랑 글을 작성합니다.
+            {prefillNotice && <div style={{ color: 'var(--muted)', marginTop: 4 }}>{prefillNotice}</div>}
+          </div>
+        )}
+
         <div className="taku-write-grid">
           {/* 에디터 */}
-          <div style={{ minWidth: 0 }}>
+          <div style={{ minWidth: 0, ...(isGoods && isDesktop ? { display: 'flex', flexDirection: 'column' } : {}) }}>
             {/* 게시판 + 작품 (모바일: 세로로 쌓고 밑줄 스타일) */}
-            <div className="pw-catrow" style={{ display: 'flex', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
+            <div style={isGoods && isDesktop ? goodsCard : undefined}>
+            {isGoods && isDesktop && (
+              <div style={{ marginBottom: 12 }}>
+                <span style={{ fontSize: 15, fontWeight: 900, color: 'var(--text)' }}>게시글 설정</span>
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--muted)', marginLeft: 8 }}>어떤 굿즈인지, 어떤 작품인지 설정해 주세요.</span>
+              </div>
+            )}
+            <div className="pw-catrow" style={{ display: 'flex', gap: 10, marginBottom: isGoods && isDesktop ? 0 : 12, flexWrap: 'wrap' }}>
               <div ref={boardRef} style={{ position: 'relative' }}>
                 <button className="pw-select-btn" onClick={() => setBoardOpen(o => !o)} style={{ ...selectStyle, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, cursor: 'pointer', minWidth: 160, background: 'var(--surface)', color: 'var(--text)', fontFamily: 'inherit' }}>
                   {meta.label}
@@ -432,16 +617,6 @@ export default function PostWritePage() {
                     )}
                   </div>
                 )}
-                {!lockTag && myWorks.filter(w => !tagIds.includes(w.id)).length > 0 && (
-                  <div style={{ marginTop: 8 }}>
-                    <div style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 700, marginBottom: 6 }}>내 최애·관심 작품</div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                      {myWorks.filter(w => !tagIds.includes(w.id)).map(w => (
-                        <button key={w.id} onClick={() => toggleTag(w.id)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, fontSize: 13, padding: '6px 12px', borderRadius: 9999, cursor: 'pointer', fontFamily: 'inherit' }}># {w.name}</button>
-                      ))}
-                    </div>
-                  </div>
-                )}
                 {selectedTags.length > 0 && (
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
                     {selectedTags.map(t => (
@@ -454,6 +629,25 @@ export default function PostWritePage() {
                 )}
               </div>
             </div>
+            {myWorks.filter(w => !tagIds.includes(w.id)).length > 0 && (
+              <div style={{ marginTop: 10 }}>
+                <div style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 700, marginBottom: 6 }}>내 최애·관심 작품</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <button type="button" aria-label="왼쪽으로" onClick={() => workLaneRef.current?.scrollBy({ left: -220, behavior: 'smooth' })} style={laneArrow}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+                  </button>
+                  <div ref={workLaneRef} className="pw-worklane" style={{ display: 'flex', flexWrap: 'nowrap', gap: 6, overflowX: 'auto', paddingBottom: 2, flex: 1, minWidth: 0 }}>
+                    {myWorks.filter(w => !tagIds.includes(w.id)).map(w => (
+                      <button key={w.id} onClick={() => toggleTag(w.id)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, fontSize: 13, padding: '6px 12px', borderRadius: 9999, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap', flexShrink: 0 }}># {w.name}</button>
+                    ))}
+                  </div>
+                  <button type="button" aria-label="오른쪽으로" onClick={() => workLaneRef.current?.scrollBy({ left: 220, behavior: 'smooth' })} style={laneArrow}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+                  </button>
+                </div>
+              </div>
+            )}
+            </div>
 
             {BOARD_FLAIRS[board] && (
               <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap', alignItems: 'center' }}>
@@ -464,6 +658,7 @@ export default function PostWritePage() {
               </div>
             )}
 
+            <div style={isGoods && isDesktop ? { ...goodsCard, flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, marginBottom: 0 } : undefined}>
             {/* 제목 */}
             <input value={title} onChange={e => setTitle(e.target.value)} maxLength={100} placeholder="제목을 입력해 주세요" style={{ width: '100%', border: 'none', borderBottom: '1px solid var(--border)', background: 'none', padding: '12px 2px', fontSize: 22, fontWeight: 700, color: 'var(--text)', fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }} />
 
@@ -554,8 +749,8 @@ export default function PostWritePage() {
             </div>
 
             {/* 본문 */}
-            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph="내용을 입력하세요." onKeyDown={onEditorKeyDown}
-              style={{ minHeight: 340, maxHeight: '55vh', overflowY: 'auto', fontSize: 16, lineHeight: 1.7, color: 'var(--text)', padding: '12px 14px', border: '1px solid var(--border)', borderRadius: 12 }} />
+            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown}
+              style={{ minHeight: 340, maxHeight: isGoods && isDesktop ? 'none' : '55vh', flex: isGoods && isDesktop ? 1 : undefined, overflowY: 'auto', fontSize: 16, lineHeight: 1.7, color: 'var(--text)', padding: '12px 14px', border: '1px solid var(--border)', borderRadius: 12 }} />
 
             {pollData && (
               <div style={{ marginTop: 12 }}>
@@ -584,11 +779,29 @@ export default function PostWritePage() {
                 {fanartAgreeFields}
               </div>
             )}
+            </div>
           </div>
 
           {/* 설정 사이드바 — PC만. 모바일은 등록 시 모달로 */}
           {isDesktop && (
-            <aside className="taku-write-side">
+            <aside className="taku-write-side" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              {isGoods && (
+                <div style={{ border: '1px solid var(--accent)', background: 'var(--accent-l, rgba(232,0,111,.06))', borderRadius: 14, padding: '16px 16px' }}>
+                  <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--accent)', marginBottom: 10 }}>굿즈 자랑 팁</div>
+                  <ul style={{ margin: 0, paddingLeft: 16, display: 'flex', flexDirection: 'column', gap: 7, fontSize: 12.5, color: 'var(--text)', lineHeight: 1.5 }}>
+                    <li>굿즈의 포인트가 잘 보이게 사진을 찍어보세요.</li>
+                    <li>구입처, 가격, 만족도 등 정보를 함께 남겨주면 좋아요!</li>
+                    <li>다른 타쿠들이 궁금해할 내용도 환영이에요.</li>
+                  </ul>
+                  <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--accent)', marginTop: 12 }}>서로 존중하고 즐겁게 자랑해요!</div>
+                </div>
+              )}
+              {isGoods && (
+                <div style={{ border: '1px solid var(--border)', borderRadius: 14, padding: '16px 16px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+                  <div style={{ fontSize: 14, fontWeight: 900 }}>굿즈 정보</div>
+                  {goodsMetaFields}
+                </div>
+              )}
               <div style={{ border: '1px solid var(--border)', borderRadius: 14, padding: '16px 16px', display: 'flex', flexDirection: 'column', gap: 14 }}>
                 <div style={{ fontSize: 14, fontWeight: 900 }}>설정</div>
                 {settingsFields}
@@ -596,6 +809,15 @@ export default function PostWritePage() {
             </aside>
           )}
         </div>
+        {isGoods && !existingGoodsId && (
+          <label style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 16, padding: '14px 16px', borderRadius: 14, border: '1px solid var(--accent)', background: 'var(--accent-l, rgba(232,0,111,.06))', cursor: 'pointer' }}>
+            <input type="checkbox" checked={addToCollection} onChange={() => setAddToCollection(v => !v)} style={{ width: 18, height: 18, accentColor: 'var(--accent)', flexShrink: 0 }} />
+            <span style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
+              <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>이 글의 굿즈를 내 컬렉션에도 담기</span>
+              <span style={{ fontSize: 12.5, color: 'var(--muted)' }}>작품별 컬렉션에 자동으로 정리돼요.</span>
+            </span>
+          </label>
+        )}
       </div>
       {pollOpen && <PollModal onClose={() => setPollOpen(false)} onConfirm={data => { setPollData(data); setPollOpen(false) }} />}
       {tableOpen && <TableModal onClose={() => setTableOpen(false)} onConfirm={html => { appendBlock(html); setTableOpen(false) }} />}
@@ -605,6 +827,11 @@ export default function PostWritePage() {
         <div onClick={() => setSettingsOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 3000, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: 'flex-end' }}>
           <div onClick={e => e.stopPropagation()} style={{ width: '100%', background: 'var(--surface)', borderRadius: '20px 20px 0 0', padding: '20px 18px calc(18px + env(safe-area-inset-bottom))', display: 'flex', flexDirection: 'column', gap: 14, maxHeight: '82vh', overflowY: 'auto' }}>
             <div style={{ fontSize: 16, fontWeight: 900 }}>{editId ? '수정 옵션' : '등록 옵션'}</div>
+            {isGoods && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 14, paddingBottom: 4, borderBottom: '1px solid var(--border)' }}>
+                {goodsMetaFields}
+              </div>
+            )}
             {settingsFields}
             {isFanart && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 9, padding: '14px 16px', background: 'var(--surface2)', borderRadius: 12 }}>
@@ -616,7 +843,7 @@ export default function PostWritePage() {
             {err && <div style={{ fontSize: 13, color: '#c0392b', background: 'rgba(239,90,90,.08)', borderRadius: 10, padding: '10px 12px' }}>{err}</div>}
             <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
               <button onClick={() => setSettingsOpen(false)} style={{ flex: 1, padding: '13px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--muted)', fontWeight: 800, fontSize: 15, cursor: 'pointer', fontFamily: 'inherit' }}>취소</button>
-              <button onClick={submit} disabled={saving || (isFanart && !allAgreed)} style={{ flex: 2, padding: '13px', borderRadius: 12, border: 'none', background: (saving || (isFanart && !allAgreed)) ? 'var(--border)' : 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: (saving || (isFanart && !allAgreed)) ? 'default' : 'pointer', fontFamily: 'inherit' }}>{saving ? (editId ? '수정 중…' : '등록 중…') : (editId ? '수정' : '등록')}</button>
+              <button onClick={submit} disabled={saving || (isFanart && !allAgreed)} style={{ flex: 2, padding: '13px', borderRadius: 12, border: 'none', background: (saving || (isFanart && !allAgreed)) ? 'var(--border)' : 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: (saving || (isFanart && !allAgreed)) ? 'default' : 'pointer', fontFamily: 'inherit' }}>{saving ? (editId ? '수정 중…' : '등록 중…') : (editId ? '수정' : (existingGoodsId ? '게시글 등록' : '등록'))}</button>
             </div>
           </div>
         </div>
@@ -658,6 +885,8 @@ export default function PostWritePage() {
   )
 }
 
+const goodsCard: React.CSSProperties = { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '18px 20px', marginBottom: 16 }
+const laneArrow: React.CSSProperties = { flexShrink: 0, width: 30, height: 30, borderRadius: 9999, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--muted)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }
 const moreIconStyle: React.CSSProperties = { width: 46, height: 46, borderRadius: 14, background: 'var(--surface2)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text)' }
 const moreItemStyle: React.CSSProperties = { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', color: 'var(--text)', padding: '6px 0' }
 function RouteIcon() {
