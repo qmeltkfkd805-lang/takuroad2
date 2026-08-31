@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import GoodsPageShell from '@/components/goods/GoodsPageShell'
 import { getMyGoods, getGoodsDetail, type GoodsListItem, type GoodsImageDetail } from '@/services/goodsService'
-import { createExhibit, type ExhibitVisibility } from '@/services/exhibitService'
+import { createExhibit, getExhibitPostOptions, type ExhibitVisibility, type ExhibitPostOption } from '@/services/exhibitService'
 
 const P = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
 const VIS: { key: ExhibitVisibility; label: string }[] = [
@@ -24,6 +24,8 @@ export default function ExhibitCreate() {
   const [order, setOrder] = useState<string[]>([])   // 선택된 image id 순서(첫=대표)
   const [caption, setCaption] = useState('')
   const [visibility, setVisibility] = useState<ExhibitVisibility>('public')
+  const [postOptions, setPostOptions] = useState<ExhibitPostOption[] | null>(null)
+  const [sourcePostId, setSourcePostId] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
   const [err, setErr] = useState<string | null>(null)
 
@@ -33,6 +35,9 @@ export default function ExhibitCreate() {
 
   async function choose(g: GoodsListItem) {
     setPicked(g); setStep('compose'); setImages(null); setOrder([]); setErr(null)
+    setPostOptions(null); setSourcePostId(null)
+    // 원본 글 후보는 사진 로딩과 독립 — 실패해도 등록은 가능
+    getExhibitPostOptions(g.id).then(setPostOptions).catch(() => setPostOptions([]))
     try {
       const d = await getGoodsDetail(g.id)
       const imgs = (d?.images ?? []).filter(im => im.url)
@@ -58,6 +63,7 @@ export default function ExhibitCreate() {
         imageIds: order,
         caption: caption.trim() || null,
         visibility,
+        sourcePostId,
       })
       router.replace('/profile/exhibit')
       void id
@@ -133,13 +139,34 @@ export default function ExhibitCreate() {
             style={{ width: '100%', boxSizing: 'border-box', padding: '11px 13px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontSize: 14, fontFamily: 'inherit', resize: 'vertical', marginBottom: 18 }} />
 
           <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', marginBottom: 8 }}>공개범위</div>
-          <div style={{ display: 'inline-flex', gap: 2, background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: 3, marginBottom: 22 }}>
+          <div style={{ display: 'inline-flex', gap: 2, background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: 3, marginBottom: 18 }}>
             {VIS.map(v => (
               <button key={v.key} onClick={() => setVisibility(v.key)} style={{ padding: '8px 16px', border: 'none', borderRadius: 8, cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 800, background: visibility === v.key ? 'var(--surface)' : 'none', color: visibility === v.key ? 'var(--accent)' : 'var(--muted)', boxShadow: visibility === v.key ? '0 1px 3px rgba(0,0,0,.12)' : 'none' }}>{v.label}</button>
             ))}
           </div>
 
-          {err && <div style={{ color: '#e5484d', fontSize: 13, marginBottom: 12 }}>{err}</div>}
+          {/* 원본 글 연결 */}
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', marginBottom: 8 }}>원본 굿즈 자랑 글 <span style={{ color: 'var(--muted)', fontWeight: 600 }}>(선택)</span></div>
+          {postOptions === null ? (
+            <p style={{ fontSize: 13, color: 'var(--muted)', margin: '0 0 22px' }}>불러오는 중…</p>
+          ) : postOptions.length === 0 ? (
+            <p style={{ fontSize: 13, color: 'var(--muted)', margin: '0 0 22px' }}>이 굿즈로 쓴 자랑 글이 없어요. 글을 쓰면 나중에 전시 편집에서 연결할 수 있어요.</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 22 }}>
+              <label style={rowOpt(sourcePostId === null)}>
+                <input type="radio" name="srcpost" checked={sourcePostId === null} onChange={() => setSourcePostId(null)} />
+                <span style={{ fontSize: 13.5, color: 'var(--text)' }}>연결 안 함</span>
+              </label>
+              {postOptions.map(p => (
+                <label key={p.id} style={rowOpt(sourcePostId === p.id)}>
+                  <input type="radio" name="srcpost" checked={sourcePostId === p.id} onChange={() => setSourcePostId(p.id)} />
+                  <span style={{ fontSize: 13.5, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.title}</span>
+                </label>
+              ))}
+            </div>
+          )}
+
+          {err &&<div style={{ color: '#e5484d', fontSize: 13, marginBottom: 12 }}>{err}</div>}
 
           <div style={{ display: 'flex', gap: 10 }}>
             <button onClick={() => router.push('/profile/exhibit')} disabled={saving} style={btnGhost}>취소</button>
@@ -153,5 +180,8 @@ export default function ExhibitCreate() {
   )
 }
 
+function rowOpt(on: boolean): React.CSSProperties {
+  return { display: 'flex', alignItems: 'center', gap: 8, padding: '9px 12px', borderRadius: 10, border: `1px solid ${on ? 'var(--accent, #ff5692)' : 'var(--border)'}`, background: 'var(--surface)', cursor: 'pointer' }
+}
 const btnPrimary: React.CSSProperties = { height: 44, padding: '0 20px', borderRadius: 12, border: 'none', background: 'var(--accent)', color: '#fff', fontFamily: 'inherit', fontSize: 14.5, fontWeight: 800, cursor: 'pointer' }
 const btnGhost: React.CSSProperties = { height: 44, padding: '0 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--muted)', fontFamily: 'inherit', fontSize: 14.5, fontWeight: 800, cursor: 'pointer' }

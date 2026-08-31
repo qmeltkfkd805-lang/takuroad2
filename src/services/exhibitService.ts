@@ -87,6 +87,15 @@ export async function createExhibit(input: CreateExhibitInput): Promise<string> 
   return json.id as string
 }
 
+/* 등록 화면용 — 이 굿즈로 쓴 본인 활성 자랑 글 후보(원본 글 연결). 실패 시 빈 배열. */
+export async function getExhibitPostOptions(goodsItemId: string): Promise<ExhibitPostOption[]> {
+  if (!UUID_RE.test(goodsItemId)) return []
+  const res = await fetch(`/api/exhibit/post-options?goodsId=${encodeURIComponent(goodsItemId)}`, { cache: 'no-store' })
+  if (!res.ok) return []
+  const json = await res.json().catch(() => ({}))
+  return (json?.postOptions ?? []) as ExhibitPostOption[]
+}
+
 /* ---- 편집(소유자 전용) ---- */
 
 export interface ExhibitManageImage { id: string; url: string }
