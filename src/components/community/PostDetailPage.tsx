@@ -30,11 +30,11 @@ export default function PostDetailPage() {
     </div>
   )
 
-  const isGoods = post.board === 'goods'
   return (
     <div className="post-detail-wrap" style={{ paddingTop: 20, paddingBottom: 72 }}>
-      <style>{`.post-detail-wrap{padding-left:48px;padding-right:48px}@media (max-width:640px){.post-detail-wrap{padding-left:16px;padding-right:16px}}`}</style>
-      <div style={{ maxWidth: isGoods ? 1120 : 820, margin: '0 auto', minWidth: 0 }}>
+      <style>{`.post-detail-wrap{padding-left:32px;padding-right:32px}@media (max-width:640px){.post-detail-wrap{padding-left:16px;padding-right:16px}}`}</style>
+      {/* 본문 폭 — 다른 커뮤니티처럼 넓게. 굿즈 보드는 우측 레일이 있어 1120 유지 */}
+      <div style={{ maxWidth: 1120, margin: '0 auto', minWidth: 0 }}>
         <PostDetailModal post={post} variant="page" onClose={() => router.back()} onChanged={load} />
       </div>
     </div>

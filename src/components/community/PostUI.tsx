@@ -363,19 +363,41 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
         </div>
       )}
       <div style={{ padding: isPage ? '18px 0 24px' : '16px 18px 20px' }}>
-        {tagRow(undefined, false)}
-        {post.title && <h3 style={{ fontSize: 19, fontWeight: 800, margin: '0 0 8px' }}>{post.flair && <span style={{ ...flairBadge, fontSize: 13 }}>{post.flair}</span>}{post.title}</h3>}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: 'var(--muted)', paddingBottom: 14, marginBottom: 16, borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
-          {authorLink}
-          <UserLevelBadge userId={post.author?.id} />
-          <span>· {fmtDate(post.createdAt)}</span>
-          <span>· 조회 {post.viewCount}</span>
-          {kebab}
-        </div>
-        <div style={{ minHeight: isPage ? 56 : undefined, marginBottom: isPage ? 20 : 16 }}>
+        {isPage ? (
+          /* 게시판형 제목 헤더 — 굵은 상단선 + 회색 박스. 작품 페이지 모달(variant 미지정)은 아래 기존 형태 유지 */
+          <div style={{ border: '1px solid var(--border)', borderTop: '2px solid var(--text)', background: 'var(--surface2)', padding: '20px 24px 14px', marginBottom: 26 }}>
+            {tagRow(undefined, false)}
+            {post.title && <h1 style={{ fontSize: 26, fontWeight: 800, lineHeight: 1.35, margin: '2px 0 14px', wordBreak: 'break-word' }}>{post.flair && <span style={{ ...flairBadge, fontSize: 14 }}>{post.flair}</span>}{post.title}</h1>}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', paddingTop: 12, borderTop: '1px solid var(--border)', fontSize: 13, color: 'var(--muted)' }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                {authorLink}
+                <UserLevelBadge userId={post.author?.id} />
+                <span>· {fmtDate(post.createdAt)}</span>
+              </span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12 }}>
+                <span>조회 {post.viewCount}</span>
+                <span>댓글 {post.commentCount}</span>
+                {kebab}
+              </span>
+            </div>
+          </div>
+        ) : (
+          <>
+            {tagRow(undefined, false)}
+            {post.title && <h3 style={{ fontSize: 19, fontWeight: 800, margin: '0 0 8px' }}>{post.flair && <span style={{ ...flairBadge, fontSize: 13 }}>{post.flair}</span>}{post.title}</h3>}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: 'var(--muted)', paddingBottom: 14, marginBottom: 16, borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
+              {authorLink}
+              <UserLevelBadge userId={post.author?.id} />
+              <span>· {fmtDate(post.createdAt)}</span>
+              <span>· 조회 {post.viewCount}</span>
+              {kebab}
+            </div>
+          </>
+        )}
+        <div style={{ minHeight: isPage ? 160 : undefined, marginBottom: isPage ? 28 : 16, padding: isPage ? '0 4px' : undefined }}>
           {post.content && (isHtml
-            ? <div className="taku-post-body" style={{ fontSize: 14.5, lineHeight: 1.65, margin: 0, wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
-            : <p style={{ fontSize: 14.5, lineHeight: 1.65, whiteSpace: 'pre-wrap', margin: 0 }}>{post.content}</p>)}
+            ? <div className="taku-post-body" style={{ fontSize: isPage ? 16 : 14.5, lineHeight: isPage ? 1.8 : 1.65, margin: 0, wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
+            : <p style={{ fontSize: isPage ? 16 : 14.5, lineHeight: isPage ? 1.8 : 1.65, whiteSpace: 'pre-wrap', margin: 0 }}>{post.content}</p>)}
         </div>
 
         {poll && <PollView poll={poll} userId={user?.id ?? null} onChanged={loadPoll} onRequireLogin={() => router.push(ROUTES.login)} />}
