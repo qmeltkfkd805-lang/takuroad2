@@ -92,6 +92,23 @@ export async function getEventHomeItems(): Promise<EventHomeItem[]> {
   return hydrate(data ?? [])
 }
 
+/** 최근 종료된 이벤트 — 종료 후 days일 이내만. 이벤트 홈 '종료' 탭용.
+    (DB에서 지우는 게 아니라 목록 노출 기간만 제한한다. 그 이전 것도 상세 링크는 계속 살아있음) */
+export async function getRecentlyEndedEventItems(days = 30): Promise<EventHomeItem[]> {
+  const supabase = createClient()
+  const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
+  const { data, error } = await supabase
+    .from('events')
+    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, cover_url, place_name, place_addr')
+    .in('type', HOME_TYPES)
+    .lt('end_date', today())
+    .gte('end_date', cutoff)
+    .order('end_date', { ascending: false })
+
+  if (error) { console.error('[이벤트 홈] 최근 종료 조회 실패:', error.message); return [] }
+  return hydrate(data ?? [])
+}
+
 /** 지난 이벤트 — "더보기"를 눌렀을 때만 불러온다. */
 export async function getPastEventItems(limit = 12): Promise<EventHomeItem[]> {
   const supabase = createClient()

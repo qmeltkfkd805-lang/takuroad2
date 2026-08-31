@@ -112,6 +112,8 @@
 .poster { position: relative; width: 100%; aspect-ratio: 3 / 4; background: #F2F2F4; overflow: hidden; }
 .posterImg { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
 .posterPh { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: #F2F2F4; }
+/* 종료된 이벤트 — 포스터만 흑백. 상태 배지·하트는 형제 요소라 색이 살아있다 */
+.posterEnded { filter: grayscale(1); opacity: .82; }
 .badgeTL { position: absolute; top: 10px; left: 10px; z-index: 2; }
 .heart { position: absolute; top: 8px; right: 8px; z-index: 2; width: 32px; height: 32px; border: none; border-radius: 9999px; background: rgba(255,255,255,.94); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
 .cardBody { padding: 12px 13px 14px; display: flex; flex-direction: column; gap: 4px; }

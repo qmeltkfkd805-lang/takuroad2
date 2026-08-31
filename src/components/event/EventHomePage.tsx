@@ -8,7 +8,7 @@ import { Icon } from '@/components/tds'
 import { EventStatusBadge } from '@/components/tds/EventStatusBadge'
 import { getEventStatus, EventStatusKind } from '@/lib/utils/eventStatus'
 import { rankEvents, daysUntil } from '@/lib/event/rankEvents'
-import { getEventHomeItems, getMyAffinityTagIds, EventHomeItem } from '@/services/eventHomeService'
+import { getEventHomeItems, getRecentlyEndedEventItems, getMyAffinityTagIds, EventHomeItem } from '@/services/eventHomeService'
 import { getMySavedEventIds, saveEvent, unsaveEvent } from '@/services/eventSaveService'
 import { monthCells, eventOnDay, ymd, addDays, WEEKDAY_KO } from '@/lib/event/calendar'
 import styles from './EventHomePage.module.css'
@@ -20,8 +20,11 @@ const TYPE_ICON: Record<string, string> = { popup: 'event', collab_cafe: 'cafe',
 const md = (s: string | null) => (s ? `${new Date(s).getMonth() + 1}.${String(new Date(s).getDate()).padStart(2, '0')}` : '')
 const periodText = (s: string | null, e: string | null) => [md(s), md(e)].filter(Boolean).join(' ~ ')
 
-type StatusTab = 'ongoing' | 'upcoming' | 'ending' | 'fav'
+type StatusTab = 'all' | 'ongoing' | 'upcoming' | 'ending' | 'fav' | 'ended'
 type Period = 'all' | 'week' | 'month'
+
+/** 종료 탭 노출 기간 — 끝난 뒤 이 일수까지만 목록에 남는다(DB에서 지우진 않음) */
+const ENDED_WINDOW_DAYS = 30
 
 // 이벤트가 목록에 뜰 수 있는 상태인지 (종료·불명은 제외)
 function bucketOf(kind: EventStatusKind): 'ongoing' | 'upcoming' | 'ending' | null {
@@ -59,11 +62,14 @@ function dayColor(kind: EventStatusKind): string | null {
 }
 
 /* ================= 포스터 카드 ================= */
-function PosterCard({ ev, saved, onToggleSave, onOpen }: {
+function PosterCard({ ev, saved, onToggleSave, onOpen, ended = false }: {
   ev: EventHomeItem; saved: boolean; onToggleSave: (id: string) => void; onOpen: (ev: EventHomeItem) => void
+  /** 종료된 이벤트 — 포스터를 흑백 처리 */
+  ended?: boolean
 }) {
   const [imgErr, setImgErr] = useState(false)
   const showImg = ev.coverUrl && !imgErr
+  const grey = ended ? ` ${styles.posterEnded}` : ''
   const place = ev.placeName ?? ev.shopName
   const period = periodText(ev.startDate, ev.endDate)
   const heart = (e: React.MouseEvent) => { e.preventDefault(); e.stopPropagation(); onToggleSave(ev.id) }
@@ -71,8 +77,8 @@ function PosterCard({ ev, saved, onToggleSave, onOpen }: {
     <div className={styles.card} onClick={() => onOpen(ev)}>
       <div className={styles.poster}>
         {showImg
-          ? <img className={styles.posterImg} src={ev.coverUrl!} alt="" draggable={false} onError={() => setImgErr(true)} />
-          : <div className={styles.posterPh}><Icon name={TYPE_ICON[ev.type] ?? 'calendar'} size={44} style={{ opacity: .4 }} /></div>}
+          ? <img className={styles.posterImg + grey} src={ev.coverUrl!} alt="" draggable={false} onError={() => setImgErr(true)} />
+          : <div className={styles.posterPh + grey}><Icon name={TYPE_ICON[ev.type] ?? 'calendar'} size={44} style={{ opacity: .4 }} /></div>}
         <span className={styles.badgeTL}><EventStatusBadge startDate={ev.startDate} endDate={ev.endDate} /></span>
         <button className={styles.heart} onClick={heart} aria-pressed={saved} aria-label={saved ? '저장 해제' : '저장'}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill={saved ? PINK : 'none'} stroke={saved ? PINK : '#8A857C'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20C5 15 3.5 10.5 5.5 7.8 7.1 5.9 10.2 6.1 12 8.4 13.8 6.1 16.9 5.9 18.5 7.8 20.5 10.5 19 15 12 20Z" /></svg>
@@ -213,11 +219,14 @@ export default function EventHomePage() {
   const isDesktop = useIsDesktop()
 
   const [items, setItems] = useState<EventHomeItem[]>([])
+  // 종료 탭 — 처음 눌렀을 때만 불러온다(홈 첫 로딩을 무겁게 하지 않으려고)
+  const [endedItems, setEndedItems] = useState<EventHomeItem[]>([])
+  const [endedState, setEndedState] = useState<'idle' | 'loading' | 'done'>('idle')
   const [favTagIds, setFavTagIds] = useState<Set<string>>(new Set())
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(true)
 
-  const [tab, setTab] = useState<StatusTab>('ongoing')
+  const [tab, setTab] = useState<StatusTab>('all')
   const [search, setSearch] = useState('')
   const [region, setRegion] = useState<string | null>(null)
   const [type, setType] = useState<string | null>(null)
@@ -227,6 +236,12 @@ export default function EventHomePage() {
   const [sheet, setSheet] = useState(false)
 
   useEffect(() => { getEventHomeItems().then(setItems).catch(() => {}).finally(() => setLoading(false)) }, [])
+  useEffect(() => {
+    if (tab !== 'ended' || endedState !== 'idle') return
+    setEndedState('loading')
+    getRecentlyEndedEventItems(ENDED_WINDOW_DAYS)
+      .then(setEndedItems).catch(() => setEndedItems([])).finally(() => setEndedState('done'))
+  }, [tab, endedState])
   useEffect(() => {
     if (!user) { setFavTagIds(new Set()); setSavedIds(new Set()); return }
     getMyAffinityTagIds(user.id).then(({ favorites }) => setFavTagIds(new Set(favorites))).catch(() => {})
@@ -271,24 +286,32 @@ export default function EventHomePage() {
     return s <= end && e >= today
   }
 
-  // 탭 제외 공통 필터
-  const preTab = useMemo(() => {
+  // 탭과 무관한 공통 필터(검색·지역·종류·작품·기간·날짜)
+  const passesCommon = (i: EventHomeItem): boolean => {
     const q = search.trim().toLowerCase()
-    return items.filter(i => {
-      if (bucketOf(getEventStatus(i).kind) === null) return false
-      if (region && regionOf(i) !== region) return false
-      if (type && i.type !== type) return false
-      if (workId && i.tagId !== workId) return false
-      if (!inPeriod(i)) return false
-      if (selectedDay && !eventOnDay(i.startDate, i.endDate, selectedDay)) return false
-      if (q && !(i.title.toLowerCase().includes(q) || (i.workName ?? '').toLowerCase().includes(q))) return false
-      return true
-    })
+    if (region && regionOf(i) !== region) return false
+    if (type && i.type !== type) return false
+    if (workId && i.tagId !== workId) return false
+    if (!inPeriod(i)) return false
+    if (selectedDay && !eventOnDay(i.startDate, i.endDate, selectedDay)) return false
+    if (q && !(i.title.toLowerCase().includes(q) || (i.workName ?? '').toLowerCase().includes(q))) return false
+    return true
+  }
+
+  // 탭 제외 공통 필터
+  const preTab = useMemo(
+    () => items.filter(i => bucketOf(getEventStatus(i).kind) !== null && passesCommon(i)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items, search, region, type, workId, period, selectedDay])
+    [items, search, region, type, workId, period, selectedDay])
+
+  // 종료 탭 — ⚠️ rankEvents는 종료 이벤트를 걸러내므로 여기엔 쓰지 않는다. 종료일 최신순.
+  const preTabEnded = useMemo(
+    () => endedItems.filter(passesCommon).slice().sort((a, b) => (b.endDate ?? '').localeCompare(a.endDate ?? '')),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [endedItems, search, region, type, workId, period, selectedDay])
 
   const counts = useMemo(() => {
-    const c = { ongoing: 0, upcoming: 0, ending: 0, fav: 0 }
+    const c = { all: preTab.length, ongoing: 0, upcoming: 0, ending: 0, fav: 0, ended: preTabEnded.length }
     for (const i of preTab) {
       const k = getEventStatus(i).kind
       if (inTab(k, 'ongoing')) c.ongoing++
@@ -297,15 +320,20 @@ export default function EventHomePage() {
       if (i.tagId && favTagIds.has(i.tagId)) c.fav++
     }
     return c
-  }, [preTab, favTagIds])
+  }, [preTab, favTagIds, preTabEnded])
 
   const list = useMemo(() => {
-    const f = preTab.filter(i => {
-      if (tab === 'fav') return i.tagId && favTagIds.has(i.tagId)
-      return inTab(getEventStatus(i).kind, tab)
-    })
+    if (tab === 'ended') return preTabEnded
+    // 전체 = 아직 안 끝난 이벤트 전부(preTab이 이미 종료·불명을 걸러냄)
+    if (tab === 'all') return rankEvents(preTab, { favoriteTagIds: favTagIds }).map(r => r.event)
+    if (tab === 'fav') {
+      const fav = preTab.filter(i => i.tagId && favTagIds.has(i.tagId))
+      return rankEvents(fav, { favoriteTagIds: favTagIds }).map(r => r.event)
+    }
+    const st: 'ongoing' | 'upcoming' | 'ending' = tab
+    const f = preTab.filter(i => inTab(getEventStatus(i).kind, st))
     return rankEvents(f, { favoriteTagIds: favTagIds }).map(r => r.event)
-  }, [preTab, tab, favTagIds])
+  }, [preTab, preTabEnded, tab, favTagIds])
 
   const activeChips = [
     selectedDay && { key: 'day', label: `${Number(selectedDay.slice(5, 7))}월 ${Number(selectedDay.slice(8, 10))}일`, clear: () => setSelectedDay(null) },
@@ -316,10 +344,12 @@ export default function EventHomePage() {
   ].filter(Boolean) as { key: string; label: string; clear: () => void }[]
 
   const TABS: { key: StatusTab; label: string; count?: number }[] = [
+    { key: 'all', label: '전체', count: counts.all },
     { key: 'ongoing', label: '진행 중', count: counts.ongoing },
     { key: 'upcoming', label: '오픈 예정', count: counts.upcoming },
     { key: 'ending', label: '종료 임박', count: counts.ending },
     { key: 'fav', label: '내 최애', count: user ? counts.fav : undefined },
+    { key: 'ended', label: '종료', count: endedState === 'done' ? counts.ended : undefined },
   ]
 
   return (
@@ -426,7 +456,7 @@ export default function EventHomePage() {
       </div>
 
       {/* 포스터 그리드 */}
-      {loading ? (
+      {(tab === 'ended' ? endedState !== 'done' : loading) ? (
         <div className={styles.grid}>
           {[0, 1, 2, 3].map(i => <div key={i} className={styles.skel} />)}
         </div>
@@ -434,13 +464,16 @@ export default function EventHomePage() {
         <div className={styles.empty}>
           {selectedDay
             ? `${Number(selectedDay.slice(5, 7))}월 ${Number(selectedDay.slice(8, 10))}일에는 이벤트가 없어요.`
-            : '선택한 조건의 이벤트가 없어요.'}
+            : tab === 'ended'
+              ? `최근 ${ENDED_WINDOW_DAYS}일 안에 끝난 이벤트가 없어요.`
+              : '선택한 조건의 이벤트가 없어요.'}
           {activeChips.length > 0 && <button className={styles.emptyReset} onClick={() => { setRegion(null); setType(null); setPeriod('all'); setWorkId(null); setSelectedDay(null); setSearch('') }}>필터 초기화</button>}
         </div>
       ) : (
         <div className={styles.grid}>
           {list.map(ev => (
-            <PosterCard key={ev.id} ev={ev} saved={savedIds.has(ev.id)} onToggleSave={toggleSave} onOpen={openEvent} />
+            <PosterCard key={ev.id} ev={ev} saved={savedIds.has(ev.id)} onToggleSave={toggleSave} onOpen={openEvent}
+              ended={getEventStatus(ev).kind === 'ended'} />
           ))}
         </div>
       )}
