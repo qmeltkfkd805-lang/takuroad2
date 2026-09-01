@@ -34,6 +34,8 @@ export interface EventDetail {
   /** ticketUrls와 같은 순서의 버튼명 */
   ticketLabels: string[]
   placeDetail: string | null
+  /** 여러 지점에서 하는 같은 이벤트를 묶는 키 (없으면 단독) */
+  seriesKey: string | null
   /** 샵으로 연결되지 않은 이벤트의 장소 (이름·주소·좌표) */
   placeSnapshot: string | null
   placeId: string | null
@@ -64,6 +66,9 @@ export interface RelatedEvent {
   endDate: string | null
   shopName: string | null
   coverUrl: string | null
+  seriesKey: string | null
+  /** 여러 지점에서 하는 이벤트면 지점 수 (1이면 단독) */
+  branchCount: number
 }
 
 export async function getEventDetail(eventId: string): Promise<EventDetail | null> {
@@ -71,7 +76,7 @@ export async function getEventDetail(eventId: string): Promise<EventDetail | nul
 
   const { data: ev, error } = await supabase
     .from('events')
-    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, entry_info, hours_info, hours, cover_url, parking, parking_note, description, place_name, place_addr, place_lat, place_lng, place_detail, place_id, source_urls, ticket_urls, created_by, updated_by, updated_at')
+    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, entry_info, hours_info, hours, cover_url, parking, parking_note, description, place_name, place_addr, place_lat, place_lng, place_detail, place_id, series_key, source_urls, ticket_urls, created_by, updated_by, updated_at')
     .eq('id', eventId)
     .maybeSingle()
 
@@ -134,6 +139,7 @@ export async function getEventDetail(eventId: string): Promise<EventDetail | nul
     ticketUrls,
     ticketLabels,
     placeDetail: e.place_detail ?? null,
+    seriesKey: e.series_key ?? null,
     placeSnapshot: e.place_name ?? null,
     placeId: e.place_id ?? null,
     placeAddr: e.place_addr ?? null,
@@ -151,21 +157,52 @@ export async function getEventDetail(eventId: string): Promise<EventDetail | nul
 }
 
 /** 같은 작품의 다른 이벤트 (자기 자신 제외, 안 끝난 것 우선) */
-export async function getRelatedEvents(tagId: string, excludeId: string, limit = 6): Promise<RelatedEvent[]> {
+/**
+ * 같은 작품의 다른 이벤트.
+ * 여러 지점에서 하는 이벤트는 한 장으로 접고(series_key), 지금 보고 있는 이벤트와 같은 묶음은
+ * 바로 위 "다른 지점" 섹션이 이미 보여주므로 여기서 뺀다.
+ */
+export async function getRelatedEvents(
+  tagId: string,
+  excludeId: string,
+  opts: { excludeSeriesKey?: string | null; limit?: number } = {},
+): Promise<RelatedEvent[]> {
   const supabase = createClient()
   const today = new Date().toISOString().slice(0, 10)
+  const limit = opts.limit ?? 12
+  const skipKey = (opts.excludeSeriesKey ?? '').trim()
 
   const { data } = await supabase
     .from('events')
-    .select('id, type, title, shop_id, start_date, end_date, cover_url')
+    .select('id, type, title, shop_id, start_date, end_date, cover_url, series_key, place_name')
     .eq('tag_id', tagId)
     .neq('id', excludeId)
     .in('type', ['popup', 'collab_cafe', 'exhibition', 'official_event'])
     .or(`end_date.is.null,end_date.gte.${today}`)
     .order('start_date', { ascending: true })
-    .limit(limit)
+    // 접기 전이라 넉넉히 받아온다 — 지점이 많으면 limit이 금방 차버린다
+    .limit(limit * 4)
 
-  const rows = (data ?? []) as any[]
+  let rows = (data ?? []) as any[]
+
+  // 같은 묶음(=지금 이벤트의 다른 지점)은 제외
+  if (skipKey) rows = rows.filter(r => (r.series_key ?? '') !== skipKey)
+
+  // 같은 series_key는 첫 행(가장 이른 시작일)만 남기고 지점 수만 센다
+  const branchCount = new Map<string, number>()
+  for (const r of rows) {
+    const k = (r.series_key ?? '').trim()
+    if (k) branchCount.set(k, (branchCount.get(k) ?? 0) + 1)
+  }
+  const seen = new Set<string>()
+  rows = rows.filter(r => {
+    const k = (r.series_key ?? '').trim()
+    if (!k) return true
+    if (seen.has(k)) return false
+    seen.add(k)
+    return true
+  }).slice(0, limit)
+
   if (rows.length === 0) return []
 
   const shopIds = [...new Set(rows.map(r => r.shop_id).filter(Boolean))]
@@ -184,9 +221,12 @@ export async function getRelatedEvents(tagId: string, excludeId: string, limit =
     title: r.title ?? '',
     startDate: r.start_date ?? null,
     endDate: r.end_date ?? null,
-    shopName: r.shop_id ? (shopMap.get(r.shop_id)?.name ?? null) : null,
+    // 샵에 연결됐으면 샵 이름, 아니면 장소 스냅샷 — 카드에 위치가 비지 않게 한다
+    shopName: (r.shop_id ? shopMap.get(r.shop_id)?.name : null) ?? r.place_name ?? null,
     // 자기 포스터가 있으면 그걸, 없으면 작품 커버 (같은 작품이므로 tagCoverUrl 하나로 충분)
     coverUrl: resolveEventCover({ eventCoverUrl: r.cover_url ?? null, workCoverUrl: tagCoverUrl }),
+    seriesKey: r.series_key ?? null,
+    branchCount: branchCount.get((r.series_key ?? '').trim()) ?? 1,
   }))
 }
 

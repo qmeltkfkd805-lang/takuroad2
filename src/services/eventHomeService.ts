@@ -24,6 +24,8 @@ export interface EventHomeItem {
   endDate: string | null
   reserveStart: string | null
   reserveEnd: string | null
+  /** 여러 지점에서 하는 같은 이벤트를 묶는 키 (없으면 단독 이벤트) */
+  seriesKey: string | null
 }
 
 const today = () => new Date().toISOString().slice(0, 10)
@@ -74,6 +76,7 @@ async function hydrate(rows: any[]): Promise<EventHomeItem[]> {
       endDate: r.end_date ?? null,
       reserveStart: r.reserve_start ?? null,
       reserveEnd: r.reserve_end ?? null,
+      seriesKey: r.series_key ?? null,
     }
   })
 }
@@ -83,7 +86,7 @@ export async function getEventHomeItems(): Promise<EventHomeItem[]> {
   const supabase = createClient()
   const { data, error } = await supabase
     .from('events')
-    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, cover_url, place_name, place_addr')
+    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, cover_url, place_name, place_addr, series_key')
     .in('type', HOME_TYPES)
     .or(`end_date.is.null,end_date.gte.${today()}`)
     .order('start_date', { ascending: true })
@@ -99,7 +102,7 @@ export async function getRecentlyEndedEventItems(days = 30): Promise<EventHomeIt
   const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
   const { data, error } = await supabase
     .from('events')
-    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, cover_url, place_name, place_addr')
+    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, cover_url, place_name, place_addr, series_key')
     .in('type', HOME_TYPES)
     .lt('end_date', today())
     .gte('end_date', cutoff)
@@ -114,7 +117,7 @@ export async function getPastEventItems(limit = 12): Promise<EventHomeItem[]> {
   const supabase = createClient()
   const { data, error } = await supabase
     .from('events')
-    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, cover_url, place_name, place_addr')
+    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, cover_url, place_name, place_addr, series_key')
     .in('type', HOME_TYPES)
     .lt('end_date', today())
     .order('end_date', { ascending: false })

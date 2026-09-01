@@ -8,6 +8,7 @@ import { Icon } from '@/components/tds'
 import { EventStatusBadge } from '@/components/tds/EventStatusBadge'
 import { getEventStatus, EventStatusKind } from '@/lib/utils/eventStatus'
 import { rankEvents, daysUntil } from '@/lib/event/rankEvents'
+import { collapseEventSeries, countCollapsed } from '@/lib/event/eventSeries'
 import { getEventHomeItems, getRecentlyEndedEventItems, getMyAffinityTagIds, EventHomeItem } from '@/services/eventHomeService'
 import { getMySavedEventIds, saveEvent, unsaveEvent } from '@/services/eventSaveService'
 import { monthCells, eventOnDay, ymd, addDays, WEEKDAY_KO } from '@/lib/event/calendar'
@@ -62,10 +63,12 @@ function dayColor(kind: EventStatusKind): string | null {
 }
 
 /* ================= 포스터 카드 ================= */
-function PosterCard({ ev, saved, onToggleSave, onOpen, ended = false }: {
+function PosterCard({ ev, saved, onToggleSave, onOpen, ended = false, branchCount = 1 }: {
   ev: EventHomeItem; saved: boolean; onToggleSave: (id: string) => void; onOpen: (ev: EventHomeItem) => void
   /** 종료된 이벤트 — 포스터를 흑백 처리 */
   ended?: boolean
+  /** 같은 이벤트가 여러 지점에서 열릴 때 지점 수 (1이면 배지 없음) */
+  branchCount?: number
 }) {
   const [imgErr, setImgErr] = useState(false)
   const showImg = ev.coverUrl && !imgErr
@@ -80,6 +83,11 @@ function PosterCard({ ev, saved, onToggleSave, onOpen, ended = false }: {
           ? <img className={styles.posterImg + grey} src={ev.coverUrl!} alt="" draggable={false} onError={() => setImgErr(true)} />
           : <div className={styles.posterPh + grey}><Icon name={TYPE_ICON[ev.type] ?? 'calendar'} size={44} style={{ opacity: .4 }} /></div>}
         <span className={styles.badgeTL}><EventStatusBadge startDate={ev.startDate} endDate={ev.endDate} /></span>
+        {branchCount > 1 && (
+          <span style={{ position: 'absolute', left: 10, bottom: 10, zIndex: 2, fontSize: 11, fontWeight: 800, color: '#fff', background: 'rgba(0,0,0,.62)', padding: '3px 9px', borderRadius: 9999 }}>
+            {branchCount}개 지점
+          </span>
+        )}
         <button className={styles.heart} onClick={heart} aria-pressed={saved} aria-label={saved ? '저장 해제' : '저장'}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill={saved ? PINK : 'none'} stroke={saved ? PINK : '#8A857C'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20C5 15 3.5 10.5 5.5 7.8 7.1 5.9 10.2 6.1 12 8.4 13.8 6.1 16.9 5.9 18.5 7.8 20.5 10.5 19 15 12 20Z" /></svg>
         </button>
@@ -88,7 +96,12 @@ function PosterCard({ ev, saved, onToggleSave, onOpen, ended = false }: {
         {ev.workName && <div className={styles.cWork}>{ev.workName}</div>}
         <div className={styles.cTitle}>{ev.title}</div>
         {period && <div className={styles.cMeta}><CalIcon />{period}</div>}
-        {place && <div className={styles.cMeta}><PinIcon /><span className={styles.cMetaText}>{place}</span></div>}
+        {place && (
+          <div className={styles.cMeta}>
+            <PinIcon />
+            <span className={styles.cMetaText}>{branchCount > 1 ? `${place} 외 ${branchCount - 1}곳` : place}</span>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -311,28 +324,38 @@ export default function EventHomePage() {
     [endedItems, search, region, type, workId, period, selectedDay])
 
   const counts = useMemo(() => {
-    const c = { all: preTab.length, ongoing: 0, upcoming: 0, ending: 0, fav: 0, ended: preTabEnded.length }
+    // 여러 지점 이벤트는 한 장으로 접히므로 개수도 접은 기준으로 센다
+    const bucket: Record<'ongoing' | 'upcoming' | 'ending' | 'fav', EventHomeItem[]> = { ongoing: [], upcoming: [], ending: [], fav: [] }
     for (const i of preTab) {
       const k = getEventStatus(i).kind
-      if (inTab(k, 'ongoing')) c.ongoing++
-      if (inTab(k, 'upcoming')) c.upcoming++
-      if (inTab(k, 'ending')) c.ending++
-      if (i.tagId && favTagIds.has(i.tagId)) c.fav++
+      if (inTab(k, 'ongoing')) bucket.ongoing.push(i)
+      if (inTab(k, 'upcoming')) bucket.upcoming.push(i)
+      if (inTab(k, 'ending')) bucket.ending.push(i)
+      if (i.tagId && favTagIds.has(i.tagId)) bucket.fav.push(i)
     }
-    return c
+    return {
+      all: countCollapsed(preTab),
+      ongoing: countCollapsed(bucket.ongoing),
+      upcoming: countCollapsed(bucket.upcoming),
+      ending: countCollapsed(bucket.ending),
+      fav: countCollapsed(bucket.fav),
+      ended: countCollapsed(preTabEnded),
+    }
   }, [preTab, favTagIds, preTabEnded])
 
   const list = useMemo(() => {
-    if (tab === 'ended') return preTabEnded
+    // ⭐ 접기는 항상 정렬 뒤에. 그래야 그룹의 대표가 "가장 임박한 지점"이 되고,
+    //    지역 필터가 걸려 있으면 그 지역 지점이 대표가 된다.
+    if (tab === 'ended') return collapseEventSeries(preTabEnded)
     // 전체 = 아직 안 끝난 이벤트 전부(preTab이 이미 종료·불명을 걸러냄)
-    if (tab === 'all') return rankEvents(preTab, { favoriteTagIds: favTagIds }).map(r => r.event)
+    if (tab === 'all') return collapseEventSeries(rankEvents(preTab, { favoriteTagIds: favTagIds }).map(r => r.event))
     if (tab === 'fav') {
       const fav = preTab.filter(i => i.tagId && favTagIds.has(i.tagId))
-      return rankEvents(fav, { favoriteTagIds: favTagIds }).map(r => r.event)
+      return collapseEventSeries(rankEvents(fav, { favoriteTagIds: favTagIds }).map(r => r.event))
     }
     const st: 'ongoing' | 'upcoming' | 'ending' = tab
     const f = preTab.filter(i => inTab(getEventStatus(i).kind, st))
-    return rankEvents(f, { favoriteTagIds: favTagIds }).map(r => r.event)
+    return collapseEventSeries(rankEvents(f, { favoriteTagIds: favTagIds }).map(r => r.event))
   }, [preTab, preTabEnded, tab, favTagIds])
 
   const activeChips = [
@@ -473,7 +496,7 @@ export default function EventHomePage() {
         <div className={styles.grid}>
           {list.map(ev => (
             <PosterCard key={ev.id} ev={ev} saved={savedIds.has(ev.id)} onToggleSave={toggleSave} onOpen={openEvent}
-              ended={getEventStatus(ev).kind === 'ended'} />
+              branchCount={ev.branchCount} ended={getEventStatus(ev).kind === 'ended'} />
           ))}
         </div>
       )}

@@ -13,6 +13,7 @@ import {
   getEventDetail, getRelatedEvents, deleteEvent,
 } from '@/services/eventDetailService'
 import { getMySavedEventIds, saveEvent, unsaveEvent } from '@/services/eventSaveService'
+import { getSeriesSiblings, type SeriesSibling } from '@/services/eventService'
 import EventReviewTab from './EventReviewTab'
 import EventVisitButton from './EventVisitButton'
 import EventQnaTab from './EventQnaTab'
@@ -56,6 +57,63 @@ function directionsUrl(ev: EventDetail): string | null {
   return addr ? `https://map.kakao.com/link/search/${encodeURIComponent(addr)}` : null
 }
 
+/* 가로로 넘겨 보는 카드 레일.
+   데스크톱은 화살표, 모바일은 손가락 스크롤. 양 끝에 닿으면 해당 화살표가 사라진다. */
+function CardRail({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [atStart, setAtStart] = useState(true)
+  const [atEnd, setAtEnd] = useState(true)
+
+  const sync = () => {
+    const el = ref.current
+    if (!el) return
+    const max = el.scrollWidth - el.clientWidth
+    setAtStart(el.scrollLeft <= 1)
+    setAtEnd(el.scrollLeft >= max - 1)
+  }
+
+  useEffect(() => {
+    sync()
+    const el = ref.current
+    if (!el) return
+    // 카드 이미지가 늦게 들어오면 폭이 바뀌므로 다시 잰다
+    const ro = new ResizeObserver(sync)
+    ro.observe(el)
+    for (const c of Array.from(el.children)) ro.observe(c)
+    window.addEventListener('resize', sync)
+    return () => { ro.disconnect(); window.removeEventListener('resize', sync) }
+  }, [children])
+
+  // 한 번에 보이는 만큼(끝 카드가 살짝 걸치게) 넘긴다
+  const page = (dir: 1 | -1) => {
+    const el = ref.current
+    if (!el) return
+    el.scrollBy({ left: dir * Math.max(el.clientWidth - 60, 180), behavior: 'smooth' })
+  }
+
+  return (
+    <div className={styles.relWrap}>
+      <button
+        type="button" aria-label="이전"
+        className={`${styles.relNav} ${styles.relPrev}`}
+        disabled={atStart} onClick={() => page(-1)}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="m15 6-6 6 6 6" /></svg>
+      </button>
+
+      <div className={styles.relRail} ref={ref} onScroll={sync}>{children}</div>
+
+      <button
+        type="button" aria-label="다음"
+        className={`${styles.relNav} ${styles.relNext}`}
+        disabled={atEnd} onClick={() => page(1)}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="m9 6 6 6-6 6" /></svg>
+      </button>
+    </div>
+  )
+}
+
 export default function EventDetailPage() {
   const params = useParams<{ id: string }>()
   const router = useRouter()
@@ -72,6 +130,8 @@ export default function EventDetailPage() {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const [saved, setSaved] = useState(false)
+  // 같은 이벤트의 다른 지점 (events.series_key)
+  const [siblings, setSiblings] = useState<SeriesSibling[]>([])
 
   useEffect(() => {
     if (!user || !eventId) { setSaved(false); return }
@@ -96,6 +156,9 @@ export default function EventDetailPage() {
 
   useEffect(() => {
     if (!eventId) return
+    // 상세 → 상세로 넘어가면 같은 컴포넌트가 그대로 살아 있어서 스크롤 위치가 남는다.
+    // ("다른 이벤트"를 눌렀는데 다음 글도 그 자리부터 보이는 문제)
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
     let alive = true
     setLoading(true)
     getEventDetail(eventId)
@@ -103,8 +166,14 @@ export default function EventDetailPage() {
         if (!alive) return
         setEvent(ev)
         setTab('about')
+        setSiblings([])
+        if (ev?.seriesKey) {
+          const sb = await getSeriesSiblings(ev.seriesKey, ev.id)
+          if (alive) setSiblings(sb)
+        }
         if (ev?.work) {
-          const rel = await getRelatedEvents(ev.work.id, ev.id)
+          // 지금 이벤트의 다른 지점은 위 "다른 지점" 섹션이 보여주므로 여기선 뺀다
+          const rel = await getRelatedEvents(ev.work.id, ev.id, { excludeSeriesKey: ev.seriesKey })
           if (alive) setRelated(rel)   // 커버는 서비스가 각자 채운다
         }
       })
@@ -351,6 +420,26 @@ export default function EventDetailPage() {
                   <Tile icon="ticket" label="입장 방법" lines={[event.entryInfo ?? '등록된 정보 없음']} />
                 </div>
               </section>
+
+              {/* 다른 지점 — 같은 이벤트가 여러 곳에서 열릴 때 */}
+              {siblings.length > 0 && (
+                <section className={styles.card}>
+                  <h2 className={styles.cardTitle}><EventIcon name="pin" size={18} color="var(--accent)" />다른 지점</h2>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {siblings.map(sb => (
+                      <Link key={sb.id} href={`/event/${sb.id}`} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '11px 13px', border: '1px solid var(--border)', borderRadius: 10, textDecoration: 'none', color: 'inherit' }}>
+                        <span style={{ flex: 1, minWidth: 0 }}>
+                          <span style={{ display: 'block', fontSize: 13.5, fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{sb.placeName ?? '장소 미정'}</span>
+                          <span style={{ display: 'block', fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>
+                            {[sb.startDate, sb.endDate].filter(Boolean).map(d => String(d).slice(5).replace('-', '.')).join(' ~ ')}
+                          </span>
+                        </span>
+                        <span style={{ flexShrink: 0, fontSize: 12.5, fontWeight: 700, color: 'var(--accent)' }}>보기 ›</span>
+                      </Link>
+                    ))}
+                  </div>
+                </section>
+              )}
             </>
           )}
 
@@ -476,19 +565,24 @@ export default function EventDetailPage() {
           {related.length > 0 && event.work && (
             <section className={styles.card}>
               <h2 className={styles.cardTitle}>{event.work.name}의 다른 이벤트</h2>
-              <div className={styles.relGrid}>
+              <CardRail>
                 {related.map(r => (
-                  <EventCard
-                    key={r.id}
-                    event={{
-                      id: r.id, title: r.title, type: r.type,
-                      workName: event.work?.name, place: r.shopName,
-                      startDate: r.startDate, endDate: r.endDate, coverUrl: r.coverUrl,
-                    }}
-                    onClick={() => router.push(`/event/${r.id}`)}
-                  />
+                  <div className={styles.relItem} key={r.id}>
+                    <EventCard
+                      style={{ height: '100%' }}
+                      event={{
+                        id: r.id, title: r.title, type: r.type,
+                        workName: event.work?.name,
+                        place: r.branchCount > 1 && r.shopName
+                          ? `${r.shopName} 외 ${r.branchCount - 1}곳`
+                          : r.shopName,
+                        startDate: r.startDate, endDate: r.endDate, coverUrl: r.coverUrl,
+                      }}
+                      onClick={() => router.push(`/event/${r.id}`)}
+                    />
+                  </div>
                 ))}
-              </div>
+              </CardRail>
             </section>
           )}
 

@@ -11,7 +11,7 @@ import { getEventStatus } from '@/lib/utils/eventStatus'
 import { daysUntil } from '@/lib/event/rankEvents'
 import {
   EventFormData, EMPTY_EVENT_FORM,
-  createEventDraft, updateEventDraft, saveEventExtra, searchShopsByName, loadEventForm, uploadEventCover,
+  createEventDraft, updateEventDraft, saveEventExtra, searchShopsByName, findShopsAtPlace, loadEventForm, uploadEventCover,
 } from '@/services/eventCreateService'
 import { getShopBySlug } from '@/services/shopService'
 import { EventHomeType } from '@/services/eventHomeService'
@@ -60,6 +60,8 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
   const [shopQuery, setShopQuery] = useState('')
   const [shopHits, setShopHits] = useState<ShopHit[]>([])
   const [shopPicked, setShopPicked] = useState<ShopHit | null>(null)
+  // 장소로 고른 자리에 등록된 샵이 있으면 "이 샵의 이벤트인가요?"를 물어본다
+  const [shopSuggest, setShopSuggest] = useState<ShopHit[]>([])
   const [placeQuery, setPlaceQuery] = useState('')
   const [placeHits, setPlaceHits] = useState<PlaceSearchResult[]>([])
   const [placeSearching, setPlaceSearching] = useState(false)
@@ -209,6 +211,7 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
     set('placeName', s.name)
     setShopHits([])
     setShopQuery('')
+    setShopSuggest([])
   }
   const clearShop = () => {
     setShopPicked(null)
@@ -230,8 +233,14 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
     // 이 주소가 학습된 장소면 자동 연결 (지도 그룹핀·place 상세에 묶임)
     const matched = await findPlaceByAddr(p.roadAddress || p.address)
     set('placeId', matched ? matched.id : null)
+    // 이 자리에 등록된 샵이 있으면 연결할지 물어본다 (자동으로 붙이지는 않는다)
+    try {
+      const hits = await findShopsAtPlace({ addr: p.roadAddress || p.address, placeId: matched?.id ?? null })
+      setShopSuggest(hits)
+    } catch { setShopSuggest([]) }
   }
   const clearPlace = () => {
+    setShopSuggest([])
     set('placeId', null)
     set('placeName', '')
     set('placeAddr', '')
@@ -431,6 +440,47 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
                   )}
                 </Field>
               )}
+
+              {/* 이 자리에 등록된 샵이 있으면 연결 제안 — 붙여두면 샵 상세에도 이 이벤트가 나온다 */}
+              {!shopPicked && shopSuggest.length > 0 && (
+                <div style={{ margin: '-6px 0 20px', padding: '14px 16px', border: '1px solid var(--accent)', borderRadius: 12, background: 'var(--accent-l, rgba(255,86,146,.08))' }}>
+                  <div style={{ fontSize: 13.5, fontWeight: 800, color: 'var(--text)', marginBottom: 4 }}>
+                    이 장소에 등록된 샵이 있어요
+                  </div>
+                  <p style={{ fontSize: 12.5, color: 'var(--muted)', margin: '0 0 12px', lineHeight: 1.6 }}>
+                    이 샵의 이벤트인가요? 연결하면 그 샵 페이지에도 이 이벤트가 함께 나와요.
+                  </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {shopSuggest.map(s => (
+                      <div key={s.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', borderRadius: 10, background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ fontSize: 13, fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.name}</div>
+                          {s.addr && <div style={{ fontSize: 11.5, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.addr}</div>}
+                        </div>
+                        <button onClick={() => pickShop(s)} style={{ flexShrink: 0, padding: '8px 14px', borderRadius: 8, border: 'none', background: 'var(--accent)', color: '#fff', fontSize: 12.5, fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit' }}>
+                          네, 연결
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <button onClick={() => setShopSuggest([])} style={{ ...linkBtn, marginTop: 10 }}>
+                    아니요, 이 샵과 상관없어요
+                  </button>
+                </div>
+              )}
+
+              <Field
+                label="같은 이벤트 묶기"
+                hint={<>여러 지점에서 하는 같은 이벤트면 <b>지점마다 같은 값</b>을 넣어주세요. 목록에 한 장으로 묶여 보이고, 상세에서 다른 지점으로 이동할 수 있어요. 한 곳에서만 하면 비워두세요.</>}
+              >
+                <input
+                  value={form.seriesKey}
+                  onChange={e => set('seriesKey', e.target.value)}
+                  maxLength={60}
+                  placeholder="예: amnesia-world-gratte-2026"
+                  style={inp}
+                />
+              </Field>
 
               <Field label="상세 위치" hint="층·매장 위치처럼 찾아가는 데 필요한 정보">
                 <input value={form.placeDetail} onChange={e => set('placeDetail', e.target.value)} maxLength={60} placeholder="예: 4층 팝마트 매장 내" style={inp} />

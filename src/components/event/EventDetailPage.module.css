@@ -137,6 +137,40 @@
 
 .relGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
 
+/* 다른 이벤트 — 가로로 넘겨 보는 레일.
+   데스크톱은 좌우 화살표, 모바일은 그냥 손가락으로 스크롤한다. */
+.relWrap { position: relative; }
+.relRail {
+  display: flex; gap: 14px;
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-behavior: smooth; scroll-snap-type: x proximity;
+  padding: 2px 2px 4px; margin: 0 -2px;
+  scrollbar-width: none; -ms-overflow-style: none;
+}
+.relRail::-webkit-scrollbar { display: none; }
+/* 카드 크기는 예전 그리드(auto-fill minmax(190px,1fr))가 만들던 것과 같게 —
+   이 폭에서는 한 화면에 2장이 들어차던 크기다. */
+.relItem { flex: 0 0 calc((100% - 14px) / 2); min-width: 190px; max-width: 300px; scroll-snap-align: start; }
+
+.relNav {
+  position: absolute; top: 42%; transform: translateY(-50%);
+  width: 38px; height: 38px; padding: 0; border-radius: 9999px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  display: grid; place-items: center; cursor: pointer; z-index: 2;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .16);
+  transition: opacity .15s ease, background .15s ease;
+}
+.relNav:hover { background: var(--surface2); }
+.relNav:disabled { opacity: 0; pointer-events: none; }
+.relPrev { left: -8px; }
+.relNext { right: -8px; }
+
+/* 모바일은 화살표 없이 손가락으로 넘긴다 */
+@media (hover: none) and (pointer: coarse) {
+  .relNav { display: none; }
+  .relItem { min-width: 150px; max-width: none; }
+}
+
 /* 우측 레일 */
 .rail { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
 @media (min-width: 1024px), (hover: hover) and (pointer: fine) { .rail { position: sticky; top: 76px; } }

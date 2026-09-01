@@ -27,6 +27,8 @@ export interface EventFormData {
   placeLng: number | null
   /** 층수·매장 위치 */
   placeDetail: string
+  /** 여러 지점에서 하는 같은 이벤트를 묶는 키 (비우면 단독 이벤트) */
+  seriesKey: string
   /** 주차 — true 가능 / false 불가 / null 모름 */
   parking: boolean | null
   parkingNote: string
@@ -48,7 +50,7 @@ export interface EventFormData {
 export const EMPTY_EVENT_FORM: EventFormData = {
   tagId: null, type: 'popup', title: '', coverUrl: null, startDate: '', endDate: '',
   reserveStart: '', reserveEnd: '',
-  shopId: null, placeId: null, placeName: '', placeAddr: '', placeLat: null, placeLng: null, placeDetail: '',
+  shopId: null, placeId: null, placeName: '', placeAddr: '', placeLat: null, placeLng: null, placeDetail: '', seriesKey: '',
   parking: null, parkingNote: '',
   hours: null, hoursInfo: '', entryInfo: '', description: '', sourceUrls: [''], ticketUrls: [''], ticketLabels: [],
 }
@@ -129,6 +131,7 @@ export async function saveEventExtra(eventId: string, form: EventFormData, userI
     .update({
       description: nn(form.description),
       place_detail: nn(form.placeDetail),
+      series_key: nn(form.seriesKey),
       // 샵에 연결됐으면 샵이 장소다 — 중복 저장하지 않는다
       place_id: form.placeId,
       place_name: form.shopId ? null : nn(form.placeName),
@@ -148,6 +151,26 @@ export async function saveEventExtra(eventId: string, form: EventFormData, userI
     return { ok: false, message: error.message }
   }
   return { ok: true }
+}
+
+/* 이 장소에 등록된 샵 찾기 — 장소로 이벤트를 등록할 때
+   "이 샵의 이벤트인가요?"를 물어보기 위한 조회. 같은 place_id 우선, 없으면 주소 앞부분 일치. */
+export async function findShopsAtPlace(
+  { addr, placeId }: { addr?: string | null; placeId?: string | null },
+): Promise<{ id: string; name: string; addr: string | null }[]> {
+  const supabase = createClient()
+
+  if (placeId) {
+    const { data } = await supabase
+      .from('shops').select('id, name, addr').eq('place_id', placeId).eq('status', 'active').limit(5)
+    if ((data ?? []).length) return (data ?? []) as any[]
+  }
+
+  const base = (addr ?? '').trim()
+  if (!base) return []
+  const { data } = await supabase
+    .from('shops').select('id, name, addr').ilike('addr', `${base}%`).eq('status', 'active').limit(5)
+  return (data ?? []) as any[]
 }
 
 /** 샵 검색 — 이름으로 (등록된 샵에 연결하면 지도·길찾기·평점이 다 붙는다) */
@@ -192,6 +215,7 @@ export async function loadEventForm(eventId: string): Promise<{ form: EventFormD
       placeLat: ev.shop?.lat ?? ev.placeLat,
       placeLng: ev.shop?.lng ?? ev.placeLng,
       placeDetail: ev.placeDetail ?? '',
+      seriesKey: ev.seriesKey ?? '',
 
       parking: ev.parking,
       parkingNote: ev.parkingNote ?? '',

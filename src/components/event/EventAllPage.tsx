@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { EventCard } from '@/components/tds'
 import { rankEvents, toEventHomeSections } from '@/lib/event/rankEvents'
+import { collapseEventSeries } from '@/lib/event/eventSeries'
 import {
   EventHomeItem, getEventHomeItems, getPastEventItems, getMyAffinityTagIds,
 } from '@/services/eventHomeService'
@@ -57,21 +58,28 @@ export default function EventAllPage() {
 
   // rankEvents는 끝난 이벤트를 걸러내므로 지난 이벤트에는 쓰지 않는다.
   // 반환 형태를 { event, isFavorite }로 통일해 아래 렌더가 한 갈래로 돌게 한다.
+  // ⭐ 접기는 항상 정렬 뒤에 (이벤트 홈과 같은 규칙)
   const rows = useMemo(() => {
     if (key === 'past') {
-      return items.map(event => ({ event, isFavorite: !!event.tagId && favoriteTagIds.has(event.tagId) }))
+      return collapseEventSeries(items)
+        .map(event => ({ event, isFavorite: !!event.tagId && favoriteTagIds.has(event.tagId) }))
     }
     const sections = toEventHomeSections(rankEvents(items, { favoriteTagIds }))
     const picked =
       key === 'ends_today' ? sections.endsToday :
       key === 'upcoming'   ? sections.upcoming  :
                              sections.ongoing
-    return picked.map(r => ({ event: r.event, isFavorite: r.isFavorite }))
+    return collapseEventSeries(picked.map(r => r.event))
+      .map(event => ({ event, isFavorite: !!event.tagId && favoriteTagIds.has(event.tagId) }))
   }, [items, favoriteTagIds, key])
 
-  const toCard = (ev: EventHomeItem) => ({
+  const toCard = (ev: EventHomeItem & { branchCount?: number }) => ({
     id: ev.id, title: ev.title, type: ev.type,
-    workName: ev.workName, place: ev.placeName ?? ev.shopName,
+    workName: ev.workName,
+    // 여러 지점 이벤트는 대표 지점 + "외 N곳"
+    place: (ev.branchCount ?? 1) > 1
+      ? `${ev.placeName ?? ev.shopName ?? ''} 외 ${(ev.branchCount ?? 1) - 1}곳`
+      : (ev.placeName ?? ev.shopName),
     startDate: ev.startDate, endDate: ev.endDate, coverUrl: ev.coverUrl,
     affinity: ev.tagId && favoriteTagIds.has(ev.tagId) ? ('favorite' as const)
             : ev.tagId && interestTagIds.has(ev.tagId) ? ('interest' as const)
