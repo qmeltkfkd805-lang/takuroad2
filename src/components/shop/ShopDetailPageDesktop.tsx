@@ -170,7 +170,8 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
   const [selectedEvent, setSelectedEvent] = useState<any | null>(null)
   const allEvents = [
     ...shopEvents.filter((e: any) => e.type === 'event').map((e: any) => ({ id: String(e.id), source: 'shop', title: e.title, type: e.type, start: e.starts_at ?? null, end: e.ends_at ?? null, image: e.image_url ?? null, video: e.video_url ?? null, description: e.description ?? null })),
-    ...workEvents.map((e: any) => ({ id: `work-${e.id}`, source: 'work', title: e.title, type: e.type, start: e.startDate ?? null, end: e.endDate ?? null, image: null, video: null, description: null })),
+    // 작품 이벤트 — 포스터(없으면 작품 커버)·작품명을 붙여 이벤트 홈 카드처럼 보이게
+    ...workEvents.map((e: any) => ({ id: `work-${e.id}`, source: 'work', eventId: e.id, title: e.title, type: e.type, start: e.startDate ?? null, end: e.endDate ?? null, image: e.coverUrl ?? null, video: null, description: null, workName: e.workName ?? null })),
   ]
   const EVENTS_PER_PAGE = 4
   const eventsTotalPages = Math.max(1, Math.ceil(allEvents.length / EVENTS_PER_PAGE))
@@ -492,7 +493,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                       {pagedEvents.map(e => {
                         const dateRange = [evFmt(e.start), evFmt(e.end)].filter(Boolean).join(' ~ ')
                         return (
-                          <article key={e.id} onClick={() => setSelectedEvent(e)} style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', background: 'var(--surface)', cursor: 'pointer' }}>
+                          <article key={e.id} onClick={() => (e as any).source === 'work' ? router.push(`/event/${(e as any).eventId}`) : setSelectedEvent(e)} style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', background: 'var(--surface)', cursor: 'pointer' }}>
                             {(e as any).video ? (
                               <video src={(e as any).video + '#t=0.1'} preload="metadata" muted playsInline style={{ width: '100%', maxHeight: 420, objectFit: 'cover', display: 'block', background: '#000' }} />
                             ) : e.image ? (
@@ -505,6 +506,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                             <div style={{ padding: '16px 18px 18px' }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 9 }}>
                                 <span style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l, rgba(232,0,111,.08))', padding: '3px 10px', borderRadius: 9999 }}>{evLabel(e.type)}</span>
+                                {(e as any).workName && <span style={{ fontSize: 11.5, fontWeight: 700, color: '#5A43B5' }}>{(e as any).workName}</span>}
                                 <EventStatusBadge startDate={e.start} endDate={e.end} now={new Date()} />
                               </div>
                               <div style={{ fontSize: 17, fontWeight: 900, lineHeight: 1.35, marginBottom: 9 }}>{e.title}</div>

@@ -3,19 +3,11 @@ import { useState, useEffect } from 'react'
 import { getActiveShopEvents, EVENT_TYPE_ICON, EVENT_TYPE_LABEL, ShopEventType } from '@/services/shopEventService'
 import { SectionHeader } from '@/components/tds/SectionHeader'
 import AppIcon from '@/components/tds/AppIcon'
-import { Icon } from '@/components/tds'
-import { getEventsByShop, WORK_EVENT_ICON } from '@/services/eventService'
+import { getEventsByShop, type ShopWorkEvent } from '@/services/eventService'
+import ShopWorkEventCards from './ShopWorkEventCards'
 
 interface Props {
   shopId: string
-}
-
-interface WorkItem {
-  id: string
-  icon: string
-  title: string
-  dateText: string | null
-  sortKey: string
 }
 
 function fmtDate(s: string | null): string {
@@ -30,7 +22,7 @@ function fmtRange(start: string | null, end: string | null): string | null {
 
 export default function ShopEventList({ shopId }: Props) {
   const [news, setNews] = useState<any[]>([])
-  const [works, setWorks] = useState<WorkItem[]>([])
+  const [works, setWorks] = useState<ShopWorkEvent[]>([])
   const [loading, setLoading] = useState(true)
   const [selected, setSelected] = useState<any | null>(null)
 
@@ -44,13 +36,7 @@ export default function ShopEventList({ shopId }: Props) {
         return String(b.created_at ?? '').localeCompare(String(a.created_at ?? ''))
       })
       setNews(sorted)
-      setWorks(workEvents.map(e => ({
-        id: `work-${e.id}`,
-        icon: WORK_EVENT_ICON[e.type] ?? 'event',
-        title: e.title ?? '',
-        dateText: fmtRange(e.startDate, e.endDate),
-        sortKey: (e.startDate ?? e.createdAt ?? '').slice(0, 10),
-      })).sort((a, b) => b.sortKey.localeCompare(a.sortKey)))
+      setWorks(workEvents)   // 정렬은 getEventsByShop이 이벤트 홈 규칙(rankEvents)으로 끝냈다
       setLoading(false)
     })
   }, [shopId])
@@ -89,17 +75,8 @@ export default function ShopEventList({ shopId }: Props) {
       {works.length > 0 && (
         <>
           <SectionHeader title="진행중인 이벤트" tone="coral" icon={<img src="/icons/event.png" alt="" width={22} height={22} />} />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {works.map(item => (
-              <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px', borderRadius: '14px', border: '1px solid var(--border)', background: 'var(--surface)' }}>
-                <div style={{ width: '44px', height: '44px', borderRadius: '12px', flexShrink: 0, background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px' }}><Icon name={item.icon} size={22} /></div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 800, fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginBottom: '3px' }}>{item.title}</div>
-                  {item.dateText && <p style={{ fontSize: '12px', color: 'var(--muted)', margin: 0 }}>{item.dateText}</p>}
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* 이벤트 홈과 같은 포스터 카드 */}
+          <ShopWorkEventCards events={works} />
         </>
       )}
 

@@ -15,6 +15,7 @@ import AdminPlaceLink from './AdminPlaceLink'
 import AdminPlaceAccessNote from './AdminPlaceAccessNote'
 import { getTodayStatus } from '@/lib/utils/date'
 import ShopEnrichmentSection from './ShopEnrichmentSection'
+import ShopEventLinkPanel from './ShopEventLinkPanel'
 import ShopAmenitySection from './ShopAmenitySection'
 import ShopHighlightManager from './ShopHighlightManager'
 import PhotosManage from './PhotosManage'
@@ -29,7 +30,7 @@ const STEPS = [
   { n: 1, label: '기본 정보' },
   { n: 2, label: '사진' },
   { n: 3, label: '취급 작품 & 상품' },
-  { n: 4, label: '사진' },
+  { n: 4, label: '추천 코너' },
   { n: 5, label: '편의시설' },
   { n: 6, label: '확인 & 등록' },
 ]
@@ -216,7 +217,14 @@ export default function ShopFormWizard({ mode, shop }: Props) {
 
   async function handleTempSave() {
     const ok = await saveCore()
-    if (ok) { setSavedNote(mode === 'edit' ? '저장됐어요 ✓' : '임시저장됐어요'); setTimeout(() => setSavedNote(''), 2000) }
+    if (!ok) return
+    // 수정 모드: 저장하면 이 화면에 머무르지 않고 방금 저장한 샵 상세로 이동
+    if (mode === 'edit' && shop?.slug) {
+      if (photosDirty && !window.confirm('사진 순서가 아직 저장되지 않았어요.\n저장하지 않고 샵 화면으로 갈까요?')) return
+      router.push(ROUTES.shop(shop.slug))
+      return
+    }
+    setSavedNote('임시저장됐어요'); setTimeout(() => setSavedNote(''), 2000)
   }
   async function goNext() {
     if (step === 1) { if (!(await saveCore())) return }
@@ -251,7 +259,10 @@ export default function ShopFormWizard({ mode, shop }: Props) {
   const showBreak = breakOn || WEEKDAYS.some(d => !!(form.hours as any)?.[d]?.breakStart)
   const previewCat = CATEGORIES.find(c => form.cats.includes(c.name))
   const previewStatus = getTodayStatus(form.hours)
-  const previewImg = mode === 'edit' ? (shop?.images?.[0] ?? null) : null
+  // 대표 사진 — 사진 단계에서 바꾸면 PhotosManage가 알려줘 미리보기에 바로 반영된다
+  const [previewImg, setPreviewImg] = useState<string | null>(mode === 'edit' ? (shop?.images?.[0] ?? null) : null)
+  // 사진 순서가 저장 안 된 채로 화면을 뜨는 걸 막기 위해 PhotosManage가 알려준다
+  const [photosDirty, setPhotosDirty] = useState(false)
 
   return (
     <div className="sw-root" style={{ maxWidth: 1320, margin: '0 auto', padding: '20px 32px 60px' }}>
@@ -554,9 +565,8 @@ export default function ShopFormWizard({ mode, shop }: Props) {
         {/* STEP 2 — 대표 이미지 */}
         {step === 2 && (
           <>
-            <StepHead icon={<Svg size={20} color="var(--accent)"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-5-5L5 21" /></Svg>} title="사진" sub="여러 장 올리고 ★대표를 지정하세요. 대표가 샵 카드·상세 히어로에 먼저 보여요." />
             {canEnrich && shopId && shopSlug
-              ? <PhotosManage shop={{ id: shopId, slug: shopSlug }} embedded />
+              ? <PhotosManage shop={{ id: shopId, slug: shopSlug }} embedded onCoverChange={setPreviewImg} onDirtyChange={setPhotosDirty} />
               : <NeedSave />}
           </>
         )}
@@ -565,14 +575,20 @@ export default function ShopFormWizard({ mode, shop }: Props) {
         {step === 3 && (
           <>
             <StepHead icon={<Svg size={20} color="var(--accent)"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" /><path d="M3.3 7 12 12l8.7-5M12 22V12" /></Svg>} title="취급 작품 & 상품" sub="이 샵에서 다루는 작품과 상품을 입력해주세요." />
-            {canEnrich && shopId ? <ShopEnrichmentSection shopId={shopId} /> : <NeedSave />}
+            {canEnrich && shopId ? (
+              <>
+                <ShopEnrichmentSection shopId={shopId} />
+                <div style={{ height: 1, background: 'var(--border)', margin: '24px 0' }} />
+                <ShopEventLinkPanel shopId={shopId} shopName={form.name} shopAddr={form.addr || null} />
+              </>
+            ) : <NeedSave />}
           </>
         )}
 
-        {/* STEP 4 — 사진 */}
+        {/* STEP 4 — 추천 코너 (사진 관리는 2단계) */}
         {step === 4 && (
           <>
-            <StepHead icon={<Svg size={20} color="var(--accent)"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-5-5L5 21" /></Svg>} title="사진" sub="매장 외관·내부·굿즈 사진을 추가해 샵을 더 잘 보여주세요." />
+            <StepHead icon={<Svg size={20} color="var(--accent)"><path d="m12 3 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9z" /></Svg>} title="추천 코너" sub="“이 샵 가면 이것만큼은 꼭 보세요” — 가본 사람만 아는 포인트를 알려주세요." />
             {canEnrich && shopId && shopSlug ? <ShopHighlightManager shopId={shopId} shopSlug={shopSlug} /> : <NeedSave />}
           </>
         )}
