@@ -276,7 +276,15 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
 
   const tagRow = (extra?: React.ReactNode, showKebab = true) => (
     <div style={{ display: 'flex', gap: 7, marginBottom: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-      <span style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--accent)' }}>{BOARD_LABEL[post.board]}</span>
+      {/* 게시판 이름 — 누르면 그 게시판 목록으로 */}
+      <button
+        onClick={e => { e.stopPropagation(); router.push(`/community?board=${post.board}`) }}
+        style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--accent)', background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit' }}
+        onMouseEnter={e => { e.currentTarget.style.textDecoration = 'underline' }}
+        onMouseLeave={e => { e.currentTarget.style.textDecoration = 'none' }}
+      >
+        {BOARD_LABEL[post.board]}
+      </button>
       {post.work && (
         <button onClick={() => post.work?.slug ? router.push(`/work/${encodeURIComponent(post.work.slug)}`) : router.push(`/work/${post.work?.id}`)} style={{ fontSize: 11.5, fontWeight: 700, color: 'var(--muted)', background: 'var(--surface2)', border: 'none', padding: '3px 9px', borderRadius: 9999, cursor: 'pointer', fontFamily: 'inherit' }}>
           {post.work.name} ›
@@ -424,14 +432,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
   return (
     <div onClick={isPage ? undefined : onClose} style={isPage ? { width: '100%' } : { position: 'fixed', inset: 0, background: 'rgba(0,0,0,.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000, padding: 16 }}>
       <div onClick={isPage ? undefined : (e => e.stopPropagation())} style={isPage ? { width: '100%' } : { background: 'var(--surface)', borderRadius: 18, maxWidth: 560, width: '100%', maxHeight: '92vh', overflow: 'auto' }}>
-        {isPage && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '14px 0', borderBottom: '1px solid var(--border)', marginBottom: 4 }}>
-            <button onClick={onClose} aria-label="뒤로" style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--text)', display: 'flex' }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
-            </button>
-            <span style={{ fontSize: 15, fontWeight: 800 }}>커뮤니티</span>
-          </div>
-        )}
+        {/* 상단 "‹ 커뮤니티" 줄은 없앴다 — 제목 헤더의 게시판 이름이 그 역할을 한다 */}
         <style>{`.taku-post-body img{max-width:100%;border-radius:10px}.taku-post-body video{max-width:100%;border-radius:10px}.taku-post-body blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}.taku-post-body a{color:var(--accent)}`}</style>
         {isGoodsBoard && goodsLoading
           ? <div style={{ padding: '56px 0', textAlign: 'center', color: 'var(--muted)', fontSize: 14 }}>불러오는 중…</div>
