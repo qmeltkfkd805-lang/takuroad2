@@ -153,6 +153,94 @@ export async function saveEventExtra(eventId: string, form: EventFormData, userI
   return { ok: true }
 }
 
+/* ── 같은 이벤트(여러 지점) 자동 감지 ───────────────────────────── */
+
+/** "AMNESIA WORLD Gratte (홍대점)" → "AMNESIA WORLD Gratte"
+    (홍대점) [잠실] - 부산점 같은 지점 꼬리표만 떼어낸다. 그 외 제목은 그대로 둔다. */
+export function baseEventTitle(title: string): string {
+  return (title ?? '')
+    .replace(/\s*[(（[]\s*[^)）\]]*점\s*[)）\]]\s*$/, '')
+    .replace(/\s*[-–—]\s*\S*점\s*$/, '')
+    .trim()
+}
+
+/** 새 묶음 키 — 제목(지점 꼬리표 제외) + 시작일. DB에서 눈으로 알아볼 수 있게 만든다. */
+export function makeSeriesKey(title: string, startDate: string): string {
+  const base = baseEventTitle(title)
+    .toLowerCase()
+    .replace(/[^0-9a-z가-힣]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 40)
+  return `${base || 'event'}-${startDate}`.slice(0, 60)
+}
+
+export interface SeriesCandidate {
+  id: string
+  title: string
+  placeName: string | null
+  startDate: string | null
+  endDate: string | null
+  seriesKey: string | null
+}
+
+/**
+ * 지점만 다른 같은 이벤트 찾기.
+ * ⚠️ 제목(지점 꼬리표 제외)과 기간이 "완전히" 같은 것만 후보로 본다.
+ *    제목이 비슷하기만 한 건 다른 회차일 수 있어서 절대 묶지 않는다. 최종 판단은 사용자가 한다.
+ */
+export async function findSeriesCandidates(
+  { title, startDate, endDate, excludeId }:
+  { title: string; startDate: string; endDate: string; excludeId?: string | null },
+): Promise<SeriesCandidate[]> {
+  const base = baseEventTitle(title)
+  if (base.length < 2 || !startDate || !endDate) return []
+
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('events')
+    .select('id, title, shop_id, place_name, start_date, end_date, series_key')
+    // 앞부분만 좁히고, 꼬리표를 뗀 제목이 정확히 같은지는 아래에서 다시 본다
+    .ilike('title', `${base}%`)
+    .eq('start_date', startDate)
+    .eq('end_date', endDate)
+    .limit(20)
+
+  if (error) return []
+  const rows = (data ?? []).filter((r: any) =>
+    r.id !== excludeId && baseEventTitle(r.title ?? '') === base)
+  if (rows.length === 0) return []
+
+  const shopIds = [...new Set(rows.map((r: any) => r.shop_id).filter(Boolean))]
+  let shopMap = new Map<string, string>()
+  if (shopIds.length) {
+    const { data: shops } = await supabase.from('shops').select('id, name').in('id', shopIds)
+    shopMap = new Map((shops ?? []).map((s: any) => [s.id, s.name]))
+  }
+
+  return rows.map((r: any) => ({
+    id: r.id,
+    title: r.title ?? '',
+    placeName: (r.shop_id ? shopMap.get(r.shop_id) : null) ?? r.place_name ?? null,
+    startDate: r.start_date ?? null,
+    endDate: r.end_date ?? null,
+    seriesKey: r.series_key ?? null,
+  }))
+}
+
+/** 묶기 — 남의 이벤트 행도 series_key 하나만 채워야 해서 RPC를 쓴다 */
+export async function linkEventSeries(eventIds: string[], key: string): Promise<{ key: string | null; message?: string }> {
+  const ids = [...new Set(eventIds.filter(Boolean))]
+  if (ids.length === 0) return { key }
+
+  const supabase = createClient()
+  const { data, error } = await supabase.rpc('link_event_series', { p_event_ids: ids, p_key: key })
+  if (error) {
+    console.error('[이벤트 묶기 실패]', error.message, error.code, error.details, error.hint)
+    return { key: null, message: error.message }
+  }
+  return { key: (data as string) ?? key }
+}
+
 /* 이 장소에 등록된 샵 찾기 — 장소로 이벤트를 등록할 때
    "이 샵의 이벤트인가요?"를 물어보기 위한 조회. 같은 place_id 우선, 없으면 주소 앞부분 일치. */
 export async function findShopsAtPlace(

@@ -12,6 +12,7 @@ import { daysUntil } from '@/lib/event/rankEvents'
 import {
   EventFormData, EMPTY_EVENT_FORM,
   createEventDraft, updateEventDraft, saveEventExtra, searchShopsByName, findShopsAtPlace, loadEventForm, uploadEventCover,
+  findSeriesCandidates, linkEventSeries, makeSeriesKey, type SeriesCandidate,
 } from '@/services/eventCreateService'
 import { getShopBySlug } from '@/services/shopService'
 import { EventHomeType } from '@/services/eventHomeService'
@@ -62,6 +63,10 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
   const [shopPicked, setShopPicked] = useState<ShopHit | null>(null)
   // 장소로 고른 자리에 등록된 샵이 있으면 "이 샵의 이벤트인가요?"를 물어본다
   const [shopSuggest, setShopSuggest] = useState<ShopHit[]>([])
+  // 제목·기간이 똑같은 이벤트가 이미 있으면 "지점만 다른 같은 이벤트인가요?"를 물어본다
+  const [seriesSuggest, setSeriesSuggest] = useState<SeriesCandidate[]>([])
+  const [seriesDismissed, setSeriesDismissed] = useState(false)
+  const [seriesBusy, setSeriesBusy] = useState(false)
   const [placeQuery, setPlaceQuery] = useState('')
   const [placeHits, setPlaceHits] = useState<PlaceSearchResult[]>([])
   const [placeSearching, setPlaceSearching] = useState(false)
@@ -239,6 +244,40 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
       setShopSuggest(hits)
     } catch { setShopSuggest([]) }
   }
+  /* 지점만 다른 같은 이벤트 찾기 — 제목과 기간이 완전히 같은 것만.
+     장소 단계에 들어왔을 때(제목·기간이 이미 정해진 시점) 한 번 조회한다. */
+  useEffect(() => {
+    if (step !== 3 || seriesDismissed || form.seriesKey.trim()) { setSeriesSuggest([]); return }
+    if (!form.title.trim() || !form.startDate || !form.endDate) { setSeriesSuggest([]); return }
+    let alive = true
+    const t = setTimeout(() => {
+      findSeriesCandidates({ title: form.title, startDate: form.startDate, endDate: form.endDate, excludeId: eventId })
+        .then(r => { if (alive) setSeriesSuggest(r) })
+        .catch(() => { if (alive) setSeriesSuggest([]) })
+    }, 250)
+    return () => { alive = false; clearTimeout(t) }
+  }, [step, form.title, form.startDate, form.endDate, form.seriesKey, seriesDismissed, eventId])
+
+  /* "네, 같은 이벤트예요" — 후보들과 이 이벤트에 같은 키를 넣는다.
+     후보 중에 이미 키가 있으면 그 묶음에 합류하고, 없으면 새 키를 만든다. */
+  const linkSeries = async () => {
+    if (seriesSuggest.length === 0 || seriesBusy) return
+    setSeriesBusy(true)
+    const existing = seriesSuggest.find(s => s.seriesKey)?.seriesKey?.trim() || ''
+    const key = existing || makeSeriesKey(form.title, form.startDate)
+    const ids = seriesSuggest.filter(s => (s.seriesKey ?? '') !== key).map(s => s.id)
+    if (eventId) ids.push(eventId)
+
+    const res = await linkEventSeries(ids, key)
+    setSeriesBusy(false)
+    if (res.key) {
+      set('seriesKey', res.key)
+      setSeriesSuggest([])
+    } else {
+      setError(res.message ?? '묶기에 실패했어요. 아래 칸에 직접 넣어주세요.')
+    }
+  }
+
   const clearPlace = () => {
     setShopSuggest([])
     set('placeId', null)
@@ -469,9 +508,49 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
                 </div>
               )}
 
+              {/* 제목·기간이 똑같은 이벤트가 이미 있으면 묶을지 물어본다. 자동으로 묶지는 않는다 */}
+              {seriesSuggest.length > 0 && (
+                <div style={{ margin: '-6px 0 20px', padding: '14px 16px', border: '1px solid var(--accent)', borderRadius: 12, background: 'var(--accent-l, rgba(255,86,146,.08))' }}>
+                  <div style={{ fontSize: 13.5, fontWeight: 800, color: 'var(--text)', marginBottom: 4 }}>
+                    같은 이벤트가 이미 등록돼 있어요
+                  </div>
+                  <p style={{ fontSize: 12.5, color: 'var(--muted)', margin: '0 0 12px', lineHeight: 1.6 }}>
+                    지점만 다른 같은 이벤트인가요? 묶으면 목록에 한 장으로 보이고, 상세에서 서로 다른 지점으로 이동할 수 있어요.
+                  </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 12 }}>
+                    {seriesSuggest.map(s => (
+                      <div key={s.id} style={{ padding: '10px 12px', borderRadius: 10, background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                        <div style={{ fontSize: 13, fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.title}</div>
+                        <div style={{ fontSize: 11.5, color: 'var(--muted)', marginTop: 2 }}>
+                          {[s.placeName, s.startDate && s.endDate ? `${s.startDate.slice(5).replace('-', '.')} ~ ${s.endDate.slice(5).replace('-', '.')}` : null]
+                            .filter(Boolean).join(' · ')}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    onClick={linkSeries}
+                    disabled={seriesBusy}
+                    style={{ padding: '9px 16px', borderRadius: 8, border: 'none', background: 'var(--accent)', color: '#fff', fontSize: 12.5, fontWeight: 800, cursor: seriesBusy ? 'default' : 'pointer', fontFamily: 'inherit', opacity: seriesBusy ? .6 : 1 }}
+                  >
+                    {seriesBusy ? '묶는 중…' : '네, 같은 이벤트예요'}
+                  </button>
+                  <button onClick={() => { setSeriesSuggest([]); setSeriesDismissed(true) }} style={{ ...linkBtn, marginTop: 10 }}>
+                    아니요, 다른 이벤트예요
+                  </button>
+                </div>
+              )}
+
+              {/* 묶기 완료 */}
+              {form.seriesKey.trim() && seriesSuggest.length === 0 && (
+                <div style={{ margin: '-6px 0 20px', padding: '11px 14px', borderRadius: 10, background: 'var(--surface2)', border: '1px solid var(--border)', fontSize: 12.5, color: 'var(--muted)', lineHeight: 1.6 }}>
+                  <b style={{ color: 'var(--text)' }}>다른 지점과 묶인 이벤트예요.</b> 목록에는 한 장으로 보이고, 상세에서 서로 이동할 수 있어요.
+                </div>
+              )}
+
               <Field
                 label="같은 이벤트 묶기"
-                hint={<>여러 지점에서 하는 같은 이벤트면 <b>지점마다 같은 값</b>을 넣어주세요. 목록에 한 장으로 묶여 보이고, 상세에서 다른 지점으로 이동할 수 있어요. 한 곳에서만 하면 비워두세요.</>}
+                hint={<>보통은 위에서 자동으로 잡아줘요. 못 잡았을 때만 <b>지점마다 같은 값</b>을 직접 넣어주세요. 한 곳에서만 하면 비워둡니다.</>}
               >
                 <input
                   value={form.seriesKey}
@@ -780,11 +859,12 @@ function StepHead({ icon, title, sub }: { icon: EventIconName; title: string; su
   )
 }
 
-function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
+// hint는 <b> 같은 강조를 섞어 쓰므로 문자열이 아니라 ReactNode를 받는다
+function Field({ label, hint, children }: { label: string; hint?: React.ReactNode; children: React.ReactNode }) {
   return (
     <div style={{ marginBottom: 22 }}>
       <div style={{ fontSize: 13, fontWeight: 800, marginBottom: 6 }}>{label}</div>
-      {hint && <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 8 }}>{hint}</p>}
+      {hint && <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 8, lineHeight: 1.6 }}>{hint}</p>}
       {children}
     </div>
   )

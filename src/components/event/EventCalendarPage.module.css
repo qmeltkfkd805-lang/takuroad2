@@ -59,7 +59,7 @@
 
 /* ── 우측 패널 ── */
 .panel { border: 1px solid var(--border); border-radius: var(--r); background: var(--surface); display: flex; flex-direction: column; max-height: calc(100dvh - 120px); }
-@media (min-width: 1024px), (hover: hover) and (pointer: fine) { .panel { position: sticky; top: 80px; } }
+/* 데스크톱에서는 아래 "한 화면 맞추기"가 캘린더와 같은 높이로 고정하므로 sticky가 필요 없다 */
 .panelHead { padding: 16px 16px 12px; border-bottom: 1px solid var(--border); }
 .panelDate { font-size: 17px; font-weight: 900; color: var(--text); }
 .panelCounts { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 6px; font-size: 12.5px; color: var(--muted); }
@@ -123,9 +123,32 @@
 .skelCal { height: 700px; border-radius: var(--r); background: var(--surface2); animation: pulse 1.3s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .5 } }
 
-/* 모바일 */
+/* 한 화면에 딱 맞추기 (데스크톱)
+   페이지 자체는 스크롤하지 않고, 캘린더와 오른쪽 패널이 남은 높이를 똑같이 나눠 갖는다.
+   긴 목록은 패널 안쪽에서만 스크롤된다. ⚠️ 기본 규칙들보다 아래에 있어야 덮어쓴다. */
+@media (min-width: 1024px), (hover: hover) and (pointer: fine) {
+  .page { height: 100dvh; display: flex; flex-direction: column; padding-bottom: 18px; overflow: hidden; }
+  .layout { flex: 1; min-height: 0; align-items: stretch; }
+
+  .cal { display: flex; flex-direction: column; min-height: 0; }
+  /* 주 행이 남은 높이를 균등하게 나눈다. 화면이 낮으면 96px까지만 줄고, 그 아래로는 안쪽 스크롤 */
+  .grid { flex: 1; min-height: 0; grid-auto-rows: minmax(96px, 1fr); overflow-y: auto; }
+  .weeks { flex: 1; min-height: 0; overflow-y: auto; }
+  .cell { height: auto; min-height: 0; }
+
+  /* 캘린더와 같은 높이 — 그래서 sticky가 필요 없다 */
+  .panel { position: static; height: 100%; max-height: none; min-height: 0; }
+  .skelCal { height: auto; min-height: 0; }
+}
+
+/* 모바일 — 위 "한 화면 맞추기"는 쓰지 않는다 (넓은 태블릿이 두 쿼리에 모두 걸릴 수 있어 되돌린다) */
 @media (hover: none) and (pointer: coarse) {
-  .page { padding: 12px 12px 40px; }
+  .page { padding: 12px 12px 40px; display: block; height: auto; overflow: visible; }
+  .layout { min-height: 0; align-items: start; }
+  .grid { grid-auto-rows: auto; overflow: visible; }
+  .weeks { overflow: visible; }
+  .panel { height: auto; }
+  .skelCal { height: 700px; }
   .topHead { flex-wrap: wrap; }
   .headRight { width: 100%; }
   .workSearch { flex: 1; width: auto; }

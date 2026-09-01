@@ -51,3 +51,6 @@ src/scripts/event-backups/
 src/scripts/event-goods-backups/
 src/scripts/work-event-covers/
 src/scripts/work-menu-goods-images/
+
+# 작품 보강 스크립트 백업 스냅샷 (용량 큼)
+src/scripts/work-enrichment-output/
