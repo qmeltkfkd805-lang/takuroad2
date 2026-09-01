@@ -119,6 +119,8 @@ export interface ShopPreset {
   icon: string        // EventIconName
   color: string
   patch: Partial<ShopFilters>
+  /** 누르면 열 탭. 팝업·전시·콜라보 카페는 샵이 아니라 이벤트라 'event' 탭으로 연다 */
+  tab?: 'shop' | 'event'
 }
 
 /**
@@ -128,9 +130,10 @@ export interface ShopPreset {
 export const SHOP_PRESETS: ShopPreset[] = [
   { id: 'figure', label: '피규어 쇼핑', icon: 'bag',    color: '#E8006F', patch: { goodsSlugs: ['figure-new'], openNow: true } },
   { id: 'gacha',  label: '가챠 투어',   icon: 'sparkle', color: '#E03535', patch: { goodsSlugs: ['gacha-new'], openNow: true } },
-  { id: 'cafe',   label: '콜라보 카페', icon: 'party',  color: '#EA580C', patch: { cats: ['콜라보카페'], hasEvent: true } },
-  { id: 'exhibition', label: '전시회', icon: 'star', color: '#4F46E5', patch: { cats: ['전시'] } },
-  { id: 'popup',  label: '이번 주 팝업', icon: 'ticket', color: '#0099CC', patch: { cats: ['팝업스토어'] } },
+  // 아래 3개는 샵이 아니라 기간 한정 이벤트 → '팝업·이벤트' 탭이 열린 상태로 보여준다
+  { id: 'cafe',   label: '콜라보 카페', icon: 'party',  color: '#EA580C', patch: { cats: ['콜라보카페'] }, tab: 'event' },
+  { id: 'exhibition', label: '전시회', icon: 'star', color: '#4F46E5', patch: { cats: ['전시'] }, tab: 'event' },
+  { id: 'popup',  label: '이번 주 팝업', icon: 'ticket', color: '#0099CC', patch: { cats: ['팝업스토어'] }, tab: 'event' },
 ]
 
 /** URL 쿼리 ↔ 필터 */

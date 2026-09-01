@@ -61,8 +61,9 @@ export default function ExhibitDetailView({ id, homeHref = '/profile/exhibit' }:
   }
 
   return (
-    <div style={{ padding: '10px 12px 72px', maxWidth: 500, margin: '0 auto', minWidth: 0 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 0 10px' }}>
+    /* 카드 박스 없이 사진은 화면 끝까지, 글 사이는 선 하나로만 구분(인스타 모바일 피드) */
+    <div style={{ padding: '10px 0 72px', maxWidth: 500, margin: '0 auto', minWidth: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 12px 10px' }}>
         <button onClick={() => router.back()} aria-label="뒤로" style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--text)', display: 'flex', padding: 4, marginLeft: -4 }}>
           <svg width="24" height="24" viewBox="0 0 24 24" {...P}><path d="m15 18-6-6 6-6" /></svg>
         </button>
@@ -82,7 +83,7 @@ export default function ExhibitDetailView({ id, homeHref = '/profile/exhibit' }:
       )}
 
       {state === 'ok' && cards.map(card => (
-        <div key={card.id} id={`ex-${card.id}`} style={{ marginBottom: 14 }}>
+        <div key={card.id} id={`ex-${card.id}`}>
           <ExhibitFeedPost
             card={card}
             isOwner={isOwner}
@@ -177,9 +178,9 @@ function ExhibitFeedPost({
   }
 
   return (
-    <div ref={wrapRef} style={{ border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden', background: 'var(--surface)' }}>
+    <div ref={wrapRef} style={{ borderBottom: '1px solid var(--border)', background: 'transparent' }}>
       {/* 헤더 — 작품 + 종류 */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '11px 12px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '11px 14px' }}>
         <div style={{ minWidth: 0, flex: 1 }}>
           <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{workName ?? '작품 미지정'}</div>
           {goodsTypeName && <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 1 }}>{goodsTypeName}</div>}
@@ -220,7 +221,7 @@ function ExhibitFeedPost({
       <ExhibitCarousel images={images} moreHint={!detail && card.imageCount > 1 ? card.imageCount : 0} />
 
       {/* 본문 */}
-      <div style={{ padding: '12px 14px 16px' }}>
+      <div style={{ padding: '12px 14px 20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 8 }}>
           {goodsName && <span style={{ fontSize: 13.5, fontWeight: 800, color: 'var(--text)' }}>{goodsName}</span>}
           <span style={{ fontSize: 11.5, color: 'var(--muted)', marginLeft: 'auto' }}>{VIS_LABEL[visibility] ?? ''}</span>

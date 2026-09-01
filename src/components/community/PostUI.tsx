@@ -9,7 +9,7 @@ import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import UserLevelBadge from '@/components/cosmetic/UserLevelBadge'
 import {
   togglePostLike, incrementPostView, getComments, addComment, deleteComment, toggleCommentLike,
-  reportPost, hidePost, deletePost, setPostVisibility, getWorkPosts,
+  reportPost, hidePost, deletePostWithGoods, setPostVisibility, getWorkPosts,
   getAdjacentPosts, type PostNeighbor,
 } from '@/services/communityPostService'
 import { CommunityPost, PostComment, ReportReason, REPORT_REASONS, BOARD_LABEL, Poll } from '@/types/community-post'
@@ -171,7 +171,19 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
     await toggleCommentLike(c.id, user.id)
   }
   const onHide = async () => { if (window.confirm('이 글을 숨길까요?')) { await hidePost(post.id); onChanged?.(); onClose() } }
-  const onDelete = async () => { if (window.confirm('이 글을 삭제할까요? 되돌릴 수 없어요.')) { await deletePost(post.id); onChanged?.(); onClose() } }
+  // 굿즈 자랑 글은 연결된 굿즈도 함께 삭제(다른 글·전시관에 걸려 있으면 굿즈는 남음)
+  const onDelete = async () => {
+    const isGoodsPost = post.board === 'goods'
+    const msg = isGoodsPost
+      ? '이 글을 삭제할까요?\n\n연결된 굿즈도 내 굿즈에서 함께 사라져요.\n(그 굿즈로 쓴 다른 자랑 글이 있거나 전시관에 걸려 있으면 굿즈는 남아요)\n\n되돌릴 수 없어요.'
+      : '이 글을 삭제할까요? 되돌릴 수 없어요.'
+    if (!window.confirm(msg)) return
+    const r = await deletePostWithGoods(post.id)
+    if (isGoodsPost && r.ok && r.keptGoods.length > 0) {
+      window.alert('글은 삭제했어요. 이 굿즈는 전시관이나 다른 자랑 글에 연결돼 있어 내 굿즈에 남겨뒀어요.')
+    }
+    onChanged?.(); onClose()
+  }
 
   const isAuthor = !!user && post.author?.id === user.id
   const togglePrivate = async () => {

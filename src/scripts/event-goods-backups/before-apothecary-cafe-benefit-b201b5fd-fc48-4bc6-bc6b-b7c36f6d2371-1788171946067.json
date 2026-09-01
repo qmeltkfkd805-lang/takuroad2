@@ -1,0 +1,15 @@
+[
+  {
+    "id": "7a5c6819-8b64-4959-b5f2-5b3e9e972325",
+    "event_id": "b201b5fd-fc48-4bc6-bc6b-b7c36f6d2371",
+    "name": "Gratte 메뉴·특전 안내",
+    "kind": "menu",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/b201b5fd-fc48-4bc6-bc6b-b7c36f6d2371/official-x-2075493439626747982-1.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-25T13:22:26.235531+00:00",
+    "updated_at": "2026-08-25T13:22:26.235531+00:00"
+  }
+]

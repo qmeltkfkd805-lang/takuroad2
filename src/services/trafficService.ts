@@ -31,6 +31,21 @@ export async function getTimeseries(metric: Metric, days: number): Promise<TimeP
   return data as TimePoint[]
 }
 
+/* 유입 채널별 가입 수 (관리자 전용 RPC). profiles.signup_channel 집계 — firstTouch.ts가 채운 값 */
+export interface SignupSourceRow { channel: string; count: number }
+export async function getSignupSources(days: number): Promise<SignupSourceRow[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase.rpc('get_signup_sources', { days })
+  if (error) {
+    console.error('[유입 채널] rpc 실패:', {
+      message: (error as any)?.message, code: (error as any)?.code,
+      details: (error as any)?.details, hint: (error as any)?.hint,
+    })
+    return []
+  }
+  return ((data ?? []) as any[]).map(r => ({ channel: r.channel, count: Number(r.count) || 0 }))
+}
+
 export async function getVisitSummary(): Promise<VisitSummary | null> {
   const supabase = createClient()
   const { data, error } = await supabase.rpc('get_visit_summary')

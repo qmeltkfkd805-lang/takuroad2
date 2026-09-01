@@ -200,10 +200,7 @@ export async function createShop(
 ): Promise<{ slug: string; id: string } | null> {
   const supabase = createClient()
 
-  const { data: shop, error } = await supabase
-    .from('shops')
-    .insert({
-      slug:         data.slug,
+  const payload = {
       name:         data.name,
       description:  data.description || null,
       addr:         data.addr || null,
@@ -229,11 +226,28 @@ export async function createShop(
       added_by:     userId,
       owner_id:     userId,
       status:       data.status ?? 'active',   // 위저드는 'hidden'으로 만들고 '등록 완료' 때 공개
-    } as any)
-    .select('slug, id')
-    .single()
+  }
 
-  if (error || !shop) { if (error) console.error('[shop] 생성 실패:', error.message); return null }
+  // slug 충돌 처리 — 같은 이름의 샵이 이미 있으면 -2, -3… 을 붙여 다시 시도.
+  // (unique_violation = 23505. 동시에 같은 이름이 들어와도 여기서 걸러진다)
+  const baseSlug = String(data.slug || '').trim() || `shop-${Math.random().toString(36).slice(2, 8)}`
+  let shop: { slug: string; id: string } | null = null
+  for (let attempt = 1; attempt <= 8; attempt++) {
+    const slug = attempt === 1 ? baseSlug : `${baseSlug}-${attempt}`
+    const { data: row, error } = await supabase
+      .from('shops')
+      .insert({ ...payload, slug } as any)
+      .select('slug, id')
+      .single()
+
+    if (row) { shop = row as any; break }
+    if ((error as any)?.code !== '23505') {
+      console.error('[shop] 생성 실패:', error?.message)
+      return null
+    }
+    // slug 중복 → 다음 번호로 재시도
+  }
+  if (!shop) { console.error('[shop] 생성 실패: slug 중복이 계속돼 포기'); return null }
 
   // 성장 Activity — 샵 등록. (경험치)
   // ⭐ 위저드는 'hidden'(임시)으로 만들고 '등록 완료' 때 publishShop에서 경험치를 준다.

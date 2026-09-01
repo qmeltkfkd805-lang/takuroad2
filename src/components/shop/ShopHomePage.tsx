@@ -73,7 +73,10 @@ export default function ShopHomePage() {
                 <button className={styles.heroBtnPrimary} onClick={() => go('/map')}>
                   <EventIcon name="pin" size={15} color="#fff" />내 주변 샵 찾기
                 </button>
-                <button className={styles.heroBtnGhost} onClick={() => go('/shops/all?section=region')}>지역별 둘러보기</button>
+                <button className={styles.heroBtnGhost} onClick={() => go('/shop/new')}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
+                  샵 등록하기
+                </button>
               </div>
             </div>
             {topRegion && (

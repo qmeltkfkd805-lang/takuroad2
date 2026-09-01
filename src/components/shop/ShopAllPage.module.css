@@ -84,6 +84,42 @@
   box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 6px;
 }
 .popMenuRight { left: auto; right: 0; }
+
+/* 지역 2단계 패널 (지도 CategoryFilter와 같은 디자인) — .popMenu와 별도 클래스 */
+.popMenuRegion {
+  min-width: 0; width: min(380px, calc(100vw - 32px));
+  max-height: none; overflow: hidden; padding: 0;
+}
+.regionHead {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 14px 10px; border-bottom: 1px solid var(--border);
+}
+.regionHeadLabel { font-size: 12px; font-weight: 800; color: var(--muted); }
+.regionReset {
+  border: none; background: none; padding: 0; cursor: pointer;
+  font-family: inherit; font-size: 12px; font-weight: 700; color: var(--accent);
+}
+.regionGrid { display: grid; grid-template-columns: 128px 1fr; }
+.regionCol { border-right: 1px solid var(--border); padding: 6px; max-height: 300px; overflow-y: auto; scrollbar-width: thin; }
+.districtCol { padding: 6px; max-height: 300px; overflow-y: auto; scrollbar-width: thin; display: flex; flex-direction: column; gap: 4px; }
+.regionItem, .regionItemOn {
+  display: block; width: 100%; text-align: left;
+  padding: 9px 10px; margin-bottom: 4px; border-radius: 9px; border: none;
+  background: transparent; color: var(--text);
+  font-size: 12.5px; font-weight: 600; cursor: pointer; font-family: inherit;
+}
+.regionItem:hover { background: var(--surface2); }
+.regionItemOn { background: var(--accent-l); color: var(--accent); font-weight: 800; }
+.districtItem, .districtItemOn {
+  padding: 9px 10px; border-radius: 9px; cursor: pointer; font-family: inherit;
+  font-size: 12.5px; font-weight: 700; text-align: left; flex-shrink: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  border: 1.5px solid var(--border); background: var(--surface); color: var(--text);
+}
+.districtItem:hover { border-color: var(--accent); }
+.districtItemOn { border-color: var(--accent); background: var(--accent-l); color: var(--accent); }
+.regionHint { padding: 14px 10px; font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+
 .popList { display: flex; flex-direction: column; }
 .popItem, .popItemOn {
   display: flex; align-items: center; gap: 8px; width: 100%; text-align: left;

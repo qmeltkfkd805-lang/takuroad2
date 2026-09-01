@@ -210,13 +210,16 @@ export default function ShopAllPage() {
       <div className={styles.themes}>
         <span className={styles.themeLabel}><EventIcon name="sparkle" size={15} color="var(--accent)" />오늘의 테마</span>
         {SHOP_PRESETS.map(p => {
-          const on = presetActive(filters, p.patch)
+          // 팝업·전시·콜라보 카페 테마는 '팝업·이벤트' 탭이 켜진 상태로 연다(tab: 'event')
+          const on = presetActive(filters, p.patch) && tab === (p.tab ?? 'shop')
           return (
             <button
               key={p.id}
               className={on ? styles.themeChipOn : styles.themeChip}
               aria-pressed={on}
-              onClick={() => apply(on ? EMPTY_FILTERS : { ...EMPTY_FILTERS, ...p.patch })}
+              onClick={() => on
+                ? go({ filters: EMPTY_FILTERS, tab: 'shop', page: 1 })
+                : go({ filters: { ...EMPTY_FILTERS, ...p.patch }, tab: p.tab ?? 'shop', page: 1 })}
             >
               <EventIcon name={p.icon as any} size={14} color={on ? '#fff' : p.color} />{p.label}
             </button>
@@ -250,15 +253,15 @@ export default function ShopAllPage() {
         </div>
 
         <div className={styles.filterBtns}>
-          <Popover label="지역" value={filters.region ?? undefined}>
+          <Popover label="지역" value={filters.district ? `${filters.region} ${filters.district}` : (filters.region ?? undefined)} menuClass={styles.popMenuRegion}>
             {close => (
-              <div className={styles.popList} role="listbox">
-                <button className={!filters.region ? styles.popItemOn : styles.popItem} onClick={() => { apply({ ...filters, region: null, district: null }); close() }}>전체 지역</button>
-                {SIDO.map(s => (
-                  <button key={s} className={filters.region === s ? styles.popItemOn : styles.popItem}
-                    onClick={() => { apply({ ...filters, region: s, district: null }); close() }}>{s}</button>
-                ))}
-              </div>
+              <RegionPanel
+                region={filters.region}
+                district={filters.district}
+                districtsByRegion={districtsByRegion}
+                onPick={(region, district) => apply({ ...filters, region, district })}
+                close={close}
+              />
             )}
           </Popover>
 
@@ -403,9 +406,69 @@ function pageNumbers(cur: number, total: number): (number | '…')[] {
   return out
 }
 
+/* ───────── 지역 2단계 패널 (지도 CategoryFilter와 같은 구조: 좌 시/도, 우 구·군) ───────── */
+function RegionPanel({ region, district, districtsByRegion, onPick, close }: {
+  region: string | null
+  district: string | null
+  districtsByRegion: Record<string, string[]>
+  onPick: (region: string | null, district: string | null) => void
+  close: () => void
+}) {
+  // 패널 안에서 보고 있는 시/도 — 고르기 전에도 구 목록을 미리 볼 수 있게 선택과 분리
+  const [viewRegion, setViewRegion] = useState<string | null>(region)
+  const districts = viewRegion ? (districtsByRegion[viewRegion] ?? []) : []
+
+  const pickRegion = (s: string) => {
+    setViewRegion(s)
+    onPick(s, null)   // 시/도 단계에서 이미 필터 적용 — 패널은 열어둔 채 구 목록을 보여준다
+  }
+
+  return (
+    <div>
+      <div className={styles.regionHead}>
+        <span className={styles.regionHeadLabel}>지역</span>
+        {region && <button className={styles.regionReset} onClick={() => { onPick(null, null); close() }}>초기화</button>}
+      </div>
+      <div className={styles.regionGrid}>
+        {/* 왼쪽 — 시/도 */}
+        <div className={styles.regionCol}>
+          <button className={!region ? styles.regionItemOn : styles.regionItem}
+            onClick={() => { onPick(null, null); close() }}>전체 지역</button>
+          {SIDO.map(s => (
+            <button key={s} className={viewRegion === s ? styles.regionItemOn : styles.regionItem}
+              onClick={() => pickRegion(s)}>{s}</button>
+          ))}
+        </div>
+        {/* 오른쪽 — 시/군/구 */}
+        <div className={styles.districtCol}>
+          {!viewRegion ? (
+            <div className={styles.regionHint}>왼쪽에서 시/도를 먼저 고르세요.</div>
+          ) : districts.length === 0 ? (
+            <div className={styles.regionHint}>{viewRegion}에는 구·군 정보가 없어요.</div>
+          ) : (
+            <>
+              <button
+                className={viewRegion === region && !district ? styles.districtItemOn : styles.districtItem}
+                onClick={() => { onPick(viewRegion, null); close() }}
+              >{viewRegion} 전체</button>
+              {districts.map(d => (
+                <button key={d}
+                  className={viewRegion === region && district === d ? styles.districtItemOn : styles.districtItem}
+                  onClick={() => { onPick(viewRegion, d); close() }}
+                >{d}</button>
+              ))}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /* ───────── 팝오버 ───────── */
-function Popover({ label, value, count, align, children }: {
-  label: string; value?: string; count?: number; align?: 'left' | 'right'; children: (close: () => void) => React.ReactNode
+function Popover({ label, value, count, align, menuClass, children }: {
+  label: string; value?: string; count?: number; align?: 'left' | 'right'; menuClass?: string
+  children: (close: () => void) => React.ReactNode
 }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -422,7 +485,11 @@ function Popover({ label, value, count, align, children }: {
         {value ?? label}{count ? ` ${count}` : ''}
         <svg className={open ? styles.chevUp : styles.chevDown} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M6 9l6 6 6-6" /></svg>
       </button>
-      {open && <div className={align === 'right' ? `${styles.popMenu} ${styles.popMenuRight}` : styles.popMenu}>{children(() => setOpen(false))}</div>}
+      {open && (
+        <div className={[styles.popMenu, align === 'right' ? styles.popMenuRight : '', menuClass ?? ''].filter(Boolean).join(' ')}>
+          {children(() => setOpen(false))}
+        </div>
+      )}
     </div>
   )
 }

@@ -1,0 +1,121 @@
+{
+  "events": [
+    {
+      "id": "439fe62a-6b41-4bbd-abd1-94250298acb3",
+      "tag_id": "cdb2b8fa-0a7f-4ecf-a1af-7f7287b85338",
+      "type": "popup",
+      "shop_id": null,
+      "title": "폼폼푸린의 와-앙만두 팝업스토어",
+      "created_at": "2026-08-31T14:25:45.688976+00:00",
+      "start_date": "2026-09-02",
+      "end_date": "2026-09-27",
+      "entry_info": "현장예약 후 입장\n대기 없을 시 바로 입장 가능",
+      "hours_info": "일~목 10:30~20:30\n금·토·공휴일 10:30~21:00\n현장예약 접수 09:30부터",
+      "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+      "reserve_start": null,
+      "reserve_end": null,
+      "hours": {
+        "fri": {
+          "open": "10:30",
+          "close": "21:00"
+        },
+        "mon": {
+          "open": "10:30",
+          "close": "20:30"
+        },
+        "sat": {
+          "open": "10:30",
+          "close": "21:00"
+        },
+        "sun": {
+          "open": "10:30",
+          "close": "20:30"
+        },
+        "thu": {
+          "open": "10:30",
+          "close": "20:30"
+        },
+        "tue": {
+          "open": "10:30",
+          "close": "20:30"
+        },
+        "wed": {
+          "open": "10:30",
+          "close": "20:30"
+        }
+      },
+      "cover_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/event-posters/pompompurin-wang-mandu-2026-main.jpg",
+      "parking": true,
+      "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용",
+      "description": "폼폼푸린 탄생 30주년을 기념해 왕만두집 사장님으로 변신한 폼폼푸린과 친구들을 만나는 공식 캐릭터 팝업스토어입니다.\n\n현장 대기는 09:30부터 등록할 수 있으며 1명이 최대 2명까지 등록할 수 있습니다. 호출 후 15분 안에 방문하지 않으면 예약이 취소될 수 있고, 당일 수용 인원을 넘으면 조기 마감될 수 있습니다.\n\n7만원 이상 구매 후 공식 운영 계정 팔로우를 인증하면 영수증 1건당 와앙만두 기프트세트 1개를 받을 수 있으며 준비 수량 소진 시 종료됩니다.",
+      "place_name": "아이파크몰 용산점",
+      "place_addr": "서울 용산구 한강대로23길 55",
+      "place_lat": 37.5288166772537,
+      "place_lng": 126.964532769945,
+      "place_detail": "리빙파크 6F",
+      "source_urls": [
+        "https://www.instagram.com/hk_zip/",
+        "https://www.instagram.com/sanrio_kr/",
+        "https://www.hdc-iparkmall.com/main/location"
+      ],
+      "ticket_urls": [],
+      "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+      "updated_at": "2026-08-31T14:25:45.701+00:00",
+      "place_id": "045ed3e4-9d81-4f68-a4c7-e6815f0ccadc",
+      "video_url": null
+    }
+  ],
+  "place": {
+    "id": "045ed3e4-9d81-4f68-a4c7-e6815f0ccadc",
+    "slug": "place-990380",
+    "name": "아이파크몰 용산점",
+    "place_type": "SHOPPING_MALL",
+    "addr": "서울 용산구 한강대로23길 55",
+    "region": "서울",
+    "district": "용산구",
+    "lat": 37.5288166772537,
+    "lng": 126.964532769945,
+    "google_place_id": null,
+    "description": null,
+    "hours": null,
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용",
+    "cover_url": null,
+    "created_at": "2026-08-04T14:51:37.732378+00:00",
+    "updated_at": "2026-08-31T09:43:05.474+00:00",
+    "kakao_place_id": "7990380",
+    "system_created": false,
+    "category_name": "가정,생활 > 복합쇼핑몰",
+    "cover_image": null,
+    "access_note": null
+  },
+  "tag": {
+    "id": "cdb2b8fa-0a7f-4ecf-a1af-7f7287b85338",
+    "name": "폼폼푸린",
+    "slug": "pompompurin",
+    "created_at": "2026-06-22T13:13:47.67071+00:00",
+    "ip_type": "캐릭터",
+    "ip_type_id": "ccf85ccf-cb65-40e8-9402-4f6fbc6df485",
+    "cover_url": null,
+    "banner_image": null,
+    "english_name": null,
+    "release_year": null,
+    "genres": [
+      "일상",
+      "가족",
+      "코미디"
+    ],
+    "description": "갈색 베레모가 트레이드마크인 느긋한 골든리트리버 소년으로 낮잠과 신발 모으기를 좋아한다.",
+    "keywords": null,
+    "status": null,
+    "original_type": null,
+    "accent_color": null,
+    "homepage_url": null,
+    "twitter_url": null,
+    "youtube_url": null,
+    "official_url": "https://www.sanrio.co.jp/characters/pompompurin/",
+    "created_by": null,
+    "aliases": null,
+    "links": []
+  }
+}

@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
-import { getAdminMembers, AdminMember, getMemberDetail, MemberDetail, grantExp } from '@/services/adminMemberService'
+import { getAdminMembers, AdminMember, getMemberDetail, MemberDetail, grantExp, getMemberSignupSource, MemberSignupSource, getMemberItems, MemberItem, MemberItemKind } from '@/services/adminMemberService'
 import { adminUpsert } from '@/services/adminUpsertService'
 import { createClient } from '@/lib/supabase/client'
 
@@ -80,6 +80,46 @@ export default function MemberAdminTab() {
   )
 }
 
+/* 활동 타일을 눌렀을 때 펼쳐지는 목록 — 여섯 종류가 같은 모양이라 하나로 렌더한다 */
+function MemberItemList({ uid, kind, label }: { uid: string; kind: MemberItemKind; label: string }) {
+  const [rows, setRows] = useState<MemberItem[] | null>(null)
+  useEffect(() => {
+    setRows(null)
+    getMemberItems(uid, kind).then(setRows).catch(() => setRows([]))
+  }, [uid, kind])
+
+  return (
+    <div style={{ marginTop: 12, border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
+      <div style={{ padding: '9px 12px', background: 'var(--surface2)', fontSize: 12.5, fontWeight: 800 }}>
+        {label} {rows ? `${rows.length}건` : ''}
+      </div>
+      {rows === null ? (
+        <div style={{ padding: 18, textAlign: 'center', color: 'var(--muted)', fontSize: 13 }}>불러오는 중...</div>
+      ) : rows.length === 0 ? (
+        <div style={{ padding: 18, textAlign: 'center', color: 'var(--muted)', fontSize: 13 }}>내역이 없어요.</div>
+      ) : (
+        <div style={{ maxHeight: 360, overflowY: 'auto' }}>
+          {rows.map((r, i) => (
+            <div key={`${r.item_id}-${i}`} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', borderTop: i === 0 ? 'none' : '1px solid var(--border)' }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title}</span>
+                  {r.badge && <span style={{ flexShrink: 0, fontSize: 10, fontWeight: 800, color: 'var(--accent)', border: '1px solid var(--accent)', borderRadius: 5, padding: '1px 5px' }}>{r.badge}</span>}
+                </div>
+                {r.subtitle && <div style={{ fontSize: 11.5, color: 'var(--muted)', marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.subtitle}</div>}
+              </div>
+              {r.at && <span style={{ flexShrink: 0, fontSize: 11, color: 'var(--muted)' }}>{new Date(r.at).toLocaleDateString('ko-KR')}</span>}
+              {r.href && (
+                <a href={r.href} target="_blank" rel="noreferrer" style={{ flexShrink: 0, fontSize: 11.5, fontWeight: 700, color: 'var(--accent)', textDecoration: 'none' }}>열기 ›</a>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 function MemberDetailView({ id, onBack }: { id: string; onBack: () => void }) {
   const [d, setD] = useState<MemberDetail | null>(null)
   const [loading, setLoading] = useState(true)
@@ -93,6 +133,11 @@ function MemberDetailView({ id, onBack }: { id: string; onBack: () => void }) {
   const [grantTierId, setGrantTierId] = useState('')
   const [grantBusy, setGrantBusy] = useState(false)
   const [grantMsg, setGrantMsg] = useState<string | null>(null)
+  const [src, setSrc] = useState<MemberSignupSource | null>(null)
+  useEffect(() => { getMemberSignupSource(id).then(setSrc).catch(() => {}) }, [id])
+  // 활동 타일 클릭 → 그 종류의 목록 펼치기
+  const [openKind, setOpenKind] = useState<MemberItemKind | null>(null)
+  useEffect(() => { setOpenKind(null) }, [id])
 
   const refresh = useCallback(() => {
     getMemberDetail(id).then((m) => {
@@ -153,9 +198,13 @@ function MemberDetailView({ id, onBack }: { id: string; onBack: () => void }) {
   if (loading) return <div style={{ padding: 40, textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
   if (!d) return <div style={{ padding: 16 }}><button onClick={onBack} style={backBtn}>← 목록</button><p style={{ marginTop: 20, color: 'var(--muted)' }}>회원 정보를 불러올 수 없어요</p></div>
 
-  const acts = [
-    { label: '체크인', v: d.checkins }, { label: '최애', v: d.favorites }, { label: '후기', v: d.reviews },
-    { label: '저장 샵', v: d.saved_shops }, { label: '만든 루트', v: d.routes }, { label: '완주 루트', v: d.route_completions },
+  const acts: { label: string; v: number; kind: MemberItemKind }[] = [
+    { label: '체크인', v: d.checkins, kind: 'checkins' },
+    { label: '최애', v: d.favorites, kind: 'favorites' },
+    { label: '후기', v: d.reviews, kind: 'reviews' },
+    { label: '저장 샵', v: d.saved_shops, kind: 'saved_shops' },
+    { label: '만든 루트', v: d.routes, kind: 'routes' },
+    { label: '완주 루트', v: d.route_completions, kind: 'route_completions' },
   ]
   const status = d.status || 'active'
 
@@ -186,15 +235,46 @@ function MemberDetailView({ id, onBack }: { id: string; onBack: () => void }) {
         <Row k="등급" v={ROLE_LABEL[d.role] ?? d.role} />
       </Card>
 
+      {/* 가입 유입 경로 — 첫 방문 때 잡아 profiles에 저장한 값 */}
+      <Card title="유입 경로">
+        <Row k="채널" v={src?.signup_channel || '기록 없음'} />
+        {src?.signup_referrer && <Row k="referrer" v={src.signup_referrer} mono />}
+        {src?.signup_landing_path && <Row k="첫 방문 페이지" v={src.signup_landing_path} mono />}
+        {src?.signup_utm_source && <Row k="utm_source" v={src.signup_utm_source} mono />}
+        {src?.signup_utm_medium && <Row k="utm_medium" v={src.signup_utm_medium} mono />}
+        {src?.signup_utm_campaign && <Row k="utm_campaign" v={src.signup_utm_campaign} mono />}
+        {!src?.signup_channel && (
+          <p style={{ fontSize: 11.5, color: 'var(--muted)', margin: '6px 0 0', lineHeight: 1.6 }}>
+            이 기능이 들어가기 전에 가입한 회원이거나, 브라우저 저장소가 막혀 있어 기록이 없어요.
+          </p>
+        )}
+      </Card>
+
       <Card title="활동">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
-          {acts.map((a) => (
-            <div key={a.label} style={{ border: '1px solid var(--border)', borderRadius: 10, padding: '12px 6px', textAlign: 'center' }}>
-              <div style={{ fontSize: 20, fontWeight: 900 }}>{a.v.toLocaleString()}</div>
-              <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>{a.label}</div>
-            </div>
-          ))}
+          {acts.map((a) => {
+            const on = openKind === a.kind
+            return (
+              <button
+                key={a.label}
+                onClick={() => setOpenKind(on ? null : a.kind)}
+                disabled={a.v === 0}
+                aria-expanded={on}
+                style={{
+                  border: `1px solid ${on ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 10, padding: '12px 6px',
+                  textAlign: 'center', fontFamily: 'inherit',
+                  background: on ? 'var(--accent-l)' : 'none',
+                  color: on ? 'var(--accent)' : 'var(--text)',
+                  cursor: a.v === 0 ? 'default' : 'pointer', opacity: a.v === 0 ? 0.5 : 1,
+                }}
+              >
+                <div style={{ fontSize: 20, fontWeight: 900 }}>{a.v.toLocaleString()}</div>
+                <div style={{ fontSize: 11, color: on ? 'var(--accent)' : 'var(--muted)', marginTop: 2 }}>{a.label}</div>
+              </button>
+            )
+          })}
         </div>
+        {openKind && <MemberItemList uid={d.id} kind={openKind} label={acts.find(a => a.kind === openKind)?.label ?? ''} />}
       </Card>
 
       {d.recent_activity && d.recent_activity.length > 0 && (

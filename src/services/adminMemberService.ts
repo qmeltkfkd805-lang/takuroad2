@@ -52,6 +52,54 @@ export async function getMemberDetail(uid: string): Promise<MemberDetail | null>
   return data as MemberDetail
 }
 
+/* 가입 유입 경로 (관리자 전용). 기존 get_member_detail은 손대지 않고 별도 RPC로 읽는다. */
+export interface MemberSignupSource {
+  signup_channel: string | null
+  signup_referrer: string | null
+  signup_landing_path: string | null
+  signup_utm_source: string | null
+  signup_utm_medium: string | null
+  signup_utm_campaign: string | null
+}
+export async function getMemberSignupSource(uid: string): Promise<MemberSignupSource | null> {
+  const supabase = createClient()
+  const { data, error } = await supabase.rpc('get_member_signup_source', { uid })
+  if (error) {
+    // PostgrestError는 그냥 찍으면 {}로 보인다 — 필드를 펼쳐서 남긴다
+    console.error('[유입 경로] rpc 실패:', {
+      message: (error as any)?.message, code: (error as any)?.code,
+      details: (error as any)?.details, hint: (error as any)?.hint,
+    })
+    return null
+  }
+  const row = Array.isArray(data) ? data[0] : data
+  return (row as MemberSignupSource) ?? null
+}
+
+/* 활동 타일 클릭 → 그 회원이 실제로 뭘 했는지 목록 (관리자 전용).
+   여섯 종류를 한 가지 모양으로 돌려주므로 UI 하나로 렌더한다. */
+export type MemberItemKind = 'checkins' | 'favorites' | 'reviews' | 'saved_shops' | 'routes' | 'route_completions'
+export interface MemberItem {
+  item_id: string
+  title: string
+  subtitle: string | null
+  badge: string | null
+  at: string | null
+  href: string | null
+}
+export async function getMemberItems(uid: string, kind: MemberItemKind): Promise<MemberItem[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase.rpc('get_member_items', { uid, kind, page_limit: 200 })
+  if (error) {
+    console.error('[회원 활동 목록] rpc 실패:', {
+      message: (error as any)?.message, code: (error as any)?.code,
+      details: (error as any)?.details, hint: (error as any)?.hint,
+    })
+    return []
+  }
+  return (data ?? []) as MemberItem[]
+}
+
 export async function grantExp(uid: string, amount: number, reason: string): Promise<{ total_exp: number; level: number } | null> {
   const supabase = createClient()
   const { data, error } = await supabase.rpc('admin_grant_exp', { uid, amount, reason })

@@ -1,6 +1,6 @@
 ﻿'use client'
 import { useState, useEffect, useMemo, useRef } from 'react'
-import { getTimeseries, getVisitSummary, Metric, TimePoint, VisitSummary } from '@/services/trafficService'
+import { getTimeseries, getVisitSummary, getSignupSources, Metric, TimePoint, VisitSummary, SignupSourceRow } from '@/services/trafficService'
 
 const METRICS: { v: Metric; label: string }[] = [
   { v: 'visits', label: '방문자' }, { v: 'signups', label: '신규 가입' },
@@ -17,12 +17,15 @@ export default function TrafficSection() {
   const [data, setData] = useState<TimePoint[]>([])
   const [loading, setLoading] = useState(true)
   const [summary, setSummary] = useState<VisitSummary | null>(null)
+  const [sources, setSources] = useState<SignupSourceRow[] | null>(null)
 
   useEffect(() => { getVisitSummary().then(setSummary) }, [])
   useEffect(() => {
     setLoading(true)
     getTimeseries(metric, days).then((d) => { setData(d); setLoading(false) })
   }, [metric, days])
+  // 유입 채널은 기간만 따라간다(지표 탭과 무관)
+  useEffect(() => { getSignupSources(days).then(setSources).catch(() => setSources([])) }, [days])
 
   const total = useMemo(() => data.reduce((s, p) => s + p.count, 0), [data])
   const allZero = total === 0
@@ -57,6 +60,48 @@ export default function TrafficSection() {
         <Chart data={data} />
       )}
       {!loading && !allZero && <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 8, textAlign: 'right' }}>기간 합계 {total.toLocaleString()}</p>}
+
+      <SignupSources rows={sources} days={days} />
+    </div>
+  )
+}
+
+/* 유입 채널별 가입 — 어디서 들어와서 가입했는지. 기간은 위 기간 칩을 따라간다. */
+function SignupSources({ rows, days }: { rows: SignupSourceRow[] | null; days: number }) {
+  const totalCount = (rows ?? []).reduce((s, r) => s + r.count, 0)
+  return (
+    <div style={{ marginTop: 18, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8, marginBottom: 10 }}>
+        <h4 style={{ margin: 0, fontSize: 14, fontWeight: 900 }}>유입 채널별 가입</h4>
+        <span style={{ fontSize: 12, color: 'var(--muted)' }}>최근 {days}일 · 합계 {totalCount.toLocaleString()}</span>
+      </div>
+
+      {rows === null ? (
+        <div style={{ padding: '18px 0', textAlign: 'center', color: 'var(--muted)', fontSize: 13 }}>불러오는 중...</div>
+      ) : rows.length === 0 ? (
+        <div style={{ padding: '18px 0', textAlign: 'center', color: 'var(--muted)', fontSize: 13 }}>이 기간에 가입한 회원이 없어요.</div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+          {rows.map(r => {
+            const pct = totalCount > 0 ? Math.round((r.count / totalCount) * 100) : 0
+            const unknown = r.channel === '기록 없음'
+            return (
+              <div key={r.channel} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <span style={{ flex: '0 0 108px', fontSize: 12.5, fontWeight: 700, color: unknown ? 'var(--muted)' : 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={r.channel}>{r.channel}</span>
+                <span style={{ flex: 1, height: 8, borderRadius: 9999, background: 'var(--surface2)', overflow: 'hidden' }}>
+                  <span style={{ display: 'block', width: `${Math.max(pct, 2)}%`, height: '100%', borderRadius: 9999, background: unknown ? 'var(--border)' : 'var(--accent)' }} />
+                </span>
+                <span style={{ flex: '0 0 74px', textAlign: 'right', fontSize: 12.5, fontWeight: 800 }}>
+                  {r.count.toLocaleString()}<span style={{ color: 'var(--muted)', fontWeight: 600 }}> · {pct}%</span>
+                </span>
+              </div>
+            )
+          })}
+        </div>
+      )}
+      <p style={{ fontSize: 11.5, color: 'var(--muted)', margin: '10px 0 0', lineHeight: 1.6 }}>
+        첫 방문 때의 referrer·utm으로 판별해요. 기능 적용(2026-08-31) 전 가입자는 “기록 없음”으로 잡힙니다.
+      </p>
     </div>
   )
 }

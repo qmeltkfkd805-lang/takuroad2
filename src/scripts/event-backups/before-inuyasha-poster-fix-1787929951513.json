@@ -1,0 +1,12 @@
+[
+  {
+    "id": "8be154d4-78b2-4d47-92b4-da86ea72f1b0",
+    "title": "이누야샤 POP-UP STORE (홍대점)",
+    "cover_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/covers/2026/inuyasha-popup-hongdae.png"
+  },
+  {
+    "id": "fe1237d2-0c9f-427c-81e1-64e940744567",
+    "title": "이누야샤 POP-UP STORE (수원점)",
+    "cover_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/covers/2026/inuyasha-popup-suwon.png"
+  }
+]

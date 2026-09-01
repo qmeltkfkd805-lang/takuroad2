@@ -13,6 +13,7 @@ import { CosmeticProvider } from '@/components/cosmetic/CosmeticProvider'
 import UnlockModal from '@/components/cosmetic/UnlockModal'
 import LevelUpModal from '@/components/growth/LevelUpModal'
 import { logVisit } from '@/services/trafficService'
+import { captureFirstTouch } from '@/lib/utils/firstTouch'
 
 const NO_SHELL = ['/login', '/admin', '/dev', '/test']
 
@@ -39,6 +40,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const hideHeaderMobile = !showHeaderMobile
   const { user } = useAuth()
   const evalOnceRef = useRef(false)
+  // 유입 경로는 랜딩 순간에 한 번만 — /login 같은 bare 화면에서도 잡아야 하므로 bare 체크 위에서 실행
+  useEffect(() => { captureFirstTouch() }, [])
   useEffect(() => {
     if (bare) return
     logVisit(pathname, user?.id ?? null).catch(() => {}).then(() => {

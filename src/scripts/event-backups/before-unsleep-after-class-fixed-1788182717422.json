@@ -1,0 +1,32 @@
+{
+  "events": [],
+  "tag": {
+    "id": "6e4433fa-7cba-44dc-ab1e-de003c2fa027",
+    "name": "언슬립",
+    "slug": "unsleep",
+    "created_at": "2026-08-31T13:24:04.317245+00:00",
+    "ip_type": "웹툰",
+    "ip_type_id": null,
+    "cover_url": null,
+    "banner_image": null,
+    "english_name": "UNSLEEP",
+    "release_year": null,
+    "genres": [
+      "BL",
+      "캠퍼스",
+      "로맨스 코미디"
+    ],
+    "description": "현외 작가의 캠퍼스 BL 웹툰입니다.",
+    "keywords": null,
+    "status": null,
+    "original_type": null,
+    "accent_color": null,
+    "homepage_url": null,
+    "twitter_url": "https://x.com/JMEESHOP",
+    "youtube_url": null,
+    "official_url": "https://www.lezhin.com/ko/comic/unsleep",
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "aliases": null,
+    "links": []
+  }
+}

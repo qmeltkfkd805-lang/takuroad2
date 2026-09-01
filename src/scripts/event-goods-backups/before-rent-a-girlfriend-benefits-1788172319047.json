@@ -1,0 +1,28 @@
+[
+  {
+    "id": "9d5517c8-fb34-4208-ad1a-b634703d54a5",
+    "event_id": "a3b44c97-3b6a-4060-949e-348584090b9a",
+    "name": "콜라보 메뉴·굿즈 안내",
+    "kind": "menu",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/a3b44c97-3b6a-4060-949e-348584090b9a/official-x-2087464109155754007-1.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-25T13:22:40.192574+00:00",
+    "updated_at": "2026-08-25T13:22:40.192574+00:00"
+  },
+  {
+    "id": "931fa009-1afa-4649-9bdd-315553e74b9d",
+    "event_id": "a3b44c97-3b6a-4060-949e-348584090b9a",
+    "name": "메뉴 스탬프·해시태그 이벤트 안내",
+    "kind": "menu",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/a3b44c97-3b6a-4060-949e-348584090b9a/official-x-2087464109155754007-2.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-25T13:22:40.704013+00:00",
+    "updated_at": "2026-08-25T13:22:40.704013+00:00"
+  }
+]

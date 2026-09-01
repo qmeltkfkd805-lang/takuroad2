@@ -20,22 +20,27 @@ export function buildProductSlug(tagSlug: string, characterSlug: string | null, 
 }
 
 // 샵의 취급 작품 목록 (1단계, 가벼운 입력)
+// 주력 작품은 shop_tags.is_primary → tag에 isPrimary로 붙여서 돌려준다
 export async function getShopTags(shopId: string) {
   const supabase = createClient()
   const { data } = await supabase
     .from('shop_tags')
-    .select('tag_id, tags ( id, name, slug, cover_url )')
+    .select('tag_id, is_primary, tags ( id, name, slug, cover_url )')
     .eq('shop_id', shopId)
-  return (data ?? []).map((d: any) => d.tags).filter(Boolean)
+  return (data ?? [])
+    .filter((d: any) => d.tags)
+    .map((d: any) => ({ ...d.tags, isPrimary: !!d.is_primary }))
 }
 
-export async function updateShopTags(shopId: string, tagIds: string[]): Promise<boolean> {
+/* 취급 작품 저장(전체 교체). primaryIds에 든 작품은 주력으로 표시.
+   ⚠️ delete 후 insert라 primaryIds를 안 넘기면 주력 표시가 날아간다 — 항상 같이 넘길 것. */
+export async function updateShopTags(shopId: string, tagIds: string[], primaryIds: string[] = []): Promise<boolean> {
   const supabase = createClient()
   await supabase.from('shop_tags').delete().eq('shop_id', shopId)
   if (tagIds.length === 0) return true
   const { error } = await supabase
     .from('shop_tags')
-    .insert(tagIds.map(tagId => ({ shop_id: shopId, tag_id: tagId })) as any)
+    .insert(tagIds.map(tagId => ({ shop_id: shopId, tag_id: tagId, is_primary: primaryIds.includes(tagId) })) as any)
   return !error
 }
 

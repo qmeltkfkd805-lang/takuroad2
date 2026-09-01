@@ -1,0 +1,28 @@
+[
+  {
+    "id": "4cf54028-a877-49f4-8911-ef46874ae979",
+    "event_id": "ffa26041-dd27-430f-a29b-e10ee3a44ffb",
+    "name": "구매 특전 안내",
+    "kind": "goods",
+    "price": null,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/ffa26041-dd27-430f-a29b-e10ee3a44ffb/official-popcond-banpresto-1.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-25T13:35:50.979829+00:00",
+    "updated_at": "2026-08-25T13:35:50.979829+00:00"
+  },
+  {
+    "id": "1b5cc0df-1c94-4f66-98d7-40c9610062ac",
+    "event_id": "ffa26041-dd27-430f-a29b-e10ee3a44ffb",
+    "name": "럭키 박스",
+    "kind": "goods",
+    "price": 35000,
+    "image_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/ffa26041-dd27-430f-a29b-e10ee3a44ffb/official-popcond-banpresto-2.jpg",
+    "is_deleted": false,
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "created_at": "2026-08-25T13:35:51.924538+00:00",
+    "updated_at": "2026-08-25T13:35:51.924538+00:00"
+  }
+]

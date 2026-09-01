@@ -1,0 +1,63 @@
+{
+  "id": "a409e6e2-abd7-4cc6-8c9b-b9459ec8868e",
+  "tag_id": "1027065f-cc43-424a-bc69-471cc38df7fd",
+  "type": "collab_cafe",
+  "shop_id": null,
+  "title": "블리치 천년혈전편 × 피규어프레소 공식 콜라보 카페",
+  "created_at": "2026-08-28T13:59:32.629497+00:00",
+  "start_date": "2026-09-11",
+  "end_date": "2026-10-11",
+  "entry_info": "입장 방식 추후 공개",
+  "hours_info": "매일 12:00~21:00\n라스트오더 20:00\n홀 마감 20:30",
+  "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+  "reserve_start": null,
+  "reserve_end": null,
+  "hours": {
+    "fri": {
+      "open": "12:00",
+      "close": "21:00"
+    },
+    "mon": {
+      "open": "12:00",
+      "close": "21:00"
+    },
+    "sat": {
+      "open": "12:00",
+      "close": "21:00"
+    },
+    "sun": {
+      "open": "12:00",
+      "close": "21:00"
+    },
+    "thu": {
+      "open": "12:00",
+      "close": "21:00"
+    },
+    "tue": {
+      "open": "12:00",
+      "close": "21:00"
+    },
+    "wed": {
+      "open": "12:00",
+      "close": "21:00"
+    }
+  },
+  "cover_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/event-posters/bleach-thousand-year-blood-war-figurepresso-2026.jpg",
+  "parking": false,
+  "parking_note": "주차 불가",
+  "description": "TV 애니메이션 「블리치 천년혈전편」을 주제로 진행되는 공식 콜라보 카페입니다.\n\n콜라보 메뉴와 특전, 굿즈 및 입장 방식은 공식 계정을 통해 추후 공개될 예정입니다.",
+  "place_name": "피규어프레소 FP점",
+  "place_addr": "서울 마포구 와우산로29길 48-11",
+  "place_lat": 37.5560622275284,
+  "place_lng": 126.927559406211,
+  "place_detail": "2층 더베이크 홍대피규어프레소FP점",
+  "source_urls": [
+    "https://x.com/figurepresso_cf/status/2093157518227001419",
+    "https://figurepresso.com/fp_contect.html"
+  ],
+  "ticket_urls": [],
+  "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+  "updated_at": "2026-08-28T13:59:31.384+00:00",
+  "place_id": null,
+  "video_url": null
+}

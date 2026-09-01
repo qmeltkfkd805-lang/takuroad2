@@ -1,0 +1,126 @@
+[
+  {
+    "id": "b201b5fd-fc48-4bc6-bc6b-b7c36f6d2371",
+    "tag_id": "70ec9dbc-8eb6-41fd-bef2-9139a228fa86",
+    "type": "collab_cafe",
+    "shop_id": null,
+    "title": "약사의 혼잣말 × 애니메이트 콜라보 카페 (잠실점)",
+    "created_at": "2026-08-23T08:16:13.00914+00:00",
+    "start_date": "2026-08-22",
+    "end_date": "2026-09-06",
+    "entry_info": "현장 선착순 입장",
+    "hours_info": "매일 10:00~21:00",
+    "created_by": null,
+    "reserve_start": null,
+    "reserve_end": null,
+    "hours": {
+      "fri": {
+        "open": "10:00",
+        "close": "21:00"
+      },
+      "mon": {
+        "open": "10:00",
+        "close": "21:00"
+      },
+      "sat": {
+        "open": "10:00",
+        "close": "21:00"
+      },
+      "sun": {
+        "open": "10:00",
+        "close": "21:00"
+      },
+      "thu": {
+        "open": "10:00",
+        "close": "21:00"
+      },
+      "tue": {
+        "open": "10:00",
+        "close": "21:00"
+      },
+      "wed": {
+        "open": "10:00",
+        "close": "21:00"
+      }
+    },
+    "cover_url": "https://media.orings.co.kr/static/place/2026-07-15/dbaab4f4-c319-4681-a8ec-e7b2e62601db.jpg",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 1,000원, 이후 10분당 1,000원\n5만원 이상 구매 시 1시간, 10만원 이상 2시간, 15만원 이상 3시간 무료\n무료 주차는 최대 3시간",
+    "description": "「약사의 혼잣말」 만우절 페어 일러스트를 활용한 Gratte 메뉴와 특전을 만나는 콜라보 카페입니다.\n작품의 분위기를 담은 공간 연출과 일러스트를 함께 감상하며 캐릭터별 요소를 찾아보는 재미가 있습니다.",
+    "place_name": "애니메이트 잠실롯데점",
+    "place_addr": "서울 송파구 올림픽로 240",
+    "place_lat": 37.5116711641753,
+    "place_lng": 127.09816575087,
+    "place_detail": "애니메이트 카페 잠실롯데점",
+    "source_urls": [
+      "https://x.com/animatecafe_js/status/2075493439626747982"
+    ],
+    "ticket_urls": [],
+    "updated_by": null,
+    "updated_at": "2026-08-25T05:40:41.342+00:00",
+    "place_id": "1a2065ca-3c50-406b-a261-62bfaa979c24",
+    "video_url": null
+  },
+  {
+    "id": "7a8d26e1-ffda-4a97-a41b-285e42d3997c",
+    "tag_id": "70ec9dbc-8eb6-41fd-bef2-9139a228fa86",
+    "type": "collab_cafe",
+    "shop_id": null,
+    "title": "약사의 혼잣말 × 애니메이트 콜라보 카페 (홍대점)",
+    "created_at": "2026-08-23T08:16:12.66785+00:00",
+    "start_date": "2026-08-22",
+    "end_date": "2026-09-06",
+    "entry_info": "현장 선착순 입장",
+    "hours_info": "매일 11:00~22:00",
+    "created_by": null,
+    "reserve_start": null,
+    "reserve_end": null,
+    "hours": {
+      "fri": {
+        "open": "11:00",
+        "close": "22:00"
+      },
+      "mon": {
+        "open": "11:00",
+        "close": "22:00"
+      },
+      "sat": {
+        "open": "11:00",
+        "close": "22:00"
+      },
+      "sun": {
+        "open": "11:00",
+        "close": "22:00"
+      },
+      "thu": {
+        "open": "11:00",
+        "close": "22:00"
+      },
+      "tue": {
+        "open": "11:00",
+        "close": "22:00"
+      },
+      "wed": {
+        "open": "11:00",
+        "close": "22:00"
+      }
+    },
+    "cover_url": "https://media.orings.co.kr/static/place/2026-07-15/dbaab4f4-c319-4681-a8ec-e7b2e62601db.jpg",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 2,000원\n이후 10분당 1,000원\n1만원 구매 시 1시간 무료\n3만원 구매 시 2시간 무료\n5만원 구매 시 3시간 무료",
+    "description": "「약사의 혼잣말」 만우절 페어 일러스트를 활용한 Gratte 메뉴와 특전을 만나는 콜라보 카페입니다.\n작품의 분위기를 담은 공간 연출과 일러스트를 함께 감상하며 캐릭터별 요소를 찾아보는 재미가 있습니다.",
+    "place_name": "AK플라자 홍대",
+    "place_addr": "서울 마포구 양화로 188",
+    "place_lat": 37.5578085490102,
+    "place_lng": 126.926407838298,
+    "place_detail": "5층 애니메이트 카페 홍대점",
+    "source_urls": [
+      "https://x.com/animatecafe_js/status/2075493439626747982"
+    ],
+    "ticket_urls": [],
+    "updated_by": null,
+    "updated_at": "2026-08-25T05:40:41.253+00:00",
+    "place_id": "6c9bad49-7a5b-43d3-b2df-405a2e5df390",
+    "video_url": null
+  }
+]

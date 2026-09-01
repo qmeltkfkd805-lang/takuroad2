@@ -7,7 +7,9 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { ROUTES } from '@/lib/constants/routes'
 import { UserAvatar } from '@/components/cosmetic/UserFace'
 import { getFollowCounts, getFollowState, follow, unfollow } from '@/services/followService'
+import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { getExhibits, type ExhibitCard } from '@/services/exhibitService'
+import ExhibitLightbox from './ExhibitLightbox'
 import styles from './Exhibit.module.css'
 
 const P = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
@@ -24,6 +26,9 @@ export default function ExhibitPublicPage({ nickname }: { nickname: string }) {
   const [follows, setFollows] = useState<{ followers: number; following: number }>({ followers: 0, following: 0 })
   const [following, setFollowing] = useState(false)
   const [followBusy, setFollowBusy] = useState(false)
+  // 데스크톱에서만 라이트박스로 크게 보기. 모바일은 기존대로 상세 페이지로 이동.
+  const isDesktop = useIsDesktop()
+  const [lightbox, setLightbox] = useState<number | null>(null)
 
   // 1) 닉네임 → 프로필
   useEffect(() => {
@@ -112,8 +117,8 @@ export default function ExhibitPublicPage({ nickname }: { nickname: string }) {
         <div style={{ padding: '48px 16px', textAlign: 'center', color: 'var(--muted)' }}>{isSelf ? '아직 전시한 굿즈가 없어요.' : '아직 공개된 전시가 없어요.'}</div>
       ) : (
         <div className={styles.grid}>
-          {cards.map(c => (
-            <button key={c.id} className={styles.cell} onClick={() => router.push(`/exhibit/${encodeURIComponent(nickname)}/${c.id}`)} aria-label={c.caption || '전시'}>
+          {cards.map((c, i) => (
+            <button key={c.id} className={styles.cell} onClick={() => isDesktop ? setLightbox(i) : router.push(`/exhibit/${encodeURIComponent(nickname)}/${c.id}`)} aria-label={c.caption || '전시'}>
               {c.coverUrl
                 ? <img src={c.coverUrl} alt="" loading="lazy" />
                 : <span className={styles.cellPh}><svg width="30" height="30" viewBox="0 0 24 24" {...P}><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="9" cy="11" r="2" /><path d="m5 19 5-4 3 2 3-3 3 3" /></svg></span>}
@@ -124,6 +129,11 @@ export default function ExhibitPublicPage({ nickname }: { nickname: string }) {
             </button>
           ))}
         </div>
+      )}
+
+      {isDesktop && lightbox !== null && cards && cards.length > 0 && (
+        <ExhibitLightbox cards={cards} index={lightbox} ownerName={owner.nickname}
+          onIndex={setLightbox} onClose={() => setLightbox(null)} />
       )}
     </div>
   )

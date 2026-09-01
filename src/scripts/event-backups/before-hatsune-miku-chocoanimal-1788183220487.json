@@ -1,0 +1,68 @@
+{
+  "events": [
+    {
+      "id": "4c433b45-79d5-473a-b2d8-df4636f1ee37",
+      "tag_id": "94dea875-614e-4e2d-ba30-ea509385603b",
+      "type": "collab_cafe",
+      "shop_id": null,
+      "title": "하츠네 미쿠-Chocoanimal Miku Wagon × 애니메이트 카페",
+      "created_at": "2026-08-31T13:33:15.391767+00:00",
+      "start_date": "2026-09-04",
+      "end_date": "2026-10-13",
+      "entry_info": "현장 선착순 입장",
+      "hours_info": "매일 10:00~21:00\n라스트오더 20:30",
+      "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+      "reserve_start": null,
+      "reserve_end": null,
+      "hours": {
+        "fri": {
+          "open": "10:00",
+          "close": "21:00"
+        },
+        "mon": {
+          "open": "10:00",
+          "close": "21:00"
+        },
+        "sat": {
+          "open": "10:00",
+          "close": "21:00"
+        },
+        "sun": {
+          "open": "10:00",
+          "close": "21:00"
+        },
+        "thu": {
+          "open": "10:00",
+          "close": "21:00"
+        },
+        "tue": {
+          "open": "10:00",
+          "close": "21:00"
+        },
+        "wed": {
+          "open": "10:00",
+          "close": "21:00"
+        }
+      },
+      "cover_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/event-posters/hatsune-miku-chocoanimal-animate-cafe-2026.jpg",
+      "parking": true,
+      "parking_note": "주차 가능(유료)\n최초 30분 1,000원, 이후 10분당 1,000원\n5만원 이상 구매 시 1시간, 10만원 이상 2시간, 15만원 이상 3시간 무료\n무료 주차는 최대 3시간",
+      "description": "하츠네 미쿠와 피아프로 캐릭터즈가 초콜릿과 동물을 모티브로 한 「Chocoanimal Miku Wagon」 비주얼로 등장하는 공식 콜라보 카페입니다.\n\n테마 메뉴와 주문 특전, 한정 굿즈를 함께 만날 수 있으며 일부 메뉴와 특전은 준비 수량 소진 시 조기 종료될 수 있습니다.",
+      "place_name": "롯데월드 쇼핑몰",
+      "place_addr": "서울 송파구 올림픽로 240",
+      "place_lat": 37.5116711641753,
+      "place_lng": 127.09816575087,
+      "place_detail": "B1F 애니메이트 카페 잠실롯데점",
+      "source_urls": [
+        "https://x.com/animatecafe_js/status/2090725607793434787",
+        "https://x.com/animatecafe_js",
+        "https://www.animatecafe.jp/event/ac000738"
+      ],
+      "ticket_urls": [],
+      "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+      "updated_at": "2026-08-31T13:33:15.269+00:00",
+      "place_id": "8e04079d-1c22-42ce-b114-0b15e3e3a62f",
+      "video_url": null
+    }
+  ]
+}

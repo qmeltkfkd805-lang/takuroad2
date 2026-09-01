@@ -204,6 +204,8 @@ export default function ShopFormWizard({ mode, shop }: Props) {
       const result = await createShop({ ...finalForm, status: 'hidden' }, user.id)
       if (!result) { setError('등록에 실패했어요. 슬러그가 중복되었을 수 있어요.'); setSaving(false); return false }
       setCreatedShopId(result.id); setCreatedShopSlug(result.slug)
+      // 이름이 겹쳐 slug에 -2 같은 번호가 붙었을 수 있다 → 폼도 실제 저장된 slug로 맞춘다
+      if (result.slug !== finalForm.slug) setForm(f => ({ ...f, slug: result.slug }))
     } else if (shopId) {
       const ok = await updateShop(shopId, finalForm, user.id)
       if (!ok) { setError('저장에 실패했어요.'); setSaving(false); return false }
@@ -449,7 +451,6 @@ export default function ShopFormWizard({ mode, shop }: Props) {
                   <span style={{ color: 'var(--muted)' }}>~</span>
                   <TimeField value={bulkClose} onChange={setBulkClose} />
                   <button onClick={toggleAllDays} style={{ padding: '7px 13px', borderRadius: 8, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 800, fontSize: 12.5, border: `1.5px solid ${allDaysApplied ? 'var(--accent)' : 'var(--border)'}`, background: allDaysApplied ? 'var(--accent-l, rgba(232,0,111,.08))' : 'var(--surface)', color: allDaysApplied ? 'var(--accent)' : 'var(--text)' }}>{allDaysApplied ? <><Svg size={12}><path d="m5 12 5 5L20 6" /></Svg> 모든 요일 적용</> : '모든 요일 적용'}</button>
-                  <button onClick={applySelectedDays} disabled={pickDays.length === 0} style={{ padding: '7px 13px', borderRadius: 8, cursor: pickDays.length ? 'pointer' : 'default', fontFamily: 'inherit', fontWeight: 800, fontSize: 12.5, border: '1.5px solid var(--border)', background: 'var(--surface)', color: pickDays.length ? 'var(--text)' : 'var(--muted)', opacity: pickDays.length ? 1 : .55 }}>선택 요일 적용{pickDays.length ? ` (${pickDays.length})` : ''}</button>
                 </div>
                 {/* 요일 선택 칩 (선택 요일 적용용) */}
                 <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6 }}>
@@ -462,7 +463,11 @@ export default function ShopFormWizard({ mode, shop }: Props) {
                       <button key={day} onClick={() => togglePickDay(day)} style={{ width: 30, padding: '5px 0', borderRadius: 6, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 700, fontSize: 12, border: `1.5px solid ${on ? 'var(--accent)' : 'var(--border)'}`, background: on ? 'var(--accent-l, rgba(232,0,111,.08))' : 'var(--surface)', color: on ? 'var(--accent)' : 'var(--muted)' }}>{WEEKDAY_LABEL[day]}</button>
                     )
                   })}
-                  <span style={{ fontSize: 11.5, color: 'var(--muted)' }}>요일 고르고 “선택 요일 적용”</span>
+                  {/* 요일 칩 바로 옆에 적용 버튼 — 고르면 핑크 채움으로 바뀐다 */}
+                  <button onClick={applySelectedDays} disabled={pickDays.length === 0} style={{ marginLeft: 4, padding: '6px 13px', borderRadius: 8, cursor: pickDays.length ? 'pointer' : 'default', fontFamily: 'inherit', fontWeight: 800, fontSize: 12.5, border: `1.5px solid ${pickDays.length ? 'var(--accent)' : 'var(--border)'}`, background: pickDays.length ? 'var(--accent)' : 'var(--surface)', color: pickDays.length ? '#fff' : 'var(--muted)', opacity: pickDays.length ? 1 : .55 }}>선택 요일 적용{pickDays.length ? ` (${pickDays.length})` : ''}</button>
+                </div>
+                <div style={{ fontSize: 11.5, color: pickDays.length ? 'var(--accent)' : 'var(--muted)', fontWeight: pickDays.length ? 700 : 400, marginTop: -4 }}>
+                  {pickDays.length ? `${pickDays.length}개 요일 선택됨 — “선택 요일 적용”을 누르세요` : '요일을 고른 뒤 “선택 요일 적용”을 누르면 그 요일에만 위 시간이 들어가요.'}
                 </div>
                 {/* 플래그 + 휴게 토글 */}
                 <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>

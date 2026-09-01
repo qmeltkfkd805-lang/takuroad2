@@ -1,0 +1,63 @@
+{
+  "events": [],
+  "place": {
+    "id": "4b29ff5a-d789-4da4-a198-75126c1a3218",
+    "slug": "starcity-mall-konkuk",
+    "name": "스타시티몰",
+    "place_type": "SHOPPING_MALL",
+    "addr": "서울 광진구 아차산로 272",
+    "region": "서울",
+    "district": "광진구",
+    "lat": 37.5387990752117,
+    "lng": 127.072469149139,
+    "google_place_id": null,
+    "description": null,
+    "hours": null,
+    "parking": null,
+    "parking_note": null,
+    "cover_url": null,
+    "created_at": "2026-08-31T07:38:29.504927+00:00",
+    "updated_at": "2026-08-31T07:38:29.504927+00:00",
+    "kakao_place_id": "12553066",
+    "system_created": false,
+    "category_name": "가정,생활 > 상가,아케이드",
+    "cover_image": null,
+    "access_note": null
+  },
+  "tag": {
+    "id": "c0abe340-8f54-4c4d-b9e5-13dbb1ed7a47",
+    "name": "헌터×헌터",
+    "slug": "hunter-x-hunter",
+    "created_at": "2026-06-22T07:49:28.360642+00:00",
+    "ip_type": "만화,애니,영화,게임",
+    "ip_type_id": "daf19877-8914-4210-8368-01cac634ebf3",
+    "cover_url": null,
+    "banner_image": null,
+    "english_name": "Hunter x Hunter",
+    "release_year": null,
+    "genres": [
+      "모험",
+      "액션",
+      "판타지",
+      "소년물"
+    ],
+    "description": "아버지처럼 헌터가 되려는 곤이 시험을 떠나 동료를 만나고 미지와 강적이 기다리는 세계를 모험한다.",
+    "keywords": null,
+    "status": null,
+    "original_type": null,
+    "accent_color": null,
+    "homepage_url": null,
+    "twitter_url": null,
+    "youtube_url": null,
+    "official_url": "https://www.ntv.co.jp/hunterhunter/",
+    "created_by": null,
+    "aliases": [
+      "HUNTER×HUNTER",
+      "ハンターxハンター",
+      "HxH",
+      "全职猎人",
+      "القناص"
+    ],
+    "links": []
+  }
+}

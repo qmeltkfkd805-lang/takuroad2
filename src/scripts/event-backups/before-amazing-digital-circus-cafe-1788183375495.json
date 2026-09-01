@@ -1,0 +1,97 @@
+{
+  "events": [
+    {
+      "id": "473eec60-6eaa-406f-a0ea-e7961de74fca",
+      "tag_id": "6913a8ed-fc06-4625-89d4-74bdbdb7440e",
+      "type": "collab_cafe",
+      "shop_id": null,
+      "title": "The Amazing Digital Circus × 애니메이트 카페",
+      "created_at": "2026-08-31T13:35:34.696849+00:00",
+      "start_date": "2026-11-13",
+      "end_date": "2026-12-08",
+      "entry_info": "입장 방식 추후 공개",
+      "hours_info": "매일 10:00~21:00\n라스트오더 20:30",
+      "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+      "reserve_start": null,
+      "reserve_end": null,
+      "hours": {
+        "fri": {
+          "open": "10:00",
+          "close": "21:00"
+        },
+        "mon": {
+          "open": "10:00",
+          "close": "21:00"
+        },
+        "sat": {
+          "open": "10:00",
+          "close": "21:00"
+        },
+        "sun": {
+          "open": "10:00",
+          "close": "21:00"
+        },
+        "thu": {
+          "open": "10:00",
+          "close": "21:00"
+        },
+        "tue": {
+          "open": "10:00",
+          "close": "21:00"
+        },
+        "wed": {
+          "open": "10:00",
+          "close": "21:00"
+        }
+      },
+      "cover_url": "https://ouhlwmtwgxewrktgrzkd.supabase.co/storage/v1/object/public/event-goods/event-posters/amazing-digital-circus-animate-cafe-jamsil-2026.jpg",
+      "parking": true,
+      "parking_note": "주차 가능(유료)\n최초 30분 1,000원, 이후 10분당 1,000원\n5만원 이상 구매 시 1시간, 10만원 이상 2시간, 15만원 이상 3시간 무료\n무료 주차는 최대 3시간",
+      "description": "웹 애니메이션 「The Amazing Digital Circus」의 캐릭터와 세계관을 테마로 진행되는 공식 콜라보 카페입니다.\n\n메뉴와 굿즈, 특전 및 입장 방식은 공식 후속 공지가 공개되는 대로 추가됩니다.",
+      "place_name": "롯데월드 쇼핑몰",
+      "place_addr": "서울 송파구 올림픽로 240",
+      "place_lat": 37.5116711641753,
+      "place_lng": 127.09816575087,
+      "place_detail": "B1F 애니메이트 카페 잠실롯데점",
+      "source_urls": [
+        "https://x.com/animatecafe_js/status/2093262323020333334",
+        "https://x.com/animatecafe_js",
+        "https://www.glitchprod.com/digital-circus"
+      ],
+      "ticket_urls": [],
+      "updated_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+      "updated_at": "2026-08-31T13:35:34.59+00:00",
+      "place_id": "8e04079d-1c22-42ce-b114-0b15e3e3a62f",
+      "video_url": null
+    }
+  ],
+  "tag": {
+    "id": "6913a8ed-fc06-4625-89d4-74bdbdb7440e",
+    "name": "어메이징 디지털 서커스",
+    "slug": "the-amazing-digital-circus",
+    "created_at": "2026-08-31T13:35:32.667358+00:00",
+    "ip_type": "애니메이션",
+    "ip_type_id": null,
+    "cover_url": null,
+    "banner_image": null,
+    "english_name": "The Amazing Digital Circus",
+    "release_year": null,
+    "genres": [
+      "코미디",
+      "판타지",
+      "블랙 코미디"
+    ],
+    "description": "GLITCH Productions가 제작한 독립 웹 애니메이션 시리즈입니다.",
+    "keywords": null,
+    "status": null,
+    "original_type": null,
+    "accent_color": null,
+    "homepage_url": null,
+    "twitter_url": null,
+    "youtube_url": "https://www.youtube.com/@GLITCH",
+    "official_url": "https://www.glitchprod.com/digital-circus",
+    "created_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "aliases": null,
+    "links": []
+  }
+}

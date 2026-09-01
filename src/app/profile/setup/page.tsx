@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { readFirstTouch, channelOf } from '@/lib/utils/firstTouch'
 
 export default function ProfileSetupPage() {
   const [nickname, setNickname] = useState('')
@@ -44,9 +45,20 @@ export default function ProfileSetupPage() {
     }
 
     // 프로필 생성
+    // 첫 방문 때 잡아둔 유입 경로를 같이 남긴다 (관리자 회원 상세에서 확인)
+    const ft = readFirstTouch()
     const { error: insertError } = await supabase
       .from('profiles')
-      .insert({ id: user.id, nickname: trimmed } as any)
+      .insert({
+        id: user.id,
+        nickname: trimmed,
+        signup_channel: channelOf(ft),
+        signup_referrer: ft?.referrer ?? null,
+        signup_landing_path: ft?.landingPath ?? null,
+        signup_utm_source: ft?.utmSource ?? null,
+        signup_utm_medium: ft?.utmMedium ?? null,
+        signup_utm_campaign: ft?.utmCampaign ?? null,
+      } as any)
 
     if (insertError) {
       setError('오류가 발생했어요. 다시 시도해주세요')

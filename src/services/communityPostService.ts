@@ -328,6 +328,22 @@ export async function deletePost(id: string): Promise<boolean> {
   return !error
 }
 
+/* 작성자 본인이 글을 지울 때 — 연결된 굿즈도 내 굿즈에서 함께 삭제.
+   단 그 굿즈로 쓴 다른 자랑 글이 있거나 전시관에 걸려 있으면 굿즈는 남는다(keptGoods로 알려줌).
+   판단·삭제는 서버 라우트에서. 라우트가 실패하면 글만 지우는 기존 경로로 폴백. */
+export interface DeletePostResult { ok: boolean; deletedGoods: string[]; keptGoods: { id: string; reason: string }[] }
+export async function deletePostWithGoods(id: string): Promise<DeletePostResult> {
+  try {
+    const res = await fetch(`/api/community/post/${encodeURIComponent(id)}`, { method: 'DELETE' })
+    if (res.ok) {
+      const j = await res.json().catch(() => ({}))
+      return { ok: true, deletedGoods: j?.deletedGoods ?? [], keptGoods: j?.keptGoods ?? [] }
+    }
+  } catch { /* 아래 폴백 */ }
+  const ok = await deletePost(id)
+  return { ok, deletedGoods: [], keptGoods: [] }
+}
+
 export async function getReportedPosts(): Promise<ReportedPost[]> {
   const supabase = createClient()
   const { data: reps } = await supabase.from('post_reports').select('post_id, reason, content, created_at').order('created_at', { ascending: false })

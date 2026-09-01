@@ -1,0 +1,1 @@
+import{createClient}from'@supabase/supabase-js';import{config}from'dotenv';config({path:'../.env.local'});const d=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.SUPABASE_SERVICE_ROLE_KEY);const r=await d.from('places').select('place_type').limit(1000);if(r.error)throw r.error;console.log([...new Set(r.data.map(x=>x.place_type))].sort())
