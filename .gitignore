@@ -45,3 +45,9 @@ next-env.d.ts
 *.zip
 
 *.zip
+
+# 스크립트 작업 부산물 — 백업 스냅샷과 스크랩한 원본
+src/scripts/event-backups/
+src/scripts/event-goods-backups/
+src/scripts/work-event-covers/
+src/scripts/work-menu-goods-images/
