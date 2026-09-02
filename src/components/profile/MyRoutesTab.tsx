@@ -32,7 +32,7 @@ export default function MyRoutesTab({ userId, readOnly }: { userId: string; read
     setRoutes(prev => prev.filter(r => r.id !== routeId))
   }
   async function copyShare(route: any) {
-    let token = route.share_token
+    const token = route.share_token
     if (!route.is_shared && !route.is_official) {
       await toggleRouteShare(route.id, userId, true)
       setRoutes(prev => prev.map(r => r.id === route.id ? { ...r, is_shared: true } : r))

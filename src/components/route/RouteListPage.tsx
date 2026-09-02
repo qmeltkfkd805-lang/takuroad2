@@ -135,7 +135,7 @@ export default function RouteListPage() {
 
   useEffect(() => {
     if (pageClamped > 1 && topRef.current) topRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [pageClamped])
 
   const detailCount = [stops, theme, period].filter(Boolean).length

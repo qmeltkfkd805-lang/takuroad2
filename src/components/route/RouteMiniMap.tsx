@@ -28,7 +28,7 @@ export default function RouteMiniMap({ stops }: { stops: RouteStop[] }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => { draw() /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [stops])
+  useEffect(() => { draw()   }, [stops])
 
   function draw() {
     const map = mapRef.current

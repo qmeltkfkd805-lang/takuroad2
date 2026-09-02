@@ -29,7 +29,7 @@ export default function EventReviewTab({ eventId, onCountChange }: { eventId: st
     onCountChange?.(rows.length)
     setLoading(false)
   }
-  useEffect(() => { load() /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [eventId])
+  useEffect(() => { load()   }, [eventId])
 
   const mine = user ? reviews.find(r => r.userId === user.id) : null
 

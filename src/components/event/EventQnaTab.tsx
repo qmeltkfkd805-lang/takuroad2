@@ -27,7 +27,7 @@ export default function EventQnaTab({ eventId, onCountChange }: { eventId: strin
     onCountChange?.(list.length)
     setLoading(false)
   }
-  useEffect(() => { load() /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [eventId])
+  useEffect(() => { load()   }, [eventId])
 
   const ask = async () => {
     if (!user) { router.push('/login'); return }

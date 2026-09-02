@@ -23,7 +23,7 @@ export default function EventGoodsTab({ eventId }: { eventId: string }) {
     setRows(await getEventGoods(eventId))
     setLoading(false)
   }
-  useEffect(() => { load() /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [eventId])
+  useEffect(() => { load()   }, [eventId])
 
   const hide = async (id: string) => {
     if (!user) return

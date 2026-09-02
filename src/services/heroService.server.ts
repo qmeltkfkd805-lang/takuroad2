@@ -169,7 +169,7 @@ async function buildAutoEvents(
     .lte('start_date', until)
     .order('start_date', { ascending: true })
 
-  let evs = (rows ?? []).filter((e: any) => !o.manualEventIds.has(e.id) && e.title)
+  const evs = (rows ?? []).filter((e: any) => !o.manualEventIds.has(e.id) && e.title)
   if (evs.length === 0) return []
 
   // 작품 커버/이름, 샵 이름

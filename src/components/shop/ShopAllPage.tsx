@@ -160,7 +160,7 @@ export default function ShopAllPage() {
   // 페이지 이동 시 목록 상단으로
   useEffect(() => {
     if (pageClamped > 1 && listTop.current) listTop.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [pageClamped])
 
   const dirty = isDirty(filters)

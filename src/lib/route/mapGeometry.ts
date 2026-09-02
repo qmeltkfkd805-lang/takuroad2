@@ -110,7 +110,7 @@ export function splitReturnRuns(
   }
 
   // 세그먼트 → 연속 run 으로 그룹화 (경계점 공유해 선이 이어지게)
-  let runs: RouteRun[] = []
+  const runs: RouteRun[] = []
   let start = 0, cur = isReturn[0]
   for (let i = 1; i < n - 1; i++) {
     if (isReturn[i] !== cur) { runs.push({ type: cur ? 'return' : 'normal', pts: geo.slice(start, i + 1), startIndex: start }); start = i; cur = isReturn[i] }

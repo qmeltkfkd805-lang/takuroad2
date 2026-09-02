@@ -40,7 +40,7 @@ export default function ExhibitEditView({ id }: { id: string }) {
       setCaption(d.caption ?? ''); setVisibility(d.visibility); setSourcePostId(d.sourcePostId)
     } catch { setData('notfound') }
   }
-  useEffect(() => { load() /* eslint-disable-next-line */ }, [id])
+  useEffect(() => { load()   }, [id])
 
   function flash(m: string) { setMsg(m); setTimeout(() => setMsg(null), 1800) }
 

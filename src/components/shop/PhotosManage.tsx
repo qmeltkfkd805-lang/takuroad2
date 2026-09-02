@@ -54,7 +54,7 @@ export default function PhotosManage({ shop, embedded = false, onCoverChange, on
   const [cropBusy, setCropBusy] = useState(false)
 
   useEffect(() => { imagesRef.current = images }, [images])
-  useEffect(() => { onDirtyChange?.(dirty) /* eslint-disable-next-line */ }, [dirty])
+  useEffect(() => { onDirtyChange?.(dirty)   }, [dirty])
 
   /* 큰 미리보기 = 항상 대표 사진. 그래서 대표가 없으면 첫 사진을 자동으로 대표로 만든다
      (addShopImage가 is_cover:false로 넣기 때문에 새 샵은 대표가 비어 있다) */
@@ -69,7 +69,7 @@ export default function PhotosManage({ shop, embedded = false, onCoverChange, on
     setLoading(false)
     onCoverChange?.(rows.find(r => r.is_cover)?.image_url ?? rows[0]?.image_url ?? null)
   }
-  useEffect(() => { load() /* eslint-disable-next-line */ }, [shop.id])
+  useEffect(() => { load()   }, [shop.id])
 
   // 드래그 중 전역 포인터 추적
   useEffect(() => {

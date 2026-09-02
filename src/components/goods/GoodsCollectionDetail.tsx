@@ -66,7 +66,7 @@ export default function GoodsCollectionDetail({ workId }: { workId: string | nul
       setAll(acc)
     } catch { setError(true); setAll([]) }
   }
-  useEffect(() => { load() /* eslint-disable-next-line */ }, [workId])
+  useEffect(() => { load()   }, [workId])
 
   const workName = unassigned ? '작품 미지정' : (all?.[0]?.workName ?? '컬렉션')
   const total = all?.length ?? 0

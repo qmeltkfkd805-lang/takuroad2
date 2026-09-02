@@ -114,7 +114,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
       } finally { if (alive) setGoodsLoading(false) }
     })()
     return () => { alive = false }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [post.id, isGoodsBoard, post.work?.id, post.author?.id, user?.id])
 
   useEffect(() => { incrementPostView(post.id) }, [post.id])

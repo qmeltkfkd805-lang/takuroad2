@@ -177,7 +177,7 @@ export async function toggleRouteShare(routeId: string, userId: string, isShared
 export async function getPublicRoutes(filters?: { region?: string; tag?: string; search?: string }) {
   const supabase = createClient()
 
-  let query = supabase
+  const query = supabase
     .from('routes')
     .select(`
       id, title, description, tips, likes, is_official, official_difficulty, created_at, share_token,
