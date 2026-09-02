@@ -52,6 +52,25 @@
 .toneRed   { color: #B42318; }
 .tonePink  { color: var(--accent); }
 
+/* ── 처리 결과 안내 ── */
+.notice {
+  display: flex; align-items: center; gap: 9px;
+  padding: 12px 14px; margin-bottom: 14px;
+  border: 1px solid var(--border); border-radius: 10px;
+  font-size: 13.5px; font-weight: 700; line-height: 1.5;
+}
+.noticeOk  { background: #E3F5EC; border-color: #BCE5D3; color: #0F6E56; }
+.noticeErr { background: #FDECEC; border-color: #F5C9C9; color: #B42318; }
+.noticeClose {
+  margin-left: auto; flex-shrink: 0;
+  width: 30px; height: 30px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: none; border-radius: 6px; background: none;
+  color: inherit; cursor: pointer; padding: 0; opacity: .75;
+}
+.noticeClose:hover { opacity: 1; background: rgba(0, 0, 0, .06); }
+.noticeClose:focus-visible { outline: 2px solid currentColor; outline-offset: 1px; }
+
 /* ── 검색 · 필터 · 정렬 ── */
 .toolbar { padding: 16px 18px 12px; border-bottom: 1px solid var(--border); }
 .searchRow { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
@@ -116,7 +135,7 @@
 .colMeta { width: 22%; }
 .colStatus { width: 116px; }
 .colOfficial { width: 92px; }
-.colAction { width: 190px; }
+.colAction { width: 236px; }
 
 /* 샵 셀 */
 .shopCell { display: flex; align-items: center; gap: 12px; min-width: 0; }
@@ -185,8 +204,8 @@
 .metaOk { color: #0F6E56; font-weight: 700; }
 
 /* 작업 버튼 */
-.actionCell { display: flex; gap: 6px; justify-content: flex-end; }
-.ghostBtn, .editBtn {
+.actionCell { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; }
+.ghostBtn, .editBtn, .dangerBtn {
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 44px; padding: 0 14px;
   border: 1px solid var(--border); border-radius: 8px;
@@ -198,6 +217,12 @@
 .ghostBtn:focus-visible, .editBtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .btnOff { opacity: .45; cursor: default; }
 .btnOff:hover { border-color: var(--border); color: var(--text); }
+
+/* 되돌리기 어려운 동작 — 채우지 않고 테두리·글자만 빨강으로 */
+.dangerBtn { color: #B42318; }
+.dangerBtn:hover:not(:disabled) { border-color: #B42318; background: #FDECEC; }
+.dangerBtn:focus-visible { outline: 2px solid #B42318; outline-offset: 1px; }
+.dangerBtn:disabled { opacity: .5; cursor: default; }
 
 /* ── 페이지네이션 ── */
 .pager {

@@ -2,7 +2,9 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import Link from 'next/link'
 import { getAdminShopsExcludingDeleted } from '@/services/shopService'
+import { changeShopStatus } from '@/services/shopReportService'
 import { getAdminStats, AdminStats } from '@/services/adminDashboardService'
+import { useAuth } from '@/components/layout/AuthProvider'
 import { Shop } from '@/types/shop'
 import { SHOP_STATUS_LABEL } from '@/lib/constants/categories'
 import { quickCompleteness, shopRegion, QuickCheck } from '@/lib/shop/quickCompleteness'
@@ -50,6 +52,12 @@ const COMPLETE_MIN = 80
 
 const NO_REGION = '지역 미정' // shopRegion()이 돌려주는 값
 
+/* 삭제 처리를 열어줄 상태.
+   숨김(hidden)은 신고 반려·비공개 처리로 내려간 샵이라 여기서 정리한다.
+   운영중·임시휴업·폐업 샵은 실수로 지우면 손해가 커서 이 화면에서는 막아둔다
+   (샵 신고 탭의 상태 변경 메뉴에서는 여전히 가능하다). */
+const DELETABLE_STATUSES = ['hidden']
+
 interface Row {
   shop: Shop
   region: string
@@ -60,6 +68,7 @@ interface Row {
 }
 
 export default function ShopAdminTab() {
+  const { user } = useAuth()
   const [shops, setShops] = useState<Shop[]>([])
   const [stats, setStats] = useState<AdminStats | null>(null)
   // 다시 불러오기는 키를 올려서 요청한다 (effect 안에서 곧바로 setState 하지 않기 위해)
@@ -78,6 +87,10 @@ export default function ShopAdminTab() {
   const [liveMsg, setLiveMsg] = useState('')
   const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  const [busyId, setBusyId] = useState<string | null>(null)
+  const [notice, setNotice] = useState<{ ok: boolean; text: string } | null>(null)
+  const noticeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
   useEffect(() => {
     let alive = true
     const key = reloadKey
@@ -91,7 +104,10 @@ export default function ShopAdminTab() {
     return () => { alive = false }
   }, [reloadKey])
 
-  useEffect(() => () => { if (copyTimer.current) clearTimeout(copyTimer.current) }, [])
+  useEffect(() => () => {
+    if (copyTimer.current) clearTimeout(copyTimer.current)
+    if (noticeTimer.current) clearTimeout(noticeTimer.current)
+  }, [])
 
   const rows: Row[] = useMemo(() => shops.map((s) => {
     const cp = quickCompleteness(s)
@@ -161,6 +177,48 @@ export default function ShopAdminTab() {
     copyTimer.current = setTimeout(() => { setCopied(null); setLiveMsg('') }, 2400)
   }
 
+  /* 삭제 = 소프트 삭제. 기존 관리자 API(/api/admin/shop-status)를 그대로 쓴다.
+     행이 지워지는 게 아니라 status가 'deleted'로 바뀌고 deleted_at·deleted_by·
+     delete_reason이 기록된다. 목록과 요약 카드 둘 다 deleted를 제외하므로
+     성공하면 reloadKey를 올려 양쪽을 함께 새로고침한다. */
+  async function handleDelete(s: Shop) {
+    if (!user) {
+      showNotice(false, '로그인 정보를 확인할 수 없어요. 새로고침 후 다시 시도해 주세요.')
+      return
+    }
+    const okToGo = window.confirm(
+      `"${s.name}" 샵을 삭제 처리할까요?\n\n`
+      + '목록·통계에서 빠지고 사용자 사이트에도 나오지 않습니다.\n'
+      + '데이터가 지워지지는 않지만, 되돌리려면 DB에서 직접 상태를 바꿔야 해요.'
+    )
+    if (!okToGo) return
+
+    const reason = window.prompt(
+      '삭제 이유 (비워도 됩니다. 예: 중복 등록, 폐업 확인)\n\n'
+      + '※ [취소]를 누르면 삭제하지 않습니다.'
+    )
+    // prompt는 취소하면 null을 준다 — 되돌리기 어려운 작업이라 취소는 취소로 처리한다
+    if (reason === null) return
+
+    setBusyId(s.id)
+    setNotice(null)
+    const ok = await changeShopStatus(s.id, 'deleted', user.id, reason.trim() || undefined)
+    setBusyId(null)
+    if (ok) {
+      showNotice(true, `"${s.name}" 샵을 삭제 처리했어요.`)
+      setReloadKey((k) => k + 1)   // 목록과 요약 카드를 함께 다시 불러온다
+    } else {
+      showNotice(false, `"${s.name}" 삭제에 실패했어요. 관리자 권한을 확인하거나 잠시 후 다시 시도해 주세요.`)
+    }
+  }
+
+  function showNotice(ok: boolean, text: string) {
+    setNotice({ ok, text })
+    if (noticeTimer.current) clearTimeout(noticeTimer.current)
+    // 성공 안내만 자동으로 사라지게 한다. 실패는 읽고 조치할 때까지 남긴다
+    if (ok) noticeTimer.current = setTimeout(() => setNotice(null), 5000)
+  }
+
   return (
     <div className={styles.wrap}>
       <div className={styles.head}>
@@ -181,6 +239,19 @@ export default function ShopAdminTab() {
         <Stat label={SHOP_STATUS_LABEL.closed} value={stats?.shopsClosed} loading={loading} icon="close" iconClass={styles.iconRed} toneClass={styles.toneRed} />
         <Stat label="공식 샵" value={stats?.shopsOfficial} loading={loading} icon="verify" iconClass={styles.iconPink} toneClass={styles.tonePink} />
       </div>
+
+      {notice && (
+        <div
+          className={notice.ok ? `${styles.notice} ${styles.noticeOk}` : `${styles.notice} ${styles.noticeErr}`}
+          role={notice.ok ? 'status' : 'alert'}
+        >
+          <AdminIcon name={notice.ok ? 'checkCircle' : 'alert'} size={17} />
+          <span>{notice.text}</span>
+          <button type="button" className={styles.noticeClose} onClick={() => setNotice(null)} aria-label="안내 닫기">
+            <AdminIcon name="close" size={15} />
+          </button>
+        </div>
+      )}
 
       <div className={styles.card}>
         <div className={styles.toolbar}>
@@ -283,6 +354,9 @@ export default function ShopAdminTab() {
                       row={r}
                       copied={copied && copied.id === r.shop.id ? copied.ok : null}
                       onCopy={() => copyPath(r.shop)}
+                      deletable={DELETABLE_STATUSES.includes(r.shop.status)}
+                      busy={busyId === r.shop.id}
+                      onDelete={() => handleDelete(r.shop)}
                     />
                   ))}
                 </tbody>
@@ -315,7 +389,10 @@ export default function ShopAdminTab() {
   )
 }
 
-function ShopRow({ row, copied, onCopy }: { row: Row; copied: boolean | null; onCopy: () => void }) {
+function ShopRow({ row, copied, onCopy, deletable, busy, onDelete }: {
+  row: Row; copied: boolean | null; onCopy: () => void
+  deletable: boolean; busy: boolean; onDelete: () => void
+}) {
   const s = row.shop
   const thumb = s.images?.[0]
   const label = SHOP_STATUS_LABEL[s.status] ?? s.status ?? '상태 미정'
@@ -405,6 +482,17 @@ function ShopRow({ row, copied, onCopy }: { row: Row; copied: boolean | null; on
           ) : (
             <button type="button" className={`${styles.editBtn} ${styles.btnOff}`} disabled title="경로(slug)가 없어서 편집 화면을 열 수 없어요">
               편집
+            </button>
+          )}
+          {deletable && (
+            <button
+              type="button"
+              className={styles.dangerBtn}
+              onClick={onDelete}
+              disabled={busy}
+              title="목록과 사용자 사이트에서 빼고 삭제 상태로 기록합니다"
+            >
+              {busy ? '처리 중…' : '삭제'}
             </button>
           )}
         </div>
