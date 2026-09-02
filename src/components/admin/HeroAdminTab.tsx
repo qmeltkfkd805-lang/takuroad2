@@ -322,7 +322,7 @@ function SlotRow({ rank, card, view, menuOpen, onToggleMenu, onEdit, onPin, onEn
         {isManual ? (
           <>
             <button type="button" className={styles.iconBtn} onClick={onEdit} aria-label="히어로 편집">
-              <AdminIcon name="settings" size={17} />
+              <AdminIcon name="edit" size={17} />
             </button>
             <span className={styles.menuWrap} onMouseDown={e => e.stopPropagation()}>
               <button type="button" className={styles.iconBtn} onClick={onToggleMenu}

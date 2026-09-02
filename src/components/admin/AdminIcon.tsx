@@ -24,6 +24,7 @@ export type AdminIconName =
   | 'external' | 'settings' | 'chevron' | 'menu' | 'close'
   // 대시보드
   | 'inbox' | 'visitor' | 'userPlus' | 'checkin' | 'alert' | 'arrowRight'
+  | 'search' | 'edit' | 'doc' | 'checkCircle'
 
 /** 24x24 뷰박스 기준 path 데이터. 전부 stroke, fill 없음 */
 const PATHS: Record<AdminIconName, string> = {
@@ -53,6 +54,10 @@ const PATHS: Record<AdminIconName, string> = {
   checkin:   'M4.5 5.5h15v14h-15z M8.5 10.5l2.5 2.5 4.5-4.5',
   alert:     'M12 4 2.8 19.5h18.4z M12 10v4 M12 17h.01',
   arrowRight:'M5 12h13 M13 6.5 18.5 12 13 17.5',
+  search:    'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14z M20.5 20.5 16 16',
+  edit:      'M12 20h8 M16.5 3.6a2.1 2.1 0 0 1 3 3L7.5 18.6l-4 1 1-4z',
+  doc:       'M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z M14 3v4.5h4.5 M8.5 12.5h7 M8.5 16.5h4.5',
+  checkCircle:'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z M8.5 12.2l2.4 2.4 4.6-4.9',
 }
 
 interface Props {
