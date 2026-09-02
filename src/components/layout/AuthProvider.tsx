@@ -38,10 +38,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const supabase = createClient()
 
+  /* select('*') 대신 Profile 타입에 있는 컬럼만 명시한다.
+     - 타입(@/types/database의 Profile)이 원래 이 7개뿐이라 쓰는 범위와 정확히 같다.
+       화면에서 실제로 읽는 건 nickname·avatar_url·role 셋뿐이지만 타입을 그대로 채운다.
+     - '*'로 긁어오면 admin_note·signup_* 같은 내부 컬럼까지 브라우저로 내려온다.
+       그 컬럼들은 anon/authenticated의 SELECT 권한을 회수할 예정인데,
+       '*'를 두면 권한 적용 순간 이 조회가 통째로 실패한다(권한 없는 컬럼이 하나라도
+       포함되면 쿼리 전체가 거부된다). 컬럼을 명시하면 영향이 없다. */
   async function loadProfile(userId: string) {
     const { data, error } = await supabase
       .from('profiles')
-      .select('*')
+      .select('id, nickname, avatar_url, bio, role, created_at, updated_at')
       .eq('id', userId)
       .maybeSingle()
     if (error) console.error('[AuthProvider] 프로필 읽기 실패:', error)
