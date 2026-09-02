@@ -10,6 +10,7 @@ import AppIcon from '@/components/tds/AppIcon'
 import RouteThumb from './RouteThumb'
 import RouteResultCard, { HeartIcon } from './RouteResultCard'
 import { rtStops, rtRegions, fmtDur, metaShort } from './routeMeta'
+import { buildRouteHero, byRoutePopularity, routeInfoScore, ROUTE_HERO_MAX } from '@/lib/route/heroOrder'
 import styles from './RouteExplorePage.module.css'
 
 /* 마스크 아이콘 (히어로 메타용) */
@@ -79,10 +80,11 @@ export default function RouteExplorePage() {
     getMyFavoriteTagIds(user.id).then(ids => setFavTagIds(new Set(ids))).catch(() => {})
   }, [user])
 
-  const infoScore = (r: any) => (r.route_shops?.length ?? 0) + (r.route_tips?.[0]?.count ?? 0)
-  const popular = useMemo(() => [...routes].sort((a, b) => ((b.likes ?? 0) - (a.likes ?? 0)) || (infoScore(b) - infoScore(a))), [routes])
+  // 인기 정렬 규칙은 lib/route/heroOrder 한 곳에만 둔다 (관리자 미리보기와 같은 결과를 내야 해서)
+  const infoScore = routeInfoScore
+  const popular = useMemo(() => [...routes].sort(byRoutePopularity), [routes])
   const recent = useMemo(() => [...routes].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()), [routes])
-  const official = useMemo(() => routes.filter(r => r.is_official), [routes])
+  // (히어로는 buildRouteHero가 추천 우선 배치까지 함께 처리한다)
   const taste = useMemo(() => routes.filter(r => r.primary_tag_id && favTagIds.has(r.primary_tag_id)), [routes, favTagIds])
 
   // 추천: 운영추천(is_official) + 내 관심작품 우선, 그 뒤 저장수. (임의 점수 없이 실제 필드만)
@@ -97,7 +99,11 @@ export default function RouteExplorePage() {
     return [...routes].map(r => [r, dist(r)] as const).sort((a, b) => a[1] - b[1]).map(x => x[0])
   }, [routes, location])
 
-  const heroList = useMemo(() => (official.length ? official : popular).slice(0, 5), [official, popular])
+  /* 히어로: 추천 루트를 앞에 두고 남는 자리를 인기순으로 채운다 (id 중복 제거, 최대 5).
+     예전에는 추천이 하나라도 있으면 그것만 보여줘서, 한 개만 지정해도 히어로가
+     한 장으로 줄고 자동 회전이 멈췄다.
+     계산은 buildRouteHero 하나로 모았다 — 관리자 미리보기가 같은 함수를 쓴다. */
+  const heroList = useMemo(() => buildRouteHero(routes, ROUTE_HERO_MAX), [routes])
   const [heroIdx, setHeroIdx] = useState(0)
   useEffect(() => { setHeroIdx(0) }, [heroList.length])
   useEffect(() => {
