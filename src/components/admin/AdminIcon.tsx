@@ -27,6 +27,8 @@ export type AdminIconName =
   | 'search' | 'edit' | 'doc' | 'checkCircle'
   // 샵 관리
   | 'copy' | 'plus'
+  // 장소 관리
+  | 'image' | 'imageAlert'
 
 /** 24x24 뷰박스 기준 path 데이터. 전부 stroke, fill 없음 */
 const PATHS: Record<AdminIconName, string> = {
@@ -62,6 +64,8 @@ const PATHS: Record<AdminIconName, string> = {
   checkCircle:'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z M8.5 12.2l2.4 2.4 4.6-4.9',
   copy:      'M9 9.5V5.5A1.5 1.5 0 0 1 10.5 4h8A1.5 1.5 0 0 1 20 5.5v8a1.5 1.5 0 0 1-1.5 1.5h-4 M5.5 9h8A1.5 1.5 0 0 1 15 10.5v8a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 4 18.5v-8A1.5 1.5 0 0 1 5.5 9z',
   plus:      'M12 5.5v13 M5.5 12h13',
+  image:     'M5.5 4.5h13A1.5 1.5 0 0 1 20 6v12a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18V6a1.5 1.5 0 0 1 1.5-1.5z M9.2 10.7a1.6 1.6 0 1 0 0-3.2 1.6 1.6 0 0 0 0 3.2z M4.2 16.4 8.8 12l3.4 3.3 2.9-2.4 4.7 4.2',
+  imageAlert:'M20 11.5V6a1.5 1.5 0 0 0-1.5-1.5h-13A1.5 1.5 0 0 0 4 6v12a1.5 1.5 0 0 0 1.5 1.5h6.6 M9.2 10.7a1.6 1.6 0 1 0 0-3.2 1.6 1.6 0 0 0 0 3.2z M4.2 16.4 8.8 12l3 2.9 M18.5 14.5v3 M18.5 20.2h.01',
 }
 
 interface Props {
