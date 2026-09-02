@@ -544,6 +544,50 @@ export async function getMyVerifyRequest(shopId: string, userId: string) {
 
 // === 관리자 전용 함수 ===
 
+/* 관리자 샵 관리 목록 전용 — 삭제된 샵만 빼고 전부 가져온다.
+   사용자용 getShops()는 `status = 'active'`로 잘라서 내려주기 때문에
+   관리자 화면에서 임시휴업·폐업·승인대기 샵을 볼 수가 없다. 그래서 따로 둔다.
+   (getShops()는 손대지 않는다 — 사용자 사이트 동작은 그대로다)
+
+   제외 기준은 대시보드 RPC get_dashboard_stats의 shops_total과 똑같이 맞췄다:
+     (select count(*) from shops where status <> 'deleted')
+   SQL의 `status <> 'deleted'`는 status가 NULL인 행을 제외한다(NULL 비교 결과는 참이 아니라서).
+   PostgREST의 .neq('status','deleted')도 같은 SQL로 나가므로 카드 숫자와 목록 개수가 항상 맞는다.
+
+   2026-09-02 실제 데이터 확인: active 46 / hidden 2 / deleted 1, NULL 없음.
+   → 46 + 2 = 48 로 대시보드 shops_total과 일치한다.
+   ⚠️ 나중에 status가 NULL인 샵이 생기면 이 목록과 대시보드 카드 양쪽에서 똑같이 빠진다.
+   그때는 여기와 RPC를 함께 고쳐야 한다(한쪽만 고치면 숫자가 어긋난다). */
+export async function getAdminShopsExcludingDeleted(): Promise<Shop[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('shops')
+    .select(`
+      id, slug, name, description,
+      addr, country, region, city, district,
+      lat, lng, google_place_id,
+      place_id, floor, unit,
+      places ( slug, name, lat, lng, access_note ),
+      hours, parking, parking_note, shop_link, sns_links, phone,
+      start_date, end_date, event_info,
+      rating_avg, rating_count, visit_count, bookmark_count,
+      is_verified, is_claimed, status,
+      temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
+      added_by, owner_id, created_at, updated_at,
+      shop_images ( image_url, is_cover, sort_order ),
+      cats
+    `)
+    .neq('status', 'deleted')
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    // PostgrestError는 통째로 찍으면 {}로만 보인다 — 필드를 펼쳐서 남긴다
+    console.error('[관리자 샵 목록] 조회 실패:', error.message, error.code, error.details, error.hint)
+    return []
+  }
+  return (data ?? []).map(toShop)
+}
+
 export async function getPendingShops(): Promise<Shop[]> {
   const supabase = createClient()
   const { data, error } = await supabase

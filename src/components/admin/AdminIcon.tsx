@@ -25,6 +25,8 @@ export type AdminIconName =
   // 대시보드
   | 'inbox' | 'visitor' | 'userPlus' | 'checkin' | 'alert' | 'arrowRight'
   | 'search' | 'edit' | 'doc' | 'checkCircle'
+  // 샵 관리
+  | 'copy' | 'plus'
 
 /** 24x24 뷰박스 기준 path 데이터. 전부 stroke, fill 없음 */
 const PATHS: Record<AdminIconName, string> = {
@@ -58,6 +60,8 @@ const PATHS: Record<AdminIconName, string> = {
   edit:      'M12 20h8 M16.5 3.6a2.1 2.1 0 0 1 3 3L7.5 18.6l-4 1 1-4z',
   doc:       'M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z M14 3v4.5h4.5 M8.5 12.5h7 M8.5 16.5h4.5',
   checkCircle:'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z M8.5 12.2l2.4 2.4 4.6-4.9',
+  copy:      'M9 9.5V5.5A1.5 1.5 0 0 1 10.5 4h8A1.5 1.5 0 0 1 20 5.5v8a1.5 1.5 0 0 1-1.5 1.5h-4 M5.5 9h8A1.5 1.5 0 0 1 15 10.5v8a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 4 18.5v-8A1.5 1.5 0 0 1 5.5 9z',
+  plus:      'M12 5.5v13 M5.5 12h13',
 }
 
 interface Props {
