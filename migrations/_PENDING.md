@@ -3,9 +3,27 @@
 > 코드는 커밋됐지만 DB에 반영이 안 된 것들. 돌리고 나면 이 목록에서 지운다.
 > **배포(`git push`) 전에 반드시 여기가 비어 있어야 한다.**
 
-## 없음 ✅
+## `shop_review.sql` — 검토만 끝났고 아직 안 돌림
 
-2026-09-02 기준으로 밀린 마이그레이션 없음.
+신규 샵 검수(선등록 후검수)용. `shops`에 `review_status` / `reviewed_at` / `reviewed_by` 추가 +
+INSERT 기본값 트리거 + UPDATE 변조 차단 트리거.
+
+**⚠️ 적용 순서 주의**: `ADD COLUMN`을 default 없이 먼저 하고 그다음 `SET DEFAULT`를 해야
+기존 샵 49건이 `pending`으로 backfill되지 않는다. 파일 안에 그 순서로 되어 있으니 순서를 바꾸지 말 것.
+
+아직 서비스·UI는 구현 전이다. DB만 먼저 넣어도 동작에는 영향이 없다(새 컬럼을 아무도 안 읽음).
+단 트리거가 붙는 순간부터 **모든 샵 INSERT를 가로채므로**, 적용 직후 일반 계정으로
+샵 등록이 되는지 반드시 한 번 확인할 것.
+
+```sql
+-- 적용 확인
+select column_name, column_default from information_schema.columns
+ where table_name = 'shops' and column_name like 'review%' or column_name like 'reviewed%';
+
+-- 기존 데이터가 NULL로 남았는지 ((null) 49 만 나와야 정상)
+select coalesce(review_status,'(null)') as review_status, count(*)
+  from public.shops group by 1 order by 2 desc;
+```
 
 ---
 
@@ -52,6 +70,7 @@ psql "postgresql://postgres:<비밀번호>@db.<프로젝트ref>.supabase.co:5432
 
 | 날짜 | 파일 | 내용 |
 | --- | --- | --- |
+| 2026-09-02 | `profiles_privilege_guard.sql` | 🚨 보안 — 회원이 스스로 `role='admin'`으로 바꿀 수 있던 구멍 차단. `is_admin()` + `profiles` UPDATE 트리거 |
 | 2026-09-02 | `visit_analytics.sql` | 방문 경로 분석 RPC 5개 + `normalize_visit_path` + `visit_window_start` + 인덱스 2개 |
 | 2026-09-01 | `event_link_series.sql` | `link_event_series()` RPC — 위저드에서 남의 이벤트와 묶을 때 |
 | 2026-09-01 | `event_series_key.sql` | `events.series_key` 컬럼 + 부분 인덱스. 11묶음 / 24건 배정 |
