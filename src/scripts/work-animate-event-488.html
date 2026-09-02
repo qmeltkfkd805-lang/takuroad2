@@ -1,0 +1,960 @@
+<!doctype html>
+<html>
+<head>
+    <title>애니메이트코리아 온라인샵</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="애니메이트코리아 온라인샵" />
+    <meta name="description" content="애니메이트코리아 온라인샵" />
+    <meta name="keywords" content="애니메이트,굿즈샵,BL,애니메이트 온라인샵,애니메이트 코리아,아니메이트 온라인,애니메이션,굿즈,귀멸의칼날,하이큐,주술회전,프로세카,앙상블스타즈,앙스타,블루아카" />
+    <meta name="csrf-token" content="MTc4ODI3OTAxNzE2MTU4NTU2MTIxMTc2ODIwNzk2NTg3NjEwMjEwOTgy" />
+
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="애니메이트코리아 온라인샵">
+    <meta property="og:image" content="https://www.animate-onlineshop.co.kr/data/common/snsRepresentImage.jpg">
+    <meta property="og:url" content="https://www.animate-onlineshop.co.kr/board/view.php?bdId=event&amp;sno=488">
+    <meta property="og:description" content="한국 공식 애니메이트코리아 온라인샵 | 한정상품이나 오리지널 특전이 다수!포인트 5%환원 외, 애니메이트 매장 방문 수령이나 무료 배송 캠페인 등 통신 판매만이 가능한 유익한 기획도 다수 실시 중입니다. 다양한 애니메이션 굿즈,음반,코믹스 등을 다양하게 만나실 수 있습니다!">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="애니메이트코리아 온라인샵">
+    <meta name="twitter:image" content="https://www.animate-onlineshop.co.kr/data/common/snsRepresentImage.jpg">
+    <meta name="twitter:description" content="한국 공식 애니메이트코리아 온라인샵 | 한정상품이나 오리지널 특전이 다수!포인트 5%환원 외, 애니메이트 매장 방문 수령이나 무료 배송 캠페인 등 통신 판매만이 가능한 유익한 기획도 다수 실시 중입니다. 다양한 애니메이션 굿즈,음반,코믹스 등을 다양하게 만나실 수 있습니다!">
+
+    <link rel="icon" href="/data/common/favicon.ico" type="image/x-icon" />
+		<meta name="twitter:card" content="summary_large_image" />
+    <link type="text/css" rel="stylesheet" href="/data/skin/front/designbook_odyssey/css/reset.css?ts=1706256317">
+    <link type="text/css" rel="stylesheet" href="/data/skin/front/designbook_odyssey/css/common/common.css?ts=1695801687">
+    <link type="text/css" rel="stylesheet" href="/data/skin/front/designbook_odyssey/css/common/layer/layer.css?ts=1743044936">
+    <link type="text/css" rel="stylesheet" href="/data/skin/front/designbook_odyssey/css/layout/layout.css?ts=1695801687">
+    <link type="text/css" rel="stylesheet" href="/data/skin/front/designbook_odyssey/css/goods/list.css?ts=1695801687">
+	<link type="text/css" rel="stylesheet" href="/data/skin/front/designbook_odyssey/css/button.css?ts=1755845834">
+    <link type="text/css" rel="stylesheet" href="/data/skin/front/designbook_odyssey/css/board/board.css?ts=1706256255" />
+    <link type="text/css" rel="stylesheet" href="/data/skin/front/designbook_odyssey/js/jquery/chosen/chosen.css?ts=1695801689" />
+    <link type="text/css" rel="stylesheet" href="/data/skin/front/designbook_odyssey/css/custom.css?ts=1775704111" />
+
+
+    <script type="text/javascript">
+        var json_locale_data = {"domain":"messages","locale_data":{"messages":{"":{"lang":"ATF","plural-forms":"nplurals=1; plural=0"}}}}
+    </script>
+    <script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/gd_gettext.js?ts=1695801689"></script>
+    <script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/jquery/jquery.min.js?ts=1695801690"></script>
+    <script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/underscore/underscore-min.js?ts=1695801719"></script>
+    <script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/jquery/validation/jquery.validate.min.js?ts=1695801696"></script>
+    <script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/jquery/validation/additional-methods.min.js?ts=1695801695"></script>
+    <script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/numeral/numeral.min.js?ts=1695801708"></script>
+    <script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/global/accounting.min.js?ts=1695801689"></script>
+    <script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/global/money.min.js?ts=1695801689"></script>
+    <script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/jquery/chosen/chosen.jquery.min.js?ts=1695801689"></script>
+    <script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/jquery/placeholder/placeholders.jquery.min.js?ts=1695801691"></script>
+    <![if gt IE 8]>
+    <script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/copyclipboard/clipboard.min.js?ts=1695801689"></script>
+    <![endif]>
+    <script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/jquery/vticker/jquery.vticker.js?ts=1695801699"></script>
+    <script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/gd_ui.js?ts=1695801689"></script>
+
+    <script type="text/javascript">
+        // 고도몰5 통화정책
+        var gdCurrencyDecimal = 0;
+        var gdCurrencyDecimalFormat = '0';
+        var gdCurrencyCode = 'KRW';
+        var gdCurrencyAddDecimal = 0;
+        var gdCurrencyAddDecimalFormat = '';
+        var gdCurrencyAddCode = '';
+        var gdLocale = 'ko';
+        var gdCurrencySymbol = '';
+        var gdCurrencyString = '원';
+
+        // 환율변환 정책
+        fx.base = "KRW";
+        fx.settings = {
+            from : "KRW",
+            to : gdCurrencyCode
+        };
+        fx.rates = {
+            "KRW" : 1,
+            "USD" : 0.001,
+            "CNY" : 0.010,
+            "JPY" : 0.100,
+            "EUR" : 0.001,
+        }
+    </script>
+
+    <script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/gd_common.js?ts=1695801689"></script>
+
+    <!-- Add script : start -->
+    <script type="text/javascript" src="/admin/gd_share/script/visit/gd_visit.js?requestUrl=https%3A%2F%2Fcollector-statistics.nhn-commerce.com%2Fhttp.msg&requestData=%7B%22base_time%22%3A%222026-09-02T01%3A10%3A17%2B09%3A00%22%2C%22mall_id%22%3A%22664173%22%2C%22user_id%22%3Anull%2C%22refer%22%3A%22%22%2C%22uri%22%3A%22https%3A%5C%2F%5C%2Fwww.animate-onlineshop.co.kr%3A443%5C%2Fboard%5C%2Fview.php%3FbdId%3Devent%26sno%3D488%22%2C%22domain%22%3A%22www.animate-onlineshop.co.kr%22%2C%22country%22%3A%22kr%22%2C%22solution%22%3A%22G5%22%2C%22analytics_client_id%22%3A%2201a05dbc-517e-7689-8816-b8151967312f%22%2C%22analytics_session_id%22%3A%2201a05dbc-517f-7b2a-b57a-7faa7863e4f0%22%7D&dummyData="></script>
+    <script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/gd_board_common.js"></script>
+    <!-- Add script : end -->
+
+    
+
+    <style type="text/css">
+        body {
+        }
+
+        /* body > #wrap > #header_warp : 상단 영역 */
+        #header_warp {
+        }
+
+        /* body > #wrap > #container : 메인 영역 */
+        #container {
+        }
+
+        /* body > #wrap > #footer_wrap : 하단 영역 */
+        #footer_wrap {
+        }
+    </style>
+
+    <script src="//godomall-storage.cdn-nhncommerce.com/godomall-sdk/0.3.2/godomall-sdk.js" onload="GodomallSDK.setup('WYLT1c3tZXs8xw+3MExOUQ==', 'OLjWuPyiU80bpQp6HYluV0Hfxp0M854IKNkIjsQwYJtQqJO95uRVZDHtvIj9pz6bYYGbtEhdqagYKjbbrsQ9XYZWj+Oxhy6AoLw5acajZg3bnIR4ZSyMPA1FObXCr8DfEBc8dP7HYgsJg9dwOWCAAg==')"></script><!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HSKZRT3LWY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HSKZRT3LWY');
+</script><link rel="canonical" href="https://www.animate-onlineshop.co.kr/board/view.php?bdId=event&sno=488">
+
+
+
+
+
+
+</head>
+
+<body class="body-board body-view pc"  >
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPD6WSM"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<div class="top_area"></div>
+<div id="wrap">
+
+    <div id="header_warp">
+<style>
+.content_box {float:none;}
+</style>
+<script src="/data/skin/front/designbook_odyssey/js/jquery.cycle2.js"></script>
+<script src="/data/skin/front/designbook_odyssey/js/jquery.cycle2.carousel.js"></script>
+<script>$.fn.cycle.defaults.autoSelector = '.cycle-slideshow';</script>
+<script src="/data/skin/front/designbook_odyssey/js/js.cookie.js"></script>
+<script src="/data/skin/front/designbook_odyssey/js/jquery.cookie.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    /* COLOR _ SERVICE */
+    $('#faqIframe').load(function() {
+        var css = '<style type="text/css">.btn_date_check {background:#404040; border:1px solid #404040;}.board_hot_list ul li.on span {color:#404040!important;}</style>';
+        $('#faqIframe').contents().find("head").append(css);
+    });
+
+    /* 상단링크 */
+    $(".top-link > li").mouseenter(function(){
+        $(this).children("div").css('display','block');
+    });
+    $(".top-link > li").mouseleave(function(){
+        $(this).children("div").css('display','none');
+    });
+
+    /* 상단카테고리 */
+    $("#btnCateNav").mouseenter(function(){
+        var cateHeight = $("#header .sub_menu_box .sub_depth0").height();
+        if( cateHeight > 459 ){
+            $("#header .sub_menu_box.layer_type").stop().animate({height:cateHeight},400);
+            $(".nav_more_cate .btn_more").css({background:'url(/data/skin/front/designbook_odyssey/img/dimg/ico_cate_close.png) no-repeat 0 0'});
+        } else {
+            $("#header .sub_menu_box.layer_type").stop().animate({height:458},400);
+        }
+    });
+    $("#header .top-service .lnb").mouseleave(function(){
+        $("#header .sub_menu_box.layer_type").stop().animate({height:"458px"},400);
+        $(".nav_more_cate .btn_more").css({background:'url(/data/skin/front/designbook_odyssey/img/dimg/ico_cate_open.png) no-repeat 0 0'});
+    });
+
+	/* 회원가입 포인트 혜택 */
+	function pointE(){
+		$(".join > a > span").animate({ marginTop : 0 } ,{ duration : 700  , complete : function(){
+			$(this).animate({ marginTop : -5 } , {complete : function(){
+				pointE()
+			}})
+		}})
+	}
+	pointE();
+
+ /*상품아이콘*/
+//$(".goods_list_cont .item_tit_box").each(function(){
+  //  if(!$(this).find('p').hasClass('tt_icon')){
+         //$(this).css("margin-top", '26px');
+ //  }
+//})
+
+$(".goods_list_cont .item_tit_box").each(function(){
+    if(!$(this).find('p').hasClass('tt_icon')){
+          $(this).addClass("no-tag");
+    }
+});
+
+});
+
+/*특정 메인진열 얼랏창*/
+$(document).ready(function(){
+	$('.goods_recommend .btn_basket_get').on('click', function(e){
+		alert("로그인하셔야 본 서비스를 이용하실 수 있습니다.");
+		document.location.href = "../member/login.php";
+		return false;
+	});			
+});
+</script>
+<div id="header">
+
+<!--상단 배너-->
+<!-- 소재내의 배경색을 확인하여 background의 값으로 지정-->
+<style>
+.top_line_banner{
+text-align:center;
+background:#fff;
+border:0;
+}
+</style>
+
+<link type="text/css" rel="stylesheet" media="all" href="/data/skin/front/designbook_odyssey/outline/header/css/top_headerbnr.css">
+<div class="top_line_banner">
+</div>
+
+
+    <div class="head-wrap">
+        <!-- 상단링크 s -->
+        <div class="top-link-wrap">
+            <div class="container">
+                <!--멀티상점 선택 -->
+                
+                <!--멀티상점 선택 -->
+                <ul class="top-link">
+                    <li><a href="../member/login.php">로그인</a></li>
+                    <li class="join"><a href="../member/join_method.php">회원가입</a></li>
+					<li><a href="../mypage/order_list.php">주문/배송</a></li>
+                    <li><a href="../mypage/index.php">마이페이지</a></li>
+					<li><a href="../service/faq.php">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- //상단링크 e -->
+        <div class="container">
+            <!-- 로고 s -->
+            <h1><a href="../main/index.php" ><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/skin/front/designbook_odyssey/img/banner/25f94bcd9ab5a497fb8f8fbfa28150ad_21643.jpg"  alt="logo" title="logo"   /></a></h1>
+            <!-- //로고 e -->
+            <!-- 검색 폼 -->
+            <div class="top_search">
+    <form name="frmSearchTop" id="frmSearchTop" action="../goods/goods_search.php" method="get">
+        <fieldset>
+            <legend>검색폼</legend>
+            <div class="top_search_cont">
+                <div class="top_text_cont">
+                    <input type="text" id="search_form" name="keyword" class="top_srarch_text" title=""  placeholder="" autocomplete="off">
+                    <input type="image" src="/data/skin/front/designbook_odyssey/img/dimg/top_btn_search.png" id="btnSearchTop" class="btn_top_srarch" title="검색" value="검색" alt="검색">
+                </div>
+                <!-- //top_text_cont -->
+                <div class="search_cont" style="display:none;">
+                    <input type="hidden" name="recentCount" value="5" />
+
+                    <script type="text/javascript">
+    $(function(){
+
+        /* 상단 검색 */
+        $('.top_search_cont input[name="keyword"]').on({
+            'focus':function(){
+                $(this).parents().find('.search_cont').show();
+            },
+            'blur':function(){
+                $('body').click(function(e){
+                    if (!$('.search_cont').has(e.target).length && e.target.name != 'keyword') {
+                        $(this).parents().find('.search_cont').hide();
+                    }
+                });
+                $('.btn_top_search_close').click(function(){
+                    $(this).parents().find('.search_cont').hide();
+                });
+            }
+        });
+
+        if($("input[name=recentCount]").val() > 0) {
+            $('.js_recom_box').removeClass('recom_box_only').addClass('recom_box');
+        }else{
+            $('.js_recom_box').removeClass('recom_box').addClass('recom_box_only');
+        }
+
+    });
+</script>
+<div class="js_recom_box ">
+    <dl>
+        <dt>추천상품</dt>
+        <dd>
+            <div class="recom_item_cont">
+                <!-- //recom_icon_box -->
+                <div class="recom_tit_box">
+                    <a href="../goods/goods_view.php?goodsNo=">
+                    </a>
+                </div>
+                <!-- //recom_tit_box -->
+                <div class="recom_money_box">
+                </div>
+                <!-- //recom_money_box -->
+                <div class="recom_number_box">
+                </div>
+                <!-- //recom_number_box -->
+            </div>
+            <!-- //recom_item_cont -->
+        </dd>
+    </dl>
+</div>
+
+                    <!-- //recom_box -->
+
+                    <div class="recent_box">
+                        <dl class="js_recent_area">
+                            <dt>최근검색어</dt>
+                            <dd>최근 검색어가 없습니다.</dd>
+                        </dl>
+                    </div>
+                    <!-- //recent_box -->
+                    <div class="seach_top_all">
+                        <button type="button" class="btn_top_search_close"><strong>닫기</strong></button>
+                    </div>
+                    <!-- //seach_top_all -->
+
+                </div>
+                <!-- //search_cont -->
+            </div>
+            <!-- //top_search_cont -->
+        </fieldset>
+    </form>
+</div>
+<!-- //top_search -->
+            <!-- 검색 폼 -->
+			<ul class="right-link">
+				<li><a href="../mypage/wish_list.php"><span><img src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/skin/front/designbook_odyssey/img/dimg/top_btn_wish.png" alt=""/></span></a></li>
+				<li><a href="../order/cart.php"><span><img src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/skin/front/designbook_odyssey/img/dimg/top_btn_cart.png" alt=""/></span><span class="cart">0</span></a></li>
+			</ul>
+        </div>
+    </div><!-- // head-wrap e -->
+    <div class="top-service">
+        <div class="container">
+            <!-- 전체 카테고리 출력 레이어 시작 -->
+            <h2 class="dn">전체 카테고리</h2>
+            <div class="gnb_all">
+    <a href="#;" class="btn_all_menu_open">전체카테고리</a>
+</div>
+<div class="gnb_allmenu_wrap">
+
+</div>
+            <!-- 전체 카테고리 출력 레이어 끝 -->
+            <div class="top_category">
+                <ul>
+                    <li><a href="/goods/goods_list.php?cateCd=008"><span>신상품</span></a></li>
+                    <li><a href="/goods/goods_list.php?cateCd=010"><span>예약상품</span></a></li>
+                    <li><a href="/board/list.php?bdId=event"><span>페어・이벤트</span></a></li>
+                    <li><a href="/goods/goods_list.php?cateCd=012"><span>포인트경품</span></a></li>
+					<li><a href="/board/list.php?bdId=notice2">공지사항</a></li>
+                    <li><a href="/main/html.php?htmid=service/shopinfo.html">매장안내</a></li>
+                    <li><a href="/goods/goods_list.php?cateCd=039">특가상품</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div><!--// div#header -->
+    </div>
+    <!-- //header_warp -->
+
+    <div id="container">
+        <div id="contents">
+        <!-- 본문 시작 -->
+
+            <!-- //location_wrap -->
+
+            <div class="sub_content">
+
+                <!-- //side_cont -->
+<div class="content">
+<div class="addition_zone">
+	<p><p><br></p></p>
+</div>
+<div class="board_zone_sec">
+	<div class="board_zone_tit">
+		<h2>페어・이벤트</h2>
+	</div>
+	<div class="board_zone_cont">
+		<div class="board_zone_view">
+
+			<div class="board_view_tit">
+				<h3>
+					[페어]
+					제5인격 겨울축제 페어 2026
+				</h3>
+			</div>
+				<!--작성자,작성일 숨김-->
+			<div class="board_view_info" style="display:none;">
+                <span class="view_info_idip">
+                    <strong>애니메이트온라인</strong>
+                </span>
+				<span class="view_info_day">
+                    <em>2026.08.28 14:15:36</em>
+                </span>
+				<span class="view_info_hits">
+                </span>
+			</div>
+			<!-- //board_view_info -->
+
+
+
+			<div class="board_view_content">
+
+				<div class="view_goods_select">
+
+
+				</div>
+				<!-- //view_goods_select -->
+
+				<div class="seem_cont">
+					<div style="margin:10px 0 10px 0">
+						<p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" box-sizing:="" border-box;="" 255);="" border-box;"="" style="color: rgb(51, 51, 51); font-family: "><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 14.6667px; font-family: 돋움, dotum;"><b style="box-sizing: border-box; margin: 0px; padding: 0px;"><img src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/editor/board/event/ba79d6250e0d98e2fef5120d54eb6e93_141411.jpeg" title="ba79d6250e0d98e2fef5120d54eb6e93_141411.jpeg" alt="ba79d6250e0d98e2fef5120d54eb6e93_141411.jpeg" class="js-smart-img"><br style="clear:both;"> </b></span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" box-sizing:="" border-box;="" 255);="" border-box;"="" style="color: rgb(51, 51, 51); font-family: "><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 14.6667px; font-family: 돋움, dotum;"><b style="box-sizing: border-box; margin: 0px; padding: 0px;"><br></b></span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" box-sizing:="" border-box;="" 255);="" border-box;"="" style="color: rgb(51, 51, 51); font-family: "><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 14.6667px; font-family: 돋움, dotum;"><b style="box-sizing: border-box; margin: 0px; padding: 0px;">제5인격 겨울축제 페어 2026</b></span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" box-sizing:="" border-box;="" 255);="" border-box;"="" style="color: rgb(51, 51, 51); font-family: "><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 14.6667px;"><b style="box-sizing: border-box; margin: 0px; padding: 0px;"><br style="box-sizing: border-box;"></b></span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;">○개최기간</span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;"> </span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-family: 돋움, dotum;"><span style="box-sizing: border-box; margin: 0px; padding: 0px; font-family: 돋움, dotum;">2026년 8월 29일(토) ~ 2026년 9월 13일(일) </span>(단, 특전 소진 시 배포가 종료됩니다.)</span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;">(※온라인샵은 매장 오픈 시간과 동일하게 페어 대상 상품이 개시됩니다.)</span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="box-sizing: border-box; margin: 0px; padding: 0px; color: rgb(255, 0, 0); font-family: 돋움, dotum;"> </span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;"> </span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;">○개최장소</span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;"> 홍대점/잠실롯데점/부산점/수원점/온라인샵</span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;"> </span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;"> </span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;">○이벤트 내용</span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;"> </span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;">* 페어 개최 기간 중, 개최 점포에서 『제5인격』 관련 </span><b style="box-sizing: border-box; margin: 0px; padding: 0px;"><span style="font-family: 돋움, dotum;">상품 구매</span></b><b style="box-sizing: border-box; margin: 0px; padding: 0px;"><span style="font-family: 돋움, dotum;">ㆍ예약 15,000원당</span></b></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><b style="box-sizing: border-box; margin: 0px; padding: 0px;"><br style="box-sizing: border-box;"></b></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><br></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><b style="box-sizing: border-box; margin: 0px; padding: 0px;"></b></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><b style="box-sizing: border-box; margin: 0px; padding: 0px;"><span style="font-family: 돋움, dotum;">특전 【 구매 특전 일러스트 카드】를 1장 </span></b><b style="box-sizing: border-box; margin: 0px; padding: 0px;"><span style="font-family: 돋움, dotum;">드립니다.</span></b></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><b style="box-sizing: border-box; margin: 0px; padding: 0px;"><br></b></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum; font-size: 9pt;"> </span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;">○주의사항</span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;">※ 시책과 연관된 경품, 특전, 사인본지, 응모권, 교환권, 뽑기권 등은 전부 제3자에게 양도, 옥션 등의 전매는 금지하고 있습니다. </span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;">※ 특전은 랜덤 배포로, 특전의 종류를 선택할 수 없습니다. </span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;">※ 티켓,쿠지 품목이 판매될 경우, 페어 대상 상품에서 제외됩니다.</span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;">※ 페어(이벤트) 개최 기간 중이라도 특전이 소진될 경우 배포가 종료됩니다. </span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;">※ 페어(이벤트)의 내용은 상황에 의해 변경, 연기, 중지되는 경우가 있습니다.</span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;">※ 온라인의 경우 일반상품과 예약상품을 함께 구매 시 일반 상품 금액에 해당되는 특전수량만 선증정</span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;">   예약상품은 예약상품 금액에 해당되는 특전 수량을 예약상품 배송시 특전 증정됩니다. </span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;">※ 온라인의 경우 구입 날짜가 페어(이벤트)기간이 동일할 때에 특전이 배포됩니다. </span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="font-family: 돋움, dotum;">※ 페어(이벤트)기간에 구입 또는 예약을 하셨더라도 특전이 소진되면 증정되지 않습니다. </span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="color: rgb(0, 0, 0); font-family: 돋움, dotum; font-size: 13px; white-space: pre-wrap; background-color: rgb(255, 255, 255);">※ 페어 대상 상품의 금액은 상품 구매의 실 결제금액으로 배송비 및 기타 수수료는 해당 되지 않습니다. </span> </p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="color: rgb(0, 0, 0); font-family: 돋움, dotum; font-size: 13px; white-space: pre-wrap; background-color: rgb(255, 255, 255);"> </span></p><p malgun="" gothic",="" "맑은="" 고딕",="" applegothic,="" dotum,="" 돋움,="" "helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" background-color:="" rgb(255,="" 255,="" 255);"="" 255);="" box-sizing:="" border-box;"="" border-box;="" style="color: rgb(51, 51, 51); font-family: "><span style="color: rgb(0, 0, 0); font-family: 돋움, dotum; font-size: 13px; white-space: pre-wrap; background-color: rgb(255, 255, 255);"> </span></p>
+					</div>
+				</div>
+				<!-- //seem_cont -->
+
+
+			</div>
+			<!-- //board_view_content -->
+
+
+			<div class="board_view_comment">
+
+				<div class="view_comment js_comment_area" data-bdId="event" data-sno="488">
+
+				</div>
+
+			</div>
+			<!-- //board_view_comment -->
+
+		</div>
+		<!-- //board_zone_view -->
+
+		<div class="btn_right_box">
+<button type="button" class="btn_board_list" onclick="gd_btn_list('event')"><strong>목록</strong></button>		</div>
+
+	</div>
+	<!-- //board_zone_cont -->
+
+	<!-- N : 관련게시글 영역 시작 -->
+	<div class="board_zone_cont">
+		<div class="board_zone_list">
+			<table class="board_list_table">
+				<colgroup>
+					<col style="width:6%">  <!-- 번호 -->
+					<col>					<!-- 제목 -->
+					<col style="width:15%"> <!-- 추천 -->
+					<col style="width:10%"> <!-- 조회 -->
+				</colgroup>
+				<thead style="display:none;">
+				<tr>
+					<th>번호</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>날짜</th>
+				</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+
+		</div>
+		<!-- //board_zone_list -->
+	</div>
+	<!-- //board_zone_cont -->
+	<!-- N : 관련게시글 영역 끝 -->
+
+	<!-- N : 리스트화면 노출 시작 -->
+	<!-- N : 리스트화면 노출 끝 -->
+
+</div>
+<!-- //board_zone_sec -->
+
+<div class="addition_zone">
+	<p><p><br></p></p>
+</div>
+
+<!-- 레이어 호출시 딤처리 -->
+<div id="layerDim" class="dn">&nbsp;</div>
+<!-- //레이어 호출시 딤처리 -->
+<!-- 비밀글 클릭시 인증 레이어 -->
+<div id="lyPassword" class="dn layer_wrap password_layer" style="height: 226px">
+	<div class="layer_wrap_cont">
+		<div class="ly_tit">
+			<h4>비밀번호 인증</h4>
+		</div>
+		<div class="ly_cont">
+			<div class="scroll_box">
+				<p>글 작성시 설정한 비밀번호를 입력해 주세요.</p>
+				<input type="password" name="writerPw" class="text">
+			</div>
+			<!-- // -->
+			<div class="btn_center_box">
+				<button type="button" class="btn_ly_password js_submit"><strong>확인</strong></button>
+			</div>
+		</div>
+		<!-- //ly_cont -->
+		<a href="#close" class="ly_close layer_close"><img src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/skin/front/designbook_odyssey/img/common/layer/btn_layer_close.png" alt="닫기"></a>
+	</div>
+	<!-- //layer_wrap_cont -->
+</div>
+<!-- //layer_wrap -->
+<script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/gd_board_view.js" charset="utf-8"></script>
+</div>
+<!-- //content -->
+            </div>
+            <!-- //sub_content -->
+        </div>
+        <!-- //본문 끝 contents -->
+    </div>
+    <!-- //container -->
+
+    <div id="footer_wrap">
+<div id="footer">
+    <div class="link">
+        <div class="container">
+            <ul>
+                <li><a href="/">홈</a></li>
+                <li><a href="../service/company.php">회사소개</a></li>
+                <li><a href="../service/agreement.php">이용약관</a></li>
+                <li><a href="../service/private.php" class="privacy">개인정보취급방침</a></li>
+                <li><a href="../service/guide.php">이용안내</a></li>
+                <li><a href="../service/index.php">고객센터</a></li>
+				 <li><a href="https://www.animate-onlineshop.co.kr/main/html.php?htmid=service/shopinfo.html">매장안내</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="container">
+			<!-- 은행정보-->
+			<div class="bank-info" style="display:none">
+                <h3>BANK INFO</h3>
+                <ul style="display:none">
+<li>하나은행<strong>78091001654604</strong></li>                </ul>
+                <p><b>하나은행 780-910016-54604</b> <br> 예금주 : 애니메이트 홍대점</p>
+            </div>
+            <!-- 공지사항-->
+            <div class="notice">
+                <h3><a href="../board/list.php?bdId=notice" title="공지 리스트">NOTICE</a></h3>
+                <ul>
+                    <li>
+                        <a href="../board/view.php?bdId=notice2&sno=44" alt="제목">【당첨자발표】 「1to10 1-3...</a>
+                        <span class="bottom-n-date"><!--등록일-->2026.08.28</span>
+                    </li>
+                    <li>
+                        <a href="../board/view.php?bdId=notice2&sno=43" alt="제목">※중요※ 8월 애니메이트 온라인샵...</a>
+                        <span class="bottom-n-date"><!--등록일-->2026.08.06</span>
+                    </li>
+                    <li>
+                        <a href="../board/view.php?bdId=notice2&sno=23" alt="제목">개인정보처리방침 변경 안내 (9/...</a>
+                        <span class="bottom-n-date"><!--등록일-->2025.09.03</span>
+                    </li>
+                    <li>
+                        <a href="../board/view.php?bdId=notice2&sno=2" alt="제목">애니메이트 온라인샵 방문수령 가이...</a>
+                        <span class="bottom-n-date"><!--등록일-->2024.08.28</span>
+                    </li>
+                    <li>
+                        <a href="../board/view.php?bdId=notice2&sno=1" alt="제목">국내 서적 주문 및 발송 안내</a>
+                        <span class="bottom-n-date"><!--등록일-->2024.08.28</span>
+                    </li>
+                </ul>
+            </div>
+
+			<div class="cs-center">
+                <h3>MY SERVICE</h3>
+             
+			   <ul>
+					<li><a href="/mypage/index.php">마이페이지</a></li>
+					<li><a href="/mypage/order_list.php">주문/배송조회</a></li>
+					<li><a href="../board/list.php?bdId=notice2">공지사항</a></li>
+					<li><a href="/service/faq.php">자주하는 질문</a></li>
+					<li><a href="https://www.animate-onlineshop.co.kr/main/html.php?htmid=service/shopinfo.html">매장안내</a></li>
+			   </ul> 
+            </div>
+			<div class="sns">
+				 <h3>OFFICIAL SNS</h3>		
+				<ul>
+					<li><a href="https://x.com/animateonlineKR" target="_blank" class="tw" alt="애니메이트 온라인샵">애니메이트 코리아 온라인샵 X</a><b>애니메이트 코리아 온라인샵 X</b></li>
+					<li><a href="https://x.com/animate_hongdae" target="_blank" class="tw" alt="애니메이트 홍대점">애니메이트 코리아 홍대점 X</a><b>애니메이트 코리아 홍대점 X</b></li>
+					<li><a href="https://x.com/animate_busan" target="_blank" class="tw" alt="애니메이트 부산점">애니메이트 코리아 부산점 X</a><b>애니메이트 코리아 부산점 X</b></li>
+					<li><a href="https://x.com/animate_lotte" target="_blank" class="tw" alt="애니메이트 잠실롯데점">애니메이트 코리아 잠실롯데점 X</a><b>애니메이트 코리아 잠실롯데점 X</b></li>
+					<li><a href="https://x.com/animate_suwon" target="_blank" class="tw" alt="애니메이트 수원점">애니메이트 코리아 수원점 X</a><b>애니메이트 코리아 수원점 X</b></li>	
+						
+				</ul>
+				
+			</div>
+	
+            <!-- <div class="bottom-quick">
+                <h3><img src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/skin/front/designbook_odyssey/img/dimg/bottom_tit_04.gif" alt="quick menu"></h3>
+                <ul>
+                    <li><a href="../mypage/index.php"><img src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/skin/front/designbook_odyssey/img/dimg/bottom_quick_01.gif" alt="mypage"><span>마이페이지</span></a></li>
+                    <li><a href="../board/list.php?bdId=notice"><img src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/skin/front/designbook_odyssey/img/dimg/bottom_quick_02.gif" alt="notice"><span>공지사항</span></a></li>
+                   
+                </ul>
+            </div> -->
+        </div>
+    </div>
+    <div class="footer">
+        <div class="container footer_wrap">
+            <div class="footer_logo"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/skin/front/designbook_odyssey/img/banner/25f94bcd9ab5a497fb8f8fbfa28150ad_35884.jpg"  alt="logo" title="logo"   /></div>
+            <div class="policy">
+                <ul>
+                    <li>상호명 : 애니메이트 홍대점</li>
+                    <li>대표 : 정동훈</li>
+                    <li>사업자등록번호 : 669-85-01315 <a href="#" class="btn_licensee_info" onclick="gd_popup_bizInfo('6698501315'); return false;">사업자정보확인 ></a></li>
+                    <li>통신판매업신고번호 : 2020-서울마포-2540</li>
+                </ul>
+                <ul>
+                    <li>전화 : <strong>070-4158-5911</strong> <b style="color:red">※온라인 문의는 전화로 접수받지 않습니다. 1:1 문의 게시판에 남겨주십시오.</b></li>
+                    <!-- <li>팩스 : </li> -->
+                    <li>주소 : 서울특별시 마포구 양화로 188(동교동) 애경타워 5층</li>
+					<li>반품/교환지 주소 :  서울특별시 금천구 범안로 1130(가산동) 디지털엠파이어빌딩 1204호</li>
+
+                </ul>
+                <ul>
+                    <li>개인정보관리자 : 김기남</li>
+                    <li>메일 : <a href="mailto:"animate_onlineshop@daewonmedia.com" class="btn_email">animate_onlineshop@daewonmedia.com</a>※메일로 문의시 답변 및 회신드리지 않습니다.</li>
+                </ul>
+                <p>copyright (c) <strong>animate-onlineshop.co.kr</strong> all rights reserved<a href="https://gdadmin.animate-onlineshop.co.kr/" target="window">.</a></p>
+            </div>
+        </div>
+        <div class="foot_certify">
+			<span></span>
+			<span></span>
+		</div>
+		<!-- //foot_certify -->
+    </div>
+</div><!--// div.footer -->
+    </div>
+    <!-- //footer_wrap -->
+
+
+    
+
+    <!-- 퀵 검색 폼 -->
+    <!-- Add script : start -->
+<script type="text/javascript" src="/data/skin/front/designbook_odyssey/js/gd_multi_select_box.js"></script>
+<!-- Add script : end -->
+<form name="frmQuickSearch" id="frmQuickSearch" action="../goods/goods_search.php" method="get">
+<input type="hidden" name="mode" value="quick"/>
+<div id="quick_search" class="q_top"><!-- N : 위치이동 시 클래스로 제어 / [상단 .q_top], [좌측 .q_left], [우측 .q_right] -->
+    <div class="quick_search_cont">
+        <a href="#open" class="btn_quick_search_open"><span class="skip">퀵검색열림</span></a>
+        <div class="quick_search_cont_box">
+            <h2>퀵검색</h2>
+            <dl class="first">
+                <dt>브랜드</dt>
+                <dd>
+                    <div class="select_box">
+<select id="quickBrandGoods1" name="quickBrandGoods[]"  class="chosen-select">
+<option value="">=브랜드선택=</option>
+<option value="127"  data-flag="kr" data-mall-name="기준몰">승리의 여신: 니케</option>
+<option value="246"  data-flag="kr" data-mall-name="기준몰">LIMBUS COMPANY</option>
+<option value="242"  data-flag="kr" data-mall-name="기준몰">초(超) 가구야 공주!</option>
+<option value="118"  data-flag="kr" data-mall-name="기준몰">NU:카니발</option>
+<option value="030"  data-flag="kr" data-mall-name="기준몰">은혼</option>
+<option value="220"  data-flag="kr" data-mall-name="기준몰">ALIEN STAGE</option>
+<option value="215"  data-flag="kr" data-mall-name="기준몰">개구리 중사 케로로</option>
+<option value="178"  data-flag="kr" data-mall-name="기준몰">명조: 워더링 웨이브</option>
+<option value="162"  data-flag="kr" data-mall-name="기준몰">붕괴 : 스타레일</option>
+<option value="035"  data-flag="kr" data-mall-name="기준몰">진격의 거인</option>
+<option value="177"  data-flag="kr" data-mall-name="기준몰">걸즈 밴드 크라이</option>
+<option value="240"  data-flag="kr" data-mall-name="기준몰">타몬 군 지금 어느쪽!?</option>
+<option value="243"  data-flag="kr" data-mall-name="기준몰">해즈빈 호텔</option>
+<option value="017"  data-flag="kr" data-mall-name="기준몰">주술회전</option>
+<option value="043"  data-flag="kr" data-mall-name="기준몰">천관사복</option>
+<option value="204"  data-flag="kr" data-mall-name="기준몰">케이온!</option>
+<option value="120"  data-flag="kr" data-mall-name="기준몰">봇치 더 록!</option>
+<option value="105"  data-flag="kr" data-mall-name="기준몰">블루 록</option>
+<option value="140"  data-flag="kr" data-mall-name="기준몰">블루 아카이브</option>
+<option value="009"  data-flag="kr" data-mall-name="기준몰">하이큐 !!</option>
+<option value="014"  data-flag="kr" data-mall-name="기준몰">나의 히어로 아카데미아</option>
+<option value="159"  data-flag="kr" data-mall-name="기준몰">WIND BREAKER</option>
+<option value="097"  data-flag="kr" data-mall-name="기준몰">프로젝트 세카이</option>
+<option value="071"  data-flag="kr" data-mall-name="기준몰">원신</option>
+<option value="051"  data-flag="kr" data-mall-name="기준몰">기븐</option>
+<option value="004"  data-flag="kr" data-mall-name="기준몰">THE IDOLM@STER</option>
+<option value="015"  data-flag="kr" data-mall-name="기준몰">문호 스트레이독스</option>
+<option value="007"  data-flag="kr" data-mall-name="기준몰">앙상블 스타즈!!</option>
+<option value="006"  data-flag="kr" data-mall-name="기준몰">아이돌리쉬 세븐</option>
+<option value="001"  data-flag="kr" data-mall-name="기준몰">BanG Dream!</option>
+<option value="171"  data-flag="kr" data-mall-name="기준몰">BanG Dream! It&#039;s MyGO!!!!!</option>
+<option value="061"  data-flag="kr" data-mall-name="기준몰">SPY×FAMILY</option>
+<option value="063"  data-flag="kr" data-mall-name="기준몰">제5인격</option>
+<option value="130"  data-flag="kr" data-mall-name="기준몰">【최애의 아이】</option>
+<option value="074"  data-flag="kr" data-mall-name="기준몰">VTuber</option>
+<option value="031"  data-flag="kr" data-mall-name="기준몰">에반게리온</option>
+<option value="012"  data-flag="kr" data-mall-name="기준몰">러브라이브!School idol project</option>
+<option value="048"  data-flag="kr" data-mall-name="기준몰">우마무스메</option>
+<option value="122"  data-flag="kr" data-mall-name="기준몰">카와이계</option>
+<option value="060"  data-flag="kr" data-mall-name="기준몰">논캐릭</option>
+<option value="144"  data-flag="kr" data-mall-name="기준몰">그라떼 (Gratte)</option>
+<option value="251"  data-flag="kr" data-mall-name="기준몰">단간론파 시리즈</option>
+<option value="254"  data-flag="kr" data-mall-name="기준몰">성세천하</option>
+</select>
+</div>
+<div class="select_box">
+<select id="quickBrandGoods2" name="quickBrandGoods[]"  class="chosen-select">
+<option value="">=브랜드선택=</option>
+</select>
+</div>
+<div class="select_box">
+<select id="quickBrandGoods3" name="quickBrandGoods[]"  class="chosen-select">
+<option value="">=브랜드선택=</option>
+</select>
+</div>
+<script type="text/javascript">
+$(function() {
+	$('#quickBrandGoods1').multi_select_box('#quickBrandGoods',3,'../share/category_select_json.php?cateType=brand&userMode=y','=브랜드선택=');
+	$('#quickBrandGoods2').multi_select_box('#quickBrandGoods',3,'../share/category_select_json.php?cateType=brand&userMode=y','=브랜드선택=');
+	$('#quickBrandGoods3').multi_select_box('#quickBrandGoods',3,'../share/category_select_json.php?cateType=brand&userMode=y','=브랜드선택=');
+});
+
+</script>
+
+                </dd>
+            </dl>
+            <dl>
+                <dt>카테고리</dt>
+                <dd>
+                    <div class="select_box">
+<select id="quickCateGoods1" name="quickCateGoods[]"  class="chosen-select">
+<option value="">=카테고리선택=</option>
+<option value="001"  data-flag="kr" data-mall-name="기준몰">굿즈</option>
+<option value="002"  data-flag="kr" data-mall-name="기준몰">Blu-ray/DVD</option>
+<option value="003"  data-flag="kr" data-mall-name="기준몰">CD</option>
+<option value="004"  data-flag="kr" data-mall-name="기준몰">국내서적</option>
+<option value="005"  data-flag="kr" data-mall-name="기준몰">해외서적</option>
+<option value="008"  data-flag="kr" data-mall-name="기준몰">신상품</option>
+<option value="010"  data-flag="kr" data-mall-name="기준몰">예약상품</option>
+<option value="012"  data-flag="kr" data-mall-name="기준몰">포인트경품</option>
+<option value="039"  data-flag="kr" data-mall-name="기준몰">특가상품</option>
+<option value="040"  data-flag="kr" data-mall-name="기준몰">I.G Port Online store</option>
+<option value="041"  data-flag="kr" data-mall-name="기준몰">bones store</option>
+<option value="044"  data-flag="kr" data-mall-name="기준몰">STUDIO PIERROT</option>
+<option value="047"  data-flag="kr" data-mall-name="기준몰">이벤트상품</option>
+</select>
+</div>
+<div class="select_box">
+<select id="quickCateGoods2" name="quickCateGoods[]"  class="chosen-select">
+<option value="">=카테고리선택=</option>
+</select>
+</div>
+<div class="select_box">
+<select id="quickCateGoods3" name="quickCateGoods[]"  class="chosen-select">
+<option value="">=카테고리선택=</option>
+</select>
+</div>
+<div class="select_box">
+<select id="quickCateGoods4" name="quickCateGoods[]"  class="chosen-select">
+<option value="">=카테고리선택=</option>
+</select>
+</div>
+<script type="text/javascript">
+$(function() {
+	$('#quickCateGoods1').multi_select_box('#quickCateGoods',4,'../share/category_select_json.php?userMode=y','=카테고리선택=');
+	$('#quickCateGoods2').multi_select_box('#quickCateGoods',4,'../share/category_select_json.php?userMode=y','=카테고리선택=');
+	$('#quickCateGoods3').multi_select_box('#quickCateGoods',4,'../share/category_select_json.php?userMode=y','=카테고리선택=');
+	$('#quickCateGoods4').multi_select_box('#quickCateGoods',4,'../share/category_select_json.php?userMode=y','=카테고리선택=');
+});
+
+</script>
+
+                </dd>
+            </dl>
+            <dl>
+                <dt>가격</dt>
+                <dd>
+                    <div class="price_box">
+                        <input type="text"  name="goodsPrice[]" value=""/><span>원 ~</span>
+                    </div>
+                    <div class="price_box">
+                        <input type="text"  name="goodsPrice[]" value=""/><span>원</span>
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>검색어</dt>
+                <dd><div class="search_box"><input type="text" name="keyword"/></div></dd>
+            </dl>
+            <dl>
+                <dt>아이콘</dt>
+                <dd>
+                    <div class="benefit_box">
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon36" name="goodsIcon[n][]" value="icon0035" />
+                        <label for="quickSearchIcon36" class="check-s " title="★애니메이트한정★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/anigen_i.png"  alt="★애니메이트한정★" title="★애니메이트한정★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon49" name="goodsIcon[n][]" value="icon0048" />
+                        <label for="quickSearchIcon49" class="check-s " title="★스페이스갤러리아 수주예약★"><img  src="/data/icon/goods_icon/스페이스_갤러리아_수주예약.png"  alt="★스페이스갤러리아 수주예약★" title="★스페이스갤러리아 수주예약★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon48" name="goodsIcon[n][]" value="icon0047" />
+                        <label for="quickSearchIcon48" class="check-s " title="★이벤트 대상 상품★"><img  src="/data/icon/goods_icon/이벤트대상상품.png"  alt="★이벤트 대상 상품★" title="★이벤트 대상 상품★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon47" name="goodsIcon[n][]" value="icon0046" />
+                        <label for="quickSearchIcon47" class="check-s " title="."><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/trans1.png"  alt="." title="." class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon46" name="goodsIcon[n][]" value="icon0045" />
+                        <label for="quickSearchIcon46" class="check-s " title="★특가상품★"><img  src="/data/icon/goods_icon/특가상품.png"  alt="★특가상품★" title="★특가상품★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon44" name="goodsIcon[n][]" value="icon0043" />
+                        <label for="quickSearchIcon44" class="check-s " title="★수주예약★애니메이트한정★"><img  src="/data/icon/goods_icon/수주_애니한.png"  alt="★수주예약★애니메이트한정★" title="★수주예약★애니메이트한정★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon43" name="goodsIcon[n][]" value="icon0042" />
+                        <label for="quickSearchIcon43" class="check-s " title="★특전★★동시특전★"><img  src="/data/icon/goods_icon/특전_동시.png"  alt="★특전★★동시특전★" title="★특전★★동시특전★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon42" name="goodsIcon[n][]" value="icon0041" />
+                        <label for="quickSearchIcon42" class="check-s " title="★봉입특전★"><img  src="/data/icon/goods_icon/봉입특전.png"  alt="★봉입특전★" title="★봉입특전★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon41" name="goodsIcon[n][]" value="icon0040" />
+                        <label for="quickSearchIcon41" class="check-s " title="★예약상품★★봉입특전★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/yoyaku_iret.png"  alt="★예약상품★★봉입특전★" title="★예약상품★★봉입특전★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon40" name="goodsIcon[n][]" value="icon0039" />
+                        <label for="quickSearchIcon40" class="check-s " title="★재판★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/saiban_i.png"  alt="★재판★" title="★재판★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon39" name="goodsIcon[n][]" value="icon0038" />
+                        <label for="quickSearchIcon39" class="check-s " title="★재판예약★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/saiban_yoyaku_i.png"  alt="★재판예약★" title="★재판예약★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon38" name="goodsIcon[n][]" value="icon0037" />
+                        <label for="quickSearchIcon38" class="check-s " title="★예약상품★★애니메이트한정★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/yoyaku_anigen_i.png"  alt="★예약상품★★애니메이트한정★" title="★예약상품★★애니메이트한정★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon37" name="goodsIcon[n][]" value="icon0036" />
+                        <label for="quickSearchIcon37" class="check-s " title="★수주예약상품★★특전★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/yoyaku2_tk_i.png"  alt="★수주예약상품★★특전★" title="★수주예약상품★★특전★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon24" name="goodsIcon[n][]" value="icon0023" />
+                        <label for="quickSearchIcon24" class="check-s " title="★특전★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/tokuten_i2.png"  alt="★특전★" title="★특전★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon35" name="goodsIcon[n][]" value="icon0034" />
+                        <label for="quickSearchIcon35" class="check-s " title="★애니메이트한정★★특전★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/anigen_tk_i.png"  alt="★애니메이트한정★★특전★" title="★애니메이트한정★★특전★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon34" name="goodsIcon[n][]" value="icon0033" />
+                        <label for="quickSearchIcon34" class="check-s " title="★특전★★연동특전★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/tokuten_rendou_i.png"  alt="★특전★★연동특전★" title="★특전★★연동특전★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon33" name="goodsIcon[n][]" value="icon0032" />
+                        <label for="quickSearchIcon33" class="check-s " title="★예약상품★★전권특전★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/yoyaku_zk_i.png"  alt="★예약상품★★전권특전★" title="★예약상품★★전권특전★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon32" name="goodsIcon[n][]" value="icon0031" />
+                        <label for="quickSearchIcon32" class="check-s " title="★예약상품★★동시특전★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/yoyaku_ds_i.png"  alt="★예약상품★★동시특전★" title="★예약상품★★동시특전★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon31" name="goodsIcon[n][]" value="icon0030" />
+                        <label for="quickSearchIcon31" class="check-s " title="★예약상품★★연동특전★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/yoyaku_rd_i.png"  alt="★예약상품★★연동특전★" title="★예약상품★★연동특전★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon30" name="goodsIcon[n][]" value="icon0029" />
+                        <label for="quickSearchIcon30" class="check-s " title="★동시특전★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/dongshi_i.png"  alt="★동시특전★" title="★동시특전★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon29" name="goodsIcon[n][]" value="icon0028" />
+                        <label for="quickSearchIcon29" class="check-s " title="★연동특전★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/rendou_i.png"  alt="★연동특전★" title="★연동특전★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon28" name="goodsIcon[n][]" value="icon0027" />
+                        <label for="quickSearchIcon28" class="check-s " title="★전권특전★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/zenkan_i.png"  alt="★전권특전★" title="★전권특전★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon27" name="goodsIcon[n][]" value="icon0026" />
+                        <label for="quickSearchIcon27" class="check-s " title="★예약상품★★특전★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/yoyaku_tk_i.png"  alt="★예약상품★★특전★" title="★예약상품★★특전★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon26" name="goodsIcon[n][]" value="icon0025" />
+                        <label for="quickSearchIcon26" class="check-s " title="★수주예약상품★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/yoyaku2_i.png"  alt="★수주예약상품★" title="★수주예약상품★" class="middle"  /></label>
+                        </span>
+                        <span class="form-element icon-check">
+                            <input type="checkbox" id="quickSearchIcon25" name="goodsIcon[n][]" value="icon0024" />
+                        <label for="quickSearchIcon25" class="check-s " title="★예약상품★"><img  src="https://cdn-pro-web-250-117.cdn-nhncommerce.com/animatete13_godomall_com/data/icon/goods_icon/yoyaku_i.png"  alt="★예약상품★" title="★예약상품★" class="middle"  /></label>
+                        </span>
+                    </div>
+                </dd>
+            </dl>
+
+            <div class="quick_btn"><input type="submit" value="검색"/></div>
+        </div>
+        <!-- //quick_search_cont_box -->
+        <a href="#close" class="btn_quick_search_close"><span class="skip">퀵검색닫힘</span></a>
+    </div>
+    <!-- //quick_search_cont -->
+</div>
+</form>
+    <!-- 퀵 검색 폼 -->
+
+</div>
+<!-- //wrap -->
+
+<!-- 쇼핑 카트 탭 -->
+
+<!-- //쇼핑 카트 탭 -->
+
+<!-- 절대! 지우지마세요 : Start -->
+<div id="layerDim" class="dn">&nbsp;</div>
+<iframe name="ifrmProcess" src='/blank.php' style="display:none" width="100%" height="0" bgcolor="#000"></iframe>
+<!-- 절대! 지우지마세요 : End -->
+
+<!-- 외부 스크립트 -->
+<!-- Twitter universal website tag code -->
+<script>
+!function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+},s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+// Insert Twitter Pixel ID and Standard Event data below
+twq('init','o6rsa');
+twq('track','PageView');
+</script>
+<!-- End Twitter universal website tag code --><script>window.GodomallSDKConfig = {"mallInfo":{"mallDomain":"animatete13.godomall.com","mallNm":"\uc560\ub2c8\uba54\uc774\ud2b8\ucf54\ub9ac\uc544 \uc628\ub77c\uc778\uc0f5","mallNmEng":"ANIMATE KOREA\u2502ONLINE SHOP","mallUsageStatus":{"kr":"y","us":"n","cn":"n","jp":"n"},"mallSno":1},"location":{"path":"\/board\/view.php","pathSegments":["board","view"]},"extraParams":null,"isLoggedIn":false,"memberOnlyEndpoints":["^\/member\/","^\/orders\/"]};</script>
+										
+<!-- This script is for AceCounter START -->
+<script language='javascript'>
+var _ag   = 0 ;         // 로그인사용자 나이
+var _id   = '';    		// 로그인사용자 아이디
+var _mr   = '';        	// 로그인사용자 결혼여부 ('single' , 'married' )
+var _gd   = '';         // 로그인사용자 성별 ('man' , 'woman')
+var _skey = '' ;        // 내부검색어
+
+var _jn = '' ;          //  가입탈퇴 ( 'join','withdraw' ) 
+var _jid = '' ;			// 가입시입력한 ID
+
+var _ud1 = '' ;			// 사용자 정의변수 1 ( 1 ~ 10 정수값)
+var _ud2 = '' ;			// 사용자 정의변수 2 ( 1 ~ 10 정수값)
+var _ud3 = '' ;			// 사용자 정의변수 3 ( 1 ~ 10 정수값)
+</script>
+<!-- AceCounter END --> 
+<!-- AceCounter Log Gathering Script V.8.0.AMZ2019080601 -->
+<script language='javascript'>
+	var _AceGID=(function(){var Inf=['gtc10.acecounter.com','8080','BS4A44760384429','AW','0','NaPm,Ncisy','ALL','0']; var _CI=(!_AceGID)?[]:_AceGID.val;var _N=0;var _T=new Image(0,0);if(_CI.join('.').indexOf(Inf[3])<0){ _T.src ="https://"+ Inf[0] +'/?cookie'; _CI.push(Inf);  _N=_CI.length; } return {o: _N,val:_CI}; })();
+	var _AceCounter=(function(){var G=_AceGID;var _sc=document.createElement('script');var _sm=document.getElementsByTagName('script')[0];if(G.o!=0){var _A=G.val[G.o-1];var _G=(_A[0]).substr(0,_A[0].indexOf('.'));var _C=(_A[7]!='0')?(_A[2]):_A[3];var _U=(_A[5]).replace(/\,/g,'_');_sc.src='https:'+'//cr.acecounter.com/Web/AceCounter_'+_C+'.js?gc='+_A[2]+'&py='+_A[4]+'&gd='+_G+'&gp='+_A[1]+'&up='+_U+'&rd='+(new Date().getTime());_sm.parentNode.insertBefore(_sc,_sm);return _sc.src;}})();
+</script>
+<!-- AceCounter Log Gathering Script End -->
+
+</body>
+</html>

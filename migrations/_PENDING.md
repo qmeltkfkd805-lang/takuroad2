@@ -5,7 +5,7 @@
 
 ## 없음 ✅
 
-2026-09-01 기준으로 밀린 마이그레이션 없음.
+2026-09-02 기준으로 밀린 마이그레이션 없음.
 
 ---
 
@@ -31,6 +31,15 @@ select policyname from pg_policies
  where tablename = '<테이블>' and policyname = '<정책명>';
 ```
 
+⚠️ Supabase SQL Editor는 **텍스트가 선택돼 있으면 선택한 부분만** 실행한다.
+붙여넣은 뒤 아무 데나 클릭해 선택을 풀고 Run 할 것. 함수가 몇 개 안 생겼으면 대개 이 문제다.
+적용 여부는 개수만 세지 말고 본문까지 확인하는 게 확실하다:
+
+```sql
+select proname, prosrc like '%<본문에 있어야 할 문자열>%' as ok
+  from pg_proc where pronamespace = 'public'::regnamespace and proname = '<함수명>';
+```
+
 DDL은 서비스 롤 REST로는 못 돌린다. 대시보드가 죽었으면 psql이 필요하다.
 
 ```powershell
@@ -43,6 +52,7 @@ psql "postgresql://postgres:<비밀번호>@db.<프로젝트ref>.supabase.co:5432
 
 | 날짜 | 파일 | 내용 |
 | --- | --- | --- |
+| 2026-09-02 | `visit_analytics.sql` | 방문 경로 분석 RPC 5개 + `normalize_visit_path` + `visit_window_start` + 인덱스 2개 |
 | 2026-09-01 | `event_link_series.sql` | `link_event_series()` RPC — 위저드에서 남의 이벤트와 묶을 때 |
 | 2026-09-01 | `event_series_key.sql` | `events.series_key` 컬럼 + 부분 인덱스. 11묶음 / 24건 배정 |
 | 2026-09-01 | `shop_images_select_owner.sql` | 등록 중(hidden) 샵 사진을 소유자가 볼 수 있게 하는 SELECT 정책 |

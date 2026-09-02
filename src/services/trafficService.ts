@@ -53,5 +53,26 @@ export async function getVisitSummary(): Promise<VisitSummary | null> {
   return data as VisitSummary
 }
 
+/* 관리자 대시보드 '오늘' 카드용.
+   새 RPC를 만들지 않고 이미 있는 get_visit_summary + get_timeseries를 합쳐 오늘치만 뽑는다.
+   그래서 바로 위 트래픽 차트와 항상 같은 값이 나온다. */
+export interface TodayCounts { visitors: number; pageviews: number; checkins: number }
+
+export async function getTodayCounts(): Promise<TodayCounts> {
+  const [summary, checkinSeries] = await Promise.all([
+    getVisitSummary().catch(() => null),
+    getTimeseries('checkins', 7).catch(() => [] as TimePoint[]),
+  ])
+  // 로컬(KST) 기준 오늘. 오늘 체크인이 0건이면 시계열에 그 날짜 행 자체가 없으므로 0이 된다.
+  const today = new Date().toLocaleDateString('sv-SE')   // YYYY-MM-DD
+  const todayRow = checkinSeries.find(p => (p.date ?? '').slice(0, 10) === today)
+
+  return {
+    visitors: summary?.today_uv ?? 0,
+    pageviews: summary?.today_pv ?? 0,
+    checkins: Number(todayRow?.count) || 0,
+  }
+}
+
 
 

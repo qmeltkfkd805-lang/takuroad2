@@ -4,8 +4,10 @@ import { useState, useEffect, CSSProperties, ReactNode } from 'react'
 import Link from 'next/link'
 import { getAdminTodoSummary, getAdminStats, getTopShops, AdminStats, TopShop } from '@/services/adminDashboardService'
 import { getActiveWorks, ActiveWork } from '@/services/activeWorksService'
+import { getTodayCounts, TodayCounts } from '@/services/trafficService'
 import { ROUTES } from '@/lib/constants/routes'
 import TrafficSection from './TrafficSection'
+import VisitPathsSection from './VisitPathsSection'
 import BadgeReevalButton from './BadgeReevalButton'
 
 const rankRow: CSSProperties = {
@@ -19,6 +21,8 @@ export default function AdminDashboardPage({ onNavigate }: { onNavigate: (tab: s
   const [summary, setSummary] = useState<any>(null)
   const [topWorks, setTopWorks] = useState<ActiveWork[]>([])
   const [topShops, setTopShops] = useState<TopShop[]>([])
+  // 오늘 방문자·체크인 — 트래픽 섹션과 같은 RPC를 쓴다. 늦게 와도 화면을 막지 않는다
+  const [today, setToday] = useState<TodayCounts | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -26,6 +30,7 @@ export default function AdminDashboardPage({ onNavigate }: { onNavigate: (tab: s
       .then(([s, sum, works, shops]) => {
         setStats(s); setSummary(sum); setTopWorks(works); setTopShops(shops); setLoading(false)
       })
+    getTodayCounts().then(setToday).catch(() => setToday({ visitors: 0, pageviews: 0, checkins: 0 }))
   }, [])
 
   if (loading || !stats || !summary) {
@@ -37,6 +42,8 @@ export default function AdminDashboardPage({ onNavigate }: { onNavigate: (tab: s
       <BadgeReevalButton />
       <SectionTitle>📈 트래픽</SectionTitle>
       <TrafficSection />
+      <SectionTitle>🧭 방문 경로 <Muted>어느 페이지를 보고 어디서 나갔는지</Muted></SectionTitle>
+      <VisitPathsSection />
       <SectionTitle>📊 전체 현황</SectionTitle>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 24 }}>
         <StatCard label="작품" value={stats.works} onClick={() => onNavigate('works')} />
@@ -50,10 +57,16 @@ export default function AdminDashboardPage({ onNavigate }: { onNavigate: (tab: s
       <SectionTitle>🗓 오늘</SectionTitle>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 8 }}>
         <StatCard label="신규 회원" value={stats.newMembersToday} accent />
-        <PlaceholderCard label="방문자" />
-        <PlaceholderCard label="체크인" />
+        {today === null
+          ? <LoadingCard label="방문자" />
+          : <StatCard label="방문자" value={today.visitors} sub={`페이지뷰 ${today.pageviews.toLocaleString()}`} />}
+        {today === null
+          ? <LoadingCard label="체크인" />
+          : <StatCard label="체크인" value={today.checkins} />}
       </div>
-      <p style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 24 }}>※ 방문자·체크인은 체크인/분석 시스템 연결 후 집계돼요.</p>
+      <p style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 24 }}>
+        ※ 방문자는 세션 기준 순방문자(UV)예요. 봇과 로컬 개발 접속은 빠집니다.
+      </p>
 
       <SectionTitle>🟠 검수 대기</SectionTitle>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
@@ -113,7 +126,7 @@ function Muted({ children }: { children: ReactNode }) {
   return <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--muted)' }}>{children}</span>
 }
 
-function StatCard({ label, value, onClick, accent }: { label: string; value: number; onClick?: () => void; accent?: boolean }) {
+function StatCard({ label, value, onClick, accent, sub }: { label: string; value: number; onClick?: () => void; accent?: boolean; sub?: string }) {
   return (
     <div onClick={onClick} style={{
       border: '1px solid var(--border)', borderRadius: 12, padding: '14px 12px',
@@ -121,14 +134,16 @@ function StatCard({ label, value, onClick, accent }: { label: string; value: num
     }}>
       <div style={{ fontSize: 24, fontWeight: 900, color: accent ? 'var(--accent)' : 'var(--text)' }}>{(value ?? 0).toLocaleString()}</div>
       <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>{label}</div>
+      {sub && <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 3 }}>{sub}</div>}
     </div>
   )
 }
 
-function PlaceholderCard({ label }: { label: string }) {
+/* 통계 RPC가 아직 안 온 동안 — 카드 크기를 유지해 레이아웃이 튀지 않게 한다 */
+function LoadingCard({ label }: { label: string }) {
   return (
-    <div style={{ border: '1px dashed var(--border)', borderRadius: 12, padding: '14px 12px', background: 'var(--surface2)' }}>
-      <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--muted)' }}>준비 중</div>
+    <div style={{ border: '1px solid var(--border)', borderRadius: 12, padding: '14px 12px', background: 'var(--surface)' }}>
+      <div style={{ fontSize: 24, fontWeight: 900, color: 'var(--border)' }}>—</div>
       <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>{label}</div>
     </div>
   )
