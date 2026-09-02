@@ -588,6 +588,61 @@ export async function getAdminShopsExcludingDeleted(): Promise<Shop[]> {
   return (data ?? []).map(toShop)
 }
 
+/* ── 신규 샵 검수 (선등록 후검수) ────────────────────────────
+   샵은 등록 즉시 공개(status='active')되고, 검수는 별도 축(review_status)으로 돈다.
+   값은 DB 트리거가 정한다(migrations/shop_review.sql):
+     일반 사용자·EventReviewPage 등록 → 'pending'
+     관리자 등록                      → 'reviewed'
+   기존 샵(기능 도입 전)은 NULL이라 대기열에 잡히지 않는다. */
+export type ShopReviewStatus = 'pending' | 'reviewed' | 'needs_attention'
+
+export async function getShopsForReview(status: ShopReviewStatus): Promise<Shop[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('shops')
+    .select(`
+      id, slug, name, description,
+      addr, country, region, city, district,
+      lat, lng, google_place_id,
+      place_id, floor, unit,
+      places ( slug, name, lat, lng, access_note ),
+      hours, parking, parking_note, shop_link, sns_links, phone,
+      start_date, end_date, event_info,
+      rating_avg, rating_count, visit_count, bookmark_count,
+      is_verified, is_claimed, status,
+      temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
+      added_by, owner_id, created_at, updated_at,
+      shop_images ( image_url, is_cover, sort_order ),
+      cats
+    `)
+    .eq('review_status', status)
+    .order('created_at', { ascending: true })   // 오래 기다린 것부터
+
+  if (error) {
+    console.error('[샵 검수 목록] 조회 실패:', error.message, error.code, error.details, error.hint)
+    return []
+  }
+  return (data ?? []).map(toShop)
+}
+
+/* 검수 상태 변경. reviewed_at·reviewed_by는 보내지 않는다 —
+   DB 트리거가 now()와 auth.uid()로 강제하고, 관리자가 아니면 42501로 거부한다. */
+export async function setShopReviewStatus(
+  shopId: string,
+  status: ShopReviewStatus,
+): Promise<{ ok: boolean; error?: string }> {
+  const supabase = createClient()
+  const { error } = await supabase
+    .from('shops')
+    .update({ review_status: status } as any)
+    .eq('id', shopId)
+  if (error) {
+    console.error('[샵 검수] 상태 변경 실패:', error.message, error.code, error.details, error.hint)
+    return { ok: false, error: error.message }
+  }
+  return { ok: true }
+}
+
 export async function getPendingShops(): Promise<Shop[]> {
   const supabase = createClient()
   const { data, error } = await supabase

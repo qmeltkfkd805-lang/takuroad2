@@ -31,7 +31,12 @@ const GROUPS: MenuGroup[] = [
   {
     key: 'review', label: '검수 · 승인',
     items: [
-      { tab: 'shops',       label: '샵 승인',      icon: 'approve' },
+      /* '샵 승인'(status='pending' 대기열)은 메뉴에서 뺐다 — pending을 만드는 경로가
+         코드 어디에도 없어 구조적으로 항상 비어 있었다(2026-09-02 확인).
+         대신 '선등록 후검수'로 정책을 바꿔 아래 '신규 샵 검수'가 그 자리를 대신한다.
+         옛 코드(AdminPage의 tab==='shops', getPendingShops/approveShop/rejectShop)는
+         남겨뒀으니 승인제가 필요해지면 되살릴 수 있다. 단 그때는 RLS부터 잠글 것. */
+      { tab: 'shopreview',  label: '신규 샵 검수', icon: 'approve' },
       { tab: 'verify',      label: '인증 심사',    icon: 'verify' },
       { tab: 'reported',    label: '샵 신고',      icon: 'flagShop' },
       { tab: 'postreports', label: '게시글 신고',  icon: 'flagPost' },

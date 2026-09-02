@@ -77,12 +77,15 @@ export async function getAdminStats(): Promise<AdminStats> {
 const CONTACT_STATUS_DONE = 'done'      // ContactAdminTab / updateContactMessage
 const CONTACT_TYPE_PARTNER = 'partner'  // AdminPage의 onlyType/excludeType
 const POST_STATUS_HIDDEN = 'hidden'     // communityPostService.restorePost의 반대 상태
+const SHOP_REVIEW_PENDING = 'pending'   // shops.review_status — migrations/shop_review.sql
 
 /** null = 조회 실패 또는 아직 안 옴 (UI에서 '—' 처리) */
 export interface AdminBadgeCounts {
   hiddenPosts: number | null
   openContacts: number | null
   openPartners: number | null
+  /** 신규 샵 검수 대기 (review_status='pending'). 기능 도입 전 샵은 NULL이라 안 잡힌다 */
+  shopReview: number | null
 }
 
 // supabase count 응답에서 필요한 부분만 좁게 본다 (Database 타입이 any라 여기서 형태를 명시한다)
@@ -98,6 +101,8 @@ export async function getAdminBadgeCounts(): Promise<AdminBadgeCounts> {
       .neq('status', CONTACT_STATUS_DONE).neq('type', CONTACT_TYPE_PARTNER),
     supabase.from('contact_messages').select('id', { count: 'exact', head: true })
       .neq('status', CONTACT_STATUS_DONE).eq('type', CONTACT_TYPE_PARTNER),
+    supabase.from('shops').select('id', { count: 'exact', head: true })
+      .eq('review_status', SHOP_REVIEW_PENDING),
   ])
 
   const pick = (r: PromiseSettledResult<CountResult>, tag: string): number | null => {
@@ -114,6 +119,7 @@ export async function getAdminBadgeCounts(): Promise<AdminBadgeCounts> {
     hiddenPosts: pick(results[0], '숨김 글'),
     openContacts: pick(results[1], '문의'),
     openPartners: pick(results[2], '제휴 문의'),
+    shopReview: pick(results[3], '신규 샵 검수'),
   }
 }
 

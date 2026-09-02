@@ -20,12 +20,11 @@ interface Props {
   onNavigate: (tab: string) => void
   /** getAdminTodoSummary 결과. null이면 아직 안 왔거나 실패 */
   todo: AdminTodoSummary | null
-  pendingShops: number
   pendingVerify: number
   badges: AdminBadgeCounts | null
 }
 
-export default function AdminDashboardPage({ onNavigate, todo, pendingShops, pendingVerify, badges }: Props) {
+export default function AdminDashboardPage({ onNavigate, todo, pendingVerify, badges }: Props) {
   const [stats, setStats] = useState<AdminStats | null>(null)
   const [topWorks, setTopWorks] = useState<ActiveWork[] | null>(null)
   const [topShops, setTopShops] = useState<TopShop[] | null>(null)
@@ -46,7 +45,8 @@ export default function AdminDashboardPage({ onNavigate, todo, pendingShops, pen
   // 처리해야 할 업무 — 각 값의 출처는 기존 관리 화면과 같다
   const todos: { key: string; label: string; icon: AdminIconName; count: number | null; tab?: string }[] = [
     { key: 'goods',    label: '미확인 굿즈 정보', icon: 'inbox',    count: todo ? todo.unconfirmedProducts : null },
-    { key: 'shops',    label: '샵 승인',         icon: 'approve',  count: pendingShops, tab: 'shops' },
+    // 옛 '샵 승인'(status='pending')은 뺐다 — 선등록 후검수로 정책이 바뀌었다
+    { key: 'shopreview', label: '신규 샵 검수',  icon: 'approve',  count: badges ? badges.shopReview : null, tab: 'shopreview' },
     { key: 'verify',   label: '인증 심사',       icon: 'verify',   count: pendingVerify, tab: 'verify' },
     { key: 'contacts', label: '문의',            icon: 'contact',  count: badges ? badges.openContacts : null, tab: 'contacts' },
   ]

@@ -12,8 +12,10 @@
 -- 기존 데이터는 backfill 하지 않는다. 기존 샵의 review_status는 NULL로 남고,
 -- NULL = "검수 기능 도입 이전 데이터, 대기열 대상 아님" 을 뜻한다.
 --
--- ⚠️ 적용 전 반드시 확인: profiles의 UPDATE RLS가 일반 사용자의 role 변경을 막는가?
---    막지 못하면 아래 is_admin()이 무의미해진다. (파일 맨 아래 [사전 점검] 참고)
+-- ✅ 사전 점검 완료 (2026-09-02): profiles의 role 변경 경로를 먼저 막았다.
+--    - UPDATE는 컬럼 권한에 role이 없어 원래 불가 + profiles_guard_privileged 트리거 추가
+--    - INSERT는 테이블 권한을 걷고 안전한 컬럼만 재허용 (profiles_column_privileges.sql)
+--    따라서 아래 is_admin()의 판정을 신뢰할 수 있다.
 -- ============================================================
 
 
@@ -72,12 +74,12 @@ language sql
 stable
 security definer
 set search_path to 'public', 'pg_temp'
-as $$
+as $is_admin$
   select exists (
     select 1 from public.profiles p
     where p.id = auth.uid() and p.role = 'admin'
   );
-$$;
+$is_admin$;
 
 revoke all on function public.is_admin() from public, anon;
 grant execute on function public.is_admin() to authenticated;
@@ -100,7 +102,7 @@ create or replace function public.shops_review_set_on_insert()
 returns trigger
 language plpgsql
 set search_path to 'public', 'pg_temp'
-as $$
+as $ins_fn$
 begin
   if public.is_admin() then
     new.review_status := 'reviewed';
@@ -113,7 +115,7 @@ begin
   end if;
   return new;
 end;
-$$;
+$ins_fn$;
 
 revoke all on function public.shops_review_set_on_insert() from public, anon, authenticated;
 
@@ -131,7 +133,7 @@ create or replace function public.shops_review_guard_on_update()
 returns trigger
 language plpgsql
 set search_path to 'public', 'pg_temp'
-as $$
+as $upd_fn$
 begin
   if not public.is_admin() then
     -- 조용히 되돌리면 공격을 못 본 채 넘어간다. 명시적으로 거부한다.
@@ -145,7 +147,7 @@ begin
   new.reviewed_by := auth.uid();
   return new;
 end;
-$$;
+$upd_fn$;
 
 revoke all on function public.shops_review_guard_on_update() from public, anon, authenticated;
 
@@ -163,19 +165,15 @@ select pg_notify('pgrst', 'reload schema');
 
 
 -- ============================================================
--- [사전 점검] 적용 전에 반드시 이것부터 실행할 것
--- 일반 사용자가 자기 role을 admin으로 바꿀 수 있으면 위 설계는 전부 무의미하다.
+-- [알아둘 것] shops의 다른 컬럼은 아직 넓게 열려 있다
 -- ============================================================
--- select policyname, cmd, roles,
---        pg_get_expr(polqual, polrelid)      as using_expr,
---        pg_get_expr(polwithcheck, polrelid) as with_check_expr
--- from pg_policies pol
--- join pg_policy p on p.polname = pol.policyname
--- join pg_class c  on c.oid = p.polrelid and c.relname = 'profiles'
--- where pol.schemaname = 'public' and pol.tablename = 'profiles';
+-- shops는 anon·authenticated 모두 테이블 단위 INSERT/UPDATE/DELETE 권한을 갖고 있고,
+-- shops_update_tiered 정책이 "is_claimed가 아니면 누구나 수정"이라 컬럼 제한이 없다.
+-- 즉 로그인한 사용자가 status·is_verified·owner_id 같은 값을 직접 바꿀 수 있다.
+-- (2026-09-02 확인. 별도 보안 작업으로 분리)
 --
--- select tgname, pg_get_triggerdef(oid) from pg_trigger
--- where tgrelid = 'public.profiles'::regclass and not tgisinternal;
+-- 다만 이 마이그레이션이 추가하는 review_status·reviewed_at·reviewed_by는
+-- 위 트리거가 관리자 외의 변경을 42501로 거부하므로 그 문제의 영향을 받지 않는다.
 
 
 -- ============================================================

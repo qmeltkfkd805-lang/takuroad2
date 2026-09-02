@@ -20,6 +20,7 @@ import WorkAdminTab from './WorkAdminTab'
 import HeroAdminTab from './HeroAdminTab'
 import MemberAdminTab from './MemberAdminTab'
 import ShopAdminTab from './ShopAdminTab'
+import ShopReviewTab from './ShopReviewTab'
 import PlaceAdminTab from './PlaceAdminTab'
 import ContactAdminTab from './ContactAdminTab'
 import SuggestionAdminTab from './SuggestionAdminTab'
@@ -49,8 +50,8 @@ interface VerifyRequest {
 /* 탭 목록을 배열로 둔다 — 주소창의 ?tab= 값이 진짜 탭인지 런타임에 확인해야 해서.
    (타입만 있으면 검사할 수가 없다. 유니온 타입은 배열에서 뽑는다) */
 const TABS = [
-  'dashboard', 'hero', 'shops', 'shopmanage', 'works', 'members', 'verify', 'routes',
-  'events', 'reported', 'postreports', 'places', 'contacts', 'partners', 'suggestions',
+  'dashboard', 'hero', 'shops', 'shopmanage', 'shopreview', 'works', 'members', 'verify',
+  'routes', 'events', 'reported', 'postreports', 'places', 'contacts', 'partners', 'suggestions',
 ] as const
 type Tab = typeof TABS[number]
 
@@ -162,8 +163,16 @@ export default function AdminPage() {
   }
 
   // 사이드바 배지용 미처리 건수. 값이 없거나 조회 실패면 배지를 숨긴다
+  /* 검수 완료 처리 후 사이드바 배지를 다시 맞춘다. 전역 상태를 새로 두지 않고
+     이 한 함수를 내려보내 필요한 곳에서만 부른다. */
+  async function refreshBadges() {
+    try { setBadges(await getAdminBadgeCounts()) }
+    catch (e) { console.error('[관리자] 배지 건수 갱신 실패:', e) }
+  }
+
   const sidebarCounts = {
     shops: pendingShops.length,
+    shopreview: badges?.shopReview ?? null,
     verify: verifyRequests.length,
     reported: todo?.pendingSuggestions ?? null,     // shop_suggestions status='pending'
     postreports: badges?.hiddenPosts ?? null,
@@ -185,7 +194,6 @@ export default function AdminPage() {
         <AdminDashboardPage
           onNavigate={(t) => goTab(toTab(t))}
           todo={todo}
-          pendingShops={pendingShops.length}
           pendingVerify={verifyRequests.length}
           badges={badges}
         />
@@ -332,6 +340,7 @@ export default function AdminPage() {
       )}
 
       {tab === 'shopmanage' && <ShopAdminTab />}
+      {tab === 'shopreview' && <ShopReviewTab onReviewed={refreshBadges} />}
       {tab === 'works' && <WorkAdminTab />}
       {tab === 'places' && <PlaceAdminTab />}
       {tab === 'members' && <MemberAdminTab />}
