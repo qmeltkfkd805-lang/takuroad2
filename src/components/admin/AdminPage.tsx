@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import {
   getPendingShops, approveShop, rejectShop,
@@ -46,12 +46,39 @@ interface VerifyRequest {
   profiles: { id: string; nickname: string } | null
 }
 
-type Tab = 'dashboard' | 'hero' | 'shops' | 'shopmanage' | 'works' | 'members' | 'verify' | 'routes' | 'events' | 'reported' | 'postreports' | 'places' | 'contacts' | 'partners' | 'suggestions'
+/* 탭 목록을 배열로 둔다 — 주소창의 ?tab= 값이 진짜 탭인지 런타임에 확인해야 해서.
+   (타입만 있으면 검사할 수가 없다. 유니온 타입은 배열에서 뽑는다) */
+const TABS = [
+  'dashboard', 'hero', 'shops', 'shopmanage', 'works', 'members', 'verify', 'routes',
+  'events', 'reported', 'postreports', 'places', 'contacts', 'partners', 'suggestions',
+] as const
+type Tab = typeof TABS[number]
+
+const DEFAULT_TAB: Tab = 'dashboard'
+
+function toTab(raw: string | null): Tab {
+  return TABS.includes(raw as Tab) ? (raw as Tab) : DEFAULT_TAB
+}
 
 export default function AdminPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { user, profile, loading: authLoading } = useAuth()
-  const [tab, setTab] = useState<Tab>('dashboard')
+
+  /* 현재 탭은 주소(?tab=)에 남긴다 — 새로고침해도 보던 화면 그대로 돌아오게.
+     화면 state를 따로 두는 이유는 탭 전환을 네비게이션이 끝날 때까지 기다리지 않고
+     바로 보여주기 위해서다. 주소가 먼저 바뀌는 경우(뒤로/앞으로 가기, 링크 진입)에는
+     아래 파생 조정으로 화면이 주소를 따라간다. */
+  const urlTab = toTab(searchParams.get('tab'))
+  const [tab, setTab] = useState<Tab>(urlTab)
+  const [prevUrlTab, setPrevUrlTab] = useState<Tab>(urlTab)
+  if (urlTab !== prevUrlTab) { setPrevUrlTab(urlTab); setTab(urlTab) }
+
+  function goTab(next: Tab) {
+    setTab(next)
+    // 기본 탭은 쿼리 없이 깔끔하게. scroll:false — 탭만 바뀌는데 위로 튀지 않게
+    router.replace(next === DEFAULT_TAB ? '/admin' : `/admin?tab=${next}`, { scroll: false })
+  }
   const [pendingShops, setPendingShops] = useState<Shop[]>([])
   const [verifyRequests, setVerifyRequests] = useState<VerifyRequest[]>([])
   const [ready, setReady] = useState(false)
@@ -93,7 +120,8 @@ export default function AdminPage() {
       .catch(e => { if (alive) { console.error('[관리자] 배지 건수 실패:', e); setBadges(null) } })
 
     return () => { alive = false }
-  }, [user, profile, authLoading, ready])
+    // router는 App Router에서 참조가 안정적이라 넣어도 재실행되지 않는다
+  }, [user, profile, authLoading, ready, router])
 
 
   async function handleApproveShop(shopId: string) {
@@ -148,14 +176,14 @@ export default function AdminPage() {
       <AdminSidebar
         tab={tab}
         counts={sidebarCounts}
-        onSelect={(t) => setTab(t as Tab)}
+        onSelect={(t) => goTab(toTab(t))}
         onViewSite={() => window.open(ROUTES.home, '_blank', 'noopener')}
       />
 
       <div className={styles.content}>
       {tab === 'dashboard' && (
         <AdminDashboardPage
-          onNavigate={(t) => setTab(t as Tab)}
+          onNavigate={(t) => goTab(toTab(t))}
           todo={todo}
           pendingShops={pendingShops.length}
           pendingVerify={verifyRequests.length}
