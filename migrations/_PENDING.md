@@ -3,27 +3,29 @@
 > 코드는 커밋됐지만 DB에 반영이 안 된 것들. 돌리고 나면 이 목록에서 지운다.
 > **배포(`git push`) 전에 반드시 여기가 비어 있어야 한다.**
 
-## `shop_review.sql` — 검토만 끝났고 아직 안 돌림
+## 없음 ✅
 
-신규 샵 검수(선등록 후검수)용. `shops`에 `review_status` / `reviewed_at` / `reviewed_by` 추가 +
-INSERT 기본값 트리거 + UPDATE 변조 차단 트리거.
+2026-09-02 기준으로 밀린 마이그레이션 없음.
 
-**⚠️ 적용 순서 주의**: `ADD COLUMN`을 default 없이 먼저 하고 그다음 `SET DEFAULT`를 해야
-기존 샵 49건이 `pending`으로 backfill되지 않는다. 파일 안에 그 순서로 되어 있으니 순서를 바꾸지 말 것.
+---
 
-아직 서비스·UI는 구현 전이다. DB만 먼저 넣어도 동작에는 영향이 없다(새 컬럼을 아무도 안 읽음).
-단 트리거가 붙는 순간부터 **모든 샵 INSERT를 가로채므로**, 적용 직후 일반 계정으로
-샵 등록이 되는지 반드시 한 번 확인할 것.
+## ⚠️ 다음 보안 과제 — `shops` 쓰기 권한 (마이그레이션 미작성)
 
-```sql
--- 적용 확인
-select column_name, column_default from information_schema.columns
- where table_name = 'shops' and column_name like 'review%' or column_name like 'reviewed%';
+`shops`는 `anon`·`authenticated` 모두 **테이블 단위** INSERT/UPDATE/DELETE 권한을 갖고 있고
+컬럼 제한이 없다. 여기에 `shops_update_tiered` 정책이
+`(is_claimed IS NOT TRUE) OR owner_id = auth.uid() OR admin` 이라,
+**로그인한 사용자가 `is_claimed`가 아닌 모든 샵을 수정할 수 있다.**
 
--- 기존 데이터가 NULL로 남았는지 ((null) 49 만 나와야 정상)
-select coalesce(review_status,'(null)') as review_status, count(*)
-  from public.shops group by 1 order by 2 desc;
-```
+브라우저에서 직접 `status='deleted'`(사이트에서 사라짐), `is_verified=true`(공식 샵 자칭),
+`owner_id` 변경(사장님 인증 우회), 평점·방문수 조작이 전부 된다.
+`/api/admin/shop-status`·`shop-field`의 admin 게이트가 PostgREST 직접 호출로 우회된다.
+(`anon`은 UPDATE 정책이 `{authenticated}` 전용이라 RLS가 막는다)
+
+`profiles`처럼 단순히 컬럼 권한으로 못 나눈다 — 관리자 작업 다수가 클라이언트에서
+`authenticated` 역할로 돌고(`approveShop`은 status+is_verified,
+`approveVerifyRequest`는 is_claimed+owner_id), 게다가 `publishShop`은 **일반 사용자**가
+`status`를 `active`로 바꾼다. 트리거 방식이 맞되 `status`는
+"본인이 만든 hidden → active"만 허용하는 조건부 로직이 필요하다.
 
 ---
 
@@ -70,6 +72,7 @@ psql "postgresql://postgres:<비밀번호>@db.<프로젝트ref>.supabase.co:5432
 
 | 날짜 | 파일 | 내용 |
 | --- | --- | --- |
+| 2026-09-02 | `shop_review.sql` | 신규 샵 검수 — `shops.review_status`/`reviewed_at`/`reviewed_by` + INSERT 기본값·UPDATE 차단 트리거. 기존 50건 NULL 유지 확인 |
 | 2026-09-02 | `profiles_column_privileges.sql` | 🚨 보안 — `admin_note`·`signup_*` 읽기 차단(anon 포함), 가입 INSERT로 `role='admin'` 심는 경로 차단. **테이블 권한을 걷고 컬럼만 재허용**하는 순서가 핵심 |
 | 2026-09-02 | `profiles_privilege_guard.sql` | 🚨 보안 — 회원이 스스로 `role='admin'`으로 바꿀 수 있던 구멍 차단. `is_admin()` + `profiles` UPDATE 트리거 |
 | 2026-09-02 | `visit_analytics.sql` | 방문 경로 분석 RPC 5개 + `normalize_visit_path` + `visit_window_start` + 인덱스 2개 |
