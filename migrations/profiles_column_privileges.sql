@@ -65,14 +65,23 @@ grant select (
 -- 뿐이라 신규 가입자가 프로필 생성 시점에 이렇게 관리자가 될 수 있었다:
 --   supabase.from('profiles').insert({ id: <자기 id>, nickname: 'x', role: 'admin' })
 -- UPDATE 쪽은 이미 컬럼 권한으로 막혀 있었는데(role에 UPDATE 없음) INSERT만 열려 있었다.
-revoke insert (
-  role,
-  admin_note,
-  status,
-  suspended_until,
-  is_beta,
-  passport_number
-) on public.profiles from authenticated, anon;
+-- ⚠️ SELECT와 똑같이, 테이블 단위 INSERT부터 걷어야 한다.
+--    (2026-09-02 1차 적용 때 컬럼 단위 revoke insert만 써서 아무 효과가 없었다.
+--     테이블 권한이 남아 있으면 컬럼 권한을 빼도 그대로 통과한다)
+revoke insert on table public.profiles from authenticated, anon;
+
+grant insert (
+  id, nickname, avatar_url, bio,
+  is_profile_public, selected_title_id, selected_title_type, equipped,
+  privacy_settings, notification_settings, app_settings,
+  created_at, updated_at,
+  -- /profile/setup 이 첫 방문 유입 경로를 여기에 남긴다. 읽기는 막았지만 쓰기는 필요하다
+  signup_channel, signup_referrer, signup_landing_path,
+  signup_utm_source, signup_utm_medium, signup_utm_campaign
+) on public.profiles to authenticated;
+
+-- 빠진 것 = role, admin_note, status, suspended_until, is_beta, passport_number
+-- anon에게는 INSERT를 주지 않는다 (원래도 없었다).
 
 -- passport_number는 trg_assign_passport_number(BEFORE INSERT)가 채운다.
 -- 컬럼 INSERT 권한은 "문장에 나열된 컬럼"에만 검사되고 트리거가 NEW에 넣는 값은
@@ -139,8 +148,7 @@ select pg_notify('pgrst', 'reload schema');
 -- [롤백] Supabase 기본 상태(테이블 단위 전체 허용)로 되돌린다
 -- ============================================================
 -- grant select on table public.profiles to anon, authenticated;
--- grant insert (role, admin_note, status, suspended_until, is_beta, passport_number)
---   on public.profiles to authenticated, anon;
+-- grant insert on table public.profiles to authenticated;
 -- select pg_notify('pgrst', 'reload schema');
 --
 -- ⚠️ 롤백하면 (1) 내부 컬럼 노출과 (2) 가입 시 권한 상승이 함께 되살아난다.

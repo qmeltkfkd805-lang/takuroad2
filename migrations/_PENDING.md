@@ -3,25 +3,6 @@
 > 코드는 커밋됐지만 DB에 반영이 안 된 것들. 돌리고 나면 이 목록에서 지운다.
 > **배포(`git push`) 전에 반드시 여기가 비어 있어야 한다.**
 
-## `profiles_column_privileges.sql` — ⭐코드 배포 직후에 적용할 것
-
-`profiles`의 내부 컬럼 노출 차단(`admin_note` + `signup_*` 6개)과, 가입 시 INSERT로
-스스로 관리자가 되는 경로 차단.
-
-⚠️ **이번만은 "코드 먼저, SQL 나중"이 맞다.** 위 규칙(배포 전 이 목록 비우기)의 예외다.
-`AuthProvider`의 `select('*')`를 컬럼 명시로 바꾼 코드가 **먼저 배포되어 있어야** 한다.
-SQL을 먼저 넣으면 `select('*')`가 권한 없는 컬럼을 포함하게 되어 프로필 조회가 통째로 깨진다.
-
-```sql
--- 적용 확인: admin_note와 signup_* 가 sel=false 여야 한다
-select column_name,
-       bool_or(privilege_type='SELECT') as sel,
-       bool_or(privilege_type='INSERT') as ins
-from information_schema.column_privileges
-where table_schema='public' and table_name='profiles' and grantee='authenticated'
-group by column_name order by column_name;
-```
-
 ## `shop_review.sql` — 검토만 끝났고 아직 안 돌림
 
 신규 샵 검수(선등록 후검수)용. `shops`에 `review_status` / `reviewed_at` / `reviewed_by` 추가 +
@@ -89,6 +70,7 @@ psql "postgresql://postgres:<비밀번호>@db.<프로젝트ref>.supabase.co:5432
 
 | 날짜 | 파일 | 내용 |
 | --- | --- | --- |
+| 2026-09-02 | `profiles_column_privileges.sql` | 🚨 보안 — `admin_note`·`signup_*` 읽기 차단(anon 포함), 가입 INSERT로 `role='admin'` 심는 경로 차단. **테이블 권한을 걷고 컬럼만 재허용**하는 순서가 핵심 |
 | 2026-09-02 | `profiles_privilege_guard.sql` | 🚨 보안 — 회원이 스스로 `role='admin'`으로 바꿀 수 있던 구멍 차단. `is_admin()` + `profiles` UPDATE 트리거 |
 | 2026-09-02 | `visit_analytics.sql` | 방문 경로 분석 RPC 5개 + `normalize_visit_path` + `visit_window_start` + 인덱스 2개 |
 | 2026-09-01 | `event_link_series.sql` | `link_event_series()` RPC — 위저드에서 남의 이벤트와 묶을 때 |
