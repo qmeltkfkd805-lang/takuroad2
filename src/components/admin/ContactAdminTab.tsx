@@ -12,26 +12,34 @@ const FILTERS = [
   { key: 'processing', label: '처리중' },
   { key: 'done', label: '완료' },
 ]
-const PARTNER_KEYS = ['partnerType','manager','company','phone','homepage','instagram','x','snsEtc','collab','collabEtc','address','works','branches','eventName','eventPeriod','eventPlace','brandName','brandGoal','adPeriod','adPlace','adBudget']
 const STATUS_LABEL: Record<string, string> = { pending: '대기', processing: '처리중', done: '완료' }
 
 export default function ContactAdminTab({ onlyType, excludeType }: { onlyType?: string; excludeType?: string } = {}) {
   const [filter, setFilter] = useState('all')
   const [items, setItems] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
   const [openId, setOpenId] = useState<string | null>(null)
+  // 다시 불러오기는 키를 올려서 요청한다 (effect 안에서 곧바로 setState 하지 않기 위해)
+  const [reloadKey, setReloadKey] = useState(0)
+  const [loadedKey, setLoadedKey] = useState<string | null>(null)
 
-  const load = useCallback(() => {
-    setLoading(true)
-    getAllContactMessages(filter).then(data => {
-      let rows = data
-      if (onlyType) rows = rows.filter((m: any) => m.type === onlyType)
-      if (excludeType) rows = rows.filter((m: any) => m.type !== excludeType)
-      setItems(rows); setLoading(false)
-    })
-  }, [filter, onlyType, excludeType])
+  const key = `${filter}|${onlyType ?? ''}|${excludeType ?? ''}|${reloadKey}`
+  const loading = loadedKey !== key
 
-  useEffect(() => { load() }, [load])
+  const load = useCallback(() => { setReloadKey(k => k + 1) }, [])
+
+  useEffect(() => {
+    let alive = true
+    getAllContactMessages(filter)
+      .then(data => {
+        if (!alive) return
+        let rows = data
+        if (onlyType) rows = rows.filter((m: any) => m.type === onlyType)
+        if (excludeType) rows = rows.filter((m: any) => m.type !== excludeType)
+        setItems(rows); setLoadedKey(key)
+      })
+      .catch(() => { if (alive) setLoadedKey(key) })
+    return () => { alive = false }
+  }, [key, filter, onlyType, excludeType])
 
   function typeLabel(t: string) {
     return CONTACT_TYPES.find(c => c.key === t)?.label ?? t
@@ -89,12 +97,6 @@ function Detail({ m, onSaved }: { m: any; onSaved: () => void }) {
 
   const x = m.extra ?? {}
   const isPartner = m.type === 'partner'
-  const extraEntries = Object.entries(x).filter(([k]) => !isPartner || !PARTNER_KEYS.includes(k))
-
-  function Row({ label, value }: { label: string; value: any }) {
-    if (value === undefined || value === null || value === '') return null
-    return <div className={styles.extraRow}><span className={styles.extraKey}>{label}</span><span>{String(value)}</span></div>
-  }
 
   return (
     <div className={styles.detail}>

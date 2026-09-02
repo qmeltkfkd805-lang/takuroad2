@@ -57,18 +57,21 @@ export default function PlaceAdminTab() {
   const [msg, setMsg] = useState<string | null>(null)
   const [q, setQ] = useState('')
 
-  const load = async () => {
+  useEffect(() => {
+    let alive = true
     const supabase = createClient()
-    const { data, error } = await supabase
+    supabase
       .from('places')
       .select('id, name, slug, place_type, addr, cover_image')
       .order('name')
-    if (error) console.error('[Place 목록]', error.message)
-    setPlaces((data ?? []) as Place[])
-    setLoading(false)
-  }
-
-  useEffect(() => { load() }, [])
+      .then(({ data, error }) => {
+        if (!alive) return
+        if (error) console.error('[Place 목록]', error.message)
+        setPlaces((data ?? []) as Place[])
+        setLoading(false)
+      })
+    return () => { alive = false }
+  }, [])
 
   const toast = (m: string) => { setMsg(m); setTimeout(() => setMsg(null), 2600) }
 

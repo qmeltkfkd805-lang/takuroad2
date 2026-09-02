@@ -8,12 +8,15 @@ const FILTERS = [{ key: 'all', label: '전체' }, ...SUGGESTION_STATUS]
 export default function SuggestionAdminTab() {
   const [filter, setFilter] = useState<string>('all')
   const [rows, setRows] = useState<any[]>([])
-  const [ready, setReady] = useState(false)
+  // 어떤 필터의 결과를 갖고 있는지로 로딩 여부를 판단한다 (effect 안에서 곧바로 setState 하지 않기 위해)
+  const [loadedFilter, setLoadedFilter] = useState<string | null>(null)
+  const ready = loadedFilter === filter
 
   useEffect(() => {
     let alive = true
-    setReady(false)
-    getAllSuggestions(filter).then(data => { if (alive) { setRows(data); setReady(true) } })
+    getAllSuggestions(filter)
+      .then(data => { if (alive) { setRows(data); setLoadedFilter(filter) } })
+      .catch(() => { if (alive) { setRows([]); setLoadedFilter(filter) } })
     return () => { alive = false }
   }, [filter])
 

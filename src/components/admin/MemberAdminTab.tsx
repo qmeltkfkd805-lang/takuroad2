@@ -20,16 +20,19 @@ export default function MemberAdminTab() {
   const [page, setPage] = useState(0)
   const [query, setQuery] = useState('')
   const [search, setSearch] = useState('')
-  const [loading, setLoading] = useState(true)
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  // 어떤 검색어·페이지의 결과를 갖고 있는지로 로딩 여부를 판단한다 (effect 안에서 곧바로 setState 하지 않기 위해)
+  const [loadedKey, setLoadedKey] = useState<string | null>(null)
+  const loading = loadedKey !== `${search}|${page}`
 
-  const load = useCallback(async (s: string, p: number) => {
-    setLoading(true)
-    const res = await getAdminMembers(s, PAGE_SIZE, p * PAGE_SIZE)
-    setMembers(res.members); setTotal(res.total); setLoading(false)
-  }, [])
-
-  useEffect(() => { load(search, page) }, [search, page, load])
+  useEffect(() => {
+    let alive = true
+    const key = `${search}|${page}`
+    getAdminMembers(search, PAGE_SIZE, page * PAGE_SIZE)
+      .then((res) => { if (alive) { setMembers(res.members); setTotal(res.total); setLoadedKey(key) } })
+      .catch(() => { if (alive) setLoadedKey(key) })
+    return () => { alive = false }
+  }, [search, page])
   function submitSearch() { setPage(0); setSearch(query.trim()) }
   const maxPage = Math.max(0, Math.ceil(total / PAGE_SIZE) - 1)
 
@@ -82,11 +85,17 @@ export default function MemberAdminTab() {
 
 /* 활동 타일을 눌렀을 때 펼쳐지는 목록 — 여섯 종류가 같은 모양이라 하나로 렌더한다 */
 function MemberItemList({ uid, kind, label }: { uid: string; kind: MemberItemKind; label: string }) {
-  const [rows, setRows] = useState<MemberItem[] | null>(null)
+  // 어떤 (회원, 종류)의 결과인지 같이 들고 있다가, 지금 보고 있는 것과 다르면 null(=로딩)로 본다
+  const [got, setGot] = useState<{ key: string; rows: MemberItem[] } | null>(null)
   useEffect(() => {
-    setRows(null)
-    getMemberItems(uid, kind).then(setRows).catch(() => setRows([]))
+    let alive = true
+    const key = `${uid}|${kind}`
+    getMemberItems(uid, kind)
+      .then((r) => { if (alive) setGot({ key, rows: r }) })
+      .catch(() => { if (alive) setGot({ key, rows: [] }) })
+    return () => { alive = false }
   }, [uid, kind])
+  const rows = got && got.key === `${uid}|${kind}` ? got.rows : null
 
   return (
     <div style={{ marginTop: 12, border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
@@ -137,7 +146,9 @@ function MemberDetailView({ id, onBack }: { id: string; onBack: () => void }) {
   useEffect(() => { getMemberSignupSource(id).then(setSrc).catch(() => {}) }, [id])
   // 활동 타일 클릭 → 그 종류의 목록 펼치기
   const [openKind, setOpenKind] = useState<MemberItemKind | null>(null)
-  useEffect(() => { setOpenKind(null) }, [id])
+  // 다른 회원으로 바뀌면 펼쳐둔 목록을 닫는다 (effect 대신 렌더 중 파생 상태 조정)
+  const [prevId, setPrevId] = useState(id)
+  if (id !== prevId) { setPrevId(id); setOpenKind(null) }
 
   const refresh = useCallback(() => {
     getMemberDetail(id).then((m) => {

@@ -15,14 +15,20 @@ export default function TrafficSection() {
   const [metric, setMetric] = useState<Metric>('signups')
   const [days, setDays] = useState(30)
   const [data, setData] = useState<TimePoint[]>([])
-  const [loading, setLoading] = useState(true)
   const [summary, setSummary] = useState<VisitSummary | null>(null)
   const [sources, setSources] = useState<SignupSourceRow[] | null>(null)
+  // 어떤 지표·기간의 결과를 갖고 있는지로 로딩 여부를 판단한다 (effect 안에서 곧바로 setState 하지 않기 위해)
+  const [loadedKey, setLoadedKey] = useState<string | null>(null)
+  const loading = loadedKey !== `${metric}|${days}`
 
   useEffect(() => { getVisitSummary().then(setSummary) }, [])
   useEffect(() => {
-    setLoading(true)
-    getTimeseries(metric, days).then((d) => { setData(d); setLoading(false) })
+    let alive = true
+    const key = `${metric}|${days}`
+    getTimeseries(metric, days)
+      .then((d) => { if (alive) { setData(d); setLoadedKey(key) } })
+      .catch(() => { if (alive) { setData([]); setLoadedKey(key) } })
+    return () => { alive = false }
   }, [metric, days])
   // 유입 채널은 기간만 따라간다(지표 탭과 무관)
   useEffect(() => { getSignupSources(days).then(setSources).catch(() => setSources([])) }, [days])

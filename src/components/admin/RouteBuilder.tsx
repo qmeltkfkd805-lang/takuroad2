@@ -84,17 +84,19 @@ export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRo
 
   function switchMode(m: SourceMode) {
     if (m === sourceMode) return
+    // 로딩 표시는 effect가 아니라 이 핸들러에서 켠다
+    if (m !== 'work') setLoadingShops(true)
     setSourceMode(m); setQuery(''); setSelectedTag(null); setCandidates([])
   }
 
   useEffect(() => {
     if (sourceMode === 'work') return
-    if (candidates.length > 0 || loadingShops) return
-    setLoadingShops(true)
+    let alive = true
     const p = sourceMode === 'region' ? getShops() : (user ? getSavedShops(user.id) : Promise.resolve([]))
-    p.then((shops) => setCandidates((shops as Shop[]).filter((s) => s.lat != null && s.lng != null)))
-      .catch(() => setCandidates([]))
-      .finally(() => setLoadingShops(false))
+    p.then((shops) => { if (alive) setCandidates((shops as Shop[]).filter((s) => s.lat != null && s.lng != null)) })
+      .catch(() => { if (alive) setCandidates([]) })
+      .finally(() => { if (alive) setLoadingShops(false) })
+    return () => { alive = false }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sourceMode])
 

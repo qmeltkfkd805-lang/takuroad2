@@ -22,11 +22,21 @@ const inputStyle: CSSProperties = { width: '100%', padding: '10px 12px', borderR
 
 export default function BannerAdminTab() {
   const [banners, setBanners] = useState<FeaturedBanner[]>([])
-  const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState<'new' | FeaturedBanner | null>(null)
+  // 다시 불러오기는 키를 올려서 요청한다 (effect 안에서 곧바로 setState 하지 않기 위해)
+  const [reloadKey, setReloadKey] = useState(0)
+  const [loadedKey, setLoadedKey] = useState(-1)
+  const loading = loadedKey !== reloadKey
 
-  async function load() { setLoading(true); setBanners(await getAllBanners()); setLoading(false) }
-  useEffect(() => { load() }, [])
+  function load() { setReloadKey((k) => k + 1) }
+
+  useEffect(() => {
+    let alive = true
+    getAllBanners()
+      .then((rows) => { if (alive) { setBanners(rows); setLoadedKey(reloadKey) } })
+      .catch(() => { if (alive) setLoadedKey(reloadKey) })
+    return () => { alive = false }
+  }, [reloadKey])
 
   async function handleToggle(b: FeaturedBanner) {
     await adminUpsert({ table: 'featured_banners', id: b.id, fields: { is_active: !b.is_active }, action: 'update' })
@@ -62,7 +72,7 @@ export default function BannerAdminTab() {
       {banners.length === 0 ? (
         <div style={{ padding: '50px 20px', textAlign: 'center', color: 'var(--muted)' }}>
           <div style={{ fontSize: 36, marginBottom: 10 }}>🖼️</div>
-          <p style={{ fontSize: 14 }}>아직 배너가 없어요. "새 배너"로 첫 배너를 만들어보세요.</p>
+          <p style={{ fontSize: 14 }}>아직 배너가 없어요. &quot;새 배너&quot;로 첫 배너를 만들어보세요.</p>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

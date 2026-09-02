@@ -6,15 +6,20 @@ import { ReportedPost, PostAppeal, REASON_LABEL, BOARD_LABEL } from '@/types/com
 
 export default function PostReportsTab() {
   const [items, setItems] = useState<ReportedPost[]>([])
-  const [loading, setLoading] = useState(true)
+  // 다시 불러오기는 키를 올려서 요청한다 (effect 안에서 곧바로 setState 하지 않기 위해)
+  const [reloadKey, setReloadKey] = useState(0)
+  const [loadedKey, setLoadedKey] = useState(-1)
+  const loading = loadedKey !== reloadKey
 
-  const load = useCallback(async () => {
-    setLoading(true)
-    setItems(await getReportedPosts())
-    setLoading(false)
-  }, [])
+  const load = useCallback(() => { setReloadKey(k => k + 1) }, [])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => {
+    let alive = true
+    getReportedPosts()
+      .then(rows => { if (alive) { setItems(rows); setLoadedKey(reloadKey) } })
+      .catch(() => { if (alive) setLoadedKey(reloadKey) })
+    return () => { alive = false }
+  }, [reloadKey])
 
   const onRestore = async (id: string) => {
     if (!window.confirm('이 글을 다시 공개할까요?')) return
