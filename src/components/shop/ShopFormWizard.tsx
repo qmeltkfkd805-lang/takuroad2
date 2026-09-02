@@ -16,7 +16,6 @@ import AdminPlaceAccessNote from './AdminPlaceAccessNote'
 import { getTodayStatus } from '@/lib/utils/date'
 import ShopEnrichmentSection from './ShopEnrichmentSection'
 import ShopEventLinkPanel from './ShopEventLinkPanel'
-import ShopAmenitySection from './ShopAmenitySection'
 import ShopHighlightManager from './ShopHighlightManager'
 import PhotosManage from './PhotosManage'
 import CompletenessIndicator from './CompletenessIndicator'
@@ -31,8 +30,7 @@ const STEPS = [
   { n: 2, label: '사진' },
   { n: 3, label: '취급 작품 & 상품' },
   { n: 4, label: '추천 코너' },
-  { n: 5, label: '편의시설' },
-  { n: 6, label: '확인 & 등록' },
+  { n: 5, label: '확인 & 등록' },
 ]
 
 const TIPS = [
@@ -228,7 +226,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
   }
   async function goNext() {
     if (step === 1) { if (!(await saveCore())) return }
-    setStep(s => Math.min(6, s + 1))
+    setStep(s => Math.min(STEPS.length, s + 1))
   }
   function goPrev() { setStep(s => Math.max(1, s - 1)) }
   function goToStep(n: number) { if (n === 1 || canEnrich) setStep(n) }
@@ -593,16 +591,8 @@ export default function ShopFormWizard({ mode, shop }: Props) {
           </>
         )}
 
-        {/* STEP 5 — 편의시설 */}
+        {/* STEP 5 — 확인 & 등록 */}
         {step === 5 && (
-          <>
-            <StepHead icon={<Svg size={20} color="var(--accent)"><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5.6 5.6 4.2 4.2M19.8 19.8l-1.4-1.4M18.4 5.6l1.4-1.4M4.2 19.8l1.4-1.4" /><circle cx="12" cy="12" r="4" /></Svg>} title="편의시설 & 서비스" sub="주차·예약·포인트 등 이용에 도움이 되는 정보를 선택해주세요." />
-            {canEnrich && shopId ? <ShopAmenitySection shopId={shopId} /> : <NeedSave />}
-          </>
-        )}
-
-        {/* STEP 6 — 확인 & 등록 */}
-        {step === 6 && (
           <>
             <StepHead icon={<Svg size={20} color="var(--accent)"><path d="m5 12 5 5L20 6" /></Svg>} title="마지막으로 확인해요" sub="입력한 정보를 확인하고 등록을 완료해주세요." />
             {shopId && <div style={{ marginBottom: 16 }}><CompletenessIndicator shopId={shopId} /></div>}
@@ -623,7 +613,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
         {/* 단계 이동 */}
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, marginTop: 18, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
           <button onClick={goPrev} disabled={step === 1} style={{ ...ghostBtn, opacity: step === 1 ? 0.4 : 1, display: 'inline-flex', alignItems: 'center', gap: 5 }}><Svg size={15}><path d="m15 18-6-6 6-6" /></Svg>이전</button>
-          {step < 6 ? (
+          {step < STEPS.length ? (
             <button onClick={goNext} disabled={saving} style={nextBtn}>{saving ? '저장 중...' : '다음 단계'}<Svg size={15} color="#fff"><path d="m9 18 6-6-6-6" /></Svg></button>
           ) : (
             <button onClick={finish} disabled={saving} style={nextBtn}>{mode === 'edit' ? '수정 완료' : '등록 완료'}<CheckIcon size={15} color="#fff" /></button>
