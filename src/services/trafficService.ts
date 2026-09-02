@@ -56,21 +56,49 @@ export async function getVisitSummary(): Promise<VisitSummary | null> {
 /* 관리자 대시보드 '오늘' 카드용.
    새 RPC를 만들지 않고 이미 있는 get_visit_summary + get_timeseries를 합쳐 오늘치만 뽑는다.
    그래서 바로 위 트래픽 차트와 항상 같은 값이 나온다. */
-export interface TodayCounts { visitors: number; pageviews: number; checkins: number }
+export interface TodayCounts {
+  visitors: number
+  pageviews: number
+  checkins: number
+  /** 전일 대비 증감. 어제 값을 못 구하면 null (UI에서 증감을 감춘다) */
+  visitorsDelta: number | null
+  checkinsDelta: number | null
+  signupsYesterday: number | null
+}
+
+/** 시계열에서 특정 날짜 한 점만 꺼낸다. 그 날 값이 0이면 행 자체가 없으므로 null */
+function dayOf(series: TimePoint[], date: string): number | null {
+  const row = series.find(p => (p.date ?? '').slice(0, 10) === date)
+  return row ? (Number(row.count) || 0) : null
+}
+
+const ymd = (offsetDays = 0) => {
+  const d = new Date()
+  d.setDate(d.getDate() + offsetDays)
+  return d.toLocaleDateString('sv-SE')   // 로컬(KST) 기준 YYYY-MM-DD
+}
 
 export async function getTodayCounts(): Promise<TodayCounts> {
-  const [summary, checkinSeries] = await Promise.all([
+  const [summary, checkinSeries, signupSeries] = await Promise.all([
     getVisitSummary().catch(() => null),
     getTimeseries('checkins', 7).catch(() => [] as TimePoint[]),
+    getTimeseries('signups', 7).catch(() => [] as TimePoint[]),
   ])
-  // 로컬(KST) 기준 오늘. 오늘 체크인이 0건이면 시계열에 그 날짜 행 자체가 없으므로 0이 된다.
-  const today = new Date().toLocaleDateString('sv-SE')   // YYYY-MM-DD
-  const todayRow = checkinSeries.find(p => (p.date ?? '').slice(0, 10) === today)
+  const today = ymd(0)
+  const yesterday = ymd(-1)
+
+  const checkinsToday = dayOf(checkinSeries, today) ?? 0
+  const checkinsYest = dayOf(checkinSeries, yesterday)
 
   return {
     visitors: summary?.today_uv ?? 0,
     pageviews: summary?.today_pv ?? 0,
-    checkins: Number(todayRow?.count) || 0,
+    checkins: checkinsToday,
+    // get_visit_summary가 어제 UV를 같이 주므로 그대로 쓴다
+    visitorsDelta: summary ? (summary.today_uv ?? 0) - (summary.yesterday_uv ?? 0) : null,
+    // 어제 행이 아예 없으면 0건이었다는 뜻이라 0으로 본다 (시계열이 통째로 비면 null)
+    checkinsDelta: checkinSeries.length ? checkinsToday - (checkinsYest ?? 0) : null,
+    signupsYesterday: signupSeries.length ? (dayOf(signupSeries, yesterday) ?? 0) : null,
   }
 }
 

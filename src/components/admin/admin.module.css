@@ -1,39 +1,23 @@
-﻿/* 관리자 반응형 레이아웃 */
-.layout { min-height: 100dvh; background: var(--surface); }
+/* 관리자 레이아웃 — 모바일 세로 스택, 데스크톱 240px 고정 사이드바 + 본문 */
 
-/* 모바일 기본: 상단 가로탭 */
-.tabBar {
-  position: sticky; top: 0; z-index: 50;
-  background: var(--surface); border-bottom: 1px solid var(--border);
-  padding: 14px 16px;
+.layout {
+  min-height: 100dvh;
+  background: var(--surface2);
 }
-.title { font-size: 18px; font-weight: 900; margin: 0 0 12px; }
-.tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
-.sideTitle { display: none; }
 
-.tab {
-  padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer;
-  font-family: inherit; font-weight: 700; font-size: 13px;
-  white-space: nowrap; flex-shrink: 0;
-  background: var(--surface2); color: var(--text);
-  display: flex; align-items: center; gap: 6px;
+.content {
+  padding: 16px 14px 48px;
+  min-width: 0;
 }
-.tabActive { background: var(--accent); color: #fff; }
 
-/* PC(1024+): 왼쪽 세로 사이드바 + 오른쪽 콘텐츠 */
-@media (min-width: 1024px), (hover: hover) and (pointer: fine) {
+@media (min-width: 1024px) {
   .layout {
-    display: grid; grid-template-columns: 220px minmax(0, 1fr);
-    max-width: 1280px; margin: 0 auto; align-items: start;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    align-items: start;
   }
-  .tabBar {
-    position: sticky; top: 0; align-self: start;
-    border-bottom: none; border-right: 1px solid var(--border);
-    height: 100dvh; padding: 20px 12px;
+  .content {
+    padding: 0 0 56px;
+    min-height: 100dvh;
   }
-  .sideTitle { display: block; font-size: 18px; font-weight: 900; margin: 4px 8px 16px; }
-  .title { display: none; }
-  .tabs { flex-direction: column; gap: 4px; overflow: visible; }
-  .tab { width: 100%; justify-content: flex-start; padding: 10px 14px; font-size: 14px; }
-  .content { padding: 8px 4px 40px; }
 }

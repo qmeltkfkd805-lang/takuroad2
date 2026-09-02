@@ -31,7 +31,7 @@ export default function TrafficSection() {
   const allZero = total === 0
 
   return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 14, padding: 16, marginBottom: 18 }}>
+    <div style={{ border: '1px solid var(--border)', borderRadius: 10, padding: 16, marginBottom: 0, background: 'var(--surface)' }}>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 16 }}>
         <SummaryCard label="오늘 방문자" value={summary?.today_uv ?? 0} delta={summary ? summary.today_uv - summary.yesterday_uv : null} />
         <SummaryCard label="오늘 페이지뷰" value={summary?.today_pv ?? 0} />

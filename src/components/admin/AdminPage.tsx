@@ -23,7 +23,28 @@ import ShopAdminTab from './ShopAdminTab'
 import PlaceAdminTab from './PlaceAdminTab'
 import ContactAdminTab from './ContactAdminTab'
 import SuggestionAdminTab from './SuggestionAdminTab'
+import AdminSidebar from './AdminSidebar'
+import { getAdminTodoSummary, getAdminBadgeCounts, AdminBadgeCounts, AdminTodoSummary } from '@/services/adminDashboardService'
 import styles from './admin.module.css'
+
+/* 인증 신청 한 건. getPendingVerifyRequests()의 select와 아래 JSX가 쓰는 필드만 적었다.
+   (Database 타입이 any라 서비스에서 형태가 안 잡힌다 — 화면에서 쓰는 만큼만 좁게 명시) */
+interface VerifyRequest {
+  id: string
+  shop_id: string
+  user_id: string
+  note: string | null
+  evidence_url: string | null
+  created_at: string
+  extra: {
+    transfer?: boolean
+    manager?: string; position?: string; phone?: string; email?: string
+    bizName?: string; bizNo?: string; owner?: string
+    features?: string[]
+  } | null
+  shops: { id: string; name: string; slug: string } | null
+  profiles: { id: string; nickname: string } | null
+}
 
 type Tab = 'dashboard' | 'hero' | 'shops' | 'shopmanage' | 'works' | 'members' | 'verify' | 'routes' | 'events' | 'reported' | 'postreports' | 'places' | 'contacts' | 'partners' | 'suggestions'
 
@@ -32,9 +53,15 @@ export default function AdminPage() {
   const { user, profile, loading: authLoading } = useAuth()
   const [tab, setTab] = useState<Tab>('dashboard')
   const [pendingShops, setPendingShops] = useState<Shop[]>([])
-  const [verifyRequests, setVerifyRequests] = useState<any[]>([])
+  const [verifyRequests, setVerifyRequests] = useState<VerifyRequest[]>([])
   const [ready, setReady] = useState(false)
+  // 사이드바 배지 + 대시보드가 함께 쓰는 미처리 건수. 한 번만 불러 내려준다
+  const [todo, setTodo] = useState<AdminTodoSummary | null>(null)
+  const [badges, setBadges] = useState<AdminBadgeCounts | null>(null)
 
+  /* 권한 확인 후 최초 1회 조회.
+     setState는 전부 then 콜백 안에 둔다 — effect 본문에서 동기로 부르면
+     렌더가 한 번 더 돈다(react-hooks/set-state-in-effect). */
   useEffect(() => {
     if (authLoading) return
     // 로그인 안 됨 → 홈
@@ -43,18 +70,31 @@ export default function AdminPage() {
     if (!profile) return
     // profile까지 왔는데 관리자 아님 → 홈
     if (profile.role !== 'admin') { router.push(ROUTES.home); return }
-    if (!ready) loadData()
+    if (ready) return
+
+    let alive = true
+    Promise.all([getPendingShops(), getPendingVerifyRequests()])
+      .then(([shops, requests]) => {
+        if (!alive) return
+        setPendingShops(shops)
+        // supabase-js는 select 문자열만 보고 조인을 배열로 추론하지만, FK가 to-one이라
+        // 런타임에는 객체 하나가 온다. 기존 화면도 req.shops?.name 으로 쓰고 있다.
+        setVerifyRequests(requests as unknown as VerifyRequest[])
+        setReady(true)
+      })
+      .catch(e => { if (alive) { console.error('[관리자] 목록 조회 실패:', e); setReady(true) } })
+
+    // 배지·업무 건수는 화면을 막지 않는다. 실패해도 나머지는 그대로 보인다
+    getAdminTodoSummary()
+      .then(t => { if (alive) setTodo(t) })
+      .catch(e => { if (alive) { console.error('[관리자] 업무 요약 실패:', e); setTodo(null) } })
+    getAdminBadgeCounts()
+      .then(b => { if (alive) setBadges(b) })
+      .catch(e => { if (alive) { console.error('[관리자] 배지 건수 실패:', e); setBadges(null) } })
+
+    return () => { alive = false }
   }, [user, profile, authLoading, ready])
 
-  async function loadData() {
-    const [shops, requests] = await Promise.all([
-      getPendingShops(),
-      getPendingVerifyRequests(),
-    ])
-    setPendingShops(shops)
-    setVerifyRequests(requests)
-    setReady(true)
-  }
 
   async function handleApproveShop(shopId: string) {
     await approveShop(shopId)
@@ -67,7 +107,7 @@ export default function AdminPage() {
     setPendingShops(prev => prev.filter(s => s.id !== shopId))
   }
 
-  async function handleApproveVerify(req: any) {
+  async function handleApproveVerify(req: VerifyRequest) {
     await approveVerifyRequest(req.id, req.shop_id, req.user_id)
     setVerifyRequests(prev => prev.filter(r => r.id !== req.id))
   }
@@ -79,7 +119,8 @@ export default function AdminPage() {
     setVerifyRequests(prev => prev.filter(r => r.id !== requestId))
   }
 
-  async function handleViewEvidence(path: string) {
+  async function handleViewEvidence(path: string | null) {
+    if (!path) return
     const url = await getEvidenceFileUrl(path)
     if (url) window.open(url, '_blank')
   }
@@ -92,64 +133,35 @@ export default function AdminPage() {
     )
   }
 
+  // 사이드바 배지용 미처리 건수. 값이 없거나 조회 실패면 배지를 숨긴다
+  const sidebarCounts = {
+    shops: pendingShops.length,
+    verify: verifyRequests.length,
+    reported: todo?.pendingSuggestions ?? null,     // shop_suggestions status='pending'
+    postreports: badges?.hiddenPosts ?? null,
+    contacts: badges?.openContacts ?? null,
+    partners: badges?.openPartners ?? null,
+  }
+
   return (
     <div className={styles.layout}>
-
-      <div className={styles.tabBar}>
-        <div className={styles.sideTitle}>관리자</div>
-        <h1 className={styles.title}>관리자 페이지</h1>
-
-        <div className={styles.tabs}>
-          <TabButton active={tab === 'dashboard'} onClick={() => setTab('dashboard')}>
-            🏠 대시보드
-          </TabButton>
-          <TabButton active={tab === 'hero'} onClick={() => setTab('hero')}>
-            🌟 홈 히어로 관리
-          </TabButton>
-          <TabButton active={tab === 'shops'} onClick={() => setTab('shops')}>
-            샵 승인 {pendingShops.length > 0 && `(${pendingShops.length})`}
-          </TabButton>
-          <TabButton active={tab === 'shopmanage'} onClick={() => setTab('shopmanage')}>
-            🏪 샵 관리
-          </TabButton>
-          <TabButton active={tab === 'works'} onClick={() => setTab('works')}>
-            🎬 작품 메타
-          </TabButton>
-          <TabButton active={tab === 'places'} onClick={() => setTab('places')}>
-            장소(Place)
-          </TabButton>
-          <TabButton active={tab === 'members'} onClick={() => setTab('members')}>
-            👥 회원
-          </TabButton>
-          <TabButton active={tab === 'verify'} onClick={() => setTab('verify')}>
-            인증 심사 {verifyRequests.length > 0 && `(${verifyRequests.length})`}
-          </TabButton>
-          <TabButton active={tab === 'reported'} onClick={() => setTab('reported')}>
-            ⚠️ 신고된 샵
-          </TabButton>
-          <TabButton active={tab === 'postreports'} onClick={() => setTab('postreports')}>
-            🎨 게시글 신고
-          </TabButton>
-          <TabButton active={tab === 'contacts'} onClick={() => setTab('contacts')}>
-            ✉️ 문의 관리
-        </TabButton>
-        <TabButton active={tab === 'partners'} onClick={() => setTab('partners')}>
-          🤝 제휴 문의
-        </TabButton>
-        <TabButton active={tab === 'suggestions'} onClick={() => setTab('suggestions')}>
-          💡 제안 관리
-        </TabButton>
-          <TabButton active={tab === 'routes'} onClick={() => setTab('routes')}>
-            추천 루트
-          </TabButton>
-          <TabButton active={tab === 'events'} onClick={() => setTab('events')}>
-            시즌 이벤트
-          </TabButton>
-        </div>
-      </div>
+      <AdminSidebar
+        tab={tab}
+        counts={sidebarCounts}
+        onSelect={(t) => setTab(t as Tab)}
+        onViewSite={() => window.open(ROUTES.home, '_blank', 'noopener')}
+      />
 
       <div className={styles.content}>
-      {tab === 'dashboard' && <AdminDashboardPage onNavigate={(t) => setTab(t as Tab)} />}
+      {tab === 'dashboard' && (
+        <AdminDashboardPage
+          onNavigate={(t) => setTab(t as Tab)}
+          todo={todo}
+          pendingShops={pendingShops.length}
+          pendingVerify={verifyRequests.length}
+          badges={badges}
+        />
+      )}
       {tab === 'hero' && <HeroAdminTab />}
   
       {tab === 'shops' && (
@@ -304,21 +316,6 @@ export default function AdminPage() {
       {tab === 'events' && <SeasonalEventTab />}
       </div>
     </div>
-  )
-}
-
-function TabButton({ active, onClick, children }: {
-  active: boolean
-  onClick: () => void
-  children: React.ReactNode
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={active ? styles.tab + ' ' + styles.tabActive : styles.tab}
-    >
-      {children}
-    </button>
   )
 }
 

@@ -24,7 +24,7 @@ export default function VisitPathsSection() {
   const [days, setDays] = useState(30)
 
   return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 14, padding: 16, marginBottom: 18 }}>
+    <div style={{ border: '1px solid var(--border)', borderRadius: 10, padding: 16, marginBottom: 0, background: 'var(--surface)' }}>
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
         <h4 style={{ margin: 0, fontSize: 14, fontWeight: 900 }}>방문 경로</h4>
         <div style={{ display: 'flex', gap: 6 }}>
@@ -48,19 +48,26 @@ export default function VisitPathsSection() {
   )
 }
 
+/* 조회 결과를 "어떤 조건으로 받은 것인지"와 함께 들고 있는다.
+   조건이 바뀌면 rows가 자동으로 null(=로딩)이 되므로, effect에서 상태를 미리 비울 필요가 없다. */
+function useKeyedFetch<T>(key: string, fetcher: () => Promise<T[]>): T[] | null {
+  const [got, setGot] = useState<{ key: string; rows: T[] } | null>(null)
+  useEffect(() => {
+    let alive = true
+    fetcher().then(rows => { if (alive) setGot({ key, rows }) }).catch(() => { if (alive) setGot({ key, rows: [] }) })
+    return () => { alive = false }
+    // fetcher는 매 렌더 새로 만들어지므로 key만 본다
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key])
+  return got && got.key === key ? got.rows : null
+}
+
 /* ── 페이지별 ─────────────────────────────────────────────── */
 function PagesTab({ days }: { days: number }) {
   // 묶어보기: /event/:id 로 합쳐 "어떤 종류의 페이지가 인기인지"
   // 개별보기: 실제 주소 그대로 "어느 이벤트가 인기인지"
   const [grouped, setGrouped] = useState(true)
-  const [rows, setRows] = useState<TopPathRow[] | null>(null)
-
-  useEffect(() => {
-    let alive = true
-    setRows(null)
-    getTopPaths(days, grouped, 40).then(r => { if (alive) setRows(r) })
-    return () => { alive = false }
-  }, [days, grouped])
+  const rows = useKeyedFetch<TopPathRow>(`${days}|${grouped}`, () => getTopPaths(days, grouped, 40))
 
   const maxPv = useMemo(() => Math.max(1, ...(rows ?? []).map(r => r.pv)), [rows])
 
@@ -90,13 +97,7 @@ function PagesTab({ days }: { days: number }) {
 
 /* ── 유입 경로 ────────────────────────────────────────────── */
 function ReferrersTab({ days }: { days: number }) {
-  const [rows, setRows] = useState<ReferrerRow[] | null>(null)
-  useEffect(() => {
-    let alive = true
-    setRows(null)
-    getVisitReferrers(days, 20).then(r => { if (alive) setRows(r) })
-    return () => { alive = false }
-  }, [days])
+  const rows = useKeyedFetch<ReferrerRow>(String(days), () => getVisitReferrers(days, 20))
 
   const max = useMemo(() => Math.max(1, ...(rows ?? []).map(r => r.sessions)), [rows])
   const total = useMemo(() => (rows ?? []).reduce((s, r) => s + r.sessions, 0), [rows])
@@ -121,13 +122,7 @@ function ReferrersTab({ days }: { days: number }) {
 
 /* ── 이탈 페이지 ──────────────────────────────────────────── */
 function ExitsTab({ days }: { days: number }) {
-  const [rows, setRows] = useState<ExitPathRow[] | null>(null)
-  useEffect(() => {
-    let alive = true
-    setRows(null)
-    getExitPaths(days, 30).then(r => { if (alive) setRows(r) })
-    return () => { alive = false }
-  }, [days])
+  const rows = useKeyedFetch<ExitPathRow>(String(days), () => getExitPaths(days, 30))
 
   const max = useMemo(() => Math.max(1, ...(rows ?? []).map(r => r.exits)), [rows])
 
@@ -150,16 +145,13 @@ function ExitsTab({ days }: { days: number }) {
 
 /* ── 방문 여정 ────────────────────────────────────────────── */
 function SessionsTab({ days }: { days: number }) {
-  const [rows, setRows] = useState<VisitSessionRow[] | null>(null)
+  const rows = useKeyedFetch<VisitSessionRow>(String(days), () => getRecentVisitSessions(days, 60))
   const [openId, setOpenId] = useState<string | null>(null)
   const [steps, setSteps] = useState<SessionStep[] | null>(null)
 
-  useEffect(() => {
-    let alive = true
-    setRows(null); setOpenId(null); setSteps(null)
-    getRecentVisitSessions(days, 60).then(r => { if (alive) setRows(r) })
-    return () => { alive = false }
-  }, [days])
+  // 기간이 바뀌면 펼쳐둔 세션도 접는다 (렌더 중 파생 상태 조정)
+  const [prevDays, setPrevDays] = useState(days)
+  if (days !== prevDays) { setPrevDays(days); setOpenId(null); setSteps(null) }
 
   const open = (id: string) => {
     if (openId === id) { setOpenId(null); setSteps(null); return }

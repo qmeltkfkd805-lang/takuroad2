@@ -19,21 +19,30 @@ export interface VisitSessionRow {
 }
 export interface SessionStep { path: string; at: string }
 
+/* RPC 응답은 Database 타입이 any라 형태가 안 잡힌다. 여기서 필요한 필드만 명시한다. */
+type PgErrorLike = { message?: string; code?: string; details?: string; hint?: string }
+/** 숫자 컬럼이 bigint면 문자열로 오기도 해서 둘 다 받는다 */
+type Num = number | string | null | undefined
+type RawRow = Record<string, Num>
+
 /** RPC 실패를 한 곳에서 로그로 남긴다. PostgrestError는 그냥 찍으면 {}로 나온다 */
 function logRpcError(tag: string, error: unknown) {
-  const e = error as any
+  const e = (error ?? {}) as PgErrorLike
   console.error(`[방문 분석] ${tag} rpc 실패:`, {
-    message: e?.message, code: e?.code, details: e?.details, hint: e?.hint,
+    message: e.message, code: e.code, details: e.details, hint: e.hint,
   })
 }
+
+const str = (v: Num): string | null => (v == null ? null : String(v))
+const num = (v: Num): number => Number(v) || 0
 
 /** 페이지별 순위. grouped=true면 /event/:id 로 묶어서, false면 실제 주소 그대로 */
 export async function getTopPaths(days = 30, grouped = true, limit = 30): Promise<TopPathRow[]> {
   const supabase = createClient()
   const { data, error } = await supabase.rpc('get_top_paths', { days, grouped, limit_n: limit })
   if (error) { logRpcError('페이지 순위', error); return [] }
-  return ((data ?? []) as any[]).map(r => ({
-    path: r.path ?? '/', pv: Number(r.pv) || 0, uv: Number(r.uv) || 0,
+  return ((data ?? []) as RawRow[]).map(r => ({
+    path: str(r.path) ?? '/', pv: num(r.pv), uv: num(r.uv),
   }))
 }
 
@@ -42,10 +51,10 @@ export async function getVisitReferrers(days = 30, limit = 20): Promise<Referrer
   const supabase = createClient()
   const { data, error } = await supabase.rpc('get_visit_referrers', { days, limit_n: limit })
   if (error) { logRpcError('유입 경로', error); return [] }
-  return ((data ?? []) as any[]).map(r => ({
-    source: r.source ?? '알 수 없음',
-    sessions: Number(r.sessions) || 0,
-    landingPath: r.landing_path ?? null,
+  return ((data ?? []) as RawRow[]).map(r => ({
+    source: str(r.source) ?? '알 수 없음',
+    sessions: num(r.sessions),
+    landingPath: str(r.landing_path),
   }))
 }
 
@@ -54,8 +63,8 @@ export async function getExitPaths(days = 30, limit = 30): Promise<ExitPathRow[]
   const supabase = createClient()
   const { data, error } = await supabase.rpc('get_exit_paths', { days, limit_n: limit })
   if (error) { logRpcError('이탈 페이지', error); return [] }
-  return ((data ?? []) as any[]).map(r => ({
-    path: r.path ?? '/', exits: Number(r.exits) || 0, bounces: Number(r.bounces) || 0,
+  return ((data ?? []) as RawRow[]).map(r => ({
+    path: str(r.path) ?? '/', exits: num(r.exits), bounces: num(r.bounces),
   }))
 }
 
@@ -64,15 +73,15 @@ export async function getRecentVisitSessions(days = 7, limit = 50): Promise<Visi
   const supabase = createClient()
   const { data, error } = await supabase.rpc('get_recent_visit_sessions', { days, limit_n: limit })
   if (error) { logRpcError('세션 목록', error); return [] }
-  return ((data ?? []) as any[]).map(r => ({
-    sessionId: r.session_id,
-    userId: r.user_id ?? null,
-    nickname: r.nickname ?? null,
-    startedAt: r.started_at,
-    endedAt: r.ended_at,
-    pageCount: Number(r.page_count) || 0,
-    entryPath: r.entry_path ?? null,
-    exitPath: r.exit_path ?? null,
+  return ((data ?? []) as RawRow[]).map(r => ({
+    sessionId: str(r.session_id) ?? '',
+    userId: str(r.user_id),
+    nickname: str(r.nickname),
+    startedAt: str(r.started_at) ?? '',
+    endedAt: str(r.ended_at) ?? '',
+    pageCount: num(r.page_count),
+    entryPath: str(r.entry_path),
+    exitPath: str(r.exit_path),
   }))
 }
 
@@ -81,5 +90,5 @@ export async function getVisitSessionPath(sessionId: string): Promise<SessionSte
   const supabase = createClient()
   const { data, error } = await supabase.rpc('get_visit_session_path', { p_session_id: sessionId })
   if (error) { logRpcError('세션 경로', error); return [] }
-  return ((data ?? []) as any[]).map(r => ({ path: r.path ?? '/', at: r.created_at }))
+  return ((data ?? []) as RawRow[]).map(r => ({ path: str(r.path) ?? '/', at: str(r.created_at) ?? '' }))
 }
