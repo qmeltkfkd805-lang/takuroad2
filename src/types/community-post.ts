@@ -136,12 +136,9 @@ export interface NewAppeal {
   proofImages?: string[]
 }
 
-export interface ReportedPost {
-  post: CommunityPost
-  reportCount: number
-  reasonCounts: Record<string, number>
-  reports: { reason: string; content: string | null; createdAt: string }[]
-}
+/* ReportedPost 는 없앴다. post_reports 에 처리 상태가 생기면서 관리자 화면이
+   미처리 / 처리 이력 / 숨김 글을 따로 조회한다.
+   → communityPostService 의 PostReportRow · PostReportGroup */
 
 export interface PostAppeal {
   id: string

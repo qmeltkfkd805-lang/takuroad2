@@ -139,7 +139,7 @@ export default function AdminPage() {
     shopreview: badges?.shopReview ?? null,
     verify: verifyPending,
     reported: todo?.pendingSuggestions ?? null,     // shop_suggestions status='pending'
-    postreports: badges?.hiddenPosts ?? null,
+    postreports: badges?.pendingPostReports ?? null,
     contacts: badges?.openContacts ?? null,
     partners: badges?.openPartners ?? null,
   }
@@ -218,7 +218,7 @@ export default function AdminPage() {
       {tab === 'places' && <PlaceAdminTab />}
       {tab === 'members' && <MemberAdminTab />}
       {tab === 'reported' && <ReportedShopsTab onResolved={refreshBadges} />}
-      {tab === 'postreports' && <PostReportsTab />}
+      {tab === 'postreports' && <PostReportsTab onResolved={refreshBadges} />}
       {tab === 'contacts' && <ContactAdminTab excludeType="partner" />}
       {tab === 'partners' && <ContactAdminTab onlyType="partner" />}
       {tab === 'suggestions' && <SuggestionAdminTab />}

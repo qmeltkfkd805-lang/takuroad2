@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/client'
 import {
   Board, CommunityPost, NewPost, PostSort, PostComment,
-  ReportReason, NewAppeal, ReportedPost, PostAppeal,
+  ReportReason, NewAppeal, PostAppeal,
   CommunityStats, TrendingTag,
 } from '@/types/community-post'
 
@@ -311,17 +311,13 @@ export async function submitAppeal(postId: string, userId: string, data: NewAppe
   return true
 }
 
-// ── 관리자 ──
-export async function hidePost(id: string): Promise<boolean> {
-  const supabase = createClient()
-  const { error } = await supabase.from('community_posts').update({ status: 'hidden', hidden_by: 'admin', hidden_at: new Date().toISOString() } as any).eq('id', id)
-  return !error
-}
-export async function restorePost(id: string): Promise<boolean> {
-  const supabase = createClient()
-  const { error } = await supabase.from('community_posts').update({ status: 'active' } as any).eq('id', id)
-  return !error
-}
+/* hidePost / restorePost 는 없앴다.
+   관리자의 글 상태 변경은 신고 처리와 한 트랜잭션이어야 해서 서버 라우트
+   /api/admin/post-report → admin_resolve_post_reports RPC 로 옮겼다(resolvePostReports).
+   hidePost 는 PostUI 의 onHide 하나만 부르고 있었는데 그 onHide 가 JSX 어디에도
+   렌더되지 않는 죽은 코드였다 — 작성자 메뉴는 수정/나만보기/삭제 셋뿐이다.
+   migrations/community_posts_write_privileges.sql 이후로는 authenticated 에게
+   status·hidden_* UPDATE 권한이 없어 실행되면 42501 이 난다. */
 export async function deletePost(id: string): Promise<boolean> {
   const supabase = createClient()
   const { error } = await supabase.from('community_posts').delete().eq('id', id)
@@ -344,32 +340,143 @@ export async function deletePostWithGoods(id: string): Promise<DeletePostResult>
   return { ok, deletedGoods: [], keptGoods: [] }
 }
 
-export async function getReportedPosts(): Promise<ReportedPost[]> {
-  const supabase = createClient()
-  const { data: reps } = await supabase.from('post_reports').select('post_id, reason, content, created_at').order('created_at', { ascending: false })
-  const byPost = new Map<string, any[]>()
-  for (const r of reps ?? []) {
-    const arr = byPost.get(r.post_id) ?? []; arr.push(r); byPost.set(r.post_id, arr)
-  }
-  const { data: hiddenPosts } = await supabase.from('community_posts').select('id').eq('status', 'hidden')
-  for (const h of hiddenPosts ?? []) if (!byPost.has(h.id)) byPost.set(h.id, [])
+/* ── 관리자 > 게시글 신고 ─────────────────────────────────────────────
+   예전 getReportedPosts 는 "모든 신고 + 숨김 글"을 한 덩어리로 돌려줬다.
+   post_reports 에 처리 상태가 없어서 미처리와 처리 완료를 구분할 수 없었기 때문이다.
+   migrations/post_report_review.sql 로 status(pending/dismissed/resolved)가 생겨
+   대기열 / 처리 이력 / 숨김 글을 각각 따로 가져온다.
 
-  const ids = Array.from(byPost.keys())
-  if (ids.length === 0) return []
-  const { data: posts } = await supabase.from('community_posts').select(SELECT).in('id', ids)
-  const result: ReportedPost[] = (posts ?? []).map((p: any) => {
-    const rs = byPost.get(p.id) ?? []
-    const reasonCounts: Record<string, number> = {}
-    for (const r of rs) reasonCounts[r.reason] = (reasonCounts[r.reason] ?? 0) + 1
-    return {
-      post: toPost(p, new Set()),
-      reportCount: rs.length,
-      reasonCounts,
-      reports: rs.map((r: any) => ({ reason: r.reason, content: r.content ?? null, createdAt: r.created_at })),
-    }
-  })
-  result.sort((x, y) => y.reportCount - x.reportCount)
-  return result
+   조회는 관리자 RLS(post_reports_admin, cposts_admin)로 통과한다.
+   실패는 삼키지 않고 throw 한다 — 화면에서 빈 목록과 조회 실패를 구분해야 한다.
+   신고자(reporter_id)는 이 화면에서 쓰지 않으므로 아예 select 하지 않는다. */
+
+export type PostReportStatus = 'pending' | 'dismissed' | 'resolved'
+
+export interface PostReportRow {
+  id: string
+  postId: string
+  reason: string
+  content: string | null
+  createdAt: string
+  status: PostReportStatus
+  reviewedAt: string | null
+  /** 처리한 관리자. 계정이 지워지면 reviewed_by 가 null 이 되어 여기도 null 이다 */
+  reviewer: { id: string; nickname: string } | null
+}
+
+export interface PostReportGroup {
+  postId: string
+  post: CommunityPost | null
+  reports: PostReportRow[]   // 오래된 순
+}
+
+/* profiles 로 나가는 FK 가 reporter_id·reviewed_by 둘이라 이름으로 지정해야 한다.
+   reporter 쪽은 조인하지 않는다(신고자 닉네임은 이 화면에 표시하지 않는다). */
+const REPORT_SELECT = `
+  id, post_id, reason, content, created_at, status, reviewed_at,
+  reviewer:profiles!post_reports_reviewed_by_fkey ( id, nickname )
+`
+
+/* PostgREST 원본 행. Database 타입이 any 라 여기서 형태를 명시한다.
+   임베드는 관계에 따라 객체 하나로도, 배열로도 온다 — 둘 다 받는다. */
+interface RawReviewer { id: string; nickname: string }
+interface RawReportRow {
+  id: string
+  post_id: string
+  reason: string
+  content: string | null
+  created_at: string
+  status: PostReportStatus
+  reviewed_at: string | null
+  reviewer: RawReviewer | RawReviewer[] | null
+}
+
+function toReportRow(r: RawReportRow): PostReportRow {
+  const rev = Array.isArray(r.reviewer) ? r.reviewer[0] : r.reviewer
+  return {
+    id: r.id,
+    postId: r.post_id,
+    reason: r.reason,
+    content: r.content ?? null,
+    createdAt: r.created_at,
+    status: r.status,
+    reviewedAt: r.reviewed_at ?? null,
+    reviewer: rev ? { id: rev.id, nickname: rev.nickname } : null,
+  }
+}
+
+async function fetchPostReportGroups(statuses: PostReportStatus[]): Promise<PostReportGroup[]> {
+  const supabase = createClient()
+  const { data: reps, error } = await supabase
+    .from('post_reports')
+    .select(REPORT_SELECT)
+    .in('status', statuses)
+    .order('created_at', { ascending: true })
+  if (error) throw error
+
+  const rows = (reps ?? []).map(toReportRow)
+  if (rows.length === 0) return []
+
+  // 글 본문은 한 번에 가져와 그룹에 붙인다 (신고마다 중복으로 받지 않는다)
+  const ids = Array.from(new Set(rows.map(r => r.postId)))
+  const { data: posts, error: postError } = await supabase
+    .from('community_posts').select(SELECT).in('id', ids)
+  if (postError) throw postError
+  const byId = new Map<string, CommunityPost>()
+  for (const p of posts ?? []) byId.set(p.id, toPost(p, new Set()))
+
+  const map = new Map<string, PostReportGroup>()
+  for (const r of rows) {
+    const g = map.get(r.postId)
+    if (g) g.reports.push(r)
+    else map.set(r.postId, { postId: r.postId, post: byId.get(r.postId) ?? null, reports: [r] })
+  }
+  return Array.from(map.values())
+}
+
+/** 미처리 신고 (대기열) */
+export function getPendingPostReports(): Promise<PostReportGroup[]> {
+  return fetchPostReportGroups(['pending'])
+}
+/** 처리 이력 — 반려(dismissed) + 조치 완료(resolved) */
+export function getReviewedPostReports(): Promise<PostReportGroup[]> {
+  return fetchPostReportGroups(['dismissed', 'resolved'])
+}
+
+/** 숨김 처리된 글. 신고 없이 숨겨진 글(자동 숨김·작성자 숨김)도 여기 잡힌다 */
+export async function getHiddenPosts(): Promise<CommunityPost[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('community_posts').select(SELECT)
+    .eq('status', 'hidden')
+    .order('hidden_at', { ascending: false })
+  if (error) throw error
+  return (data ?? []).map(p => toPost(p, new Set()))
+}
+
+export type PostReportAction = 'dismiss' | 'hide_and_resolve' | 'restore'
+
+/* 글 상태 변경과 신고 처리는 원자적이어야 한다.
+   클라이언트에서 두 번 UPDATE 하지 않고, 서버 라우트가 admin_resolve_post_reports
+   RPC 를 부른다(plpgsql 함수 본문 = 단일 트랜잭션).
+   보내는 것은 postId 와 동작뿐이다 — 처리할 신고 목록·처리자·처리 시각은
+   서버가 정한다. */
+export async function resolvePostReports(
+  postId: string, action: PostReportAction,
+): Promise<{ ok: boolean; error?: string; reports?: number }> {
+  try {
+    const res = await fetch('/api/admin/post-report', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ postId, action }),
+    })
+    const json = await res.json().catch(() => ({}))
+    if (!res.ok) return { ok: false, error: json?.error ?? '처리에 실패했어요' }
+    return { ok: true, reports: typeof json?.reports === 'number' ? json.reports : undefined }
+  } catch (e) {
+    console.error('[게시글 신고 처리 실패]', e)
+    return { ok: false, error: '네트워크 오류로 처리하지 못했어요' }
+  }
 }
 
 export async function getPostAppeals(postId: string): Promise<PostAppeal[]> {
@@ -443,12 +550,9 @@ export async function getNotices(board?: Board | 'all'): Promise<CommunityPost[]
   return (data ?? []).map((r: any) => toPost(r, new Set()))
 }
 
-// 관리자: 공지 지정/해제
-export async function setNotice(id: string, isNotice: boolean): Promise<boolean> {
-  const supabase = createClient()
-  const { error } = await supabase.from('community_posts').update({ is_notice: isNotice } as any).eq('id', id)
-  return !error
-}
+/* setNotice(공지 지정/해제)도 없앴다. 호출부가 하나도 없었다.
+   공지는 PostWritePage 의 작성 시점 체크박스(isAdmin && isNotice)로만 지정되고
+   그건 INSERT 다. is_notice 의 UPDATE 권한은 회수됐다. */
 
 // ── 인기 게시글 (좋아요 최다) ──
 export async function getPopularPosts(limit = 5): Promise<CommunityPost[]> {

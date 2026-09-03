@@ -64,9 +64,12 @@ export async function getAdminStats(): Promise<AdminStats> {
    마이그레이션·RPC·정책은 건드리지 않는다.
 
    "미처리" 기준은 기존 관리 화면에서 그대로 가져왔다:
-   - 게시글 신고 : PostReportsTab의 restorePost()가 되돌리는 값이 community_posts.status='hidden'.
-                   post_reports에는 처리 상태 컬럼이 없어(누적 신고만 쌓임) 배지로 쓸 수 없다.
-                   그래서 "숨김 처리된 글" 수를 센다. 처리하면 줄어드는 유일한 실제 상태값이다.
+   - 게시글 신고 : post_reports.status='pending' 건수.
+                   예전에는 처리 상태 컬럼이 없어 "숨김 처리된 글" 수를 대신 셌는데,
+                   그건 신고 대기열이 아니라 조치 결과라 배지 숫자가 실제 할 일과 달랐다
+                   (자동 숨김 글이 쌓이면 배지가 늘고, 반려해도 줄지 않았다).
+                   migrations/post_report_review.sql 이후 PostReportsTab의 미처리 탭과
+                   같은 기준을 쓴다.
    - 문의/제휴  : ContactAdminTab의 STATUS_LABEL = pending·processing·done.
                    updateContactMessage가 완료 시 'done'으로 바꾼다 → done이 아니면 미처리.
                    문의 관리는 type≠'partner', 제휴 문의는 type='partner' (탭 필터와 동일).
@@ -76,12 +79,13 @@ export async function getAdminStats(): Promise<AdminStats> {
    실패한 항목만 null이 되고 나머지는 살아남는다(대시보드 전체가 깨지지 않게). */
 const CONTACT_STATUS_DONE = 'done'      // ContactAdminTab / updateContactMessage
 const CONTACT_TYPE_PARTNER = 'partner'  // AdminPage의 onlyType/excludeType
-const POST_STATUS_HIDDEN = 'hidden'     // communityPostService.restorePost의 반대 상태
+const POST_REPORT_PENDING = 'pending'   // post_reports.status — migrations/post_report_review.sql
 const SHOP_REVIEW_PENDING = 'pending'   // shops.review_status — migrations/shop_review.sql
 
 /** null = 조회 실패 또는 아직 안 옴 (UI에서 '—' 처리) */
 export interface AdminBadgeCounts {
-  hiddenPosts: number | null
+  /** 미처리 게시글 신고 (post_reports.status='pending') */
+  pendingPostReports: number | null
   openContacts: number | null
   openPartners: number | null
   /** 신규 샵 검수 대기 (review_status='pending'). 기능 도입 전 샵은 NULL이라 안 잡힌다 */
@@ -95,8 +99,8 @@ export async function getAdminBadgeCounts(): Promise<AdminBadgeCounts> {
   const supabase = createClient()
 
   const results = await Promise.allSettled<CountResult>([
-    supabase.from('community_posts').select('id', { count: 'exact', head: true })
-      .eq('status', POST_STATUS_HIDDEN),
+    supabase.from('post_reports').select('id', { count: 'exact', head: true })
+      .eq('status', POST_REPORT_PENDING),
     supabase.from('contact_messages').select('id', { count: 'exact', head: true })
       .neq('status', CONTACT_STATUS_DONE).neq('type', CONTACT_TYPE_PARTNER),
     supabase.from('contact_messages').select('id', { count: 'exact', head: true })
@@ -116,7 +120,7 @@ export async function getAdminBadgeCounts(): Promise<AdminBadgeCounts> {
   }
 
   return {
-    hiddenPosts: pick(results[0], '숨김 글'),
+    pendingPostReports: pick(results[0], '미처리 게시글 신고'),
     openContacts: pick(results[1], '문의'),
     openPartners: pick(results[2], '제휴 문의'),
     shopReview: pick(results[3], '신규 샵 검수'),

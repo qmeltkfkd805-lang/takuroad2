@@ -365,9 +365,14 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
               />
             </div>
 
-            {/* 탭 바 (클릭 시 내용 전환) */}
+            {/* 탭 바 (클릭 시 내용 전환)
+                top 61 = 전역 헤더 높이(60) + 아래 테두리(1). 헤더를 덮지 않고 그 아래에 붙는다.
+                zIndex 는 헤더(AppShell.module.css 의 .header = 30)보다 낮아야 한다.
+                예전에는 top 0 / zIndex 50 이라 스크롤하면 헤더 위를 덮었고, 그 탓에
+                상단바의 알림 드롭다운이 이 바에 가려졌다 — 드롭다운의 zIndex 100 은
+                헤더라는 stacking context 안의 값이라 바깥에서는 헤더 전체가 30 으로 취급된다. */}
             <div style={{
-              position: 'sticky', top: 0, zIndex: 50, background: 'var(--surface)',
+              position: 'sticky', top: 61, zIndex: 20, background: 'var(--surface)',
               borderBottom: '1px solid var(--border)', marginBottom: 24, display: 'flex', gap: 4,
             }}>
               {visibleTabs.map(t => (

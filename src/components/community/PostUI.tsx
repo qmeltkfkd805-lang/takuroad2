@@ -9,7 +9,7 @@ import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import UserLevelBadge from '@/components/cosmetic/UserLevelBadge'
 import {
   togglePostLike, incrementPostView, getComments, addComment, deleteComment, toggleCommentLike,
-  reportPost, hidePost, deletePostWithGoods, setPostVisibility, getWorkPosts,
+  reportPost, deletePostWithGoods, setPostVisibility, getWorkPosts,
   getAdjacentPosts, type PostNeighbor,
 } from '@/services/communityPostService'
 import { CommunityPost, PostComment, ReportReason, REPORT_REASONS, BOARD_LABEL, Poll } from '@/types/community-post'
@@ -170,7 +170,6 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
     setComments(cs => updateCommentLikeTree(cs, c.id, liked))
     await toggleCommentLike(c.id, user.id)
   }
-  const onHide = async () => { if (window.confirm('이 글을 숨길까요?')) { await hidePost(post.id); onChanged?.(); onClose() } }
   // 굿즈 자랑 글은 연결된 굿즈도 함께 삭제(다른 글·전시관에 걸려 있으면 굿즈는 남음)
   const onDelete = async () => {
     const isGoodsPost = post.board === 'goods'

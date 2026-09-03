@@ -46,6 +46,13 @@
   .headTop { flex-direction: column; }
   .headActions { width: 100%; }
 }
+/* 창을 좁힌 PC — 위 .mHead 가 켜지지만 전역 헤더도 그대로 보인다.
+   (AppShell 은 화면 폭이 아니라 기기 종류로 헤더를 숨긴다: hover/pointer 기준)
+   z-index 30 은 전역 헤더와 동률이라 나중에 그려지는 이쪽이 헤더를 덮고,
+   그 탓에 상단바의 알림 드롭다운이 가려진다. 헤더 아래로 내린다. */
+@media (max-width: 900px) and (hover: hover) and (pointer: fine) {
+  .mHead { top: 61px; z-index: 20; }
+}
 
 /* ===== 내 굿즈 / 작품별 컬렉션 ===== */
 .wrap { padding-bottom: 48px; }
