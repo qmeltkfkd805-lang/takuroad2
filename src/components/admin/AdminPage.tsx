@@ -136,16 +136,23 @@ export default function AdminPage() {
     setPendingShops(prev => prev.filter(s => s.id !== shopId))
   }
 
+  /* 승인·거절은 서버가 요청 레코드를 보고 판단한다. 여기서는 요청 번호만 넘긴다.
+     실패하면 목록에서 지우지 않는다 — 예전에는 결과와 무관하게 지워서
+     실제로는 처리가 안 됐는데 처리된 것처럼 보였다. */
   async function handleApproveVerify(req: VerifyRequest) {
-    await approveVerifyRequest(req.id, req.shop_id, req.user_id)
+    const res = await approveVerifyRequest(req.id)
+    if (!res.ok) { alert(res.error ?? '승인에 실패했어요'); return }
     setVerifyRequests(prev => prev.filter(r => r.id !== req.id))
+    refreshBadges()
   }
 
   async function handleRejectVerify(requestId: string) {
     const reason = prompt('거절 사유를 입력하세요. (신청자에게 표시됩니다)')
-    if (reason === null) return
-    await rejectVerifyRequest(requestId, reason)
+    if (reason === null) return   // 취소 — 아무것도 하지 않는다
+    const res = await rejectVerifyRequest(requestId, reason)
+    if (!res.ok) { alert(res.error ?? '거절에 실패했어요'); return }
     setVerifyRequests(prev => prev.filter(r => r.id !== requestId))
+    refreshBadges()
   }
 
   async function handleViewEvidence(path: string | null) {

@@ -533,7 +533,9 @@ export async function getMyVerifyRequest(shopId: string, userId: string) {
   const supabase = createClient()
   const { data } = await supabase
     .from('shop_verify_requests')
-    .select('id, status, note, evidence_url, created_at')
+    // extra 는 신청 폼에 적었던 내용(담당자·연락처·사업자 정보 등).
+    // 거절 후 재신청할 때 폼을 다시 채워주는 데 쓴다.
+    .select('id, status, note, evidence_url, extra, created_at')
     .eq('shop_id', shopId)
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
@@ -706,33 +708,38 @@ export async function getPendingVerifyRequests() {
   return data ?? []
 }
 
-export async function approveVerifyRequest(requestId: string, shopId: string, userId: string): Promise<boolean> {
-  const supabase = createClient()
-
-  const { error: reqError } = await supabase
-    .from('shop_verify_requests')
-    .update({ status: 'approved' } as any)
-    .eq('id', requestId)
-
-  if (reqError) return false
-
-  const { error: shopError } = await supabase
-    .from('shops')
-    .update({ is_claimed: true, owner_id: userId } as any)
-    .eq('id', shopId)
-
-  return !shopError
+/* 인증 심사 승인·거절은 서버에서 처리한다 (/api/admin/shop-verify).
+   예전에는 여기서 shop_verify_requests 와 shops 를 각각 UPDATE 했는데,
+   두 UPDATE 가 독립이라 뒤엣것이 실패하면 "승인 표시만 남고 소유권은 안 넘어간"
+   상태로 조용히 끝났다. shopId·userId 를 호출부가 넘기는 것도 문제였다 —
+   요청 레코드와 대조하지 않아서 아무 샵이나 지목할 수 있었다.
+   이제 requestId 만 보내고, 대상 샵과 신청자는 서버가 요청 레코드에서 읽는다.
+   (곧 shops.is_claimed·owner_id 는 authenticated 에서 UPDATE 권한을 회수한다) */
+async function callVerifyApi(
+  requestId: string,
+  action: 'approve' | 'reject',
+  reason?: string
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const res = await fetch('/api/admin/shop-verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ requestId, action, reason }),
+    })
+    const json: { error?: string } | null = await res.json().catch(() => null)
+    if (!res.ok) return { ok: false, error: json?.error ?? '처리에 실패했어요' }
+    return { ok: true }
+  } catch {
+    return { ok: false, error: '네트워크 오류로 처리하지 못했어요' }
+  }
 }
 
-export async function rejectVerifyRequest(requestId: string, reason?: string): Promise<boolean> {
-  const supabase = createClient()
-  const patch: any = { status: 'rejected' }
-  if (reason && reason.trim()) patch.note = reason.trim()
-  const { error } = await supabase
-    .from('shop_verify_requests')
-    .update(patch)
-    .eq('id', requestId)
-  return !error
+export function approveVerifyRequest(requestId: string) {
+  return callVerifyApi(requestId, 'approve')
+}
+
+export function rejectVerifyRequest(requestId: string, reason?: string) {
+  return callVerifyApi(requestId, 'reject', reason)
 }
 
 export async function getEvidenceFileUrl(path: string): Promise<string | null> {
@@ -838,19 +845,29 @@ export async function getVisitedShops(userId: string): Promise<Shop[]> {
     .map(toShop)
 }
 
-// 내 인증 신청 전체 현황
+/* 내 인증 신청 전체 현황.
+
+   updated_at — 전용 처리일 컬럼이 없어 이걸 쓴다. trg_verify_requests_updated_at 이
+     갱신하므로 approved/rejected 행에서는 심사 결정 시각과 같다.
+     pending 행에서는 생성 시각과 같으니 처리일로 쓰면 안 된다(화면에서 거른다).
+   shops.is_claimed / owner_id — '샵 관리하기' 로 실제 들어갈 수 있는지 판단용.
+     /shop/[slug]/manage 가 서버에서 (is_claimed && owner_id = 나) 를 검사하고
+     아니면 redirect 하므로, 조건을 못 맞추면 버튼 자체를 안 그린다.
+
+   오류를 삼키지 않는다 — 예전에는 return [] 이라 조회 실패와 "신청 0건"이
+   화면에서 구분되지 않았다. 호출부가 catch 해서 각자 처리한다. */
 export async function getMyVerifyRequests(userId: string) {
   const supabase = createClient()
   const { data, error } = await supabase
     .from('shop_verify_requests')
     .select(`
-      id, status, note, created_at,
-      shops ( id, name, slug )
+      id, status, note, created_at, updated_at,
+      shops ( id, name, slug, is_claimed, owner_id )
     `)
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
 
-  if (error) return []
+  if (error) throw error
   return data ?? []
 }
 
