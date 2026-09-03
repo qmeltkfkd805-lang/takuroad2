@@ -128,6 +128,10 @@ export default function AdminPage() {
   async function refreshBadges() {
     try { setBadges(await getAdminBadgeCounts()) }
     catch (e) { console.error('[관리자] 배지 건수 갱신 실패:', e) }
+    /* 샵 신고 배지(reported)와 대시보드는 업무 요약의 pendingSuggestions 를 쓴다.
+       배지 조회와 별개 소스라 여기서 같이 다시 맞춘다. */
+    try { setTodo(await getAdminTodoSummary()) }
+    catch (e) { console.error('[관리자] 업무 요약 갱신 실패:', e) }
   }
 
   const sidebarCounts = {
@@ -213,7 +217,7 @@ export default function AdminPage() {
       {tab === 'works' && <WorkAdminTab />}
       {tab === 'places' && <PlaceAdminTab />}
       {tab === 'members' && <MemberAdminTab />}
-      {tab === 'reported' && <ReportedShopsTab />}
+      {tab === 'reported' && <ReportedShopsTab onResolved={refreshBadges} />}
       {tab === 'postreports' && <PostReportsTab />}
       {tab === 'contacts' && <ContactAdminTab excludeType="partner" />}
       {tab === 'partners' && <ContactAdminTab onlyType="partner" />}

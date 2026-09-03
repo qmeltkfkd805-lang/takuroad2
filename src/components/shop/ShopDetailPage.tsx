@@ -9,10 +9,10 @@ import { ROUTES } from '@/lib/constants/routes'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useSaved } from '@/hooks/useSaved'
 import VerifyRequestButton from './VerifyRequestButton'
+import ReportIssueButton from './ReportIssueButton'
 import CheckInButton from './CheckInButton'
 import ReviewSection from './ReviewSection'
 import ShopEventList from './ShopEventList'
-import ConfirmInfoButton from './ConfirmInfoButton'
 import ShopAmenityBadges from './ShopAmenityBadges'
 import ShopHighlights from './ShopHighlights'
 import ShopTagBadges from './ShopTagBadges'
@@ -263,6 +263,12 @@ export default function ShopDetailPage({ shop }: Props) {
             </p>
           </>
         )}
+
+        {/* 정보가 틀렸을 때 알리는 곳. 이 버튼이 관리자 '샵 신고' 대기열을 채운다
+            (컴포넌트는 있었는데 어디에도 붙어 있지 않아 신고를 넣을 길이 없었다) */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '0 0 20px' }}>
+          <ReportIssueButton shopId={shop.id} label="정보가 달라요" />
+        </div>
 
         <div style={{ height: '1px', background: 'var(--border)', margin: '0 0 24px' }} />
 

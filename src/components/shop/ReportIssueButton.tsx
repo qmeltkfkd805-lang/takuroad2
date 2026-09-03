@@ -52,11 +52,13 @@ export default function ReportIssueButton({ shopId, label = '정보가 달라요
   }
 
   async function handleSubmit() {
-    if (!user || !canSubmit) return
+    if (!user || !canSubmit || submitting) return
     setSubmitting(true)
     const finalReason = isOther ? `기타: ${customReason.trim()}` : selectedReason!
-    await reportShopIssue(shopId, user.id, finalReason)
+    const ok = await reportShopIssue(shopId, user.id, finalReason)
     setSubmitting(false)
+    // 예전에는 결과와 무관하게 '접수됐어요'를 띄웠다. 실패하면 그대로 알린다.
+    if (!ok) { alert('신고를 접수하지 못했어요. 잠시 후 다시 시도해 주세요.'); return }
     setDone(true)
     setTimeout(() => {
       handleClose()
