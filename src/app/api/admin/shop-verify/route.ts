@@ -74,13 +74,15 @@ export async function POST(request: NextRequest) {
   const now = new Date().toISOString()
 
   if (action === 'reject') {
-    // note 는 신청자에게 보이는 사유. 사유가 없으면 기존 신청 메모를 지우지 않는다.
+    /* 거절 사유는 reject_reason 에 넣는다. note 는 신청자가 낸 사업자 메모라
+       건드리지 않는다 — 예전에는 사유로 덮어써서, 어떤 rejected 행의 note 가
+       진짜 사유인지 구분할 수 없게 됐다(그래서 화면에서 '거절 사유'라고 못 썼다). */
     const patch: Record<string, unknown> = {
       status: 'rejected',
       reviewed_by: user.id,
+      reject_reason: reason,   // 사유를 안 적었으면 null
       updated_at: now,
     }
-    if (reason) patch.note = reason
 
     const { data: updated, error } = await adminSupabase
       .from('shop_verify_requests')

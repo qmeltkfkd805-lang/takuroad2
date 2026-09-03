@@ -24,9 +24,14 @@ export default function HolidayManage({ shop }: { shop: Shop }) {
       temporary_holiday_end: end || null,
       temporary_holiday_message: message.trim() || null,
     }, user.id)
-    setSaving(false)
-    if (ok) { router.push('/shop/' + shop.slug); router.refresh() }
-    else alert('저장에 실패했어요. 잠시 후 다시 시도해 주세요.')
+    if (!ok) {
+      setSaving(false)
+      alert('저장에 실패했어요. 잠시 후 다시 시도해 주세요.')
+      return
+    }
+    // saving은 풀지 않는다 — 이동하는 사이 버튼이 다시 눌리지 않게.
+    router.push('/shop/' + shop.slug)
+    router.refresh()   // 매장 페이지는 서버에서 그리므로 캐시를 비워야 새 값이 보인다
   }
 
   async function clearHoliday() {

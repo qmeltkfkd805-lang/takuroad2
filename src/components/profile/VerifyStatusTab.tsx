@@ -12,10 +12,12 @@ import styles from './verifyStatus.module.css'
    데이터는 shopService.getMyVerifyRequests 가 주는 것만 쓴다(RLS 상 본인 것만 내려온다).
    요약 숫자·필터·최신 신청 판별은 전부 이 목록에서 계산하고 추가 조회를 하지 않는다.
 
-   note 를 '거절 사유'라고 단정하지 않는다 — 신청할 때 사업자 정보 문자열이 들어가고
-   (`[사업자] … / 등록번호 …`), 거절할 때 사유를 적으면 그걸 덮어쓴다. 사유가 적히지
-   않은 채 거절되면 신청 원문이 그대로 남는다. 둘을 구분할 컬럼이 없어서
-   중립적으로 '안내 내용'이라고만 쓴다. (후속: 거절 사유 전용 컬럼 분리) */
+   거절 사유 표시는 두 갈래다.
+     reject_reason 이 있으면 → 관리자가 적은 사유가 확실하므로 '거절 사유'
+     없고 note 만 있으면   → 2026-09-03 이전 데이터. 그때는 note 하나를 신청 메모와
+                             거절 사유가 같이 써서, 어느 쪽인지 구분할 방법이 없다.
+                             그래서 '거절 사유'라 단정하지 않고 '안내 내용'으로만 쓴다.
+     둘 다 없으면          → 사유를 확인할 수 없다는 안내만 */
 
 interface VerifyShop {
   id: string
@@ -28,7 +30,8 @@ interface VerifyShop {
 interface VerifyRow {
   id: string
   status: string
-  note: string | null
+  note: string | null            // 신청자가 낸 메모(사업자 정보)
+  reject_reason: string | null   // 관리자가 적은 거절 사유 (2026-09-03부터)
   created_at: string
   updated_at: string | null
   shops: VerifyShop | null
@@ -221,6 +224,13 @@ function RequestCard({ row, userId, isLatest }: { row: VerifyRow; userId: string
   const canManage = isApproved && slug !== null && shop?.is_claimed === true && shop.owner_id === userId
   const canReapply = isRejected && isLatest && slug !== null
 
+  /* reject_reason 이 있으면 관리자가 적은 사유가 확실하다. 없으면 옛 데이터라
+     note 를 보여주되 그게 사유인지 신청 메모인지 알 수 없어 제목을 낮춘다. */
+  const reasonText = hasText(row.reject_reason) ? row.reject_reason
+    : hasText(row.note) ? row.note
+    : null
+  const reasonTitle = hasText(row.reject_reason) ? '거절 사유' : '안내 내용'
+
   const badge = isPending ? { cls: styles.badgePending, icon: 'clock', text: '심사 중' }
     : isApproved ? { cls: styles.badgeApproved, icon: 'check', text: '인증 완료' }
     : isRejected ? { cls: styles.badgeRejected, icon: 'close', text: '인증 거절' }
@@ -274,14 +284,12 @@ function RequestCard({ row, userId, isLatest }: { row: VerifyRow; userId: string
 
       {isRejected && (
         <div className={`${styles.note} ${styles.noteRejected}`}>
-          {hasText(row.note) ? (
+          {reasonText ? (
             <>
-              {/* 이 값이 거절 사유인지 신청할 때 적힌 메모인지 구분할 방법이 없어
-                  '거절 사유'라고 단정하지 않는다. */}
               <div className={`${styles.noteHead} ${styles.noteHeadRejected}`}>
-                <AppIcon name="warning" size={15} color="currentColor" />안내 내용
+                <AppIcon name="warning" size={15} color="currentColor" />{reasonTitle}
               </div>
-              <p className={styles.noteBody}>{row.note}</p>
+              <p className={styles.noteBody}>{reasonText}</p>
               <p className={styles.noteHint}>부족한 정보를 보완한 뒤 다시 신청할 수 있어요.</p>
             </>
           ) : (

@@ -22,7 +22,8 @@ type ClaimExtra = {
 
 interface MyRequest {
   status: string
-  note?: string | null
+  note?: string | null            // 신청자가 낸 메모(사업자 정보)
+  reject_reason?: string | null   // 관리자가 적은 거절 사유 (2026-09-03부터)
   extra?: ClaimExtra | null
   created_at?: string
 }
@@ -178,7 +179,11 @@ export default function ClaimFormPage({ slug }: { slug: string }) {
       {already?.status === 'rejected' && (
         <div className={styles.rejectBox}>
           <p className={styles.rejectTitle}>이전 신청이 거절됐어요</p>
-          {already.note && <p className={styles.rejectNote}>{already.note}</p>}
+          {/* reject_reason 이 관리자가 적은 사유다. 없으면 2026-09-03 이전 데이터라
+              note 를 대신 보여주는데, 그게 사유인지 신청 메모인지는 알 수 없다. */}
+          {(already.reject_reason || already.note) && (
+            <p className={styles.rejectNote}>{already.reject_reason || already.note}</p>
+          )}
           <p className={styles.rejectHint}>지난번에 적으신 내용을 그대로 불러왔어요. 보완해서 다시 신청하실 수 있어요. 증빙 자료는 다시 첨부해 주세요.</p>
         </div>
       )}

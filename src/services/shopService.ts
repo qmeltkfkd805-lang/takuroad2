@@ -535,7 +535,7 @@ export async function getMyVerifyRequest(shopId: string, userId: string) {
     .from('shop_verify_requests')
     // extra 는 신청 폼에 적었던 내용(담당자·연락처·사업자 정보 등).
     // 거절 후 재신청할 때 폼을 다시 채워주는 데 쓴다.
-    .select('id, status, note, evidence_url, extra, created_at')
+    .select('id, status, note, reject_reason, evidence_url, extra, created_at')
     .eq('shop_id', shopId)
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
@@ -861,7 +861,7 @@ export async function getMyVerifyRequests(userId: string) {
   const { data, error } = await supabase
     .from('shop_verify_requests')
     .select(`
-      id, status, note, created_at, updated_at,
+      id, status, note, reject_reason, created_at, updated_at,
       shops ( id, name, slug, is_claimed, owner_id )
     `)
     .eq('user_id', userId)

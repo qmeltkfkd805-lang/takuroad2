@@ -10,7 +10,7 @@ import { createClient as createServerClient } from '@/lib/supabase/server'
      - shops.name/description/addr/parking_note/floor_info : text
      - shops.parking : boolean (UI 토글)
      - shops.shop_link : text, UI input type=url → http/https URL
-     - shops.hours : jsonb(BusinessHours, 요일객체)
+     - shops.hours : jsonb(요일객체 mon~sun + holiday·yearRound 플래그)
      - shop_products.availability : text CHECK(6개 enum)
    목록 밖 field(=id/status/created_by/owner_id/승인 컬럼 등)는 400.
 
@@ -73,8 +73,21 @@ function validate(rule: FieldRule, raw: unknown): Checked {
     if (raw === null) return { ok: true, value: null }
     if (!isPlainObject(raw)) return { ok: false, error: '영업시간 형식이 아니에요' }
     const days = Object.entries(raw)
-    if (days.length > 7) return { ok: false, error: '요일 키가 너무 많아요' }
+    // 요일 7개 + holiday + yearRound
+    if (days.length > 9) return { ok: false, error: '영업시간 키가 너무 많아요' }
     for (const [k, v] of days) {
+      /* 위저드(ShopHoursEditor)는 요일 키와 같은 객체에 이 두 플래그를 넣는다.
+         예전에는 mon~sun만 허용해서, 공휴일 휴무나 연중무휴가 켜진 샵은
+         관리자 '변경 되돌리기'가 400으로 막혔다. 값은 켜짐 하나뿐이고
+         끌 때는 키 자체를 지우므로 다른 값이 올 일이 없다. */
+      if (k === 'holiday') {
+        if (v !== 'closed') return { ok: false, error: '공휴일 값이 올바르지 않아요' }
+        continue
+      }
+      if (k === 'yearRound') {
+        if (v !== true) return { ok: false, error: '연중무휴 값이 올바르지 않아요' }
+        continue
+      }
       if (!DAY_KEYS.has(k)) return { ok: false, error: '알 수 없는 요일 키예요' }   // mon~sun 만
       if (v === null) continue
       if (!isPlainObject(v)) return { ok: false, error: '요일 값 형식 오류' }
