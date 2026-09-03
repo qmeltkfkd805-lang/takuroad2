@@ -259,22 +259,34 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                 </div>
               )}
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, rgba(0,0,0,.72) 0%, rgba(0,0,0,.25) 42%, rgba(0,0,0,0) 70%)', pointerEvents: 'none' }} />
-              {canManage && (
-                <div style={{ position: 'absolute', top: 16, right: 16, zIndex: 6 }}>
-                  <button onClick={() => setMenuOpen(o => !o)} aria-label="관리 메뉴" style={{ width: 36, height: 36, borderRadius: 9999, border: 'none', background: 'rgba(0,0,0,.45)', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <svg width={20} height={20} viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="19" cy="12" r="2" /></svg>
-                  </button>
-                  {menuOpen && (
-                    <div style={{ position: 'absolute', top: 44, right: 0, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 8px 24px rgba(0,0,0,.18)', overflow: 'hidden', minWidth: 150 }}>
-                      {(isAdmin || (!!user && shop.owner_id === user.id && shop.is_claimed)) && (
-                        <button onClick={() => { setMenuOpen(false); router.push('/shop/' + shop.slug + '/manage') }} style={{ ...menuItemStyle, fontWeight: 800, color: color }}><AppIcon name="shop" size={15} color={color} style={{ marginRight: 6 }} />매장 관리</button>
-                      )}
+              {/* 더보기 — 예전에는 canManage 일 때만 그려서 일반 사용자에겐 메뉴가 아예 없었다.
+                  신고하기를 여기 넣기 위해 항상 그리고, 관리 항목만 조건부로 둔다. */}
+              <div style={{ position: 'absolute', top: 16, right: 16, zIndex: 6 }}>
+                <button onClick={() => setMenuOpen(o => !o)} aria-label="더보기" aria-expanded={menuOpen} style={{ width: 36, height: 36, borderRadius: 9999, border: 'none', background: 'rgba(0,0,0,.45)', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg width={20} height={20} viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="19" cy="12" r="2" /></svg>
+                </button>
+                {menuOpen && (
+                  <div style={{ position: 'absolute', top: 44, right: 0, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 8px 24px rgba(0,0,0,.18)', overflow: 'hidden', minWidth: 150 }}>
+                    {(isAdmin || (!!user && shop.owner_id === user.id && shop.is_claimed)) && (
+                      <button onClick={() => { setMenuOpen(false); router.push('/shop/' + shop.slug + '/manage') }} style={{ ...menuItemStyle, fontWeight: 800, color: color }}><AppIcon name="shop" size={15} color={color} style={{ marginRight: 6 }} />매장 관리</button>
+                    )}
+                    {canManage && (
                       <button onClick={() => { setMenuOpen(false); router.push(ROUTES.shopEdit(shop.slug)) }} style={menuItemStyle}>수정하기</button>
+                    )}
+                    {/* 모달이 닫힐 때 메뉴도 닫는다. 열 때 닫으면 이 버튼이 언마운트돼 모달까지 사라진다 */}
+                    <ReportIssueButton
+                      shopId={shop.id}
+                      label="신고하기"
+                      variant="menu"
+                      style={{ ...menuItemStyle, borderTop: canManage ? '1px solid var(--border)' : undefined }}
+                      onClose={() => setMenuOpen(false)}
+                    />
+                    {canManage && (
                       <button onClick={handleDelete} style={{ ...menuItemStyle, color: '#e04343', borderTop: '1px solid var(--border)' }}>샵 삭제하기</button>
-                    </div>
-                  )}
-                </div>
-              )}
+                    )}
+                  </div>
+                )}
+              </div>
               <div style={{ position: 'absolute', left: 24, bottom: 22, right: 24, color: '#fff' }}>
                 <h1 style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 27, fontWeight: 900, lineHeight: 1.2, marginBottom: 10, textShadow: '0 2px 12px rgba(0,0,0,.4)' }}>
                   <span style={{ minWidth: 0 }}>{shop.name}</span>
@@ -496,11 +508,6 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                     </div>
                   )}
                   {!shop.is_claimed && <VerifyRequestButton shopId={shop.id} shopName={shop.name} slug={shop.slug} accentColor={color} />}
-                  {/* 정보가 틀렸을 때 알리는 곳. 이 버튼이 관리자 '샵 신고' 대기열을 채운다
-                      (컴포넌트는 있었는데 어디에도 붙어 있지 않아 신고를 넣을 길이 없었다) */}
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 14 }}>
-                    <ReportIssueButton shopId={shop.id} label="정보가 달라요" />
-                  </div>
                 </Section>
 
                 {/* 편의시설 / 서비스 */}

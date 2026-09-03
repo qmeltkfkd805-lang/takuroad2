@@ -1,7 +1,9 @@
 'use client'
 
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Shop } from '@/types/shop'
+import { deleteShop } from '@/services/shopService'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import { getTodayStatus, formatBusinessHours, getPopupStatus } from '@/lib/utils/date'
 import { parseParkingRows } from '@/lib/utils/parkingNote'
@@ -28,9 +30,25 @@ interface Props {
 
 export default function ShopDetailPage({ shop }: Props) {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user, isAdmin } = useAuth()
   const { isSaved, toggleSave } = useSaved()
   const isDesktop = useIsDesktop()
+
+  /* 히어로 더보기(⋯). 데스크톱과 같은 항목을 모바일에도 둔다.
+     드롭다운 대신 바텀시트다 — ShopGallery 컨테이너가 overflow:hidden 이라
+     그 안에서는 드롭다운이 잘리고, 모바일에서는 바텀시트가 더 자연스럽다. */
+  const [menuOpen, setMenuOpen] = useState(false)
+  const canManage = isAdmin || (!!user && shop.owner_id === user.id)
+  const canOwnerManage = isAdmin || (!!user && shop.owner_id === user.id && shop.is_claimed)
+
+  async function handleDelete() {
+    setMenuOpen(false)
+    if (!user) return
+    if (!window.confirm('정말 이 샵을 삭제할까요? 되돌릴 수 없어요.')) return
+    const ok = await deleteShop(shop.id, user.id)
+    if (ok) router.push('/map')
+    else window.alert('삭제에 실패했어요. 권한이 없거나 연결된 데이터가 있을 수 있어요.')
+  }
 
   const catInfo = CATEGORY_NAME_MAP[shop.cat]
   const color = catInfo?.color ?? '#e8006f'
@@ -49,9 +67,44 @@ export default function ShopDetailPage({ shop }: Props) {
         isSaved={isSaved(shop.id)}
         onToggleSave={() => { toggleSave(shop.id) }}
         onShare={() => { if (navigator.share) { navigator.share({ title: shop.name, url: window.location.href }) } else { navigator.clipboard?.writeText(window.location.href) } }}
+        onMore={() => setMenuOpen(true)}
         fallbackIcon={catInfo?.icon ?? 'shop'}
         fallbackBg={catInfo?.bgColor ?? 'var(--surface2)'}
       />
+
+      {menuOpen && (
+        <div
+          onClick={() => setMenuOpen(false)}
+          style={{ position: 'fixed', inset: 0, zIndex: 900, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}
+        >
+          <div
+            role="dialog" aria-modal="true" aria-label="샵 메뉴"
+            onClick={e => e.stopPropagation()}
+            style={{ background: 'var(--surface)', borderRadius: '20px 20px 0 0', width: '100%', maxWidth: '680px', padding: '10px 0 18px' }}
+          >
+            <div style={{ width: 38, height: 4, borderRadius: 999, background: 'var(--border)', margin: '0 auto 8px' }} />
+            {canOwnerManage && (
+              <button onClick={() => { setMenuOpen(false); router.push(`/shop/${shop.slug}/manage`) }}
+                style={{ ...sheetItem, fontWeight: 800, color }}>매장 관리</button>
+            )}
+            {canManage && (
+              <button onClick={() => { setMenuOpen(false); router.push(ROUTES.shopEdit(shop.slug)) }} style={sheetItem}>수정하기</button>
+            )}
+            {/* 모달이 닫힐 때 시트도 닫는다 — 열 때 닫으면 버튼이 언마운트돼 모달까지 사라진다 */}
+            <ReportIssueButton
+              shopId={shop.id}
+              label="신고하기"
+              variant="menu"
+              style={sheetItem}
+              onClose={() => setMenuOpen(false)}
+            />
+            {canManage && (
+              <button onClick={handleDelete} style={{ ...sheetItem, color: '#e04343', borderTop: '1px solid var(--border)' }}>샵 삭제하기</button>
+            )}
+            <button onClick={() => setMenuOpen(false)} style={{ ...sheetItem, color: 'var(--muted)', borderTop: '1px solid var(--border)' }}>닫기</button>
+          </div>
+        </div>
+      )}
 
       <div style={{ padding: '20px 16px', position: 'relative', marginTop: '-20px', background: 'var(--surface)', borderRadius: '24px 24px 0 0' }}>
 
@@ -264,12 +317,6 @@ export default function ShopDetailPage({ shop }: Props) {
           </>
         )}
 
-        {/* 정보가 틀렸을 때 알리는 곳. 이 버튼이 관리자 '샵 신고' 대기열을 채운다
-            (컴포넌트는 있었는데 어디에도 붙어 있지 않아 신고를 넣을 길이 없었다) */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '0 0 20px' }}>
-          <ReportIssueButton shopId={shop.id} label="정보가 달라요" />
-        </div>
-
         <div style={{ height: '1px', background: 'var(--border)', margin: '0 0 24px' }} />
 
         {/* === 리뷰 === */}
@@ -283,6 +330,13 @@ export default function ShopDetailPage({ shop }: Props) {
       </div>
     </div>
   )
+}
+
+/* 바텀시트 한 줄. 최소 높이 44px 로 터치 영역을 확보한다 */
+const sheetItem: React.CSSProperties = {
+  display: 'block', width: '100%', textAlign: 'left', minHeight: 52, padding: '15px 20px',
+  border: 'none', background: 'none', fontFamily: 'inherit', fontSize: 15, fontWeight: 700,
+  color: 'var(--text)', cursor: 'pointer',
 }
 
 function InfoRow({ icon, label, children }: {

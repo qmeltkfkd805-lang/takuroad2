@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { reportShopIssue } from '@/services/shopReportService'
 import { ROUTES } from '@/lib/constants/routes'
@@ -9,8 +10,14 @@ import { useRouter } from 'next/navigation'
 interface Props {
   shopId: string
   label?: string
-  variant?: 'default' | 'dashed'
+  /** menu = 드롭다운 메뉴 한 줄로 그린다(호출부의 메뉴 항목 스타일을 style 로 받는다) */
+  variant?: 'default' | 'dashed' | 'menu'
   accentColor?: string
+  style?: React.CSSProperties
+  /** 모달이 닫힐 때. 메뉴 안에서 열었으면 그 메뉴도 같이 닫는다.
+   *  열 때가 아니라 닫을 때 부른다 — 열면서 메뉴를 닫으면 이 컴포넌트가 통째로
+   *  언마운트되어 모달까지 사라진다. */
+  onClose?: () => void
 }
 
 const REASONS = [
@@ -25,7 +32,10 @@ const REASONS = [
   '기타',
 ]
 
-export default function ReportIssueButton({ shopId, label = '정보가 달라요', variant = 'default', accentColor = 'var(--accent)' }: Props) {
+export default function ReportIssueButton({
+  shopId, label = '정보가 달라요', variant = 'default',
+  accentColor = 'var(--accent)', style, onClose,
+}: Props) {
   const router = useRouter()
   const { user } = useAuth()
   const [showModal, setShowModal] = useState(false)
@@ -49,6 +59,7 @@ export default function ReportIssueButton({ shopId, label = '정보가 달라요
     setShowModal(false)
     setSelectedReason(null)
     setCustomReason('')
+    onClose?.()
   }
 
   async function handleSubmit() {
@@ -68,7 +79,9 @@ export default function ReportIssueButton({ shopId, label = '정보가 달라요
 
   return (
     <>
-      {variant === 'dashed' ? (
+      {variant === 'menu' ? (
+        <button onClick={handleOpen} style={style}>{label}</button>
+      ) : variant === 'dashed' ? (
         <button
           onClick={handleOpen}
           style={{
@@ -96,7 +109,12 @@ export default function ReportIssueButton({ shopId, label = '정보가 달라요
         </button>
       )}
 
-      {showModal && (
+      {/* 모달은 body 로 포털한다.
+          이 버튼이 z-index 를 가진 조상(예: 샵 상세 히어로의 더보기 메뉴, zIndex 6) 안에
+          있으면 그 stacking context 에 갇혀서, position:fixed + z-index:999 여도
+          sticky 탭 바(zIndex 50) 아래로 깔린다.
+          showModal 은 클릭으로만 켜지므로 이 시점에는 document 가 항상 있다. */}
+      {showModal && typeof document !== 'undefined' && createPortal(
         <div
           onClick={() => !submitting && handleClose()}
           style={{
@@ -169,7 +187,8 @@ export default function ReportIssueButton({ shopId, label = '정보가 달라요
               </>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   )

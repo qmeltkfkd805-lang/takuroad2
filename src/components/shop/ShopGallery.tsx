@@ -9,6 +9,9 @@ interface ShopGalleryProps {
   isSaved: boolean
   onToggleSave: () => void
   onShare: () => void
+  /** 더보기(⋯). 넘기면 저장·공유 옆에 버튼이 하나 붙는다.
+   *  메뉴 자체는 호출부가 그린다 — 이 컨테이너는 overflow:hidden 이라 드롭다운이 잘린다. */
+  onMore?: () => void
   fallbackIcon?: string
   fallbackBg?: string
 }
@@ -16,7 +19,7 @@ interface ShopGalleryProps {
 const H = 340
 
 export default function ShopGallery({
-  images, shopName, onBack, isSaved, onToggleSave, onShare,
+  images, shopName, onBack, isSaved, onToggleSave, onShare, onMore,
   fallbackIcon = 'shop', fallbackBg = 'var(--surface2)',
 }: ShopGalleryProps) {
   const [idx, setIdx] = useState(0)
@@ -81,6 +84,11 @@ export default function ShopGallery({
         <FloatBtn onClick={onShare} label="공유">
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" /></svg>
         </FloatBtn>
+        {onMore && (
+          <FloatBtn onClick={onMore} label="더보기">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="19" cy="12" r="2" /></svg>
+          </FloatBtn>
+        )}
       </div>
 
       {multi && (
