@@ -103,6 +103,29 @@
   font-size: 13px; font-weight: 700; color: var(--accent);
 }
 .moreLink:hover { text-decoration: underline; }
+
+/* ── 인증 현황 카드 (신청 이력이 있을 때만 렌더된다) ── */
+.verifyList { display: flex; flex-direction: column; gap: 4px; }
+.verifyRow {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; min-height: 44px; padding: 0 4px;
+  border: none; background: none; cursor: pointer; font-family: inherit; text-align: left;
+  border-radius: var(--r-xs);
+}
+.verifyRow:hover { background: var(--surface2); }
+.verifyRow:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.verifyName {
+  font-size: 14px; font-weight: 700; color: var(--text);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.verifyChip {
+  flex-shrink: 0; padding: 4px 10px; border-radius: var(--r-full);
+  font-size: 11.5px; font-weight: 800; white-space: nowrap;
+}
+.verifyPending  { background: rgba(245,177,0,.14); color: #A87A00; }
+.verifyApproved { background: var(--green-l); color: #0E8C7C; }
+.verifyRejected { background: var(--red-l); color: #D64545; }
+.verifyUnknown  { background: var(--surface2); color: var(--muted); }
 .editLink {
   display: inline-flex; align-items: center; gap: 5px;
   border: 1px solid var(--border); background: var(--surface); color: var(--muted);

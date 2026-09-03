@@ -12,6 +12,7 @@ import { getMyLevelInfo, LevelInfo } from '@/services/expService'
 import { getFollowCounts, getFollowers, getFollowing, getFollowFeed, FollowUser, FollowFeedItem } from '@/services/followService'
 import { getMyRecentActivities, RecentActivity } from '@/services/activityService'
 import { getQuickMenu, setQuickMenu } from '@/services/quickMenuService'
+import { getMyVerifyRequests } from '@/services/shopService'
 import MyGoodsSection from '@/components/goods/MyGoodsSection'
 import GrowthPage from '@/components/growth/GrowthPage'
 import ChroniclePage from '@/components/collection/ChroniclePage'
@@ -44,6 +45,20 @@ const SUB_TITLE: Record<Sub, string> = {
   saved: '저장한 샵', savedroutes: '저장한 루트', routes: '내 루트', completed: '완주한 루트', visited: '방문 기록',
   posts: '작성한 글', comments: '내 댓글', reviews: '내 후기', shops: '등록한 샵', verify: '인증 현황',
   badges: '배지', growth: '성장센터', chronicle: '연대기', collection: '컬렉션',
+}
+
+/* 대시보드 인증 현황 카드에 필요한 최소 필드.
+   자세한 표시는 VerifyStatusTab이 한다 — 여기서는 샵 이름과 상태만 쓴다. */
+interface VerifyBrief {
+  id: string
+  status: string
+  shops: { name: string | null } | null
+}
+
+const VERIFY_LABEL: Record<string, { text: string; cls: string }> = {
+  pending:  { text: '심사 중',   cls: 'verifyPending' },
+  approved: { text: '인증 완료', cls: 'verifyApproved' },
+  rejected: { text: '인증 거절', cls: 'verifyRejected' },
 }
 
 const STAT_TINT = ['rgba(255,86,146,.12)', 'rgba(247,169,40,.16)', 'rgba(34,197,94,.14)', 'rgba(59,155,232,.14)']
@@ -121,6 +136,12 @@ export default function ProfileDesktop({ passport, userId }: Props) {
   const [draft, setDraft] = useState<string[]>([])
   const [savingMenu, setSavingMenu] = useState(false)
 
+  /* 인증 현황 — 신청 이력이 있는 사람에게만 카드로 보여준다.
+     '인증 현황'은 빠른 메뉴 카탈로그에만 있고 DEFAULT_QUICK에는 없어서,
+     사장님 인증을 신청해놓고도 결과를 보러 들어올 길이 없었다.
+     0건이면 카드를 아예 그리지 않아 대부분의 사용자에겐 아무것도 안 보인다. */
+  const [verifyReqs, setVerifyReqs] = useState<VerifyBrief[]>([])
+
   useEffect(() => {
     if (!userId) return
     getMyLevelInfo(userId).then(setLevelInfo).catch(() => {})
@@ -131,6 +152,10 @@ export default function ProfileDesktop({ passport, userId }: Props) {
       const valid = (keys ?? []).filter(k => QUICK_BY_KEY.has(k)).slice(0, MAX_QUICK)
       if (valid.length) setQuickKeys(valid)
     }).catch(() => {})
+    // 조회에 실패하면 카드를 안 그린다 — 대시보드를 막을 정보가 아니다
+    getMyVerifyRequests(userId)
+      .then(rows => setVerifyReqs((rows ?? []) as unknown as VerifyBrief[]))
+      .catch(() => {})
   }, [userId])
 
   const [isMobile, setIsMobile] = useState(false)
@@ -378,6 +403,29 @@ export default function ProfileDesktop({ passport, userId }: Props) {
                 </div>
               )}
             </section>
+
+            {/* 인증 현황 — 신청 이력이 있을 때만 그린다 */}
+            {verifyReqs.length > 0 && (
+              <section className={styles.card}>
+                <div className={styles.cardHead}>
+                  <span className={styles.cardTitle}>인증 현황</span>
+                  <button className={styles.moreLink} onClick={() => setView('verify')}>전체 보기 ›</button>
+                </div>
+                <div className={styles.verifyList}>
+                  {verifyReqs.slice(0, 3).map(r => {
+                    const s = VERIFY_LABEL[r.status]
+                    return (
+                      <button key={r.id} className={styles.verifyRow} onClick={() => setView('verify')}>
+                        <span className={styles.verifyName}>{r.shops?.name ?? '삭제된 샵'}</span>
+                        <span className={`${styles.verifyChip} ${s ? styles[s.cls] : styles.verifyUnknown}`}>
+                          {s ? s.text : r.status}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </section>
+            )}
 
             {/* 최근 활동 */}
             <section className={`${styles.card} ${styles.recentCard}`}>
