@@ -65,16 +65,16 @@
 -- auth.uid() 는 definer 로 바뀌어도 그대로 동작한다. 실행 롤이 아니라
 -- 요청의 JWT 설정값을 읽기 때문이다.
 alter function public.notify_review_comment()       security definer;
-alter function public.notify_review_comment()       set search_path to 'public', 'pg_temp';
+alter function public.notify_review_comment()       set search_path to 'public', 'extensions', 'pg_temp';
 
 alter function public.notify_shop_owner_comment()   security definer;
-alter function public.notify_shop_owner_comment()   set search_path to 'public', 'pg_temp';
+alter function public.notify_shop_owner_comment()   set search_path to 'public', 'extensions', 'pg_temp';
 
 alter function public.notify_shop_owner_review()    security definer;
-alter function public.notify_shop_owner_review()    set search_path to 'public', 'pg_temp';
+alter function public.notify_shop_owner_review()    set search_path to 'public', 'extensions', 'pg_temp';
 
 alter function public.notify_verify_status_change() security definer;
-alter function public.notify_verify_status_change() set search_path to 'public', 'pg_temp';
+alter function public.notify_verify_status_change() set search_path to 'public', 'extensions', 'pg_temp';
 
 
 -- ── 2) RLS 를 우회하거나 죽은 권한 회수 ─────────────────────
