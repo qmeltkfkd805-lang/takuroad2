@@ -5,27 +5,7 @@
 
 ## 없음 ✅
 
-2026-09-02 기준으로 밀린 마이그레이션 없음.
-
----
-
-## ⚠️ 다음 보안 과제 — `shops` 쓰기 권한 (마이그레이션 미작성)
-
-`shops`는 `anon`·`authenticated` 모두 **테이블 단위** INSERT/UPDATE/DELETE 권한을 갖고 있고
-컬럼 제한이 없다. 여기에 `shops_update_tiered` 정책이
-`(is_claimed IS NOT TRUE) OR owner_id = auth.uid() OR admin` 이라,
-**로그인한 사용자가 `is_claimed`가 아닌 모든 샵을 수정할 수 있다.**
-
-브라우저에서 직접 `status='deleted'`(사이트에서 사라짐), `is_verified=true`(공식 샵 자칭),
-`owner_id` 변경(사장님 인증 우회), 평점·방문수 조작이 전부 된다.
-`/api/admin/shop-status`·`shop-field`의 admin 게이트가 PostgREST 직접 호출로 우회된다.
-(`anon`은 UPDATE 정책이 `{authenticated}` 전용이라 RLS가 막는다)
-
-`profiles`처럼 단순히 컬럼 권한으로 못 나눈다 — 관리자 작업 다수가 클라이언트에서
-`authenticated` 역할로 돌고(`approveShop`은 status+is_verified,
-`approveVerifyRequest`는 is_claimed+owner_id), 게다가 `publishShop`은 **일반 사용자**가
-`status`를 `active`로 바꾼다. 트리거 방식이 맞되 `status`는
-"본인이 만든 hidden → active"만 허용하는 조건부 로직이 필요하다.
+2026-09-03 기준으로 밀린 마이그레이션 없음.
 
 ---
 
@@ -72,6 +52,7 @@ psql "postgresql://postgres:<비밀번호>@db.<프로젝트ref>.supabase.co:5432
 
 | 날짜 | 파일 | 내용 |
 | --- | --- | --- |
+| 2026-09-03 | `shops_write_privileges.sql` | 🚨 보안 — `shops` 테이블 쓰기 권한을 걷고 안전한 컬럼만 재허용. `TRUNCATE`·`TRIGGER` 회수, `anon` 쓰기 전면 차단, INSERT 값 강제·`status` 전이·정보확인 시각 트리거 3개 |
 | 2026-09-02 | `shop_review.sql` | 신규 샵 검수 — `shops.review_status`/`reviewed_at`/`reviewed_by` + INSERT 기본값·UPDATE 차단 트리거. 기존 50건 NULL 유지 확인 |
 | 2026-09-02 | `profiles_column_privileges.sql` | 🚨 보안 — `admin_note`·`signup_*` 읽기 차단(anon 포함), 가입 INSERT로 `role='admin'` 심는 경로 차단. **테이블 권한을 걷고 컬럼만 재허용**하는 순서가 핵심 |
 | 2026-09-02 | `profiles_privilege_guard.sql` | 🚨 보안 — 회원이 스스로 `role='admin'`으로 바꿀 수 있던 구멍 차단. `is_admin()` + `profiles` UPDATE 트리거 |
