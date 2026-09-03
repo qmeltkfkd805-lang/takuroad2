@@ -3,11 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
-import {
-  getPendingShops, approveShop, rejectShop,
-  getPendingVerifyRequests, approveVerifyRequest, rejectVerifyRequest,
-  getEvidenceFileUrl,
-} from '@/services/shopService'
+import { getPendingShops, approveShop, rejectShop, getPendingVerifyRequests } from '@/services/shopService'
 import { Shop } from '@/types/shop'
 import Link from 'next/link'
 import { ROUTES } from '@/lib/constants/routes'
@@ -21,31 +17,13 @@ import HeroAdminTab from './HeroAdminTab'
 import MemberAdminTab from './MemberAdminTab'
 import ShopAdminTab from './ShopAdminTab'
 import ShopReviewTab from './ShopReviewTab'
+import VerifyReviewTab from './VerifyReviewTab'
 import PlaceAdminTab from './PlaceAdminTab'
 import ContactAdminTab from './ContactAdminTab'
 import SuggestionAdminTab from './SuggestionAdminTab'
 import AdminSidebar from './AdminSidebar'
 import { getAdminTodoSummary, getAdminBadgeCounts, AdminBadgeCounts, AdminTodoSummary } from '@/services/adminDashboardService'
 import styles from './admin.module.css'
-
-/* 인증 신청 한 건. getPendingVerifyRequests()의 select와 아래 JSX가 쓰는 필드만 적었다.
-   (Database 타입이 any라 서비스에서 형태가 안 잡힌다 — 화면에서 쓰는 만큼만 좁게 명시) */
-interface VerifyRequest {
-  id: string
-  shop_id: string
-  user_id: string
-  note: string | null
-  evidence_url: string | null
-  created_at: string
-  extra: {
-    transfer?: boolean
-    manager?: string; position?: string; phone?: string; email?: string
-    bizName?: string; bizNo?: string; owner?: string
-    features?: string[]
-  } | null
-  shops: { id: string; name: string; slug: string } | null
-  profiles: { id: string; nickname: string } | null
-}
 
 /* 탭 목록을 배열로 둔다 — 주소창의 ?tab= 값이 진짜 탭인지 런타임에 확인해야 해서.
    (타입만 있으면 검사할 수가 없다. 유니온 타입은 배열에서 뽑는다) */
@@ -81,7 +59,9 @@ export default function AdminPage() {
     router.replace(next === DEFAULT_TAB ? '/admin' : `/admin?tab=${next}`, { scroll: false })
   }
   const [pendingShops, setPendingShops] = useState<Shop[]>([])
-  const [verifyRequests, setVerifyRequests] = useState<VerifyRequest[]>([])
+  /* 사이드바 배지·대시보드에 쓸 대기 건수만 들고 있는다. 목록 자체는
+     VerifyReviewTab이 직접 조회한다. 처리하고 나면 그 컴포넌트가 새 개수를 올려준다. */
+  const [verifyPending, setVerifyPending] = useState(0)
   const [ready, setReady] = useState(false)
   // 사이드바 배지 + 대시보드가 함께 쓰는 미처리 건수. 한 번만 불러 내려준다
   const [todo, setTodo] = useState<AdminTodoSummary | null>(null)
@@ -105,9 +85,7 @@ export default function AdminPage() {
       .then(([shops, requests]) => {
         if (!alive) return
         setPendingShops(shops)
-        // supabase-js는 select 문자열만 보고 조인을 배열로 추론하지만, FK가 to-one이라
-        // 런타임에는 객체 하나가 온다. 기존 화면도 req.shops?.name 으로 쓰고 있다.
-        setVerifyRequests(requests as unknown as VerifyRequest[])
+        setVerifyPending(requests.length)
         setReady(true)
       })
       .catch(e => { if (alive) { console.error('[관리자] 목록 조회 실패:', e); setReady(true) } })
@@ -136,31 +114,6 @@ export default function AdminPage() {
     setPendingShops(prev => prev.filter(s => s.id !== shopId))
   }
 
-  /* 승인·거절은 서버가 요청 레코드를 보고 판단한다. 여기서는 요청 번호만 넘긴다.
-     실패하면 목록에서 지우지 않는다 — 예전에는 결과와 무관하게 지워서
-     실제로는 처리가 안 됐는데 처리된 것처럼 보였다. */
-  async function handleApproveVerify(req: VerifyRequest) {
-    const res = await approveVerifyRequest(req.id)
-    if (!res.ok) { alert(res.error ?? '승인에 실패했어요'); return }
-    setVerifyRequests(prev => prev.filter(r => r.id !== req.id))
-    refreshBadges()
-  }
-
-  async function handleRejectVerify(requestId: string) {
-    const reason = prompt('거절 사유를 입력하세요. (신청자에게 표시됩니다)')
-    if (reason === null) return   // 취소 — 아무것도 하지 않는다
-    const res = await rejectVerifyRequest(requestId, reason)
-    if (!res.ok) { alert(res.error ?? '거절에 실패했어요'); return }
-    setVerifyRequests(prev => prev.filter(r => r.id !== requestId))
-    refreshBadges()
-  }
-
-  async function handleViewEvidence(path: string | null) {
-    if (!path) return
-    const url = await getEvidenceFileUrl(path)
-    if (url) window.open(url, '_blank')
-  }
-
   if (!ready) {
     return (
       <div style={{ padding: '60px', textAlign: 'center', color: 'var(--muted)' }}>
@@ -180,7 +133,7 @@ export default function AdminPage() {
   const sidebarCounts = {
     shops: pendingShops.length,
     shopreview: badges?.shopReview ?? null,
-    verify: verifyRequests.length,
+    verify: verifyPending,
     reported: todo?.pendingSuggestions ?? null,     // shop_suggestions status='pending'
     postreports: badges?.hiddenPosts ?? null,
     contacts: badges?.openContacts ?? null,
@@ -201,7 +154,7 @@ export default function AdminPage() {
         <AdminDashboardPage
           onNavigate={(t) => goTab(toTab(t))}
           todo={todo}
-          pendingVerify={verifyRequests.length}
+          pendingVerify={verifyPending}
           badges={badges}
         />
       )}
@@ -253,98 +206,7 @@ export default function AdminPage() {
         </div>
       )}
 
-      {tab === 'verify' && (
-        <div>
-          {verifyRequests.length === 0 ? (
-            <EmptyState text="심사 대기 중인 인증 신청이 없어요" />
-          ) : (
-            verifyRequests.map(req => (
-              <div key={req.id} style={{ padding: '16px', borderBottom: '1px solid var(--border)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Link href={ROUTES.shop(req.shops?.slug ?? '')} target="_blank" style={{ fontWeight: 700, fontSize: '15px' }}>
-                      {req.shops?.name ?? '알 수 없음'}
-                    </Link>
-                    {req.extra?.transfer && <span style={{ fontSize: '11px', fontWeight: 800, color: '#b45309', background: '#fef3c7', padding: '2px 8px', borderRadius: '9999px' }}>인증 이전 요청</span>}
-                  </span>
-                  <span style={{ fontSize: '12px', color: 'var(--muted)' }}>
-                    {new Date(req.created_at).toLocaleDateString('ko-KR')}
-                  </span>
-                </div>
-                <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '8px' }}>
-                  신청자: {req.profiles?.nickname ?? '알 수 없음'}
-                </p>
-                {req.extra && (
-                  <div style={{ marginBottom: '10px' }}>
-                    <div style={{ fontSize: '12px', fontWeight: 800, color: 'var(--muted)', margin: '0 0 8px' }}>기본 정보</div>
-                    <div style={{ background: 'var(--surface2)', borderRadius: '10px', padding: '12px 14px', marginBottom: '12px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 16px', fontSize: '13px' }}>
-                      {req.extra.manager && <div><span style={{ color: 'var(--muted)', marginRight: 6 }}>담당자</span><b>{req.extra.manager}{req.extra.position ? ' (' + req.extra.position + ')' : ''}</b></div>}
-                      {req.extra.phone && <div><span style={{ color: 'var(--muted)', marginRight: 6 }}>연락처</span><b>{req.extra.phone}</b></div>}
-                      {req.extra.email && <div style={{ gridColumn: '1 / -1' }}><span style={{ color: 'var(--muted)', marginRight: 6 }}>이메일</span><b>{req.extra.email}</b></div>}
-                    </div>
-                    <div style={{ fontSize: '12px', fontWeight: 800, color: 'var(--muted)', margin: '0 0 8px' }}>사업자 정보</div>
-                    <div style={{ background: 'var(--surface2)', borderRadius: '10px', padding: '12px 14px', marginBottom: '12px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 16px', fontSize: '13px' }}>
-                      {req.extra.bizName && <div><span style={{ color: 'var(--muted)', marginRight: 6 }}>상호</span><b>{req.extra.bizName}</b></div>}
-                      {req.extra.bizNo && <div><span style={{ color: 'var(--muted)', marginRight: 6 }}>사업자번호</span><b>{req.extra.bizNo}</b></div>}
-                      {req.extra.owner && <div><span style={{ color: 'var(--muted)', marginRight: 6 }}>대표자</span><b>{req.extra.owner}</b></div>}
-                    </div>
-                    {Array.isArray(req.extra.features) && req.extra.features.length > 0 && (
-                      <div>
-                        <div style={{ fontSize: '12px', fontWeight: 800, color: 'var(--muted)', margin: '0 0 8px' }}>관리 희망 기능</div>
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                          {req.extra.features.map((f: string) => (
-                            <span key={f} style={{ fontSize: '12px', fontWeight: 600, padding: '4px 10px', borderRadius: '9999px', background: 'var(--accent-l)', color: 'var(--accent)' }}>{f}</span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-                {req.note && !req.extra && (
-                  <p style={{
-                    fontSize: '13px', lineHeight: 1.6, color: 'var(--text)',
-                    background: 'var(--surface2)', borderRadius: '8px',
-                    padding: '10px', marginBottom: '10px',
-                  }}>
-                    {req.note}
-                  </p>
-                )}
-                {req.evidence_url && (
-                  <button
-                    onClick={() => handleViewEvidence(req.evidence_url)}
-                    style={{
-                      fontSize: '12px', color: 'var(--cyan)', background: 'none',
-                      border: '1px solid var(--cyan)', borderRadius: '6px',
-                      padding: '4px 10px', cursor: 'pointer', marginBottom: '10px',
-                    }}
-                  >
-                    📎 첨부파일 보기
-                  </button>
-                )}
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <button
-                    onClick={() => handleApproveVerify(req)}
-                    style={{
-                      flex: 1, padding: '9px', borderRadius: '8px',
-                      background: 'var(--green)', color: '#fff', border: 'none',
-                      fontWeight: 700, fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
-                    }}
-                  >인증 승인</button>
-                  <button
-                    onClick={() => handleRejectVerify(req.id)}
-                    style={{
-                      flex: 1, padding: '9px', borderRadius: '8px',
-                      background: 'var(--surface2)', color: 'var(--red)',
-                      border: '1px solid var(--border)',
-                      fontWeight: 700, fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
-                    }}
-                  >거절</button>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      )}
+      {tab === 'verify' && <VerifyReviewTab onPendingCount={setVerifyPending} />}
 
       {tab === 'shopmanage' && <ShopAdminTab />}
       {tab === 'shopreview' && <ShopReviewTab onReviewed={refreshBadges} />}

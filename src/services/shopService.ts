@@ -689,22 +689,44 @@ export async function rejectShop(shopId: string): Promise<boolean> {
   return !error
 }
 
+/* 관리자 인증 심사 목록.
+
+   두 함수로 나눠 둔다 — 대기열과 처리 이력은 화면에서 쓰임새가 다르고,
+   처리 완료는 탭을 열 때만 부르기 때문이다(초기 로딩을 늘리지 않는다).
+   select 는 화면이 실제로 쓰는 컬럼만. profiles 는 nickname 만 가져온다. */
+const VERIFY_SELECT = `
+  id, shop_id, user_id, note, reject_reason, evidence_url, extra,
+  status, created_at, updated_at, reviewed_by,
+  shops ( id, name, slug ),
+  profiles!shop_verify_requests_user_id_fkey ( id, nickname ),
+  reviewer:profiles!shop_verify_requests_reviewed_by_fkey ( id, nickname )
+`
+
+/** 심사 대기 — 오래 기다린 순으로 본다(대기열이니 오래된 게 위). */
 export async function getPendingVerifyRequests() {
   const supabase = createClient()
   const { data, error } = await supabase
     .from('shop_verify_requests')
-    .select(`
-      id, shop_id, user_id, note, evidence_url, extra, status, created_at,
-      shops ( id, name, slug ),
-      profiles!shop_verify_requests_user_id_fkey ( id, nickname )
-    `)
+    .select(VERIFY_SELECT)
     .eq('status', 'pending')
     .order('created_at', { ascending: false })
 
-  if (error) {
-    console.error('getPendingVerifyRequests error:', JSON.stringify(error))
-    return []
-  }
+  if (error) throw error
+  return data ?? []
+}
+
+/** 처리 완료 — 승인·거절만. 최근 처리 순.
+ *  updated_at 은 pending 이 아닌 행에서는 심사 결정 시각과 같다(전용 컬럼이 없다). */
+export async function getCompletedVerifyRequests() {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('shop_verify_requests')
+    .select(VERIFY_SELECT)
+    .in('status', ['approved', 'rejected'])
+    .order('updated_at', { ascending: false })
+    .limit(200)
+
+  if (error) throw error
   return data ?? []
 }
 
@@ -742,11 +764,17 @@ export function rejectVerifyRequest(requestId: string, reason?: string) {
   return callVerifyApi(requestId, 'reject', reason)
 }
 
-export async function getEvidenceFileUrl(path: string): Promise<string | null> {
+/* 증빙 파일의 5분짜리 서명 URL.
+   download: true 면 Content-Disposition 이 attachment 로 붙어 브라우저가 내려받는다.
+   버킷은 비공개라 이 URL 없이는 접근할 수 없고, 경로 자체는 화면에 노출하지 않는다. */
+export async function getEvidenceFileUrl(
+  path: string,
+  opts: { download?: boolean } = {}
+): Promise<string | null> {
   const supabase = createClient()
   const { data, error } = await supabase.storage
     .from('verify-documents')
-    .createSignedUrl(path, 60 * 5)
+    .createSignedUrl(path, 60 * 5, opts.download ? { download: true } : undefined)
 
   if (error) return null
   return data.signedUrl

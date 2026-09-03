@@ -29,6 +29,8 @@ export type AdminIconName =
   | 'copy' | 'plus'
   // 장소 관리
   | 'image' | 'imageAlert'
+  // 인증 심사
+  | 'refresh' | 'clock'
 
 /** 24x24 뷰박스 기준 path 데이터. 전부 stroke, fill 없음 */
 const PATHS: Record<AdminIconName, string> = {
@@ -66,6 +68,8 @@ const PATHS: Record<AdminIconName, string> = {
   plus:      'M12 5.5v13 M5.5 12h13',
   image:     'M5.5 4.5h13A1.5 1.5 0 0 1 20 6v12a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18V6a1.5 1.5 0 0 1 1.5-1.5z M9.2 10.7a1.6 1.6 0 1 0 0-3.2 1.6 1.6 0 0 0 0 3.2z M4.2 16.4 8.8 12l3.4 3.3 2.9-2.4 4.7 4.2',
   imageAlert:'M20 11.5V6a1.5 1.5 0 0 0-1.5-1.5h-13A1.5 1.5 0 0 0 4 6v12a1.5 1.5 0 0 0 1.5 1.5h6.6 M9.2 10.7a1.6 1.6 0 1 0 0-3.2 1.6 1.6 0 0 0 0 3.2z M4.2 16.4 8.8 12l3 2.9 M18.5 14.5v3 M18.5 20.2h.01',
+  refresh:   'M20 12a8 8 0 1 1-2.4-5.7 M20 4v4.5h-4.5',
+  clock:     'M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17z M12 7.2V12l3.3 2',
 }
 
 interface Props {
