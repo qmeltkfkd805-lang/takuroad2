@@ -3,11 +3,10 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { CATEGORIES, WEEKDAYS, WEEKDAY_LABEL } from '@/lib/constants/categories'
+import { CATEGORIES } from '@/lib/constants/categories'
 import { ROUTES } from '@/lib/constants/routes'
 import { createShop, updateShop, publishShop } from '@/services/shopService'
 import { Shop, ShopFormData } from '@/types/shop'
-import { BusinessHours } from '@/types/database'
 import { generateSlug } from '@/lib/utils/shop'
 import { geocodeAddress, searchPlace, PlaceSearchResult } from '@/lib/utils/geocode'
 import { findPlaceByAddr, findPlaceBySameAddr } from '@/services/placeService'
@@ -19,6 +18,7 @@ import ShopEventLinkPanel from './ShopEventLinkPanel'
 import ShopHighlightManager from './ShopHighlightManager'
 import PhotosManage from './PhotosManage'
 import CompletenessIndicator from './CompletenessIndicator'
+import ShopHoursEditor, { HOURS_HINT } from './ShopHoursEditor'
 
 interface Props {
   mode: 'create' | 'edit'
@@ -72,12 +72,6 @@ export default function ShopFormWizard({ mode, shop }: Props) {
   const [createdShopId, setCreatedShopId] = useState<string | null>(null)
   const [createdShopSlug, setCreatedShopSlug] = useState<string | null>(null)
   const [links, setLinks] = useState<string[]>([''])
-  const [bulkOpen, setBulkOpen] = useState('10:00')
-  const [bulkClose, setBulkClose] = useState('20:00')
-  const [pickDays, setPickDays] = useState<string[]>([])
-  const [breakOn, setBreakOn] = useState(false)
-  const [bulkBreakStart, setBulkBreakStart] = useState('15:00')
-  const [bulkBreakEnd, setBulkBreakEnd] = useState('16:00')
 
   useEffect(() => { if (!user) router.push(ROUTES.login) }, [user, router])
 
@@ -140,50 +134,6 @@ export default function ShopFormWizard({ mode, shop }: Props) {
     const clean = next.map(l => l.trim()).filter(Boolean)
     set('sns_links', clean)
     set('shop_link', clean[0] ?? '')
-  }
-  function toggleAllDays() {
-    const applied = WEEKDAYS.every(d => { const dh: any = (form.hours as any)?.[d]; return dh && dh.open === bulkOpen && dh.close === bulkClose })
-    const h: any = { ...(form.hours ?? {}) }
-    WEEKDAYS.forEach(d => { h[d] = applied ? null : { open: bulkOpen, close: bulkClose } })
-    set('hours', h)
-  }
-  function toggleHoliday() {
-    const h: any = { ...(form.hours ?? {}) }
-    if (h.holiday === 'closed') delete h.holiday; else { h.holiday = 'closed'; delete h.yearRound }
-    set('hours', h)
-  }
-  function toggleYearRound() {
-    const h: any = { ...(form.hours ?? {}) }
-    if (h.yearRound) delete h.yearRound; else { h.yearRound = true; delete h.holiday }
-    set('hours', h)
-  }
-  // 선택한 요일에만 일괄 시간 적용
-  function applyBulkToDays(days: string[]) {
-    const h: any = { ...(form.hours ?? {}) }
-    days.forEach(d => { h[d] = { ...(h[d] || {}), open: bulkOpen, close: bulkClose } })
-    set('hours', h)
-  }
-  function applySelectedDays() { if (pickDays.length > 0) { applyBulkToDays(pickDays); setPickDays([]) } }
-  function togglePickDay(day: string) {
-    setPickDays(p => p.includes(day) ? p.filter(x => x !== day) : [...p, day])
-  }
-  // 휴게시간 켜기/끄기 (끄면 모든 요일 휴게 제거)
-  function toggleBreak() {
-    const anyBreak = WEEKDAYS.some(d => !!(form.hours as any)?.[d]?.breakStart)
-    if (breakOn || anyBreak) {
-      const h: any = { ...(form.hours ?? {}) }
-      WEEKDAYS.forEach(d => { if (h[d]) h[d] = { open: h[d].open, close: h[d].close } })
-      set('hours', h)
-      setBreakOn(false)
-    } else {
-      setBreakOn(true)
-    }
-  }
-  // 영업 중인 요일에 휴게시간 일괄 적용
-  function applyBreakToOpenDays() {
-    const h: any = { ...(form.hours ?? {}) }
-    WEEKDAYS.forEach(d => { if (h[d]) h[d] = { ...h[d], breakStart: bulkBreakStart, breakEnd: bulkBreakEnd } })
-    set('hours', h)
   }
 
   async function saveCore(): Promise<boolean> {
@@ -253,8 +203,6 @@ export default function ShopFormWizard({ mode, shop }: Props) {
     { label: '저장', ok: canEnrich },
   ]
 
-  const allDaysApplied = WEEKDAYS.every(d => { const dh: any = (form.hours as any)?.[d]; return dh && dh.open === bulkOpen && dh.close === bulkClose })
-  const showBreak = breakOn || WEEKDAYS.some(d => !!(form.hours as any)?.[d]?.breakStart)
   const previewCat = CATEGORIES.find(c => form.cats.includes(c.name))
   const previewStatus = getTodayStatus(form.hours)
   // 대표 사진 — 사진 단계에서 바꾸면 PhotosManage가 알려줘 미리보기에 바로 반영된다
@@ -451,83 +399,10 @@ export default function ShopFormWizard({ mode, shop }: Props) {
               </div>
             </Field>
 
-            <Field label="영업시간" hint={<>24시 표기로 입력해 주세요. (예: 오후 6시 → 18, 자정 마감 → 24)<br />종료가 시작보다 빠르면 다음날로 계산돼요.<br />비우면 휴무로 표시돼요.</>}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 12, padding: 12, background: 'var(--surface2)', borderRadius: 10 }}>
-                {/* 시간 + 적용 */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
-                  <span style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--muted)' }}>같은 시간</span>
-                  <TimeField value={bulkOpen} onChange={setBulkOpen} />
-                  <span style={{ color: 'var(--muted)' }}>~</span>
-                  <TimeField value={bulkClose} onChange={setBulkClose} />
-                  <button onClick={toggleAllDays} style={{ padding: '7px 13px', borderRadius: 8, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 800, fontSize: 12.5, border: `1.5px solid ${allDaysApplied ? 'var(--accent)' : 'var(--border)'}`, background: allDaysApplied ? 'var(--accent-l, rgba(232,0,111,.08))' : 'var(--surface)', color: allDaysApplied ? 'var(--accent)' : 'var(--text)' }}>{allDaysApplied ? <><Svg size={12}><path d="m5 12 5 5L20 6" /></Svg> 모든 요일 적용</> : '모든 요일 적용'}</button>
-                </div>
-                {/* 요일 선택 칩 (선택 요일 적용용) */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6 }}>
-                  <button onClick={() => setPickDays(['mon', 'tue', 'wed', 'thu', 'fri'])} style={{ padding: '5px 10px', borderRadius: 6, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 700, fontSize: 12, border: '1.5px solid var(--border)', background: 'var(--surface)', color: 'var(--muted)' }}>평일</button>
-                  <button onClick={() => setPickDays(['sat', 'sun'])} style={{ padding: '5px 10px', borderRadius: 6, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 700, fontSize: 12, border: '1.5px solid var(--border)', background: 'var(--surface)', color: 'var(--muted)' }}>주말</button>
-                  <span style={{ width: 1, height: 16, background: 'var(--border)', margin: '0 2px' }} />
-                  {WEEKDAYS.map(day => {
-                    const on = pickDays.includes(day)
-                    return (
-                      <button key={day} onClick={() => togglePickDay(day)} style={{ width: 30, padding: '5px 0', borderRadius: 6, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 700, fontSize: 12, border: `1.5px solid ${on ? 'var(--accent)' : 'var(--border)'}`, background: on ? 'var(--accent-l, rgba(232,0,111,.08))' : 'var(--surface)', color: on ? 'var(--accent)' : 'var(--muted)' }}>{WEEKDAY_LABEL[day]}</button>
-                    )
-                  })}
-                  {/* 요일 칩 바로 옆에 적용 버튼 — 고르면 핑크 채움으로 바뀐다 */}
-                  <button onClick={applySelectedDays} disabled={pickDays.length === 0} style={{ marginLeft: 4, padding: '6px 13px', borderRadius: 8, cursor: pickDays.length ? 'pointer' : 'default', fontFamily: 'inherit', fontWeight: 800, fontSize: 12.5, border: `1.5px solid ${pickDays.length ? 'var(--accent)' : 'var(--border)'}`, background: pickDays.length ? 'var(--accent)' : 'var(--surface)', color: pickDays.length ? '#fff' : 'var(--muted)', opacity: pickDays.length ? 1 : .55 }}>선택 요일 적용{pickDays.length ? ` (${pickDays.length})` : ''}</button>
-                </div>
-                <div style={{ fontSize: 11.5, color: pickDays.length ? 'var(--accent)' : 'var(--muted)', fontWeight: pickDays.length ? 700 : 400, marginTop: -4 }}>
-                  {pickDays.length ? `${pickDays.length}개 요일 선택됨 — “선택 요일 적용”을 누르세요` : '요일을 고른 뒤 “선택 요일 적용”을 누르면 그 요일에만 위 시간이 들어가요.'}
-                </div>
-                {/* 플래그 + 휴게 토글 */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
-                  <button onClick={toggleHoliday} style={{ padding: '7px 13px', borderRadius: 8, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 800, fontSize: 12.5, border: `1.5px solid ${(form.hours as any)?.holiday === 'closed' ? 'var(--accent)' : 'var(--border)'}`, background: (form.hours as any)?.holiday === 'closed' ? 'var(--accent-l, rgba(232,0,111,.08))' : 'var(--surface)', color: (form.hours as any)?.holiday === 'closed' ? 'var(--accent)' : 'var(--text)' }}>{(form.hours as any)?.holiday === 'closed' ? <><Svg size={12}><path d="m5 12 5 5L20 6" /></Svg> 공휴일 휴무</> : '공휴일 휴무'}</button>
-                  <button onClick={toggleYearRound} style={{ padding: '7px 13px', borderRadius: 8, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 800, fontSize: 12.5, border: `1.5px solid ${(form.hours as any)?.yearRound ? 'var(--accent)' : 'var(--border)'}`, background: (form.hours as any)?.yearRound ? 'var(--accent-l, rgba(232,0,111,.08))' : 'var(--surface)', color: (form.hours as any)?.yearRound ? 'var(--accent)' : 'var(--text)' }}>{(form.hours as any)?.yearRound ? <><Svg size={12}><path d="m5 12 5 5L20 6" /></Svg> 연중무휴</> : '연중무휴'}</button>
-                  <button onClick={toggleBreak} style={{ padding: '7px 13px', borderRadius: 8, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 800, fontSize: 12.5, border: `1.5px solid ${showBreak ? 'var(--accent)' : 'var(--border)'}`, background: showBreak ? 'var(--accent-l, rgba(232,0,111,.08))' : 'var(--surface)', color: showBreak ? 'var(--accent)' : 'var(--text)' }}>{showBreak ? <><Svg size={12}><path d="m5 12 5 5L20 6" /></Svg> 휴게시간</> : '휴게시간'}</button>
-                </div>
-                {/* 휴게시간 일괄 (휴게 켰을 때만) */}
-                {showBreak && (
-                  <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
-                    <span style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--muted)' }}>휴게시간</span>
-                    <TimeField value={bulkBreakStart} onChange={setBulkBreakStart} />
-                    <span style={{ color: 'var(--muted)' }}>~</span>
-                    <TimeField value={bulkBreakEnd} onChange={setBulkBreakEnd} />
-                    <button onClick={applyBreakToOpenDays} style={{ padding: '7px 13px', borderRadius: 8, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 800, fontSize: 12.5, border: '1.5px solid var(--border)', background: 'var(--surface)', color: 'var(--text)' }}>휴게시간 모든 요일 적용</button>
-                  </div>
-                )}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                {WEEKDAYS.map(day => {
-                  const dayHours = form.hours?.[day]
-                  const isOpen = !!dayHours
-                  const hasBreak = !!(dayHours && (dayHours.breakStart || dayHours.breakEnd))
-                  return (
-                    <div key={day} style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                      <button onClick={() => { const h: BusinessHours = { ...(form.hours ?? {}) }; h[day] = isOpen ? null : { open: '10:00', close: '20:00' }; set('hours', h) }}
-                        style={{ width: 34, flexShrink: 0, padding: '6px 0', borderRadius: 6, border: `1.5px solid ${isOpen ? 'var(--accent)' : 'var(--border)'}`, background: isOpen ? 'var(--accent-l, rgba(232,0,111,.08))' : 'var(--surface)', color: isOpen ? 'var(--accent)' : 'var(--muted)', fontWeight: 700, fontSize: 12, cursor: 'pointer', fontFamily: 'inherit' }}>
-                        {WEEKDAY_LABEL[day]}
-                      </button>
-                      {isOpen && dayHours ? (
-                        <>
-                          <TimeField value={dayHours.open} onChange={v => { const h: BusinessHours = { ...(form.hours ?? {}) }; h[day] = { ...dayHours, open: v }; set('hours', h) }} />
-                          <span style={{ color: 'var(--muted)' }}>~</span>
-                          <TimeField value={dayHours.close} onChange={v => { const h: BusinessHours = { ...(form.hours ?? {}) }; h[day] = { ...dayHours, close: v }; set('hours', h) }} />
-                          {showBreak && (hasBreak ? (
-                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginLeft: 2 }}>
-                              <span style={{ fontSize: 11.5, fontWeight: 700, color: 'var(--muted)' }}>휴게</span>
-                              <TimeField value={dayHours.breakStart ?? ''} onChange={v => { const h: BusinessHours = { ...(form.hours ?? {}) }; h[day] = { ...dayHours, breakStart: v }; set('hours', h) }} />
-                              <span style={{ color: 'var(--muted)' }}>~</span>
-                              <TimeField value={dayHours.breakEnd ?? ''} onChange={v => { const h: BusinessHours = { ...(form.hours ?? {}) }; h[day] = { ...dayHours, breakEnd: v }; set('hours', h) }} />
-                              <button onClick={() => { const h: BusinessHours = { ...(form.hours ?? {}) }; h[day] = { open: dayHours.open, close: dayHours.close }; set('hours', h) }} title="휴게 삭제" style={{ width: 24, height: 24, borderRadius: 6, border: '1.5px solid var(--border)', background: 'var(--surface)', color: 'var(--muted)', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, lineHeight: 1 }}>×</button>
-                            </span>
-                          ) : (
-                            <button onClick={() => { const h: BusinessHours = { ...(form.hours ?? {}) }; h[day] = { ...dayHours, breakStart: bulkBreakStart, breakEnd: bulkBreakEnd }; set('hours', h) }} style={{ padding: '5px 10px', borderRadius: 6, border: '1.5px dashed var(--border)', background: 'var(--surface)', color: 'var(--muted)', cursor: 'pointer', fontFamily: 'inherit', fontWeight: 700, fontSize: 12 }}>+ 휴게</button>
-                          ))}
-                        </>
-                      ) : <span style={{ fontSize: 13, color: 'var(--muted)' }}>휴무</span>}
-                    </div>
-                  )
-                })}
-              </div>
+            {/* 영업시간 편집기는 ShopHoursEditor로 분리했다 —
+                사장님 매장 관리(HoursManage)와 같은 걸 쓴다. 표시·동작은 그대로다. */}
+            <Field label="영업시간" hint={HOURS_HINT}>
+              <ShopHoursEditor value={form.hours} onChange={h => set('hours', h)} />
             </Field>
 
             <Field label="주차">
@@ -750,45 +625,6 @@ const iconBtn: React.CSSProperties = {
   color: 'var(--text)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
 }
 
-/* 24시간제 시간 입력 (0~24시). 오전/오후 없이 숫자로 직접 입력.
-   종료가 시작보다 이르면(예: 09:00~01:00) 자동으로 다음날로 계산된다(date.ts). */
-function TimeField({ value, onChange }: { value: string; onChange: (v: string) => void }) {
-  const [hhStr, mmStr] = (value || '00:00').split(':')
-  const hh = Number(hhStr) || 0
-  const mm = Number(mmStr) || 0
-
-  // 타이핑 중 표시용 로컬 상태. 밖에서 값이 바뀌면(일괄적용 등) 동기화하되,
-  // 입력 중(focused)엔 건드리지 않아 커서/자릿수가 튀지 않게 한다.
-  const [focused, setFocused] = useState(false)
-  const [hText, setHText] = useState(String(hh).padStart(2, '0'))
-  const [mText, setMText] = useState(String(mm).padStart(2, '0'))
-  useEffect(() => {
-    if (!focused) { setHText(String(hh).padStart(2, '0')); setMText(String(mm).padStart(2, '0')) }
-  }, [value, focused])   // eslint-disable-line react-hooks/exhaustive-deps
-
-  const commit = (hv: number, mv: number) => {
-    const ch = Math.min(24, Math.max(0, hv || 0))
-    const cm = ch === 24 ? 0 : Math.min(59, Math.max(0, mv || 0))   // 24시는 분 0 고정
-    onChange(`${String(ch).padStart(2, '0')}:${String(cm).padStart(2, '0')}`)
-  }
-  const onHour = (raw: string) => { const d = raw.replace(/\D/g, '').slice(0, 2); setHText(d); if (d !== '') commit(Number(d), mm) }
-  const onMin = (raw: string) => { const d = raw.replace(/\D/g, '').slice(0, 2); setMText(d); if (d !== '') commit(hh, Number(d)) }
-
-  const numInp: React.CSSProperties = { ...inp, width: 44, padding: '6px 4px', fontSize: 13, textAlign: 'center', background: 'var(--surface)' }
-  return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-      <input inputMode="numeric" value={hText} aria-label="시" maxLength={2}
-        onFocus={e => { setFocused(true); e.target.select() }}
-        onBlur={() => { setFocused(false); setHText(String(hh).padStart(2, '0')) }}
-        onChange={e => onHour(e.target.value)} style={numInp} />
-      <span style={{ color: 'var(--muted)' }}>:</span>
-      <input inputMode="numeric" value={mText} aria-label="분" maxLength={2}
-        onFocus={e => { setFocused(true); e.target.select() }}
-        onBlur={() => { setFocused(false); setMText(String(mm).padStart(2, '0')) }}
-        onChange={e => onMin(e.target.value)} style={numInp} />
-    </span>
-  )
-}
 const nextBtn: React.CSSProperties = {
   padding: '13px 26px', borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff',
   fontWeight: 800, fontSize: 15, cursor: 'pointer', fontFamily: 'inherit', display: 'inline-flex', alignItems: 'center', gap: 5,

@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Shop } from '@/types/shop'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
-import { getTodayStatus, getPopupStatus } from '@/lib/utils/date'
+import { getTodayStatus, getPopupStatus, formatBusinessHours } from '@/lib/utils/date'
 import { parseParkingRows } from '@/lib/utils/parkingNote'
 import { ROUTES } from '@/lib/constants/routes'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -84,6 +84,11 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
   const homepage = snsAll.find(x => x.name === 'globe') ?? null
   const holidayClosed = (shop.hours as any)?.holiday === 'closed'
   const yearRound = (shop.hours as any)?.yearRound === true
+
+  // 기본 정보의 '영업 상태'를 펼치면 요일별 시간표가 나온다 (모바일 ShopHeader와 같은 방식)
+  const hoursFormatted = formatBusinessHours(shop.hours)
+  const hasHours = hoursFormatted.length > 0
+  const [hoursOpen, setHoursOpen] = useState(false)
 
   const [idx, setIdx] = useState(0)
   const images = shop.images ?? []
@@ -409,12 +414,49 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                         ? <span style={{ color: '#ef5a5a', fontWeight: 800 }}>폐점</span>
                         : shop.status === 'temporary_closed'
                           ? <span style={{ color: '#3e8fc9', fontWeight: 800 }}>임시 휴업</span>
-                          : <span>
-                              <span style={{ color: todayStatus.isOpen ? '#14b8a0' : '#ef5a5a', fontWeight: 800 }}>{todayStatus.label}</span>
-                              {todayStatus.todayHours && <span style={{ color: 'var(--muted)' }}> · {todayStatus.todayHours}</span>}
-                              {holidayClosed && <span style={{ color: '#c0392b', fontWeight: 800 }}> · 공휴일 휴무</span>}
-                              {yearRound && <span style={{ color: 'var(--muted)', fontWeight: 700 }}> · 연중무휴</span>}
-                            </span>
+                          : <>
+                              {/* 오늘 상태 줄. 요일별 시간표가 있으면 눌러서 펼친다 */}
+                              <button
+                                type="button"
+                                onClick={() => hasHours && setHoursOpen(o => !o)}
+                                aria-expanded={hasHours ? hoursOpen : undefined}
+                                aria-label={hasHours ? (hoursOpen ? '요일별 영업시간 접기' : '요일별 영업시간 펼치기') : undefined}
+                                disabled={!hasHours}
+                                style={{
+                                  display: 'inline-flex', alignItems: 'center', gap: 4, flexWrap: 'wrap',
+                                  border: 'none', background: 'none', padding: 0, margin: 0,
+                                  font: 'inherit', fontSize: 14, lineHeight: 1.6, color: 'var(--text)',
+                                  textAlign: 'left', cursor: hasHours ? 'pointer' : 'default',
+                                }}
+                              >
+                                <span style={{ color: todayStatus.isOpen ? '#14b8a0' : '#ef5a5a', fontWeight: 800 }}>{todayStatus.label}</span>
+                                {todayStatus.todayHours && <span style={{ color: 'var(--muted)' }}>· {todayStatus.todayHours}</span>}
+                                {holidayClosed && <span style={{ color: '#c0392b', fontWeight: 800 }}>· 공휴일 휴무</span>}
+                                {yearRound && <span style={{ color: 'var(--muted)', fontWeight: 700 }}>· 연중무휴</span>}
+                                {hasHours && (
+                                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2.4"
+                                    strokeLinecap="round" strokeLinejoin="round" aria-hidden
+                                    style={{ flexShrink: 0, transform: hoursOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform .2s' }}>
+                                    <path d="M6 9l6 6 6-6" />
+                                  </svg>
+                                )}
+                              </button>
+
+                              {/* 요일별 시간표 (펼침) */}
+                              {hoursOpen && hasHours && (
+                                <div style={{
+                                  marginTop: 8, padding: '10px 12px', borderRadius: 10,
+                                  background: 'var(--surface2)', display: 'flex', flexDirection: 'column', gap: 5,
+                                }}>
+                                  {hoursFormatted.map(h => (
+                                    <div key={h.day} style={{ display: 'flex', gap: 14, fontSize: 13 }}>
+                                      <span style={{ width: 22, flexShrink: 0, color: 'var(--muted)', fontWeight: 700 }}>{h.label}</span>
+                                      <span style={{ color: h.isOpen ? 'var(--text)' : 'var(--muted)', fontWeight: h.isOpen ? 600 : 400 }}>{h.hours}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </>
                     } />
                     <InfoItem label="공식 홈페이지" value={homepage
                       ? <a href={homepage.url} target="_blank" rel="noopener noreferrer" style={{ color }}>{homepage.url.replace(/^https?:\/\//, '')}</a>

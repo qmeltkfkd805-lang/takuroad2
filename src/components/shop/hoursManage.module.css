@@ -2,15 +2,7 @@
 .back { font-size: 13px; font-weight: 700; color: var(--accent); text-decoration: none; }
 .title { font-size: 26px; font-weight: 900; color: var(--text); margin: 16px 0 8px; }
 .desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0 0 28px; }
-.days { display: flex; flex-direction: column; gap: 10px; }
-.dayRow { display: flex; align-items: center; gap: 14px; }
-.dayOn, .dayOff { width: 48px; flex-shrink: 0; padding: 10px 0; border-radius: 10px; font-weight: 800; font-size: 14px; cursor: pointer; font-family: inherit; }
-.dayOn { border: 1.5px solid var(--accent); background: var(--accent-l); color: var(--accent); }
-.dayOff { border: 1.5px solid var(--border); background: var(--surface); color: var(--muted); }
-.times { display: flex; align-items: center; gap: 10px; }
-.time { border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; font-size: 14px; font-family: inherit; background: var(--surface); color: var(--text); }
-.time:focus { outline: none; border-color: var(--accent); }
-.tilde { color: var(--muted); }
-.closed { font-size: 14px; color: var(--muted); }
+/* 요일·시간 입력 스타일은 ShopHoursEditor가 직접 들고 있다 (위저드와 같은 모양).
+   여기 있던 .days/.dayRow/.dayOn/.dayOff/.times/.time/.tilde/.closed 는 그래서 지웠다. */
 .saveBtn { margin-top: 32px; width: 100%; padding: 15px; border: none; border-radius: 12px; background: var(--accent); color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; font-family: inherit; }
 .saveBtn:disabled { opacity: .6; }
