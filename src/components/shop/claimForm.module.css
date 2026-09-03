@@ -41,6 +41,12 @@
 .doneDesc { font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0 0 24px; }
 .doneBtn { display: inline-block; padding: 13px 32px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 800; border-radius: 9999px; text-decoration: none; }
 
+/* 거절된 신청을 보완해서 다시 넣을 때 폼 위에 뜨는 안내 */
+.rejectBox { padding: 16px 18px; border: 1px solid var(--red); border-radius: 12px; background: var(--red-l, #fef2f2); margin-bottom: 24px; }
+.rejectTitle { font-size: 14px; font-weight: 800; color: var(--red); margin: 0 0 8px; }
+.rejectNote { font-size: 13px; color: var(--text); line-height: 1.6; margin: 0 0 8px; white-space: pre-wrap; }
+.rejectHint { font-size: 12.5px; color: var(--muted); line-height: 1.6; margin: 0; }
+
 @media (hover: none) and (pointer: coarse) and (max-width: 768px) {
   .row2 { grid-template-columns: 1fr; }
 }

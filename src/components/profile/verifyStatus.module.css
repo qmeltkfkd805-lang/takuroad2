@@ -1,0 +1,138 @@
+/* 마이페이지 > 인증 현황 전용 스타일.
+   틀(subHead 뒤로가기·제목, subBody max-width 1000px)은 ProfileDesktop 것을 그대로 쓰고,
+   여기에는 이 화면에서만 쓰는 것만 둔다. 색·radius·그림자는 globals.css 토큰만 사용.
+   다크모드는 이 앱에 정의가 없어 추가하지 않는다. */
+
+.wrap { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+
+/* ── 머리말 ── */
+.intro { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.introText { min-width: 0; }
+.title { font-size: 22px; font-weight: 900; color: var(--text); margin-bottom: 4px; }
+.lead { font-size: 14px; color: var(--muted); line-height: 1.5; }
+
+/* ── 상태 요약 ── */
+.summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.sumCard {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--r-sm);
+}
+.sumIcon {
+  width: 38px; height: 38px; flex-shrink: 0; border-radius: var(--r-xs);
+  display: flex; align-items: center; justify-content: center;
+}
+.sumBody { min-width: 0; }
+.sumLabel { font-size: 12.5px; color: var(--muted); font-weight: 600; }
+.sumValue { font-size: 20px; font-weight: 900; color: var(--text); line-height: 1.2; }
+
+/* ── 필터 ── */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  min-height: 44px; padding: 0 18px; border-radius: var(--r-full);
+  border: 1px solid var(--border); background: var(--surface);
+  font-family: inherit; font-size: 14px; font-weight: 700; color: var(--muted);
+  cursor: pointer;
+}
+.chip:hover { color: var(--text); }
+.chipOn { border-color: var(--accent); background: var(--accent-l); color: var(--accent); }
+
+/* ── 신청 카드 ── */
+.list { display: flex; flex-direction: column; gap: 14px; }
+.card {
+  padding: 18px 20px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--r);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.cardHead { display: flex; align-items: flex-start; gap: 12px; }
+.shopIcon {
+  width: 46px; height: 46px; flex-shrink: 0; border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+}
+.headText { flex: 1; min-width: 0; }
+.shopName {
+  font-size: 16px; font-weight: 800; color: var(--text);
+  text-decoration: none; display: inline-block; max-width: 100%;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom;
+}
+a.shopName:hover { color: var(--accent); }
+.dates { margin-top: 4px; font-size: 12.5px; color: var(--muted); }
+.dateSep { margin: 0 6px; opacity: .6; }
+
+/* 상태 배지 — 색만으로 구분하지 않고 아이콘 + 글자를 함께 쓴다 */
+.badge {
+  flex-shrink: 0; display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 12px; border-radius: var(--r-full);
+  font-size: 12.5px; font-weight: 800; white-space: nowrap;
+}
+.badgePending { background: rgba(245,177,0,.14); color: #A87A00; }
+.badgeApproved { background: var(--green-l); color: #0E8C7C; }
+.badgeRejected { background: var(--red-l); color: #D64545; }
+.badgeUnknown { background: var(--surface2); color: var(--muted); }
+
+/* ── 안내 박스 ── */
+.note { padding: 14px 16px; border-radius: var(--r-sm); }
+.notePending { background: var(--surface2); }
+.noteApproved { background: var(--green-l); }
+.noteRejected { background: var(--red-l); }
+.noteHead { display: flex; align-items: center; gap: 7px; font-size: 13.5px; font-weight: 800; margin-bottom: 5px; }
+.noteHeadPending { color: var(--text); }
+.noteHeadApproved { color: #0E8C7C; }
+.noteHeadRejected { color: #D64545; }
+.noteBody { font-size: 13px; color: var(--text); line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+.noteHint { margin-top: 8px; font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+
+/* ── 진행 단계 (접수 → 심사 완료 두 개뿐) ── */
+.foot { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+.steps { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.step { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.stepDot {
+  width: 22px; height: 22px; flex-shrink: 0; border-radius: var(--r-full);
+  display: flex; align-items: center; justify-content: center;
+}
+.stepDone { background: var(--green-l); color: #0E8C7C; }
+.stepFail { background: var(--red-l); color: #D64545; }
+.stepWait { background: var(--surface2); color: var(--muted); }
+.stepText { min-width: 0; }
+.stepLabel { font-size: 12.5px; font-weight: 700; color: var(--text); }
+.stepSub { font-size: 11.5px; color: var(--muted); }
+.stepLine { width: 34px; height: 1px; background: var(--border); flex-shrink: 0; }
+
+/* ── 행동 버튼 ── */
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 0 20px; border-radius: var(--r-full);
+  font-family: inherit; font-size: 14px; font-weight: 700;
+  text-decoration: none; cursor: pointer; border: 1px solid transparent;
+}
+.btnPrimary { background: var(--accent); color: #fff; }
+.btnPrimary:hover { filter: brightness(.96); }
+.btnGhost { background: var(--surface); border-color: var(--border); color: var(--text); }
+.btnGhost:hover { border-color: var(--accent); color: var(--accent); }
+
+/* 키보드 포커스는 지우지 않고 또렷하게 */
+.chip:focus-visible, .btn:focus-visible, .shopName:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+
+/* ── 로딩·빈 상태·오류 ── */
+.state { padding: 56px 24px; text-align: center; }
+.stateIcon { margin: 0 auto 14px; display: block; }
+.stateTitle { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.stateDesc { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin-bottom: 18px; }
+
+/* ── 모바일: 한 열 ── */
+@media (max-width: 640px) {
+  .wrap { padding: 16px 12px 40px; gap: 16px; }
+  .title { font-size: 19px; }
+  .summary { grid-template-columns: 1fr; gap: 8px; }
+  .sumCard { padding: 12px 14px; }
+  .sumValue { font-size: 18px; }
+  .chip { flex: 1 1 auto; padding: 0 12px; }
+  .card { padding: 16px; }
+  .foot { align-items: stretch; }
+  .actions { margin-left: 0; width: 100%; }
+  .btn { width: 100%; }
+  .stepLine { width: 20px; }
+}

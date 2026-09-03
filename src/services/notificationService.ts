@@ -53,9 +53,14 @@ export async function markAllAsRead(userId: string): Promise<void> {
     .eq('is_read', false)
 }
 
-// 알림이 가리키는 곳으로 이동할 링크 만들기
+/* 알림이 가리키는 곳으로 이동할 링크 만들기.
+
+   인증 심사 알림은 결과에 따라 갈 곳이 다르다.
+     승인 → 인증된 그 샵 (트리거가 notifications.link 에 /shop/{slug} 를 넣어준다)
+     거절 → 마이페이지 인증 현황 (거절 사유는 VerifyStatusTab 에만 표시된다)
+   예전에는 둘 다 인증 현황으로 보내면서 link 를 통째로 버렸다. */
 export function getNotificationLink(noti: Notification, shopSlug?: string): string {
-  if (noti.type === 'verify_approved' || noti.type === 'verify_rejected') return '/profile?tab=verify'
+  if (noti.type === 'verify_rejected') return '/profile?tab=verify'
   if (noti.link) return noti.link
   if (shopSlug) return `/shop/${shopSlug}`
   return '/'

@@ -12,12 +12,27 @@ const MANAGE_FEATURES = [
   '영업시간 수정', '휴무 공지', '이벤트 등록', '매장 사진 관리', '굿즈 입고 소식', '댓글 답변',
 ]
 
+/* 신청할 때 shop_verify_requests.extra 에 넣어둔 폼 내용.
+   거절 후 재신청 때 그대로 되살린다(submit 에서 만드는 객체와 짝을 이룬다).
+   전부 optional 이다 — 옛 신청 건에는 없는 키가 있을 수 있다. */
+type ClaimExtra = {
+  manager?: string; position?: string; email?: string; phone?: string
+  bizName?: string; bizNo?: string; owner?: string; features?: string[]
+}
+
+interface MyRequest {
+  status: string
+  note?: string | null
+  extra?: ClaimExtra | null
+  created_at?: string
+}
+
 export default function ClaimFormPage({ slug }: { slug: string }) {
   const { user } = useAuth()
   const router = useRouter()
   const [shop, setShop] = useState<Shop | null>(null)
   const [loading, setLoading] = useState(true)
-  const [already, setAlready] = useState<{ status: string } | null>(null)
+  const [already, setAlready] = useState<MyRequest | null>(null)
   const [transferMode, setTransferMode] = useState(false)
 
   const [manager, setManager] = useState('')
@@ -40,10 +55,45 @@ export default function ClaimFormPage({ slug }: { slug: string }) {
     getShopBySlug(slug).then(s => { setShop(s); setLoading(false) })
   }, [slug])
 
+  /* 지난 신청을 불러온다.
+     거절된 건이면 폼이 다시 열리므로(아래 분기), 그때 지난번에 적은 내용을 되살려
+     처음부터 다시 입력하지 않게 한다. 증빙 파일만은 되살리지 않는다 —
+     스토리지 경로만 저장돼 있어 File 객체를 복원할 수 없고, 사유가 증빙 문제였다면
+     같은 파일을 그대로 다시 내는 게 오히려 곤란하다.
+     setState 는 전부 .then() 안에서만 부른다. effect 본문에서 동기로 부르면
+     렌더가 한 번 더 돈다(react-hooks/set-state-in-effect). */
   useEffect(() => {
     if (!user || !shop) return
-    getMyVerifyRequest(shop.id, user.id).then(req => { if (req) setAlready(req) })
-    if ((user as any).email) setEmail((user as any).email)
+    let alive = true
+    const accountEmail = user.email ?? ''
+
+    getMyVerifyRequest(shop.id, user.id)
+      .then(req => {
+        if (!alive) return
+        const my = (req ?? null) as MyRequest | null
+        if (my) setAlready(my)
+
+        // 되살릴 게 없으면 폼을 건드리지 않는다. 조회가 늦게 끝나는 사이
+        // 사용자가 이미 입력을 시작했을 수 있어서, 빈 값으로 덮어쓰면 안 된다.
+        const prev: ClaimExtra | null = my?.status === 'rejected' ? (my.extra ?? null) : null
+        if (!prev) {
+          setEmail(cur => cur || accountEmail)   // 아직 비어 있을 때만 계정 이메일로 채운다
+          return
+        }
+
+        setManager(prev.manager ?? '')
+        setPosition(prev.position ?? '')
+        setPhone(prev.phone ?? '')
+        setBizName(prev.bizName ?? '')
+        setBizNo(prev.bizNo ?? '')
+        setOwner(prev.owner ?? '')
+        // 그 사이 목록에서 사라진 항목이 있을 수 있어 현재 목록에 있는 것만 남긴다.
+        setFeatures(Array.isArray(prev.features) ? prev.features.filter(f => MANAGE_FEATURES.includes(f)) : [])
+        setEmail(prev.email || accountEmail)
+      })
+      .catch(() => { if (alive) setEmail(cur => cur || accountEmail) })
+
+    return () => { alive = false }
   }, [user, shop])
 
   function toggleFeature(f: string) {
@@ -84,7 +134,9 @@ export default function ClaimFormPage({ slug }: { slug: string }) {
           <div className={styles.doneIcon}><AppIcon name="check" size={28} /></div>
           <h2 className={styles.doneTitle}>인증 신청이 접수되었어요</h2>
           <p className={styles.doneDesc}>운영진이 검토 후 결과를 알려드릴게요.</p>
-          <Link href="/mypage" className={styles.doneBtn}>마이페이지로</Link>
+          {/* /mypage 는 존재하지 않는 경로였다(page.tsx 가 없어 404).
+              마이페이지는 /profile 이고, 방금 넣은 신청의 상태는 인증 현황에서 본다. */}
+          <Link href="/profile?tab=verify" className={styles.doneBtn}>인증 현황 보기</Link>
         </div>
       </div>
     )
@@ -103,14 +155,19 @@ export default function ClaimFormPage({ slug }: { slug: string }) {
     )
   }
 
-  if (already) {
-    const label = { pending: '심사 중', approved: '인증 완료', rejected: '거절됨' }[already.status] ?? already.status
+  /* 거절된 신청은 막지 않는다 — 사유를 보고 보완해서 다시 넣을 수 있어야 한다.
+     예전에는 상태와 무관하게 전부 막아서, 한 번 거절되면 그 매장은 영영 신청할 수 없었다.
+     심사 중(pending)·인증 완료(approved)일 때만 막는다.
+     심사 중에 또 넣으면 관리자 대기열에 같은 건이 쌓이고,
+     이미 인증된 매장은 아래 '인증 이전 요청' 분기가 따로 처리한다. */
+  if (already && already.status !== 'rejected') {
+    const label = { pending: '심사 중', approved: '인증 완료' }[already.status] ?? already.status
     return (
       <div className={styles.wrap}>
         <div className={styles.done}>
           <h2 className={styles.doneTitle}>{shop.name}</h2>
           <p className={styles.doneDesc}>이미 이 매장에 대한 인증 신청이 있어요. (상태: {label})</p>
-          <Link href="/mypage" className={styles.doneBtn}>인증 현황 보기</Link>
+          <Link href="/profile?tab=verify" className={styles.doneBtn}>인증 현황 보기</Link>
         </div>
       </div>
     )
@@ -118,6 +175,14 @@ export default function ClaimFormPage({ slug }: { slug: string }) {
 
   return (
     <div className={styles.wrap}>
+      {already?.status === 'rejected' && (
+        <div className={styles.rejectBox}>
+          <p className={styles.rejectTitle}>이전 신청이 거절됐어요</p>
+          {already.note && <p className={styles.rejectNote}>{already.note}</p>}
+          <p className={styles.rejectHint}>지난번에 적으신 내용을 그대로 불러왔어요. 보완해서 다시 신청하실 수 있어요. 증빙 자료는 다시 첨부해 주세요.</p>
+        </div>
+      )}
+
       <div className={styles.shopBox}>
         <span className={styles.shopLabel}>인증할 매장</span>
         <div className={styles.shopName}>{shop.name}</div>

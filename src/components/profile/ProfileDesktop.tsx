@@ -92,8 +92,21 @@ export default function ProfileDesktop({ passport, userId }: Props) {
   const worn = useWorn(userId)
   const urlTab = useSearchParams().get('tab')
 
-  const initialView: 'dashboard' | Sub = urlTab && SUB_SET.has(urlTab as Sub) ? (urlTab as Sub) : 'dashboard'
-  const [view, setView] = useState<'dashboard' | Sub>(initialView)
+  const urlView: 'dashboard' | Sub = urlTab && SUB_SET.has(urlTab as Sub) ? (urlTab as Sub) : 'dashboard'
+  const [view, setView] = useState<'dashboard' | Sub>(urlView)
+
+  /* URL 의 ?tab 이 바뀌면 화면도 따라간다.
+     예전에는 useState 초깃값으로만 읽어서, 이미 마이페이지에 있는 상태로
+     알림(/profile?tab=verify)을 누르면 같은 라우트라 재마운트가 안 되고
+     대시보드에 그대로 머물렀다 — 거절 사유를 볼 방법이 없었다.
+     effect 가 아니라 "렌더 중 파생 상태 조정"으로 처리한다. effect 에서 setState 를
+     부르면 한 프레임 늦게 반영되고 렌더가 한 번 더 돈다(react-hooks/set-state-in-effect).
+     화면 안에서 setView 로 옮겨다닐 때는 URL 이 그대로라 여기에 걸리지 않는다. */
+  const [prevUrlView, setPrevUrlView] = useState<'dashboard' | Sub>(urlView)
+  if (urlView !== prevUrlView) {
+    setPrevUrlView(urlView)
+    setView(urlView)
+  }
 
   const [levelInfo, setLevelInfo] = useState<LevelInfo | null>(null)
   const [follow, setFollow] = useState<{ followers: number; following: number }>({ followers: 0, following: 0 })
