@@ -232,8 +232,8 @@ export default function AdminPage() {
       {tab === 'members' && <MemberAdminTab />}
       {tab === 'reported' && <ReportedShopsTab onResolved={refreshBadges} />}
       {tab === 'postreports' && <PostReportsTab onResolved={refreshBadges} />}
-      {tab === 'contacts' && <ContactAdminTab excludeType="partner" />}
-      {tab === 'partners' && <ContactAdminTab onlyType="partner" />}
+      {tab === 'contacts' && <ContactAdminTab excludeType="partner" onSaved={refreshBadges} />}
+      {tab === 'partners' && <ContactAdminTab onlyType="partner" onSaved={refreshBadges} />}
       {tab === 'suggestions' && <SuggestionAdminTab />}
       {tab === 'routes' && <OfficialRouteTab />}
       {tab === 'events' && <SeasonalEventTab />}

@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, Fragment } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getMyContactMessages } from '@/services/contactService'
 import { CONTACT_TYPES } from './contactConfig'
@@ -20,12 +21,17 @@ export default function MyContacts({ refreshKey = 0 }: { refreshKey?: number }) 
      null = 사용자가 직접 닫음. 이렇게 구분해야 닫은 행이 다시 열리지 않는다. */
   const [openId, setOpenId] = useState<string | null | undefined>(undefined)
 
-  /* 답변 알림에서 ?inquiry=<id> 로 넘어온다.
-     useSearchParams 대신 window.location.search 를 읽는다 — 이 페이지는 정적
-     프리렌더 대상이라 useSearchParams 를 쓰면 Suspense 경계가 필요해진다.
-     lazy 초기화라 렌더 중 setState 가 없다(react-hooks/set-state-in-effect 회피). */
-  const [target] = useState<string | null>(() =>
-    typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('inquiry'))
+  /* 답변 알림에서 /support/contact?inquiry=<id> 로 넘어온다.
+
+     예전에는 window.location.search 를 useState 의 lazy 초기화로 한 번만 읽었다.
+     알림 클릭은 router.push 로 클라이언트 이동이라, 이 컴포넌트가 처음 마운트되는
+     시점에 주소창이 아직 안 바뀌어 있을 수 있다. 그러면 target 이 null 로 굳고
+     초기화 함수는 다시 돌지 않아서, 주소에 ?inquiry= 가 있어도 영영 안 펴졌다.
+     useSearchParams 는 주소가 바뀌면 다시 렌더되므로 그 문제가 없다.
+     (같은 페이지의 ContactForm 이 이미 useSearchParams 를 쓰고 있어
+      Suspense 경계를 새로 만들 필요도 없다) */
+  const sp = useSearchParams()
+  const target = sp.get('inquiry')
   const shownId = openId === undefined ? target : openId
 
   useEffect(() => {
