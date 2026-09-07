@@ -15,11 +15,16 @@ import { createClient } from '@/lib/supabase/client'
    RPC 는 파라미터가 없다 — auth.uid() 본인 행만 돌려준다.
    사용자 id 를 인자로 받게 만들면 남의 설정을 읽을 구멍이 생긴다.
 
-   세 서비스(privacy / notification / app)가 이 한 곳만 부른다.
+   privacyService 와 notificationPrefService 가 이 한 곳만 부른다.
    화면이 서로 다른 페이지라 한 번에 하나만 뜬다 — 중복 호출 걱정은 없다.
+
+   app_settings(테마·지역)는 읽는 쪽이 없다. 다크모드 팔레트도, 기본 지역을
+   쓰는 필터도 아직 없어서 appSettingsService 는 지웠다.
+   컬럼과 update_app_settings RPC 는 남겨둔다 — 그때 UI 만 붙이면 된다.
    ============================================================ */
 
 export interface MySettingsRow {
+  /** 아직 쓰는 곳이 없다. RPC 반환 모양을 그대로 적어둔 것 */
   app_settings: Record<string, unknown> | null
   notification_settings: Record<string, unknown> | null
   privacy_settings: Record<string, unknown> | null
