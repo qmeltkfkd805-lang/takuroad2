@@ -8,7 +8,8 @@ import { getEquipped, getMyCosmetics, getMyBadges, getMyFavoriteWorks, SHOWCASE_
       → 하나의 UPDATE 문에 담아 전부 성공하거나 전부 실패하게 한다.
 
    ⭐ 컬럼 화이트리스트: authenticated 는 nickname·avatar_url·bio·equipped·
-      is_profile_public·selected_title_id·selected_title_type·app_settings 만 UPDATE 가능.
+      is_profile_public·selected_title_id·selected_title_type 만 UPDATE 가능.
+      (app_settings 는 update_app_settings RPC 로 옮기면서 UPDATE 권한을 회수했다)
       payload 에는 nickname·bio·equipped 만 넣는다(role·status 등 절대 금지).
       ⚠️ 혼합 payload에 비허용 컬럼이 하나라도 섞이면 UPDATE 전체가 실패한다.
 
