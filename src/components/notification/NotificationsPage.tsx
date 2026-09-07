@@ -15,7 +15,7 @@ const NOTI_ICON: Record<string, string> = {
   like: 'heart', post_like: 'heart', review_like: 'heart',
   check_in: 'pushpin', checkin: 'pushpin',
   goods: 'gift', goods_restock: 'gift', product_restock: 'gift',
-  shop_approved: 'shop', shop_review: 'pencil',
+  shop_approved: 'shop', shop_review: 'pencil', contact_answered: 'commentbox',
   verify_approved: 'check', verify_rejected: 'close',
   event: 'event', work_event: 'event',
   notice: 'megaphone', announcement: 'megaphone',

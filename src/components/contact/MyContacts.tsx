@@ -16,12 +16,28 @@ export default function MyContacts({ refreshKey = 0 }: { refreshKey?: number }) 
   const { user } = useAuth()
   const [items, setItems] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [openId, setOpenId] = useState<string | null>(null)
+  /* undefined = 사용자가 아직 아무 행도 누르지 않음 → 알림으로 넘어온 문의를 편다.
+     null = 사용자가 직접 닫음. 이렇게 구분해야 닫은 행이 다시 열리지 않는다. */
+  const [openId, setOpenId] = useState<string | null | undefined>(undefined)
+
+  /* 답변 알림에서 ?inquiry=<id> 로 넘어온다.
+     useSearchParams 대신 window.location.search 를 읽는다 — 이 페이지는 정적
+     프리렌더 대상이라 useSearchParams 를 쓰면 Suspense 경계가 필요해진다.
+     lazy 초기화라 렌더 중 setState 가 없다(react-hooks/set-state-in-effect 회피). */
+  const [target] = useState<string | null>(() =>
+    typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('inquiry'))
+  const shownId = openId === undefined ? target : openId
 
   useEffect(() => {
     if (!user) { setLoading(false); return }
     getMyContactMessages(user.id).then(data => { setItems(data); setLoading(false) })
   }, [user, refreshKey])
+
+  // 목록이 그려진 뒤 해당 문의로 스크롤. setState 가 없어 effect 로 둬도 된다.
+  useEffect(() => {
+    if (!target || items.length === 0) return
+    document.getElementById('inquiry-' + target)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, [target, items.length])
 
   if (!user) return null
   if (loading) return null
@@ -46,10 +62,10 @@ export default function MyContacts({ refreshKey = 0 }: { refreshKey?: number }) 
         <tbody>
           {items.map(m => {
             const st = STATUS[m.status] ?? STATUS.pending
-            const open = openId === m.id
+            const open = shownId === m.id
             return (
               <Fragment key={m.id}>
-                <tr className={styles.row} onClick={() => setOpenId(open ? null : m.id)}>
+                <tr id={'inquiry-' + m.id} className={styles.row} onClick={() => setOpenId(open ? null : m.id)}>
                   <td className={styles.type}>{typeLabel(m.type)}</td>
                   <td className={styles.subject}>{m.title}</td>
                   <td><span className={styles.badge + ' ' + styles[st.cls]}>{st.label}</span></td>
