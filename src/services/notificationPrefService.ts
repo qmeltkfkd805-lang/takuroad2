@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { getMySettings } from './mySettingsService'
 
 /* ============================================================
    알림 설정 — profiles.notification_settings (jsonb)
@@ -24,13 +25,15 @@ function browserPushDefault(): boolean {
   } catch { return false }
 }
 
-/** 내 알림 설정 (저장값 + 기본값 병합) */
-export async function getMyNotifPrefs(userId: string): Promise<NotifPrefs> {
-  const supabase = createClient()
-  const { data } = await supabase
-    .from('profiles').select('notification_settings').eq('id', userId).maybeSingle()
+/** 내 알림 설정 (저장값 + 기본값 병합)
+    조회는 get_my_settings RPC 로 한다 — profiles.notification_settings 의 SELECT
+    권한을 회수했기 때문이다. 마케팅 수신동의 여부와 이메일 수신 설정이 들어 있어
+    로그인한 다른 사용자에게 읽히면 안 된다. 자세한 이유는 mySettingsService 주석 참고.
+    RPC 가 본인 행만 돌려주므로 userId 인자는 받지 않는다. */
+export async function getMyNotifPrefs(): Promise<NotifPrefs> {
+  const row = await getMySettings()
 
-  const saved: any = (data as any)?.notification_settings ?? {}
+  const saved: any = row?.notification_settings ?? {}
   const st: any = saved.types ?? {}
   const ch: any = saved.channels ?? {}
   const mk: any = saved.marketing ?? {}

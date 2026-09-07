@@ -80,7 +80,7 @@ export default function GoodsListPage() {
 
   useEffect(() => {
     if (!user) return
-    getMyPrivacy(user.id).then(p => setPrivacyLevel(p.goods)).catch(() => {})
+    getMyPrivacy().then(p => setPrivacyLevel(p.goods)).catch(() => {})
   }, [user])
 
   // 검색 디바운스

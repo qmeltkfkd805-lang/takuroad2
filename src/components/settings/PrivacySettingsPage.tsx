@@ -32,7 +32,7 @@ export default function PrivacySettingsPage() {
 
   useEffect(() => {
     if (!user) return
-    getMyPrivacy(user.id).then(setPrefs)
+    getMyPrivacy().then(setPrefs)
   }, [user])
 
   async function change(target: PrivacyTarget, level: PrivacyLevel) {

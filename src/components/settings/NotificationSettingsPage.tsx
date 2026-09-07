@@ -30,7 +30,7 @@ export default function NotificationSettingsPage() {
   const [busy, setBusy] = useState(false)
 
   useEffect(() => {
-    if (user) getMyNotifPrefs(user.id).then(setPrefs)
+    if (user) getMyNotifPrefs().then(setPrefs)
   }, [user])
 
   async function toggleType(t: NotifType, v: boolean) {

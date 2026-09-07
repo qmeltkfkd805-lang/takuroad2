@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { getMySettings } from './mySettingsService'
 
 /* ============================================================
    공개범위 — profiles.privacy_settings (jsonb)
@@ -21,17 +22,15 @@ export const PRIVACY_LEVELS: PrivacyLevel[] = ['public', 'followers', 'private']
 
 export type PrivacySettings = Record<PrivacyTarget, PrivacyLevel>
 
-/** 내 공개범위 (저장값 + is_profile_public 기본값 병합) */
-export async function getMyPrivacy(userId: string): Promise<PrivacySettings> {
-  const supabase = createClient()
-  const { data } = await supabase
-    .from('profiles')
-    .select('privacy_settings, is_profile_public')
-    .eq('id', userId)
-    .maybeSingle()
+/** 내 공개범위 (저장값 + is_profile_public 기본값 병합)
+    조회는 get_my_settings RPC 로 한다 — profiles.privacy_settings 의 SELECT 권한을
+    회수했기 때문이다. 자세한 이유는 mySettingsService 주석 참고.
+    RPC 가 본인 행만 돌려주므로 userId 인자는 받지 않는다. */
+export async function getMyPrivacy(): Promise<PrivacySettings> {
+  const row = await getMySettings()
 
-  const saved: any = (data as any)?.privacy_settings ?? {}
-  const fallback: PrivacyLevel = (data as any)?.is_profile_public === false ? 'private' : 'public'
+  const saved: any = row?.privacy_settings ?? {}
+  const fallback: PrivacyLevel = row?.is_profile_public === false ? 'private' : 'public'
 
   const out = {} as PrivacySettings
   for (const t of PRIVACY_TARGETS) {
