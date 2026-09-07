@@ -4,9 +4,21 @@ import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { CONTACT_TYPES, FIELD_DEFS, FieldKey } from './contactConfig'
 import { createContactMessage, uploadContactFiles } from '@/services/contactService'
+import { ROUTES } from '@/lib/constants/routes'
 import styles from './ContactForm.module.css'
 import Link from 'next/link'
 import AppIcon from '@/components/tds/AppIcon'
+
+/* 로그인 안내 — 문의는 로그인한 사용자만 받는다.
+   비로그인 문의는 답변을 전달할 경로가 없다. 메일 발송 기능이 없고,
+   '내 문의'(getMyContactMessages)는 user_id 로 조회하므로 비로그인은 열 수 없다.
+   접수만 받고 답변이 도달하지 않는 것보다, 접수 자체를 받지 않는 편이 정직하다. */
+const loginCta: React.CSSProperties = {
+  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+  minHeight: 44, padding: '0 24px', marginTop: 4,
+  borderRadius: 12, background: 'var(--accent)', color: '#fff',
+  fontSize: 14.5, fontWeight: 800, textDecoration: 'none',
+}
 
 export default function ContactForm({ onSent }: { onSent?: () => void }) {
   const { user } = useAuth()
@@ -55,6 +67,19 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
   }
 
   const canSubmit = agree && emailValue && type.fields.filter(f => FIELD_DEFS[f].required).every(f => (values[f] ?? '').trim())
+
+  if (!user) {
+    return (
+      <div className={styles.done}>
+        <h3 className={styles.doneTitle}>로그인이 필요해요</h3>
+        <p className={styles.doneDesc}>
+          답변을 받아보시려면 로그인해주세요.<br />
+          문의하신 내용과 답변은 <b>마이페이지 &gt; 내 문의</b>에서 확인할 수 있어요.
+        </p>
+        <Link href={ROUTES.login} style={loginCta}>로그인하기</Link>
+      </div>
+    )
+  }
 
   if (sentId) {
     return (

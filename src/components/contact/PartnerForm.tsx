@@ -4,8 +4,19 @@ import Link from 'next/link'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { createContactMessage, uploadContactFiles } from '@/services/contactService'
 import { PARTNER_TYPES, P_FIELD_DEFS, COLLAB_FIELDS, PFieldKey } from './partnerConfig'
+import { ROUTES } from '@/lib/constants/routes'
 import styles from './PartnerForm.module.css'
 import AppIcon from '@/components/tds/AppIcon'
+
+/* 로그인 안내 — ContactForm 과 같은 이유다.
+   비로그인 문의는 답변을 전달할 경로가 없다(메일 발송 기능 없음,
+   '내 문의'는 user_id 로 조회). 접수 자체를 받지 않는다. */
+const loginCta: React.CSSProperties = {
+  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+  minHeight: 44, padding: '0 24px', marginTop: 4,
+  borderRadius: 12, background: 'var(--accent)', color: '#fff',
+  fontSize: 14.5, fontWeight: 800, textDecoration: 'none',
+}
 
 export default function PartnerForm() {
   const { user } = useAuth()
@@ -55,6 +66,19 @@ export default function PartnerForm() {
     setSending(false)
     if (res.ok && res.id) setSentId(res.id)
     else alert('전송에 실패했어요. 잠시 후 다시 시도해 주세요.')
+  }
+
+  if (!user) {
+    return (
+      <div className={styles.done}>
+        <h3 className={styles.doneTitle}>로그인이 필요해요</h3>
+        <p className={styles.doneDesc}>
+          제휴 문의도 로그인 후 접수하고 있어요.<br />
+          진행 상황과 답변은 <b>마이페이지 &gt; 내 문의</b>에서 확인할 수 있어요.
+        </p>
+        <Link href={ROUTES.login} style={loginCta}>로그인하기</Link>
+      </div>
+    )
   }
 
   if (sentId) {

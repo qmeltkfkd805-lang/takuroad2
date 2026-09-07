@@ -15,6 +15,13 @@ export async function createContactMessage(payload: ContactPayload): Promise<{ o
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
+  /* 문의는 로그인한 사용자만 받는다.
+     비로그인 문의는 답변을 전달할 경로가 없었다 — 메일 발송 기능이 없고
+     '내 문의'(getMyContactMessages)는 user_id 로 조회하므로 열 수도 없다.
+     폼(ContactForm/PartnerForm)에서 이미 막지만, 서비스에서도 한 번 더 막는다.
+     DB 쪽도 contact_insert_any 정책이 user_id = auth.uid() 를 요구한다. */
+  if (!user) return { ok: false, error: '로그인이 필요해요' }
+
   /* 접수번호(id)를 클라이언트에서 미리 만든다.
      예전에는 .select('id').single() 로 돌려받았는데, INSERT ... RETURNING 은
      SELECT 정책의 적용을 받는다. contact_select_own 이 auth.uid() = user_id 라
@@ -36,7 +43,7 @@ export async function createContactMessage(payload: ContactPayload): Promise<{ o
       content: payload.content,
       extra: payload.extra ?? {},
       email: payload.email,
-      user_id: user?.id ?? null,
+      user_id: user.id,
       page_url: payload.pageUrl ?? null,
       page_label: payload.pageLabel ?? null,
       attachment_urls: payload.attachmentUrls ?? [],
