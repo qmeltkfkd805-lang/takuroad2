@@ -10,6 +10,7 @@ export interface StaleShop {
 }
 
 export interface AdminTodoSummary {
+  /** 미처리 신고가 있는 샵 수 (신고 건수가 아니다 — ReportedShopsTab 목록 행 수와 같다) */
   pendingSuggestions: number
   pendingVerifyRequests: number
   staleShops: StaleShop[]
@@ -18,14 +19,21 @@ export interface AdminTodoSummary {
 
 export async function getAdminTodoSummary(): Promise<AdminTodoSummary> {
   const supabase = createClient()
-  const { count: pendingSuggestions } = await supabase.from('shop_suggestions').select('id', { count: 'exact', head: true }).eq('status', 'pending')
+  /* 사이드바 '샵 신고' 배지용. ReportedShopsTab 이 shop_id 로 묶어서 보여주므로
+     여기서도 신고 건수가 아니라 신고된 샵 수를 센다 — 안 그러면 배지 2인데
+     목록에는 1줄만 있는 상황이 된다(실제로 그랬다).
+     count exact 로는 distinct 를 못 세므로 shop_id 만 받아 JS 에서 묶는다. */
+  const { data: suggestionRows } = await supabase
+    .from('shop_suggestions').select('shop_id').eq('status', 'pending')
+  const pendingSuggestions = new Set((suggestionRows ?? []).map(r => r.shop_id)).size
+
   const { count: pendingVerifyRequests } = await supabase.from('shop_verify_requests').select('id', { count: 'exact', head: true }).eq('status', 'pending')
   const cutoff = new Date()
   cutoff.setDate(cutoff.getDate() - 180)
   const { data: staleShops } = await supabase.from('shops').select('id, name, slug, visit_count, info_last_confirmed_at').lt('info_last_confirmed_at', cutoff.toISOString()).eq('status', 'active').order('visit_count', { ascending: false }).limit(5)
   const { count: unconfirmedProducts } = await supabase.from('shop_products').select('id', { count: 'exact', head: true }).eq('confirm_count', 0).eq('is_active', true)
   return {
-    pendingSuggestions: pendingSuggestions ?? 0,
+    pendingSuggestions,
     pendingVerifyRequests: pendingVerifyRequests ?? 0,
     staleShops: (staleShops ?? []) as StaleShop[],
     unconfirmedProducts: unconfirmedProducts ?? 0,
@@ -63,18 +71,24 @@ export async function getAdminStats(): Promise<AdminStats> {
    읽기 전용 count만 가져온다(head: true라 본문은 안 받는다). 기존 테이블·컬럼만 쓰고
    마이그레이션·RPC·정책은 건드리지 않는다.
 
+   ⭐ 배지는 "그 화면에 들어가면 보게 될 항목 수"다. 신고 건수가 아니다.
+      신고 화면들은 대상(글·샵) 단위로 묶어서 보여주므로, 건수로 세면
+      배지 5인데 목록에는 2줄만 있는 상황이 된다. 실제로 그랬다(샵 신고 2건 / 1샵).
+      count exact 로는 distinct 를 못 세므로 대상 id 만 받아 JS 에서 묶는다.
+      대기열은 크지 않아 부담이 없다.
+      건수는 각 화면 상단 요약 카드와 항목별 "미처리 N건" 배지에 이미 나온다.
+
    "미처리" 기준은 기존 관리 화면에서 그대로 가져왔다:
-   - 게시글 신고 : post_reports.status='pending' 건수.
+   - 게시글 신고 : post_reports.status='pending' 인 글 수 (distinct post_id).
+                   PostReportsTab 의 미처리 탭·목록과 같은 단위다.
                    예전에는 처리 상태 컬럼이 없어 "숨김 처리된 글" 수를 대신 셌는데,
                    그건 신고 대기열이 아니라 조치 결과라 배지 숫자가 실제 할 일과 달랐다
                    (자동 숨김 글이 쌓이면 배지가 늘고, 반려해도 줄지 않았다).
-                   migrations/post_report_review.sql 이후 PostReportsTab의 미처리 탭과
-                   같은 기준을 쓴다.
    - 문의/제휴  : ContactAdminTab의 STATUS_LABEL = pending·processing·done.
                    updateContactMessage가 완료 시 'done'으로 바꾼다 → done이 아니면 미처리.
                    문의 관리는 type≠'partner', 제휴 문의는 type='partner' (탭 필터와 동일).
-   ※ 샵 신고 배지는 새로 조회하지 않는다. getAdminTodoSummary의 pendingSuggestions
-     (shop_suggestions.status='pending')가 ReportedShopsTab과 같은 기준이라 그대로 쓴다.
+   ※ 샵 신고 배지는 여기서 조회하지 않는다. getAdminTodoSummary의 pendingSuggestions
+     를 쓴다 — 거기서도 같은 이유로 distinct shop_id 를 센다.
 
    실패한 항목만 null이 되고 나머지는 살아남는다(대시보드 전체가 깨지지 않게). */
 const CONTACT_STATUS_DONE = 'done'      // ContactAdminTab / updateContactMessage
@@ -84,7 +98,7 @@ const SHOP_REVIEW_PENDING = 'pending'   // shops.review_status — migrations/sh
 
 /** null = 조회 실패 또는 아직 안 옴 (UI에서 '—' 처리) */
 export interface AdminBadgeCounts {
-  /** 미처리 게시글 신고 (post_reports.status='pending') */
+  /** 미처리 신고가 있는 게시글 수 (신고 건수가 아니다 — PostReportsTab 목록 행 수와 같다) */
   pendingPostReports: number | null
   openContacts: number | null
   openPartners: number | null
@@ -98,9 +112,19 @@ type CountResult = { count: number | null; error: { message?: string; code?: str
 export async function getAdminBadgeCounts(): Promise<AdminBadgeCounts> {
   const supabase = createClient()
 
+  /* 게시글 신고만 셈법이 다르다 — 건수가 아니라 신고된 글 수다.
+     count exact 로는 distinct 를 못 세므로 post_id 만 받아 JS 에서 묶는다. */
+  let pendingPostReports: number | null = null
+  try {
+    const { data, error } = await supabase
+      .from('post_reports').select('post_id').eq('status', POST_REPORT_PENDING)
+    if (error) throw error
+    pendingPostReports = new Set((data ?? []).map(r => r.post_id)).size
+  } catch (e) {
+    console.error('[관리자 배지] 미처리 게시글 신고 조회 실패:', e)
+  }
+
   const results = await Promise.allSettled<CountResult>([
-    supabase.from('post_reports').select('id', { count: 'exact', head: true })
-      .eq('status', POST_REPORT_PENDING),
     supabase.from('contact_messages').select('id', { count: 'exact', head: true })
       .neq('status', CONTACT_STATUS_DONE).neq('type', CONTACT_TYPE_PARTNER),
     supabase.from('contact_messages').select('id', { count: 'exact', head: true })
@@ -120,10 +144,10 @@ export async function getAdminBadgeCounts(): Promise<AdminBadgeCounts> {
   }
 
   return {
-    pendingPostReports: pick(results[0], '미처리 게시글 신고'),
-    openContacts: pick(results[1], '문의'),
-    openPartners: pick(results[2], '제휴 문의'),
-    shopReview: pick(results[3], '신규 샵 검수'),
+    pendingPostReports,
+    openContacts: pick(results[0], '문의'),
+    openPartners: pick(results[1], '제휴 문의'),
+    shopReview: pick(results[2], '신규 샵 검수'),
   }
 }
 

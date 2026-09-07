@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getPendingShops, approveShop, rejectShop, getPendingVerifyRequests } from '@/services/shopService'
@@ -69,7 +69,20 @@ export default function AdminPage() {
 
   /* 권한 확인 후 최초 1회 조회.
      setState는 전부 then 콜백 안에 둔다 — effect 본문에서 동기로 부르면
-     렌더가 한 번 더 돈다(react-hooks/set-state-in-effect). */
+     렌더가 한 번 더 돈다(react-hooks/set-state-in-effect).
+
+     ⚠️ "이미 시작했는가"는 ref 로 기억한다. 예전에는 ready 상태로 막았는데,
+        ready 가 의존성 배열에 있어서 setReady(true) 가 effect 를 다시 돌렸고,
+        그때 실행된 정리 함수가 alive=false 로 만들면서 **아직 안 끝난
+        업무 요약·배지 조회를 취소**했다. 두 조회는 위 Promise.all 보다 느려서
+        거의 항상 취소됐고, 재실행은 if (ready) return 에 막혀 다시 시도하지 않았다.
+        결과는 사이드바 배지가 통째로 안 뜨는 것이었다.
+
+     alive 취소 플래그는 두지 않는다. React 18 은 언마운트 후 setState 를
+     경고 없이 무시하고, StrictMode(개발 모드)는 effect 를 두 번 돌리면서
+     사이에 정리 함수를 부르기 때문에 — 취소 플래그를 두면 개발 모드에서
+     첫 실행의 조회가 통째로 버려진다. */
+  const startedRef = useRef(false)
   useEffect(() => {
     if (authLoading) return
     // 로그인 안 됨 → 홈
@@ -78,29 +91,27 @@ export default function AdminPage() {
     if (!profile) return
     // profile까지 왔는데 관리자 아님 → 홈
     if (profile.role !== 'admin') { router.push(ROUTES.home); return }
-    if (ready) return
+    if (startedRef.current) return
+    startedRef.current = true
 
-    let alive = true
     Promise.all([getPendingShops(), getPendingVerifyRequests()])
       .then(([shops, requests]) => {
-        if (!alive) return
         setPendingShops(shops)
         setVerifyPending(requests.length)
         setReady(true)
       })
-      .catch(e => { if (alive) { console.error('[관리자] 목록 조회 실패:', e); setReady(true) } })
+      .catch(e => { console.error('[관리자] 목록 조회 실패:', e); setReady(true) })
 
     // 배지·업무 건수는 화면을 막지 않는다. 실패해도 나머지는 그대로 보인다
     getAdminTodoSummary()
-      .then(t => { if (alive) setTodo(t) })
-      .catch(e => { if (alive) { console.error('[관리자] 업무 요약 실패:', e); setTodo(null) } })
+      .then(t => setTodo(t))
+      .catch(e => { console.error('[관리자] 업무 요약 실패:', e); setTodo(null) })
     getAdminBadgeCounts()
-      .then(b => { if (alive) setBadges(b) })
-      .catch(e => { if (alive) { console.error('[관리자] 배지 건수 실패:', e); setBadges(null) } })
+      .then(b => setBadges(b))
+      .catch(e => { console.error('[관리자] 배지 건수 실패:', e); setBadges(null) })
 
-    return () => { alive = false }
     // router는 App Router에서 참조가 안정적이라 넣어도 재실행되지 않는다
-  }, [user, profile, authLoading, ready, router])
+  }, [user, profile, authLoading, router])
 
 
   async function handleApproveShop(shopId: string) {
@@ -138,7 +149,9 @@ export default function AdminPage() {
     shops: pendingShops.length,
     shopreview: badges?.shopReview ?? null,
     verify: verifyPending,
-    reported: todo?.pendingSuggestions ?? null,     // shop_suggestions status='pending'
+    /* 배지는 전부 "그 화면 목록의 행 수"다 — 신고 건수가 아니라 신고된 샵·글 수.
+       adminDashboardService 의 두 함수가 distinct 로 센다. */
+    reported: todo?.pendingSuggestions ?? null,     // 미처리 신고가 있는 샵 수
     postreports: badges?.pendingPostReports ?? null,
     contacts: badges?.openContacts ?? null,
     partners: badges?.openPartners ?? null,
