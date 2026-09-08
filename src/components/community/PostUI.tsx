@@ -76,6 +76,21 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
   const { user, isAdmin } = useAuth()
   const router = useRouter()
   const [post, setPost] = useState(initial)
+
+  /* 부모가 다시 조회해서 넘겨준 값을 반영한다.
+     예전에는 useState(initial) 로 처음 한 번만 복사하고 끝이라, 부모가 새 글 정보를
+     넘겨줘도 화면이 계속 옛날 값을 들고 있었다.
+     상세 페이지(PostDetailPage)는 로그인 정보가 준비되기 전에 한 번 조회한다.
+     그때는 좋아요 여부(likedByMe)를 알 수 없어 false 로 온다. 로그인 정보가 붙은 뒤
+     다시 조회해서 true 로 넘겨줘도 이 컴포넌트가 무시해서, 새로고침하면 눌러둔
+     좋아요가 계속 꺼진 것처럼 보였다.
+     effect 가 아니라 렌더 중에 맞춘다 — React 가 권장하는 방식이고
+     react-hooks/set-state-in-effect 에도 걸리지 않는다.
+     부모가 넘기는 post 는 전부 state 에 담긴 객체라 매 렌더마다 새로 만들어지지 않는다
+     (PostDetailPage 의 post, WorkCommunityTabs 의 opened). 무한 렌더가 나지 않는다. */
+  const [syncedFrom, setSyncedFrom] = useState(initial)
+  if (syncedFrom !== initial) { setSyncedFrom(initial); setPost(initial) }
+
   const [imgIdx, setImgIdx] = useState(0)
   const [comments, setComments] = useState<PostComment[]>([])
   const highlightId = useSearchParams().get('comment')
