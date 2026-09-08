@@ -1,89 +1,22 @@
 'use client'
-
-import { useState, useEffect, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { getMyPosts, submitAppeal, uploadAppealImage } from '@/services/communityPostService'
-import { CommunityPost, REASON_LABEL, BOARD_LABEL, NewAppeal } from '@/types/community-post'
+import { submitAppeal, uploadAppealImage } from '@/services/communityPostService'
+import { CommunityPost, NewAppeal } from '@/types/community-post'
 import AppIcon from '@/components/tds/AppIcon'
 
-export default function MyPostsPage() {
-  const { user } = useAuth()
-  const router = useRouter()
-  const [posts, setPosts] = useState<CommunityPost[]>([])
-  const [loading, setLoading] = useState(true)
-  const [appealing, setAppealing] = useState<CommunityPost | null>(null)
+/* 숨김 처리된 내 글에 대한 이의제기 폼.
 
-  const load = useCallback(async () => {
-    if (!user) { setLoading(false); return }
-    setLoading(true)
-    setPosts(await getMyPosts(user.id))
-    setLoading(false)
-  }, [user])
+   예전에는 MyPostsPage(=/mypage/posts) 안에만 있었는데, 그 페이지로 가는 링크가
+   코드 어디에도 없었다. 즉 글이 숨겨진 사용자는 그 사실을 알 방법도,
+   이의제기할 방법도 없었다. 실제로 쓰는 화면인 프로필 > 작성한 글(MyPostsTab)에서
+   쓰려고 여기로 뺐다. */
 
-  useEffect(() => { load() }, [load])
-
-  return (
-    <div style={{ maxWidth: 860, margin: '0 auto', padding: '28px 20px 72px' }}>
-      <h1 style={{ fontSize: 24, fontWeight: 900, marginBottom: 6 }}>내 글</h1>
-      <p style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 24 }}>내가 올린 글을 관리하고, 숨김 처리된 글에 이의제기할 수 있어요.</p>
-
-      {loading ? (
-        <p style={{ color: 'var(--muted)' }}>불러오는 중…</p>
-      ) : !user ? (
-        <p style={{ color: 'var(--muted)' }}>로그인이 필요해요.</p>
-      ) : posts.length === 0 ? (
-        <p style={{ color: 'var(--muted)' }}>아직 올린 글이 없어요.</p>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {posts.map(post => {
-            const hidden = post.status === 'hidden'
-            const cover = post.images[0] ?? null
-            return (
-              <div key={post.id} style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', background: 'var(--surface)' }}>
-                <div style={{ display: 'flex', gap: 14, padding: 14 }}>
-                  {cover && (
-                    <div style={{ width: 92, height: 92, flexShrink: 0, borderRadius: 12, overflow: 'hidden', background: 'var(--surface2)' }}>
-                      <img src={cover} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: hidden ? 'grayscale(0.4)' : 'none' }} />
-                    </div>
-                  )}
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
-                      <span style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--accent)' }}>{BOARD_LABEL[post.board]}</span>
-                      <span style={{ fontSize: 15, fontWeight: 800 }}>{post.title || '제목 없음'}</span>
-                      {hidden && <span style={{ fontSize: 11.5, fontWeight: 800, color: '#c0392b', background: 'rgba(239,90,90,.1)', padding: '2px 8px', borderRadius: 9999 }}>임시 숨김</span>}
-                    </div>
-                    <div style={{ fontSize: 12.5, color: 'var(--muted)' }}>{post.work?.name ? `${post.work.name} · ` : ''}좋아요 {post.likeCount} · 댓글 {post.commentCount} · 조회 {post.viewCount}</div>
-                    {post.content && <p style={{ fontSize: 13, color: 'var(--muted)', margin: '8px 0 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{stripHtml(post.content)}</p>}
-                  </div>
-                </div>
-
-                {hidden && (
-                  <div style={{ background: 'rgba(239,90,90,.07)', borderTop: '1px solid var(--border)', padding: '13px 16px' }}>
-                    <p style={{ fontSize: 13, lineHeight: 1.55, margin: '0 0 8px', color: 'var(--text)' }}>
-                      신고가 접수되어 <b>관리자 확인 전까지 임시 숨김</b> 처리되었어요{post.hiddenReason ? ` (사유: ${REASON_LABEL[post.hiddenReason] ?? post.hiddenReason})` : ''}.
-                      본인의 창작물이거나 문제가 없다면 아래에서 소명해 주세요. 검토 후 다시 공개될 수 있어요.
-                    </p>
-                    <button
-                      onClick={() => setAppealing(post)}
-                      style={{ border: 'none', background: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, fontWeight: 800, color: 'var(--accent)', textDecoration: 'underline' }}
-                    >
-                      이의제기하기 →
-                    </button>
-                  </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      )}
-
-      {appealing && <AppealModal post={appealing} onClose={() => setAppealing(null)} onDone={() => { setAppealing(null); load() }} />}
-    </div>
-  )
-}
-
-function AppealModal({ post, onClose, onDone }: { post: CommunityPost; onClose: () => void; onDone: () => void }) {
+export default function AppealModal({ post, onClose, onDone }: {
+  post: CommunityPost
+  onClose: () => void
+  onDone: () => void
+}) {
   const { user } = useAuth()
   const isCopy = post.hiddenReason === 'copy'
   const [message, setMessage] = useState('')
@@ -159,8 +92,6 @@ function AppealModal({ post, onClose, onDone }: { post: CommunityPost; onClose: 
     </div>
   )
 }
-
-function stripHtml(html: string): string { return html.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim() }
 
 function Label({ children }: { children: React.ReactNode }) {
   return <div style={{ fontSize: 13, fontWeight: 800, margin: '4px 0 6px' }}>{children}</div>
