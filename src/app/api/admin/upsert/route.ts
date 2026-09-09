@@ -3,7 +3,20 @@ import { createClient } from '@supabase/supabase-js'
 import { createClient as createServerClient } from '@/lib/supabase/server'
 
 const ALLOWED: Record<string, string[]> = {
-  profiles: ['role', 'admin_note', 'status', 'suspended_until', 'is_beta'],
+  /* ⚠️ role 은 여기 다시 넣지 말 것.
+     역할 변경은 admin_set_member_role RPC 전용이다. 그 안에서
+       - actor 가 관리자인지
+       - 자기 자신을 바꾸려는 것인지
+       - 강등 후에도 관리자가 남는지 (advisory lock 으로 동시 강등 직렬화)
+     를 전부 검증한다. 이 generic 경로에는 그런 검증이 없다.
+     REST 는 트랜잭션이 없어서 여기서 "관리자 수 세기 → UPDATE" 를 하면
+     두 관리자가 동시에 강등될 때 관리자가 0명이 되는 것을 막을 수 없다.
+     관리자가 0명이 되면 role='admin' 을 요구하는 모든 RPC·API·정책이 막히고
+     DB 직접 접속 외에는 복구가 불가능하다.
+
+     status·suspended_until 은 남겨둔다. 실제 제재 설계가 끝나면 그때 정리한다
+     (지금 정지는 로그인·글쓰기를 실제로 막지 않는다). */
+  profiles: ['admin_note', 'status', 'suspended_until', 'is_beta'],
   tags: ['name', 'english_name', 'slug', 'ip_type', 'release_year', 'genres', 'description', 'cover_url', 'banner_image'],
   featured_banners: ['title', 'subtitle', 'image_url', 'cta_label', 'cta_href', 'cta_label2', 'cta_href2', 'bg_color', 'text_color', 'sort_order', 'is_active'],
   places: ['name', 'cover_image', 'place_type', 'addr'],
