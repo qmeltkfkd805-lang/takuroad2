@@ -9,6 +9,7 @@ import {
 import { CommunityPost, PostAppeal, REASON_LABEL, BOARD_LABEL, REPORT_REASONS } from '@/types/community-post'
 import AdminIcon, { AdminIconName } from './AdminIcon'
 import styles from './postReports.module.css'
+import AdminConfirmModal from './AdminConfirmModal'
 
 /* 관리자 > 게시글 신고.
 
@@ -803,6 +804,9 @@ function AppealCard({ appeal }: { appeal: PostAppeal }) {
    ESC 닫기, 초기 포커스, Tab 순환, 닫을 때 포커스 복귀.
    onCancel 을 의존성에 넣지 않는다 — 부모가 인라인 함수를 넘기면 매 렌더 effect 가
    다시 돌아 focus() 가 재실행되고, 한글 조합 중이면 글자가 깨진다. */
+/* 확인 모달은 공통 컴포넌트(AdminConfirmModal)로 옮겼다.
+   focus trap·ESC·배경 클릭·포커스 복귀·한글 IME 대응은 전부 그쪽에 있다.
+   여기서는 어떤 문구와 색으로 보여줄지만 정한다. 동작과 모양은 이전과 같다. */
 function ConfirmModal({ action, post, pendingCount, busy, onCancel, onConfirm }: {
   action: PostReportAction
   post: CommunityPost
@@ -811,50 +815,19 @@ function ConfirmModal({ action, post, pendingCount, busy, onCancel, onConfirm }:
   onCancel: () => void
   onConfirm: () => void
 }) {
-  const boxRef = useRef<HTMLDivElement>(null)
-  const openerRef = useRef<Element | null>(null)
-  const cancelRef = useRef(onCancel)
-  useEffect(() => { cancelRef.current = onCancel })
-
-  useEffect(() => {
-    openerRef.current = document.activeElement
-    const box = boxRef.current
-    box?.querySelector<HTMLElement>('[data-autofocus], button')?.focus()
-
-    const prevOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') { e.preventDefault(); cancelRef.current(); return }
-      if (e.key !== 'Tab' || !box) return
-      const items = box.querySelectorAll<HTMLElement>(
-        'button:not([disabled]), input, textarea, a[href], [tabindex]:not([tabindex="-1"])')
-      if (items.length === 0) return
-      const first = items[0], last = items[items.length - 1]
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus() }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus() }
-    }
-    document.addEventListener('keydown', onKey)
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = prevOverflow
-      ;(openerRef.current as HTMLElement | null)?.focus?.()
-    }
-  }, [])
-
   const isHidden = post.status === 'hidden'
   const spec = action === 'dismiss'
     ? {
       title: '이 글의 신고를 반려할까요?',
       confirm: '신고 반려',
-      cls: styles.btnGhost,
+      tone: 'ghost' as const,
       desc: `미처리 신고 ${pendingCount}건이 모두 반려 처리됩니다. 글 공개 상태는 바뀌지 않습니다.`,
     }
     : action === 'hide_and_resolve'
       ? {
         title: isHidden ? '숨김을 유지하고 처리할까요?' : '이 글을 숨기고 처리할까요?',
         confirm: isHidden ? '숨김 유지하고 처리' : '글 숨기고 처리',
-        cls: isHidden ? styles.btnDone : styles.btnWarn,
+        tone: (isHidden ? 'success' : 'warn') as 'success' | 'warn',
         desc: isHidden
           ? `글은 이미 숨김 상태라 그대로 두고, 미처리 신고 ${pendingCount}건만 조치 완료로 기록합니다.`
           : `글이 사이트에서 보이지 않게 되고 미처리 신고 ${pendingCount}건이 조치 완료로 기록됩니다. 삭제되지 않으며 숨김 글 탭에서 다시 공개할 수 있습니다.`,
@@ -862,27 +835,24 @@ function ConfirmModal({ action, post, pendingCount, busy, onCancel, onConfirm }:
       : {
         title: '이 글을 다시 공개할까요?',
         confirm: '다시 공개',
-        cls: styles.btnGhost,
+        tone: 'ghost' as const,
         desc: '글이 사이트에 다시 보입니다. 과거 신고의 처리 상태는 바뀌지 않습니다.',
       }
 
   return (
-    <div className={styles.overlay} onClick={onCancel}>
-      <div ref={boxRef} className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="post-report-modal-title"
-        onClick={e => e.stopPropagation()}>
-        <h2 id="post-report-modal-title" className={styles.modalTitle}>{spec.title}</h2>
-        <p className={styles.modalBody}>
-          <b>{postTitle(post)}</b>
-          <span style={{ color: 'var(--muted)' }}> · {BOARD_LABEL[post.board] ?? post.board}</span>
-        </p>
-        <p className={styles.modalMuted}>{spec.desc}</p>
-        <div className={styles.modalActs}>
-          <button type="button" className={`${styles.btn} ${styles.btnGhost}`} onClick={onCancel} disabled={busy}>취소</button>
-          <button type="button" data-autofocus className={`${styles.btn} ${spec.cls}`} onClick={onConfirm} disabled={busy}>
-            {busy ? '처리 중…' : spec.confirm}
-          </button>
-        </div>
-      </div>
-    </div>
+    <AdminConfirmModal
+      labelledById="post-report-modal-title"
+      title={spec.title}
+      body={<>
+        <b>{postTitle(post)}</b>
+        <span style={{ color: 'var(--muted)' }}> · {BOARD_LABEL[post.board] ?? post.board}</span>
+      </>}
+      description={spec.desc}
+      confirmLabel={spec.confirm}
+      tone={spec.tone}
+      busy={busy}
+      onCancel={onCancel}
+      onConfirm={onConfirm}
+    />
   )
 }

@@ -1,0 +1,33 @@
+/* 관리자 확인 모달 공통 스타일.
+   postReports.module.css 안에 있던 규칙을 그대로 옮겼다. 보이는 모양은 같다.
+   색·radius·그림자는 globals.css 토큰만 쓴다. */
+
+.overlay {
+  position: fixed; inset: 0; z-index: 60; background: rgba(0, 0, 0, .4);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.modal {
+  width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto;
+  background: var(--surface); border-radius: var(--r); padding: 24px; box-shadow: var(--sh-lg);
+}
+.title { font-size: 18px; font-weight: 900; color: var(--text); margin-bottom: 10px; }
+.body { font-size: 14px; color: var(--text); line-height: 1.7; word-break: break-word; }
+.muted { font-size: 13px; color: var(--muted); line-height: 1.6; margin-top: 10px; }
+.acts { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 44px; padding: 0 20px; border-radius: var(--r-sm);
+  font-family: inherit; font-size: 14px; font-weight: 800; cursor: pointer;
+  border: 1px solid transparent; text-decoration: none;
+}
+.btn:disabled { opacity: .5; cursor: default; }
+.btnGhost { background: var(--surface); border-color: var(--border); color: var(--text); font-weight: 700; }
+.btnGhost:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.btnPrimary { background: var(--accent); color: #fff; }
+.btnDanger { background: var(--red); color: #fff; }
+.btnSuccess { background: var(--green); color: #fff; }
+.btnWarn { background: var(--surface); border-color: #D9A400; color: #A87A00; }
+.btnWarn:hover:not(:disabled) { background: rgba(245, 177, 0, .12); }
+
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
