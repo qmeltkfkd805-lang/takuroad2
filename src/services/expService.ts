@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import type { Database } from '@/types/database'
 
 export interface LevelInfo {
   level: number
@@ -89,18 +91,44 @@ export interface AddExpResult {
   totalExp: number
 }
 
-interface GrantOpts { once?: boolean; dailyCap?: number }
+/* client 를 넘기면 그 클라이언트로 지급한다 (서버 경로 = service_role).
+   안 넘기면 지금까지처럼 브라우저 클라이언트를 만든다 — 기존 동작 그대로다.
 
-// EXP 지급 — 유일한 진입점. 배율 적용 후 grant_exp RPC로 위임.
-export async function addExp(
+   ⚠️ 서버에서 브라우저 클라이언트를 만들면 세션이 없어 anon 이 된다.
+      grant_exp 는 anon EXECUTE 를 회수했으므로(rpc_caller_guards.sql) 42501 로 막힌다.
+      /api/admin/reevaluate-badges 의 배지 보너스 XP 가 실제로 이렇게 죽어 있었다. */
+interface GrantOpts {
+  once?: boolean
+  dailyCap?: number
+  client?: SupabaseClient<Database>
+}
+
+/** grant_exp 가 돌려주는 행. Database 타입이 any 라 RPC 응답에 타입이 안 붙어서 여기서 정의한다. */
+interface GrantExpRow {
+  from_level: number
+  to_level: number
+  gained: number
+  total_exp: number
+}
+
+/** 지급 결과와 실패 사유를 구분해서 돌려준다.
+ *  ok: true, result: null 은 "RPC 는 통했는데 지급분이 0" 이다 (멱등 차단·일일 상한).
+ *  이건 실패가 아니다. 실패는 ok: false 뿐이다. */
+export type AddExpOutcome =
+  | { ok: true; result: AddExpResult | null }
+  | { ok: false; error: string }
+
+/** EXP 지급 본체. 배율 적용 후 grant_exp RPC 로 위임한다.
+ *  실패를 삼키지 않고 그대로 돌려주므로, 서버에서 부분 실패를 보고할 수 있다. */
+export async function addExpDetailed(
   userId: string,
   amount: number,
   reason: string,
   relatedType?: string,
   relatedId?: string,
   opts?: GrantOpts,
-): Promise<AddExpResult | null> {
-  const supabase = createClient()
+): Promise<AddExpOutcome> {
+  const supabase = opts?.client ?? createClient()
   const { data, error } = await supabase.rpc('grant_exp', {
     p_user_id: userId,
     p_amount: Math.round(amount * XP_MULTIPLIER),
@@ -109,11 +137,13 @@ export async function addExp(
     p_related_id: relatedId ?? null,
     p_once: opts?.once ?? false,
     p_daily_cap: opts?.dailyCap ?? null,
-  } as any)
+  } as never)
 
-  if (error) { console.error('[grant_exp 실패]', error.message); return null }
-  const row: any = Array.isArray(data) ? data[0] : data
-  if (!row) return null
+  if (error) return { ok: false, error: error.message }
+
+  const row = (Array.isArray(data) ? data[0] : data) as GrantExpRow | null | undefined
+  if (!row) return { ok: true, result: null }
+
   const result: AddExpResult = {
     from: row.from_level,
     to: row.to_level,
@@ -122,25 +152,51 @@ export async function addExp(
     totalExp: row.total_exp,
   }
   // 레벨업 → 전역 이벤트 (본인 것만 뜨도록 userId 포함) + 그 사이 레벨의 보상
+  // 서버에서는 window 가 없으므로 자연히 건너뛴다.
   if (result.leveledUp && typeof window !== 'undefined') {
     const rewards = await getLevelRewards(result.from, result.to)
     window.dispatchEvent(new CustomEvent(LEVELUP_EVENT, { detail: { ...result, userId, rewards } }))
   }
-  return result
+  return { ok: true, result }
+}
+
+// EXP 지급 — 유일한 진입점. 기존 호출부의 계약(실패하면 null)을 그대로 유지한다.
+export async function addExp(
+  userId: string,
+  amount: number,
+  reason: string,
+  relatedType?: string,
+  relatedId?: string,
+  opts?: GrantOpts,
+): Promise<AddExpResult | null> {
+  const out = await addExpDetailed(userId, amount, reason, relatedType, relatedId, opts)
+  if (!out.ok) { console.error('[grant_exp 실패]', out.error); return null }
+  return out.result
 }
 
 /** 일회성 XP — 같은 (user, reason, related_id) 있으면 지급 안 함 (RPC에서 멱등 처리). */
 export async function addExpOnce(
   userId: string, amount: number, reason: string, relatedType?: string, relatedId?: string,
+  client?: SupabaseClient<Database>,
 ): Promise<AddExpResult | null> {
-  return addExp(userId, amount, reason, relatedType, relatedId, { once: true })
+  return addExp(userId, amount, reason, relatedType, relatedId, { once: true, client })
+}
+
+/** addExpOnce 와 같은데 실패 사유를 그대로 돌려준다.
+ *  서버에서 "배지는 들어갔는데 EXP 만 실패" 를 보고해야 할 때 쓴다. */
+export async function addExpOnceDetailed(
+  userId: string, amount: number, reason: string, relatedType?: string, relatedId?: string,
+  client?: SupabaseClient<Database>,
+): Promise<AddExpOutcome> {
+  return addExpDetailed(userId, amount, reason, relatedType, relatedId, { once: true, client })
 }
 
 /** 일일 상한 XP — 오늘 그 reason 합이 상한 미만일 때만 (RPC에서 처리). */
 export async function addExpDailyCapped(
   userId: string, amount: number, reason: string, perDay: number,
+  client?: SupabaseClient<Database>,
 ): Promise<AddExpResult | null> {
-  return addExp(userId, amount, reason, undefined, undefined, { dailyCap: perDay })
+  return addExp(userId, amount, reason, undefined, undefined, { dailyCap: perDay, client })
 }
 
 export interface LevelReward {

@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/client'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '@/types/database'
 import { countActivity } from './growthService'
-import { addExpOnce, BADGE_XP_BY_RARITY } from './expService'
+import { addExpOnceDetailed, BADGE_XP_BY_RARITY } from './expService'
 
 export type BadgeRarity = 'common' | 'rare' | 'epic' | 'legendary'
 
@@ -364,10 +364,52 @@ export async function getUnvisitedShopsForTag(userId: string, tag: string) {
     .filter((s: any) => s && !visitedIds.has(s.id))
 }
 
-// 자동 배지 평가 (체크인 후 호출)
-export async function evaluateBadgeTiersForUser(userId: string, client?: SupabaseClient<Database>): Promise<string[]> {
+/* ── 자동 배지 평가 ─────────────────────────────────────────
+
+   ⭐ 지급에 쓴 클라이언트를 보너스 EXP 까지 그대로 넘긴다.
+      예전에는 배지 insert 만 넘겨받은 client 로 하고 EXP 는 addExpOnce 가
+      브라우저 클라이언트를 새로 만들어 지급했다. 서버(/api/admin/reevaluate-badges)
+      에서는 그 클라이언트에 세션이 없어 anon 이 되고, grant_exp 의 anon EXECUTE 를
+      회수한 뒤로는 42501 로 막혀서 "배지는 들어가고 EXP 만 빠지는" 상태였다.
+      게다가 try/catch 가 조용히 삼켜서 관리자에게 아무것도 안 보였다.
+
+   ⭐ 결과를 두 갈래로 구분해서 돌려준다 — 지급 성공 / EXP 만 실패 / 판정·insert 실패.
+      기존 호출부(브라우저 4곳)는 evaluateBadgeTiersForUser 가 예전처럼
+      tierId 배열을 돌려주므로 손대지 않았다.                                   */
+
+export interface BadgeGrantOutcome {
+  tierId: string
+  tierName: string
+  /** 이 배지에 걸린 보너스 EXP. 0 이면 원래 안 주는 배지다. */
+  exp: number
+  /** exp 가 0 이면 줄 게 없으므로 true 로 둔다. */
+  expGranted: boolean
+  expError: string | null
+}
+
+export interface BadgeEvalFailure {
+  tierId: string
+  tierName: string
+  stage: 'condition' | 'insert'
+  message: string
+}
+
+export interface BadgeEvalResult {
+  /** 이번에 새로 지급된 배지 */
+  earned: BadgeGrantOutcome[]
+  /** 배지는 들어갔는데 보너스 EXP 가 실패한 건 (earned 의 부분집합) */
+  expFailures: BadgeGrantOutcome[]
+  /** 배지 자체를 못 준 건 — 조건 판정이 터졌거나 insert 가 실패했다 */
+  failures: BadgeEvalFailure[]
+}
+
+export async function evaluateBadgeTiersDetailed(
+  userId: string,
+  client?: SupabaseClient<Database>,
+): Promise<BadgeEvalResult> {
   const supabase = client ?? createClient()
-  const newlyEarned: string[] = []
+  const earned: BadgeGrantOutcome[] = []
+  const failures: BadgeEvalFailure[] = []
 
   const { data: tiers } = await supabase
     .from('badge_tiers')
@@ -375,7 +417,7 @@ export async function evaluateBadgeTiersForUser(userId: string, client?: Supabas
     .eq('award_type', 'automatic')
     .eq('is_active', true)
 
-  if (!tiers) return []
+  if (!tiers) return { earned, expFailures: [], failures }
 
   const { data: existing } = await supabase
     .from('user_badge_tiers')
@@ -393,33 +435,63 @@ export async function evaluateBadgeTiersForUser(userId: string, client?: Supabas
       if (tier.available_until && now > new Date(tier.available_until)) continue
     }
 
+    const tierName: string = tier.name ?? '배지'
+
     // ⚠️ 배지 하나가 터져도 나머지 평가는 계속돼야 한다.
     //    (옛 조건 하나가 에러를 던지면 뒤의 성장 배지가 전부 안 돌던 버그)
     try {
       const qualifies = await checkTierCondition(userId, tier, existingIds, supabase)
-      if (qualifies) {
-        const { error } = await supabase
-          .from('user_badge_tiers')
-          .insert({ user_id: userId, badge_tier_id: tier.id } as any)
-        if (error) {
-          console.error('[배지 지급 실패]', tier.name, error.message)
+      if (!qualifies) continue
+
+      const { error } = await supabase
+        .from('user_badge_tiers')
+        .insert({ user_id: userId, badge_tier_id: tier.id } as any)
+
+      if (error) {
+        // 23505 = 이미 그 배지를 가지고 있다. 평가가 동시에 두 번 돌면(AppShell·체크인·
+        // 활동 훅이 각각 부른다) 양쪽 다 "없음"으로 읽고 둘 다 insert 를 시도한다.
+        // 먼저 넣은 쪽이 EXP 까지 처리하므로 여기서는 조용히 넘어간다. 오류가 아니다.
+        if (error.code === '23505') continue
+        console.error('[배지 지급 실패]', tierName, error.message)
+        failures.push({ tierId: tier.id, tierName, stage: 'insert', message: error.message })
+        continue
+      }
+
+      console.log('[배지 획득]', tierName)
+
+      // ⭐ 배지 보너스 XP (tier당 1회) — reward_exp 우선, 없으면 등급 기본값
+      //    중복 키는 예전 그대로다: reason='badge', related_type='badge', related_id=tier.id + once
+      //    재평가를 여러 번 돌려도 같은 배지의 보너스는 한 번만 들어간다.
+      // tier 는 이미 any 다 (Database 타입이 any라 select('*') 결과에 타입이 안 붙는다).
+      // 그래서 여기엔 별도 캐스트가 필요 없다.
+      const xp: number = tier.reward_exp ?? BADGE_XP_BY_RARITY[tier.rarity ?? 'common'] ?? 15
+      const outcome: BadgeGrantOutcome = {
+        tierId: tier.id, tierName, exp: xp, expGranted: xp <= 0, expError: null,
+      }
+      if (xp > 0) {
+        const out = await addExpOnceDetailed(userId, xp, 'badge', 'badge', tier.id, supabase)
+        if (out.ok) {
+          outcome.expGranted = true
         } else {
-          newlyEarned.push(tier.id)
-          console.log('[배지 획득]', tier.name)
-          // ⭐ 배지 보너스 XP (tier당 1회) — reward_exp 우선, 없으면 등급 기본값
-          const xp = (tier as any).reward_exp ?? BADGE_XP_BY_RARITY[tier.rarity ?? 'common'] ?? 15
-          if (xp > 0) {
-            try { await addExpOnce(userId, xp, 'badge', 'badge', tier.id) }
-            catch (e) { console.error('[배지 XP 실패]', tier.name, e) }
-          }
+          outcome.expError = out.error
+          console.error('[배지 XP 실패]', tierName, out.error)
         }
       }
+      earned.push(outcome)
     } catch (e) {
-      console.error('[배지 판정 실패]', tier.name, tier.condition_type, e)
+      const message = e instanceof Error ? e.message : String(e)
+      console.error('[배지 판정 실패]', tierName, tier.condition_type, e)
+      failures.push({ tierId: tier.id, tierName, stage: 'condition', message })
     }
   }
 
-  return newlyEarned
+  return { earned, expFailures: earned.filter(o => !o.expGranted), failures }
+}
+
+/** 기존 호출부용 — 새로 얻은 tier id 배열만 돌려준다. 시그니처·동작 그대로. */
+export async function evaluateBadgeTiersForUser(userId: string, client?: SupabaseClient<Database>): Promise<string[]> {
+  const r = await evaluateBadgeTiersDetailed(userId, client)
+  return r.earned.map(o => o.tierId)
 }
 
 async function checkTierCondition(userId: string, tier: any, earnedTierIds: Set<string>, supabase: SupabaseClient<Database>): Promise<boolean> {
