@@ -2,8 +2,11 @@
 
 import { useState, useRef, useCallback } from 'react'
 import Cropper from 'react-easy-crop'
-import { uploadShopMainImage, setShopMainImage } from '@/services/shopService'
+import { uploadShopImage, setShopMainImage } from '@/services/shopService'
 import { getCroppedImageFile, CropArea } from '@/lib/utils/cropImage'
+import {
+  SHOP_IMAGE_PRESET, ALLOWED_INPUT_MIME, UploadError, UPLOAD_ERROR_TEXT,
+} from '@/lib/utils/imageEncode'
 
 interface Props {
   shopSlug: string
@@ -25,6 +28,11 @@ export default function ShopMainImageUploader({ shopSlug, shopId, currentImageUr
   function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
+    if (!file.type || !ALLOWED_INPUT_MIME.has(file.type)) {
+      alert(UPLOAD_ERROR_TEXT['unsupported-type'])
+      e.target.value = ''
+      return
+    }
     setRawImageSrc(URL.createObjectURL(file))
   }
 
@@ -34,15 +42,31 @@ export default function ShopMainImageUploader({ shopSlug, shopId, currentImageUr
 
   async function handleSaveCrop() {
     if (!rawImageSrc || !croppedAreaPixels) return
+    if (uploading) return                        // 중복 클릭 방지
     setUploading(true)
 
-    const croppedFile = await getCroppedImageFile(rawImageSrc, croppedAreaPixels, `main-${Date.now()}.jpg`, rotation)
-    const url = await uploadShopMainImage(croppedFile, shopSlug)
-
-    if (url) {
-      await setShopMainImage(shopId, url)
-      setSavedImageUrl(url)
-      onUploaded?.(url)
+    try {
+      const croppedFile = await getCroppedImageFile(
+        rawImageSrc, croppedAreaPixels, `main-${Date.now()}.webp`, rotation,
+        SHOP_IMAGE_PRESET,
+      )
+      const r = await uploadShopImage(croppedFile, shopSlug)
+      if (!r.ok) {
+        alert(UPLOAD_ERROR_TEXT[r.code])
+      } else {
+        const saved = await setShopMainImage(shopId, r.url)
+        if (!saved) {
+          // Storage DELETE 정책상 클라이언트에서 되돌릴 수 없다.
+          // 참조 없는 파일로 남으므로 다음 고아 정리에서 회수된다.
+          console.error('[DB 저장 실패] 정리 대상 =', `${r.bucket}/${r.path}`)
+          alert(UPLOAD_ERROR_TEXT['db-failed'])
+        } else {
+          setSavedImageUrl(r.url)
+          onUploaded?.(r.url)
+        }
+      }
+    } catch (e) {
+      alert(UPLOAD_ERROR_TEXT[e instanceof UploadError ? e.code : 'encode-failed'])
     }
 
     setRawImageSrc(null)
@@ -168,7 +192,7 @@ export default function ShopMainImageUploader({ shopSlug, shopId, currentImageUr
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*"
+        accept="image/jpeg,image/png,image/webp"
         onChange={handleFileSelect}
         style={{ display: 'none' }}
       />

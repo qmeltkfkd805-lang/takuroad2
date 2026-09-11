@@ -3,6 +3,7 @@ import { recordShopRegisterActivity } from '@/services/activityService'
 import { geekAreaFromAddr } from '@/lib/utils/geekArea'
 import { resolveEventCover } from '@/lib/event/eventCover'
 import { Shop } from '@/types/shop'
+import { UploadErrorCode, extOfMime, uuid } from '@/lib/utils/imageEncode'
 
 export function toShop(raw: any): Shop {
   // 카테고리는 shops.cats(text[]) 컬럼에 직접 저장 — categories/shop_categories 테이블 의존 제거.
@@ -949,19 +950,46 @@ export async function deleteAccount(userId: string): Promise<boolean> {
   return true
 }
 
-export async function uploadShopMainImage(file: File, shopSlug: string): Promise<string | null> {
+/** 샵 슬러그는 Storage 경로의 첫 조각이 된다.
+ *  createShop 은 클라이언트가 보낸 slug 를 trim() 만 해서 쓰므로 여기서 다시 검증한다.
+ *  정제해서 다른 폴더에 쓰면 샵과 경로가 어긋나므로 거부한다.
+ *  (2026-09-11 확인: 기존 shops.slug 중 이 형식을 벗어나는 것 0건) */
+const SAFE_SLUG = /^[a-z0-9][a-z0-9-]{0,79}$/
+
+export type UploadResult =
+  | { ok: true; url: string; bucket: 'shop-images'; path: string }
+  | { ok: false; code: UploadErrorCode }
+
+/** 샵 이미지 업로드. 실패 원인을 구분해 돌려준다.
+ *  경로 확장자와 Content-Type 을 같은 file.type 에서 뽑으므로 둘이 어긋날 수 없다. */
+export async function uploadShopImage(file: File, shopSlug: string): Promise<UploadResult> {
+  if (!SAFE_SLUG.test(shopSlug)) return { ok: false, code: 'invalid-target' }
+
+  // file.type 이 빈 문자열이면 거부한다. 파일명으로 MIME 을 추측하지 않는다.
+  const ext = file.type ? extOfMime(file.type) : null
+  if (!ext) return { ok: false, code: 'unsupported-type' }
+
   const supabase = createClient()
-  const ext = file.name.split('.').pop()
-  const path = `${shopSlug}/main/${Date.now()}.${ext}`
+  // Date.now() 단독은 빠른 다중 업로드에서 충돌한다. UUID 로 고유성을 보장하고
+  // 타임스탬프는 정렬·추적용으로만 남긴다. 사용자 입력 파일명은 경로에 넣지 않는다.
+  const path = `${shopSlug}/main/${Date.now()}-${uuid()}.${ext}`
 
   const { error } = await supabase.storage
     .from('shop-images')
-    .upload(path, file)
-
-  if (error) return null
+    .upload(path, file, { contentType: file.type, upsert: false })
+  if (error) {
+    console.error('[uploadShopImage]', error.message)   // 응답 전문·URL·키는 남기지 않는다
+    return { ok: false, code: 'upload-failed' }
+  }
 
   const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
-  return data.publicUrl
+  return { ok: true, url: data.publicUrl, bucket: 'shop-images', path }
+}
+
+/** 기존 시그니처 유지 — 다른 호출부가 있으면 그대로 동작한다 */
+export async function uploadShopMainImage(file: File, shopSlug: string): Promise<string | null> {
+  const r = await uploadShopImage(file, shopSlug)
+  return r.ok ? r.url : null
 }
 
 export async function setShopMainImage(shopId: string, imageUrl: string): Promise<boolean> {

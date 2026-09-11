@@ -5,11 +5,15 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import {
   getShopImages, addShopImage, deleteShopImage,
-  setShopCoverImage, reorderShopImages, uploadShopMainImage,
+  setShopCoverImage, reorderShopImages, uploadShopImage,
   ShopImageRow,
 } from '@/services/shopService'
 import Cropper from 'react-easy-crop'
 import { getCroppedImageFile, CropArea } from '@/lib/utils/cropImage'
+import { normalizeImageFile } from '@/lib/utils/normalizeImage'
+import {
+  SHOP_IMAGE_PRESET, ALLOWED_INPUT_MIME, UploadError, UPLOAD_ERROR_TEXT,
+} from '@/lib/utils/imageEncode'
 import styles from './photosManage.module.css'
 
 const MAX_PHOTOS = 10
@@ -139,19 +143,25 @@ export default function PhotosManage({ shop, embedded = false, onCoverChange, on
   /* ── 업로드 (클릭 · 드래그앤드롭 공용) ── */
   async function handleFiles(list: File[]) {
     if (!list.length || !user || busy) return
-    const errs: string[] = []
+    setUploadErrors([])
+
+    // state 로 넘기는 것은 항상 복사본이다. 이 배열 자체를 state 가 참조하게 두면
+    // 아래 업로드 루프에서 계속 push 하는 동안 state 가 들고 있는 값이 변형된다.
+    const errors: string[] = []
     const seen = new Set<string>()
     const picked: File[] = []
 
     for (const f of list) {
-      if (!f.type.startsWith('image/')) { errs.push(`${f.name} · 이미지 파일이 아니에요`); continue }
+      if (!f.type || !ALLOWED_INPUT_MIME.has(f.type)) {
+        errors.push(`${f.name} · ${UPLOAD_ERROR_TEXT['unsupported-type']}`); continue
+      }
       const key = `${f.name}:${f.size}`
-      if (seen.has(key)) { errs.push(`${f.name} · 같은 파일이 중복돼 한 장만 올려요`); continue }
+      if (seen.has(key)) { errors.push(`${f.name} · 같은 파일이 중복돼 한 장만 올려요`); continue }
       seen.add(key)
-      if (images.length + picked.length >= MAX_PHOTOS) { errs.push(`${f.name} · 최대 ${MAX_PHOTOS}장까지만 올릴 수 있어요`); continue }
+      if (images.length + picked.length >= MAX_PHOTOS) { errors.push(`${f.name} · 최대 ${MAX_PHOTOS}장까지만 올릴 수 있어요`); continue }
       picked.push(f)
     }
-    setUploadErrors(errs)
+    setUploadErrors([...errors])
     if (fileRef.current) fileRef.current.value = ''
     if (!picked.length) return
 
@@ -161,16 +171,31 @@ export default function PhotosManage({ shop, embedded = false, onCoverChange, on
     let order = images.length
     for (let i = 0; i < picked.length; i++) {
       const f = picked[i]
-      const url = await uploadShopMainImage(f, shop.slug)
-      if (url) {
-        await addShopImage(shop.id, url, user.id, order)
+      try {
+        // 크롭을 거치지 않아도 같은 규격을 적용한다 — 장변 2048 WebP q0.82
+        // 이 이름은 로컬 File 의 라벨일 뿐이다. 실제 Storage 경로는
+        // uploadShopImage 가 타임스탬프+UUID 로 따로 만든다. 고유할 필요가 없다.
+        const normalized = await normalizeImageFile(
+          f, `main-${i}.webp`, SHOP_IMAGE_PRESET,
+        )
+        const r = await uploadShopImage(normalized, shop.slug)
+        if (!r.ok) { errors.push(`${f.name} · ${UPLOAD_ERROR_TEXT[r.code]}`); continue }
+
+        const added = await addShopImage(shop.id, r.url, user.id, order)
+        if (!added) {
+          // Storage DELETE 정책상 클라이언트에서 되돌릴 수 없다.
+          // 참조 없는 파일로 남으므로 다음 고아 정리에서 회수된다.
+          console.error('[DB 저장 실패] 정리 대상 =', `${r.bucket}/${r.path}`)
+          errors.push(`${f.name} · ${UPLOAD_ERROR_TEXT['db-failed']}`); continue
+        }
         order++
-      } else {
-        errs.push(`${f.name} · 업로드에 실패했어요`)
+      } catch (e) {
+        const code = e instanceof UploadError ? e.code : 'encode-failed'
+        errors.push(`${f.name} · ${UPLOAD_ERROR_TEXT[code]}`)
       }
       setUploading({ done: i + 1, total: picked.length })
     }
-    setUploadErrors([...errs])
+    setUploadErrors([...errors])
     await load()
     setUploading(null)
     setBusy(false)
@@ -260,9 +285,16 @@ export default function PhotosManage({ shop, embedded = false, onCoverChange, on
     const wasCover = cropTarget.is_cover
     const so = cropTarget.sort_order
     try {
-      const file = await getCroppedImageFile(cropTarget.image_url, caPixels, `crop-${Date.now()}.jpg`, rotation)
-      const url = await uploadShopMainImage(file, shop.slug)
-      if (!url) { alert('저장에 실패했어요.'); setCropBusy(false); return }
+      const file = await getCroppedImageFile(
+        cropTarget.image_url, caPixels, `crop-${Date.now()}.webp`, rotation,
+        SHOP_IMAGE_PRESET,
+      )
+      const r = await uploadShopImage(file, shop.slug)
+      if (!r.ok) {
+        alert(UPLOAD_ERROR_TEXT[r.code])
+        setCropTarget(null); setCropBusy(false); return
+      }
+      const url = r.url
       if (dirty) await persistOrder()
       await addShopImage(shop.id, url, user.id, so)
       await deleteShopImage(cropTarget.id)
@@ -322,11 +354,11 @@ export default function PhotosManage({ shop, embedded = false, onCoverChange, on
               : full ? `사진을 ${MAX_PHOTOS}장 다 채웠어요`
                 : '사진을 끌어다 놓거나 클릭해서 추가'}
           </span>
-          <span className={styles.uploadSub}>JPG, PNG · 최대 {MAX_PHOTOS}장</span>
+          <span className={styles.uploadSub}>JPG, PNG, WebP · 최대 {MAX_PHOTOS}장</span>
         </span>
         <span className={styles.uploadBtn}>사진 선택</span>
       </button>
-      <input ref={fileRef} type="file" accept="image/*" multiple onChange={onPick} hidden />
+      <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={onPick} hidden />
 
       {uploadErrors.length > 0 && (
         <div className={styles.uploadErrors}>
