@@ -6,6 +6,7 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import {
   getShopImages, addShopImage, deleteShopImage,
   setShopCoverImage, reorderShopImages, uploadShopImage,
+  updateShopImageSource, removeUploadedObject,
   ShopImageRow,
 } from '@/services/shopService'
 import Cropper from 'react-easy-crop'
@@ -56,6 +57,9 @@ export default function PhotosManage({ shop, embedded = false, onCoverChange, on
   const [rotation, setRotation] = useState(0)
   const [caPixels, setCaPixels] = useState<CropArea | null>(null)
   const [cropBusy, setCropBusy] = useState(false)
+  /* 동기 실행 잠금. setCropBusy 는 리렌더가 비동기라 같은 프레임의 두 번째 클릭이
+     통과할 수 있다. cropBusy state 는 버튼 표시 전용이다. */
+  const cropLockRef = useRef(false)
 
   useEffect(() => { imagesRef.current = images }, [images])
   useEffect(() => { onDirtyChange?.(dirty)   }, [dirty])
@@ -280,40 +284,47 @@ export default function PhotosManage({ shop, embedded = false, onCoverChange, on
     setCropTarget(img)
   }
 
-  // 잘라서 저장 — 원본은 잘린 새 이미지로 교체(같은 자리·대표 유지)
+  /* 잘라서 저장 — 같은 행을 제자리에서 갱신한다.
+     새 행을 만들고 구 행을 지우던 방식은 구 Storage 객체를 고아로 만들었다.
+     id·is_cover·sort_order·uploaded_by·created_at 이 그대로 유지되므로
+     대표 사진을 크롭해도 cover 전환 RPC 를 부를 필요가 없다.
+     구 객체는 AFTER UPDATE 트리거가 정리 큐에 적재한다
+     (구 행의 storage_path 가 NULL 인 기존 행은 적재되지 않는다).
+     기존 객체를 여기서 직접 지우지 않는다. */
   async function saveCrop() {
     if (!cropTarget || !caPixels || !user) return
+    if (cropLockRef.current) return          // 중복 실행 방지 (동기)
+    cropLockRef.current = true
     setCropBusy(true)
-    const wasCover = cropTarget.is_cover
-    const so = cropTarget.sort_order
+    const target = cropTarget
     try {
       const file = await getCroppedImageFile(
-        cropTarget.image_url, caPixels, `crop-${Date.now()}.webp`, rotation,
+        target.image_url, caPixels, `crop-${Date.now()}.webp`, rotation,
         SHOP_IMAGE_PRESET,
       )
       const r = await uploadShopImage(file, shop.slug)
-      if (!r.ok) {
-        alert(UPLOAD_ERROR_TEXT[r.code])
-        setCropTarget(null); setCropBusy(false); return
-      }
-      const url = r.url
+      if (!r.ok) { alert(UPLOAD_ERROR_TEXT[r.code]); return }
+      const ref = { bucket: r.bucket, path: r.path }
+
       if (dirty) await persistOrder()
-      const newId = await addShopImage(shop.id, url, user.id, so, {
-        bucket: r.bucket, path: r.path,
-      })
-      if (!newId) {
+
+      const ok = await updateShopImageSource(target.id, r.url, ref)
+      if (!ok) {
+        // 방금 올린 새 객체만 정확한 path 로 되돌린다. 구 객체는 건드리지 않는다.
+        await removeUploadedObject(ref)
         alert(UPLOAD_ERROR_TEXT['db-failed'])
-        setCropTarget(null); setCropBusy(false); return
+        return
       }
-      await deleteShopImage(cropTarget.id)
-      if (wasCover) await setShopCoverImage(shop.id, newId)
+
       await load()
       if (!embedded) router.refresh()
     } catch {
       alert('이미지를 불러오지 못했어요. 새로고침 후 다시 시도해주세요.')
+    } finally {
+      cropLockRef.current = false
+      setCropTarget(null)
+      setCropBusy(false)
     }
-    setCropTarget(null)
-    setCropBusy(false)
   }
 
   // 크게 보이는 사진 = 대표 사진 (썸네일을 누르면 대표가 바뀐다)

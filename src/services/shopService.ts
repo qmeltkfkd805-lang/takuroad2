@@ -1143,6 +1143,44 @@ export async function deleteShopImage(imageId: string): Promise<boolean> {
   return !error
 }
 
+/** 크롭 교체 — 같은 행의 출처만 바꾼다.
+ *  image_url · storage_bucket · storage_path 세 필드만 건드린다.
+ *  id · shop_id · is_cover · sort_order · uploaded_by · created_at 은 그대로 유지된다.
+ *  구 객체는 AFTER UPDATE 트리거가 정리 큐에 적재한다. 여기서 Storage 를 지우지 않는다.
+ *  storage 가 비정상이면 거부한다 — image_url 과 path 가 어긋난 행을 만들지 않는다. */
+export async function updateShopImageSource(
+  imageId: string,
+  imageUrl: string,
+  storage: StorageRef,
+): Promise<boolean> {
+  if (!isSaneStorageRef(storage)) {
+    console.error('[updateShopImageSource] 비정상 storage 참조 — 거부한다')
+    return false
+  }
+
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('shop_images')
+    .update({
+      image_url: imageUrl,
+      storage_bucket: storage.bucket,
+      storage_path: storage.path,
+    })
+    .eq('id', imageId)
+    .select('id')
+
+  if (error) {
+    console.error('[updateShopImageSource]', error.message)
+    return false
+  }
+  // RLS 가 막으면 error 는 null 인데 0행이 돌아온다. 성공으로 오판하면 안 된다.
+  if (!data || data.length !== 1) {
+    console.error('[updateShopImageSource] 변경된 행 없음 — 권한 없음 또는 대상 없음')
+    return false
+  }
+  return true
+}
+
 /** 대표 사진 지정 — RPC 하나로 원자 처리한다. 행을 지우지 않고 기존 대표를 갤러리로 강등한다.
  *  클라이언트에서 update 를 두 번으로 나누지 않는다 (그 사이에 cover 0개·2개 창이 열린다).
  *  RPC 는 SECURITY INVOKER 라 shop_images UPDATE RLS 가 그대로 최종 방어선이다. */
