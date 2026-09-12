@@ -52,6 +52,7 @@ psql "postgresql://postgres:<비밀번호>@db.<프로젝트ref>.supabase.co:5432
 
 | 날짜 | 파일 | 내용 |
 | --- | --- | --- |
+| 2026-09-12 | `storage_shop_images_insert_policies.sql` | 🚨 보안 — 샵 이미지 INSERT 정책 최소 권한화. `work_img_upload`(버킷만 검사 → 로그인한 누구나 shop-images 아무 경로에 업로드 가능) 등 3개를 제거하고 용도별 5개로 분리. 경로 깊이 고정·2번째 폴더 허용 목록·예약 프리픽스 차단·`banners`/`notices`/`works` 관리자 전용 |
 | 2026-09-11 | `storage_shop_images_delete_policy.sql` | 샵 이미지 DELETE 정책 수정 — `storage.foldername(shops.name)` 인자 오류로 아무도 삭제 못 하던 것을 `path_tokens` 기준으로 재작성. 인증 샵 소유자 또는 관리자, `main`·`highlights`·`events` 경로만 |
 | 2026-09-03 | `shop_verify_requests_cleanup.sql` | 🚨 보안 — 쓰기 권한 회수(`TRUNCATE`·`TRIGGER`·`UPDATE`·`DELETE`), INSERT는 5개 컬럼만. `reject_reason` 컬럼 분리(기존 7건 backfill 안 함) |
 | 2026-09-03 | `shops_write_privileges.sql` | 🚨 보안 — `shops` 테이블 쓰기 권한을 걷고 안전한 컬럼만 재허용. `TRUNCATE`·`TRIGGER` 회수, `anon` 쓰기 전면 차단, INSERT 값 강제·`status` 전이·정보확인 시각 트리거 3개 |
