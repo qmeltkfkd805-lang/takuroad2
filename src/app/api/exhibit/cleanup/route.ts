@@ -1,24 +1,34 @@
 import { NextResponse } from 'next/server'
 import { serviceClient } from '@/lib/supabase/service'
+import { env } from '@/lib/env'
+import type { SelectAllFn } from '@/lib/storage/canonicalRef'
+import {
+  runCleanup, BATCH, MAX_ATTEMPTS, PURGE_DAYS,
+  type QueueRow, type QueueStore,
+} from '@/lib/storage/cleanupWorker'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-/* 전시 스토리지 정리 워커 (크론 전용)
+/* Storage 정리 워커 (크론 전용)
    GET|POST /api/exhibit/cleanup   헤더: Authorization: Bearer <CRON_SECRET>  (또는 x-cron-secret)
 
-   DELETE 시 즉시 정리가 실패한 분(트리거가 exhibit_storage_cleanup_queue에 적재)을 처리한다.
-   - pending + attempts < MAX + lease 만료된 행만 배치로 claim(lease_until 조건부 UPDATE = 행 단위 원자적)
-   - 버킷은 화이트리스트만 허용(큐 행이 오염돼도 다른 버킷을 지우지 못하게)
-   - 성공 → status='done', done_at 기록 / 실패 → attempts+1, MAX 도달 시 status='failed'
-   - 마지막에 done_at이 PURGE_DAYS 지난 행 삭제 */
+   경로 이름은 exhibit 시절 그대로다. vercel.json 의 cron 이 이 경로를 부르므로 바꾸지 않는다.
+   실제로는 exhibit-images 와 shop-images 를 함께 처리한다.
 
-const BATCH = 50            // 한 번에 처리할 큐 행 수
-const MAX_ATTEMPTS = 5      // 이 횟수 도달하면 status='failed'로 격리
-const LEASE_MIN = 5         // claim 유지 시간(분)
-const REMOVE_CHUNK = 100    // storage.remove 한 번에 보낼 경로 수
-const PURGE_DAYS = 30       // done 행 보관 기간
-const ALLOWED_BUCKETS = new Set(['exhibit-images'])
+   Next.js 16 문서 확인 (node_modules/next/dist/docs)
+     01-app/01-getting-started/15-route-handlers.md
+       · Route Handler 는 기본적으로 캐시되지 않는다. GET 만 opt-in 대상이며
+         이 라우트는 force-dynamic 이라 해당 없다
+     01-app/03-api-reference/03-file-conventions/02-route-segment-config/runtime.md
+       · runtime 은 'nodejs' | 'edge' 이고 'nodejs' 가 기본값이다. 유효한 옵션이다
+       · edge 는 Cache Components 비지원 — 여기서는 nodejs 를 유지한다
+
+   구체적인 삭제 규칙과 안전 원칙은 lib/storage/cleanupWorker.ts 참고. */
+
+/** 한 번에 가져올 행 수와 전체 상한. 상한을 넘기면 조용히 덜 훑지 않고 실패시킨다. */
+const PAGE = 1000
+const ROW_CAP = 50_000
 
 function authorized(req: Request): boolean {
   const secret = process.env.CRON_SECRET
@@ -35,110 +45,110 @@ function authorized(req: Request): boolean {
   return diff === 0
 }
 
-async function run() {
+const QUEUE = 'exhibit_storage_cleanup_queue'
+
+/* Next.js 16 은 route 파일의 export 를 핸들러·세그먼트 설정으로 제한한다.
+   (.next/types 검증에서 TS2344 로 걸린다) 그래서 export 하지 않는다. */
+async function buildDeps() {
   const svc = serviceClient()
-  const nowIso = new Date().toISOString()
-  const leaseIso = new Date(Date.now() + LEASE_MIN * 60_000).toISOString()
-  const freeLease = `lease_until.is.null,lease_until.lt.${nowIso}`
+  const supabaseHost = new URL(env.supabase.url).host
 
-  // 1) 후보 조회 (오래된 것부터)
-  const { data: cands, error: selErr } = await svc.from('exhibit_storage_cleanup_queue')
-    .select('id')
-    .eq('status', 'pending')
-    .lt('attempts', MAX_ATTEMPTS)
-    .or(freeLease)
-    .order('created_at', { ascending: true })
-    .limit(BATCH)
-  if (selErr) throw new Error(selErr.message)
-
-  const ids = (cands ?? []).map((r: any) => r.id)
-  if (!ids.length) return { claimed: 0, deleted: 0, failed: 0, purged: await purge(svc) }
-
-  // 2) claim — lease 조건을 UPDATE에 그대로 걸어 다른 워커와 겹치지 않게
-  const { data: claimed, error: claimErr } = await svc.from('exhibit_storage_cleanup_queue')
-    .update({ claimed_at: nowIso, lease_until: leaseIso })
-    .in('id', ids)
-    .eq('status', 'pending')
-    .or(freeLease)
-    .select('id, bucket_id, object_path, attempts')
-  if (claimErr) throw new Error(claimErr.message)
-
-  const rows = (claimed ?? []) as { id: number; bucket_id: string; object_path: string; attempts: number }[]
-  if (!rows.length) return { claimed: 0, deleted: 0, failed: 0, purged: await purge(svc) }
-
-  const okIds: number[] = []
-  const failures: { row: typeof rows[number]; message: string }[] = []
-
-  // 3) 허용되지 않은 버킷은 바로 실패 처리
-  const usable: typeof rows = []
-  for (const r of rows) {
-    if (!r.bucket_id || !ALLOWED_BUCKETS.has(r.bucket_id) || !r.object_path) {
-      failures.push({ row: r, message: `허용되지 않은 대상: ${r.bucket_id}` })
-    } else usable.push(r)
-  }
-
-  // 4) 버킷별로 묶어서 삭제
-  const byBucket = new Map<string, typeof rows>()
-  for (const r of usable) {
-    const arr = byBucket.get(r.bucket_id) ?? []
-    arr.push(r)
-    byBucket.set(r.bucket_id, arr)
-  }
-  for (const [bucket, group] of byBucket) {
-    for (let i = 0; i < group.length; i += REMOVE_CHUNK) {
-      const chunk = group.slice(i, i + REMOVE_CHUNK)
-      try {
-        const { error } = await svc.storage.from(bucket).remove(chunk.map(r => r.object_path))
-        if (error) throw error
-        // 이미 없는 객체도 성공으로 취급(멱등) — 목표는 "남아있지 않은 상태"
-        okIds.push(...chunk.map(r => r.id))
-      } catch (e: any) {
-        const message = String(e?.message ?? e ?? '삭제 실패').slice(0, 500)
-        for (const r of chunk) failures.push({ row: r, message })
-      }
+  /* PostgREST 는 기본 페이지 크기가 있으므로 range 로 끝까지 읽는다.
+     한 페이지만 읽고 끝내면 참조를 놓쳐 오삭제로 이어진다. */
+  const selectAll: SelectAllFn = async (table, columns) => {
+    const out: Record<string, unknown>[] = []
+    for (let from = 0; ; from += PAGE) {
+      if (from >= ROW_CAP) throw new Error(`row cap exceeded: ${table}`)
+      const { data, error } = await svc.from(table)
+        .select(columns.join(','))
+        .range(from, from + PAGE - 1)
+      if (error) throw new Error(`${table}: ${error.message}`)
+      const rows = (data ?? []) as unknown as Record<string, unknown>[]
+      out.push(...rows)
+      if (rows.length < PAGE) break
     }
+    return out
   }
 
-  // 5) 결과 반영
-  if (okIds.length) {
-    await svc.from('exhibit_storage_cleanup_queue')
-      .update({ status: 'done', done_at: new Date().toISOString(), lease_until: null, last_error: null })
-      .in('id', okIds)
-  }
-  for (const f of failures) {
-    const attempts = (f.row.attempts ?? 0) + 1
-    await svc.from('exhibit_storage_cleanup_queue')
-      .update({
-        attempts,
-        status: attempts >= MAX_ATTEMPTS ? 'failed' : 'pending',
-        lease_until: null,
-        last_error: f.message,
-      })
-      .eq('id', f.row.id)
+  const freeLease = (nowIso: string) => `lease_until.is.null,lease_until.lt.${nowIso}`
+
+  const queue: QueueStore = {
+    async listClaimable(limit, maxAttempts, nowIso) {
+      const { data, error } = await svc.from(QUEUE)
+        .select('id')
+        .eq('status', 'pending')
+        .lt('attempts', maxAttempts)
+        .or(freeLease(nowIso))
+        .order('created_at', { ascending: true })
+        .limit(limit)
+      if (error) throw new Error(error.message)
+      return (data ?? []) as unknown as { id: number }[]
+    },
+    async claim(ids, nowIso, leaseIso) {
+      const { data, error } = await svc.from(QUEUE)
+        .update({ claimed_at: nowIso, lease_until: leaseIso })
+        .in('id', ids)
+        .eq('status', 'pending')
+        .or(freeLease(nowIso))
+        .select('id, bucket_id, object_path, attempts')
+      if (error) throw new Error(error.message)
+      return (data ?? []) as unknown as QueueRow[]
+    },
+    async markDone(ids, doneIso) {
+      if (!ids.length) return
+      await svc.from(QUEUE)
+        .update({ status: 'done', done_at: doneIso, lease_until: null, last_error: null })
+        .in('id', ids)
+    },
+    async markBlocked(id, message) {
+      // 참조가 실제로 확인된 경우. attempts 는 올리지 않는다.
+      // status 에 blocked 값이 없으므로 failed + last_error 접두어로 구분한다.
+      // 자동 재처리되지 않는다. 운영자가 별도로 재검사·재큐잉해야 한다.
+      await svc.from(QUEUE)
+        .update({ status: 'failed', lease_until: null, last_error: message.slice(0, 500) })
+        .eq('id', id)
+    },
+    async markFailure(id, attempts, status, message) {
+      await svc.from(QUEUE)
+        .update({ attempts, status, lease_until: null, last_error: message.slice(0, 500) })
+        .eq('id', id)
+    },
+    async release(ids) {
+      // 검사가 불완전해 손대지 못한 경우. pending 복귀 + lease 해제. attempts 유지.
+      if (!ids.length) return
+      await svc.from(QUEUE)
+        .update({ status: 'pending', lease_until: null, claimed_at: null })
+        .in('id', ids)
+    },
+    async purge(cutoffIso) {
+      const { data } = await svc.from(QUEUE)
+        .delete()
+        .eq('status', 'done')
+        .lt('done_at', cutoffIso)
+        .select('id')
+      return (data ?? []).length
+    },
   }
 
-  return { claimed: rows.length, deleted: okIds.length, failed: failures.length, purged: await purge(svc) }
-}
+  const removeObjects = async (bucket: string, paths: string[]) => {
+    const { error } = await svc.storage.from(bucket).remove(paths)
+    if (error) throw error
+  }
 
-/* done 상태로 PURGE_DAYS 지난 행 정리 */
-async function purge(svc: ReturnType<typeof serviceClient>): Promise<number> {
-  const cutoff = new Date(Date.now() - PURGE_DAYS * 24 * 60 * 60_000).toISOString()
-  const { data } = await svc.from('exhibit_storage_cleanup_queue')
-    .delete()
-    .eq('status', 'done')
-    .lt('done_at', cutoff)
-    .select('id')
-  return (data ?? []).length
+  return { selectAll, queue, removeObjects, supabaseHost, now: () => new Date() }
 }
 
 async function handle(req: Request) {
   if (!authorized(req)) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
   try {
-    const result = await run()
-    return NextResponse.json({ ok: true, ...result }, { headers: { 'Cache-Control': 'no-store' } })
-  } catch (e: any) {
-    console.error('[exhibit cleanup]', e?.message ?? e)
-    return NextResponse.json({ ok: false, error: e?.message ?? 'cleanup failed' }, { status: 500 })
+    const result = await runCleanup(await buildDeps())
+    return NextResponse.json({ ok: true, batch: BATCH, maxAttempts: MAX_ATTEMPTS, purgeDays: PURGE_DAYS, ...result },
+      { headers: { 'Cache-Control': 'no-store' } })
+  } catch (e) {
+    // 응답 전문·URL·키는 남기지 않는다
+    const message = e instanceof Error ? e.message : 'cleanup failed'
+    console.error('[storage cleanup]', message)
+    return NextResponse.json({ ok: false, error: message }, { status: 500 })
   }
 }
 
