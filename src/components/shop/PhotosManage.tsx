@@ -181,7 +181,9 @@ export default function PhotosManage({ shop, embedded = false, onCoverChange, on
         const r = await uploadShopImage(normalized, shop.slug)
         if (!r.ok) { errors.push(`${f.name} · ${UPLOAD_ERROR_TEXT[r.code]}`); continue }
 
-        const added = await addShopImage(shop.id, r.url, user.id, order)
+        const added = await addShopImage(shop.id, r.url, user.id, order, {
+          bucket: r.bucket, path: r.path,
+        })
         if (!added) {
           // Storage DELETE 정책상 클라이언트에서 되돌릴 수 없다.
           // 참조 없는 파일로 남으므로 다음 고아 정리에서 회수된다.
@@ -296,11 +298,15 @@ export default function PhotosManage({ shop, embedded = false, onCoverChange, on
       }
       const url = r.url
       if (dirty) await persistOrder()
-      await addShopImage(shop.id, url, user.id, so)
+      const newId = await addShopImage(shop.id, url, user.id, so, {
+        bucket: r.bucket, path: r.path,
+      })
+      if (!newId) {
+        alert(UPLOAD_ERROR_TEXT['db-failed'])
+        setCropTarget(null); setCropBusy(false); return
+      }
       await deleteShopImage(cropTarget.id)
-      const rows = await getShopImages(shop.id)
-      const nw = rows.find(r => r.image_url === url)
-      if (wasCover && nw) await setShopCoverImage(shop.id, nw.id)
+      if (wasCover) await setShopCoverImage(shop.id, newId)
       await load()
       if (!embedded) router.refresh()
     } catch {

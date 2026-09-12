@@ -2,7 +2,10 @@
 
 import { useState, useRef, useCallback } from 'react'
 import Cropper from 'react-easy-crop'
-import { uploadShopImage, setShopMainImage } from '@/services/shopService'
+import {
+  uploadShopImage, addShopImage, deleteShopImage,
+  setShopCoverImage, removeUploadedObject,
+} from '@/services/shopService'
 import { getCroppedImageFile, CropArea } from '@/lib/utils/cropImage'
 import {
   SHOP_IMAGE_PRESET, ALLOWED_INPUT_MIME, UploadError, UPLOAD_ERROR_TEXT,
@@ -11,12 +14,20 @@ import {
 interface Props {
   shopSlug: string
   shopId: string
+  /** 로그인 사용자 id. 상위(ShopForm)가 useAuth 로 이미 갖고 있는 값을 그대로 받는다.
+   *  이 컴포넌트에서 auth.getUser() 를 새로 부르지 않는다.
+   *  uploaded_by 기록용이며 권한 근거가 아니다 — 소유권 판정은 RLS 가 한다. */
+  userId: string
   currentImageUrl?: string | null
   onUploaded?: (url: string) => void
 }
 
-export default function ShopMainImageUploader({ shopSlug, shopId, currentImageUrl, onUploaded }: Props) {
+export default function ShopMainImageUploader({ shopSlug, shopId, userId, currentImageUrl, onUploaded }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null)
+  /* 동기 실행 잠금. setUploading 은 리렌더가 비동기라 같은 프레임 안의
+     두 번째 클릭이 클로저의 옛 uploading(false)을 보고 통과한다.
+     중복 실행 방지는 이 ref 가 맡고, uploading state 는 버튼 라벨·disabled 표시 전용이다. */
+  const uploadLockRef = useRef(false)
   const [savedImageUrl, setSavedImageUrl] = useState<string | null>(currentImageUrl ?? null)
   const [rawImageSrc, setRawImageSrc] = useState<string | null>(null)
   const [crop, setCrop] = useState({ x: 0, y: 0 })
@@ -40,9 +51,16 @@ export default function ShopMainImageUploader({ shopSlug, shopId, currentImageUr
     setCroppedAreaPixels(croppedAreaPixelsValue)
   }, [])
 
+  /* 새 파일 업로드 → DB 행 안전 추가 → 원자적 대표 전환 → 성공 후에만 화면 갱신.
+     기존 대표 행과 기존 Storage 객체는 어느 경로에서도 건드리지 않는다.
+     이전 대표는 삭제되지 않고 갤러리 사진으로 강등된다. */
   async function handleSaveCrop() {
+    // 입력 검증은 잠금을 잡기 전에 끝낸다 — 잡았다 푸는 경로를 만들지 않는다.
     if (!rawImageSrc || !croppedAreaPixels) return
-    if (uploading) return                        // 중복 클릭 방지
+    if (!userId) return                          // 로그인 사용자가 없으면 시작하지 않는다
+
+    if (uploadLockRef.current) return            // 중복 클릭 방지 (동기)
+    uploadLockRef.current = true
     setUploading(true)
 
     try {
@@ -50,29 +68,43 @@ export default function ShopMainImageUploader({ shopSlug, shopId, currentImageUr
         rawImageSrc, croppedAreaPixels, `main-${Date.now()}.webp`, rotation,
         SHOP_IMAGE_PRESET,
       )
+
+      // 1) 새 객체 업로드
       const r = await uploadShopImage(croppedFile, shopSlug)
-      if (!r.ok) {
-        alert(UPLOAD_ERROR_TEXT[r.code])
-      } else {
-        const saved = await setShopMainImage(shopId, r.url)
-        if (!saved) {
-          // Storage DELETE 정책상 클라이언트에서 되돌릴 수 없다.
-          // 참조 없는 파일로 남으므로 다음 고아 정리에서 회수된다.
-          console.error('[DB 저장 실패] 정리 대상 =', `${r.bucket}/${r.path}`)
-          alert(UPLOAD_ERROR_TEXT['db-failed'])
-        } else {
-          setSavedImageUrl(r.url)
-          onUploaded?.(r.url)
-        }
+      if (!r.ok) { alert(UPLOAD_ERROR_TEXT[r.code]); return }
+      const ref = { bucket: r.bucket, path: r.path }
+
+      // 2) 갤러리 사진으로 먼저 추가한다 (is_cover=false). 기존 대표는 그대로다.
+      const newId = await addShopImage(shopId, r.url, userId, 0, ref)
+      if (!newId) {
+        await removeUploadedObject(ref)
+        alert(UPLOAD_ERROR_TEXT['db-failed'])
+        return
       }
+
+      // 3) 원자적 대표 전환. 실패하면 방금 만든 것만 되돌린다.
+      const promoted = await setShopCoverImage(shopId, newId)
+      if (!promoted) {
+        const rowGone = await deleteShopImage(newId)
+        if (rowGone) await removeUploadedObject(ref)
+        else console.error('[롤백 실패] 신규 행 =', newId, '/ 정리 대상 =', `${ref.bucket}/${ref.path}`)
+        alert('대표 사진 지정에 실패했어요.')
+        return                                   // 성공 표시·미리보기 갱신 안 함
+      }
+
+      // 4) 성공한 뒤에만 화면을 갱신한다
+      setSavedImageUrl(r.url)
+      onUploaded?.(r.url)
     } catch (e) {
       alert(UPLOAD_ERROR_TEXT[e instanceof UploadError ? e.code : 'encode-failed'])
+    } finally {
+      // 어떤 경로로 빠져나가도 잠금을 반드시 푼다
+      uploadLockRef.current = false
+      setRawImageSrc(null)
+      setRotation(0)
+      setZoom(1)
+      setUploading(false)
     }
-
-    setRawImageSrc(null)
-    setRotation(0)
-    setZoom(1)
-    setUploading(false)
   }
 
   function handleCancelCrop() {

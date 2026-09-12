@@ -52,6 +52,7 @@ psql "postgresql://postgres:<비밀번호>@db.<프로젝트ref>.supabase.co:5432
 
 | 날짜 | 파일 | 내용 |
 | --- | --- | --- |
+| 2026-09-12 | `shop_images_cover_transition.sql` | 대표 사진 교체를 행 삭제 → `is_cover` 강등으로 전환. `setShopMainImage` 가 기존 대표 행을 지워 원본 Storage 를 고아로 만들던 구조 제거. 원자적 전환 RPC `shop_images_set_cover`(SECURITY INVOKER, authenticated 전용), 샵당 대표 1개 부분 유니크 인덱스, 출처 기록 컬럼 `storage_bucket`·`storage_path`(nullable, backfill 없음) |
 | 2026-09-12 | `storage_shop_images_insert_policies.sql` | 🚨 보안 — 샵 이미지 INSERT 정책 최소 권한화. `work_img_upload`(버킷만 검사 → 로그인한 누구나 shop-images 아무 경로에 업로드 가능) 등 3개를 제거하고 용도별 5개로 분리. 경로 깊이 고정·2번째 폴더 허용 목록·예약 프리픽스 차단·`banners`/`notices`/`works` 관리자 전용 |
 | 2026-09-11 | `storage_shop_images_delete_policy.sql` | 샵 이미지 DELETE 정책 수정 — `storage.foldername(shops.name)` 인자 오류로 아무도 삭제 못 하던 것을 `path_tokens` 기준으로 재작성. 인증 샵 소유자 또는 관리자, `main`·`highlights`·`events` 경로만 |
 | 2026-09-03 | `shop_verify_requests_cleanup.sql` | 🚨 보안 — 쓰기 권한 회수(`TRUNCATE`·`TRIGGER`·`UPDATE`·`DELETE`), INSERT는 5개 컬럼만. `reject_reason` 컬럼 분리(기존 7건 backfill 안 함) |

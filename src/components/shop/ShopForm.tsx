@@ -159,12 +159,13 @@ export default function ShopForm({ mode, shop }: Props) {
 
       <div style={{ padding: '20px 16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-        {mode === 'edit' && shop && (
+        {mode === 'edit' && shop && user && (
           <>
             <CompletenessIndicator shopId={shop.id} />
             <ShopMainImageUploader
               shopSlug={shop.slug}
               shopId={shop.id}
+              userId={user.id}
               currentImageUrl={shop.images[0] ?? null}
             />
           </>

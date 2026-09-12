@@ -992,18 +992,52 @@ export async function uploadShopMainImage(file: File, shopSlug: string): Promise
   return r.ok ? r.url : null
 }
 
-export async function setShopMainImage(shopId: string, imageUrl: string): Promise<boolean> {
+/* setShopMainImage 는 제거했다.
+   기존 대표 행을 먼저 delete 해서 원본 Storage 객체를 참조 없는 고아로 만드는 구조였다.
+   대표 전환은 addShopImage 로 행을 먼저 만든 뒤 setShopCoverImage(RPC)로 처리한다. */
+
+/** 업로드 결과가 돌려준 정확한 출처. URL 을 파싱해서 만들지 않는다.
+ *  클라이언트가 DB 로 보내는 값이므로 권한 근거로 신뢰하지 않는다 — 기록용이다. */
+export interface StorageRef {
+  bucket: 'shop-images'
+  path: string
+}
+
+function hasControlChar(s: string): boolean {
+  for (let i = 0; i < s.length; i++) {
+    const c = s.charCodeAt(i)
+    if (c < 0x20 || c === 0x7f) return true
+  }
+  return false
+}
+
+/** 편의 검증. DB CHECK 와 RLS 를 대체하지 않는다. */
+function isSaneStorageRef(ref: StorageRef): boolean {
+  const p = ref.path
+  return ref.bucket === 'shop-images'
+    && typeof p === 'string'
+    && p.trim() !== ''
+    && !p.startsWith('/')
+    && !p.startsWith('shop-images/')
+    && !p.includes('://')
+    && !p.includes('\\')
+    && !/(^|\/)\.\.(\/|$)/.test(p)
+    && !hasControlChar(p)
+}
+
+/** 방금 업로드한 객체 1개만 지운다. 업로드 결과의 path 만 받는다 — URL 을 다시 파싱하지 않는다. */
+export async function removeUploadedObject(ref: StorageRef): Promise<boolean> {
+  if (!isSaneStorageRef(ref)) {
+    console.error('[removeUploadedObject] 비정상 참조 — 삭제를 시도하지 않는다')
+    return false
+  }
   const supabase = createClient()
-
-  // 기존 대표사진(is_cover=true)을 전부 삭제
-  await supabase.from('shop_images').delete().eq('shop_id', shopId).eq('is_cover', true)
-
-  // 새 이미지를 대표사진으로 추가
-  const { error } = await supabase
-    .from('shop_images')
-    .insert({ shop_id: shopId, image_url: imageUrl, is_cover: true, sort_order: 0 } as any)
-
-  return !error
+  const { error } = await supabase.storage.from(ref.bucket).remove([ref.path])
+  if (error) {
+    console.error('[Storage 롤백 실패] 정리 대상 =', `${ref.bucket}/${ref.path}`)
+    return false
+  }
+  return true
 }
 
 
@@ -1063,12 +1097,44 @@ export async function getShopImages(shopId: string): Promise<ShopImageRow[]> {
   return (data ?? []) as ShopImageRow[]
 }
 
-export async function addShopImage(shopId: string, imageUrl: string, userId: string, sortOrder: number): Promise<boolean> {
+/** 갤러리 사진 추가. 항상 is_cover=false 로 넣는다.
+ *  성공하면 새 행 id 를 돌려준다 — 실패 롤백과 대표 전환에 필요하다.
+ *  storage 는 선택 인자다. 기존 호출부는 넘기지 않아도 그대로 동작한다. */
+export async function addShopImage(
+  shopId: string,
+  imageUrl: string,
+  userId: string,
+  sortOrder: number,
+  storage?: StorageRef,
+): Promise<string | null> {
   const supabase = createClient()
-  const { error } = await supabase
+  const row: Record<string, unknown> = {
+    shop_id: shopId,
+    image_url: imageUrl,
+    is_cover: false,
+    sort_order: sortOrder,
+    uploaded_by: userId,
+  }
+  if (storage) {
+    if (isSaneStorageRef(storage)) {
+      row.storage_bucket = storage.bucket
+      row.storage_path = storage.path
+    } else {
+      // 출처만 비우고 행은 넣는다. 롤백은 업로드 결과의 path 로 하므로 영향이 없다.
+      console.error('[addShopImage] 비정상 storage 참조 — 출처를 저장하지 않는다')
+    }
+  }
+
+  const { data, error } = await supabase
     .from('shop_images')
-    .insert({ shop_id: shopId, image_url: imageUrl, is_cover: false, sort_order: sortOrder, uploaded_by: userId } as any)
-  return !error
+    .insert(row as any)
+    .select('id')
+    .single()
+  if (error) {
+    console.error('[addShopImage]', error.message)
+    return null
+  }
+  return (data as { id: string }).id
 }
 
 export async function deleteShopImage(imageId: string): Promise<boolean> {
@@ -1077,12 +1143,21 @@ export async function deleteShopImage(imageId: string): Promise<boolean> {
   return !error
 }
 
-/** 대표 사진 지정 — 기존 cover 해제 후 지정 (행을 지우지 않는다) */
+/** 대표 사진 지정 — RPC 하나로 원자 처리한다. 행을 지우지 않고 기존 대표를 갤러리로 강등한다.
+ *  클라이언트에서 update 를 두 번으로 나누지 않는다 (그 사이에 cover 0개·2개 창이 열린다).
+ *  RPC 는 SECURITY INVOKER 라 shop_images UPDATE RLS 가 그대로 최종 방어선이다. */
 export async function setShopCoverImage(shopId: string, imageId: string): Promise<boolean> {
   const supabase = createClient()
-  await supabase.from('shop_images').update({ is_cover: false } as any).eq('shop_id', shopId).eq('is_cover', true)
-  const { error } = await supabase.from('shop_images').update({ is_cover: true, sort_order: 0 } as any).eq('id', imageId)
-  return !error
+  const { data, error } = await supabase.rpc('shop_images_set_cover', {
+    p_shop_id: shopId,
+    p_image_id: imageId,
+  })
+  if (error) {
+    // 응답 전문·URL·키는 남기지 않는다
+    console.error('[setShopCoverImage]', error.code ?? error.message)
+    return false
+  }
+  return (data as { ok?: boolean } | null)?.ok === true
 }
 
 /** 순서 일괄 갱신 */
