@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { uploadContentAddressed } from '@/lib/storage/contentAddressed'
 import { EventHomeType } from '@/services/eventHomeService'
 import { BusinessHours } from '@/types/database'
 import { getEventDetail } from '@/services/eventDetailService'
@@ -325,6 +326,10 @@ export async function uploadEventCover(file: File): Promise<{ url: string | null
   if (file.size > 5 * 1024 * 1024) return { url: null, error: '사진은 5MB 이하만 올릴 수 있어요.' }
 
   const supabase = createClient()
+
+  /* 내용 주소 경로 우선. 같은 포스터를 여러 이벤트 커버로 써도 객체는 하나다. */
+  const ca = await uploadContentAddressed(supabase, 'event-goods', file)
+  if (!ca.fallback) return ca.error ? { url: null, error: ca.error } : { url: ca.url, error: null }
   const mime = file.type.split('/')[1]
   const ext = mime && /^[a-z0-9]+$/i.test(mime) ? (mime === 'jpeg' ? 'jpg' : mime) : 'jpg'
   const rand = typeof crypto !== 'undefined' && crypto.randomUUID
