@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { prepareImage } from '@/lib/storage/compressImage'
 import { uploadContentAddressed } from '@/lib/storage/contentAddressed'
 import { EventHomeType } from '@/services/eventHomeService'
 import { BusinessHours } from '@/types/database'
@@ -328,7 +329,10 @@ export async function uploadEventCover(file: File): Promise<{ url: string | null
   const supabase = createClient()
 
   /* 내용 주소 경로 우선. 같은 포스터를 여러 이벤트 커버로 써도 객체는 하나다. */
-  const ca = await uploadContentAddressed(supabase, 'event-goods', file)
+  // 포스터는 글자가 많아 넉넉하게 준다 (2048 / q92)
+  const prep = await prepareImage(file, 2048, 0.92)
+  const up = prep.compressed ? new File([prep.data], `x.${prep.ext}`, { type: prep.contentType }) : file
+  const ca = await uploadContentAddressed(supabase, 'event-goods', up)
   if (!ca.fallback) return ca.error ? { url: null, error: ca.error } : { url: ca.url, error: null }
   const mime = file.type.split('/')[1]
   const ext = mime && /^[a-z0-9]+$/i.test(mime) ? (mime === 'jpeg' ? 'jpg' : mime) : 'jpg'

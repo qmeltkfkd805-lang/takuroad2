@@ -41,10 +41,11 @@ export async function uploadWorkImage(
   file: File, slug: string, kind: 'cover' | 'banner'
 ): Promise<string | null> {
   const supabase = createClient()
-  const ext = file.name.split('.').pop()
-  const path = `works/${slug}/${kind}/${Date.now()}.${ext}`
-  const { error } = await supabase.storage.from('shop-images').upload(path, file)
+  const prep = await prepareImage(file)
+  const path = `works/${slug}/${kind}/${Date.now()}.${prep.ext}`
+  const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { contentType: prep.contentType })
   if (error) return null
   const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
   return data.publicUrl
 }
+import { prepareImage } from '@/lib/storage/compressImage'

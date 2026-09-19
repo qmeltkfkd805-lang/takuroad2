@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { prepareImage } from '@/lib/storage/compressImage'
 import { recordReviewActivity, recordPhotoActivity } from '@/services/activityService'
 import { geekAreaFromAddr } from '@/lib/utils/geekArea'
 import { Review, ReviewFormData } from '@/types/review'
@@ -140,12 +141,12 @@ export async function uploadReviewImages(
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i]
-    const ext = file.name.split('.').pop()
-    const path = `${reviewId}/${i}.${ext}`
+    const prep = await prepareImage(file)
+    const path = `${reviewId}/${i}.${prep.ext}`
 
     const { error } = await supabase.storage
       .from('review-images')
-      .upload(path, file, { upsert: true })
+      .upload(path, prep.data, { contentType: prep.contentType, upsert: true })
 
     if (!error) {
       const { data } = supabase.storage

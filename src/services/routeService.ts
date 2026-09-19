@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { prepareImage } from '@/lib/storage/compressImage'
 import { recordRouteCreatedActivity } from '@/services/activityService'
 import { calcDistance } from '@/hooks/useCurrentLocation'
 
@@ -337,9 +338,9 @@ export async function getMyRouteProgress(userId: string) {
 
 export async function uploadRouteCover(file: File, userId: string, routeKey: string): Promise<string | null> {
   const supabase = createClient()
-  const ext = file.name.split('.').pop()
-  const path = `routes/${userId}/${routeKey}/${Date.now()}.${ext}`
-  const { error } = await supabase.storage.from('shop-images').upload(path, file)
+  const prep = await prepareImage(file)
+  const path = `routes/${userId}/${routeKey}/${Date.now()}.${prep.ext}`
+  const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { contentType: prep.contentType })
   if (error) { console.error('[route cover upload]', error); return null }
   const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
   return data.publicUrl

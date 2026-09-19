@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { prepareImage } from '@/lib/storage/compressImage'
 
 export async function getShopHighlights(shopId: string) {
   const supabase = createClient()
@@ -29,12 +30,12 @@ export async function deleteHighlight(id: string): Promise<boolean> {
 
 export async function uploadHighlightImage(file: File, shopSlug: string): Promise<string | null> {
   const supabase = createClient()
-  const ext = file.name.split('.').pop()
-  const path = `${shopSlug}/highlights/${Date.now()}.${ext}`
+  const prep = await prepareImage(file)
+  const path = `${shopSlug}/highlights/${Date.now()}.${prep.ext}`
 
   const { error } = await supabase.storage
     .from('shop-images')
-    .upload(path, file)
+    .upload(path, prep.data, { contentType: prep.contentType })
 
   if (error) return null
 

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { prepareImage } from '@/lib/storage/compressImage'
 import { recordShopRegisterActivity } from '@/services/activityService'
 import { geekAreaFromAddr } from '@/lib/utils/geekArea'
 import { resolveEventCover } from '@/lib/event/eventCover'
@@ -972,11 +973,12 @@ export async function uploadShopImage(file: File, shopSlug: string): Promise<Upl
   const supabase = createClient()
   // Date.now() 단독은 빠른 다중 업로드에서 충돌한다. UUID 로 고유성을 보장하고
   // 타임스탬프는 정렬·추적용으로만 남긴다. 사용자 입력 파일명은 경로에 넣지 않는다.
-  const path = `${shopSlug}/main/${Date.now()}-${uuid()}.${ext}`
+  const prep = await prepareImage(file)
+  const path = `${shopSlug}/main/${Date.now()}-${uuid()}.${prep.ext}`
 
   const { error } = await supabase.storage
     .from('shop-images')
-    .upload(path, file, { contentType: file.type, upsert: false })
+    .upload(path, prep.data, { contentType: prep.contentType, upsert: false })
   if (error) {
     console.error('[uploadShopImage]', error.message)   // 응답 전문·URL·키는 남기지 않는다
     return { ok: false, code: 'upload-failed' }
@@ -1045,10 +1047,10 @@ export async function removeUploadedObject(ref: StorageRef): Promise<boolean> {
 export async function uploadAvatar(userId: string, file: File): Promise<{ ok: boolean; url?: string; error?: string }> {
   const supabase = createClient()
 
-  const ext = file.name.split('.').pop() || 'jpg'
-  const path = `avatars/${userId}-${Date.now()}.${ext}`
+  const prep = await prepareImage(file, 512, 0.85)
+  const path = `avatars/${userId}-${Date.now()}.${prep.ext}`
 
-  const { error: upErr } = await supabase.storage.from('shop-images').upload(path, file, { upsert: true })
+  const { error: upErr } = await supabase.storage.from('shop-images').upload(path, prep.data, { contentType: prep.contentType, upsert: true })
   if (upErr) return { ok: false, error: '이미지 업로드에 실패했어요' }
 
   const { data } = supabase.storage.from('shop-images').getPublicUrl(path)

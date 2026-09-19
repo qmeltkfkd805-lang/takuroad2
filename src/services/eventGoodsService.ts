@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { prepareImage } from '@/lib/storage/compressImage'
 import { uploadContentAddressed } from '@/lib/storage/contentAddressed'
 
 export type GoodsKind = 'menu' | 'goods'
@@ -113,7 +114,10 @@ export async function uploadGoodsImage(eventId: string, file: File): Promise<Upl
 
   /* 내용 주소 경로를 먼저 시도한다. 같은 이미지를 여러 이벤트에 올려도 객체는 하나다.
      경로에 eventId 가 들어가지 않는다 — 객체가 더 이상 한 이벤트에 종속되지 않기 때문이다. */
-  const ca = await uploadContentAddressed(supabase, 'event-goods', file)
+  // 포스터는 글자가 많아 넉넉하게 준다 (2048 / q92)
+  const prep = await prepareImage(file, 2048, 0.92)
+  const up = prep.compressed ? new File([prep.data], `x.${prep.ext}`, { type: prep.contentType }) : file
+  const ca = await uploadContentAddressed(supabase, 'event-goods', up)
   if (!ca.fallback) return ca.error ? { url: null, error: ca.error } : { url: ca.url, error: null }
 
   /* 해시나 포맷 판정이 불가능할 때만 기존 랜덤 경로로 내려온다. 업로드 자체는 막지 않는다. */

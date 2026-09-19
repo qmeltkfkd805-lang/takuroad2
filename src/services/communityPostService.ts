@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { prepareImage } from '@/lib/storage/compressImage'
 import {
   Board, CommunityPost, NewPost, PostSort, PostComment,
   ReportReason, NewAppeal, PostAppeal,
@@ -52,9 +53,9 @@ async function likedSetFor(ids: string[], userId?: string | null): Promise<Set<s
 // ── 이미지 업로드 ──
 export async function uploadPostImage(file: File, userId: string): Promise<string | null> {
   const supabase = createClient()
-  const ext = file.name.split('.').pop() || 'jpg'
-  const path = `community/${userId}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${ext}`
-  const { error } = await supabase.storage.from('shop-images').upload(path, file)
+  const prep = await prepareImage(file)
+  const path = `community/${userId}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${prep.ext}`
+  const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { contentType: prep.contentType })
   if (error) { console.error('[게시글 이미지 업로드 실패]', error.message); return null }
   const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
   return data.publicUrl
@@ -291,9 +292,9 @@ export async function reportPost(postId: string, userId: string, reason: ReportR
 // ── 이의제기 ──
 export async function uploadAppealImage(file: File, userId: string): Promise<string | null> {
   const supabase = createClient()
-  const ext = file.name.split('.').pop() || 'jpg'
-  const path = `community-appeal/${userId}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${ext}`
-  const { error } = await supabase.storage.from('shop-images').upload(path, file)
+  const prep = await prepareImage(file)
+  const path = `community-appeal/${userId}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${prep.ext}`
+  const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { contentType: prep.contentType })
   if (error) { console.error('[이의제기 이미지 업로드 실패]', error.message); return null }
   const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
   return data.publicUrl

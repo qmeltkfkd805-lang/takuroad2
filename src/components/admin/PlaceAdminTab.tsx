@@ -1,4 +1,5 @@
 'use client'
+import { prepareImage } from '@/lib/storage/compressImage'
 
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -49,9 +50,10 @@ async function uploadPlaceCover(file: File): Promise<{ url: string | null; error
   const rand = typeof crypto !== 'undefined' && crypto.randomUUID
     ? crypto.randomUUID()
     : `${Date.now()}-${Math.random().toString(36).slice(2)}`
-  const path = `covers/${rand}.${ext}`
+  const prep = await prepareImage(file)
+  const path = `covers/${rand}.${prep.ext}`
 
-  const { error } = await supabase.storage.from('places').upload(path, file)
+  const { error } = await supabase.storage.from('places').upload(path, prep.data, { contentType: prep.contentType })
   if (error) {
     console.error('[Place 커버 업로드 실패]', error.message)
     return { url: null, error: error.message }

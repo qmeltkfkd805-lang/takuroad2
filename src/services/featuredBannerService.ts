@@ -1,4 +1,4 @@
-﻿import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 
 export interface FeaturedBanner {
   id: string
@@ -37,9 +37,9 @@ export async function getAllBanners(): Promise<FeaturedBanner[]> {
 // 배너 이미지 업로드 (shop-images 버킷의 banners/ 경로)
 export async function uploadBannerImage(file: File): Promise<string | null> {
   const supabase = createClient()
-  const ext = file.name.split('.').pop()
-  const path = `banners/${Date.now()}.${ext}`
-  const { error } = await supabase.storage.from('shop-images').upload(path, file)
+  const prep = await prepareImage(file)
+  const path = `banners/${Date.now()}.${prep.ext}`
+  const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { contentType: prep.contentType })
   if (error) {
     console.error('배너 업로드 실패:', error.message)
     return null
@@ -47,3 +47,4 @@ export async function uploadBannerImage(file: File): Promise<string | null> {
   const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
   return data.publicUrl
 }
+import { prepareImage } from '@/lib/storage/compressImage'

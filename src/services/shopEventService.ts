@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { prepareImage } from '@/lib/storage/compressImage'
 
 export type ShopEventType =
   | 'notice' | 'event' | 'restock' | 'new_arrival'
@@ -113,12 +114,12 @@ export async function deleteShopEvent(eventId: string): Promise<boolean> {
 
 export async function uploadEventImage(file: File, shopSlug: string): Promise<string | null> {
   const supabase = createClient()
-  const ext = file.name.split('.').pop()
-  const path = `${shopSlug}/events/${Date.now()}.${ext}`
+  const prep = await prepareImage(file)
+  const path = `${shopSlug}/events/${Date.now()}.${prep.ext}`
 
   const { error } = await supabase.storage
     .from('shop-images')
-    .upload(path, file)
+    .upload(path, prep.data, { contentType: prep.contentType })
 
   if (error) return null
 
