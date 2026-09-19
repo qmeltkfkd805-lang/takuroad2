@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { usePostLightbox } from './ImageLightbox'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -92,6 +93,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
   if (syncedFrom !== initial) { setSyncedFrom(initial); setPost(initial) }
 
   const [imgIdx, setImgIdx] = useState(0)
+  const lb = usePostLightbox()
   const [comments, setComments] = useState<PostComment[]>([])
   const highlightId = useSearchParams().get('comment')
   const [commentText, setCommentText] = useState('')
@@ -338,11 +340,12 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
         .gd-comments{grid-area:comments;min-width:0}
       `}</style>
       <div className="gd-grid">
+        {lb.node}
         <div className="gd-main">
           {!goodsHasInlineImg && images.length > 0 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 14 }}>
               {images.map((src, i) => (
-                <img key={i} src={src} alt={`${post.title || '굿즈'} 사진 ${i + 1}`} loading={i === 0 ? 'eager' : 'lazy'} style={{ width: '100%', borderRadius: 14, display: 'block', background: 'var(--surface2)' }} />
+                <img key={i} src={src} alt={`${post.title || '굿즈'} 사진 ${i + 1}`} loading={i === 0 ? 'eager' : 'lazy'} onClick={() => lb.openAt(images, i)} style={{ width: '100%', borderRadius: 14, display: 'block', background: 'var(--surface2)', cursor: 'zoom-in' }} />
               ))}
             </div>
           )}
@@ -356,7 +359,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
             {visBadge}
           </div>
           {goodsHtml && (goodsIsHtml
-            ? <div className="taku-post-body" style={{ fontSize: 14.5, lineHeight: 1.7, margin: '0 0 16px', wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(goodsHtml) }} />
+            ? <div className="taku-post-body" onClick={lb.onBodyClick} style={{ fontSize: 14.5, lineHeight: 1.7, margin: '0 0 16px', wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(goodsHtml) }} />
             : <p style={{ fontSize: 14.5, lineHeight: 1.7, whiteSpace: 'pre-wrap', margin: '0 0 16px' }}>{goodsHtml}</p>)}
           <GoodsInfoCard
             detail={goodsDetail}
@@ -384,9 +387,10 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
   // ── 일반 게시글 본문 ──
   const genericBody = (
     <>
+      {lb.node}
       {showCarousel && (
         <div style={{ position: 'relative', background: '#000' }}>
-          <img src={images[imgIdx]} alt="" style={{ width: '100%', maxHeight: '52vh', objectFit: 'contain', display: 'block' }} />
+          <img src={images[imgIdx]} alt="" onClick={() => lb.openAt(images, imgIdx)} style={{ width: '100%', maxHeight: '52vh', objectFit: 'contain', display: 'block', cursor: 'zoom-in' }} />
           {images.length > 1 && (
             <>
               <button onClick={() => setImgIdx(i => (i - 1 + images.length) % images.length)} style={navBtn('left')}>‹</button>
@@ -430,7 +434,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
         )}
         <div style={{ minHeight: isPage ? 160 : undefined, marginBottom: isPage ? 28 : 16, padding: isPage ? '0 4px' : undefined }}>
           {post.content && (isHtml
-            ? <div className="taku-post-body" style={{ fontSize: isPage ? 16 : 14.5, lineHeight: isPage ? 1.8 : 1.65, margin: 0, wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
+            ? <div className="taku-post-body" onClick={lb.onBodyClick} style={{ fontSize: isPage ? 16 : 14.5, lineHeight: isPage ? 1.8 : 1.65, margin: 0, wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
             : <p style={{ fontSize: isPage ? 16 : 14.5, lineHeight: isPage ? 1.8 : 1.65, whiteSpace: 'pre-wrap', margin: 0 }}>{post.content}</p>)}
         </div>
 
