@@ -116,21 +116,27 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
     return <div style={{ padding: '20px', textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
   }
 
-  const filteredTags = allTags.filter(tag =>
-    tag.name.toLowerCase().includes(tagSearch.toLowerCase())
-  )
+  const nameById = new Map(allTags.map((t: any) => [t.id, t.name]))
+  const norm = (s: any) => (typeof s === 'string' ? s : '').toLowerCase().trim()
+  function tagMatches(tag: any, q: string): boolean {
+    const s = norm(q)
+    if (!s) return true
+    const fields: any[] = [tag.name, tag.english_name, nameById.get(tag.parent_tag_id)]
+    if (Array.isArray(tag.aliases)) fields.push(...tag.aliases)
+    if (Array.isArray(tag.keywords)) fields.push(...tag.keywords)
+    return fields.some(f => norm(f).includes(s))
+  }
+  const matchRank = (tag: any, q: string) => (norm(tag.name).includes(norm(q)) ? 0 : 1)
+  const sortByRank = (list: any[], q: string) => [...list].sort((a, b) => matchRank(a, q) - matchRank(b, q))
+  const filteredTags = sortByRank(allTags.filter((tag: any) => tagMatches(tag, tagSearch)), tagSearch)
 
-  const filteredMyTags = myTags.filter(tag =>
-    tag.name.toLowerCase().includes(goodsTagSearch.toLowerCase())
-  )
+  const filteredMyTags = sortByRank(myTags.filter((tag: any) => tagMatches(tag, goodsTagSearch)), goodsTagSearch)
 
   // 주력 작품 — 선택된 것(칩)과 검색 후보(이미 주력인 건 제외)
   const primaryTags = primaryIds
     .map(id => myTags.find(t => t.id === id) ?? allTags.find(t => t.id === id))
     .filter(Boolean)
-  const primaryCandidates = allTags
-    .filter(t => !primaryIds.includes(t.id) && t.name.toLowerCase().includes(primarySearch.trim().toLowerCase()))
-    .slice(0, 40)
+  const primaryCandidates = sortByRank(allTags.filter((t: any) => !primaryIds.includes(t.id) && tagMatches(t, primarySearch)), primarySearch).slice(0, 40)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>

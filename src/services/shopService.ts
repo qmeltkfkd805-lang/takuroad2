@@ -486,7 +486,7 @@ export async function getAllTags() {
   for (let from = 0; ; from += pageSize) {
     const { data, error } = await supabase
       .from('tags')
-      .select('id, name, slug, cover_url, banner_image, english_name, ip_type, release_year, genres, description, created_at')
+      .select('id, name, slug, cover_url, banner_image, english_name, ip_type, release_year, genres, description, created_at, aliases, keywords, parent_tag_id')
       .order('name')
       .range(from, from + pageSize - 1)
     if (error) throw error
