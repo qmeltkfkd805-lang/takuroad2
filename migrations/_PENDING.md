@@ -52,6 +52,7 @@ psql "postgresql://postgres:<비밀번호>@db.<프로젝트ref>.supabase.co:5432
 
 | 날짜 | 파일 | 내용 |
 | --- | --- | --- |
+| 2026-09-20 | `tags_parent.sql` | 작품 계층(프랜차이즈) — `tags.parent_tag_id` 추가(자기참조 방지 CHECK + 부분 인덱스). 평면 1단으로 82개 지정: 보컬로이드 39(ip_type 기준)·디즈니 18·산리오 10·스튜디오 지브리 8·건담 7. 샵 등록/수정의 취급 작품 검색이 부모 이름까지 훑어 "디즈니"→하위 작품이 함께 나오게 하는 용도 |
 | 2026-09-12 | `shop_images_storage_cleanup_trigger.sql` | 사진 삭제·크롭 교체 시 Storage 객체가 고아가 되던 것을 차단. `shop_images` AFTER DELETE / AFTER UPDATE OF(image_url, storage_bucket, storage_path) 트리거가 기존 `exhibit_storage_cleanup_queue` 에 적재(SECURITY DEFINER, 직접 EXECUTE 권한 전부 회수). `storage_path` 가 NULL 인 기존 137행은 적재하지 않음. 실제 삭제는 워커가 전 출처 참조 재확인 후 수행 |
 | 2026-09-12 | `shop_images_cover_transition.sql` | 대표 사진 교체를 행 삭제 → `is_cover` 강등으로 전환. `setShopMainImage` 가 기존 대표 행을 지워 원본 Storage 를 고아로 만들던 구조 제거. 원자적 전환 RPC `shop_images_set_cover`(SECURITY INVOKER, authenticated 전용), 샵당 대표 1개 부분 유니크 인덱스, 출처 기록 컬럼 `storage_bucket`·`storage_path`(nullable, backfill 없음) |
 | 2026-09-12 | `storage_shop_images_insert_policies.sql` | 🚨 보안 — 샵 이미지 INSERT 정책 최소 권한화. `work_img_upload`(버킷만 검사 → 로그인한 누구나 shop-images 아무 경로에 업로드 가능) 등 3개를 제거하고 용도별 5개로 분리. 경로 깊이 고정·2번째 폴더 허용 목록·예약 프리픽스 차단·`banners`/`notices`/`works` 관리자 전용 |
