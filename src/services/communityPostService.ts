@@ -85,10 +85,10 @@ export async function createPost(userId: string, input: NewPost): Promise<string
   if (error) { console.error('[게시글 등록 실패]', error.message, error.code); return null }
   const postId = data?.id ?? null
 
-  // 팬아트 업로드 XP (비활동 소스 — 글당 1회)
+  // 팬아트 업로드 XP — 금액은 서버가 정한다. activity_logs 행은 만들지 않는다(기존 동작 유지).
   if (postId && input.board === 'fanart') {
-    import('./expService')
-      .then(({ addExpOnce, XP_RULES }) => addExpOnce(userId, XP_RULES.fanart.baseXp, 'fanart', 'post', postId))
+    import('./activityService')
+      .then(m => m.recordActivity('fanart', postId, userId))
       .catch(e => console.error('[팬아트 XP 실패]', e))
   }
 

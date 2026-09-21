@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
-import { recordEventSubmitActivity } from '@/services/activityService'
+// 승인·보상은 서버 라우트가 한다 — activityService 를 직접 부르지 않는다
 
 export interface NewSubmission {
   tagId: string
@@ -144,63 +144,33 @@ export interface ApproveInput {
 // 제보 승인 = 준비된 shop_id로 Event 생성 + 제보 마감.
 // (shop 준비는 검수 화면의 책임 — 이 함수는 shop_id가 있다고 전제)
 export async function approveSubmission(input: ApproveInput, reviewerId: string): Promise<boolean> {
-  const supabase = createClient()
-
-  // ③ Event 생성 (검수자가 수정한 값으로)
-  const { data: event, error: eventErr } = await supabase
-    .from('events')
-    .insert({
-      tag_id: input.tagId,
-      type: input.type,
-      shop_id: input.shopId,
-      title: input.title,
-      start_date: input.startDate,
-      end_date: input.endDate,
-    } as any)
-    .select('id')
-    .single()
-
-  if (eventErr || !event) {
-    console.error('[승인 실패 - Event 생성]', eventErr?.message, eventErr?.code)
-    return false
-  }
-
-  // ④ 제보 마감
-  const { error: subErr } = await supabase
-    .from('event_submissions')
-    .update({
-      status: 'approved',
-      event_id: event.id,
-      reviewed_by: reviewerId,
-      reviewed_at: new Date().toISOString(),
-    } as any)
-    .eq('id', input.submissionId)
-
-  if (subErr) {
-    console.error('[승인 실패 - 제보 마감]', subErr.message, subErr.code)
-    return false
-  }
-
-  // 성장 Activity — 제보 채택.
-  // ⭐ 성취는 검수자(reviewerId)가 아니라 '제보한 사람'의 것이다
+  // ⭐ 승인·보상은 서버(/api/admin/approve-submission)가 한다.
+  //    관리자 세션이 브라우저에서 남에게 EXP 를 주던 창구를 닫기 위함이다.
+  //    제보자와 상태는 서버가 DB 에서 다시 읽고, 보상 금액은 RPC 가 정한다.
+  //    reviewerId 는 서버가 세션에서 가져가므로 더 쓰지 않는다 (시그니처 유지).
+  void reviewerId
   try {
-    const { data: sub } = await supabase
-      .from('event_submissions').select('submitted_by').eq('id', input.submissionId).maybeSingle()
-    const submitter = (sub as any)?.submitted_by
-    if (submitter) {
-      await recordEventSubmitActivity({
-        userId: submitter,
-        eventId: event.id,
-        eventName: input.title,
-        eventType: input.type as any,
-        workId: input.tagId ?? null,
-      })
-    }
+    const res = await fetch('/api/admin/approve-submission', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        submissionId: input.submissionId,
+        tagId: input.tagId ?? null,
+        shopId: input.shopId,
+        title: input.title,
+        type: input.type,
+        startDate: input.startDate ?? null,
+        endDate: input.endDate ?? null,
+      }),
+    })
+    const json = await res.json().catch(() => null) as any
+    if (!res.ok) { console.error('[제보 승인 실패]', res.status, json?.error); return false }
+    if (json?.rewardFailed) console.error('[제보 승인] 이벤트는 만들어졌지만 보상이 실패했습니다', input.submissionId)
+    return !!json?.success
   } catch (e) {
-    console.error('[제보 채택 Activity 실패]', e)
+    console.error('[제보 승인 실패]', e)
+    return false
   }
-
-  return true
 }
 
 // 제보 반려 = Event 생성 없이 제보만 마감(사유 기록, 사유는 선택).
