@@ -2,7 +2,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useRouter } from 'next/navigation'
-import { createWork, uploadWorkImage, findDuplicateWork, getWorkForEdit, updateWork, getPromotedGenres } from '@/services/workRegisterService'
+import { createWork, uploadWorkImage, findDuplicateWork, getWorkForEdit, updateWork, getPromotedGenres, searchParentWorks, getParentWork } from '@/services/workRegisterService'
 import { IP_TYPES, normIpType, ipTypeList } from '@/lib/constants/ipType'
 
 const GENRES =['액션', '격투', '판타지', '모험', '학원', '일상', '가족', 'SF', '추리', '퍼즐', '로맨스', 'BL', 'GL', '코미디', '스포츠', '음악', '아이돌', '요리', '호러', '드라마', '마법소녀', '소년물', '로봇/메카', '19', '고어', '기타']
@@ -30,6 +30,17 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
   const [slug, setSlug] = useState('')
   const [aliases, setAliases] = useState<string[]>([])
   const [aliasInput, setAliasInput] = useState('')
+  const [parentId, setParentId] = useState<string | null>(null)
+  const [parentName, setParentName] = useState('')
+  const [parentQ, setParentQ] = useState('')
+  const [parentOpts, setParentOpts] = useState<{ id: string; name: string; slug: string }[]>([])
+  useEffect(() => {
+    const s = parentQ.trim()
+    if (!s) { setParentOpts([]); return }
+    let alive = true
+    const tm = setTimeout(() => { searchParentWorks(s, editId ?? undefined).then((r) => { if (alive) setParentOpts(r) }) }, 250)
+    return () => { alive = false; clearTimeout(tm) }
+  }, [parentQ, editId])
   const [ipType, setIpType] = useState('')
   const [original, setOriginal] = useState('')
   const [status, setStatus] = useState('')
@@ -149,6 +160,8 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
         setIpType(ipTypeList(w.ip_type).join(',')); setOriginal(w.original_type ?? ''); setStatus(w.status ?? '')
         setCover(w.cover_url ?? ''); setAccent(w.accent_color ?? '#FF5692')
         setDesc(w.description ?? ''); setGenres(w.genres ?? []); setKeywords(w.keywords ?? [])
+        setParentId(w.parent_tag_id ?? null)
+        if (w.parent_tag_id) getParentWork(w.parent_tag_id).then((pp) => { if (alive && pp) setParentName(pp.name) })
         const all: { label: string; url: string }[] = (Array.isArray(w.links) && w.links.length ? w.links : [
           w.homepage_url && { label: '홈페이지', url: w.homepage_url },
           w.twitter_url && { label: 'X (트위터)', url: w.twitter_url },
@@ -168,6 +181,7 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
   function buildPayload() {
     return {
       name, slug, english_name: eng, aliases, ip_type: ipType, original_type: original, status,
+      parent_tag_id: parentId,
       cover_url: cover, accent_color: accent, description: desc,
       genres, keywords, links: [
         ...FIXED_LINKS.filter((k) => (fixedLinks[k] ?? '').trim()).map((k) => ({ label: k, url: fixedLinks[k].trim() })),
@@ -262,6 +276,24 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
                 <button onClick={addAlias} style={{ ...miniBtn, padding: '0 16px' }}>추가</button>
               </div>
               <div style={{ ...chipWrap, marginBottom: aliases.length ? 16 : 6 }}>{aliases.map((a) => <button key={a} onClick={() => setAliases((x) => x.filter((y) => y !== a))} style={{ ...chip(true), display: 'inline-flex', alignItems: 'center', gap: 5 }}>{a}<Svg size={12} color="#fff"><path d="M6 6l12 12M18 6 6 18" /></Svg></button>)}</div>
+              <Label>상위 작품 (프랜차이즈)</Label>
+              {parentId ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+                  <span style={{ ...chip(true), display: 'inline-flex', alignItems: 'center', gap: 6 }}>{parentName || '선택됨'}</span>
+                  <button onClick={() => { setParentId(null); setParentName(''); setParentQ('') }} style={miniBtn}>해제</button>
+                </div>
+              ) : (
+                <>
+                  <input value={parentQ} onChange={(e) => setParentQ(e.target.value)} maxLength={40} placeholder="예: 디즈니, 산리오, 닌텐도 — 시리즈·브랜드에 속하면 지정 (선택)" style={{ ...inp, marginBottom: parentOpts.length ? 6 : 16 }} />
+                  {parentOpts.length > 0 && (
+                    <div style={{ ...chipWrap, marginBottom: 16 }}>
+                      {parentOpts.map((po) => (
+                        <button key={po.id} onClick={() => { setParentId(po.id); setParentName(po.name); setParentOpts([]) }} style={chip(false)}>{po.name}</button>
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
               {isAdmin ? (
                 <>
                   <Label>대표 이미지 (관리자)</Label>

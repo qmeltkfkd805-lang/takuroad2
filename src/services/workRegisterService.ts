@@ -16,6 +16,7 @@ export interface NewWork {
   keywords?: string[]
   aliases?: string[]
   links?: { label: string; url: string }[]   // 공식 링크 — 원하는 만큼
+  parent_tag_id?: string | null              // 상위 작품(프랜차이즈)
 }
 
 function slugify(name: string, eng?: string): string {
@@ -47,6 +48,7 @@ export async function createWork(userId: string, w: NewWork): Promise<{ slug: st
     status: w.status || null,
     original_type: w.original_type || null,
     links: w.links ?? [],
+    parent_tag_id: w.parent_tag_id ?? null,
     created_by: userId,
   }
   let finalSlug = slug
@@ -150,7 +152,31 @@ export async function updateWork(id: string, w: NewWork): Promise<{ slug: string
     status: w.status || null,
     original_type: w.original_type || null,
     links: w.links ?? [],
+    parent_tag_id: w.parent_tag_id ?? null,
   } as any).eq('id', id)
   if (error) { console.error('[updateWork]', error); return null }
   return { slug }
+}
+
+
+// 상위 작품(프랜차이즈) 후보 검색 — 이름·영문명으로 최대 20개
+export interface ParentOption { id: string; name: string; slug: string }
+
+export async function searchParentWorks(q: string, excludeId?: string): Promise<ParentOption[]> {
+  const s = q.trim()
+  if (!s) return []
+  const supabase = createClient()
+  let query = supabase.from('tags').select('id, name, slug')
+    .or(`name.ilike.%${s}%,english_name.ilike.%${s}%`)
+  if (excludeId) query = query.neq('id', excludeId)
+  const { data, error } = await query.order('name').limit(20)
+  if (error) { console.error('[searchParentWorks]', error.message); return [] }
+  return (data ?? []) as ParentOption[]
+}
+
+// 선택된 상위 작품 한 건 (수정 화면에서 이름 표시용)
+export async function getParentWork(id: string): Promise<ParentOption | null> {
+  const supabase = createClient()
+  const { data } = await supabase.from('tags').select('id, name, slug').eq('id', id).maybeSingle()
+  return (data as ParentOption) ?? null
 }
