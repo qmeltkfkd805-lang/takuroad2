@@ -52,6 +52,7 @@ psql "postgresql://postgres:<비밀번호>@db.<프로젝트ref>.supabase.co:5432
 
 | 날짜 | 파일 | 내용 |
 | --- | --- | --- |
+| 2026-09-21 | `tags_parent_nintendo.sql` | 작품 계층 2차 — `닌텐도`(제작사,브랜드) 신설 + 직속 6개(슈퍼마리오·별의 커비·피크민·스플래툰·동물의 숲·젤다의 전설), `동키콩`→슈퍼마리오(2단, keywords에 `닌텐도` 추가로 보완), `희망의 힘 어른 프리큐어 23`→프리큐어. 누적 하위 106개. 미채택: 쥬얼펫→산리오, 프로젝트 세카이→보컬로이드, 포켓몬→닌텐도, 전대대실격→전대 |
 | 2026-09-20 | `tags_parent.sql` | 취급 작품 검색 프랜차이즈 계층 — `tags.parent_tag_id` 컬럼 + 자기참조 CHECK + 부분 인덱스, `라코`→`랏코` 이름 수정(slug rako), 하위 98개 지정: 보컬로이드 40·디즈니 18·산리오 18·스튜디오 지브리 8·건담 7·치이카와 6·라인프렌즈 1. 샵 취급 작품 검색이 name/english_name/aliases/keywords/부모명까지 매칭 |
 | 2026-09-12 | `shop_images_storage_cleanup_trigger.sql` | 사진 삭제·크롭 교체 시 Storage 객체가 고아가 되던 것을 차단. `shop_images` AFTER DELETE / AFTER UPDATE OF(image_url, storage_bucket, storage_path) 트리거가 기존 `exhibit_storage_cleanup_queue` 에 적재(SECURITY DEFINER, 직접 EXECUTE 권한 전부 회수). `storage_path` 가 NULL 인 기존 137행은 적재하지 않음. 실제 삭제는 워커가 전 출처 참조 재확인 후 수행 |
 | 2026-09-12 | `shop_images_cover_transition.sql` | 대표 사진 교체를 행 삭제 → `is_cover` 강등으로 전환. `setShopMainImage` 가 기존 대표 행을 지워 원본 Storage 를 고아로 만들던 구조 제거. 원자적 전환 RPC `shop_images_set_cover`(SECURITY INVOKER, authenticated 전용), 샵당 대표 1개 부분 유니크 인덱스, 출처 기록 컬럼 `storage_bucket`·`storage_path`(nullable, backfill 없음) |
