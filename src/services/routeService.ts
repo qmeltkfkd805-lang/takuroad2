@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
 import { prepareImage } from '@/lib/storage/compressImage'
-import { recordRouteCreatedActivity } from '@/services/activityService'
+import { recordActivity } from '@/services/activityService'
 import { calcDistance } from '@/hooks/useCurrentLocation'
 
 // ??醫뚰몴 媛??꾨낫 ?쒓컙 異붿젙 (?됯퇏 4km/h)
@@ -74,17 +74,8 @@ export async function createRoute(
 
   if (shopsError) return null
 
-  // 성장 Activity — 내가 만든 덕질 코스
-  try {
-    await recordRouteCreatedActivity({
-      userId,
-      routeId: route.id,
-      routeName: title,
-      routeToken: route.share_token,
-    })
-  } catch (e) {
-    console.error('[루트 제작 Activity 실패]', e)
-  }
+  // 성장 Activity — 내가 만든 덕질 코스. 스냅샷·EXP 는 서버가 정한다
+  await recordActivity('route_created', route.id, userId)
 
   return { id: route.id, shareToken: route.share_token }
 }

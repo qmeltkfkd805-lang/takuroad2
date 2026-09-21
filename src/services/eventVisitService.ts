@@ -1,6 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
-import { recordEventVisitActivity, ActivityEventType } from './activityService'
-import { geekAreaFromAddr } from '@/lib/utils/geekArea'
+import { recordActivity } from './activityService'
 
 /* ============================================================
    이벤트 참여 기록 (event_visits)
@@ -82,7 +81,7 @@ export async function recordEventVisit(
   const visitedOn = resolveVisitedOn(e.start_date ?? null, e.end_date ?? null)
 
   // 3) 원본 기록
-  const { error } = await supabase
+  const { data: created, error } = await supabase
     .from('event_visits')
     .insert({
       user_id: userId,
@@ -90,6 +89,8 @@ export async function recordEventVisit(
       visited_on: visitedOn,
       source,
     } as any)
+    .select('id')
+    .single()
 
   if (error) {
     if (error.code === '23505') return { success: true, already: true }   // 동시에 눌림
@@ -97,41 +98,10 @@ export async function recordEventVisit(
     return { success: false, error: '기록에 실패했어요' }
   }
 
-  // 4) 스냅샷 재료
-  //    샵에 붙은 이벤트면 샵 주소·소속 장소를, 아니면 이벤트 자체 장소를 쓴다
-  const shop = e.shops ?? null
-  const addr: string | null = shop?.addr ?? e.place_addr ?? null
-
-  // ⭐ 덕질 지역 — "마포구"가 아니라 "홍대". DB region이 비어도 주소에서 뽑는다
-  const region: string | null = shop?.region?.trim() || geekAreaFromAddr(addr)
-
-  // Story 안에서 한 번 더 묶이는 장소.
-  // 샵이면 그 샵이 속한 Place(스타필드 수원…), 샵이 없으면 이벤트 장소명
-  const placeName: string | null = shop?.places?.name ?? e.place_name ?? null
-
-  // 작품 이름 (그때의 이름)
-  let workName: string | null = null
-  if (e.tag_id) {
-    const { data: tag } = await supabase
-      .from('tags')
-      .select('name')
-      .eq('id', e.tag_id)
-      .maybeSingle()
-    workName = (tag as any)?.name ?? null
-  }
-
-  // 5) ⭐ Activity 파이프라인 — 직접 insert 하지 않고 activityService를 통해서만
-  await recordEventVisitActivity({
-    userId,
-    eventId,
-    eventName: e.title,
-    eventType: (e.type ?? 'popup') as ActivityEventType,
-    region,
-    placeName,
-    workId: e.tag_id ?? null,
-    workName,
-    occurredAt: toOccurredAt(visitedOn),
-  })
+  // 4) ⭐ Activity 파이프라인 — 기록·스냅샷·EXP 를 서버가 정한다.
+  //    스냅샷 재료(지역·장소·작품)도 서버가 원본 행에서 만들므로 여기서 더 읽지 않는다.
+  //    참여 날짜(visited_on)도 서버가 원본에서 읽어 occurred_at 에 반영한다.
+  await recordActivity('event_visit', created?.id, userId)
 
   return { success: true }
 }

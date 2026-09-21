@@ -35,13 +35,22 @@ const ALLOWED_TYPES = new Set([
 ])
 
 type Snapshot = Record<string, string | number | null>
-interface Built { snapshot: Snapshot; workId: string | null }
+interface Built { snapshot: Snapshot; workId: string | null; occurredAt?: string | null }
 
 /** 값이 없는 키는 아예 넣지 않는다 (기존 createActivity 가 undefined 를 빼던 것과 같다) */
 function clean(o: Record<string, string | number | null | undefined>): Snapshot {
   const out: Snapshot = {}
   for (const [k, v] of Object.entries(o)) if (v !== undefined && v !== null && v !== '') out[k] = v
   return out
+}
+
+/** date(YYYY-MM-DD) 를 그 날짜의 KST 정오로 고정한다.
+    시간대 변환으로 전날·다음 날로 밀리지 않게 하기 위함이다.
+    값이 없거나 형식이 다르면 null — 그때는 RPC 가 넣은 now() 를 그대로 둔다. */
+function kstNoon(d: unknown): string | null {
+  if (typeof d !== 'string') return null
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d)
+  return m ? `${m[1]}-${m[2]}-${m[3]}T12:00:00+09:00` : null
 }
 
 export async function POST(req: NextRequest) {
@@ -105,6 +114,15 @@ export async function POST(req: NextRequest) {
 
   if (!row) return NextResponse.json({ recorded: false, rewarded: false, gained: 0 })
 
+  // 참여 날짜 보존 — RPC 는 occurred_at 에 now() 를 넣는다.
+  // 클라이언트 값을 믿지 않고, 서버가 본인 소유 원본 행에서 읽은 날짜로만 교정한다.
+  if (row.recorded && built.occurredAt) {
+    const { error: upErr } = await svc.from('activity_logs')
+      .update({ occurred_at: built.occurredAt })
+      .eq('user_id', user.id).eq('type', type).eq('source_id', sourceId)
+    if (upErr) console.error('[activity] occurred_at 교정 실패', sourceId, upErr.message)
+  }
+
   return NextResponse.json({
     recorded: row.recorded,
     rewarded: row.rewarded,
@@ -146,7 +164,7 @@ async function buildSnapshot(svc: Svc, type: string, sourceId: string, userId: s
   }
 
   if (type === 'event_visit') {
-    const { data: ev } = await svc.from('event_visits').select('event_id').eq('id', sourceId).eq('user_id', userId).maybeSingle()
+    const { data: ev } = await svc.from('event_visits').select('event_id, visited_on').eq('id', sourceId).eq('user_id', userId).maybeSingle()
     if (!ev) return { snapshot: {}, workId: null }
     const { data: e } = await svc.from('events')
       .select('title, type, tag_id, place_name, place_addr, shops ( name, addr, region, places ( name ) )')
@@ -167,6 +185,7 @@ async function buildSnapshot(svc: Svc, type: string, sourceId: string, userId: s
         work_name: workName,
       }),
       workId: e?.tag_id ?? null,
+      occurredAt: kstNoon(ev.visited_on),
     }
   }
 

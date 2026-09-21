@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
 import { prepareImage } from '@/lib/storage/compressImage'
-import { recordShopRegisterActivity } from '@/services/activityService'
+import { recordActivity } from '@/services/activityService'
 import { geekAreaFromAddr } from '@/lib/utils/geekArea'
 import { resolveEventCover } from '@/lib/event/eventCover'
 import { Shop } from '@/types/shop'
@@ -255,17 +255,7 @@ export async function createShop(
   // ⭐ 위저드는 'hidden'(임시)으로 만들고 '등록 완료' 때 publishShop에서 경험치를 준다.
   //    그래서 여기선 바로 active로 만드는 경로(이벤트 리뷰 등)에만 지급한다.
   if ((data.status ?? 'active') === 'active') {
-    try {
-      await recordShopRegisterActivity({
-        userId,
-        shopId: shop.id,
-        shopName: (data as any)?.name ?? '샵',
-        shopSlug: shop.slug,
-        region: ((data as any)?.region?.trim() || geekAreaFromAddr((data as any)?.addr ?? null)) ?? null,
-      })
-    } catch (e) {
-      console.error('[샵 등록 Activity 실패]', e)
-    }
+    await recordActivity('shop_register', shop.id, userId)
   }
 
   return { slug: shop.slug, id: shop.id }
@@ -290,17 +280,8 @@ export async function publishShop(shopId: string): Promise<boolean> {
 
   // 최초 공개(등록 완료)일 때만 경험치/Activity 지급
   if (before && (before as any).status !== 'active') {
-    try {
-      await recordShopRegisterActivity({
-        userId: (before as any).added_by,
-        shopId,
-        shopName: (before as any).name ?? '샵',
-        shopSlug: (before as any).slug,
-        region: (((before as any).region?.trim()) || geekAreaFromAddr((before as any).addr ?? null)) ?? null,
-      })
-    } catch (e) {
-      console.error('[샵 등록 Activity 실패]', e)
-    }
+    // ⚠️ 보상 대상은 세션 사용자다. 관리자가 남의 임시 샵을 공개 전환하면 서버가 403 으로 거부한다.
+    await recordActivity('shop_register', shopId, (before as any).added_by)
   }
   return true
 }

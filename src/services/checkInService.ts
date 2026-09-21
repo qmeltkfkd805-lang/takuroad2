@@ -1,9 +1,8 @@
 import { createClient } from '@/lib/supabase/client'
-import { recordShopVisitActivity } from './activityService'
-import { geekAreaFromAddr } from '@/lib/utils/geekArea'
+import { recordActivity } from './activityService'
 import { requestBadgeEvaluation } from './badgeService'
 
-const CHECK_IN_EXP = 5
+// EXP 는 서버(/api/activity)가 정한다. 방문은 현장 증명이 없어 0 이다.
 
 export interface CheckInResult {
   success: boolean
@@ -62,7 +61,7 @@ export async function createCheckIn(
     return { success: true, expEarned: 0 }   // 이미 방문한 곳 — 재기록 안 함
   }
 
-  const { error } = await supabase
+  const { data: created, error } = await supabase
     .from('check_ins')
     .insert({
       user_id: userId,
@@ -70,9 +69,11 @@ export async function createCheckIn(
       lat: hasCoords ? userLat : null,
       lng: hasCoords ? userLng : null,
       distance_m: null,
-      exp_earned: CHECK_IN_EXP,
+      exp_earned: 0,                                          // 지급은 서버가 결정 — 방문은 0
       check_in_date: new Date().toISOString().slice(0, 10),   // 방문 기록일
     } as any)
+    .select('id')
+    .single()
 
   if (error) {
     if (error.code === '23505') {
@@ -81,35 +82,10 @@ export async function createCheckIn(
     return { success: false, error: '방문 기록에 실패했어요' }
   }
 
-  // XP는 아래 recordShopVisitActivity → createActivity 훅에서 shop_visit(5XP)로 지급된다 (중복 방지 포함)
-
-  // 샵 정보 조회 (slug = 링크용, addr → 덕질 지역 = Activity 스냅샷용)
-  let slug = shopSlug
-  let geekArea: string | null = null
-  let placeName: string | null = null
-  const { data: shopData } = await supabase
-    .from('shops')
-    .select('slug, region, addr, places ( name, slug )')
-    .eq('id', shopId)
-    .maybeSingle()
-  if (shopData) {
-    const sd = shopData as any
-    slug = slug ?? sd.slug
-    // ⭐ 덕질 지역 — "마포구"가 아니라 "홍대". DB region이 비어도 주소에서 뽑는다
-    geekArea = sd.region?.trim() || geekAreaFromAddr(sd.addr)
-    placeName = sd.places?.name ?? null   // 소속 장소(스타필드 등) — Story에서 한 번 더 묶임
-  }
-
-  // ⭐ Activity 시스템 — 스냅샷 방식으로 방문 기록.
-  // snapshot에 "그때의 샵 이름"을 박아둔다 (나중에 샵 이름이 바뀌어도 연대기는 그때 이름 그대로)
-  await recordShopVisitActivity({
-    userId,
-    shopId,
-    shopName,
-    shopSlug: slug ?? null,
-    region: geekArea,      // 덕질 지역 (홍대·수원…)
-    placeName,             // 소속 장소 (스타필드 수원…) — Story 내 그룹핑용
-  })
+  // ⭐ Activity 시스템 — 기록·스냅샷·EXP 를 서버가 정한다.
+  //    스냅샷("그때의 샵 이름")도 서버가 원본 행에서 만들므로 여기서 샵을 다시 읽지 않는다.
+  //    현장 증명이 없어 EXP 는 0 이다 (기록만 남는다).
+  const act = await recordActivity('shop_visit', created?.id, userId)
 
   await (supabase as any).rpc('increment_visit_count', { p_shop_id: shopId })
 
@@ -118,7 +94,7 @@ export async function createCheckIn(
   const { recordRouteProgressOnCheckIn } = await import('./routeProgressService')
   const completedRouteIds = await recordRouteProgressOnCheckIn(userId, shopId)
 
-  return { success: true, expEarned: CHECK_IN_EXP, newTierIds, completedRouteIds }
+  return { success: true, expEarned: act.gained, newTierIds, completedRouteIds }
 }
 
 export async function getMyCheckIns(userId: string) {

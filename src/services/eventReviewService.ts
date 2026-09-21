@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
 import { recordEventVisit } from './eventVisitService'
-import { recordReviewActivity } from './activityService'
+import { recordActivity } from './activityService'
 
 export interface EventReview {
   id: string
@@ -61,9 +61,11 @@ export async function createEventReview(
   eventId: string, userId: string, stars: number, content: string,
 ): Promise<{ ok: boolean; message?: string }> {
   const supabase = createClient()
-  const { error } = await supabase
+  const { data: created, error } = await supabase
     .from('event_reviews')
     .insert({ event_id: eventId, user_id: userId, stars, content } as any)
+    .select('id')
+    .single()
 
   if (error) {
     // unique (event_id, user_id) 위반
@@ -78,18 +80,8 @@ export async function createEventReview(
   try {
     await recordEventVisit(userId, eventId, 'review')
 
-    // 성장 Activity — 리뷰(이벤트 후기). ref = 이벤트
-    const { data: ev } = await supabase
-      .from('events').select('title, type, tag_id').eq('id', eventId).maybeSingle()
-    const e: any = ev ?? {}
-    await recordReviewActivity({
-      userId,
-      targetType: 'event',
-      targetId: eventId,
-      targetName: e.title ?? '이벤트',
-      eventType: e.type ?? undefined,
-      workId: e.tag_id ?? null,
-    })
+    // 성장 Activity — 이벤트 후기. 스냅샷·EXP 는 서버가 정한다
+    await recordActivity('review', created?.id, userId)
   } catch (e) {
     console.error('후기 → 참여 기록 자동 생성 실패:', e)
   }

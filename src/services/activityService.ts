@@ -62,6 +62,74 @@ export interface ActivitySnapshot {
   ip_type?: string | null
 }
 
+export interface ActivityResult {
+  recorded: boolean
+  rewarded: boolean
+  gained: number
+  leveledUp: boolean
+  fromLevel: number
+  toLevel: number
+  totalExp: number
+}
+
+/** ⭐ 활동 기록 + 보상 — 서버(/api/activity)가 원본 행을 대조하고
+    스냅샷·EXP·title 을 전부 정한다. 클라이언트는 { type, sourceId } 만 보낸다.
+    실패해도 원래 동작(리뷰 작성 등)을 막지 않는다. */
+export async function recordActivity(type: string, sourceId: string | null | undefined, userId?: string): Promise<ActivityResult> {
+  const fail: ActivityResult = { recorded: false, rewarded: false, gained: 0, leveledUp: false, fromLevel: 0, toLevel: 0, totalExp: 0 }
+  if (!sourceId) return fail
+  let out: ActivityResult
+  try {
+    const res = await fetch('/api/activity', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, sourceId }),
+    })
+    const json = await res.json().catch(() => null) as any
+    if (!res.ok) { console.error('[활동 기록 실패]', type, res.status, json?.error); return fail }
+    out = {
+      recorded: !!json?.recorded,
+      rewarded: !!json?.rewarded,
+      gained: Number(json?.gained) || 0,
+      leveledUp: !!json?.leveledUp,
+      fromLevel: Number(json?.fromLevel) || 0,
+      toLevel: Number(json?.toLevel) || 0,
+      totalExp: Number(json?.totalExp) || 0,
+    }
+  } catch (e) {
+    console.error('[활동 기록 실패]', type, e)
+    return fail
+  }
+
+  // 레벨업 모달 — EXP 지급이 서버로 갔으므로 addExp 가 하던 알림을 여기서 대신 한다
+  if (out.leveledUp && userId && typeof window !== 'undefined') {
+    const o = out
+    import('./expService')
+      .then(async m => {
+        const rewards = await m.getLevelRewards(o.fromLevel, o.toLevel)
+        window.dispatchEvent(new CustomEvent(m.LEVELUP_EVENT, {
+          detail: { from: o.fromLevel, to: o.toLevel, leveledUp: true, gained: o.gained, totalExp: o.totalExp, userId, rewards },
+        }))
+      })
+      .catch(e => console.error('[레벨업 알림 실패]', e))
+  }
+
+  // ⭐⭐ 모든 기록이 여기를 지나간다 → 배지 평가도 여기서 한 번만.
+  if (out.recorded) {
+    import('./badgeService')
+      .then(m => m.requestBadgeEvaluation())
+      .then(async newTiers => {
+        if (newTiers && newTiers.length > 0) {
+          const { announceUnlock } = await import('./unlockService')
+          announceUnlock(newTiers)
+        }
+      })
+      .catch(e => console.error('[배지 평가 실패]', e))
+  }
+
+  return out
+}
+
 export interface CreateActivityInput {
   userId: string
   type: ActivityType
@@ -679,6 +747,32 @@ function activityExp(type: string, s: ActivitySnapshot): number {
   return XP_RULES[type]?.baseXp ?? 0
 }
 
+/** 서버가 EXP 를 0 으로 주는 활동. XP_RULES 는 옛 규칙이라 화면에서 거짓말이 된다.
+    exp_logs 에 실제 지급 기록이 있으면 그 값을, 없으면 0 을 쓴다.
+    (기존 지급분은 회수하지 않으므로 옛 기록은 그대로 보인다) */
+const SERVER_ZERO_EXP_TYPES = new Set(['shop_visit', 'event_visit'])
+
+async function applyActualExp(
+  supabase: ReturnType<typeof createClient>,
+  userId: string,
+  page: any[],
+  rows: ActivityLogRow[],
+): Promise<void> {
+  const targets = rows
+    .map((r, i) => ({ r, related: (page[i]?.related_id ?? null) as string | null }))
+    .filter(x => SERVER_ZERO_EXP_TYPES.has(x.r.type))
+  if (targets.length === 0) return
+  const ids = [...new Set(targets.map(t => t.related).filter(Boolean))] as string[]
+  const byKey = new Map<string, number>()
+  if (ids.length > 0) {
+    const { data } = await supabase
+      .from('exp_logs').select('reason, related_id, amount')
+      .eq('user_id', userId).in('related_id', ids)
+    for (const e of (data ?? []) as any[]) byKey.set(`${e.reason}|${e.related_id}`, Number(e.amount) || 0)
+  }
+  for (const t of targets) t.r.exp = t.related ? (byKey.get(`${t.r.type}|${t.related}`) ?? 0) : 0
+}
+
 export interface ActivityLogRow {
   id: string
   type: string
@@ -750,6 +844,7 @@ export async function getMyActivityLog(opts: {
   const hasMore = raw.length > limit
   const page = hasMore ? raw.slice(0, limit) : raw
   const rows = page.map(mapActivityRow)
+  await applyActualExp(supabase, opts.userId, page, rows)
   const last = page[page.length - 1]
   const nextCursor = hasMore && last ? { occurredAt: last.occurred_at, id: last.id } : null
   return { rows, nextCursor }
