@@ -48,8 +48,10 @@ export interface XpRule {
 }
 
 export const XP_RULES: Record<string, XpRule> = {
-  shop_visit:      { baseXp: 5,  once: true, category: 'explore',    visible: true },
-  event_visit:     { baseXp: 10, once: true, category: 'explore',    visible: true },
+  // ⚠️ 방문·참여는 현장 증명이 없어 서버(record_activity_reward)가 EXP 0 을 준다.
+  //    baseXp 는 과거 지급분 표시용 옛 규칙으로만 남기고, "경험치 얻는 방법" 안내에서는 감춘다.
+  shop_visit:      { baseXp: 5,  once: true, category: 'explore',    visible: false },
+  event_visit:     { baseXp: 10, once: true, category: 'explore',    visible: false },
   route_completed: { baseXp: 15, once: true, category: 'explore',    visible: true },
   review:          { baseXp: 10, once: true, category: 'contribute', visible: true },
   photo_upload:    { baseXp: 3,  once: true, category: 'contribute', visible: true },
