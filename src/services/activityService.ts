@@ -118,7 +118,7 @@ export async function createActivity(input: CreateActivityInput): Promise<void> 
   //    새 활동이 생겨도 평가 호출을 따로 붙일 필요가 없다.
   //    사용자를 기다리게 하지 않는다 (실패해도 기록은 이미 남았다)
   import('./badgeService')
-    .then(m => m.evaluateBadgeTiersForUser(input.userId))
+    .then(m => m.requestBadgeEvaluation())
     .then(async newTiers => {
       // ⭐ 딴 순간이 가장 기분 좋은 순간이다. 그냥 흘려보내지 않는다.
       if (newTiers && newTiers.length > 0) {

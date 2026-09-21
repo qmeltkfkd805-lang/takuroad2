@@ -9,7 +9,7 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { getRouteByShareToken, toggleRouteSave, getMySavedRouteIds } from '@/services/routeService'
 import { getVisitedShopIds, setShopVisited, isRouteCompleted, recordRouteCompletion, resetRouteProgress } from '@/services/routeVisitService'
 import { addExpOnce, XP_RULES } from '@/services/expService'
-import { evaluateBadgeTiersForUser } from '@/services/badgeService'
+import { requestBadgeEvaluation } from '@/services/badgeService'
 import { formatDistance } from '@/hooks/useCurrentLocation'
 import { shopRegion } from '@/lib/utils/region'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
@@ -152,7 +152,7 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
       const { firstTime } = await recordRouteCompletion(route.id, user.id)
       if (firstTime) {
         try { await addExpOnce(user.id, XP_RULES.route_completed.baseXp, 'route_completed', 'route', route.id) } catch { /* noop */ }
-        try { await evaluateBadgeTiersForUser(user.id) } catch { /* noop */ }
+        try { await requestBadgeEvaluation() } catch { /* noop */ }
       }
       setShowComplete(true)
     } finally { setCompleting(false) }

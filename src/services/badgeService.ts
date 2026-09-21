@@ -494,6 +494,21 @@ export async function evaluateBadgeTiersForUser(userId: string, client?: Supabas
   return r.earned.map(o => o.tierId)
 }
 
+/** 브라우저에서 부르는 배지 평가 — 조건 계산도 지급도 서버가 한다.
+    본문을 보내지 않는다. 평가 대상은 세션 사용자로 고정돼 있다.
+    (브라우저가 user_badge_tiers 에 직접 INSERT 하던 구조를 대체한다) */
+export async function requestBadgeEvaluation(): Promise<string[]> {
+  try {
+    const res = await fetch('/api/badges/evaluate', { method: 'POST' })
+    if (!res.ok) { console.error('[배지 평가 실패]', res.status); return [] }
+    const json = await res.json()
+    return Array.isArray(json?.newTierIds) ? json.newTierIds : []
+  } catch (e) {
+    console.error('[배지 평가 실패]', e)
+    return []
+  }
+}
+
 async function checkTierCondition(userId: string, tier: any, earnedTierIds: Set<string>, supabase: SupabaseClient<Database>): Promise<boolean> {
   const type = tier.condition_type
   const target = tier.condition_target

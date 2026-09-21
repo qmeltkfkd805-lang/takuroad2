@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/client'
 import { recordShopVisitActivity } from './activityService'
 import { geekAreaFromAddr } from '@/lib/utils/geekArea'
-import { evaluateBadgeTiersForUser } from './badgeService'
+import { requestBadgeEvaluation } from './badgeService'
 
 const CHECK_IN_EXP = 5
 
@@ -113,7 +113,7 @@ export async function createCheckIn(
 
   await (supabase as any).rpc('increment_visit_count', { p_shop_id: shopId })
 
-  const newTierIds = await evaluateBadgeTiersForUser(userId)
+  const newTierIds = await requestBadgeEvaluation()
 
   const { recordRouteProgressOnCheckIn } = await import('./routeProgressService')
   const completedRouteIds = await recordRouteProgressOnCheckIn(userId, shopId)

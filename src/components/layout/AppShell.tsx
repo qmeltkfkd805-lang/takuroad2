@@ -48,11 +48,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       if (!user || evalOnceRef.current) return
       evalOnceRef.current = true
       ;(async () => {
-        const [{ evaluateBadgeTiersForUser }, { announceUnlock }] = await Promise.all([
+        const [{ requestBadgeEvaluation }, { announceUnlock }] = await Promise.all([
           import('@/services/badgeService'),
           import('@/services/unlockService'),
         ])
-        const newTiers = await evaluateBadgeTiersForUser(user.id)
+        const newTiers = await requestBadgeEvaluation()
         if (newTiers.length > 0) announceUnlock(newTiers)
       })()
     })
