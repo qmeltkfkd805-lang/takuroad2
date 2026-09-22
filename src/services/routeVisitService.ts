@@ -27,12 +27,25 @@ export async function isRouteCompleted(routeId: string, userId: string): Promise
 }
 
 // 완주 기록 남기기 — 이미 있으면 재기록하지 않음(배찌·완주수는 딱 한 번만 반영)
-export async function recordRouteCompletion(routeId: string, userId: string): Promise<{ firstTime: boolean }> {
-  const supabase = createClient()
-  const { data: ex } = await supabase.from('route_completions').select('id').eq('route_id', routeId).eq('user_id', userId).maybeSingle()
-  if (ex) return { firstTime: false }
-  const { error } = await supabase.from('route_completions').insert({ route_id: routeId, user_id: userId } as any)
-  return { firstTime: !error }
+/* 완주 기록은 서버가 한다.
+   브라우저는 route_completions 에 INSERT 권한이 없고, 완주 조건도 서버가
+   route_progress 로 직접 대조한다. userId 는 서버가 세션에서 가져가므로 보내지 않는다.
+   EXP 는 0 이다 — 보상은 GPS 세션이 검증한 완주에만 간다. */
+export async function recordRouteCompletion(routeId: string, userId: string): Promise<{ firstTime: boolean; gained: number }> {
+  void userId
+  try {
+    const res = await fetch('/api/route/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ routeId }),
+    })
+    const json = await res.json().catch(() => null) as any
+    if (!res.ok) { console.error('[루트 완주 기록 실패]', res.status, json?.error); return { firstTime: false, gained: 0 } }
+    return { firstTime: !!json?.recorded, gained: Number(json?.gained) || 0 }
+  } catch (e) {
+    console.error('[루트 완주 기록 실패]', e)
+    return { firstTime: false, gained: 0 }
+  }
 }
 
 // 방문 체크 초기화(재도전) — 완주 기록(route_completions)은 그대로 두고 진행(route_progress)만 삭제

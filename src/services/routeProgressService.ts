@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
-import { recordRouteCompleteActivity } from './activityService'
+import { recordRouteCompletion } from './routeVisitService'
 import { geekAreaFromAddr } from '@/lib/utils/geekArea'
 
 /* ============================================================
@@ -83,23 +83,10 @@ export async function recordRouteProgressOnCheckIn(userId: string, shopId: strin
     const visited = progress?.length ?? 0
 
     if (total > 0 && visited >= total) {
-      const { error } = await supabase
-        .from('route_completions')
-        .insert({ route_id: route.id, user_id: userId } as any)
-
-      if (!error) {
-        completedRouteIds.push(route.id)
-
-        // ⭐ Activity 파이프라인 — 완주를 그날 그 지역 Story에 합류시킨다
-        const area = await resolveRouteArea(supabase, route.id)
-        await recordRouteCompleteActivity({
-          userId,
-          routeId: route.id,
-          routeName: route.title,
-          routeToken: route.share_token ?? null,   // 루트 상세는 /route/[token]
-          region: area,
-        })
-      }
+      // 완주 행·활동 기록·스냅샷은 전부 서버가 만든다.
+      // 브라우저는 route_completions 에 쓸 수 없고, 완주 조건도 서버가 다시 대조한다.
+      const { firstTime } = await recordRouteCompletion(route.id, userId)
+      if (firstTime) completedRouteIds.push(route.id)
     }
   }
 

@@ -78,7 +78,7 @@ const ACTIVITY_WORD: Record<string, [string, string]> = {
   review:          ['후기를 {n}개 남겼어요', '후기를 {n}개 남기면 얻어요'],
   photo_upload:    ['사진을 {n}장 올렸어요', '사진을 {n}장 올리면 얻어요'],
   route_created:   ['루트를 {n}개 만들었어요', '루트를 {n}개 만들면 얻어요'],
-  route_completed: ['루트를 {n}개 완주했어요', '루트를 {n}개 완주하면 얻어요'],
+  route_completed: ['GPS로 확인된 루트를 {n}개 완주했어요', 'GPS로 확인하며 루트를 {n}개 완주하면 얻어요'],
   event_visit:     ['이벤트에 {n}번 참여했어요', '이벤트에 {n}번 참여하면 얻어요'],
   shop_added:      ['샵을 {n}곳 등록했어요', '샵을 {n}곳 등록하면 얻어요'],
   contribution:    ['{n}번 기여했어요', '{n}번 기여하면 얻어요'],

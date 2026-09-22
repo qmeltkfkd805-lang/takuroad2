@@ -5,7 +5,8 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import type { OrderedStop, VerifyConfig } from './types'
 import { deriveCheckpoints } from './checkpoints'
 import { evaluatePing, type CheckpointState, type PrevVerified } from './verification'
-import { grantCompletionRewards } from './rewardService'
+import { grantFieldBonus } from './rewardService'
+import { loadRouteShopIds, recordGpsCompletion, recordManualCompletion } from './completion'
 
 const VERIFIED = new Set(['proximity_verified', 'checkpoint_verified', 'qr_verified'])
 const ACTIVE = new Set(['active', 'paused'])
@@ -221,10 +222,31 @@ export async function endSession(
 
   const hasRisk = (s.risk_flags ?? []).length > 0
   const confidence = fieldRatio >= 0.999 ? 'high' : (fieldRatio >= cfg.fieldBonusRequiredRatio ? 'medium' : 'recorded')
+
+  /* ⚠️ mode:'complete' 는 "완료 요청"일 뿐 완료 증거가 아니다.
+     GPS 완주로 인정하려면 루트의 모든 샵이 현장 확인된 체크포인트로 덮여야 하고
+     위험 신호가 없어야 한다. 수동 기록(manual_recorded)은 자기 주장이라 증거에 넣지 않는다.
+     조건 미충족이면 비GPS 완주로 기록만 남고 EXP·GPS 배지 진행은 없다. */
+  const routeShopIds = await loadRouteShopIds(client, s.route_id)
+  const fieldShopIds = new Set<string>()
+  for (const v of verifiedCps) {
+    const cp = checkpoints.find(c => c.key === v.checkpoint_key)
+    if (cp?.kind === 'shop') (cp.shopIds ?? []).forEach(id => fieldShopIds.add(id))
+  }
+  const gpsVerified = mode === 'complete' && !hasRisk
+    && routeShopIds.length > 0 && routeShopIds.every(id => fieldShopIds.has(id))
+
   let bonusGranted = false
+  let gained = 0
   if (mode === 'complete') {
-    const r = await grantCompletionRewards(client, userId, s.route_id, { fieldRatio, hasRisk, cfg })
-    bonusGranted = r.bonusGranted
+    if (gpsVerified) {
+      const c = await recordGpsCompletion(client, userId, s.route_id)
+      gained = c.gained
+      bonusGranted = (await grantFieldBonus(client, userId, s.route_id, { fieldRatio, hasRisk, cfg })).bonusGranted
+    } else {
+      const c = await recordManualCompletion(client, userId, s.route_id)
+      if (!('error' in c)) gained = c.gained
+    }
   }
   await client.from('route_sessions').update({ confidence, field_ratio: fieldRatio }).eq('id', sessionId)
 
@@ -234,5 +256,6 @@ export async function endSession(
     visitedCount: visitedShopIds.size,
     fieldVerified: verifiedCps.length, totalCheckpoints,
     manualCount, confidence, bonusGranted,
+    gpsVerified, gained,
   }
 }

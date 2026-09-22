@@ -73,7 +73,7 @@ export const BADGE_XP_BY_RARITY: Record<string, number> = {
 }
 
 export const REASON_LABEL: Record<string, string> = {
-  shop_visit: '샵 방문', event_visit: '이벤트 참여', route_completed: '루트 완주',
+  shop_visit: '샵 방문', event_visit: '이벤트 참여', route_completed: '루트 완주 (GPS 확인)',
   review: '리뷰 작성', photo_upload: '사진 등록', shop_register: '샵 등록',
   event_submit: '이벤트 제보 채택', route_created: '루트 제작', work_register: '작품 등록',
   work_progress: '작품 진행률', fanart: '팬아트 업로드', featured_fanart: '대표 팬아트 선정',

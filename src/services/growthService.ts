@@ -82,6 +82,13 @@ export async function countActivity(userId: string, target: ActivityCountTarget,
     rows = rows.filter(r => r.snapshot?.event_type === target.where!.event_type)
   }
 
+  /* 루트 완주 — 서버가 GPS 세션으로 검증한 완주만 센다.
+     비GPS 완주도 활동 기록은 남지만(연대기) 배지 집계에는 넣지 않는다.
+     verified 가 없는 옛 기록은 GPS 로 간주하지 않는다. */
+  if (types.includes('route_completed') && rows.length > 0) {
+    rows = rows.filter(r => (r as any).type !== 'route_completed' || r.snapshot?.verified === 'gps')
+  }
+
   // 샵 등록 — 살아있는 샵만
   /* ⚠️ 샵 등록만 예외 — 살아있는(active) 샵만 센다.
      승인 개념이 없어서, 관리자가 쓰레기 샵을 지우면 카운트도 빠져야
@@ -143,7 +150,7 @@ const VERB: Record<string, string> = {
   photo_upload: '사진 등록',
   shop_visit: '샵 방문',
   event_visit: '이벤트 참여',
-  route_completed: '루트 완주',
+  route_completed: 'GPS 루트 완주',
   route_created: '루트 제작',
   shop_register: '샵 등록',
   event_submit: '제보 채택',
@@ -358,7 +365,7 @@ async function likesReceivedCount(userId: string, supabase: SupabaseClient<Datab
 const HINT: Record<string, string> = {
   shop_visit: '샵을 방문하면 올라가요',
   event_visit: '이벤트에 참여하면 올라가요',
-  route_completed: '루트를 완주하면 올라가요',
+  route_completed: 'GPS로 확인하며 루트를 완주하면 올라가요',
   review: '후기를 쓰면 올라가요',
   photo_upload: '사진을 올리면 올라가요',
   work_register: '작품을 등록하면 올라가요',

@@ -8,7 +8,6 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getRouteByShareToken, toggleRouteSave, getMySavedRouteIds } from '@/services/routeService'
 import { getVisitedShopIds, setShopVisited, isRouteCompleted, recordRouteCompletion, resetRouteProgress } from '@/services/routeVisitService'
-import { addExpOnce, XP_RULES } from '@/services/expService'
 import { requestBadgeEvaluation } from '@/services/badgeService'
 import { formatDistance } from '@/hooks/useCurrentLocation'
 import { shopRegion } from '@/lib/utils/region'
@@ -151,7 +150,7 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
       // 첫 완주만 기록 + 경험치/배찌(딱 한 번)
       const { firstTime } = await recordRouteCompletion(route.id, user.id)
       if (firstTime) {
-        try { await addExpOnce(user.id, XP_RULES.route_completed.baseXp, 'route_completed', 'route', route.id) } catch { /* noop */ }
+        // EXP 는 서버가 정한다 — 비GPS 완주는 0, GPS 검증 완주만 /api/route-session/end 에서 지급된다
         try { await requestBadgeEvaluation() } catch { /* noop */ }
       }
       setShowComplete(true)
