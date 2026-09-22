@@ -60,20 +60,10 @@ export async function createWork(userId: string, w: NewWork): Promise<{ slug: st
   }
   if (error) { console.error('[createWork]', error.code, '|', error.message, '|', error.details, '|', error.hint); return null }
 
-  /* ⭐ 작품 등록도 덕질 기여다 — activity_logs에 남긴다.
-     ref_id = tag id. distinct로 세면 '서로 다른 작품 N개'가 된다.
-     (샵 등록처럼 승인 개념이 없어 등록 즉시 기록한다) */
-  try {
-    const { createActivity } = await import('./activityService')
-    await createActivity({
-      userId,
-      type: 'work_register',
-      refType: 'work',
-      refId: (data as any)?.id ?? undefined,
-      workId: (data as any)?.id ?? null,
-      snapshot: { work_name: w.name.trim(), work_slug: finalSlug, ip_type: w.ip_type ?? null },
-    })
-  } catch (e) { console.error('[작품 등록 활동 기록 실패]', e) }
+  /* 작품 등록 보상은 중단됐다 (2026-09-22).
+     검수·중복 병합 절차가 없어 무제한 생성이 가능했고, 등록 자체도 관리자 전용으로 제한했다.
+     서버 RPC(record_activity_reward)도 work_register 를 받지 않는다.
+     기존에 지급된 EXP·배지는 회수하지 않는다. */
 
   return { slug: finalSlug }
 }

@@ -44,7 +44,7 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
   const router = useRouter()
   const pathname = usePathname() ?? ''
   const isProfile = pathname.startsWith('/profile')   // 📱 마이페이지에선 모바일 검색창 숨김 (자체 헤더가 있어 중복)
-  const { user, profile } = useAuth()
+  const { user, profile, isAdmin } = useAuth()
   const [q, setQ] = useState('')
   const [unread, setUnread] = useState(0)
   const [level, setLevel] = useState<number | null>(null)
@@ -150,10 +150,12 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
                 🔍 '{term}' 전체 검색
               </button>
             )}
-            <button type="button" className={styles.dropItem} onClick={() => go('/work/new')} style={{ color: 'var(--accent)', fontWeight: 800 }}>
-              <WorkIcon size={18} />
-              <span className={styles.dropText}>찾는 작품이 없나요? 직접 작품 등록하기</span>
-            </button>
+            {isAdmin && (
+              <button type="button" className={styles.dropItem} onClick={() => go('/work/new')} style={{ color: 'var(--accent)', fontWeight: 800 }}>
+                <WorkIcon size={18} />
+                <span className={styles.dropText}>찾는 작품이 없나요? 직접 작품 등록하기</span>
+              </button>
+            )}
           </div>
         )}
       </div>
