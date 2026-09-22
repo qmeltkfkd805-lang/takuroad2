@@ -140,7 +140,10 @@ export interface CreateActivityInput {
   occurredAt?: string
 }
 
-/** 스냅샷 기반 Activity 생성 — 유일한 진입점. 실패해도 원래 동작을 막지 않는다. */
+/** ⛔ 더 이상 쓰지 않는다 (2026-09-22).
+    activity_reward_4_lockdown.sql 이후 브라우저는 activity_logs 에 쓸 수 없다 — 부르면 42501 로 실패한다.
+    새 활동 기록은 recordActivity(type, sourceId, userId) 를 쓴다. 서버가 원본을 대조하고 스냅샷·EXP 를 정한다.
+    아래 record*Activity 래퍼들도 같은 이유로 호출부가 없다. 지우지 않고 남겨둔 건 문구·스냅샷 규격 참고용이다. */
 export async function createActivity(input: CreateActivityInput): Promise<void> {
   const supabase = createClient()
   const { error } = await supabase

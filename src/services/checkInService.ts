@@ -12,6 +12,7 @@ export interface CheckInResult {
   completedRouteIds?: string[]
 }
 
+/** ⛔ 호출부 없음. activity_logs 직접 INSERT 라 2026-09-22 이후 42501 로 실패한다. */
 export async function logActivity(
   userId: string,
   type: string,

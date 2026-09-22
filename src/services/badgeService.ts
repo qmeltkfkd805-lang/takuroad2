@@ -605,6 +605,7 @@ async function checkTierCondition(userId: string, tier: any, earnedTierIds: Set<
 }
 
 // 대표 배지 설정
+/** ⛔ 호출부 없음. user_badge_tiers UPDATE 라 2026-09-22 이후 42501 로 실패한다. */
 export async function setFeaturedBadgeTiers(userId: string, tierIds: string[]): Promise<boolean> {
   if (tierIds.length > 3) return false
   const supabase = createClient()
@@ -775,6 +776,8 @@ export async function deleteTierAdmin(tierId: string): Promise<boolean> {
   return !error
 }
 
+/** ⛔ 호출부 없음. 수동 지급은 /api/admin/grant-badge(service_role)를 쓴다.
+    여기서 직접 INSERT 하면 2026-09-22 이후 42501 로 실패한다. */
 export async function awardTierManually(userId: string, tierId: string, adminId: string): Promise<boolean> {
   const supabase = createClient()
   const { error } = await supabase
