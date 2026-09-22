@@ -40,6 +40,7 @@ const GROUPS: MenuGroup[] = [
       { tab: 'verify',      label: '인증 심사',    icon: 'verify' },
       { tab: 'reported',    label: '샵 신고',      icon: 'flagShop' },
       { tab: 'postreports', label: '게시글 신고',  icon: 'flagPost' },
+      { tab: 'workrequests', label: '작품 추가 요청', icon: 'work' },
     ],
   },
   {

@@ -150,12 +150,10 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
                 🔍 '{term}' 전체 검색
               </button>
             )}
-            {isAdmin && (
-              <button type="button" className={styles.dropItem} onClick={() => go('/work/new')} style={{ color: 'var(--accent)', fontWeight: 800 }}>
-                <WorkIcon size={18} />
-                <span className={styles.dropText}>찾는 작품이 없나요? 직접 작품 등록하기</span>
-              </button>
-            )}
+            <button type="button" className={styles.dropItem} onClick={() => go(isAdmin ? '/work/new' : '/work/request')} style={{ color: 'var(--accent)', fontWeight: 800 }}>
+              <WorkIcon size={18} />
+              <span className={styles.dropText}>{isAdmin ? '찾는 작품이 없나요? 직접 작품 등록하기' : '찾는 작품이 없나요? 작품 추가 요청'}</span>
+            </button>
           </div>
         )}
       </div>

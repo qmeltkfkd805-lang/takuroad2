@@ -1,5 +1,6 @@
 'use client'
 import { useState, useMemo, useRef, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useRouter } from 'next/navigation'
 import { createWork, uploadWorkImage, findDuplicateWork, getWorkForEdit, updateWork, getPromotedGenres, searchParentWorks, getParentWork } from '@/services/workRegisterService'
@@ -23,10 +24,12 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
   const { user, isAdmin } = useAuth()
 
   const editing = mode === 'edit'
+  // 관리자가 "작품 추가 요청"에서 넘어올 때 작품명을 채워준다 (신규 등록에서만)
+  const sp = useSearchParams()
   const [loadingEdit, setLoadingEdit] = useState(mode === 'edit')
   const [step, setStep] = useState(1)
-  const [name, setName] = useState('')
-  const [eng, setEng] = useState('')
+  const [name, setName] = useState(() => (mode === 'create' ? (sp.get('name') ?? '') : ''))
+  const [eng, setEng] = useState(() => (mode === 'create' ? (sp.get('english') ?? '') : ''))
   const [slug, setSlug] = useState('')
   const [aliases, setAliases] = useState<string[]>([])
   const [aliasInput, setAliasInput] = useState('')

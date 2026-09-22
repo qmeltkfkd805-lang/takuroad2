@@ -21,6 +21,7 @@ import VerifyReviewTab from './VerifyReviewTab'
 import PlaceAdminTab from './PlaceAdminTab'
 import ContactAdminTab from './ContactAdminTab'
 import SuggestionAdminTab from './SuggestionAdminTab'
+import WorkRequestAdminTab from './WorkRequestAdminTab'
 import AdminSidebar from './AdminSidebar'
 import { getAdminTodoSummary, getAdminBadgeCounts, AdminBadgeCounts, AdminTodoSummary } from '@/services/adminDashboardService'
 import styles from './admin.module.css'
@@ -29,7 +30,7 @@ import styles from './admin.module.css'
    (타입만 있으면 검사할 수가 없다. 유니온 타입은 배열에서 뽑는다) */
 const TABS = [
   'dashboard', 'hero', 'shops', 'shopmanage', 'shopreview', 'works', 'members', 'verify',
-  'routes', 'events', 'reported', 'postreports', 'places', 'contacts', 'partners', 'suggestions',
+  'routes', 'events', 'reported', 'postreports', 'places', 'contacts', 'partners', 'suggestions', 'workrequests',
 ] as const
 type Tab = typeof TABS[number]
 
@@ -235,6 +236,7 @@ export default function AdminPage() {
       {tab === 'contacts' && <ContactAdminTab excludeType="partner" onSaved={refreshBadges} />}
       {tab === 'partners' && <ContactAdminTab onlyType="partner" onSaved={refreshBadges} />}
       {tab === 'suggestions' && <SuggestionAdminTab />}
+      {tab === 'workrequests' && <WorkRequestAdminTab />}
       {tab === 'routes' && <OfficialRouteTab />}
       {tab === 'events' && <SeasonalEventTab />}
       </div>

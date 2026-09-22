@@ -32,7 +32,7 @@ export default async function WorkNewPage() {
           중복 작품을 합치고 잘못 등록된 작품을 정리할 절차를 먼저 마련하고 있어요.
           준비되는 대로 다시 열 예정입니다. 등록하고 싶은 작품이 있으면 알려주세요.
         </p>
-        <Link href="/support/suggest" style={{ display: 'inline-block', padding: '12px 22px', borderRadius: 12, background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, textDecoration: 'none' }}>작품 추가 요청하기</Link>
+        <Link href="/work/request" style={{ display: 'inline-block', padding: '12px 22px', borderRadius: 12, background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, textDecoration: 'none' }}>작품 추가 요청</Link>
       </div>
     )
   }

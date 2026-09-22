@@ -138,14 +138,14 @@ export default function MyWorksPage() {
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 16px 10px', gap: 12 }}>
           <h1 style={{ fontSize: 24, fontWeight: 900, margin: 0 }}>작품</h1>
-          {isAdmin && <Link href="/work/new" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '9px 14px', borderRadius: 10, background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 13.5, textDecoration: 'none' }}>+ 작품 등록</Link>}
+          <Link href={isAdmin ? '/work/new' : '/work/request'} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '9px 14px', borderRadius: 10, background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 13.5, textDecoration: 'none' }}>{isAdmin ? '+ 작품 등록' : '+ 작품 추가 요청'}</Link>
         </div>
 
         {loading ? (
           <p style={{ color: 'var(--muted)', padding: '32px 16px', textAlign: 'center' }}>불러오는 중…</p>
         ) : works.length === 0 ? (
           <div style={{ padding: '0 16px' }}>
-            <EmptyBox title="아직 등록된 작품이 없어요" desc={isAdmin ? '첫 작품을 등록해보세요.' : '작품 등록은 현재 관리자만 가능합니다.'} action={isAdmin ? <Link href="/work/new" style={primaryBtn}>작품 등록하기</Link> : null} />
+            <EmptyBox title="아직 등록된 작품이 없어요" desc={isAdmin ? '첫 작품을 등록해보세요.' : '찾는 작품이 없으면 추가 요청을 남겨주세요.'} action={<Link href={isAdmin ? '/work/new' : '/work/request'} style={primaryBtn}>{isAdmin ? '작품 등록하기' : '작품 추가 요청'}</Link>} />
           </div>
         ) : (
           <>
@@ -296,7 +296,7 @@ export default function MyWorksPage() {
           )}
           </div>
           )}
-          {isAdmin && <Link href="/work/new" style={{ ...primaryBtn, flexShrink: 0 }}>+ 작품 등록하기</Link>}
+          <Link href={isAdmin ? '/work/new' : '/work/request'} style={{ ...primaryBtn, flexShrink: 0 }}>{isAdmin ? '+ 작품 등록하기' : '+ 작품 추가 요청'}</Link>
         </div>
       </div>
 
@@ -309,8 +309,8 @@ export default function MyWorksPage() {
       ) : works.length === 0 ? (
         <EmptyBox
           title="아직 등록된 작품이 없어요"
-          desc={isAdmin ? '첫 작품을 등록해보세요.' : '작품 등록은 현재 관리자만 가능합니다.'}
-          action={isAdmin ? <Link href="/work/new" style={primaryBtn}>작품 등록하기</Link> : null}
+          desc={isAdmin ? '첫 작품을 등록해보세요.' : '찾는 작품이 없으면 추가 요청을 남겨주세요.'}
+          action={<Link href={isAdmin ? '/work/new' : '/work/request'} style={primaryBtn}>{isAdmin ? '작품 등록하기' : '작품 추가 요청'}</Link>}
         />
       ) : filtered.length === 0 ? (
         <EmptyBox

@@ -52,6 +52,8 @@ psql "postgresql://postgres:<비밀번호>@db.<프로젝트ref>.supabase.co:5432
 
 | 날짜 | 파일 | 내용 |
 | --- | --- | --- |
+| 2026-09-22 | `work_requests.sql` | 작품 추가 요청 테이블 — 일반 사용자가 작품을 직접 만들 수 없게 된 대신 요청을 남기면 관리자가 검토해 등록한다. RLS 4개(본인 조회·관리자 조회·본인 등록·관리자 수정), 같은 사람이 같은 작품을 중복 대기시키지 못하는 부분 유니크 인덱스. 보상 없음. 화면: `/work/request` 폼 + 관리자 `작품 추가 요청` 탭 |
+| 2026-09-22 | `tags_insert_admin_only.sql` | 🚨 보안 — 작품 신규 생성을 관리자 전용으로 제한. `tags_user_insert`(로그인한 누구나 INSERT) 삭제, 관리자 생성은 기존 `tags_write_admin`(ALL, using 식이 INSERT 검사에도 적용)이 담당. 기존 1,992건·조회·소유자 수정은 그대로. 롤백은 `tags_insert_admin_only_ROLLBACK.sql`. 검증: 관리자 폼 등록 1건 성공(활동 0·EXP 0) 후 정확한 id로 삭제, `relrowsecurity=true` 확인. ⚠️ 일반 계정 JWT 실거부(42501)는 미검증 — 정책 검사로만 확인 |
 | 2026-09-21 | `tags_parent_nintendo.sql` | 작품 계층 2차 — `닌텐도`(제작사,브랜드) 신설 + 직속 6개(슈퍼마리오·별의 커비·피크민·스플래툰·동물의 숲·젤다의 전설), `동키콩`→슈퍼마리오(2단, keywords에 `닌텐도` 추가로 보완), `희망의 힘 어른 프리큐어 23`→프리큐어. 누적 하위 106개. 미채택: 쥬얼펫→산리오, 프로젝트 세카이→보컬로이드, 포켓몬→닌텐도, 전대대실격→전대 |
 | 2026-09-20 | `tags_parent.sql` | 취급 작품 검색 프랜차이즈 계층 — `tags.parent_tag_id` 컬럼 + 자기참조 CHECK + 부분 인덱스, `라코`→`랏코` 이름 수정(slug rako), 하위 98개 지정: 보컬로이드 40·디즈니 18·산리오 18·스튜디오 지브리 8·건담 7·치이카와 6·라인프렌즈 1. 샵 취급 작품 검색이 name/english_name/aliases/keywords/부모명까지 매칭 |
 | 2026-09-12 | `shop_images_storage_cleanup_trigger.sql` | 사진 삭제·크롭 교체 시 Storage 객체가 고아가 되던 것을 차단. `shop_images` AFTER DELETE / AFTER UPDATE OF(image_url, storage_bucket, storage_path) 트리거가 기존 `exhibit_storage_cleanup_queue` 에 적재(SECURITY DEFINER, 직접 EXECUTE 권한 전부 회수). `storage_path` 가 NULL 인 기존 137행은 적재하지 않음. 실제 삭제는 워커가 전 출처 참조 재확인 후 수행 |

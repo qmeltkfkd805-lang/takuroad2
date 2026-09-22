@@ -103,16 +103,14 @@ export default function SearchPage() {
               검색 결과가 없어요
             </p>
             <p style={{ color: 'var(--muted)', fontSize: '14px', marginBottom: '20px' }}>
-              {isAdmin ? '원하는 작품이 없나요? 직접 작품을 등록해보세요.' : '작품 등록은 현재 관리자만 가능합니다.'}
+              {isAdmin ? '원하는 작품이 없나요? 직접 작품을 등록해보세요.' : '원하는 작품이 없나요? 추가 요청을 남겨주세요.'}
             </p>
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
-              {isAdmin && (
-                <Link href="/work/new" style={{
-                  padding: '12px 22px', borderRadius: '12px',
-                  background: 'var(--accent)', color: '#fff',
-                  fontWeight: 800, fontSize: '14px', textDecoration: 'none',
-                }}>+ 직접 작품 등록하기</Link>
-              )}
+              <Link href={isAdmin ? '/work/new' : '/work/request'} style={{
+                padding: '12px 22px', borderRadius: '12px',
+                background: 'var(--accent)', color: '#fff',
+                fontWeight: 800, fontSize: '14px', textDecoration: 'none',
+              }}>{isAdmin ? '+ 직접 작품 등록하기' : '+ 작품 추가 요청'}</Link>
               <Link href={ROUTES.shopNew} style={{
                 padding: '12px 22px', borderRadius: '12px',
                 border: '1px solid var(--border)', color: 'var(--text)',
@@ -172,10 +170,10 @@ export default function SearchPage() {
           </>
         )}
 
-        {isAdmin && !loading && searched && !matchedTag && !hasTagResults && !noResultsAtAll && (
+        {!loading && searched && !matchedTag && !hasTagResults && !noResultsAtAll && (
           <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', background: 'var(--surface2)', borderBottom: '1px solid var(--border)' }}>
-            <span style={{ fontSize: '13px', color: 'var(--muted)' }}>찾는 작품이 없나요? 직접 등록해보세요.</span>
-            <Link href="/work/new" style={{ padding: '8px 16px', borderRadius: '9999px', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: '13px', textDecoration: 'none', flexShrink: 0 }}>+ 작품 등록</Link>
+            <span style={{ fontSize: '13px', color: 'var(--muted)' }}>{isAdmin ? '찾는 작품이 없나요? 직접 등록해보세요.' : '찾는 작품이 없나요? 추가 요청을 남겨주세요.'}</span>
+            <Link href={isAdmin ? '/work/new' : '/work/request'} style={{ padding: '8px 16px', borderRadius: '9999px', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: '13px', textDecoration: 'none', flexShrink: 0 }}>{isAdmin ? '+ 작품 등록' : '+ 작품 추가 요청'}</Link>
           </div>
         )}
 
