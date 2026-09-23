@@ -20,7 +20,10 @@ export const MAX_ATTEMPTS = 5
 export const LEASE_MIN = 5
 export const REMOVE_CHUNK = 100
 export const PURGE_DAYS = 30
-export const ALLOWED_BUCKETS = new Set(['exhibit-images', 'shop-images'])
+/* contact-files 는 문의 첨부다. 보호는 여기가 아니라 참조 스냅샷이 한다 —
+   REF_SOURCES 의 contact_attachments_protected 뷰가 유효 예약·제출된 첨부·
+   보호 구간 내 만료 건을 내보내므로 isReferenced 에 걸려 blocked 로 빠진다. */
+export const ALLOWED_BUCKETS = new Set(['exhibit-images', 'shop-images', 'contact-files'])
 
 export interface QueueRow {
   id: number

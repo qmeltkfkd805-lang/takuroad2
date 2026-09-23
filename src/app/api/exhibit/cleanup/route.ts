@@ -138,11 +138,54 @@ async function buildDeps() {
   return { selectAll, queue, removeObjects, supabaseHost, now: () => new Date() }
 }
 
+/* 문의 첨부 단계. 실패해도 기존 exhibit·shop 정리를 멈추지 않는다.
+   여기서 던지면 워커가 아예 안 돌아 용량 정리가 통째로 서 버린다. */
+async function contactSteps(): Promise<Record<string, unknown>> {
+  const svc = serviceClient()
+  const out: Record<string, unknown> = {}
+  try {
+    const { data, error } = await svc.rpc('contact_expire_drafts', { p_limit: 200 })
+    if (error) throw new Error(error.message)
+    const row = (Array.isArray(data) ? data[0] : data) as
+      { drafts_expired: number; attachments_expired: number } | null
+    out.draftsExpired = row?.drafts_expired ?? 0
+    out.attachmentsExpired = row?.attachments_expired ?? 0
+  } catch (e) {
+    out.expireError = e instanceof Error ? e.message : 'expire failed'
+  }
+  try {
+    const { data, error } = await svc.rpc('contact_enqueue_expired_attachments', { p_limit: 200 })
+    if (error) throw new Error(error.message)
+    const row = (Array.isArray(data) ? data[0] : data) as { enqueued: number } | null
+    out.attachmentsEnqueued = row?.enqueued ?? 0
+  } catch (e) {
+    out.enqueueError = e instanceof Error ? e.message : 'enqueue failed'
+  }
+  return out
+}
+
+async function contactSync(): Promise<Record<string, unknown>> {
+  try {
+    const svc = serviceClient()
+    const { data, error } = await svc.rpc('contact_sync_cleanup_state')
+    if (error) throw new Error(error.message)
+    const row = (Array.isArray(data) ? data[0] : data) as
+      { done: number; skipped: number } | null
+    return { contactCleanupDone: row?.done ?? 0, contactCleanupSkipped: row?.skipped ?? 0 }
+  } catch (e) {
+    return { syncError: e instanceof Error ? e.message : 'sync failed' }
+  }
+}
+
 async function handle(req: Request) {
   if (!authorized(req)) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
   try {
+    /* 순서: 만료 처리 → 큐 적재 → 워커 → 결과 동기화.
+       동기화가 워커 뒤에 와야 이번 회차 결과가 첨부 행에 반영된다. */
+    const contact = await contactSteps()
     const result = await runCleanup(await buildDeps())
-    return NextResponse.json({ ok: true, batch: BATCH, maxAttempts: MAX_ATTEMPTS, purgeDays: PURGE_DAYS, ...result },
+    const synced = await contactSync()
+    return NextResponse.json({ ok: true, batch: BATCH, maxAttempts: MAX_ATTEMPTS, purgeDays: PURGE_DAYS, ...result, ...contact, ...synced },
       { headers: { 'Cache-Control': 'no-store' } })
   } catch (e) {
     // 응답 전문·URL·키는 남기지 않는다
