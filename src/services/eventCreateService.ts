@@ -334,13 +334,19 @@ export async function uploadEventCover(file: File): Promise<{ url: string | null
   const up = prep.compressed ? new File([prep.data], `x.${prep.ext}`, { type: prep.contentType }) : file
   const ca = await uploadContentAddressed(supabase, 'event-goods', up)
   if (!ca.fallback) return ca.error ? { url: null, error: ca.error } : { url: ca.url, error: null }
+  // ⚠️ fallback 경로에서도 압축본(up)을 올린다. 예전에는 원본 file 을 올려서
+  //    내용 주소 판정이 실패할 때만 조용히 원본이 쌓였다.
   const mime = file.type.split('/')[1]
-  const ext = mime && /^[a-z0-9]+$/i.test(mime) ? (mime === 'jpeg' ? 'jpg' : mime) : 'jpg'
+  const ext = prep.compressed
+    ? prep.ext
+    : (mime && /^[a-z0-9]+$/i.test(mime) ? (mime === 'jpeg' ? 'jpg' : mime) : 'jpg')
   const rand = typeof crypto !== 'undefined' && crypto.randomUUID
     ? crypto.randomUUID()
     : `${Date.now()}-${Math.random().toString(36).slice(2)}`
 
-  const { error } = await supabase.storage.from('event-goods').upload(`covers/${rand}.${ext}`, file)
+  const { error } = await supabase.storage
+    .from('event-goods')
+    .upload(`covers/${rand}.${ext}`, up, { contentType: prep.contentType })
   if (error) {
     console.error('[이벤트 커버 업로드 실패]', error.message)
     return { url: null, error: error.message }

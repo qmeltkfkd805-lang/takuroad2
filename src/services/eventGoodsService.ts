@@ -124,9 +124,13 @@ export async function uploadGoodsImage(eventId: string, file: File): Promise<Upl
   const rand = typeof crypto !== 'undefined' && crypto.randomUUID
     ? crypto.randomUUID()
     : `${Date.now()}-${Math.random().toString(36).slice(2)}`
-  const path = `${eventId}/${rand}.${extOf(file)}`
+  // ⚠️ fallback 경로에서도 압축본(up)을 올린다. 예전에는 원본 file 을 올려서
+  //    내용 주소 판정이 실패할 때만 조용히 원본이 쌓였다.
+  const path = `${eventId}/${rand}.${prep.compressed ? prep.ext : extOf(file)}`
 
-  const { error } = await supabase.storage.from('event-goods').upload(path, file, { upsert: false })
+  const { error } = await supabase.storage
+    .from('event-goods')
+    .upload(path, up, { contentType: prep.contentType, upsert: false })
   if (error) {
     // 원인을 삼키지 않는다 — 버킷 없음 / RLS 거부 / 용량 초과가 전부 여기로 온다
     console.error('[굿즈 이미지 업로드 실패]', error.message, error)

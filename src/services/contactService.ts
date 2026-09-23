@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { prepareImage } from '@/lib/storage/compressImage'
 
 export type ContactPayload = {
   type: string
@@ -129,9 +130,14 @@ export async function uploadContactFiles(files: File[]): Promise<string[]> {
   const supabase = createClient()
   const urls: string[] = []
   for (const file of files) {
-    const ext = file.name.split('.').pop() || 'bin'
+    /* 이미지 첨부는 압축해서 올린다. prepareImage 는 PDF 등 비이미지와 GIF 를
+       그대로 통과시키므로 문서 첨부는 원본이 유지된다. */
+    const prep = await prepareImage(file)
+    const ext = prep.compressed ? prep.ext : (file.name.split('.').pop() || 'bin')
     const path = `contact/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${ext}`
-    const { error } = await supabase.storage.from('contact-files').upload(path, file)
+    const { error } = await supabase.storage
+      .from('contact-files')
+      .upload(path, prep.data, { contentType: prep.contentType })
     if (error) { console.error('[첨부 업로드 실패]', error.message); continue }
     const { data } = supabase.storage.from('contact-files').getPublicUrl(path)
     if (data?.publicUrl) urls.push(data.publicUrl)

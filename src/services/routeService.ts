@@ -330,7 +330,12 @@ export async function getMyRouteProgress(userId: string) {
 export async function uploadRouteCover(file: File, userId: string, routeKey: string): Promise<string | null> {
   const supabase = createClient()
   const prep = await prepareImage(file)
-  const path = `routes/${userId}/${routeKey}/${Date.now()}.${prep.ext}`
+  /* 새 루트는 아직 id 가 없어서 호출부가 'new' 를 넘긴다 (admin/RouteBuilder.tsx:116).
+     경로에 'new' 가 박히면 서로 다른 루트의 커버가 한 폴더에 섞여 어느 루트 것인지
+     알 수 없다. 초안은 drafts/ 로 모으고, 파일명에 난수를 붙여 같은 밀리초에
+     두 장이 올라가도 경로가 겹치지 않게 한다. */
+  const key = routeKey && routeKey !== 'new' ? routeKey : 'drafts'
+  const path = `routes/${userId}/${key}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${prep.ext}`
   const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { contentType: prep.contentType })
   if (error) { console.error('[route cover upload]', error); return null }
   const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
