@@ -9,6 +9,7 @@ import { ROUTES } from '@/lib/constants/routes'
 import TrafficSection from './TrafficSection'
 import VisitPathsSection from './VisitPathsSection'
 import BadgeReevalButton from './BadgeReevalButton'
+import StorageSection from './StorageSection'
 import AdminIcon, { AdminIconName } from './AdminIcon'
 import styles from './adminDashboard.module.css'
 
@@ -226,6 +227,8 @@ export default function AdminDashboardPage({ onNavigate, todo, pendingVerify, ba
       <section style={{ marginBottom: 16 }}>
         <VisitPathsSection />
       </section>
+
+      <StorageSection />
 
       <BadgeReevalButton />
     </div>
