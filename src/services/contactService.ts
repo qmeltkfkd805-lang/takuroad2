@@ -1,58 +1,179 @@
 import { createClient } from '@/lib/supabase/client'
 import { prepareImage } from '@/lib/storage/compressImage'
 
+/* ── 첨부 업로드 ─────────────────────────────────────────────
+   서버가 자리를 예약하고 서명 URL 을 주면 브라우저가 그 URL 로 직접 보낸다.
+
+   예전에는 브라우저가 contact-files 에 직접 upload() 했다. 버킷의 INSERT
+   정책이 {public} 에 조건이 버킷 이름뿐이라 비로그인도 아무 파일이나 올릴 수
+   있었고, 경로도 클라이언트가 정했다. 이제 경로·슬롯·개수를 서버가 정한다.
+
+   압축을 예약보다 먼저 한다
+     서버가 예약 시점에 확장자를 경로에 박기 때문에, 압축 후 webp 가 되면
+     경로와 어긋난다. 압축한 결과의 확장자·크기로 예약해야 맞는다.
+
+   초안(draftId)을 제출까지 들고 간다
+     첨부가 그 초안에 묶여 있고, 제출 때 서버가 그 초안의 첨부만 확인해
+     연결한다. 초안은 1시간 뒤 만료되므로 화면에서 안내해야 한다. */
+
+export const CONTACT_MAX_FILES = 5
+export const CONTACT_MAX_BYTES = 10 * 1024 * 1024   // 10 MiB. 버킷·RPC 와 같은 값
+
+export interface AttachmentUploadResult {
+  /** 제출 시 함께 보내야 한다. 하나도 못 올렸으면 null */
+  draftId: string | null
+  uploaded: number
+  /** 올리지 못한 파일. 사용자에게 보여줘야 한다 */
+  failed: { name: string; reason: string }[]
+  /** 초안 만료 시각. 화면 안내용 */
+  expiresAt: string | null
+}
+
+/* 응답에 타입을 준다. any 로 두면 draftId 의 제어 흐름 추론이
+   res → data → draftId → res 로 순환해 TS7022 가 난다. */
+interface ReserveResponse {
+  draftId?: string
+  draftExpiresAt?: string
+  bucket?: string
+  path?: string
+  token?: string
+  error?: string
+}
+
+interface SubmitResponse {
+  id?: string
+  attached?: number
+  dropped?: number
+  error?: string
+}
+
+function extOf(name: string): string {
+  const m = /\.([A-Za-z0-9]{1,8})$/.exec(name)
+  return m ? m[1].toLowerCase() : ''
+}
+
+export async function uploadContactFiles(files: File[]): Promise<AttachmentUploadResult> {
+  const out: AttachmentUploadResult = { draftId: null, uploaded: 0, failed: [], expiresAt: null }
+  if (!files.length) return out
+
+  const supabase = createClient()
+  let draftId: string | null = null
+
+  for (const file of files.slice(0, CONTACT_MAX_FILES)) {
+    try {
+      /* 이미지면 압축한다. prepareImage 는 PDF 등 비이미지와 GIF 를 그대로
+         통과시키므로 문서 첨부는 원본이 유지된다. */
+      const prep = await prepareImage(file)
+      const blob = prep.data
+      const ext = prep.compressed ? prep.ext : extOf(file.name)
+
+      // 사전 검사는 압축 결과 기준이다. 서버도 같은 값으로 다시 본다
+      if (blob.size > CONTACT_MAX_BYTES) {
+        out.failed.push({ name: file.name, reason: '10MB를 넘어요' })
+        continue
+      }
+
+      // 1) 서버에 자리 예약 — 경로·슬롯·개수는 서버가 정한다
+      const res = await fetch('/api/contact/attachments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ draftId, ext, size: blob.size }),
+      })
+      const data = (await res.json()) as ReserveResponse
+      if (!res.ok) {
+        out.failed.push({ name: file.name, reason: data?.error ?? '첨부 준비에 실패했어요' })
+        /* 초안 만료나 개수 초과면 남은 파일도 같은 이유로 실패한다.
+           의미 없는 요청을 반복하지 않는다. */
+        if (res.status === 400 || res.status === 403) break
+        continue
+      }
+
+      draftId = data.draftId ?? null
+      out.draftId = draftId
+      if (data.draftExpiresAt) out.expiresAt = data.draftExpiresAt
+
+      // 2) 서명 URL 로 직접 전송. 파일 바이트는 우리 서버를 지나지 않는다
+      if (!data.bucket || !data.path || !data.token) {
+        out.failed.push({ name: file.name, reason: '업로드 준비 응답이 올바르지 않아요' })
+        continue
+      }
+      const { error } = await supabase.storage
+        .from(data.bucket)
+        .uploadToSignedUrl(data.path, data.token, blob, { contentType: prep.contentType })
+
+      if (error) {
+        /* 예약 슬롯은 이미 소모됐다 — 남은 개수가 하나 줄어든 채로 남는다.
+           그 객체는 업로드되지 않은 채 만료를 거쳐 정리된다. */
+        out.failed.push({ name: file.name, reason: error.message })
+        continue
+      }
+      out.uploaded++
+    } catch (e) {
+      out.failed.push({ name: file.name, reason: e instanceof Error ? e.message : '업로드에 실패했어요' })
+    }
+  }
+
+  return out
+}
+
+/* ── 문의 접수 ───────────────────────────────────────────────
+   attachment_urls 를 보내지 않는다. 서버가 초안의 첨부를 Storage 에서 확인해
+   직접 만든다. 클라이언트가 임의의 URL 을 문의에 붙일 수 없다.
+
+   접수번호(id)도 서버가 만든다. 예전에는 INSERT ... RETURNING 이 SELECT 정책에
+   걸려 실패하는 문제 때문에 클라이언트가 id 를 미리 만들었는데, 이제 서버가
+   service_role 로 넣고 그 id 를 돌려주므로 그 우회가 필요 없다. */
 export type ContactPayload = {
   type: string
   title: string
   content: string
-  extra: Record<string, string>
+  extra: Record<string, unknown>
   email: string
   pageUrl?: string | null
   pageLabel?: string | null
-  attachmentUrls?: string[]
+  /** uploadContactFiles 가 돌려준 값 */
+  draftId?: string | null
 }
 
-export async function createContactMessage(payload: ContactPayload): Promise<{ ok: boolean; id?: string; error?: string }> {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  /* 문의는 로그인한 사용자만 받는다.
-     비로그인 문의는 답변을 전달할 경로가 없었다 — 메일 발송 기능이 없고
-     '내 문의'(getMyContactMessages)는 user_id 로 조회하므로 열 수도 없다.
-     폼(ContactForm/PartnerForm)에서 이미 막지만, 서비스에서도 한 번 더 막는다.
-     DB 쪽도 contact_insert_any 정책이 user_id = auth.uid() 를 요구한다. */
-  if (!user) return { ok: false, error: '로그인이 필요해요' }
-
-  /* 접수번호(id)를 클라이언트에서 미리 만든다.
-     예전에는 .select('id').single() 로 돌려받았는데, INSERT ... RETURNING 은
-     SELECT 정책의 적용을 받는다. contact_select_own 이 auth.uid() = user_id 라
-     비로그인 문의는 양쪽이 null 이고 null = null 은 참이 아니다 — 방금 넣은
-     자기 행을 못 읽어서 42501 "new row violates row-level security policy" 로
-     접수가 통째로 실패했다. 비로그인 문의가 한 번도 접수된 적이 없었던 이유다.
-
-     성공 화면이 접수번호(#앞 8자리)를 보여주므로 RETURNING 을 그냥 없앨 수는 없다.
-     id 를 미리 정해 넣고 그 값을 그대로 돌려준다.
-     (contact_messages_returning_fix.sql 에서 id 의 INSERT 권한을 부여한다) */
-  const id = crypto.randomUUID()
-
-  const { error } = await supabase
-    .from('contact_messages')
-    .insert({
-      id,
-      type: payload.type,
-      title: payload.title,
-      content: payload.content,
-      extra: payload.extra ?? {},
-      email: payload.email,
-      user_id: user.id,
-      page_url: payload.pageUrl ?? null,
-      page_label: payload.pageLabel ?? null,
-      attachment_urls: payload.attachmentUrls ?? [],
-    } as any)
-
-  if (error) return { ok: false, error: error.message }
-  return { ok: true, id }
+export interface ContactSubmitResult {
+  ok: boolean
+  id?: string
+  /** 실제로 붙은 첨부 수 */
+  attached?: number
+  /** 업로드가 끝나지 않아 빠진 첨부 수. 0 이 아니면 알려야 한다 */
+  dropped?: number
+  error?: string
+  /** 초안 만료 등으로 첨부부터 다시 올려야 하는 경우 */
+  needsReattach?: boolean
 }
+
+export async function createContactMessage(payload: ContactPayload): Promise<ContactSubmitResult> {
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        draftId: payload.draftId ?? null,
+        type: payload.type,
+        title: payload.title,
+        content: payload.content,
+        extra: payload.extra ?? {},
+        email: payload.email,
+        pageUrl: payload.pageUrl ?? null,
+        pageLabel: payload.pageLabel ?? null,
+      }),
+    })
+    const data = (await res.json()) as SubmitResponse
+    if (!res.ok) {
+      const msg = String(data?.error ?? '접수에 실패했어요')
+      return { ok: false, error: msg, needsReattach: msg.includes('만료') }
+    }
+    return { ok: true, id: data.id, attached: data.attached, dropped: data.dropped }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : '접수에 실패했어요' }
+  }
+}
+
 export async function getMyContactMessages(userId: string) {
   const supabase = createClient()
   const { data, error } = await supabase
@@ -63,6 +184,7 @@ export async function getMyContactMessages(userId: string) {
   if (error) return []
   return data ?? []
 }
+
 /* ── 관리자: 문의 조회 ─────────────────────────────────────────────
    security definer RPC 를 거친다. 예전에는 select('*') 로 테이블을 직접 읽었는데,
    그러면 admin_note(내부 메모)의 SELECT 권한을 authenticated 에서 회수할 수 없다 —
@@ -123,24 +245,4 @@ export async function updateContactMessage(
   const { error } = await supabase.from('contact_messages').update(upd).eq('id', id)
   if (error) return { ok: false, error: error.message }
   return { ok: true }
-}
-// ── 첨부파일 업로드 → 공개 URL 배열 ──
-export async function uploadContactFiles(files: File[]): Promise<string[]> {
-  if (!files.length) return []
-  const supabase = createClient()
-  const urls: string[] = []
-  for (const file of files) {
-    /* 이미지 첨부는 압축해서 올린다. prepareImage 는 PDF 등 비이미지와 GIF 를
-       그대로 통과시키므로 문서 첨부는 원본이 유지된다. */
-    const prep = await prepareImage(file)
-    const ext = prep.compressed ? prep.ext : (file.name.split('.').pop() || 'bin')
-    const path = `contact/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${ext}`
-    const { error } = await supabase.storage
-      .from('contact-files')
-      .upload(path, prep.data, { contentType: prep.contentType })
-    if (error) { console.error('[첨부 업로드 실패]', error.message); continue }
-    const { data } = supabase.storage.from('contact-files').getPublicUrl(path)
-    if (data?.publicUrl) urls.push(data.publicUrl)
-  }
-  return urls
 }

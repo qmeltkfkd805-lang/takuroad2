@@ -249,6 +249,12 @@ export const REF_SOURCES: RefSource[] = [
 
   // ── URL 또는 path ──
   { kind: 'urlOrPath', table: 'shop_verify_requests', column: 'evidence_url', fallbackBucket: 'verify-documents' },
+
+  /* 문의 첨부. 테이블이 아니라 보호용 뷰를 본다.
+     뷰는 (1) 유효한 예약 (2) 제출된 첨부 (3) 만료됐지만 정리 시점 전인 것을
+     내보낸다. 이걸 빼면 아직 제출 안 된 첨부가 삭제 후보로 잡히고,
+     반대로 테이블 전체를 보면 정리 끝난 만료 행이 영원히 참조로 남는다. */
+  { kind: 'pathWithBucketColumn', table: 'contact_attachments_protected', column: 'object_path', bucketColumn: 'bucket_id' },
 ]
 
 /* ============================================================

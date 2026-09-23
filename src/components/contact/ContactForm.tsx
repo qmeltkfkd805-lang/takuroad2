@@ -33,6 +33,8 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
   const [files, setFiles] = useState<File[]>([])
   const [sending, setSending] = useState(false)
   const [sentId, setSentId] = useState<string | null>(null)
+  // 첨부 업로드·접수 과정의 안내. 실패해도 본문은 보존한다
+  const [note, setNote] = useState<string | null>(null)
 
   const type = useMemo(() => CONTACT_TYPES.find(t => t.key === typeKey)!, [typeKey])
 
@@ -56,14 +58,34 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
     for (const f of type.fields) {
       if (f !== 'title' && f !== 'content' && (values[f] ?? '').trim()) extra[f] = values[f]
     }
-    const attachmentUrls = files.length ? await uploadContactFiles(files) : []
+    /* 첨부는 서버가 자리를 예약하고 서명 URL 로 직접 올린다.
+       초안(draftId)을 제출까지 들고 가야 첨부가 이 문의에 연결된다. */
+    let draftId: string | null = null
+    if (files.length) {
+      const up = await uploadContactFiles(files)
+      draftId = up.draftId
+      if (up.failed.length) {
+        setNote('올리지 못한 파일이 있어요 — ' + up.failed.map(f => f.name + '(' + f.reason + ')').join(', '))
+      }
+      // 하나도 못 올렸으면 멈춘다. 작성한 내용은 그대로 둔다
+      if (up.uploaded === 0) { setSending(false); return }
+    }
+
     const res = await createContactMessage({
       type: typeKey, title, content, extra,
-      email: emailValue, pageUrl: fromPath, pageLabel: fromLabel, attachmentUrls,
+      email: emailValue, pageUrl: fromPath, pageLabel: fromLabel, draftId,
     })
     setSending(false)
-    if (res.ok && res.id) { setSentId(res.id); onSent?.() }
-    else alert('전송에 실패했어요. 잠시 후 다시 시도해 주세요.')
+    if (res.ok && res.id) {
+      setNote(res.dropped ? '첨부 ' + res.dropped + '개는 업로드가 끝나지 않아 빠졌어요.' : null)
+      setSentId(res.id); onSent?.()
+    } else {
+      /* 초안이 만료됐으면 첨부부터 다시 올려야 한다.
+         본문은 보존하고 파일 선택만 비운다 */
+      if (res.needsReattach) setFiles([])
+      setNote((res.error ?? '접수에 실패했어요')
+        + (res.needsReattach ? ' 첨부를 다시 선택해주세요. 작성하신 내용은 그대로 있어요.' : ''))
+    }
   }
 
   const canSubmit = agree && emailValue && type.fields.filter(f => FIELD_DEFS[f].required).every(f => (values[f] ?? '').trim())
@@ -88,6 +110,9 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
         <h3 className={styles.doneTitle}>문의가 접수되었어요</h3>
         <p className={styles.doneDesc}>평균 1~3일 안에 답변 드릴게요. 접수번호를 알려드려요.</p>
         <span className={styles.doneId}>#{sentId.slice(0, 8)}</span>
+        {note && (
+          <p className={styles.doneDesc} style={{ color: 'var(--warn, #d97706)' }}>{note}</p>
+        )}
       </div>
     )
   }
@@ -150,7 +175,19 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
           <input type="file" multiple accept="image/*" onChange={onFiles} hidden />
         </label>
         {files.length > 0 && <span className={styles.fileList}>{files.map(f => f.name).join(', ')}</span>}
+        <p style={{ fontSize: 12.5, color: 'var(--muted)', margin: '6px 0 0', lineHeight: 1.6 }}>
+          최대 5개, 파일당 10MB까지 올릴 수 있어요. 파일을 고른 뒤 1시간 안에 보내주세요 —
+          시간이 지나면 첨부만 다시 올리시면 돼요. 한 번 고른 파일을 빼도 남은 개수는 돌아오지 않아요.
+        </p>
       </div>
+
+      {note && (
+        <div style={{
+          margin: '0 0 12px', padding: '10px 12px', borderRadius: 9,
+          border: '1px solid #f0b429', background: '#fff8e6',
+          fontSize: 12.5, lineHeight: 1.6, color: '#7a5200', whiteSpace: 'pre-wrap',
+        }}>{note}</div>
+      )}
 
       <label className={styles.agree}>
         <input type="checkbox" checked={agree} onChange={e => setAgree(e.target.checked)} />
