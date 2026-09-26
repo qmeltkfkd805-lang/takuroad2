@@ -31,7 +31,7 @@ const PAGE = 1000
 const ROW_CAP = 50_000
 
 function authorized(req: Request): boolean {
-  const secret = process.env.CRON_SECRET
+  const secret = (process.env.CRON_SECRET ?? '').trim()
   if (!secret) return false
   const h = req.headers
   const bearer = h.get('authorization') ?? ''
@@ -178,6 +178,7 @@ async function contactSync(): Promise<Record<string, unknown>> {
 }
 
 async function handle(req: Request) {
+  if (!(process.env.CRON_SECRET ?? '').trim()) return NextResponse.json({ error: 'cron secret not configured' }, { status: 500 })
   if (!authorized(req)) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
   try {
     /* 순서: 만료 처리 → 큐 적재 → 워커 → 결과 동기화.
