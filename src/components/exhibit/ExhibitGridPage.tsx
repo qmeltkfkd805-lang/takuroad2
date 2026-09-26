@@ -34,6 +34,15 @@ export default function ExhibitGridPage() {
 
   const nickname = profile?.nickname ?? '나'
 
+  // 라이트박스에서 "전시에서 빼기" 성공 → 목록·개수 갱신, 보던 위치 유지(마지막이면 앞으로)
+  function onRemoved(id: string) {
+    const next = (cards ?? []).filter(c => c.id !== id)
+    setCards(next)
+    setCount(n => Math.max(0, n - 1))
+    if (next.length === 0) setLightbox(null)
+    else setLightbox(i => (i === null ? null : Math.min(i, next.length - 1)))
+  }
+
   const addBtn = (
     <button onClick={() => router.push('/profile/exhibit/new')} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, border: 'none', cursor: 'pointer', background: 'var(--accent)', color: '#fff', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 800, padding: '9px 15px', borderRadius: 9999 }}>
       <svg width="15" height="15" viewBox="0 0 24 24" {...P}><path d="M12 5v14M5 12h14" /></svg>전시관에 추가
@@ -92,7 +101,10 @@ export default function ExhibitGridPage() {
       )}
       {isDesktop && lightbox !== null && cards && cards.length > 0 && (
         <ExhibitLightbox cards={cards} index={lightbox} ownerName={nickname}
-          onIndex={setLightbox} onClose={() => setLightbox(null)} />
+          onIndex={setLightbox} onClose={() => setLightbox(null)}
+          isOwner
+          shareUrl={c => profile?.nickname ? `/exhibit/${encodeURIComponent(profile.nickname)}/${c.id}` : `/profile/exhibit/${c.id}`}
+          onRemoved={onRemoved} />
       )}
       <style>{`@media (max-width:768px){ .gv-edit-desktop{ display:none } }`}</style>
     </GoodsPageShell>

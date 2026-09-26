@@ -89,6 +89,17 @@ export async function deleteExhibit(id: string, kind: ExhibitKind): Promise<void
   if (!res.ok) { const j = await res.json().catch(() => ({})); throw new Error(j?.error ?? '전시에서 빼지 못했어요') }
 }
 
+/* "전시에서 빼기" 확인창 문구 — 종류마다 실제로 일어나는 일을 그대로 안내(상세 피드·라이트박스 공용) */
+export function exhibitRemoveConfirmText(kind: ExhibitKind, imageCount: number): string {
+  if (kind === 'post') {
+    return '이 글을 전시관에서 뺄까요?\n\n전시 연결만 해제돼요. 원본 글과 사진은 그대로 남아요.'
+  }
+  return '이 전시를 전시관에서 뺄까요?\n\n'
+    + `이 전시와, 전시용으로 따로 저장된 사진${imageCount > 0 ? ` ${imageCount}장` : ''}이 영구 삭제돼요.\n`
+    + '내 굿즈와 굿즈 사진은 그대로 남아요.\n'
+    + '삭제한 전시는 되돌릴 수 없어요.'
+}
+
 /* ---- 새 방식: 내 굿즈 글 연결 ---- */
 
 export interface ExhibitPostChoice {

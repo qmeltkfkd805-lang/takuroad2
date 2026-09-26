@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { getExhibitDetail, getExhibits, deleteExhibit, type ExhibitDetail, type ExhibitCard } from '@/services/exhibitService'
+import { getExhibitDetail, getExhibits, deleteExhibit, exhibitRemoveConfirmText, type ExhibitDetail, type ExhibitCard } from '@/services/exhibitService'
 
 const P = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
 const VIS_LABEL: Record<string, string> = { public: '전체 공개', followers: '팔로워 공개', private: '나만 보기' }
@@ -143,16 +143,7 @@ function ExhibitFeedPost({
   // 전시에서 빼기 — 종류마다 실제로 일어나는 일을 그대로 안내한다
   async function onRemove() {
     setMenu(false)
-    let msg: string
-    if (isPost) {
-      msg = '이 글을 전시관에서 뺄까요?\n\n전시 연결만 해제돼요. 원본 글과 사진은 그대로 남아요.'
-    } else {
-      const n = detail ? detail.images.length : card.imageCount
-      msg = '이 전시를 전시관에서 뺄까요?\n\n'
-        + `이 전시와, 전시용으로 따로 저장된 사진${n > 0 ? ` ${n}장` : ''}이 영구 삭제돼요.\n`
-        + '내 굿즈와 굿즈 사진은 그대로 남아요.\n'
-        + '삭제한 전시는 되돌릴 수 없어요.'
-    }
+    const msg = exhibitRemoveConfirmText(card.kind, detail ? detail.images.length : card.imageCount)
     if (!window.confirm(msg)) return
     setBusy(true)
     try { await deleteExhibit(card.id, card.kind); onDeleted(card.id) }

@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { getExhibitDetail, type ExhibitCard, type ExhibitDetail } from '@/services/exhibitService'
+import { useRouter } from 'next/navigation'
+import { getExhibitDetail, deleteExhibit, exhibitRemoveConfirmText, type ExhibitCard, type ExhibitDetail } from '@/services/exhibitService'
 
 /* 전시 라이트박스 (데스크톱 전용)
    격자에서 사진을 누르면 그 전시 하나만 화면에 꽉 차게 띄운다.
@@ -19,16 +20,22 @@ const fmt = (s: string | null) => {
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
 }
 
-export default function ExhibitLightbox({ cards, index, ownerName, onIndex, onClose }: {
+export default function ExhibitLightbox({ cards, index, ownerName, onIndex, onClose, isOwner = false, shareUrl, onRemoved }: {
   cards: ExhibitCard[]
   index: number
   ownerName?: string | null
   onIndex: (i: number) => void
   onClose: () => void
+  isOwner?: boolean                          // 본인 전시관이면 ⋯ 메뉴에 수정·빼기 노출
+  shareUrl?: (card: ExhibitCard) => string   // 공유할 주소(없으면 현재 주소)
+  onRemoved?: (id: string) => void           // 빼기 성공 → 호출부가 목록에서 제거
 }) {
+  const router = useRouter()
   const cache = useRef<Map<string, ExhibitDetail>>(new Map())
   const [detail, setDetail] = useState<ExhibitDetail | null>(null)
   const [imgIdx, setImgIdx] = useState(0)
+  const [menu, setMenu] = useState(false)
+  const [busy, setBusy] = useState(false)
 
   const card = cards[index]
   const hasPrev = index > 0
@@ -44,6 +51,7 @@ export default function ExhibitLightbox({ cards, index, ownerName, onIndex, onCl
   useEffect(() => {
     if (!card) return
     setImgIdx(0)
+    setMenu(false)
     const cached = cache.current.get(card.id)
     setDetail(cached ?? null)
     let alive = true
@@ -64,13 +72,13 @@ export default function ExhibitLightbox({ cards, index, ownerName, onIndex, onCl
   // 키보드 — 좌우는 전시 이동, Esc는 닫기
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') { onClose(); return }
+      if (e.key === 'Escape') { if (menu) setMenu(false); else onClose(); return }
       if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1) }
       if (e.key === 'ArrowRight') { e.preventDefault(); go(1) }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [go, onClose])
+  }, [go, onClose, menu])
 
   // 열려 있는 동안 배경 스크롤 잠금
   useEffect(() => {
@@ -88,9 +96,40 @@ export default function ExhibitLightbox({ cards, index, ownerName, onIndex, onCl
   const typeName = detail?.goodsTypeName ?? card.goodsTypeName
   const title = card.kind === 'post' ? (detail?.title ?? null) : null
   const caption = detail ? detail.caption : (card.kind === 'post' ? null : card.caption)
+  const postId = card.kind === 'post' ? (detail?.postId ?? card.postId) : null
+
+  function onEditPost() {
+    setMenu(false)
+    if (postId) router.push(`/community/write?edit=${postId}`)
+  }
+
+  async function onShare() {
+    setMenu(false)
+    const url = shareUrl ? `${window.location.origin}${shareUrl(card)}` : window.location.href
+    try {
+      const nav = navigator as any
+      if (nav.share) await nav.share({ title: title || card.caption || '굿즈 전시', url })
+      else { await navigator.clipboard.writeText(url); window.alert('링크를 복사했어요') }
+    } catch { /* 취소 */ }
+  }
+
+  async function onRemove() {
+    setMenu(false)
+    if (!window.confirm(exhibitRemoveConfirmText(card.kind, detail ? detail.images.length : card.imageCount))) return
+    setBusy(true)
+    try {
+      await deleteExhibit(card.id, card.kind)
+      cache.current.delete(card.id)
+      onRemoved?.(card.id)
+    } catch (e: any) {
+      window.alert(e?.message ?? '전시에서 빼지 못했어요')
+    } finally {
+      setBusy(false)
+    }
+  }
 
   return (
-    <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 4000, background: 'rgba(0,0,0,.93)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 84px' }}>
+    <div onClick={() => { if (menu) setMenu(false); else onClose() }} style={{ position: 'fixed', inset: 0, zIndex: 4000, background: 'rgba(0,0,0,.93)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 84px' }}>
       <style>{`.exlb-nav{opacity:.75;transition:opacity .12s ease}.exlb-nav:hover{opacity:1}.exlb-imgnav{opacity:0;transition:opacity .12s ease}.exlb-stage:hover .exlb-imgnav{opacity:.9}`}</style>
 
       {/* 닫기 */}
@@ -98,6 +137,31 @@ export default function ExhibitLightbox({ cards, index, ownerName, onIndex, onCl
         style={{ position: 'fixed', top: 18, right: 22, width: 40, height: 40, borderRadius: 9999, border: 'none', background: 'rgba(255,255,255,.12)', color: '#fff', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
         <svg width="22" height="22" viewBox="0 0 24 24" {...P}><path d="M18 6 6 18M6 6l12 12" /></svg>
       </button>
+
+      {/* 더보기(⋯) — 닫기 버튼 왼쪽 */}
+      <div onClick={e => e.stopPropagation()} style={{ position: 'fixed', top: 18, right: 72, zIndex: 2 }}>
+        <button onClick={() => setMenu(m => !m)} aria-label="더보기" aria-expanded={menu} className="exlb-nav" disabled={busy}
+          style={{ width: 40, height: 40, borderRadius: 9999, border: 'none', background: 'rgba(255,255,255,.12)', color: '#fff', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8" /><circle cx="12" cy="12" r="1.8" /><circle cx="19" cy="12" r="1.8" /></svg>
+        </button>
+        {menu && (
+          <div role="menu" style={{ position: 'absolute', top: 'calc(100% + 8px)', right: 0, minWidth: 190, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 12px 36px rgba(0,0,0,.35)', overflow: 'hidden' }}>
+            {isOwner && postId && (
+              <button role="menuitem" onClick={onEditPost} style={menuItem()}>
+                <svg width="17" height="17" viewBox="0 0 24 24" {...P}><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>원본 글 수정
+              </button>
+            )}
+            <button role="menuitem" onClick={onShare} style={menuItem()}>
+              <svg width="17" height="17" viewBox="0 0 24 24" {...P}><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 13.5 6.8 4M15.4 6.5 8.6 10.5" /></svg>공유
+            </button>
+            {isOwner && (
+              <button role="menuitem" onClick={onRemove} disabled={busy} style={menuItem('#e5484d')}>
+                <svg width="17" height="17" viewBox="0 0 24 24" {...P}><path d="M5 12h14" /><rect x="3" y="4" width="18" height="16" rx="2" /></svg>전시에서 빼기
+              </button>
+            )}
+          </div>
+        )}
+      </div>
 
       {/* 전시 순번 */}
       <div style={{ position: 'fixed', top: 24, left: 26, color: 'rgba(255,255,255,.7)', fontSize: 13, fontWeight: 700 }}>
@@ -120,7 +184,7 @@ export default function ExhibitLightbox({ cards, index, ownerName, onIndex, onCl
 
       {/* 본체 — 사진 위, 정보 아래 */}
       {/* 카드 폭이 사진 비율을 따라간다 → 위아래·좌우 검은 여백(레터박스)이 안 생김 */}
-      <div onClick={e => e.stopPropagation()}
+      <div onClick={e => { e.stopPropagation(); if (menu) setMenu(false) }}
         style={{ display: 'inline-flex', flexDirection: 'column', width: 'auto', maxWidth: 'min(980px, 100%)', minWidth: 380, maxHeight: '90vh', background: 'var(--surface)', borderRadius: 14, overflow: 'hidden', boxShadow: '0 24px 70px rgba(0,0,0,.5)' }}>
 
         {/* 사진 */}
@@ -174,6 +238,10 @@ export default function ExhibitLightbox({ cards, index, ownerName, onIndex, onCl
       </div>
     </div>
   )
+}
+
+function menuItem(color?: string): React.CSSProperties {
+  return { display: 'flex', alignItems: 'center', gap: 10, width: '100%', padding: '13px 16px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14.5, fontWeight: 700, color: color ?? 'var(--text)', textAlign: 'left' }
 }
 
 const navBtn: React.CSSProperties = {

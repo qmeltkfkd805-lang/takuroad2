@@ -133,7 +133,15 @@ export default function ExhibitPublicPage({ nickname }: { nickname: string }) {
 
       {isDesktop && lightbox !== null && cards && cards.length > 0 && (
         <ExhibitLightbox cards={cards} index={lightbox} ownerName={owner.nickname}
-          onIndex={setLightbox} onClose={() => setLightbox(null)} />
+          onIndex={setLightbox} onClose={() => setLightbox(null)}
+          isOwner={!!isSelf}
+          shareUrl={c => `/exhibit/${encodeURIComponent(owner.nickname)}/${c.id}`}
+          onRemoved={id => {
+            const next = cards.filter(c => c.id !== id)
+            setCards(next)
+            if (next.length === 0) setLightbox(null)
+            else setLightbox(i => (i === null ? null : Math.min(i, next.length - 1)))
+          }} />
       )}
     </div>
   )
