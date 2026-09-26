@@ -99,7 +99,7 @@ export default function ExhibitPublicPage({ nickname }: { nickname: string }) {
         </div>
         <div style={{ display: 'flex', gap: 8, marginLeft: 'auto' }}>
           {isSelf ? (
-            <button onClick={() => router.push('/profile/exhibit/new')} style={btnPrimary}>굿즈 전시하기</button>
+            <button onClick={() => router.push('/profile/exhibit/new')} style={btnPrimary}>전시관에 추가</button>
           ) : (
             <button onClick={toggleFollow} disabled={followBusy} style={following ? btnGhost : btnPrimary}>{following ? '팔로잉' : '팔로우'}</button>
           )}

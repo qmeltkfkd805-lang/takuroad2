@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getExhibitDetail, getExhibits, deleteExhibit, type ExhibitDetail, type ExhibitCard } from '@/services/exhibitService'
-import { getGoodsPostId } from '@/services/goodsService'
 
 const P = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
 const VIS_LABEL: Record<string, string> = { public: '전체 공개', followers: '팔로워 공개', private: '나만 보기' }
@@ -131,39 +130,39 @@ function ExhibitFeedPost({
     if (el) { requestAnimationFrame(() => { el.scrollIntoView({ block: 'start' }); onScrolled() }) }
   }, [focus, didScroll, onScrolled])
 
+  const isPost = card.kind === 'post'
   const images = detail ? detail.images : (card.coverUrl ? [card.coverUrl] : [])
-  const caption = detail ? detail.caption : card.caption
+  const title = isPost ? (detail?.title ?? null) : null
+  const caption = detail ? detail.caption : (isPost ? null : card.caption)
   const goodsName = detail?.goodsName ?? null
   const goodsTypeName = detail?.goodsTypeName ?? card.goodsTypeName
-  const postId = detail?.postId ?? null
+  const postId = isPost ? (detail?.postId ?? card.postId) : null   // 이전 방식 전시엔 원본 글 링크를 만들지 않는다
   const visibility = detail?.visibility ?? card.visibility
   const workName = detail?.workName ?? card.workName
 
-  async function onDelete() {
+  // 전시에서 빼기 — 종류마다 실제로 일어나는 일을 그대로 안내한다
+  async function onRemove() {
     setMenu(false)
-    if (!window.confirm('이 전시를 내릴까요? 원본 굿즈는 그대로 남아요.')) return
-    setBusy(true)
-    try { await deleteExhibit(card.id); onDeleted(card.id) }
-    catch (e: any) { window.alert(e?.message ?? '삭제에 실패했어요'); setBusy(false) }
-  }
-  // 수정 → 내 굿즈·작품 컬렉션과 동일: 연결된 굿즈 자랑 글 편집(없으면 굿즈 편집)
-  async function onEdit() {
-    setMenu(false)
-    let gid = detail?.goodsItemId ?? null
-    if (!gid) { try { const dd = await getExhibitDetail(card.id); if (dd) { setDetail(dd); gid = dd.goodsItemId } } catch { /* ignore */ } }
-    if (gid) {
-      try { const pid = await getGoodsPostId(gid); if (pid) { router.push(`/community/write?edit=${pid}`); return } } catch { /* fallback */ }
-      router.push(`/community/write?goodsId=${gid}`); return   // 연결 글 없으면 기존 굿즈로 새 글 작성
+    let msg: string
+    if (isPost) {
+      msg = '이 글을 전시관에서 뺄까요?\n\n전시 연결만 해제돼요. 원본 글과 사진은 그대로 남아요.'
+    } else {
+      const n = detail ? detail.images.length : card.imageCount
+      msg = '이 전시를 전시관에서 뺄까요?\n\n'
+        + `이 전시와, 전시용으로 따로 저장된 사진${n > 0 ? ` ${n}장` : ''}이 영구 삭제돼요.\n`
+        + '내 굿즈와 굿즈 사진은 그대로 남아요.\n'
+        + '삭제한 전시는 되돌릴 수 없어요.'
     }
-    router.push(`/profile/exhibit/${card.id}/edit`)   // goodsItemId 확보 실패 시에만(전시 자체 편집)
+    if (!window.confirm(msg)) return
+    setBusy(true)
+    try { await deleteExhibit(card.id, card.kind); onDeleted(card.id) }
+    catch (e: any) { window.alert(e?.message ?? '전시에서 빼지 못했어요'); setBusy(false) }
   }
 
-  // 굿즈 정보만 수정(굿즈 편집 폼) — 별도 항목
-  async function onEditGoodsInfo() {
+  // 새 방식 전시의 수정 = 원본 글 수정
+  function onEditPost() {
     setMenu(false)
-    let gid = detail?.goodsItemId ?? null
-    if (!gid) { try { const dd = await getExhibitDetail(card.id); if (dd) { setDetail(dd); gid = dd.goodsItemId } } catch { /* ignore */ } }
-    if (gid) router.push(`/profile/goods/${gid}/edit`)
+    if (postId) router.push(`/community/write?edit=${postId}`)
   }
 
   async function onShare() {
@@ -172,7 +171,7 @@ function ExhibitFeedPost({
     const url = `${origin}${homeHref}/${card.id}`
     try {
       const nav = navigator as any
-      if (nav.share) await nav.share({ title: caption || '굿즈 전시', url })
+      if (nav.share) await nav.share({ title: title || card.caption || '굿즈 전시', url })
       else { await navigator.clipboard.writeText(url); window.alert('링크를 복사했어요') }
     } catch { /* 취소 */ }
   }
@@ -193,22 +192,17 @@ function ExhibitFeedPost({
             <>
               <div onClick={() => setMenu(false)} style={{ position: 'fixed', inset: 0, zIndex: 40 }} />
               <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: 4, minWidth: 160, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 8px 28px rgba(0,0,0,.18)', overflow: 'hidden', zIndex: 41 }}>
-                {isOwner && (
-                  <button onClick={onEdit} style={menuItem()}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" {...P}><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>수정
-                  </button>
-                )}
-                {isOwner && (
-                  <button onClick={onEditGoodsInfo} style={menuItem()}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" {...P}><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="9" cy="11" r="2" /><path d="m5 19 5-4 3 2 3-3 3 3" /></svg>굿즈 정보 수정
+                {isOwner && isPost && postId && (
+                  <button onClick={onEditPost} style={menuItem()}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" {...P}><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>원본 글 수정
                   </button>
                 )}
                 <button onClick={onShare} style={menuItem()}>
                   <svg width="16" height="16" viewBox="0 0 24 24" {...P}><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 13.5 6.8 4M15.4 6.5 8.6 10.5" /></svg>공유
                 </button>
                 {isOwner && (
-                  <button onClick={onDelete} disabled={busy} style={menuItem('#e5484d')}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" {...P}><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13" /></svg>내리기
+                  <button onClick={onRemove} disabled={busy} style={menuItem('#e5484d')}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" {...P}><path d="M5 12h14" /><rect x="3" y="4" width="18" height="16" rx="2" /></svg>전시에서 빼기
                   </button>
                 )}
               </div>
@@ -226,12 +220,15 @@ function ExhibitFeedPost({
           {goodsName && <span style={{ fontSize: 13.5, fontWeight: 800, color: 'var(--text)' }}>{goodsName}</span>}
           <span style={{ fontSize: 11.5, color: 'var(--muted)', marginLeft: 'auto' }}>{VIS_LABEL[visibility] ?? ''}</span>
         </div>
+        {title && (
+          <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)', margin: '0 0 6px', wordBreak: 'break-word' }}>{title}</div>
+        )}
         {caption && (
           <p style={{ fontSize: 14, lineHeight: 1.65, color: 'var(--text)', whiteSpace: 'pre-wrap', margin: '0 0 14px' }}>{caption}</p>
         )}
         {postId && (
           <button onClick={() => router.push(`/community/${postId}`)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 15px', borderRadius: 10, border: '1px solid var(--accent, #ff5692)', background: 'var(--surface)', color: 'var(--accent)', fontWeight: 800, fontSize: 13.5, cursor: 'pointer', fontFamily: 'inherit' }}>
-            원본 굿즈 자랑 글 보기
+            원본 글 보기
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
           </button>
         )}

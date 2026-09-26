@@ -86,7 +86,8 @@ export default function ExhibitLightbox({ cards, index, ownerName, onIndex, onCl
   const shown = images[Math.min(imgIdx, Math.max(0, images.length - 1))] ?? null
   const workName = detail?.workName ?? card.workName
   const typeName = detail?.goodsTypeName ?? card.goodsTypeName
-  const caption = detail?.caption ?? card.caption
+  const title = card.kind === 'post' ? (detail?.title ?? null) : null
+  const caption = detail ? detail.caption : (card.kind === 'post' ? null : card.caption)
 
   return (
     <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 4000, background: 'rgba(0,0,0,.93)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 84px' }}>
@@ -125,8 +126,8 @@ export default function ExhibitLightbox({ cards, index, ownerName, onIndex, onCl
         {/* 사진 */}
         <div className="exlb-stage" style={{ position: 'relative', flex: '0 1 auto', minHeight: 0, background: '#0d0d0f', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {shown
-            ? <img src={shown} alt={caption ?? '전시 사진'} style={{ display: 'block', width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: 'min(72vh, 780px)' }} />
-            : <span style={{ padding: '80px 40px', color: 'rgba(255,255,255,.4)', fontSize: 13 }}>사진을 불러오는 중…</span>}
+            ? <img src={shown} alt={title ?? caption ?? '전시 사진'} style={{ display: 'block', width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: 'min(72vh, 780px)' }} />
+            : <span style={{ padding: '80px 40px', color: 'rgba(255,255,255,.4)', fontSize: 13 }}>{detail ? '사진이 없는 글이에요' : '사진을 불러오는 중…'}</span>}
 
           {images.length > 1 && (
             <>
@@ -152,7 +153,7 @@ export default function ExhibitLightbox({ cards, index, ownerName, onIndex, onCl
 
         {/* 정보 — 사진 아래 */}
         <div style={{ flex: '0 0 auto', maxHeight: '18vh', overflowY: 'auto', padding: '16px 22px 18px', background: 'var(--surface)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 9, flexWrap: 'wrap', marginBottom: caption ? 10 : 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 9, flexWrap: 'wrap', marginBottom: (title || caption) ? 10 : 0 }}>
             {workName && <span style={{ fontSize: 12, fontWeight: 800, color: 'var(--accent)', border: '1px solid var(--accent, #ff5692)', padding: '3px 10px', borderRadius: 9999 }}>{workName}</span>}
             {typeName && <span style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)' }}>{typeName}</span>}
             {detail?.goodsName && <span style={{ fontSize: 13.5, color: 'var(--muted)' }}>{detail.goodsName}</span>}
@@ -163,6 +164,9 @@ export default function ExhibitLightbox({ cards, index, ownerName, onIndex, onCl
               <span style={{ fontSize: 12.5, color: 'var(--muted)' }}>{fmt(detail?.createdAt ?? card.createdAt)}</span>
             </span>
           </div>
+          {title && (
+            <div style={{ margin: caption ? '0 0 6px' : 0, fontSize: 15.5, fontWeight: 800, color: 'var(--text)', wordBreak: 'break-word' }}>{title}</div>
+          )}
           {caption && (
             <p style={{ margin: 0, fontSize: 14.5, lineHeight: 1.75, color: 'var(--text)', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{caption}</p>
           )}

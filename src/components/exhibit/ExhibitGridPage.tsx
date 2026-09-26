@@ -36,7 +36,7 @@ export default function ExhibitGridPage() {
 
   const addBtn = (
     <button onClick={() => router.push('/profile/exhibit/new')} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, border: 'none', cursor: 'pointer', background: 'var(--accent)', color: '#fff', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 800, padding: '9px 15px', borderRadius: 9999 }}>
-      <svg width="15" height="15" viewBox="0 0 24 24" {...P}><path d="M12 5v14M5 12h14" /></svg>굿즈 전시하기
+      <svg width="15" height="15" viewBox="0 0 24 24" {...P}><path d="M12 5v14M5 12h14" /></svg>전시관에 추가
     </button>
   )
 
@@ -66,9 +66,9 @@ export default function ExhibitGridPage() {
       ) : cards.length === 0 ? (
         <div style={{ padding: '48px 16px', textAlign: 'center' }}>
           <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)', marginBottom: 6 }}>아직 전시한 굿즈가 없어요</div>
-          <p style={{ fontSize: 13.5, color: 'var(--muted)', margin: '0 0 16px', lineHeight: 1.6 }}>내 굿즈 중 자랑하고 싶은 걸 골라 전시관에 걸어보세요.</p>
+          <p style={{ fontSize: 13.5, color: 'var(--muted)', margin: '0 0 16px', lineHeight: 1.6 }}>내가 쓴 굿즈 글을 골라 전시관에 걸어보세요.</p>
           <button onClick={() => router.push('/profile/exhibit/new')} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, border: 'none', cursor: 'pointer', background: 'var(--accent)', color: '#fff', fontFamily: 'inherit', fontSize: 14, fontWeight: 800, padding: '11px 18px', borderRadius: 9999 }}>
-            <svg width="15" height="15" viewBox="0 0 24 24" {...P}><path d="M12 5v14M5 12h14" /></svg>굿즈 전시하기
+            <svg width="15" height="15" viewBox="0 0 24 24" {...P}><path d="M12 5v14M5 12h14" /></svg>전시관에 추가
           </button>
         </div>
       ) : (

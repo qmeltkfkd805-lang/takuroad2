@@ -1,11 +1,21 @@
 import { createClient } from '@/lib/supabase/client'
+import { htmlToPlainText } from '@/lib/text/htmlToPlainText'
 
-/* 전시관 서비스 — 조회 개수는 RPC(get_exhibit_count) 직접, 목록/상세/등록은 서버 라우트(signed URL·검증) 경유. */
+/* 전시관 서비스 — 조회 개수는 RPC(get_exhibit_count) 직접, 목록/상세/등록은 서버 라우트(signed URL·검증) 경유.
+
+   전시는 두 종류다.
+   - 'post'   : 새 방식. 내 굿즈 글(community_posts)을 가리키기만 한다(exhibit_entries).
+                사진·본문·공개범위는 원본 글을 그대로 따른다. 빼기 = 연결만 해제.
+   - 'legacy' : 이전 방식. 사진을 exhibit-images 로 복사해 둔 전시(exhibit_items).
+                수정 없이 빼기만 가능. 빼기 = 전시와 전시용 사진 삭제. */
 
 export type ExhibitVisibility = 'public' | 'followers' | 'private'
+export type ExhibitKind = 'post' | 'legacy'
 
 export interface ExhibitCard {
   id: string
+  kind: ExhibitKind
+  postId: string | null     // kind='post' 일 때 원본 글 id
   caption: string | null
   visibility: ExhibitVisibility
   workName: string | null
@@ -18,8 +28,10 @@ export interface ExhibitCard {
 
 export interface ExhibitDetail {
   id: string
+  kind: ExhibitKind
   ownerId: string
-  caption: string | null
+  title: string | null      // kind='post' 일 때 원본 글 제목
+  caption: string | null    // kind='post' 는 원본 글 본문
   visibility: ExhibitVisibility
   goodsName: string | null
   goodsTypeName: string | null
@@ -69,10 +81,52 @@ export async function getExhibitDetail(id: string): Promise<ExhibitDetail | null
   return (await res.json()) as ExhibitDetail
 }
 
-/* 전시 삭제 (소유자) */
-export async function deleteExhibit(id: string): Promise<void> {
-  const res = await fetch(`/api/exhibit/${id}`, { method: 'DELETE' })
-  if (!res.ok) { const j = await res.json().catch(() => ({})); throw new Error(j?.error ?? '삭제에 실패했어요') }
+/* 전시에서 빼기 (소유자)
+   - post  : 연결만 해제(원본 글·사진 유지)
+   - legacy: 전시와 전시용으로 복사해 둔 사진 삭제(내 굿즈·굿즈 사진 유지) */
+export async function deleteExhibit(id: string, kind: ExhibitKind): Promise<void> {
+  const res = await fetch(`/api/exhibit/${encodeURIComponent(id)}?kind=${kind}`, { method: 'DELETE' })
+  if (!res.ok) { const j = await res.json().catch(() => ({})); throw new Error(j?.error ?? '전시에서 빼지 못했어요') }
+}
+
+/* ---- 새 방식: 내 굿즈 글 연결 ---- */
+
+export interface ExhibitPostChoice {
+  postId: string
+  title: string | null
+  excerpt: string | null
+  coverUrl: string | null
+  imageCount: number
+  visibility: 'public' | 'private'
+  workName: string | null
+  createdAt: string
+  entryId: string | null    // 이미 전시 중이면 전시 id
+}
+
+/* 추가 화면용 — 내가 쓴 굿즈 글(활성) + 전시 중 여부 */
+export async function getMyExhibitPostChoices(): Promise<ExhibitPostChoice[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase.rpc('get_my_exhibit_post_options')
+  if (error) throw new Error('내 굿즈 글을 불러오지 못했어요')
+  return ((data ?? []) as any[]).map(r => ({
+    postId: r.post_id,
+    title: r.title ?? null,
+    excerpt: htmlToPlainText(r.excerpt),   // 본문 앞부분(HTML) → 글자만
+    coverUrl: typeof r.cover === 'string' && /^https?:\/\//.test(r.cover) ? r.cover : null,
+    imageCount: Number(r.image_count) || 0,
+    visibility: r.visibility === 'private' ? 'private' : 'public',
+    workName: r.work_name ?? null,
+    createdAt: r.created_at,
+    entryId: r.entry_id ?? null,
+  }))
+}
+
+/* 굿즈 글을 전시관에 추가 → 전시 id (이미 전시 중이면 기존 id) */
+export async function addExhibitEntry(postId: string): Promise<string> {
+  const supabase = createClient()
+  const { data, error } = await supabase.rpc('add_exhibit_entry', { p_post: postId })
+  if (error) throw new Error(error.message || '전시관에 추가하지 못했어요')
+  return data as string
 }
 
 /* 전시 등록 → 새 전시 id */
