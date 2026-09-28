@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import { Story, StoryItem } from '@/services/storyBuilder'
 import { AXIS_KEYS, AXIS_LABEL, AXIS_ICON, AXIS_VERB } from '@/lib/work/workProgress'
@@ -59,6 +61,8 @@ export default function StoryCard({ story }: { story: Story }) {
   const router = useRouter()
   const [y, m, d] = story.date.split('-')
   const hl = story.highlight
+  // 사진 크게 보기 — 어느 항목의 몇 번째 사진인지
+  const [viewer, setViewer] = useState<{ title: string; photos: string[]; index: number } | null>(null)
 
   return (
     <article className={styles.card}>
@@ -99,9 +103,10 @@ export default function StoryCard({ story }: { story: Story }) {
                     {item.photos && item.photos.length > 0 && (
                       <span className={styles.photos} onClick={e => e.stopPropagation()}>
                         {item.photos.map((src, pi) => (
-                          <a key={pi} href={src} target="_blank" rel="noreferrer" className={styles.photo} aria-label={`${item.name} 사진 ${pi + 1}`}>
+                          <button key={pi} type="button" className={styles.photo} aria-label={`${item.name} 사진 ${pi + 1} 크게 보기`}
+                            onClick={() => setViewer({ title: item.name, photos: item.photos!, index: pi })}>
                             <img src={src} alt="" loading="lazy" />
-                          </a>
+                          </button>
                         ))}
                       </span>
                     )}
@@ -169,6 +174,76 @@ export default function StoryCard({ story }: { story: Story }) {
           {story.area}에서 {story.totalCount}곳
         </footer>
       )}
+
+      {viewer && (
+        <PhotoViewer title={viewer.title} photos={viewer.photos} start={viewer.index} onClose={() => setViewer(null)} />
+      )}
     </article>
+  )
+}
+
+/* 사진 크게 보기 — 화면 위에 띄우고 ‹ › · ←/→ 키 · 좌우 스와이프로 넘긴다. Esc·바깥 클릭으로 닫기.
+   카드 안에 두면 카드 레이아웃에 갇히므로 body 로 띄운다. */
+function PhotoViewer({ title, photos, start, onClose }: { title: string; photos: string[]; start: number; onClose: () => void }) {
+  const [i, setI] = useState(start)
+  const touchX = useRef<number | null>(null)
+  const total = photos.length
+  const go = (d: number) => setI(v => Math.min(total - 1, Math.max(0, v + d)))
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+      else if (e.key === 'ArrowLeft') setI(v => Math.max(0, v - 1))
+      else if (e.key === 'ArrowRight') setI(v => Math.min(total - 1, v + 1))
+    }
+    window.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'   // 뒤 화면 스크롤 잠금
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prev }
+  }, [onClose, total])
+
+  if (typeof document === 'undefined') return null
+  return createPortal(
+    <div className={styles.viewer} onClick={onClose} role="dialog" aria-modal="true" aria-label={`${title} 사진`}>
+      <div className={styles.viewerTop} onClick={e => e.stopPropagation()}>
+        <span className={styles.viewerTitle}>{title}</span>
+        {total > 1 && <span className={styles.viewerCount}>{i + 1} / {total}</span>}
+        <button type="button" className={styles.viewerClose} onClick={onClose} aria-label="닫기">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
+        </button>
+      </div>
+
+      <div className={styles.viewerStage}
+        onTouchStart={e => { touchX.current = e.touches[0].clientX }}
+        onTouchEnd={e => {
+          if (touchX.current == null) return
+          const dx = e.changedTouches[0].clientX - touchX.current
+          touchX.current = null
+          if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1)
+        }}>
+        <img src={photos[i]} alt="" className={styles.viewerImg} onClick={e => e.stopPropagation()} />
+      </div>
+
+      {i > 0 && (
+        <button type="button" className={`${styles.viewerNav} ${styles.viewerPrev}`} aria-label="이전 사진" onClick={e => { e.stopPropagation(); go(-1) }}>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+      )}
+      {i < total - 1 && (
+        <button type="button" className={`${styles.viewerNav} ${styles.viewerNext}`} aria-label="다음 사진" onClick={e => { e.stopPropagation(); go(1) }}>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+      )}
+
+      {total > 1 && (
+        <div className={styles.viewerDots} onClick={e => e.stopPropagation()}>
+          {photos.map((_, k) => (
+            <button key={k} type="button" aria-label={`${k + 1}번째 사진`} onClick={() => setI(k)}
+              className={k === i ? `${styles.viewerDot} ${styles.viewerDotOn}` : styles.viewerDot} />
+          ))}
+        </div>
+      )}
+    </div>,
+    document.body,
   )
 }
