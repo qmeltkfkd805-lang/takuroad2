@@ -188,9 +188,10 @@ export default function ShopHoursEditor({ value, onChange }: {
                     title={elsewhere ? '다른 영업시간에 들어가 있어요. 누르면 이쪽으로 옮겨요.' : undefined}
                     style={{
                       width: 42, height: 40, borderRadius: 10, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 800, fontSize: 14.5,
+                      // 선택 = 주차 선택 칩과 같은 톤(연한 분홍 바탕 + 분홍 테두리·글자)
                       border: `1.5px solid ${on ? 'var(--accent)' : 'var(--border)'}`,
-                      background: on ? 'var(--accent)' : 'var(--surface)',
-                      color: on ? '#fff' : elsewhere ? 'var(--border)' : 'var(--text)',
+                      background: on ? 'var(--accent-l, rgba(232,0,111,.08))' : 'var(--surface)',
+                      color: on ? 'var(--accent)' : elsewhere ? 'var(--border)' : 'var(--text)',
                       textDecoration: elsewhere ? 'line-through' : 'none',
                     }}>
                     {WEEKDAY_LABEL[day]}
