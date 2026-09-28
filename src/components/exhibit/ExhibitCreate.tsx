@@ -3,14 +3,15 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import GoodsPageShell from '@/components/goods/GoodsPageShell'
-import { getMyExhibitPostChoices, addExhibitEntry, type ExhibitPostChoice } from '@/services/exhibitService'
+import { getMyExhibitPostChoices, addExhibitEntry, deleteExhibit, exhibitRemoveConfirmText, type ExhibitPostChoice } from '@/services/exhibitService'
 
 const P = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
 
 /* 전시관에 추가 (/profile/exhibit/new)
    내가 쓴 굿즈 글을 고르고 "전시관에 추가"를 누르면 끝.
    - 사진·본문·공개범위는 원본 글을 그대로 쓴다(별도 입력 없음)
-   - 이미 전시 중인 글은 "전시 중"으로 표시하고 고를 수 없다(DB unique 로도 중복 차단) */
+   - 이미 전시 중인 글은 "전시 중"으로 표시하고 고를 수 없다(DB unique 로도 중복 차단)
+   - 전시 중인 글은 카드의 "전시에서 빼기"로 바로 뺄 수 있다(연결만 해제, 원본 글·사진 유지) */
 export default function ExhibitCreate() {
   const router = useRouter()
   const [posts, setPosts] = useState<ExhibitPostChoice[] | null>(null)
@@ -18,6 +19,7 @@ export default function ExhibitCreate() {
   const [picked, setPicked] = useState<string[]>([])
   const [saving, setSaving] = useState(false)
   const [err, setErr] = useState<string | null>(null)
+  const [removing, setRemoving] = useState<string | null>(null)   // 빼는 중인 글 id
 
   useEffect(() => {
     getMyExhibitPostChoices().then(setPosts).catch(() => { setLoadErr(true); setPosts([]) })
@@ -31,21 +33,35 @@ export default function ExhibitCreate() {
   async function submit() {
     if (!picked.length) return
     setSaving(true); setErr(null)
-    const done: string[] = []
+    const done = new Map<string, string>()   // 글 id → 새 전시 id
     try {
       for (const pid of picked) {
-        await addExhibitEntry(pid)
-        done.push(pid)
+        done.set(pid, await addExhibitEntry(pid))
       }
       router.replace('/profile/exhibit')
     } catch (e: any) {
       // 일부만 추가됐으면 그만큼 "전시 중"으로 반영하고 나머지만 남긴다
-      if (done.length) {
-        setPosts(prev => prev?.map(p => done.includes(p.postId) ? { ...p, entryId: p.entryId ?? 'added' } : p) ?? prev)
-        setPicked(prev => prev.filter(x => !done.includes(x)))
+      if (done.size) {
+        setPosts(prev => prev?.map(p => done.has(p.postId) ? { ...p, entryId: done.get(p.postId) ?? p.entryId } : p) ?? prev)
+        setPicked(prev => prev.filter(x => !done.has(x)))
       }
       setErr(e?.message ?? '전시관에 추가하지 못했어요')
       setSaving(false)
+    }
+  }
+
+  // 전시 중인 글 빼기 — 연결만 해제. 성공하면 카드가 다시 "고를 수 있는 글"로 돌아온다.
+  async function removeFromExhibit(p: ExhibitPostChoice) {
+    if (!p.entryId || removing || saving) return
+    if (!window.confirm(exhibitRemoveConfirmText('post', 0))) return
+    setRemoving(p.postId); setErr(null)
+    try {
+      await deleteExhibit(p.entryId, 'post')
+      setPosts(prev => prev?.map(x => x.postId === p.postId ? { ...x, entryId: null } : x) ?? prev)
+    } catch (e: any) {
+      setErr(e?.message ?? '전시에서 빼지 못했어요')
+    } finally {
+      setRemoving(null)
     }
   }
 
@@ -80,11 +96,13 @@ export default function ExhibitCreate() {
               const shown = !!p.entryId
               const label = (p.title && p.title.trim()) || (p.excerpt && p.excerpt.trim()) || '(제목 없음)'
               return (
-                <button key={p.postId} onClick={() => toggle(p)} disabled={shown || saving} aria-pressed={on}
+                <div key={p.postId} style={{
+                  display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRadius: 16, background: 'var(--surface)',
+                  border: on ? '3px solid var(--accent, #ff5692)' : '1px solid var(--border)',
+                }}>
+                <button onClick={() => toggle(p)} disabled={shown || saving} aria-pressed={on}
                   style={{
-                    display: 'block', padding: 0, textAlign: 'left', fontFamily: 'inherit', overflow: 'hidden',
-                    borderRadius: 16, background: 'var(--surface)',
-                    border: on ? '3px solid var(--accent, #ff5692)' : '1px solid var(--border)',
+                    display: 'block', width: '100%', padding: 0, border: 'none', background: 'none', textAlign: 'left', fontFamily: 'inherit',
                     cursor: shown ? 'default' : 'pointer', opacity: shown ? 0.62 : 1,
                   }}>
                   <span style={{ display: 'block', position: 'relative', aspectRatio: '1/1', background: 'var(--surface2)' }}>
@@ -110,6 +128,13 @@ export default function ExhibitCreate() {
                     </span>
                   </span>
                 </button>
+                {shown && (
+                  <button onClick={() => removeFromExhibit(p)} disabled={!!removing || saving}
+                    style={{ margin: '0 14px 14px', height: 42, borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: '#e5484d', fontFamily: 'inherit', fontSize: 14, fontWeight: 800, cursor: 'pointer', opacity: (removing && removing !== p.postId) ? 0.5 : 1 }}>
+                    {removing === p.postId ? '빼는 중…' : '전시에서 빼기'}
+                  </button>
+                )}
+                </div>
               )
             })}
           </div>
