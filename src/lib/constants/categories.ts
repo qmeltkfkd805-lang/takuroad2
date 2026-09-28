@@ -1,5 +1,6 @@
 ﻿export const CATEGORIES = [
   { name: '굿즈샵',      slug: 'goods',       icon: 'goods',      color: '#e8006f', bgColor: 'rgba(232,0,111,.12)' },
+  { name: '피규어샵',    slug: 'figure',      icon: 'goods',      color: '#0d9488', bgColor: 'rgba(13,148,136,.12)' },
   { name: '서점',        slug: 'bookstore',   icon: 'book',       color: '#0891b2', bgColor: 'rgba(8,145,178,.12)' },
   { name: '카드/TCG',    slug: 'tcg',         icon: 'tcg',        color: '#b45309', bgColor: 'rgba(180,83,9,.12)' },
   { name: '중고샵',      slug: 'used',        icon: 'secondhand', color: '#059669', bgColor: 'rgba(5,150,105,.12)' },
