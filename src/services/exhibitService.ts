@@ -43,14 +43,6 @@ export interface ExhibitDetail {
   createdAt: string
 }
 
-export interface CreateExhibitInput {
-  goodsItemId: string
-  imageIds: string[]        // goods_item_images id, 순서 = 정렬(첫 번째 = 대표)
-  caption?: string | null
-  visibility: ExhibitVisibility
-  sourcePostId?: string | null
-}
-
 /* 전시 개수 (본인/타인 모두 can_view_exhibit 적용) */
 export async function getExhibitCount(ownerId?: string): Promise<number> {
   const supabase = createClient()
@@ -144,77 +136,4 @@ export async function addExhibitEntry(postId: string): Promise<string> {
   const { data, error } = await supabase.rpc('add_exhibit_entry', { p_post: postId })
   if (error) throw new Error(error.message || '전시관에 추가하지 못했어요')
   return data as string
-}
-
-/* 전시 등록 → 새 전시 id */
-export async function createExhibit(input: CreateExhibitInput): Promise<string> {
-  const res = await fetch('/api/exhibit', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(input),
-  })
-  const json = await res.json().catch(() => ({}))
-  if (!res.ok) throw new Error(json?.error ?? '전시 등록에 실패했어요')
-  return json.id as string
-}
-
-/* 등록 화면용 — 이 굿즈로 쓴 본인 활성 자랑 글 후보(원본 글 연결). 실패 시 빈 배열. */
-export async function getExhibitPostOptions(goodsItemId: string): Promise<ExhibitPostOption[]> {
-  if (!UUID_RE.test(goodsItemId)) return []
-  const res = await fetch(`/api/exhibit/post-options?goodsId=${encodeURIComponent(goodsItemId)}`, { cache: 'no-store' })
-  if (!res.ok) return []
-  const json = await res.json().catch(() => ({}))
-  return (json?.postOptions ?? []) as ExhibitPostOption[]
-}
-
-/* ---- 편집(소유자 전용) ---- */
-
-export interface ExhibitManageImage { id: string; url: string }
-export interface ExhibitPostOption { id: string; title: string; createdAt: string }
-export interface ExhibitManage {
-  id: string
-  goodsItemId: string
-  goodsName: string | null
-  workName: string | null
-  caption: string | null
-  visibility: ExhibitVisibility
-  sourcePostId: string | null
-  images: ExhibitManageImage[]
-  postOptions: ExhibitPostOption[]
-}
-
-/* 편집용 데이터(이미지 id 포함) */
-export async function getExhibitManage(id: string): Promise<ExhibitManage | null> {
-  const res = await fetch(`/api/exhibit/${encodeURIComponent(id)}/manage`, { cache: 'no-store' })
-  if (res.status === 403 || res.status === 401 || res.status === 404) return null
-  if (!res.ok) throw new Error('전시 정보를 불러오지 못했어요')
-  return (await res.json()) as ExhibitManage
-}
-
-async function manage(id: string, payload: any): Promise<void> {
-  const res = await fetch(`/api/exhibit/${encodeURIComponent(id)}/manage`, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
-  })
-  if (!res.ok) { const j = await res.json().catch(() => ({})); throw new Error(j?.error ?? '처리에 실패했어요') }
-}
-
-/* 캡션·공개범위·원본 글 저장 */
-export function updateExhibit(id: string, v: { caption: string | null; visibility: ExhibitVisibility; sourcePostId: string | null }): Promise<void> {
-  return manage(id, { action: 'update', ...v })
-}
-/* 굿즈 이미지에서 사진 추가(서버 복사) */
-export function addExhibitImages(id: string, imageIds: string[]): Promise<void> {
-  return manage(id, { action: 'add', imageIds })
-}
-/* 사진 삭제(최소 1장 유지) */
-export function removeExhibitImage(id: string, imageId: string): Promise<void> {
-  return manage(id, { action: 'remove', imageId })
-}
-/* 사진 순서 변경 */
-export function reorderExhibitImages(id: string, ordered: string[]): Promise<void> {
-  return manage(id, { action: 'reorder', ordered })
-}
-/* 대표(커버) 지정 */
-export function setExhibitCover(id: string, imageId: string): Promise<void> {
-  return manage(id, { action: 'cover', imageId })
 }
