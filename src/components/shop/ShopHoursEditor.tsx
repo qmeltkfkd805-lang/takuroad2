@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { WEEKDAYS, WEEKDAY_LABEL } from '@/lib/constants/categories'
 import { BusinessHours, DayHours } from '@/types/database'
+import { getMonthlyOff, monthlyOffLabel, WEEK_KO, type MonthlyOff } from '@/lib/utils/monthlyOff'
 
 /* 영업시간 편집기 — 샵 등록 위저드와 사장님 매장 관리가 같은 걸 쓴다.
 
@@ -21,7 +22,7 @@ import { BusinessHours, DayHours } from '@/types/database'
       요일 키만 있다고 가정하는 코드를 새로 만들지 말 것. */
 
 type Day = typeof WEEKDAYS[number]
-type HoursMap = BusinessHours & { holiday?: 'closed'; yearRound?: boolean }
+type HoursMap = BusinessHours & { holiday?: 'closed'; yearRound?: boolean; monthlyOff?: MonthlyOff }
 
 interface Group {
   id: number
@@ -59,7 +60,8 @@ function toGroups(value: BusinessHours | null): Group[] {
 }
 
 /* 묶음 → 저장용 hours. holiday·yearRound 는 그대로 유지. */
-function toHours(groups: Group[], extras: Pick<HoursMap, 'holiday' | 'yearRound'>): HoursMap {
+type Extras = Pick<HoursMap, 'holiday' | 'yearRound' | 'monthlyOff'>
+function toHours(groups: Group[], extras: Extras): HoursMap {
   const next: HoursMap = {}
   for (const d of WEEKDAYS) {
     const g = groups.find(x => x.days.includes(d))
@@ -70,6 +72,7 @@ function toHours(groups: Group[], extras: Pick<HoursMap, 'holiday' | 'yearRound'
   }
   if (extras.holiday === 'closed') next.holiday = 'closed'
   if (extras.yearRound) next.yearRound = true
+  if (extras.monthlyOff && extras.monthlyOff.weeks.length && extras.monthlyOff.days.length) next.monthlyOff = extras.monthlyOff
   return next
 }
 
@@ -110,11 +113,17 @@ export default function ShopHoursEditor({ value, onChange }: {
     if (value !== emitted) setGroups(toGroups(value))
   }
 
-  const extras = { holiday: hours.holiday, yearRound: hours.yearRound }
+  const monthlyOff = getMonthlyOff(hours)
+  const extras: Extras = { holiday: hours.holiday, yearRound: hours.yearRound, monthlyOff: monthlyOff ?? undefined }
   const holidayClosed = hours.holiday === 'closed'
   const yearRound = !!hours.yearRound
+  /* 정기휴무를 켰지만 주·요일을 다 빼버린 상태도 화면에선 유지해야 해서 로컬로 들고 있는다.
+     (저장값엔 주·요일이 하나 이상일 때만 들어간다) */
+  const [monthlyDraft, setMonthlyDraft] = useState<MonthlyOff | null>(monthlyOff)
+  const monthlyOn = !!monthlyOff || !!monthlyDraft
+  const monthlyView: MonthlyOff = monthlyOff ?? monthlyDraft ?? { weeks: [2, 4], days: ['sun'] }
 
-  function emit(nextGroups: Group[], nextExtras = extras) {
+  function emit(nextGroups: Group[], nextExtras: Extras = extras) {
     setGroups(nextGroups)
     const h = toHours(nextGroups, nextExtras)
     setEmitted(h)
@@ -144,10 +153,34 @@ export default function ShopHoursEditor({ value, onChange }: {
     emit(rest.length ? rest : [newGroup()])
   }
   function toggleHoliday() {
-    emit(groups, holidayClosed ? { ...extras, holiday: undefined } : { holiday: 'closed', yearRound: undefined })
+    emit(groups, holidayClosed ? { ...extras, holiday: undefined } : { ...extras, holiday: 'closed', yearRound: undefined })
   }
   function toggleYearRound() {
-    emit(groups, yearRound ? { ...extras, yearRound: undefined } : { holiday: undefined, yearRound: true })
+    // 연중무휴 ↔ 공휴일 휴무·정기휴무는 함께 쓸 수 없다
+    if (!yearRound) setMonthlyDraft(null)
+    emit(groups, yearRound ? { ...extras, yearRound: undefined } : { holiday: undefined, yearRound: true, monthlyOff: undefined })
+  }
+  function toggleMonthly() {
+    if (monthlyOn) {
+      setMonthlyDraft(null)
+      emit(groups, { ...extras, monthlyOff: undefined })
+    } else {
+      const init: MonthlyOff = { weeks: [2, 4], days: ['sun'] }   // 대형마트 의무휴업이 가장 흔한 조합
+      setMonthlyDraft(init)
+      emit(groups, { ...extras, yearRound: undefined, monthlyOff: init })
+    }
+  }
+  function setMonthly(next: MonthlyOff) {
+    setMonthlyDraft(next)
+    emit(groups, { ...extras, monthlyOff: next.weeks.length && next.days.length ? next : undefined })
+  }
+  function toggleMonthlyWeek(w: number) {
+    const ws = monthlyView.weeks.includes(w) ? monthlyView.weeks.filter(x => x !== w) : [...monthlyView.weeks, w].sort((a, b) => a - b)
+    setMonthly({ ...monthlyView, weeks: ws })
+  }
+  function toggleMonthlyDay(d: Day) {
+    const ds = monthlyView.days.includes(d) ? monthlyView.days.filter(x => x !== d) : WEEKDAYS.filter(x => x === d || monthlyView.days.includes(x))
+    setMonthly({ ...monthlyView, days: ds })
   }
 
   const usedDays = new Set(groups.flatMap(g => g.days))
@@ -188,10 +221,9 @@ export default function ShopHoursEditor({ value, onChange }: {
                     title={elsewhere ? '다른 영업시간에 들어가 있어요. 누르면 이쪽으로 옮겨요.' : undefined}
                     style={{
                       width: 42, height: 40, borderRadius: 10, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 800, fontSize: 14.5,
-                      // 선택 = 주차 선택 칩과 같은 톤(연한 분홍 바탕 + 분홍 테두리·글자)
                       border: `1.5px solid ${on ? 'var(--accent)' : 'var(--border)'}`,
-                      background: on ? 'var(--accent-l, rgba(232,0,111,.08))' : 'var(--surface)',
-                      color: on ? 'var(--accent)' : elsewhere ? 'var(--border)' : 'var(--text)',
+                      background: on ? 'var(--accent)' : 'var(--surface)',
+                      color: on ? '#fff' : elsewhere ? 'var(--border)' : 'var(--text)',
                       textDecoration: elsewhere ? 'line-through' : 'none',
                     }}>
                     {WEEKDAY_LABEL[day]}
@@ -239,8 +271,31 @@ export default function ShopHoursEditor({ value, onChange }: {
       {/* 공휴일·연중무휴 */}
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
         <ToggleBtn on={holidayClosed} onClick={toggleHoliday} label="공휴일 휴무" />
+        <ToggleBtn on={monthlyOn} onClick={toggleMonthly} label="매달 정기휴무" />
         <ToggleBtn on={yearRound} onClick={toggleYearRound} label="연중무휴" />
       </div>
+
+      {/* 매달 정기휴무 — 예) 대형마트 둘째·넷째 일요일 */}
+      {monthlyOn && (
+        <div style={{ padding: '14px 16px', borderRadius: 14, border: '1.5px solid var(--border)', background: 'var(--surface)', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ fontSize: 13, color: 'var(--muted)' }}>매달 쉬는 주와 요일을 눌러주세요 (예: 이마트 등 대형마트 안 매장은 보통 둘째·넷째 일요일)</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6 }}>
+            <span style={{ ...stepLabel, minWidth: 44, fontSize: 13.5 }}>몇째 주</span>
+            {WEEK_KO.map((label, i) => (
+              <SoftChip key={label} on={monthlyView.weeks.includes(i + 1)} onClick={() => toggleMonthlyWeek(i + 1)} label={label} wide />
+            ))}
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6 }}>
+            <span style={{ ...stepLabel, minWidth: 44, fontSize: 13.5 }}>요일</span>
+            {WEEKDAYS.map(d => (
+              <SoftChip key={d} on={monthlyView.days.includes(d)} onClick={() => toggleMonthlyDay(d)} label={WEEKDAY_LABEL[d]} />
+            ))}
+          </div>
+          {!(monthlyView.weeks.length && monthlyView.days.length) && (
+            <div style={{ fontSize: 12.5, color: '#e5484d' }}>주와 요일을 하나 이상 골라야 저장돼요.</div>
+          )}
+        </div>
+      )}
 
       {/* 요약 — 실제로 저장될 내용 */}
       <div style={{ padding: '12px 14px', borderRadius: 12, background: 'var(--surface2)', fontSize: 14, lineHeight: 1.7, color: 'var(--text)' }}>
@@ -250,6 +305,7 @@ export default function ShopHoursEditor({ value, onChange }: {
             <div style={{ color: 'var(--muted)' }}>
               {closedDays.length ? `쉬는 요일: ${daysLabel(closedDays)}` : '쉬는 요일 없음'}
               {holidayClosed ? ' · 공휴일 휴무' : ''}{yearRound ? ' · 연중무휴' : ''}
+              {monthlyOffLabel(hours) ? ` · ${monthlyOffLabel(hours)}` : ''}
             </div>
           </>
         ) : (
@@ -257,6 +313,21 @@ export default function ShopHoursEditor({ value, onChange }: {
         )}
       </div>
     </div>
+  )
+}
+
+/* 주차 선택과 같은 톤의 선택 칩(연한 분홍 바탕 + 분홍 테두리·글자) */
+function SoftChip({ on, onClick, label, wide }: { on: boolean; onClick: () => void; label: string; wide?: boolean }) {
+  return (
+    <button type="button" onClick={onClick} aria-pressed={on}
+      style={{
+        minWidth: wide ? 58 : 42, height: 38, padding: wide ? '0 10px' : 0, borderRadius: 10, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 800, fontSize: 14,
+        border: `1.5px solid ${on ? 'var(--accent)' : 'var(--border)'}`,
+        background: on ? 'var(--accent-l, rgba(232,0,111,.08))' : 'var(--surface)',
+        color: on ? 'var(--accent)' : 'var(--text)',
+      }}>
+      {label}
+    </button>
   )
 }
 

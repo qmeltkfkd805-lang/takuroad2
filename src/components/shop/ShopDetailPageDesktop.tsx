@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Shop } from '@/types/shop'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import { getTodayStatus, getPopupStatus, formatBusinessHours } from '@/lib/utils/date'
+import { monthlyOffLabel } from '@/lib/utils/monthlyOff'
 import { parseParkingRows } from '@/lib/utils/parkingNote'
 import { ROUTES } from '@/lib/constants/routes'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -85,6 +86,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
   const homepage = snsAll.find(x => x.name === 'globe') ?? null
   const holidayClosed = (shop.hours as any)?.holiday === 'closed'
   const yearRound = (shop.hours as any)?.yearRound === true
+  const monthlyOff = monthlyOffLabel(shop.hours)   // 예: "매월 둘째·넷째 일요일 휴무"
 
   // 기본 정보의 '영업 상태'를 펼치면 요일별 시간표가 나온다 (모바일 ShopHeader와 같은 방식)
   const hoursFormatted = formatBusinessHours(shop.hours)
@@ -320,6 +322,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                     {todayStatus.todayHours && <span>· {todayStatus.todayHours}</span>}
                     {holidayClosed && <span style={{ color: '#ffd0d0', fontWeight: 700 }}>· 공휴일 휴무</span>}
                     {yearRound && <span style={{ color: 'rgba(255,255,255,.9)' }}>· 연중무휴</span>}
+                    {monthlyOff && <span style={{ color: '#ffd0d0', fontWeight: 700 }}>· {monthlyOff}</span>}
                   </span>
                   {shop.temporary_holiday_end && new Date(shop.temporary_holiday_end) >= new Date(new Date().toDateString()) && (
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,.18)', color: '#fff', borderRadius: 8, padding: '6px 12px', fontWeight: 800, fontSize: 12.5, alignSelf: 'flex-start', marginTop: 2, backdropFilter: 'blur(4px)' }}>
@@ -451,6 +454,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                                 {todayStatus.todayHours && <span style={{ color: 'var(--muted)' }}>· {todayStatus.todayHours}</span>}
                                 {holidayClosed && <span style={{ color: '#c0392b', fontWeight: 800 }}>· 공휴일 휴무</span>}
                                 {yearRound && <span style={{ color: 'var(--muted)', fontWeight: 700 }}>· 연중무휴</span>}
+                                {monthlyOff && <span style={{ color: '#c0392b', fontWeight: 800 }}>· {monthlyOff}</span>}
                                 {hasHours && (
                                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2.4"
                                     strokeLinecap="round" strokeLinejoin="round" aria-hidden

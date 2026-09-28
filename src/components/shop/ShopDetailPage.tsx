@@ -6,6 +6,7 @@ import { Shop } from '@/types/shop'
 import { deleteShop } from '@/services/shopService'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import { getTodayStatus, formatBusinessHours, getPopupStatus } from '@/lib/utils/date'
+import { monthlyOffLabel } from '@/lib/utils/monthlyOff'
 import { parseParkingRows } from '@/lib/utils/parkingNote'
 import { ROUTES } from '@/lib/constants/routes'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -129,6 +130,7 @@ export default function ShopDetailPage({ shop }: Props) {
           ratingCount={shop.rating_count}
           todayStatus={todayStatus}
           hoursFormatted={hoursFormatted}
+          monthlyOff={monthlyOffLabel(shop.hours)}
           color={color}
         />
 

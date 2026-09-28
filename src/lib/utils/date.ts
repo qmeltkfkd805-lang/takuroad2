@@ -1,5 +1,6 @@
 import { BusinessHours } from '@/types/database'
 import { WEEKDAYS, WEEKDAY_LABEL } from '@/lib/constants/categories'
+import { isMonthlyOffDate } from './monthlyOff'
 
 const DAY_INDEX: Record<string, number> = {
   sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6,
@@ -38,6 +39,11 @@ export function getTodayStatus(hours: BusinessHours | null): {
   // null이면 휴무
   if (todayData === null) {
     return { isOpen: false, label: '오늘 휴무', todayHours: null }
+  }
+
+  // 매달 정기휴무(예: 둘째·넷째 일요일)에 걸리는 날
+  if (isMonthlyOffDate(hours, today)) {
+    return { isOpen: false, label: '오늘 정기휴무', todayHours: null }
   }
 
   const { open, close } = todayData
