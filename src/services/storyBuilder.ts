@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/client'
 import { geekAreaFromAddr } from '@/lib/utils/geekArea'
 import { AxisProgress, NextGoal, getWorkProgress } from '@/lib/work/workProgress'
+import { getMyVisitPhotoUrls } from './eventVisitPhotoService'
 
 /* ============================================================
    Story Builder — Activity를 "읽을 만한 이야기"로 재구성하는 계층
@@ -26,6 +27,8 @@ export interface StoryItem {
   /** 이벤트 종류 — 아이콘·문구를 UI가 이걸로 고른다 (Activity Type은 event_visit 하나) */
   eventType?: string | null
   pct?: number | null
+  /** 이벤트 "다녀왔어요" 때 남긴 내 사진(서명 URL, 1시간) — 특전·음식 등 */
+  photos?: string[]
 }
 
 /** Story 안의 장소 그룹 (Place 또는 독립샵) */
@@ -184,6 +187,16 @@ export async function getMyStories(userId: string, limit = 20): Promise<Story[]>
   const stories = Array.from(map.values())
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, limit)
+
+  // 이벤트 기록에 내가 남긴 사진 붙이기 (activity related_id = event_id)
+  const eventItems = stories.flatMap(s => s.places.flatMap(p => p.items))
+    .filter(it => it.type === 'event_visit' && it.refType === 'event' && it.refId)
+  if (eventItems.length) {
+    try {
+      const byEvent = await getMyVisitPhotoUrls(userId, eventItems.map(it => it.refId!))
+      for (const it of eventItems) { const urls = byEvent[it.refId!]; if (urls?.length) it.photos = urls }
+    } catch { /* 사진은 부가 정보 — 실패해도 연대기는 그대로 */ }
+  }
 
   // 각 Story에 하이라이트("그래서 다음엔?") 붙이기
   await attachHighlights(supabase, userId, stories)

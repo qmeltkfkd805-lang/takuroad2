@@ -95,6 +95,16 @@ export default function StoryCard({ story }: { story: Story }) {
                     </span>
                     <span className={styles.name}>{item.name}</span>
                     <span className={styles.label}>{meta.label}</span>
+                    {/* 그 이벤트에서 남긴 내 사진(특전·음식 등) — 누르면 크게 */}
+                    {item.photos && item.photos.length > 0 && (
+                      <span className={styles.photos} onClick={e => e.stopPropagation()}>
+                        {item.photos.map((src, pi) => (
+                          <a key={pi} href={src} target="_blank" rel="noreferrer" className={styles.photo} aria-label={`${item.name} 사진 ${pi + 1}`}>
+                            <img src={src} alt="" loading="lazy" />
+                          </a>
+                        ))}
+                      </span>
+                    )}
                   </li>
                 )
               })}

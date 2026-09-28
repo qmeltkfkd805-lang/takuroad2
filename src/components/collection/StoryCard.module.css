@@ -111,3 +111,14 @@
 @media (prefers-reduced-motion: reduce) {
   .bar span, .axisBar > span { transition: none; }
 }
+
+/* 이벤트 기록에 남긴 내 사진 — 항목 아래 줄에 작은 썸네일 */
+.item { flex-wrap: wrap; }
+.photos { flex-basis: 100%; display: flex; gap: 8px; margin: 8px 0 2px 27px; }
+.photo {
+  display: block; width: 88px; height: 88px; border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border); background: var(--surface2); flex-shrink: 0;
+}
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .15s ease; }
+.photo:hover img { transform: scale(1.04); }
+@media (max-width: 480px) { .photo { width: 72px; height: 72px; } .photos { margin-left: 0; } }

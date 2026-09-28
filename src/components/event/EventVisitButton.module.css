@@ -110,3 +110,29 @@
 .modalOk:hover { filter: brightness(1.05); }
 
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ── 사진 단계 ── */
+.pickGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 0 14px; }
+.pickItem { position: relative; aspect-ratio: 1 / 1; border-radius: 12px; overflow: hidden; background: var(--surface2); border: 1px solid var(--border); }
+.pickItem img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pickRemove {
+  position: absolute; top: 5px; right: 5px; width: 26px; height: 26px; border-radius: 9999px;
+  border: none; background: rgba(0, 0, 0, .6); color: #fff; font-size: 17px; line-height: 1; cursor: pointer;
+}
+.pickButtons { display: flex; gap: 8px; margin: 0 0 18px; }
+.pickBtn {
+  flex: 1; height: 50px; border-radius: 12px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  border: 1.5px dashed var(--accent, #ff5692); background: var(--accent-l, rgba(232, 0, 111, .06));
+  color: var(--accent); font-family: inherit; font-size: 14.5px; font-weight: 800;
+}
+.pickBtn:disabled { opacity: .5; cursor: default; }
+.modalDesc b { color: var(--text); }
+
+/* 다녀온 이벤트 — 사진 추가 */
+.photoAdd {
+  padding: 9px 14px; border-radius: 9999px; cursor: pointer;
+  border: 1px dashed var(--accent, #ff5692); background: var(--surface);
+  color: var(--accent); font-family: inherit; font-size: 12.5px; font-weight: 800;
+}
+.photoAdd:hover { background: var(--accent-l, rgba(232, 0, 111, .06)); }
