@@ -32,6 +32,7 @@ export async function getEventsByTag(tagId: string, limit = 20): Promise<WorkEve
   const { data, error } = await supabase
     .from('events')
     .select('id, tag_id, type, shop_id, title, created_at, start_date, end_date, cover_url')
+    .is('deleted_at', null)   // 숨긴(삭제 요청된) 이벤트 제외 — migrations/events_soft_delete.sql
     .eq('tag_id', tagId)
     .order('created_at', { ascending: false })
     .limit(limit)
@@ -87,6 +88,7 @@ export async function getEventsByShop(shopId: string): Promise<ShopWorkEvent[]> 
   const { data, error } = await supabase
     .from('events')
     .select('id, type, title, start_date, end_date, created_at, cover_url, tag_id')
+    .is('deleted_at', null)   // 숨긴(삭제 요청된) 이벤트 제외 — migrations/events_soft_delete.sql
     .eq('shop_id', shopId)
     .in('type', ['popup', 'collab_cafe', 'exhibition'])
     .or(`end_date.is.null,end_date.gte.${today}`)
@@ -139,6 +141,7 @@ export async function getSeriesSiblings(seriesKey: string | null, excludeId: str
   const { data, error } = await supabase
     .from('events')
     .select('id, title, place_name, shop_id, start_date, end_date')
+    .is('deleted_at', null)   // 숨긴(삭제 요청된) 이벤트 제외 — migrations/events_soft_delete.sql
     .eq('series_key', key)
     .neq('id', excludeId)
     .order('start_date', { ascending: true })
@@ -193,6 +196,7 @@ export async function getUnlinkedEvents(limit = 300): Promise<LinkableEvent[]> {
   const { data, error } = await supabase
     .from('events')
     .select(EVENT_LINK_COLS)
+    .is('deleted_at', null)   // 숨긴(삭제 요청된) 이벤트 제외 — migrations/events_soft_delete.sql
     .is('shop_id', null)
     .or(`end_date.is.null,end_date.gte.${today}`)
     .order('start_date', { ascending: false })
@@ -207,6 +211,7 @@ export async function getLinkedEvents(shopId: string): Promise<LinkableEvent[]> 
   const { data, error } = await supabase
     .from('events')
     .select(EVENT_LINK_COLS)
+    .is('deleted_at', null)   // 숨긴(삭제 요청된) 이벤트 제외 — migrations/events_soft_delete.sql
     .eq('shop_id', shopId)
     .order('start_date', { ascending: false })
   if (error) { console.error('[이벤트 연결] 연결 목록 조회 실패:', error.message); return [] }
@@ -246,6 +251,7 @@ export async function getActiveEvents(limit = 8): Promise<ActiveEvent[]> {
   const { data, error } = await supabase
     .from('events')
     .select('id, tag_id, type, shop_id, title, start_date, end_date, cover_url, place_name')
+    .is('deleted_at', null)   // 숨긴(삭제 요청된) 이벤트 제외 — migrations/events_soft_delete.sql
     .or(`end_date.is.null,end_date.gte.${today}`)
     .order('start_date', { ascending: true })
     .limit(limit)

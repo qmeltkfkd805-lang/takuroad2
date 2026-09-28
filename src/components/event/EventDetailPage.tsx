@@ -250,6 +250,13 @@ export default function EventDetailPage() {
         <strong>{event.title}</strong>
       </nav>
 
+      {/* 삭제 요청됐지만 다녀온 사람이 있어 보관 중인 이벤트 — 작성자·관리자·다녀온 사람에게만 열린다 */}
+      {event.deletedAt && (
+        <div style={{ margin: '0 0 16px', padding: '12px 16px', borderRadius: 12, background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--muted)', fontSize: 14, fontWeight: 700, lineHeight: 1.6 }}>
+          삭제된 이벤트예요. 다녀온 기록을 위해 보관 중이라 목록과 검색에는 나오지 않아요.
+        </div>
+      )}
+
       <div className={styles.layout}>
         <div className={styles.main}>
 

@@ -87,6 +87,7 @@ export async function getEventHomeItems(): Promise<EventHomeItem[]> {
   const { data, error } = await supabase
     .from('events')
     .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, cover_url, place_name, place_addr, series_key')
+    .is('deleted_at', null)   // 숨긴(삭제 요청된) 이벤트 제외 — migrations/events_soft_delete.sql
     .in('type', HOME_TYPES)
     .or(`end_date.is.null,end_date.gte.${today()}`)
     .order('start_date', { ascending: true })
@@ -103,6 +104,7 @@ export async function getRecentlyEndedEventItems(days = 30): Promise<EventHomeIt
   const { data, error } = await supabase
     .from('events')
     .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, cover_url, place_name, place_addr, series_key')
+    .is('deleted_at', null)   // 숨긴(삭제 요청된) 이벤트 제외 — migrations/events_soft_delete.sql
     .in('type', HOME_TYPES)
     .lt('end_date', today())
     .gte('end_date', cutoff)
@@ -118,6 +120,7 @@ export async function getPastEventItems(limit = 12): Promise<EventHomeItem[]> {
   const { data, error } = await supabase
     .from('events')
     .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, cover_url, place_name, place_addr, series_key')
+    .is('deleted_at', null)   // 숨긴(삭제 요청된) 이벤트 제외 — migrations/events_soft_delete.sql
     .in('type', HOME_TYPES)
     .lt('end_date', today())
     .order('end_date', { ascending: false })

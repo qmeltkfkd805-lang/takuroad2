@@ -4,6 +4,8 @@ import { EventHomeType } from '@/services/eventHomeService'
 import { BusinessHours } from '@/types/database'
 
 export interface EventDetail {
+  /** 삭제 요청됐지만 다녀온 사람이 있어 숨겨 둔 이벤트(작성자·관리자·다녀온 사람만 열림) */
+  deletedAt: string | null
   id: string
   type: EventHomeType
   title: string
@@ -76,7 +78,7 @@ export async function getEventDetail(eventId: string): Promise<EventDetail | nul
 
   const { data: ev, error } = await supabase
     .from('events')
-    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, entry_info, hours_info, hours, cover_url, parking, parking_note, description, place_name, place_addr, place_lat, place_lng, place_detail, place_id, series_key, source_urls, ticket_urls, created_by, updated_by, updated_at')
+    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, entry_info, hours_info, hours, cover_url, parking, parking_note, description, place_name, place_addr, place_lat, place_lng, place_detail, place_id, series_key, source_urls, ticket_urls, created_by, updated_by, updated_at, deleted_at')
     .eq('id', eventId)
     .maybeSingle()
 
@@ -114,6 +116,7 @@ export async function getEventDetail(eventId: string): Promise<EventDetail | nul
 
   return {
     id: e.id,
+    deletedAt: e.deleted_at ?? null,
     type: e.type,
     title: e.title ?? '',
     startDate: e.start_date ?? null,
@@ -175,6 +178,7 @@ export async function getRelatedEvents(
   const { data } = await supabase
     .from('events')
     .select('id, type, title, shop_id, start_date, end_date, cover_url, series_key, place_name')
+    .is('deleted_at', null)   // 숨긴(삭제 요청된) 이벤트 제외 — migrations/events_soft_delete.sql
     .eq('tag_id', tagId)
     .neq('id', excludeId)
     .in('type', ['popup', 'collab_cafe', 'exhibition', 'official_event'])

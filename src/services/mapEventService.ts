@@ -35,6 +35,7 @@ export async function getOngoingMapEvents(): Promise<MapEvent[]> {
   const { data, error } = await supabase
     .from('events')
     .select('id, title, cover_url, tag_id, type, place_name, place_addr, place_lat, place_lng, start_date, end_date, shops ( lat, lng, addr, name )')
+    .is('deleted_at', null)   // 숨긴(삭제 요청된) 이벤트 제외 — migrations/events_soft_delete.sql
     .or(`start_date.is.null,start_date.lte.${today}`)
     .or(`end_date.is.null,end_date.gte.${today}`)
 
