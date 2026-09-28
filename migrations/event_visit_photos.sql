@@ -103,6 +103,32 @@ create trigger event_visit_photos_limit
 
 revoke all on function public.event_visit_photos_limit() from public, anon, authenticated;
 
+-- ── 4. 사진을 남기면 경험치 (2026-09-28 적용) ─────────────
+-- 사진이 실제로 저장될 때 DB가 지급한다(클라이언트 관여 없음, 화면에 안내 없음 — 악용 방지).
+--   이벤트당 1번(p_once), 5 XP, 하루 최대 15 XP(p_daily_cap). 사유 = 'event_visit_photo'
+--   경험치 지급이 실패해도 사진 저장은 막지 않는다.
+create or replace function public.event_visit_photo_exp()
+returns trigger
+language plpgsql
+security definer
+set search_path to 'pg_catalog', 'public', 'extensions', 'pg_temp'
+as $$
+begin
+  begin
+    perform public.grant_exp(new.user_id, 5, 'event_visit_photo', 'event', new.event_id, true, 15);
+  exception when others then
+    raise warning 'event_visit_photo_exp 실패: %', sqlerrm;
+  end;
+  return new;
+end $$;
+
+drop trigger if exists event_visit_photo_exp on public.event_visit_photos;
+create trigger event_visit_photo_exp
+  after insert on public.event_visit_photos
+  for each row execute function public.event_visit_photo_exp();
+
+revoke all on function public.event_visit_photo_exp() from public, anon, authenticated;
+
 select pg_notify('pgrst', 'reload schema');
 
 
@@ -126,6 +152,8 @@ select pg_notify('pgrst', 'reload schema');
 -- ============================================================
 -- [롤백] — 올린 사진 목록이 함께 지워진다(파일은 버킷에 남음)
 -- ============================================================
+-- drop trigger if exists event_visit_photo_exp on public.event_visit_photos;
+-- drop function if exists public.event_visit_photo_exp();
 -- drop trigger if exists event_visit_photos_limit on public.event_visit_photos;
 -- drop function if exists public.event_visit_photos_limit();
 -- drop table if exists public.event_visit_photos;
