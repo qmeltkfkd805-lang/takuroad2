@@ -10,6 +10,7 @@ export function htmlToPlainText(html: string | null | undefined): string | null 
   if (!/<[a-z!/]/i.test(s)) return s.trim() || null   // 태그가 없으면 원문 그대로
 
   s = s
+    .replace(/<div data-gm="1"[\s\S]*?<\/div>/gi, '')   // 굿즈 정보 블록(글 상세와 같은 규칙으로 제외)
     .replace(/<(script|style)[\s\S]*?<\/\1\s*>/gi, '')
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/<\/(p|div|li|h[1-6]|blockquote|tr)\s*>/gi, '\n')

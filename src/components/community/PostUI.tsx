@@ -16,6 +16,7 @@ import {
 import { CommunityPost, PostComment, ReportReason, REPORT_REASONS, BOARD_LABEL, Poll } from '@/types/community-post'
 import { getPollByPost, votePoll } from '@/services/pollService'
 import { getPostGoods, getGoodsDetail, type GoodsDetail } from '@/services/goodsService'
+import { getExhibitEntryIdForPost, addExhibitEntry, deleteExhibit, exhibitRemoveConfirmText } from '@/services/exhibitService'
 import AppIcon from '@/components/tds/AppIcon'
 
 // ── 대표 팬아트 배지 ──
@@ -191,7 +192,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
   const onDelete = async () => {
     const isGoodsPost = post.board === 'goods'
     const msg = isGoodsPost
-      ? '이 글을 삭제할까요?\n\n연결된 굿즈도 내 굿즈에서 함께 사라져요.\n(그 굿즈로 쓴 다른 자랑 글이 있거나 전시관에 걸려 있으면 굿즈는 남아요)\n\n되돌릴 수 없어요.'
+      ? '이 글을 삭제할까요?\n\n연결된 굿즈도 내 굿즈에서 함께 사라져요.\n(그 굿즈로 쓴 다른 자랑 글이 있거나 전시관에 걸려 있으면 굿즈는 남아요)\n전시관에 걸어둔 글이라면 전시관에서도 빠져요.\n\n되돌릴 수 없어요.'
       : '이 글을 삭제할까요? 되돌릴 수 없어요.'
     if (!window.confirm(msg)) return
     const r = await deletePostWithGoods(post.id)
@@ -202,6 +203,49 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
   }
 
   const isAuthor = !!user && post.author?.id === user.id
+
+  // ── 전시관 추가/제외 (내 굿즈 글 + 활성 글만) ──
+  // undefined = 아직 모름(메뉴 열 때 확인), null = 전시 안 함, string = 전시 id
+  const canExhibit = isAuthor && post.board === 'goods' && post.status === 'active'
+  // 글이 바뀌면 자동으로 "모름"이 되도록 글 id 와 묶어서 보관한다(effect 안 동기 setState 회피)
+  const [exhibitState, setExhibitState] = useState<{ postId: string; entryId: string | null } | null>(null)
+  const exhibitEntryId: string | null | undefined = exhibitState?.postId === post.id ? exhibitState.entryId : undefined
+  const setExhibitEntryId = (entryId: string | null) => setExhibitState({ postId: post.id, entryId })
+  const [exhibitBusy, setExhibitBusy] = useState(false)
+  useEffect(() => {
+    if (!menuOpen || !canExhibit || exhibitEntryId !== undefined) return
+    let alive = true
+    const pid = post.id
+    getExhibitEntryIdForPost(pid)
+      .then(id => { if (alive) setExhibitState({ postId: pid, entryId: id }) })
+      .catch(() => { if (alive) setExhibitState({ postId: pid, entryId: null }) })
+    return () => { alive = false }
+  }, [menuOpen, canExhibit, exhibitEntryId, post.id])
+
+  const toggleExhibit = async () => {
+    if (exhibitEntryId === undefined || exhibitBusy) return
+    setMenuOpen(false)
+    setExhibitBusy(true)
+    try {
+      if (exhibitEntryId) {
+        if (!window.confirm(exhibitRemoveConfirmText('post', 0))) return
+        await deleteExhibit(exhibitEntryId, 'post')
+        setExhibitEntryId(null)
+        window.alert('전시관에서 뺐어요.')
+      } else {
+        const id = await addExhibitEntry(post.id)
+        setExhibitEntryId(id)
+        window.alert(post.visibility === 'private'
+          ? '전시관에 추가했어요.\n이 글은 나만보기라 전시관에서도 나에게만 보여요.'
+          : '전시관에 추가했어요.')
+      }
+    } catch (e: any) {
+      window.alert(e?.message ?? '처리하지 못했어요')
+    } finally {
+      setExhibitBusy(false)
+    }
+  }
+
   const togglePrivate = async () => {
     const to = post.visibility === 'private' ? 'public' : 'private'
     const ok = await setPostVisibility(post.id, to)
@@ -230,6 +274,12 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
         <div style={{ position: 'absolute', top: '100%', right: 0, zIndex: 30, marginTop: 4, minWidth: 140, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.14)', overflow: 'hidden' }}>
           <button onClick={() => { setMenuOpen(false); router.push(`/community/write?edit=${post.id}`) }} style={menuItem}>수정하기</button>
           <button onClick={togglePrivate} style={menuItem}>{post.visibility === 'private' ? '전체 공개' : '나만보기'}</button>
+          {canExhibit && (
+            <button onClick={toggleExhibit} disabled={exhibitEntryId === undefined || exhibitBusy}
+              style={exhibitEntryId === undefined ? { ...menuItem, color: 'var(--muted)' } : menuItem}>
+              {exhibitEntryId === undefined ? '전시관 확인 중…' : exhibitEntryId ? '전시관에서 제외' : '전시관에 추가'}
+            </button>
+          )}
           <button onClick={() => { setMenuOpen(false); onDelete() }} style={{ ...menuItem, color: '#e04343' }}>삭제하기</button>
         </div>
       )}

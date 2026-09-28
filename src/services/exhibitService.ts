@@ -132,6 +132,12 @@ export async function getMyExhibitPostChoices(): Promise<ExhibitPostChoice[]> {
   }))
 }
 
+/* 이 글이 전시 중이면 전시 id, 아니면 null (내 굿즈 글 한정) */
+export async function getExhibitEntryIdForPost(postId: string): Promise<string | null> {
+  const list = await getMyExhibitPostChoices()
+  return list.find(p => p.postId === postId)?.entryId ?? null
+}
+
 /* 굿즈 글을 전시관에 추가 → 전시 id (이미 전시 중이면 기존 id) */
 export async function addExhibitEntry(postId: string): Promise<string> {
   const supabase = createClient()
