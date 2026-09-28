@@ -4,7 +4,12 @@ import AppShell from '@/components/layout/AppShell'
 import { env } from '@/lib/env'
 import './globals.css'
 
+const SITE_URL = 'https://www.takuroad.kr'
+const OG_IMAGE = { url: '/og-default.png', width: 1200, height: 630, alt: '타쿠로드 TAKUROAD' }
+
 export const metadata: Metadata = {
+  // 공유 미리보기(카카오톡 등)는 이미지 주소가 절대 주소여야 한다 → 상대 경로의 기준 주소
+  metadataBase: new URL(SITE_URL),
   title: {
     default: '타쿠로드 | 덕후의 성지순례 지도',
     template: '%s | 타쿠로드',
@@ -21,7 +26,16 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ko_KR',
     siteName: '타쿠로드',
-    images: [{ url: '/og-default.png', width: 1200, height: 630 }],
+    url: SITE_URL,
+    title: '타쿠로드 | 덕후의 성지순례 지도',
+    description: '한국의 애니·오타쿠 쇼핑 명소를 한눈에. 피규어, 굿즈, 카드, 팝업스토어를 지도에서 찾아보세요.',
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '타쿠로드 | 덕후의 성지순례 지도',
+    description: '한국의 애니·오타쿠 쇼핑 명소를 한눈에. 피규어, 굿즈, 카드, 팝업스토어를 지도에서 찾아보세요.',
+    images: [OG_IMAGE.url],
   },
   robots: { index: true, follow: true },
 }
@@ -40,9 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Noto+Sans+KR:wght@400;500;700;900&display=swap"
           rel="stylesheet"
         />
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="icon" href="/icon-192.png" />
-        <link rel="apple-touch-icon" href="/icon-192.png" />
+        {/* 파비콘·홈 화면 아이콘은 app/icon.png · app/apple-icon.png · app/favicon.ico 로 Next가 자동 연결 */}
         <script
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${env.kakao.appKey}&libraries=services&autoload=false`}
           async
