@@ -154,8 +154,16 @@ export async function getMyFavoriteTagIds(userId: string): Promise<string[]> {
 export const hotShops = (items: ShopHomeItem[], n = 10) =>
   [...items].sort((a, b) => hotScore(b) - hotScore(a)).slice(0, n)
 
-export const newShops = (items: ShopHomeItem[], n = 8) =>
-  [...items].sort((a, b) => b.created_at.localeCompare(a.created_at)).slice(0, n)
+/** "새로 등록된 샵" — 등록한 지 2주(14일) 이내인 샵만, 최신순. 2주가 지나면 자동으로 빠진다.
+    해당하는 샵이 없으면 빈 배열 → 샵 홈에서 섹션 자체가 숨겨진다. */
+export const NEW_SHOP_DAYS = 14
+export const newShops = (items: ShopHomeItem[], n = 8, now: Date = new Date()) => {
+  const cutoff = now.getTime() - NEW_SHOP_DAYS * 24 * 60 * 60 * 1000
+  return items
+    .filter(s => { const t = Date.parse(s.created_at); return Number.isFinite(t) && t >= cutoff })
+    .sort((a, b) => b.created_at.localeCompare(a.created_at))
+    .slice(0, n)
+}
 
 export const eventShops = (items: ShopHomeItem[], n = 8) =>
   items.filter(s => s.hasEvent).sort((a, b) => hotScore(b) - hotScore(a)).slice(0, n)
