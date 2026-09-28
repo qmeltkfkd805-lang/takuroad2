@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { recordEventVisit, getMyEventVisit, getEventVisitCount } from '@/services/eventVisitService'
@@ -29,16 +30,31 @@ export default function EventVisitButton({ eventId, eventTitle, ended }: Props) 
   const [count, setCount] = useState(0)
   const [submitting, setSubmitting] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
+  const [confirmOpen, setConfirmOpen] = useState(false)
+
+  // 확인 창이 열려 있을 때 Esc 로 닫기
+  useEffect(() => {
+    if (!confirmOpen) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setConfirmOpen(false) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [confirmOpen])
 
   useEffect(() => {
     if (user) getMyEventVisit(user.id, eventId).then(setVisited).catch(() => {})
     getEventVisitCount(eventId).then(setCount).catch(() => {})
   }, [user, eventId])
 
-  const handleClick = async () => {
+  // 버튼은 바로 기록하지 않고 확인 창부터 연다(잘못 누름 방지)
+  const handleClick = () => {
     if (!user) { router.push('/login'); return }
     if (visited || submitting) return
+    setConfirmOpen(true)
+  }
 
+  const confirmVisit = async () => {
+    if (!user || visited || submitting) return
+    setConfirmOpen(false)
     setSubmitting(true)
     const res = await recordEventVisit(user.id, eventId, 'button')
 
@@ -78,6 +94,23 @@ export default function EventVisitButton({ eventId, eventTitle, ended }: Props) 
       )}
 
       {toast && <div className={styles.toast}>{toast}</div>}
+
+      {/* 확인 창 — 히어로가 overflow:hidden·filter 를 써서 안에 두면 잘리므로 body 로 띄운다 */}
+      {confirmOpen && typeof document !== 'undefined' && createPortal(
+        <div className={styles.backdrop} onClick={() => setConfirmOpen(false)}>
+          <div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="ev-visit-title" onClick={e => e.stopPropagation()}>
+            <div className={styles.modalIcon}><EventIcon name="pin" size={24} color="var(--accent)" /></div>
+            <h3 id="ev-visit-title" className={styles.modalTitle}>이 이벤트에 다녀오셨나요?</h3>
+            <p className={styles.modalEvent}>{eventTitle}</p>
+            <p className={styles.modalDesc}>다녀온 이벤트로 기록하면 내 연대기에 남아요.</p>
+            <div className={styles.modalActions}>
+              <button type="button" className={styles.modalCancel} onClick={() => setConfirmOpen(false)}>취소</button>
+              <button type="button" className={styles.modalOk} onClick={confirmVisit} autoFocus>네, 다녀왔어요</button>
+            </div>
+          </div>
+        </div>,
+        document.body,
+      )}
     </div>
   )
 }

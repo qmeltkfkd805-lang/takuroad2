@@ -76,3 +76,37 @@
   from { opacity: 0; transform: translateY(4px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ── "다녀왔어요" 확인 창 ── */
+.backdrop {
+  position: fixed; inset: 0; z-index: 5000;
+  background: rgba(0, 0, 0, .45);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+  animation: fade .15s ease;
+}
+.modal {
+  width: 100%; max-width: 420px;
+  background: var(--surface); color: var(--text);
+  border-radius: 20px; padding: 28px 26px 22px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .28);
+  text-align: center;
+  animation: rise .18s ease;
+}
+.modalIcon {
+  width: 52px; height: 52px; margin: 0 auto 14px; border-radius: 9999px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent-l, rgba(232, 0, 111, .08));
+}
+.modalTitle { margin: 0 0 8px; font-size: 19px; font-weight: 900; letter-spacing: -.02em; }
+.modalEvent { margin: 0 0 10px; font-size: 15px; font-weight: 700; color: var(--accent); line-height: 1.45; word-break: keep-all; }
+.modalDesc { margin: 0 0 22px; font-size: 14px; color: var(--muted); line-height: 1.6; }
+.modalActions { display: flex; gap: 10px; }
+.modalCancel, .modalOk {
+  flex: 1; height: 48px; border-radius: 12px; cursor: pointer;
+  font-family: inherit; font-size: 15px; font-weight: 800;
+}
+.modalCancel { border: 1px solid var(--border); background: var(--surface); color: var(--muted); }
+.modalOk { border: none; background: var(--accent); color: #fff; }
+.modalOk:hover { filter: brightness(1.05); }
+
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
