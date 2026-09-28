@@ -3,7 +3,7 @@ import { prepareImage } from '@/lib/storage/compressImage'
 import { recordActivity } from '@/services/activityService'
 import { geekAreaFromAddr } from '@/lib/utils/geekArea'
 import { resolveEventCover } from '@/lib/event/eventCover'
-import { Shop } from '@/types/shop'
+import { Shop, ShopBranch } from '@/types/shop'
 import { UploadErrorCode, extOfMime, uuid } from '@/lib/utils/imageEncode'
 
 export function toShop(raw: any): Shop {
@@ -54,6 +54,7 @@ export function toShop(raw: any): Shop {
     sns_links:      raw.sns_links ?? [],
     phone:          raw.phone ?? null,
     floor_info:     raw.floor_info,
+    branches:       normalizeBranches(raw.branches),
     start_date:     raw.start_date,
     end_date:       raw.end_date,
     event_info:     raw.event_info,
@@ -72,6 +73,23 @@ export function toShop(raw: any): Shop {
     created_at:     raw.created_at,
     updated_at:     raw.updated_at,
   }
+}
+
+/** 층별 매장 구성 정리 — 빈 줄 제거, 글자 길이·개수 제한 (DB check: 배열 · 최대 20줄) */
+export function normalizeBranches(v: unknown): ShopBranch[] {
+  if (!Array.isArray(v)) return []
+  const clip = (x: unknown, n: number) => String(x ?? '').trim().slice(0, n)
+  return v
+    .map((b: any) => ({
+      floor: clip(b?.floor, 20),
+      name: clip(b?.name, 40),
+      room: clip(b?.room, 30) || undefined,
+      items: Array.isArray(b?.items)
+        ? [...new Set<string>(b.items.map((i: unknown) => clip(i, 20)).filter(Boolean))].slice(0, 12)
+        : [],
+    }))
+    .filter(b => b.floor || b.name || b.items.length)
+    .slice(0, 20)
 }
 
 export async function getShops(): Promise<Shop[]> {
@@ -118,7 +136,7 @@ export async function getShopBySlug(slug: string): Promise<Shop | null> {
       lat, lng, google_place_id,
       place_id, floor, unit,
       places ( slug, name, lat, lng, access_note ),
-      hours, parking, parking_note, shop_link, sns_links, phone,
+      hours, parking, parking_note, shop_link, sns_links, phone, branches,
       start_date, end_date, event_info,
       rating_avg, rating_count, visit_count, bookmark_count,
       is_verified, is_claimed, status,
@@ -215,6 +233,7 @@ export async function createShop(
       sns_links:    data.sns_links ?? [],
       phone:        data.phone || null,
       floor_info:   data.floor_info || null,
+      ...(data.branches !== undefined ? { branches: normalizeBranches(data.branches) } : {}),
       start_date:   data.start_date || null,
       end_date:     data.end_date || null,
       event_info:   data.event_info || null,
@@ -318,6 +337,7 @@ export async function updateShop(
       sns_links:    data.sns_links ?? [],
       phone:        data.phone || null,
       floor_info:   data.floor_info || null,
+      ...(data.branches !== undefined ? { branches: normalizeBranches(data.branches) } : {}),
       start_date:   data.start_date || null,
       end_date:     data.end_date || null,
       event_info:   data.event_info || null,

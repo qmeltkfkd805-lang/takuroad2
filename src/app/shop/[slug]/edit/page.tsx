@@ -18,7 +18,7 @@ async function getShop(slug: string) {
       lat, lng, google_place_id,
       place_id, floor, unit,
       places ( slug, name, lat, lng ),
-      hours, parking, parking_note, shop_link, sns_links, phone, floor_info, start_date, end_date, event_info,
+      hours, parking, parking_note, shop_link, sns_links, phone, floor_info, branches, start_date, end_date, event_info,
       rating_avg, rating_count, visit_count, bookmark_count,
       is_verified, is_claimed, status,
       temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,

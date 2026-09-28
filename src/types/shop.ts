@@ -49,6 +49,8 @@ export interface Shop {
   sns_links: string[]
   phone: string | null
   floor_info: string | null
+  /** 층별 매장 구성 — 같은 건물의 본점·1호점·2호점 (shops.branches jsonb) */
+  branches?: ShopBranch[]
 
   start_date: string | null
   end_date: string | null
@@ -100,6 +102,16 @@ export interface ShopFormData {
   place_name: string | null   // 표시용 (저장 안 됨, UI 편의)
   floor: string
   unit: string
+  /** 층별 매장 구성 */
+  branches?: ShopBranch[]
+}
+
+/** 층별 매장 한 줄 — 예) 2층 · 본점 · 136호 · [피규어, 가챠, 굿즈] */
+export interface ShopBranch {
+  floor: string
+  name: string
+  room?: string
+  items: string[]
 }
 
 // 지도 마커용 최소 타입 (전체 Shop보다 가볍게)

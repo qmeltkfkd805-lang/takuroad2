@@ -23,6 +23,7 @@ import ShopGallery from './ShopGallery'
 import ShopHeader from './ShopHeader'
 import ShopDetailPageDesktop from './ShopDetailPageDesktop'
 import { useIsDesktop } from '@/hooks/useIsDesktop'
+import { ShopBranchList } from './ShopBranches'
 import { Button } from '@/components/tds/Button'
 
 interface Props {
@@ -316,6 +317,16 @@ export default function ShopDetailPage({ shop }: Props) {
             }}>
               {shop.description}
             </p>
+          </>
+        )}
+
+        {/* === 층별 매장 구성 === */}
+        {(shop.branches?.length ?? 0) > 0 && (
+          <>
+            <h2 style={{ fontSize: '15px', fontWeight: 900, marginBottom: '10px' }}>층별 매장 구성</h2>
+            <div style={{ marginBottom: '24px' }}>
+              <ShopBranchList branches={shop.branches} compact />
+            </div>
           </>
         )}
 

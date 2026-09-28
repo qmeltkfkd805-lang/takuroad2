@@ -19,6 +19,7 @@ import ShopHighlightManager from './ShopHighlightManager'
 import PhotosManage from './PhotosManage'
 import CompletenessIndicator from './CompletenessIndicator'
 import ShopHoursEditor, { HOURS_HINT } from './ShopHoursEditor'
+import { ShopBranchEditor } from './ShopBranches'
 
 interface Props {
   mode: 'create' | 'edit'
@@ -84,6 +85,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
         shop_link: shop.shop_link ?? '', sns_links: (shop as any).sns_links?.length ? (shop as any).sns_links : (shop.shop_link ? [shop.shop_link] : []), phone: shop.phone ?? '', floor_info: shop.floor_info ?? '',
         start_date: shop.start_date ?? '', end_date: shop.end_date ?? '', event_info: shop.event_info ?? '',
         place_id: shop.place_id ?? null, place_name: shop.place_name ?? null, floor: shop.floor ?? '', unit: shop.unit ?? '',
+        branches: shop.branches ?? [],
       })
       const initLinks = (shop as any).sns_links?.length ? (shop as any).sns_links : (shop.shop_link ? [shop.shop_link] : [])
       setLinks(initLinks.length ? initLinks : [''])
@@ -318,6 +320,11 @@ export default function ShopFormWizard({ mode, shop }: Props) {
             <Field label="샵 한 줄 소개">
               <textarea value={form.description ?? ''} onChange={e => set('description', e.target.value)} rows={3} maxLength={100} placeholder="예: 다양한 애니메이션 굿즈와 이벤트가 가득한 공간!" style={{ ...inp, resize: 'vertical' }} />
               <div style={{ textAlign: 'right', fontSize: 11.5, color: form.description.length >= 100 ? 'var(--accent)' : 'var(--muted)', marginTop: 4 }}>{form.description.length}/100</div>
+            </Field>
+
+            {/* 같은 건물 여러 층의 본점·1호점 — 소개글 대신 표로 한눈에 */}
+            <Field label="층별 매장 구성" hint="같은 건물 안에 본점·1호점처럼 층별 매장이 있을 때만 적어주세요. 상세 페이지에 표로 보여요.">
+              <ShopBranchEditor value={form.branches ?? []} onChange={b => set('branches', b)} />
             </Field>
 
             <Field label="샵 카테고리 *" hint="복수 선택 가능">

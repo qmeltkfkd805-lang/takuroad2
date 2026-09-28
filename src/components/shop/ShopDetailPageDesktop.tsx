@@ -30,6 +30,7 @@ import ReportIssueButton from './ReportIssueButton'
 import VerifiedBadge from './VerifiedBadge'
 import AppIcon from '@/components/tds/AppIcon'
 import CheckInButton from './CheckInButton'
+import { ShopBranchList } from './ShopBranches'
 
 interface Props {
   shop: Shop
@@ -426,6 +427,13 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                     </div>
                   )}
                 </Section>
+
+                {/* 층별 매장 구성 — 같은 건물의 본점·1호점·2호점 */}
+                {(shop.branches?.length ?? 0) > 0 && (
+                  <Section title="층별 매장 구성">
+                    <ShopBranchList branches={shop.branches} />
+                  </Section>
+                )}
 
                 {/* 기본 정보 */}
                 <Section title="기본 정보">
