@@ -1,4 +1,8 @@
-.page { max-width: 1320px; margin: 0 auto; padding: 18px 24px 72px; }
+/* contain: inline-size — 탭 내용(예: 소개 탭의 메타 4칸, 줄바꿈 없는 긴 글자)이 페이지 폭을
+   밀어 넓히지 못하게 한다. 안 그러면 소개 탭에서만 페이지가 넓어져 히어로(4:5)가 커졌다가
+   다른 탭에서 줄어든다. 폭은 바깥(앱 레이아웃)이 정하고, 넘치는 칸은 제자리에서 가로 스크롤.
+   contain 을 걸면 내용 기준 폭이 0이 되므로 width: 100% 로 폭을 직접 준다. */
+.page { width: 100%; max-width: 1320px; margin: 0 auto; padding: 18px 24px 72px; box-sizing: border-box; contain: inline-size; }
 
 /* 브레드크럼 */
 .crumbs {
