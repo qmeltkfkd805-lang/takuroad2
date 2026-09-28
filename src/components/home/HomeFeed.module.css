@@ -27,9 +27,8 @@
 .newsMore { border: none; background: none; color: var(--muted); font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; }
 .newsMore:hover { color: var(--accent); }
 
-.newsRail { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; cursor: grab; user-select: none; padding-bottom: 2px; }
+.newsRail { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 2px; }
 .newsRail::-webkit-scrollbar { display: none; }
-.newsRail:active { cursor: grabbing; }
 .newsRail img { pointer-events: none; -webkit-user-drag: none; }
 
 .newsSlideLink { flex: 0 0 clamp(240px, 34%, 330px); scroll-snap-align: start; text-decoration: none; color: inherit; user-select: none; -webkit-user-select: none; }
@@ -65,9 +64,8 @@
 .routeMore { border: none; background: none; color: var(--muted); font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; }
 .routeMore:hover { color: var(--accent); }
 
-.routeRail { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; cursor: grab; user-select: none; padding-bottom: 2px; }
+.routeRail { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 2px; }
 .routeRail::-webkit-scrollbar { display: none; }
-.routeRail:active { cursor: grabbing; }
 .routeRail img { pointer-events: none; -webkit-user-drag: none; }
 
 .routeSlideLink { flex: 0 0 clamp(280px, 46%, 380px); scroll-snap-align: start; text-decoration: none; color: inherit; user-select: none; -webkit-user-select: none; }
@@ -123,18 +121,16 @@
 .shopRow::-webkit-scrollbar { display: none; }
 .shopItem { width: 200px; height: 280px; flex-shrink: 0; }
 
-/* no-scrollbar-rows : 가로 줄 스크롤바 숨김 + 드래그 커서 */
+/* no-scrollbar-rows : 가로 줄 스크롤바 숨김 (넘기기는 < > 화살표) */
 .feedGrid, .eventRow, .shopRow {
   scrollbar-width: none;
   -ms-overflow-style: none;
-  cursor: grab;
   user-select: none;
 }
 .feedGrid::-webkit-scrollbar,
 .eventRow::-webkit-scrollbar,
 .shopRow::-webkit-scrollbar { display: none; }
 
-.feedGrid:active, .eventRow:active, .shopRow:active { cursor: grabbing; }
 
 /* 드래그 중 이미지가 딸려 나가지 않게 */
 .feedGrid img, .eventRow img, .shopRow img {
@@ -156,3 +152,20 @@
   /* 샵 카드 칸 고정 높이(280px) 제거 — 내용만큼만 차지 */
   .shopItem { height: auto; }
 }
+
+/* ── 가로 줄 좌우 화살표 — 마우스를 줄 위에 올렸을 때만 보인다 ── */
+.railWrap { position: relative; }
+.railArrow {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+  width: 42px; height: 42px; border-radius: 9999px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  box-shadow: 0 6px 18px rgba(0,0,0,.16);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease;
+}
+.railArrowLeft { left: 8px; }
+.railArrowRight { right: 8px; }
+.railWrap:hover .railArrow { opacity: 1; pointer-events: auto; }
+.railArrow:hover { transform: translateY(-50%) scale(1.06); }
+/* 터치 기기(모바일)는 손가락으로 밀면 되니 화살표를 숨긴다 */
+@media (hover: none) { .railArrow { display: none; } }

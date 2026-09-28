@@ -11,7 +11,6 @@ import HeroSlot from './HeroSlot'
 import { getProductsByTag } from '@/services/shopProductService'
 import { getShopsByTag } from '@/services/shopService'
 import { useSaved } from '@/hooks/useSaved'
-import { useDragScroll } from '@/hooks/useDragScroll'
 import { useSlider } from '@/hooks/useSlider'
 import type { Shop } from '@/types/shop'
 import { ShopCard } from '@/components/tds'
@@ -185,11 +184,11 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
   const router = useRouter()
   const { isSaved, toggleSave } = useSaved()
 
-  // 가로 슬라이드 — 최애 새소식·추천 루트는 공용 useSlider(컨테이너 동작), 이벤트·샵은 단순 드래그
+  // 가로 슬라이드 — 모두 공용 useSlider. 마우스를 줄 위에 올리면 < > 버튼이 뜬다(SlideRail).
   const newsSlider = useSlider(260)
   const routeSlider = useSlider(320)
   const eventSlider = useSlider(320)
-  const shopsDrag = useDragScroll()
+  const shopsSlider = useSlider(424)
   const [rels, setRels] = useState<WorkRelationship[]>([])
   const [loading, setLoading] = useState(true)
   const [newsFilter, setNewsFilter] = useState<'all' | 'work' | 'event' | 'shop'>('all')
@@ -247,8 +246,12 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
   const allNews = newsItems.filter(n => n.kind !== 'none')
   const updateNews = newsSlider.update
   const updateRoute = routeSlider.update
+  const updateEvent = eventSlider.update
+  const updateShops = shopsSlider.update
   useEffect(() => { updateNews() }, [allNews.length, updateNews])
   useEffect(() => { updateRoute() }, [routes.length, updateRoute])
+  useEffect(() => { updateEvent() }, [eventCards.length, updateEvent])
+  useEffect(() => { updateShops() }, [popularShops.length, updateShops])
 
   // 이벤트 소식 저장(하트)
   useEffect(() => {
@@ -301,9 +304,9 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
         ) : allNews.length === 0 ? (
           <Muted>아직 소식이 없어요</Muted>
         ) : (
-          <div className={styles.newsRail} {...newsSlider.railProps}>
+          <SlideRail slider={newsSlider} className={styles.newsRail}>
             {allNews.map((item, i) => <NewsSlideCard key={i} item={item} />)}
-          </div>
+          </SlideRail>
         )}
       </section>
 
@@ -317,11 +320,11 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
             </div>
             <button className={styles.routeMore} onClick={() => { window.location.href = ROUTES.routes }}>전체 보기 ›</button>
           </div>
-          <div className={styles.routeRail} {...routeSlider.railProps}>
+          <SlideRail slider={routeSlider} className={styles.routeRail}>
             {routes.map((r: any) => (
               <RouteSlideCard key={r.id} r={r} saved={savedRouteIds.has(r.id)} onToggleSave={toggleSaveRoute} />
             ))}
-          </div>
+          </SlideRail>
         </section>
       )}
 
@@ -335,7 +338,7 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
             </div>
             <button className={styles.routeMore} onClick={() => { window.location.href = '/events' }}>전체 보기 ›</button>
           </div>
-          <div className={styles.routeRail} {...eventSlider.railProps}>
+          <SlideRail slider={eventSlider} className={styles.routeRail}>
             {eventCards.map((ev: any) => (
               <EventSlideCard key={ev.id} ev={{
                 id: ev.id,
@@ -347,7 +350,7 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
                 coverUrl: ev.coverUrl ?? null,
               }} />
             ))}
-          </div>
+          </SlideRail>
         </section>
       )}
 
@@ -359,7 +362,7 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
             </div>
           </div>
           {/* 지도 바텀시트와 같은 가로 줄 (200x280 카드) */}
-          <div className={styles.shopRow} {...shopsDrag}>
+          <SlideRail slider={shopsSlider} className={styles.shopRow}>
             {popularShops.map(shop => (
               <div key={shop.id} className={styles.shopItem}>
                 <ShopCard
@@ -372,10 +375,34 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
                 />
               </div>
             ))}
-          </div>
+          </SlideRail>
         </section>
       )}
 
+    </div>
+  )
+}
+
+/* 가로 줄 + 좌우 화살표. 화살표는 마우스를 줄 위에 올렸을 때만 보이고(CSS :hover),
+   더 넘길 쪽이 없으면 그쪽 화살표는 아예 그리지 않는다. 터치 기기에선 숨긴다. */
+function SlideRail({ slider, className, children }: {
+  slider: ReturnType<typeof useSlider>
+  className: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className={styles.railWrap}>
+      <div className={className} {...slider.railProps}>{children}</div>
+      {slider.canLeft && (
+        <button type="button" aria-label="이전" onClick={() => slider.scrollBy(-1)} className={`${styles.railArrow} ${styles.railArrowLeft}`}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+      )}
+      {slider.canRight && (
+        <button type="button" aria-label="다음" onClick={() => slider.scrollBy(1)} className={`${styles.railArrow} ${styles.railArrowRight}`}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+      )}
     </div>
   )
 }
