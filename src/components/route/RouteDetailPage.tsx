@@ -12,6 +12,7 @@ import { toggleRouteSave, getMySavedRouteIds, toggleRouteShare, deleteRoute, adm
 import { recordRouteStart, hasStartedRoute, getRouteTips, addRouteTip, deleteRouteTip, RouteTip } from '@/services/routeTipService'
 import { getRelatedRoutes, RelatedRoute } from '@/services/routeRelatedService'
 import { getVisitedShopIds, setShopVisited, recordRouteCompletion, getMyRouteRunStats } from '@/services/routeVisitService'
+import { createCheckIn } from '@/services/checkInService'
 import RouteReviews from './RouteReviews'
 import styles from './RouteDetailPage.module.css'
 
@@ -208,6 +209,12 @@ export default function RouteDetailPage({ route }: { route: any }) {
     }
     const ok = await setShopVisited(route.id, shopId, user.id, !has)
     if (!ok) { setVisitedIds(prev => { const n = new Set(prev); has ? n.add(shopId) : n.delete(shopId); return n }); return }
+    // 루트에서 방문 체크 = 그 샵 방문 기록(샵 상세 "방문했어요"와 같음, 하루 1번씩 방문 횟수 +1).
+    // 체크를 해제해도 방문 기록은 지우지 않는다(실제로 다녀온 것이므로)
+    if (!has) {
+      const shop = sortedStops.find((rs: any) => rs.shops?.id === shopId)?.shops
+      createCheckIn(user.id, shopId, shop?.lat ?? 0, shop?.lng ?? 0, shop?.name ?? '').catch(() => {})
+    }
     // 모든 스팟을 체크했으면 완주 기록 (서버가 route_progress 로 다시 대조, 비GPS 완주는 EXP 0) — 후기는 완주 기록이 있어야 쓸 수 있다
     if (!has && celebratedRef.current) completionRef.current = recordRouteCompletion(route.id, user.id)
       .then(() => getMyRouteRunStats(route.id, user.id).then(setMyRuns))
