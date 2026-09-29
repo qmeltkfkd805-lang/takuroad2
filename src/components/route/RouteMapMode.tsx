@@ -161,9 +161,10 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
   async function retryRoute() {
     if (!user) return
     setShowRetry(false)
-    await resetRouteProgress(route.id, user.id).catch(() => {})
+    const ok = await resetRouteProgress(route.id, user.id).catch(() => false)
+    if (!ok) { setToast('초기화하지 못했어요. 잠시 후 다시 시도해 주세요.'); return }
     setVisitedIds(new Set())
-    setToast('방문 기록을 초기화했어요. 다시 도전해보세요!')
+    setToast('체크를 모두 풀었어요. 방문·완주 기록은 그대로예요!')
   }
   async function doShare() {
     const url = typeof window !== 'undefined' ? `${window.location.origin}/map?routeId=${routeId}` : ''
@@ -341,7 +342,7 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
               <button className={styles.retryNo} onClick={() => setShowRetry(false)}>아니오</button>
               <button className={styles.retryYes} onClick={retryRoute}>네, 다시 도전</button>
             </div>
-            <p className={styles.retryNote}>완주 기록과 배지는 그대로 유지돼요.</p>
+            <p className={styles.retryNote}>체크만 모두 풀려요. 방문 기록·완주 기록·배지는 그대로예요.</p>
           </div>
         </div>
       )}

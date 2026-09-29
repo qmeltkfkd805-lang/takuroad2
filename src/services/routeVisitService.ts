@@ -48,11 +48,14 @@ export async function recordRouteCompletion(routeId: string, userId: string): Pr
   }
 }
 
-// 방문 체크 초기화(재도전) — 완주 기록(route_completions)은 그대로 두고 진행(route_progress)만 삭제
+// 다시 도전 — 방문 체크와 이어하던 따라가기 세션을 서버가 초기화한다.
+// 샵 방문 기록·완주 기록·완주 횟수·후기는 그대로 둔다. (/api/route/reset)
 export async function resetRouteProgress(routeId: string, userId: string): Promise<boolean> {
-  const supabase = createClient()
-  const { error } = await supabase.from('route_progress').delete().eq('route_id', routeId).eq('user_id', userId)
-  return !error
+  void userId
+  try {
+    const res = await fetch('/api/route/reset', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ routeId }) })
+    return res.ok
+  } catch { return false }
 }
 
 export interface CompletedRoute {
