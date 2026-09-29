@@ -329,7 +329,7 @@ export default function RouteExplorePage() {
                   </div>
                 </div>
                 <div className={styles.heroMap}>
-                  <RouteThumb stops={rtStops(hero)} showEnds height={280} />
+                  <RouteThumb stops={rtStops(hero)} showEnds height={280} variant="detail" />
                   {heroList.length > 1 && (
                     <div className={styles.heroDots}>
                       {heroList.map((_, i) => (
