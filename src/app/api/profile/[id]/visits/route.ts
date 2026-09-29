@@ -144,14 +144,14 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   if (rIds.length) {
     const { data: rv, error: rvErr } = await acc.svc.from('route_reviews')
       .select('route_id, route_review_photos ( object_path, sort, created_at )')
-      .eq('user_id', acc.owner.id).in('route_id', rIds)
+      .eq('user_id', acc.owner.id).in('route_id', rIds).order('created_at', { ascending: true })
     if (!rvErr) {
       const byRoute = new Map<string, { url: string; private: boolean }[]>()
       for (const r of (rv ?? []) as any[]) {
         const list = [...(r.route_review_photos ?? [])]
           .sort((x: any, y: any) => (x.sort - y.sort) || String(x.created_at).localeCompare(String(y.created_at)))
           .map((p: any) => ({ url: acc.svc.storage.from('route-photos').getPublicUrl(p.object_path).data.publicUrl, private: false }))
-        if (list.length) byRoute.set(r.route_id, list)
+        if (list.length) byRoute.set(r.route_id, [...(byRoute.get(r.route_id) ?? []), ...list])   // 완주 후기 여러 개 → 사진 이어 붙임
       }
       for (const it of items) { const rid = routeOf.get(it.id); const list = rid ? byRoute.get(rid) : null; if (list) it.photos = list }
     }

@@ -233,7 +233,7 @@
 /* ─────────────────────────────────────────────
    📱 모바일 루트 상세 — 이해→시작 흐름 (기기 기준 렌더 분기, PC 미사용)
    ───────────────────────────────────────────── */
-.mPage { background: var(--surface); min-height: 100dvh; padding-bottom: calc(150px + env(safe-area-inset-bottom)); }
+.mPage { background: var(--surface); min-height: 100dvh; padding-bottom: calc(160px + env(safe-area-inset-bottom)); }
 
 /* 앱바 */
 .mAppbar {
@@ -300,3 +300,10 @@
   display: flex; padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
   box-shadow: 0 -4px 16px rgba(0,0,0,.08);
 }
+
+
+/* 모바일 코스 안내 — 방문 체크 현황 + 완주 초기화 */
+.mResetRow { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; font-size: 13.5px; font-weight: 700; color: var(--text); }
+.mResetRow b { color: #16a34a; }
+.mResetBtn { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.mResetBtn:disabled { opacity: .6; }

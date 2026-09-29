@@ -40,13 +40,19 @@ interface Snapshot {
   config: RunConfig | null
 }
 
-async function postJson(url: string, body: any) {
-  const res = await fetch(url, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body), credentials: 'same-origin',
-  })
-  const data = await res.json().catch(() => ({}))
-  return { ok: res.ok, data }
+// 네트워크가 잠깐 끊기거나 페이지를 새로고침하는 중이면 fetch 가 TypeError("network error")를 던진다.
+// 여기서 받아 실패(ok:false)로 돌려준다 — 안 받으면 화면에 런타임 에러로 뜬다.
+async function postJson(url: string, body: any): Promise<{ ok: boolean; data: any }> {
+  try {
+    const res = await fetch(url, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body), credentials: 'same-origin',
+    })
+    const data = await res.json().catch(() => ({}))
+    return { ok: res.ok, data }
+  } catch {
+    return { ok: false, data: {} }
+  }
 }
 
 export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; enabled: boolean }) {
@@ -137,7 +143,8 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
   // 활성 세션 새로고침(복귀 시 상태 재동기화)
   const refreshActive = useCallback(async () => {
     if (!routeId) return null
-    const res = await fetch(`/api/route-session/active?routeId=${routeId}`, { credentials: 'same-origin' })
+    const res = await fetch(`/api/route-session/active?routeId=${routeId}`, { credentials: 'same-origin' }).catch(() => null)
+    if (!res) return null   // 네트워크 끊김 — 다음 확인 때 다시
     const d = await res.json().catch(() => ({}))
     if (d.session) {
       applyStart({ session: d.session, checkpoints: d.checkpoints, visits: d.visits, config: snap.config })
@@ -177,6 +184,17 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
     await postJson('/api/route-session/undo', { sessionId: sid, checkpointKey: key })
   }, [])
 
+  // 직접 방문 체크 — 목록에서 누른 샵을 세션에 '직접 기록'으로 남긴다 (종료 시 진행·완주에 반영)
+  const manual = useCallback(async (shopId: string): Promise<boolean> => {
+    const sid = sessionRef.current
+    if (!sid) return false
+    const key = `shop:${shopId}`
+    setVisitStatus(prev => { const m = new Map(prev); m.set(key, 'manual_recorded'); return m })
+    const { ok } = await postJson('/api/route-session/manual', { sessionId: sid, shopId })
+    if (!ok) setVisitStatus(prev => { const m = new Map(prev); m.set(key, 'pending'); return m })
+    return ok
+  }, [])
+
   const dismissArrival = useCallback((id: string) => {
     setArrivals(prev => prev.filter(a => a.id !== id))
   }, [])
@@ -207,7 +225,7 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
     startedOnceRef.current = true
     ;(async () => {
       const status = await refreshActive()
-      // 남은 세션이 있어도 자동 진입하지 않음 — idle로 두고 '이어서 따라가기'를 유도(사용자 탭 시 resume)
+      // 남은 세션이 있어도 자동 진입하지 않음 — idle로 두고 '루트 시작하기'를 누르면(사용자 탭 시 resume)
       if (status === 'active' || status === 'paused') { setHasExistingSession(true); setPhase('idle') }
       else if (autoStart) await start()
       else setPhase('idle')
@@ -281,6 +299,6 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
     nextDistanceM,
     confirmedShopIds,
     arrivedShopIds,
-    start, pause, resume, undo, skip, end, dismissArrival, refreshActive,
+    start, pause, resume, undo, skip, end, manual, dismissArrival, refreshActive,
   }
 }

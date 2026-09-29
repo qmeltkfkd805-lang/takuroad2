@@ -11,9 +11,10 @@ import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { toggleRouteSave, getMySavedRouteIds, toggleRouteShare, deleteRoute, adminDeleteRoute, adminSetRouteShared } from '@/services/routeService'
 import { recordRouteStart, hasStartedRoute, getRouteTips, addRouteTip, deleteRouteTip, RouteTip } from '@/services/routeTipService'
 import { getRelatedRoutes, RelatedRoute } from '@/services/routeRelatedService'
-import { getVisitedShopIds, setShopVisited, recordRouteCompletion, getMyRouteRunStats } from '@/services/routeVisitService'
+import { getVisitedShopIds, setShopVisited, recordRouteCompletion, getMyRouteRunStats, resetRouteProgress } from '@/services/routeVisitService'
 import { createCheckIn } from '@/services/checkInService'
 import RouteReviews from './RouteReviews'
+import RouteCourseMobile from './RouteCourseMobile'
 import styles from './RouteDetailPage.module.css'
 
 import AppIcon from '@/components/tds/AppIcon'
@@ -267,6 +268,19 @@ export default function RouteDetailPage({ route }: { route: any }) {
     catch { setToast('링크 복사에 실패했어요') }
   }
   // 지도 관련 액션은 모두 타쿠로드 내부 지도로 이동
+  // 완주 초기화 — 방문 체크·멈춘 따라가기만 풀고, 방문·완주 기록과 후기는 남긴다 (서버: /api/route/reset)
+  const [resetting, setResetting] = useState(false)
+  async function resetCourse() {
+    if (!user || resetting) return
+    if (!window.confirm('방문 체크를 모두 풀고 처음부터 다시 도전할까요?\n방문 기록·완주 기록·후기는 그대로 남아요.')) return
+    setResetting(true)
+    const ok = await resetRouteProgress(route.id, user.id).catch(() => false)
+    setResetting(false)
+    if (!ok) { setToast('초기화하지 못했어요. 잠시 후 다시 시도해 주세요.'); return }
+    setVisitedIds(new Set())
+    setToast('완주를 초기화했어요. 다시 도전해 보세요!')
+  }
+
   const openInternalMap = (spotId?: string) => router.push(`/map?routeId=${route.share_token}${spotId ? `&spotId=${spotId}` : ''}`)
   useEffect(() => { if (!toast) return; const t = setTimeout(() => setToast(null), 2600); return () => clearTimeout(t) }, [toast])
 
@@ -447,7 +461,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
 
         {/* CTA — 지도 아래 */}
         <div className={styles.mCta} ref={ctaRef}>
-          <button className={styles.mStart} onClick={handleStart}><PinIcon size={17} color="#fff" />{started ? '이어서 따라가기' : '루트 시작하기'}</button>
+          <button className={styles.mStart} onClick={handleStart}><PinIcon size={17} color="#fff" />루트 시작하기</button>
           <button className={`${styles.mSave} ${saved ? styles.mSaveOn : ''}`} onClick={handleSave} disabled={savingBusy} aria-pressed={saved}><HeartIcon size={17} filled={saved} color={saved ? 'var(--accent)' : 'currentColor'} />저장</button>
         </div>
 
@@ -462,6 +476,12 @@ export default function RouteDetailPage({ route }: { route: any }) {
         <div className={styles.mTabBody}>
           {mobileTab === 'course' && (
             <>
+              {user && visitedCount > 0 && (
+                <div className={styles.mResetRow}>
+                  <span>방문 체크 <b>{visitedCount}</b>/{sortedStops.filter((rs: any) => rs.shops).length}</span>
+                  <button type="button" className={styles.mResetBtn} onClick={resetCourse} disabled={resetting}>{resetting ? '초기화 중…' : '완주 초기화'}</button>
+                </div>
+              )}
               {authorNotes.length > 0 && (
                 <div className={styles.block}>
                   <h2 className={styles.blockTitle}>여행 전 tip</h2>
@@ -470,7 +490,12 @@ export default function RouteDetailPage({ route }: { route: any }) {
                   </ul>
                 </div>
               )}
-              {singleSpot ? <p className={styles.singleNote}>한 곳으로 이루어진 루트예요. 이동 경로·거리는 표시하지 않아요.</p> : timelineOl}
+              {singleSpot && <p className={styles.singleNote}>한 곳으로 이루어진 루트예요. 이동 경로·거리는 표시하지 않아요.</p>}
+              <RouteCourseMobile
+                stops={sortedStops} visitedIds={visitedIds} selectedId={selectedShopId}
+                onSelect={setSelectedShopId} onToggleVisit={toggleVisited} onOpenMap={openInternalMap}
+                statusOf={(shop: any) => (shop.hours || shop.status ? statusPill(getShopStatus(shop, now).kind) : null)}
+              />
               {tipsBlock}
             </>
           )}
@@ -500,7 +525,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
         {/* sticky 시작 버튼 — inline CTA가 화면 밖일 때만 */}
         {!ctaVisible && (
           <div className={styles.mStickyCta}>
-            <button className={styles.mStart} onClick={handleStart}><PinIcon size={17} color="#fff" />{started ? '이어서 따라가기' : '루트 시작하기'}</button>
+            <button className={styles.mStart} onClick={handleStart}><PinIcon size={17} color="#fff" />루트 시작하기</button>
           </div>
         )}
 
@@ -678,7 +703,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
                 <span className={styles.progressPct}>{visitedCount}/{spotCount} 방문</span>
               </div>
             )}
-            <button className={styles.railPrimary} onClick={handleStart}><PinIcon size={16} color="#fff" />{started ? '이어서 따라가기' : '루트 시작하기'}</button>
+            <button className={styles.railPrimary} onClick={handleStart}><PinIcon size={16} color="#fff" />루트 시작하기</button>
             <SaveBtn cls={`${styles.railGhost} ${saved ? styles.railGhostOn : ''}`} />
             {shopsWithCoords.length > 0 && <button className={styles.railLink} onClick={() => openInternalMap()}><ExpandIcon size={13} />타쿠로드 지도에서 보기</button>}
           </div>
@@ -715,7 +740,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
       {/* 모바일 하단 고정 액션 */}
       <div className={styles.mobileBar}>
         <SaveBtn cls={styles.mobileSave} />
-        <button className={styles.mobileStart} onClick={handleStart}><PinIcon size={16} color="#fff" />{started ? '이어서 따라가기' : '루트 시작하기'}</button>
+        <button className={styles.mobileStart} onClick={handleStart}><PinIcon size={16} color="#fff" />루트 시작하기</button>
       </div>
 
       {toast && <div className={styles.toast} role="status">{toast}</div>}

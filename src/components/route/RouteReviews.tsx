@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { UserAvatar } from '@/components/cosmetic/UserFace'
 import { PhotoViewer } from '@/components/collection/StoryCard'
-import { isRouteCompleted } from '@/services/routeVisitService'
+import { isRouteCompleted, getMyRouteRunStats } from '@/services/routeVisitService'
 import {
   getRouteReviews, saveRouteReview, deleteRouteReview,
   MAX_ROUTE_PHOTOS, MAX_REVIEW_LEN, type RouteReview, type RouteReviewPhoto,
@@ -17,7 +17,7 @@ import s from './RouteReviews.module.css'
 /* ============================================================
    루트 상세 > 후기 — 완주 후기(글 + 사진 3장)
    - 목록: 누구나(루트를 볼 수 있으면). 사진은 눌러서 크게 넘겨보기
-   - 쓰기: 완주한 사람만. 루트당 1개, 내 후기는 수정·삭제
+   - 쓰기: 완주한 사람만. 완주할 때마다 1개씩(하루 1번 센 완주 횟수만큼), 내 후기는 각각 수정·삭제
    - 부모(완주 축하 창의 "후기 남기기", 주소 ?review=1)가 openSignal 을 올리면 쓰기 창을 연다
    ============================================================ */
 
@@ -28,17 +28,23 @@ export default function RouteReviews({ routeId, routeTitle, openSignal = 0, onOp
   const router = useRouter()
   const [list, setList] = useState<RouteReview[] | null>(null)
   const [completed, setCompleted] = useState(false)
-  const [editing, setEditing] = useState(false)
+  const [runs, setRuns] = useState(0)   // 내 완주 횟수(하루 1번씩)
+  // 쓰기 창: 'new' = 새 후기, RouteReview = 그 후기 수정
+  const [editing, setEditing] = useState<'new' | RouteReview | null>(null)
   const [viewer, setViewer] = useState<{ title: string; photos: string[]; index: number } | null>(null)
   const [toast, setToast] = useState<string | null>(null)
 
-  const mine = user && list ? list.find(r => r.userId === user.id) ?? null : null
+  // 내 후기(오래된 순) — n번째 완주 후기 번호 매기기
+  const mine = user && list ? list.filter(r => r.userId === user.id).sort((a, b) => a.createdAt.localeCompare(b.createdAt)) : []
+  const mineNo = new Map(mine.map((r, i) => [r.id, i + 1]))
+  const canWriteMore = completed && mine.length < Math.max(1, runs)
 
   const load = useCallback(() => { getRouteReviews(routeId).then(setList).catch(() => setList([])) }, [routeId])
   useEffect(() => { load() }, [load])
   useEffect(() => {
-    if (!user) { setCompleted(false); return }
+    if (!user) { setCompleted(false); setRuns(0); return }
     isRouteCompleted(routeId, user.id).then(setCompleted).catch(() => {})
+    getMyRouteRunStats(routeId, user.id).then(st => setRuns(st.count)).catch(() => {})
   }, [user, routeId])
   useEffect(() => { if (!toast) return; const t = setTimeout(() => setToast(null), 2400); return () => clearTimeout(t) }, [toast])
 
@@ -48,7 +54,11 @@ export default function RouteReviews({ routeId, routeTitle, openSignal = 0, onOp
     const ok = completed || await isRouteCompleted(routeId, user.id).catch(() => false)
     if (!ok) { setToast('루트를 완주하면 후기를 남길 수 있어요'); return }
     setCompleted(true)
-    setEditing(true)
+    // 방금 완주해서 늘어난 완주 횟수를 다시 읽고, 남길 자리가 있으면 새 후기 · 없으면(같은 날 또 완주) 마지막 후기 수정
+    const n = await getMyRouteRunStats(routeId, user.id).then(st => st.count).catch(() => runs)
+    setRuns(n)
+    const last = mine[mine.length - 1] ?? null
+    setEditing(mine.length < Math.max(1, n) || !last ? 'new' : last)
   }
   useEffect(() => {
     if (!openSignal) return
@@ -68,10 +78,10 @@ export default function RouteReviews({ routeId, routeTitle, openSignal = 0, onOp
   return (
     <div className={s.wrap}>
       {/* 쓰기 안내 — 완주했는데 아직 후기가 없을 때 */}
-      {user && completed && list && !mine && (
+      {user && list && canWriteMore && (
         <button type="button" className={s.writeBtn} onClick={openWrite}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>
-          완주 후기 남기기
+          {mine.length > 0 ? `${mine.length + 1}번째 완주 후기 남기기` : '완주 후기 남기기'}
         </button>
       )}
 
@@ -86,10 +96,10 @@ export default function RouteReviews({ routeId, routeTitle, openSignal = 0, onOp
               <div className={s.head}>
                 <UserAvatar userId={r.userId} src={r.avatarUrl} name={r.nickname} size={32} showEffect={false} />
                 <span className={s.name}>{r.nickname}</span>
-                <span className={s.date}>{fmt(r.createdAt)} 완주</span>
+                <span className={s.date}>{fmt(r.createdAt)} {user && r.userId === user.id && mine.length > 1 ? `${mineNo.get(r.id)}번째 완주` : '완주'}</span>
                 {user && r.userId === user.id && (
                   <span className={s.mineActions}>
-                    <button type="button" onClick={() => setEditing(true)}>수정</button>
+                    <button type="button" onClick={() => setEditing(r)}>수정</button>
                     <button type="button" onClick={() => onDelete(r)}>삭제</button>
                   </span>
                 )}
@@ -111,9 +121,9 @@ export default function RouteReviews({ routeId, routeTitle, openSignal = 0, onOp
       )}
 
       {editing && user && (
-        <ReviewModal routeId={routeId} routeTitle={routeTitle} userId={user.id} existing={mine}
-          onClose={() => setEditing(false)}
-          onSaved={() => { setEditing(false); setToast('후기를 남겼어요'); load() }} />
+        <ReviewModal routeId={routeId} routeTitle={routeTitle} userId={user.id} existing={editing === 'new' ? null : editing}
+          onClose={() => setEditing(null)}
+          onSaved={() => { setEditing(null); setToast('후기를 남겼어요'); load() }} />
       )}
       {viewer && <PhotoViewer title={viewer.title} photos={viewer.photos} start={viewer.index} onClose={() => setViewer(null)} />}
       {toast && <div className={s.toast} role="status">{toast}</div>}

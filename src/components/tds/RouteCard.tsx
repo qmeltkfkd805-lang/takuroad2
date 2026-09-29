@@ -136,7 +136,7 @@ export function RouteCard({ route, onStart, onClick, style }: RouteCardProps) {
               padding: 9, borderRadius: 11, cursor: 'pointer',
             }}
           >
-            {started ? '이어서 가기' : '코스 시작'}
+            루트 시작하기
           </button>
         )}
       </div>

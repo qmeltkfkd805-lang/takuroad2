@@ -1,5 +1,5 @@
 'use client'
-/* 진행 중 하단 미니시트 — 현장 확인 n/m, 다음 추천지, 거리/도보시간, 길안내/일시중지/루트 종료.
+/* 진행 중 하단 미니시트 — 현장 확인 n/m, 다음 추천지, 거리/도보시간, 일시중지/루트 종료.
    방문 인증 버튼은 두지 않음(자동 감지). 화면에 고정 오버레이라 기존 레이아웃은 건드리지 않음. */
 import type { RunCheckpoint, RunPhase } from '@/lib/routeRun/useRouteRun'
 import { formatDistance } from '@/hooks/useCurrentLocation'
@@ -28,11 +28,6 @@ export default function RouteRunSheet(props: {
   const pct = totalCheckpoints ? Math.round((verifiedCount / totalCheckpoints) * 100) : 0
   const paused = phase === 'paused'
 
-  const navigate = () => {
-    if (!nextCheckpoint) return
-    const name = encodeURIComponent(nextCheckpoint.label ?? '목적지')
-    window.open(`https://map.kakao.com/link/to/${name},${nextCheckpoint.lat},${nextCheckpoint.lng}`, '_blank', 'noopener')
-  }
 
   return (
     <div className={styles.sheet} role="region" aria-label="루트 진행">
@@ -73,7 +68,6 @@ export default function RouteRunSheet(props: {
       )}
 
       <div className={styles.controls}>
-        <button className={styles.ghost} onClick={navigate} disabled={!nextCheckpoint}>길안내</button>
         {paused
           ? <button className={styles.ghost} onClick={onResume}>다시 시작</button>
           : <button className={styles.ghost} onClick={onPause}>일시중지</button>}

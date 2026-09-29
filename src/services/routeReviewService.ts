@@ -4,7 +4,7 @@ import { shrink } from './eventVisitPhotoService'
 /* ============================================================
    루트 완주 후기 — 글 + 사진(최대 3장)
    - 완주한 사람만 쓴다(DB 정책: route_completions 에 내 행이 있어야 insert)
-   - 루트당 1개, 수정·삭제 가능
+   - 완주할 때마다 1개씩(하루 1번 센 완주 횟수만큼), 각각 수정·삭제 가능
    - 사진: 공개 버킷 route-photos, 경로 {userId}/{routeId}/{uuid}.webp (브라우저에서 줄여 다시 그려서 위치정보 제거)
    - 루트 상세 > 후기, 연대기·공개 프로필 방문 기록의 "루트 완주"에 함께 보인다
    SQL: migrations/route_reviews.sql
@@ -88,7 +88,7 @@ export async function saveRouteReview(
       .insert({ route_id: routeId, user_id: userId, content: text } as any).select('id').single()
     if (error || !data) {
       throw new Error(error?.code === '42501' || error?.message?.includes('row-level')
-        ? '루트를 완주해야 후기를 남길 수 있어요'
+        ? '완주할 때마다 후기를 1개씩 남길 수 있어요'
         : '후기를 저장하지 못했어요')
     }
     reviewId = (data as any).id as string
@@ -134,13 +134,13 @@ export async function getMyRouteReviewPhotoUrls(userId: string, routeIds: string
   const supabase = createClient()
   const { data, error } = await supabase.from('route_reviews')
     .select('route_id, route_review_photos ( object_path, sort, created_at )')
-    .eq('user_id', userId).in('route_id', ids)
+    .eq('user_id', userId).in('route_id', ids).order('created_at', { ascending: true })
   if (error || !data) return out
   for (const r of data as any[]) {
     const list = [...(r.route_review_photos ?? [])]
       .sort((a: any, b: any) => (a.sort - b.sort) || String(a.created_at).localeCompare(String(b.created_at)))
       .map((p: any) => publicUrl(p.object_path))
-    if (list.length) out[r.route_id] = list
+    if (list.length) out[r.route_id] = [...(out[r.route_id] ?? []), ...list]   // 완주 후기가 여러 개면 사진을 이어 붙인다
   }
   return out
 }

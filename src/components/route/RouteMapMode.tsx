@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getRouteByShareToken, toggleRouteSave, getMySavedRouteIds } from '@/services/routeService'
 import { getVisitedShopIds, setShopVisited, isRouteCompleted, recordRouteCompletion, resetRouteProgress } from '@/services/routeVisitService'
+import { createCheckIn } from '@/services/checkInService'
 import { requestBadgeEvaluation } from '@/services/badgeService'
 import { formatDistance } from '@/hooks/useCurrentLocation'
 import { shopRegion } from '@/lib/utils/region'
@@ -49,6 +50,7 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
   const [showComplete, setShowComplete] = useState(false)
   const [showRetry, setShowRetry] = useState(false)
   const [completing, setCompleting] = useState(false)
+  const [busyShop, setBusyShop] = useState<string | null>(null)
   const listRef = useRef<HTMLOListElement>(null)
 
   // 『루트 방문하기』 진행 모드 — 모바일(터치기기)에서만 동작, 데스크톱 레이아웃은 그대로.
@@ -115,7 +117,7 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
     setEnding(false)
     setShowEndSheet(false)
     if (!r) { setToast('종료 처리에 실패했어요. 잠시 후 다시 시도해 주세요.'); return }
-    if (mode === 'later') { setToast('오늘까지 기록을 저장했어요. 이어서 따라올 수 있어요.'); router.push(`/route/${routeId}`); return }
+    if (mode === 'later') { setToast('오늘까지 기록을 저장했어요. 루트 시작하기를 누르면 이어서 할 수 있어요.'); router.push(`/route/${routeId}`); return }
     setEndResult(r)
   }
   function closeRunComplete() { setEndResult(null); router.push(`/route/${routeId}`) }
@@ -158,6 +160,50 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
       setShowComplete(true)
     } finally { setCompleting(false) }
   }
+  /* 목록에서 스팟별 방문 체크 (루트 보기·따라가기 둘 다)
+     - 따라가기 중: 세션에 '직접 기록' (종료할 때 진행·완주에 반영). 직접 기록한 것만 여기서 풀 수 있다
+     - 그 밖: 루트 방문 체크(route_progress). 전부 체크하면 완주 기록 + 축하 창
+     - 체크하면 샵 방문 기록도 함께 (하루 1번씩 방문 횟수 +1). 체크를 풀어도 방문 기록은 남는다 */
+  function isSpotChecked(shopId: string) {
+    return runActive ? run.confirmedShopIds.has(shopId) : visitedIds.has(shopId)
+  }
+  async function toggleSpotVisit(shopId: string) {
+    if (!user) { router.push('/login'); return }
+    if (!route || busyShop) return
+    const shop = stops.find((rs: any) => rs.shops?.id === shopId)?.shops
+    const recordShopVisit = () => createCheckIn(user.id, shopId, shop?.lat ?? 0, shop?.lng ?? 0, shop?.name ?? '').catch(() => {})
+    setBusyShop(shopId)
+    try {
+      if (runActive) {
+        const key = `shop:${shopId}`
+        if (run.confirmedShopIds.has(shopId)) {
+          if (run.visitStatus.get(key) === 'manual_recorded') await run.undo(key)
+          else setToast('현장에서 확인된 곳은 여기서 풀 수 없어요')
+          return
+        }
+        if (await run.manual(shopId)) recordShopVisit()
+        else setToast('기록하지 못했어요. 잠시 후 다시 시도해 주세요.')
+        return
+      }
+      const has = visitedIds.has(shopId)
+      setVisitedIds(prev => { const n = new Set(prev); has ? n.delete(shopId) : n.add(shopId); return n })
+      const ok = await setShopVisited(route.id, shopId, user.id, !has)
+      if (!ok) {
+        setVisitedIds(prev => { const n = new Set(prev); has ? n.add(shopId) : n.delete(shopId); return n })
+        setToast('체크하지 못했어요. 잠시 후 다시 시도해 주세요.')
+        return
+      }
+      if (has) return
+      recordShopVisit()
+      const allIds = stops.map((rs: any) => rs.shops?.id).filter(Boolean)
+      const projected = new Set(visitedIds); projected.add(shopId)
+      if (allIds.length > 0 && allIds.every((id: string) => projected.has(id))) {
+        await recordRouteCompletion(route.id, user.id)   // 서버가 체크를 다시 대조 · 하루 1번 완주 횟수
+        setShowComplete(true)
+      }
+    } finally { setBusyShop(null) }
+  }
+
   async function retryRoute() {
     if (!user) return
     setShowRetry(false)
@@ -245,7 +291,16 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
                       {cats.length > 0 && <div className={styles.spotTags}>{cats.slice(0, 2).map(c => { const cc = (CATEGORY_NAME_MAP as any)[c]; return <span key={c} className={styles.spotTag} style={cc ? { color: cc.color, background: cc.bgColor, border: 'none' } : undefined}>{c}</span> })}</div>}
                       {noCoord && <div className={styles.noCoord}>지도 위치 없음</div>}
                     </div>
-                    <Link href={`/shop/${shop.slug}`} className={styles.detailLink} onClick={e => e.stopPropagation()}>상세 ›</Link>
+                    <span className={styles.spotSide}>
+                      {(() => { const on = isSpotChecked(shop.id); return (
+                        <button type="button" className={`${styles.visitBtn} ${on ? styles.visitBtnOn : ''}`}
+                          onClick={e => { e.stopPropagation(); toggleSpotVisit(shop.id) }} disabled={busyShop === shop.id}
+                          aria-pressed={on} aria-label={`${shop.name} ${on ? '방문 체크 풀기' : '방문 체크'}`}>
+                          {on ? '✓ 방문' : '방문'}
+                        </button>
+                      ) })()}
+                      <Link href={`/shop/${shop.slug}`} className={styles.detailLink} onClick={e => e.stopPropagation()}>상세 ›</Link>
+                    </span>
                   </div>
                 </li>
               )

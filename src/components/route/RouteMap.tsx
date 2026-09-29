@@ -33,6 +33,8 @@ interface Props {
   myLocation?: { lat: number; lng: number } | null
   /** 하단 시트에 가려지지 않도록 bounds 아래쪽 여백(px). 기본 40. */
   bottomPadding?: number
+  /** geometry 가 바뀔 때 전체 루트로 다시 맞출지(기본 true). 따라가기 중엔 끄고 fitPoints 로 구간만 맞춘다 */
+  fitOnGeometryChange?: boolean
 }
 
 export interface RouteMapRef {
@@ -40,13 +42,15 @@ export interface RouteMapRef {
   fit: (bottomPad?: number) => void
   /** 특정 좌표로 부드럽게 이동. */
   panTo: (lat: number, lng: number, level?: number) => void
+  /** 주어진 점들이 다 보이게 맞춤(아래 여백 px). 너무 가까이(레벨 2 미만) 확대하지 않는다 */
+  fitPoints: (points: { lat: number; lng: number }[], bottomPad?: number) => void
 }
 
 /* 루트 상세 지도 — 실제 카카오 지도.
    · 마커: 작은 흰색 번호 원 / 출발·도착 플래그 / 선택 강조 + 나머지 약화 (routeMarker)
    · 경로: 흰색 외곽선 + 핑크 실선 2중 + 진행방향 화살표
    · 컨테이너 크기 확정 후 relayout + setBounds 재맞춤 */
-const RouteMap = forwardRef<RouteMapRef, Props>(function RouteMap({ shops, selectedIndex = null, onSelectIndex, geometry = null, variant = 'route', onHasReturn, myLocation = null, bottomPadding = 40 }: Props, ref) {
+const RouteMap = forwardRef<RouteMapRef, Props>(function RouteMap({ shops, selectedIndex = null, onSelectIndex, geometry = null, variant = 'route', onHasReturn, myLocation = null, bottomPadding = 40, fitOnGeometryChange = true }: Props, ref) {
   const preview = variant === 'preview'
   const onHasReturnRef = useRef(onHasReturn)
   onHasReturnRef.current = onHasReturn
@@ -297,7 +301,7 @@ const RouteMap = forwardRef<RouteMapRef, Props>(function RouteMap({ shops, selec
   }, [shops])
 
   // geometry 변경 → 경로선/화살표 다시 그리고 범위 재맞춤
-  useEffect(() => { drawPath(); drawArrows(); fitToBounds() // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { drawPath(); drawArrows(); if (fitOnGeometryChange) fitToBounds() // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [geometry])
 
   // 선택 변경 → 마커 재생성(강조/약화) + 중앙 이동/확대 (해제 시 전체 복귀)
@@ -350,6 +354,18 @@ const RouteMap = forwardRef<RouteMapRef, Props>(function RouteMap({ shops, selec
       if (!map || !window.kakao?.maps) return
       const pos = new window.kakao.maps.LatLng(lat, lng)
       try { if (level != null) map.setLevel(level, { anchor: pos, animate: { duration: 250 } }); map.panTo(pos) } catch { /* noop */ }
+    },
+    fitPoints: (points, bottomPad) => {
+      const map = mapRef.current
+      if (!map || !window.kakao?.maps || points.length === 0) return
+      try {
+        const K = window.kakao.maps
+        if (points.length === 1) { map.setLevel(3, { anchor: new K.LatLng(points[0].lat, points[0].lng), animate: { duration: 250 } }); map.panTo(new K.LatLng(points[0].lat, points[0].lng)); return }
+        const b = new K.LatLngBounds()
+        points.forEach(p => b.extend(new K.LatLng(p.lat, p.lng)))
+        map.setBounds(b, 70, 50, Math.max(60, bottomPad ?? bottomPadRef.current), 50)
+        if (map.getLevel() < 2) map.setLevel(2)
+      } catch { /* noop */ }
     },
   }), [])
 
