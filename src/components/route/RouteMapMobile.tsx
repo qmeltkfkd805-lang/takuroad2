@@ -8,6 +8,8 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { getRouteByShareToken, toggleRouteSave, getMySavedRouteIds } from '@/services/routeService'
 import { useCurrentLocation, formatDistance, calcDistance } from '@/hooks/useCurrentLocation'
 import { shopRegion } from '@/lib/utils/region'
+import { getShopStatus } from '@/lib/utils/shopStatus'
+import { statusPillOf } from './RouteCourseMobile'
 import { useRouteRun, type EndResult } from '@/lib/routeRun/useRouteRun'
 import RouteMap, { type RouteMapRef } from './RouteMap'
 import RouteSheet, { type SheetStop } from './run/RouteSheet'
@@ -115,6 +117,8 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
     const next = arr[i + 1]
     return {
       id: s.id, slug: s.slug, order: i + 1, name: s.name, floor,
+      addr: s.addr ?? null,
+      status: s.hours || s.status ? statusPillOf(getShopStatus(s).kind) : null,
       cats: Array.isArray(s.cats) ? s.cats : [],
       thumb: s.shop_images?.[0]?.image_url ?? null,
       walkMin: rs.duration_from_prev_min ?? null, walkM: rs.distance_from_prev_m ?? null,

@@ -110,7 +110,7 @@ export async function getRouteByShareToken(token: string) {
       profiles!routes_user_id_fkey ( nickname ),
       route_shops (
         id, sort_order, distance_from_prev_m, duration_from_prev_min, move_tip,
-        shops ( id, slug, name, addr, lat, lng, place_id, floor, unit, floor_info,
+        shops ( id, slug, name, addr, lat, lng, place_id, floor, unit, floor_info, hours, status,
           places ( name, access_note ),
           shop_images ( image_url, is_cover, sort_order ),
           cats

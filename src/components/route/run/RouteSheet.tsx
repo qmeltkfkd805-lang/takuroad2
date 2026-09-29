@@ -15,6 +15,9 @@ export interface SheetStop {
   order: number
   name: string
   floor: string | null
+  addr?: string | null
+  /** 영업 상태 배지 (영업 중·영업 종료 …) */
+  status?: { text: string; tone: string } | null
   cats: string[]
   thumb: string | null
   walkMin: number | null    // 이전 스팟에서 이동
@@ -110,7 +113,8 @@ export default function RouteSheet(props: {
       const avail = vh - 54 - 58
       setHeights({
         collapsed: running ? (hasArrive ? 262 : 200) + (hasTip ? 58 : 0) : (showProgress ? 262 : 196),   // 진행률 줄만큼 더 높게
-        half: Math.round(avail * 0.5),
+        // 선택한 스팟 카드(사진·이름 / 상태·층 / 주소 / 태그 / 버튼 + 시작 버튼)가 잘리지 않게 최소 430px
+        half: Math.min(Math.round(avail * 0.86), Math.max(Math.round(avail * 0.5), 430)),
         expanded: Math.round(avail * 0.86),
       })
     }
@@ -206,19 +210,46 @@ export default function RouteSheet(props: {
         </div>
       ) : selected ? (
         <div className={styles.content}>
+          {/* 선택한 스팟 — 루트 상세 코스 안내 카드와 같은 구조 */}
           <div className={styles.spotCard}>
-            <div className={styles.spotThumb}>{selected.thumb ? <img src={selected.thumb} alt="" /> : <span className={styles.noThumb} />}</div>
-            <div className={styles.spotBody}>
-              <div className={styles.spotName}><span className={styles.spotNum}>{selected.order}</span>{selected.name}</div>
-              <div className={styles.spotMeta}>
-                {selected.floor && <span>{selected.floor}</span>}
-                {selected.cats.slice(0, 2).map(c => <Tag key={c} c={c} />)}
+            <div className={styles.spotTop}>
+              <div className={styles.spotThumb}>{selected.thumb ? <img src={selected.thumb} alt="" /> : (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M4 10v10h16V10M3 10l2-6h14l2 6M3 10h18M9 20v-6h6v6" /></svg>
+              )}</div>
+              <div className={styles.spotHead}>
+                <div className={styles.spotName}>
+                  <span className={`${styles.spotNum} ${selected.visited ? styles.spotNumDone : ''}`}>{selected.visited ? <CheckIcon size={12} /> : selected.order}</span>
+                  <span className={styles.spotNameText}>{selected.name}</span>
+                </div>
+                {(selected.status || selected.floor) && (
+                  <div className={styles.spotMeta}>
+                    {selected.status && <span className={styles.spotStatus} data-tone={selected.status.tone}>{selected.status.text}</span>}
+                    {selected.floor && <span className={styles.spotFloor}>{selected.floor}</span>}
+                  </div>
+                )}
               </div>
-              {selected.toNextM != null && <div className={styles.spotNext}>다음 장소까지 {walkText(selected.toNextMin, selected.toNextM)}</div>}
             </div>
-            {onToggleVisit && <VisitCheck on={selected.visited} busy={busyVisitId === selected.id} name={selected.name} onClick={() => onToggleVisit(selected.id)} big />}
+            {selected.addr && (
+              <div className={styles.spotAddr}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" /><circle cx="12" cy="10" r="2.5" /></svg>
+                <span>{selected.addr}</span>
+              </div>
+            )}
+            {selected.cats.length > 0 && <div className={styles.spotTags}>{selected.cats.slice(0, 3).map(c => <Tag key={c} c={c} />)}</div>}
+            {selected.toNextM != null && <div className={styles.spotNext}>다음 장소까지 {walkText(selected.toNextMin, selected.toNextM)}</div>}
+            <div className={styles.spotBtns}>
+              <button type="button" className={styles.spotDetail} onClick={() => onOpenDetail(selected.slug)}>상세 보기</button>
+              {onToggleVisit && (
+                <button type="button" className={selected.visited ? styles.spotVisitOn : styles.spotVisit}
+                  onClick={() => onToggleVisit(selected.id)} disabled={busyVisitId === selected.id}
+                  aria-pressed={selected.visited} aria-label={`${selected.name} ${selected.visited ? '방문 체크 풀기' : '방문 체크'}`}>
+                  {selected.visited ? <CheckIcon size={16} /> : (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" /><circle cx="12" cy="10" r="2.5" /></svg>
+                  )}{selected.visited ? '방문함' : '방문 체크'}
+                </button>
+              )}
+            </div>
           </div>
-          <button className={styles.detailLink} onClick={() => onOpenDetail(selected.slug)}>상세 보기 →</button>
           <button className={styles.cta} onClick={onStart} disabled={starting}>{starting ? '준비 중…' : startLabel}</button>
           {snap === 'expanded' && <CourseList {...listProps} />}
         </div>

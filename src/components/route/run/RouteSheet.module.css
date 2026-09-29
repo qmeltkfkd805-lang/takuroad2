@@ -24,17 +24,38 @@
 .listToggle { width: 100%; margin-top: 10px; padding: 8px; border: none; background: none; color: var(--accent); font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
 
 /* 선택 스팟 카드 */
-.spotCard { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
-.spotThumb { width: 60px; height: 60px; border-radius: 12px; overflow: hidden; background: var(--surface2); flex-shrink: 0; }
-.spotThumb img { width: 100%; height: 100%; object-fit: cover; }
+.spotCard { border: 1px solid var(--border); border-radius: 14px; background: var(--surface); padding: 14px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.spotTop { display: flex; gap: 12px; align-items: flex-start; min-width: 0; }
+.spotThumb { width: 60px; height: 60px; border-radius: 10px; overflow: hidden; background: var(--surface2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.spotThumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .noThumb { display: block; width: 100%; height: 100%; background: var(--surface2); }
-.spotBody { min-width: 0; flex: 1; }
-.spotName { display: flex; align-items: center; gap: 7px; font-size: 15.5px; font-weight: 800; color: var(--text); }
-.spotNum { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 11.5px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.spotMeta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 5px; font-size: 11.5px; font-weight: 700; color: var(--text); }
-.spotNext { font-size: 12.5px; font-weight: 700; color: var(--accent); margin-top: 6px; }
-.detailLink { display: block; width: 100%; text-align: left; padding: 6px 0 12px; border: none; background: none; color: var(--muted); font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
-.detailLink:hover { color: var(--accent); }
+.spotHead { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.spotName { display: flex; align-items: flex-start; gap: 7px; min-width: 0; }
+.spotNameText { min-width: 0; font-size: 16px; font-weight: 800; line-height: 1.35; color: var(--text); word-break: keep-all; overflow-wrap: anywhere; }
+.spotNum { width: 22px; height: 22px; margin-top: 1px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 11.5px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.spotNumDone { background: #16a34a; }
+.spotMeta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.spotStatus, .spotFloor { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 11.5px; white-space: nowrap; }
+.spotStatus { font-weight: 800; background: var(--surface2); color: #6b7280; }
+.spotStatus[data-tone="open"] { background: #dcfce7; color: #15803d; }
+.spotStatus[data-tone="soon"] { background: #ffedd5; color: #c2410c; }
+.spotFloor { font-weight: 700; background: var(--surface2); color: var(--text); white-space: normal; overflow-wrap: anywhere; }
+.spotAddr { display: flex; gap: 5px; align-items: flex-start; font-size: 13px; line-height: 1.5; color: var(--muted); min-width: 0; }
+.spotAddr svg { flex-shrink: 0; margin-top: 3px; }
+.spotAddr span { min-width: 0; word-break: keep-all; overflow-wrap: anywhere; }
+.spotTags { display: flex; flex-wrap: wrap; gap: 5px; }
+.spotNext { font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.spotBtns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.spotDetail, .spotVisit, .spotVisitOn {
+  box-sizing: border-box; min-height: 44px; min-width: 0; padding: 0 10px; border-radius: 11px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  font-family: inherit; font-size: 14px; font-weight: 800; cursor: pointer; white-space: nowrap; -webkit-tap-highlight-color: transparent;
+}
+.spotDetail { border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+.spotVisit { border: 1.5px solid var(--accent); background: var(--surface); color: var(--accent); }
+.spotVisitOn { border: 1.5px solid #bbf7d0; background: #f0fdf4; color: #15803d; }
+.spotVisit:disabled, .spotVisitOn:disabled { opacity: .6; }
+.spotDetail:active, .spotVisit:active, .spotVisitOn:active { transform: scale(.98); }
 
 .tag { padding: 2px 7px; border-radius: 6px; font-size: 10.5px; font-weight: 700; background: var(--surface2); color: var(--muted); }
 
@@ -108,3 +129,4 @@
 /* 진행 중 — 다음 장소 가는 길 메모 */
 .runTip { margin: -2px 0 10px; padding: 9px 12px; border-radius: 10px; background: var(--accent-l); color: var(--text); font-size: 13px; font-weight: 600; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
 .runTipLabel { display: inline-block; margin-right: 6px; font-size: 11px; font-weight: 900; color: var(--accent); }
+.spotTags .tag { font-size: 11.5px; padding: 3px 8px; border-radius: 7px; }
