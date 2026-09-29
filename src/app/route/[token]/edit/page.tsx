@@ -15,7 +15,7 @@ export default async function RouteEditPage({ params }: Props) {
   const supabase = await createClient()
   const { data } = await supabase
     .from('routes')
-    .select('id, user_id, is_shared, created_at, share_token')
+    .select('id, user_id, is_shared, is_official, created_at, share_token')
     .eq('share_token', token)
     .maybeSingle()
   if (!data) notFound()
@@ -27,6 +27,7 @@ export default async function RouteEditPage({ params }: Props) {
       editToken={token}
       ownerId={r.user_id}
       initialShared={!!r.is_shared}
+      isOfficial={!!r.is_official}
       lastEdited={r.created_at}
     />
   )

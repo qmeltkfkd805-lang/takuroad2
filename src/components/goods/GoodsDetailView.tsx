@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import GoodsPageShell from './GoodsPageShell'
 import { getGoodsDetail, type GoodsDetail } from '@/services/goodsService'
+import { useAuth } from '@/components/layout/AuthProvider'
 
 /* 읽기 전용 굿즈 상세 — 연결된 굿즈자랑 글이 삭제됐거나 직접 등록한 굿즈를 "올라갔을 때처럼" 보여줌.
    사진은 인라인 세로 나열, 아래 흰색 굿즈 정보 카드. 소장 정보(구입처·가격·구매일·메모)는 소유자에게만 RPC가 반환. */
@@ -22,11 +23,31 @@ export default function GoodsDetailView({ id }: { id: string }) {
   const [g, setG] = useState<GoodsDetail | null>(null)
   const [state, setState] = useState<'loading' | 'ok' | 'error'>('loading')
 
+  const { user } = useAuth() as any
+  // 주인이 아니면(공개 프로필에서 들어온 경우) 수정 버튼·내 굿즈 경로를 숨긴다
+  const isOwner = !!g && !!user && user.id === g.ownerId
+
   useEffect(() => {
     let alive = true
     setState('loading')
     getGoodsDetail(id)
-      .then(d => { if (!alive) return; if (d) { setG(d); setState('ok') } else setState('error') })
+      .then(async d => {
+        if (!alive) return
+        if (!d) { setState('error'); return }
+        // 남의 굿즈 사진은 브라우저에서 서명할 수 없다(goods-images 는 주인 폴더만) → 서버가 권한 확인 후 서명
+        if (d.images.some(im => !im.url)) {
+          try {
+            const r = await fetch(`/api/goods/${id}/images`, { cache: 'no-store' })
+            if (r.ok) {
+              const j = await r.json()
+              const byId = new Map<string, string | null>((j.images ?? []).map((x: any) => [x.id, x.url]))
+              d = { ...d, images: d.images.map(im => im.url ? im : { ...im, url: byId.get(im.id) ?? null }) }
+            }
+          } catch { /* 사진 없이 표시 */ }
+        }
+        if (!alive) return
+        setG(d); setState('ok')
+      })
       .catch(() => { if (alive) setState('error') })
     return () => { alive = false }
   }, [id])
@@ -54,9 +75,9 @@ export default function GoodsDetailView({ id }: { id: string }) {
 
   return (
     <GoodsPageShell
-      crumbs={[{ label: '마이', href: '/profile' }, { label: '내 굿즈', href: '/profile/goods' }, { label: '굿즈' }]}
+      crumbs={isOwner || state !== 'ok' ? [{ label: '마이', href: '/profile' }, { label: '내 굿즈', href: '/profile/goods' }, { label: '굿즈' }] : [{ label: '굿즈' }]}
       title="굿즈"
-      right={state === 'ok' ? editBtn : undefined}
+      right={state === 'ok' && isOwner ? editBtn : undefined}
     >
       {state === 'loading' && (
         <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>불러오는 중…</div>
@@ -64,7 +85,7 @@ export default function GoodsDetailView({ id }: { id: string }) {
       {state === 'error' && (
         <div style={{ padding: 48, textAlign: 'center' }}>
           <p style={{ margin: '0 0 16px', color: 'var(--muted)' }}>굿즈를 찾을 수 없어요.</p>
-          <button onClick={() => router.push('/profile/goods')} style={{ padding: '10px 18px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>내 굿즈로</button>
+          <button onClick={() => (user ? router.push('/profile/goods') : router.back())} style={{ padding: '10px 18px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>{user ? '내 굿즈로' : '돌아가기'}</button>
         </div>
       )}
       {state === 'ok' && g && (
@@ -77,7 +98,7 @@ export default function GoodsDetailView({ id }: { id: string }) {
               </button>
             )}
             <span style={{ fontSize: 12.5, color: 'var(--muted)' }}>{fmtDate(g.createdAt)} 기록</span>
-            <span style={{ marginLeft: 'auto' }} className="gv-edit-desktop">{editBtn}</span>
+            {isOwner && <span style={{ marginLeft: 'auto' }} className="gv-edit-desktop">{editBtn}</span>}
           </div>
 
           {/* 제목 */}

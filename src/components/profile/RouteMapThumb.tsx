@@ -13,7 +13,7 @@ import { type RouteMapVariant } from '@/components/route/routeMeta'
 
 type Stop = { lat: number; lng: number }
 
-export default function RouteMapThumb({ stops, height = 118, labels, showEnds = false, variant = 'detail' }: { stops: Stop[]; height?: number; labels?: string[]; showEnds?: boolean; variant?: RouteMapVariant }) {
+export default function RouteMapThumb({ stops, height = 118, labels, showEnds = false, variant = 'preview' }: { stops: Stop[]; height?: number; labels?: string[]; showEnds?: boolean; variant?: RouteMapVariant }) {
   const ref = useRef<HTMLDivElement>(null)
   const [inView, setInView] = useState(false)
 
@@ -51,12 +51,16 @@ export default function RouteMapThumb({ stops, height = 118, labels, showEnds = 
       })
       try { map.setZoomable(false); map.setDraggable(false) } catch { /* noop */ }
 
-      // preview는 경로가 잘 보이도록 여백을 최소화해 최대한 확대
-      const pad = variant === 'preview' ? 10 : 28
+      /* 샵이 한 건물에 몰린 루트는 범위가 너무 좁아 최대로 확대돼 동네가 안 보인다 → 미니 지도는 레벨 3(약 50m)보다 더 확대하지 않는다 */
+      const clampZoom = () => { try { if (variant === 'preview' && map.getLevel() < 3) map.setLevel(3) } catch { /* noop */ } }
+      /* preview(미니 지도)는 경로선이 가장자리에서 잘리지 않는 만큼만 여백을 두고 최대한 확대.
+         선 두께·출발/도착 점(13px)의 절반이 넘는 여백 + 썸네일 높이에 비례 */
+      const pad = variant === 'preview' ? Math.max(14, Math.round(height * 0.12)) : 28
       if (list.length > 1) {
         const bounds = new kakao.maps.LatLngBounds()
         list.forEach(p => bounds.extend(new kakao.maps.LatLng(p.lat, p.lng)))
         map.setBounds(bounds, pad, pad, pad, pad)
+        clampZoom()
       } else {
         map.setLevel(variant === 'preview' ? 3 : 4)
       }
@@ -116,6 +120,7 @@ export default function RouteMapThumb({ stops, height = 118, labels, showEnds = 
             const b = new kakao.maps.LatLngBounds()
             list.forEach(p => b.extend(new kakao.maps.LatLng(p.lat, p.lng)))
             map.setBounds(b, pad, pad, pad, pad)
+            clampZoom()
           } else {
             map.setLevel(variant === 'preview' ? 3 : 4); map.setCenter(new kakao.maps.LatLng(list[0].lat, list[0].lng))
           }

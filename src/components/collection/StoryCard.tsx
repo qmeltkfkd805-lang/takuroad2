@@ -184,7 +184,7 @@ export default function StoryCard({ story }: { story: Story }) {
 
 /* 사진 크게 보기 — 화면 위에 띄우고 ‹ › · ←/→ 키 · 좌우 스와이프로 넘긴다. Esc·바깥 클릭으로 닫기.
    카드 안에 두면 카드 레이아웃에 갇히므로 body 로 띄운다. */
-function PhotoViewer({ title, photos, start, onClose }: { title: string; photos: string[]; start: number; onClose: () => void }) {
+export function PhotoViewer({ title, photos, start, onClose }: { title: string; photos: string[]; start: number; onClose: () => void }) {
   const [i, setI] = useState(start)
   const touchX = useRef<number | null>(null)
   const total = photos.length

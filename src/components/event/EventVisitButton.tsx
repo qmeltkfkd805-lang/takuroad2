@@ -24,7 +24,7 @@ interface Picked { file: File; url: string }
  * 샵의 CheckInButton과 같은 역할이자, 이벤트 Activity의 시작점.
  *
  * 흐름: 버튼 → 확인 창("다녀오셨나요?") → 기록 → 사진 단계(특전·음식 사진, 선택·최대 3장)
- *       사진은 나만 보고, 연대기의 그 이벤트 아래에 함께 보인다.
+ *       사진은 연대기의 그 이벤트 아래에 함께 보이고, 내 공개 프로필 > 방문 기록에도 공개된다.
  *       이미 다녀온 이벤트는 "+ 사진 남기기"로 나중에 추가할 수 있다.
  *
  * ⭐ 종료 여부와 상관없이 항상 누를 수 있다.
@@ -163,7 +163,7 @@ export default function EventVisitButton({ eventId, eventTitle, ended }: Props) 
             <h3 id="ev-visit-title" className={styles.modalTitle}>특전이나 음식 사진도 남길까요?</h3>
             <p className={styles.modalDesc}>
               받은 특전·먹은 메뉴·산 굿즈를 찍어두면 연대기에 함께 남아요.<br />
-              사진은 <b>나만 볼 수 있어요</b>. (최대 {MAX_VISIT_PHOTOS}장{photoCount > 0 ? `, ${room}장 더 가능` : ''})
+              사진은 <b>내 프로필 방문 기록에도 공개</b>돼요. (최대 {MAX_VISIT_PHOTOS}장{photoCount > 0 ? `, ${room}장 더 가능` : ''})
             </p>
 
             {picked.length > 0 && (
