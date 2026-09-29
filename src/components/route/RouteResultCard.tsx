@@ -26,7 +26,7 @@ function WalkIcon({ size = 13 }: { size?: number }) {
 
 /** 홈·목록 공용 루트 카드. view로 그리드/리스트 전환, 동일 데이터 모델 사용. */
 export default function RouteResultCard({
-  route, view = 'grid', saved, onOpen, onToggleSave, mapVariant = 'detail',
+  route, view = 'grid', saved, onOpen, onToggleSave, mapVariant = 'preview',
 }: {
   route: any
   view?: RouteView

@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/client'
 import { geekAreaFromAddr } from '@/lib/utils/geekArea'
 import { AxisProgress, NextGoal, getWorkProgress } from '@/lib/work/workProgress'
 import { getMyVisitPhotoUrls } from './eventVisitPhotoService'
+import { getMyRouteReviewPhotoUrls } from './routeReviewService'
 
 /* ============================================================
    Story Builder — Activity를 "읽을 만한 이야기"로 재구성하는 계층
@@ -27,7 +28,7 @@ export interface StoryItem {
   /** 이벤트 종류 — 아이콘·문구를 UI가 이걸로 고른다 (Activity Type은 event_visit 하나) */
   eventType?: string | null
   pct?: number | null
-  /** 이벤트 "다녀왔어요" 때 남긴 내 사진(서명 URL, 1시간) — 특전·음식 등 */
+  /** 이벤트 "다녀왔어요" 사진(서명 URL, 1시간) · 루트 완주 후기 사진(공개 URL) */
   photos?: string[]
 }
 
@@ -81,7 +82,7 @@ const STORY_TYPES = new Set(['shop_visit', 'event_visit', 'route_completed'])
  *    한국에서 새벽 1시에 방문 기록을 누르면 UTC로는 전날이라 Story가 어제로 묶였다.
  *    브라우저의 로컬 시간대로 변환해서 날짜를 뽑는다.
  */
-function localDay(iso: string | null | undefined): string {
+export function localDay(iso: string | null | undefined): string {
   if (!iso) return ''
   const d = new Date(iso)
   if (isNaN(d.getTime())) return ''
@@ -196,6 +197,16 @@ export async function getMyStories(userId: string, limit = 20): Promise<Story[]>
       const byEvent = await getMyVisitPhotoUrls(userId, eventItems.map(it => it.refId!))
       for (const it of eventItems) { const urls = byEvent[it.refId!]; if (urls?.length) it.photos = urls }
     } catch { /* 사진은 부가 정보 — 실패해도 연대기는 그대로 */ }
+  }
+
+  // 루트 완주 기록에 완주 후기 사진 붙이기 (activity related_id = route_id)
+  const routeItems = stories.flatMap(s => s.places.flatMap(p => p.items))
+    .filter(it => it.type === 'route_completed' && it.refType === 'route' && it.refId)
+  if (routeItems.length) {
+    try {
+      const byRoute = await getMyRouteReviewPhotoUrls(userId, routeItems.map(it => it.refId!))
+      for (const it of routeItems) { const urls = byRoute[it.refId!]; if (urls?.length) it.photos = urls }
+    } catch { /* 사진은 부가 정보 */ }
   }
 
   // 각 Story에 하이라이트("그래서 다음엔?") 붙이기

@@ -67,6 +67,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   }
 
   const items: any[] = []
+  const routeOf = new Map<string, string>()   // 기록 id → 루트 id (완주 후기 사진 붙이기용)
   for (const a of page) {
     const s = a.snapshot ?? {}
     let href: string | null = null
@@ -91,6 +92,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     } else if (a.type === 'route_completed') {
       const rt = a.related_id ? routes.get(a.related_id) : null
       visible = !!rt
+      if (rt) routeOf.set(a.id, rt.id)
       if (rt?.share_token) href = `/route/${rt.share_token}`
     }
     if (!visible && !acc.isSelf) continue
@@ -134,6 +136,24 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
         const list = byEvent.get(it.href.slice('/event/'.length))
         if (list?.length) it.photos = list
       }
+    }
+  }
+
+  // 루트 완주 기록에 그 루트의 완주 후기 사진 (공개 버킷, 루트를 볼 수 있을 때만 — 위에서 걸러짐)
+  const rIds = [...new Set(items.filter(i => routeOf.has(i.id)).map(i => routeOf.get(i.id)!))]
+  if (rIds.length) {
+    const { data: rv, error: rvErr } = await acc.svc.from('route_reviews')
+      .select('route_id, route_review_photos ( object_path, sort, created_at )')
+      .eq('user_id', acc.owner.id).in('route_id', rIds)
+    if (!rvErr) {
+      const byRoute = new Map<string, { url: string; private: boolean }[]>()
+      for (const r of (rv ?? []) as any[]) {
+        const list = [...(r.route_review_photos ?? [])]
+          .sort((x: any, y: any) => (x.sort - y.sort) || String(x.created_at).localeCompare(String(y.created_at)))
+          .map((p: any) => ({ url: acc.svc.storage.from('route-photos').getPublicUrl(p.object_path).data.publicUrl, private: false }))
+        if (list.length) byRoute.set(r.route_id, list)
+      }
+      for (const it of items) { const rid = routeOf.get(it.id); const list = rid ? byRoute.get(rid) : null; if (list) it.photos = list }
     }
   }
 

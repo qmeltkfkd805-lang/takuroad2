@@ -4,10 +4,12 @@
 import type { EndResult } from '@/lib/routeRun/useRouteRun'
 import styles from './RouteRunComplete.module.css'
 
-export default function RouteRunComplete({ result, routeTitle, onClose }: {
+export default function RouteRunComplete({ result, routeTitle, onClose, onReview }: {
   result: EndResult
   routeTitle: string
   onClose: () => void
+  /** 완주했을 때 "후기 남기기" — 루트 상세의 후기 쓰기 창으로 */
+  onReview?: () => void
 }) {
   const completed = result.completed
   return (
@@ -18,7 +20,7 @@ export default function RouteRunComplete({ result, routeTitle, onClose }: {
         <div className={styles.sub}>{completed ? '루트 완주' : '오늘의 기록'}</div>
         <div className={styles.title}>{routeTitle}</div>
         <p className={styles.msg}>
-          {completed ? '완주를 축하합니다!' : '기록을 저장했어요.'}
+          {completed ? <>완주를 축하합니다!<br />어떠셨나요? 사진과 함께 후기를 남겨주세요.</> : '기록을 저장했어요.'}
         </p>
 
         <div className={styles.stats}>
@@ -38,7 +40,14 @@ export default function RouteRunComplete({ result, routeTitle, onClose }: {
 
         {result.bonusGranted && <div className={styles.bonus}>현장 확인 보너스를 받았어요 ✨</div>}
 
-        <button className={styles.close} onClick={onClose}>확인</button>
+        {completed && onReview ? (
+          <>
+            <button className={styles.close} onClick={onReview}>후기 남기기</button>
+            <button className={styles.close} onClick={onClose} style={{ marginTop: 8, background: 'var(--surface)', color: 'var(--accent)', border: '1px solid var(--accent)' }}>나중에</button>
+          </>
+        ) : (
+          <button className={styles.close} onClick={onClose}>확인</button>
+        )}
       </div>
     </div>
   )

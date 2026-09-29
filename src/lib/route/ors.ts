@@ -6,7 +6,9 @@
 
 import type { LatLng } from './pathHash'
 
-const ORS_URL = 'https://api.openrouteservice.org/v2/directions/foot-walking/geojson'
+/* 2026-09-28 api.openrouteservice.org 가 종료됐다(403). 같은 키로 api.heigit.org 를 쓴다.
+   https://ask.openrouteservice.org/t/deprecating-api-openrouteservice-org-in-favour-of-api-heigit-org/7912 */
+const ORS_URL = 'https://api.heigit.org/openrouteservice/v2/directions/foot-walking/geojson'
 const MAX_WAYPOINTS = 50
 
 export const ORS_PROVIDER = 'ors-foot-walking'

@@ -3,7 +3,9 @@
    USE_PIN_PREVIEW = true  → 경량 SVG 핀 미리보기 (카카오 로고 없음)
    USE_PIN_PREVIEW = false → 실제 카카오 지도(RouteMapThumb)로 복귀
    ※ 이 한 줄만 바꾸면 홈·목록 카드/레일/히어로 썸네일이 전부 원복된다.
-   ※ 루트 상세·지도 보기 화면은 항상 실제 카카오 지도를 사용(여기서 다루지 않음). */
+   ※ 루트 상세·지도 보기 화면은 항상 실제 카카오 지도를 사용(여기서 다루지 않음).
+   ⭐ 카드·목록의 미니 지도는 기본이 'preview' = 경로선 + 출발·도착 점만(번호 없음).
+      번호 핀은 루트 상세에서만 variant="detail" 로 명시해서 쓴다. */
 import RouteMapThumb from '@/components/profile/RouteMapThumb'
 import RoutePinPreview from './RoutePinPreview'
 import type { RouteMapVariant } from './routeMeta'
@@ -12,7 +14,7 @@ export const USE_PIN_PREVIEW = false
 
 type Stop = { lat: number; lng: number }
 
-export default function RouteThumb({ stops, height = 118, labels, showEnds, variant = 'detail' }: { stops: Stop[]; height?: number; labels?: string[]; showEnds?: boolean; variant?: RouteMapVariant }) {
+export default function RouteThumb({ stops, height = 118, labels, showEnds, variant = 'preview' }: { stops: Stop[]; height?: number; labels?: string[]; showEnds?: boolean; variant?: RouteMapVariant }) {
   return USE_PIN_PREVIEW
     ? <RoutePinPreview stops={stops} height={height} />
     : <RouteMapThumb stops={stops} height={height} labels={labels} showEnds={showEnds} variant={variant} />

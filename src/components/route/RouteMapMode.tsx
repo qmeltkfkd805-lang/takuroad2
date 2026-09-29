@@ -139,12 +139,14 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
     if (completing) return
     setCompleting(true)
     try {
-      // 이미 완주한 루트면 '다시 도전?' 모달
-      const already = await isRouteCompleted(route.id, user.id)
-      if (already) { setShowRetry(true); return }
       const allIds = stops.map((rs: any) => rs.shops?.id).filter(Boolean)
       if (allIds.length === 0) return
       const toAdd = allIds.filter((id: string) => !visitedIds.has(id))
+      // 이미 완주했고 지금도 전부 체크된 상태면 '다시 도전?' 모달.
+      // "다시 도전"으로 방문 체크를 초기화한 뒤 다시 완주하는 경우는 막지 않는다
+      // (완주 기록·배지는 처음 한 번만 — 서버가 중복 기록을 막는다)
+      const already = await isRouteCompleted(route.id, user.id)
+      if (already && toAdd.length === 0) { setShowRetry(true); return }
       setVisitedIds(new Set(allIds))
       await Promise.all(toAdd.map((id: string) => setShopVisited(route.id, id, user.id, true).catch(() => {})))
       // 첫 완주만 기록 + 경험치/배찌(딱 한 번)
@@ -310,7 +312,8 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
           onClose={() => setShowEndSheet(false)}
         />
       )}
-      {endResult && <RouteRunComplete result={endResult} routeTitle={route.title} onClose={closeRunComplete} />}
+      {endResult && <RouteRunComplete result={endResult} routeTitle={route.title} onClose={closeRunComplete}
+        onReview={() => { setEndResult(null); router.push(`/route/${routeId}?review=1`) }} />}
 
       {showComplete && (
         <div className={styles.completeOverlay} role="dialog" aria-modal="true" onClick={() => setShowComplete(false)}>
@@ -319,8 +322,9 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
             <img src="/taku/taku-checkin.png" alt="" className={styles.completeChar} />
             <div className={styles.completeSub}>루트 완주</div>
             <div className={styles.completeTitle}>{route.title}</div>
-            <p className={styles.completeMsg}>완주를 축하합니다!<br />{spotCount}곳을 모두 둘러봤어요.</p>
-            <button className={styles.completeClose} onClick={() => setShowComplete(false)}>확인</button>
+            <p className={styles.completeMsg}>완주를 축하합니다!<br />{spotCount}곳을 모두 둘러봤어요.<br />어떠셨나요? 사진과 함께 후기를 남겨주세요.</p>
+            <button className={styles.completeClose} onClick={() => router.push(`/route/${routeId}?review=1`)}>후기 남기기</button>
+            <button className={styles.completeClose} onClick={() => setShowComplete(false)} style={{ marginTop: 8, background: 'var(--surface)', color: 'var(--accent)', border: '1px solid var(--accent)' }}>나중에</button>
           </div>
         </div>
       )}

@@ -11,7 +11,8 @@ import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { toggleRouteSave, getMySavedRouteIds, toggleRouteShare, deleteRoute, adminDeleteRoute, adminSetRouteShared } from '@/services/routeService'
 import { recordRouteStart, hasStartedRoute, getRouteTips, addRouteTip, deleteRouteTip, RouteTip } from '@/services/routeTipService'
 import { getRelatedRoutes, RelatedRoute } from '@/services/routeRelatedService'
-import { getVisitedShopIds, setShopVisited } from '@/services/routeVisitService'
+import { getVisitedShopIds, setShopVisited, recordRouteCompletion } from '@/services/routeVisitService'
+import RouteReviews from './RouteReviews'
 import styles from './RouteDetailPage.module.css'
 
 import AppIcon from '@/components/tds/AppIcon'
@@ -108,6 +109,9 @@ export default function RouteDetailPage({ route }: { route: any }) {
   const [toast, setToast] = useState<string | null>(null)
   const [showComplete, setShowComplete] = useState(false)
   const celebratedRef = useRef(false)
+  // 완주 후기 쓰기 창 열기 신호 (완주 축하 창의 "후기 남기기", 주소 ?review=1)
+  const [reviewSignal, setReviewSignal] = useState(0)
+  const completionRef = useRef<Promise<unknown> | null>(null)
   // 모바일 전용: 탭 + inline CTA 가시성(스크롤 시 sticky 시작버튼 표시)
   const [mobileTab, setMobileTab] = useState<'course' | 'reviews' | 'related'>('course')
   const ctaRef = useRef<HTMLDivElement>(null)
@@ -115,6 +119,8 @@ export default function RouteDetailPage({ route }: { route: any }) {
 
   const isAuthor = !!user && user.id === route.user_id
   const canManage = isAuthor || isAdmin   // 관리자는 남의 루트도 관리 가능
+  // 수정: 내 루트(추천 지정 전) 또는 관리자 — 추천(공식) 루트는 관리자만 고칠 수 있다
+  const canEdit = isAdmin || (isAuthor && !route.is_official)
   const sectionRefs = { course: useRef<HTMLElement>(null), reviews: useRef<HTMLElement>(null), related: useRef<HTMLElement>(null) }
 
   useEffect(() => {
@@ -158,6 +164,23 @@ export default function RouteDetailPage({ route }: { route: any }) {
     catch { setSaved(p => !p) }
     finally { setSavingBusy(false) }
   }
+  async function openReview() {
+    setShowComplete(false)
+    if (completionRef.current) await completionRef.current   // 방금 완주했으면 기록이 끝난 뒤에 연다
+    setMobileTab('reviews')
+    setReviewSignal(n => n + 1)
+    setTimeout(() => document.getElementById('reviews')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
+  }
+  // 지도(따라가기)에서 완주하고 "후기 남기기"로 오면 ?review=1
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (new URLSearchParams(window.location.search).get('review') === '1') {
+      setMobileTab('reviews'); setReviewSignal(n => n + 1)
+      const u = new URL(window.location.href); u.searchParams.delete('review'); window.history.replaceState(null, '', u.toString())
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   function handleStart() {
     // 시작 기록은 로그인 시에만(선택). 진행 모드(run=1)로 지도에 진입 — 모바일에서 자동 방문 감지 시작.
     if (user && !started) { recordRouteStart(route.id, user.id).catch(() => {}); setStarted(true) }
@@ -178,7 +201,9 @@ export default function RouteDetailPage({ route }: { route: any }) {
       celebratedRef.current = false
     }
     const ok = await setShopVisited(route.id, shopId, user.id, !has)
-    if (!ok) setVisitedIds(prev => { const n = new Set(prev); has ? n.add(shopId) : n.delete(shopId); return n })
+    if (!ok) { setVisitedIds(prev => { const n = new Set(prev); has ? n.add(shopId) : n.delete(shopId); return n }); return }
+    // 모든 스팟을 체크했으면 완주 기록 (서버가 route_progress 로 다시 대조, 비GPS 완주는 EXP 0) — 후기는 완주 기록이 있어야 쓸 수 있다
+    if (!has && celebratedRef.current) completionRef.current = recordRouteCompletion(route.id, user.id).catch(() => {})
   }
   async function submitTip() {
     if (!user || !tipInput.trim() || tipBusy) return
@@ -190,13 +215,14 @@ export default function RouteDetailPage({ route }: { route: any }) {
   async function removeTip(id: string) {
     if (await deleteRouteTip(id)) setRouteTips(prev => prev.filter(t => t.id !== id))
   }
+  /* 루트는 공개가 기본 — 비공개는 "임시 저장"뿐이라 공개 → 비공개로 되돌리는 메뉴는 없다.
+     임시 저장 루트에만 "공개하기"가 보인다. */
   async function handleTogglePublish() {
-    if (!user || publishBusy) return
+    if (!user || publishBusy || shared) return
     setPublishBusy(true)
-    const next = !shared
-    const ok = isAuthor ? await toggleRouteShare(route.id, user.id, next) : await adminSetRouteShared(route.id, next)
+    const ok = isAuthor ? await toggleRouteShare(route.id, user.id, true) : await adminSetRouteShared(route.id, true)
     setPublishBusy(false)
-    if (ok) { setShared(next); setToast(next ? '공개로 전환했어요.' : '비공개로 전환했어요.') }
+    if (ok) { setShared(true); setToast('공개했어요.') }
     else setToast('변경에 실패했어요.')
     setMenuOpen(false)
   }
@@ -349,8 +375,8 @@ export default function RouteDetailPage({ route }: { route: any }) {
   if (!isDesktop) {
     const statusBadge = route.is_official
       ? <span className={styles.mStatusOfficial}><MaskIcon name="star" size={12} color="#fff" />추천</span>
-      : canManage
-        ? <span className={`${styles.mStatus} ${shared ? styles.mStatusPublic : styles.mStatusDraft}`}>{shared ? '공개됨' : '작성중'}</span>
+      : canManage && !shared
+        ? <span className={`${styles.mStatus} ${styles.mStatusDraft}`}>임시 저장</span>
         : null
     const MTABS = [
       { key: 'course', label: '코스 안내' },
@@ -369,8 +395,8 @@ export default function RouteDetailPage({ route }: { route: any }) {
               <button className={styles.mAppIcon} onClick={() => setMenuOpen(v => !v)} aria-haspopup="menu" aria-expanded={menuOpen} aria-label="더보기"><MoreIcon size={20} /></button>
               {menuOpen && (
                 <div className={styles.kebabMenu} role="menu">
-                  {isAuthor && !route.is_official && <Link href={`/route/${route.share_token}/edit`} className={styles.kebabItem} role="menuitem"><PencilIcon size={15} />수정하기</Link>}
-                  <button className={styles.kebabItem} role="menuitem" onClick={handleTogglePublish} disabled={publishBusy}>{shared ? <><LockIcon size={15} />비공개로 전환</> : <><GlobeIcon size={15} />공개하기</>}</button>
+                  {canEdit && <Link href={`/route/${route.share_token}/edit`} className={styles.kebabItem} role="menuitem"><PencilIcon size={15} />수정하기</Link>}
+                  {!shared && <button className={styles.kebabItem} role="menuitem" onClick={handleTogglePublish} disabled={publishBusy}><GlobeIcon size={15} />공개하기</button>}
                   {!isAuthor && isAdmin && <div className={styles.kebabNote}>관리자 권한</div>}
                   <button className={`${styles.kebabItem} ${styles.kebabDanger}`} role="menuitem" onClick={handleDelete} disabled={deleteBusy}><TrashIcon size={15} />삭제하기</button>
                 </div>
@@ -433,10 +459,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
             </>
           )}
           {mobileTab === 'reviews' && (
-            <div className={styles.reviewEmpty}>
-              <MaskIcon name="star" size={26} color="var(--muted)" />
-              <p>완주 후기 기능은 준비 중이에요.<br />루트를 다녀왔다면 ‘코스 안내’의 여행자 팁으로 경험을 공유해주세요.</p>
-            </div>
+            <RouteReviews routeId={route.id} routeTitle={route.title} openSignal={reviewSignal} onOpened={() => setReviewSignal(0)} />
           )}
           {mobileTab === 'related' && (
             related.length > 0 ? (
@@ -474,9 +497,10 @@ export default function RouteDetailPage({ route }: { route: any }) {
               <div className={styles.completeSub}>루트 완주</div>
               <div className={styles.completeTitle}>{route.title}</div>
               <p className={styles.completeMsg}>완주를 축하합니다!<br />{spotCount}곳을 모두 둘러봤어요.</p>
+              <p className={styles.completeMsg} style={{ marginTop: -4 }}>어떠셨나요? 사진과 함께 후기를 남겨주세요.</p>
               <div className={styles.completeBtns}>
-                <button className={styles.completeShare} onClick={() => { setShowComplete(false); openInternalMap() }}>지도에서 다시 보기</button>
-                <button className={styles.completeClose} onClick={() => setShowComplete(false)}>확인</button>
+                <button className={styles.completeClose} onClick={openReview}>후기 남기기</button>
+                <button className={styles.completeShare} onClick={() => setShowComplete(false)}>나중에</button>
               </div>
             </div>
           </div>
@@ -503,8 +527,8 @@ export default function RouteDetailPage({ route }: { route: any }) {
                 <div className={styles.badgeRow}>
                   {route.is_official
                     ? <span className={styles.officialBadge}><MaskIcon name="star" size={12} color="#fff" />추천</span>
-                    : canManage
-                      ? <span className={`${styles.statusBadge} ${shared ? styles.statusPublic : styles.statusDraft}`}>{shared ? '공개됨' : '작성중'}</span>
+                    : canManage && !shared
+                      ? <span className={`${styles.statusBadge} ${styles.statusDraft}`}>임시 저장</span>
                       : null}
                 </div>
                 <div className={styles.infoTopActions}>
@@ -514,10 +538,12 @@ export default function RouteDetailPage({ route }: { route: any }) {
                       <button className={styles.topIconBtn} onClick={() => setMenuOpen(v => !v)} aria-haspopup="menu" aria-expanded={menuOpen} aria-label="더보기" title="더보기"><MoreIcon size={18} /></button>
                       {menuOpen && (
                         <div className={styles.kebabMenu} role="menu">
-                          {isAuthor && !route.is_official && <Link href={`/route/${route.share_token}/edit`} className={styles.kebabItem} role="menuitem"><PencilIcon size={15} />수정하기</Link>}
-                          <button className={styles.kebabItem} role="menuitem" onClick={handleTogglePublish} disabled={publishBusy}>
-                            {shared ? <><LockIcon size={15} />비공개로 전환</> : <><GlobeIcon size={15} />공개하기</>}
-                          </button>
+                          {canEdit && <Link href={`/route/${route.share_token}/edit`} className={styles.kebabItem} role="menuitem"><PencilIcon size={15} />수정하기</Link>}
+                          {!shared && (
+                            <button className={styles.kebabItem} role="menuitem" onClick={handleTogglePublish} disabled={publishBusy}>
+                              <GlobeIcon size={15} />공개하기
+                            </button>
+                          )}
                           {!isAuthor && isAdmin && <div className={styles.kebabNote}>관리자 권한</div>}
                           <button className={`${styles.kebabItem} ${styles.kebabDanger}`} role="menuitem" onClick={handleDelete} disabled={deleteBusy}><TrashIcon size={15} />삭제하기</button>
                         </div>
@@ -545,7 +571,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
             <div className={styles.mapWrap}>
               {shopsWithCoords.length > 0 ? (
                 <>
-                  <RouteThumb stops={rtStops(route)} showEnds height={340} />
+                  <RouteThumb stops={rtStops(route)} showEnds height={340} variant="detail" />
                   <button className={styles.bigMapBtn} onClick={() => router.push(`/map?routeId=${route.share_token}`)}><ExpandIcon size={15} />타쿠로드 지도에서 보기</button>
                 </>
               ) : (
@@ -598,10 +624,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
           <section id="reviews" data-anchor="reviews" ref={sectionRefs.reviews} className={styles.section}>
             <div className={styles.block}>
               <h2 className={styles.blockTitle}>후기</h2>
-              <div className={styles.reviewEmpty}>
-                <MaskIcon name="star" size={26} color="var(--muted)" />
-                <p>완주 후기 기능은 준비 중이에요.<br />루트를 다녀왔다면 위의 ‘여행자 팁’으로 경험을 공유해주세요.</p>
-              </div>
+              <RouteReviews routeId={route.id} routeTitle={route.title} openSignal={reviewSignal} onOpened={() => setReviewSignal(0)} />
             </div>
           </section>
 
@@ -688,9 +711,10 @@ export default function RouteDetailPage({ route }: { route: any }) {
             <div className={styles.completeSub}>루트 완주</div>
             <div className={styles.completeTitle}>{route.title}</div>
             <p className={styles.completeMsg}>완주를 축하합니다!<br />{spotCount}곳을 모두 둘러봤어요.</p>
+            <p className={styles.completeMsg} style={{ marginTop: -4 }}>어떠셨나요? 사진과 함께 후기를 남겨주세요.</p>
             <div className={styles.completeBtns}>
-              <button className={styles.completeShare} onClick={() => { setShowComplete(false); openInternalMap() }}>지도에서 다시 보기</button>
-              <button className={styles.completeClose} onClick={() => setShowComplete(false)}>확인</button>
+              <button className={styles.completeClose} onClick={openReview}>후기 남기기</button>
+              <button className={styles.completeShare} onClick={() => setShowComplete(false)}>나중에</button>
             </div>
           </div>
         </div>

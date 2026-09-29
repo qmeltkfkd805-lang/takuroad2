@@ -1,0 +1,36 @@
+/* 루트 완주 후기 */
+.wrap { display: flex; flex-direction: column; gap: 12px; }
+.writeBtn {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px;
+  border-radius: 9999px; border: 1px solid var(--accent); background: var(--accent-l, rgba(255,86,146,.12));
+  color: var(--accent); font-family: inherit; font-size: 14px; font-weight: 800; cursor: pointer;
+}
+.empty { padding: 32px 16px; text-align: center; color: var(--muted); font-size: 13.5px; line-height: 1.6; border: 1px dashed var(--border); border-radius: 14px; }
+.list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.item { padding: 14px 2px; border-bottom: 1px solid var(--border); }
+.item:last-child { border-bottom: none; }
+.head { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.name { font-size: 14px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.date { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.mineActions { margin-left: auto; display: inline-flex; gap: 2px; }
+.mineActions button { border: none; background: none; color: var(--muted); font-family: inherit; font-size: 12.5px; font-weight: 700; padding: 4px 6px; cursor: pointer; }
+.text { margin: 8px 0 0 40px; font-size: 14px; line-height: 1.6; color: var(--text); white-space: pre-wrap; word-break: break-word; }
+.photos { display: flex; gap: 8px; margin: 10px 0 0 40px; flex-wrap: wrap; }
+.photo { width: 96px; height: 96px; border-radius: 10px; overflow: hidden; border: none; padding: 0; cursor: pointer; background: var(--surface2); }
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.textarea {
+  width: 100%; box-sizing: border-box; min-height: 110px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font-family: inherit; font-size: 14px; line-height: 1.6; resize: vertical; outline: none;
+}
+.textarea:focus { border-color: var(--accent); }
+.count { text-align: right; font-size: 11.5px; color: var(--muted); margin: 4px 0 12px; }
+.hint { margin: -8px 0 14px; font-size: 12px; color: var(--muted); }
+.err { margin: 0 0 12px; font-size: 13px; color: #d33; font-weight: 700; }
+.toast {
+  position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%); z-index: 70;
+  background: rgba(32,32,45,.92); color: #fff; font-size: 13.5px; font-weight: 700; padding: 10px 16px; border-radius: 9999px;
+}
+@media (max-width: 640px) {
+  .text, .photos { margin-left: 0; }
+  .photo { width: 84px; height: 84px; }
+}
