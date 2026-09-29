@@ -14,6 +14,8 @@ import RouteSheet, { type SheetStop } from './run/RouteSheet'
 import ArrivalToast from './run/ArrivalToast'
 import RouteEndSheet, { type EndShop } from './run/RouteEndSheet'
 import RouteRunComplete from './run/RouteRunComplete'
+import { getVisitedShopIds, setShopVisited, recordRouteCompletion } from '@/services/routeVisitService'
+import { createCheckIn } from '@/services/checkInService'
 import styles from './RouteMapMobile.module.css'
 
 function fmtDur(min: number | null | undefined): string | null {
@@ -41,6 +43,9 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
   const [ending, setEnding] = useState(false)
   const [endResult, setEndResult] = useState<EndResult | null>(null)
   const [skippedShops, setSkippedShops] = useState<Set<string>>(new Set())
+  // 루트 보기(따라가기 전) 방문 체크 = route_progress — 루트 상세 체크와 같은 값
+  const [visitedIds, setVisitedIds] = useState<Set<string>>(new Set())
+  const [busyVisitId, setBusyVisitId] = useState<string | null>(null)
 
   const mapRef = useRef<RouteMapRef>(null)
   const fitTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -74,6 +79,11 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
     if (!user || !route) { setSaved(false); return }
     getMySavedRouteIds(user.id).then(ids => setSaved(ids.includes(route.id))).catch(() => {})
   }, [user, route])
+
+  useEffect(() => {
+    if (!user || !route?.id) { setVisitedIds(new Set()); return }
+    getVisitedShopIds(route.id, user.id).then(ids => setVisitedIds(new Set(ids))).catch(() => {})
+  }, [user, route?.id])
 
   useEffect(() => {
     if (!route?.id) { setPath(null); return }
@@ -110,9 +120,11 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
       walkMin: rs.duration_from_prev_min ?? null, walkM: rs.distance_from_prev_m ?? null,
       toNextMin: next?.duration_from_prev_min ?? null, toNextM: next?.distance_from_prev_m ?? null,
       moveTip: rs.move_tip ?? null,
-      visited: run.confirmedShopIds.has(s.id),
+      // 따라가기 중엔 세션 확인(현장·직접), 그 밖엔 루트 방문 체크
+      // 따라가는 중이거나 이어갈 세션이 남아 있으면 세션의 체크 기록을 보여준다(새로고침해도 17/18 유지)
+      visited: (run.phase === 'running' || run.phase === 'paused' || run.hasExistingSession) ? run.confirmedShopIds.has(s.id) : visitedIds.has(s.id),
     } as SheetStop
-  }).filter(Boolean) as SheetStop[], [rawStops, run.confirmedShopIds])
+  }).filter(Boolean) as SheetStop[], [rawStops, run.confirmedShopIds, run.phase, run.hasExistingSession, visitedIds])
 
   const endShops: EndShop[] = useMemo(() => sheetStops.map(s => ({ id: s.id, name: s.name, floor: s.floor })), [sheetStops])
 
@@ -120,6 +132,8 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
   const selIdx = coordIndexOf(selectedId)
 
   const running = run.phase === 'running' || run.phase === 'paused'
+  const runningRef = useRef(false)
+  runningRef.current = running
   const visitedCount = sheetStops.filter(s => s.visited).length
 
   // 샵 좌표 맵(안내 커서 거리 계산용)
@@ -135,11 +149,53 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
   const nextCoord = nextShop ? shopCoord.get(nextShop.id) ?? null : null
   const nextDistanceM = myLoc && nextCoord ? Math.round(calcDistance(myLoc.lat, myLoc.lng, nextCoord.lat, nextCoord.lng)) : null
 
+  /* 따라가는 중엔 전체 경로 대신 "이전 장소 → 다음 장소" 한 구간만 그린다 (12번을 방문했으면 12→13만).
+     실제 도보 경로(ORS)가 있으면 그 중 두 장소 사이 부분만 잘라 쓰고, 없으면 두 점을 잇는다.
+     첫 장소로 가는 중(이전 장소 없음)엔 선 없이 핀만. */
+  const prevStop = useMemo(() => {
+    if (!running || !nextShop) return null
+    const idx = sheetStops.findIndex(s => s.id === nextShop.id)
+    return idx > 0 ? sheetStops[idx - 1] : null
+  }, [running, nextShop, sheetStops])
+  const segmentLine = useMemo((): [number, number][] | null => {
+    if (!running || !nextShop || !prevStop) return null
+    const a = shopCoord.get(prevStop.id), b = shopCoord.get(nextShop.id)
+    if (!a || !b) return null
+    const geo = path && (path.status === 'ok' || path.status === 'partial') && path.geometry.length > 1 ? path.geometry : null
+    if (geo) {
+      const nearest = (p: { lat: number; lng: number }, from: number) => {
+        let bi = from, bd = Infinity
+        for (let i = from; i < geo.length; i++) { const d = (geo[i][0] - p.lng) ** 2 + (geo[i][1] - p.lat) ** 2; if (d < bd) { bd = d; bi = i } }
+        return bi
+      }
+      const i0 = nearest(a, 0), i1 = nearest(b, i0)
+      if (i1 > i0) return geo.slice(i0, i1 + 1)
+    }
+    return [[a.lng, a.lat], [b.lng, b.lat]]
+  }, [running, nextShop, prevStop, shopCoord, path])
+
+  // "다음" 장소가 바뀌면 그 구간(이전→다음)이 보이게 지도 확대 — "방문 완료" 표시(1.4초)가 끝난 뒤 넘어가게
+  const prevNextRef = useRef<string | null>(null)
+  useEffect(() => {
+    const id = running ? nextShop?.id ?? null : null
+    if (!id) { prevNextRef.current = null; return }
+    if (prevNextRef.current === id) return
+    const first = prevNextRef.current === null
+    prevNextRef.current = id
+    const c = shopCoord.get(id)
+    if (!c) return
+    const p = prevStop ? shopCoord.get(prevStop.id) : null
+    const t = setTimeout(() => mapRef.current?.fitPoints(p ? [p, c] : [c], sheetH + 24), first ? 400 : 1500)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [running, nextShop?.id, shopCoord])
+
   // 시트 높이 → 지도 아래 여백(bounds)로 반영 (드래그가 멈춘 뒤 재맞춤)
   const onHeight = useCallback((px: number) => {
     setSheetH(px)
     if (fitTimer.current) clearTimeout(fitTimer.current)
-    fitTimer.current = setTimeout(() => { if (coordIndexOf(selectedId) < 0) mapRef.current?.fit(px + 24) }, 220)
+    // 따라가는 중엔 전체 루트로 다시 맞추지 않는다(지금 구간을 보고 있으므로)
+    fitTimer.current = setTimeout(() => { if (coordIndexOf(selectedId) < 0 && !runningRef.current) mapRef.current?.fit(px + 24) }, 220)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedId])
 
@@ -178,6 +234,53 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
     setEndResult(r)
   }
   function closeRunComplete() { setEndResult(null); router.push(`/route/${routeId}`) }
+
+  /* 스팟 방문 체크 (목록·선택 카드·"여기 방문했어요")
+     - 따라가기 중: 세션에 '직접 기록' (종료할 때 진행·완주 반영). 직접 기록한 것만 다시 눌러 풀 수 있다
+     - 그 밖: 루트 방문 체크. 전부 체크하면 완주 기록 + 축하 창(후기 남기기)
+     - 체크하면 샵 방문 기록도 함께(하루 1번씩 +1). 체크를 풀어도 방문 기록은 남는다 */
+  async function toggleVisit(shopId: string): Promise<boolean> {
+    if (!user) { router.push('/login'); return false }
+    if (!route || busyVisitId) return false
+    const stop = sheetStops.find(s => s.id === shopId)
+    const coord = shopCoord.get(shopId)
+    const recordShopVisit = () => createCheckIn(user.id, shopId, coord?.lat ?? 0, coord?.lng ?? 0, stop?.name ?? '').catch(() => {})
+    try { navigator.vibrate?.(12) } catch { /* noop */ }
+    setBusyVisitId(shopId)
+    try {
+      if (running || run.hasExistingSession) {
+        const key = `shop:${shopId}`
+        if (run.confirmedShopIds.has(shopId)) {
+          if (run.visitStatus.get(key) === 'manual_recorded') { await run.undo(key); setToast(`${stop?.order ?? ''}번 체크를 풀었어요`) }
+          else setToast('현장에서 확인된 곳이에요')
+          return false
+        }
+        if (await run.manual(shopId)) {
+          recordShopVisit()
+          setToast(`✓ ${stop?.order ?? ''}번 방문 (${visitedCount + 1}/${sheetStops.length})`)
+          return true
+        }
+        setToast('기록하지 못했어요. 잠시 후 다시 시도해 주세요.')
+        return false
+      }
+      const has = visitedIds.has(shopId)
+      setVisitedIds(prev => { const n = new Set(prev); has ? n.delete(shopId) : n.add(shopId); return n })
+      const ok = await setShopVisited(route.id, shopId, user.id, !has)
+      if (!ok) {
+        setVisitedIds(prev => { const n = new Set(prev); has ? n.add(shopId) : n.delete(shopId); return n })
+        setToast('체크하지 못했어요. 잠시 후 다시 시도해 주세요.')
+        return false
+      }
+      if (has) { setToast(`${stop?.order ?? ''}번 체크를 풀었어요`); return false }
+      recordShopVisit()
+      const next = new Set(visitedIds); next.add(shopId)
+      const done = sheetStops.length > 0 && sheetStops.every(s => next.has(s.id))
+      if (!done) { setToast(`✓ ${stop?.order ?? ''}번 방문 (${next.size}/${sheetStops.length})`); return true }
+      await recordRouteCompletion(route.id, user.id)   // 서버가 체크를 다시 대조 · 하루 1번 완주 횟수
+      setEndResult({ mode: 'complete', completed: true, visitedCount: sheetStops.length, fieldVerified: 0, totalCheckpoints: 0, manualCount: sheetStops.length, confidence: 'recorded', bonusGranted: false })
+      return true
+    } finally { setBusyVisitId(null) }
+  }
 
   const navigateNext = () => {
     if (!nextShop || !nextCoord) return
@@ -237,7 +340,8 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
           <RouteMap
             ref={mapRef}
             shops={shopsWithCoords}
-            geometry={pathLine}
+            geometry={running ? segmentLine : pathLine}
+            fitOnGeometryChange={!running}
             selectedIndex={selIdx >= 0 ? selIdx : null}
             onSelectIndex={(i: number) => selectSpot(shopsWithCoords[i]?.id ?? null)}
             myLocation={myLoc}
@@ -283,6 +387,10 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
         onSkip={skipNext}
         onPauseResume={onPauseResume}
         onEnd={() => setShowEndSheet(true)}
+        onToggleVisit={toggleVisit}
+        busyVisitId={busyVisitId}
+        showProgress={!!user}
+        nextId={nextShop?.id ?? null}
       />
 
       {running && <ArrivalToast arrivals={run.arrivals} onUndo={run.undo} onDismiss={run.dismissArrival} />}
@@ -296,7 +404,8 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
           onClose={() => setShowEndSheet(false)}
         />
       )}
-      {endResult && <RouteRunComplete result={endResult} routeTitle={route.title} onClose={closeRunComplete} />}
+      {endResult && <RouteRunComplete result={endResult} routeTitle={route.title} onClose={closeRunComplete}
+        onReview={() => { setEndResult(null); router.push(`/route/${routeId}?review=1`) }} />}
 
       {toast && <div className={styles.toast} role="status">{toast}</div>}
     </div>
