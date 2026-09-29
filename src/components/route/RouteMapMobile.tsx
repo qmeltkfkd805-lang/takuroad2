@@ -243,15 +243,16 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
 
   const resuming = run.hasExistingSession && !running
 
-  // 뒤로 돌아왔을 때: 따라가는 중이었으면 "루트 시작하기"를 다시 누르지 않아도 바로 이어서
+  // 끝내지 않은 따라가기가 있으면 지도에 들어오자마자 바로 진행 화면으로 (뒤로가기·새로고침·다시 들어와도)
+  // — "루트 시작하기"를 다시 누를 필요 없음. 이 탭에서 일시중지해 뒀던 거면 일시중지 그대로
   const restoredRef = useRef(false)
   useEffect(() => {
-    const sv = savedUi.current
-    if (restoredRef.current || !sv || !run.hasExistingSession || running) return
+    if (restoredRef.current || !run.hasExistingSession || running) return
     restoredRef.current = true
+    const sv = savedUi.current
     ;(async () => {
       await run.resume()
-      if (sv.phase === 'paused') await run.pause()
+      if (sv?.phase === 'paused') await run.pause()
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [run.hasExistingSession, running])
