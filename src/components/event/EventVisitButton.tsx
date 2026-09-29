@@ -183,11 +183,11 @@ export default function EventVisitButton({ eventId, eventTitle, ended }: Props) 
               <div className={styles.pickButtons}>
                 <button type="button" className={styles.pickBtn} onClick={() => cameraRef.current?.click()} disabled={uploading}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" /><circle cx="12" cy="13.5" r="3.5" /></svg>
-                  카메라로 찍기
+                  카메라
                 </button>
                 <button type="button" className={styles.pickBtn} onClick={() => albumRef.current?.click()} disabled={uploading}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="9" cy="11" r="2" /><path d="m5 19 5-4 3 2 3-3 3 3" /></svg>
-                  앨범에서 고르기
+                  앨범
                 </button>
               </div>
             )}
