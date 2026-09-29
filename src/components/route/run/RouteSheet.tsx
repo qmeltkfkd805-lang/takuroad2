@@ -62,14 +62,38 @@ export default function RouteSheet(props: {
   onSkip: () => void
   onPauseResume: () => void
   onEnd: () => void
+  /** 스팟 방문 체크 토글 — 목록·선택 카드·"다음" 줄의 체크 버튼 */
+  onToggleVisit?: (id: string) => void | Promise<boolean | void>
+  busyVisitId?: string | null
+  /** 로그인했을 때만 진행률(방문 체크 n/N)을 요약에 보여준다 */
+  showProgress?: boolean
+  /** 진행 중 "다음" 안내 대상 샵 id — 한 번에 도착 체크 */
+  nextId?: string | null
 }) {
   const {
     onHeightChange, title, metaLine, stops, selectedId, onSelect, onOpenDetail,
     running, phase, onStart, startLabel, starting, visitedCount, totalStops,
     fieldVerified, checkpointTotal, nextLabel, nextDistanceM, onNavigate, onSkip, onPauseResume, onEnd,
+    onToggleVisit, busyVisitId = null, showProgress = false, nextId = null,
   } = props
+  const pct = totalStops ? Math.round((visitedCount / totalStops) * 100) : 0
 
+  const hasArrive = !!nextId && !!onToggleVisit && !!nextLabel   // 진행 중 "여기 방문했어요" 버튼이 있으면 접힌 높이도 키운다
   const [snap, setSnap] = useState<SheetSnap>('collapsed')
+  // "여기 방문했어요" — 평소엔 회색, 눌러서 기록되면 잠깐 초록(방문 완료)으로 보여준 뒤 다음 장소로
+  // 방문 완료를 보여주는 동안엔 "다음" 줄도 방금 방문한 곳을 그대로 두었다가, 끝나면 2번→3번으로 넘어간다
+  const [arrived, setArrived] = useState(false)
+  const [heldLabel, setHeldLabel] = useState<string | null>(null)
+  useEffect(() => { if (!arrived) return; const t = setTimeout(() => { setArrived(false); setHeldLabel(null) }, 1400); return () => clearTimeout(t) }, [arrived])
+  async function onArrive() {
+    if (!nextId || !onToggleVisit || arrived) return
+    // 누르는 즉시 지금 장소를 붙잡아 둔다 — 기록 중에 목록이 먼저 다음 장소로 바뀌어도 화면은 순서대로(현재 → 방문 완료 → 다음)
+    setHeldLabel(nextLabel)
+    setArrived(true)
+    const ok = await onToggleVisit(nextId)
+    if (!ok) { setArrived(false); setHeldLabel(null) }
+  }
+  const shownNext = arrived && heldLabel ? heldLabel : nextLabel
   const [heights, setHeights] = useState({ collapsed: 190, half: 380, expanded: 560 })
   const [dragH, setDragH] = useState<number | null>(null)   // 드래그 중 실시간 높이
   const dragRef = useRef<{ startY: number; startH: number } | null>(null)
@@ -81,7 +105,7 @@ export default function RouteSheet(props: {
       const vh = window.innerHeight
       const avail = vh - 54 - 58
       setHeights({
-        collapsed: running ? 214 : 196,
+        collapsed: running ? (hasArrive ? 276 : 214) : (showProgress ? 262 : 196),   // 진행률 줄만큼 더 높게
         half: Math.round(avail * 0.5),
         expanded: Math.round(avail * 0.86),
       })
@@ -89,7 +113,7 @@ export default function RouteSheet(props: {
     calc()
     window.addEventListener('resize', calc)
     return () => window.removeEventListener('resize', calc)
-  }, [running])
+  }, [running, showProgress, hasArrive])
 
   const curH = dragH ?? heights[snap]
   useEffect(() => { onHeightChange(curH) }, [curH, onHeightChange])
@@ -129,6 +153,7 @@ export default function RouteSheet(props: {
   }
 
   const selected = selectedId ? stops.find(s => s.id === selectedId) ?? null : null
+  const listProps = { stops, selectedId, onSelect, onOpenDetail, listRef, onToggleVisit, busyVisitId }
 
   return (
     <div className={styles.sheet} style={{ height: curH, transition: dragH == null ? 'height .28s cubic-bezier(.32,.72,0,1)' : 'none' }}>
@@ -150,11 +175,17 @@ export default function RouteSheet(props: {
           <div className={styles.nextRow}>
             <div className={styles.nextInfo}>
               <span className={styles.nextLabel}>다음</span>
-              <span className={styles.nextName}>{nextLabel ?? '안내할 다음 지점이 없어요'}</span>
+              <span className={styles.nextName}>{shownNext ?? '안내할 다음 지점이 없어요'}</span>
             </div>
-            {nextLabel && <span className={styles.nextDist}>{nextDistanceM != null ? walkText(Math.round(nextDistanceM / 75), nextDistanceM) : '위치 확인 중…'}</span>}
+            {arrived ? <span className={styles.nextDist} style={{ color: '#16a34a' }}>도착</span>
+              : nextLabel && <span className={styles.nextDist}>{nextDistanceM != null ? walkText(Math.round(nextDistanceM / 75), nextDistanceM) : '위치 확인 중…'}</span>}
           </div>
-          {!nextLabel && <div className={styles.runNote}>방문한 곳은 ‘오늘 루트 종료’에서 확인해 주세요.</div>}
+          {((nextLabel && nextId && onToggleVisit) || arrived) && (
+            <button className={`${styles.arriveBtn} ${arrived ? styles.arriveBtnOn : ''}`} onClick={onArrive} disabled={arrived || busyVisitId === nextId}>
+              <CheckIcon /> {arrived ? '방문 완료!' : '여기 방문했어요'}
+            </button>
+          )}
+          {!nextLabel && <div className={styles.runNote}>방문한 곳은 아래 목록에서 체크하거나 ‘오늘 루트 종료’에서 확인해 주세요.</div>}
           <div className={styles.runBtns}>
             <button className={styles.ghost} onClick={onNavigate} disabled={!nextLabel}>길안내</button>
             <button className={styles.ghost} onClick={onSkip} disabled={!nextLabel}>건너뛰기</button>
@@ -164,7 +195,7 @@ export default function RouteSheet(props: {
           <button className={styles.listToggle} onClick={() => snapTo(snap === 'expanded' ? 'collapsed' : 'expanded')}>
             코스 목록 {snap === 'expanded' ? '▾' : '▸'}
           </button>
-          {snap === 'expanded' && <CourseList stops={stops} selectedId={selectedId} onSelect={onSelect} onOpenDetail={onOpenDetail} listRef={listRef} showVisited />}
+          {snap === 'expanded' && <CourseList {...listProps} />}
         </div>
       ) : selected ? (
         <div className={styles.content}>
@@ -178,10 +209,11 @@ export default function RouteSheet(props: {
               </div>
               {selected.toNextM != null && <div className={styles.spotNext}>다음 장소까지 {walkText(selected.toNextMin, selected.toNextM)}</div>}
             </div>
+            {onToggleVisit && <VisitCheck on={selected.visited} busy={busyVisitId === selected.id} name={selected.name} onClick={() => onToggleVisit(selected.id)} big />}
           </div>
           <button className={styles.detailLink} onClick={() => onOpenDetail(selected.slug)}>상세 보기 →</button>
           <button className={styles.cta} onClick={onStart} disabled={starting}>{starting ? '준비 중…' : startLabel}</button>
-          {snap === 'expanded' && <CourseList stops={stops} selectedId={selectedId} onSelect={onSelect} onOpenDetail={onOpenDetail} listRef={listRef} />}
+          {snap === 'expanded' && <CourseList {...listProps} />}
         </div>
       ) : (
         <div className={styles.content}>
@@ -189,24 +221,51 @@ export default function RouteSheet(props: {
             <div className={styles.sumTitle}>{title}</div>
             <div className={styles.sumMeta}>{metaLine}</div>
           </div>
+          {/* 내 방문 체크 진행률 — 목록을 열어 스팟마다 체크 */}
+          {showProgress && (
+            <button type="button" className={styles.progress} onClick={() => snapTo('expanded')} aria-label="코스 목록 열어 방문 체크하기">
+              <span className={styles.progressTop}>
+                <span>방문 체크 <b>{visitedCount}</b>/{totalStops}</span>
+                <span className={styles.progressHint}>{visitedCount === 0 ? '다녀온 곳을 체크해요 ›' : `${pct}%`}</span>
+              </span>
+              <span className={styles.bar} style={{ marginBottom: 0 }}><span className={styles.barFill} style={{ width: `${pct}%`, display: 'block' }} /></span>
+            </button>
+          )}
           <button className={styles.cta} onClick={onStart} disabled={starting}>{starting ? '준비 중…' : startLabel}</button>
           <button className={styles.listToggle} onClick={() => snapTo(snap === 'expanded' ? 'collapsed' : 'expanded')}>
             코스 목록 {snap === 'expanded' ? '▾' : '▸'}
           </button>
-          {snap === 'expanded' && <CourseList stops={stops} selectedId={selectedId} onSelect={onSelect} onOpenDetail={onOpenDetail} listRef={listRef} />}
+          {snap === 'expanded' && <CourseList {...listProps} />}
         </div>
       )}
     </div>
   )
 }
 
-function CourseList({ stops, selectedId, onSelect, onOpenDetail, listRef, showVisited = false }: {
+function CheckIcon({ size = 18 }: { size?: number }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+}
+
+/* 방문 체크 버튼 — 엄지로 누르기 쉬운 44px 원. 체크되면 초록 */
+function VisitCheck({ on, busy, name, onClick, big = false }: { on: boolean; busy: boolean; name: string; onClick: () => void; big?: boolean }) {
+  return (
+    <button type="button" className={`${styles.check} ${on ? styles.checkOn : ''} ${big ? styles.checkBig : ''}`}
+      onClick={e => { e.stopPropagation(); onClick() }} disabled={busy}
+      aria-pressed={on} aria-label={`${name} ${on ? '방문 체크 풀기' : '방문 체크'}`}>
+      <CheckIcon size={big ? 22 : 20} />
+      <span className={styles.checkText}>{on ? '방문 완료' : '방문 체크'}</span>
+    </button>
+  )
+}
+
+function CourseList({ stops, selectedId, onSelect, onOpenDetail, listRef, onToggleVisit, busyVisitId }: {
   stops: SheetStop[]
   selectedId: string | null
   onSelect: (id: string | null) => void
   onOpenDetail: (slug: string) => void
   listRef: RefObject<HTMLOListElement | null>
-  showVisited?: boolean
+  onToggleVisit?: (id: string) => void
+  busyVisitId?: string | null
 }) {
   return (
     <ol className={styles.list} ref={listRef}>
@@ -218,16 +277,20 @@ function CourseList({ stops, selectedId, onSelect, onOpenDetail, listRef, showVi
               <div className={styles.travel}>{walkText(s.walkMin, s.walkM)}</div>
             )}
             {i > 0 && stops[i - 1]?.moveTip && <div className={styles.tip}>{stops[i - 1].moveTip}</div>}
-            <div className={`${styles.row} ${sel ? styles.rowSel : ''}`} role="button" tabIndex={0}
+            <div className={`${styles.row} ${sel ? styles.rowSel : ''} ${s.visited ? styles.rowDone : ''}`} role="button" tabIndex={0}
               onClick={() => onSelect(sel ? null : s.id)}
               onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(sel ? null : s.id) } }}>
-              <span className={`${styles.rowNum} ${showVisited && s.visited ? styles.rowNumDone : ''}`}>{showVisited && s.visited ? '✓' : s.order}</span>
+              <span className={`${styles.rowNum} ${s.visited ? styles.rowNumDone : ''}`}>{s.visited ? '✓' : s.order}</span>
               <div className={styles.rowThumb}>{s.thumb ? <img src={s.thumb} alt="" loading="lazy" /> : <span className={styles.noThumb} />}</div>
               <div className={styles.rowBody}>
                 <div className={styles.rowName}>{s.name}</div>
-                <div className={styles.rowMeta}>{s.floor && <span>{s.floor}</span>}{s.cats.slice(0, 2).map(c => <Tag key={c} c={c} />)}</div>
+                <div className={styles.rowMeta}>
+                  {s.floor && <span>{s.floor}</span>}
+                  {s.cats.slice(0, 2).map(c => <Tag key={c} c={c} />)}
+                  <button className={styles.rowDetail} onClick={e => { e.stopPropagation(); onOpenDetail(s.slug) }}>상세 ›</button>
+                </div>
               </div>
-              <button className={styles.rowDetail} onClick={e => { e.stopPropagation(); onOpenDetail(s.slug) }}>상세 ›</button>
+              {onToggleVisit && <VisitCheck on={s.visited} busy={busyVisitId === s.id} name={s.name} onClick={() => onToggleVisit(s.id)} />}
             </div>
           </li>
         )
