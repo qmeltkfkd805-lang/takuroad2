@@ -122,7 +122,7 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
       moveTip: rs.move_tip ?? null,
       // 따라가기 중엔 세션 확인(현장·직접), 그 밖엔 루트 방문 체크
       // 따라가는 중이거나 이어갈 세션이 남아 있으면 세션의 체크 기록을 보여준다(새로고침해도 17/18 유지)
-      visited: (run.phase === 'running' || run.phase === 'paused' || run.hasExistingSession) ? run.confirmedShopIds.has(s.id) : visitedIds.has(s.id),
+      visited: (run.phase === 'running' || run.phase === 'paused' || run.hasExistingSession) ? (run.confirmedShopIds.has(s.id) || visitedIds.has(s.id)) : visitedIds.has(s.id),
     } as SheetStop
   }).filter(Boolean) as SheetStop[], [rawStops, run.confirmedShopIds, run.phase, run.hasExistingSession, visitedIds])
 
@@ -250,12 +250,20 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
     try {
       if (running || run.hasExistingSession) {
         const key = `shop:${shopId}`
+        const dropLocal = () => setVisitedIds(prev => { const n = new Set(prev); n.delete(shopId); return n })
         if (run.confirmedShopIds.has(shopId)) {
-          if (run.visitStatus.get(key) === 'manual_recorded') { await run.undo(key); setToast(`${stop?.order ?? ''}번 체크를 풀었어요`) }
+          if (run.visitStatus.get(key) === 'manual_recorded') { await run.undo(key); dropLocal(); setToast(`${stop?.order ?? ''}번 체크를 풀었어요`) }
           else setToast('현장에서 확인된 곳이에요')
           return false
         }
+        // PC·루트 상세에서 체크해 둔 곳 → 체크 풀기
+        if (visitedIds.has(shopId)) {
+          if (await setShopVisited(route.id, shopId, user.id, false)) { dropLocal(); setToast(`${stop?.order ?? ''}번 체크를 풀었어요`) }
+          else setToast('체크를 풀지 못했어요. 잠시 후 다시 시도해 주세요.')
+          return false
+        }
         if (await run.manual(shopId)) {
+          setVisitedIds(prev => new Set(prev).add(shopId))
           recordShopVisit()
           setToast(`✓ ${stop?.order ?? ''}번 방문 (${visitedCount + 1}/${sheetStops.length})`)
           return true

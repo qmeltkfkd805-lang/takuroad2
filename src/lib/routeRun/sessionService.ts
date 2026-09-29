@@ -1,6 +1,7 @@
 /* 루트 진행 세션 서비스 — 생성/조회/상태전이/수동기록/취소/ping/종료.
    Service Role 클라이언트를 받아 서버에서만 실행. userId는 핸들러가 인증한 값(클라이언트 신뢰 안 함).
-   기존 route_progress/route_completions/EXP는 '정상 종료' 시에만 반영. */
+   방문 체크(route_progress)는 세션에서 확인·체크되는 즉시 같이 반영 → PC·모바일·루트 상세가 같은 체크를 본다.
+   완주 기록/EXP는 '정상 종료' 시에만 반영. */
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { OrderedStop, VerifyConfig } from './types'
 import { deriveCheckpoints } from './checkpoints'
@@ -83,7 +84,22 @@ export async function getActiveSession(client: SupabaseClient, routeId: string, 
     .select('*').eq('route_id', routeId).eq('user_id', userId).in('status', ['active', 'paused'])
     .order('started_at', { ascending: false }).limit(1).maybeSingle()
   if (!data) return null
-  return { session: data, visits: await loadVisits(client, (data as any).id) }
+  const visits = await loadVisits(client, (data as any).id)
+  // 예전 세션(즉시 반영 전)에 체크해 둔 곳도 route_progress 로 옮겨 다른 화면과 맞춘다
+  await reflectToProgress(client, routeId, userId, sessionShopIds((data as any).checkpoints ?? [], visits)).catch(() => {})
+  return { session: data, visits }
+}
+
+/** 세션에서 방문으로 인정된 샵 — 확인된 '샵 체크포인트' + 직접 체크. (건물 도착만으론 내부 샵 방문 아님) */
+function sessionShopIds(checkpoints: StoredCheckpoint[], visits: any[]): string[] {
+  const ids = new Set<string>()
+  for (const v of visits) {
+    if (v.status === 'manual_recorded' && v.shop_id) { ids.add(v.shop_id); continue }
+    if (!VERIFIED.has(v.status)) continue
+    const cp = checkpoints.find(c => c.key === v.checkpoint_key)
+    if (cp?.kind === 'shop') cp.shopIds.forEach(id => ids.add(id))
+  }
+  return Array.from(ids)
 }
 
 export async function setSessionStatus(client: SupabaseClient, sessionId: string, userId: string, status: 'active' | 'paused') {
@@ -100,6 +116,7 @@ export async function recordManual(client: SupabaseClient, sessionId: string, us
     session_id: sessionId, checkpoint_key: `shop:${shopId}`, shop_id: shopId,
     status: 'manual_recorded', verification_mode: 'manual', verified_at: nowIso(),
   } as any, { onConflict: 'session_id,checkpoint_key' })
+  await reflectToProgress(client, s.route_id, userId, [shopId]).catch(() => {})
   // 짧은 시간 다수 수동기록 → 위험신호만 남김(강등/제재 아님)
   const since = new Date(Date.now() - 60_000).toISOString()
   const { count } = await client.from('route_session_visits')
@@ -112,7 +129,7 @@ export async function recordManual(client: SupabaseClient, sessionId: string, us
   return { ok: true as const }
 }
 
-/** 자동 확인 취소 — 세션 방문만 pending으로 되돌림. 기존 route_progress는 건드리지 않음. */
+/** 체크 취소 — 세션 방문을 pending으로 되돌리고, 그 샵의 방문 체크(route_progress)도 푼다. */
 export async function undoAuto(client: SupabaseClient, sessionId: string, userId: string, checkpointKey: string) {
   const s = await loadOwned(client, sessionId, userId)
   if (!s) return { error: 'not_found' as const }
@@ -120,6 +137,9 @@ export async function undoAuto(client: SupabaseClient, sessionId: string, userId
     status: 'pending', verification_mode: null, verified_at: null, distance_m: null, accuracy_m: null,
     sample_count: 0, in_range_since: null,
   }).eq('session_id', sessionId).eq('checkpoint_key', checkpointKey)
+  const cp = ((s.checkpoints ?? []) as StoredCheckpoint[]).find(c => c.key === checkpointKey)
+  const shopIds = checkpointKey.startsWith('shop:') ? [checkpointKey.slice(5)] : cp?.kind === 'shop' ? cp.shopIds : []
+  if (shopIds.length) await client.from('route_progress').delete().eq('route_id', s.route_id).eq('user_id', userId).in('shop_id', shopIds)
   return { ok: true as const }
 }
 
@@ -159,6 +179,7 @@ export async function processPing(client: SupabaseClient, sessionId: string, use
       status, verification_mode: p.mode, verified_at: new Date(at).toISOString(), distance_m: p.distanceM, accuracy_m: p.accuracyM,
     }).eq('session_id', sessionId).eq('checkpoint_key', p.key)
     confirmed.push({ key: p.key, label: cp?.label ?? '도착', distanceM: p.distanceM })
+    if (cp?.kind === 'shop') await reflectToProgress(client, s.route_id, userId, cp.shopIds).catch(() => {})
   }
   if (dec.riskFlags.length) {
     const merged = Array.from(new Set([...(s.risk_flags ?? []), ...dec.riskFlags]))
