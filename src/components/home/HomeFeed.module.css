@@ -94,6 +94,7 @@
 @media (hover: none) and (pointer: coarse) {
   .routeSection { padding: 8px 16px 0; }
   .routeSlideLink { flex-basis: 82%; }
+  .routeSlideLinkMap { flex-basis: 88%; }
   .routeArrows { display: none; }
 }
 
@@ -169,3 +170,7 @@
 .railArrow:hover { transform: translateY(-50%) scale(1.06); }
 /* 터치 기기(모바일)는 손가락으로 밀면 되니 화살표를 숨긴다 */
 @media (hover: none) { .railArrow { display: none; } }
+
+/* 성지순례(루트) 카드 — 지도 칸을 루트 페이지 카드 지도(약 185×132)와 비슷하게 넓혀 같은 모양으로 보이게 */
+.routeSlideMap { height: 132px; }
+.routeThumbMap { width: 44%; max-width: 170px; }

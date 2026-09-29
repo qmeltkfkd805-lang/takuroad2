@@ -14,8 +14,8 @@ export const USE_PIN_PREVIEW = false
 
 type Stop = { lat: number; lng: number }
 
-export default function RouteThumb({ stops, height = 118, labels, showEnds, variant = 'preview' }: { stops: Stop[]; height?: number; labels?: string[]; showEnds?: boolean; variant?: RouteMapVariant }) {
+export default function RouteThumb({ stops, height = 118, labels, showEnds, variant = 'preview', tight }: { stops: Stop[]; height?: number; labels?: string[]; showEnds?: boolean; variant?: RouteMapVariant; tight?: boolean }) {
   return USE_PIN_PREVIEW
     ? <RoutePinPreview stops={stops} height={height} />
-    : <RouteMapThumb stops={stops} height={height} labels={labels} showEnds={showEnds} variant={variant} />
+    : <RouteMapThumb stops={stops} height={height} labels={labels} showEnds={showEnds} variant={variant} tight={tight} />
 }

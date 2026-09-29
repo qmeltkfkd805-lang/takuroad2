@@ -13,13 +13,13 @@ import { type RouteMapVariant } from '@/components/route/routeMeta'
 
 type Stop = { lat: number; lng: number }
 
-export default function RouteMapThumb({ stops, height = 118, labels, showEnds = false, variant = 'preview' }: { stops: Stop[]; height?: number; labels?: string[]; showEnds?: boolean; variant?: RouteMapVariant }) {
+export default function RouteMapThumb({ stops, height = 118, labels, showEnds = false, variant = 'preview', tight = false }: { stops: Stop[]; height?: number; labels?: string[]; showEnds?: boolean; variant?: RouteMapVariant; /** 작은 칸에서도 선 크기 유지 — 선이 안 잘리는 한 더 확대 (홈 카드) */ tight?: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
   const [inView, setInView] = useState(false)
 
   const pts = (stops ?? []).filter(s => typeof s?.lat === 'number' && typeof s?.lng === 'number')
   const coordsKey = pts.map(p => `${p.lat.toFixed(5)},${p.lng.toFixed(5)}`).join(';')
-  const labelsKey = (labels ?? []).join('|') + (showEnds ? '#e' : '') + `#${variant}`
+  const labelsKey = (labels ?? []).join('|') + (showEnds ? '#e' : '') + `#${variant}` + (tight ? '#t' : '')
   const hasCoords = pts.length > 0
 
   // 화면 근처에 들어오면 초기화 (lazy)
@@ -53,6 +53,23 @@ export default function RouteMapThumb({ stops, height = 118, labels, showEnds = 
 
       /* 샵이 한 건물에 몰린 루트는 범위가 너무 좁아 최대로 확대돼 동네가 안 보인다 → 미니 지도는 레벨 3(약 50m)보다 더 확대하지 않는다 */
       const clampZoom = () => { try { if (variant === 'preview' && map.getLevel() < 3) map.setLevel(3) } catch { /* noop */ } }
+      /* 미니 지도는 칸 크기와 상관없이 선이 같은 크기로 보이게 — 모든 점이 가장자리 8px 안쪽에 들어오는 한 한 단계씩 더 확대
+         (칸이 작아져도 지도가 한 단계 멀어져 선이 찌그러져 보이지 않게, 대신 선 둘레 여백만 줄어든다) */
+      const zoomToFit = () => {
+        if (!tight || variant !== 'preview' || list.length < 2) return
+        try {
+          const w = el.clientWidth, h = el.clientHeight, m = 8
+          const inside = () => {
+            const proj = map.getProjection()
+            return list.every(p => { const q = proj.containerPointFromCoords(new kakao.maps.LatLng(p.lat, p.lng)); return q.x >= m && q.x <= w - m && q.y >= m && q.y <= h - m })
+          }
+          const b = new kakao.maps.LatLngBounds(); list.forEach(p => b.extend(new kakao.maps.LatLng(p.lat, p.lng)))
+          for (let lv = map.getLevel() - 1; lv >= 3; lv--) {
+            map.setLevel(lv); map.setCenter(b.getCenter ? b.getCenter() : map.getCenter())
+            if (!inside()) { map.setLevel(lv + 1); map.setCenter(b.getCenter ? b.getCenter() : map.getCenter()); break }
+          }
+        } catch { /* noop */ }
+      }
       /* preview(미니 지도)는 경로선이 가장자리에서 잘리지 않는 만큼만 여백을 두고 최대한 확대.
          선 두께·출발/도착 점(13px)의 절반이 넘는 여백 + 썸네일 높이에 비례 */
       const pad = variant === 'preview' ? Math.max(14, Math.round(height * 0.12)) : 28
@@ -61,6 +78,7 @@ export default function RouteMapThumb({ stops, height = 118, labels, showEnds = 
         list.forEach(p => bounds.extend(new kakao.maps.LatLng(p.lat, p.lng)))
         map.setBounds(bounds, pad, pad, pad, pad)
         clampZoom()
+        zoomToFit()
       } else {
         map.setLevel(variant === 'preview' ? 3 : 4)
       }
@@ -121,6 +139,7 @@ export default function RouteMapThumb({ stops, height = 118, labels, showEnds = 
             list.forEach(p => b.extend(new kakao.maps.LatLng(p.lat, p.lng)))
             map.setBounds(b, pad, pad, pad, pad)
             clampZoom()
+            zoomToFit()
           } else {
             map.setLevel(variant === 'preview' ? 3 : 4); map.setCenter(new kakao.maps.LatLng(list[0].lat, list[0].lng))
           }

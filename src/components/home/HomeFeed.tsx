@@ -94,10 +94,10 @@ function RouteSlideCard({ r, saved, onToggleSave }: { r: any; saved: boolean; on
   const metaParts = [`${count}곳`, dist, dur].filter(Boolean)
   const heart = (e: React.MouseEvent) => { e.preventDefault(); e.stopPropagation(); onToggleSave(r.id) }
   return (
-    <Link href={`/route/${r.share_token}`} className={styles.routeSlideLink}>
-      <div className={styles.routeSlide}>
-        <div className={styles.routeThumb}>
-          <RouteThumb stops={stops} height={124} variant="preview" showEnds />
+    <Link href={`/route/${r.share_token}`} className={`${styles.routeSlideLink} ${styles.routeSlideLinkMap}`}>
+      <div className={`${styles.routeSlide} ${styles.routeSlideMap}`}>
+        <div className={`${styles.routeThumb} ${styles.routeThumbMap}`}>
+          <RouteThumb stops={stops} height={132} variant="preview" showEnds tight />
           <span className={styles.routeCount}>{count}곳</span>
           <button
             className={styles.routeHeart}
