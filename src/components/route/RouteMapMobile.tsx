@@ -26,7 +26,21 @@ function fmtDur(min: number | null | undefined): string | null {
   return h && m ? `약 ${h}시간 ${m}분` : h ? `약 ${h}시간` : `약 ${m}분`
 }
 
+/* 따라가기 화면 상태를 이 탭(sessionStorage)에 잠깐 기억 — 샵 상세를 보고 뒤로 오면 하던 화면 그대로
+   (진행 중이었는지 · 목록에서 고른 다음 장소 · 건너뛴 곳). 탭을 닫으면 사라진다. */
+interface RunUi { phase: 'running' | 'paused'; anchorId: string | null; jumpedId: string | null; skipped: string[] }
+const runUiKey = (routeId: string) => `taku:routeRun:${routeId}`
+function loadRunUi(routeId: string): RunUi | null {
+  if (typeof window === 'undefined') return null
+  try { const v = sessionStorage.getItem(runUiKey(routeId)); return v ? JSON.parse(v) as RunUi : null } catch { return null }
+}
+function saveRunUi(routeId: string, v: RunUi | null) {
+  try { if (v) sessionStorage.setItem(runUiKey(routeId), JSON.stringify(v)); else sessionStorage.removeItem(runUiKey(routeId)) } catch { /* 저장 안 돼도 동작엔 문제 없음 */ }
+}
+
 export default function RouteMapMobile({ routeId }: { routeId: string }) {
+  const savedUi = useRef<RunUi | null | undefined>(undefined)
+  if (savedUi.current === undefined) savedUi.current = loadRunUi(routeId)
   const router = useRouter()
   const params = useSearchParams()
   const { user } = useAuth()
@@ -44,10 +58,10 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
   const [showEndSheet, setShowEndSheet] = useState(false)
   const [ending, setEnding] = useState(false)
   const [endResult, setEndResult] = useState<EndResult | null>(null)
-  const [skippedShops, setSkippedShops] = useState<Set<string>>(new Set())
+  const [skippedShops, setSkippedShops] = useState<Set<string>>(() => new Set(savedUi.current?.skipped ?? []))
   // 따라가는 중 코스 목록에서 고른 곳 — 그곳부터 순서대로 안내 (anchorId), 방금 고른 곳이면 이전 구간 선은 안 그림 (jumpedId)
-  const [anchorId, setAnchorId] = useState<string | null>(null)
-  const [jumpedId, setJumpedId] = useState<string | null>(null)
+  const [anchorId, setAnchorId] = useState<string | null>(savedUi.current?.anchorId ?? null)
+  const [jumpedId, setJumpedId] = useState<string | null>(savedUi.current?.jumpedId ?? null)
   // 루트 보기(따라가기 전) 방문 체크 = route_progress — 루트 상세 체크와 같은 값
   const [visitedIds, setVisitedIds] = useState<Set<string>>(new Set())
   const [busyVisitId, setBusyVisitId] = useState<string | null>(null)
@@ -228,6 +242,24 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
   }, [params, router])
 
   const resuming = run.hasExistingSession && !running
+
+  // 뒤로 돌아왔을 때: 따라가는 중이었으면 "루트 시작하기"를 다시 누르지 않아도 바로 이어서
+  const restoredRef = useRef(false)
+  useEffect(() => {
+    const sv = savedUi.current
+    if (restoredRef.current || !sv || !run.hasExistingSession || running) return
+    restoredRef.current = true
+    ;(async () => {
+      await run.resume()
+      if (sv.phase === 'paused') await run.pause()
+    })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [run.hasExistingSession, running])
+  // 따라가는 동안 화면 상태 기억
+  useEffect(() => {
+    if (run.phase !== 'running' && run.phase !== 'paused') return
+    saveRunUi(routeId, { phase: run.phase, anchorId, jumpedId, skipped: Array.from(skippedShops) })
+  }, [routeId, run.phase, anchorId, jumpedId, skippedShops])
   function onStart() {
     run.requestLocationNow()   // 사용자 탭(제스처)에서 위치 권한 요청 → iOS 팝업 확실히
     if (resuming) run.resume(); else { setSkippedShops(new Set()); setAnchorId(null); setJumpedId(null); run.start() }
@@ -247,6 +279,7 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
     if (ending) return
     setEnding(true)
     const r = await run.end(mode, manualIds)
+    if (r) { saveRunUi(routeId, null); savedUi.current = null }
     setEnding(false)
     setShowEndSheet(false)
     if (!r) { setToast('종료 처리에 실패했어요. 잠시 후 다시 시도해 주세요.'); return }
@@ -316,6 +349,7 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
     if (!window.confirm('방문 체크를 모두 풀고 처음부터 다시 도전할까요?\n방문 기록·완주 기록·후기는 그대로 남아요.')) return
     const ok = await resetRouteProgress(route.id, user.id).catch(() => false)
     if (!ok) { setToast('초기화하지 못했어요. 잠시 후 다시 시도해 주세요.'); return }
+    saveRunUi(routeId, null)
     window.location.reload()
   }
   const onPauseResume = () => { if (run.phase === 'paused') run.resume(); else run.pause() }
