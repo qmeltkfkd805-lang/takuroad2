@@ -45,6 +45,9 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
   const [ending, setEnding] = useState(false)
   const [endResult, setEndResult] = useState<EndResult | null>(null)
   const [skippedShops, setSkippedShops] = useState<Set<string>>(new Set())
+  // 따라가는 중 코스 목록에서 고른 곳 — 그곳부터 순서대로 안내 (anchorId), 방금 고른 곳이면 이전 구간 선은 안 그림 (jumpedId)
+  const [anchorId, setAnchorId] = useState<string | null>(null)
+  const [jumpedId, setJumpedId] = useState<string | null>(null)
   // 루트 보기(따라가기 전) 방문 체크 = route_progress — 루트 상세 체크와 같은 값
   const [visitedIds, setVisitedIds] = useState<Set<string>>(new Set())
   const [busyVisitId, setBusyVisitId] = useState<string | null>(null)
@@ -148,7 +151,10 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
   }, [rawStops])
 
   // 다음 안내 = 전체 샵 순서에서 아직 안 지나갔고(도착/확인) 건너뛰지 않은 첫 샵
-  const nextShop = sheetStops.find(s => !run.arrivedShopIds.has(s.id) && !s.visited && !skippedShops.has(s.id)) ?? null
+  // 코스 목록에서 고른 곳이 있으면 그곳부터(끝까지 다 갔으면 앞쪽 남은 곳으로 돌아감)
+  const isPending = (s: SheetStop) => !run.arrivedShopIds.has(s.id) && !s.visited && !skippedShops.has(s.id)
+  const anchorIdx = anchorId ? sheetStops.findIndex(s => s.id === anchorId) : -1
+  const nextShop = (anchorIdx >= 0 ? sheetStops.slice(anchorIdx).find(isPending) : undefined) ?? sheetStops.find(isPending) ?? null
   const nextLabel = nextShop ? `${nextShop.order}. ${nextShop.name}${nextShop.floor ? ` (${nextShop.floor})` : ''}` : null
   const nextCoord = nextShop ? shopCoord.get(nextShop.id) ?? null : null
   const nextDistanceM = myLoc && nextCoord ? Math.round(calcDistance(myLoc.lat, myLoc.lng, nextCoord.lat, nextCoord.lng)) : null
@@ -158,9 +164,10 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
      첫 장소로 가는 중(이전 장소 없음)엔 선 없이 핀만. */
   const prevStop = useMemo(() => {
     if (!running || !nextShop) return null
+    if (jumpedId === nextShop.id) return null   // 목록에서 골라 건너뛴 곳 — 이전 구간 선 없이 그 핀으로 이동
     const idx = sheetStops.findIndex(s => s.id === nextShop.id)
     return idx > 0 ? sheetStops[idx - 1] : null
-  }, [running, nextShop, sheetStops])
+  }, [running, nextShop, sheetStops, jumpedId])
   const segmentLine = useMemo((): [number, number][] | null => {
     if (!running || !nextShop || !prevStop) return null
     const a = shopCoord.get(prevStop.id), b = shopCoord.get(nextShop.id)
@@ -223,8 +230,17 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
   const resuming = run.hasExistingSession && !running
   function onStart() {
     run.requestLocationNow()   // 사용자 탭(제스처)에서 위치 권한 요청 → iOS 팝업 확실히
-    if (resuming) run.resume(); else { setSkippedShops(new Set()); run.start() }
+    if (resuming) run.resume(); else { setSkippedShops(new Set()); setAnchorId(null); setJumpedId(null); run.start() }
     setSelectedId(null)
+  }
+  // 따라가는 중 코스 목록에서 장소를 고르면 → 그곳을 "다음 장소"로 (새 창·다시 시작 없이)
+  const chooseNext = (id: string) => {
+    const st = sheetStops.find(s => s.id === id)
+    if (!st) return
+    if (st.visited || run.arrivedShopIds.has(id)) { setToast(`${st.order}번은 이미 방문 체크했어요`); return }
+    setSkippedShops(prev => { if (!prev.has(id)) return prev; const n = new Set(prev); n.delete(id); return n })
+    setAnchorId(id); setJumpedId(id)
+    setToast(`${st.order}번 ${st.name}(으)로 안내할게요`)
   }
   const skipNext = () => { if (nextShop) setSkippedShops(prev => { const n = new Set(prev); n.add(nextShop.id); return n }) }
   async function handleRunEnd(mode: 'complete' | 'partial' | 'later', manualIds: string[]) {
@@ -406,6 +422,7 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
         busyVisitId={busyVisitId}
         showProgress={!!user}
         onReset={user && !running ? resetCourse : undefined}
+        onChooseNext={running ? chooseNext : undefined}
         nextId={nextShop?.id ?? null}
       />
 

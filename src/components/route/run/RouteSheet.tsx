@@ -28,7 +28,7 @@ export interface SheetStop {
   visited: boolean
 }
 
-export type SheetSnap = 'collapsed' | 'half' | 'expanded'
+export type SheetSnap = 'mini' | 'collapsed' | 'half' | 'expanded'   // mini = 손잡이·진행률만 남기고 접은 상태
 
 function walkText(min: number | null, m: number | null): string | null {
   const parts: string[] = []
@@ -75,12 +75,14 @@ export default function RouteSheet(props: {
   nextId?: string | null
   /** 완주 초기화 — 코스 목록을 펼쳤을 때 맨 아래에 보인다 (체크가 하나라도 있을 때) */
   onReset?: () => void
+  /** 따라가는 중 코스 목록에서 장소를 누르면 그곳을 다음 장소로 */
+  onChooseNext?: (id: string) => void
 }) {
   const {
     onHeightChange, title, metaLine, stops, selectedId, onSelect, onOpenDetail,
     running, phase, onStart, startLabel, starting, visitedCount, totalStops,
     nextLabel, nextDistanceM, onSkip, onPauseResume, onEnd,
-    onToggleVisit, busyVisitId = null, showProgress = false, nextId = null, onReset,
+    onToggleVisit, busyVisitId = null, showProgress = false, nextId = null, onReset, onChooseNext,
   } = props
   const pct = totalStops ? Math.round((visitedCount / totalStops) * 100) : 0
 
@@ -119,10 +121,11 @@ export default function RouteSheet(props: {
     ro.observe(el)
     return () => ro.disconnect()
   }, [running])
-  const [heights, setHeights] = useState({ collapsed: 190, half: 380, expanded: 560 })
+  const [heights, setHeights] = useState({ mini: MINI_H, collapsed: 190, half: 380, expanded: 560 })
   const [dragH, setDragH] = useState<number | null>(null)   // 드래그 중 실시간 높이
   const dragRef = useRef<{ startY: number; startH: number } | null>(null)
   const listRef = useRef<HTMLOListElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
 
   // 뷰포트에 맞춰 3단 높이 계산 (앱바 54 + 하단탭 58 제외 영역 기준)
   useEffect(() => {
@@ -130,6 +133,7 @@ export default function RouteSheet(props: {
       const vh = window.innerHeight
       const avail = vh - 54 - 58
       setHeights({
+        mini: MINI_H,
         // 진행 중: 위쪽 내용 높이(손잡이 18 + 내용 + 코스 목록 줄 여유) — 화면의 86%를 넘지 않게
         collapsed: running
           ? Math.min(Math.round(avail * 0.86), runTopH ? runTopH + 18 + 44 : (hasArrive ? 262 : 200) + (hasTip ? 58 : 0))
@@ -149,13 +153,14 @@ export default function RouteSheet(props: {
 
   // 선택되면 최소 half까지 올려서 상세가 보이게
   useEffect(() => {
-    if (selectedId && snap === 'collapsed') setSnap('half')
+    if (selectedId && (snap === 'collapsed' || snap === 'mini')) setSnap('half')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedId])
 
   const snapTo = useCallback((target: SheetSnap) => setSnap(target), [])
   const cycle = useCallback(() => {
-    setSnap(s => (s === 'collapsed' ? 'half' : s === 'half' ? 'expanded' : 'collapsed'))
+    // 손잡이 탭: 기본 ↔ 접기(mini). 크게 펼친 상태에서 누르면 기본 높이로
+    setSnap(s => (s === 'collapsed' ? 'mini' : 'collapsed'))
   }, [])
 
   // 드래그(핸들)
@@ -166,14 +171,14 @@ export default function RouteSheet(props: {
   const onPointerMove = (e: ReactPointerEvent) => {
     if (!dragRef.current) return
     const dy = dragRef.current.startY - e.clientY   // 위로 끌면 +
-    const h = Math.min(heights.expanded + 40, Math.max(heights.collapsed - 40, dragRef.current.startH + dy))
+    const h = Math.min(heights.expanded + 40, Math.max(heights.mini - 10, dragRef.current.startH + dy))
     setDragH(h)
   }
   const onPointerUp = () => {
     if (!dragRef.current) return
     const h = dragH ?? heights[snap]
     // 가장 가까운 스냅으로
-    const cands: SheetSnap[] = ['collapsed', 'half', 'expanded']
+    const cands: SheetSnap[] = ['mini', 'collapsed', 'half', 'expanded']
     let best: SheetSnap = 'collapsed', bd = Infinity
     for (const c of cands) { const d = Math.abs(heights[c] - h); if (d < bd) { bd = d; best = c } }
     dragRef.current = null
@@ -182,7 +187,11 @@ export default function RouteSheet(props: {
   }
 
   const selected = selectedId ? stops.find(s => s.id === selectedId) ?? null : null
-  const listProps = { stops, selectedId, onSelect, onOpenDetail, listRef, onToggleVisit, busyVisitId }
+  // 따라가는 중엔 목록에서 누른 곳을 "다음 장소"로 바꾸고 시트를 기본 높이로 내려 카드를 보여준다
+  const listSelect = running && onChooseNext
+    ? (id: string | null) => { if (id) { onChooseNext(id); setSnap('collapsed'); contentRef.current?.scrollTo({ top: 0 }) } }
+    : onSelect
+  const listProps = { stops, selectedId: running ? nextId : selectedId, onSelect: listSelect, onOpenDetail, listRef, onToggleVisit, busyVisitId }
 
   return (
     <div className={styles.sheet} style={{ height: curH, transition: dragH == null ? 'height .28s cubic-bezier(.32,.72,0,1)' : 'none' }}>
@@ -192,13 +201,14 @@ export default function RouteSheet(props: {
       </div>
 
       {running ? (
-        <div className={styles.content}>
+        <div className={styles.content} ref={contentRef}>
           <div ref={runTopRef}>
           <div className={styles.runHead}>
             <div>
               <span className={styles.badge}>{phase === 'paused' ? '일시중지' : '진행 중'}</span>
               <span className={styles.runCount}>방문 {visitedCount}/{totalStops}곳</span>
             </div>
+            <FoldBtn folded={snap === 'mini'} onClick={() => snapTo(snap === 'mini' ? 'collapsed' : 'mini')} />
           </div>
           <div className={styles.bar}><div className={styles.barFill} style={{ width: `${pct}%` }} /></div>
           {shownStop ? (
@@ -248,7 +258,10 @@ export default function RouteSheet(props: {
       ) : (
         <div className={styles.content}>
           <div className={styles.summary}>
-            <div className={styles.sumTitle}>{title}</div>
+            <div className={styles.sumTitleRow}>
+              <div className={styles.sumTitle}>{title}</div>
+              <FoldBtn folded={snap === 'mini'} onClick={() => snapTo(snap === 'mini' ? 'collapsed' : 'mini')} />
+            </div>
             <div className={styles.sumMeta}>{metaLine}</div>
           </div>
           {/* 내 방문 체크 진행률 — 목록을 열어 스팟마다 체크 */}
@@ -272,6 +285,18 @@ export default function RouteSheet(props: {
         </div>
       )}
     </div>
+  )
+}
+
+const MINI_H = 74   // 접었을 때: 손잡이 + 진행 중·방문 n/N + 진행 막대 (또는 루트 제목)
+
+/* 시트 접기/펼치기 버튼 — 손잡이를 탭하거나 끌어도 같은 동작 */
+function FoldBtn({ folded, onClick }: { folded: boolean; onClick: () => void }) {
+  return (
+    <button type="button" className={styles.foldBtn} onClick={onClick} aria-expanded={!folded} aria-label={folded ? '시트 펼치기' : '시트 접기'}>
+      {folded ? '펼치기' : '접기'}
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ transform: folded ? 'rotate(180deg)' : undefined }}><path d="m6 9 6 6 6-6" /></svg>
+    </button>
   )
 }
 
