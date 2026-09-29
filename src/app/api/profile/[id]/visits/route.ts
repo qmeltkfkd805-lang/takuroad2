@@ -35,7 +35,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 
   const before = new URL(req.url).searchParams.get('before')
   let q = acc.svc.from('activity_logs')
-    .select('id, type, snapshot, related_type, related_id, occurred_at, created_at, title')
+    .select('id, type, snapshot, related_type, related_id, source_id, occurred_at, created_at, title')
     .eq('user_id', acc.owner.id)
     .in('type', types)
     .order('occurred_at', { ascending: false, nullsFirst: false })
@@ -154,6 +154,32 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
         if (list.length) byRoute.set(r.route_id, list)
       }
       for (const it of items) { const rid = routeOf.get(it.id); const list = rid ? byRoute.get(rid) : null; if (list) it.photos = list }
+    }
+  }
+
+  // 몇 번째 방문인지(샵) · 총 몇 번 완주했는지(루트) — 하루 1번씩 센다 (SQL: migrations/visit_counts.sql)
+  const shopIdsShown = [...new Set(page.filter(a => a.type === 'shop_visit' && a.related_id).map(a => a.related_id as string))]
+  if (shopIdsShown.length) {
+    const { data: cis } = await acc.svc.from('check_ins')
+      .select('id, shop_id, check_in_date, created_at').eq('user_id', acc.owner.id).in('shop_id', shopIdsShown)
+      .order('check_in_date', { ascending: true }).order('created_at', { ascending: true })
+    const ordinal = new Map<string, number>()   // check_in id → n번째
+    const seenPerShop = new Map<string, number>()
+    for (const c of (cis ?? []) as any[]) {
+      const n = (seenPerShop.get(c.shop_id) ?? 0) + 1
+      seenPerShop.set(c.shop_id, n); ordinal.set(c.id, n)
+    }
+    const srcOf = new Map(page.map(a => [a.id, a.source_id]))
+    for (const it of items) if (it.type === 'shop_visit') { const n = ordinal.get(srcOf.get(it.id)); if (n) it.visitNo = n }
+  }
+  const routeIdsShown = [...new Set(items.filter(i => routeOf.has(i.id)).map(i => routeOf.get(i.id)!))]
+  if (routeIdsShown.length) {
+    const { data: runs, error: runErr } = await acc.svc.from('route_completion_runs')
+      .select('route_id').eq('user_id', acc.owner.id).in('route_id', routeIdsShown)
+    if (!runErr) {
+      const cnt = new Map<string, number>()
+      for (const r of (runs ?? []) as any[]) cnt.set(r.route_id, (cnt.get(r.route_id) ?? 0) + 1)
+      for (const it of items) { const rid = routeOf.get(it.id); const n = rid ? cnt.get(rid) : 0; if (n) it.runCount = n }
     }
   }
 

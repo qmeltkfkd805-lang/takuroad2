@@ -404,7 +404,7 @@ function PostsList({ userId, isSelf, active }: { userId: string; isSelf: boolean
 }
 
 /* ── 방문 기록 — 연대기와 같은 날짜 규칙(localDay)으로 월별 묶음 ── */
-interface VisitItem { id: string; type: string; at: string; name: string | null; eventType: string | null; placeName: string | null; region: string | null; workName: string | null; gps: boolean; href: string | null; thumb: string | null; photos?: { url: string; private: boolean }[] }
+interface VisitItem { id: string; type: string; at: string; name: string | null; eventType: string | null; placeName: string | null; region: string | null; workName: string | null; gps: boolean; href: string | null; thumb: string | null; photos?: { url: string; private: boolean }[]; visitNo?: number; runCount?: number }
 const EVENT_LABEL: Record<string, string> = { popup: '팝업 참여', collab_cafe: '콜라보 카페 방문', exhibition: '전시 관람', official_event: '행사 참가' }
 function typeLabel(v: VisitItem): string {
   if (v.type === 'shop_visit') return '샵 방문'
@@ -452,6 +452,8 @@ function VisitTimeline({ userId, isSelf, active, allowed }: { userId: string; is
                     <span className={s.tlBody}>
                       <span className={s.tlTop}>
                         <span className={s.tlType}>{typeLabel(v)}</span>
+                        {v.visitNo && v.visitNo > 1 && <span className={s.tlType}>{v.visitNo}번째 방문</span>}
+                        {v.runCount && v.runCount > 1 && <span className={s.tlType}>총 {v.runCount}번 완주</span>}
                         {v.gps && <span className={s.tlGps}>GPS 인증</span>}
                       </span>
                       <p className={s.tlName}>{v.name || typeLabel(v)}</p>

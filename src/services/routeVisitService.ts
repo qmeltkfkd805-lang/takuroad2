@@ -66,23 +66,59 @@ export interface CompletedRoute {
   total: number
   regions: string[]
   stops: { lat: number; lng: number }[]
+  /** 완주 횟수(하루 1번씩) · 마지막 완주일 */
+  runCount: number
+  lastRunDate: string | null
 }
 
-// 방문=전체(완주)인 루트
+/* 완주 횟수 — route_completion_runs(하루 1번씩 1행). SQL: migrations/visit_counts.sql
+   표가 아직 없으면 완주 기록이 있을 때 1번으로 본다. */
+export async function getMyRouteRunStats(routeId: string, userId: string): Promise<{ count: number; lastDate: string | null }> {
+  const supabase = createClient()
+  const { data, error } = await supabase.from('route_completion_runs')
+    .select('run_date, created_at').eq('route_id', routeId).eq('user_id', userId)
+    .order('created_at', { ascending: false })
+  if (error) return { count: (await isRouteCompleted(routeId, userId)) ? 1 : 0, lastDate: null }
+  const rows = (data ?? []) as any[]
+  const last = rows.map(r => r.run_date).filter(Boolean).sort().pop() ?? null
+  return { count: rows.length, lastDate: last }
+}
+
+export async function getMyRouteRunCounts(userId: string): Promise<Record<string, { count: number; lastDate: string | null }>> {
+  const supabase = createClient()
+  const { data, error } = await supabase.from('route_completion_runs').select('route_id, run_date').eq('user_id', userId)
+  if (error) return {}
+  const out: Record<string, { count: number; lastDate: string | null }> = {}
+  for (const r of (data ?? []) as any[]) {
+    const o = (out[r.route_id] ??= { count: 0, lastDate: null })
+    o.count++
+    if (r.run_date && (!o.lastDate || r.run_date > o.lastDate)) o.lastDate = r.run_date
+  }
+  return out
+}
+
+// 완주한 루트 — 완주 기록(route_completions) + 예전 방식(방문=전체). "다시 도전"으로 체크를 지워도 목록에 남는다
 export async function getCompletedRoutes(userId: string): Promise<CompletedRoute[]> {
   const supabase = createClient()
-  const { data: prog } = await supabase.from('route_progress').select('route_id, shop_id').eq('user_id', userId)
-  if (!prog || prog.length === 0) return []
-  const routeIds = Array.from(new Set((prog as any[]).map((p) => p.route_id)))
+  const [{ data: prog }, { data: comps }, runs] = await Promise.all([
+    supabase.from('route_progress').select('route_id, shop_id').eq('user_id', userId),
+    supabase.from('route_completions').select('route_id').eq('user_id', userId),
+    getMyRouteRunCounts(userId),
+  ])
+  const completedIds = new Set(((comps ?? []) as any[]).map(c => c.route_id))
+  const routeIds = Array.from(new Set([...completedIds, ...((prog ?? []) as any[]).map((p) => p.route_id)]))
+  if (routeIds.length === 0) return []
   const { data: routes } = await supabase
     .from('routes')
     .select('id, title, share_token, cover_image_url, official_difficulty, total_distance_m, total_duration_min, route_shops ( id, sort_order, shops ( region, addr, lat, lng ) )')
     .in('id', routeIds)
   return ((routes ?? []) as any[]).map((r) => {
     const total = r.route_shops?.length ?? 0
-    const visited = (prog as any[]).filter((p) => p.route_id === r.id).length
+    const visited = ((prog ?? []) as any[]).filter((p) => p.route_id === r.id).length
     const regions = Array.from(new Set((r.route_shops ?? []).map((rs: any) => rs.shops?.region || (rs.shops?.addr ? String(rs.shops.addr).trim().split(/\s+/)[0] : null)).filter(Boolean))) as string[]
     const stops = [...(r.route_shops ?? [])].sort((a: any, b: any) => (a.sort_order ?? 0) - (b.sort_order ?? 0)).map((rs: any) => ({ lat: rs.shops?.lat, lng: rs.shops?.lng })).filter((s: any) => typeof s.lat === 'number' && typeof s.lng === 'number')
-    return { id: r.id, title: r.title, shareToken: r.share_token, cover: r.cover_image_url, difficulty: r.official_difficulty, distance: r.total_distance_m, durationMin: r.total_duration_min ?? null, total, visited, regions, stops }
-  }).filter((r: any) => r.total > 0 && r.visited >= r.total).map(({ visited, ...r }: any) => r)
+    const done = completedIds.has(r.id) || (total > 0 && visited >= total)
+    const run = runs[r.id]
+    return { id: r.id, title: r.title, shareToken: r.share_token, cover: r.cover_image_url, difficulty: r.official_difficulty, distance: r.total_distance_m, durationMin: r.total_duration_min ?? null, total, regions, stops, done, runCount: Math.max(run?.count ?? 0, done ? 1 : 0), lastRunDate: run?.lastDate ?? null }
+  }).filter((r: any) => r.done).map(({ done, ...r }: any) => r)
 }

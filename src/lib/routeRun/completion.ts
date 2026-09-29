@@ -39,6 +39,25 @@ async function findCompletionId(svc: SupabaseClient, userId: string, routeId: st
   return (data as any)?.id ?? null
 }
 
+/* 완주 횟수 — 하루 1번까지 한 행 (route_completion_runs, SQL: migrations/visit_counts.sql).
+   완주 여부·EXP·배지는 route_completions 가 그대로 맡고, 여기는 "몇 번 완주했나"만 센다.
+   같은 날 GPS 로 다시 완주하면 그날 행을 gps 로 올린다(내리지는 않음). 표가 없으면 조용히 넘어간다. */
+function kstToday(): string {
+  return new Date(Date.now() + 9 * 3600_000).toISOString().slice(0, 10)
+}
+export async function recordCompletionRun(svc: SupabaseClient, userId: string, routeId: string, verified: 'gps' | 'manual'): Promise<void> {
+  try {
+    const run_date = kstToday()
+    const { error } = await svc.from('route_completion_runs')
+      .upsert({ route_id: routeId, user_id: userId, run_date, verified } as any, { onConflict: 'route_id,user_id,run_date', ignoreDuplicates: true })
+    if (error) { console.error('[completion run]', error.code, error.message); return }
+    if (verified === 'gps') {
+      await svc.from('route_completion_runs').update({ verified: 'gps' } as any)
+        .eq('route_id', routeId).eq('user_id', userId).eq('run_date', run_date)
+    }
+  } catch (e) { console.error('[completion run]', (e as Error)?.message) }
+}
+
 function toOutcome(data: unknown): CompletionOutcome {
   const row = (Array.isArray(data) ? data[0] : data) as any
   if (!row) return EMPTY
@@ -72,6 +91,7 @@ export async function recordManualCompletion(
     completionId = (created as any)?.id ?? await findCompletionId(svc, userId, routeId)
   }
   if (!completionId) return { error: 'completion_failed' }
+  await recordCompletionRun(svc, userId, routeId, verified)
 
   const { data, error } = await svc.rpc('record_activity_reward', {
     p_user: userId, p_type: 'route_completed', p_source_id: completionId,
@@ -98,6 +118,7 @@ export async function recordGpsCompletion(
     return EMPTY
   }
   const out = toOutcome(data)
+  await recordCompletionRun(svc, userId, routeId, 'gps')
   if (out.recorded) return out
 
   /* 이미 활동 기록이 있는 경우 — 버튼으로 먼저 완주해 둔 루트를 나중에 GPS 로 완주했다.

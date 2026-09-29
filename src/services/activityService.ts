@@ -649,7 +649,8 @@ export async function checkWorkMilestone(userId: string, workId: string): Promis
     .select('shop_id')
     .eq('user_id', userId)
 
-  const visited = (visits ?? []).filter((v: any) => totalShopIds.has(v.shop_id)).length
+  // 같은 샵 재방문(하루 1번씩 기록)은 한 곳으로 센다
+  const visited = new Set((visits ?? []).map((v: any) => v.shop_id).filter((id: string) => totalShopIds.has(id))).size
   const pct = Math.round((visited / total) * 100)
 
   const reached = MILESTONES.filter(m => pct >= m)

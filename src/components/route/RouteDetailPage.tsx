@@ -11,7 +11,7 @@ import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { toggleRouteSave, getMySavedRouteIds, toggleRouteShare, deleteRoute, adminDeleteRoute, adminSetRouteShared } from '@/services/routeService'
 import { recordRouteStart, hasStartedRoute, getRouteTips, addRouteTip, deleteRouteTip, RouteTip } from '@/services/routeTipService'
 import { getRelatedRoutes, RelatedRoute } from '@/services/routeRelatedService'
-import { getVisitedShopIds, setShopVisited, recordRouteCompletion } from '@/services/routeVisitService'
+import { getVisitedShopIds, setShopVisited, recordRouteCompletion, getMyRouteRunStats } from '@/services/routeVisitService'
 import RouteReviews from './RouteReviews'
 import styles from './RouteDetailPage.module.css'
 
@@ -112,6 +112,12 @@ export default function RouteDetailPage({ route }: { route: any }) {
   // 완주 후기 쓰기 창 열기 신호 (완주 축하 창의 "후기 남기기", 주소 ?review=1)
   const [reviewSignal, setReviewSignal] = useState(0)
   const completionRef = useRef<Promise<unknown> | null>(null)
+  // 내 완주 횟수(하루 1번씩) · 마지막 완주일
+  const [myRuns, setMyRuns] = useState<{ count: number; lastDate: string | null }>({ count: 0, lastDate: null })
+  useEffect(() => {
+    if (!user) { setMyRuns({ count: 0, lastDate: null }); return }
+    getMyRouteRunStats(route.id, user.id).then(setMyRuns).catch(() => {})
+  }, [user, route.id])
   // 모바일 전용: 탭 + inline CTA 가시성(스크롤 시 sticky 시작버튼 표시)
   const [mobileTab, setMobileTab] = useState<'course' | 'reviews' | 'related'>('course')
   const ctaRef = useRef<HTMLDivElement>(null)
@@ -203,7 +209,9 @@ export default function RouteDetailPage({ route }: { route: any }) {
     const ok = await setShopVisited(route.id, shopId, user.id, !has)
     if (!ok) { setVisitedIds(prev => { const n = new Set(prev); has ? n.add(shopId) : n.delete(shopId); return n }); return }
     // 모든 스팟을 체크했으면 완주 기록 (서버가 route_progress 로 다시 대조, 비GPS 완주는 EXP 0) — 후기는 완주 기록이 있어야 쓸 수 있다
-    if (!has && celebratedRef.current) completionRef.current = recordRouteCompletion(route.id, user.id).catch(() => {})
+    if (!has && celebratedRef.current) completionRef.current = recordRouteCompletion(route.id, user.id)
+      .then(() => getMyRouteRunStats(route.id, user.id).then(setMyRuns))
+      .catch(() => {})
   }
   async function submitTip() {
     if (!user || !tipInput.trim() || tipBusy) return
@@ -410,6 +418,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
           {statusBadge && <div className={styles.mBadgeRow}>{statusBadge}</div>}
           <h1 className={styles.mTitle}>{route.title}</h1>
           <div className={styles.mAuthor}>{author ? `${author}의 루트` : '타쿠로드 루트'}{route.created_at && <> · {fmtDate(route.created_at)}</>}</div>
+          {myRuns.count > 0 && <div className={styles.mAuthor} style={{ marginTop: 4 }}>내 완주 <b style={{ color: 'var(--accent)' }}>{myRuns.count}번</b>{myRuns.lastDate && <> · 마지막 {myRuns.lastDate.replace(/-/g, '.')}</>}</div>}
           {route.description && <p className={styles.mDesc}>{route.description}</p>}
           {tags.length > 0 && <div className={styles.mTags}>{tags.map(t => <span key={t as string} className={styles.mTag}>{t as string}</span>)}</div>}
           <div className={styles.mStats}>
@@ -554,6 +563,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
               </div>
               <h1 className={styles.infoTitle}>{route.title}</h1>
               <div className={styles.infoAuthor}>{author ? `${author}의 루트` : '타쿠로드 루트'}{route.created_at && <> · {fmtDate(route.created_at)}</>}</div>
+              {myRuns.count > 0 && <div className={styles.infoAuthor} style={{ marginTop: 4 }}>내 완주 <b style={{ color: 'var(--accent)' }}>{myRuns.count}번</b>{myRuns.lastDate && <> · 마지막 {myRuns.lastDate.replace(/-/g, '.')}</>}</div>}
               {route.description && <p className={styles.infoDesc}>{route.description}</p>}
               {tags.length > 0 && <div className={styles.tagRow}>{tags.map(t => <span key={t as string} className={styles.tag}>{t as string}</span>)}</div>}
               <div className={styles.metaRow}>

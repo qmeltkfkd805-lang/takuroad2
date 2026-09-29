@@ -31,7 +31,8 @@ export default function CompletedRoutesTab({ userId }: { userId: string }) {
     <RouteBrowser
       routes={ui}
       emptyText="완주한 루트가 없어요"
-      badgeFor={() => ({ text: '완료', bg: '#22c55e' })}
+      // 완주 횟수(하루 1번씩)
+      badgeFor={r => { const n = routes.find(x => x.id === r.id)?.runCount ?? 1; return { text: n > 1 ? `${n}번 완주` : '완주', bg: '#22c55e' } }}
     />
   )
 }

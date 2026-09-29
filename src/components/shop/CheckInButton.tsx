@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { createCheckIn, getMyCheckInStatus, getShopCheckInCount } from '@/services/checkInService'
+import { createCheckIn, getMyCheckInStatus, getShopCheckInCount, kstToday } from '@/services/checkInService'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/tds/Button'
 import AppIcon from '@/components/tds/AppIcon'
@@ -18,6 +18,8 @@ interface Props {
 export default function CheckInButton({ shopId, shopName, shopLat, shopLng }: Props) {
   const { user } = useAuth()
   const [checkedInToday, setCheckedInToday] = useState(false)
+  // 내 방문 횟수(하루 1번씩) · 마지막 방문일 — 다른 날 다시 오면 +1
+  const [mine, setMine] = useState<{ count: number; lastDate: string | null }>({ count: 0, lastDate: null })
   const [checkInCount, setCheckInCount] = useState(0)
   const [submitting, setSubmitting] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
@@ -25,7 +27,7 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng }: Pr
 
   useEffect(() => {
     if (user) {
-      getMyCheckInStatus(user.id, shopId).then(s => setCheckedInToday(s.checkedInToday))
+      getMyCheckInStatus(user.id, shopId).then(s => { setCheckedInToday(s.checkedInToday); setMine({ count: s.count, lastDate: s.lastDate }) })
     }
     getShopCheckInCount(shopId).then(setCheckInCount)
   }, [user, shopId])
@@ -40,9 +42,13 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng }: Pr
     )
 
     if (result.success) {
+      const wasToday = checkedInToday
       setCheckedInToday(true)
-      setCheckInCount(c => c + 1)
-      setToast('방문 기록 완료!')
+      if (!wasToday) {
+        setCheckInCount(c => c + 1)
+        setMine(m => ({ count: m.count + 1, lastDate: kstToday() }))
+      }
+      setToast(mine.count > 0 ? `${mine.count + 1}번째 방문을 기록했어요!` : '방문 기록 완료!')
       setTimeout(() => setToast(null), 2500)
 
       if (result.newTierIds && result.newTierIds.length > 0) {
@@ -83,11 +89,19 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng }: Pr
         leftIcon={!checkedInToday && !submitting ? checkinIcon : undefined}
       >
         {checkedInToday
-          ? '방문한 곳이에요'
+          ? '오늘 방문 기록했어요'
           : submitting
             ? '기록 중...'
-            : '방문했어요'}
+            : mine.count > 0 ? '또 방문했어요' : '방문했어요'}
       </Button>
+
+      {/* 내 방문 횟수 — 같은 샵은 하루 1번씩 센다 */}
+      {user && mine.count > 0 && (
+        <div style={{ marginTop: 8, textAlign: 'center', fontSize: 13, color: 'var(--muted)', fontWeight: 600 }}>
+          내 방문 <b style={{ color: 'var(--text)', fontWeight: 800 }}>{mine.count}번</b>
+          {mine.lastDate && <> · 마지막 {mine.lastDate.replace(/-/g, '.')}</>}
+        </div>
+      )}
 
       {toast && (
         <div style={{
