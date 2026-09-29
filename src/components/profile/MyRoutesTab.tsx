@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useAuth } from '@/components/layout/AuthProvider'
 import { getMyRoutes, deleteRoute, toggleRouteShare } from '@/services/routeService'
 import { LoadingState } from './SavedShopsTab'
 import { routeRegions } from './RouteRegionFilter'
@@ -16,6 +17,7 @@ function stopsOf(r: any): { lat: number; lng: number }[] {
 
 export default function MyRoutesTab({ userId, readOnly }: { userId: string; readOnly?: boolean }) {
   const router = useRouter()
+  const { isAdmin } = useAuth()
   const [routes, setRoutes] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -33,19 +35,16 @@ export default function MyRoutesTab({ userId, readOnly }: { userId: string; read
   }
   async function copyShare(route: any) {
     const token = route.share_token
-    if (!route.is_shared && !route.is_official) {
-      await toggleRouteShare(route.id, userId, true)
-      setRoutes(prev => prev.map(r => r.id === route.id ? { ...r, is_shared: true } : r))
-    }
     if (token) {
       navigator.clipboard?.writeText(window.location.origin + '/route/' + token)
       alert('공유 링크가 복사됐어요!')
     }
   }
-  async function toggleVisibility(route: any) {
-    const next = !(route.is_shared || route.is_official)
-    await toggleRouteShare(route.id, userId, next)
-    setRoutes(prev => prev.map(r => r.id === route.id ? { ...r, is_shared: next } : r))
+  /* 루트는 공개가 기본 — 임시 저장 루트만 "공개하기"로 공개할 수 있고, 공개 → 비공개는 없다 */
+  async function publish(route: any) {
+    const ok = await toggleRouteShare(route.id, userId, true)
+    if (ok) setRoutes(prev => prev.map(r => r.id === route.id ? { ...r, is_shared: true } : r))
+    else alert('공개하지 못했어요. 다시 시도해 주세요.')
   }
 
   if (loading) return <LoadingState />
@@ -69,14 +68,17 @@ export default function MyRoutesTab({ userId, readOnly }: { userId: string; read
     <RouteBrowser
       routes={ui}
       emptyText={readOnly ? '공개한 루트가 없어요' : '아직 만든 루트가 없어요'}
-      badgeFor={r => r.isShared ? { text: '공개', bg: '#22c55e' } : { text: '비공개', bg: '#9aa1ab' }}
+      badgeFor={r => r.isShared ? null : { text: '임시 저장', bg: '#9aa1ab' }}
+      // 임시 저장 루트는 눌러서 바로 이어 만들기 → "저장하기"를 누르면 공개
+      hrefFor={readOnly ? undefined : r => (!r.isShared && r.shareToken ? '/route/' + r.shareToken + '/edit' : null)}
       menuFor={readOnly ? undefined : (r) => {
         const raw = routes.find(x => x.id === r.id)
         if (!raw) return null
+        const isDraft = !(raw.is_shared || raw.is_official)
         return [
-          { label: '공유하기', onClick: () => copyShare(raw) },
-          { label: '수정하기', onClick: () => raw.share_token && router.push('/route/' + raw.share_token + '/edit') },
-          { label: r.isShared ? '비공개로 전환' : '공개로 전환', onClick: () => toggleVisibility(raw) },
+          ...(isDraft ? [{ label: '공개하기', onClick: () => publish(raw) }] : [{ label: '공유하기', onClick: () => copyShare(raw) }]),
+          // 추천(공식) 루트는 관리자만 수정
+          ...(!raw.is_official || isAdmin ? [{ label: '수정하기', onClick: () => raw.share_token && router.push('/route/' + raw.share_token + '/edit') }] : []),
           { label: '삭제하기', danger: true, onClick: () => handleDelete(r.id) },
         ]
       }}

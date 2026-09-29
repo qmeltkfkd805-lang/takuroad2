@@ -39,8 +39,10 @@ function Dropdown({ label, options, onPick }: {
   )
 }
 
-export default function RouteBrowser({ routes, badgeFor, menuFor, emptyText }: {
+export default function RouteBrowser({ routes, badgeFor, menuFor, emptyText, hrefFor }: {
   routes: UIRoute[]
+  /** 카드를 눌렀을 때 갈 곳 (없으면 루트 상세) — 임시 저장 루트는 이어서 만들기로 */
+  hrefFor?: (r: UIRoute) => string | null
   badgeFor?: (r: UIRoute) => { text: string; bg: string } | null
   menuFor?: (r: UIRoute) => RouteMenuItem[] | null
   emptyText: string
@@ -94,7 +96,7 @@ export default function RouteBrowser({ routes, badgeFor, menuFor, emptyText }: {
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: cols === 2 ? 'repeat(auto-fill, minmax(150px, 1fr))' : '1fr', gap: 12, padding: '0 16px' }}>
           {shown.map(r => (
-            <RouteCard key={r.id} route={r} onOpen={() => { if (r.shareToken) window.location.href = '/route/' + r.shareToken }} badge={badgeFor?.(r) ?? null} menu={menuFor?.(r) ?? null} />
+            <RouteCard key={r.id} route={r} onOpen={() => { const href = hrefFor?.(r) ?? (r.shareToken ? '/route/' + r.shareToken : null); if (href) window.location.href = href }} badge={badgeFor?.(r) ?? null} menu={menuFor?.(r) ?? null} />
           ))}
         </div>
       )}

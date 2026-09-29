@@ -46,9 +46,9 @@ const BulbIcon = (p: { size?: number; color?: string }) => <Svg {...p}><path d="
 
 type SourceMode = 'work' | 'region' | 'saved'
 
-export default function RouteBuilder({ mode = 'create', editRouteId = null, editToken = null, ownerId = null, initialShared = false, lastEdited = null }: { mode?: 'create' | 'edit'; editRouteId?: string | null; editToken?: string | null; ownerId?: string | null; initialShared?: boolean; lastEdited?: string | null } = {}) {
+export default function RouteBuilder({ mode = 'create', editRouteId = null, editToken = null, ownerId = null, initialShared = false, isOfficial = false, lastEdited = null }: { mode?: 'create' | 'edit'; editRouteId?: string | null; editToken?: string | null; ownerId?: string | null; initialShared?: boolean; isOfficial?: boolean; lastEdited?: string | null } = {}) {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user, isAdmin } = useAuth()
 
   const [step, setStep] = useState(1)
   const [sourceMode, setSourceMode] = useState<SourceMode>('region')  // 샵 소스: 샵 검색(region) / 저장한 샵(saved)
@@ -72,13 +72,11 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
 
   const [saving, setSaving] = useState(false)
   const editing = mode === 'edit'
+  const isOwner = !!ownerId && !!user && user.id === ownerId
   const [shared, setShared] = useState(initialShared)
   const [loadingEdit, setLoadingEdit] = useState(mode === 'edit')
-  const [shareBusy, setShareBusy] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
   const [showExit, setShowExit] = useState(false)   // 나가기 확인 다이얼로그
-  const [publishAsk, setPublishAsk] = useState<{ id: string; shareToken: string } | null>(null) // 저장 직후 공개 여부 묻기
-  const [publishBusy, setPublishBusy] = useState(false)
   const [guideOpen, setGuideOpen] = useState(false)  // '좋은 루트 만드는 법' 접기/펼치기
 
   useEffect(() => { getAllTagsFull().then(setTags).catch(() => {}) }, [])
@@ -235,10 +233,13 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
     { label: '테마·추천 대상 설정', ok: themes.length > 0 || !!target.trim() },
   ]
 
-  async function save() {
+  /* 루트는 공개가 기본이다. 비공개 = "임시 저장"(아직 다 못 만든 루트)뿐.
+     - 저장하기/변경사항 저장 : 이름 + 샵 2곳 이상 필요, 저장하면 바로 공개 (임시 저장 루트를 불러와 저장해도 공개)
+     - 임시 저장           : 이름 + 샵 1곳 이상이면 언제든, 나만 보는 상태로 남김 (공개된 루트는 임시 저장으로 못 돌린다) */
+  async function save(asDraft = false) {
     if (!user) return
     if (!title.trim()) { setMsg('루트 이름을 입력하세요'); setStep(1); return }
-    if (added.length < 2) { setMsg('샵을 2개 이상 담아주세요'); setStep(2); return }
+    if (added.length < (asDraft ? 1 : 2)) { setMsg(asDraft ? '샵을 1곳 이상 담으면 임시 저장할 수 있어요' : '샵을 2개 이상 담아주세요'); setStep(2); return }
     setSaving(true); setMsg(null)
     const shopInput = added.map((s, i) => ({ shopId: s.id, lat: s.lat as number, lng: s.lng as number, moveTip: i < added.length - 1 ? (moveTips[s.id] ?? null) : null }))
     const meta = {
@@ -252,36 +253,27 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
       const ok = await updateRoute(editRouteId, title.trim(), desc.trim(), difficulty, shopInput)
       if (!ok) { setSaving(false); setMsg('수정 저장 실패'); return }
       await updateRouteMeta(editRouteId, meta)
+      // 임시 저장 루트를 "공개하기"로 저장하면 공개로 바꾼다 (작성자만 — 추천 루트는 이미 공개)
+      if (!asDraft && !shared && isOwner) {
+        const pub = await toggleRouteShare(editRouteId, user.id, true)
+        if (!pub) { setSaving(false); setMsg('저장은 됐지만 공개하지 못했어요. 다시 눌러주세요.'); return }
+        setShared(true)
+      }
       setSaving(false)
-      router.push(`/route/${editToken}`)
+      router.push(asDraft ? '/profile?tab=routes' : `/route/${editToken}`)
       return
     }
     const res = await createRoute(user.id, title.trim(), desc.trim(), shopInput, difficulty)
     if (!res) { setSaving(false); setMsg('루트 생성 실패'); return }
     await updateRouteMeta(res.id, meta)
-    setSaving(false)
-    // 저장 완료 → 공개 여부를 물어본 뒤 '내 루트'로 이동
-    setPublishAsk({ id: res.id, shareToken: res.shareToken })
-  }
-
-  // 저장 직후 공개/비공개 선택 → 내 루트 화면으로
-  async function finishPublish(makePublic: boolean) {
-    if (!user || !publishAsk || publishBusy) return
-    setPublishBusy(true)
-    if (makePublic) {
-      await toggleRouteShare(publishAsk.id, user.id, true)
+    if (!asDraft) {
+      const pub = await toggleRouteShare(res.id, user.id, true)
+      if (!pub) { setSaving(false); setMsg('저장은 됐지만 공개하지 못했어요. 내 루트에서 이어서 공개해 주세요.'); router.push('/profile?tab=routes'); return }
     }
-    router.push('/profile?tab=routes')
+    setSaving(false)
+    router.push(asDraft ? '/profile?tab=routes' : `/route/${res.shareToken}`)
   }
 
-  async function toggleShared() {
-    if (!user || !editRouteId || shareBusy) return
-    setShareBusy(true)
-    const next = !shared
-    const ok = await toggleRouteShare(editRouteId, user.id, next)
-    setShareBusy(false)
-    if (ok) setShared(next)
-  }
   async function doDelete() {
     if (!user || !editRouteId) return
     if (!confirm('이 루트를 삭제할까요? 되돌릴 수 없어요.')) return
@@ -292,8 +284,11 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
 
   if (!user) return <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>로그인하면 루트를 만들 수 있어요.</div>
   if (editing && loadingEdit) return <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>루트 불러오는 중...</div>
-  if (editing && ownerId && user.id !== ownerId) return <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>이 루트를 수정할 권한이 없어요.</div>
+  /* 수정 권한: 관리자는 모든 루트, 작성자는 추천(공식) 지정 전 루트만 (추천 지정 때 "이후 관리자만 편집" 약속) */
+  if (editing && !(isAdmin || (isOwner && !isOfficial))) return <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>{isOfficial ? '추천 루트는 관리자만 수정할 수 있어요.' : '이 루트를 수정할 권한이 없어요.'}</div>
 
+  // 임시 저장: 새 루트, 또는 아직 공개 안 한 내 루트 (추천 루트·남의 루트는 해당 없음)
+  const canDraft = !shared && (!editing || (isOwner && !isOfficial))
   const searchPlaceholder = sourceMode === 'saved' ? '저장한 샵에서 검색 (이름·지역)' : '지역·이름 검색 (예: 홍대, 강남)'
   const diffMeta = DIFF.find((d) => d.v === difficulty)!
   // 단계별 완료 조건 + 미완료 사유
@@ -526,15 +521,9 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
                 <ReviewRow label="테마" value={themes.length ? themes.join(', ') : '(없음)'} ok={themes.length > 0} />
               </div>
               {/* 저장 버튼은 하단 고정 액션 바에 있음 */}
-              {editing && (
+              {/* 루트 삭제는 내 일반 루트에서만. 추천 루트는 관리자 > 추천 루트 관리에서 */}
+              {editing && isOwner && !isOfficial && (
                 <>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginTop: 14, padding: '12px 14px', background: 'var(--surface2)', borderRadius: 12 }}>
-                    <div>
-                      <div style={{ fontSize: 13, fontWeight: 800 }}>공개 설정</div>
-                      <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>{shared ? '누구나 볼 수 있어요' : '나만 볼 수 있어요 (작성중)'}</div>
-                    </div>
-                    <button onClick={toggleShared} disabled={shareBusy} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 9999, border: 'none', background: shared ? 'var(--green)' : 'var(--yellow)', color: '#fff', fontWeight: 800, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>{shareBusy ? '처리 중…' : (shared ? '공개' : '작성중')}</button>
-                  </div>
                   <button onClick={doDelete} style={{ width: '100%', marginTop: 12, padding: 13, borderRadius: 12, border: '1px solid var(--red)', background: 'var(--surface)', color: 'var(--red)', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}><Svg size={15} color="var(--red)"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6" /></Svg>루트 삭제</button>
                 </>
               )}
@@ -569,10 +558,14 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
         {step > 1 && (
           <button onClick={() => setStep((s) => Math.max(1, s - 1))} style={{ ...ghostBtn, minHeight: 50, flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 4, padding: '0 18px' }}><Svg size={15}><path d="m15 18-6-6 6-6" /></Svg>이전</button>
         )}
+        {/* 임시 저장 — 아직 공개하지 않은(작성 중) 루트만. 공개된 루트는 되돌리지 않는다 */}
+        {canDraft && (
+          <button onClick={() => save(true)} disabled={saving} style={{ ...ghostBtn, minHeight: 50, flexShrink: 0, padding: '0 16px', fontWeight: 800, fontSize: 14 }}>임시 저장</button>
+        )}
         {step < STEPS.length ? (
           <button onClick={() => { if (canNext) { setStep((s) => Math.min(STEPS.length, s + 1)); setMsg(null) } else { setMsg(curIssue) } }} disabled={!canNext} style={{ flex: 1, minWidth: 0, minHeight: 50, borderRadius: 12, border: 'none', background: canNext ? 'var(--accent)' : 'var(--border)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: canNext ? 'pointer' : 'default', fontFamily: 'inherit', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{canNext ? nextLabel : (curIssue ?? nextLabel)}</button>
         ) : (
-          <button onClick={save} disabled={saving} style={{ flex: 1, minWidth: 0, minHeight: 50, borderRadius: 12, border: 'none', background: saving ? 'var(--border)' : 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: saving ? 'default' : 'pointer', fontFamily: 'inherit' }}>{saving ? '저장 중…' : (editing ? '변경사항 저장' : '루트 저장하기')}</button>
+          <button onClick={() => save(false)} disabled={saving} style={{ flex: 1, minWidth: 0, minHeight: 50, borderRadius: 12, border: 'none', background: saving ? 'var(--border)' : 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: saving ? 'default' : 'pointer', fontFamily: 'inherit' }}>{saving ? '저장 중…' : (editing && shared ? '변경사항 저장' : '저장하기')}</button>
         )}
       </div>
 
@@ -585,23 +578,6 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
             <div style={{ display: 'flex', gap: 10 }}>
               <button onClick={() => setShowExit(false)} style={{ flex: 1, minHeight: 48, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 800, fontSize: 14.5, cursor: 'pointer', fontFamily: 'inherit' }}>계속 작성</button>
               <button onClick={doExit} style={{ flex: 1, minHeight: 48, borderRadius: 12, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14.5, cursor: 'pointer', fontFamily: 'inherit' }}>나가기</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 저장 완료 — 전체 공개 여부 확인 */}
-      {publishAsk && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 4000, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-          <div style={{ width: '100%', maxWidth: 360, background: 'var(--surface)', borderRadius: 18, padding: '24px 20px 18px', textAlign: 'center' }}>
-            <div style={{ width: 52, height: 52, borderRadius: 9999, background: 'var(--accent-l, #FFE6EF)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' }}>
-              <Svg size={26} color="var(--accent)"><path d="M20 6 9 17l-5-5" /></Svg>
-            </div>
-            <div style={{ fontSize: 17, fontWeight: 900, marginBottom: 8 }}>루트를 저장했어요!</div>
-            <div style={{ fontSize: 13.5, color: 'var(--muted)', lineHeight: 1.6, marginBottom: 20 }}>이 루트를 전체보기에 공개할까요?<br />공개하면 다른 사람도 둘러볼 수 있어요.<br />나중에 내 루트에서 언제든 바꿀 수 있어요.</div>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <button onClick={() => finishPublish(false)} disabled={publishBusy} style={{ flex: 1, minHeight: 48, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 800, fontSize: 14.5, cursor: publishBusy ? 'default' : 'pointer', fontFamily: 'inherit' }}>비공개로 저장</button>
-              <button onClick={() => finishPublish(true)} disabled={publishBusy} style={{ flex: 1, minHeight: 48, borderRadius: 12, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14.5, cursor: publishBusy ? 'default' : 'pointer', fontFamily: 'inherit' }}>{publishBusy ? '처리 중…' : '네, 공개할게요'}</button>
             </div>
           </div>
         </div>
