@@ -45,7 +45,7 @@
 .spotAddr span { min-width: 0; word-break: keep-all; overflow-wrap: anywhere; }
 .spotTags { display: flex; flex-wrap: wrap; gap: 5px; }
 .spotNext { font-size: 12.5px; font-weight: 700; color: var(--muted); }
-.spotBtns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.spotBtns { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 8px; }   /* 버튼 1개면 전체 폭, 2개면 반반 */
 .spotDetail, .spotVisit, .spotVisitOn {
   box-sizing: border-box; min-height: 44px; min-width: 0; padding: 0 10px; border-radius: 11px;
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
@@ -130,3 +130,9 @@
 .runTip { margin: -2px 0 10px; padding: 9px 12px; border-radius: 10px; background: var(--accent-l); color: var(--text); font-size: 13px; font-weight: 600; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
 .runTipLabel { display: inline-block; margin-right: 6px; font-size: 11px; font-weight: 900; color: var(--accent); }
 .spotTags .tag { font-size: 11.5px; padding: 3px 8px; border-radius: 7px; }
+.resetBtn { display: block; width: 100%; min-height: 44px; margin-top: 12px; border-radius: 11px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-family: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; }
+.spotLabel { align-self: flex-start; font-size: 11px; font-weight: 800; color: var(--accent); background: var(--accent-l); border-radius: 9999px; padding: 3px 9px; margin-bottom: -2px; }
+.spotTip { font-size: 12.5px; line-height: 1.5; color: var(--text); background: var(--accent-l); border-radius: 10px; padding: 7px 10px; white-space: pre-wrap; word-break: keep-all; overflow-wrap: anywhere; }
+.spotTip b { display: block; font-size: 10.5px; font-weight: 800; color: var(--accent); margin-bottom: 1px; }
+.spotVisitDone, .spotVisitDone:disabled { opacity: 1; box-sizing: border-box; min-height: 44px; min-width: 0; padding: 0 10px; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: inherit; font-size: 14px; font-weight: 800; white-space: nowrap; border: 1.5px solid #16a34a; background: #16a34a; color: #fff; }
+.spotDetail:disabled { opacity: .5; }

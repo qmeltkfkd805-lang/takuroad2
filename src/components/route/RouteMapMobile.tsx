@@ -16,7 +16,7 @@ import RouteSheet, { type SheetStop } from './run/RouteSheet'
 import ArrivalToast from './run/ArrivalToast'
 import RouteEndSheet, { type EndShop } from './run/RouteEndSheet'
 import RouteRunComplete from './run/RouteRunComplete'
-import { getVisitedShopIds, setShopVisited, recordRouteCompletion } from '@/services/routeVisitService'
+import { getVisitedShopIds, setShopVisited, recordRouteCompletion, resetRouteProgress } from '@/services/routeVisitService'
 import { createCheckIn } from '@/services/checkInService'
 import styles from './RouteMapMobile.module.css'
 
@@ -294,9 +294,13 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
     } finally { setBusyVisitId(null) }
   }
 
-  const navigateNext = () => {
-    if (!nextShop || !nextCoord) return
-    window.open(`https://map.kakao.com/link/to/${encodeURIComponent(nextShop.name)},${nextCoord.lat},${nextCoord.lng}`, '_blank', 'noopener')
+  // 완주 초기화 — 방문 체크·멈춘 따라가기를 풀고(방문·완주 기록과 후기는 유지) 화면을 새로 불러온다
+  const resetCourse = async () => {
+    if (!user || !route?.id) return
+    if (!window.confirm('방문 체크를 모두 풀고 처음부터 다시 도전할까요?\n방문 기록·완주 기록·후기는 그대로 남아요.')) return
+    const ok = await resetRouteProgress(route.id, user.id).catch(() => false)
+    if (!ok) { setToast('초기화하지 못했어요. 잠시 후 다시 시도해 주세요.'); return }
+    window.location.reload()
   }
   const onPauseResume = () => { if (run.phase === 'paused') run.resume(); else run.pause() }
 
@@ -387,7 +391,7 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
         running={running}
         phase={run.phase}
         onStart={onStart}
-        startLabel={resuming ? '이어서 따라가기' : '루트 시작하기'}
+        startLabel="루트 시작하기"   // 남은 세션이 있어도 문구는 같게 — 누르면 이어서 진행
         starting={run.phase === 'loading'}
         visitedCount={visitedCount}
         totalStops={sheetStops.length}
@@ -395,13 +399,13 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
         checkpointTotal={run.totalCheckpoints}
         nextLabel={nextLabel}
         nextDistanceM={nextDistanceM}
-        onNavigate={navigateNext}
         onSkip={skipNext}
         onPauseResume={onPauseResume}
         onEnd={() => setShowEndSheet(true)}
         onToggleVisit={toggleVisit}
         busyVisitId={busyVisitId}
         showProgress={!!user}
+        onReset={user && !running ? resetCourse : undefined}
         nextId={nextShop?.id ?? null}
       />
 
