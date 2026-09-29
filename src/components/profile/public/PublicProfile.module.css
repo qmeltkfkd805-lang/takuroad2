@@ -1,0 +1,166 @@
+/* 공개 프로필 — 흰 바탕 + 핑크는 팔로우 버튼과 선택된 탭에만 */
+.page { width: 100%; max-width: 1100px; margin: 0 auto; padding: 28px 28px 72px; box-sizing: border-box; min-width: 0; background: var(--surface); }
+
+/* ── 헤더(가로형) ── */
+.head { display: flex; align-items: flex-start; gap: 22px; }
+.avatar { flex-shrink: 0; }
+.info { flex: 1; min-width: 0; }
+.nameRow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.name { font-size: 22px; font-weight: 900; color: var(--text); margin: 0; letter-spacing: -0.3px; word-break: break-all; }
+.bio { margin: 6px 0 0; font-size: 14px; line-height: 1.55; color: var(--text); white-space: pre-wrap; word-break: break-word; }
+.works { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.work {
+  display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 9999px;
+  border: 1px solid var(--border); background: var(--surface2); color: var(--text);
+  font-size: 12.5px; font-weight: 700; text-decoration: none; white-space: nowrap; max-width: 220px; overflow: hidden; text-overflow: ellipsis;
+}
+.work:hover { border-color: var(--text); }
+.stats { display: flex; gap: 18px; margin-top: 12px; font-size: 14px; color: var(--muted); }
+.stats b { color: var(--text); font-weight: 900; margin-right: 4px; }
+
+.actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.btn {
+  height: 38px; padding: 0 18px; border-radius: 9999px; font-family: inherit; font-size: 13.5px; font-weight: 800; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text); white-space: nowrap;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none;
+}
+.btn:disabled { opacity: .6; cursor: default; }
+.follow { background: var(--accent); border-color: var(--accent); color: #fff; }
+.iconBtn { width: 38px; padding: 0; }
+.menuWrap { position: relative; }
+.menu {
+  position: absolute; right: 0; top: 44px; z-index: 20; min-width: 150px; padding: 6px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.08);
+}
+.menu button {
+  display: block; width: 100%; text-align: left; padding: 10px 12px; border: none; background: none; border-radius: 8px;
+  font-family: inherit; font-size: 13.5px; font-weight: 700; color: var(--text); cursor: pointer;
+}
+.menu button:hover { background: var(--surface2); }
+.menu .danger { color: #d33; }
+
+/* ── 메인 탭(밑줄) ── */
+.tabs { display: flex; gap: 4px; margin-top: 26px; border-bottom: 1px solid var(--border); }
+.tab {
+  position: relative; padding: 12px 16px 13px; border: none; background: none; cursor: pointer;
+  font-family: inherit; font-size: 15px; font-weight: 800; color: var(--muted);
+}
+.tab[aria-selected='true'] { color: var(--accent); }
+.tab[aria-selected='true']::after { content: ''; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; background: var(--accent); border-radius: 2px; }
+
+/* ── 서브 탭(작은 버튼) ── */
+.subs { display: flex; gap: 6px; margin: 18px 0 16px; }
+.sub {
+  height: 32px; padding: 0 14px; border-radius: 9999px; border: 1px solid var(--border); background: var(--surface);
+  font-family: inherit; font-size: 13px; font-weight: 800; color: var(--muted); cursor: pointer;
+}
+.sub[aria-selected='true'] { border-color: var(--accent); background: var(--accent-l, rgba(255,86,146,.12)); color: var(--accent); }
+
+.panel { padding-top: 4px; min-height: 240px; }
+
+/* ── 사진 그리드: PC 3열, 모바일 2열 ── */
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.cell {
+  position: relative; display: block; width: 100%; aspect-ratio: 1 / 1; overflow: hidden;
+  background: var(--surface2); border: none; padding: 0; cursor: pointer; border-radius: 10px;
+}
+.cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #c4c4cc; }
+.multi {
+  position: absolute; top: 7px; right: 7px; width: 22px; height: 22px; border-radius: 7px; background: rgba(0,0,0,.45); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+@media (hover: hover) { .cell:hover img { filter: brightness(.93); } }
+
+/* 작품별 묶음 */
+.group + .group { margin-top: 28px; }
+.groupHead { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; }
+.back {
+  width: 32px; height: 32px; border-radius: 9999px; border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0;
+}
+.groupName { font-size: 16px; font-weight: 900; color: var(--text); margin: 0; }
+.groupCount { font-size: 13px; font-weight: 700; color: var(--muted); }
+
+/* 굿즈 카드(사진 + 이름) */
+.gCard { display: block; min-width: 0; border: none; background: none; padding: 0; text-align: left; cursor: pointer; font-family: inherit; }
+.gName { margin: 8px 2px 0; font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gWork { margin: 2px 2px 0; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gridGoods { row-gap: 16px; }
+
+/* ── 게시글 목록 ── */
+.postList { list-style: none; margin: 0; padding: 0; }
+.post { border-bottom: 1px solid var(--border); }
+.postLink { display: flex; gap: 14px; align-items: center; padding: 14px 2px; text-decoration: none; color: inherit; }
+.postBody { flex: 1; min-width: 0; }
+.postMeta { font-size: 12px; color: var(--muted); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.postTitle { margin: 4px 0 0; font-size: 15px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.postEx { margin: 3px 0 0; font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.postThumb { position: relative; width: 72px; height: 72px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: var(--surface2); }
+.postThumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.pill { font-size: 11px; font-weight: 800; padding: 1px 7px; border-radius: 9999px; border: 1px solid var(--border); color: var(--muted); }
+
+/* ── 방문 기록(월별 · 세로 타임라인) ── */
+.month + .month { margin-top: 26px; }
+.monthHead { font-size: 15px; font-weight: 900; color: var(--text); margin: 0 0 8px; }
+.tl { list-style: none; margin: 0; padding: 0 0 0 18px; position: relative; }
+.tl::before { content: ''; position: absolute; left: 5px; top: 8px; bottom: 8px; width: 2px; background: var(--border); border-radius: 2px; }
+.tlItem { position: relative; }
+.tlItem::before {
+  content: ''; position: absolute; left: -17px; top: 50%; margin-top: -5px; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--surface); border: 2px solid #c9c9d1; box-sizing: border-box;
+}
+.tlRow { display: flex; align-items: center; gap: 12px; padding: 12px 8px; border-radius: 12px; text-decoration: none; color: inherit; }
+a.tlRow:hover { background: var(--surface2); }
+.tlDate { width: 64px; flex-shrink: 0; white-space: nowrap; font-size: 12.5px; font-weight: 800; color: var(--muted); }
+.tlBody { flex: 1; min-width: 0; }
+.tlTop { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.tlType { font-size: 11.5px; font-weight: 800; color: var(--text); background: var(--surface2); border-radius: 6px; padding: 2px 7px; }
+.tlGps { font-size: 11px; font-weight: 800; color: #0d7a5f; background: rgba(13,122,95,.08); border-radius: 6px; padding: 2px 7px; }
+.tlName { margin: 4px 0 0; font-size: 14.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tlDesc { margin: 2px 0 0; font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tlThumb { position: relative; width: 48px; height: 48px; border-radius: 9px; overflow: hidden; flex-shrink: 0; background: var(--surface2); display: flex; align-items: center; justify-content: center; color: #b9b9c3; }
+.tlThumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* 방문 기록 사진 — 항목 아래, 이름 줄에 맞춰 들여서 */
+.tlPhotos { display: flex; gap: 8px; margin: -4px 0 8px 84px; }
+.tlPhoto {
+  position: relative; width: 84px; height: 84px; border-radius: 10px; overflow: hidden; flex-shrink: 0;
+  border: none; padding: 0; cursor: pointer; background: var(--surface2);
+}
+.tlPhoto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.tlLock {
+  position: absolute; left: 5px; bottom: 5px; padding: 1px 6px; border-radius: 6px;
+  background: rgba(0,0,0,.55); color: #fff; font-size: 10.5px; font-weight: 800;
+}
+
+/* ── 상태 ── */
+.state { padding: 56px 16px; text-align: center; color: var(--muted); font-size: 14px; line-height: 1.6; white-space: pre-line; }
+.state button { margin-top: 12px; }
+.skel { background: linear-gradient(90deg, var(--surface2) 0%, #efeff2 50%, var(--surface2) 100%); background-size: 200% 100%; animation: sk 1.2s ease-in-out infinite; }
+@keyframes sk { 0% { background-position: 200% 0 } 100% { background-position: -200% 0 } }
+.more { display: flex; justify-content: center; margin-top: 20px; }
+.toast {
+  position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); z-index: 60;
+  background: rgba(32,32,45,.92); color: #fff; font-size: 13.5px; font-weight: 700; padding: 10px 16px; border-radius: 9999px;
+}
+
+/* ── 모바일 ── */
+@media (max-width: 640px) {
+  .page { padding: 18px 16px 88px; }
+  .head { flex-wrap: wrap; gap: 14px; }
+  .name { font-size: 19px; }
+  .bio { font-size: 13.5px; }
+  .stats { gap: 14px; font-size: 13.5px; }
+  .actions { width: 100%; }
+  .actions .follow, .actions .grow { flex: 1; }
+  .tabs { margin-top: 18px; }
+  .tab { flex: 1; padding: 12px 6px 13px; font-size: 14.5px; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .cell { border-radius: 8px; }
+  .postThumb { width: 60px; height: 60px; }
+  .tlDate { width: 60px; font-size: 11.5px; }
+  .tlRow { gap: 10px; padding: 11px 4px; }
+  .tlPhotos { margin-left: 74px; gap: 6px; }
+  .tlPhoto { width: 72px; height: 72px; }
+}
