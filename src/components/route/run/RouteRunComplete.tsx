@@ -29,16 +29,11 @@ export default function RouteRunComplete({ result, routeTitle, onClose, onReview
             <span className={styles.statLabel}>방문한 장소</span>
           </div>
           <div className={styles.stat}>
-            <span className={styles.statNum}>{result.fieldVerified}</span>
-            <span className={styles.statLabel}>현장에서 확인</span>
-          </div>
-          <div className={styles.stat}>
             <span className={styles.statNum}>{result.manualCount}</span>
             <span className={styles.statLabel}>직접 기록</span>
           </div>
         </div>
 
-        {result.bonusGranted && <div className={styles.bonus}>현장 확인 보너스를 받았어요 ✨</div>}
 
         {completed && onReview ? (
           <>

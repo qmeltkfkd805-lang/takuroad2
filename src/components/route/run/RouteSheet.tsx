@@ -73,12 +73,16 @@ export default function RouteSheet(props: {
   const {
     onHeightChange, title, metaLine, stops, selectedId, onSelect, onOpenDetail,
     running, phase, onStart, startLabel, starting, visitedCount, totalStops,
-    fieldVerified, checkpointTotal, nextLabel, nextDistanceM, onNavigate, onSkip, onPauseResume, onEnd,
+    nextLabel, nextDistanceM, onNavigate, onSkip, onPauseResume, onEnd,
     onToggleVisit, busyVisitId = null, showProgress = false, nextId = null,
   } = props
   const pct = totalStops ? Math.round((visitedCount / totalStops) * 100) : 0
 
-  const hasArrive = !!nextId && !!onToggleVisit && !!nextLabel   // 진행 중 "여기 방문했어요" 버튼이 있으면 접힌 높이도 키운다
+  // 다음 장소로 가는 길 메모 — 루트 작성자가 앞 장소에 적어 둔 이동 설명(move_tip)
+  const nextIdx = nextId ? stops.findIndex(s => s.id === nextId) : -1
+  const nextTip = nextIdx > 0 ? stops[nextIdx - 1]?.moveTip ?? null : null
+  const hasArrive = !!nextId && !!onToggleVisit && !!nextLabel
+  const hasTip = !!nextTip   // 진행 중 "여기 방문했어요" 버튼이 있으면 접힌 높이도 키운다
   const [snap, setSnap] = useState<SheetSnap>('collapsed')
   // "여기 방문했어요" — 평소엔 회색, 눌러서 기록되면 잠깐 초록(방문 완료)으로 보여준 뒤 다음 장소로
   // 방문 완료를 보여주는 동안엔 "다음" 줄도 방금 방문한 곳을 그대로 두었다가, 끝나면 2번→3번으로 넘어간다
@@ -105,7 +109,7 @@ export default function RouteSheet(props: {
       const vh = window.innerHeight
       const avail = vh - 54 - 58
       setHeights({
-        collapsed: running ? (hasArrive ? 276 : 214) : (showProgress ? 262 : 196),   // 진행률 줄만큼 더 높게
+        collapsed: running ? (hasArrive ? 262 : 200) + (hasTip ? 58 : 0) : (showProgress ? 262 : 196),   // 진행률 줄만큼 더 높게
         half: Math.round(avail * 0.5),
         expanded: Math.round(avail * 0.86),
       })
@@ -113,7 +117,7 @@ export default function RouteSheet(props: {
     calc()
     window.addEventListener('resize', calc)
     return () => window.removeEventListener('resize', calc)
-  }, [running, showProgress, hasArrive])
+  }, [running, showProgress, hasArrive, hasTip])
 
   const curH = dragH ?? heights[snap]
   useEffect(() => { onHeightChange(curH) }, [curH, onHeightChange])
@@ -167,11 +171,10 @@ export default function RouteSheet(props: {
           <div className={styles.runHead}>
             <div>
               <span className={styles.badge}>{phase === 'paused' ? '일시중지' : '진행 중'}</span>
-              <span className={styles.runCount}>현장 확인 {fieldVerified}/{checkpointTotal}</span>
+              <span className={styles.runCount}>방문 {visitedCount}/{totalStops}곳</span>
             </div>
-            <span className={styles.runVisited}>방문 기록 {visitedCount}/{totalStops}곳</span>
           </div>
-          <div className={styles.bar}><div className={styles.barFill} style={{ width: `${checkpointTotal ? Math.round((fieldVerified / checkpointTotal) * 100) : 0}%` }} /></div>
+          <div className={styles.bar}><div className={styles.barFill} style={{ width: `${pct}%` }} /></div>
           <div className={styles.nextRow}>
             <div className={styles.nextInfo}>
               <span className={styles.nextLabel}>다음</span>
@@ -180,6 +183,10 @@ export default function RouteSheet(props: {
             {arrived ? <span className={styles.nextDist} style={{ color: '#16a34a' }}>도착</span>
               : nextLabel && <span className={styles.nextDist}>{nextDistanceM != null ? walkText(Math.round(nextDistanceM / 75), nextDistanceM) : '위치 확인 중…'}</span>}
           </div>
+          {/* 가는 길 메모 (루트 작성자가 적어 둔 이동 설명) */}
+          {nextTip && !arrived && (
+            <div className={styles.runTip}><span className={styles.runTipLabel}>가는 길</span>{nextTip}</div>
+          )}
           {((nextLabel && nextId && onToggleVisit) || arrived) && (
             <button className={`${styles.arriveBtn} ${arrived ? styles.arriveBtnOn : ''}`} onClick={onArrive} disabled={arrived || busyVisitId === nextId}>
               <CheckIcon /> {arrived ? '방문 완료!' : '여기 방문했어요'}
