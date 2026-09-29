@@ -83,10 +83,16 @@
 .groupCount { font-size: 13px; font-weight: 700; color: var(--muted); }
 
 /* 굿즈 카드(사진 + 이름) */
-.gCard { display: block; min-width: 0; border: none; background: none; padding: 0; text-align: left; cursor: pointer; font-family: inherit; }
-.gName { margin: 8px 2px 0; font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.gWork { margin: 2px 2px 0; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.gridGoods { row-gap: 16px; }
+/* 사진 + 이름 + 작품을 한 카드 안에 */
+.gCard {
+  display: block; min-width: 0; padding: 0 0 11px; text-align: left; cursor: pointer; font-family: inherit;
+  border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--surface);
+}
+.gCard .cell { border-radius: 0; }
+@media (hover: hover) { .gCard:hover { border-color: #d6d6dc; } }
+.gName { margin: 10px 11px 0; font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gWork { margin: 3px 11px 0; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gridGoods { gap: 12px; }
 
 /* ── 게시글 목록 ── */
 .postList { list-style: none; margin: 0; padding: 0; }
@@ -157,6 +163,10 @@ a.tlRow:hover { background: var(--surface2); }
   .tabs { margin-top: 18px; }
   .tab { flex: 1; padding: 12px 6px 13px; font-size: 14.5px; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .gridGoods { gap: 10px; }
+  .gName { margin: 9px 9px 0; font-size: 13px; }
+  .gWork { margin: 2px 9px 0; }
+  .gCard { padding-bottom: 10px; }
   .cell { border-radius: 8px; }
   .postThumb { width: 60px; height: 60px; }
   .tlDate { width: 60px; font-size: 11.5px; }
