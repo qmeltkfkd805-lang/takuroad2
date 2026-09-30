@@ -19,6 +19,7 @@ import { getRouteFloorMaps, getRouteSources, type RouteSource } from '@/services
 import { floorGroupKey, floorGroupLabel, hasFloorGroups } from '@/lib/route/autoOrder'
 import FloorMapViewer, { collectFloorMaps } from './FloorMapViewer'
 import TransferOwnerModal from './TransferOwnerModal'
+import { shopRegion } from '@/lib/shop/quickCompleteness'
 import styles from './RouteDetailPage.module.css'
 
 import AppIcon from '@/components/tds/AppIcon'
@@ -156,7 +157,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
   useEffect(() => {
     let alive = true
     getRouteTips(route.id).then(t => { if (alive) setRouteTips(t) }).catch(() => {})
-    const regions = Array.from(new Set(sortedStops.map((rs: any) => rs.shops?.region).filter(Boolean))) as string[]
+    const regions = Array.from(new Set(sortedStops.map((rs: any) => rs.shops ? shopRegion(rs.shops) : null).filter((x: any) => x && x !== '지역 미정'))) as string[]   // region 칸이 비면 주소에서
     getRelatedRoutes(route.id, route.primary_tag_id ?? null, regions, 6).then(r => { if (alive) setRelated(r) }).catch(() => {})
     return () => { alive = false }
   }, [route.id])
@@ -544,7 +545,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
                     </div>
                     <div className={styles.mRelatedInfo}>
                       <div className={styles.mRelatedTitle}>{r.title}</div>
-                      <div className={styles.mRelatedMeta}>스팟 {r.shop_count}곳{r.distance_m != null ? ` · ${(r.distance_m / 1000).toFixed(1)}km` : ''}</div>
+                      <div className={styles.mRelatedMeta}>스팟 {r.shop_count}곳{r.distance_m ? ` · ${(r.distance_m / 1000).toFixed(1)}km` : ''}</div>
                     </div>
                   </Link>
                 ))}
@@ -719,7 +720,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
                         <span className={styles.relatedReason}>{r.reason}</span>
                       </div>
                       <div className={styles.relatedTitle}>{r.title}</div>
-                      <div className={styles.relatedMeta}>스팟 {r.shop_count}곳{r.distance_m != null ? ` · ${(r.distance_m / 1000).toFixed(1)}km` : ''}</div>
+                      <div className={styles.relatedMeta}>스팟 {r.shop_count}곳{r.distance_m ? ` · ${(r.distance_m / 1000).toFixed(1)}km` : ''}</div>
                     </Link>
                   ))}
                 </div>

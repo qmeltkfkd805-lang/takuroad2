@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { shopRegion } from '@/lib/shop/quickCompleteness'
 
 export interface RelatedRoute {
   id: string
@@ -41,26 +42,24 @@ export async function getRelatedRoutes(
   }
 
   // 후보 B: 근처 지역(샵 region 일치) 공개 루트
+  //  공개 루트를 샵 지역과 함께 불러와서 여기서 비교한다 (route_shops 중첩 필터는 결과가 비는 경우가 있었음)
   if (uniqRegions.length) {
-    const { data: rs } = await supabase
-      .from('route_shops')
-      .select('route_id, shops!inner(region)')
-      .in('shops.region', uniqRegions)
-      .limit(200)
-    const regionIds = Array.from(new Set(((rs ?? []) as any[]).map((x) => x.route_id))).filter((id) => id !== routeId)
-    if (regionIds.length) {
-      const { data } = await supabase
-        .from('routes')
-        .select('id, title, share_token, cover_image_url, total_distance_m, route_shops(id)')
-        .in('id', regionIds)
-        .eq('is_shared', true)
-        .neq('id', routeId)
-        .limit(30)
-      for (const r of (data ?? []) as any[]) {
-        const ex = map.get(r.id)
-        if (ex) ex.sameRegion = true
-        else map.set(r.id, { id: r.id, title: r.title, share_token: r.share_token, cover_image_url: r.cover_image_url, shop_count: r.route_shops?.length ?? 0, distance_m: r.total_distance_m ?? null, sameTag: false, sameRegion: true })
-      }
+    const want = new Set(regions.filter(Boolean))   // 같은 시·구끼리만 ("경기 수원시" ↔ "경기 수원시")
+    const { data } = await supabase
+      .from('routes')
+      .select('id, title, share_token, cover_image_url, total_distance_m, route_shops ( id, shops ( region, addr ) )')
+      .eq('is_shared', true)
+      .neq('id', routeId)
+      .limit(500)
+    for (const r of (data ?? []) as any[]) {
+      const hit = (r.route_shops ?? []).some((rs: any) => {
+        // region 칸이 비어 있는 샵이 많아서 주소 앞부분("경기 수원시")으로 대신 — 루트 목록과 같은 방식
+        return !!rs.shops && want.has(shopRegion(rs.shops))
+      })
+      if (!hit) continue
+      const ex = map.get(r.id)
+      if (ex) ex.sameRegion = true
+      else map.set(r.id, { id: r.id, title: r.title, share_token: r.share_token, cover_image_url: r.cover_image_url, shop_count: r.route_shops?.length ?? 0, distance_m: r.total_distance_m ?? null, sameTag: false, sameRegion: true })
     }
   }
 
