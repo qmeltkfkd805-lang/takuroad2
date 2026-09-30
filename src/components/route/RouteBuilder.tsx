@@ -440,16 +440,23 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
       <style>{`
         .rb-root{ width:100%; max-width:100%; overflow-x:hidden; }
         .rb-bottom{ position:sticky; bottom:0; }
+        .rb-head{ position:sticky; top:0; z-index:35; background:var(--bg, #fff); padding:10px 0; margin-top:-10px; }
         @media (hover:none) and (pointer:coarse){
           .rb-root{ padding:12px 14px 96px !important; }
           .rb-form{ padding:16px 16px !important; border-radius:14px !important; border-left:none !important; border-right:none !important; margin:0 -14px !important; }
           .rb-bottom{ position:fixed !important; left:0; right:0; bottom:0; }
         }
       `}</style>
-      {/* 전용 헤더 — 뒤로 · 루트 만들기 · 나가기 */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+      {/* 전용 헤더 — 뒤로 · 루트 만들기 · [저장하기|임시 저장] · 나가기 (스크롤해도 위에 붙어 있음)
+          공개된 루트 수정: 어느 단계에서든 바로 "저장하기" / 새 루트·아직 공개 안 한 루트: 같은 자리에 "임시 저장" */}
+      <div className="rb-head" style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
         <button onClick={requestExit} style={iconBtn} aria-label="뒤로"><Svg><path d="m15 18-6-6 6-6" /></Svg></button>
-        <h1 style={{ flex: 1, fontSize: 20, fontWeight: 900, margin: 0 }}>{editing ? '루트 수정' : '루트 만들기'}</h1>
+        <h1 style={{ flex: 1, minWidth: 0, fontSize: 20, fontWeight: 900, margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{editing ? '루트 수정' : '루트 만들기'}</h1>
+        {canDraft ? (
+          <button onClick={() => save(true)} disabled={saving || !editReady} style={{ ...ghostBtn, fontWeight: 800, color: 'var(--accent)', borderColor: 'var(--accent)' }}>{saving ? '저장 중…' : '임시 저장'}</button>
+        ) : editing ? (
+          <button onClick={() => save(false)} disabled={saving || !editReady} style={{ ...ghostBtn, fontWeight: 800, border: 'none', background: saving ? 'var(--border)' : 'var(--accent)', color: '#fff' }}>{saving ? '저장 중…' : '저장하기'}</button>
+        ) : null}
         <button onClick={requestExit} style={ghostBtn}>나가기</button>
       </div>
 
@@ -785,10 +792,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
         {step > 1 && (
           <button onClick={() => setStep((s) => Math.max(1, s - 1))} style={{ ...ghostBtn, minHeight: 50, flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 4, padding: '0 18px' }}><Svg size={15}><path d="m15 18-6-6 6-6" /></Svg>이전</button>
         )}
-        {/* 임시 저장 — 아직 공개하지 않은(작성 중) 루트만. 공개된 루트는 되돌리지 않는다 */}
-        {canDraft && (
-          <button onClick={() => save(true)} disabled={saving} style={{ ...ghostBtn, minHeight: 50, flexShrink: 0, padding: '0 16px', fontWeight: 800, fontSize: 14 }}>임시 저장</button>
-        )}
+        {/* 임시 저장은 위 헤더로 옮겼다 (스크롤해도 항상 보이게) */}
         {step < STEPS.length ? (
           <button onClick={() => { if (canNext) { setStep((s) => Math.min(STEPS.length, s + 1)); setMsg(null) } else { setMsg(curIssue) } }} disabled={!canNext} style={{ flex: 1, minWidth: 0, minHeight: 50, borderRadius: 12, border: 'none', background: canNext ? 'var(--accent)' : 'var(--border)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: canNext ? 'pointer' : 'default', fontFamily: 'inherit', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{canNext ? nextLabel : (curIssue ?? nextLabel)}</button>
         ) : (
