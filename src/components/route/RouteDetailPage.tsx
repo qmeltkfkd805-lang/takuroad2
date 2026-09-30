@@ -737,6 +737,13 @@ export default function RouteDetailPage({ route }: { route: any }) {
             <button className={styles.railPrimary} onClick={handleStart}><PinIcon size={16} color="#fff" />루트 시작하기</button>
             <SaveBtn cls={`${styles.railGhost} ${saved ? styles.railGhostOn : ''}`} />
             {shopsWithCoords.length > 0 && <button className={styles.railLink} onClick={() => openInternalMap()}><ExpandIcon size={13} />타쿠로드 지도에서 보기</button>}
+            {/* 완주 초기화 — 방문 체크만 풀고 방문·완주 기록과 후기는 남긴다 (모바일 '코스 안내' 위와 같은 기능) */}
+            {user && visitedCount > 0 && (
+              <button type="button" onClick={resetCourse} disabled={resetting}
+                style={{ marginTop: 6, width: '100%', background: 'none', border: 'none', padding: '6px 0', color: 'var(--muted)', fontSize: 12.5, fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: 2, cursor: 'pointer', fontFamily: 'inherit' }}>
+                {resetting ? '초기화 중…' : `완주 초기화 (방문 체크 ${visitedCount}곳 풀기)`}
+              </button>
+            )}
           </div>
 
           <div className={styles.railCard}>
