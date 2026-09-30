@@ -10,6 +10,8 @@ import { shopRegion } from '@/lib/shop/quickCompleteness'
 import { Shop } from '@/types/shop'
 import RouteMiniMap from '@/components/admin/RouteMiniMap'
 import LogoLoader from '@/components/common/LogoLoader'
+import { useFormDraft } from '@/hooks/useFormDraft'
+import DraftNotice from '@/components/common/DraftNotice'
 
 const DIFF = [
   { v: 1, l: '가볍게', c: '#0E7A63' },
@@ -131,6 +133,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   const isOwner = !!ownerId && !!user && user.id === ownerId
   const [shared, setShared] = useState(initialShared)
   const [loadingEdit, setLoadingEdit] = useState(mode === 'edit')
+  const [editReady, setEditReady] = useState(mode !== 'edit')   // 수정 모드: 루트·출처·층 지도·메타를 다 불러온 뒤에야 임시저장본을 덮어쓴다
   const [msg, setMsg] = useState<string | null>(null)
   const [showExit, setShowExit] = useState(false)   // 나가기 확인 다이얼로그
   const [guideOpen, setGuideOpen] = useState(false)  // '좋은 루트 만드는 법' 접기/펼치기
@@ -141,7 +144,8 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   useEffect(() => {
     if (mode !== 'edit' || !editRouteId) return
     let alive = true
-    getRouteForEdit(editRouteId).then((r: any) => {
+    const loads: Promise<unknown>[] = []
+    loads.push(getRouteForEdit(editRouteId).then((r: any) => {
       if (!alive) return
       if (r) {
         setTitle(r.title ?? ''); setDesc(r.description ?? ''); setDifficulty(r.official_difficulty ?? 1)
@@ -153,18 +157,68 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
         setMoveTips(tips)
       }
       setLoadingEdit(false)
-    }).catch(() => setLoadingEdit(false))
-    getRouteSources(editRouteId).then(list => { if (alive) setSources(list.map(x => ({ name: x.name, url: x.url ?? '' }))) }).catch(() => {})
-    getRouteFloorMaps(editRouteId).then(list => { if (alive) setFloorMaps(Object.fromEntries(list.map(m => [m.key, m]))) }).catch(() => {})
-    getRouteMeta(editRouteId).then((m: any) => {
+    }).catch(() => setLoadingEdit(false)))
+    loads.push(getRouteSources(editRouteId).then(list => { if (alive) setSources(list.map(x => ({ name: x.name, url: x.url ?? '' }))) }).catch(() => {}))
+    loads.push(getRouteFloorMaps(editRouteId).then(list => { if (alive) setFloorMaps(Object.fromEntries(list.map(m => [m.key, m]))) }).catch(() => {}))
+    loads.push(getRouteMeta(editRouteId).then((m: any) => {
       if (!alive) return
       setCoverUrl(m.cover ?? ''); setThemes(m.themes ?? [])
       setTarget(m.target ? String(m.target).split('\n').map((l: string) => '- ' + l).join('\n') : '')
       setTips(m.tips ? String(m.tips).split('\n').map((l: string) => '- ' + l).join('\n') : '')
       setPrimaryTagId(m.primaryTag ?? null)
-    }).catch(() => {})
+    }).catch(() => {}))
+    Promise.allSettled(loads).then(() => { if (alive) setEditReady(true) })
     return () => { alive = false }
   }, [mode, editRouteId])
+
+  /* 작성 중 자동 임시저장 — 샵 정보 고치러 다른 화면에 다녀오거나 새로고침해도 담은 샵·순서·층 지도·출처·입력한 내용이 그대로.
+     새 루트는 사용자별 1개, 수정은 루트별로. 저장(공개·임시 저장)하면 지운다. */
+  type BuilderDraft = {
+    step: number; added: Shop[]; moveTips: Record<string, string>; title: string; desc: string; difficulty: number
+    coverUrl: string; themes: string[]; target: string; tips: string; primaryTagId: string | null; selectedTag: AdminTag | null
+    floorMaps: Record<string, FloorMap>; sources: { name: string; url: string }[]; orderMode: AutoOrderMode | null
+  }
+  // 수정 모드: 불러온 그대로면 저장하지 않는다(바꾼 게 있을 때만 임시저장) — 단계 이동은 변경으로 치지 않음
+  const draftData = { step, added, moveTips, title, desc, difficulty, coverUrl, themes, target, tips, primaryTagId, selectedTag, floorMaps, sources, orderMode }
+  const sig = (d: BuilderDraft) => JSON.stringify({ ...d, step: 0, added: d.added.map(x => x.id) })
+  const baselineRef = useRef<string | null>(null)
+  if (editing && editReady && baselineRef.current === null) baselineRef.current = sig(draftData)
+  const draftKey = !user ? null : editing ? (editRouteId && editReady ? `taku:draft:route-edit:${editRouteId}:${user.id}` : null) : `taku:draft:route-new:${user.id}`
+  const draft = useFormDraft<BuilderDraft>(
+    draftKey,
+    draftData,
+    d => {
+      if (Array.isArray(d.added)) setAdded(d.added)
+      if (d.moveTips) setMoveTips(d.moveTips)
+      setTitle(d.title ?? ''); setDesc(d.desc ?? ''); if (d.difficulty) setDifficulty(d.difficulty)
+      setCoverUrl(d.coverUrl ?? ''); setThemes(d.themes ?? []); setTarget(d.target ?? ''); setTips(d.tips ?? '')
+      setPrimaryTagId(d.primaryTagId ?? null); setSelectedTag(d.selectedTag ?? null)
+      if (d.floorMaps) setFloorMaps(d.floorMaps)
+      if (Array.isArray(d.sources)) setSources(d.sources)
+      if (d.orderMode) { setOrderMode(d.orderMode); autoResultRef.current = d.added ?? null }   // "층별 안내" 선택 표시 유지
+      if (d.step) setStep(d.step)
+    },
+    d => editing
+      ? sig(d) === baselineRef.current
+      : d.added.length === 0 && !d.title.trim() && !d.desc.trim() && d.sources.every(x => !x.name.trim() && !x.url.trim()),
+  )
+  // 샵 정보(층수 등)를 고치고 돌아왔을 때 — 담아 둔 샵을 새로 불러온 최신 정보로 바꿔 끼운다 (순서는 그대로)
+  useEffect(() => {
+    if (!candidates.length) return
+    const byId = new Map(candidates.map(c => [c.id, c]))
+    setAdded(prev => {
+      if (!prev.some(x => byId.has(x.id))) return prev
+      const next = prev.map(x => byId.get(x.id) ?? x)
+      if (autoResultRef.current === prev) autoResultRef.current = next   // 자동 정렬 표시는 유지
+      return next
+    })
+  }, [candidates])
+  function draftStartOver() {
+    draft.discard()
+    if (editing) { window.location.reload(); return }   // 수정: 저장된 루트 내용으로 다시
+    setAdded([]); setMoveTips({}); setTitle(''); setDesc(''); setDifficulty(1); setCoverUrl(''); setThemes([]); setTarget(''); setTips('')
+    setPrimaryTagId(null); setSelectedTag(null); setFloorMaps({}); setSources([]); setOrderMode(null); setOrderBefore(null); setStep(1)
+  }
 
   function switchMode(m: SourceMode) {
     if (m === sourceMode) return
@@ -320,6 +374,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
         setShared(true)
       }
       setSaving(false)
+      draft.clear()
       router.push(asDraft ? '/profile?tab=routes' : `/route/${editToken}`)
       return
     }
@@ -330,9 +385,10 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
     { const src = sourcesToSave(); if (src.length && !(await saveRouteSources(res.id, src))) window.alert('출처는 저장하지 못했어요. (DB에 source_credits 칸이 필요해요)') }
     if (!asDraft) {
       const pub = await toggleRouteShare(res.id, user.id, true)
-      if (!pub) { setSaving(false); setMsg('저장은 됐지만 공개하지 못했어요. 내 루트에서 이어서 공개해 주세요.'); router.push('/profile?tab=routes'); return }
+      if (!pub) { setSaving(false); draft.clear(); setMsg('저장은 됐지만 공개하지 못했어요. 내 루트에서 이어서 공개해 주세요.'); router.push('/profile?tab=routes'); return }
     }
     setSaving(false)
+    draft.clear()
     router.push(asDraft ? '/profile?tab=routes' : `/route/${res.shareToken}`)
   }
 
@@ -416,6 +472,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
       {/* 본문 */}
       <div>
         <div className="rb-form" style={{ border: '1px solid var(--border)', borderRadius: 18, padding: 32, background: 'var(--surface)' }}>
+          {draft.restored && <DraftNotice text={editing ? '수정 중이던 내용을 불러왔어요.' : '만들던 루트를 불러왔어요.'} onDiscard={draftStartOver} onClose={draft.dismiss} />}
           {/* STEP 1 — 샵 불러오기 */}
           {step === 1 && (
             <>
