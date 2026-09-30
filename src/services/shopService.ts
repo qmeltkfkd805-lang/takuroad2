@@ -621,6 +621,7 @@ export async function getShopsForReview(status: ShopReviewStatus): Promise<Shop[
       cats
     `)
     .eq('review_status', status)
+    .neq('status', 'deleted')   // 삭제한 샵(같은 샵으로 합치며 지운 것 등)은 검수 목록에서 뺀다
     .order('created_at', { ascending: true })   // 오래 기다린 것부터
 
   if (error) {

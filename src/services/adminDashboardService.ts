@@ -130,7 +130,7 @@ export async function getAdminBadgeCounts(): Promise<AdminBadgeCounts> {
     supabase.from('contact_messages').select('id', { count: 'exact', head: true })
       .neq('status', CONTACT_STATUS_DONE).eq('type', CONTACT_TYPE_PARTNER),
     supabase.from('shops').select('id', { count: 'exact', head: true })
-      .eq('review_status', SHOP_REVIEW_PENDING),
+      .eq('review_status', SHOP_REVIEW_PENDING).neq('status', 'deleted'),
   ])
 
   const pick = (r: PromiseSettledResult<CountResult>, tag: string): number | null => {
