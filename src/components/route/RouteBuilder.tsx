@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getAllTagsFull, AdminTag } from '@/services/workAdminService'
 import { getShops, getSavedShops } from '@/services/shopService'
+import { autoOrder, floorNumber, type AutoOrderMode } from '@/lib/route/autoOrder'
 import { createRoute, updateRouteMeta, updateRoute, getRouteForEdit, getRouteMeta, deleteRoute, toggleRouteShare } from '@/services/routeService'
 import { useRouter } from 'next/navigation'
 import { shopRegion } from '@/lib/shop/quickCompleteness'
@@ -61,6 +62,27 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   const [query, setQuery] = useState('')
   const [added, setAdded] = useState<Shop[]>([])
   const [moveTips, setMoveTips] = useState<Record<string, string>>({})   // fromShopId → 다음 스팟까지 이동 팁
+  // 순서 자동 정하기 (층별 안내 / 도보 안내 / 둘 다) — 누르기 전 순서를 기억해 되돌릴 수 있게
+  const [orderMode, setOrderMode] = useState<AutoOrderMode | null>(null)
+  const [orderBefore, setOrderBefore] = useState<Shop[] | null>(null)
+  const autoResultRef = useRef<Shop[] | null>(null)
+  const [orderNote, setOrderNote] = useState<string | null>(null)
+  const [tipsOpen, setTipsOpen] = useState(false)   // 구간 이동 팁 — 평소엔 접어 두고 펼치면 입력
+  // 자동 정렬 뒤 직접 옮기거나 샵을 더하고 빼면 → 그 순서가 새 기준 (되돌리기 대상 없음)
+  useEffect(() => {
+    if (autoResultRef.current && added !== autoResultRef.current) { autoResultRef.current = null; setOrderBefore(null); setOrderMode(null); setOrderNote(null) }
+  }, [added])
+  function applyAutoOrder(m: AutoOrderMode) {
+    const base = orderBefore ?? added
+    const next = autoOrder(base, m)
+    autoResultRef.current = next
+    setOrderBefore(base); setAdded(next); setOrderMode(m)
+    // 바뀐 게 없으면 왜 그런지 알려준다 (층 정보가 없거나 이미 그 순서)
+    const same = next.every((s, i) => s.id === added[i]?.id)
+    const noFloor = base.filter(s => floorNumber(s as any) === null).length
+    if (same) setOrderNote(m !== 'walk' && noFloor > 0 ? `층 정보가 없는 샵이 ${noFloor}곳 있어 층 순서를 정하지 못한 곳이 있어요. 지금이 이미 그 순서예요.` : '지금이 이미 그 순서예요.')
+    else setOrderNote(m !== 'walk' && noFloor > 0 ? `층 정보가 없는 ${noFloor}곳은 같은 건물 맨 뒤에 뒀어요.` : null)
+  }
 
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
@@ -413,6 +435,39 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
             <>
               <StepHead icon={<PinIcon size={20} color="var(--accent)" />} title="코스 순서를 정해요" sub="드래그하거나 화살표로 순서를 바꿀 수 있어요. (2곳 이상)" />
               {added.length >= 2 && (
+                <div style={{ marginBottom: 14, border: '1px solid var(--border)', borderRadius: 12, padding: '12px 12px 10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
+                    <span style={{ fontSize: 13, fontWeight: 800 }}>순서 자동으로 정하기</span>
+                    {orderBefore && (
+                      <button type="button" onClick={() => { autoResultRef.current = null; setAdded(orderBefore); setOrderBefore(null); setOrderMode(null); setOrderNote(null) }}
+                        style={{ border: 'none', background: 'none', color: 'var(--muted)', fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', textDecoration: 'underline' }}>원래 순서로</button>
+                    )}
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 6 }}>
+                    {([
+                      { m: 'floor', label: '층별 안내', sub: '같은 건물은 낮은 층부터' },
+                      { m: 'walk', label: '도보 안내', sub: '가까운 곳부터 차례로' },
+                      { m: 'both', label: '둘 다', sub: '건물은 도보 순, 안은 층 순' },
+                    ] as { m: AutoOrderMode; label: string; sub: string }[]).map(o => {
+                      const on = orderMode === o.m
+                      return (
+                        <button key={o.m} type="button" aria-pressed={on}
+                          onClick={() => applyAutoOrder(o.m)}
+                          style={{ minWidth: 0, minHeight: 52, padding: '7px 6px', borderRadius: 10, border: on ? '1.5px solid var(--accent)' : '1px solid var(--border)', background: on ? 'var(--accent-l)' : 'var(--surface)', color: on ? 'var(--accent)' : 'var(--text)', cursor: 'pointer', fontFamily: 'inherit', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+                          <span style={{ fontSize: 13, fontWeight: 800 }}>{o.label}</span>
+                          <span style={{ fontSize: 10.5, fontWeight: 600, color: on ? 'var(--accent)' : 'var(--muted)', lineHeight: 1.3, wordBreak: 'keep-all' }}>{o.sub}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                  {orderNote && <div role="status" style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', marginTop: 8, lineHeight: 1.5 }}>{orderNote}</div>}
+                  <div style={{ fontSize: 11.5, color: 'var(--muted)', marginTop: 8, lineHeight: 1.5 }}>
+                    도보 순서는 지금 1번 샵에서 출발해요. 층은 샵 정보의 층수(B1·3F·5층 등)로 정해요. 정한 뒤에도 꾹 눌러 직접 바꿀 수 있어요.
+                    {orderMode && Object.values(moveTips).some(v => v.trim()) && <> 순서가 바뀌었으니 아래 <b>구간 이동 팁</b>도 펼쳐서 한 번 확인해 주세요.</>}
+                  </div>
+                </div>
+              )}
+              {added.length >= 2 && (
                 <div style={{ marginBottom: 16 }}><RouteMiniMap stops={mapStops} /></div>
               )}
               <Label>루트 순서 ({added.length}) · 꾹 눌러 이동</Label>
@@ -439,9 +494,28 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
                 </div>
               )}
               {added.length >= 2 && (
-                <div style={{ marginTop: 20 }}>
-                  <Label>구간 이동 팁 (선택)</Label>
-                  <div style={{ fontSize: 12, color: 'var(--muted)', margin: '2px 0 10px' }}>스팟 사이 이동에 대한 팁을 남겨보세요. 예: 지하상가로 가면 더 빨라요</div>
+                <div style={{ marginTop: 20, border: '1px solid var(--border)', borderRadius: 12 }}>
+                  {(() => {
+                    const filled = added.slice(0, -1).filter(s => (moveTips[s.id] ?? '').trim()).length
+                    return (
+                      <button type="button" onClick={() => setTipsOpen(v => !v)} aria-expanded={tipsOpen}
+                        style={{ width: '100%', minHeight: 48, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '10px 14px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left' }}>
+                        <span style={{ minWidth: 0 }}>
+                          <span style={{ fontSize: 13.5, fontWeight: 800, color: 'var(--text)' }}>구간 이동 팁 <span style={{ fontWeight: 600, color: 'var(--muted)' }}>· 선택</span></span>
+                          <span style={{ display: 'block', fontSize: 12, color: filled ? 'var(--accent)' : 'var(--muted)', fontWeight: filled ? 700 : 500, marginTop: 2 }}>
+                            {filled ? `${filled}개 구간에 팁을 적었어요` : '스팟 사이 이동 팁을 남길 수 있어요'}
+                          </span>
+                        </span>
+                        <span style={{ flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12.5, fontWeight: 700, color: 'var(--muted)' }}>
+                          {tipsOpen ? '접기' : '펼치기'}
+                          <Svg size={14}><path d={tipsOpen ? 'm18 15-6-6-6 6' : 'm6 9 6 6 6-6'} /></Svg>
+                        </span>
+                      </button>
+                    )
+                  })()}
+                  {tipsOpen && (
+                  <div style={{ padding: '0 12px 12px' }}>
+                  <div style={{ fontSize: 12, color: 'var(--muted)', margin: '0 2px 10px' }}>예: 지하상가로 가면 더 빨라요</div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                     {added.slice(0, -1).map((s, i) => (
                       <div key={s.id} style={{ border: '1px solid var(--border)', borderRadius: 10, padding: '10px 12px' }}>
@@ -450,6 +524,8 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
                       </div>
                     ))}
                   </div>
+                  </div>
+                  )}
                 </div>
               )}
               <button onClick={() => setStep(1)} style={{ ...ghostBtn, marginTop: 12, display: 'inline-flex', alignItems: 'center', gap: 5 }}><Svg size={14}><path d="M12 5v14M5 12h14" /></Svg>샵 더 담기</button>
