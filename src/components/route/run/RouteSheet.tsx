@@ -26,6 +26,10 @@ export interface SheetStop {
   toNextM: number | null
   moveTip: string | null
   visited: boolean
+  /** 층이 바뀌는 곳이면 "3층으로 이동하세요" (따라가기 '다음 장소' 옆에 표시) */
+  floorMove?: string | null
+  /** 이 장소 층의 층 지도 사진이 있으면 true — '층 지도' 버튼 */
+  hasFloorMap?: boolean
 }
 
 export type SheetSnap = 'mini' | 'collapsed' | 'half' | 'expanded'   // mini = 손잡이·진행률만 남기고 접은 상태
@@ -77,12 +81,14 @@ export default function RouteSheet(props: {
   onReset?: () => void
   /** 따라가는 중 코스 목록에서 장소를 누르면 그곳을 다음 장소로 */
   onChooseNext?: (id: string) => void
+  /** 층 지도 사진 보기 (장소 id) */
+  onOpenFloorMap?: (id: string) => void
 }) {
   const {
     onHeightChange, title, metaLine, stops, selectedId, onSelect, onOpenDetail,
     running, phase, onStart, startLabel, starting, visitedCount, totalStops,
     nextLabel, nextDistanceM, onSkip, onPauseResume, onEnd,
-    onToggleVisit, busyVisitId = null, showProgress = false, nextId = null, onReset, onChooseNext,
+    onToggleVisit, busyVisitId = null, showProgress = false, nextId = null, onReset, onChooseNext, onOpenFloorMap,
   } = props
   const pct = totalStops ? Math.round((visitedCount / totalStops) * 100) : 0
 
@@ -213,6 +219,8 @@ export default function RouteSheet(props: {
           <div className={styles.bar}><div className={styles.barFill} style={{ width: `${pct}%` }} /></div>
           {shownStop ? (
             <SpotCard stop={shownStop} label={arrived ? '방금 방문' : '다음 장소'}
+              floorMove={!arrived ? shownStop.floorMove ?? null : null}
+              onFloorMap={!arrived && shownStop.hasFloorMap && onOpenFloorMap ? () => onOpenFloorMap(shownStop.id) : undefined}
               distance={arrived ? <span style={{ color: '#16a34a' }}>도착</span>
                 : <>지금 위치에서 {nextDistanceM != null ? walkText(Math.round(nextDistanceM / 75), nextDistanceM) : '위치 확인 중…'}</>}
               tip={!arrived ? nextTip : null}
@@ -306,12 +314,24 @@ function PinSvg({ size = 16 }: { size?: number }) {
 
 /* 스팟 카드 — 루트 상세 "코스 안내" 카드와 같은 구조 (지도 시트의 선택 스팟 · 따라가기 "다음 장소" 공용)
    사진 + 번호·이름 / 영업 상태·층 / 주소(전체 폭) / 태그 / 거리 줄 / 가는 길 메모 / [왼쪽 | 오른쪽] 버튼 */
-function SpotCard({ stop, label, distance, tip, left, right }: {
+function SpotCard({ stop, label, distance, tip, left, right, floorMove, onFloorMap }: {
   stop: SheetStop; label?: string; distance?: ReactNode; tip?: string | null; left?: ReactNode; right: ReactNode
+  floorMove?: string | null; onFloorMap?: () => void
 }) {
   return (
     <div className={styles.spotCard}>
-      {label && <span className={styles.spotLabel}>{label}</span>}
+      {(label || floorMove || onFloorMap) && (
+        <div className={styles.spotLabelRow}>
+          {label && <span className={styles.spotLabel}>{label}</span>}
+          {floorMove && <span className={styles.spotFloorMove}>{floorMove}</span>}
+          {onFloorMap && (
+            <button type="button" className={styles.spotFloorMapBtn} onClick={onFloorMap}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z" /><path d="M9 4v14M15 6v14" /></svg>
+              층 지도
+            </button>
+          )}
+        </div>
+      )}
       <div className={styles.spotTop}>
         <div className={styles.spotThumb}>{stop.thumb ? <img src={stop.thumb} alt="" /> : (
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M4 10v10h16V10M3 10l2-6h14l2 6M3 10h18M9 20v-6h6v6" /></svg>

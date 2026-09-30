@@ -5,7 +5,9 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { getRouteByShareToken, toggleRouteSave, getMySavedRouteIds } from '@/services/routeService'
+import { getRouteByShareToken, toggleRouteSave, getMySavedRouteIds, getRouteFloorMaps } from '@/services/routeService'
+import { floorGroupKey, floorGroupLabel, floorNumber, buildingKey } from '@/lib/route/autoOrder'
+import FloorMapViewer, { collectFloorMaps } from './FloorMapViewer'
 import { useCurrentLocation, formatDistance, calcDistance } from '@/hooks/useCurrentLocation'
 import { shopRegion } from '@/lib/utils/region'
 import { getShopStatus } from '@/lib/utils/shopStatus'
@@ -128,9 +130,30 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
   const shopsWithCoords = useMemo(() => rawStops.map((rs: any) => rs.shops).filter((s: any) => s && s.lat && s.lng).map((s: any) => ({ id: s.id, name: s.name, lat: s.lat, lng: s.lng })), [rawStops])
   const region = useMemo(() => { for (const rs of rawStops) { const r = rs.shops ? shopRegion(rs.shops) : null; if (r && r !== '지역 미정') return r } return null }, [rawStops])
 
+  // 층 지도 사진 (루트 만들 때 층별로 올린 이미지) — 따라가는 중 '층 지도' 버튼으로 본다
+  const [floorMaps, setFloorMaps] = useState<Record<string, { url: string }>>({})
+  const [floorMapOpen, setFloorMapOpen] = useState<string | null>(null)   // 열어 둔 묶음 키
+  useEffect(() => {
+    if (!route?.id) return
+    let alive = true
+    getRouteFloorMaps(route.id).then(list => { if (alive) setFloorMaps(Object.fromEntries(list.map(m => [m.key, { url: m.url }]))) }).catch(() => {})
+    return () => { alive = false }
+  }, [route?.id])
+  const floorSlides = useMemo(() => collectFloorMaps(rawStops.map((rs: any) => rs.shops), floorMaps), [rawStops, floorMaps])
+
   const sheetStops: SheetStop[] = useMemo(() => rawStops.map((rs: any, i: number, arr: any[]) => {
     const s = rs.shops
     if (!s) return null
+    // 앞 장소와 층이 다르면 "3층으로 이동하세요" (다른 건물이면 "AK플라자 5층으로 …")
+    const prevShop = i > 0 ? arr[i - 1]?.shops : null
+    let floorMove: string | null = null
+    const fNum = floorNumber(s)
+    if (prevShop && fNum !== null && floorGroupKey(prevShop) !== floorGroupKey(s)) {
+      const fl = fNum < 0 ? `지하 ${-fNum}층` : `${fNum}층`
+      floorMove = buildingKey(prevShop) === buildingKey(s)
+        ? `${fl}으로 이동하세요`
+        : `${(s.places?.name ?? '').trim() ? `${s.places.name.trim()} ` : ''}${fl}으로 이동하세요`
+    }
     const floor = s.floor_info || [s.floor, s.unit].filter(Boolean).join(' ') || null
     const next = arr[i + 1]
     return {
@@ -142,11 +165,13 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
       walkMin: rs.duration_from_prev_min ?? null, walkM: rs.distance_from_prev_m ?? null,
       toNextMin: next?.duration_from_prev_min ?? null, toNextM: next?.distance_from_prev_m ?? null,
       moveTip: rs.move_tip ?? null,
+      floorMove,
+      hasFloorMap: !!floorMaps[floorGroupKey(s)]?.url,
       // 따라가기 중엔 세션 확인(현장·직접), 그 밖엔 루트 방문 체크
       // 따라가는 중이거나 이어갈 세션이 남아 있으면 세션의 체크 기록을 보여준다(새로고침해도 17/18 유지)
       visited: (run.phase === 'running' || run.phase === 'paused' || run.hasExistingSession) ? (run.confirmedShopIds.has(s.id) || visitedIds.has(s.id)) : visitedIds.has(s.id),
     } as SheetStop
-  }).filter(Boolean) as SheetStop[], [rawStops, run.confirmedShopIds, run.phase, run.hasExistingSession, visitedIds])
+  }).filter(Boolean) as SheetStop[], [rawStops, run.confirmedShopIds, run.phase, run.hasExistingSession, visitedIds, floorMaps])
 
   const endShops: EndShop[] = useMemo(() => sheetStops.map(s => ({ id: s.id, name: s.name, floor: s.floor })), [sheetStops])
 
@@ -459,7 +484,9 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
         onReset={user && !running ? resetCourse : undefined}
         onChooseNext={running ? chooseNext : undefined}
         nextId={nextShop?.id ?? null}
+        onOpenFloorMap={(id: string) => { const sh = rawStops.find((rs: any) => rs.shops?.id === id)?.shops; if (sh) setFloorMapOpen(floorGroupKey(sh)) }}
       />
+      {floorMapOpen && <FloorMapViewer slides={floorSlides} startKey={floorMapOpen} onClose={() => setFloorMapOpen(null)} />}
 
       {running && <ArrivalToast arrivals={run.arrivals} onUndo={run.undo} onDismiss={run.dismissArrival} />}
       {showEndSheet && (
