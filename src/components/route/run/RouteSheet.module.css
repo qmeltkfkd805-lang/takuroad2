@@ -39,7 +39,7 @@
 .spotStatus { font-weight: 800; background: var(--surface2); color: #6b7280; }
 .spotStatus[data-tone="open"] { background: #dcfce7; color: #15803d; }
 .spotStatus[data-tone="soon"] { background: #ffedd5; color: #c2410c; }
-.spotFloor { font-weight: 700; background: var(--surface2); color: var(--text); white-space: normal; overflow-wrap: anywhere; }
+.spotFloor { font-weight: 700; background: var(--surface2); color: var(--text); white-space: normal; overflow-wrap: anywhere; height: auto; min-height: 22px; padding: 3px 8px; line-height: 1.4; max-width: 100%; box-sizing: border-box; }   /* 길면 칸이 같이 늘어나게 */
 .spotAddr { display: flex; gap: 5px; align-items: flex-start; font-size: 13px; line-height: 1.5; color: var(--muted); min-width: 0; }
 .spotAddr svg { flex-shrink: 0; margin-top: 3px; }
 .spotAddr span { min-width: 0; word-break: keep-all; overflow-wrap: anywhere; }
