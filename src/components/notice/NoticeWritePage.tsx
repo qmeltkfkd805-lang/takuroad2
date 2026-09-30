@@ -1,5 +1,6 @@
 'use client'
 
+import { useFormDraft } from '@/hooks/useFormDraft'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -28,6 +29,21 @@ export default function NoticeWritePage() {
   const [saving, setSaving] = useState(false)
   const [err, setErr] = useState('')
   const [ready, setReady] = useState(false)
+  /* 새 공지: 쓰던 내용 자동 임시저장 — 본문(에디터)은 바뀔 때마다 html 로 옮겨 담는다 */
+  const [html, setHtml] = useState('')
+  const pendingHtml = useRef<string | null>(null)
+  const draft = useFormDraft(!editId && isAdmin ? 'taku:draft:notice-new' : null, { title, isPinned, html },
+    d => { setTitle(d.title ?? ''); setIsPinned(!!d.isPinned); pendingHtml.current = d.html ?? ''; setHtml(d.html ?? '') },
+    d => !d.title.trim() && !d.html.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim() && !/<img/i.test(d.html))
+  useEffect(() => {
+    if (editId || !ready || !isAdmin) return
+    const el = editorRef.current
+    if (!el) return
+    if (pendingHtml.current !== null) { el.innerHTML = pendingHtml.current; pendingHtml.current = null }
+    const mo = new MutationObserver(() => setHtml(el.innerHTML))
+    mo.observe(el, { childList: true, subtree: true, characterData: true })
+    return () => mo.disconnect()
+  }, [editId, ready, isAdmin, draft.restored])
 
   useEffect(() => {
     if (!editId) { setReady(true); return }
@@ -94,7 +110,7 @@ export default function NoticeWritePage() {
       : await createNotice({ title, content: html, isPinned, userId: user.id })
     setSaving(false)
 
-    if (ok) router.push('/support/notice')
+    if (ok) { draft.clear(); router.push('/support/notice') }
     else setErr('저장에 실패했어요. 관리자 계정인지 확인해주세요.')
   }
 

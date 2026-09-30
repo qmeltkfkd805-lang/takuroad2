@@ -1,4 +1,5 @@
 'use client'
+import { useFormDraft } from '@/hooks/useFormDraft'
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -32,6 +33,10 @@ export default function PartnerForm() {
   const [sentId, setSentId] = useState<string | null>(null)
   // 첨부 업로드·접수 과정의 안내. 실패해도 본문은 보존한다
   const [note, setNote] = useState<string | null>(null)
+  // 쓰던 제휴 문의 자동 임시저장 (첨부 파일은 다시 골라야 해요)
+  const draft = useFormDraft(`taku:draft:partner:${user?.id ?? 'guest'}`, { typeKey, common, values, collab, collabEtc, content },
+    d => { if (d.typeKey) setTypeKey(d.typeKey); setCommon(d.common ?? {}); setValues(d.values ?? {}); setCollab(d.collab ?? []); setCollabEtc(d.collabEtc ?? ''); setContent(d.content ?? '') },
+    d => Object.values(d.common).every(v => !String(v).trim()) && Object.values(d.values).every(v => !String(v).trim()) && d.collab.length === 0 && !d.collabEtc.trim() && !d.content.trim())
 
   const type = useMemo(() => PARTNER_TYPES.find(t => t.key === typeKey)!, [typeKey])
   const authedEmail = (user as any)?.email ?? ''
@@ -80,6 +85,7 @@ export default function PartnerForm() {
     setSending(false)
     if (res.ok && res.id) {
       setNote(res.dropped ? '첨부 ' + res.dropped + '개는 업로드가 끝나지 않아 빠졌어요.' : null)
+      draft.clear()
       setSentId(res.id)
     } else {
       /* 초안이 만료됐으면 첨부부터 다시 올려야 한다.

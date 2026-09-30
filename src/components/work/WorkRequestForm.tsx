@@ -1,5 +1,6 @@
 ﻿'use client'
 
+import { useFormDraft } from '@/hooks/useFormDraft'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -33,6 +34,10 @@ export default function WorkRequestForm() {
   const [done, setDone] = useState(false)
   const [mine, setMine] = useState<WorkRequest[]>([])
   const [reload, setReload] = useState(0)
+  // 쓰던 요청 자동 임시저장 (요청을 보내면 칸이 비워지면서 저장본도 지워진다)
+  useFormDraft(user ? `taku:draft:work-request:${user.id}` : null, { name, eng, url, note },
+    d => { setName(d.name ?? ''); setEng(d.eng ?? ''); setUrl(d.url ?? ''); setNote(d.note ?? '') },
+    d => !d.name.trim() && !d.eng.trim() && !d.url.trim() && !d.note.trim())
 
   // 요청의 목적이 중복을 줄이는 것이라, 입력 중에 이미 있는 작품인지 알려준다
   useEffect(() => {

@@ -1,5 +1,6 @@
 'use client'
 
+import { useFormDraft } from '@/hooks/useFormDraft'
 import { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -28,6 +29,10 @@ export default function ReviewSection({ shopId, shopName, accentColor }: Props) 
   const [images, setImages] = useState<File[]>([])
   const [previews, setPreviews] = useState<string[]>([])
   const [submitting, setSubmitting] = useState(false)
+  // 쓰던 후기 자동 임시저장 — 돌아오면 후기 쓰기 창을 열어 그대로 (등록하면 칸이 비워지며 지워짐)
+  useFormDraft(user ? `taku:draft:shop-review:${shopId}:${user.id}` : null, { stars, content },
+    d => { if (d.content?.trim()) { setContent(d.content); setStars(d.stars ?? 5); setShowForm(true) } },
+    d => !d.content.trim())
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {

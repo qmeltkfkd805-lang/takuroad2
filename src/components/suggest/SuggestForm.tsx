@@ -1,4 +1,5 @@
 'use client'
+import { useFormDraft } from '@/hooks/useFormDraft'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -13,6 +14,10 @@ export default function SuggestForm() {
   const [content, setContent] = useState('')
   const [sending, setSending] = useState(false)
   const [sentId, setSentId] = useState<string | null>(null)
+  // 쓰던 제안 자동 임시저장
+  const draft = useFormDraft(user ? `taku:draft:suggest:${user.id}` : null, { title, content },
+    d => { setTitle(d.title ?? ''); setContent(d.content ?? '') },
+    d => !d.title.trim() && !d.content.trim())
 
   if (sentId) {
     return (
@@ -44,7 +49,7 @@ export default function SuggestForm() {
     setSending(true)
     const res = await createSuggestion(title, content)
     setSending(false)
-    if (res.ok && res.id) setSentId(res.id)
+    if (res.ok && res.id) { draft.clear(); setSentId(res.id) }
     else alert('전송에 실패했어요. 잠시 후 다시 시도해 주세요.')
   }
 

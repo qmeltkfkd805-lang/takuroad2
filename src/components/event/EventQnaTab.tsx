@@ -1,4 +1,5 @@
 'use client'
+import { useFormDraft } from '@/hooks/useFormDraft'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -20,6 +21,10 @@ export default function EventQnaTab({ eventId, onCountChange }: { eventId: strin
   const [saving, setSaving] = useState(false)
   const [answering, setAnswering] = useState<string | null>(null)
   const [answerText, setAnswerText] = useState('')
+  // 쓰던 질문 자동 임시저장 (등록하면 칸이 비워지며 지워짐)
+  useFormDraft(user ? `taku:draft:event-qna:${eventId}:${user.id}` : null, { question },
+    d => setQuestion(d.question ?? ''),
+    d => !d.question.trim())
 
   const load = async () => {
     const list = await getEventQna(eventId)

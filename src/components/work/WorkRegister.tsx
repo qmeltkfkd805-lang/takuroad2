@@ -1,4 +1,6 @@
 'use client'
+import { useFormDraft } from '@/hooks/useFormDraft'
+import DraftNotice from '@/components/common/DraftNotice'
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -77,6 +79,24 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
   useEffect(() => { getPromotedGenres(3, GENRES).then(setPromotedGenres).catch(() => {}) }, [])
   const [msg, setMsg] = useState<string | null>(null)
   const coverRef = useRef<HTMLInputElement | null>(null)
+  // 새 작품 등록: 쓰던 내용 자동 임시저장 (관리자가 요청에서 넘어온 경우엔 그 내용이 우선)
+  const draft = useFormDraft(
+    !editing && user && !sp.get('name') ? `taku:draft:work-new:${user.id}` : null,
+    { step, name, eng, slug, aliases, parentId, parentName, ipType, original, status, cover, accent, desc, genres, keywords, fixedLinks, extraLinks },
+    d => {
+      setName(d.name ?? ''); setEng(d.eng ?? ''); setSlug(d.slug ?? ''); setAliases(d.aliases ?? [])
+      setParentId(d.parentId ?? null); setParentName(d.parentName ?? ''); setIpType(d.ipType ?? ''); setOriginal(d.original ?? '')
+      setStatus(d.status ?? ''); setCover(d.cover ?? ''); if (d.accent) setAccent(d.accent); setDesc(d.desc ?? '')
+      setGenres(d.genres ?? []); setKeywords(d.keywords ?? []); setFixedLinks(d.fixedLinks ?? {}); setExtraLinks(d.extraLinks ?? [])
+      if (d.step) setStep(d.step)
+    },
+    d => !d.name.trim() && !d.eng.trim() && !d.desc.trim() && !d.cover && d.aliases.length === 0 && d.genres.length === 0 && d.keywords.length === 0 && !d.ipType && !d.original && !d.status && !d.parentId && Object.values(d.fixedLinks).every(v => !v) && d.extraLinks.length === 0,
+  )
+  function draftStartOver() {
+    draft.discard()
+    setName(''); setEng(''); setSlug(''); setAliases([]); setParentId(null); setParentName(''); setIpType(''); setOriginal(''); setStatus('')
+    setCover(''); setAccent('#FF5692'); setDesc(''); setGenres([]); setKeywords([]); setFixedLinks({}); setExtraLinks([]); setStep(1)
+  }
 
   const slugForUpload = useMemo(() => {
     // Storage 경로는 ASCII만 안전 — 영문/숫자만 추출, 한글 등은 제거 후 없으면 랜덤
@@ -223,6 +243,7 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
     const res = await createWork(user.id, payload)
     if (!res) { setSaving(false); setMsg('등록 실패 — 다시 시도해주세요'); return }
     setSaving(false)
+    draft.clear()
     router.push('/my-works')
   }
 
@@ -244,6 +265,7 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
           <button onClick={() => router.push(editing && slug ? `/work/${slug}` : '/my-works')} style={ghostBtn}>나가기</button>
         </div>
       </div>
+      {draft.restored && <DraftNotice onDiscard={draftStartOver} onClose={draft.dismiss} />}
 
       <div style={{ display: 'flex', gap: 8, overflowX: 'auto', marginBottom: 28, paddingBottom: 6 }}>
         {STEPS.map((s) => {

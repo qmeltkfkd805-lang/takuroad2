@@ -1,5 +1,7 @@
 'use client'
 
+import { useFormDraft } from '@/hooks/useFormDraft'
+import DraftNotice from '@/components/common/DraftNotice'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -70,6 +72,21 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
   const [placeQuery, setPlaceQuery] = useState('')
   const [placeHits, setPlaceHits] = useState<PlaceSearchResult[]>([])
   const [placeSearching, setPlaceSearching] = useState(false)
+  /* 새 이벤트 등록: 쓰던 내용 자동 임시저장 — 다른 화면에 다녀오거나 새로고침해도 그대로.
+     2단계에서 이벤트가 먼저 만들어진 뒤면 그 id 도 기억해 같은 이벤트를 이어서 채운다(중복 등록 방지) */
+  type EventDraft = { form: EventFormData; step: number; eventId: string | null; shopPicked: ShopHit | null }
+  const draft = useFormDraft<EventDraft>(
+    !isEdit && user ? `taku:draft:event-new:${user.id}` : null,
+    { form, step, eventId, shopPicked },
+    d => {
+      if (d.form) setForm({ ...EMPTY_EVENT_FORM, ...d.form })
+      if (d.eventId) setEventId(d.eventId)
+      if (d.shopPicked) setShopPicked(d.shopPicked)
+      if (d.step) setStep(d.step > 2 && !d.eventId ? 2 : d.step)
+    },
+    d => !d.eventId && JSON.stringify(d.form) === JSON.stringify(EMPTY_EVENT_FORM),
+  )
+  function draftStartOver() { draft.discard(); setForm(EMPTY_EVENT_FORM); setStep(1); setEventId(null); setShopPicked(null) }
 
   const set = <K extends keyof EventFormData>(k: K, v: EventFormData[K]) =>
     setForm(f => ({ ...f, [k]: v }))
@@ -207,6 +224,7 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
     const b = await saveEventExtra(eventId, form, user.id)
     setSaving(false)
     if (!a.ok || !b.ok) { setError(`저장 실패: ${a.message ?? b.message}`); return }
+    draft.clear()
     router.push(`/event/${eventId}`)
   }
 
@@ -303,6 +321,7 @@ export default function EventFormWizard({ editId }: { editId?: string }) {
         </div>
         <button onClick={() => router.back()} style={ghostBtn}>나가기</button>
       </div>
+      {draft.restored && <DraftNotice onDiscard={draftStartOver} onClose={draft.dismiss} />}
 
       {/* 스텝바 */}
       <div style={{ display: 'flex', gap: 8, overflowX: 'auto', marginBottom: 28, paddingBottom: 6 }}>

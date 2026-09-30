@@ -1,4 +1,5 @@
 'use client'
+import { useFormDraft } from '@/hooks/useFormDraft'
 import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -22,6 +23,10 @@ export default function EventReviewTab({ eventId, onCountChange }: { eventId: st
   const [content, setContent] = useState('')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // 쓰던 후기 자동 임시저장 (등록하면 칸이 비워지며 지워짐)
+  useFormDraft(user ? `taku:draft:event-review:${eventId}:${user.id}` : null, { stars, content },
+    d => { setContent(d.content ?? ''); setStars(d.stars ?? 5) },
+    d => !d.content.trim())
 
   const load = async () => {
     const rows = await getEventReviews(eventId)

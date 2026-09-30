@@ -1,4 +1,5 @@
 'use client'
+import { useFormDraft } from '@/hooks/useFormDraft'
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -50,6 +51,16 @@ export default function ShopEventForm({ shopId, shopSlug, initialType, event }: 
   const [allTags, setAllTags] = useState<any[]>([])
   const [goodsTypes, setGoodsTypes] = useState<any[]>([])
   const [tagSearch, setTagSearch] = useState('')
+  // 새 소식: 쓰던 내용 자동 임시저장 (사진·영상은 파일이라 다시 골라야 해요)
+  const draft = useFormDraft(
+    !isEdit && user ? `taku:draft:shop-event:${shopId}:${user.id}` : null,
+    { type, title, description, startsAt, endsAt, tagId, goodsTypeId },
+    d => {
+      if (d.type && !initialType) setType(d.type); setTitle(d.title ?? ''); setDescription(d.description ?? '')
+      setStartsAt(d.startsAt ?? ''); setEndsAt(d.endsAt ?? ''); setTagId(d.tagId ?? null); setGoodsTypeId(d.goodsTypeId ?? null)
+    },
+    d => !d.title.trim() && !d.description.trim() && !d.startsAt && !d.endsAt && !d.tagId && !d.goodsTypeId,
+  )
 
   useEffect(() => {
     getAllTags().then(rows => setAllTags(rows ?? []))
@@ -145,6 +156,7 @@ export default function ShopEventForm({ shopId, shopSlug, initialType, event }: 
 
     setSubmitting(false)
     if (ok) {
+      draft.clear()
       router.push('/shop/' + shopSlug + '/manage/events')
       router.refresh()
     } else {

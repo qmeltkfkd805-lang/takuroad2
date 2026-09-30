@@ -1,5 +1,7 @@
 'use client'
 
+import { useFormDraft } from '@/hooks/useFormDraft'
+import DraftNotice from '@/components/common/DraftNotice'
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -63,6 +65,17 @@ export default function EventSubmitPage({ initialTagId, initialShopSlug }: Props
 
   // 샵 상세에서 진입(initialShopSlug): 그 샵을 불러와 장소를 고정. shop_id를 제보에 실어보냄.
   const [lockedShop, setLockedShop] = useState<Shop | null>(null)
+  // 쓰던 제보 자동 임시저장 (다른 화면에 다녀오거나 새로고침해도 그대로)
+  const draft = useFormDraft(
+    user ? `taku:draft:event-submit:${user.id}` : null,
+    { title, tagId, tagName, type, startDate, endDate, sourceUrl, description, placeDetail, place },
+    d => {
+      setTitle(d.title ?? ''); if (d.tagId && !initialTagId) { setTagId(d.tagId); setTagName(d.tagName ?? '') }
+      setType(d.type ?? ''); setStartDate(d.startDate ?? ''); setEndDate(d.endDate ?? ''); setSourceUrl(d.sourceUrl ?? '')
+      setDescription(d.description ?? ''); setPlaceDetail(d.placeDetail ?? ''); if (d.place && !initialShopSlug) setPlace(d.place)
+    },
+    d => !d.title.trim() && !d.type && !d.startDate && !d.endDate && !d.sourceUrl.trim() && !d.description.trim() && !d.placeDetail.trim() && !d.place,
+  )
   const shopInited = useRef(false)
   useEffect(() => {
     if (shopInited.current || !initialShopSlug) return
@@ -111,6 +124,7 @@ export default function EventSubmitPage({ initialTagId, initialShopSlug }: Props
     setSubmitting(false)
 
     if (ok) {
+      draft.clear()
       alert('제보가 접수되었어요! 검수 후 등록됩니다. 감사합니다.')
       router.push('/')
     } else {
@@ -123,6 +137,7 @@ export default function EventSubmitPage({ initialTagId, initialShopSlug }: Props
       <h1 style={{ fontSize: '20px', fontWeight: 900, color: 'var(--text)', margin: '4px 0 20px' }}>
         <AppIcon name="ticket" size={18} style={{ marginRight: 7 }} />이벤트 제보하기
       </h1>
+      {draft.restored && <DraftNotice text="쓰던 제보를 불러왔어요." onDiscard={() => { draft.discard(); setTitle(''); setType(''); setStartDate(''); setEndDate(''); setSourceUrl(''); setDescription(''); setPlaceDetail(''); if (!initialShopSlug) setPlace(null) }} onClose={draft.dismiss} />}
 
       <Field label="이벤트명 *">
         <input value={title} onChange={e => setTitle(e.target.value)}

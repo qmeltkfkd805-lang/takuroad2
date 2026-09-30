@@ -1,4 +1,5 @@
 'use client'
+import { useFormDraft } from '@/hooks/useFormDraft'
 import { useState, useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -35,6 +36,10 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
   const [sentId, setSentId] = useState<string | null>(null)
   // 첨부 업로드·접수 과정의 안내. 실패해도 본문은 보존한다
   const [note, setNote] = useState<string | null>(null)
+  // 쓰던 문의 자동 임시저장 (첨부 파일은 다시 골라야 해요)
+  const draft = useFormDraft(`taku:draft:contact:${user?.id ?? 'guest'}`, { typeKey, values, email },
+    d => { if (d.typeKey) setTypeKey(d.typeKey); setValues(d.values ?? {}); setEmail(d.email ?? '') },
+    d => Object.values(d.values).every(v => !String(v).trim()) && !d.email.trim())
 
   const type = useMemo(() => CONTACT_TYPES.find(t => t.key === typeKey)!, [typeKey])
 
@@ -78,6 +83,7 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
     setSending(false)
     if (res.ok && res.id) {
       setNote(res.dropped ? '첨부 ' + res.dropped + '개는 업로드가 끝나지 않아 빠졌어요.' : null)
+      draft.clear()
       setSentId(res.id); onSent?.()
     } else {
       /* 초안이 만료됐으면 첨부부터 다시 올려야 한다.

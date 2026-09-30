@@ -1,5 +1,6 @@
 'use client'
 
+import { useFormDraft } from '@/hooks/useFormDraft'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
@@ -142,6 +143,10 @@ function ReviewModal({ routeId, routeTitle, userId, existing, onClose, onSaved }
   const [picked, setPicked] = useState<Picked[]>([])
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState<string | null>(null)
+  // 새 후기: 쓰던 글 자동 임시저장 (사진은 파일이라 다시 골라야 해요)
+  const draft = useFormDraft(existing ? null : `taku:draft:route-review:${routeId}:${userId}`, { text },
+    d => setText(d.text ?? ''),
+    d => !d.text.trim())
   const cameraRef = useRef<HTMLInputElement>(null)
   const albumRef = useRef<HTMLInputElement>(null)
   const room = MAX_ROUTE_PHOTOS - kept.length - picked.length
@@ -169,6 +174,7 @@ function ReviewModal({ routeId, routeTitle, userId, existing, onClose, onSaved }
     try {
       const removed = (existing?.photos ?? []).filter(p => !kept.some(k => k.id === p.id))
       await saveRouteReview(routeId, userId, text, { existingId: existing?.id ?? null, removePhotos: removed, newFiles: picked.map(p => p.file) })
+      draft.clear()
       onSaved()
     } catch (e: any) {
       setErr(e?.message ?? '저장하지 못했어요')

@@ -1,5 +1,6 @@
 'use client'
 
+import { useFormDraft } from '@/hooks/useFormDraft'
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import SettingsSubShell from '@/components/settings/SettingsSubShell'
@@ -60,6 +61,18 @@ export default function GoodsForm({ mode, id, presetWorkId, presetWorkName }: Pr
   const [saving, setSaving] = useState(false)
   const [err, setErr] = useState('')
   const fileRef = useRef<HTMLInputElement | null>(null)
+  // 굿즈자랑 새 글: 쓰던 글자 자동 임시저장 (사진은 파일이라 다시 골라야 해요)
+  const draft = useFormDraft(
+    mode === 'create' ? `taku:draft:goods-new${presetWorkId ? ':' + presetWorkId : ''}` : null,
+    { workId, workName, name, character, store, purchasedOn, memo, visibility, manualTags, shareContent, showBuyInfo },
+    d => {
+      if (!presetWorkId && d.workId) { setWorkId(d.workId); setWorkName(d.workName ?? '') }
+      setName(d.name ?? ''); setCharacter(d.character ?? ''); setStore(d.store ?? ''); setPurchasedOn(d.purchasedOn ?? '')
+      setMemo(d.memo ?? ''); if (d.visibility) setVisibility(d.visibility); setManualTags(d.manualTags ?? [])
+      setShareContent(d.shareContent ?? ''); setShowBuyInfo(!!d.showBuyInfo)
+    },
+    d => !d.name.trim() && !d.character.trim() && !d.store.trim() && !d.purchasedOn && !d.memo.trim() && d.manualTags.length === 0 && !d.shareContent.trim() && (!!presetWorkId || !d.workId),
+  )
 
   // 편집 프리필
   useEffect(() => {
@@ -125,6 +138,7 @@ export default function GoodsForm({ mode, id, presetWorkId, presetWorkName }: Pr
         const newFiles = previews.filter(p => p.file).map(p => p.file!)
         if (newFiles.length) await addGoodsImages(id, newFiles)
       }
+      draft.clear()
       router.replace('/profile/goods')
     } catch (e: any) {
       setErr(e?.message ?? '저장에 실패했어요'); setSaving(false)
