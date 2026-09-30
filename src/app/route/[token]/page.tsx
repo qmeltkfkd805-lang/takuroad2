@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import RouteDetailGate from '@/components/route/RouteDetailGate'
+import { withStopKeys } from '@/lib/route/stopKey'
 
 interface Props {
   params: Promise<{ token: string }>
@@ -15,7 +16,7 @@ const SELECT = `
   profiles!routes_user_id_fkey ( nickname ),
   primary_tag:tags!primary_tag_id ( name ),
   route_shops (
-    id, sort_order, distance_from_prev_m, duration_from_prev_min, move_tip,
+    *,
     shops ( id, slug, name, addr, lat, lng, region, hours, status, floor, unit, floor_info, place_id, places ( name ),
       shop_images ( image_url, is_cover, sort_order ),
       cats
@@ -26,7 +27,8 @@ const SELECT = `
 async function fetchRoute(token: string) {
   const supabase = await createClient()
   const { data } = await supabase.from('routes').select(SELECT).eq('share_token', token).maybeSingle()
-  return data as any
+  // 같은 샵이 층마다 나뉜 방문지는 shops.id = "샵id@층", floor_info = 그 층 (lib/route/stopKey)
+  return data ? withStopKeys(data as any) : (data as any)
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

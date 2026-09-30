@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/client'
 import { prepareImage } from '@/lib/storage/compressImage'
 import { recordActivity } from '@/services/activityService'
 import { calcDistance } from '@/hooks/useCurrentLocation'
+import { withStopKeys } from '@/lib/route/stopKey'
 
 // ??醫뚰몴 媛??꾨낫 ?쒓컙 異붿젙 (?됯퇏 4km/h)
 function estimateWalkMinutes(meters: number): number {
@@ -13,6 +14,8 @@ interface RouteShopInput {
   lat: number
   lng: number
   moveTip?: string | null   // 이 스팟 → 다음 스팟 이동 팁
+  /** 같은 샵이 여러 층에 있어 층마다 따로 담았을 때 이 방문지의 층 (없으면 빈 값) */
+  stopFloor?: string | null
 }
 
 // 猷⑦듃 ?앹꽦 (???쒖꽌 + 嫄곕━/?쒓컙 怨꾩궛 ?ы븿)
@@ -46,6 +49,7 @@ export async function createRoute(
       distance_from_prev_m: distFromPrev,
       duration_from_prev_min: durFromPrev,
       move_tip: i < shops.length - 1 ? (shop.moveTip?.trim() || null) : null,
+      ...(shop.stopFloor?.trim() ? { stop_floor: shop.stopFloor.trim() } : {}),
     }
   })
 
@@ -109,7 +113,7 @@ export async function getRouteByShareToken(token: string) {
       is_shared, user_id, created_at,
       profiles!routes_user_id_fkey ( nickname ),
       route_shops (
-        id, sort_order, distance_from_prev_m, duration_from_prev_min, move_tip,
+        *,
         shops ( id, slug, name, addr, lat, lng, place_id, floor, unit, floor_info, hours, status,
           places ( name, access_note ),
           shop_images ( image_url, is_cover, sort_order ),
@@ -124,7 +128,7 @@ export async function getRouteByShareToken(token: string) {
     console.error('getRouteByShareToken error:', JSON.stringify(error))
     return null
   }
-  return data
+  return data ? withStopKeys(data as any) : data   // 층마다 나뉜 방문지는 shops.id = "샵id@층"
 }
 
 // 猷⑦듃 ??젣
@@ -292,7 +296,7 @@ export async function getRouteForEdit(routeId: string) {
   const { data, error } = await supabase
     .from('routes')
     .select(`id, title, description, official_difficulty,
-      route_shops ( sort_order, move_tip, shops ( id, name, lat, lng, addr, region, place_id, floor, unit, floor_info, places ( name ) ) )`)
+      route_shops ( *, shops ( id, name, lat, lng, addr, region, place_id, floor, unit, floor_info, places ( name ) ) )`)
     .eq('id', routeId)
     .maybeSingle()
   if (error || !data) { console.error('[route edit load]', error); return null }
@@ -310,7 +314,7 @@ export async function updateRoute(routeId: string, title: string, description: s
       dur = estimateWalkMinutes(d)
       totalDistance += d; totalDuration += dur
     }
-    return { route_id: routeId, shop_id: shop.shopId, sort_order: i, distance_from_prev_m: d, duration_from_prev_min: dur, move_tip: i < shops.length - 1 ? (shop.moveTip?.trim() || null) : null }
+    return { route_id: routeId, shop_id: shop.shopId, sort_order: i, distance_from_prev_m: d, duration_from_prev_min: dur, move_tip: i < shops.length - 1 ? (shop.moveTip?.trim() || null) : null, ...(shop.stopFloor?.trim() ? { stop_floor: shop.stopFloor.trim() } : {}) }
   })
   const { error: upErr } = await supabase.from('routes').update({
     title, description: description || null, official_difficulty: difficulty,

@@ -43,16 +43,20 @@ export async function recordRouteProgressOnCheckIn(userId: string, shopId: strin
 
   const { data: routeShops } = await supabase
     .from('route_shops')
-    .select('route_id, routes!inner(id, title, is_shared, user_id, share_token)')
+    .select('*, routes!inner(id, title, is_shared, user_id, share_token)')
     .eq('shop_id', shopId)
 
   if (!routeShops) return []
 
   const completedRouteIds: string[] = []
+  const seenRoutes = new Set<string>()
 
   for (const rs of routeShops as any[]) {
     const route = rs.routes
-    if (!route) continue
+    if (!route || seenRoutes.has(route.id)) continue
+    seenRoutes.add(route.id)
+    // 이 루트에서 이 샵이 층마다 따로 방문지면 어느 층인지 알 수 없어 자동 체크하지 않는다 (루트 화면에서 층별로 체크)
+    if ((routeShops as any[]).some(x => x.route_id === route.id && (x.stop_floor ?? '') !== '')) continue
 
     const { data: existing } = await supabase
       .from('route_completions')

@@ -12,6 +12,20 @@ import RouteMiniMap from '@/components/admin/RouteMiniMap'
 import LogoLoader from '@/components/common/LogoLoader'
 import { useFormDraft } from '@/hooks/useFormDraft'
 import DraftNotice from '@/components/common/DraftNotice'
+import { stopKey, splitFloorSegments } from '@/lib/route/stopKey'
+
+/* 같은 샵이 여러 층에 있으면(층 정보 "2층 136호 · 3층 · 9층") 층마다 따로 방문지로 담는다.
+   담긴 항목의 id = 방문지 id("샵id@층"), shop_id = 실제 샵 id, stop_floor = 그 층, floor_info = 그 층 */
+function realShopId(s: any): string { return s?.shop_id ?? s?.id }
+function asStop(shop: any, floor: string): any {
+  const id = realShopId(shop)
+  return { ...shop, id: stopKey(id, floor), shop_id: id, stop_floor: floor, floor_info: floor, floor: null, unit: null }
+}
+function expandStops(shop: any): any[] {
+  const segs = splitFloorSegments(shop?.floor_info)
+  if (segs.length >= 2) return segs.map(seg => asStop(shop, seg))
+  return [{ ...shop, shop_id: realShopId(shop) }]
+}
 
 const DIFF = [
   { v: 1, l: '가볍게', c: '#0E7A63' },
@@ -150,10 +164,17 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
       if (r) {
         setTitle(r.title ?? ''); setDesc(r.description ?? ''); setDifficulty(r.official_difficulty ?? 1)
         const ordered = (r.route_shops ?? []).slice().sort((a: any, b: any) => a.sort_order - b.sort_order)
-        const shops = ordered.map((rs: any) => rs.shops).filter((s: any) => s && s.lat != null && s.lng != null)
-        setAdded(shops as Shop[])
+        // 저장된 층별 방문지는 그대로, 아직 안 나눈 여러 층 샵은 층마다 나눠서 보여준다(저장하면 반영)
+        const list: any[] = []
         const tips: Record<string, string> = {}
-        ordered.forEach((rs: any) => { if (rs.shops?.id && rs.move_tip) tips[rs.shops.id] = rs.move_tip })
+        ordered.forEach((rs: any) => {
+          const sh = rs.shops
+          if (!sh || sh.lat == null || sh.lng == null) return
+          const entries = (rs.stop_floor ?? '').trim() ? [asStop(sh, rs.stop_floor.trim())] : expandStops(sh)
+          list.push(...entries)
+          if (rs.move_tip) tips[entries[entries.length - 1].id] = rs.move_tip   // 이동 팁은 그 샵의 마지막 층 뒤에
+        })
+        setAdded(list as Shop[])
         setMoveTips(tips)
       }
       setLoadingEdit(false)
@@ -207,8 +228,15 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
     if (!candidates.length) return
     const byId = new Map(candidates.map(c => [c.id, c]))
     setAdded(prev => {
-      if (!prev.some(x => byId.has(x.id))) return prev
-      const next = prev.map(x => byId.get(x.id) ?? x)
+      if (!prev.some(x => byId.has(realShopId(x)))) return prev
+      const next = prev.flatMap((x: any) => {
+        const c = byId.get(realShopId(x))
+        if (!c) return [x]
+        if (x.stop_floor) return [asStop(c, x.stop_floor)]   // 층별로 담은 건 그 층 그대로
+        // 층 정보를 여러 층으로 고치고 왔으면 층마다 나눈다 (이미 나뉘어 담긴 게 있으면 그대로)
+        const split = expandStops(c)
+        return split.length > 1 && prev.some((y: any) => realShopId(y) === c.id && y.stop_floor) ? [{ ...c, shop_id: c.id }] : split
+      }) as Shop[]
       if (autoResultRef.current === prev) autoResultRef.current = next   // 자동 정렬 표시는 유지
       return next
     })
@@ -249,11 +277,15 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
     if (!q) return candidates
     return candidates.filter((s) => norm(s.name ?? '').includes(q) || norm(s.addr ?? '').includes(q) || norm(shopRegion(s)).includes(q))
   }, [candidates, q])
-  const addedIds = useMemo(() => new Set(added.map((s) => s.id)), [added])
+  // 담긴 샵(실제 샵 id) — 층마다 나뉘어도 샵 하나로 본다
+  const addedIds = useMemo(() => new Set(added.map((s) => realShopId(s))), [added])
 
-  function add(s: Shop) { if (!addedIds.has(s.id)) setAdded((a) => [...a, s]) }
-  function addAll() { setAdded((a) => { const ids = new Set(a.map((x) => x.id)); return [...a, ...filtered.filter((s) => !ids.has(s.id))] }) }
+  function add(s: Shop) { if (!addedIds.has(s.id)) setAdded((a) => [...a, ...expandStops(s)]) }
+  function addAll() { setAdded((a) => { const ids = new Set(a.map((x) => realShopId(x))); return [...a, ...filtered.filter((s) => !ids.has(s.id)).flatMap(expandStops)] }) }
+  /** 순서 목록의 한 줄(방문지) 빼기 */
   function remove(id: string) { setAdded((a) => a.filter((s) => s.id !== id)) }
+  /** 후보 목록에서 "담김"을 다시 누르면 그 샵의 모든 층을 뺀다 */
+  function removeShop(shopId: string) { setAdded((a) => a.filter((s) => realShopId(s) !== shopId)) }
   function move(i: number, dir: -1 | 1) {
     setAdded((a) => { const j = i + dir; if (j < 0 || j >= a.length) return a; const c = [...a]; [c[i], c[j]] = [c[j], c[i]]; return c })
   }
@@ -383,7 +415,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
     if (!title.trim()) { setMsg('루트 이름을 입력하세요'); setStep(1); return }
     if (added.length < (asDraft ? 1 : 2)) { setMsg(asDraft ? '샵을 1곳 이상 담으면 임시 저장할 수 있어요' : '샵을 2개 이상 담아주세요'); setStep(2); return }
     setSaving(true); setMsg(null)
-    const shopInput = added.map((s, i) => ({ shopId: s.id, lat: s.lat as number, lng: s.lng as number, moveTip: i < added.length - 1 ? (moveTips[s.id] ?? null) : null }))
+    const shopInput = added.map((s: any, i) => ({ shopId: realShopId(s), stopFloor: s.stop_floor ?? null, lat: s.lat as number, lng: s.lng as number, moveTip: i < added.length - 1 ? (moveTips[s.id] ?? null) : null }))
     const meta = {
       cover_image_url: coverUrl || null,
       themes,
@@ -574,7 +606,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
                           <div style={{ fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{s.name}</div>
                           <div style={{ fontSize: 11, color: 'var(--muted)' }}>{shopRegion(s)}</div>
                         </div>
-                        <button onClick={() => addedIds.has(s.id) ? remove(s.id) : add(s)} style={{ ...smallBtn, ...(addedIds.has(s.id) ? { background: 'var(--surface)', color: 'var(--accent)', border: '1px solid var(--accent)' } : {}) }}>{addedIds.has(s.id) ? '✓ 담김' : '담기'}</button>
+                        <button onClick={() => addedIds.has(s.id) ? removeShop(s.id) : add(s)} style={{ ...smallBtn, ...(addedIds.has(s.id) ? { background: 'var(--surface)', color: 'var(--accent)', border: '1px solid var(--accent)' } : {}) }}>{addedIds.has(s.id) ? '✓ 담김' : '담기'}</button>
                       </div>
                     ))}
                     {!loadingShops && filtered.length === 0 && <div style={{ padding: 16, textAlign: 'center', color: 'var(--muted)', fontSize: 13 }}>{sourceMode === 'saved' ? '저장한 샵이 없어요' : '검색 결과가 없어요'}</div>}
@@ -671,7 +703,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
                       draggable={false} onDragStart={(e) => e.preventDefault()}
                       style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 4px', borderBottom: '1px solid var(--border)', background: dragging ? 'var(--accent-l, #FFE6EF)' : 'var(--surface)', boxShadow: dragging ? '0 6px 18px rgba(0,0,0,.16)' : 'none', borderRadius: dragging ? 10 : 0, position: 'relative', zIndex: dragging ? 20 : 1, transform, transition: dragging ? 'none' : 'transform .15s', cursor: 'grab', userSelect: 'none', WebkitUserSelect: 'none', WebkitTouchCallout: 'none' }}>
                       <span style={{ width: 22, height: 22, borderRadius: 9999, background: 'var(--accent)', color: '#fff', fontSize: 11, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{i + 1}</span>
-                      <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{s.name}</span>
+                      <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{s.name}{(s as any).stop_floor && <span style={{ marginLeft: 6, fontWeight: 600, color: 'var(--muted)' }}>{(s as any).stop_floor}</span>}</span>
                       <button onPointerDown={(e) => e.stopPropagation()} onClick={() => move(i, -1)} disabled={i === 0} style={{ ...smallBtn, opacity: i === 0 ? 0.3 : 1 }} aria-label="위로"><Svg size={13}><path d="m18 15-6-6-6 6" /></Svg></button>
                       <button onPointerDown={(e) => e.stopPropagation()} onClick={() => move(i, 1)} disabled={i === added.length - 1} style={{ ...smallBtn, opacity: i === added.length - 1 ? 0.3 : 1 }} aria-label="아래로"><Svg size={13}><path d="m6 9 6 6 6-6" /></Svg></button>
                       <button onPointerDown={(e) => e.stopPropagation()} onClick={() => remove(s.id)} style={{ ...smallBtn, color: 'var(--red)' }} aria-label="삭제"><Svg size={13}><path d="M6 6l12 12M18 6 6 18" /></Svg></button>

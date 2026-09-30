@@ -51,6 +51,8 @@ export async function createCheckIn(
   shopSlug?: string
 ): Promise<CheckInResult> {
   const supabase = createClient()
+  // 루트에서 층마다 나뉜 방문지 id("샵id@층")가 넘어와도 방문 기록은 실제 샵으로
+  shopId = shopId.split('@')[0]
 
   // 방문 기록 방식 — GPS 검증 없음. 갔다 와서 눌러도 됨.
   // 좌표가 넘어오면 참고로 저장하지만, 없어도 정상 기록.

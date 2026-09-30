@@ -8,6 +8,11 @@ import { deriveCheckpoints } from './checkpoints'
 import { evaluatePing, type CheckpointState, type PrevVerified } from './verification'
 import { grantFieldBonus } from './rewardService'
 import { loadRouteShopIds, recordGpsCompletion, recordManualCompletion } from './completion'
+import { stopKey, shopIdOf, parseStopKey } from '@/lib/route/stopKey'
+import { addProgress, removeProgress } from '@/lib/route/progressRows'
+
+/* ⭐ 여기서 'shopId'·'shopIds' 는 전부 "방문지 id"다 — 샵 id, 같은 샵이 층마다 나뉜 루트면 "샵id@층".
+   route_session_visits.shop_id(uuid)에는 실제 샵 id만, 체크포인트 키(shop:…)에는 방문지 id를 넣는다. */
 
 const VERIFIED = new Set(['proximity_verified', 'checkpoint_verified', 'qr_verified'])
 const ACTIVE = new Set(['active', 'paused'])
@@ -40,21 +45,21 @@ export async function createOrResumeSession(client: SupabaseClient, routeId: str
   }
 
   const { data: route } = await client.from('routes')
-    .select('id, route_shops ( sort_order, shops ( id, lat, lng, place_id ) )')
+    .select('id, route_shops ( *, shops ( id, lat, lng, place_id ) )')
     .eq('id', routeId).maybeSingle()
   if (!route) return { error: 'route_not_found' as const }
 
   const stops: OrderedStop[] = ((route as any).route_shops ?? [])
     .slice().sort((a: any, b: any) => a.sort_order - b.sort_order)
-    .map((rs: any) => rs.shops).filter((s: any) => s && s.lat != null && s.lng != null)
-    .map((s: any) => ({ shopId: s.id, lat: s.lat, lng: s.lng, placeId: s.place_id ?? null }))
+    .filter((rs: any) => rs.shops && rs.shops.lat != null && rs.shops.lng != null)
+    .map((rs: any) => ({ shopId: stopKey(rs.shops.id, rs.stop_floor), lat: rs.shops.lat, lng: rs.shops.lng, placeId: rs.shops.place_id ?? null }))
   if (stops.length === 0) return { error: 'no_coords' as const }
 
   const cps = deriveCheckpoints(stops, cfg)
 
   // 라벨(토스트용): 건물=place명, 샵=shop명
   const placeIds = [...new Set(cps.filter(c => c.kind === 'building').map(c => c.placeId).filter(Boolean))] as string[]
-  const shopIds = cps.filter(c => c.kind === 'shop').map(c => c.shopIds[0])
+  const shopIds = cps.filter(c => c.kind === 'shop').map(c => shopIdOf(c.shopIds[0]))
   const [{ data: places }, { data: shops }] = await Promise.all([
     placeIds.length ? client.from('places').select('id, name').in('id', placeIds) : Promise.resolve({ data: [] as any[] }),
     shopIds.length ? client.from('shops').select('id, name').in('id', shopIds) : Promise.resolve({ data: [] as any[] }),
@@ -63,7 +68,8 @@ export async function createOrResumeSession(client: SupabaseClient, routeId: str
   const shopName = new Map((shops ?? []).map((s: any) => [s.id, s.name]))
   const stored: StoredCheckpoint[] = cps.map(c => ({
     ...c,
-    label: c.kind === 'building' ? (placeName.get(c.placeId as string) ?? '건물') : (shopName.get(c.shopIds[0]) ?? '샵'),
+    label: c.kind === 'building' ? (placeName.get(c.placeId as string) ?? '건물')
+      : (() => { const p = parseStopKey(c.shopIds[0]); const n = shopName.get(p.shopId) ?? '샵'; return p.stopFloor ? `${n} ${p.stopFloor}` : n })(),
   }))
 
   const { data: session, error } = await client.from('route_sessions')
@@ -73,7 +79,7 @@ export async function createOrResumeSession(client: SupabaseClient, routeId: str
 
   const visitRows = stored.map(c => ({
     session_id: (session as any).id, checkpoint_key: c.key,
-    shop_id: c.kind === 'shop' ? c.shopIds[0] : null, status: 'pending',
+    shop_id: c.kind === 'shop' ? shopIdOf(c.shopIds[0]) : null, status: 'pending',
   }))
   await client.from('route_session_visits').insert(visitRows as any)
   return { session, visits: await loadVisits(client, (session as any).id), resumed: false }
@@ -94,12 +100,19 @@ export async function getActiveSession(client: SupabaseClient, routeId: string, 
 function sessionShopIds(checkpoints: StoredCheckpoint[], visits: any[]): string[] {
   const ids = new Set<string>()
   for (const v of visits) {
-    if (v.status === 'manual_recorded' && v.shop_id) { ids.add(v.shop_id); continue }
+    if (v.status === 'manual_recorded') { const k = visitStopKey(v); if (k) ids.add(k); continue }
     if (!VERIFIED.has(v.status)) continue
     const cp = checkpoints.find(c => c.key === v.checkpoint_key)
     if (cp?.kind === 'shop') cp.shopIds.forEach(id => ids.add(id))
   }
   return Array.from(ids)
+}
+
+/** 세션 방문 행 → 방문지 id (직접 체크는 체크포인트 키 "shop:방문지id" 에 층까지 들어 있다) */
+function visitStopKey(v: any): string | null {
+  const key: string = v?.checkpoint_key ?? ''
+  if (key.startsWith('shop:')) return key.slice(5)
+  return v?.shop_id ?? null
 }
 
 export async function setSessionStatus(client: SupabaseClient, sessionId: string, userId: string, status: 'active' | 'paused') {
@@ -112,8 +125,11 @@ export async function setSessionStatus(client: SupabaseClient, sessionId: string
 export async function recordManual(client: SupabaseClient, sessionId: string, userId: string, shopId: string) {
   const s = await loadOwned(client, sessionId, userId)
   if (!s || !ACTIVE.has(s.status)) return { error: 'not_active' as const }
+  // 이 루트의 방문지인지 서버가 확인 (샵 id 또는 "샵id@층")
+  const routeStops = await loadRouteShopIds(client, s.route_id)
+  if (!routeStops.includes(shopId)) return { error: 'not_in_route' as const }
   await client.from('route_session_visits').upsert({
-    session_id: sessionId, checkpoint_key: `shop:${shopId}`, shop_id: shopId,
+    session_id: sessionId, checkpoint_key: `shop:${shopId}`, shop_id: shopIdOf(shopId),
     status: 'manual_recorded', verification_mode: 'manual', verified_at: nowIso(),
   } as any, { onConflict: 'session_id,checkpoint_key' })
   await reflectToProgress(client, s.route_id, userId, [shopId]).catch(() => {})
@@ -139,7 +155,7 @@ export async function undoAuto(client: SupabaseClient, sessionId: string, userId
   }).eq('session_id', sessionId).eq('checkpoint_key', checkpointKey)
   const cp = ((s.checkpoints ?? []) as StoredCheckpoint[]).find(c => c.key === checkpointKey)
   const shopIds = checkpointKey.startsWith('shop:') ? [checkpointKey.slice(5)] : cp?.kind === 'shop' ? cp.shopIds : []
-  if (shopIds.length) await client.from('route_progress').delete().eq('route_id', s.route_id).eq('user_id', userId).in('shop_id', shopIds)
+  if (shopIds.length) await removeProgress(client, s.route_id, userId, shopIds)
   return { ok: true as const }
 }
 
@@ -190,10 +206,7 @@ export async function processPing(client: SupabaseClient, sessionId: string, use
 
 async function reflectToProgress(client: SupabaseClient, routeId: string, userId: string, shopIds: string[]) {
   if (!shopIds.length) return
-  const { data: ex } = await client.from('route_progress').select('shop_id').eq('route_id', routeId).eq('user_id', userId)
-  const have = new Set((ex ?? []).map((r: any) => r.shop_id))
-  const rows = shopIds.filter(id => !have.has(id)).map(id => ({ route_id: routeId, shop_id: id, user_id: userId }))
-  if (rows.length) await client.from('route_progress').insert(rows as any)
+  await addProgress(client, routeId, userId, shopIds)
 }
 
 /** 종료. mode=later는 세션만 유지(확정 반영 없음). complete/partial만 route_progress 반영, complete만 완주기록/EXP. 멱등. */
@@ -217,9 +230,10 @@ export async function endSession(
   const firstFinalize = !!claimed
 
   // 수동 기록 반영(upsert = 재요청에도 중복 없음)
-  for (const sid of manualShopIds ?? []) {
+  const routeStopSet = new Set(await loadRouteShopIds(client, s.route_id))
+  for (const sid of (manualShopIds ?? []).filter(k => routeStopSet.has(k))) {
     await client.from('route_session_visits').upsert({
-      session_id: sessionId, checkpoint_key: `shop:${sid}`, shop_id: sid,
+      session_id: sessionId, checkpoint_key: `shop:${sid}`, shop_id: shopIdOf(sid),
       status: 'manual_recorded', verification_mode: 'manual', verified_at: nowIso(),
     } as any, { onConflict: 'session_id,checkpoint_key' })
   }
@@ -237,7 +251,7 @@ export async function endSession(
     if (cp?.kind === 'shop') (cp.shopIds ?? []).forEach(id => visitedShopIds.add(id))
   }
   const manualCount = visits.filter(v => v.status === 'manual_recorded').length
-  for (const v of visits.filter(x => x.status === 'manual_recorded')) if (v.shop_id) visitedShopIds.add(v.shop_id)
+  for (const v of visits.filter(x => x.status === 'manual_recorded')) { const k = visitStopKey(v); if (k) visitedShopIds.add(k) }
 
   await reflectToProgress(client, s.route_id, userId, [...visitedShopIds])
 

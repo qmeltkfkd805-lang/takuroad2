@@ -7,6 +7,7 @@
  *     (authenticated 는 route_completions INSERT 권한 없음, UPDATE 정책 없음).
  */
 import type { SupabaseClient } from '@supabase/supabase-js'
+import { rowStopKey } from '@/lib/route/stopKey'
 
 export interface CompletionOutcome {
   recorded: boolean
@@ -17,10 +18,16 @@ export interface CompletionOutcome {
 const EMPTY: CompletionOutcome = { recorded: false, rewarded: false, gained: 0 }
 const ROUTE_COMPLETED_XP = 15
 
-/** 루트에 속한 샵 id (필수 방문지) */
+/** 루트의 필수 방문지 id — 샵 id, 같은 샵이 층마다 나뉘면 "샵id@층" (lib/route/stopKey) */
 export async function loadRouteShopIds(svc: SupabaseClient, routeId: string): Promise<string[]> {
-  const { data } = await svc.from('route_shops').select('shop_id').eq('route_id', routeId)
-  return [...new Set(((data ?? []) as any[]).map(r => r.shop_id).filter(Boolean))]
+  const { data } = await svc.from('route_shops').select('*').eq('route_id', routeId)
+  return [...new Set(((data ?? []) as any[]).filter(r => r.shop_id).map(r => rowStopKey(r)))]
+}
+
+/** 이 루트에서 이 사람이 체크한 방문지 id */
+export async function loadProgressStopKeys(svc: SupabaseClient, routeId: string, userId: string): Promise<Set<string>> {
+  const { data } = await svc.from('route_progress').select('*').eq('route_id', routeId).eq('user_id', userId)
+  return new Set(((data ?? []) as any[]).filter(r => r.shop_id).map(r => rowStopKey(r)))
 }
 
 /** 스냅샷은 서버가 원본 행에서 만든다 */
@@ -71,9 +78,7 @@ export async function recordManualCompletion(
   const shopIds = await loadRouteShopIds(svc, routeId)
   if (shopIds.length === 0) return { error: 'route_empty' }
 
-  const { data: prog } = await svc.from('route_progress')
-    .select('shop_id').eq('route_id', routeId).eq('user_id', userId)
-  const visited = new Set(((prog ?? []) as any[]).map(p => p.shop_id))
+  const visited = await loadProgressStopKeys(svc, routeId, userId)
   if (!shopIds.every(id => visited.has(id))) return { error: 'not_completed' }
 
   // 완주 행이 이미 있으면 그대로 쓴다. GPS 로 올라간 행을 manual 로 내리지 않는다.

@@ -1,22 +1,17 @@
 import { createClient } from '@/lib/supabase/client'
+import { progressKeys, addProgress, removeProgress } from '@/lib/route/progressRows'
 
-// 이 루트에서 내가 방문 체크한 샵 id 목록
+// 이 루트에서 내가 방문 체크한 방문지 id 목록 (샵 id, 층마다 나뉜 곳은 "샵id@층" — lib/route/stopKey)
 export async function getVisitedShopIds(routeId: string, userId: string): Promise<string[]> {
-  const supabase = createClient()
-  const { data } = await supabase.from('route_progress').select('shop_id').eq('route_id', routeId).eq('user_id', userId)
-  return ((data ?? []) as any[]).map((r) => r.shop_id)
+  return Array.from(await progressKeys(createClient(), routeId, userId))
 }
 
+/** 방문 체크 켜기/끄기 — shopId 는 방문지 id (층마다 나뉜 곳은 "샵id@층") */
 export async function setShopVisited(routeId: string, shopId: string, userId: string, visited: boolean): Promise<boolean> {
   const supabase = createClient()
-  if (visited) {
-    const { data: ex } = await supabase.from('route_progress').select('shop_id').eq('route_id', routeId).eq('shop_id', shopId).eq('user_id', userId).maybeSingle()
-    if (ex) return true
-    const { error } = await supabase.from('route_progress').insert({ route_id: routeId, shop_id: shopId, user_id: userId } as any)
-    return !error
-  }
-  const { error } = await supabase.from('route_progress').delete().eq('route_id', routeId).eq('shop_id', shopId).eq('user_id', userId)
-  return !error
+  return visited
+    ? addProgress(supabase, routeId, userId, [shopId])
+    : removeProgress(supabase, routeId, userId, [shopId])
 }
 
 // 이 루트를 이미 완주(완주 기록 보유)했는지
