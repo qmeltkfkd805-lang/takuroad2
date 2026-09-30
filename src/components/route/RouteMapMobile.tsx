@@ -116,7 +116,7 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
     return () => { cancelled = true }
   }, [route?.id, pathReload])
 
-  useEffect(() => { if (!toast) return; const t = setTimeout(() => setToast(null), 2400); return () => clearTimeout(t) }, [toast])
+  useEffect(() => { if (!toast) return; const t = setTimeout(() => setToast(null), 1500); return () => clearTimeout(t) }, [toast])
   useEffect(() => {
     if (!menuOpen) return
     const h = (e: MouseEvent) => { if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false) }
@@ -307,20 +307,19 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
         const key = `shop:${shopId}`
         const dropLocal = () => setVisitedIds(prev => { const n = new Set(prev); n.delete(shopId); return n })
         if (run.confirmedShopIds.has(shopId)) {
-          if (run.visitStatus.get(key) === 'manual_recorded') { await run.undo(key); dropLocal(); setToast(`${stop?.order ?? ''}번 체크를 풀었어요`) }
+          if (run.visitStatus.get(key) === 'manual_recorded') { await run.undo(key); dropLocal() }
           else setToast('현장에서 확인된 곳이에요')
           return false
         }
         // PC·루트 상세에서 체크해 둔 곳 → 체크 풀기
         if (visitedIds.has(shopId)) {
-          if (await setShopVisited(route.id, shopId, user.id, false)) { dropLocal(); setToast(`${stop?.order ?? ''}번 체크를 풀었어요`) }
+          if (await setShopVisited(route.id, shopId, user.id, false)) { dropLocal() }
           else setToast('체크를 풀지 못했어요. 잠시 후 다시 시도해 주세요.')
           return false
         }
         if (await run.manual(shopId)) {
           setVisitedIds(prev => new Set(prev).add(shopId))
-          recordShopVisit()
-          setToast(`✓ ${stop?.order ?? ''}번 방문 (${visitedCount + 1}/${sheetStops.length})`)
+          recordShopVisit()   // 방문 체크 성공 알림은 띄우지 않는다 (카드의 '방문 완료!'로 충분)
           return true
         }
         setToast('기록하지 못했어요. 잠시 후 다시 시도해 주세요.')
@@ -334,11 +333,11 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
         setToast('체크하지 못했어요. 잠시 후 다시 시도해 주세요.')
         return false
       }
-      if (has) { setToast(`${stop?.order ?? ''}번 체크를 풀었어요`); return false }
+      if (has) return false
       recordShopVisit()
       const next = new Set(visitedIds); next.add(shopId)
       const done = sheetStops.length > 0 && sheetStops.every(s => next.has(s.id))
-      if (!done) { setToast(`✓ ${stop?.order ?? ''}번 방문 (${next.size}/${sheetStops.length})`); return true }
+      if (!done) return true
       await recordRouteCompletion(route.id, user.id)   // 서버가 체크를 다시 대조 · 하루 1번 완주 횟수
       setEndResult({ mode: 'complete', completed: true, visitedCount: sheetStops.length, fieldVerified: 0, totalCheckpoints: 0, manualCount: sheetStops.length, confidence: 'recorded', bonusGranted: false })
       return true

@@ -7,7 +7,7 @@ import styles from './ArrivalToast.module.css'
 
 function ToastItem({ item, onUndo, onDismiss }: { item: Arrival; onUndo: (key: string) => void; onDismiss: (id: string) => void }) {
   useEffect(() => {
-    const t = setTimeout(() => onDismiss(item.id), 6000)
+    const t = setTimeout(() => onDismiss(item.id), 3000)
     return () => clearTimeout(t)
   }, [item.id, onDismiss])
   return (
