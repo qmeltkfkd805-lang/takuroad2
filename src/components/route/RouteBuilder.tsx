@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useMemo, useRef, Fragment } from 'react'
+import { useState, useEffect, useLayoutEffect, useMemo, useRef, Fragment } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getAllTagsFull, AdminTag } from '@/services/workAdminService'
 import { getShops, getSavedShops } from '@/services/shopService'
@@ -292,31 +292,61 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
     }, 180)
   }
 
+  /* 끌어서 순서 바꾸기 — 층 묶음 제목 줄이 끼어 있어도(행 높이가 제각각이어도) 맞게 동작하도록
+     "행 높이 × 순번" 대신 실제 화면의 각 행 위치로 들어갈 자리를 정한다. */
+  const addedRef = useRef(added)
+  addedRef.current = added
+  const dragRef = useRef(drag)
+  dragRef.current = drag
+  // 잡은 행의 원래 자리(transform 뺀 위치) 기준으로 손가락을 따라가게 오프셋 계산
+  const syncDragOffset = () => {
+    const d = dragRef.current
+    if (!d) return
+    const idx = addedRef.current.findIndex(x => x.id === d.id)
+    const el = rowRefs.current[idx]
+    if (!el) return
+    const natural = el.getBoundingClientRect().top - d.dy
+    const dy = (lastYRef.current - grabRef.current) - natural
+    if (Math.abs(dy - d.dy) > 0.5 || d.index !== idx) setDrag(p => p ? { ...p, index: idx, dy } : p)
+  }
+  // 순서가 바뀌어 다시 그려진 직후 오프셋 보정 (묶음 제목이 생기거나 없어져도 튀지 않게)
+  useLayoutEffect(() => { if (drag) syncDragOffset() }, [added])   // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     if (!drag) return
     const dragId = drag.id
     const onMove = (e: PointerEvent) => {
       e.preventDefault()
-      const y = e.clientY
-      const listTop = listRef.current?.getBoundingClientRect().top ?? 0
-      const h = hRef.current
-      // 잡은 행의 실제 top이 놓인 슬롯
-      const raw = Math.max(0, Math.min(added.length - 1, Math.round((y - grabRef.current - listTop) / h)))
-      // 실시간으로 순서 반영 → 화면에 보이는 그대로가 결과가 된다
-      setAdded((a) => {
-        const idx = a.findIndex((x) => x.id === dragId)
-        if (idx === -1 || idx === raw) return a
-        const c = [...a]; const [m] = c.splice(idx, 1); c.splice(raw, 0, m); return c
+      lastYRef.current = e.clientY
+      const list = addedRef.current
+      const idx = list.findIndex(x => x.id === dragId)
+      if (idx === -1) return
+      // 잡은 행의 지금 가운데 높이
+      const center = (e.clientY - grabRef.current) + hRef.current / 2
+      // 다른 행들 중 가운데가 그보다 위에 있는 개수 = 들어갈 자리
+      let target = 0
+      list.forEach((_, j) => {
+        if (j === idx) return
+        const el = rowRefs.current[j]
+        if (!el) return
+        const rc = el.getBoundingClientRect()
+        if (rc.top + rc.height / 2 < center) target++
       })
-      // 잡은 행만 손가락을 따라 떠 있게 오프셋 갱신
-      setDrag((d) => d ? { ...d, index: raw, dy: (y - grabRef.current) - (listTop + raw * h) } : d)
+      if (target !== idx) {
+        setAdded(a => {
+          const k = a.findIndex(x => x.id === dragId)
+          if (k === -1 || k === target) return a
+          const c = [...a]; const [m] = c.splice(k, 1); c.splice(target, 0, m); return c
+        })
+      }
+      syncDragOffset()
     }
     const onUp = () => setDrag(null)
     window.addEventListener('pointermove', onMove, { passive: false })
     window.addEventListener('pointerup', onUp)
     window.addEventListener('pointercancel', onUp)
     return () => { window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerup', onUp); window.removeEventListener('pointercancel', onUp) }
-  }, [drag, added.length])
+  }, [drag?.id])   // eslint-disable-line react-hooks/exhaustive-deps
 
   const tagMatches = tagQuery.trim() ? tags.filter((t) => norm(t.name).includes(norm(tagQuery))).slice(0, 8) : []
   const mapStops = useMemo(() => added.map((s) => ({ id: s.id, lat: s.lat as number, lng: s.lng as number, name: s.name })), [added])
@@ -606,9 +636,9 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
                   {added.map((s, i) => {
                     const dragging = drag?.id === s.id
                     const transform = dragging ? `translateY(${drag!.dy}px)` : undefined
-                    // 층별 묶음 제목 — 앞 샵과 건물·층이 달라지는 곳마다 (끄는 중엔 숨겨서 순서 계산이 흔들리지 않게)
+                    // 층별 묶음 제목 — 앞 샵과 건물·층이 달라지는 곳마다 (끄는 중에도 그대로 보인다)
                     const gKey = floorGroupKey(s as any)
-                    const showHead = !drag && showFloorGroups && (i === 0 || floorGroupKey(added[i - 1] as any) !== gKey)
+                    const showHead = showFloorGroups && (i === 0 || floorGroupKey(added[i - 1] as any) !== gKey)
                     const gLabel = floorGroupLabel(s as any)
                     const fm = floorMaps[gKey]
                     return (
