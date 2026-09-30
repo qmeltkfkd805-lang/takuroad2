@@ -9,6 +9,8 @@ export interface RelatedRoute {
   shop_count: number
   distance_m: number | null
   reason: '같은 작품·지역' | '같은 지역' | '같은 작품'
+  stops: { lat: number; lng: number }[]   // 카드 미니 지도용 (방문 순서)
+  raw: any   // 루트 홈 카드(RouteResultCard)에 그대로 넘기는 원본
 }
 
 // 우선순위: 1) 같은 작품 + 근처 지역  2) 같은 지역  3) 같은 작품
@@ -24,20 +26,22 @@ export async function getRelatedRoutes(
     regions.filter(Boolean).flatMap((r) => [r, r.split(' ')[0]]).filter(Boolean)
   ))
 
-  type Cand = { id: string; title: string; share_token: string; cover_image_url: string | null; shop_count: number; distance_m: number | null; sameTag: boolean; sameRegion: boolean }
+  type Cand = { id: string; title: string; share_token: string; cover_image_url: string | null; shop_count: number; distance_m: number | null; sameTag: boolean; sameRegion: boolean; stops: { lat: number; lng: number }[]; raw: any }
+  const stopsOf = (r: any) => ((r.route_shops ?? []) as any[]).slice().sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+    .map(rs => rs.shops).filter((x: any) => x && typeof x.lat === 'number' && typeof x.lng === 'number').map((x: any) => ({ lat: x.lat, lng: x.lng }))
   const map = new Map<string, Cand>()
 
   // 후보 A: 같은 작품 공개 루트
   if (primaryTagId) {
     const { data } = await supabase
       .from('routes')
-      .select('id, title, share_token, cover_image_url, total_distance_m, route_shops(id)')
+      .select('id, title, share_token, cover_image_url, likes, total_distance_m, total_duration_min, route_shops ( id, sort_order, shops ( name, region, addr, lat, lng ) )')
       .eq('primary_tag_id', primaryTagId)
       .eq('is_shared', true)
       .neq('id', routeId)
       .limit(30)
     for (const r of (data ?? []) as any[]) {
-      map.set(r.id, { id: r.id, title: r.title, share_token: r.share_token, cover_image_url: r.cover_image_url, shop_count: r.route_shops?.length ?? 0, distance_m: r.total_distance_m ?? null, sameTag: true, sameRegion: false })
+      map.set(r.id, { id: r.id, title: r.title, share_token: r.share_token, cover_image_url: r.cover_image_url, shop_count: r.route_shops?.length ?? 0, distance_m: r.total_distance_m ?? null, sameTag: true, sameRegion: false, stops: stopsOf(r), raw: r })
     }
   }
 
@@ -47,7 +51,7 @@ export async function getRelatedRoutes(
     const want = new Set(regions.filter(Boolean))   // 같은 시·구끼리만 ("경기 수원시" ↔ "경기 수원시")
     const { data } = await supabase
       .from('routes')
-      .select('id, title, share_token, cover_image_url, total_distance_m, route_shops ( id, shops ( region, addr ) )')
+      .select('id, title, share_token, cover_image_url, likes, total_distance_m, total_duration_min, route_shops ( id, sort_order, shops ( name, region, addr, lat, lng ) )')
       .eq('is_shared', true)
       .neq('id', routeId)
       .limit(500)
@@ -59,7 +63,7 @@ export async function getRelatedRoutes(
       if (!hit) continue
       const ex = map.get(r.id)
       if (ex) ex.sameRegion = true
-      else map.set(r.id, { id: r.id, title: r.title, share_token: r.share_token, cover_image_url: r.cover_image_url, shop_count: r.route_shops?.length ?? 0, distance_m: r.total_distance_m ?? null, sameTag: false, sameRegion: true })
+      else map.set(r.id, { id: r.id, title: r.title, share_token: r.share_token, cover_image_url: r.cover_image_url, shop_count: r.route_shops?.length ?? 0, distance_m: r.total_distance_m ?? null, sameTag: false, sameRegion: true, stops: stopsOf(r), raw: r })
     }
   }
 
@@ -74,6 +78,6 @@ export async function getRelatedRoutes(
   scored.sort((a, b) => b.score - a.score || b.c.shop_count - a.c.shop_count)
 
   return scored.slice(0, limit).map(({ c, reason }) => ({
-    id: c.id, title: c.title, share_token: c.share_token, cover_image_url: c.cover_image_url, shop_count: c.shop_count, distance_m: c.distance_m, reason,
+    id: c.id, title: c.title, share_token: c.share_token, cover_image_url: c.cover_image_url, shop_count: c.shop_count, distance_m: c.distance_m, reason, stops: c.stops, raw: c.raw,
   }))
 }

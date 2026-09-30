@@ -24,6 +24,7 @@ import styles from './RouteDetailPage.module.css'
 
 import AppIcon from '@/components/tds/AppIcon'
 import RouteThumb from './RouteThumb'
+import RouteResultCard from './RouteResultCard'
 import { rtStops } from './routeMeta'
 
 /* ---- 아이콘 ---- */
@@ -143,12 +144,25 @@ export default function RouteDetailPage({ route }: { route: any }) {
   const canManage = isAuthor || isAdmin   // 관리자는 남의 루트도 관리 가능
   // 수정: 내 루트(추천 지정 전) 또는 관리자 — 추천(공식) 루트는 관리자만 고칠 수 있다
   const canEdit = isAdmin || (isAuthor && !route.is_official)
+  // 관련 루트 카드의 저장(하트)
+  const [savedRouteIds, setSavedRouteIds] = useState<Set<string>>(new Set())
+  async function toggleRelatedSave(e: React.MouseEvent, id: string) {
+    e.stopPropagation()
+    if (!user) { router.push('/login'); return }
+    const on = await toggleRouteSave(id, user.id).catch(() => null)
+    if (on == null) return
+    setSavedRouteIds(prev => { const n = new Set(prev); on ? n.add(id) : n.delete(id); return n })
+  }
+  const relatedCard = (r: any, view: 'grid' | 'list') => (
+    <RouteResultCard key={r.id} route={r.raw ?? r} view={view} mapVariant="preview" saved={savedRouteIds.has(r.id)}
+      onOpen={() => router.push(`/route/${r.share_token}`)} onToggleSave={e => toggleRelatedSave(e, r.id)} />
+  )
   const sectionRefs = { course: useRef<HTMLElement>(null), reviews: useRef<HTMLElement>(null), related: useRef<HTMLElement>(null) }
 
   useEffect(() => {
     if (!user) { setSaved(false); setVisitedIds(new Set()); return }
     let alive = true
-    getMySavedRouteIds(user.id).then(ids => { if (alive) setSaved(ids.includes(route.id)) }).catch(() => {})
+    getMySavedRouteIds(user.id).then(ids => { if (alive) { setSaved(ids.includes(route.id)); setSavedRouteIds(new Set(ids)) } }).catch(() => {})
     getVisitedShopIds(route.id, user.id).then(ids => { if (alive) setVisitedIds(new Set(ids)) }).catch(() => {})
     hasStartedRoute(route.id, user.id).then(s => { if (alive) setStarted(s) }).catch(() => {})
     return () => { alive = false }
@@ -536,19 +550,8 @@ export default function RouteDetailPage({ route }: { route: any }) {
           )}
           {mobileTab === 'related' && (
             related.length > 0 ? (
-              <div className={styles.mRelated}>
-                {related.slice(0, 6).map(r => (
-                  <Link key={r.id} href={`/route/${r.share_token}`} className={styles.mRelatedCard}>
-                    <div className={styles.mRelatedThumb}>
-                      {r.cover_image_url ? <img src={r.cover_image_url} alt="" loading="lazy" /> : <ColorIcon name="colormap" size={24} />}
-                      <span className={styles.mRelatedReason}>{r.reason}</span>
-                    </div>
-                    <div className={styles.mRelatedInfo}>
-                      <div className={styles.mRelatedTitle}>{r.title}</div>
-                      <div className={styles.mRelatedMeta}>스팟 {r.shop_count}곳{r.distance_m ? ` · ${(r.distance_m / 1000).toFixed(1)}km` : ''}</div>
-                    </div>
-                  </Link>
-                ))}
+              <div style={{ display: 'grid', gap: 10 }}>
+                {related.slice(0, 6).map(r => relatedCard(r, 'list'))}
               </div>
             ) : <p className={styles.emptyLine}>관련 루트가 아직 없어요.</p>
           )}
@@ -713,16 +716,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
               <div className={styles.block}>
                 <h2 className={styles.blockTitle}>관련 루트</h2>
                 <div className={styles.relatedGrid}>
-                  {related.slice(0, 3).map(r => (
-                    <Link key={r.id} href={`/route/${r.share_token}`} className={styles.relatedCard}>
-                      <div className={styles.relatedThumb}>
-                        {r.cover_image_url ? <img src={r.cover_image_url} alt="" loading="lazy" /> : <ColorIcon name="colormap" size={26} />}
-                        <span className={styles.relatedReason}>{r.reason}</span>
-                      </div>
-                      <div className={styles.relatedTitle}>{r.title}</div>
-                      <div className={styles.relatedMeta}>스팟 {r.shop_count}곳{r.distance_m ? ` · ${(r.distance_m / 1000).toFixed(1)}km` : ''}</div>
-                    </Link>
-                  ))}
+                  {related.slice(0, 3).map(r => relatedCard(r, 'grid'))}
                 </div>
               </div>
             </section>
