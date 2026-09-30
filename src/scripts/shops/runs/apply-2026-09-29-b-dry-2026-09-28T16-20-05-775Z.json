@@ -1,0 +1,339 @@
+{
+ "plan": "2026-09-29-b",
+ "at": "2026-09-28T16:20:05.775Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "hoemarket-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5560017438305,
+    "lng": 126.927809919208,
+    "road": "서울 마포구 와우산로29길 48-14",
+    "building": "서교타운",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "호에마켓 홍대점",
+    "addr": "서울 마포구 와우산로29길 48-14",
+    "floor_info": "1층",
+    "cats": [
+     "굿즈샵",
+     "쿠지",
+     "가챠",
+     "피규어샵"
+    ],
+    "hours": {
+     "mon": {
+      "open": "13:00",
+      "close": "19:00"
+     },
+     "tue": {
+      "open": "13:00",
+      "close": "19:00"
+     },
+     "wed": {
+      "open": "13:00",
+      "close": "19:00"
+     },
+     "thu": {
+      "open": "13:00",
+      "close": "19:00"
+     },
+     "fri": {
+      "open": "13:00",
+      "close": "19:00"
+     },
+     "sat": {
+      "open": "13:00",
+      "close": "19:00"
+     },
+     "sun": {
+      "open": "13:00",
+      "close": "19:00"
+     }
+    },
+    "shop_link": "https://x.com/hoemarket",
+    "sns_links": [
+     "https://x.com/hoemarket",
+     "https://www.instagram.com/hoemarket_/",
+     "https://www.hoemarket.com/",
+     "https://linktr.ee/hoemarket"
+    ],
+    "description": "홍대 와우산로의 정품 애니메이션 굿즈샵으로, 전시회 굿즈를 모아 두고 보고 살 수 있는 갤러리형 매장을 내세웁니다. 치이카와 등 랜덤 굿즈·가챠머신, 쿠지(꽝 없는 뽑기)와 작품별 기획 이벤트 소식은 공식 X 에 올라옵니다.\n영업시간은 매일 13:00~19:00입니다(이치방쿠지 판매처 목록의 매장 등록 안내). 같은 브랜드의 구의점(아차산역)은 따로 운영합니다.",
+    "lat": 37.5560017438305,
+    "lng": 126.927809919208,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T16:20:05.775Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와",
+      "최애의 아이",
+      "스파이×패밀리",
+      "WIND BREAKER (니이 사토루)",
+      "앙상블 스타즈!!",
+      "우마무스메 프리티 더비",
+      "마슐"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "hoemarket-guui",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.550775692995,
+    "lng": 127.088710483489,
+    "road": "서울 광진구 천호대로130길 22",
+    "building": "구의동 Phil Heim",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "호에마켓 구의점",
+    "addr": "서울 광진구 천호대로130길 22",
+    "floor_info": "구의동 Phil Heim 상가",
+    "cats": [
+     "굿즈샵"
+    ],
+    "hours": {
+     "mon": {
+      "open": "13:00",
+      "close": "18:00"
+     },
+     "tue": {
+      "open": "13:00",
+      "close": "18:00"
+     },
+     "wed": {
+      "open": "13:00",
+      "close": "18:00"
+     },
+     "thu": {
+      "open": "13:00",
+      "close": "18:00"
+     },
+     "fri": {
+      "open": "13:00",
+      "close": "18:00"
+     },
+     "sat": {
+      "open": "13:00",
+      "close": "18:00"
+     },
+     "sun": {
+      "open": "13:00",
+      "close": "18:00"
+     }
+    },
+    "shop_link": "https://x.com/hoemarket_staff",
+    "sns_links": [
+     "https://x.com/hoemarket_staff",
+     "https://x.com/hoemarket",
+     "https://www.hoemarket.com/"
+    ],
+    "description": "아차산역 3번 출구 근처의 정품 애니메이션 굿즈샵으로, 온라인몰 호에마켓의 오프라인 매장입니다. 인형·굿즈와 포켓몬 카드팩 입고 소식은 구의점 공식 X 에 올라옵니다.\n영업시간은 매일 13:00~18:00이며, 주말은 예약제로 운영합니다(공식 계정 안내 — 공휴일 휴무는 따로 공지).",
+    "lat": 37.550775692995,
+    "lng": 127.088710483489,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T16:20:05.775Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "주술회전",
+      "데스노트",
+      "나의 히어로 아카데미아",
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "plushie-new",
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "ittanstore-jeonju",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8201765300288,
+    "lng": 127.146028292868,
+    "road": "전북특별자치도 전주시 완산구 팔달로 199",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "이딴가게",
+    "addr": "전북특별자치도 전주시 완산구 팔달로 199",
+    "floor_info": "뱅뱅빌딩 3층",
+    "cats": [
+     "굿즈샵",
+     "쿠지",
+     "피규어샵"
+    ],
+    "phone": "010-7443-7234",
+    "hours": {
+     "mon": null,
+     "tue": null,
+     "wed": {
+      "open": "14:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "14:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "14:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "14:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "14:00",
+      "close": "20:00"
+     }
+    },
+    "shop_link": "https://ittanstore.com/",
+    "sns_links": [
+     "https://x.com/ittanstore",
+     "https://www.instagram.com/ittanstore/",
+     "https://www.facebook.com/ittanstore/"
+    ],
+    "description": "일본 애니메이션 굿즈·피규어를 파는 전주 굿즈샵으로, 온라인몰과 함께 오프라인 매장을 운영합니다. 2026년 2월 팔달로 뱅뱅빌딩 3층으로 매장을 다시 열었습니다.\n영업시간은 14:00~20:00이고 월·화요일은 쉽니다(공식 X 안내). 전화는 온라인몰 고객센터 번호입니다.",
+    "lat": 35.8201765300288,
+    "lng": 127.146028292868,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T16:20:05.775Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kakagacha-gongneung",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.6289351122752,
+    "lng": 127.076658389084,
+    "road": "서울 노원구 공릉로51길 4",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "까까가챠",
+    "addr": "서울 노원구 공릉로51길 4",
+    "floor_info": "지하 1층",
+    "cats": [
+     "가챠",
+     "굿즈샵",
+     "쿠지",
+     "피규어샵"
+    ],
+    "phone": "0507-1394-9644",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://www.threads.com/@kakagacha_official",
+    "sns_links": [
+     "https://www.threads.com/@kakagacha_official"
+    ],
+    "description": "공릉동(노원)의 가챠·피규어·랜덤박스 굿즈샵으로, 리멘트 피규어와 캐릭터 랜덤박스, 건담 프라모델 소식을 공식 Threads 에 올립니다.\n영업시간은 매일 12:00~21:00입니다(이치방쿠지 판매처 목록의 매장 등록 안내).",
+    "lat": 37.6289351122752,
+    "lng": 127.076658389084,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T16:20:05.775Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "죠죠의 기묘한 모험",
+      "치이카와"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

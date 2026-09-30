@@ -1,0 +1,358 @@
+{
+ "at": "2026-09-29T04-42-14-354Z",
+ "dry": false,
+ "total": 44,
+ "out": [
+  {
+   "name": "덴덴샵&피규어버블 본점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "더굿즈 국전점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "제일복권(이치방쿠지) 서초점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "마로굿즈",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "놀이터 가챠",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "쿠지방 국제전자센터점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "아데꼬 국제전자센터점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "아이러브토이즈 국전점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "네코코(NECOCO)",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "가챠노모리",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "가챠마을",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "우노테크",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "패미컴",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "행피소",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "꾸잉양판점 국전점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "두리조이 가챠샵",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "쿠지매니아 국전점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "토피코 국제전자센터점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "펀해브",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "하비파크 국제전자점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "지지코믹마켓 국전점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "콘비니애니",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "논노21",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "아이템레오",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "애니랩스 국제전자센터점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "피규어프레소 서초점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "스카이토이 국전",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "애니메굿즈",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "모에다",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "큐트피플컴퍼니",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "이스타에그 국전점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "오타쿠사랑방",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "따빼몰 국제전자센터점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "브라더굿즈 국제전자센터점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "니지겐상회",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "미라클쿠지 국전점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "카구탱",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "토이스카이",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "딴솔샵",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "더쿠하우스 국제전자센터점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "한우리 국제전자센터점",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "쿄우마샵 국제전자센터점",
+   "status": "UPDATED",
+   "fields": [
+    "hours"
+   ]
+  },
+  {
+   "name": "잇츠토이",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  },
+  {
+   "name": "쿠지런",
+   "status": "UPDATED",
+   "fields": [
+    "branches",
+    "hours"
+   ]
+  }
+ ]
+}

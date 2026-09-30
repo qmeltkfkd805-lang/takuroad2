@@ -1,0 +1,185 @@
+{
+ "plan": "2026-09-29",
+ "at": "2026-09-28T15:20:29.921Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "tunstoks-jeju",
+   "action": "insert",
+   "geocode": {
+    "lat": 33.4953777896081,
+    "lng": 126.533435532491,
+    "road": "제주특별자치도 제주시 중앙로 281",
+    "building": "남정빌딩",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "b2a4e34a-1320-4cb0-8fc7-61317ca37713",
+   "slug": "teonseutokseu-jejujeom",
+   "extras": {
+    "works": {
+     "added": [
+      "은혼",
+      "문호 스트레이독스",
+      "나의 히어로 아카데미아",
+      "블리치",
+      "주술회전",
+      "원피스",
+      "장송의 프리렌",
+      "그 비스크 돌은 사랑을 한다",
+      "블루 아카이브"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "can-badge-new",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "mowazeul-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8720457264915,
+    "lng": 128.596739074332,
+    "road": "대구 중구 경상감영길 170",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "6c7cc764-3bf6-411b-b84c-e4766e8e4230",
+   "slug": "mowajeul-daegujeom",
+   "extras": {
+    "works": {
+     "added": [
+      "은혼",
+      "에반게리온",
+      "하이큐!!",
+      "승리의 여신: 니케"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "longlongliebe-cheongna",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5336049319905,
+    "lng": 126.65573076274,
+    "road": "인천 서해구 청라에메랄드로 99",
+    "building": "지젤엠청라",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "3a9c74df-c747-463d-a17f-fb8988a66b0b",
+   "slug": "rongrongribegeimjeu",
+   "extras": {
+    "works": {
+     "added": [
+      "닌텐도"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji"
+     ],
+     "unknown": []
+    },
+    "custom_goods": {
+     "added": [
+      "비디오게임",
+      "게임기·게임 액세서리"
+     ]
+    }
+   }
+  },
+  {
+   "key": "jjanganime-cheonan",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.8045067035317,
+    "lng": 127.131857626851,
+    "road": "충남 천안시 서북구 쌍용대로 77",
+    "building": "마에스트로",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "a851379f-2747-457b-91c0-abcc76338e2d",
+   "slug": "jjanganeaenigutjeu",
+   "extras": {
+    "works": {
+     "added": [
+      "체인소맨",
+      "하츠네 미쿠",
+      "장송의 프리렌",
+      "약사의 혼잣말"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "adultpark-gunpo",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.3719139237254,
+    "lng": 126.942594895011,
+    "road": "경기 군포시 산본천로 230",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "4e3caf54-2b0d-4b23-9182-006899a72671",
+   "slug": "eoreunidaegongwon",
+   "extras": {
+    "works": {
+     "added": [
+      "나의 히어로 아카데미아",
+      "주술회전",
+      "헌터×헌터",
+      "나루토",
+      "귀멸의 칼날"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-2026-09-28T15-20-29-921Z.json"
+}

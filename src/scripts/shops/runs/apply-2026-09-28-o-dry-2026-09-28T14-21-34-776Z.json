@@ -1,0 +1,368 @@
+{
+ "plan": "2026-09-28-o",
+ "at": "2026-09-28T14:21:34.776Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "hiddentoy-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8690098854669,
+    "lng": 128.595055764195,
+    "road": "대구 중구 동성로 23-1",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "히든토이 대구본점",
+    "addr": "대구 중구 동성로 23-1",
+    "cats": [
+     "가챠",
+     "쿠지",
+     "굿즈샵"
+    ],
+    "phone": "010-5759-6664",
+    "shop_link": "https://pf.kakao.com/_rxfxcvT",
+    "sns_links": [
+     "https://pf.kakao.com/_rxfxcvT",
+     "https://band.us/@likehyeon",
+     "https://www.instagram.com/hidden_toy/",
+     "https://x.com/hidden_toy",
+     "https://blog.naver.com/hiddentoy"
+    ],
+    "description": "\"전국 최대 규모 가챠샵\"을 내건 대구 동성로의 가챠 전문점으로, 캡슐토이(가챠)와 제일복권(이치방쿠지)을 팝니다. 동성로에서 본점 외에 별관·2호점도 운영하며, 매장별 가챠 입고 현황은 공식 밴드·블로그에 올라옵니다.\n공식 채널 공지 기준 연중무휴입니다. 영업시간은 공식 채널 표기가 서로 달라 방문 전 카카오톡 채널로 확인해 주세요.",
+    "lat": 35.8690098854669,
+    "lng": 128.595055764195,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T14:21:34.776Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "건담"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "hiddentoy-ilsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.6357731232175,
+    "lng": 126.831425031117,
+    "road": "경기 고양시 덕양구 화중로 98",
+    "building": "화정광성프라자",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "히든토이 일산점",
+    "addr": "경기 고양시 덕양구 화중로 98",
+    "floor_info": "지하 1층",
+    "cats": [
+     "가챠",
+     "쿠지",
+     "굿즈샵"
+    ],
+    "phone": "010-6274-3475",
+    "hours": {
+     "mon": {
+      "open": "14:00",
+      "close": "21:00"
+     },
+     "tue": null,
+     "wed": {
+      "open": "14:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "14:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "14:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "14:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "14:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://x.com/hiddentoy_ilsan",
+    "sns_links": [
+     "https://x.com/hiddentoy_ilsan",
+     "https://pf.kakao.com/_zduSK",
+     "https://band.us/n/afa95aYdodwbw"
+    ],
+    "description": "제일복권(이치방쿠지)과 가챠 전문점으로, 산리오 소품도 함께 팝니다. 화정역 3번 출구에서 걸어갈 수 있는 건물 지하 1층에 있습니다.\n영업시간은 14:00~21:00, 화요일 휴무입니다(공식 계정 안내). 구매·문의는 카카오톡 채널로 받습니다.",
+    "lat": 37.6357731232175,
+    "lng": 126.831425031117,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T14:21:34.776Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "승리의 여신: 니케",
+      "전생했더니 슬라임이었던 건에 대하여",
+      "원피스",
+      "산리오"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "parkseobang-daejeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.3398204804178,
+    "lng": 127.390645153057,
+    "road": "대전 서구 계룡로 616",
+    "building": "대전오렌지타운",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "박서방 대전본점",
+    "addr": "대전 서구 계룡로 616",
+    "floor_info": "오렌지타운 3층",
+    "cats": [
+     "프라모델",
+     "피규어샵",
+     "쿠지",
+     "서점"
+    ],
+    "phone": "042-537-0083",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "19:00"
+     },
+     "tue": null,
+     "wed": {
+      "open": "10:30",
+      "close": "19:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "19:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "19:00"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "19:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "19:00"
+     }
+    },
+    "shop_link": "https://litt.ly/psb0083",
+    "sns_links": [
+     "https://x.com/park_seobang",
+     "https://www.instagram.com/parkseobang.lnc/",
+     "https://blog.naver.com/psb0083",
+     "https://smartstore.naver.com/psbgundam"
+    ],
+    "description": "대전에서 30년 된 하비샵으로, 건프라 등 프라모델과 도색 도료·공구, 피규어, 제일복권(이치방쿠지), 굿즈, 만화책·소설책을 팝니다. 성심당 롯데점에서 1분 거리 오렌지타운 3층에 있습니다.\n영업시간은 10:30~19:00(일요일 12:00 오픈), 화요일 정기휴무입니다(공식 계정 안내).",
+    "lat": 36.3398204804178,
+    "lng": 127.390645153057,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T14:21:34.776Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "나의 히어로 아카데미아",
+      "승리의 여신: 니케",
+      "건담"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "manga",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "parkseobang-jeju",
+   "action": "insert",
+   "geocode": {
+    "lat": 33.4902322419752,
+    "lng": 126.474199468505,
+    "road": "제주특별자치도 제주시 월랑로 59",
+    "building": "세흔빌딩",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "박서방 제주지점",
+    "addr": "제주특별자치도 제주시 월랑로 59",
+    "floor_info": "4층",
+    "cats": [
+     "프라모델",
+     "피규어샵",
+     "쿠지",
+     "서점"
+    ],
+    "phone": "064-742-0083",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "19:30"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "19:30"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "19:30"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "19:30"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "19:30"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "yearRound": true
+    },
+    "shop_link": "https://litt.ly/psb_jeju",
+    "sns_links": [
+     "https://x.com/psbjeju",
+     "https://litt.ly/psb_jeju"
+    ],
+    "description": "제주 노형동의 복합 하비샵으로, 이치방쿠지(제일복권)·피규어·건프라와 도색용품·조립 도구, 애니 굿즈, 만화책·라이트노벨·일본 잡지와 원서를 팝니다. 중고 위탁 판매도 합니다.\n영업시간은 평일 10:30~19:30, 주말 10:30~20:30이며 연중무휴입니다(공식 계정 안내).",
+    "lat": 33.4902322419752,
+    "lng": 126.474199468505,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T14:21:34.776Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "야마다 군과 Lv999의 사랑을 하다",
+      "원펀맨",
+      "하츠네 미쿠",
+      "바키"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "manga",
+      "light-novel",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "parkseobang-dongtan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.1669493066166,
+    "lng": 127.105305422682,
+    "road": "경기 화성시 동탄구 동탄대로5길 21",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "박서방 동탄점",
+    "addr": "경기 화성시 동탄구 동탄대로5길 21",
+    "floor_info": "라크몽 A동 4층 E410호",
+    "cats": [
+     "프라모델",
+     "쿠지"
+    ],
+    "phone": "070-4833-0083",
+    "shop_link": "https://www.instagram.com/psbdongtan/",
+    "sns_links": [
+     "https://www.instagram.com/psbdongtan/"
+    ],
+    "description": "대전 하비샵 박서방의 동탄 지점으로, 프라모델과 제일복권(이치방쿠지)을 팝니다. 동탄호수공원 앞 라크몽 A동 4층(디스커버리 옆)에 있습니다.",
+    "lat": 37.1669493066166,
+    "lng": 127.105305422682,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T14:21:34.776Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

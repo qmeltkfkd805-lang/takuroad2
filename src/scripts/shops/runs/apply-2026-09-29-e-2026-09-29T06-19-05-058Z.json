@@ -1,0 +1,152 @@
+{
+ "plan": "2026-09-29-e",
+ "at": "2026-09-29T06:19:05.058Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "daewonshop-songdo",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.3816291013573,
+    "lng": 126.657917047216,
+    "road": "인천 연수구 송도국제대로 123",
+    "building": "현대프리미엄 아울렛 송도점",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "27536f9f-8a9c-4f91-9b3c-825291032f17",
+   "slug": "daewonsyap-hyeondaepeurimieomaulret-songdojeom",
+   "extras": {
+    "works": {
+     "added": [
+      "닌텐도"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "custom_goods": {
+     "added": [
+      "비디오게임",
+      "게임기·게임 액세서리"
+     ]
+    }
+   }
+  },
+  {
+   "key": "daewonshop-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "road": "서울 용산구 한강대로23길 55",
+    "building": "용산역",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "b2e50c38-6039-4ab7-b130-0ce77de279e4",
+   "slug": "daewonsyap-yongsan-aipakeumoljeom",
+   "extras": {
+    "works": {
+     "added": [
+      "닌텐도"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "custom_goods": {
+     "added": [
+      "비디오게임",
+      "게임기·게임 액세서리"
+     ]
+    }
+   }
+  },
+  {
+   "key": "banpresto-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "road": "서울 용산구 한강대로23길 55",
+    "building": "용산역",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "7b9e49cf-4a97-4f6a-933d-6a0de28caf00",
+   "slug": "banpeureseuto-yongsanjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "반프레스토",
+      "원피스",
+      "은혼",
+      "장송의 프리렌",
+      "단다단",
+      "헌터×헌터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "marvel-collection-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "road": "서울 용산구 한강대로23길 55",
+    "building": "용산역",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "fd06fd8e-cd92-4354-8e36-675c8ab63925",
+   "slug": "mabeulkeolreksyeon-yongsanjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "마블"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "koriko-cafe-yeonnam",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5650570196981,
+    "lng": 126.924761748001,
+    "road": "서울 마포구 성미산로 165-7",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "93dc0757-300e-41f6-9327-072bcbfb2db5",
+   "slug": "korikokape-yeonnamjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "마녀 배달부 키키"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-e-2026-09-29T06-19-05-058Z.json"
+}

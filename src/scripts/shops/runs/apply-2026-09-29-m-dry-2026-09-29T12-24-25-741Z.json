@@ -1,0 +1,263 @@
+{
+ "plan": "2026-09-29-m",
+ "at": "2026-09-29T12:24:25.741Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "joyhobby-sindorim",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5071169087537,
+    "lng": 126.890222775625,
+    "road": "서울 구로구 새말로 97",
+    "building": "신도림테크노마트",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "조이하비",
+    "addr": "서울 구로구 새말로 97",
+    "floor_info": "신도림 테크노마트 3층",
+    "cats": [
+     "프라모델",
+     "피규어샵"
+    ],
+    "shop_link": "https://www.joyhobby.co.kr/",
+    "sns_links": [],
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "yearRound": true
+    },
+    "place_id": "a8644d38-c8dc-42fc-a06c-6b97327e1412",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 일반 주차장 B3F~B7F\n최초 30분 무료, 이후 30분당 1,500원\n2만원 이상 구매 영수증 제시 시 2시간 30분 추가(총 3시간)\n우대 할인 중복 불가 · 등록: 1F·10F 안내데스크, 이마트 고객센터 앞",
+    "description": "신도림 테크노마트 3층의 취미 전문점입니다. 건담·SF 프라모델, 스케일 모형(AFV·항공·함선), 피규어·캐릭터 상품, 도료·재료, RC 등을 취급합니다(공식 쇼핑몰 분류 기준).\n테크노마트 공식 영업시간표 기준 매일 10:30~20:30, 연중무휴(테크노마트 휴점일에도 영업).\n신도림역 3번 출구에서 지하로 연결됩니다.",
+    "lat": 37.5071169087537,
+    "lng": 126.890222775625,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T12:24:25.741Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "figurepresso-fp",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5560818991805,
+    "lng": 126.92746137823,
+    "road": "서울 마포구 와우산로29길 48-11",
+    "building": "서교 엠투빌딩",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "피규어프레소 에프피점",
+    "addr": "서울 마포구 와우산로29길 48-11",
+    "floor_info": "지하 1층~2층",
+    "cats": [
+     "피규어샵",
+     "굿즈샵"
+    ],
+    "shop_link": "https://figurepresso.com",
+    "sns_links": [
+     "https://x.com/figurepresso_fp",
+     "https://x.com/fp_enter"
+    ],
+    "phone": "010-7105-9467",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "yearRound": true
+    },
+    "description": "정품 피규어 전문점 피규어프레소의 홍대 매장(FP점)입니다. 지하 1층은 피규어·쿠지, 1층은 랜덤 굿즈·넨도로이드·인형, 2층은 이벤트·굿즈 공간으로 운영합니다(공식 매장 소개).\n매일 12:00~21:00, 연중무휴(공식 안내).\n홍대입구역 7번 출구에서 도보 1분.",
+    "lat": 37.5560818991805,
+    "lng": 126.92746137823,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T12:24:25.741Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "busanmodel",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.193373792282,
+    "lng": 129.066353045281,
+    "road": "부산 연제구 아시아드대로 99",
+    "building": "한림빌딩",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "부산모형",
+    "addr": "부산 연제구 아시아드대로 99",
+    "floor_info": "한림빌딩 3층",
+    "cats": [
+     "프라모델"
+    ],
+    "shop_link": "http://www.busanmodel.co.kr/",
+    "sns_links": [],
+    "phone": "051-852-3246",
+    "description": "1995년 사직과학모형으로 시작한 부산 연제구의 모형 전문점입니다. RC(자동차·보트·비행기·드론)와 건담·애니메이션 프라모델, 스케일 모형, 철도 모형, 에어소프트건 등을 취급합니다(공식 홈페이지 분류 기준).\n영업시간은 공식 표기가 없어 방문 전 전화로 확인하세요.",
+    "lat": 35.193373792282,
+    "lng": 129.066353045281,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T12:24:25.741Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "figurepresso-sindorim-closed",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "description": "정품 피규어 전문 매장 피규어프레소의 신도림점으로, 신도림 테크노마트 3층 58호(에스컬레이터 바로 앞)에 있습니다. 2026년 5월 홍대 에프레소점이 이곳으로 확장 이전했습니다. 매일 12:00~21:00 영업하며, 매월 둘째·넷째 화요일은 휴무입니다(공식 안내). 신도림역 3번 출구에서 지하 통로로 연결됩니다."
+   }
+  },
+  {
+   "key": "gbase-coex-hours",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "21:00"
+     }
+    }
+   }
+  },
+  {
+   "key": "gbase-daegu-parking",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking": true,
+    "parking_note": "건물 주차 안내 없음 — 인근 동성로 중앙주차장(2·28공원 지하주차장) 이용(공식 안내)"
+   }
+  },
+  {
+   "key": "animate-lotte-sns",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "shop_link": "https://x.com/animate_lotte",
+    "sns_links": [
+     "https://x.com/animate_lotte"
+    ]
+   }
+  }
+ ]
+}

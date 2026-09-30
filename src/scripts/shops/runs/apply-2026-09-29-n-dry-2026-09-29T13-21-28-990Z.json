@@ -1,0 +1,421 @@
+{
+ "plan": "2026-09-29-n",
+ "at": "2026-09-29T13:21:28.990Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "aniplus-hapjeong",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5510079695241,
+    "lng": 126.91164899787,
+    "road": "서울 마포구 월드컵로3길 14",
+    "building": "마포 한강 2차 푸르지오",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "애니플러스샵 서울 합정점",
+    "addr": "서울 마포구 월드컵로3길 14",
+    "floor_info": "딜라이트스퀘어 지하 1층 B101~105호",
+    "cats": [
+     "굿즈샵",
+     "콜라보카페"
+    ],
+    "shop_link": "https://aniplustv.com/storeInfo/hapjung",
+    "sns_links": [
+     "https://x.com/ANIPLUS_SEOUL",
+     "https://x.com/ANIPLUS_SHOP"
+    ],
+    "phone": "070-7162-3000",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     }
+    },
+    "place_id": "9403b9d4-21e1-4614-a1c0-581d1284f619",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 마포한강2차푸르지오 지하주차장\n1만원 구매마다 30분 할인, 최대 4시간",
+    "description": "애니메이션 채널 애니플러스가 직영하는 굿즈샵으로, 직영점 중 가장 큰 매장입니다. 콜라보 카페 2곳이 함께 운영되어 작품별 콜라보 카페와 한정 굿즈 판매가 이어집니다.\n매일 10:00~22:00, 설·추석 당일 휴무(공식 안내).\n합정역 8번 출구 방향 건물 연결통로(에스컬레이터)로 지하 1층 이동, 교보문고 맞은편.",
+    "lat": 37.5510079695241,
+    "lng": 126.91164899787,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T13:21:28.990Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "프로젝트 세카이",
+      "홀로라이브",
+      "우마무스메 프리티 더비"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "link_events": {
+     "linked": [
+      {
+       "id": "c0723fbe-c1b2-4701-b99a-ff71e2ad46d7",
+       "title": "프로젝트 세카이 컬러풀 스테이지! feat. 하츠네 미쿠 × 애니플러스 콜라보 카페 (서울 합정점)"
+      },
+      {
+       "id": "ecd671cc-a248-475b-a4c5-857ae8a837a1",
+       "title": "hololive FLOW GLOW × 애니플러스 콜라보 카페 (서울 합정점)"
+      }
+     ],
+     "skipped": []
+    }
+   }
+  },
+  {
+   "key": "aniplus-seomyeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1529239695577,
+    "lng": 129.059604905121,
+    "road": "부산 부산진구 중앙대로 672",
+    "building": "삼정타워",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "애니플러스샵 부산 서면점",
+    "addr": "부산 부산진구 중앙대로 672",
+    "floor_info": "삼정타워 9층",
+    "cats": [
+     "굿즈샵",
+     "콜라보카페"
+    ],
+    "shop_link": "https://aniplustv.com/storeInfo/busan",
+    "sns_links": [
+     "https://x.com/ANIPLUS_BUSAN",
+     "https://x.com/ANIPLUS_SHOP"
+    ],
+    "phone": "070-7162-7048",
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "yearRound": true
+    },
+    "place_id": "6a3e3e01-c868-4948-b8a6-942678852eeb",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 삼정타워 지하주차장\n구매 금액별 할인: 1만원 1시간 · 3만원 2시간 · 5만원 3시간 · 10만원 4시간 · 20만원 5시간(최대 5시간)",
+    "description": "애니메이션 채널 애니플러스가 직영하는 굿즈샵으로, 인터랙티브 체험존과 콜라보 카페 2곳을 함께 운영하는 멀티형 매장입니다.\n매일 11:00~22:00, 연중무휴(공식 안내).\n서면역 2번 출구 방향 지하상가 끝 계단으로 나와 직진 도보 3분, 1층 스타벅스가 있는 삼정타워 9층.",
+    "lat": 35.1529239695577,
+    "lng": 129.059604905121,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T13:21:28.990Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "프로젝트 세카이",
+      "홀로라이브",
+      "우마무스메 프리티 더비"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "link_events": {
+     "linked": [
+      {
+       "id": "89e25504-8687-44c6-b7ca-785fa40c768a",
+       "title": "프로젝트 세카이 컬러풀 스테이지! feat. 하츠네 미쿠 × 애니플러스 콜라보 카페 (부산 서면점)"
+      },
+      {
+       "id": "a0770baf-b2b1-42ad-b8b8-b58165f2cc1c",
+       "title": "hololive FLOW GLOW × 애니플러스 콜라보 카페 (부산 서면점)"
+      }
+     ],
+     "skipped": []
+    }
+   }
+  },
+  {
+   "key": "gongteo-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8725755413445,
+    "lng": 128.597813928162,
+    "road": "대구 중구 교동2길 39",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "공터",
+    "addr": "대구 중구 교동2길 39",
+    "floor_info": "3층",
+    "cats": [
+     "굿즈샵",
+     "가챠",
+     "피규어샵"
+    ],
+    "shop_link": "https://x.com/gachashop",
+    "sns_links": [
+     "https://x.com/gachashop",
+     "https://www.instagram.com/gong.teo/"
+    ],
+    "phone": "010-9862-3012",
+    "description": "대구 동성로의 가챠·애니 굿즈샵입니다. 캡슐토이와 피규어, 애니메이션 굿즈를 취급합니다(공식 X 소개).\n영업시간은 공식 소개에 표기가 없어 방문 전 공식 SNS 공지를 확인하세요.",
+    "lat": 35.8725755413445,
+    "lng": 128.597813928162,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T13:21:28.990Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "달빛천사",
+      "헌터×헌터",
+      "하츠네 미쿠"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "acrylic-stand",
+      "clear-file",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "animarket-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8725755413445,
+    "lng": 128.597813928162,
+    "road": "대구 중구 교동2길 39",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "애니마켓",
+    "addr": "대구 중구 교동2길 39",
+    "floor_info": "2층",
+    "cats": [
+     "중고샵",
+     "굿즈샵",
+     "가챠",
+     "피규어샵"
+    ],
+    "shop_link": "https://x.com/aniimarket",
+    "sns_links": [
+     "https://x.com/aniimarket"
+    ],
+    "phone": "010-2263-1891",
+    "hours": {
+     "mon": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "13:00",
+      "close": "20:00"
+     }
+    },
+    "description": "대구 동성로의 애니메이션 굿즈 위탁 판매 매장입니다. 위탁 굿즈(TCG 카드·캔뱃지·키링·아크릴 스탠드·인형·피규어 등)와 가챠를 운영합니다. 2025년 공터 카페가 애니마켓으로 바뀌었습니다(공식 X).\n매일 13:00~20:00(공식 X 소개). 위탁 상품은 재고가 수시로 바뀝니다.",
+    "lat": 35.8725755413445,
+    "lng": 128.597813928162,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T13:21:28.990Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "acrylic-stand",
+      "can-badge-new",
+      "keyring",
+      "clear-file",
+      "figure-new",
+      "plushie-new",
+      "card-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kkomjirak-hwajeong",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.6332580376991,
+    "lng": 126.834681601914,
+    "road": "경기 고양시 덕양구 백양로 84",
+    "building": "옥빛마을12단지아파트",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "꼼지락 하비샵 화정점",
+    "addr": "경기 고양시 덕양구 백양로 84",
+    "floor_info": "옥빛12단지 파인트리 지하 1층 01호",
+    "cats": [
+     "피규어샵",
+     "프라모델",
+     "쿠지",
+     "굿즈샵"
+    ],
+    "shop_link": "https://pf.kakao.com/_xnvvvb",
+    "sns_links": [
+     "https://x.com/param_kkomjirak",
+     "https://pf.kakao.com/_xnvvvb",
+     "https://m.blog.naver.com/param04",
+     "https://smartstore.naver.com/hobby121"
+    ],
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "20:00"
+     }
+    },
+    "parking": true,
+    "parking_note": "주차 가능(조건은 매장 문의)",
+    "description": "고양 화정의 피규어·굿즈샵입니다. 피규어, 건담 프라모델, 제일복권(이치방쿠지), 애니메이션 굿즈를 취급하고 피규어 예약 판매도 합니다(공식 채널 소개).\n매일 12:00~20:00(공식 카카오톡 채널 운영시간). 화정 이마트 맞은편, 계단으로 지하 1층.",
+    "lat": 37.6332580376991,
+    "lng": 126.834681601914,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T13:21:28.990Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

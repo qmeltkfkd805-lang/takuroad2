@@ -1,0 +1,19 @@
+[
+ {"name":"랜덤 캔배지 (7종, 각)","kind":"goods","price":5500,"file":"product_list_01.jpg","box":[72,302,490,812]},
+ {"name":"랜덤 아크릴 명찰 (7종, 각)","kind":"goods","price":7000,"file":"product_list_01.jpg","box":[511,302,929,812]},
+ {"name":"랜덤 선수 티켓 (7종, 각)","kind":"goods","price":4500,"file":"product_list_01.jpg","box":[950,302,1368,812]},
+ {"name":"증명사진 세트","kind":"goods","price":12000,"file":"product_list_01.jpg","box":[72,842,490,1346]},
+ {"name":"아크릴 블록 (7종, 각)","kind":"goods","price":10000,"file":"product_list_01.jpg","box":[511,842,929,1346]},
+ {"name":"장면컷 아크릴 스탠드 (7종, 각)","kind":"goods","price":17000,"file":"product_list_01.jpg","box":[950,842,1368,1346]},
+ {"name":"테츠야 2호 마우스 패드","kind":"goods","price":8000,"file":"product_list_02.jpg","box":[72,302,490,812]},
+ {"name":"멀티클리너 (4종, 각)","kind":"goods","price":5500,"file":"product_list_02.jpg","box":[511,302,929,812]},
+ {"name":"세이린 농구부 반팔 티셔츠","kind":"goods","price":39000,"file":"product_list_02.jpg","box":[950,302,1368,812]},
+ {"name":"A3 포스터","kind":"goods","price":7500,"file":"product_list_02.jpg","box":[72,842,490,1346]},
+ {"name":"데스크 장패드","kind":"goods","price":28000,"file":"product_list_02.jpg","box":[511,842,929,1346]},
+ {"name":"랜덤 아크릴 카드 (10종, 각)","kind":"goods","price":7000,"file":"product_list_02.jpg","box":[950,842,1368,1346]},
+ {"name":"포토 스튜디오st. 엽서 세트","kind":"goods","price":18000,"file":"product_list_03.jpg","box":[72,302,706,812]},
+ {"name":"명대사 키링 (7종, 각)","kind":"goods","price":12000,"file":"product_list_03.jpg","box":[734,302,1368,812]},
+ {"name":"유니폼 스트랩 키링 (7종, 각)","kind":"goods","price":19000,"file":"product_list_03.jpg","box":[72,842,1368,1346]},
+ {"name":"캐릭터 코스터 (7종 랜덤, 2만원 이상 구매 특전)","kind":"goods","price":null,"file":"product_list_04.jpg","box":[100,482,1340,1130],"note":"2만원당 1매, 영수증 합산 불가"},
+ {"name":"캐릭터 스티커 (7종 랜덤, 5만원 이상 구매 특전)","kind":"goods","price":null,"file":"product_list_05.jpg","box":[100,468,1340,1087],"note":"5만원당 1매, 영수증 합산 불가"}
+]

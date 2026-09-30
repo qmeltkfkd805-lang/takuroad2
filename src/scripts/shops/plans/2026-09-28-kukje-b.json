@@ -1,0 +1,70 @@
+{
+ "name": "2026-09-28-kukje-b",
+ "items": [
+  {
+   "action": "insert",
+   "key": "kukje-kyouma-9f-1",
+   "fields": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://x.com/kyouma_gacha",
+     "https://x.com/kyoumashop"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "쿄우마샵 카드가챠 1호점",
+    "floor_info": "국제전자센터 9층",
+    "cats": [
+     "가챠"
+    ],
+    "shop_link": "https://x.com/kyouma_gacha",
+    "description": "쿄우마샵의 가챠·카드가챠 매장(1호점)으로, 국제전자센터 9층에 있습니다. 본점은 같은 건물 2층입니다. 영업시간은 공식 안내가 없어 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요."
+   },
+   "goods_types": [
+    "gacha-new",
+    "card-new"
+   ],
+   "works": [
+    {
+     "tag_id": "b63d916c-7f00-4e5a-901c-acde7a88e9e8",
+     "primary": false,
+     "evidence": "공식 X \"국제전자센터 9층 카드가챠 1호점에서 판매 중\" 아이엠스타(아이카츠!) 가챠(2026-04-09)"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/kyouma_gacha/status/2042162279970750965",
+     "fields": [
+      "name",
+      "floor_info",
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "http://www.kecday.co.kr/bbs/board.php?bo_table=sisul",
+     "fields": [
+      "place_id",
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ],
+   "unconfirmed": [
+    "unit",
+    "hours",
+    "phone"
+   ],
+   "photo": "needed",
+   "brand_links": [
+    "https://x.com/kyouma_gacha",
+    "https://x.com/kyoumashop"
+   ],
+   "notes": "본점(2층)과 공식 계정 공유 — 공식 게시물이 \"국제전자센터 9층 카드가챠 1호점\" 으로 구분 → 별도 행 (brand_links 로 공유 링크 제외)"
+  }
+ ]
+}

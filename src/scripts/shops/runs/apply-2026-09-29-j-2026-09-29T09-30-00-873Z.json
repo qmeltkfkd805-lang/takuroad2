@@ -1,0 +1,119 @@
+{
+ "plan": "2026-09-29-j",
+ "at": "2026-09-29T09:30:00.873Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "pitb-connect-cheongju",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.6269631809148,
+    "lng": 127.430731962744,
+    "road": "충북 청주시 흥덕구 2순환로 1225",
+    "building": "청주센트럴시티(터미널복합)",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "3faa04b6-890c-498d-b900-0cb9ec0f14f7",
+   "slug": "play-in-the-box-keonekteuhyeondae-cheongjujeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "tamiya-hanam",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5454041231797,
+    "lng": 127.223940331575,
+    "road": "경기 하남시 미사대로 750",
+    "building": "스타필드 하남",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "2875eebb-b8ab-4a35-a507-e9fa27bfa7a0",
+   "slug": "tamiya-peuramodel-paektori-seutapildeu-hanamjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "tamiya-yangjae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.481137253899,
+    "lng": 127.041871983504,
+    "road": "서울 서초구 바우뫼로 215",
+    "building": "TAMIYA빌딩",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "976e760c-86ce-45cb-a7e8-460fe4c2848b",
+   "slug": "tamiya-peuramodel-paektori-yangjae-bonjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "capsulepang-coex",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5118239121138,
+    "lng": 127.059159043842,
+    "road": "서울 강남구 영동대로 513",
+    "building": "코엑스",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "8d9e0608-eca4-403c-ab96-8be9eea9a014",
+   "slug": "kaepsyulpang-seutapildeu-koekseumoljeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "capsulepang-goyang",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.6469771187284,
+    "lng": 126.89477806511,
+    "road": "경기 고양시 덕양구 고양대로 1955",
+    "building": "스타필드 고양",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "22678b1e-e5a5-4dc2-906e-12913b4e71cc",
+   "slug": "kaepsyulpang-seutapildeu-goyangjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-j-2026-09-29T09-30-00-873Z.json"
+}

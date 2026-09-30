@@ -1,0 +1,52 @@
+[
+ {
+  "id": "773e2f96-cea4-4710-8d97-40eb09f239cb",
+  "slug": "gakuen-idolmaster",
+  "parent_tag_id": null
+ },
+ {
+  "id": "2ee1269f-0c23-49c1-8e2d-3af51376db1c",
+  "slug": "idolmaster",
+  "parent_tag_id": null
+ },
+ {
+  "id": "53b159d9-21d3-416c-b0d9-b7f393e31dfc",
+  "slug": "idolmaster-cinderella-girls",
+  "parent_tag_id": null
+ },
+ {
+  "id": "7617a567-1728-4b42-b26f-ece500f1a2b9",
+  "slug": "idolmaster-shiny-colors",
+  "parent_tag_id": null
+ },
+ {
+  "id": "5bc455ed-516a-4ea0-a419-fe59b14221f1",
+  "slug": "persona-3-reload",
+  "parent_tag_id": null
+ },
+ {
+  "id": "c098506a-5dcb-4f9b-9eb8-bffd1b42f00e",
+  "slug": "persona-4",
+  "parent_tag_id": null
+ },
+ {
+  "id": "63b5e319-e35d-4f05-bc99-3bec3c85cf29",
+  "slug": "persona-5",
+  "parent_tag_id": null
+ },
+ {
+  "id": "0a52ab77-f2b5-4bbf-8d00-004d137525a7",
+  "slug": "persona-series",
+  "parent_tag_id": null
+ },
+ {
+  "id": "5018bb5f-1019-4ac2-825d-b98610269f81",
+  "slug": "rilakkuma",
+  "parent_tag_id": null
+ },
+ {
+  "id": "e19a0f86-f091-4ca0-ae9b-497e75134657",
+  "slug": "san-x",
+  "parent_tag_id": null
+ }
+]

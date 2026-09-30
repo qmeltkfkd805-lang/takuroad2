@@ -1,0 +1,102 @@
+{
+  "key": "tamon-gratte",
+  "official_urls": [
+    "https://x.com/animatecafe_js/status/2096131213916581894",
+    "https://x.com/animatecafe_js/status/2101144253028315605"
+  ],
+  "title_official": "타몬 군 지금 어느 쪽?! Gratte",
+  "work": "타몬 군 지금 어느 쪽?!",
+  "type_guess": "collab_cafe",
+  "start_date": "2026-09-19",
+  "end_date": "2026-11-01",
+  "branches": [
+    {
+      "name": "animate cafe 홍대점",
+      "venue": "AK PLAZA 홍대",
+      "address": "서울 마포구 양화로 188",
+      "floor_detail": "5층 (unverified_popga)",
+      "hours": "월-금 11:00~22:00 / 토·일 10:30~22:00 (unverified_popga)",
+      "start_date": "2026-09-19",
+      "end_date": "2026-11-01"
+    },
+    {
+      "name": "animate cafe 잠실롯데점",
+      "venue": "롯데월드몰 쇼핑몰동",
+      "address": "서울 송파구 올림픽로 240",
+      "floor_detail": "B1층 29호 (unverified_popga)",
+      "hours": "매일 10:00~21:00 (unverified_popga)",
+      "start_date": "2026-09-19",
+      "end_date": "2026-11-01"
+    },
+    {
+      "name": "animate cafe 부산점 (쿠키 출장 판매점)",
+      "venue": "삼정타워",
+      "address": "부산 부산진구 중앙대로 672",
+      "floor_detail": "11층 (1102호 unverified_popga)",
+      "hours": "일-목 11:00~22:00 / 금·토 11:00~22:30 (unverified_popga)",
+      "start_date": "2026-09-19",
+      "end_date": "2026-11-01"
+    }
+  ],
+  "entry": "자유 입장(별도 예약 안내 없음). 매장 내 카운터·키오스크에서 도안 번호 선택 후 주문.",
+  "benefits": [
+    {
+      "condition": "메뉴 주문 1개당 +7,500원 (유상 특전, 메뉴 1개당 1개 구매 가능)",
+      "item": "랜덤 아크릴 코스터",
+      "count_kinds": "전 12종 (선택 불가, 소진 시 종료)"
+    }
+  ],
+  "menu": [
+    {
+      "name": "그라떼 (베이스: 아이스 아메리카노/아이스 초코라떼/아이스 딸기라떼/소다 에이드/메론 소다)",
+      "price": 7000
+    },
+    {
+      "name": "아이싱 쿠키",
+      "price": 6500
+    },
+    {
+      "name": "아이스크림 (베이스: 바닐라/초코/녹차/딸기/망고)",
+      "price": 7000
+    },
+    {
+      "name": "유상특전 랜덤 아크릴 코스터 (메뉴 1개당 추가 구매)",
+      "price": 7500
+    }
+  ],
+  "goods": [],
+  "notes": [
+    "도안 22종(번호 1~22) 중 선택",
+    "부산점은 '쿠키 출장 판매점'으로 표기 - 쿠키만 판매로 보임(라떼/아이스는 홍대·잠실롯데). 포스터 표기: 'animate cafe 홍대점·잠실롯데점 / 〈쿠키 출장 판매점〉 animate cafe 부산점'",
+    "트윗 본문 해시태그는 #잠실롯데 #애니메이트카페만 표기, 포스터에 3개 매장 명시",
+    "특전은 소진 시 배포 종료, 랜덤 특전은 같은 그림 중복 가능",
+    "매장 상황에 따라 정리권 안내 및 구매 제한 가능",
+    "9/19 개최 당일 게시물에 쿠키·코스터 실물 사진(display-photo.jpg) 첨부"
+  ],
+  "unverified_popga": [
+    "각 매장 층·호수 상세 및 영업시간"
+  ],
+  "images": [
+    {
+      "file": "poster.jpg",
+      "source_url": "https://pbs.twimg.com/media/HRX4-w-aYAAXDeV.jpg?name=orig",
+      "what": "main poster (기간·매장)",
+      "width": 3150,
+      "height": 2238
+    },
+    {
+      "file": "menu-1.jpg",
+      "source_url": "https://pbs.twimg.com/media/HRX4_l7bAAAkr9t.jpg?name=orig",
+      "what": "menu list + prices + 도안 22종 + 유상특전 코스터 12종",
+      "width": 3096,
+      "height": 2187
+    },
+    {
+      "file": "display-photo.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSe_PkSaMAAZvWv.jpg?name=orig",
+      "what": "실물 사진 (쿠키·아크릴 코스터 진열)",
+      "width": 1127,
+      "height": 1200
+    }
+  ]
+}

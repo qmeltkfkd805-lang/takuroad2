@@ -1,0 +1,51 @@
+{
+ "plan": "2026-09-23",
+ "at": "2026-09-23T05:21:27.268Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "animate-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5577458058734,
+    "lng": 126.926498328277,
+    "road": "서울 마포구 양화로 188",
+    "building": "애경타워",
+    "count": 2
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "애니메이트 홍대점",
+    "addr": "서울 마포구 양화로 188",
+    "floor_info": "AK&홍대(애경타워) 5층",
+    "cats": [
+     "굿즈샵",
+     "서점"
+    ],
+    "phone": "02-3144-7357",
+    "shop_link": "https://x.com/animate_hongdae",
+    "sns_links": [
+     "https://x.com/animate_hongdae"
+    ],
+    "nearest_station": "홍대입구역",
+    "description": "애니메이션·만화·게임 공식 굿즈와 서적을 판매하는 애니메이트 코리아 매장입니다. AK&홍대(애경타워) 5층에 있습니다.\n\n가는 길: 2호선 홍대입구역 8번 출구에서 동교동삼거리 방면으로 약 150m (AK&홍대 공식 안내).\n\n영업시간은 매장 공식 X(@animate_hongdae) 공지를 확인해 주세요.",
+    "lat": 37.5577458058734,
+    "lng": 126.926498328277,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-23T05:21:27.268Z",
+    "info_confirmed_by_type": "admin"
+   }
+  },
+  {
+   "key": "animate-suwon-phone",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "phone": "031-240-1993"
+   }
+  }
+ ]
+}

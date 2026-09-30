@@ -1,0 +1,125 @@
+// 2026-09-28 plan 생성기 — node scripts/shops/plans/make-2026-09-28.mjs
+import { writeFileSync } from 'node:fs'
+const D = '2026-09-28'
+const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+const all = (open, close) => Object.fromEntries(DAYS.map((d) => [d, { open, close }]))
+const split = (wd, we, weDays) => Object.fromEntries(DAYS.map((d) => [d, weDays.includes(d) ? we : wd]))
+const src = (url, fields) => ({ url, fields, checked_at: D })
+const TIMES = 'afc1d124-cd6b-4aca-876f-237c4fda27dc'
+const LWM = '037ee556-bbf3-42f0-ae4a-b126d859d1c1'
+const GIMPO = '99e4e44e-6048-4ad3-8dc3-c3dbbc8f568d'
+const IPARK = '045ed3e4-9d81-4f68-a4c7-e6815f0ccadc'
+const POKEMON = '6200fb96-d722-4cbf-b09c-d5967f598ee7'
+const GUNDAM = '98516d1a-f883-4cb0-95f8-e588dc3c5da7'
+const FUN = 'https://www.bnkrmall.co.kr/etc/funsquare_store.do'
+const FUN_PRESS = 'https://www.etnews.com/20251216000336'
+const IPARK_PARKING = '주차 가능(유료)\n10분당 1,500원, 무료 회차 없음\n구매 시 할인(패션파크·리빙파크·면세점·이마트): 2만원 1시간 · 4만원 2시간 · 6만원 3시간 · 10만원 4시간 · 20만원 5시간\n당일 영수증 한정, 하루 최대 5시간'
+const IPARK_SRC = src('https://www.iparkmall.co.kr/main/parking.do', ['parking', 'parking_note'])
+const PKM_LIST = 'https://pokemonkorea.co.kr/pokemon_cardshop/menu809'
+
+const items = [
+  {
+    action: 'insert', key: 'funsquare-timessquare', brand: '펀 스퀘어',
+    brand_links: [FUN],
+    fields: {
+      name: '펀 스퀘어 타임스퀘어점', addr: '서울 영등포구 영중로 15', floor_info: '타임스퀘어 지하 1층', cats: ['굿즈샵'], phone: '02-2069-2674',
+      hours: all('10:30', '22:00'), shop_link: FUN, sns_links: [],
+      place_id: TIMES, parking: true,
+      parking_note: '주차 가능(유료)\n최초 30분 무료, 이후 10분당 1,000원\n매장 이용 시 주차할인권 제공(일부 매장 제외), 1일 최대 8시간\n심야(20:00~09:00) 기본요금 50% 할인',
+      description: '반다이남코코리아 직영 매장 FUN SQUARE(펀 스퀘어)의 타임스퀘어점으로, 타임스퀘어 지하 1층에 있습니다. 매장 안에 가샤폰 반다이 오피셜숍(GBO 타임스퀘어점)이 함께 있습니다. 매일 10:30~22:00 영업합니다(공식 매장 안내). 1호선 영등포역과 연결되어 있습니다. 반다이남코코리아 멤버십 혜택은 적용되지 않습니다.',
+    },
+    sources: [src(FUN, ['name', 'addr', 'floor_info', 'phone', 'hours', 'description']), src('https://www.timessquare.co.kr/parking-info', ['place_id', 'parking', 'parking_note'])],
+    unconfirmed: ['goods_types', 'works'], photo: 'needed',
+    notes: '같은 공간의 가샤폰 타임스퀘어점(7392fe21)은 별도 행 유지 — 펀 스퀘어 수원스타필드점·가샤폰 수원스타필드점 분리 관행과 같음. 지점 취급 상품 공식 안내 없음',
+  },
+  {
+    action: 'insert', key: 'funsquare-lotteworldmall', brand: '펀 스퀘어',
+    brand_links: [FUN],
+    fields: {
+      name: '펀 스퀘어 롯데월드몰점', addr: '서울 송파구 올림픽로 300', floor_info: '롯데월드몰 2층', cats: ['굿즈샵', '프라모델', '쿠지'], phone: '02-3213-4273',
+      hours: all('10:30', '22:00'), shop_link: FUN, sns_links: [],
+      place_id: LWM, parking: true,
+      parking_note: '주차 가능(유료)\n10:00~20:00 10분당 500원\n그 외 시간 10분당 200원\n펀 스퀘어 구매 주차 지원 불가(매장 공식 안내)',
+      description: '반다이남코코리아 직영 매장 FUN SQUARE(펀 스퀘어)의 롯데월드몰점으로, 롯데월드몰 2층에 있습니다(2025년 12월 오픈). 건담 프라모델·애니메이션 피규어·이치방쿠지와 함께 가샤폰 반다이 오피셜숍(GBO 롯데월드몰점)이 매장 안에 있습니다. 매일 10:30~22:00 영업합니다(공식 매장 안내). 잠실역 10·11번 출구 지하 통로로 롯데월드몰 지하 1층과 연결됩니다. 롯데월드 지하 1층의 가샤폰 잠실롯데점과는 다른 매장입니다.',
+    },
+    goods_types: ['plamodel-new', 'figure-new', 'ichiban-kuji'],
+    works: [{ tag_id: GUNDAM, primary: false, evidence: '반다이남코코리아 롯데월드몰점 오픈 보도자료(2025-12-16) — 매장 구성에 건담 프라모델 명시' }],
+    sources: [src(FUN, ['name', 'addr', 'floor_info', 'phone', 'hours', 'parking_note']), src(FUN_PRESS, ['goods_types', 'works', 'description']), src('https://www.lotteworldmall.co.kr', ['place_id', 'parking'])],
+    unconfirmed: [], photo: 'needed',
+    notes: '상품 분류·건담은 반다이남코코리아 보도자료(롯데월드몰점 오픈) 기준. 가샤폰 롯데월드몰점(7b8bf8d5) 별도 행 유지',
+  },
+  {
+    action: 'insert', key: 'funsquare-gimpo', brand: '펀 스퀘어',
+    brand_links: [FUN],
+    fields: {
+      name: '펀 스퀘어 롯데몰 김포공항점', addr: '서울 강서구 하늘길 38', floor_info: '롯데몰 김포공항점 GF층', cats: ['굿즈샵'], phone: '02-6116-5053',
+      hours: all('10:30', '22:00'), shop_link: FUN, sns_links: [],
+      place_id: GIMPO, parking: true,
+      parking_note: '주차 가능(유료)\n최초 30분 무료, 이후 30분당 1,000원\n펀 스퀘어 구매 주차 지원 불가(매장 공식 안내)',
+      description: '반다이남코코리아 직영 매장 FUN SQUARE(펀 스퀘어)의 롯데몰 김포공항점으로, 롯데몰 김포공항점 GF층에 있습니다. 매장 안에 가샤폰 반다이 오피셜숍(GBO 롯데몰 김포공항점)이 함께 있습니다. 매일 10:30~22:00 영업합니다(공식 매장 안내). 김포공항역 3번 출구에서 지하 연결통로로 도보 5분입니다.',
+    },
+    sources: [src(FUN, ['name', 'addr', 'floor_info', 'phone', 'hours', 'parking_note', 'description']), src('https://www.lotteshopping.com/store/main?cstrCd=0402', ['place_id', 'parking'])],
+    unconfirmed: ['goods_types', 'works'], photo: 'needed',
+    notes: '건물 구매 무료주차 대신 매장 공식 "주차 지원 불가" 우선 표기. 가샤폰 롯데몰 김포공항점(bb03cccb) 별도 행 유지',
+  },
+  {
+    action: 'insert', key: 'pokemon-cardshop-yongsan', brand: '포켓몬 카드샵',
+    brand_links: [PKM_LIST],
+    fields: {
+      name: '포켓몬 카드샵 용산', addr: '서울 용산구 한강대로23길 55', floor_info: '아이파크몰 리빙파크 8층', cats: ['카드/TCG'], phone: null,
+      hours: split({ open: '10:30', close: '20:30' }, { open: '10:30', close: '21:00' }, ['fri', 'sat']),
+      shop_link: 'https://pokemonkorea.co.kr/pokemon_cardshop/menu329', sns_links: [],
+      place_id: IPARK, parking: true, parking_note: IPARK_PARKING,
+      description: '포켓몬코리아 공식 인증 포켓몬 카드 게임 전문 매장 "POKÉMON CARD SHOP 용산"으로, 용산 아이파크몰 리빙파크 8층에 있습니다(2023년 8월 오픈). 10:30~20:30, 금·토·공휴일은 10:30~21:00 영업합니다(공식 안내). 공식 대회·리그는 포켓몬 카드 게임 공식 예약 사이트에서 신청합니다. 용산역과 연결되어 있습니다.',
+    },
+    goods_types: ['card-new'],
+    works: [{ tag_id: POKEMON, primary: true, evidence: '포켓몬코리아 공식 포켓몬 카드샵 매장 안내(용산) — 포켓몬 카드 게임 전문 매장' }],
+    sources: [src('https://pokemonkorea.co.kr/pokemon_cardshop/menu329', ['name', 'addr', 'floor_info', 'hours', 'works', 'goods_types']), IPARK_SRC],
+    unconfirmed: ['phone', 'hours_holiday_detail'], photo: 'needed',
+    notes: '공식 안내는 2023-08 오픈 이미지(주소·시간) — 공식 목록에 2026-09-28 현재 게재. 공휴일은 금·토와 같은 21:00 마감(hours 구조상 description)',
+  },
+  {
+    action: 'insert', key: 'pokemon-cardshop-mokdong', brand: '포켓몬 카드샵',
+    brand_links: [PKM_LIST],
+    fields: {
+      name: '포켓몬 카드샵 카드챔프 목동', addr: '서울 양천구 오목로 194', floor_info: '정우빌딩 2층', cats: ['카드/TCG'], phone: '070-4140-8211',
+      hours: all('12:30', '21:10'), shop_link: 'https://pokemonkorea.co.kr/pokemon_cardshop/menu758', sns_links: [],
+      description: '포켓몬코리아 공식 인증 포켓몬 카드 게임 전문 매장 "포켓몬 카드샵 목동"(운영 카드챔프)으로, 오목로 194 정우빌딩 2층에 있습니다(2026년 6월 20일 오픈). 매일 12:30~21:10 영업합니다(공식 안내). 공식 대회·리그는 포켓몬 카드 게임 공식 예약 사이트에서 신청합니다.',
+    },
+    goods_types: ['card-new'],
+    works: [{ tag_id: POKEMON, primary: true, evidence: '포켓몬코리아 공식 포켓몬 카드샵 매장 안내(목동) — 포켓몬 카드 게임 전문 매장' }],
+    sources: [src('https://pokemonkorea.co.kr/pokemon_cardshop/menu758', ['name', 'addr', 'floor_info', 'hours', 'phone', 'works', 'goods_types'])],
+    unconfirmed: ['parking', 'sns_links'], photo: 'needed',
+    notes: '단독 빌딩 — 건물(places) 만들지 않음, 공식 주차 안내 없음',
+  },
+  // ── 순환 재점검 (반다이남코코리아 스토어 공식 안내·아이파크몰 공식 주차 안내 2026-09-28)
+  {
+    action: 'update', key: 'recheck-bandai-cardgame-yongsan', shop_id: '55d7c8c3-0aa9-4096-bd51-60b5c8748191', expect_updated_at: '2026-09-15T06:38:16.669677+00:00',
+    fields: {
+      phone: '02-2012-2700', floor_info: '리빙파크 6층 반다이남코코리아 스토어 내', parking_note: IPARK_PARKING,
+      description: '반다이 공식 카드게임 매장 "반다이 카드 게임즈 샵(BANDAI CARD GAMES SHOP)"으로, 용산 아이파크몰 리빙파크 6층 반다이남코코리아 스토어 안에 있습니다. 일~목 10:30~20:30, 금·토 10:30~21:00 영업하며 공휴일은 아이파크몰 운영시간에 따릅니다(공식 안내). 용산역과 연결되어 있습니다.',
+    },
+    overwrite: ['floor_info', 'parking_note', 'description'], reason: '반다이남코코리아 스토어 공식 안내 — 스토어 내 위치·전화 보완, 설명의 타사 카드게임(유희왕) 언급 제거, 아이파크몰 공식 주차 요금(10분당 1,500원)으로 갱신',
+    sources: [src('https://www.bnkrmall.co.kr/etc/bandainamcokorea_store.do', ['phone', 'floor_info', 'hours', 'description']), IPARK_SRC],
+  },
+  {
+    action: 'update', key: 'recheck-gbase-yongsan', shop_id: 'c9fdb6e6-fc04-47db-9e77-7933be98d707', expect_updated_at: '2026-09-15T06:42:36.578613+00:00',
+    fields: { floor_info: '리빙파크 6층 반다이남코코리아 스토어 내', parking_note: IPARK_PARKING },
+    overwrite: ['floor_info', 'parking_note'], reason: '반다이남코코리아 스토어 공식 안내(시간·전화 일치) — 스토어 내 위치 보완, 아이파크몰 공식 주차 요금 갱신',
+    sources: [src('https://www.bnkrmall.co.kr/etc/bandainamcokorea_store.do', ['floor_info', 'hours', 'phone']), IPARK_SRC],
+  },
+  {
+    action: 'update', key: 'recheck-tamiya-yongsan', shop_id: 'c1ae13b4-8e80-43a5-ab5e-e782a035d545', expect_updated_at: '2026-09-15T06:44:03.01611+00:00',
+    fields: { parking_note: IPARK_PARKING },
+    overwrite: ['parking_note'], reason: '아이파크몰 공식 주차 안내 — 기존 "10분당 1,300원"은 2026-03 요금 변경 전 값',
+    sources: [IPARK_SRC],
+  },
+  {
+    action: 'update', key: 'recheck-chiikawa-yongsan', shop_id: '4a115ed5-37bd-43ad-a87d-a5e85120f2fe', expect_updated_at: '2026-09-15T06:13:14.248793+00:00',
+    fields: { parking_note: IPARK_PARKING },
+    overwrite: ['parking_note'], reason: '아이파크몰 공식 주차 안내 — 기존 "10분당 1,300원"은 2026-03 요금 변경 전 값',
+    sources: [IPARK_SRC],
+  },
+]
+writeFileSync('scripts/shops/plans/2026-09-28.json', JSON.stringify({ name: D, items }, null, 1))
+console.log('items', items.length)

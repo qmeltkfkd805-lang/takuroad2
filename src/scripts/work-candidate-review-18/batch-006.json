@@ -1,0 +1,172 @@
+[
+  {
+    "slug": "sword-of-the-demon-hunter-anime",
+    "name": "귀인환등초",
+    "englishName": "Sword of the Demon Hunter",
+    "aliases": [],
+    "description": "에도 시대의 검사가 오랜 세월에 걸쳐 귀신과 인간의 운명을 지켜본다",
+    "genres": [
+      "판타지",
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "yaiba-samurai-legend-anime",
+    "name": "진 사무라이전 야이바",
+    "englishName": "YAIBA: Samurai Legend",
+    "aliases": [],
+    "description": "야생에서 자란 소년 검객 야이바가 라이벌과 요괴를 상대로 모험을 펼친다",
+    "genres": [
+      "액션",
+      "모험",
+      "소년물"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "teogonia-anime",
+    "name": "테오고니아",
+    "englishName": "Teogonia",
+    "aliases": [],
+    "description": "변경 마을의 소년이 전생의 기억과 힘을 깨워 아인종과의 전쟁에 맞선다",
+    "genres": [
+      "판타지",
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-beast-player-erin-anime",
+    "name": "짐승의 연주자 에린",
+    "englishName": "The Beast Player Erin",
+    "aliases": [],
+    "description": "왕국의 전쟁 짐승을 돌보는 소녀가 생명과 권력의 비밀을 깨닫는다",
+    "genres": [
+      "판타지",
+      "드라마",
+      "가족"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "garo-the-animation-anime",
+    "name": "가로 -불꽃의 각인-",
+    "englishName": "GARO: The Animation",
+    "aliases": [],
+    "description": "마녀사냥으로 어머니를 잃은 마계기사가 왕국을 뒤덮은 음모와 맞선다",
+    "genres": [
+      "판타지",
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "katanagatari-anime",
+    "name": "칼 이야기",
+    "englishName": "Katanagatari",
+    "aliases": [],
+    "description": "검을 쓰지 않는 검사와 책사가 열두 자루의 명검을 모으기 위해 전국을 여행한다",
+    "genres": [
+      "액션",
+      "모험",
+      "로맨스"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "humanity-has-declined-anime",
+    "name": "인류는 쇠퇴했습니다",
+    "englishName": "Humanity Has Declined",
+    "aliases": [],
+    "description": "인류가 쇠퇴한 미래에서 조정관 소녀가 요정들의 기묘한 사건을 해결한다",
+    "genres": [
+      "판타지",
+      "코미디",
+      "SF"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "ground-control-to-psychoelectric-girl-anime",
+    "name": "전파녀와 청춘남",
+    "englishName": "Ground Control to Psychoelectric Girl",
+    "aliases": [],
+    "description": "도시로 온 소년이 자신을 외계인이라 믿는 사촌과 기묘한 청춘을 보낸다",
+    "genres": [
+      "로맨스",
+      "코미디",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "sound-of-the-sky-anime",
+    "name": "하늘의 소리",
+    "englishName": "Sound of the Sky",
+    "aliases": [],
+    "description": "전쟁의 흔적이 남은 변방 요새에서 신병 소녀가 나팔을 배우며 동료와 살아간다",
+    "genres": [
+      "음악",
+      "드라마",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "eden-of-the-east-anime",
+    "name": "동쪽의 에덴",
+    "englishName": "Eden of the East",
+    "aliases": [],
+    "description": "기억을 잃은 청년과 대학생이 거액의 전자화폐가 걸린 국가 구원 게임을 파헤친다",
+    "genres": [
+      "추리",
+      "로맨스",
+      "SF"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  }
+]

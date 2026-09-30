@@ -1,0 +1,411 @@
+{
+ "name": "2026-09-29-j",
+ "items": [
+  {
+   "action": "insert",
+   "key": "pitb-connect-cheongju",
+   "brand": "PLAY IN THE BOX",
+   "fields": {
+    "name": "PLAY IN THE BOX 커넥트현대 청주점",
+    "addr": "충북 청주시 흥덕구 2순환로 1225",
+    "floor_info": "커넥트현대 청주 3층",
+    "cats": [
+     "굿즈샵",
+     "가챠",
+     "피규어샵"
+    ],
+    "shop_link": "https://playinthebox.co.kr/ko",
+    "sns_links": [
+     "https://www.instagram.com/playinthebox_official/",
+     "https://playinthebox.co.kr/ko"
+    ],
+    "phone": "043-925-2429",
+    "place_id": "a4de1004-e4e6-45ae-8aa9-f69888824e7a",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n입차 후 30분 이내 출차 시 무료, 이후 10분당 1,000원(1일 최대 70,000원)\n구매 시 무료: 1만원 이상 1시간 · 3만원 이상 2시간 · 5만원 이상 3시간 · 10만원 이상 5시간 · 30만원 이상 당일",
+    "description": "캐릭터 굿즈·피규어·캡슐토이를 모아 파는 캐릭터 편집숍 PLAY IN THE BOX(플레이인더박스)의 매장으로, 커넥트현대 청주 3층(컬처 & 매니아)에 있습니다.\n청주고속버스터미널과 건물이 바로 연결되어 있습니다.\n영업시간은 공식 안내에 표기되어 있지 않아 비워 두었습니다. 방문 전 입점 건물 영업시간과 공식 SNS 공지를 확인하세요."
+   },
+   "goods_types": [
+    "figure-new",
+    "gacha-new"
+   ],
+   "works": [],
+   "sources": [
+    {
+     "url": "https://playinthebox.co.kr/ko/about",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "shop_link",
+      "sns_links",
+      "goods_types",
+      "cats"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 오프라인 매장 목록 \"커넥트현대 청주점 — 충청북도 청주시 흥덕구 2순환로 1225 3F\". 소개 \"한국 최대 피규어 성지 · 캡슐토이\" — 매장 공통 소개라 분류는 피규어·가챠만(브랜드 기준)"
+    },
+    {
+     "url": "https://www.ehyundai.com/newPortal/DP/FG/FG000000_V.do?branchCd=B00179000",
+     "fields": [
+      "floor_info",
+      "phone"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "커넥트현대 청주 공식 층별안내 3F 컬처 & 매니아 \"플레이인더박스 043-925-2429\""
+    },
+    {
+     "url": "https://www.ehyundai.com/newPortal/DP/WC/WC000000_V.do?branchCd=B00179000",
+     "fields": [
+      "place_id",
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "커넥트현대 청주 공식 위치/주차 — 새 place(a4de1004) 생성, 노트 그대로 복사"
+    }
+   ],
+   "unconfirmed": [
+    "hours",
+    "works"
+   ],
+   "photo": "needed",
+   "notes": "분류는 브랜드 공식 소개 기준. 지점 취급 작품 공식 확인 전 비움"
+  },
+  {
+   "action": "insert",
+   "key": "tamiya-hanam",
+   "fields": {
+    "name": "타미야 프라모델 팩토리 스타필드 하남점",
+    "addr": "경기 하남시 미사대로 750",
+    "floor_info": "스타필드 하남 2층",
+    "cats": [
+     "프라모델"
+    ],
+    "shop_link": "https://tamiya.co.kr/",
+    "sns_links": [
+     "https://tamiya.co.kr/"
+    ],
+    "phone": "031-8072-8886",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     }
+    },
+    "place_id": "4c6da0d6-5461-4eab-a0f3-4d80eaba6145",
+    "parking": true,
+    "parking_note": "주차 가능(무료)\n트레이더스 이용 고객은 지하주차장 이용",
+    "description": "한국타미야 직영 프라모델 전문점 타미야 프라모델 팩토리의 하남점으로, 스타필드 하남 2층에 있습니다.\n프라모델과 관련 공구·도료 등을 판매합니다."
+   },
+   "goods_types": [
+    "plamodel-new"
+   ],
+   "works": [],
+   "sources": [
+    {
+     "url": "https://tamiya.co.kr/sub/find_store.php",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "hours",
+      "shop_link"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "한국타미야 공식 매장 안내 \"타미야 플라모델 팩토리 하남점 / 경기도 하남시 미사대로 750 스타필드 하남 2층 / t. 031-8072-8886 / 월-일 10:00 - 22:00\""
+    },
+    {
+     "url": "https://www.starfield.co.kr/hanam/tenant/categoryInfo.do",
+     "fields": [
+      "floor_info",
+      "phone",
+      "hours",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "스타필드 하남 공식 매장 안내 \"타미야 프라모델 팩토리 — 프라모델 전문점, 평일·주말/공휴일 10:00-22:00, 031-8072-8886, 2F\" 일치"
+    },
+    {
+     "url": "https://www.starfield.co.kr/hanam/about/parkingInfo.do",
+     "fields": [
+      "place_id",
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "스타필드 하남 공식 주차안내 \"주차요금은 무료\" — 새 place(4c6da0d6) 생성"
+    }
+   ],
+   "unconfirmed": [
+    "closed_days"
+   ],
+   "photo": "needed",
+   "notes": "휴무일 표기 없음(yearRound 넣지 않음)"
+  },
+  {
+   "action": "insert",
+   "key": "tamiya-yangjae",
+   "fields": {
+    "name": "타미야 프라모델 팩토리 양재 본점",
+    "addr": "서울 서초구 바우뫼로 215",
+    "floor_info": "TAMIYA빌딩 1층",
+    "cats": [
+     "프라모델"
+    ],
+    "shop_link": "https://tamiya.co.kr/",
+    "sns_links": [
+     "https://tamiya.co.kr/"
+    ],
+    "phone": "02-2135-3113",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     }
+    },
+    "description": "한국타미야 직영 프라모델 전문점 타미야 프라모델 팩토리의 본점으로, 양재동 TAMIYA빌딩 1층에 있습니다.\n프라모델과 관련 공구·도료 등을 판매합니다."
+   },
+   "goods_types": [
+    "plamodel-new"
+   ],
+   "works": [],
+   "sources": [
+    {
+     "url": "https://tamiya.co.kr/sub/find_store.php",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "hours",
+      "shop_link",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "한국타미야 공식 매장 안내 \"타미야 플라모델 팩토리 양재 본점 / 서울특별시 서초구 바우뫼로 215 (양재동, TAMIYA빌딩 1층) / t. 02-2135-3113 / 월-일 10:30 - 20:30\""
+    }
+   ],
+   "unconfirmed": [
+    "closed_days",
+    "parking"
+   ],
+   "photo": "needed",
+   "notes": "단독 건물 — place 만들지 않음. 주차 공식 안내 없음"
+  },
+  {
+   "action": "insert",
+   "key": "capsulepang-coex",
+   "fields": {
+    "name": "캡슐팡 스타필드 코엑스몰점",
+    "addr": "서울 강남구 영동대로 513",
+    "floor_info": "스타필드 코엑스몰 지하 1층 · 지하 2층",
+    "cats": [
+     "가챠"
+    ],
+    "phone": "02-562-5671",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "22:00"
+     }
+    },
+    "place_id": "86c742e0-a1fa-42b7-8ee0-0de38b8bdb39",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n입차 후 20분 이내 출차 시 무료, 15분당 1,500원(1일 최대 60,000원)\n코엑스몰 구매 시: 5만원 이상 1시간 · 10만원 이상 2시간 · 15만원 이상 3시간 무료(일부 매장 제외)\n카카오T 주차 모바일 결제 시 20% 할인",
+    "description": "캡슐토이(가챠) 전문 매장 캡슐팡의 스타필드 코엑스몰 매장입니다.\n· 지하 1층: 메가박스·아쿠아리움 방면 통로\n· 지하 2층: 건담베이스 옆\n영업시간·전화는 스타필드 코엑스몰 공식 매장 안내 기준입니다(전화는 지하 2층 매장 표기)."
+   },
+   "goods_types": [
+    "gacha-new"
+   ],
+   "works": [],
+   "sources": [
+    {
+     "url": "https://www.starfield.co.kr/coexmall/tenant/categoryInfo.do",
+     "fields": [
+      "name",
+      "floor_info",
+      "phone",
+      "hours",
+      "goods_types",
+      "cats"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 매장 안내 두 항목: \"캡슐팡 — 캡슐토이 전문 매장, 10:30-22:00, B1\"(지도 안내 10-57, 아쿠아리움·메가박스 인근) / \"캡슐팡 — 캡슐토이 전문 매장, 10:30-22:00, 02-562-5671, B2\"(지도 안내 \"펀시티/캡슐팡, 에이샵, 건담베이스\"). 같은 건물·같은 이름이라 한 행(지침 3-5 의 3). 매장 자체 공식 채널 못 찾음"
+    },
+    {
+     "url": "https://www.starfield.co.kr/coexmall/about/parkingInfo.do",
+     "fields": [
+      "place_id",
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "스타필드 코엑스몰 place(86c742e0) 공식 주차 노트 그대로 복사"
+    }
+   ],
+   "unconfirmed": [
+    "sns",
+    "shop_link",
+    "works"
+   ],
+   "photo": "needed",
+   "notes": "매장 자체 SNS·홈페이지 미확인(건물 공식 매장 안내 기준). 지도 안내 \"펀시티/캡슐팡\" — 운영사 관계 미확인. 호수 10-57 은 지도 안내 번호라 floor_info 에 넣지 않음"
+  },
+  {
+   "action": "insert",
+   "key": "capsulepang-goyang",
+   "fields": {
+    "name": "캡슐팡 스타필드 고양점",
+    "addr": "경기 고양시 덕양구 고양대로 1955",
+    "floor_info": "스타필드 고양 지하 1층",
+    "cats": [
+     "가챠"
+    ],
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     }
+    },
+    "place_id": "81665bc1-d17b-4404-bd6c-2350835419c1",
+    "parking": true,
+    "parking_note": "주차 가능(무료)\n21시 이후 2F~RF층 입차 제한(1층 주차장 이용)\n트레이더스 이용 고객은 지하주차장 이용",
+    "description": "캡슐토이(가챠) 전문 매장 캡슐팡의 스타필드 고양 매장으로, 지하 1층에 있습니다.\n영업시간은 스타필드 고양 공식 매장 안내 기준입니다."
+   },
+   "goods_types": [
+    "gacha-new"
+   ],
+   "works": [],
+   "sources": [
+    {
+     "url": "https://www.starfield.co.kr/goyang/tenant/categoryInfo.do",
+     "fields": [
+      "name",
+      "floor_info",
+      "hours",
+      "goods_types",
+      "cats"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 매장 안내 \"캡슐팡 — 캡슐토이 전문 매장, 10:00-22:00, B1\"(지도 안내: 에스컬레이터·유니클로 인근). 전화 표기 없음. 매장 자체 공식 채널 못 찾음"
+    },
+    {
+     "url": "https://www.starfield.co.kr/goyang/about/parkingInfo.do",
+     "fields": [
+      "place_id",
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "스타필드 고양 place(81665bc1) 공식 주차 노트 그대로 복사"
+    }
+   ],
+   "unconfirmed": [
+    "phone",
+    "sns",
+    "shop_link",
+    "works"
+   ],
+   "photo": "needed",
+   "notes": "코엑스몰점과 같은 브랜드 추정(이름·업종 소개 동일) — 운영사 공식 확인 전"
+  }
+ ]
+}

@@ -1,0 +1,169 @@
+[
+  {
+    "slug": "wistoria-wand-and-sword-anime",
+    "name": "지팡이와 검의 위스토리아",
+    "englishName": "Wistoria: Wand and Sword",
+    "aliases": [],
+    "description": "마법을 쓰지 못하는 소년이 검술만으로 마법학원의 정상에 도전한다",
+    "genres": [
+      "액션",
+      "판타지",
+      "학원"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "mayonaka-punch-anime",
+    "name": "마요나카 펀치",
+    "englishName": "MAYONAKA PUNCH",
+    "aliases": [],
+    "description": "퇴출된 영상 크리에이터가 뱀파이어들과 손잡고 백만 구독자에 도전한다",
+    "genres": [
+      "코미디",
+      "판타지",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "vtuber-legend-how-i-went-viral-after-forgetting-to-turn-off-my-stream-anime",
+    "name": "브이튜버인데 방송 끄는 걸 깜빡했더니 전설이 되어있었다",
+    "englishName": "VTuber Legend: How I Went Viral after Forgetting to Turn Off My Stream",
+    "aliases": [],
+    "description": "방송을 끄지 않은 버튜버의 솔직한 모습이 공개되며 뜻밖의 인기를 얻는다",
+    "genres": [
+      "코미디",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "negative-positive-angler-anime",
+    "name": "네거포지 앵글러",
+    "englishName": "Negative Positive Angler",
+    "aliases": [],
+    "description": "삶을 포기하려던 청년이 낚시를 좋아하는 사람들을 만나 다시 살아갈 이유를 찾는다",
+    "genres": [
+      "드라마",
+      "일상",
+      "스포츠"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "mecha-ude-mechanical-arms-anime",
+    "name": "메카우데",
+    "englishName": "Mecha-Ude: Mechanical Arms",
+    "aliases": [],
+    "description": "평범한 소년이 기계 생명체 알마와 결합해 메카우데를 둘러싼 싸움에 뛰어든다",
+    "genres": [
+      "액션",
+      "SF"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "magilumiere-magical-girls-inc-anime",
+    "name": "주식회사 마지루미에",
+    "englishName": "Magilumiere Magical Girls Inc.",
+    "aliases": [],
+    "description": "취업 준비생이 마법소녀 기업에 입사해 괴이를 퇴치하는 직장인이 된다",
+    "genres": [
+      "액션",
+      "마법소녀",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "acro-trip-anime",
+    "name": "아크로 트립",
+    "englishName": "Acro Trip",
+    "aliases": [],
+    "description": "마법소녀 팬인 소녀가 그녀의 활약을 늘리려 악의 조직 편에 합류한다",
+    "genres": [
+      "마법소녀",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "365-days-to-the-wedding-anime",
+    "name": "결혼한다는 게, 정말인가요",
+    "englishName": "365 Days to the Wedding",
+    "aliases": [],
+    "description": "전근을 피하려는 동료 두 사람이 거짓 결혼 계획을 세우며 관계가 달라진다",
+    "genres": [
+      "로맨스",
+      "코미디",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "kinokoinu-mushroom-pup-anime",
+    "name": "키노코이누",
+    "englishName": "Kinokoinu: Mushroom Pup",
+    "aliases": [],
+    "description": "상실에 빠진 그림책 작가가 버섯처럼 생긴 강아지와 살며 마음을 회복한다",
+    "genres": [
+      "일상",
+      "가족",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "murai-in-love-anime",
+    "name": "무라이의 사랑",
+    "englishName": "Murai in Love",
+    "aliases": [],
+    "description": "선생님을 짝사랑하는 남학생이 그녀의 최애 캐릭터처럼 변신해 마음을 흔든다",
+    "genres": [
+      "로맨스",
+      "코미디",
+      "학원"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  }
+]

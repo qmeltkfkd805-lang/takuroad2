@@ -1,0 +1,375 @@
+[
+ {
+  "name": "가챠노모리",
+  "status": "UPDATED",
+  "before": {
+   "floor_info": "국제전자센터 3층",
+   "branches": [
+    {
+     "name": "매장",
+     "floor": "3층",
+     "items": [
+      "가챠"
+     ]
+    }
+   ]
+  },
+  "patch": {
+   "floor_info": "국제전자센터 3층 149호",
+   "branches": [
+    {
+     "name": "매장",
+     "floor": "3층",
+     "items": [
+      "가챠"
+     ],
+     "room": "149호"
+    }
+   ]
+  }
+ },
+ {
+  "name": "가챠마을",
+  "status": "UPDATED",
+  "before": {
+   "floor_info": "국제전자센터 9층",
+   "branches": [
+    {
+     "name": "매장",
+     "floor": "9층",
+     "items": [
+      "가챠"
+     ]
+    }
+   ]
+  },
+  "patch": {
+   "floor_info": "국제전자센터 9층 104호",
+   "branches": [
+    {
+     "name": "매장",
+     "floor": "9층",
+     "items": [
+      "가챠"
+     ],
+     "room": "104호"
+    }
+   ]
+  }
+ },
+ {
+  "name": "더굿즈 국전점",
+  "status": "UPDATED",
+  "before": {
+   "floor_info": "국제전자센터 5층",
+   "branches": [
+    {
+     "name": "매장",
+     "floor": "5층",
+     "items": [
+      "자체 쿠지"
+     ]
+    }
+   ]
+  },
+  "patch": {
+   "floor_info": "국제전자센터 5층 104호",
+   "branches": [
+    {
+     "name": "매장",
+     "floor": "5층",
+     "items": [
+      "자체 쿠지"
+     ],
+     "room": "104호"
+    }
+   ]
+  }
+ },
+ {
+  "name": "마로굿즈",
+  "status": "UPDATED",
+  "before": {
+   "floor_info": "국제전자센터 5층",
+   "branches": [
+    {
+     "name": "매장",
+     "floor": "5층",
+     "items": [
+      "가챠"
+     ]
+    }
+   ]
+  },
+  "patch": {
+   "floor_info": "국제전자센터 5층 142호",
+   "branches": [
+    {
+     "name": "매장",
+     "floor": "5층",
+     "items": [
+      "가챠"
+     ],
+     "room": "142호"
+    }
+   ]
+  }
+ },
+ {
+  "name": "토피코 국제전자센터점",
+  "status": "UPDATED",
+  "before": {
+   "floor_info": "국제전자센터 3층",
+   "branches": [
+    {
+     "name": "매장",
+     "floor": "3층",
+     "items": [
+      "가챠",
+      "제일복권"
+     ]
+    }
+   ]
+  },
+  "patch": {
+   "floor_info": "국제전자센터 3층 84호",
+   "branches": [
+    {
+     "name": "매장",
+     "floor": "3층",
+     "items": [
+      "가챠",
+      "제일복권"
+     ],
+     "room": "84호"
+    }
+   ]
+  }
+ },
+ {
+  "name": "피규어프레소 서초점",
+  "status": "UPDATED",
+  "before": {
+   "floor_info": "국제전자센터 9층 (1~3호점)",
+   "branches": [
+    {
+     "name": "1~3호점",
+     "floor": "9층",
+     "items": [
+      "피규어"
+     ]
+    }
+   ]
+  },
+  "patch": {
+   "floor_info": "국제전자센터 9층 62호 (1~3호점)",
+   "branches": [
+    {
+     "name": "1~3호점",
+     "floor": "9층",
+     "items": [
+      "피규어"
+     ],
+     "room": "62호"
+    }
+   ]
+  }
+ },
+ {
+  "name": "애니랩스 국제전자센터점",
+  "status": "UPDATED",
+  "before": {
+   "floor_info": "국제전자센터 5층 · 3층(가챠점) · 8층(프리미엄 쿠지샵)",
+   "branches": [
+    {
+     "name": "매장",
+     "floor": "5층",
+     "items": [
+      "피규어",
+      "자체 쿠지",
+      "굿즈"
+     ]
+    },
+    {
+     "name": "가챠점",
+     "floor": "3층",
+     "items": [
+      "가챠"
+     ]
+    },
+    {
+     "name": "프리미엄 쿠지샵",
+     "floor": "8층",
+     "items": [
+      "쿠지"
+     ]
+    }
+   ]
+  },
+  "patch": {
+   "floor_info": "국제전자센터 5층 · 3층 77·135호(가챠점) · 8층 45호(프리미엄 쿠지샵)",
+   "branches": [
+    {
+     "name": "매장",
+     "floor": "5층",
+     "items": [
+      "피규어",
+      "자체 쿠지",
+      "굿즈"
+     ]
+    },
+    {
+     "name": "가챠점",
+     "floor": "3층",
+     "items": [
+      "가챠"
+     ],
+     "room": "77·135호"
+    },
+    {
+     "name": "프리미엄 쿠지샵",
+     "floor": "8층",
+     "items": [
+      "쿠지"
+     ],
+     "room": "45호"
+    }
+   ]
+  }
+ },
+ {
+  "name": "쿠지방 국제전자센터점",
+  "status": "UPDATED",
+  "before": {
+   "sns_links": [
+    "https://x.com/kujibang"
+   ]
+  },
+  "patch": {
+   "sns_links": [
+    "https://x.com/kujibang",
+    "https://www.instagram.com/kujibang/"
+   ]
+  }
+ },
+ {
+  "name": "이스타에그 국전점",
+  "status": "UPDATED",
+  "before": {
+   "floor_info": "국제전자센터 7층(본점) · 9층(2호점)",
+   "branches": [
+    {
+     "name": "본점",
+     "floor": "7층",
+     "items": [
+      "굿즈",
+      "피규어",
+      "카드"
+     ]
+    },
+    {
+     "name": "2호점",
+     "floor": "9층",
+     "items": []
+    }
+   ],
+   "description": "게임·애니메이션 서브컬처 상품을 판매하는 이스타에그의 국제전자센터 매장으로, 같은 건물에 두 곳이 있습니다.\n· 7층 본점: 매일 11:00~19:30, 매월 첫째·셋째 일요일 휴무\n· 9층 2호점: 매주 화요일 정기휴무\n(각 매장 공식 X 안내 — 영업시간 표는 본점 기준)"
+  },
+  "patch": {
+   "floor_info": "국제전자센터 7층(본점) · 9층 946호(2호점)",
+   "branches": [
+    {
+     "name": "본점",
+     "floor": "7층",
+     "items": [
+      "굿즈",
+      "피규어",
+      "카드"
+     ]
+    },
+    {
+     "name": "2호점",
+     "floor": "9층",
+     "items": [],
+     "room": "946호"
+    }
+   ],
+   "description": "게임·애니메이션 서브컬처 상품을 판매하는 이스타에그의 국제전자센터 매장으로, 같은 건물에 두 곳이 있습니다.\n· 7층 본점: 매일 11:00~19:30, 매월 첫째·셋째 일요일 휴무\n· 9층 946호 2호점: 14:30~19:30, 매주 화요일 정기휴무\n(각 매장 공식 X 안내 — 영업시간 표는 본점 기준)"
+  }
+ },
+ {
+  "name": "따빼몰 국제전자센터점",
+  "status": "UPDATED",
+  "before": {
+   "floor_info": "국제전자센터 3층 81~83·88호",
+   "branches": [
+    {
+     "name": "매장",
+     "room": "81~83·88호",
+     "floor": "3층",
+     "items": [
+      "굿즈",
+      "인형",
+      "피규어"
+     ]
+    }
+   ]
+  },
+  "patch": {
+   "floor_info": "국제전자센터 3층 88호",
+   "branches": [
+    {
+     "name": "매장",
+     "room": "88호",
+     "floor": "3층",
+     "items": [
+      "굿즈",
+      "인형",
+      "피규어"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "name": "미라클쿠지 국전점",
+  "status": "UPDATED",
+  "before": {
+   "floor_info": "국제전자센터 3층 41호 (1호점·2호점)",
+   "branches": [
+    {
+     "name": "1·2호점",
+     "room": "41호",
+     "floor": "3층",
+     "items": [
+      "제일복권",
+      "자체 쿠지",
+      "가챠"
+     ]
+    }
+   ]
+  },
+  "patch": {
+   "floor_info": "국제전자센터 3층 135·136호 (1호점·2호점)",
+   "branches": [
+    {
+     "floor": "3층",
+     "name": "1호점",
+     "room": "135호",
+     "items": [
+      "제일복권"
+     ]
+    },
+    {
+     "floor": "3층",
+     "name": "2호점",
+     "room": "136호",
+     "items": [
+      "자체 쿠지",
+      "가챠"
+     ]
+    }
+   ]
+  }
+ }
+]

@@ -1,0 +1,197 @@
+{
+ "plan": "2026-09-28-m",
+ "at": "2026-09-28T11:20:20.189Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "anizio-seomyeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1535530175936,
+    "lng": 129.060439857941,
+    "road": "부산 부산진구 중앙대로680번길 21",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "38bd7de6-b6d9-46f3-97ea-6137b60a1f3e",
+   "slug": "aenijio",
+   "extras": {
+    "works": {
+     "added": [
+      "은혼",
+      "치이카와",
+      "블루 아카이브",
+      "하츠네 미쿠"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "plushie-new",
+      "card-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukuspace",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5521210114354,
+    "lng": 126.918597235916,
+    "road": "서울 마포구 잔다리로 45",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "54543604-9875-4146-8005-aedb35d03c19",
+   "slug": "kuku-seupeiseu",
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와",
+      "산리오",
+      "리락쿠마",
+      "에반게리온",
+      "드래곤볼"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "xxings-wangsimni",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5614417528647,
+    "lng": 127.038394194396,
+    "road": "서울 성동구 왕십리광장로 17",
+    "building": "왕십리민자역사",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "2b7fdb05-e9fe-4021-b9ac-72057442f971",
+   "slug": "ssingseupigyueo-wangsipriyeokjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "스즈미야 하루히의 우울"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "xxings-hanyang",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5607051200897,
+    "lng": 127.040222034002,
+    "road": "서울 성동구 마조로7길 9",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "7ce08593-d29f-471d-85b2-51eefe3e49b8",
+   "slug": "ssingseupigyueo-hanyangdaejeom",
+   "extras": {
+    "works": {
+     "added": [
+      "스즈미야 하루히의 우울"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "cocogoods-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5554711047213,
+    "lng": 126.925138520984,
+    "road": "서울 마포구 와우산로27길 68",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "e0e12f41-9ddf-4b1b-9213-d5e2269074e9",
+   "slug": "the-kkokkogutjeu-hongdaejeom",
+   "extras": {
+    "works": {
+     "added": [
+      "카구라바치",
+      "죠죠의 기묘한 모험"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "can-badge-new",
+      "keyring",
+      "figure-new",
+      "plushie-new",
+      "card-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "miraclekuji-seohyeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.3841135146719,
+    "lng": 127.122640497605,
+    "road": "경기 성남시 분당구 분당로53번길 20",
+    "building": "이랜드분당프라자",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "e2eb9450-a1b5-4846-8bcb-3cd57c36c458",
+   "slug": "mirakeulkuji-seohyeonjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "self-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-28-m-2026-09-28T11-20-20-189Z.json"
+}

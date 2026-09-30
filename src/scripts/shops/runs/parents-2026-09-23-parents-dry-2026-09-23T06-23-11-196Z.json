@@ -1,0 +1,39 @@
+[
+ {
+  "child": "학원 아이돌 마스터",
+  "parent": "아이돌마스터",
+  "status": "DRY_SET"
+ },
+ {
+  "child": "아이돌마스터 샤이니 컬러즈",
+  "parent": "아이돌마스터",
+  "status": "DRY_SET"
+ },
+ {
+  "child": "아이돌마스터 신데렐라 걸즈",
+  "parent": "아이돌마스터",
+  "status": "DRY_SET"
+ },
+ {
+  "child": "페르소나3 리로드",
+  "parent": "페르소나 시리즈",
+  "status": "DRY_SET"
+ },
+ {
+  "child": "페르소나4",
+  "parent": "페르소나 시리즈",
+  "status": "DRY_SET"
+ },
+ {
+  "child": "페르소나5",
+  "parent": "페르소나 시리즈",
+  "status": "DRY_SET"
+ },
+ {
+  "child": "rilakkuma",
+  "parent": "san-x",
+  "evidence": "리락쿠마 공식 사이트가 산엑스(san-x.co.jp) 소속",
+  "url": "https://www.san-x.co.jp/rilakkuma/",
+  "status": "SKIP_NOT_FOUND"
+ }
+]

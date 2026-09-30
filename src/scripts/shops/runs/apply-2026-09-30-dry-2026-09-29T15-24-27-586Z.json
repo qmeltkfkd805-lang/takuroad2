@@ -1,0 +1,324 @@
+{
+ "plan": "2026-09-30",
+ "at": "2026-09-29T15:24:27.586Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "moaeku-sinchon",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5567378385686,
+    "lng": 126.936559696179,
+    "road": "서울 서대문구 연세로 13",
+    "building": "현대백화점 유플렉스",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "MOAE:KU 모애쿠 신촌점",
+    "addr": "서울 서대문구 연세로 13",
+    "floor_info": "현대백화점 신촌점 U-PLEX 지하 2층",
+    "cats": [
+     "콜라보카페",
+     "굿즈샵"
+    ],
+    "shop_link": "https://x.com/MOAEKU",
+    "sns_links": [
+     "https://x.com/MOAEKU",
+     "https://moaeku.co.kr"
+    ],
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "22:00"
+     }
+    },
+    "place_id": "e5915b03-9aad-4b68-866b-cb6cdc42bbf8",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 초과 시 10분당 1,000원\n3만원 이상 구매 시 1시간, 5만원 이상 2시간, 10만원 이상 3시간 무료\n30만원 이상 구매 시 당일 무료",
+    "description": "애니메이션·게임·만화·웹툰 콜라보 카페 & 팝업 스토어 MOAE:KU(모애쿠)의 신촌 매장입니다(드래곤미디어 운영). 작품별 공식 콜라보 카페·팝업 스토어가 기간마다 바뀌어 열리고, 지점 한정 MD 가 나오기도 합니다.\n매일 10:30~22:00, 20:45~21:30 은 테이크아웃만 가능(공식 X 안내). 콜라보별 예약·입장 방식과 임시 휴무는 공식 X 공지를 확인하세요.\n현대백화점 신촌점 U-PLEX 지하 2층.",
+    "lat": 37.5567378385686,
+    "lng": 126.936559696179,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T15:24:27.586Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "초(超) 가구야 공주!",
+      "비밀의 아이프리",
+      "히카루가 죽은 여름"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "link_events": {
+     "linked": [
+      {
+       "id": "a2b7d552-eb49-47f1-9b5b-52989a93eb63",
+       "title": "초(超) 가구야 공주! × MOAE:KU 콜라보 카페 & 팝업 스토어 (신촌점)"
+      },
+      {
+       "id": "10dbdd5b-e116-4153-969d-7fbc85ff7418",
+       "title": "비밀의 아이프리 × MOAE:KU 콜라보 카페 (신촌점)"
+      },
+      {
+       "id": "7d6a4293-07aa-40f2-a91d-8e24724020ee",
+       "title": "히카루가 죽은 여름 × MOAE:KU 콜라보 카페 (신촌점)"
+      }
+     ],
+     "skipped": []
+    }
+   }
+  },
+  {
+   "key": "moaeku-ipark",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "road": "서울 용산구 한강대로23길 55",
+    "building": "용산역",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "MOAE:KU 아이파크 모애쿠 용산점",
+    "addr": "서울 용산구 한강대로23길 55",
+    "floor_info": "아이파크몰 리빙파크 6층",
+    "cats": [
+     "굿즈샵",
+     "콜라보카페"
+    ],
+    "shop_link": "https://x.com/MOAEKU2",
+    "sns_links": [
+     "https://x.com/MOAEKU2",
+     "https://moaeku.co.kr"
+    ],
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     }
+    },
+    "place_id": "045ed3e4-9d81-4f68-a4c7-e6815f0ccadc",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용",
+    "description": "애니메이션·게임·만화·웹툰 팝업 스토어 MOAE:KU(모애쿠)의 용산 아이파크몰 매장입니다(드래곤미디어 운영). 작품별 공식 팝업 스토어·콜라보가 기간마다 바뀌어 열리고, 신촌점과 다른 지점 한정 MD 가 나오기도 합니다.\n운영 시간 10:30~20:30(공식 X 안내 — 행사에 따라 금·토 21:00까지 공지된 적 있음). 행사 일정은 공식 X 공지를 확인하세요.\n아이파크몰 용산점 리빙파크 6층.",
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T15:24:27.586Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "초(超) 가구야 공주!",
+      "비밀의 아이프리",
+      "오란고교 사교클럽"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "link_events": {
+     "linked": [
+      {
+       "id": "cb0d37d4-7e46-4f47-96fe-ba4048dab58c",
+       "title": "초(超) 가구야 공주! × MOAE:KU 콜라보 카페 & 팝업 스토어 (용산점)"
+      },
+      {
+       "id": "2dd86370-23e2-4c42-af7e-7ff50e38d839",
+       "title": "비밀의 아이프리 × MOAE:KU 팝업스토어 (용산점)"
+      }
+     ],
+     "skipped": []
+    }
+   }
+  },
+  {
+   "key": "illustar-sinchon",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5567378385686,
+    "lng": 126.936559696179,
+    "road": "서울 서대문구 연세로 13",
+    "building": "현대백화점 유플렉스",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "일러스타 카페 신촌점",
+    "addr": "서울 서대문구 연세로 13",
+    "floor_info": "현대백화점 신촌점 U-PLEX 12층 스페이스 일러스타",
+    "cats": [
+     "콜라보카페"
+    ],
+    "shop_link": "https://x.com/illustar_cafe",
+    "sns_links": [
+     "https://x.com/illustar_cafe",
+     "https://www.instagram.com/illustar_cafe"
+    ],
+    "place_id": "e5915b03-9aad-4b68-866b-cb6cdc42bbf8",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 초과 시 10분당 1,000원\n3만원 이상 구매 시 1시간, 5만원 이상 2시간, 10만원 이상 3시간 무료\n30만원 이상 구매 시 당일 무료",
+    "description": "서브컬처 카페 일러스타 카페의 신촌점입니다(일러스타 페스 주최사 스타라이크 운영). 게임·버추얼·캐릭터 작품 콜라보 카페가 기간마다 열리고, 콜라보 굿즈 예약 상품을 매장에서 수령할 수 있습니다.\n현대백화점 신촌점 U-PLEX 12층(층별 안내 \"SPACE ILLUSTAR\"). 콜라보 일정·이용 안내는 공식 X 를 확인하세요.",
+    "lat": 37.5567378385686,
+    "lng": 126.936559696179,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T15:24:27.586Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "SeeU"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "link_events": {
+     "linked": [
+      {
+       "id": "2b10d991-6975-443e-b831-79fb916db4c3",
+       "title": "SeeU × 일러스타 카페"
+      }
+     ],
+     "skipped": []
+    }
+   }
+  },
+  {
+   "key": "illustar-dongdaemun",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.568734553218,
+    "lng": 127.007666479829,
+    "road": "서울 중구 장충단로13길 20",
+    "building": "현대시티타워",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "일러스타 카페 동대문점",
+    "addr": "서울 중구 장충단로13길 20",
+    "floor_info": "현대시티아울렛 동대문점 2층 SEOUL EDITION",
+    "cats": [
+     "콜라보카페"
+    ],
+    "shop_link": "https://x.com/illustar_cafe",
+    "sns_links": [
+     "https://x.com/illustar_cafe",
+     "https://www.instagram.com/illustar_cafe"
+    ],
+    "phone": "02-2283-2296",
+    "place_id": "fe619e20-9280-4e6b-b0ff-af560671c803",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분(평일)·1시간(주말) 무료, 이후 10분당 800원\n구매 시 무료: 1만원 이상 1시간 · 3만원 이상 2시간 · 5만원 이상 3시간 · 10만원 이상 5시간\n재출력 영수증은 할인 제외",
+    "description": "서브컬처 카페 일러스타 카페의 동대문점입니다(스타라이크 운영). 게임·버추얼·캐릭터 작품 콜라보 카페와 일일점장 게스트 행사가 열립니다.\n현대시티아울렛 동대문점 2층 SEOUL EDITION. 콜라보·게스트 일정은 공식 X 를 확인하세요.",
+    "lat": 37.568734553218,
+    "lng": 127.007666479829,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T15:24:27.586Z",
+    "info_confirmed_by_type": "admin"
+   }
+  },
+  {
+   "key": "illustar-bucheon",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5041446553817,
+    "lng": 126.756721807955,
+    "road": "경기 부천시 원미구 송내대로 239",
+    "building": "소풍(부천터미널)",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "일러스타 카페 부천점",
+    "addr": "경기 부천시 원미구 송내대로 239",
+    "floor_info": "뉴코아아울렛 부천점 4층 스페이스 일러스타 부천",
+    "cats": [
+     "콜라보카페"
+    ],
+    "shop_link": "https://x.com/illustar_cafe",
+    "sns_links": [
+     "https://x.com/illustar_cafe",
+     "https://www.instagram.com/illustar_cafe"
+    ],
+    "place_id": "11a49bbe-9aab-4a8e-ba59-e0eb6dede71e",
+    "parking": true,
+    "description": "서브컬처 복합문화공간 \"스페이스 일러스타 부천\" 의 일러스타 카페입니다(스타라이크 운영, 2026년 1월 23일 오픈). 카페형 공간으로 콜라보·팬 행사가 열립니다.\n뉴코아아울렛 부천점 4층, 테라스형 휴식 공간 블루밍스퀘어와 연결. 7호선 상동역 1번 출구에서 약 200m.",
+    "lat": 37.5041446553817,
+    "lng": 126.756721807955,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T15:24:27.586Z",
+    "info_confirmed_by_type": "admin"
+   }
+  }
+ ]
+}

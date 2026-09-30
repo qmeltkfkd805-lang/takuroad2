@@ -1,0 +1,569 @@
+{
+ "plan": "2026-09-23-d",
+ "at": "2026-09-23T06:13:03.930Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "research-0c9666e5",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "clothing"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-ff169fc0",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "센과 치히로의 행방불명",
+      "천공의 성 라퓨타",
+      "모노노케 히메",
+      "벼랑 위의 포뇨",
+      "귀를 기울이면"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "can-badge-new",
+      "cushion",
+      "household-items"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-29449d53",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "주술회전",
+      "아이돌마스터",
+      "아이돌리쉬 세븐",
+      "다마고치",
+      "산리오"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-173a029b",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "최애의 아이",
+      "슬램덩크",
+      "귀멸의 칼날",
+      "반딧불이의 혼례",
+      "스파이×패밀리"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-3b042b45",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-f7fc399e",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "citrus",
+      "던전밥",
+      "제5인격",
+      "캐릭캐릭체인지"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-f194103b",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "doll"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-3f622398",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "폼폼푸린"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-384328ab",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "스파이×패밀리"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-c7946b62",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "도라에몽"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "gacha-new",
+      "household-items"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-76994976",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "보컬로이드",
+      "오버로드"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-be171fd6",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "명탐정 코난",
+      "장송의 프리렌",
+      "데스노트",
+      "유희왕",
+      "시나모롤",
+      "마이멜로디"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "stationery"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-a5ec4a07",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-fb162c42",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-75142dc4",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "아이돌리쉬 세븐",
+      "달빛천사"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-f24cb094",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "귀멸의 칼날",
+      "마인크래프트",
+      "던전밥",
+      "리락쿠마"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "keyring",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-2f631c45",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "보컬로이드",
+      "프로젝트 세카이",
+      "개구리 중사 케로로",
+      "데스노트",
+      "리락쿠마"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-269ab652",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-c6eb6620",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "원피스",
+      "짱구는 못말려",
+      "귀멸의 칼날",
+      "강철의 연금술사",
+      "체인소맨",
+      "죠죠의 기묘한 모험",
+      "가면라이더",
+      "괴수8호"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-63d470eb",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "하이큐!!",
+      "나루토",
+      "나의 히어로 아카데미아",
+      "문호 스트레이독스",
+      "데이트 어 라이브",
+      "체인소맨",
+      "림버스 컴퍼니",
+      "5등분의 신부",
+      "진격의 거인",
+      "흑집사",
+      "명탐정 코난",
+      "원피스",
+      "원신",
+      "붕괴: 스타레일",
+      "블루 아카이브",
+      "봇치 더 록!"
+     ],
+     "already": 2,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-3bd1292d",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "명탐정 코난",
+      "니지산지",
+      "승리의 여신: 니케",
+      "윈드 브레이커",
+      "주술회전",
+      "블루 록",
+      "은하특급 밀키 서브웨이",
+      "러브 앤 딥스페이스",
+      "스파이×패밀리"
+     ],
+     "already": 2,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-d98e6a5a",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "산리오",
+      "짱구는 못말려",
+      "치이카와",
+      "건담",
+      "포켓몬스터",
+      "디즈니"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-0aacf913",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "이웃집 토토로",
+      "마녀 배달부 키키",
+      "센과 치히로의 행방불명",
+      "하울의 움직이는 성",
+      "천공의 성 라퓨타",
+      "모노노케 히메",
+      "벼랑 위의 포뇨",
+      "귀를 기울이면"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-19540c69",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "센과 치히로의 행방불명",
+      "하울의 움직이는 성",
+      "천공의 성 라퓨타",
+      "모노노케 히메",
+      "귀를 기울이면"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "etc"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-ca2043d4",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "산리오",
+      "짱구는 못말려",
+      "명탐정 코난",
+      "귀멸의 칼날",
+      "기동전사 건담",
+      "다마고치",
+      "프리큐어",
+      "카드캡터 사쿠라",
+      "하츠네 미쿠",
+      "단다단",
+      "가정교사 히트맨 리본",
+      "학원 아이돌 마스터",
+      "마법소녀 마도카☆마기카"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-298c8675",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "명탐정 코난"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "keyring",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-dedbd4fd",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "can-badge-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "research-d2d9693d",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "카드파이트!! 뱅가드"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-23-d-2026-09-23T06-13-03-930Z.json"
+}

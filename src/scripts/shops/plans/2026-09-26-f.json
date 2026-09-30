@@ -1,0 +1,241 @@
+{
+ "name": "2026-09-26-f",
+ "items": [
+  {
+   "action": "update",
+   "key": "bldg-f25b947d",
+   "shop_id": "f25b947d-b095-4148-8249-0ab1d783f4d2",
+   "expect_updated_at": "2026-09-26T13:12:24.363941+00:00",
+   "fields": {
+    "parking": true,
+    "parking_note": "주차 가능(무료)\n트레이더스 이용 고객은 지하주차장 이용",
+    "place_id": "4fe161cc-b37a-4c94-a646-e6e1763c1986"
+   },
+   "reason": "스타필드 안성 건물 연결·공식 주차 안내(빈 값만)",
+   "sources": [
+    {
+     "url": "https://starfield.co.kr/anseong/about/parkingInfo.do",
+     "fields": [
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "bldg-acc529c3",
+   "shop_id": "acc529c3-05e8-4c34-913e-b3ea84792ae4",
+   "expect_updated_at": "2026-09-23T07:40:13.812657+00:00",
+   "fields": {
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 이후 10분당 1,000원\n구매 시 무료: 1만원 이상 1시간 · 3만원 이상 2시간 · 5만원 이상 3시간 · 10만원 이상 4시간 · 20만원 이상 5시간\n식당가 이용 시 2시간 무료\n센텀시티몰(센텀4로 15) 포함 같은 주차 기준",
+    "place_id": "3a89dba6-6afb-40fa-9a42-9d20aeecafd1"
+   },
+   "reason": "신세계백화점 센텀시티점 건물 연결·공식 주차 안내(빈 값만)",
+   "sources": [
+    {
+     "url": "https://www.shinsegae.com/store/main.do?storeCd=SC00008",
+     "fields": [
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "bldg-d34d0de3",
+   "shop_id": "d34d0de3-4d18-4fab-8bc4-bc998deb58a6",
+   "expect_updated_at": "2026-09-26T13:12:23.345736+00:00",
+   "fields": {
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 이후 10분당 1,000원\n구매 시 무료: 1만원 이상 1시간 · 3만원 이상 2시간 · 5만원 이상 3시간 · 10만원 이상 4시간 · 20만원 이상 5시간\n식당가 이용 시 2시간 무료\n센텀시티몰(센텀4로 15) 포함 같은 주차 기준",
+    "place_id": "3a89dba6-6afb-40fa-9a42-9d20aeecafd1"
+   },
+   "reason": "신세계백화점 센텀시티점 건물 연결·공식 주차 안내(빈 값만)",
+   "sources": [
+    {
+     "url": "https://www.shinsegae.com/store/main.do?storeCd=SC00008",
+     "fields": [
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "bldg-bb03cccb",
+   "shop_id": "bb03cccb-7565-4c00-ae2f-c7746a23eb3f",
+   "expect_updated_at": "2026-09-23T07:40:15.010274+00:00",
+   "fields": {
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 이후 30분당 1,000원\n구매 시 무료: 1만원 1시간 · 3만원 2시간 · 5만원 3시간 · 10만원 6시간 · 30만원 12시간\n시네마·전시관 당일 관람권 제시 시 3시간 무료",
+    "place_id": "99e4e44e-6048-4ad3-8dc3-c3dbbc8f568d"
+   },
+   "reason": "롯데몰 김포공항점 건물 연결·공식 주차 안내(빈 값만)",
+   "sources": [
+    {
+     "url": "https://www.lotteshopping.com/store/main?cstrCd=0402",
+     "fields": [
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "bldg-7392fe21",
+   "shop_id": "7392fe21-9411-4a9d-907e-d62a69a0256f",
+   "expect_updated_at": "2026-09-23T06:52:06.492866+00:00",
+   "fields": {
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 이후 10분당 1,000원\n매장 이용 시 주차할인권 제공(일부 매장 제외), 1일 최대 8시간\n심야(20:00~09:00) 기본요금 50% 할인",
+    "place_id": "afc1d124-cd6b-4aca-876f-237c4fda27dc"
+   },
+   "reason": "타임스퀘어 건물 연결·공식 주차 안내(빈 값만)",
+   "sources": [
+    {
+     "url": "https://www.timessquare.co.kr/parking-info",
+     "fields": [
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "bldg-78be4428",
+   "shop_id": "78be4428-96bc-44fe-942f-3d38ba1d06c8",
+   "expect_updated_at": "2026-09-23T07:40:14.603034+00:00",
+   "fields": {
+    "parking": true,
+    "parking_note": "주차 가능(유료, 24시간)\n20분 이내 출차 시 무료, 최초 30분 1,000원, 이후 10분당 300원\n1일 최대 15,000원\n이마트·신세계 스타일마켓 구매 시: 1만원 이상 1시간 · 3만원 이상 2시간 · 5만원 이상 3시간 · 10만원 이상 4시간 할인\n할인 중복 불가, 카드·삼성페이만 가능(현금 불가)",
+    "place_id": "55117018-1fd2-4452-a7bb-d27a7cb8457d"
+   },
+   "reason": "대전복합터미널 동관 건물 연결·공식 주차 안내(빈 값만)",
+   "sources": [
+    {
+     "url": "https://djbusterminal.co.kr/parking02",
+     "fields": [
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "bldg-b692c36b",
+   "shop_id": "b692c36b-4916-45be-811b-0c833d6d8c96",
+   "expect_updated_at": "2026-09-26T14:18:10.050952+00:00",
+   "fields": {
+    "parking": true,
+    "parking_note": "주차 가능(무료)\n21시 이후 2F~RF층 입차 제한(1층 주차장 이용)\n트레이더스 이용 고객은 지하주차장 이용"
+   },
+   "reason": "스타필드 고양 건물 연결·공식 주차 안내(빈 값만)",
+   "sources": [
+    {
+     "url": "https://www.starfield.co.kr/goyang/about/parkingInfo.do",
+     "fields": [
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "bldg-93b5faae",
+   "shop_id": "93b5faae-36dc-480d-8875-b61619d12cf0",
+   "expect_updated_at": "2026-09-26T14:18:10.361451+00:00",
+   "fields": {
+    "parking": true,
+    "parking_note": "주차 가능(무료)\n21시 이후 2F~RF층 입차 제한(1층 주차장 이용)\n트레이더스 이용 고객은 지하주차장 이용"
+   },
+   "reason": "스타필드 고양 건물 연결·공식 주차 안내(빈 값만)",
+   "sources": [
+    {
+     "url": "https://www.starfield.co.kr/goyang/about/parkingInfo.do",
+     "fields": [
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "bldg-bc4db728",
+   "shop_id": "bc4db728-cbda-4058-b1c4-539b7975dde7",
+   "expect_updated_at": "2026-09-23T14:03:26.706885+00:00",
+   "fields": {
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n입차 후 20분 이내 출차 시 무료, 15분당 1,500원(1일 최대 60,000원)\n코엑스몰 구매 시: 5만원 이상 1시간 · 10만원 이상 2시간 · 15만원 이상 3시간 무료(일부 매장 제외)\n카카오T 주차 모바일 결제 시 20% 할인",
+    "place_id": "86c742e0-a1fa-42b7-8ee0-0de38b8bdb39"
+   },
+   "reason": "스타필드 코엑스몰 건물 연결·공식 주차 안내(빈 값만)",
+   "sources": [
+    {
+     "url": "https://www.starfield.co.kr/coexmall/about/parkingInfo.do",
+     "fields": [
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "bldg-f194103b",
+   "shop_id": "f194103b-ae01-456c-86f7-29224f17fe41",
+   "expect_updated_at": "2026-09-23T14:03:27.912993+00:00",
+   "fields": {
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n6시간 무료, 이후 10분당 500원(1일 최대 18,000원)\n본건물 혼잡 시 대유평공원 B1~B2 주차장 이용 가능"
+   },
+   "reason": "스타필드 수원 건물 연결·공식 주차 안내(빈 값만)",
+   "sources": [
+    {
+     "url": "https://www.starfield.co.kr/suwon/about/parkingInfo.do",
+     "fields": [
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "bldg-d98e6a5a",
+   "shop_id": "d98e6a5a-c257-44b7-bae6-82652377f658",
+   "expect_updated_at": "2026-09-23T06:22:14.817254+00:00",
+   "fields": {
+    "parking_note": "오전 10시~오후 8시까지\n10분 당 500원\n그 외 시간 200원"
+   },
+   "reason": "같은 쇼핑몰동 지하 1층 샵(애니메이트·이치방쿠지 잠실)과 같은 주차 안내로 빈 값 채움",
+   "sources": [
+    {
+     "url": "shop:63d470eb",
+     "fields": [
+      "parking_note"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,461 @@
+{
+ "plan": "2026-09-28-m",
+ "at": "2026-09-28T11:20:11.758Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "anizio-seomyeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1535530175936,
+    "lng": 129.060439857941,
+    "road": "부산 부산진구 중앙대로680번길 21",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "애니지오",
+    "addr": "부산 부산진구 중앙대로680번길 21",
+    "floor_info": "지하 1층",
+    "cats": [
+     "굿즈샵",
+     "쿠지",
+     "가챠",
+     "피규어샵"
+    ],
+    "phone": "0507-1342-5643",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "yearRound": true
+    },
+    "shop_link": "https://x.com/AenijioI",
+    "sns_links": [
+     "https://x.com/AenijioI"
+    ],
+    "description": "부산 서면역 근처의 애니메이션 굿즈샵으로, 애니 굿즈·가챠·파샤·쿠지·피규어 등 정품을 판매합니다.\n영업시간은 매일 12:00~21:00, 연중무휴입니다(공식 계정 안내). 쿠지 관련 소식은 네이버 밴드 \"애니지오\"에서 안내합니다.",
+    "lat": 35.1535530175936,
+    "lng": 129.060439857941,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T11:20:11.758Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "은혼",
+      "치이카와",
+      "블루 아카이브",
+      "하츠네 미쿠"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "plushie-new",
+      "card-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukuspace",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5521210114354,
+    "lng": 126.918597235916,
+    "road": "서울 마포구 잔다리로 45",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "쿠쿠 스페이스",
+    "addr": "서울 마포구 잔다리로 45",
+    "floor_info": "1층 (와이랩 아카데미 건물)",
+    "cats": [
+     "굿즈샵",
+     "쿠지",
+     "가챠"
+    ],
+    "phone": "070-4103-7570",
+    "hours": {
+     "mon": {
+      "open": "11:30",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "11:30",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "11:30",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "11:30",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "11:30",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "11:30",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "11:30",
+      "close": "20:00"
+     }
+    },
+    "shop_link": "https://x.com/kukuspace_kr",
+    "sns_links": [
+     "https://x.com/kukuspace_kr",
+     "https://www.instagram.com/kukuspace.kr/"
+    ],
+    "description": "\"우주처럼 무한한 즐거움, KUKU SPACE\" — 제일복권(이치방쿠지)과 가챠, 웹툰·애니메이션 캐릭터 굿즈를 파는 종합 굿즈 편집샵입니다. 작품·브랜드 팝업도 자주 열립니다.\n영업시간은 11:30~20:00입니다(공식 계정 안내). 명절 등 휴점은 공식 계정 공지를 확인하세요.",
+    "lat": 37.5521210114354,
+    "lng": 126.918597235916,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T11:20:11.758Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와",
+      "산리오",
+      "리락쿠마",
+      "에반게리온",
+      "드래곤볼"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "xxings-wangsimni",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5614417528647,
+    "lng": 127.038394194396,
+    "road": "서울 성동구 왕십리광장로 17",
+    "building": "왕십리민자역사",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "씽스피규어 왕십리역점",
+    "addr": "서울 성동구 왕십리광장로 17",
+    "floor_info": "비트플렉스(왕십리민자역사) 2층 A-04호",
+    "cats": [
+     "피규어샵",
+     "굿즈샵",
+     "쿠지"
+    ],
+    "phone": "010-8739-3811",
+    "shop_link": "https://xxingsfigure.com/",
+    "sns_links": [
+     "https://x.com/xxingsfigure",
+     "https://smartstore.naver.com/xxingsfigure",
+     "https://pf.kakao.com/_xaWiss"
+    ],
+    "place_id": "cc0fc783-ecac-4cc7-b0a2-889171465bd4",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n30분 내 출차 무료(초과 시 입차부터 10분당 1,000원)\n구매 시 무료: 1만원 1시간 · 3만원 2시간 · 5만원 3시간 · 10만원 4시간 · 20만원 5시간\n개별 매장은 이용 매장에서 주차 등록",
+    "description": "애니 피규어·굿즈·이치방쿠지(제일복권) 전문샵 씽스피규어의 왕십리역점으로, 왕십리역과 연결된 비트플렉스 2층에 있습니다.\n매주 월요일 휴무입니다(공식 계정 안내). 구매 문의는 카카오톡 채널 \"씽스피규어\".",
+    "lat": 37.5614417528647,
+    "lng": 127.038394194396,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T11:20:11.758Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "스즈미야 하루히의 우울"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "xxings-hanyang",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5607051200897,
+    "lng": 127.040222034002,
+    "road": "서울 성동구 마조로7길 9",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "씽스피규어 한양대점",
+    "addr": "서울 성동구 마조로7길 9",
+    "floor_info": "지하층",
+    "cats": [
+     "쿠지",
+     "피규어샵",
+     "굿즈샵"
+    ],
+    "phone": "0507-1383-3811",
+    "shop_link": "https://xxingsfigure.com/",
+    "sns_links": [
+     "https://x.com/xxingsfigure",
+     "https://smartstore.naver.com/xxingsfigure",
+     "https://pf.kakao.com/_xaWiss"
+    ],
+    "description": "애니 피규어·굿즈·이치방쿠지(제일복권) 전문샵 씽스피규어의 한양대점으로, 왕십리역 6번 출구에서 도보 1분 거리의 약 25평 매장입니다(판매처 등록 안내).\n영업시간은 공식 계정 공지를 확인하세요.",
+    "lat": 37.5607051200897,
+    "lng": 127.040222034002,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T11:20:11.758Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "스즈미야 하루히의 우울"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "cocogoods-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5554711047213,
+    "lng": 126.925138520984,
+    "road": "서울 마포구 와우산로27길 68",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "THE 꼬꼬굿즈 홍대점",
+    "addr": "서울 마포구 와우산로27길 68",
+    "floor_info": "3층",
+    "cats": [
+     "굿즈샵",
+     "가챠",
+     "피규어샵"
+    ],
+    "phone": "010-9973-3129",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "20:30"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "20:30"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "yearRound": true
+    },
+    "shop_link": "https://thecocogoods.com/",
+    "sns_links": [
+     "https://x.com/COCO_Goods",
+     "https://www.instagram.com/thecocogoods/"
+    ],
+    "description": "일본 애니메이션 공식 굿즈 스토어로, 가챠·피규어·애니 굿즈를 판매합니다. 홍대에 1호점과 2호점을 운영합니다(2호점 위치는 공식 계정 확인).\n영업시간은 평일 12:00~20:30, 주말 12:00~21:00, 연중무휴입니다(공식 계정 안내).",
+    "lat": 37.5554711047213,
+    "lng": 126.925138520984,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T11:20:11.758Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "카구라바치",
+      "죠죠의 기묘한 모험"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "can-badge-new",
+      "keyring",
+      "figure-new",
+      "plushie-new",
+      "card-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "miraclekuji-seohyeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.3841135146719,
+    "lng": 127.122640497605,
+    "road": "경기 성남시 분당구 분당로53번길 20",
+    "building": "이랜드분당프라자",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "미라클쿠지 서현점",
+    "addr": "경기 성남시 분당구 분당로53번길 20",
+    "floor_info": "이랜드프라자 103호 (서현 로데오거리)",
+    "cats": [
+     "쿠지",
+     "가챠",
+     "굿즈샵"
+    ],
+    "phone": "010-9544-1151",
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "20:00"
+     }
+    },
+    "shop_link": "https://www.miraclekuji.com/",
+    "sns_links": [
+     "https://www.instagram.com/miracle_kuji/",
+     "https://x.com/Miracle_kuji"
+    ],
+    "description": "반다이 정품 이치방쿠지(제일복권)와 미라클쿠지 자체쿠지, 캡슐토이, 애니메이션 굿즈를 파는 미라클쿠지의 분당 서현 로데오거리 매장입니다. 서현역에서 약 100m 거리입니다.\n영업시간은 매일 11:00~20:00입니다(공식 매장 안내). 문의는 카카오톡 채널 \"미라클쿠지\".",
+    "lat": 37.3841135146719,
+    "lng": 127.122640497605,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T11:20:11.758Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "self-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

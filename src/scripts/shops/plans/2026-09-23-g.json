@@ -1,0 +1,426 @@
+{
+ "name": "2026-09-23-g",
+ "items": [
+  {
+   "action": "insert",
+   "key": "gundam-base-coex",
+   "brand": "건담베이스",
+   "brand_links": [
+    "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+    "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+    "https://www.bnkrmall.co.kr/etc/funsquare_store.do",
+    "https://cafe.naver.com/gbasekorea"
+   ],
+   "fields": {
+    "name": "건담베이스 코엑스점",
+    "addr": "서울 강남구 봉은사로 524",
+    "floor_info": "코엑스몰 라이브플라자 지하 2층 G203호",
+    "cats": [
+     "굿즈샵",
+     "프라모델"
+    ],
+    "phone": "02-551-2805",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+    "sns_links": [
+     "https://cafe.naver.com/gbasekorea"
+    ],
+    "description": "반다이남코코리아가 운영하는 건담 프라모델(건프라) 공식 매장입니다. 코엑스몰 라이브플라자 지하 2층에 있습니다."
+   },
+   "works": [
+    {
+     "slug": "gundam",
+     "evidence": "건담베이스 = 반다이남코 건담 프라모델 공식 매장(단일 IP 브랜드 매장, 브랜드 기준)"
+    }
+   ],
+   "goods_types": [
+    "plamodel-new"
+   ],
+   "sources": [
+    {
+     "url": "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "hours"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://m.starfield.co.kr/coexmall/tenant/tenantDetail/TN201708291105560346",
+     "fields": [
+      "floor_info"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ],
+   "unconfirmed": [
+    "closed_days",
+    "parking"
+   ],
+   "photo": "needed"
+  },
+  {
+   "action": "insert",
+   "key": "gundam-base-seomyeon",
+   "brand": "건담베이스",
+   "brand_links": [
+    "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+    "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+    "https://www.bnkrmall.co.kr/etc/funsquare_store.do",
+    "https://cafe.naver.com/gbasekorea"
+   ],
+   "fields": {
+    "name": "건담베이스 서면점",
+    "addr": "부산 부산진구 중앙대로 672",
+    "floor_info": "삼정타워 7층 702호",
+    "cats": [
+     "굿즈샵",
+     "프라모델"
+    ],
+    "phone": "051-818-3440",
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "22:30"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "22:30"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "yearRound": true
+    },
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+    "sns_links": [
+     "https://cafe.naver.com/gbasekorea"
+    ],
+    "description": "반다이남코코리아가 운영하는 건담 프라모델(건프라) 공식 매장입니다. 서면 삼정타워 7층에 있으며 연중무휴로 운영합니다(공식 안내)."
+   },
+   "works": [
+    {
+     "slug": "gundam",
+     "evidence": "건담베이스 = 반다이남코 건담 프라모델 공식 매장(단일 IP 브랜드 매장, 브랜드 기준)"
+    }
+   ],
+   "goods_types": [
+    "plamodel-new"
+   ],
+   "sources": [
+    {
+     "url": "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "hours",
+      "yearRound"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ],
+   "unconfirmed": [
+    "parking"
+   ],
+   "photo": "needed"
+  },
+  {
+   "action": "insert",
+   "key": "gundam-base-daegu",
+   "brand": "건담베이스",
+   "brand_links": [
+    "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+    "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+    "https://www.bnkrmall.co.kr/etc/funsquare_store.do",
+    "https://cafe.naver.com/gbasekorea"
+   ],
+   "fields": {
+    "name": "건담베이스 대구점",
+    "addr": "대구 중구 동성로2길 95",
+    "floor_info": "BL빌딩 4층",
+    "cats": [
+     "굿즈샵",
+     "프라모델"
+    ],
+    "phone": "053-426-2805",
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+    "sns_links": [
+     "https://cafe.naver.com/gbasekorea"
+    ],
+    "description": "반다이남코코리아가 운영하는 건담 프라모델(건프라) 공식 매장입니다. 동성로 BL빌딩 4층에 있습니다. 명절 당일은 휴무입니다(공식 안내)."
+   },
+   "works": [
+    {
+     "slug": "gundam",
+     "evidence": "건담베이스 = 반다이남코 건담 프라모델 공식 매장(단일 IP 브랜드 매장, 브랜드 기준)"
+    }
+   ],
+   "goods_types": [
+    "plamodel-new"
+   ],
+   "sources": [
+    {
+     "url": "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "hours",
+      "closed_days(명절 당일)"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ],
+   "unconfirmed": [
+    "parking"
+   ],
+   "photo": "needed"
+  },
+  {
+   "action": "insert",
+   "key": "gashapon-timesquare",
+   "brand": "가샤폰",
+   "brand_links": [
+    "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+    "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+    "https://www.bnkrmall.co.kr/etc/funsquare_store.do",
+    "https://cafe.naver.com/gbasekorea"
+   ],
+   "fields": {
+    "name": "가샤폰 타임스퀘어점",
+    "addr": "서울 영등포구 영중로 15",
+    "floor_info": "타임스퀘어 지하 1층 (펀스퀘어 타임스퀘어점 내)",
+    "cats": [
+     "가챠"
+    ],
+    "phone": "02-2069-2674",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+    "description": "반다이 공식 캡슐토이 매장 \"가샤폰 반다이 오피셜숍\"입니다. 타임스퀘어 지하 1층 펀스퀘어 안에 있습니다."
+   },
+   "goods_types": [
+    "gacha-new"
+   ],
+   "sources": [
+    {
+     "url": "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "hours"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://www.bnkrmall.co.kr/etc/funsquare_store.do",
+     "fields": [
+      "floor_info",
+      "phone",
+      "hours"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ],
+   "unconfirmed": [
+    "closed_days",
+    "works(지점별 라인업 공식 목록 없음)"
+   ],
+   "photo": "needed"
+  },
+  {
+   "action": "insert",
+   "key": "gashapon-lotteworldmall",
+   "brand": "가샤폰",
+   "brand_links": [
+    "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+    "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+    "https://www.bnkrmall.co.kr/etc/funsquare_store.do",
+    "https://cafe.naver.com/gbasekorea"
+   ],
+   "fields": {
+    "name": "가샤폰 롯데월드몰점",
+    "addr": "서울 송파구 올림픽로 300",
+    "floor_info": "롯데월드몰 2층 (펀스퀘어 롯데월드몰점 내)",
+    "cats": [
+     "가챠"
+    ],
+    "phone": "02-3213-4273",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+    "description": "반다이 공식 캡슐토이 매장 \"가샤폰 반다이 오피셜숍\"입니다. 롯데월드몰 2층 펀스퀘어 안에 있습니다(롯데월드 지하 1층의 가샤폰 잠실롯데점과 다른 매장)."
+   },
+   "goods_types": [
+    "gacha-new"
+   ],
+   "sources": [
+    {
+     "url": "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "hours"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://www.bnkrmall.co.kr/etc/funsquare_store.do",
+     "fields": [
+      "floor_info",
+      "phone",
+      "hours"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ],
+   "unconfirmed": [
+    "closed_days",
+    "works(지점별 라인업 공식 목록 없음)"
+   ],
+   "photo": "needed"
+  }
+ ]
+}

@@ -1,0 +1,453 @@
+{
+ "plan": "2026-09-30-b",
+ "at": "2026-09-29T16:19:42.151Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "smgcafe-sinchon",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5567378385686,
+    "lng": 126.936559696179,
+    "road": "서울 서대문구 연세로 13",
+    "building": "현대백화점 유플렉스",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "SMG CAFE 신촌점",
+    "addr": "서울 서대문구 연세로 13",
+    "floor_info": "현대백화점 신촌점 U-PLEX 지하 2층",
+    "cats": [
+     "콜라보카페"
+    ],
+    "shop_link": "https://x.com/smgcafe_kr",
+    "sns_links": [
+     "https://x.com/smgcafe_kr",
+     "https://ohmakestore.com",
+     "https://linktr.ee/cafeohmake"
+    ],
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "22:00"
+     }
+    },
+    "place_id": "e5915b03-9aad-4b68-866b-cb6cdc42bbf8",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 초과 시 10분당 1,000원\n3만원 이상 구매 시 1시간, 5만원 이상 2시간, 10만원 이상 3시간 무료\n30만원 이상 구매 시 당일 무료",
+    "description": "애니메이션·게임·웹툰 작품 콜라보 카페 SMG CAFE 의 신촌 매장입니다(구 오마케 카페 OH!MAKE). 작품별 콜라보 카페가 기간마다 바뀌어 열리고, 콜라보 메뉴와 MD 를 판매합니다.\n평일·주말 10:30~22:00(공식 X 안내). 콜라보별 예약·입장 방식은 공식 X 공지를 확인하세요. 문의는 DM 이 아닌 메일로 받습니다.\n현대백화점 신촌점 U-PLEX 지하 2층.",
+    "lat": 37.5567378385686,
+    "lng": 126.936559696179,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T16:19:42.151Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "에픽세븐",
+      "얼굴만으론 좋아할 수 없어요",
+      "오란고교 사교클럽"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "link_events": {
+     "linked": [
+      {
+       "id": "452ecf4d-45cf-4e4d-a9f9-a76b33afd3aa",
+       "title": "에픽세븐 8주년 × SMG CAFE 콜라보 카페"
+      },
+      {
+       "id": "df97a040-eb90-4680-adf3-a83c44051dd4",
+       "title": "얼굴만으론 좋아할 수 없어요 × SMG CAFE 콜라보 카페"
+      },
+      {
+       "id": "41993157-e994-4f2b-a5c1-83f5af00d34d",
+       "title": "오란고교 사교클럽 × SMG CAFE 콜라보 카페"
+      }
+     ],
+     "skipped": []
+    }
+   }
+  },
+  {
+   "key": "anipop-samsung",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.506926620567,
+    "lng": 127.062599867324,
+    "road": "서울 강남구 영동대로85길 13",
+    "building": "대치동송석빌딩",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "애니팝굿즈샵 삼성역점",
+    "addr": "서울 강남구 영동대로85길 13",
+    "floor_info": "5층",
+    "cats": [
+     "굿즈샵",
+     "가챠",
+     "쿠지",
+     "피규어샵"
+    ],
+    "shop_link": "https://x.com/2anipop948474",
+    "sns_links": [
+     "https://x.com/2anipop948474"
+    ],
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "21:00"
+     }
+    },
+    "description": "애니메이션 굿즈 전문점 애니팝굿즈샵의 삼성역 매장입니다. 인기 애니메이션 굿즈·피규어·이치방쿠지(제일복권)를 판매하고, 캡슐가챠 200대 이상을 진열하고 있습니다. 작품 테마 팝업 행사가 열리기도 합니다.\n매일 11:00~21:00(공식 X 안내). 리뉴얼을 위해 2026-09-22~10-18 재고정리 할인을 진행한다고 공지했습니다. 명절 휴무 등은 공식 X 공지를 확인하세요. 매장·상품 문의는 X DM.\n같은 건물 지하 1층 \"애니팝 만화카페 & 캡슐토이\" 는 별도 매장입니다.",
+    "lat": 37.506926620567,
+    "lng": 127.062599867324,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T16:19:42.151Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "주술회전",
+      "승리의 여신: 니케",
+      "명일방주"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "card-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    },
+    "link_events": {
+     "linked": [
+      {
+       "id": "d4903b86-f09c-4726-a49b-0836a3e081e6",
+       "title": "주술회전 팬텀 퍼레이드 팝업 스토어"
+      },
+      {
+       "id": "85c620bc-e4ca-4782-99b3-06644771792c",
+       "title": "명일방주 앰비언스 시네스티시아 팝업스토어"
+      }
+     ],
+     "skipped": []
+    }
+   }
+  },
+  {
+   "key": "anipop-uijeongbu",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.7403040357952,
+    "lng": 127.049195102076,
+    "road": "경기 의정부시 행복로 18",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "애니팝굿즈샵 의정부로데오점",
+    "addr": "경기 의정부시 행복로 18",
+    "floor_info": "지하 1층",
+    "cats": [
+     "굿즈샵",
+     "쿠지",
+     "피규어샵"
+    ],
+    "shop_link": "https://x.com/AnipopGoods2nd",
+    "sns_links": [
+     "https://x.com/AnipopGoods2nd"
+    ],
+    "phone": "031-821-5307",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": null,
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     }
+    },
+    "description": "애니굿즈·피규어·쿠지 전문점 애니팝굿즈샵의 의정부 로데오 매장입니다(2026년 3월 3일 오픈). 이치방쿠지(제일복권)와 애니메이션 굿즈·피규어를 판매합니다.\n12:00~21:00. 2026년 8월 둘째 주부터 일시적으로 매주 화요일 휴무(공식 X 고정 공지) — 화요일 영업 재개 여부는 공식 X 를 확인하세요. 매장·상품 문의는 X DM.",
+    "lat": 37.7403040357952,
+    "lng": 127.049195102076,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T16:19:42.151Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "드래곤볼",
+      "은혼",
+      "에반게리온",
+      "암살교실",
+      "주술회전"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "anipeace-nonhyeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5121700443755,
+    "lng": 127.018907695569,
+    "road": "서울 서초구 신반포로47길 33-2",
+    "building": "대광빌딩",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "애니피스 논현역점",
+    "addr": "서울 서초구 신반포로47길 33-2",
+    "floor_info": "지상 매장 · 지하 확장 매장",
+    "cats": [
+     "굿즈샵",
+     "쿠지",
+     "피규어샵"
+    ],
+    "shop_link": "https://x.com/anipeaceshop",
+    "sns_links": [
+     "https://x.com/anipeaceshop",
+     "https://open.kakao.com/o/gYfgLK9g"
+    ],
+    "hours": {
+     "mon": null,
+     "tue": {
+      "open": "12:00",
+      "close": "19:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "19:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "19:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "19:00"
+     },
+     "sat": {
+      "open": "13:00",
+      "close": "18:00"
+     },
+     "sun": null,
+     "holiday": "closed"
+    },
+    "description": "논현역 근처의 제일복권(이치방쿠지)·피규어·굿즈 전문점 애니피스입니다. 치이카와·산리오 등 캐릭터 굿즈와 애니메이션 쿠지를 판매합니다.\n화~금 12:00~19:00, 토 13:00~18:00, 일·월·공휴일 휴무(공식 X 안내).\n2026년 6월 24일부터 기존 지상 매장과 별도로 지하 확장 매장을 함께 운영합니다(공식 X 약도 안내).",
+    "lat": 37.5121700443755,
+    "lng": 127.018907695569,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T16:19:42.151Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와",
+      "산리오",
+      "은혼"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "onefigure-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8676413886687,
+    "lng": 128.594541535974,
+    "road": "대구 중구 동성로 8-1",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "원피규어 대구점",
+    "addr": "대구 중구 동성로 8-1",
+    "floor_info": "지하 1층",
+    "cats": [
+     "피규어샵",
+     "굿즈샵",
+     "쿠지"
+    ],
+    "shop_link": "https://x.com/OneFigure_Daegu",
+    "sns_links": [
+     "https://x.com/OneFigure_Daegu",
+     "https://smartstore.naver.com/onefi"
+    ],
+    "phone": "010-5723-0895",
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "20:30"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "20:30"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "20:30"
+     },
+     "yearRound": true
+    },
+    "description": "대구 동성로의 피규어·굿즈 전문샵 원피규어 대구점입니다. 일본 직수입 정품 영화·애니메이션 피규어와 굿즈 약 8,000종, 제일복권(이치방쿠지) 등 각종 쿠지를 판매합니다.\n11:00~20:30(토요일 21:00까지), 연중무휴(공식 X 안내). 명절 영업시간은 공식 X 공지를 확인하세요.",
+    "lat": 35.8676413886687,
+    "lng": 128.594541535974,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T16:19:42.151Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "하츠네 미쿠",
+      "시나모롤",
+      "나의 히어로 아카데미아",
+      "디지몬"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

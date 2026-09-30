@@ -1,0 +1,106 @@
+{
+  "key": "nijisanji-gratte",
+  "official_urls": [
+    "https://x.com/animate_hongdae/status/2101204644521546067",
+    "https://x.com/animate_hongdae/status/2101204648673829094",
+    "https://x.com/animatecafe_js/status/2101204646522228868",
+    "https://m.animate-onlineshop.co.kr/main/html.php?htmid=service%2Fmap.html"
+  ],
+  "title_official": "NIJISANJI 『큥bro』『THE BOOM』 페어 개최 기념 Gratte (페어: 니지산지『큥bro』『THE BOOM』페어)",
+  "work": "니지산지 (NIJISANJI) - 큥bro / THE BOOM",
+  "type_guess": "collab_cafe",
+  "start_date": "2026-10-03",
+  "end_date": "2026-10-25",
+  "branches": [
+    {
+      "name": "animate 홍대점 (Gratte + 페어)",
+      "venue": "AK PLAZA 홍대 (애경타워)",
+      "address": "서울특별시 마포구 양화로 188",
+      "floor_detail": "5층",
+      "hours": "일-목 11:00~21:40 / 금·토 10:30~21:40 (unverified_popga)",
+      "start_date": "2026-10-03",
+      "end_date": "2026-10-25"
+    },
+    {
+      "name": "animate cafe 잠실롯데점 (Gratte)",
+      "venue": "롯데월드몰 쇼핑몰동",
+      "address": "서울 송파구 올림픽로 240",
+      "floor_detail": "B1층 (29호 unverified_popga)",
+      "hours": "매일 10:00~21:00 (unverified_popga)",
+      "start_date": "2026-10-03",
+      "end_date": "2026-10-25"
+    },
+    {
+      "name": "animate 잠실롯데점 (페어)",
+      "venue": "롯데월드몰 쇼핑몰동",
+      "address": "서울 송파구 올림픽로 240",
+      "floor_detail": "B1층",
+      "hours": "",
+      "start_date": "2026-10-03",
+      "end_date": "2026-10-25"
+    },
+    {
+      "name": "animate 부산점 (페어만, Gratte 없음)",
+      "venue": "삼정타워",
+      "address": "부산광역시 부산진구 중앙대로 672",
+      "floor_detail": "11층",
+      "hours": "",
+      "start_date": "2026-10-03",
+      "end_date": "2026-10-11"
+    }
+  ],
+  "entry": "자유 입장(예약 안내 없음). 카운터·키오스크에서 도안 선택 후 주문.",
+  "benefits": [
+    {
+      "condition": "기간 중 『NIJISANJI』『NIJISANJI EN』 관련 굿즈·그라떼 구매 금액 30,000원당",
+      "item": "코스터 (랜덤, 큥bro·THE BOOM 중 그룹만 선택 가능, 그림 선택 불가)",
+      "count_kinds": "전 8종 (큥bro 4종 + THE BOOM 4종)"
+    }
+  ],
+  "menu": [
+    {
+      "name": "그라떼 (베이스: 아이스 아메리카노/아이스 초코라떼/아이스 딸기라떼/소다 에이드/메론 소다)",
+      "price": 7000
+    },
+    {
+      "name": "아이싱 쿠키 (일일 한정 수량)",
+      "price": 6500
+    }
+  ],
+  "goods": [],
+  "notes": [
+    "Gratte 개최 매장: animate 홍대점·animate cafe 잠실롯데점. 페어(코스터 특전) 개최 매장: animate 홍대점·부산점·잠실롯데점. 부산점은 이전 리뉴얼 오픈으로 10/11(일)까지만 개최",
+    "Gratte 도안 8종 (큥bro 4 + THE BOOM 4)",
+    "특전 소진 시 기간 중이라도 배포 종료, 선택 불가, 중복 가능",
+    "티켓·쿠지 품목, 온라인 쿠지·캡슐토이·쿠마메이트 관련·일부 TCG는 페어 대상 제외",
+    "페어 굿즈 목록/가격은 공식 게시물에 아직 없음 (2026-09-21 기준)",
+    "같은 Gratte 공지가 animatecafe_js 계정에도 게시됨(2101204646522228868)"
+  ],
+  "unverified_popga": [
+    "영업시간",
+    "잠실 animate cafe B1층 29호"
+  ],
+  "images": [
+    {
+      "file": "poster.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSivpGRbgAAMLqq.jpg?name=orig",
+      "what": "main poster (Gratte, 기간·매장)",
+      "width": 3348,
+      "height": 2190
+    },
+    {
+      "file": "menu-1.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSivpxWbcAAhJxM.jpg?name=orig",
+      "what": "Gratte menu + prices + 도안 8종 + 페어 코스터 특전",
+      "width": 3096,
+      "height": 2187
+    },
+    {
+      "file": "benefit-fair.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSj5esObkAA5yYN.jpg?name=orig",
+      "what": "페어 특전 (30,000원당 코스터 전8종) 안내",
+      "width": 3096,
+      "height": 2187
+    }
+  ]
+}

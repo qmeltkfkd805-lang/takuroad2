@@ -1,0 +1,130 @@
+{
+ "plan": "2026-09-26",
+ "at": "2026-09-26T13:12:20.576Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "popmart-anguk",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5772474316638,
+    "lng": 126.985652680709,
+    "road": "서울 종로구 북촌로 5",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "cb154ef3-95cc-469d-b5d0-1585434363c0",
+   "slug": "papmateu-angukjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-hirono-gwangjang",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5701196320637,
+    "lng": 126.999798964693,
+    "road": "서울 종로구 창경궁로 88",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "49bd8cbc-07df-4545-b1f5-24555e71908b",
+   "slug": "papmateu-hirono-gwangjangmaketjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "히로노"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-centum",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1688178394069,
+    "lng": 129.129523260187,
+    "road": "부산 해운대구 센텀남대로 35",
+    "building": "신세계백화점센텀시티점",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "d34d0de3-4d18-4fab-8bc4-bc998deb58a6",
+   "slug": "papmateu-sinsegye-senteomsitijeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-busan-samjung",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1529239695577,
+    "lng": 129.059604905121,
+    "road": "부산 부산진구 중앙대로 672",
+    "building": "삼정타워",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "3f9d10ad-fdee-4bdf-a432-970feee895f6",
+   "slug": "papmateu-busan-samjeongtawojeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-starfield-anseong",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.9946334108693,
+    "lng": 127.147249620616,
+    "road": "경기 안성시 공도읍 서동대로 3930-39",
+    "building": "스타필드 안성",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "f25b947d-b095-4148-8249-0ab1d783f4d2",
+   "slug": "papmateu-seutapildeu-anseongjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-26-2026-09-26T13-12-20-576Z.json"
+}

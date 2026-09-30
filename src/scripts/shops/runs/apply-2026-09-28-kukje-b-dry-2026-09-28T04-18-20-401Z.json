@@ -1,0 +1,62 @@
+{
+ "plan": "2026-09-28-kukje-b",
+ "at": "2026-09-28T04:18:20.401Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "kukje-kyouma-9f-1",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://x.com/kyouma_gacha",
+     "https://x.com/kyoumashop"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "쿄우마샵 카드가챠 1호점",
+    "floor_info": "국제전자센터 9층",
+    "cats": [
+     "가챠"
+    ],
+    "shop_link": "https://x.com/kyouma_gacha",
+    "description": "쿄우마샵의 가챠·카드가챠 매장(1호점)으로, 국제전자센터 9층에 있습니다. 본점은 같은 건물 2층입니다. 영업시간은 공식 안내가 없어 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:18:20.401Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "아이카츠!"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

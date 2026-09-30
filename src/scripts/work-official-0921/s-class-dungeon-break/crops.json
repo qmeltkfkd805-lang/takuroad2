@@ -1,0 +1,20 @@
+[
+ {"name":"랜덤 사각 캔뱃지 (가챠)","kind":"goods","price":4000,"file":"md_list_1.jpg","box":[196,344,529,678],"note":"가챠"},
+ {"name":"아크릴 스탠드","kind":"goods","price":15000,"file":"md_list_1.jpg","box":[547,344,882,678]},
+ {"name":"시팅인형키링","kind":"goods","price":16000,"file":"md_list_1.jpg","box":[196,698,529,1033]},
+ {"name":"장패드","kind":"goods","price":18000,"file":"md_list_1.jpg","box":[547,698,882,1033]},
+ {"name":"빅 스티커","kind":"goods","price":3500,"file":"md_list_2.jpg","box":[196,344,529,678]},
+ {"name":"아크릴 쉐이커 키링","kind":"goods","price":13000,"file":"md_list_2.jpg","box":[547,344,882,678]},
+ {"name":"홀로그램 포토카드 세트","kind":"goods","price":9000,"file":"md_list_2.jpg","box":[196,698,529,1033]},
+ {"name":"미니 아크릴 스탠드","kind":"goods","price":12000,"file":"md_list_2.jpg","box":[547,698,882,1033]},
+ {"name":"아크릴 키링","kind":"goods","price":8000,"file":"md_list_3.jpg","box":[196,344,529,678]},
+ {"name":"25cm 아크릴 스탠드","kind":"goods","price":25000,"file":"md_list_3.jpg","box":[547,344,882,678]},
+ {"name":"마우스패드","kind":"goods","price":6000,"file":"md_list_3.jpg","box":[196,698,529,1033]},
+ {"name":"젤펜","kind":"goods","price":5500,"file":"md_list_3.jpg","box":[547,698,882,1033]},
+ {"name":"〈내가 키운 S급들〉 포토카드 (10종, 포토카드 키오스크 전용)","kind":"goods","price":null,"file":"md_list_4_photocard_kiosk_books.jpg","box":[115,429,554,800],"note":"포토카드 키오스크 전용 판매, 가격 미표기, 구매 특전 대상 제외"},
+ {"name":"웹툰 단행본 / 하이라이트픽 / 웹툰프렌즈 오리지널스 상품","kind":"goods","price":null,"file":"md_list_4_photocard_kiosk_books.jpg","box":[578,402,965,817],"note":"이미지는 단행본 1·2권만 표시, 가격 미표기, 구매 특전 대상 제외"},
+ {"name":"에폭시 스티커팩 (7종 1세트, 7만원 이상 구매 특전)","kind":"goods","price":null,"file":"benefit_epoxy_sticker.jpg","box":[121,391,959,905],"note":"특전: 영수증 당 1장, 1인 1회, 합산 불가, 도서·포토카드 키오스크·가챠 제외"},
+ {"name":"〈내가 키운 S급들〉 한정 포토카드 (10종, 포토카드 키오스크 이용 특전)","kind":"goods","price":null,"file":"md_list_4_photocard_kiosk_books.jpg","box":[115,429,554,800],"note":"facts.json benefits[] 항목이지만 실제로는 키오스크 판매 상품 — 위 포토카드 10종 goods와 중복"},
+ {"name":"용산 브레이크 한정 헌터 자격증 (현장 공략 임무 특전)","kind":"goods","price":null,"file":"onsite_event_reward.jpg","box":[325,515,760,748],"note":"특전: 현장 공략 임무(MISSION 01~03) 성공 시, 이미지상 3종"},
+ {"name":"주차별 디지털 배경화면 (현장 게임 참여 특전)","kind":"goods","price":null,"file":null,"box":null,"note":"특전: 현장 게임 참여 시, 매주 1종·총 3종. 상품 이미지 없음(QR 휴대폰 아이콘만)"}
+]

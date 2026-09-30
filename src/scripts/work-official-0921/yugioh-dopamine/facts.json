@@ -1,0 +1,48 @@
+{
+  "key": "yugioh-dopamine",
+  "official_urls": [
+    "https://www.instagram.com/reel/DdaXtqDO7Id/",
+    "https://x.com/Yugioh_Korea/status/2100766758378369147"
+  ],
+  "title_official": "유희왕 POP-UP STORE 2026",
+  "work": "유희왕 오피셜 카드게임 (Yu-Gi-Oh! OCG)",
+  "type_guess": "popup",
+  "start_date": "2026-10-15",
+  "end_date": "2026-10-21",
+  "branches": [
+    {
+      "name": "용산 아이파크몰",
+      "venue": "용산 아이파크몰 도파민 스테이션",
+      "address": "서울 용산구 한강대로23길 55 (popga 기준)",
+      "floor_detail": "3층 도파민 스테이션",
+      "hours": "공식 미공개",
+      "start_date": "2026-10-15",
+      "end_date": "2026-10-21"
+    }
+  ],
+  "entry": "공식 미공개 (2026-09-21 현재 COMING SOON 티저만 게시). 예약 여부·입장 방식 미확인",
+  "benefits": [],
+  "menu": [],
+  "goods": [],
+  "notes": [
+    "주최/게시: 대원미디어(@popcon_daewonmedia IG) · 【공식】유희왕 오피셜 카드게임 X(@Yugioh_Korea). 티저 이미지에 KONAMI / 대원미디어 로고.",
+    "공식 문구: '단 7일, 듀얼리스트들이여 용산에 집결하라!' 2026.10.15 THU — 10.21 WED.",
+    "Yugioh_Korea X 티저(2026-09-18)는 '용산'만 언급하고 층/장소는 미기재; IG 릴 캡션·커버 이미지에 '용산 아이파크몰 3층 도파민 스테이션' 명시.",
+    "굿즈·이벤트·입장 방식 미공개. yugioh.co.kr 공지 게시판에도 2026-09-21 기준 관련 공지 없음.",
+    "참고(다른 행사): 2026-02 용산 아이파크몰 6층 TCG STATION 미니 팝업은 10:30~19:00 운영했음 — 이번 행사와 무관.",
+    "티저 영상(이미지 아님): https://video.twimg.com/amplify_video/2100759793577369600/vid/avc1/1080x1920/WnZS73Gmac7IdeES.mp4 (다운로드하지 않음)."
+  ],
+  "unverified_popga": [
+    "운영시간 '매일 10:30 ~ 22:00' (popga만 기재)",
+    "주소 서울 용산구 한강대로23길 55 (popga)"
+  ],
+  "images": [
+    {
+      "file": "reel_cover_teaser.jpg",
+      "source_url": "https://www.instagram.com/reel/DdaXtqDO7Id/",
+      "what": "main poster (릴 커버 프레임: 유희왕 POP-UP STORE 2026 / 용산 아이파크몰 3층 도파민 스테이션 / 2026.10.15-10.21)",
+      "width": 1080,
+      "height": 1920
+    }
+  ]
+}

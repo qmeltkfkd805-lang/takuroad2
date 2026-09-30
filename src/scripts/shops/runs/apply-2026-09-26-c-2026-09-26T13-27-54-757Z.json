@@ -1,0 +1,25 @@
+{
+ "plan": "2026-09-26-c",
+ "at": "2026-09-26T13:27:54.757Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "estaregg-kukje-main",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "2f1321e8-39a4-4f29-8f50-6ee8a82c6e66",
+   "patch": {
+    "sns_links": [
+     "https://x.com/E_staregg_store"
+    ]
+   },
+   "before": {
+    "sns_links": [
+     "https://x.com/E_staregg_store",
+     "https://x.com/E_stareggstore2"
+    ]
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-26-c-2026-09-26T13-27-54-757Z.json"
+}

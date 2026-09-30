@@ -1,0 +1,12 @@
+[
+ {"child":"labubu","parent":"the-monsters","kind":"series","overwrite":true,"evidence":"라부부는 THE MONSTERS 시리즈 캐릭터 — 팝마트(판매사)보다 직접적인 상위","url":"https://www.popmart.com/kr"},
+ {"child":"crybaby-popmart","parent":null,"unset":true,"reason":"팝마트=판매사/IP 운영사(C유형), 사이트 선례 없음 — 보류"},
+ {"child":"dimoo","parent":null,"unset":true,"reason":"C유형 보류"},
+ {"child":"peach-riot","parent":null,"unset":true,"reason":"C유형 보류"},
+ {"child":"molly-popmart","parent":null,"unset":true,"reason":"C유형 보류"},
+ {"child":"skullpanda","parent":null,"unset":true,"reason":"C유형 보류"},
+ {"child":"hirono","parent":null,"unset":true,"reason":"C유형 보류"},
+ {"child":"twinkle-twinkle-popmart","parent":null,"unset":true,"reason":"C유형 보류"},
+ {"child":"hacipupu","parent":null,"unset":true,"reason":"C유형 보류"},
+ {"child":"rilakkuma","parent":null,"unset":true,"reason":"산엑스를 산리오 같은 캐릭터 브랜드(B)로 볼지 기준 미정 — 보류"}
+]

@@ -1,0 +1,178 @@
+{
+ "plan": "2026-09-29-n",
+ "at": "2026-09-29T13:21:43.767Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "aniplus-hapjeong",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5510079695241,
+    "lng": 126.91164899787,
+    "road": "서울 마포구 월드컵로3길 14",
+    "building": "마포 한강 2차 푸르지오",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "74af32fd-4300-4218-a329-8ab8846bdd6d",
+   "slug": "aenipeulreoseusyap-seoul-hapjeongjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "프로젝트 세카이",
+      "홀로라이브",
+      "우마무스메 프리티 더비"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "link_events": {
+     "linked": [
+      {
+       "id": "c0723fbe-c1b2-4701-b99a-ff71e2ad46d7",
+       "title": "프로젝트 세카이 컬러풀 스테이지! feat. 하츠네 미쿠 × 애니플러스 콜라보 카페 (서울 합정점)"
+      },
+      {
+       "id": "ecd671cc-a248-475b-a4c5-857ae8a837a1",
+       "title": "hololive FLOW GLOW × 애니플러스 콜라보 카페 (서울 합정점)"
+      }
+     ],
+     "skipped": []
+    }
+   }
+  },
+  {
+   "key": "aniplus-seomyeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1529239695577,
+    "lng": 129.059604905121,
+    "road": "부산 부산진구 중앙대로 672",
+    "building": "삼정타워",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "017c45ea-232e-49f4-b1aa-6ae8d615c84a",
+   "slug": "aenipeulreoseusyap-busan-seomyeonjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "프로젝트 세카이",
+      "홀로라이브",
+      "우마무스메 프리티 더비"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "link_events": {
+     "linked": [
+      {
+       "id": "89e25504-8687-44c6-b7ca-785fa40c768a",
+       "title": "프로젝트 세카이 컬러풀 스테이지! feat. 하츠네 미쿠 × 애니플러스 콜라보 카페 (부산 서면점)"
+      },
+      {
+       "id": "a0770baf-b2b1-42ad-b8b8-b58165f2cc1c",
+       "title": "hololive FLOW GLOW × 애니플러스 콜라보 카페 (부산 서면점)"
+      }
+     ],
+     "skipped": []
+    }
+   }
+  },
+  {
+   "key": "gongteo-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8725755413445,
+    "lng": 128.597813928162,
+    "road": "대구 중구 교동2길 39",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "d7e7fe18-a45c-47a1-8a86-6e478e712a32",
+   "slug": "gongteo",
+   "extras": {
+    "works": {
+     "added": [
+      "달빛천사",
+      "헌터×헌터",
+      "하츠네 미쿠"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "acrylic-stand",
+      "clear-file",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "animarket-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8725755413445,
+    "lng": 128.597813928162,
+    "road": "대구 중구 교동2길 39",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "d0b39005-6e03-4589-9415-86e56ce1efc0",
+   "slug": "aenimaket",
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "acrylic-stand",
+      "can-badge-new",
+      "keyring",
+      "clear-file",
+      "figure-new",
+      "plushie-new",
+      "card-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kkomjirak-hwajeong",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.6332580376991,
+    "lng": 126.834681601914,
+    "road": "경기 고양시 덕양구 백양로 84",
+    "building": "옥빛마을12단지아파트",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "8805c40b-59d3-495c-855e-0586a0b074d9",
+   "slug": "kkomjirak-habisyap-hwajeongjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-n-2026-09-29T13-21-43-767Z.json"
+}

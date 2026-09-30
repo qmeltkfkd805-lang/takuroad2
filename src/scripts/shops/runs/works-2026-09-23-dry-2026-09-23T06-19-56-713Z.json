@@ -1,0 +1,170 @@
+[
+ {
+  "name": "붉은 돼지",
+  "status": "DRY_CREATE",
+  "slug": "porco-rosso",
+  "parent": "스튜디오 지브리"
+ },
+ {
+  "name": "바람계곡의 나우시카",
+  "status": "DRY_CREATE",
+  "slug": "nausicaa-of-the-valley-of-the-wind",
+  "parent": "스튜디오 지브리"
+ },
+ {
+  "name": "마루 밑 아리에티",
+  "status": "DRY_CREATE",
+  "slug": "arrietty",
+  "parent": "스튜디오 지브리"
+ },
+ {
+  "name": "고양이의 보은",
+  "status": "DRY_CREATE",
+  "slug": "the-cat-returns",
+  "parent": "스튜디오 지브리"
+ },
+ {
+  "name": "그대들은 어떻게 살 것인가",
+  "status": "DRY_CREATE",
+  "slug": "the-boy-and-the-heron",
+  "parent": "스튜디오 지브리"
+ },
+ {
+  "name": "아이카츠!",
+  "status": "DRY_CREATE",
+  "slug": "aikatsu",
+  "parent": null
+ },
+ {
+  "name": "에일리언 스테이지",
+  "status": "DRY_CREATE",
+  "slug": "alien-stage",
+  "parent": null
+ },
+ {
+  "name": "헬루바 보스",
+  "status": "DRY_CREATE",
+  "slug": "helluva-boss",
+  "parent": null
+ },
+ {
+  "name": "아이돌마스터 샤이니 컬러즈",
+  "status": "DRY_CREATE",
+  "slug": "idolmaster-shiny-colors",
+  "parent": null
+ },
+ {
+  "name": "왕님전대 킹오저",
+  "status": "DRY_CREATE",
+  "slug": "ohsama-sentai-king-ohger",
+  "parent": "전대 시리즈"
+ },
+ {
+  "name": "브롤스타즈",
+  "status": "DRY_CREATE",
+  "slug": "brawl-stars",
+  "parent": null
+ },
+ {
+  "name": "실바니안 패밀리",
+  "status": "DRY_CREATE",
+  "slug": "sylvanian-families",
+  "parent": null
+ },
+ {
+  "name": "텔레토비",
+  "status": "DRY_CREATE",
+  "slug": "teletubbies",
+  "parent": null
+ },
+ {
+  "name": "빨간 망토 차차",
+  "status": "DRY_CREATE",
+  "slug": "akazukin-chacha",
+  "parent": null
+ },
+ {
+  "name": "바키",
+  "status": "DRY_CREATE",
+  "slug": "baki",
+  "parent": null
+ },
+ {
+  "name": "mofusand",
+  "status": "DRY_CREATE",
+  "slug": "mofusand",
+  "parent": null
+ },
+ {
+  "name": "유희왕 러시 듀얼",
+  "status": "DRY_CREATE",
+  "slug": "yu-gi-oh-rush-duel",
+  "parent": "유희왕"
+ },
+ {
+  "name": "라부부",
+  "status": "DRY_CREATE",
+  "slug": "labubu",
+  "parent": "팝마트"
+ },
+ {
+  "name": "크라이베이비",
+  "status": "DRY_CREATE",
+  "slug": "crybaby-popmart",
+  "parent": "팝마트"
+ },
+ {
+  "name": "디무",
+  "status": "DRY_CREATE",
+  "slug": "dimoo",
+  "parent": "팝마트"
+ },
+ {
+  "name": "피치 라이엇",
+  "status": "DRY_CREATE",
+  "slug": "peach-riot",
+  "parent": "팝마트"
+ },
+ {
+  "name": "몰리",
+  "status": "DRY_CREATE",
+  "slug": "molly-popmart",
+  "parent": "팝마트"
+ },
+ {
+  "name": "스컬판다",
+  "status": "DRY_CREATE",
+  "slug": "skullpanda",
+  "parent": "팝마트"
+ },
+ {
+  "name": "히로노",
+  "status": "DRY_CREATE",
+  "slug": "hirono",
+  "parent": "팝마트"
+ },
+ {
+  "name": "트윙클 트윙클",
+  "status": "DRY_CREATE",
+  "slug": "twinkle-twinkle-popmart",
+  "parent": "팝마트"
+ },
+ {
+  "name": "하치푸푸",
+  "status": "DRY_CREATE",
+  "slug": "hacipupu",
+  "parent": "팝마트"
+ },
+ {
+  "name": "와사비베어",
+  "status": "DRY_CREATE",
+  "slug": "wasabi-bear",
+  "parent": null
+ },
+ {
+  "name": "멜앤로디",
+  "status": "DRY_CREATE",
+  "slug": "mel-and-lody",
+  "parent": null
+ }
+]

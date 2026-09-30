@@ -1,0 +1,9 @@
+[
+ {"child":"gakuen-idolmaster","parent":"idolmaster","evidence":"반다이남코 아이돌마스터 브랜드 공식 시리즈","url":"https://idolmaster-official.jp/"},
+ {"child":"idolmaster-shiny-colors","parent":"idolmaster","evidence":"아이돌마스터 브랜드 공식 시리즈","url":"https://idolmaster-official.jp/"},
+ {"child":"idolmaster-cinderella-girls","parent":"idolmaster","evidence":"아이돌마스터 브랜드 공식 시리즈","url":"https://idolmaster-official.jp/"},
+ {"child":"persona-3-reload","parent":"persona-series","evidence":"아틀러스 페르소나 시리즈 작품","url":"https://persona.atlus.com/"},
+ {"child":"persona-4","parent":"persona-series","evidence":"아틀러스 페르소나 시리즈 작품","url":"https://persona.atlus.com/"},
+ {"child":"persona-5","parent":"persona-series","evidence":"아틀러스 페르소나 시리즈 작품","url":"https://persona.atlus.com/"},
+ {"child":"rilakkuma","parent":"san-x","evidence":"리락쿠마 공식 사이트가 산엑스(san-x.co.jp) 소속","url":"https://www.san-x.co.jp/rilakkuma/"}
+]

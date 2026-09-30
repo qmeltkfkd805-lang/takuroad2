@@ -1,0 +1,257 @@
+{
+ "name": "2026-09-23-b",
+ "items": [
+  {
+   "action": "update",
+   "key": "animate-hongdae-links",
+   "shop_id": "927de840-7ca5-4e62-8b79-440046a524a6",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 추가, 이 매장에서 열리는 이벤트 연결",
+   "works": [
+    {
+     "tag_id": "f2658c7d-a3d0-4343-9b21-d0cab3d59ab8",
+     "evidence": "이 매장 개최 이벤트 2건 (프로젝트 세카이)"
+    },
+    {
+     "tag_id": "5253fe7d-b5f1-4663-9982-1c71bd360f14",
+     "evidence": "이 매장 개최 이벤트 1건 (내 호수에 가둔 인어)"
+    },
+    {
+     "tag_id": "4913fd41-a5e2-4c24-9297-2e799b1d16ce",
+     "evidence": "이 매장 개최 이벤트 1건 (가정교사 히트맨 리본)"
+    },
+    {
+     "tag_id": "aedfd403-e50a-4717-b509-74ff2362eae5",
+     "evidence": "이 매장 개최 이벤트 1건 (Re:제로부터 시작하는 이세계 생활)"
+    },
+    {
+     "tag_id": "f22d599c-467e-420d-8ef6-5e1b988322eb",
+     "evidence": "이 매장 개최 이벤트 1건 (꿈자리가 이상한데요?!)"
+    },
+    {
+     "tag_id": "aff664c1-b1d6-4844-939f-f7d314b6594b",
+     "evidence": "이 매장 개최 이벤트 1건 (1to10)"
+    },
+    {
+     "tag_id": "ea7312a9-a75c-491c-9b21-dcabfa0f4257",
+     "evidence": "이 매장 개최 이벤트 1건 (이환)"
+    },
+    {
+     "tag_id": "0a52ab77-f2b5-4bbf-8d00-004d137525a7",
+     "evidence": "이 매장 개최 이벤트 1건 (페르소나 시리즈)"
+    },
+    {
+     "tag_id": "77a9bc04-00de-4071-baf2-571f4fcef31d",
+     "evidence": "이 매장 개최 이벤트 1건 (블루 록)"
+    },
+    {
+     "tag_id": "0d2135c3-9e2d-4029-8ff0-05dd9e1d8155",
+     "evidence": "이 매장 개최 이벤트 1건 (가치아쿠타)"
+    },
+    {
+     "tag_id": "523c581e-4f34-4426-818f-090894ccbf45",
+     "evidence": "이 매장 개최 이벤트 1건 (지박소년 하나코군)"
+    },
+    {
+     "tag_id": "fb8c03af-9bdc-4fb2-8fef-8d9a7792873c",
+     "evidence": "이 매장 개최 이벤트 1건 (장송의 프리렌)"
+    },
+    {
+     "tag_id": "4d4b02e7-2835-45ce-8357-c92992d69387",
+     "evidence": "이 매장 개최 이벤트 1건 (오란고교 사교클럽)"
+    },
+    {
+     "tag_id": "d1e46be2-e283-4d48-bb49-61c16ce7faaf",
+     "evidence": "이 매장 개최 이벤트 1건 (New PANTY & STOCKING with GARTERBELT)"
+    },
+    {
+     "tag_id": "773e2f96-cea4-4710-8d97-40eb09f239cb",
+     "evidence": "이 매장 개최 이벤트 1건 (학원 아이돌 마스터)"
+    },
+    {
+     "tag_id": "8ef907dc-37ce-4974-a2d7-37910d56f7dd",
+     "evidence": "이 매장 개최 이벤트 1건 (제5인격)"
+    },
+    {
+     "tag_id": "484a3af3-15f1-4618-8235-96053d307aec",
+     "evidence": "이 매장 개최 이벤트 1건 (고깔모자 아뜰리에)"
+    },
+    {
+     "tag_id": "7fc6cb70-c059-40e3-86a4-39dc28b6b32c",
+     "evidence": "이 매장 개최 이벤트 1건 (주술회전)"
+    },
+    {
+     "tag_id": "35c6ae9c-8fcb-46c4-a8d7-d340b941e31e",
+     "evidence": "이 매장 개최 이벤트 1건 (매리지 톡신)"
+    },
+    {
+     "tag_id": "4526b69f-b69a-4070-b165-5d01a71d86eb",
+     "evidence": "이 매장 개최 이벤트 1건 (니디 걸 오버도즈)"
+    },
+    {
+     "tag_id": "cdc27204-c7f8-4f28-a4a7-fb7e8b7fc1b7",
+     "evidence": "이 매장 개최 이벤트 1건 (은혼)"
+    },
+    {
+     "tag_id": "734c6726-5bdc-4457-90d8-54c1f6e52319",
+     "evidence": "이 매장 개최 이벤트 1건 (마법소녀 마도카☆마기카)"
+    },
+    {
+     "tag_id": "1798e740-15b3-4875-ad2f-3929230ce058",
+     "evidence": "이 매장 개최 이벤트 1건 (공포게임 메이드로 살아남기)"
+    },
+    {
+     "tag_id": "63d2954e-2390-42ed-ad2c-af42c2a4b49c",
+     "evidence": "이 매장 개최 이벤트 1건 (니지산지)"
+    },
+    {
+     "tag_id": "cdab8396-5f6f-4107-baa5-46bdae17d1c5",
+     "evidence": "이 매장 개최 이벤트 1건 (마계학교 이루마군)"
+    },
+    {
+     "tag_id": "2a88af81-4e08-446f-befa-312110884a20",
+     "evidence": "애니메이트코리아 공식 온라인샵 작품 메뉴(하이큐!!) — 2026-09-23"
+    },
+    {
+     "tag_id": "49f4d824-0ef6-4926-80ea-8dd5f930000e",
+     "evidence": "애니메이트코리아 공식 온라인샵 작품 메뉴(원신) — 2026-09-23"
+    },
+    {
+     "tag_id": "4c29cc2f-ff8a-4d40-8298-2d23ea2bbe62",
+     "evidence": "애니메이트코리아 공식 온라인샵 작품 메뉴(우마무스메) — 2026-09-23"
+    },
+    {
+     "tag_id": "63f2a778-7dca-469d-a2c1-8b139d82637f",
+     "evidence": "애니메이트코리아 공식 온라인샵 작품 메뉴(승리의 여신: 니케) — 2026-09-23"
+    },
+    {
+     "tag_id": "adb8dfab-9e1b-4bbd-83a6-c6ce57a55f98",
+     "evidence": "애니메이트코리아 공식 온라인샵 작품 메뉴(LIMBUS COMPANY) — 2026-09-23"
+    },
+    {
+     "tag_id": "687cb7a1-97b3-45ac-a11d-36da83e4cb5b",
+     "evidence": "방문 후기 재고 언급 https://nohji.com/4718 (2022-06-20)"
+    }
+   ],
+   "goods_types": [
+    "manga",
+    "light-novel",
+    "cd-dvd-bd",
+    "acrylic-stand",
+    "keyring",
+    "can-badge-new",
+    "card-new",
+    "figure-new"
+   ],
+   "link_events": [
+    {
+     "event_id": "047abdbc-bc0f-462f-ac4e-73a2a29a2eb0",
+     "evidence": "place_detail: 5층 애니메이트 홍대점"
+    },
+    {
+     "event_id": "82535339-150c-46f9-91d9-de5a341f4205",
+     "evidence": "place_detail: 5층 애니메이트 홍대점"
+    },
+    {
+     "event_id": "aa185e65-181f-4230-a336-7c085a60340a",
+     "evidence": "place_detail: 5층 애니메이트 홍대점"
+    },
+    {
+     "event_id": "ebdc6eaa-e429-4311-b0ae-3fb26c0f61e0",
+     "evidence": "place_detail: 5층 애니메이트 홍대점"
+    },
+    {
+     "event_id": "580e2a68-b0d6-42b7-ac82-a91f2c6e13e7",
+     "evidence": "place_detail: 5층 애니메이트 홍대점"
+    },
+    {
+     "event_id": "c4ec927f-2187-4ad9-8e00-5177cf020e2a",
+     "evidence": "place_detail: 5층 애니메이트 홍대점"
+    },
+    {
+     "event_id": "0e1b8dd0-7363-41a2-b657-0de9f50f9d0e",
+     "evidence": "place_detail: 5층 애니메이트 홍대점 Gratte"
+    },
+    {
+     "event_id": "7ab59a6d-7c2a-4b5d-89b4-ec6a8f39863b",
+     "evidence": "place_detail: 5층 애니메이트 홍대점"
+    },
+    {
+     "event_id": "24c51f45-6eaf-463f-91f5-7fda7ab5ebbd",
+     "evidence": "place_detail: 5층 애니메이트 홍대점"
+    },
+    {
+     "event_id": "bcb55cb5-4e0d-4a6a-96f2-e9c0e6a66bec",
+     "evidence": "place_detail: 5층 애니메이트 홍대점"
+    },
+    {
+     "event_id": "615b5f83-fec0-44af-b594-e869d05f3b37",
+     "evidence": "place_detail: 5층 애니메이트 홍대점"
+    },
+    {
+     "event_id": "fff3ebab-a3f6-40c9-8176-865e35865cb3",
+     "evidence": "place_detail: 5층 애니메이트 홍대점"
+    },
+    {
+     "event_id": "1c24f025-7f9b-476d-b130-dcad021d148c",
+     "evidence": "place_detail: 5층 애니메이트 홍대점"
+    },
+    {
+     "event_id": "ab925f2c-d6df-4c3e-ac73-701f36e51dbd",
+     "evidence": "place_detail: 5층 애니메이트 홍대점"
+    },
+    {
+     "event_id": "018a045b-77f6-4105-99f0-1137194918ec",
+     "evidence": "place_detail: 5층 애니메이트 홍대점"
+    },
+    {
+     "event_id": "11cb4156-8f43-48a8-931d-b8acb5e714e8",
+     "evidence": "place_detail: 애니메이트 홍대점 White hall"
+    },
+    {
+     "event_id": "5032e4b9-561b-439c-8a26-f98d6429ff8a",
+     "evidence": "place_detail: 5층 애니메이트 홍대점 (POPUPSHOP)"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://www.animate-onlineshop.co.kr/",
+     "fields": [
+      "works(공식 작품 메뉴)",
+      "goods_types(상품명 분류: 피규어·아크릴스탠드·키홀더·카드 등)"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://nohji.com/4718",
+     "fields": [
+      "works(5등분의 신부)",
+      "goods_types(서적·라이트노벨)"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://o.yhj9855.com/entry/%EB%8D%95%ED%9B%84%EC%9D%B8-%EB%8B%B9%EC%8B%A0%EC%9D%B4-%EA%BC%AD-%EC%95%8C%EC%95%84%EC%95%BC-%ED%95%A0-%ED%99%8D%EB%8C%80-%EA%B5%BF%EC%A6%88%EC%83%B5-%EC%A7%80%EB%8F%84",
+     "fields": [
+      "goods_types(CD·만화·라이트노벨)"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "events.place_detail (DB)",
+     "fields": [
+      "link_events",
+      "works"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ],
+   "unconfirmed": [
+    "hours",
+    "closed_days",
+    "parking"
+   ],
+   "photo": "needed"
+  }
+ ]
+}

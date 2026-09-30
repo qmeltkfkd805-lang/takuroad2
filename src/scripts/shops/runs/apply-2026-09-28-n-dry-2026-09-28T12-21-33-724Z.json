@@ -1,0 +1,506 @@
+{
+ "plan": "2026-09-28-n",
+ "at": "2026-09-28T12:21:33.724Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "hoka-sangjum",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5569119569559,
+    "lng": 126.926827016883,
+    "road": "서울 마포구 어울마당로 153-3",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "호카상점",
+    "addr": "서울 마포구 어울마당로 153-3",
+    "floor_info": "1층",
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": "0507-1474-9066",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://x.com/hoka_sangjum",
+    "sns_links": [
+     "https://x.com/hoka_sangjum",
+     "https://www.instagram.com/hoka_sangjum/",
+     "https://pf.kakao.com/_SxhxeZn"
+    ],
+    "description": "\"소녀들의 미학 컬렉션\"을 내건 홍대 애니 굿즈샵으로, 아크릴 스탠드·캔배지·클리어 카드·마스코트 등 애니메이션 굿즈를 입고 소식과 함께 판매합니다.\n영업시간은 월~금 12:00~20:00, 토·일 11:00~21:00입니다(공식 계정 안내). 문의는 카카오톡 채널 \"호카상점\".",
+    "lat": 37.5569119569559,
+    "lng": 126.926827016883,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T12:21:33.724Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "하이큐!!",
+      "나의 히어로 아카데미아"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "acrylic-stand",
+      "can-badge-new",
+      "plushie-new",
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "urara-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5562580269541,
+    "lng": 126.927727167722,
+    "road": "서울 마포구 와우산로29길 48-29",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "스페이스 우라라 홍대점",
+    "addr": "서울 마포구 와우산로29길 48-29",
+    "floor_info": "지하 1층",
+    "cats": [
+     "굿즈샵",
+     "쿠지",
+     "가챠",
+     "피규어샵"
+    ],
+    "phone": "0507-1334-5345",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "yearRound": true
+    },
+    "shop_link": "https://x.com/SpaceUrara",
+    "sns_links": [
+     "https://x.com/SpaceUrara",
+     "https://www.instagram.com/space_urara/",
+     "https://litt.ly/urara"
+    ],
+    "description": "피규어·아트토이·애니메이션 굿즈와 제일복권(이치방쿠지)·가챠를 파는 캐릭터 굿즈샵 스페이스 우라라의 1호점입니다. 홍대입구역 6·7번 출구에서 걸어서 2분 거리 건물 지하 1층에 있습니다.\n영업시간은 주중 12:00~22:00, 주말 11:00~22:00이며 연중무휴입니다(공식 계정 안내).",
+    "lat": 37.5562580269541,
+    "lng": 126.927727167722,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T12:21:33.724Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "한교동",
+      "귀멸의 칼날"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "urara-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8687083802364,
+    "lng": 128.598741541322,
+    "road": "대구 중구 동성로6길 61",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "스페이스 우라라 동성로스파크점",
+    "addr": "대구 중구 동성로6길 61",
+    "floor_info": "동성로 스파크 3층",
+    "cats": [
+     "굿즈샵",
+     "쿠지"
+    ],
+    "phone": "010-4966-5345",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://x.com/spaceurara_DG",
+    "sns_links": [
+     "https://x.com/spaceurara_DG",
+     "https://www.instagram.com/space.urara/",
+     "https://litt.ly/urara"
+    ],
+    "place_id": "bd1a6fc0-7c55-4768-aca0-6e29f27a3dbf",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n기본 30분 2,400원, 이후 10분당 1,000원\n스파크몰 입점 매장 구매 시: 5만원 이상 1시간 무료 · 10만원 이상 2시간\n테마파크 이용·매장 구매 합산 하루 최대 3시간",
+    "description": "홍대에서 온 캐릭터 굿즈샵 스페이스 우라라의 2호점으로, 대관람차로 알려진 동성로 스파크 쇼핑몰 3층에 있습니다. 제일복권(이치방쿠지)과 캐릭터 굿즈를 팔고 코스프레 포토부스가 있습니다.\n영업시간은 평일 12:00~21:00, 주말·공휴일 11:00~22:00이며 쇼핑몰 휴점일에는 쉽니다(공식 계정 안내).",
+    "lat": 35.8687083802364,
+    "lng": 128.598741541322,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T12:21:33.724Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "나의 히어로 아카데미아",
+      "은혼",
+      "블루 록",
+      "블루 아카이브"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "urara-hwagok",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5412543091125,
+    "lng": 126.839889999096,
+    "road": "서울 강서구 화곡로 164",
+    "building": "화곡빌딩",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "스페이스 우라라 강서화곡점",
+    "addr": "서울 강서구 화곡로 164",
+    "floor_info": "5층",
+    "cats": [
+     "굿즈샵",
+     "카드/TCG",
+     "쿠지"
+    ],
+    "hours": {
+     "mon": null,
+     "tue": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://x.com/urara_hwagok",
+    "sns_links": [
+     "https://x.com/urara_hwagok",
+     "https://www.instagram.com/urara_hwagok/",
+     "https://litt.ly/urara"
+    ],
+    "description": "스페이스 우라라의 3호점으로, 애니 굿즈샵과 TCG 카드샵 \"플레이아레나\", 일본풍 킷사텐을 함께 운영합니다. 제일복권(이치방쿠지)과 포켓몬·원피스 카드 등을 팝니다.\n화곡역 6번 출구 바로 앞 던킨 건물 5층에 있으며, 영업시간은 12:00~22:00, 월요일 휴무입니다(공식 계정 안내).",
+    "lat": 37.5412543091125,
+    "lng": 126.839889999096,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T12:21:33.724Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "나의 히어로 아카데미아",
+      "명탐정 코난",
+      "봇치 더 록!"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "toygoods-ansan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.3180370975981,
+    "lng": 126.837728515812,
+    "road": "경기 안산시 단원구 고잔1길 40",
+    "building": "동원빌딩",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "토이굿즈 안산점",
+    "addr": "경기 안산시 단원구 고잔1길 40",
+    "floor_info": "1층 110호",
+    "cats": [
+     "피규어샵",
+     "굿즈샵",
+     "가챠",
+     "쿠지"
+    ],
+    "phone": "031-402-6615",
+    "hours": {
+     "mon": {
+      "open": "14:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "13:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "13:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "yearRound": true
+    },
+    "shop_link": "https://www.instagram.com/toygoods_ansan/",
+    "sns_links": [
+     "https://www.instagram.com/toygoods_ansan/"
+    ],
+    "description": "안산 중앙동의 애니 캐릭터 굿즈·피규어·가챠 전문 매장으로, 이치방쿠지(제일복권)도 팝니다.\n영업시간은 13:00~21:00(월요일 14:00 오픈, 금·토 22:00 마감)이며 연중무휴입니다(매장 안내).",
+    "lat": 37.3180370975981,
+    "lng": 126.837728515812,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T12:21:33.724Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "isekai-figure-cheonan",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.8328258539591,
+    "lng": 127.138833532982,
+    "road": "충남 천안시 서북구 두정상가1길 27",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "이세계피규어",
+    "addr": "충남 천안시 서북구 두정상가1길 27",
+    "floor_info": "프라지움1차 2층",
+    "cats": [
+     "피규어샵",
+     "쿠지",
+     "가챠"
+    ],
+    "phone": "041-556-0999",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "yearRound": true
+    },
+    "shop_link": "https://www.instagram.com/isk_figures/",
+    "sns_links": [
+     "https://www.instagram.com/isk_figures/"
+    ],
+    "description": "천안 두정동의 피규어 매장으로, 피규어와 제일복권(이치방쿠지), 가챠를 팝니다.\n영업시간은 매일 12:00~22:00, 연중무휴입니다(매장 안내).",
+    "lat": 36.8328258539591,
+    "lng": 127.138833532982,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T12:21:33.724Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

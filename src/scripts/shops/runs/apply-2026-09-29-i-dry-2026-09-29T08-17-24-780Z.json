@@ -1,0 +1,247 @@
+{
+ "plan": "2026-09-29-i",
+ "at": "2026-09-29T08:17:24.780Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "pitb-thehyundai",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5252014942155,
+    "lng": 126.929108448093,
+    "road": "서울 영등포구 여의대로 108",
+    "building": "파크원",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "PLAY IN THE BOX 더현대 서울점",
+    "addr": "서울 영등포구 여의대로 108",
+    "floor_info": "더현대 서울 5층",
+    "cats": [
+     "굿즈샵",
+     "가챠",
+     "피규어샵"
+    ],
+    "shop_link": "https://playinthebox.co.kr/ko",
+    "sns_links": [
+     "https://www.instagram.com/playinthebox_official/",
+     "https://playinthebox.co.kr/ko"
+    ],
+    "place_id": "055b4bb1-d3ab-4177-8cd3-e774c1f43bb1",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 초과 시 10분당 2,000원\n5만원 이상 구매 시 1시간, 10만원 이상 2시간, 15만원 이상 3시간 무료",
+    "description": "캐릭터 굿즈·피규어·캡슐토이를 모아 파는 캐릭터 편집숍 PLAY IN THE BOX(플레이인더박스)의 매장으로, 더현대 서울 5층에 있습니다.\n영업시간·전화는 공식 안내에 표기되어 있지 않아 비워 두었습니다. 방문 전 입점 건물 영업시간과 공식 SNS 공지를 확인하세요.",
+    "lat": 37.5252014942155,
+    "lng": 126.929108448093,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T08:17:24.780Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pitb-megabox-coex",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5118239121138,
+    "lng": 127.059159043842,
+    "road": "서울 강남구 영동대로 513",
+    "building": "코엑스",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "PLAY IN THE BOX 메가박스 코엑스점",
+    "addr": "서울 강남구 영동대로 513",
+    "floor_info": "코엑스몰 지하 2층 메가박스 코엑스",
+    "cats": [
+     "굿즈샵",
+     "가챠",
+     "피규어샵"
+    ],
+    "shop_link": "https://playinthebox.co.kr/ko",
+    "sns_links": [
+     "https://www.instagram.com/playinthebox_official/",
+     "https://playinthebox.co.kr/ko"
+    ],
+    "place_id": "86c742e0-a1fa-42b7-8ee0-0de38b8bdb39",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n입차 후 20분 이내 출차 시 무료, 15분당 1,500원(1일 최대 60,000원)\n코엑스몰 구매 시: 5만원 이상 1시간 · 10만원 이상 2시간 · 15만원 이상 3시간 무료(일부 매장 제외)\n카카오T 주차 모바일 결제 시 20% 할인",
+    "description": "캐릭터 굿즈·피규어·캡슐토이를 모아 파는 캐릭터 편집숍 PLAY IN THE BOX(플레이인더박스)의 매장으로, 코엑스 지하 2층 메가박스 코엑스에 있습니다.\n영업시간·전화는 공식 안내에 표기되어 있지 않아 비워 두었습니다. 방문 전 입점 건물 영업시간과 공식 SNS 공지를 확인하세요.",
+    "lat": 37.5118239121138,
+    "lng": 127.059159043842,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T08:17:24.780Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pitb-ipark-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "road": "서울 용산구 한강대로23길 55",
+    "building": "용산역",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "PLAY IN THE BOX 용산 아이파크몰점",
+    "addr": "서울 용산구 한강대로23길 55",
+    "floor_info": "아이파크몰 리빙파크 3층 도파민스테이션",
+    "cats": [
+     "굿즈샵",
+     "가챠",
+     "피규어샵"
+    ],
+    "shop_link": "https://playinthebox.co.kr/ko",
+    "sns_links": [
+     "https://www.instagram.com/playinthebox_official/",
+     "https://playinthebox.co.kr/ko"
+    ],
+    "place_id": "045ed3e4-9d81-4f68-a4c7-e6815f0ccadc",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용",
+    "description": "캐릭터 굿즈·피규어·캡슐토이를 모아 파는 캐릭터 편집숍 PLAY IN THE BOX(플레이인더박스)의 매장으로, 용산 아이파크몰 3층 도파민스테이션에 있습니다.\n영업시간·전화는 공식 안내에 표기되어 있지 않아 비워 두었습니다. 방문 전 입점 건물 영업시간과 공식 SNS 공지를 확인하세요.",
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T08:17:24.780Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pitb-songdo",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.3816291013573,
+    "lng": 126.657917047216,
+    "road": "인천 연수구 송도국제대로 123",
+    "building": "현대프리미엄 아울렛 송도점",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "PLAY IN THE BOX 현대프리미엄아울렛 송도점",
+    "addr": "인천 연수구 송도국제대로 123",
+    "floor_info": "현대프리미엄아울렛 송도점 지하 1층",
+    "cats": [
+     "굿즈샵",
+     "가챠",
+     "피규어샵"
+    ],
+    "shop_link": "https://playinthebox.co.kr/ko",
+    "sns_links": [
+     "https://www.instagram.com/playinthebox_official/",
+     "https://playinthebox.co.kr/ko"
+    ],
+    "place_id": "4958a1f1-12c9-46b3-8d86-bd18a0026e82",
+    "parking": true,
+    "parking_note": "주차 가능\n평일(주중) 무료 개방\n주말·공휴일 구매 시 무료: 1만원 이상 3시간 · 10만원 이상 5시간\n무료 시간 이후 10분당 1,000원",
+    "description": "캐릭터 굿즈·피규어·캡슐토이를 모아 파는 캐릭터 편집숍 PLAY IN THE BOX(플레이인더박스)의 매장으로, 현대프리미엄아울렛 송도점 지하 1층에 있습니다.\n영업시간·전화는 공식 안내에 표기되어 있지 않아 비워 두었습니다. 방문 전 입점 건물 영업시간과 공식 SNS 공지를 확인하세요.",
+    "lat": 37.3816291013573,
+    "lng": 126.657917047216,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T08:17:24.780Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pitb-centum",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1688178394069,
+    "lng": 129.129523260187,
+    "road": "부산 해운대구 센텀남대로 35",
+    "building": "신세계백화점센텀시티점",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "PLAY IN THE BOX 신세계 센텀시티점",
+    "addr": "부산 해운대구 센텀남대로 35",
+    "floor_info": "신세계백화점 센텀시티 7층",
+    "cats": [
+     "굿즈샵",
+     "가챠",
+     "피규어샵"
+    ],
+    "shop_link": "https://playinthebox.co.kr/ko",
+    "sns_links": [
+     "https://www.instagram.com/playinthebox_official/",
+     "https://playinthebox.co.kr/ko"
+    ],
+    "place_id": "3a89dba6-6afb-40fa-9a42-9d20aeecafd1",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 이후 10분당 1,000원\n구매 시 무료: 1만원 이상 1시간 · 3만원 이상 2시간 · 5만원 이상 3시간 · 10만원 이상 4시간 · 20만원 이상 5시간\n식당가 이용 시 2시간 무료\n센텀시티몰(센텀4로 15) 포함 같은 주차 기준",
+    "description": "캐릭터 굿즈·피규어·캡슐토이를 모아 파는 캐릭터 편집숍 PLAY IN THE BOX(플레이인더박스)의 매장으로, 신세계백화점 센텀시티 7층에 있습니다.\n영업시간·전화는 공식 안내에 표기되어 있지 않아 비워 두었습니다. 방문 전 입점 건물 영업시간과 공식 SNS 공지를 확인하세요.",
+    "lat": 35.1688178394069,
+    "lng": 129.129523260187,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T08:17:24.780Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

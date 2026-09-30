@@ -1,0 +1,396 @@
+{
+ "name": "2026-09-29-m",
+ "items": [
+  {
+   "action": "insert",
+   "key": "joyhobby-sindorim",
+   "photo": "needed",
+   "fields": {
+    "name": "조이하비",
+    "addr": "서울 구로구 새말로 97",
+    "floor_info": "신도림 테크노마트 3층",
+    "cats": [
+     "프라모델",
+     "피규어샵"
+    ],
+    "shop_link": "https://www.joyhobby.co.kr/",
+    "sns_links": [],
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "yearRound": true
+    },
+    "place_id": "a8644d38-c8dc-42fc-a06c-6b97327e1412",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 일반 주차장 B3F~B7F\n최초 30분 무료, 이후 30분당 1,500원\n2만원 이상 구매 영수증 제시 시 2시간 30분 추가(총 3시간)\n우대 할인 중복 불가 · 등록: 1F·10F 안내데스크, 이마트 고객센터 앞",
+    "description": "신도림 테크노마트 3층의 취미 전문점입니다. 건담·SF 프라모델, 스케일 모형(AFV·항공·함선), 피규어·캐릭터 상품, 도료·재료, RC 등을 취급합니다(공식 쇼핑몰 분류 기준).\n테크노마트 공식 영업시간표 기준 매일 10:30~20:30, 연중무휴(테크노마트 휴점일에도 영업).\n신도림역 3번 출구에서 지하로 연결됩니다."
+   },
+   "goods_types": [
+    "plamodel-new",
+    "figure-new"
+   ],
+   "add_custom_goods": [
+    "RC(무선모형)"
+   ],
+   "works": [],
+   "sources": [
+    {
+     "url": "http://wtm21.co.kr/19",
+     "fields": [
+      "hours",
+      "floor_info"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "테크노마트 공식 영업시간표(브라우저): \"3F … 조이하비 | 월 ~ 일 | 10 : 30 | 20 : 30 | 연중무휴\""
+    },
+    {
+     "url": "http://wtm21.co.kr/floor3f",
+     "fields": [
+      "floor_info",
+      "name"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "3F 매장안내 주요매장에 조이하비(라신반·피규어프레소와 같은 층). 호수 없음"
+    },
+    {
+     "url": "https://www.joyhobby.co.kr/",
+     "fields": [
+      "shop_link",
+      "goods_types",
+      "description"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 쇼핑몰 분류 건담/SF·피규어/캐릭터·AFV·AERO·SHIP·도장/재료·RC, 공지 \"9/29(화) 판매예정 반다이 제품리스트\"(영업 중). 하단 주소·전화는 이미지라 확인 못 함"
+    },
+    {
+     "url": "http://wtm21.co.kr/23",
+     "fields": [
+      "place_id",
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "신도림테크노마트 place 공식 주차 노트 복사"
+    }
+   ],
+   "unconfirmed": [
+    "phone",
+    "room",
+    "works"
+   ],
+   "notes": "전화 1800-5015 는 지역 목록·나무위키(발견용)뿐 — 비움"
+  },
+  {
+   "action": "insert",
+   "key": "figurepresso-fp",
+   "photo": "needed",
+   "fields": {
+    "name": "피규어프레소 에프피점",
+    "addr": "서울 마포구 와우산로29길 48-11",
+    "floor_info": "지하 1층~2층",
+    "cats": [
+     "피규어샵",
+     "굿즈샵"
+    ],
+    "shop_link": "https://figurepresso.com",
+    "sns_links": [
+     "https://x.com/figurepresso_fp",
+     "https://x.com/fp_enter"
+    ],
+    "phone": "010-7105-9467",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "yearRound": true
+    },
+    "description": "정품 피규어 전문점 피규어프레소의 홍대 매장(FP점)입니다. 지하 1층은 피규어·쿠지, 1층은 랜덤 굿즈·넨도로이드·인형, 2층은 이벤트·굿즈 공간으로 운영합니다(공식 매장 소개).\n매일 12:00~21:00, 연중무휴(공식 안내).\n홍대입구역 7번 출구에서 도보 1분."
+   },
+   "goods_types": [
+    "figure-new",
+    "plushie-new"
+   ],
+   "works": [],
+   "sources": [
+    {
+     "url": "https://figurepresso.com/fp_contect.html",
+     "fields": [
+      "phone",
+      "hours",
+      "name"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 매장 연락처: \"에프피점 | 010 7105 9467 ⊹월-일 12:00 ~ 21:00 ⊹휴 무 연중무휴\""
+    },
+    {
+     "url": "https://m.figurepresso.com/magazine/topic_01.html",
+     "fields": [
+      "floor_info",
+      "description",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 매거진: \"FP점 층별 이야기 B1/1F/2F\" — 지하 피규어·쿠지, 1층 랜덤 굿즈·넨도로이드·인형, 2층 이벤트·굿즈"
+    },
+    {
+     "url": "https://m.figurepresso.com/article/%EA%B3%B5%EC%A7%80%EC%82%AC%ED%95%AD/1/128956/page/1/",
+     "fields": [
+      "description"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 공지 26.05.04: \"홍대입구역 7번출구 1분거리에 위치한 에프피점은 정상 운영\""
+    },
+    {
+     "url": "https://x.com/fp_enter/status/1983697764681969921",
+     "fields": [
+      "addr"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 X(피규어프레소 CAFE) 2025-10-30 게시 — 검색 결과 본문 \"피규어프레소 에프피점 (더베이크 홍대피규어프레소FP점) - 마포구 와우산로29길 48-11 2층 - 홍대입구역 7번출구 도보 1분\"(X 직접 조회 402). 이벤트 a409e6e2 장소 표기와 같음"
+    }
+   ],
+   "unconfirmed": [
+    "works"
+   ],
+   "notes": "2층 카페(더베이크) 콜라보 카페 이벤트 a409e6e2 는 카페 공간 행사라 연결하지 않고 인계"
+  },
+  {
+   "action": "insert",
+   "key": "busanmodel",
+   "photo": "needed",
+   "fields": {
+    "name": "부산모형",
+    "addr": "부산 연제구 아시아드대로 99",
+    "floor_info": "한림빌딩 3층",
+    "cats": [
+     "프라모델"
+    ],
+    "shop_link": "http://www.busanmodel.co.kr/",
+    "sns_links": [],
+    "phone": "051-852-3246",
+    "description": "1995년 사직과학모형으로 시작한 부산 연제구의 모형 전문점입니다. RC(자동차·보트·비행기·드론)와 건담·애니메이션 프라모델, 스케일 모형, 철도 모형, 에어소프트건 등을 취급합니다(공식 홈페이지 분류 기준).\n영업시간은 공식 표기가 없어 방문 전 전화로 확인하세요."
+   },
+   "goods_types": [
+    "plamodel-new"
+   ],
+   "add_custom_goods": [
+    "RC(무선모형)"
+   ],
+   "works": [],
+   "sources": [
+    {
+     "url": "http://www.busanmodel.co.kr/smartphone2/smart.asp?pagecode=1",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "description"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 홈페이지 하단(브라우저): \"부산모형|부산시 연제구 아시아드대로 99 3층(한림빌딩) … Tel:051-852-3246|Hp:010-3872-0226\", \"부산모형(1995년) (구 사직과학모형)\""
+    },
+    {
+     "url": "http://www.busanmodel.co.kr/",
+     "fields": [
+      "goods_types",
+      "description"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 상품 분류 — RC·건담/애니메이션·프라모델/목범선·철도 모형·에어소프트. DJI 리토 X1 등 최근 상품 게시"
+    },
+    {
+     "url": "https://tamiya.co.kr/sub/find_store.php",
+     "fields": [],
+     "checked_at": "2026-09-29",
+     "note": "한국타미야 취급점 \"부산모형 | 부산광역시 연제구 아시아드대로 99 한림빌딩 3층 | t. 010-8242-0820\"(전화는 공식 홈페이지와 달라 홈페이지 값 사용)"
+    }
+   ],
+   "unconfirmed": [
+    "hours",
+    "works",
+    "recent_activity"
+   ],
+   "notes": "홈페이지 게시판 404 — 2026 날짜 게시물 확인 못 함(상품 목록은 갱신 중)"
+  },
+  {
+   "action": "update",
+   "key": "figurepresso-sindorim-closed",
+   "shop_id": "cfe0608f-e9bf-4921-9b11-75064766fece",
+   "expect_updated_at": "2026-09-28T05:33:44.682217+00:00",
+   "fields": {
+    "description": "정품 피규어 전문 매장 피규어프레소의 신도림점으로, 신도림 테크노마트 3층 58호(에스컬레이터 바로 앞)에 있습니다. 2026년 5월 홍대 에프레소점이 이곳으로 확장 이전했습니다. 매일 12:00~21:00 영업하며, 매월 둘째·넷째 화요일은 휴무입니다(공식 안내). 신도림역 3번 출구에서 지하 통로로 연결됩니다."
+   },
+   "overwrite": [
+    "description"
+   ],
+   "reason": "공식 매장 연락처 \"신도림점 … 휴 무 2주 & 4주 화요일\" — 기존 설명의 \"둘째·넷째 목요일\" 정정",
+   "sources": [
+    {
+     "url": "https://figurepresso.com/fp_contect.html",
+     "fields": [
+      "closed_days",
+      "description"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "\"신도림점 | 010 7106 9467 ⊹월-일 12:00 ~ 21:00 ⊹휴 무 2주 & 4주 화요일\" (브라우저)"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "gbase-coex-hours",
+   "shop_id": "9ac3f7bf-9d52-4250-9a84-c3f7140eedb1",
+   "expect_updated_at": "2026-09-26T13:39:27.432036+00:00",
+   "fields": {
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "21:00"
+     }
+    }
+   },
+   "overwrite": [
+    "hours"
+   ],
+   "reason": "공식 매장안내 \"평일: 월~목 오전 10시 ~ 오후 9시 / 주말(금, 토, 일), 공휴일: 오전 10시 ~ 오후 9시\" — 기존 22:00 마감 정정",
+   "sources": [
+    {
+     "url": "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+     "fields": [
+      "hours"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "GBASE 코엑스점 영업시간(브라우저)"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "gbase-daegu-parking",
+   "shop_id": "20ad80ab-7fc7-4438-aea6-c02dd75bf6cf",
+   "expect_updated_at": "2026-09-23T06:52:06.078785+00:00",
+   "fields": {
+    "parking": true,
+    "parking_note": "건물 주차 안내 없음 — 인근 동성로 중앙주차장(2·28공원 지하주차장) 이용(공식 안내)"
+   },
+   "reason": "공식 매장안내 주차 안내 \"동성로 중앙주차장 (2.28공원 지하주차장) 이용 가능\"",
+   "sources": [
+    {
+     "url": "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+     "fields": [
+      "parking",
+      "parking_note",
+      "hours"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "GBASE 대구점 — 시간(11~21, 명절 당일 휴무) 기존 값과 같음"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "animate-lotte-sns",
+   "shop_id": "63d470eb-3a99-4028-b061-e29aeab28e7c",
+   "expect_updated_at": "2026-09-28T05:33:37.385681+00:00",
+   "fields": {
+    "shop_link": "https://x.com/animate_lotte",
+    "sns_links": [
+     "https://x.com/animate_lotte"
+    ]
+   },
+   "overwrite": [
+    "shop_link",
+    "sns_links"
+   ],
+   "reason": "sns 의 instagram animatecafe_korea 는 애니메이트 카페(한국) 계정 — 매장 계정 아님(카페는 별도 행 애니메이트 카페 잠실롯데점). shop_link 추적 파라미터(?s=20) 제거",
+   "sources": [
+    {
+     "url": "https://www.animate-onlineshop.co.kr/main/html.php?htmid=service/shopinfo.html",
+     "fields": [
+      "name",
+      "addr",
+      "phone"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 매장 목록 4곳: 잠실롯데점 \"서울시 송파구 올림픽로 240 롯데월드 쇼핑몰동 B1층\", 070-4131-7343 — 기존 값과 같음"
+    }
+   ]
+  }
+ ]
+}

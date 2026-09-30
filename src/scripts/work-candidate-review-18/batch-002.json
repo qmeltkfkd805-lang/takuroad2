@@ -1,0 +1,172 @@
+[
+  {
+    "slug": "puniru-is-a-kawaii-slime-anime",
+    "name": "푸니르는 귀여운 슬라임",
+    "englishName": "Puniru Is a Kawaii Slime",
+    "aliases": [],
+    "description": "소년이 만든 슬라임 푸니르가 자유분방한 소녀 모습으로 성장해 소동을 벌인다",
+    "genres": [
+      "코미디",
+      "판타지",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "senpai-is-an-otokonoko-anime",
+    "name": "선배는 남자아이",
+    "englishName": "Senpai Is an Otokonoko",
+    "aliases": [],
+    "description": "귀여운 것을 좋아하는 남학생과 그를 사랑하는 두 친구가 마음과 정체성을 마주한다",
+    "genres": [
+      "로맨스",
+      "학원",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-magical-girl-and-the-evil-lieutenant-used-to-be-archenemies-anime",
+    "name": "마법소녀와 악은 적대하고 있었다",
+    "englishName": "The Magical Girl and the Evil Lieutenant Used to Be Archenemies",
+    "aliases": [],
+    "description": "악의 참모가 자신과 맞서는 마법소녀에게 첫눈에 반해 몰래 그녀를 돕는다",
+    "genres": [
+      "로맨스",
+      "마법소녀",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "dahlia-in-bloom-crafting-a-fresh-start-with-magical-tools-anime",
+    "name": "마도구사 달리아는 고개 숙이지 않아",
+    "englishName": "Dahlia in Bloom: Crafting a Fresh Start with Magical Tools",
+    "aliases": [],
+    "description": "전생의 기억을 지닌 달리아가 파혼을 계기로 마도구 제작자의 길을 개척한다",
+    "genres": [
+      "판타지",
+      "로맨스",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "atri-my-dear-moments-anime",
+    "name": "아트리 -마이 디어 모먼츠-",
+    "englishName": "ATRI -My Dear Moments-",
+    "aliases": [],
+    "description": "바다에 잠긴 근미래에서 소년이 인간 같은 로봇 아트리와 잃어버린 미래를 찾는다",
+    "genres": [
+      "SF",
+      "로맨스",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "delico-s-nursery-anime",
+    "name": "델리코스 너서리",
+    "englishName": "Delico’s Nursery",
+    "aliases": [],
+    "description": "흡혈귀 귀족들이 연쇄 살인 사건을 쫓는 동시에 아이들을 함께 돌본다",
+    "genres": [
+      "판타지",
+      "추리",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "narenare-cheer-for-you-anime",
+    "name": "나나레 하나나레",
+    "englishName": "Narenare -Cheer for You!-",
+    "aliases": [],
+    "description": "서로 다른 고민을 지닌 여고생들이 응원 활동을 통해 타인과 자신을 북돋운다",
+    "genres": [
+      "스포츠",
+      "학원",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "quality-assurance-in-another-world-anime",
+    "name": "이 세계는 너무나 불완전하다",
+    "englishName": "Quality Assurance in Another World",
+    "aliases": [],
+    "description": "게임 세계를 점검하는 디버거와 소녀가 버그에 갇힌 세계의 비밀을 쫓는다",
+    "genres": [
+      "판타지",
+      "모험",
+      "SF"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-ossan-newbie-adventurer-anime",
+    "name": "신참 아재 모험가, 최강 파티에서 죽을 정도로 단련해서 무적이 된다",
+    "englishName": "The Ossan Newbie Adventurer",
+    "aliases": [],
+    "description": "늦은 나이에 모험가가 된 남자가 전설적인 동료들의 훈련으로 강자들에게 도전한다",
+    "genres": [
+      "판타지",
+      "액션",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "i-parry-everything-anime",
+    "name": "나는 모든 것을 패리한다",
+    "englishName": "I Parry Everything",
+    "aliases": [],
+    "description": "재능이 없다고 믿은 모험가가 패링 기술 하나를 극한까지 단련해 영웅이 된다",
+    "genres": [
+      "판타지",
+      "액션",
+      "모험"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  }
+]

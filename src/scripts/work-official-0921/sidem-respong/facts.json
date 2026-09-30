@@ -1,0 +1,254 @@
+{
+  "key": "sidem-respong",
+  "official_urls": [
+    "https://www.instagram.com/p/DdOMg9QBUHV/",
+    "https://x.com/CafeReSPONG/status/2099060525661651387",
+    "https://x.com/CafeReSPONG/status/2099815498322162023",
+    "https://x.com/CafeReSPONG/status/2099815498745786558",
+    "https://x.com/CafeReSPONG/status/2100209506097717258",
+    "https://x.com/CafeReSPONG/status/2100479938935816547",
+    "https://x.com/CafeReSPONG/status/2100479961949732946",
+    "https://x.com/CafeReSPONG/status/2100479991733764583",
+    "https://x.com/CafeReSPONG/status/2100540268516667506",
+    "https://x.com/CafeReSPONG/status/2100540269036741098",
+    "https://booking.naver.com/booking/17/bizes/1732104/items/8030347"
+  ],
+  "title_official": "레트로카페 THE IDOLM@STER SideM in CAFE Re:SPONG",
+  "work": "아이돌마스터 SideM (THE IDOLM@STER SideM)",
+  "type_guess": "collab_cafe",
+  "start_date": "2026-10-08",
+  "end_date": "2026-10-21",
+  "branches": [
+    {
+      "name": "CAFE Re:SPONG (카페 리스퐁) 홍대",
+      "venue": "CAFE Re:SPONG",
+      "address": "서울특별시 마포구 양화로18안길 22, 4층 (동교동 169-22)",
+      "floor_detail": "4층 (네이버 예약 페이지 주소 기준)",
+      "hours": "예약 타임제. 오픈 첫날(10/8)·금·토·일: 11:00, 12:30, 14:00, 16:30, 18:00 / 월·화·수·목: 15:00, 16:30, 18:00. 타임별 이용 70분. 전체 영업시간(오픈~마감)은 공식 미기재",
+      "start_date": "2026-10-08",
+      "end_date": "2026-10-21"
+    }
+  ],
+  "entry": "네이버 예약제 (예약 오픈 2026-09-17 20:00, https://naver.me/5vJlwagv → https://booking.naver.com/booking/17/bizes/1732104/items/8030347). 예약 1건당 1명(min/max booking count 1). 타임 시작 후 20분 경과 시 미도착하면 예약 취소. 해외 거주자는 LINE 공식계정(https://lin.ee/8VZmYXU, 10:00~18:00)으로 예약 문의 가능. 입장료 별도 기재 없음",
+  "benefits": [
+    {
+      "condition": "콜라보 메뉴 1개 주문할 때마다",
+      "item": "노벨티 랜덤 코스터 (90mm, 종이) 1장",
+      "count_kinds": "14종 (이미지상: 콜라보 일러스트 5종 + 미니캐릭터 9종)"
+    }
+  ],
+  "menu": [
+    {
+      "name": "청춘의 High×Joker 나폴리탄",
+      "price": 12000
+    },
+    {
+      "name": "듀엣 Altessimo 샌드위치 세트",
+      "price": 12000
+    },
+    {
+      "name": "최강의 파트너! W 카레!",
+      "price": 14000
+    },
+    {
+      "name": "High×Joker의 NO LIMIT 팬케이크",
+      "price": 11000
+    },
+    {
+      "name": "Altessimo의 듀엣 푸딩 아라모드",
+      "price": 11000
+    },
+    {
+      "name": "W의 VICTORY 망고 파르페",
+      "price": 11000
+    },
+    {
+      "name": "High×Joker 전력의 레드 주스!",
+      "price": 7000
+    },
+    {
+      "name": "Altessimo 선율의 믹스 주스!",
+      "price": 7000
+    },
+    {
+      "name": "W 승리의 시트론 레모네이드!",
+      "price": 7000
+    },
+    {
+      "name": "315 프로덕션 크림소다 <피지컬>",
+      "price": 7000
+    },
+    {
+      "name": "315 프로덕션 크림소다 <인텔리>",
+      "price": 7000
+    },
+    {
+      "name": "315 프로덕션 크림소다 <멘탈>",
+      "price": 7000
+    },
+    {
+      "name": "315 프로덕션 캐릭터 카페라떼 (BOX A/B/C, 랜덤 캐릭터)",
+      "price": 7000
+    }
+  ],
+  "goods": [
+    {
+      "name": "랜덤 콜라보 일러스트 캔뱃지 (64mm, 전5종)",
+      "price": 7000
+    },
+    {
+      "name": "랜덤 아크릴 체키풍 카드 (60×90mm, 전5종)",
+      "price": 6000
+    },
+    {
+      "name": "아크릴 스탠드 (본체 150mm, 전5종)",
+      "price": 18000
+    },
+    {
+      "name": "랜덤 미니 캐릭터 캔뱃지 (64mm, 전9종)",
+      "price": 7000
+    },
+    {
+      "name": "랜덤 미니 캐릭터 아크릴 스탠드 (본체 70mm, 전9종)",
+      "price": 11000
+    },
+    {
+      "name": "프로필 트레이딩 카드 BOX A (전17종)",
+      "price": 5000
+    },
+    {
+      "name": "프로필 트레이딩 카드 BOX B (전16종)",
+      "price": 5000
+    },
+    {
+      "name": "프로필 트레이딩 카드 BOX C (전16종)",
+      "price": 5000
+    }
+  ],
+  "notes": [
+    "일본 SMILE BASE CAFE에서 진행되었던 콜라보카페의 한국 재진행. CAFE Re:SPONG 첫 콜라보 (카페 GRAND OPEN 2026-10-08).",
+    "굿즈는 CAFE Re:SPONG 현장 구매 (공식 X 2099815498322162023).",
+    "크림소다는 제로칼로리 사이다로 변경 가능. 메뉴 레시피·원재료는 SMILE BASE CAFE 제공 메뉴와 일부 차이 있을 수 있음 (메뉴판 주석).",
+    "가격은 공식 메뉴/굿즈 이미지에서 판독. 캐릭터 카페라떼 BOX B·C 가격도 7,000원 (이미지 확인). 트레이딩카드 BOX B·C 5,000원 (이미지 확인).",
+    "네이버 예약 페이지 주소에 '4층' 명시 — popga에는 층 정보 없음.",
+    "후속 콜라보: 12/10부터 『THE IDOLM@STER CINDERELLA GIRLS』 Rose Tea Parlor (공식 X 2099847152122183991) — 별도 이벤트."
+  ],
+  "unverified_popga": [
+    "popga preReservationEndedAt 2026-10-21T00:00:00 (공식 기재 없음)",
+    "popga operationTime '추후 공지'"
+  ],
+  "images": [
+    {
+      "file": "main_poster_x.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSB1Ff7bwAARFW5?format=jpg&name=orig",
+      "what": "main poster (X 2099060525661651387)",
+      "width": 2896,
+      "height": 4096
+    },
+    {
+      "file": "ig_post_poster.jpg",
+      "source_url": "https://www.instagram.com/p/DdOMg9QBUHV/",
+      "what": "main poster (Instagram version, lower res)",
+      "width": 1440,
+      "height": 1800
+    },
+    {
+      "file": "cafe_grand_open_teaser.jpg",
+      "source_url": "https://pbs.twimg.com/media/HR8BZGoaQAA74hb?format=jpg&name=orig",
+      "what": "venue - CAFE Re:SPONG grand open teaser (X 2098637729546355169)",
+      "width": 3277,
+      "height": 4096
+    },
+    {
+      "file": "goods_1.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSL9N-RbAAAjBdg?format=jpg&name=orig",
+      "what": "goods list 1 (콜라보 캔뱃지/체키풍 카드/아크릴 스탠드, prices)",
+      "width": 2896,
+      "height": 4096
+    },
+    {
+      "file": "goods_2.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSL9N-NaUAAmYm4?format=jpg&name=orig",
+      "what": "goods list 2 (미니 캐릭터 캔뱃지/아크릴 스탠드, prices)",
+      "width": 2896,
+      "height": 4096
+    },
+    {
+      "file": "goods_3.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSL9x_xaEAAcfU7?format=jpg&name=orig",
+      "what": "goods list 3 (프로필 트레이딩 카드 BOX A)",
+      "width": 2896,
+      "height": 4096
+    },
+    {
+      "file": "goods_4.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSL9x_zagAAVIwi?format=jpg&name=orig",
+      "what": "goods list 4 (프로필 트레이딩 카드 BOX B)",
+      "width": 2896,
+      "height": 4096
+    },
+    {
+      "file": "goods_5.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSL9YCfbAAABv-g?format=jpg&name=orig",
+      "what": "goods list 5 (프로필 트레이딩 카드 BOX C) (X 2099815498745786558)",
+      "width": 2896,
+      "height": 4096
+    },
+    {
+      "file": "menu_food_dessert_1.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSZnWkBakAAtxh0?format=jpg&name=orig",
+      "what": "menu list - FOOD (prices)",
+      "width": 2896,
+      "height": 4096
+    },
+    {
+      "file": "menu_food_dessert_2.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSZnXDSakAAhTju?format=jpg&name=orig",
+      "what": "menu list - DESSERT (prices)",
+      "width": 2896,
+      "height": 4096
+    },
+    {
+      "file": "menu_food_dessert_3.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSZnXozaAAAKHIW?format=jpg&name=orig",
+      "what": "benefit - 노벨티 랜덤 코스터 14종",
+      "width": 4096,
+      "height": 2896
+    },
+    {
+      "file": "menu_drink_1.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSZnYUJbcAAPX2H?format=jpg&name=orig",
+      "what": "menu list - DRINK (유닛 주스, prices)",
+      "width": 2896,
+      "height": 4096
+    },
+    {
+      "file": "menu_drink_2.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSZnY6vakAAJ-pL?format=jpg&name=orig",
+      "what": "menu list - DRINK (315 크림소다 3종, prices)",
+      "width": 2896,
+      "height": 4096
+    },
+    {
+      "file": "menu_latte_1.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSZnZsxb0AAbU35?format=jpg&name=orig",
+      "what": "menu list - 캐릭터 카페라떼 BOX A",
+      "width": 2896,
+      "height": 4096
+    },
+    {
+      "file": "menu_latte_2.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSZnaN4bMAA4SsP?format=jpg&name=orig",
+      "what": "menu list - 캐릭터 카페라떼 BOX B",
+      "width": 2896,
+      "height": 4096
+    },
+    {
+      "file": "menu_latte_3.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSZnat7aEAAOR3H?format=jpg&name=orig",
+      "what": "menu list - 캐릭터 카페라떼 BOX C",
+      "width": 2896,
+      "height": 4096
+    }
+  ]
+}

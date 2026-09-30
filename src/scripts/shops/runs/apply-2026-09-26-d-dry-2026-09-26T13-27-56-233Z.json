@@ -1,0 +1,40 @@
+{
+ "plan": "2026-09-26-d",
+ "at": "2026-09-26T13:27:56.233Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "estaregg-kukje-2",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "name": "이스타에그 국전 2호점",
+    "floor_info": "국제전자센터 9층",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://estar-egg.com",
+    "sns_links": [
+     "https://x.com/E_stareggstore2"
+    ],
+    "description": "이스타에그의 오프라인 2호점으로 국제전자센터 9층에 있습니다. 매주 화요일 정기휴무입니다(공식 X). 본점은 같은 건물 7층에 있습니다.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:27:56.233Z",
+    "info_confirmed_by_type": "admin"
+   }
+  }
+ ]
+}

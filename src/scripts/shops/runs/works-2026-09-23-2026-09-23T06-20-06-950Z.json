@@ -1,0 +1,170 @@
+[
+ {
+  "name": "붉은 돼지",
+  "status": "CREATED",
+  "id": "e10cce0d-4fb8-4e59-b1e9-385b87a4a707",
+  "slug": "porco-rosso"
+ },
+ {
+  "name": "바람계곡의 나우시카",
+  "status": "CREATED",
+  "id": "944f2f7b-d5ba-4495-96a1-438e5240e4a4",
+  "slug": "nausicaa-of-the-valley-of-the-wind"
+ },
+ {
+  "name": "마루 밑 아리에티",
+  "status": "CREATED",
+  "id": "2476681a-cb03-4282-893c-1261b40d4292",
+  "slug": "arrietty"
+ },
+ {
+  "name": "고양이의 보은",
+  "status": "CREATED",
+  "id": "fc04ab4a-da88-478b-aa86-fe609326e8ea",
+  "slug": "the-cat-returns"
+ },
+ {
+  "name": "그대들은 어떻게 살 것인가",
+  "status": "CREATED",
+  "id": "44745a85-a746-4e34-a0a5-6802ca02c478",
+  "slug": "the-boy-and-the-heron"
+ },
+ {
+  "name": "아이카츠!",
+  "status": "CREATED",
+  "id": "b63d916c-7f00-4e5a-901c-acde7a88e9e8",
+  "slug": "aikatsu"
+ },
+ {
+  "name": "에일리언 스테이지",
+  "status": "CREATED",
+  "id": "cfb29a4f-32a5-4be4-bcd1-c7bc18fb6a74",
+  "slug": "alien-stage"
+ },
+ {
+  "name": "헬루바 보스",
+  "status": "CREATED",
+  "id": "73aa94fa-b498-4d0f-8975-cf8be3bb9213",
+  "slug": "helluva-boss"
+ },
+ {
+  "name": "아이돌마스터 샤이니 컬러즈",
+  "status": "CREATED",
+  "id": "7617a567-1728-4b42-b26f-ece500f1a2b9",
+  "slug": "idolmaster-shiny-colors"
+ },
+ {
+  "name": "왕님전대 킹오저",
+  "status": "CREATED",
+  "id": "359da540-73be-4368-a86a-72a360598ade",
+  "slug": "ohsama-sentai-king-ohger"
+ },
+ {
+  "name": "브롤스타즈",
+  "status": "CREATED",
+  "id": "2f775a64-b38b-4746-bd6e-40ecf8e379a4",
+  "slug": "brawl-stars"
+ },
+ {
+  "name": "실바니안 패밀리",
+  "status": "CREATED",
+  "id": "038b9a11-bea4-4fd4-ae5a-e869ddacffcb",
+  "slug": "sylvanian-families"
+ },
+ {
+  "name": "텔레토비",
+  "status": "CREATED",
+  "id": "ac36a96c-7bdc-44f8-b4d2-91c7ee0d4c41",
+  "slug": "teletubbies"
+ },
+ {
+  "name": "빨간 망토 차차",
+  "status": "CREATED",
+  "id": "44277723-d11d-43b4-8286-f4e879788def",
+  "slug": "akazukin-chacha"
+ },
+ {
+  "name": "바키",
+  "status": "CREATED",
+  "id": "42a62851-c7ae-4ad3-a611-536723dae6ad",
+  "slug": "baki"
+ },
+ {
+  "name": "mofusand",
+  "status": "CREATED",
+  "id": "117de9bc-09d7-4481-9475-4c0fec7f9382",
+  "slug": "mofusand"
+ },
+ {
+  "name": "유희왕 러시 듀얼",
+  "status": "CREATED",
+  "id": "af43de4f-352f-49de-963f-7e2f276a5fda",
+  "slug": "yu-gi-oh-rush-duel"
+ },
+ {
+  "name": "라부부",
+  "status": "CREATED",
+  "id": "860fc76c-268f-479b-b104-7a571a53f554",
+  "slug": "labubu"
+ },
+ {
+  "name": "크라이베이비",
+  "status": "CREATED",
+  "id": "221cf4e7-9adc-4817-b5a3-7f78635d4dbe",
+  "slug": "crybaby-popmart"
+ },
+ {
+  "name": "디무",
+  "status": "CREATED",
+  "id": "891ba1c3-418c-460f-b84c-c86c48a0889a",
+  "slug": "dimoo"
+ },
+ {
+  "name": "피치 라이엇",
+  "status": "CREATED",
+  "id": "078cb21b-d853-4b67-b898-e437ae2c1564",
+  "slug": "peach-riot"
+ },
+ {
+  "name": "몰리",
+  "status": "CREATED",
+  "id": "8264adce-400a-4121-b449-b07a1b510f75",
+  "slug": "molly-popmart"
+ },
+ {
+  "name": "스컬판다",
+  "status": "CREATED",
+  "id": "471ac5dc-783e-485c-98b6-f916e9364415",
+  "slug": "skullpanda"
+ },
+ {
+  "name": "히로노",
+  "status": "CREATED",
+  "id": "668ff12d-9014-48fe-a07c-e40cf8071daa",
+  "slug": "hirono"
+ },
+ {
+  "name": "트윙클 트윙클",
+  "status": "CREATED",
+  "id": "c2b393cf-8030-411d-a99a-e53b2e33ef0b",
+  "slug": "twinkle-twinkle-popmart"
+ },
+ {
+  "name": "하치푸푸",
+  "status": "CREATED",
+  "id": "3181bebc-4f1f-4280-8c4c-a445ea3bf837",
+  "slug": "hacipupu"
+ },
+ {
+  "name": "와사비베어",
+  "status": "CREATED",
+  "id": "4306679e-586e-4a11-a541-85331117ad84",
+  "slug": "wasabi-bear"
+ },
+ {
+  "name": "멜앤로디",
+  "status": "CREATED",
+  "id": "91f59be0-56fe-4da6-9271-5936be7972a4",
+  "slug": "mel-and-lody"
+ }
+]

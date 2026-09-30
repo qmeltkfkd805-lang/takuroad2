@@ -1,0 +1,411 @@
+{
+ "plan": "2026-09-29",
+ "at": "2026-09-28T15:20:17.386Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "tunstoks-jeju",
+   "action": "insert",
+   "geocode": {
+    "lat": 33.4953777896081,
+    "lng": 126.533435532491,
+    "road": "제주특별자치도 제주시 중앙로 281",
+    "building": "남정빌딩",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "턴스톡스 제주점",
+    "addr": "제주특별자치도 제주시 중앙로 281",
+    "floor_info": "남정빌딩 2층 202호",
+    "cats": [
+     "쿠지",
+     "가챠",
+     "굿즈샵",
+     "피규어샵"
+    ],
+    "phone": "064-746-1246",
+    "hours": {
+     "mon": {
+      "open": "14:00",
+      "close": "18:30"
+     },
+     "tue": {
+      "open": "14:00",
+      "close": "18:30"
+     },
+     "wed": null,
+     "thu": {
+      "open": "14:00",
+      "close": "18:30"
+     },
+     "fri": {
+      "open": "14:00",
+      "close": "18:30"
+     },
+     "sat": {
+      "open": "13:00",
+      "close": "18:00"
+     },
+     "sun": {
+      "open": "13:00",
+      "close": "18:00"
+     }
+    },
+    "shop_link": "https://x.com/TunstoksJeju",
+    "sns_links": [
+     "https://x.com/TunstoksJeju",
+     "https://pf.kakao.com/_xaxbPaj",
+     "https://www.instagram.com/tunstoks_jeju/",
+     "https://www.facebook.com/tunstoksjeju/"
+    ],
+    "description": "제주시 중앙로의 제일복권(이치방쿠지)·가챠·애니 굿즈 전문점으로, 새로 나온 경품 피규어와 가챠를 공식 X 로 안내합니다. 남정빌딩 2층 202호에 있습니다.\n영업시간은 평일 14:00~18:30, 주말 13:00~18:00이고 수요일은 정기 휴무입니다(공식 계정 안내). 명절 영업시간은 공식 X 공지를 확인해 주세요.",
+    "lat": 33.4953777896081,
+    "lng": 126.533435532491,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T15:20:17.386Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "은혼",
+      "문호 스트레이독스",
+      "나의 히어로 아카데미아",
+      "블리치",
+      "주술회전",
+      "원피스",
+      "장송의 프리렌",
+      "그 비스크 돌은 사랑을 한다",
+      "블루 아카이브"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "can-badge-new",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "mowazeul-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8720457264915,
+    "lng": 128.596739074332,
+    "road": "대구 중구 경상감영길 170",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "모와즐 대구점",
+    "addr": "대구 중구 경상감영길 170",
+    "floor_info": "지하 1층",
+    "cats": [
+     "쿠지",
+     "가챠",
+     "굿즈샵",
+     "피규어샵"
+    ],
+    "phone": "0507-1400-3402",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "20:00"
+     }
+    },
+    "shop_link": "https://x.com/MoWaKIN_Daegu",
+    "sns_links": [
+     "https://x.com/MoWaKIN_Daegu"
+    ],
+    "description": "\"모두 와서 즐겨봐!\"를 내건 대구 중구의 가챠·피규어·굿즈·제일복권(이치방쿠지) 매장으로, 경상감영길 건물 지하 1층에 있습니다. 새 제일복권 회차와 입고 소식은 공식 X 에 올라옵니다.\n영업시간은 12:00~20:00입니다(공식 계정 안내). 통신판매·가격 문의는 공식 X DM 으로 받습니다.",
+    "lat": 35.8720457264915,
+    "lng": 128.596739074332,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T15:20:17.386Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "은혼",
+      "에반게리온",
+      "하이큐!!",
+      "승리의 여신: 니케"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "longlongliebe-cheongna",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5336049319905,
+    "lng": 126.65573076274,
+    "road": "인천 서해구 청라에메랄드로 99",
+    "building": "지젤엠청라",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "롱롱리베게임즈",
+    "addr": "인천 서구 청라에메랄드로 99",
+    "floor_info": "지젤엠청라 A동 2층 42호",
+    "cats": [
+     "게임샵",
+     "쿠지"
+    ],
+    "phone": "032-623-4470",
+    "hours": {
+     "mon": null,
+     "tue": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "20:00"
+     }
+    },
+    "shop_link": "https://www.threads.com/@longlongliebe",
+    "sns_links": [
+     "https://www.threads.com/@longlongliebe",
+     "https://cafe.naver.com/longlongliebe",
+     "https://longlongliebe.co.kr/"
+    ],
+    "description": "청라의 닌텐도·플레이스테이션 게임 전문 판매점으로, 신작 게임과 예약 판매, 중고 게임기·중고 게임 판매·매입, 아미보, 게임 액세서리와 함께 제일복권(이치방쿠지)도 취급합니다. 지젤엠청라 A동 2층 엘리베이터 바로 앞에 있습니다.\n영업시간은 화~토 11:00~21:00, 일 11:00~20:00이며 월요일은 쉬는 날입니다(공식 계정 안내, 임시 휴무·월요일 영업은 공식 Threads 공지).",
+    "lat": 37.5336049319905,
+    "lng": 126.65573076274,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T15:20:17.386Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "닌텐도"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "jjanganime-cheonan",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.8045067035317,
+    "lng": 127.131857626851,
+    "road": "충남 천안시 서북구 쌍용대로 77",
+    "building": "마에스트로",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "짱아네애니굿즈",
+    "addr": "충남 천안시 서북구 쌍용대로 77",
+    "floor_info": "101호",
+    "cats": [
+     "굿즈샵",
+     "쿠지",
+     "가챠",
+     "피규어샵"
+    ],
+    "phone": "0507-1490-4572",
+    "hours": {
+     "mon": {
+      "open": "12:30",
+      "close": "20:30"
+     },
+     "tue": {
+      "open": "12:30",
+      "close": "20:30"
+     },
+     "wed": {
+      "open": "12:30",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "12:30",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "12:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "20:30"
+     }
+    },
+    "shop_link": "https://www.instagram.com/jjang_anime/",
+    "sns_links": [
+     "https://www.instagram.com/jjang_anime/",
+     "https://www.threads.com/@jjang_anime"
+    ],
+    "description": "천안 쌍용동의 애니 굿즈샵으로, 쿠지(제일복권)·피규어·가챠를 팝니다. 신상 피규어 입고 소식은 공식 Instagram·Threads 에, 쿠지 현황은 네이버 밴드에 올라옵니다.\n영업시간은 평일 12:30~20:30, 주말 12:00~20:30이며 휴무 없이 운영하고 쉬는 날은 따로 공지합니다(공식 계정 안내).",
+    "lat": 36.8045067035317,
+    "lng": 127.131857626851,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T15:20:17.386Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "체인소맨",
+      "하츠네 미쿠",
+      "장송의 프리렌",
+      "약사의 혼잣말"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "adultpark-gunpo",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.3719139237254,
+    "lng": 126.942594895011,
+    "road": "경기 군포시 산본천로 230",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "어른이대공원",
+    "addr": "경기 군포시 산본천로 230",
+    "floor_info": "3층",
+    "cats": [
+     "쿠지",
+     "굿즈샵",
+     "피규어샵"
+    ],
+    "phone": "010-3694-8881",
+    "shop_link": "https://x.com/kitultpark",
+    "sns_links": [
+     "https://x.com/kitultpark",
+     "https://smartstore.naver.com/cheesemong"
+    ],
+    "description": "1호선 금정역 5번 출구 가까이 있는 제일복권(이치방쿠지) 전문점으로, 경품 피규어 등 애니 굿즈도 함께 팝니다. 쿠지 현황판은 네이버 밴드에서 확인할 수 있습니다.\n영업시간은 공식 채널에 표기되어 있지 않아 방문 전 확인해 주세요.",
+    "lat": 37.3719139237254,
+    "lng": 126.942594895011,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T15:20:17.386Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "나의 히어로 아카데미아",
+      "주술회전",
+      "헌터×헌터",
+      "나루토",
+      "귀멸의 칼날"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

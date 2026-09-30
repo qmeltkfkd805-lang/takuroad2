@@ -1,0 +1,301 @@
+[
+ {
+  "shop_id": "88aeaab9-fd49-4dd6-afab-5805d7afa508",
+  "name": "애니랜드 용산 아이파크몰점",
+  "works": [],
+  "goods_types": [],
+  "notes": "애니랜드 = 대원미디어 팝콘D스퀘어(6층) 내 캐릭터 MD샵. 근거는 오픈 당시 기사(수년 전)라 현재 구성과 다를 수 있음. 최근 블로그/후기 검색 결과 없음. 팝가스토어 용산점(짱구·스누피·미피)은 별도 매장인지 불명확해 제외."
+ },
+ {
+  "shop_id": "19540c69-60e0-4cac-bd82-0c31faae4149",
+  "name": "도토리숲 용산 아이파크몰점",
+  "works": [
+   {
+    "name": "센과 치히로의 행방불명",
+    "evidence": "도토리숲 공식몰 MOVIE 카테고리",
+    "url": "https://dotorisup.com/"
+   },
+   {
+    "name": "하울의 움직이는 성",
+    "evidence": "도토리숲 공식몰 MOVIE 카테고리",
+    "url": "https://dotorisup.com/"
+   },
+   {
+    "name": "천공의 성 라퓨타",
+    "evidence": "도토리숲 공식몰 MOVIE 카테고리",
+    "url": "https://dotorisup.com/"
+   },
+   {
+    "name": "원령공주",
+    "evidence": "도토리숲 공식몰 MOVIE 카테고리",
+    "url": "https://dotorisup.com/"
+   },
+   {
+    "name": "붉은 돼지",
+    "evidence": "도토리숲 공식몰 MOVIE 카테고리",
+    "url": "https://dotorisup.com/"
+   },
+   {
+    "name": "귀를 기울이면",
+    "evidence": "도토리숲 공식몰 MOVIE 카테고리",
+    "url": "https://dotorisup.com/"
+   },
+   {
+    "name": "바람계곡의 나우시카",
+    "evidence": "도토리숲 공식몰 MOVIE 카테고리",
+    "url": "https://dotorisup.com/"
+   },
+   {
+    "name": "마루 밑 아리에티",
+    "evidence": "도토리숲 공식몰 MOVIE 카테고리",
+    "url": "https://dotorisup.com/"
+   },
+   {
+    "name": "고양이의 보은",
+    "evidence": "도토리숲 공식몰 MOVIE 카테고리",
+    "url": "https://dotorisup.com/"
+   },
+   {
+    "name": "그대들은 어떻게 살 것인가",
+    "evidence": "도토리숲 공식몰 MOVIE 카테고리",
+    "url": "https://dotorisup.com/"
+   }
+  ],
+  "goods_types": [
+   {
+    "slug": "etc",
+    "evidence": "공식몰 상품 카테고리에 '퍼즐' 존재",
+    "url": "https://dotorisup.com/"
+   }
+  ],
+  "notes": "스튜디오 지브리 한국 공식 스토어(popcondplay.com/ip/store/6 에서 용산점 확인). 작품 근거는 브랜드 공식몰 카테고리이며 용산점 개별 재고 확인은 아님. 공식몰엔 코쿠리코 언덕에서, 아야와 마녀도 있으나 10개 제한으로 생략."
+ },
+ {
+  "shop_id": "a8a6916e-36c2-42a9-957a-e53621667e6f",
+  "name": "가챠 스테이션 용산 아이파크몰점",
+  "works": [],
+  "goods_types": [],
+  "notes": "'가챠 스테이션'(6층 팝콘D스퀘어) 명칭으로는 신뢰할 만한 자료를 찾지 못함. 가챠맵 용산 매장 목록(7곳)에도 없음. 3층 가챠파크·6층 가샤폰 반다이와 혼동 위험이 있어 모두 제외. 매장 존재/명칭 재확인 권장."
+ },
+ {
+  "shop_id": "ca2043d4-5891-44b3-9bec-c5a19369d14c",
+  "name": "가샤폰 용산 아이파크몰점",
+  "works": [
+   {
+    "name": "산리오",
+    "evidence": "가챠맵 매장 라인업에 산리오 가챠 9종 이상(키링, 마스코트 등)",
+    "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0"
+   },
+   {
+    "name": "짱구는 못말려",
+    "evidence": "가챠맵 라인업: 짱구는 못말려 미러 컬렉션",
+    "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0"
+   },
+   {
+    "name": "명탐정 코난",
+    "evidence": "가챠맵 라인업: 명탐정 코난 마킹 액세서리 2",
+    "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0"
+   },
+   {
+    "name": "귀멸의 칼날",
+    "evidence": "가챠맵 라인업: 귀멸의 칼날 잠자는 대열 3",
+    "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0"
+   },
+   {
+    "name": "기동전사 건담",
+    "evidence": "가챠맵 라인업: 기동전사 건담 SD 건담 마스코트 키링",
+    "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0"
+   },
+   {
+    "name": "다마고치",
+    "evidence": "가챠맵 라인업: 다마고치 캡슐리움, 다마고치 키링",
+    "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0"
+   },
+   {
+    "name": "프리큐어",
+    "evidence": "가챠맵 라인업: 프리큐어 올스타즈 Q posket 미니어처",
+    "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0"
+   },
+   {
+    "name": "카드캡터 체리",
+    "evidence": "가챠맵 라인업: 카드캡터 체리 Q posket 미니어처 2",
+    "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0"
+   },
+   {
+    "name": "하츠네 미쿠",
+    "evidence": "가챠맵 라인업: 하츠네미쿠 해피 점프 피규어",
+    "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0"
+   },
+   {
+    "name": "단다단",
+    "evidence": "가챠맵 라인업: 단다단 언제오려나 2",
+    "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0"
+   },
+   {
+    "name": "가정교사 히트맨 리본!",
+    "evidence": "가챠맵 라인업: 가정교사 히트맨 리본 캡슐 피규어 컬렉션 03",
+    "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0"
+   },
+   {
+    "name": "학원 아이돌마스터",
+    "evidence": "가챠맵 라인업: 학원 아이돌마스터 마킹 액세서리 2",
+    "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0"
+   },
+   {
+    "name": "마법소녀 마도카☆마기카",
+    "evidence": "가챠맵 라인업 IP 태그",
+    "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0"
+   }
+  ],
+  "goods_types": [
+   {
+    "slug": "keyring",
+    "evidence": "가챠맵 라인업: 산리오 머메이드 키링, SD 건담 마스코트 키링 등",
+    "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0"
+   },
+   {
+    "slug": "figure-new",
+    "evidence": "가챠맵 라인업: Q posket 미니어처, 캡슐 피규어 컬렉션, 미쿠 피규어",
+    "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0"
+   }
+  ],
+  "notes": "가샤폰 반다이 오피셜샵 4호점(2025-07-15 오픈, 반다이남코 코리아 스토어 내부). 가챠맵에 227종 등록, 페이지에 보이는 약 30종에서 추림. 가챠 라인업은 수시로 바뀌므로 개별 작품은 현재 시점 스냅샷임. 게임 IP 동물의 숲·마인크래프트도 라인업에 있으나 애니 중심이 아니라 제외."
+ },
+ {
+  "shop_id": "c1ae13b4-8e80-43a5-ab5e-e782a035d545",
+  "name": "타미야 프라모델 팩토리 용산 아이파크몰점",
+  "works": [],
+  "goods_types": [],
+  "notes": "자동차 프라모델·미니 4WD 중심(매장 안내: 조립 공간, 미니카 13,000원~). 애니·게임 IP 근거 없음. 공식 매장 안내: https://tamiya.co.kr/sub/find_store.php"
+ },
+ {
+  "shop_id": "2a9f7d7a-2b67-458a-ab6b-9364f32a90d1",
+  "name": "실바니안 패밀리 용산 아이파크몰",
+  "works": [
+   {
+    "name": "실바니안 패밀리",
+    "evidence": "브랜드 공식 스토어(용산 아이파크몰 6층, 8/14 그랜드 오픈)",
+    "url": "https://cafe.daangn.com/modeun-gwiyeoum/posts/%EC%9A%A9%EC%82%B0-%EC%8B%A4%EB%B0%94%EB%8B%88%EC%95%88-%ED%8C%A8%EB%B0%80%EB%A6%AC-%EC%8A%A4%ED%86%A0%EC%96%B4-%EC%98%A4%ED%94%88%E2%9D%97-%EC%8B%A4%EB%B0%94%EB%8B%88%EC%95%88-%EC%B9%9C%EA%B5%AC%EB%93%A4%EC%9D%B4-%EC%9A%A9%EC%82%B0-%EC%95%84%EC%9D%B4%ED%8C%8C%ED%81%AC-A6rrBVxA"
+   }
+  ],
+  "goods_types": [],
+  "notes": "오픈 공지에 '실바니안 블라인드백' 언급. 랜덤 봉투라 gacha-new로는 넣지 않음. 매장 후기(dpg.danawa.com, yugacrew.com)에 구체적 상품 유형 설명 없음."
+ },
+ {
+  "shop_id": "55d7c8c3-0aa9-4096-bd51-60b5c8748191",
+  "name": "반다이남코 카드 게임샵 용산 아이파크몰점",
+  "works": [],
+  "goods_types": [],
+  "notes": "'반다이 카드 게임즈샵'은 2025-07-15 오픈한 반다이남코 코리아 스토어 안의 상설 매장(etnews, seoul.co.kr). 기사에는 취급 타이틀이 따로 나오지 않음. 공식몰 카드게임 카테고리는 원피스 카드게임(기존 작품)과 건담 카드게임만 판매. 주의: 기존 설명의 '유희왕'은 코나미 제품이고, 디지몬 카드게임 한국판은 대원미디어 유통(digimoncard.co.kr)이라 이 매장 근거가 없어 제외. 드래곤볼·유니온 아레나도 매장 근거 없음. 설명(desc) 수정 권장."
+ },
+ {
+  "shop_id": "c9fdb6e6-fc04-47db-9e77-7933be98d707",
+  "name": "건담베이스 용산 아이파크몰점",
+  "works": [],
+  "goods_types": [],
+  "notes": "드래곤볼·포켓몬스터·원피스는 한국 건담베이스 전반에 대한 나무위키 설명이라 용산점만의 근거는 아님(용산점이 플래그십이긴 함). 확신이 낮으면 빌드 파이터즈만 넣을 것. keyzard 페이지는 직접 열리지 않아(403) 검색 스니펫만 확인함. 초합금 완성품은 옆 구역 타마시 스팟 서울 상품일 수도 있음."
+ },
+ {
+  "shop_id": "298c8675-96ea-409f-b768-f25818b64e91",
+  "name": "팝마트 용산 아이파크몰점",
+  "works": [
+   {
+    "name": "라부부",
+    "evidence": "팝마트 코리아 공식몰 IP 카테고리",
+    "url": "https://popmart.co.kr/category/%EB%9D%BC%EB%B6%80%EB%B6%80/87/"
+   },
+   {
+    "name": "몰리",
+    "evidence": "팝마트 코리아 공식몰 IP 카테고리",
+    "url": "https://popmart.co.kr/category/%EB%9D%BC%EB%B6%80%EB%B6%80/87/"
+   },
+   {
+    "name": "스컬판다",
+    "evidence": "팝마트 코리아 공식몰 IP 카테고리",
+    "url": "https://popmart.co.kr/category/%EB%9D%BC%EB%B6%80%EB%B6%80/87/"
+   },
+   {
+    "name": "크라이베이비",
+    "evidence": "팝마트 코리아 공식몰 IP 카테고리",
+    "url": "https://popmart.co.kr/category/%EB%9D%BC%EB%B6%80%EB%B6%80/87/"
+   },
+   {
+    "name": "디무",
+    "evidence": "팝마트 코리아 공식몰 IP 카테고리",
+    "url": "https://popmart.co.kr/category/%EB%9D%BC%EB%B6%80%EB%B6%80/87/"
+   },
+   {
+    "name": "하치푸푸",
+    "evidence": "팝마트 코리아 공식몰 IP 카테고리",
+    "url": "https://popmart.co.kr/category/%EB%9D%BC%EB%B6%80%EB%B6%80/87/"
+   },
+   {
+    "name": "히로노",
+    "evidence": "팝마트 코리아 공식몰 IP 카테고리",
+    "url": "https://popmart.co.kr/category/%EB%9D%BC%EB%B6%80%EB%B6%80/87/"
+   },
+   {
+    "name": "명탐정 코난",
+    "evidence": "당근 매장 프로필 후기: '명탐정코난 시리즈도 있길래', 괴도 키드 언급",
+    "url": "https://www.daangn.com/kr/local-profile/%ED%8C%9D%EB%A7%88%ED%8A%B8-%EC%95%84%EC%9D%B4%ED%8C%8C%ED%81%AC%EB%AA%B0-%EC%9A%A9%EC%82%B0%EC%A0%90-5gamo5k71xw6/"
+   }
+  ],
+  "goods_types": [
+   {
+    "slug": "keyring",
+    "evidence": "공식몰 상품명에 '인형 키링'(라부부 등) 다수",
+    "url": "https://popmart.co.kr/category/%EB%9D%BC%EB%B6%80%EB%B6%80/87/"
+   },
+   {
+    "slug": "plushie-new",
+    "evidence": "공식몰 '인형 키링'(봉제 펜던트) 상품",
+    "url": "https://popmart.co.kr/category/%EB%9D%BC%EB%B6%80%EB%B6%80/87/"
+   }
+  ],
+  "notes": "용산점은 2021-04-23 오픈(popmart.co.kr 공지 461). 자체 IP는 브랜드 공식몰 근거이고, 매장별 재고는 확인 안 됨. 후기에 '대부분 뽑기 형식'(블라인드 박스)이라 나오지만 gacha-new로는 넣지 않음."
+ },
+ {
+  "shop_id": "4a115ed5-37bd-43ad-a87d-a5e85120f2fe",
+  "name": "치이카와샵 용산 아이파크몰점",
+  "works": [],
+  "goods_types": [],
+  "notes": "3층 도파민스테이션, 2026-02-27 상시 오픈(popga.co.kr/content/magazine/113). 확인된 상품(말랑 인형, 소품, 한국 한정 마스코트, 랜덤 트레이딩 미니 파우치)은 기존 goods에 이미 포함되거나 해당 slug가 없음. 치이카와 외 IP 근거 없음."
+ },
+ {
+  "shop_id": "dedbd4fd-8b76-451b-9b2a-502adc705e62",
+  "name": "씨네샵 용산 아이파크몰점",
+  "works": [
+   {
+    "name": "포켓몬스터",
+    "evidence": "CJ 뉴스룸(2022-12-08): 포켓몬 랜덤 배지를 'CGV 씨네샵 용산아이파크몰, 여의도, 왕십리'에서 먼저 판매",
+    "url": "https://cjnews.cj.net/cgv-%EC%94%A8%EB%84%A4%EC%83%B5-%ED%8F%AC%EC%BC%93%EB%AA%AC%EC%8A%A4%ED%84%B0-%EA%B5%BF%EC%A6%88-%EC%B2%AB-%EC%B6%9C%EC%8B%9C/"
+   }
+  ],
+  "goods_types": [
+   {
+    "slug": "can-badge-new",
+    "evidence": "포켓몬스터 랜덤 배지 18종 및 배지 세트를 용산아이파크몰점에서 판매(2022)",
+    "url": "https://cjnews.cj.net/cgv-%EC%94%A8%EB%84%A4%EC%83%B5-%ED%8F%AC%EC%BC%93%EB%AA%AC%EC%8A%A4%ED%84%B0-%EA%B5%BF%EC%A6%88-%EC%B2%AB-%EC%B6%9C%EC%8B%9C/"
+   }
+  ],
+  "notes": "포켓몬 배지는 2022년 출시 행사 기록이라 현재 재고는 아닐 수 있음. 심슨·마블은 씨네샵 브랜드 전체 설명(점포별 아님). 확신이 낮으면 제외."
+ },
+ {
+  "shop_id": "d2d9693d-7907-491e-af91-9c5df03c15de",
+  "name": "TCG-Station 용산 아이파크몰점",
+  "works": [
+   {
+    "name": "카드파이트!! 뱅가드",
+    "evidence": "나무위키 TCG 매장/수도권: 용산 아이파크몰 6층 TCG STATION(대원미디어 직영) 주요 취급 '유희왕 OCG, 유희왕 러시 듀얼, 카드파이트!! 뱅가드'",
+    "url": "https://namu.wiki/w/%ED%8A%B8%EB%A0%88%EC%9D%B4%EB%94%A9%20%EC%B9%B4%EB%93%9C%20%EA%B2%8C%EC%9E%84/%EB%A7%A4%EC%9E%A5/%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD/%EC%88%98%EB%8F%84%EA%B6%8C"
+   },
+   {
+    "name": "유희왕 러시 듀얼",
+    "evidence": "같은 나무위키 항목(러시 듀얼 상품에 이벤트 팩 동봉)",
+    "url": "https://namu.wiki/w/%ED%8A%B8%EB%A0%88%EC%9D%B4%EB%94%A9%20%EC%B9%B4%EB%93%9C%20%EA%B2%8C%EC%9E%84/%EB%A7%A4%EC%9E%A5/%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD/%EC%88%98%EB%8F%84%EA%B6%8C"
+   }
+  ],
+  "goods_types": [],
+  "notes": "층은 6층(나무위키, 유희왕 코리아 공식 X의 2026-02 설 미니 팝업 공지). 무인 매장, 카드 자판기, 대전 테이블 4개. 러시 듀얼은 '유희왕'과 같은 IP로 합쳐도 됨. 3층 도파민스테이션 리프트바운드 팝업(2026-09)은 이 매장이 아니라 제외. 층 값 null → '6층'으로 채울 것 권장."
+ }
+]

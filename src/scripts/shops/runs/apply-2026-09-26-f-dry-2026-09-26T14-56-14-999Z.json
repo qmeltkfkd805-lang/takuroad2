@@ -1,0 +1,111 @@
+{
+ "plan": "2026-09-26-f",
+ "at": "2026-09-26T14:56:14.999Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "bldg-f25b947d",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking": true,
+    "parking_note": "주차 가능(무료)\n트레이더스 이용 고객은 지하주차장 이용",
+    "place_id": "4fe161cc-b37a-4c94-a646-e6e1763c1986"
+   }
+  },
+  {
+   "key": "bldg-acc529c3",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 이후 10분당 1,000원\n구매 시 무료: 1만원 이상 1시간 · 3만원 이상 2시간 · 5만원 이상 3시간 · 10만원 이상 4시간 · 20만원 이상 5시간\n식당가 이용 시 2시간 무료\n센텀시티몰(센텀4로 15) 포함 같은 주차 기준",
+    "place_id": "3a89dba6-6afb-40fa-9a42-9d20aeecafd1"
+   }
+  },
+  {
+   "key": "bldg-d34d0de3",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 이후 10분당 1,000원\n구매 시 무료: 1만원 이상 1시간 · 3만원 이상 2시간 · 5만원 이상 3시간 · 10만원 이상 4시간 · 20만원 이상 5시간\n식당가 이용 시 2시간 무료\n센텀시티몰(센텀4로 15) 포함 같은 주차 기준",
+    "place_id": "3a89dba6-6afb-40fa-9a42-9d20aeecafd1"
+   }
+  },
+  {
+   "key": "bldg-bb03cccb",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 이후 30분당 1,000원\n구매 시 무료: 1만원 1시간 · 3만원 2시간 · 5만원 3시간 · 10만원 6시간 · 30만원 12시간\n시네마·전시관 당일 관람권 제시 시 3시간 무료",
+    "place_id": "99e4e44e-6048-4ad3-8dc3-c3dbbc8f568d"
+   }
+  },
+  {
+   "key": "bldg-7392fe21",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 이후 10분당 1,000원\n매장 이용 시 주차할인권 제공(일부 매장 제외), 1일 최대 8시간\n심야(20:00~09:00) 기본요금 50% 할인",
+    "place_id": "afc1d124-cd6b-4aca-876f-237c4fda27dc"
+   }
+  },
+  {
+   "key": "bldg-78be4428",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking": true,
+    "parking_note": "주차 가능(유료, 24시간)\n20분 이내 출차 시 무료, 최초 30분 1,000원, 이후 10분당 300원\n1일 최대 15,000원\n이마트·신세계 스타일마켓 구매 시: 1만원 이상 1시간 · 3만원 이상 2시간 · 5만원 이상 3시간 · 10만원 이상 4시간 할인\n할인 중복 불가, 카드·삼성페이만 가능(현금 불가)",
+    "place_id": "55117018-1fd2-4452-a7bb-d27a7cb8457d"
+   }
+  },
+  {
+   "key": "bldg-b692c36b",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking": true,
+    "parking_note": "주차 가능(무료)\n21시 이후 2F~RF층 입차 제한(1층 주차장 이용)\n트레이더스 이용 고객은 지하주차장 이용"
+   }
+  },
+  {
+   "key": "bldg-93b5faae",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking": true,
+    "parking_note": "주차 가능(무료)\n21시 이후 2F~RF층 입차 제한(1층 주차장 이용)\n트레이더스 이용 고객은 지하주차장 이용"
+   }
+  },
+  {
+   "key": "bldg-bc4db728",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n입차 후 20분 이내 출차 시 무료, 15분당 1,500원(1일 최대 60,000원)\n코엑스몰 구매 시: 5만원 이상 1시간 · 10만원 이상 2시간 · 15만원 이상 3시간 무료(일부 매장 제외)\n카카오T 주차 모바일 결제 시 20% 할인",
+    "place_id": "86c742e0-a1fa-42b7-8ee0-0de38b8bdb39"
+   }
+  },
+  {
+   "key": "bldg-f194103b",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n6시간 무료, 이후 10분당 500원(1일 최대 18,000원)\n본건물 혼잡 시 대유평공원 B1~B2 주차장 이용 가능"
+   }
+  },
+  {
+   "key": "bldg-d98e6a5a",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking_note": "오전 10시~오후 8시까지\n10분 당 500원\n그 외 시간 200원"
+   }
+  }
+ ]
+}

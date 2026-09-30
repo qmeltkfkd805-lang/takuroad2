@@ -1,0 +1,560 @@
+{
+ "name": "2026-09-28-l",
+ "items": [
+  {
+   "action": "insert",
+   "key": "theku-daegu",
+   "brand": "더쿠",
+   "brand_links": [
+    "https://smartstore.naver.com/thekuh"
+   ],
+   "fields": {
+    "name": "더쿠 대구점",
+    "addr": "대구 중구 동성로6길 60",
+    "floor_info": "지하 1층",
+    "cats": [
+     "굿즈샵",
+     "쿠지",
+     "가챠",
+     "피규어샵"
+    ],
+    "phone": "070-7819-8869",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://x.com/the_ku_dg",
+    "sns_links": [
+     "https://x.com/the_ku_dg",
+     "https://smartstore.naver.com/thekuh"
+    ],
+    "description": "애니메이션·게임 굿즈와 피규어, 쿠지, 미니어처를 파는 굿즈샵 더쿠의 대구점으로, 동성로 스파크랜드 정면 건물 지하 1층에 있습니다.\n영업시간은 매일 12:00~21:00입니다(공식 계정 안내)."
+   },
+   "goods_types": [
+    "figure-new",
+    "ichiban-kuji",
+    "gacha-new"
+   ],
+   "works": [
+    {
+     "tag_id": "68b8a36f-2edc-4d17-8928-3b07503e8493",
+     "evidence": "지점 공식 X 입고 공지 — 2026-08-12 고질라 제일복권 \"괴수왕 연대기\" 판매"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/the_ku_dg",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "hours",
+      "goods_types",
+      "description"
+     ],
+     "checked_at": "2026-09-28",
+     "note": "X 프로필 \"대구 중구 동성로6길 60 지하1층 (스파크랜드 정면에 위치!) 12:00 ~ 21:00, 굿즈/피규어/쿠지/미니어처\""
+    },
+    {
+     "url": "https://ichibankuji.kr/shop",
+     "fields": [
+      "phone",
+      "hours",
+      "addr"
+     ],
+     "checked_at": "2026-09-28",
+     "note": "대원미디어 이치방쿠지 공식 판매처 목록(매장 등록 정보)"
+    },
+    {
+     "url": "https://x.com/the_ku_dg/status/2087387754552520731",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ],
+   "unconfirmed": [
+    "holiday_detail",
+    "parking"
+   ],
+   "photo": "needed",
+   "notes": "지점 공식 X 프로필(브라우저 렌더 확인) + 이치방쿠지 공식 판매처 목록 대조. 더쿠 수원점·ak플라자 수원점과 같은 브랜드(스마트스토어 thekuh), 다른 지점"
+  },
+  {
+   "action": "insert",
+   "key": "theku-daejeon",
+   "brand": "더쿠",
+   "brand_links": [
+    "https://smartstore.naver.com/thekuh"
+   ],
+   "fields": {
+    "name": "더쿠 대전점",
+    "addr": "대전 중구 대종로 468",
+    "floor_info": "천우빌딩 지하 1층",
+    "cats": [
+     "굿즈샵",
+     "쿠지",
+     "가챠",
+     "피규어샵"
+    ],
+    "phone": "070-4122-5538",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://x.com/the_ku_dj",
+    "sns_links": [
+     "https://x.com/the_ku_dj",
+     "https://smartstore.naver.com/thekuh"
+    ],
+    "description": "애니메이션·게임 굿즈와 피규어, 제일복권(이치방쿠지) 등 쿠지를 파는 굿즈샵 더쿠의 대전점으로, 대흥동 이안과병원 건물(천우빌딩) 지하 1층에 있습니다. 성심당에서 걸어서 1분 거리입니다.\n영업시간은 매일 12:00~21:00입니다(공식 계정 안내)."
+   },
+   "goods_types": [
+    "figure-new",
+    "ichiban-kuji",
+    "gacha-new",
+    "can-badge-new"
+   ],
+   "works": [
+    {
+     "tag_id": "77a9bc04-00de-4071-baf2-571f4fcef31d",
+     "evidence": "지점 공식 X 입고 공지 — 2026-09-29 블루록 2기 파샤코레 vol.6 입고"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/the_ku_dj",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "hours",
+      "goods_types",
+      "description"
+     ],
+     "checked_at": "2026-09-28",
+     "note": "X 프로필 \"대흥동 이안과병원 건물 지하1층 / 성심당 도보 1분거리, 12:00~21:00, 굿즈/피규어/제일복권 등 각종 쿠지\", 위치 \"대전 중구 대종로 468 천우빌딩 지하1층\""
+    },
+    {
+     "url": "https://ichibankuji.kr/shop",
+     "fields": [
+      "phone",
+      "hours",
+      "addr"
+     ],
+     "checked_at": "2026-09-28",
+     "note": "대원미디어 이치방쿠지 공식 판매처 목록(매장 등록 정보)"
+    },
+    {
+     "url": "https://x.com/the_ku_dj/status/2104497092253417955",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ],
+   "unconfirmed": [
+    "holiday_detail",
+    "parking"
+   ],
+   "photo": "needed",
+   "notes": "지점 공식 X 프로필(브라우저 렌더 확인) + 이치방쿠지 공식 판매처 목록 대조. 더쿠 수원점·ak플라자 수원점과 같은 브랜드(스마트스토어 thekuh), 다른 지점"
+  },
+  {
+   "action": "insert",
+   "key": "theku-yeontral",
+   "brand": "더쿠",
+   "brand_links": [
+    "https://smartstore.naver.com/thekuh"
+   ],
+   "fields": {
+    "name": "더쿠 연트럴파크점",
+    "addr": "서울 마포구 양화로21길 17",
+    "floor_info": "지하 1층",
+    "cats": [
+     "굿즈샵",
+     "쿠지",
+     "가챠",
+     "피규어샵"
+    ],
+    "phone": "070-7802-8869",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://x.com/the_ku_y",
+    "sns_links": [
+     "https://x.com/the_ku_y",
+     "https://smartstore.naver.com/thekuh"
+    ],
+    "description": "100종이 넘는 캡슐토이(가챠)와 제일복권(이치방쿠지) 등 쿠지, 애니메이션·게임 굿즈와 피규어를 파는 굿즈샵 더쿠의 연트럴파크점입니다. 홍대입구역 3번 출구에서 걸어서 30초, 꽃집 건물 지하 1층에 있습니다.\n영업시간은 매일 12:00~21:00입니다(이치방쿠지 판매처 안내)."
+   },
+   "goods_types": [
+    "gacha-new",
+    "ichiban-kuji",
+    "figure-new"
+   ],
+   "works": [],
+   "sources": [
+    {
+     "url": "https://x.com/the_ku_y",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "hours",
+      "goods_types",
+      "description"
+     ],
+     "checked_at": "2026-09-28",
+     "note": "X 프로필 \"홍대입구역 3번출구 도보 30초, 서울 마포구 양화로21길 17 지하 1층 (꽃집 건물 지하), 100여종 이상의 캡슐토이, 제일복권 등 쿠지, 애니메이션/게임 굿즈, 피규어\" — 시간은 프로필에 없어 이치방쿠지 공식 판매처 목록 \"매일 12~21시\""
+    },
+    {
+     "url": "https://ichibankuji.kr/shop",
+     "fields": [
+      "phone",
+      "hours",
+      "addr"
+     ],
+     "checked_at": "2026-09-28",
+     "note": "대원미디어 이치방쿠지 공식 판매처 목록(매장 등록 정보)"
+    }
+   ],
+   "unconfirmed": [
+    "holiday_detail",
+    "parking"
+   ],
+   "photo": "needed",
+   "notes": "지점 공식 X 프로필(브라우저 렌더 확인) + 이치방쿠지 공식 판매처 목록 대조. 더쿠 수원점·ak플라자 수원점과 같은 브랜드(스마트스토어 thekuh), 다른 지점"
+  },
+  {
+   "action": "insert",
+   "key": "theku-hongdae",
+   "brand": "더쿠",
+   "brand_links": [
+    "https://smartstore.naver.com/thekuh"
+   ],
+   "fields": {
+    "name": "더쿠 홍대입구점",
+    "addr": "서울 마포구 홍익로6길 38",
+    "floor_info": "지하 1층",
+    "cats": [
+     "굿즈샵",
+     "쿠지",
+     "가챠",
+     "피규어샵"
+    ],
+    "phone": "070-7808-8869",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://x.com/the_ku_h",
+    "sns_links": [
+     "https://x.com/the_ku_h",
+     "https://smartstore.naver.com/thekuh"
+    ],
+    "description": "애니메이션·게임 굿즈와 피규어, 제일복권(이치방쿠지) 등 쿠지를 파는 굿즈샵 더쿠의 홍대입구점으로, 홍대입구역 9번 출구에서 걸어서 1분 거리 건물 지하 1층에 있습니다.\n영업시간은 매일 12:00~21:00입니다(공식 계정 안내)."
+   },
+   "goods_types": [
+    "figure-new",
+    "ichiban-kuji",
+    "acrylic-stand",
+    "card-new"
+   ],
+   "works": [
+    {
+     "tag_id": "42a62851-c7ae-4ad3-a611-536723dae6ad",
+     "evidence": "지점 공식 X 입고 공지 — 2026-09-29 바키 Grandista 한마 바키 입고"
+    },
+    {
+     "tag_id": "0ec61572-9a5b-47a6-9567-7d15a8433dd3",
+     "evidence": "지점 공식 X 입고 공지 — 2026-09-29 나루토 아크릴 스탠드 입고"
+    },
+    {
+     "tag_id": "224d7310-587f-4431-83f8-b6000108efd9",
+     "evidence": "지점 공식 X 입고 공지 — 2026-09-29 트위스티드 원더랜드 캬라포트레 입고"
+    },
+    {
+     "tag_id": "0353ec4b-da92-41d8-b659-765ad8cc9a64",
+     "evidence": "지점 공식 X 입고 공지 — 2026-09-29 골든카무이 클리어 카드 컬렉션 입고"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/the_ku_h",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "hours",
+      "goods_types",
+      "description"
+     ],
+     "checked_at": "2026-09-28",
+     "note": "X 프로필(인증) \"홍대입구역 9번출구 도보 1분거리!!, 12:00~21:00, 굿즈/피규어/제일복권 등 각종 쿠지\", 위치 \"마포구 홍익로6길 38 지하1층\""
+    },
+    {
+     "url": "https://ichibankuji.kr/shop",
+     "fields": [
+      "phone",
+      "hours",
+      "addr"
+     ],
+     "checked_at": "2026-09-28",
+     "note": "대원미디어 이치방쿠지 공식 판매처 목록(매장 등록 정보)"
+    },
+    {
+     "url": "https://x.com/the_ku_h/status/2104515085196763293",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://x.com/the_ku_h/status/2104515035766915420",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://x.com/the_ku_h/status/2104514996780834919",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://x.com/the_ku_h/status/2104514963960471917",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ],
+   "unconfirmed": [
+    "holiday_detail",
+    "parking"
+   ],
+   "photo": "needed",
+   "notes": "지점 공식 X 프로필(브라우저 렌더 확인) + 이치방쿠지 공식 판매처 목록 대조. 더쿠 수원점·ak플라자 수원점과 같은 브랜드(스마트스토어 thekuh), 다른 지점"
+  },
+  {
+   "action": "insert",
+   "key": "brothergoods-hongdae",
+   "brand": "브라더굿즈",
+   "brand_links": [],
+   "fields": {
+    "name": "브라더굿즈 홍대점",
+    "addr": "서울 마포구 신촌로6길 24",
+    "floor_info": "2층",
+    "cats": [
+     "굿즈샵",
+     "쿠지",
+     "가챠"
+    ],
+    "phone": "070-8657-2105",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "yearRound": true
+    },
+    "shop_link": "https://www.instagram.com/brother.goods/",
+    "sns_links": [
+     "https://www.instagram.com/brother.goods/",
+     "https://x.com/wowyong81"
+    ],
+    "description": "애니·캐릭터 굿즈와 제일복권(이치방쿠지), 가챠를 파는 브라더굿즈의 홍대점으로, 홍대입구역 6·9번 출구 쪽 건물 2층에 있습니다.\n영업시간은 평일 12:00~21:00, 주말·공휴일 11:00~21:00이며 연중무휴입니다(공식 계정 안내)."
+   },
+   "goods_types": [
+    "ichiban-kuji",
+    "gacha-new"
+   ],
+   "works": [
+    {
+     "tag_id": "1a97869d-63fb-4d86-a098-2551356d835b",
+     "evidence": "지점 공식 X 입고 공지 — 2026-09-24 에반게리온 신극장판:서 (제일복권) 입고"
+    },
+    {
+     "tag_id": "d415ecff-ed16-4c62-bec1-636959446fb2",
+     "evidence": "지점 공식 X 입고 공지 — 몬스터 헌터 (제일복권) 입고"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/wowyong81",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "hours",
+      "phone",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-28",
+     "note": "X 프로필 \"애니&캐릭터굿즈&제일복권&가챠, 운영시간 평일 12:00~21:00 주말 및 공휴일 11:00~21:00 연중무휴, 070-8657-2105\", 위치 \"서울특별시 마포구 신촌로6길 24 2층 브라더굿즈\" — 게시물마다 인스타 brother.goods 로 문의 안내"
+    },
+    {
+     "url": "https://ichibankuji.kr/shop",
+     "fields": [
+      "phone",
+      "hours",
+      "addr"
+     ],
+     "checked_at": "2026-09-28",
+     "note": "\"브라더굿즈 홍대 | 신촌로6길 24 2층 | 070-8657-2105 | 평일 12:00~21:00 주말, 공휴일 11:00~21:00 (연중무휴)\""
+    },
+    {
+     "url": "https://x.com/wowyong81/status/2102991581590831612",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://x.com/wowyong81/status/2047526289448550404",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ],
+   "unconfirmed": [
+    "parking"
+   ],
+   "photo": "needed",
+   "notes": "브라더굿즈 수원역점·국제전자센터점과 같은 브랜드명, 운영 주체 관계 미확인 — 다른 지역이라 지점명 붙여 따로 등록. 공식 몰 링크 없음"
+  }
+ ]
+}

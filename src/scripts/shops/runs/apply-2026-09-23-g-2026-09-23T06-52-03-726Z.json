@@ -1,0 +1,139 @@
+{
+ "plan": "2026-09-23-g",
+ "at": "2026-09-23T06:52:03.726Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "gundam-base-coex",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5129534255276,
+    "lng": 127.057115600619,
+    "road": "서울 강남구 봉은사로 524",
+    "building": "웨스틴 서울 파르나스",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "9ac3f7bf-9d52-4250-9a84-c3f7140eedb1",
+   "slug": "geondambeiseu-koekseujeom",
+   "extras": {
+    "works": {
+     "added": [
+      "건담"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "gundam-base-seomyeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1529239695577,
+    "lng": 129.059604905121,
+    "road": "부산 부산진구 중앙대로 672",
+    "building": "삼정타워",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "a9be5ac1-8b44-4abb-8603-b2dee9223859",
+   "slug": "geondambeiseu-seomyeonjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "건담"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "gundam-base-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.870189921818,
+    "lng": 128.596901118103,
+    "road": "대구 중구 동성로2길 95",
+    "building": "BL타워",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "20ad80ab-7fc7-4438-aea6-c02dd75bf6cf",
+   "slug": "geondambeiseu-daegujeom",
+   "extras": {
+    "works": {
+     "added": [
+      "건담"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "gashapon-timesquare",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5172332566615,
+    "lng": 126.903715993779,
+    "road": "서울 영등포구 영중로 15",
+    "building": "타임스퀘어",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "7392fe21-9411-4a9d-907e-d62a69a0256f",
+   "slug": "gasyapon-taimseukweeojeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "gashapon-lotteworldmall",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5137129859207,
+    "lng": 127.104301829165,
+    "road": "서울 송파구 올림픽로 300",
+    "building": "롯데월드타워앤드롯데월드몰",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "7b8bf8d5-3df5-4034-900d-bb4e61c4dae9",
+   "slug": "gasyapon-rotdewoldeumoljeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-23-g-2026-09-23T06-52-03-726Z.json"
+}

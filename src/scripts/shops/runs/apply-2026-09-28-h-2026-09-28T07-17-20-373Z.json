@@ -1,0 +1,153 @@
+{
+ "plan": "2026-09-28-h",
+ "at": "2026-09-28T07:17:20.373Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "pokemon-cardshop-gangneung",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.7654741599775,
+    "lng": 128.878406356845,
+    "road": "강원특별자치도 강릉시 솔올로 40",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "afd5be49-7b36-4a87-b19e-4bbdcbcbeac9",
+   "slug": "poketmon-kadeusyap-kadeuweibeu-gangreung",
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pokemon-cardshop-guri",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5866412286942,
+    "lng": 127.13952733353,
+    "road": "경기 구리시 장자대로86번길 32",
+    "building": "이루미타워",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "8f68436d-e4eb-4bec-afa8-1d1ccef8c3b4",
+   "slug": "poketmon-kadeusyap-tcg-rain-guri",
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pokemon-cardshop-cheonan",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.822353993511,
+    "lng": 127.125621033521,
+    "road": "충남 천안시 서북구 백석로 130",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "a4318d0e-d281-42c4-bf71-6c67511660c2",
+   "slug": "poketmon-kadeusyap-kadeupeuraim-cheonan",
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pokemon-cardshop-daejeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.3510503853713,
+    "lng": 127.381835458876,
+    "road": "대전 서구 둔산로 72",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "686cbc89-a01f-4f82-bf21-1d1ce828de05",
+   "slug": "poketmon-kadeusyap-kadeurol-daejeon",
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pokemon-cardshop-busan",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.2054454046723,
+    "lng": 129.079333783003,
+    "road": "부산 동래구 명륜로129번길 54",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "02c9aea0-65f6-489e-8d21-1c7a0372ef25",
+   "slug": "poketmon-kadeusyap-kadeubeiseu-busan",
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-28-h-2026-09-28T07-17-20-373Z.json"
+}

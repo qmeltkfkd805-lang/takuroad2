@@ -1,0 +1,171 @@
+{
+ "plan": "2026-09-29-o",
+ "at": "2026-09-29T14:22:47.638Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "kotobukiya-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "road": "서울 용산구 한강대로23길 55",
+    "building": "용산역",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "423c5e10-9ab1-4845-ba68-d0b1a8c504c3",
+   "slug": "kotobukiya-aipakeumol-yongsan",
+   "extras": {
+    "works": {
+     "added": [
+      "최애의 아이",
+      "유희왕",
+      "우마무스메 프리티 더비"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "goodsmile-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "road": "서울 용산구 한강대로23길 55",
+    "building": "용산역",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "c1164614-6353-41f7-b667-72f6a09fef77",
+   "slug": "gutseumailseutoeobh-yongsan-aipakeumoljeom",
+   "extras": {
+    "works": {
+     "added": [
+      "주술회전",
+      "블루 아카이브",
+      "카드캡터 사쿠라"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "smg-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8687083802364,
+    "lng": 128.598741541322,
+    "road": "대구 중구 동성로6길 61",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "7d521eed-5661-4a77-9872-8018e68cc88b",
+   "slug": "smggutjeuseutoeo-daegu-dongseongroseupakeujeom",
+   "extras": {
+    "works": {
+     "added": [
+      "베르세르크",
+      "소녀전선2: 망명",
+      "드래곤볼",
+      "릴로 & 스티치",
+      "귀멸의 칼날"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "can-badge-new",
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "smg-busan",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1529239695577,
+    "lng": 129.059604905121,
+    "road": "부산 부산진구 중앙대로 672",
+    "building": "삼정타워",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "52f33d6f-29e2-429b-979b-b84231dc34ae",
+   "slug": "smggutjeuseutoeo-busan-samjeongtawojeom",
+   "extras": {
+    "works": {
+     "added": [
+      "원신",
+      "승리의 여신: 니케",
+      "하이큐!!",
+      "귀멸의 칼날",
+      "베르세르크",
+      "드래곤볼",
+      "소녀전선2: 망명"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "can-badge-new",
+      "keyring"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "asemhobby-electroland",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5327888550584,
+    "lng": 126.959558538475,
+    "road": "서울 용산구 청파로 74",
+    "building": "전자랜드",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "695f0176-68c2-483c-b254-91e7b2272fd1",
+   "slug": "asemhabi-jeonjaraendeujeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    },
+    "custom_goods": {
+     "added": [
+      "모형 도료·공구"
+     ]
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-o-2026-09-29T14-22-47-638Z.json"
+}

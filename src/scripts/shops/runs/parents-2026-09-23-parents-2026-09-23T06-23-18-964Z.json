@@ -1,0 +1,58 @@
+[
+ {
+  "child": "학원 아이돌 마스터",
+  "parent": "아이돌마스터",
+  "status": "SET",
+  "before": null,
+  "evidence": "반다이남코 아이돌마스터 브랜드 공식 시리즈",
+  "url": "https://idolmaster-official.jp/"
+ },
+ {
+  "child": "아이돌마스터 샤이니 컬러즈",
+  "parent": "아이돌마스터",
+  "status": "SET",
+  "before": null,
+  "evidence": "아이돌마스터 브랜드 공식 시리즈",
+  "url": "https://idolmaster-official.jp/"
+ },
+ {
+  "child": "아이돌마스터 신데렐라 걸즈",
+  "parent": "아이돌마스터",
+  "status": "SET",
+  "before": null,
+  "evidence": "아이돌마스터 브랜드 공식 시리즈",
+  "url": "https://idolmaster-official.jp/"
+ },
+ {
+  "child": "페르소나3 리로드",
+  "parent": "페르소나 시리즈",
+  "status": "SET",
+  "before": null,
+  "evidence": "아틀러스 페르소나 시리즈 작품",
+  "url": "https://persona.atlus.com/"
+ },
+ {
+  "child": "페르소나4",
+  "parent": "페르소나 시리즈",
+  "status": "SET",
+  "before": null,
+  "evidence": "아틀러스 페르소나 시리즈 작품",
+  "url": "https://persona.atlus.com/"
+ },
+ {
+  "child": "페르소나5",
+  "parent": "페르소나 시리즈",
+  "status": "SET",
+  "before": null,
+  "evidence": "아틀러스 페르소나 시리즈 작품",
+  "url": "https://persona.atlus.com/"
+ },
+ {
+  "child": "리락쿠마",
+  "parent": "산엑스",
+  "status": "SET",
+  "before": null,
+  "evidence": "리락쿠마 공식 사이트가 산엑스(san-x.co.jp) 소속",
+  "url": "https://www.san-x.co.jp/rilakkuma/"
+ }
+]

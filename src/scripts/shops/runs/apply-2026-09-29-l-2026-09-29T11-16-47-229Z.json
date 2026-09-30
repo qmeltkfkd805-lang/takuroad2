@@ -1,0 +1,118 @@
+{
+ "plan": "2026-09-29-l",
+ "at": "2026-09-29T11:16:47.229Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "neighborhobby",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5598714945494,
+    "lng": 126.926300212385,
+    "road": "서울 마포구 연희로 11",
+    "building": "한국특허기술진흥원빌딩",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "ca9be25e-7990-4ee4-9a41-7d8766f86be1",
+   "slug": "neibeohabi-hongdaejeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "bigbox",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5233775468121,
+    "lng": 126.851677350643,
+    "road": "서울 양천구 중앙로 304",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "d040348b-373d-4c43-a9b6-3ca6e837f333",
+   "slug": "bikbakseubig-box",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "toyfactory-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8602471517516,
+    "lng": 128.646033793711,
+    "road": "대구 수성구 만촌로 6",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "14e85481-1543-4e20-ab67-eb06caccdede",
+   "slug": "toipaektori-daegu",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "hobbyland-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8718103346644,
+    "lng": 128.594461000172,
+    "road": "대구 중구 중앙대로 434",
+    "building": "JS빌딩",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "bc93e4ab-aacd-4738-8b9c-3034b26b91c1",
+   "slug": "habiraendeu-daegu",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "hobbyhill-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8555752350143,
+    "lng": 128.600113155471,
+    "road": "대구 중구 명덕로 275",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "9bdad025-e423-4df1-bd3e-afbfd845b6dc",
+   "slug": "habihil",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-l-2026-09-29T11-16-47-229Z.json"
+}

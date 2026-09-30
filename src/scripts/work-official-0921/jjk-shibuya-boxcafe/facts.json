@@ -1,0 +1,244 @@
+{
+  "key": "jjk-shibuya-boxcafe",
+  "official_urls": [
+    "https://www.instagram.com/p/DdU_Ooaj_JR/",
+    "https://www.instagram.com/p/DdXl0ivD1Br/",
+    "https://www.instagram.com/p/DdXn7TMmNfw/",
+    "https://www.instagram.com/p/DdXtN_-GEvr/",
+    "https://x.com/BOX_CAFE_AK/status/2100385450863280532",
+    "https://x.com/BOX_CAFE_AK/status/2100391013949071458",
+    "https://x.com/BOX_CAFE_AK/status/2100391912457007473",
+    "https://x.com/BOX_CAFE_AK/status/2100404373276766225",
+    "https://linktr.ee/BOXcafe_HD",
+    "https://booking.naver.com/booking/12/bizes/1496194"
+  ],
+  "title_official": "주술회전 콜라보 카페 2026 시부야사변 (2026 JUJUTSU KAISEN CAFE SHIBUYA INCIDENT)",
+  "work": "주술회전",
+  "type_guess": "collab_cafe",
+  "start_date": "2026-09-23",
+  "end_date": "2026-12-01",
+  "branches": [
+    {
+      "name": "BOX cafe&space 홍대점",
+      "venue": "AK PLAZA 홍대 3층 BOX cafe&space",
+      "address": "서울 마포구 양화로 188",
+      "floor_detail": "3층 (홍대입구역 4번 출구 앞 AK PLAZA 홍대)",
+      "hours": "평일&주말 11:00~21:15 (IG 프로필 기재). [전기] 예약 회차 11:00~21:20 (7회차, 80분씩)",
+      "start_date": "2026-09-23",
+      "end_date": "2026-12-01"
+    }
+  ],
+  "entry": "사전 예약제(네이버 예약) + 예약 외 기간 자율 입장. [전기] 사전예약 오픈 9/18(금) 15:00, 사전예약 기간 9/18~9/22. [전기] 예약 테이블 운영: 9/23(수)~10/02(금), 10/05(월), 10/09(금), 모든 주말(주말·공휴일은 모두 예약제, 그 외 기간 자율 입장). 1개 아이디당 최대 2명, 예약 인원 외 동반 불가. 회차: 1회 11:00-12:20 / 2회 12:30-13:50 / 3회 14:00-15:20 / 4회 15:30-16:50 / 5회 17:00-18:20 / 6회 18:30-19:50 / 7회 20:00-21:20. 좌석 이용 시 1인 1메뉴 필수, 메뉴 주문은 각 타임 종료 20분 전까지. 회차 시작 후 10분 이내 미입장 시 노쇼. [후기] 예약은 추후 오픈 예정. 예약: https://booking.naver.com/booking/12/bizes/1496194",
+  "benefits": [
+    {
+      "condition": "[전기 9/23~10/28] 메뉴 구매 당 (옥문강 티라미수 제외)",
+      "item": "사각 코스터 랜덤 1종 (90x90mm, 전기 일러스트: 이타도리/후시구로/쿠기사키/고죠/나나미)",
+      "count_kinds": "5종"
+    },
+    {
+      "condition": "[후기 10/29~12/01] 메뉴 구매 당 (옥문강 티라미수 제외)",
+      "item": "사각 코스터 랜덤 1종 (90x90mm, 후기 SD 일러스트)",
+      "count_kinds": "5종"
+    },
+    {
+      "condition": "[전기] 옥문강 티라미수 구매 당",
+      "item": "랜덤 필름 카드 1종 (전기 일러스트)",
+      "count_kinds": "5종"
+    },
+    {
+      "condition": "[후기] 옥문강 티라미수 구매 당",
+      "item": "랜덤 필름 카드 1종 (후기 SD 일러스트)",
+      "count_kinds": "5종"
+    },
+    {
+      "condition": "콜라보 카페 MD 3만원 이상 구매 당 (9/23~12/01, 영수증 합산 불가, 럭키드로우 포토카드·메뉴 금액 제외)",
+      "item": "오리지널 티켓 랜덤 1종 (70x140mm)",
+      "count_kinds": "5종"
+    }
+  ],
+  "menu": [
+    {
+      "name": "[통상] 이타도리 유지 망고 드링크",
+      "price": 8000
+    },
+    {
+      "name": "[통상] 후시구로 메구미 파인 드링크",
+      "price": 8000
+    },
+    {
+      "name": "[통상] 쿠기사키 노바라 라즈베리&로즈 드링크",
+      "price": 8000
+    },
+    {
+      "name": "[통상] 고죠 사토루 석류&리치 드링크",
+      "price": 8000
+    },
+    {
+      "name": "[통상] 나나미 켄토 허니 진저 캐모마일 티",
+      "price": 8000
+    },
+    {
+      "name": "[통상] TAKE OUT 옥문강 티라미수",
+      "price": 8000
+    },
+    {
+      "name": "[전기 한정] 이타도리 유지 1학년의 인연 파르페",
+      "price": 12000
+    },
+    {
+      "name": "[전기 한정] 후시구로 메구미 1학년의 인연 파르페",
+      "price": 12000
+    },
+    {
+      "name": "[전기 한정] 쿠기사키 노바라 1학년의 인연 파르페",
+      "price": 12000
+    },
+    {
+      "name": "[전기 한정] 고죠 사토루 최강 미소 샌드",
+      "price": 15000
+    },
+    {
+      "name": "[전기 한정] 나나미 켄토 해산물 총집합! 토마토 조림 파스타",
+      "price": 15000
+    },
+    {
+      "name": "[후기 한정] 이타도리 유지 흑섬 라멘",
+      "price": 15000
+    },
+    {
+      "name": "[후기 한정] 쿠기사키 노바라 공명 또띠아",
+      "price": 15000
+    },
+    {
+      "name": "[후기 한정] 후시구로 메구미 옥견 카레",
+      "price": 15000
+    },
+    {
+      "name": "[후기 한정] 고죠 사토루 무하한 주술 팬케이크",
+      "price": 12000
+    },
+    {
+      "name": "[후기 한정] 나나미 켄토 넥타이 모티프 쉬폰 케이크",
+      "price": 12000
+    }
+  ],
+  "goods": [
+    {
+      "name": "랜덤 캔뱃지 (5종)",
+      "price": 6000
+    },
+    {
+      "name": "아크릴 스탠드 (5종, 각)",
+      "price": 21000
+    },
+    {
+      "name": "랜덤 아크릴 키링 (5종)",
+      "price": 8000
+    },
+    {
+      "name": "랜덤 SD 아크릴 스탠드 (5종)",
+      "price": 11000
+    },
+    {
+      "name": "랜덤 SD 아크릴 키링 (5종)",
+      "price": 8000
+    },
+    {
+      "name": "엽서 5종 세트",
+      "price": 10000
+    }
+  ],
+  "notes": [
+    "시즌: 전기 9/23(수)~10/28(수), 후기 10/29(목)~12/01(화). 통상 메뉴는 전 기간 9/23~12/01.",
+    "MD 6종 판매 기간 9/23~12/01. 럭키드로우는 '추후 공개 예정' (9/21 기준 미공개).",
+    "추석 연휴(9/24~9/27) 연중무휴. 추석 기간 AK PLAZA 오픈 10:30이나 카페 예약은 11시 1타임부터.",
+    "음료와 테이크아웃 메뉴 외 테이크아웃 불가. 랜덤 특전 교환 불가, 환불 시 특전 반환. 특전 소진 시 조기 종료 가능.",
+    "메뉴 및 MD 결제는 예약자 우선. 외부 음식물 반입 및 반려동물 동반 불가.",
+    "F&B/MD 재고 현황: https://app.notion.com/p/2026-3c8478ac33fd802f935ad0436644231f (linktree 기재).",
+    "운영시간 충돌: 공식 IG 프로필 '평일&주말 11:00~21:15' vs 예약 7회차 종료 21:20 vs popga '월-금 11:00~22:00 / 토-일 10:30~22:00'. 공식 쪽(11:00~21:15 / 회차표)을 우선 권장.",
+    "X(@BOX_CAFE_AK)에도 동일 이미지 게시 (전기/후기 F&B 분리 게시)."
+  ],
+  "unverified_popga": [
+    "운영시간 월-금 11:00~22:00, 토-일 10:30~22:00 (공식 자료에서 확인 안 됨, 공식 프로필은 11:00~21:15)",
+    "주소 도로명 '서울 마포구 양화로 188' (AK PLAZA 홍대 주소, 공식 게시물엔 주소 텍스트 없음)"
+  ],
+  "images": [
+    {
+      "file": "poster_main.jpg",
+      "source_url": "https://www.instagram.com/p/DdU_Ooaj_JR/",
+      "what": "main poster (일정/장소)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "menu_regular_early.jpg",
+      "source_url": "https://www.instagram.com/p/DdXn7TMmNfw/",
+      "what": "menu list - 통상 메뉴 (전기 버전, 티라미수 전기 필름카드 특전)",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "menu_limited_early.jpg",
+      "source_url": "https://www.instagram.com/p/DdXn7TMmNfw/",
+      "what": "menu list - [전기] 한정 메뉴 9/23~10/28",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "benefit_menu_coaster_early.jpg",
+      "source_url": "https://www.instagram.com/p/DdXn7TMmNfw/",
+      "what": "benefit - [전기] 메뉴 구매 특전 사각 코스터 5종",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "menu_regular_late.jpg",
+      "source_url": "https://www.instagram.com/p/DdXn7TMmNfw/",
+      "what": "menu list - 통상 메뉴 (후기 버전, 티라미수 후기 필름카드 특전)",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "menu_limited_late.jpg",
+      "source_url": "https://www.instagram.com/p/DdXn7TMmNfw/",
+      "what": "menu list - [후기] 한정 메뉴 10/29~12/01",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "benefit_menu_coaster_late.jpg",
+      "source_url": "https://www.instagram.com/p/DdXn7TMmNfw/",
+      "what": "benefit - [후기] 메뉴 구매 특전 사각 코스터 5종",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "md_list.jpg",
+      "source_url": "https://www.instagram.com/p/DdXl0ivD1Br/",
+      "what": "goods list - MD 6종",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "benefit_md_ticket.jpg",
+      "source_url": "https://www.instagram.com/p/DdXl0ivD1Br/",
+      "what": "benefit - MD 3만원 이상 오리지널 티켓 5종",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "reservation_early_timetable.jpg",
+      "source_url": "https://www.instagram.com/p/DdXtN_-GEvr/",
+      "what": "reservation - [전기] 사전예약 안내/회차표",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "reservation_early_notice.jpg",
+      "source_url": "https://www.instagram.com/p/DdXtN_-GEvr/",
+      "what": "venue rules - 콜라보 카페 주의사항",
+      "width": 1080,
+      "height": 1350
+    }
+  ]
+}

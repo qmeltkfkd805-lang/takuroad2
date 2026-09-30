@@ -1,0 +1,46 @@
+{
+ "plan": "2026-09-28-i",
+ "at": "2026-09-28T07:26:09.622Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "tcg-station-yongsan",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "floor_info": "아이파크몰 6층 1-1호"
+   },
+   "extras": {
+    "works": {
+     "added": [],
+     "already": 1,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "ichibankuji-jamsil",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "floor_info": "롯데월드 쇼핑몰동 지하 1층 29호"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "에반게리온",
+      "은혼",
+      "드래곤볼",
+      "하이큐!!"
+     ],
+     "already": 1,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

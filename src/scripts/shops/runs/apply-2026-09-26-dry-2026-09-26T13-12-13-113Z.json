@@ -1,0 +1,379 @@
+{
+ "plan": "2026-09-26",
+ "at": "2026-09-26T13:12:13.113Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "popmart-anguk",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5772474316638,
+    "lng": 126.985652680709,
+    "road": "서울 종로구 북촌로 5",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "팝마트 안국점",
+    "addr": "서울 종로구 북촌로 5",
+    "floor_info": null,
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "description": "POP MART(팝마트) 공식 아트토이 매장입니다. 안국동(북촌로)에 있으며 매일 10:00~21:00 영업합니다(공식 매장 안내).",
+    "lat": 37.5772474316638,
+    "lng": 126.985652680709,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:12:13.113Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-hirono-gwangjang",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5701196320637,
+    "lng": 126.999798964693,
+    "road": "서울 종로구 창경궁로 88",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "팝마트 히로노 광장마켓점",
+    "addr": "서울 종로구 창경궁로 88",
+    "floor_info": null,
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "20:00"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "description": "POP MART(팝마트) 공식 아트토이 매장입니다. 히로노(HIRONO) 테마 매장으로, 매일 10:00~20:00 영업합니다(공식 매장 안내).",
+    "lat": 37.5701196320637,
+    "lng": 126.999798964693,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:12:13.113Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "히로노"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-centum",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1688178394069,
+    "lng": 129.129523260187,
+    "road": "부산 해운대구 센텀남대로 35",
+    "building": "신세계백화점센텀시티점",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "팝마트 신세계 센텀시티점",
+    "addr": "부산 해운대구 센텀남대로 35",
+    "floor_info": "신세계 센텀시티 B2 하이퍼그라운드",
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": "051-745-2383",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "description": "POP MART(팝마트) 공식 아트토이 매장입니다. 신세계 센텀시티 지하 2층 하이퍼그라운드에 있습니다. 금·토·일은 20:30까지 영업합니다(공식 매장 안내).",
+    "lat": 35.1688178394069,
+    "lng": 129.129523260187,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:12:13.113Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-busan-samjung",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1529239695577,
+    "lng": 129.059604905121,
+    "road": "부산 부산진구 중앙대로 672",
+    "building": "삼정타워",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "팝마트 부산 삼정타워점",
+    "addr": "부산 부산진구 중앙대로 672",
+    "floor_info": "삼정타워 1층",
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": "051-808-6606",
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "22:30"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "22:30"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "description": "POP MART(팝마트) 공식 아트토이 매장입니다. 서면 삼정타워 1층에 있습니다. 금·토는 22:30까지 영업합니다(공식 매장 안내).",
+    "lat": 35.1529239695577,
+    "lng": 129.059604905121,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:12:13.113Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-starfield-anseong",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.9946334108693,
+    "lng": 127.147249620616,
+    "road": "경기 안성시 공도읍 서동대로 3930-39",
+    "building": "스타필드 안성",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "팝마트 스타필드 안성점",
+    "addr": "경기 안성시 공도읍 서동대로 3930-39",
+    "floor_info": "스타필드 안성 2142호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": "031-8092-1658",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "description": "POP MART(팝마트) 공식 아트토이 매장입니다. 스타필드 안성 2142호에 있으며 매일 10:00~22:00 영업합니다(공식 매장 안내).",
+    "lat": 36.9946334108693,
+    "lng": 127.147249620616,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:12:13.113Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

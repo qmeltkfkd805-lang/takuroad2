@@ -1,0 +1,42 @@
+{
+ "name": "2026-09-23",
+ "items": [
+  {
+   "action": "insert",
+   "key": "animate-hongdae",
+   "brand": "애니메이트",
+   "brand_links": ["https://www.animate-onlineshop.co.kr/", "https://www.animate.co.jp/"],
+   "fields": {
+    "name": "애니메이트 홍대점",
+    "addr": "서울 마포구 양화로 188",
+    "floor_info": "AK&홍대(애경타워) 5층",
+    "cats": ["굿즈샵", "서점"],
+    "phone": "02-3144-7357",
+    "shop_link": "https://x.com/animate_hongdae",
+    "sns_links": ["https://x.com/animate_hongdae"],
+    "nearest_station": "홍대입구역",
+    "description": "애니메이션·만화·게임 공식 굿즈와 서적을 판매하는 애니메이트 코리아 매장입니다. AK&홍대(애경타워) 5층에 있습니다.\n\n가는 길: 2호선 홍대입구역 8번 출구에서 동교동삼거리 방면으로 약 150m (AK&홍대 공식 안내).\n\n영업시간은 매장 공식 X(@animate_hongdae) 공지를 확인해 주세요."
+   },
+   "sources": [
+    {"url": "https://www.animate-onlineshop.co.kr/main/html.php?htmid=service/shopinfo.html", "fields": ["name", "addr", "floor_info", "phone", "sns_links"], "checked_at": "2026-09-23"},
+    {"url": "https://www.akplaza.com/store/introduce?store=51", "fields": ["addr", "nearest_station", "description(가는 길)"], "checked_at": "2026-09-23"}
+   ],
+   "unconfirmed": ["hours", "closed_days", "parking"],
+   "photo": "needed",
+   "notes": "매장 자체 영업시간 공식 출처 미확인(X 프로필 조회 불가). AK&홍대 쇼핑몰 영업시간(11:00~22:00, 주말·공휴일 10:30~22:00)은 매장 시간과 다를 수 있어 입력하지 않음."
+  },
+  {
+   "action": "update",
+   "key": "animate-suwon-phone",
+   "shop_id": "173a029b-fc61-4282-be89-58e4ade23cbf",
+   "expect_updated_at": "2026-09-15T06:42:29.059659+00:00",
+   "fields": {"phone": "031-240-1993"},
+   "reason": "애니메이트 코리아 공식 매장안내 페이지의 수원점 전화번호(빈 값 채움)",
+   "sources": [
+    {"url": "https://www.animate-onlineshop.co.kr/main/html.php?htmid=service/shopinfo.html", "fields": ["phone", "addr(경기도 수원시 팔달구 덕영대로 924 AK플라자 5층 — DB와 일치)", "sns(x.com/animate_suwon — DB와 일치)"], "checked_at": "2026-09-23"}
+   ],
+   "unconfirmed": ["hours"],
+   "notes": "shop_link 가 일본 본사(animate.co.jp)로 되어 있음 — 매장 공식 X(x.com/animate_suwon)로 바꿀지 검토 필요(pending)."
+  }
+ ]
+}

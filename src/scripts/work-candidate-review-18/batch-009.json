@@ -1,0 +1,170 @@
+[
+  {
+    "slug": "yuki-yuna-is-a-hero-anime",
+    "name": "유우키 유우나는 용사다",
+    "englishName": "Yuki Yuna Is a Hero",
+    "aliases": [],
+    "description": "봉사부 소녀들이 용사로 선택되어 일상을 지키는 전투에 나선다",
+    "genres": [
+      "마법소녀",
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "maria-the-virgin-witch-anime",
+    "name": "순결의 마리아",
+    "englishName": "Maria the Virgin Witch",
+    "aliases": [],
+    "description": "전쟁을 싫어하는 마녀가 전투를 방해하다 천상의 제재를 받는다",
+    "genres": [
+      "판타지",
+      "코미디",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "heavy-object-anime",
+    "name": "헤비 오브젝트",
+    "englishName": "Heavy Object",
+    "aliases": [],
+    "description": "초대형 병기가 지배하는 전장에서 두 병사가 지략으로 병기를 파괴한다",
+    "genres": [
+      "SF",
+      "액션"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "dimension-w-anime",
+    "name": "디멘션 W",
+    "englishName": "Dimension W",
+    "aliases": [],
+    "description": "불법 에너지 코일을 회수하는 남자와 로봇 소녀가 기술의 비밀을 쫓는다",
+    "genres": [
+      "SF",
+      "액션",
+      "추리"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "record-of-grancrest-war-anime",
+    "name": "그랑크레스트 전기",
+    "englishName": "Record of Grancrest War",
+    "aliases": [],
+    "description": "혼돈의 대륙에서 젊은 영주와 마법사가 평화를 위해 세력을 넓힌다",
+    "genres": [
+      "판타지",
+      "액션",
+      "로맨스"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "release-the-spyce-anime",
+    "name": "릴리즈 더 스파이스",
+    "englishName": "RELEASE THE SPYCE",
+    "aliases": [],
+    "description": "후각이 뛰어난 여고생이 비밀 스파이 조직에 들어가 범죄와 싸운다",
+    "genres": [
+      "액션",
+      "학원"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "alice-zoroku-anime",
+    "name": "앨리스와 조로쿠",
+    "englishName": "Alice & Zoroku",
+    "aliases": [],
+    "description": "초능력 연구소를 탈출한 소녀가 완고한 노인 조로쿠와 가족이 되어간다",
+    "genres": [
+      "판타지",
+      "액션",
+      "가족"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "id-0-anime",
+    "name": "아이디 제로",
+    "englishName": "ID-0",
+    "aliases": [],
+    "description": "우주 광물 채굴 중 사고를 당한 학생이 로봇 몸을 쓰는 굴착팀에 합류한다",
+    "genres": [
+      "SF",
+      "로봇/메카",
+      "모험"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "atom-the-beginning-anime",
+    "name": "아톰 더 비기닝",
+    "englishName": "Atom: The Beginning",
+    "aliases": [],
+    "description": "젊은 공학도들이 마음을 지닌 로봇을 만들며 로봇 공학의 미래를 연다",
+    "genres": [
+      "SF",
+      "로봇/메카",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "dragon-pilot-hisone-and-masotan-anime",
+    "name": "히소네와 마소땅",
+    "englishName": "Dragon Pilot: Hisone and Masotan",
+    "aliases": [],
+    "description": "신입 항공자위대원이 전투기로 위장한 용의 조종사로 선택된다",
+    "genres": [
+      "판타지",
+      "드라마",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  }
+]

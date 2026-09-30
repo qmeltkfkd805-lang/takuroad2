@@ -1,0 +1,143 @@
+{
+ "plan": "2026-09-29-c",
+ "at": "2026-09-29T05:10:21.121Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "dotorisup-jeju",
+   "action": "insert",
+   "geocode": {
+    "lat": 33.4362142409105,
+    "lng": 126.733212125567,
+    "road": "제주특별자치도 제주시 구좌읍 대천서길 16",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "80d24569-eaa3-4979-ac03-d079d2e41b20",
+   "slug": "dotorisup-jejujeom",
+   "extras": {
+    "works": {
+     "added": [
+      "스튜디오 지브리"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new",
+      "doll",
+      "plushie-new",
+      "stationery",
+      "tableware",
+      "household-items"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "rksg-plus-jamsil",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5113096112036,
+    "lng": 127.098141751177,
+    "road": "서울 송파구 올림픽로 240",
+    "building": "롯데월드",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "d040f1e2-f600-4904-925a-bc041df96c7a",
+   "slug": "rirakkuma-seumikogurasi-peulreoseu-by-jamsiljeom",
+   "extras": {
+    "works": {
+     "added": [
+      "리락쿠마",
+      "스미코구라시"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "rksg-plus-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5577458058734,
+    "lng": 126.926498328277,
+    "road": "서울 마포구 양화로 188",
+    "building": "애경타워",
+    "count": 2
+   },
+   "status": "INSERTED",
+   "id": "fabcf04d-b244-4433-b2d7-c396b8267100",
+   "slug": "rirakkuma-seumikogurasi-peulreoseu-by-hongdaejeom",
+   "extras": {
+    "works": {
+     "added": [
+      "리락쿠마",
+      "스미코구라시"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "play-one-piece-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5577458058734,
+    "lng": 126.926498328277,
+    "road": "서울 마포구 양화로 188",
+    "building": "애경타워",
+    "count": 2
+   },
+   "status": "INSERTED",
+   "id": "0eebca22-3569-43eb-86ca-3c68db965709",
+   "slug": "play-one-piece-hongdaejeom",
+   "extras": {
+    "works": {
+     "added": [
+      "원피스"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "daewonshop-thehyundai-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8666296004242,
+    "lng": 128.590625718585,
+    "road": "대구 중구 달구벌대로 2077",
+    "building": "현대백화점",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "c68fae22-7874-4df5-9e7c-3f22d144c94e",
+   "slug": "daewonsyap-deohyeondae-daegujeom",
+   "extras": {
+    "works": {
+     "added": [
+      "닌텐도"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "custom_goods": {
+     "added": [
+      "비디오게임",
+      "게임기·게임 액세서리"
+     ]
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-c-2026-09-29T05-10-21-121Z.json"
+}

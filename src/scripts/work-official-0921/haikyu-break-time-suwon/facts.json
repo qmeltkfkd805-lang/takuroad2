@@ -1,0 +1,147 @@
+{
+  "key": "haikyu-break-time-suwon",
+  "official_urls": [
+    "https://www.instagram.com/p/DdGb2EVJFFB/",
+    "https://www.instagram.com/p/DdXryLeCa-0/",
+    "https://www.instagram.com/p/DdaQkm5CdHD/",
+    "https://www.instagram.com/p/Ddh-_PpiXPo/"
+  ],
+  "title_official": "하이큐!! 쉬는 시간 POP-UP STORE ENCORE IN SUWON",
+  "work": "하이큐!!",
+  "type_guess": "popup",
+  "start_date": "2026-09-24",
+  "end_date": "2026-10-13",
+  "branches": [
+    {
+      "name": "ENCORE IN SUWON",
+      "venue": "AK PLAZA 수원 5층 SMG STORE",
+      "address": "경기 수원시 팔달구 덕영대로 924 AK플라자 수원",
+      "floor_detail": "5층 SMG STORE",
+      "hours": "월-일 10:30~22:00 (주말/평일 동일)",
+      "start_date": "2026-09-24",
+      "end_date": "2026-10-13"
+    }
+  ],
+  "entry": "무료, 현장 자율 입장 (사전예약 없음). 매장 내부 혼잡 시 대기 발생 가능 — 현장 대기 발생 시 매장 앞 나우웨이팅 등록 후 대기. 운영 시간 이전 외부 대기 라인 운영 안 함.",
+  "benefits": [
+    {
+      "condition": "2만원 이상 구매 시 (2만원 당 1매, 당일 영수증 기준, 영수증 합산 불가, 플랫 가챠 결제 금액은 제외)",
+      "item": "캐릭터 북마크 랜덤 1종",
+      "count_kinds": "12종"
+    }
+  ],
+  "menu": [],
+  "goods": [
+    {
+      "name": "랜덤 캔배지 (쉬는 시간 ver.) 12종, 각",
+      "price": 5500
+    },
+    {
+      "name": "랜덤 아크릴 명찰 (쉬는 시간 ver.) 12종, 각",
+      "price": 7000
+    },
+    {
+      "name": "랜덤 학생증 카드 (쉬는 시간 ver.) 12종, 각",
+      "price": 6200
+    },
+    {
+      "name": "랜덤 아크릴 키링 (학교 플래카드 st.) 5종, 각",
+      "price": 9500
+    },
+    {
+      "name": "아크릴 스탠드 (쉬는 시간 ver.) 12종, 각",
+      "price": 19000
+    },
+    {
+      "name": "메탈 배지 (교복 단추 st.) 5종, 각",
+      "price": 12000
+    },
+    {
+      "name": "[플랫 가챠 신상품] 랜덤 학교 엠블럼 와펜 5종, 각",
+      "price": 6000
+    },
+    {
+      "name": "[플랫 가챠 신상품] 랜덤 학생수첩 노트 & 스티커 (쉬는 시간 ver.) 12종, 각",
+      "price": 6000
+    }
+  ],
+  "notes": [
+    "앙코르 팝업 (이전 '쉬는 시간' 팝업의 수원 재개최). 주최/수입: 에스엠지홀딩스(SMG STORE).",
+    "플랫 가챠 신상품 2종은 수원 앵콜 팝업에서 먼저 판매, 행사 종료 후에도 판매 예정. 플랫 가챠 머신은 상품별 1대, 카드 결제만 가능, 대기 많을 시 1인 연속 2회 제한.",
+    "생수 제외 음료/음식물 반입 금지. 모든 상품 한정 수량. 단순 변심 교환/환불 불가; 불량 교환·환불은 구매 영수증 2장 지참, 팝업 기간 내 방문. 환불 시 특전 반납.",
+    "IG 프로필 링크: notion 'ENCORE POP-UP MD' 페이지 (www.notion.so/haikyu/10-ENCORE-POP-UP-MD-23484ffe4ede804f9cb5eb9db31f394e) — 미확인(열람 안 함)."
+  ],
+  "unverified_popga": [],
+  "images": [
+    {
+      "file": "poster_main.jpg",
+      "source_url": "https://www.instagram.com/p/DdGb2EVJFFB/",
+      "what": "main poster (ENCORE IN SUWON 일정&장소)",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "goods_list.jpg",
+      "source_url": "https://www.instagram.com/p/DdXryLeCa-0/",
+      "what": "goods list (6종 라인 + 가격)",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "benefit_bookmark.jpg",
+      "source_url": "https://www.instagram.com/p/DdXryLeCa-0/",
+      "what": "benefit - 2만원 이상 캐릭터 북마크 12종",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "flat_gacha_new_goods.jpg",
+      "source_url": "https://www.instagram.com/p/DdaQkm5CdHD/",
+      "what": "goods - 플랫 가챠 신상품 2종 + 가격",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "flat_gacha_guide_1.jpg",
+      "source_url": "https://www.instagram.com/p/DdaQkm5CdHD/",
+      "what": "플랫 가챠 머신 이용 안내 (구매/이용제한)",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "flat_gacha_guide_2.jpg",
+      "source_url": "https://www.instagram.com/p/DdaQkm5CdHD/",
+      "what": "플랫 가챠 머신 이용 안내 (교환/환불)",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "flat_gacha_wappen.jpg",
+      "source_url": "https://www.instagram.com/p/DdaQkm5CdHD/",
+      "what": "goods - 학교 엠블럼 와펜 5종 상세",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "flat_gacha_student_id_note.jpg",
+      "source_url": "https://www.instagram.com/p/DdaQkm5CdHD/",
+      "what": "goods - 학생수첩 노트&스티커 12종 상세",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "notice_period_hours_venue.jpg",
+      "source_url": "https://www.instagram.com/p/Ddh-_PpiXPo/",
+      "what": "운영 기간/시간/장소",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "notice_rules.jpg",
+      "source_url": "https://www.instagram.com/p/Ddh-_PpiXPo/",
+      "what": "이용 안내 (현장 자율 입장 등)",
+      "width": 1440,
+      "height": 1440
+    }
+  ]
+}

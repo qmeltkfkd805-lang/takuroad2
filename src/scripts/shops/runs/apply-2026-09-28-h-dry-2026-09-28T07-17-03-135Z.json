@@ -1,0 +1,389 @@
+{
+ "plan": "2026-09-28-h",
+ "at": "2026-09-28T07:17:03.135Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "pokemon-cardshop-gangneung",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.7654741599775,
+    "lng": 128.878406356845,
+    "road": "강원특별자치도 강릉시 솔올로 40",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "포켓몬 카드샵 카드웨이브 강릉",
+    "addr": "강원 강릉시 솔올로 40",
+    "floor_info": "3층",
+    "cats": [
+     "카드/TCG"
+    ],
+    "phone": "070-8680-8510",
+    "hours": {
+     "mon": null,
+     "tue": {
+      "open": "12:00",
+      "close": "19:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "19:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "19:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "19:00"
+     }
+    },
+    "shop_link": "https://pokemonkorea.co.kr/pokemon_cardshop/menu809",
+    "sns_links": [],
+    "description": "포켓몬코리아 공식 인증 포켓몬 카드 게임 전문 매장 \"POKÉMON CARD SHOP\"으로, 강릉 솔올로 40 3층에 2026년 9월 12일 문을 열었습니다.\n수·금 12:00~21:00, 화·목·토·일 12:00~19:00 영업하며 월요일은 휴무입니다(공식 안내). 공식 대회·리그는 포켓몬 카드 게임 공식 예약 사이트에서 신청합니다.",
+    "lat": 37.7654741599775,
+    "lng": 128.878406356845,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T07:17:03.135Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pokemon-cardshop-guri",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5866412286942,
+    "lng": 127.13952733353,
+    "road": "경기 구리시 장자대로86번길 32",
+    "building": "이루미타워",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "포켓몬 카드샵 TCG 라인 구리",
+    "addr": "경기 구리시 장자대로86번길 32",
+    "floor_info": "2층",
+    "cats": [
+     "카드/TCG"
+    ],
+    "phone": "031-558-3088",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "13:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "13:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://pokemonkorea.co.kr/pokemon_cardshop/menu789",
+    "sns_links": [],
+    "description": "포켓몬코리아 공식 인증 포켓몬 카드 게임 전문 매장 \"POKÉMON CARD SHOP\"으로, 구리 장자대로86번길 32 2층에 2026년 8월 22일 문을 열었습니다.\n12:00~21:00 영업하며 화·목요일은 13:00~22:00입니다(공식 안내). 공식 대회·리그는 포켓몬 카드 게임 공식 예약 사이트에서 신청합니다.",
+    "lat": 37.5866412286942,
+    "lng": 127.13952733353,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T07:17:03.135Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pokemon-cardshop-cheonan",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.822353993511,
+    "lng": 127.125621033521,
+    "road": "충남 천안시 서북구 백석로 130",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "포켓몬 카드샵 카드프라임 천안",
+    "addr": "충남 천안시 서북구 백석로 130",
+    "floor_info": "2층",
+    "cats": [
+     "카드/TCG"
+    ],
+    "phone": "070-8890-1110",
+    "hours": {
+     "mon": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "13:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://pokemonkorea.co.kr/pokemon_cardshop/menu776",
+    "sns_links": [],
+    "description": "포켓몬코리아 공식 인증 포켓몬 카드 게임 전문 매장 \"POKÉMON CARD SHOP\"으로, 천안 백석로 130 2층에 2026년 7월 26일 문을 열었습니다.\n평일·주말 모두 13:00~21:00 영업합니다(공식 안내). 공식 대회·리그는 포켓몬 카드 게임 공식 예약 사이트에서 신청합니다.",
+    "lat": 36.822353993511,
+    "lng": 127.125621033521,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T07:17:03.135Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pokemon-cardshop-daejeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.3510503853713,
+    "lng": 127.381835458876,
+    "road": "대전 서구 둔산로 72",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "포켓몬 카드샵 카드롤 대전",
+    "addr": "대전 서구 둔산로 72",
+    "floor_info": "등오빌딩 5층",
+    "cats": [
+     "카드/TCG"
+    ],
+    "phone": "010-4849-7220",
+    "hours": {
+     "mon": {
+      "open": "14:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "14:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "14:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "14:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "14:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "13:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://pokemonkorea.co.kr/pokemon_cardshop/menu749",
+    "sns_links": [],
+    "description": "포켓몬코리아 공식 인증 포켓몬 카드 게임 전문 매장 \"POKÉMON CARD SHOP\"으로, 대전 둔산로 72 등오빌딩 5층에 2026년 5월 2일 문을 열었습니다.\n평일 14:00~22:00, 주말 13:00~21:00 영업합니다(공식 안내). 공식 대회·리그는 포켓몬 카드 게임 공식 예약 사이트에서 신청합니다.",
+    "lat": 36.3510503853713,
+    "lng": 127.381835458876,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T07:17:03.135Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pokemon-cardshop-busan",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.2054454046723,
+    "lng": 129.079333783003,
+    "road": "부산 동래구 명륜로129번길 54",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "포켓몬 카드샵 카드베이스 부산",
+    "addr": "부산 동래구 명륜로129번길 54",
+    "floor_info": "4층",
+    "cats": [
+     "카드/TCG"
+    ],
+    "phone": "010-9825-9697",
+    "hours": {
+     "mon": {
+      "open": "14:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "14:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "14:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "14:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "14:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "13:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "13:00",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://pokemonkorea.co.kr/pokemon_cardshop/menu661",
+    "sns_links": [],
+    "description": "포켓몬코리아 공식 인증 포켓몬 카드 게임 전문 매장 \"POKÉMON CARD SHOP\"으로, 부산 동래구 명륜로129번길 54 4층에 2025년 9월 20일 문을 열었습니다.\n평일 14:00~22:00, 주말 13:00~22:00 영업합니다(공식 안내). 공식 대회·리그는 포켓몬 카드 게임 공식 예약 사이트에서 신청합니다.",
+    "lat": 35.2054454046723,
+    "lng": 129.079333783003,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T07:17:03.135Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

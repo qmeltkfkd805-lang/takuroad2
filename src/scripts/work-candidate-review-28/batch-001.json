@@ -1,0 +1,12 @@
+[
+  {"slug":"girlish-number-anime","name":"걸리시 넘버","englishName":"Girlish Number","aliases":[],"description":"신인 성우 치토세가 애니메이션 업계의 현실과 동료들과의 경쟁을 겪으며 성장한다.","genres":["드라마","코미디","일상"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"erased-anime","name":"나만이 없는 거리","englishName":"ERASED","aliases":[],"description":"시간을 되돌리는 능력을 지닌 사토루가 과거로 돌아가 연쇄 유괴 사건과 가족의 비극을 막는다.","genres":["추리","드라마","판타지"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"haruchika-anime","name":"하루치카","englishName":"Haruchika: Haruta & Chika","aliases":[],"description":"취주악부의 하루타와 치카가 부원을 모으면서 학교 안의 여러 수수께끼를 해결한다.","genres":["추리","음악","학원"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"myriad-colors-phantom-world-anime","name":"무채한의 팬텀 월드","englishName":"Myriad Colors Phantom World","aliases":[],"description":"팬텀이 보이는 세계에서 하루히코와 동료들이 학교에 나타나는 괴이를 퇴치한다.","genres":["판타지","액션","학원","코미디"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"luck-and-logic-anime","name":"럭 앤 로직","englishName":"Luck & Logic","aliases":[],"description":"이세계 사도와 계약해 힘을 얻은 로지컬리스트들이 도시를 위협하는 침략자와 싸운다.","genres":["판타지","액션","SF"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"and-you-thought-there-is-never-a-girl-online-anime","name":"온라인 게임의 신부는 여자아이가 아니라고 생각한 거야?","englishName":"And You Thought There Is Never a Girl Online?","aliases":[],"description":"온라인 게임 길드원들이 현실에서 만나 게임과 학교생활 사이의 관계를 이어간다.","genres":["로맨스","코미디","학원"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"kuromukuro-anime","name":"쿠로무쿠로","englishName":"Kuromukuro","aliases":[],"description":"현대에 깨어난 사무라이와 여고생이 거대 로봇을 타고 외계 침략자에 맞선다.","genres":["로봇/메카","SF","액션"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"gangsta-anime","name":"갱스터","englishName":"Gangsta.","aliases":[],"description":"범죄도시 에르가스툴룸의 해결사 워릭과 니콜라스가 조직 간 분쟁과 음모에 휘말린다.","genres":["액션","드라마","추리"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"prison-school-anime","name":"감옥학원","englishName":"Prison School","aliases":[],"description":"여학교에 입학한 다섯 남학생이 규칙을 어겨 교내 감옥에서 가혹한 생활을 시작한다.","genres":["코미디","학원"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"shimoneta-anime","name":"야한 이야기라는 개념이 존재하지 않는 지루한 세계","englishName":"Shimoneta","aliases":[],"description":"음란 표현이 금지된 사회에서 고교생 타누키치가 저항 조직의 활동에 끌려든다.","genres":["코미디","학원"],"ipType":["애니"],"officialUrl":"","source":""}
+]

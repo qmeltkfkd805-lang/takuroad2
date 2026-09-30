@@ -1,0 +1,464 @@
+{
+ "plan": "2026-09-27",
+ "at": "2026-09-27T14:20:53.750Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "popmart-daejeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.3406861255513,
+    "lng": 127.389548388967,
+    "road": "대전 서구 계룡로 598",
+    "building": "롯데백화점",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "팝마트 대전점",
+    "addr": "대전 서구 계룡로 598",
+    "floor_info": "롯데백화점 대전점 1층",
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "place_id": "50d153c6-da83-4ef6-8ef1-6a16bfd0bf24",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 이후 10분당 1,000원\n구매 시 무료: 1만원 1시간 · 5만원 2시간 · 10만원 3시간 · 20만원 4시간 · 30만원 5시간\n카드 결제만 가능(현금 불가)",
+    "description": "POP MART(팝마트) 공식 아트토이 매장으로, 롯데백화점 대전점 1층에 있습니다. 월~목 10:30~20:00, 금~일 10:30~20:30 영업합니다(공식 매장 안내). 백화점 휴점일은 롯데백화점 대전점 공지를 확인해 주세요.",
+    "lat": 36.3406861255513,
+    "lng": 127.389548388967,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-27T14:20:53.750Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "figurepresso-sindorim",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5071169087537,
+    "lng": 126.890222775625,
+    "road": "서울 구로구 새말로 97",
+    "building": "신도림테크노마트",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "피규어프레소 신도림점",
+    "addr": "서울 구로구 새말로 97",
+    "floor_info": "신도림 테크노마트 3층 58호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": "010-7106-9467",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://figurepresso.com",
+    "sns_links": [],
+    "place_id": "a8644d38-c8dc-42fc-a06c-6b97327e1412",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 일반 주차장 B3F~B7F\n최초 30분 무료, 이후 30분당 1,500원\n2만원 이상 구매 영수증 제시 시 2시간 30분 추가(총 3시간)\n우대 할인 중복 불가 · 등록: 1F·10F 안내데스크, 이마트 고객센터 앞",
+    "description": "정품 피규어 전문 매장 피규어프레소의 신도림점으로, 신도림 테크노마트 3층 58호(에스컬레이터 바로 앞)에 있습니다. 2026년 5월 홍대 에프레소점이 이곳으로 확장 이전했습니다. 매일 12:00~21:00 영업하며, 매월 둘째·넷째 목요일은 휴무입니다(공식 안내). 신도림역 3번 출구에서 지하 통로로 연결됩니다.",
+    "lat": 37.5071169087537,
+    "lng": 126.890222775625,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-27T14:20:53.750Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "hanwoori-sindorim",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5071169087537,
+    "lng": 126.890222775625,
+    "road": "서울 구로구 새말로 97",
+    "building": "신도림테크노마트",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "한우리 신도림 테크노마트점",
+    "addr": "서울 구로구 새말로 97",
+    "floor_info": "신도림 테크노마트 2층 37호",
+    "cats": [
+     "게임샵"
+    ],
+    "phone": "02-2111-7144",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     }
+    },
+    "shop_link": "https://www.gamewoori.com",
+    "sns_links": [],
+    "place_id": "a8644d38-c8dc-42fc-a06c-6b97327e1412",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 일반 주차장 B3F~B7F\n최초 30분 무료, 이후 30분당 1,500원\n2만원 이상 구매 영수증 제시 시 2시간 30분 추가(총 3시간)\n우대 할인 중복 불가 · 등록: 1F·10F 안내데스크, 이마트 고객센터 앞",
+    "description": "PlayStation·닌텐도 스위치 등 콘솔 게임을 판매하는 게임샵 한우리(겜우리)의 신도림 테크노마트 매장으로, 2층 37호에 있습니다. 매일 10:30~20:30 영업하며, 매월 둘째·넷째 화요일은 휴무입니다(공식 안내).",
+    "lat": 37.5071169087537,
+    "lng": 126.890222775625,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-27T14:20:53.750Z",
+    "info_confirmed_by_type": "admin"
+   }
+  },
+  {
+   "key": "lashinbang-seoul-main",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5576896349106,
+    "lng": 126.925430561045,
+    "road": "서울 마포구 양화로 178-5",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "라신반 서울본점",
+    "addr": "서울 마포구 양화로 178-5",
+    "floor_info": "LC타워 별관 지하 1층",
+    "cats": [
+     "중고샵",
+     "굿즈샵"
+    ],
+    "phone": null,
+    "hours": null,
+    "shop_link": "https://x.com/lashinbang_kr",
+    "sns_links": [
+     "https://x.com/lashinbang_kr",
+     "https://www.instagram.com/lashinbang_kr/"
+    ],
+    "place_id": "886751d0-19ad-4e74-87cf-5f771d79a76a",
+    "description": "일본 중고 애니메이션 굿즈·피규어 전문점 라신반(Lashinbang)의 한국 서울본점으로, 홍대입구역 4번 출구에서 도보 3분 거리 LC타워 별관 지하 1층에 있습니다. 중고 굿즈 매입도 합니다. 영업시간·전화번호는 공식 계정 안내에 따라 네이버 플레이스를 확인해 주세요.",
+    "lat": 37.5576896349106,
+    "lng": 126.925430561045,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-27T14:20:53.750Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "귀멸의 칼날"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "lashinbang-seoul-2",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5071169087537,
+    "lng": 126.890222775625,
+    "road": "서울 구로구 새말로 97",
+    "building": "신도림테크노마트",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "라신반 서울2호점",
+    "addr": "서울 구로구 새말로 97",
+    "floor_info": "신도림 테크노마트 3층",
+    "cats": [
+     "중고샵",
+     "굿즈샵"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "20:00"
+     }
+    },
+    "shop_link": "https://x.com/lashinbang_kr",
+    "sns_links": [
+     "https://x.com/lashinbang_kr",
+     "https://www.instagram.com/lashinbang_kr/"
+    ],
+    "place_id": "a8644d38-c8dc-42fc-a06c-6b97327e1412",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 일반 주차장 B3F~B7F\n최초 30분 무료, 이후 30분당 1,500원\n2만원 이상 구매 영수증 제시 시 2시간 30분 추가(총 3시간)\n우대 할인 중복 불가 · 등록: 1F·10F 안내데스크, 이마트 고객센터 앞",
+    "description": "일본 중고 애니메이션 굿즈·피규어 전문점 라신반(Lashinbang)의 한국 두 번째 직영점으로, 신도림역 2번 출구 앞 신도림 테크노마트 3층에 있습니다. 매일 12:00~20:00 영업합니다(2025년 7월 공식 공지 기준). 중고 굿즈는 예약 없이 상시 매입합니다.",
+    "lat": 37.5071169087537,
+    "lng": 126.890222775625,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-27T14:20:53.750Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "recheck-gashapon-jamsil",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "floor_info": "롯데월드 쇼핑몰동 지하 1층 36호",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "yearRound": true
+    },
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+    "description": "반다이 공식 캡슐토이 매장(GASHAPON BANDAI OFFICIAL SHOP, 공식 표기 \"GBO 롯데월드점\")으로, 롯데월드 쇼핑몰동 지하 1층 36호에 있습니다. 연중무휴 10:00~21:00 영업합니다(공식 안내). 2호선 잠실역 4번 출구 롯데월드 정문 쪽입니다."
+   }
+  },
+  {
+   "key": "recheck-funsquare-suwon",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "phone": "031-690-1509",
+    "shop_link": "https://www.bnkrmall.co.kr/etc/funsquare_store.do",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "yearRound": true
+    }
+   }
+  },
+  {
+   "key": "recheck-gashapon-yongsan",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "phone": "02-2012-2700",
+    "floor_info": "리빙파크 6층 반다이남코코리아 스토어 내",
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+    "sns_links": [
+     "https://www.bnkrmall.co.kr/etc/bandainamcokorea_store.do"
+    ]
+   }
+  },
+  {
+   "key": "recheck-gbase-ak-suwon",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "description": "건담 프라모델부터 한정판 상품, 조립용품까지 한자리에서 만날 수 있는 건담 공식 전문 매장입니다. AK플라자 수원점 5층에 있으며 매일 10:30~22:00 영업하고, AK플라자 지정 휴일에 휴무합니다(공식 안내)."
+   }
+  },
+  {
+   "key": "recheck-animate-suwon",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "shop_link": "https://x.com/animate_suwon",
+    "sns_links": [
+     "https://x.com/animate_suwon"
+    ]
+   }
+  }
+ ]
+}

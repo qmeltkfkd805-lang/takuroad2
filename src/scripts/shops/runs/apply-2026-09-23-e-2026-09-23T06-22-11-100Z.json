@@ -1,0 +1,203 @@
+{
+ "plan": "2026-09-23-e",
+ "at": "2026-09-23T06:22:11.100Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "newworks-ff169fc0",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "붉은 돼지",
+      "바람계곡의 나우시카",
+      "마루 밑 아리에티",
+      "고양이의 보은",
+      "그대들은 어떻게 살 것인가"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "newworks-29449d53",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "아이카츠!",
+      "에일리언 스테이지"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "newworks-f194103b",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "라부부",
+      "크라이베이비",
+      "디무",
+      "피치 라이엇"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "newworks-3f622398",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "왕님전대 킹오저"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "newworks-c7946b62",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "피너츠",
+      "브롤스타즈",
+      "와사비베어",
+      "멜앤로디"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "newworks-be171fd6",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "실바니안 패밀리"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "newworks-2f631c45",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "텔레토비",
+      "빨간 망토 차차",
+      "바키"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "newworks-3bd1292d",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "헬루바 보스",
+      "에일리언 스테이지",
+      "아이돌마스터 샤이니 컬러즈"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "newworks-d98e6a5a",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "mofusand"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "newworks-0aacf913",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "붉은 돼지",
+      "바람계곡의 나우시카",
+      "마루 밑 아리에티",
+      "고양이의 보은"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "newworks-19540c69",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "붉은 돼지",
+      "바람계곡의 나우시카",
+      "마루 밑 아리에티",
+      "고양이의 보은",
+      "그대들은 어떻게 살 것인가"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "custom_goods": {
+     "added": [
+      "퍼즐"
+     ]
+    }
+   }
+  },
+  {
+   "key": "newworks-2a9f7d7a",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "실바니안 패밀리"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-23-e-2026-09-23T06-22-11-100Z.json"
+}

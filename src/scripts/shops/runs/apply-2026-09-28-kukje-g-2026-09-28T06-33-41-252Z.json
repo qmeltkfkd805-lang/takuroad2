@@ -1,0 +1,73 @@
+{
+ "plan": "2026-09-28-kukje-g",
+ "at": "2026-09-28T06:33:41.252Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "kukje-haengpiso",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "7a5dbcf0-be62-4391-a388-aab4c624c0de",
+   "slug": "haengpiso",
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-doorijoy",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "0cfbecc6-32a6-4eac-b5d9-10c2ac28e879",
+   "slug": "durijoi-gachyasyap",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kyouma-3f",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "fb2ed90d-e09e-4810-bd87-a941252e17db",
+   "patch": {
+    "floor_info": "국제전자센터 2층 136호(본점) · 3층 · 9층(1·2호점)",
+    "description": "서브컬처 피규어·가챠·굿즈 전문점 쿄우마샵의 국제전자센터 매장으로, 같은 건물 2·3·9층에 있습니다.\n· 2층 136호 본점: 피규어·가챠·굿즈, 제일복권·공식 MD\n· 3층: 가챠\n· 9층 1호점: 가챠·카드가챠\n· 9층 2호점: 가챠·카드가챠·제일복권\n영업시간은 공식 안내가 없어 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요."
+   },
+   "before": {
+    "floor_info": "국제전자센터 2층 136호(본점) · 9층(1·2호점)",
+    "description": "서브컬처 피규어·가챠·굿즈 전문점 쿄우마샵의 국제전자센터 매장으로, 같은 건물에 세 곳이 있습니다.\n· 2층 136호 본점: 피규어·가챠·굿즈, 제일복권·공식 MD\n· 9층 1호점: 가챠·카드가챠\n· 9층 2호점: 가챠·카드가챠·제일복권\n영업시간은 공식 안내가 없어 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요."
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-28-kukje-g-2026-09-28T06-33-41-252Z.json"
+}

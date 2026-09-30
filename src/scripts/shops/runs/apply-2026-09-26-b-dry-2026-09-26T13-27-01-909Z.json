@@ -1,0 +1,731 @@
+{
+ "plan": "2026-09-26-b",
+ "at": "2026-09-26T13:27:01.909Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "figurepresso-seocho",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "name": "피규어프레소 서초점",
+    "floor_info": "국제전자센터 9층 (1~3호점)",
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": "010-9526-7330",
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "20:00"
+     }
+    },
+    "shop_link": "https://figurepresso.com",
+    "sns_links": [
+     "https://x.com/figurepresso"
+    ],
+    "description": "피규어프레소 국전점(1~3호점)으로, 남부터미널역 국제전자센터 9층에 있는 정품 피규어 전문 매장입니다. 매일 11:00~20:00 영업하며, 매월 첫째·셋째 일요일과 공휴일은 휴무입니다(공식 안내). 재고 문의는 공식 X DM으로 받습니다.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:27:01.909Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "단다단",
+      "루팡 3세",
+      "홀로라이브",
+      "그 비스크 돌은 사랑을 한다"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "animegoods-kukje",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "name": "애니메굿즈",
+    "floor_info": "국제전자센터 9층 001~003호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://x.com/animegoods_fp",
+    "sns_links": [
+     "https://x.com/animegoods_fp"
+    ],
+    "description": "국제전자센터 9층 001~003호에 있는 애니메이션 굿즈·피규어 전문 오프라인 매장입니다(공식 X). 3호선 남부터미널역에서 가깝습니다. 매월 첫째·셋째 일요일은 휴무입니다(국제전자센터 상가 전체 휴무일).",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:27:01.909Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "꿈빛 파티시엘",
+      "은혼",
+      "모브사이코100",
+      "개구리 중사 케로로"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "estaregg-kukje-main",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "name": "이스타에그 국전 본점",
+    "floor_info": "국제전자센터 7층",
+    "cats": [
+     "굿즈샵",
+     "카드/TCG"
+    ],
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "19:30"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "19:30"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "19:30"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "19:30"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "19:30"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "19:30"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "19:30"
+     }
+    },
+    "shop_link": "https://estar-egg.com",
+    "sns_links": [
+     "https://x.com/E_staregg_store",
+     "https://x.com/E_stareggstore2"
+    ],
+    "description": "게임·애니메이션 서브컬처 상품을 판매하는 이스타에그의 오프라인 매장(본점)으로, 국제전자센터 7층에 있습니다. 매일 11:00~19:30 영업하며 매월 첫째·셋째 일요일은 휴무입니다(공식 X). 2호점은 같은 건물 9층에 있습니다.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:27:01.909Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "홀로라이브",
+      "승리의 여신: 니케",
+      "블루 아카이브",
+      "붕괴: 스타레일",
+      "단간론파"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "plushie-new",
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "estaregg-kukje-2",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "name": "이스타에그 국전 2호점",
+    "floor_info": "국제전자센터 9층",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://estar-egg.com",
+    "sns_links": [
+     "https://x.com/E_stareggstore2",
+     "https://x.com/E_staregg_store"
+    ],
+    "description": "이스타에그의 오프라인 2호점으로 국제전자센터 9층에 있습니다. 매주 화요일 정기휴무입니다(공식 X). 본점은 같은 건물 7층에 있습니다.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:27:01.909Z",
+    "info_confirmed_by_type": "admin"
+   }
+  },
+  {
+   "key": "ttabbaemall-kukje",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "name": "따빼몰 국제전자센터점",
+    "floor_info": "국제전자센터 3층 81~83·88호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "hours": {
+     "mon": {
+      "open": "11:30",
+      "close": "19:00"
+     },
+     "tue": {
+      "open": "11:30",
+      "close": "19:00"
+     },
+     "wed": {
+      "open": "11:30",
+      "close": "19:00"
+     },
+     "thu": {
+      "open": "11:30",
+      "close": "19:00"
+     },
+     "fri": {
+      "open": "11:30",
+      "close": "19:00"
+     },
+     "sat": {
+      "open": "11:30",
+      "close": "19:00"
+     },
+     "sun": {
+      "open": "11:30",
+      "close": "19:00"
+     }
+    },
+    "shop_link": "https://ttabbaemall.co.kr",
+    "sns_links": [
+     "https://x.com/ttabbaemall"
+    ],
+    "description": "애니메이션풍 서브컬처 게임 캐릭터 굿즈샵 따빼몰의 오프라인 매장으로, 국제전자센터 3층에 있습니다. 11:30~19:00 영업하며 일요일도 운영하지만 매월 첫째·셋째 일요일은 휴무입니다(공식 X).",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:27:01.909Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "원신",
+      "붕괴: 스타레일",
+      "젠레스 존 제로",
+      "블루 아카이브",
+      "승리의 여신: 니케"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "acrylic-stand",
+      "keyring",
+      "figure-new",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "brothergoods-kukje",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "name": "브라더굿즈 국제전자센터점",
+    "floor_info": "국제전자센터 3층 3023~3027·3086~3087·3096~3099호",
+    "cats": [
+     "가챠",
+     "쿠지"
+    ],
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "20:00"
+     }
+    },
+    "shop_link": "https://www.instagram.com/brother.goods.kukje/",
+    "sns_links": [
+     "https://www.instagram.com/brother.goods.kukje/"
+    ],
+    "description": "다양한 굿즈 가챠와 브라더 쿠지를 운영하는 매장으로, 국제전자센터 3층에 있습니다. 매일 10:00~20:00 영업하며 매월 첫째·셋째 일요일은 휴무입니다(공식 인스타그램).",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:27:01.909Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "self-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "hanwoori-kukje",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "name": "한우리 국제전자센터점",
+    "floor_info": "국제전자센터 9층 114호",
+    "cats": [
+     "게임샵"
+    ],
+    "phone": "02-3465-0048",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "20:00"
+     }
+    },
+    "shop_link": "https://www.gamewoori.com",
+    "sns_links": [
+     "https://www.instagram.com/hanwooriofficial/"
+    ],
+    "description": "PlayStation·닌텐도 스위치 등 콘솔 게임과 게임 굿즈를 판매하는 게임샵 한우리(겜우리)의 국제전자센터 매장으로, 9층 114호에 있습니다. 매일 10:00~20:00 영업하며 매월 첫째·셋째 일요일은 휴무입니다(공식 안내).",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:27:01.909Z",
+    "info_confirmed_by_type": "admin"
+   }
+  },
+  {
+   "key": "miraclekuji-kukje",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "name": "미라클쿠지 국전점",
+    "floor_info": "국제전자센터 3층 41호 (1호점·2호점)",
+    "cats": [
+     "쿠지",
+     "가챠"
+    ],
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "20:00"
+     }
+    },
+    "shop_link": "https://www.miraclekuji.com",
+    "sns_links": [
+     "https://www.instagram.com/miracle_kuji/"
+    ],
+    "description": "반다이 정품 제일복권(이치방쿠지)과 미라클쿠지 자체쿠지, 캡슐토이를 판매하는 미라클쿠지 본점(국전점)으로, 국제전자센터 3층에 있습니다. 매일 11:00~20:00 영업합니다(공식 매장 안내). 문의는 카카오톡 채널 '미라클쿠지'로 받습니다.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:27:01.909Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "self-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "skytoy-kukje",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "name": "스카이토이 국전",
+    "floor_info": "국제전자센터 3층 3134호",
+    "cats": [
+     "굿즈샵",
+     "가챠",
+     "쿠지"
+    ],
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "20:00"
+     }
+    },
+    "shop_link": "https://linktr.ee/skytoy",
+    "sns_links": [
+     "https://x.com/skytoy_shop"
+    ],
+    "description": "가챠·쿠지·피규어를 판매하는 애니굿즈샵으로, 국제전자센터 3층 3134호에 있습니다. 매일 10:00~20:00 영업하며 매월 첫째·셋째 일요일은 정기휴무입니다. 오프라인 매장에서만 판매하며 문의는 카카오톡 채널로 받습니다(공식 X).",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:27:01.909Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "나의 히어로 아카데미아",
+      "헌터×헌터",
+      "진격의 거인",
+      "주술회전",
+      "치이카와"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "plushie-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "ddansol-kukje",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "name": "딴솔샵",
+    "floor_info": "국제전자센터 8층 155~157호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "19:30"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "19:30"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "19:30"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "19:30"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "19:30"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "19:30"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "19:30"
+     }
+    },
+    "shop_link": "https://www.threads.com/@ddansol_shop",
+    "sns_links": [
+     "https://www.threads.com/@ddansol_shop"
+    ],
+    "description": "치이카와·산리오·짱구·모후샌드·지브리 굿즈와 피규어, 제일복권을 판매하는 굿즈샵으로, 국제전자센터 8층에 있습니다. 11:00~19:30 영업하며 매월 첫째·셋째 일요일은 휴무입니다(공식 Threads, 2026-08 공지).",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-26T13:27:01.909Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와",
+      "산리오",
+      "짱구는 못말려",
+      "mofusand",
+      "스튜디오 지브리",
+      "나의 히어로 아카데미아",
+      "디지몬",
+      "장송의 프리렌",
+      "블루 록"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

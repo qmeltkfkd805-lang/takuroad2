@@ -1,0 +1,80 @@
+// 2026-09-29 3차 순환 점검 5곳 plan 생성 — node scripts/shops/plans/make-2026-09-29-d.mjs
+import { writeFileSync } from 'fs'
+const C = '2026-09-29'
+const w = (tag_id, evidence) => ({ tag_id, evidence })
+const IG = (p) => `https://www.instagram.com/${p}`
+const items = [
+  {
+    action: 'update', key: 'odeokodeok', shop_id: 'a5ec4a07-99a4-40f8-bad6-d5240a27d9b4', expect_updated_at: '2026-09-28T05:33:33.92042+00:00',
+    fields: {}, reason: '순환 점검 — 공식 IG·X 2026-09 입고 공지로 취급 작품 보강',
+    works: [
+      w('32995c8f-a09f-4a45-8efc-47a5e3b51e8a', '공식 IG 2026-09-21 입고 공지(블루 아카이브)'),
+      w('fd6947ed-de72-44a0-8b88-52c2249cfff0', '공식 IG 2026-09-21 입고 공지(무직전생)'),
+      w('41e73c70-0c1c-4950-9a01-4c0fd75820c5', '공식 IG 2026-09-20 입고 공지(개구리 중사 케로로)'),
+      w('06c370c8-8630-4370-8db4-7691f6172d6e', '공식 IG 2026-09-20 입고 공지(카드캡터 체리)'),
+      w('e5e3810f-0e71-46c2-afb5-99f80b228541', '공식 IG 2026-09-19 입고 공지(그 비스크돌은 사랑을 한다)'),
+      w('82faacc1-27fc-4300-949a-f7742791e6b1', '공식 IG 2026-09-19 입고 공지(단다단)'),
+      w('46d1cc6a-f88b-46e2-b4ec-d70dcf0be740', '공식 IG 2026-09-17·18 입고 공지(진격의 거인 아크릴 스탠드)'),
+      w('4c29cc2f-ff8a-4d40-8298-2d23ea2bbe62', '공식 IG 2026-09-23 입고 공지(우마무스메)'),
+      w('4613169d-2461-48a6-92fe-a97a674d2a34', '공식 IG 2026-09-13 입고 공지(붕괴: 스타레일)'),
+      w('db691edb-dc03-4251-896f-22d8412a7200', '공식 IG 2026-09-13 입고 공지(명일방주)'),
+    ],
+    sources: [
+      { url: IG('ododgoods/'), fields: ['addr', 'floor_info', 'works', 'goods_types'], checked_at: C, note: 'IG 소개 "수원역 로데오거리 … 이치방쿠지/애니굿즈(블라인드 박스 및 피규어)/가챠 … 매산로 21-9 3층", 2026-09-13~27 입고 게시물(Ddpx4tVEkF5·DdnRtZKkubs·DdiEwlZEmDt·Ddff2_9Euhu·Ddc6ZTpklh1·DdaV0XCkir_·DdXz1Kuktk4·DdSofDLkvAo·DdNgLQtkhyg). 09-14 추석 공지 "9월 25일(금) 휴무 / 23일(수) 정상영업" — 수요일 정기휴무 간접 확인' },
+      { url: 'https://x.com/ododgoods', fields: ['floor_info'], checked_at: C, note: 'X 소개 "매산로 21-9 3층", 2026-09-28 게시' },
+    ],
+    unconfirmed: ['hours', 'phone'], photo: 'needed',
+    notes: '영업시간 12~21·전화는 공식 채널 표기 없음(09-24 "오후 12시부터 판매" 공지와는 일치). 도쿄구울·닌자보이 란타로·딸기 100% 는 작품 행 없음 → 미연결',
+  },
+  {
+    action: 'update', key: 'cacti-suwon', shop_id: 'fb162c42-1fa2-4ae8-a706-a399f2f9f815', expect_updated_at: '2026-09-15T06:37:52.092155+00:00',
+    fields: {}, reason: '순환 점검 — 변경 없음(체인 계정만, 지점별 정보 없음)',
+    sources: [
+      { url: 'https://www.instagram.com/p/DQBeaXykhRu/', fields: ['addr', 'name'], checked_at: C, note: '체인 공식 IG 2025-10-20 "캑티 가챠샵 수원역점 newly open … 약 200종 가챠머신 … 향교로 21 수원로데오 중심" — 층·시간·전화 없음. 최신 체인 게시 2026-09-16, 폐점 공지 없음' },
+    ],
+    unconfirmed: ['floor_info', 'hours', 'phone'], photo: 'needed',
+    notes: '층 1층은 청소년게임제공업 목록(제3자)뿐 — 안 넣음. 09~24시·연중무휴는 공식 근거 없음(종각점 값으로 추정) — 기존 값 유지, 대조 필요. 체인 게시물 작품은 지점 미확인이라 연결 안 함',
+  },
+  {
+    action: 'update', key: 'kirakiratomo-suwon', shop_id: '75142dc4-c8e8-4235-83f3-faf84477abb4', expect_updated_at: '2026-09-28T05:33:39.141405+00:00',
+    fields: {}, reason: '순환 점검 — 월요일 정기휴무 공식 확인, 2026 입고 공지로 작품 보강',
+    goods_types: ['ichiban-kuji'],
+    works: [
+      w('a6be5443-1fa4-460b-b408-fe9a72a505d9', '공식 IG 2026-08-07 입고 공지(젠레스 존 제로)'),
+      w('69f68ebd-7061-4b7f-96c2-022dcf228edf', '공식 X 2026-04-07 쿠지 공지(나츠메 우인장)'),
+      w('773e2f96-cea4-4710-8d97-40eb09f239cb', '공식 X 2026-04-07 쿠지 공지(학원 아이돌마스터)'),
+    ],
+    sources: [
+      { url: 'https://www.instagram.com/kirakiratomo_official/p/DZBwDWAzGQd/', fields: ['hours'], checked_at: C, note: '고정 게시 2026-05-31 "6월부터 매주 월요일은 정기 휴무일" — DB 월 휴무 일치' },
+      { url: 'https://www.instagram.com/kirakiratomo_official/', fields: ['works', 'goods_types'], checked_at: C, note: '2026-07-31~09-04 입고 게시(히로아카·주술회전·진격·슬라임·프리렌·은혼·미쿠·젠레스·니케), 제일복권·룩업·넨도로이드·누이' },
+      { url: 'https://x.com/kirakiratomo_', fields: ['addr', 'floor_info', 'works'], checked_at: C, note: 'X 소개 "향교로 4, 3층" (시간·연중무휴 표기는 옛 소개 — IG 공지와 다름), 2026-04-07 쿠지 공지' },
+    ],
+    unconfirmed: ['hours_detail', 'phone'], photo: 'needed',
+    notes: '요일별 분 단위 시간·브레이크는 공식 근거 못 찾음(기존 값 유지). kirakira-tomo.com·kirakiratomo.com 은 죽은 도메인 — DB 링크엔 없음. 홍대점(@kirakiratomo_HD, 2025-09 공지)은 다음 신규 후보',
+  },
+  {
+    action: 'update', key: 'gacha-ming', shop_id: '269ab652-ba44-41e5-b93f-1c20038d395a', expect_updated_at: '2026-09-23T06:13:12.462067+00:00',
+    fields: { floor_info: '광창빌딩 105호' }, overwrite: ['floor_info'], reason: '공식 IG 소개 "안양로 314번길 10, 광창빌딩 105호" (기존 "1층 5호")',
+    works: [
+      w('f6dff3d1-5a30-409d-849c-9a34d111b1be', '공식 IG 2026-09-04·08·17 가챠 입고(산리오 PUTITTO·슈가버니즈 누이·표코노루 마스코트)'),
+      w('acc55a2d-006a-4947-b947-371e9d1538fe', '공식 IG 2026-09-08 가챠 입고(오자마녀 도레미 메지루시 악세서리4)'),
+    ],
+    sources: [
+      { url: IG('gacha_ming/'), fields: ['floor_info', 'hours', 'works'], checked_at: C, note: 'IG 소개 "안양일번가/가챠/소품샵 / 안양로 314번길 10, 광창빌딩 105호 / 화-일 13:00-21:00 / 월요일은 휴무" — 시간·월 휴무 DB 일치. 09-15 추석 휴무 9/24~25(지남). 최신 게시 2026-09-17' },
+    ],
+    unconfirmed: ['phone'], photo: 'needed',
+    notes: '전화 0507-1346-3731 은 공식 채널 표기 없음(기존 값 유지)',
+  },
+  {
+    action: 'update', key: 'cineshop-yongsan', shop_id: 'dedbd4fd-8b76-451b-9b2a-502adc705e62', expect_updated_at: '2026-09-23T06:13:16.975889+00:00',
+    fields: {}, reason: '순환 점검 — 2026-04 까지 운영 확인, 이후 공식 소식 없음',
+    sources: [
+      { url: 'https://cgv.co.kr/evt/eventDetail?evntNo=202603177139', fields: ['floor_info', 'status'], checked_at: C, note: 'CGV 공식 이벤트 "씨네샵 굿(즈)데이 2026.3.20~4.20 오프라인: 용산 HDC 아이파크몰 CGV 6F CINESHOP" (02-13~03-03 70% 세일 이벤트도 있음)' },
+      { url: 'https://www.instagram.com/cgv_cineshop/', fields: ['status'], checked_at: C, note: '마지막 게시 2024-11-12' },
+    ],
+    unconfirmed: ['hours', 'status_after_2026-04'], photo: 'needed',
+    notes: '연속 대방출 세일 — 정리 가능성. 폐점 공지 없음 → 유지, 재확인',
+  },
+]
+writeFileSync(new URL('./2026-09-29-d.json', import.meta.url), JSON.stringify({ name: '2026-09-29-d', items }, null, 1))
+console.log('written', items.length)

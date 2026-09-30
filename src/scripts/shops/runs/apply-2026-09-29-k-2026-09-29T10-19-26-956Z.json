@@ -1,0 +1,118 @@
+{
+ "plan": "2026-09-29-k",
+ "at": "2026-09-29T10:19:26.956Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "tamiya-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5572467836494,
+    "lng": 126.924986220455,
+    "road": "서울 마포구 양화로 176",
+    "building": "동교동 스타피카소",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "d65ddd85-7158-4756-8a92-ce9891b1f5d7",
+   "slug": "tamiya-hongdaejeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "tamiya-mario",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4784775572043,
+    "lng": 126.885157102201,
+    "road": "서울 금천구 벚꽃로 266",
+    "building": "마리오아울렛3",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "7a04ad6b-935f-4754-b526-c946760bc9a5",
+   "slug": "tamiya-mariojeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "tamiya-gwangbok",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.0997204203411,
+    "lng": 129.029587140355,
+    "road": "부산 중구 광복로39번길 6",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "8773fb73-64b3-45ac-a6cb-dcf9f3525b0b",
+   "slug": "tamiya-busan-gwangbokjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "tamiya-seomyeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1529239695577,
+    "lng": 129.059604905121,
+    "road": "부산 부산진구 중앙대로 672",
+    "building": "삼정타워",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "e3d095ab-9b40-415b-91bf-b2e7005d7bad",
+   "slug": "tamiya-busan-seomyeonsamjeongtawojeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "tamiya-centum",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1698533549006,
+    "lng": 129.131069686974,
+    "road": "부산 해운대구 센텀남대로 59",
+    "building": "롯데백화점센텀시티점",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "73a47e94-b61a-45e9-a5e8-1474f482a38b",
+   "slug": "tamiya-busan-senteomsitijeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-k-2026-09-29T10-19-26-956Z.json"
+}

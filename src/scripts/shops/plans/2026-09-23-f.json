@@ -1,0 +1,895 @@
+{
+ "name": "2026-09-23-f",
+ "items": [
+  {
+   "action": "update",
+   "key": "products-2f631c45",
+   "shop_id": "2f631c45-415c-4ee4-a3eb-9bcbab7c5599",
+   "fields": {},
+   "reason": "지점 공식 SNS 입고 공지로 확인된 취급 작품·상품 옵션",
+   "works": [
+    {
+     "slug": "kamisama-kiss",
+     "evidence": "지점 공식 SNS 입고 공지 2026-07-01 (https://x.com/the_ku_s/status/2072246326105124920)"
+    },
+    {
+     "slug": "project-sekai",
+     "evidence": "지점 공식 SNS 입고 공지 2026-07-29 (https://x.com/the_ku_s/status/2082393026304074057)"
+    },
+    {
+     "slug": "teletubbies",
+     "evidence": "지점 공식 SNS 입고 공지 2026-08-03 (https://x.com/the_ku_s/status/2084202784258503160)"
+    },
+    {
+     "slug": "sgt-frog",
+     "evidence": "지점 공식 SNS 입고 공지 2026-08-05 (https://x.com/the_ku_s/status/2084839470923395559)"
+    },
+    {
+     "slug": "hatsune-miku",
+     "evidence": "지점 공식 SNS 입고 공지 2026-08-07 (https://x.com/the_ku_s/status/2085657218486301064)"
+    },
+    {
+     "slug": "chainsaw-man",
+     "evidence": "지점 공식 SNS 입고 공지 2026-05-20 (https://x.com/the_ku_s/status/2057023936723112213)"
+    },
+    {
+     "slug": "chiikawa",
+     "evidence": "지점 공식 SNS 입고 공지 2026-05-17 (https://x.com/the_ku_s/status/2055951757872906493)"
+    }
+   ],
+   "products": [
+    {
+     "slug": "kamisama-kiss",
+     "goods_type": "plushie-new",
+     "variant_name": "케이프 타피누이 토모에",
+     "availability": "unknown",
+     "evidence": "오늘부터 신령님 케이프 타피누이 토모에 — 입고 공지 2026-07-01",
+     "url": "https://x.com/the_ku_s/status/2072246326105124920",
+     "date": "2026-07-01"
+    },
+    {
+     "slug": "project-sekai",
+     "goods_type": "card-new",
+     "variant_name": "H/Art Collection 클리어 카드 vol.1",
+     "availability": "unknown",
+     "evidence": "프로젝트 세카이 H/Art Collection 클리어 카드 vol.1 (버추얼 싱어/LN/MMJ/VBS/WS/25시) — 입고 공지 2026-07-29",
+     "url": "https://x.com/the_ku_s/status/2082393026304074057",
+     "date": "2026-07-29"
+    },
+    {
+     "slug": "teletubbies",
+     "goods_type": "plushie-new",
+     "variant_name": "마스코트 볼 체인",
+     "availability": "unknown",
+     "evidence": "텔레토비 마스코트 볼 체인 — 입고 공지 2026-08-03",
+     "url": "https://x.com/the_ku_s/status/2084202784258503160",
+     "date": "2026-08-03"
+    },
+    {
+     "slug": "sgt-frog",
+     "goods_type": "ichiban-kuji",
+     "variant_name": null,
+     "availability": "unknown",
+     "evidence": "제일복권 개구리중사 케로로 (3회차 판 시작) — 입고 공지 2026-08-05",
+     "url": "https://x.com/the_ku_s/status/2084839470923395559",
+     "date": "2026-08-05"
+    },
+    {
+     "slug": "hatsune-miku",
+     "goods_type": "figure-new",
+     "variant_name": "T-most 피규어",
+     "availability": "unknown",
+     "evidence": "하츠네 미쿠 T-most 피규어 — 입고 공지 2026-08-07",
+     "url": "https://x.com/the_ku_s/status/2085657218486301064",
+     "date": "2026-08-07"
+    },
+    {
+     "slug": "chainsaw-man",
+     "goods_type": "can-badge-new",
+     "variant_name": "레제편 파샤코레",
+     "availability": "unknown",
+     "evidence": "체인소맨 레제편 파샤코레 — 입고 공지 2026-05-20",
+     "url": "https://x.com/the_ku_s/status/2057023936723112213",
+     "date": "2026-05-20"
+    },
+    {
+     "slug": "chiikawa",
+     "goods_type": "can-badge-new",
+     "variant_name": "자수 캔배지 2탄",
+     "availability": "unknown",
+     "evidence": "치이카와 자수 캔배지 2탄 — 입고 공지 2026-05-17",
+     "url": "https://x.com/the_ku_s/status/2055951757872906493",
+     "date": "2026-05-17"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/the_ku_s/status/2072246326105124920",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-07-01"
+    },
+    {
+     "url": "https://x.com/the_ku_s/status/2082393026304074057",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-07-29"
+    },
+    {
+     "url": "https://x.com/the_ku_s/status/2084202784258503160",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-08-03"
+    },
+    {
+     "url": "https://x.com/the_ku_s/status/2084839470923395559",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-08-05"
+    },
+    {
+     "url": "https://x.com/the_ku_s/status/2085657218486301064",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-08-07"
+    },
+    {
+     "url": "https://x.com/the_ku_s/status/2057023936723112213",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-05-20"
+    },
+    {
+     "url": "https://x.com/the_ku_s/status/2055951757872906493",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-05-17"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "products-29449d53",
+   "shop_id": "29449d53-4cd9-4cba-9eac-8a3d88c5c25d",
+   "fields": {},
+   "reason": "지점 공식 SNS 입고 공지로 확인된 취급 작품·상품 옵션",
+   "works": [
+    {
+     "slug": "idolish7",
+     "evidence": "지점 공식 SNS 입고 공지 2026-05-17 (https://x.com/the_ku_AKs/status/2055941046715265225)"
+    },
+    {
+     "slug": "chiikawa",
+     "evidence": "지점 공식 SNS 입고 공지 2026-05-19 (https://x.com/the_ku_AKs/status/2056661170627711477)"
+    },
+    {
+     "slug": "tamagotchi",
+     "evidence": "지점 공식 SNS 입고 공지 2026-05-22 (https://x.com/the_ku_AKs/status/2057756411053158724)"
+    }
+   ],
+   "products": [
+    {
+     "slug": "idolish7",
+     "goods_type": "can-badge-new",
+     "variant_name": "캔배지 컬렉션+ vol.3",
+     "availability": "unknown",
+     "evidence": "아이돌리쉬 세븐 캔배지 컬렉션+vol.3 — 입고 공지 2026-05-17",
+     "url": "https://x.com/the_ku_AKs/status/2055941046715265225",
+     "date": "2026-05-17"
+    },
+    {
+     "slug": "chiikawa",
+     "goods_type": "can-badge-new",
+     "variant_name": "자수 캔배지 2탄",
+     "availability": "unknown",
+     "evidence": "치이카와 자수 캔배지 2탄 — 입고 공지 2026-05-19",
+     "url": "https://x.com/the_ku_AKs/status/2056661170627711477",
+     "date": "2026-05-19"
+    },
+    {
+     "slug": "tamagotchi",
+     "goods_type": "keyring",
+     "variant_name": "스탠드 미니 아크릴 키홀더",
+     "availability": "unknown",
+     "evidence": "다마고치 스탠드 미니 아크릴 키홀더 — 입고 공지 2026-05-22",
+     "url": "https://x.com/the_ku_AKs/status/2057756411053158724",
+     "date": "2026-05-22"
+    },
+    {
+     "slug": "tamagotchi",
+     "goods_type": "plushie-new",
+     "variant_name": "미니미니 Chibi 누이구루미 마스코트",
+     "availability": "unknown",
+     "evidence": "다마고치 미니미니 Chibi 누이구루미 마스코트 — 입고 공지 2026-05-23",
+     "url": "https://x.com/the_ku_AKs/status/2058111716446351600",
+     "date": "2026-05-23"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/the_ku_AKs/status/2055941046715265225",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-05-17"
+    },
+    {
+     "url": "https://x.com/the_ku_AKs/status/2056661170627711477",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-05-19"
+    },
+    {
+     "url": "https://x.com/the_ku_AKs/status/2057756411053158724",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-05-22"
+    },
+    {
+     "url": "https://x.com/the_ku_AKs/status/2058111716446351600",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-05-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "products-f7fc399e",
+   "shop_id": "f7fc399e-372c-469c-a81e-eb0c1874ad4b",
+   "fields": {},
+   "reason": "지점 공식 SNS 입고 공지로 확인된 취급 작품·상품 옵션",
+   "works": [
+    {
+     "slug": "citrus",
+     "evidence": "지점 공식 SNS 입고 공지 2026-07-26 (https://x.com/YUECHAI_SUWON/status/2081240448375595053)"
+    },
+    {
+     "slug": "delicious-in-dungeon",
+     "evidence": "지점 공식 SNS 입고 공지 2026-08-07 (https://www.instagram.com/yuechaigoods.suwon/p/DbvqxYACSWq/)"
+    },
+    {
+     "slug": "identity-v",
+     "evidence": "지점 공식 SNS 입고 공지 2026-08-07 (https://www.instagram.com/yuechaigoods.suwon/p/DbvpVVuiWr1/)"
+    },
+    {
+     "slug": "shugo-chara",
+     "evidence": "지점 공식 SNS 입고 공지 2026-08-07 (https://www.instagram.com/yuechaigoods.suwon/p/Dbvu0OPCYME/)"
+    },
+    {
+     "slug": "free",
+     "evidence": "지점 공식 SNS 입고 공지 2026-09-22 (https://www.instagram.com/yuechaigoods.suwon/p/DdnqQ8hCRO4/)"
+    },
+    {
+     "slug": "madoka-magica",
+     "evidence": "지점 공식 SNS 입고 공지 2026-09-22 (https://www.instagram.com/yuechaigoods.suwon/p/DdnpQ7dicOb/)"
+    },
+    {
+     "slug": "frieren",
+     "evidence": "지점 공식 SNS 입고 공지 2026-09-22 (https://www.instagram.com/yuechaigoods.suwon/p/DdnoVNliZK6/)"
+    },
+    {
+     "slug": "bocchi-the-rock",
+     "evidence": "지점 공식 SNS 입고 공지 2026-09-22 (https://www.instagram.com/yuechaigoods.suwon/p/DdnkY9AiWw5/)"
+    }
+   ],
+   "products": [
+    {
+     "slug": "citrus",
+     "goods_type": "can-badge-new",
+     "variant_name": "랜덤 명장면 캔뱃지 (전15종)",
+     "availability": "unknown",
+     "evidence": "시트러스 랜덤 명장면 캔뱃지 (전15종) — 입고 공지 2026-07-26",
+     "url": "https://x.com/YUECHAI_SUWON/status/2081240448375595053",
+     "date": "2026-07-26"
+    },
+    {
+     "slug": "delicious-in-dungeon",
+     "goods_type": "keyring",
+     "variant_name": "몬스터 마물식 레시피 아크릴 키링 3종",
+     "availability": "unknown",
+     "evidence": "던전밥 몬스터 마물식 레시피 아크릴 키링 3종 — 입고 공지 2026-08-07",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DbvqxYACSWq/",
+     "date": "2026-08-07"
+    },
+    {
+     "slug": "identity-v",
+     "goods_type": "card-new",
+     "variant_name": "트레이딩 랜덤 카드 (레어 포함 전158종)",
+     "availability": "unknown",
+     "evidence": "제5인격 트레이딩 랜덤 카드 — 입고 공지 2026-08-07",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DbvpVVuiWr1/",
+     "date": "2026-08-07"
+    },
+    {
+     "slug": "identity-v",
+     "goods_type": "card-new",
+     "variant_name": "폴라로이드풍 카드 3종 (조각가/소녀/입관사)",
+     "availability": "unknown",
+     "evidence": "제5인격 폴라로이드풍 카드 — 입고 공지 2026-08-07",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DbvpVVuiWr1/",
+     "date": "2026-08-07"
+    },
+    {
+     "slug": "shugo-chara",
+     "goods_type": "keyring",
+     "variant_name": "랜덤 미니 펜던트 북 키링 (전6종)",
+     "availability": "unknown",
+     "evidence": "캐릭캐릭 체인지 랜덤 미니 펜던트 북 키링 — 입고 공지 2026-08-07",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/Dbvu0OPCYME/",
+     "date": "2026-08-07"
+    },
+    {
+     "slug": "shugo-chara",
+     "goods_type": "keyring",
+     "variant_name": "랜덤 동글 누이 키링 (전6종)",
+     "availability": "unknown",
+     "evidence": "캐릭캐릭 체인지 랜덤 동글 누이 키링 — 입고 공지 2026-08-07",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/Dbvu0OPCYME/",
+     "date": "2026-08-07"
+    },
+    {
+     "slug": "free",
+     "goods_type": "plushie-new",
+     "variant_name": "얼굴 누이 판다 시리즈 5종 (하루카/마코토/린/이쿠야/키스미)",
+     "availability": "unknown",
+     "evidence": "프리! 얼굴 누이 판다 시리즈 — 입고 공지 2026-09-22",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnqQ8hCRO4/",
+     "date": "2026-09-22"
+    },
+    {
+     "slug": "madoka-magica",
+     "goods_type": "keyring",
+     "variant_name": "아크릴 키링 4종 (얼티밋 마도카&마도카/단체/마도카/호무라)",
+     "availability": "unknown",
+     "evidence": "마도카 마기카 아크릴 키링 — 입고 공지 2026-09-22",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnpQ7dicOb/",
+     "date": "2026-09-22"
+    },
+    {
+     "slug": "madoka-magica",
+     "goods_type": "photo-card",
+     "variant_name": "랜덤 인생네컷 포토 카드 (전10종)",
+     "availability": "unknown",
+     "evidence": "마도카 마기카 랜덤 인생네컷 포토 카드 — 입고 공지 2026-09-22",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnnKfWiZba/",
+     "date": "2026-09-22"
+    },
+    {
+     "slug": "frieren",
+     "goods_type": "photo-card",
+     "variant_name": "포토 카드 (페른)",
+     "availability": "unknown",
+     "evidence": "장송의 프리렌 포토 카드 (페른) — 입고 공지 2026-09-22",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnoVNliZK6/",
+     "date": "2026-09-22"
+    },
+    {
+     "slug": "frieren",
+     "goods_type": "photo-card",
+     "variant_name": "랜덤 아크릴 포토 카드 (전6종)",
+     "availability": "unknown",
+     "evidence": "장송의 프리렌 랜덤 아크릴 포토 카드 — 입고 공지 2026-09-22",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/Ddnn_NViXw-/",
+     "date": "2026-09-22"
+    },
+    {
+     "slug": "frieren",
+     "goods_type": "card-new",
+     "variant_name": "포토 티켓 2종 (프리렌)",
+     "availability": "unknown",
+     "evidence": "장송의 프리렌 포토 티켓 (프리렌) — 입고 공지 2026-09-22",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnlqtZCbTi/",
+     "date": "2026-09-22"
+    },
+    {
+     "slug": "frieren",
+     "goods_type": "acrylic-stand",
+     "variant_name": "아크릴 스탠드 (프리렌)",
+     "availability": "unknown",
+     "evidence": "장송의 프리렌 아크릴 스탠드 (프리렌) — 입고 공지 2026-09-22",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnlZtiiaoK/",
+     "date": "2026-09-22"
+    },
+    {
+     "slug": "frieren",
+     "goods_type": "acrylic-stand",
+     "variant_name": "아크릴 스탠드 7종 세트",
+     "availability": "unknown",
+     "evidence": "장송의 프리렌 아크릴 스탠드 7종 세트 — 입고 공지 2026-09-22",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnlZtiiaoK/",
+     "date": "2026-09-22"
+    },
+    {
+     "slug": "frieren",
+     "goods_type": "can-badge-new",
+     "variant_name": "캔뱃지 (프리렌)",
+     "availability": "unknown",
+     "evidence": "장송의 프리렌 캔뱃지 (프리렌) — 입고 공지 2026-09-22",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnlZtiiaoK/",
+     "date": "2026-09-22"
+    },
+    {
+     "slug": "bocchi-the-rock",
+     "goods_type": "etc",
+     "variant_name": "단체 마우스 장패드",
+     "availability": "unknown",
+     "evidence": "봇치 더 록! 단체 마우스 장패드 — 입고 공지 2026-09-22",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnkY9AiWw5/",
+     "date": "2026-09-22"
+    },
+    {
+     "slug": "bocchi-the-rock",
+     "goods_type": "card-new",
+     "variant_name": "밴드 공연 티켓 2종 (A타입 교복 / B타입 무대)",
+     "availability": "unknown",
+     "evidence": "봇치 더 록! 밴드 공연 티켓 — 입고 공지 2026-09-22",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/Ddnj8zJiYCd/",
+     "date": "2026-09-22"
+    },
+    {
+     "slug": "bocchi-the-rock",
+     "goods_type": "etc",
+     "variant_name": "랜덤 마그넷 2종 (각 전10종)",
+     "availability": "unknown",
+     "evidence": "봇치 더 록! 랜덤 마그넷 — 입고 공지 2026-09-22",
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/Ddnhlo_iXZ5/",
+     "date": "2026-09-22"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/YUECHAI_SUWON/status/2081240448375595053",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-07-26"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DbvqxYACSWq/",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-08-07"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DbvpVVuiWr1/",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-08-07"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/Dbvu0OPCYME/",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-08-07"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnqQ8hCRO4/",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-09-22"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnpQ7dicOb/",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-09-22"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnnKfWiZba/",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-09-22"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnoVNliZK6/",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-09-22"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/Ddnn_NViXw-/",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-09-22"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnlqtZCbTi/",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-09-22"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnlZtiiaoK/",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-09-22"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DdnkY9AiWw5/",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-09-22"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/Ddnj8zJiYCd/",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-09-22"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/Ddnhlo_iXZ5/",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-09-22"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "products-63d470eb",
+   "shop_id": "63d470eb-3a99-4028-b061-e29aeab28e7c",
+   "fields": {},
+   "reason": "지점 공식 SNS 입고 공지로 확인된 취급 작품·상품 옵션",
+   "works": [
+    {
+     "slug": "demon-slayer",
+     "evidence": "지점 공식 SNS 입고 공지 2026-08-06 (https://x.com/animate_lotte/status/2085268459668320760)"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "evidence": "지점 공식 SNS 입고 공지 2026-05-26 (https://x.com/animate_lotte/status/2059177226407755972)"
+    },
+    {
+     "slug": "kimi-ni-todoke",
+     "evidence": "지점 공식 SNS 입고 공지 2026-05-14 (https://x.com/animate_lotte/status/2054746683532329100)"
+    }
+   ],
+   "products": [
+    {
+     "slug": "demon-slayer",
+     "goods_type": "card-new",
+     "variant_name": "클리어 카드 (랜덤)",
+     "availability": "unknown",
+     "evidence": "귀멸의 칼날 랜덤 클리어 카드 — 입고 공지 2026-08-06",
+     "url": "https://x.com/animate_lotte/status/2085268459668320760",
+     "date": "2026-08-06"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "goods_type": "acrylic-stand",
+     "variant_name": "아크릴 스탠드 5종",
+     "availability": "unknown",
+     "evidence": "도쿄 리벤저스 아크릴 스탠드 5종 — 입고 공지 2026-05-26",
+     "url": "https://x.com/animate_lotte/status/2059177226407755972",
+     "date": "2026-05-26"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "goods_type": "clear-file",
+     "variant_name": "클리어 파일 4종",
+     "availability": "unknown",
+     "evidence": "도쿄 리벤저스 클리어 파일 4종 — 입고 공지 2026-05-26",
+     "url": "https://x.com/animate_lotte/status/2059177226407755972",
+     "date": "2026-05-26"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "goods_type": "keyring",
+     "variant_name": "포토 프레임 키홀더 5종",
+     "availability": "unknown",
+     "evidence": "도쿄 리벤저스 포토 프레임 키홀더 5종 — 입고 공지 2026-05-26",
+     "url": "https://x.com/animate_lotte/status/2059177226407755972",
+     "date": "2026-05-26"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "goods_type": "can-badge-new",
+     "variant_name": "롱 스퀘어 뱃지 5종",
+     "availability": "unknown",
+     "evidence": "도쿄 리벤저스 롱 스퀘어 뱃지 5종 — 입고 공지 2026-05-26",
+     "url": "https://x.com/animate_lotte/status/2059177226407755972",
+     "date": "2026-05-26"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "goods_type": "keyring",
+     "variant_name": "아크릴 키홀더 5종",
+     "availability": "unknown",
+     "evidence": "도쿄 리벤저스 아크릴 키홀더 5종 — 입고 공지 2026-05-26",
+     "url": "https://x.com/animate_lotte/status/2059177226407755972",
+     "date": "2026-05-26"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "goods_type": "can-badge-new",
+     "variant_name": "트레이딩 글리터 캔뱃지 (랜덤)",
+     "availability": "unknown",
+     "evidence": "도쿄 리벤저스 트레이딩 글리터 캔뱃지 (랜덤) — 입고 공지 2026-05-26",
+     "url": "https://x.com/animate_lotte/status/2059177226407755972",
+     "date": "2026-05-26"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "goods_type": "card-new",
+     "variant_name": "클리어 카드 (랜덤)",
+     "availability": "unknown",
+     "evidence": "도쿄 리벤저스 클리어 카드 (랜덤) — 입고 공지 2026-05-26",
+     "url": "https://x.com/animate_lotte/status/2059177226407755972",
+     "date": "2026-05-26"
+    },
+    {
+     "slug": "kimi-ni-todoke",
+     "goods_type": "figure-new",
+     "variant_name": "넨도로이드 쿠로누마 사와코 2.0",
+     "availability": "unknown",
+     "evidence": "넨도로이드 쿠로누마 사와코 2.0 — 입고 공지 2026-05-14",
+     "url": "https://x.com/animate_lotte/status/2054746683532329100",
+     "date": "2026-05-14"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/animate_lotte/status/2085268459668320760",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-08-06"
+    },
+    {
+     "url": "https://x.com/animate_lotte/status/2059177226407755972",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-05-26"
+    },
+    {
+     "url": "https://x.com/animate_lotte/status/2054746683532329100",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-05-14"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "products-927de840",
+   "shop_id": "927de840-7ca5-4e62-8b79-440046a524a6",
+   "fields": {},
+   "reason": "지점 공식 SNS 입고 공지로 확인된 취급 작품·상품 옵션",
+   "works": [
+    {
+     "slug": "tokyo-aliens-manga",
+     "evidence": "지점 공식 SNS 입고 공지 2026-08-24 (https://x.com/animate_hongdae/status/2091796726642557361)"
+    },
+    {
+     "slug": "my-dress-up-darling",
+     "evidence": "지점 공식 SNS 입고 공지 2026-05-27 (https://x.com/animate_hongdae/status/2059461519315005927)"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "evidence": "지점 공식 SNS 입고 공지 2026-05-29 (https://x.com/animate_hongdae/status/2060255197507797355)"
+    }
+   ],
+   "products": [
+    {
+     "slug": "tokyo-aliens-manga",
+     "goods_type": "acrylic-stand",
+     "variant_name": "아크릴 스탠드 (랜덤)",
+     "availability": "unknown",
+     "evidence": "도쿄 에일리언즈 아크릴 스탠드 (랜덤) — 입고 공지 2026-08-24",
+     "url": "https://x.com/animate_hongdae/status/2091796726642557361",
+     "date": "2026-08-24"
+    },
+    {
+     "slug": "tokyo-aliens-manga",
+     "goods_type": "can-badge-new",
+     "variant_name": "캔뱃지 (랜덤)",
+     "availability": "unknown",
+     "evidence": "도쿄 에일리언즈 캔뱃지 (랜덤) — 입고 공지 2026-08-24",
+     "url": "https://x.com/animate_hongdae/status/2091796726642557361",
+     "date": "2026-08-24"
+    },
+    {
+     "slug": "tokyo-aliens-manga",
+     "goods_type": "keyring",
+     "variant_name": "아크릴 챰 (랜덤)",
+     "availability": "unknown",
+     "evidence": "도쿄 에일리언즈 아크릴 챰 (랜덤) — 입고 공지 2026-08-24",
+     "url": "https://x.com/animate_hongdae/status/2091796726642557361",
+     "date": "2026-08-24"
+    },
+    {
+     "slug": "tokyo-aliens-manga",
+     "goods_type": "card-new",
+     "variant_name": "클리어 카드 (랜덤)",
+     "availability": "unknown",
+     "evidence": "도쿄 에일리언즈 클리어 카드 (랜덤) — 입고 공지 2026-08-24",
+     "url": "https://x.com/animate_hongdae/status/2091796726642557361",
+     "date": "2026-08-24"
+    },
+    {
+     "slug": "my-dress-up-darling",
+     "goods_type": "figure-new",
+     "variant_name": "Huggy Good Smile 키타가와 마린",
+     "availability": "unknown",
+     "evidence": "Huggy Good Smile 키타가와 마린 — 입고 공지 2026-05-27",
+     "url": "https://x.com/animate_hongdae/status/2059461519315005927",
+     "date": "2026-05-27"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "goods_type": "clear-file",
+     "variant_name": "클리어 파일 4종",
+     "availability": "unknown",
+     "evidence": "도쿄 리벤저스 클리어 파일 4종 — 입고 공지 2026-05-29",
+     "url": "https://x.com/animate_hongdae/status/2060255197507797355",
+     "date": "2026-05-29"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "goods_type": "acrylic-stand",
+     "variant_name": "아크릴 스탠드 5종",
+     "availability": "unknown",
+     "evidence": "도쿄 리벤저스 아크릴 스탠드 5종 — 입고 공지 2026-05-29",
+     "url": "https://x.com/animate_hongdae/status/2060255197507797355",
+     "date": "2026-05-29"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "goods_type": "keyring",
+     "variant_name": "포토 프레임 키홀더 5종",
+     "availability": "unknown",
+     "evidence": "도쿄 리벤저스 포토 프레임 키홀더 5종 — 입고 공지 2026-05-29",
+     "url": "https://x.com/animate_hongdae/status/2060255197507797355",
+     "date": "2026-05-29"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "goods_type": "can-badge-new",
+     "variant_name": "뱃지 5종",
+     "availability": "unknown",
+     "evidence": "도쿄 리벤저스 뱃지 5종 — 입고 공지 2026-05-29",
+     "url": "https://x.com/animate_hongdae/status/2060255197507797355",
+     "date": "2026-05-29"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "goods_type": "keyring",
+     "variant_name": "아크릴 키홀더 5종",
+     "availability": "unknown",
+     "evidence": "도쿄 리벤저스 아크릴 키홀더 5종 — 입고 공지 2026-05-29",
+     "url": "https://x.com/animate_hongdae/status/2060255197507797355",
+     "date": "2026-05-29"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "goods_type": "can-badge-new",
+     "variant_name": "캔뱃지 (랜덤)",
+     "availability": "unknown",
+     "evidence": "도쿄 리벤저스 캔뱃지 (랜덤) — 입고 공지 2026-05-29",
+     "url": "https://x.com/animate_hongdae/status/2060255197507797355",
+     "date": "2026-05-29"
+    },
+    {
+     "slug": "tokyo-revengers",
+     "goods_type": "card-new",
+     "variant_name": "클리어 카드 (랜덤)",
+     "availability": "unknown",
+     "evidence": "도쿄 리벤저스 클리어 카드 (랜덤) — 입고 공지 2026-05-29",
+     "url": "https://x.com/animate_hongdae/status/2060255197507797355",
+     "date": "2026-05-29"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/animate_hongdae/status/2091796726642557361",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-08-24"
+    },
+    {
+     "url": "https://x.com/animate_hongdae/status/2059461519315005927",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-05-27"
+    },
+    {
+     "url": "https://x.com/animate_hongdae/status/2060255197507797355",
+     "fields": [
+      "works",
+      "products"
+     ],
+     "checked_at": "2026-09-23",
+     "posted_at": "2026-05-29"
+    }
+   ]
+  }
+ ]
+}

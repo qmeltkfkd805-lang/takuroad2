@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "mahoromatic-anime",
+    "name": "마호로매틱",
+    "englishName": "Mahoromatic: Automatic Maiden",
+    "aliases": [],
+    "description": "수명이 얼마 남지 않은 전투 안드로이드 마호로가 은퇴 후 소년 스구루의 가정부가 된다.",
+    "genres": ["SF", "로맨스", "코미디", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "witchblade-anime",
+    "name": "위치블레이드",
+    "englishName": "Witchblade",
+    "aliases": [],
+    "description": "기억을 잃은 어머니 마사네가 딸을 지키기 위해 위치블레이드의 힘으로 싸운다.",
+    "genres": ["액션", "SF", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "over-drive-anime",
+    "name": "오버 드라이브",
+    "englishName": "Over Drive",
+    "aliases": [],
+    "description": "운동에 서툰 고교생 미코토가 자전거부에 들어가 로드 레이서로 성장한다.",
+    "genres": ["스포츠", "학원", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "bamboo-blade-anime",
+    "name": "뱀부 블레이드",
+    "englishName": "Bamboo Blade",
+    "aliases": [],
+    "description": "교사의 내기를 계기로 모인 여학생들이 검도부에서 훈련하며 팀으로 성장한다.",
+    "genres": ["스포츠", "학원", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "last-exile-fam-the-silver-wing-anime",
+    "name": "라스트 엑자일: 은빛 날개의 팜",
+    "englishName": "Last Exile: Fam, the Silver Wing",
+    "aliases": [],
+    "description": "공중족 소녀 팜이 침략당한 왕국의 공주들과 함께 하늘의 평화를 되찾으려 한다.",
+    "genres": ["SF", "모험", "액션"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "kurenai-anime",
+    "name": "쿠레나이",
+    "englishName": "Kurenai",
+    "aliases": [],
+    "description": "분쟁 조정인 소년 신쿠로가 대가문의 소녀 무라사키를 보호하며 함께 살아간다.",
+    "genres": ["액션", "드라마", "일상"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "library-war-anime",
+    "name": "도서관 전쟁",
+    "englishName": "Library War",
+    "aliases": [],
+    "description": "검열이 강화된 미래 일본에서 도서관 방위대원 이쿠가 책과 표현의 자유를 지킨다.",
+    "genres": ["액션", "로맨스", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "birdy-the-mighty-decode-anime",
+    "name": "철완 버디 DECODE",
+    "englishName": "Birdy the Mighty: Decode",
+    "aliases": [],
+    "description": "사고로 한 몸을 공유하게 된 지구 소년과 우주 수사관 버디가 외계 범죄를 쫓는다.",
+    "genres": ["SF", "액션", "코미디"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "phantom-requiem-for-the-phantom-anime",
+    "name": "팬텀: 레퀴엠 포 더 팬텀",
+    "englishName": "Phantom: Requiem for the Phantom",
+    "aliases": [],
+    "description": "기억을 잃고 암살자로 길러진 청년이 동료 아인과 함께 조직의 지배에서 벗어나려 한다.",
+    "genres": ["액션", "추리", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "eureka-seven-ao-anime",
+    "name": "에우레카 세븐 AO",
+    "englishName": "Eureka Seven AO",
+    "aliases": [],
+    "description": "오키나와의 소년 아오가 거대 병기 니르바슈에 올라 자신의 출생과 세계의 비밀을 찾는다.",
+    "genres": ["SF", "로봇/메카", "액션", "드라마"],
+    "ipType": ["애니"],
+    "officialUrl": "",
+    "source": ""
+  }
+]

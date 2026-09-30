@@ -1,0 +1,371 @@
+[
+ {
+  "shop_id": "c6eb6620-b968-42e0-a256-fd4a49dfe4a0",
+  "name": "이치방쿠지 잠실직영점",
+  "works": [
+   {
+    "name": "원피스",
+    "evidence": "Opening event (2025-02-14) at Jamsil store offered One Piece / Shin-chan / Demon Slayer character prizes",
+    "url": "https://x.com/ICHIBAN_KUJI_JS"
+   },
+   {
+    "name": "짱구는 못말려",
+    "evidence": "Named in Jamsil store opening event lineup",
+    "url": "https://x.com/ICHIBAN_KUJI_JS"
+   },
+   {
+    "name": "귀멸의 칼날",
+    "evidence": "Official Jamsil account: '귀멸의 칼날 상현의 3' in stock 2025-07-18, '대 호평 판매 중' with samples displayed",
+    "url": "https://x.com/ICHIBAN_KUJI_JS/status/1948607766878421397"
+   },
+   {
+    "name": "강철의 연금술사",
+    "evidence": "Official Jamsil account: FULLMETAL ALCHEMIST 문을 여는 자들 '대 호평 판매 중'",
+    "url": "https://x.com/ICHIBAN_KUJI_JS/status/1890952808549040575"
+   },
+   {
+    "name": "체인소 맨",
+    "evidence": "Official Jamsil account: 체인소맨 극장판 kuji in stock 2025-09-30",
+    "url": "https://x.com/ICHIBAN_KUJI_JS/status/1972249196909793558"
+   },
+   {
+    "name": "죠죠의 기묘한 모험",
+    "evidence": "Official Jamsil account: STARDUST CRUSADERS -STAND RUSH!- in stock 2025-09-27",
+    "url": "https://x.com/ICHIBAN_KUJI_JS/status/1970684117768691834"
+   },
+   {
+    "name": "가면라이더",
+    "evidence": "Official Jamsil account: 가면라이더 ZEZTZ & GAVV kuji '대 호평 판매 중'",
+    "url": "https://x.com/ICHIBAN_KUJI_JS/status/1999066779579216331"
+   },
+   {
+    "name": "괴수 8호",
+    "evidence": "Official Jamsil account post: Kaiju No.8 kuji arriving 2025-08-13 (search snippet only)",
+    "url": "https://x.com/ICHIBAN_KUJI_JS/status/1955208037817520601"
+   }
+  ],
+  "goods_types": [],
+  "notes": "Official direct store at Lotte World Mall B1 near the animate entrance, opened 2025-02-14. Works come from its official X account (@ICHIBAN_KUJI_JS), taken from search snippets because X pages would not load. Kaiju No.8 comes from a search-engine summary only, so it is weaker evidence. No goods types found beyond ichiban-kuji."
+ },
+ {
+  "shop_id": "14c35dab-c3f8-448a-8d41-174c9971fc1c",
+  "name": "이치방쿠지 잠실토이저러스점",
+  "works": [],
+  "goods_types": [],
+  "notes": "Found no web evidence of an ichiban kuji corner at Toys R Us Zettaplex Jamsil 4F. Search results only show the separate direct store in Lotte World Mall B1. Left empty."
+ },
+ {
+  "shop_id": "1d3a765a-8765-4b3e-a7b0-12ff33e4ff5a",
+  "name": "토이저러스 잠실점",
+  "works": [],
+  "goods_types": [],
+  "notes": "Store is now at Lotte Mart Zettaplex Jamsil 4F. Sources (mom-mom.net, namu.wiki) confirm only LEGO/Nerf hands-on zones and general toys, with no new work or goods evidence specific to this store. A 2017 article (sedaily) on figures/Naruto describes the old Lotte World location before the move, so it was excluded."
+ },
+ {
+  "shop_id": "63d470eb-3a99-4028-b061-e29aeab28e7c",
+  "name": "애니메이트 잠실롯데점",
+  "works": [
+   {
+    "name": "하이큐!!",
+    "evidence": "Official store X: new Haikyu goods in stock (files, stands, keyholders, nuipal, can badges, etc.)",
+    "url": "https://x.com/animate_lotte/status/1975117982625108330"
+   },
+   {
+    "name": "나루토",
+    "evidence": "Official store X: Naruto Shippuden can badge set in stock; Bandai Presto Naruto figure in stock",
+    "url": "https://x.com/animate_lotte/status/1979460063543877888"
+   },
+   {
+    "name": "블루 록",
+    "evidence": "Official store X: Nendoroid Surprise Blue Lock in stock",
+    "url": "https://x.com/animate_lotte/status/2022989838941929690"
+   },
+   {
+    "name": "나의 히어로 아카데미아",
+    "evidence": "Official store X: Potekoro and nuipal mascots in stock",
+    "url": "https://x.com/animate_lotte/status/1955091350753611991"
+   },
+   {
+    "name": "문호 스트레이독스",
+    "evidence": "Official store X: acrylic stands, keyholders, hologram can badges in stock",
+    "url": "https://x.com/animate_lotte/status/2038536340439269412"
+   },
+   {
+    "name": "데이트 어 라이브",
+    "evidence": "Official store X: Furyu BiCute Tokisaki Kurumi figure in stock",
+    "url": "https://x.com/animate_lotte/status/2018944819259965444"
+   },
+   {
+    "name": "체인소 맨",
+    "evidence": "Official store X: Chainsaw Man special edition sold at the counter",
+    "url": "https://x.com/animate_lotte/status/1991378472137302292"
+   },
+   {
+    "name": "림버스 컴퍼니",
+    "evidence": "Official store X: LIMBUS COMPANY fair in animate stores, delayed items arrived at this store",
+    "url": "https://x.com/animate_lotte/status/2085289782486118569"
+   },
+   {
+    "name": "5등분의 신부",
+    "evidence": "Visit blog: Quintessential Quintuplets goods fill a whole shelf at this store",
+    "url": "https://www.crispystory.com/2025/02/JamsilAnimate.html"
+   },
+   {
+    "name": "진격의 거인",
+    "evidence": "Visit blog: character goods displayed in store",
+    "url": "https://www.crispystory.com/2025/02/JamsilAnimate.html"
+   },
+   {
+    "name": "흑집사",
+    "evidence": "Visit blog: character goods displayed in store",
+    "url": "https://www.crispystory.com/2025/02/JamsilAnimate.html"
+   },
+   {
+    "name": "명탐정 코난",
+    "evidence": "Visit blog: character goods displayed in store",
+    "url": "https://www.crispystory.com/2025/02/JamsilAnimate.html"
+   },
+   {
+    "name": "장송의 프리렌",
+    "evidence": "Visit blog: character goods displayed in store",
+    "url": "https://www.crispystory.com/2025/02/JamsilAnimate.html"
+   },
+   {
+    "name": "원피스",
+    "evidence": "Visit blog: character goods displayed in store",
+    "url": "https://www.crispystory.com/2025/02/JamsilAnimate.html"
+   },
+   {
+    "name": "원신",
+    "evidence": "Visit blog: game goods (Genshin, Star Rail, ZZZ, Blue Archive) in store",
+    "url": "https://www.crispystory.com/2025/02/JamsilAnimate.html"
+   },
+   {
+    "name": "붕괴: 스타레일",
+    "evidence": "Visit blog: game goods section",
+    "url": "https://www.crispystory.com/2025/02/JamsilAnimate.html"
+   },
+   {
+    "name": "블루 아카이브",
+    "evidence": "Two visit blogs: Blue Archive goods and comics in store",
+    "url": "https://nipa0711.net/438"
+   },
+   {
+    "name": "봇치 더 록!",
+    "evidence": "Named in two independent visit blogs of this store",
+    "url": "https://nipa0711.net/438"
+   }
+  ],
+  "goods_types": [
+   {
+    "slug": "figure-new",
+    "evidence": "Official store X posts regular figure arrivals (Nendoroid, Furyu BiCute, Bandai Presto); blog notes a Nendoroid/figure section",
+    "url": "https://x.com/animate_lotte/status/2018944819259965444"
+   }
+  ],
+  "notes": "Kept this separate from the ichiban kuji store and the gacha machines at the animate entrance. Pokemon, Sanrio and Demon Slayer were seen only in the entrance gacha machines, so they were excluded. Also seen but left out: 젠레스 존 제로, 치이카와, 드래곤볼, 세일러문 (one blog each), 홀로라이브, 니지산지, 리코리스 리코일, 에반게리온 (nipa0711 blog), and 괴담출근 (goods stock post, https://x.com/animate_lotte/status/2082733605521064264). Add them if more coverage is wanted. Evidence for BL/GL, light novels, CDs and doujinshi also exists, but those are already in current_goods."
+ },
+ {
+  "shop_id": "3bd1292d-c560-4394-bca9-bca4c0c64bef",
+  "name": "애니메이트 카페 잠실롯데점",
+  "works": [
+   {
+    "name": "명탐정 코난",
+    "evidence": "Collab cafe held 7/2-8/5 (2025) per official cafe X",
+    "url": "https://x.com/animatecafe_js/status/1937797926702792947"
+   },
+   {
+    "name": "하츠네 미쿠",
+    "evidence": "HATSUNE MIKU EXPO 10th collab cafe 11/19-12/16; Chocoanimal Miku Wagon collab 9/4-10/13",
+    "url": "https://x.com/animatecafe_js/status/1985995504451240277"
+   },
+   {
+    "name": "니지산지",
+    "evidence": "NIJISANJI Crystal Clockwork collab cafe 1/16-2/10",
+    "url": "https://x.com/animatecafe_js/status/2003390123522568258"
+   },
+   {
+    "name": "승리의 여신: 니케",
+    "evidence": "NIKKE collab cafe 2/13-3/17",
+    "url": "https://x.com/animatecafe_js/status/2019697576765964675"
+   },
+   {
+    "name": "WIND BREAKER",
+    "evidence": "Collab cafe 10/3-11/16 with collab goods",
+    "url": "https://x.com/animatecafe_js/status/1971862374727799174"
+   },
+   {
+    "name": "헬루바 보스",
+    "evidence": "Helluva Boss collab cafe 7/31-9/1",
+    "url": "https://x.com/animatecafe_js/status/2074418153262850077"
+   },
+   {
+    "name": "ALIEN STAGE",
+    "evidence": "ALIEN STAGE fair Gratte collab 6/27-7/19 at Jamsil Lotte",
+    "url": "https://x.com/animatecafe_js/status/2054486820663255417"
+   },
+   {
+    "name": "주술회전",
+    "evidence": "Collab cafe at animate cafe Jamsil Lotte, 2025-03-14 to 04-15",
+    "url": "https://popga.co.kr/popup/2248"
+   },
+   {
+    "name": "블루 록",
+    "evidence": "Butler-concept collab cafe 2026-06-20 to 07-05, followed by Blue Lock Gratte",
+    "url": "https://popga.co.kr/popup/7441"
+   },
+   {
+    "name": "스파이 패밀리",
+    "evidence": "Collab cafe at Jamsil (2026-01-03 to 01-18)",
+    "url": "https://popga.co.kr/popup/5162"
+   },
+   {
+    "name": "아이돌마스터 샤이니 컬러즈",
+    "evidence": "Collab cafe 2025-12-19 to 2026-01-13",
+    "url": "https://popga.co.kr/popup/4938"
+   },
+   {
+    "name": "은하특급 밀키☆서브웨이",
+    "evidence": "Gratte collab 2026-02-01 to 02-28",
+    "url": "https://popga.co.kr/popup/5290"
+   },
+   {
+    "name": "러브앤딥스페이스",
+    "evidence": "Collab cafe in Jamsil 2026-01-17 to 02-15",
+    "url": "https://dayforyou.com/getDetail?scheduleSeq=18953"
+   },
+   {
+    "name": "타몬 군 지금 어느 쪽?!",
+    "evidence": "Gratte collab 9/19-11/1 at Hongdae and Jamsil Lotte animate cafes (search summary; weaker)",
+    "url": "https://x.com/animatecafe_js"
+   }
+  ],
+  "goods_types": [],
+  "notes": "Collab gifts found were mainly acrylic coasters plus unspecified 'collab goods', and none map cleanly to a slug, so goods_types is empty. Excluded: multi-title '로맨스 판타지' webtoon collab (popga 5869), streamer/singer collabs 다즈비 (popga 5301) and 악월 (popga 4855)."
+ },
+ {
+  "shop_id": "3e220619-377c-4822-b504-51ee7f6d00f3",
+  "name": "미니소 잠실롯데월드점",
+  "works": [],
+  "goods_types": [],
+  "notes": "Found no reviews specific to this B1 store (toward Lotte World Adventure). Everything here comes from Miniso Korea's official brand site and chain-wide collabs, so it is weaker evidence. A Facebook post about a 'Lotte World Mall 4F' Miniso is a different, older location and was not used. Barbie is also on the official IP list but was left out as a toy brand."
+ },
+ {
+  "shop_id": "d98e6a5a-c257-44b7-bae6-82652377f658",
+  "name": "가샤폰 잠실롯데점",
+  "works": [
+   {
+    "name": "산리오",
+    "evidence": "Main lineup of Gashapon Bandai Official Shop in Jamsil (Lotte World B1, across from Butter on the way to Lotte World Adventure)",
+    "url": "https://mom-mom.net/travel/places/67c6d2e54721161bb4f579cd"
+   },
+   {
+    "name": "짱구는 못말려",
+    "evidence": "Listed in main lineup",
+    "url": "https://mom-mom.net/travel/places/67c6d2e54721161bb4f579cd"
+   },
+   {
+    "name": "치이카와",
+    "evidence": "Listed as 먼작귀 in main lineup",
+    "url": "https://mom-mom.net/travel/places/67c6d2e54721161bb4f579cd"
+   },
+   {
+    "name": "mofusand",
+    "evidence": "Listed as 모프샌드 in main lineup",
+    "url": "https://mom-mom.net/travel/places/67c6d2e54721161bb4f579cd"
+   },
+   {
+    "name": "건담",
+    "evidence": "Listed in main lineup",
+    "url": "https://mom-mom.net/travel/places/67c6d2e54721161bb4f579cd"
+   },
+   {
+    "name": "포켓몬스터",
+    "evidence": "Described as full of Pokemon and Disney gacha machines",
+    "url": "https://triple.guide/attractions/a38aaf66-af39-47be-b95b-7a8311e8c5f6"
+   },
+   {
+    "name": "디즈니",
+    "evidence": "Described as full of Pokemon and Disney gacha machines",
+    "url": "https://triple.guide/attractions/a38aaf66-af39-47be-b95b-7a8311e8c5f6"
+   }
+  ],
+  "goods_types": [],
+  "notes": "Assumed to be the 'Gashapon Bandai Official Shop in Jamsil', Korea's first official shop (Lotte World Shopping Mall B1, 10:00-21:00). It is separate from the FUN SQUARE Bandai Namco gacha area on Lotte World Mall 2F (Kirby/Sanrio/Doraemon reviews), which was excluded. The link to this shop record is based on matching address and floor, so please verify. Only gacha goods were found."
+ },
+ {
+  "shop_id": "c2a6bffb-96be-468a-a35e-2e91ca8384d9",
+  "name": "반다이남코 잠실토이저러스점",
+  "works": [],
+  "goods_types": [],
+  "notes": "Found no evidence of a Bandai Namco shop-in-shop at Toys R Us Zettaplex Jamsil. namu.wiki only says gunpla buyers visit Toys R Us stores in general. Left empty."
+ },
+ {
+  "shop_id": "0aacf913-5176-41f3-a0e3-7f49ef05e276",
+  "name": "도토리숲 잠실롯데월드몰점",
+  "works": [
+   {
+    "name": "이웃집 토토로",
+    "evidence": "Visit review of this Lotte World Mall B1 store mentions Totoro goods among general Ghibli goods; also on official dotorisup.com work menu",
+    "url": "https://kr.trip.com/moments/detail/seoul-234-122031856/"
+   },
+   {
+    "name": "마녀 배달부 키키",
+    "evidence": "Official Dotorisup (Studio Ghibli official character shop) work menu",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "센과 치히로의 행방불명",
+    "evidence": "Official Dotorisup work menu",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "하울의 움직이는 성",
+    "evidence": "Official Dotorisup work menu",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "천공의 성 라퓨타",
+    "evidence": "Official Dotorisup work menu",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "원령공주",
+    "evidence": "Official Dotorisup work menu",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "벼랑 위의 포뇨",
+    "evidence": "Official Dotorisup work menu",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "붉은 돼지",
+    "evidence": "Official Dotorisup work menu",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "바람계곡의 나우시카",
+    "evidence": "Official Dotorisup work menu",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "귀를 기울이면",
+    "evidence": "Official Dotorisup work menu",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "마루 밑 아리에티",
+    "evidence": "Official Dotorisup work menu",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "고양이의 보은",
+    "evidence": "Official Dotorisup work menu",
+    "url": "https://www.dotorisup.com/"
+   }
+  ],
+  "goods_types": [],
+  "notes": "Beyond Totoro, the works come from the official Dotorisup brand mall (chain-level), not from store-specific reviews. The store review mentions handkerchiefs, keyrings and postcards, and the official site has puzzles, interior, toys & hobbies and kitchen categories, but none are new slugs beyond current_goods with store-specific evidence. Also on the official menu but omitted: 코쿠리코 언덕에서, 아야와 마녀, 그대들은 어떻게 살 것인가."
+ }
+]

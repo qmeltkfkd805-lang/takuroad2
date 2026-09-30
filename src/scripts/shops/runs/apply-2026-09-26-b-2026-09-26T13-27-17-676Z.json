@@ -1,0 +1,296 @@
+{
+ "plan": "2026-09-26-b",
+ "at": "2026-09-26T13:27:17.676Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "figurepresso-seocho",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "1bdef20f-f701-41d0-bab8-ccfc66c03d85",
+   "slug": "pigyueopeureso-seochojeom",
+   "extras": {
+    "works": {
+     "added": [
+      "단다단",
+      "루팡 3세",
+      "홀로라이브",
+      "그 비스크 돌은 사랑을 한다"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "animegoods-kukje",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "94f6d97c-e40c-45b6-8c42-9cb878897482",
+   "slug": "aenimegutjeu",
+   "extras": {
+    "works": {
+     "added": [
+      "꿈빛 파티시엘",
+      "은혼",
+      "모브사이코100",
+      "개구리 중사 케로로"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "estaregg-kukje-main",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "2f1321e8-39a4-4f29-8f50-6ee8a82c6e66",
+   "slug": "iseutaegeu-gukjeon-bonjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "홀로라이브",
+      "승리의 여신: 니케",
+      "블루 아카이브",
+      "붕괴: 스타레일",
+      "단간론파"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "plushie-new",
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "estaregg-kukje-2",
+   "action": "insert",
+   "status": "SKIP_DUPLICATE",
+   "duplicates": [
+    {
+     "id": "2f1321e8-39a4-4f29-8f50-6ee8a82c6e66",
+     "name": "이스타에그 국전 본점",
+     "addr": "서울 서초구 효령로 304",
+     "status": "active",
+     "reasons": [
+      "same-address+similar-name",
+      "same-link+address"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "ttabbaemall-kukje",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "15c0501e-486c-42e5-965e-ff2dc2400bf1",
+   "slug": "ttappaemol-gukjejeonjasenteojeom",
+   "extras": {
+    "works": {
+     "added": [
+      "원신",
+      "붕괴: 스타레일",
+      "젠레스 존 제로",
+      "블루 아카이브",
+      "승리의 여신: 니케"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "acrylic-stand",
+      "keyring",
+      "figure-new",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "brothergoods-kukje",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "1868a417-7312-4991-8d7a-6373c648f31f",
+   "slug": "beuradeogutjeu-gukjejeonjasenteojeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "self-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "hanwoori-kukje",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "fcd66bed-838b-4de2-93f9-633a41e38600",
+   "slug": "hanuri-gukjejeonjasenteojeom"
+  },
+  {
+   "key": "miraclekuji-kukje",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "abfc89ce-5a75-4e84-b945-58df332651ce",
+   "slug": "mirakeulkuji-gukjeonjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "self-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "skytoy-kukje",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "da4b3714-9c6f-490d-ba29-f8e6810d205f",
+   "slug": "seukaitoi-gukjeon",
+   "extras": {
+    "works": {
+     "added": [
+      "나의 히어로 아카데미아",
+      "헌터×헌터",
+      "진격의 거인",
+      "주술회전",
+      "치이카와"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "plushie-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "ddansol-kukje",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "42123449-2741-4314-8156-0689aff00bf0",
+   "slug": "ttansolsyap",
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와",
+      "산리오",
+      "짱구는 못말려",
+      "mofusand",
+      "스튜디오 지브리",
+      "나의 히어로 아카데미아",
+      "디지몬",
+      "장송의 프리렌",
+      "블루 록"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-26-b-2026-09-26T13-27-17-676Z.json"
+}

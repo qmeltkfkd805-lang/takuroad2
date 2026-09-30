@@ -1,0 +1,399 @@
+{
+ "plan": "2026-09-30-e",
+ "at": "2026-09-30T03:21:09.399Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "time-gacha-kondae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5412224148897,
+    "lng": 127.070365965299,
+    "road": "서울 광진구 아차산로33길 22",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "건대가챠샵 타임",
+    "addr": "서울 광진구 아차산로33길 22",
+    "floor_info": "1층",
+    "cats": [
+     "가챠"
+    ],
+    "shop_link": "https://www.instagram.com/time_gacha/",
+    "sns_links": [
+     "https://www.instagram.com/time_gacha/"
+    ],
+    "hours": {
+     "mon": {
+      "open": "00:00",
+      "close": "24:00"
+     },
+     "tue": {
+      "open": "00:00",
+      "close": "24:00"
+     },
+     "wed": {
+      "open": "00:00",
+      "close": "24:00"
+     },
+     "thu": {
+      "open": "00:00",
+      "close": "24:00"
+     },
+     "fri": {
+      "open": "00:00",
+      "close": "24:00"
+     },
+     "sat": {
+      "open": "00:00",
+      "close": "24:00"
+     },
+     "sun": {
+      "open": "00:00",
+      "close": "24:00"
+     }
+    },
+    "description": "건대입구 쪽 24시간 가챠(캡슐토이) 매장입니다(공식 인스타그램 \"건대 가챠샵 타임 [24h]\").\n대리 가챠도 받습니다.\n광진구 아차산로33길 22 1층, 하루필름 크림필터 건대점 뒷문 쪽.",
+    "lat": 37.5412224148897,
+    "lng": 127.070365965299,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-30T03:21:09.399Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "chuplay-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5587712526005,
+    "lng": 126.924816169617,
+    "road": "서울 마포구 월드컵북로2길 93",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "츄플레이",
+    "addr": "서울 마포구 월드컵북로2길 93",
+    "floor_info": "3층 301호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://www.instagram.com/chuplay_offi/",
+    "sns_links": [
+     "https://www.instagram.com/chuplay_offi/",
+     "https://x.com/chuplay_offi",
+     "https://linktr.ee/chuplay"
+    ],
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "yearRound": true
+    },
+    "description": "봉제인형·키링 등 귀여운 캐릭터 굿즈를 파는 홍대입구역 3번 출구 쪽 매장입니다. 새 입고 소식은 공식 X·인스타그램(#츄플입고)에 올라옵니다.\n연중무휴 평일 11:00~20:00, 주말 11:00~21:00(공식 인스타그램 안내). 문의는 DM 이 아니라 네이버 톡톡으로 받습니다.\n마포구 월드컵북로2길 93, 301호.",
+    "lat": 37.5587712526005,
+    "lng": 126.924816169617,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-30T03:21:09.399Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "개구리 중사 케로로"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "keyring",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "otaku-early-edu-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5561258972383,
+    "lng": 126.927216313088,
+    "road": "서울 마포구 와우산로29길 56-6",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "오타쿠 조기교육",
+    "addr": "서울 마포구 와우산로29길 56-6",
+    "floor_info": "2층",
+    "cats": [
+     "가챠",
+     "쿠지",
+     "굿즈샵",
+     "피규어샵"
+    ],
+    "shop_link": "https://www.instagram.com/otakuearlyedu/",
+    "sns_links": [
+     "https://www.instagram.com/otakuearlyedu/"
+    ],
+    "hours": {
+     "mon": {
+      "open": "12:30",
+      "close": "20:30"
+     },
+     "tue": {
+      "open": "12:30",
+      "close": "20:30"
+     },
+     "wed": {
+      "open": "12:30",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "12:30",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "12:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     }
+    },
+    "description": "가챠·쿠지·피규어·굿즈를 파는 홍대 상점입니다(공식 인스타그램 소개).\n평일 12:30~20:30, 주말 12:00~21:00.\n마포구 와우산로29길 56-6 2층.",
+    "lat": 37.5561258972383,
+    "lng": 126.927216313088,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-30T03:21:09.399Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kurostore-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5270404595814,
+    "lng": 126.964892234354,
+    "road": "서울 용산구 한강대로 69",
+    "building": "용산푸르지오써밋",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "쿠로상점",
+    "addr": "서울 용산구 한강대로 69",
+    "floor_info": "푸르지오써밋 상가동 지하 1층 B125-1호",
+    "cats": [
+     "굿즈샵",
+     "가챠",
+     "피규어샵"
+    ],
+    "shop_link": "https://www.instagram.com/kurostore_yongsan/",
+    "sns_links": [
+     "https://www.instagram.com/kurostore_yongsan/",
+     "https://x.com/kurostore_",
+     "http://pf.kakao.com/_Nxfxikxj"
+    ],
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "20:00"
+     }
+    },
+    "parking": true,
+    "description": "용산역·신용산역에서 걸어서 5분 거리, 푸르지오써밋 상가 지하 1층의 굿즈·가챠 매장입니다. 가챠에는 중복 방지 스티커 제도를 운영합니다.\n매일 11:00~20:00(공식 인스타그램 안내). 문의는 카카오톡 채널 \"쿠로상점\".\n기존 1호점·2호점은 2호점 자리(김가네 옆, B125-1호)로 합쳐졌습니다(공식 X 공지). 상가 안에 주차할 수 있습니다.",
+    "lat": 37.5270404595814,
+    "lng": 126.964892234354,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-30T03:21:09.399Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "헌터×헌터",
+      "다마고치",
+      "은혼"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "yongtaku-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5270404595814,
+    "lng": 126.964892234354,
+    "road": "서울 용산구 한강대로 69",
+    "building": "용산푸르지오써밋",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "용타쿠 본점",
+    "addr": "서울 용산구 한강대로 69",
+    "floor_info": "푸르지오써밋",
+    "cats": [
+     "쿠지",
+     "굿즈샵",
+     "가챠",
+     "피규어샵"
+    ],
+    "shop_link": "https://www.instagram.com/yongtaku_official/",
+    "sns_links": [
+     "https://www.instagram.com/yongtaku_official/"
+    ],
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "yearRound": true
+    },
+    "description": "쿠지·피규어·굿즈·가챠를 파는 용산 오타쿠샵입니다(공식 인스타그램 소개).\n연중무휴 12:00~21:00.\n용산구 한강대로 69 푸르지오써밋.",
+    "lat": 37.5270404595814,
+    "lng": 126.964892234354,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-30T03:21:09.399Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

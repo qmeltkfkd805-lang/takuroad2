@@ -1,0 +1,761 @@
+{
+ "dry": true,
+ "out": [
+  {
+   "name": "제일복권(이치방쿠지) 서초점",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "tue": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "wed": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "thu": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "fri": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sat": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sun": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "쿠지방 국제전자센터점",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "tue": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "wed": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "thu": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "fri": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sat": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sun": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "아데꼬 국제전자센터점",
+   "status": "NO_CHANGE"
+  },
+  {
+   "name": "행피소",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "tue": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "wed": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "thu": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "fri": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "sat": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "sun": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "쿠지매니아 국전점",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "tue": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "wed": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "thu": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "fri": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sat": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sun": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "토피코 국제전자센터점",
+   "status": "NO_CHANGE"
+  },
+  {
+   "name": "하비파크 국제전자점",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "10:30",
+     "close": "19:00"
+    },
+    "tue": {
+     "open": "10:30",
+     "close": "19:00"
+    },
+    "wed": {
+     "open": "10:30",
+     "close": "19:00"
+    },
+    "thu": {
+     "open": "10:30",
+     "close": "19:00"
+    },
+    "fri": {
+     "open": "10:30",
+     "close": "19:00"
+    },
+    "sat": {
+     "open": "10:30",
+     "close": "19:00"
+    },
+    "sun": {
+     "open": "10:30",
+     "close": "19:00"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "지지코믹마켓 국전점",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "tue": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "wed": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "thu": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "fri": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sat": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sun": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "콘비니애니",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "13:00",
+     "close": "19:00"
+    },
+    "tue": {
+     "open": "13:00",
+     "close": "19:00"
+    },
+    "wed": {
+     "open": "13:00",
+     "close": "19:00"
+    },
+    "thu": {
+     "open": "13:00",
+     "close": "19:00"
+    },
+    "fri": {
+     "open": "13:00",
+     "close": "19:00"
+    },
+    "sat": {
+     "open": "13:00",
+     "close": "19:00"
+    },
+    "sun": {
+     "open": "13:00",
+     "close": "19:00"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "애니랩스 국제전자센터점",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "13:00",
+     "close": "20:00"
+    },
+    "tue": {
+     "open": "13:00",
+     "close": "20:00"
+    },
+    "wed": {
+     "open": "13:00",
+     "close": "20:00"
+    },
+    "thu": {
+     "open": "13:00",
+     "close": "20:00"
+    },
+    "fri": {
+     "open": "13:00",
+     "close": "20:00"
+    },
+    "sat": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sun": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "피규어프레소 서초점",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "tue": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "wed": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "thu": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "fri": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sat": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sun": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "스카이토이 국전",
+   "status": "NO_CHANGE"
+  },
+  {
+   "name": "모에다",
+   "status": "NO_CHANGE"
+  },
+  {
+   "name": "큐트피플컴퍼니",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "tue": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "wed": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "thu": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "fri": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "sat": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "sun": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "이스타에그 국전점",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "11:00",
+     "close": "19:30"
+    },
+    "tue": {
+     "open": "11:00",
+     "close": "19:30"
+    },
+    "wed": {
+     "open": "11:00",
+     "close": "19:30"
+    },
+    "thu": {
+     "open": "11:00",
+     "close": "19:30"
+    },
+    "fri": {
+     "open": "11:00",
+     "close": "19:30"
+    },
+    "sat": {
+     "open": "11:00",
+     "close": "19:30"
+    },
+    "sun": {
+     "open": "11:00",
+     "close": "19:30"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "따빼몰 국제전자센터점",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "11:30",
+     "close": "19:00"
+    },
+    "tue": {
+     "open": "11:30",
+     "close": "19:00"
+    },
+    "wed": {
+     "open": "11:30",
+     "close": "19:00"
+    },
+    "thu": {
+     "open": "11:30",
+     "close": "19:00"
+    },
+    "fri": {
+     "open": "11:30",
+     "close": "19:00"
+    },
+    "sat": {
+     "open": "11:30",
+     "close": "19:00"
+    },
+    "sun": {
+     "open": "11:30",
+     "close": "19:00"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "브라더굿즈 국제전자센터점",
+   "status": "NO_CHANGE"
+  },
+  {
+   "name": "니지겐상회",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "tue": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "wed": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "thu": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "fri": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "sat": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sun": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "미라클쿠지 국전점",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "tue": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "wed": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "thu": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "fri": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sat": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sun": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "카구탱",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "tue": null,
+    "wed": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "thu": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "fri": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sat": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "sun": {
+     "open": "11:00",
+     "close": "20:00"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "딴솔샵",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "11:00",
+     "close": "19:30"
+    },
+    "tue": {
+     "open": "11:00",
+     "close": "19:30"
+    },
+    "wed": {
+     "open": "11:00",
+     "close": "19:30"
+    },
+    "thu": {
+     "open": "11:00",
+     "close": "19:30"
+    },
+    "fri": {
+     "open": "11:00",
+     "close": "19:30"
+    },
+    "sat": {
+     "open": "11:00",
+     "close": "19:30"
+    },
+    "sun": {
+     "open": "11:00",
+     "close": "19:30"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  },
+  {
+   "name": "한우리 국제전자센터점",
+   "status": "NO_CHANGE"
+  },
+  {
+   "name": "쿄우마샵 국제전자센터점",
+   "status": "NO_CHANGE"
+  },
+  {
+   "name": "쿠지런",
+   "status": "DRY",
+   "hours": {
+    "mon": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "tue": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "wed": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "thu": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "fri": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "sat": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "sun": {
+     "open": "12:00",
+     "close": "20:00"
+    },
+    "monthlyOff": {
+     "weeks": [
+      1,
+      3
+     ],
+     "days": [
+      "sun"
+     ]
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,894 @@
+{
+ "name": "2026-09-28-kukje-c",
+ "items": [
+  {
+   "action": "insert",
+   "key": "kukje-anilabs-5f",
+   "brand_links": [
+    "https://www.instagram.com/ani_labs_official/",
+    "https://x.com/ani__labs",
+    "https://www.threads.com/@ani_labs_official",
+    "https://band.us/@anilabs",
+    "https://litt.ly/anilabs",
+    "https://anilabs.kr/"
+   ],
+   "fields": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/ani_labs_official/",
+     "https://x.com/ani__labs",
+     "https://band.us/@anilabs"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "20:00"
+     }
+    },
+    "name": "애니랩스 국제전자센터점",
+    "floor_info": "국제전자센터 5층",
+    "cats": [
+     "굿즈샵",
+     "쿠지"
+    ],
+    "shop_link": "https://anilabs.kr/",
+    "description": "피규어·쿠지(자체 쿠지 포함)·굿즈를 파는 애니랩스(ANILABS)의 국제전자센터 5층 매장입니다. 같은 건물 3층에 가챠 매장(애니랩스 가챠점)이 있습니다. 평일 13:00~20:00, 주말 11:00~20:00 영업하며 매월 첫째·셋째 일요일은 휴무입니다(공식 인스타그램 안내)."
+   },
+   "goods_types": [
+    "figure-new",
+    "self-kuji",
+    "ichiban-kuji"
+   ],
+   "sources": [
+    {
+     "url": "https://anilabs.kr/",
+     "fields": [
+      "name",
+      "floor_info",
+      "description",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/ani_labs_official/",
+     "fields": [
+      "hours",
+      "sns_links"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "http://www.kecday.co.kr/bbs/board.php?bo_table=sisul",
+     "fields": [
+      "place_id",
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ],
+   "unconfirmed": [
+    "unit",
+    "phone",
+    "works"
+   ],
+   "photo": "needed",
+   "notes": "공식 소개 \"국제전자센터 5층/3층/8층\" — 8층은 매장명·취급 근거 없어 보류. 신도림점(테크노마트 B1)은 별도 후보"
+  },
+  {
+   "action": "insert",
+   "key": "kukje-anilabs-3f",
+   "brand_links": [
+    "https://www.instagram.com/ani_labs_official/",
+    "https://x.com/ani__labs",
+    "https://www.threads.com/@ani_labs_official",
+    "https://band.us/@anilabs",
+    "https://litt.ly/anilabs",
+    "https://anilabs.kr/"
+   ],
+   "fields": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/ani_labs_official/",
+     "https://x.com/ani__labs"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "20:00"
+     }
+    },
+    "name": "애니랩스 가챠점",
+    "floor_info": "국제전자센터 3층",
+    "cats": [
+     "가챠"
+    ],
+    "shop_link": "https://www.instagram.com/ani_labs_official/",
+    "description": "애니랩스(ANILABS)의 가챠(캡슐토이) 매장으로, 국제전자센터 3층에 있습니다. 피규어·쿠지 매장은 같은 건물 5층입니다. 평일 13:00~20:00, 주말 11:00~20:00 영업하며 매월 첫째·셋째 일요일은 휴무입니다(공식 인스타그램 안내)."
+   },
+   "goods_types": [
+    "gacha-new"
+   ],
+   "works": [
+    {
+     "tag_id": "2a88af81-4e08-446f-befa-312110884a20",
+     "primary": false,
+     "evidence": "공식 인스타그램 \"국제전자센터 3층 애니랩스가챠점\" 가챠 입고(2026-08-20·28)"
+    },
+    {
+     "tag_id": "6200fb96-d722-4cbf-b09c-d5967f598ee7",
+     "primary": false,
+     "evidence": "공식 인스타그램 \"국제전자센터 3층 애니랩스가챠점\" 가챠 입고(2026-08-20·28)"
+    },
+    {
+     "tag_id": "cdc27204-c7f8-4f28-a4a7-fb7e8b7fc1b7",
+     "primary": false,
+     "evidence": "공식 인스타그램 \"국제전자센터 3층 애니랩스가챠점\" 가챠 입고(2026-08-20·28)"
+    },
+    {
+     "tag_id": "a48e942e-23f9-4900-ad93-adedb29d92ce",
+     "primary": false,
+     "evidence": "공식 인스타그램 \"국제전자센터 3층 애니랩스가챠점\" 가챠 입고(2026-08-20·28)"
+    },
+    {
+     "tag_id": "46d1cc6a-f88b-46e2-b4ec-d70dcf0be740",
+     "primary": false,
+     "evidence": "공식 인스타그램 \"국제전자센터 3층 애니랩스가챠점\" 가챠 입고(2026-08-20·28)"
+    },
+    {
+     "tag_id": "f6dff3d1-5a30-409d-849c-9a34d111b1be",
+     "primary": false,
+     "evidence": "공식 인스타그램 \"국제전자센터 3층 애니랩스가챠점\" 가챠 입고(2026-08-20·28)"
+    },
+    {
+     "tag_id": "3ebaa72f-8569-4efe-ae20-35b05f1cdb0b",
+     "primary": false,
+     "evidence": "공식 인스타그램 \"국제전자센터 3층 애니랩스가챠점\" 가챠 입고(2026-08-20·28)"
+    },
+    {
+     "tag_id": "286467d0-d6fd-433f-b655-e35e029fe3ce",
+     "primary": false,
+     "evidence": "공식 인스타그램 \"국제전자센터 3층 애니랩스가챠점\" 가챠 입고(2026-08-20·28)"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://www.instagram.com/p/DcnJZLGCQW7/",
+     "fields": [
+      "name",
+      "floor_info",
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/DcQkuPLCRlB/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/ani_labs_official/",
+     "fields": [
+      "hours"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "http://www.kecday.co.kr/bbs/board.php?bo_table=sisul",
+     "fields": [
+      "place_id",
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ],
+   "unconfirmed": [
+    "unit",
+    "phone"
+   ],
+   "photo": "needed"
+  },
+  {
+   "action": "insert",
+   "key": "kukje-moeda",
+   "fields": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/moeda_151/"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "20:00"
+     }
+    },
+    "name": "모에다",
+    "floor_info": "국제전자센터 3층 151호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://www.instagram.com/moeda_151/",
+    "description": "인형·피규어·캐릭터 굿즈와 점프샵 제품을 파는 굿즈샵으로, 국제전자센터 3층 151호에 있습니다. 10:00~20:00 영업하며 매월 첫째·셋째 일요일은 휴무입니다(공식 인스타그램 안내). 9층 토이스카이와 같은 계정으로 소식을 올립니다."
+   },
+   "goods_types": [
+    "plushie-new",
+    "figure-new"
+   ],
+   "works": [
+    {
+     "tag_id": "b507243e-1408-47a1-9aeb-f4245127d3dc",
+     "primary": false,
+     "evidence": "공식 인스타그램 모에다 입고 게시물(2026-08~09)"
+    },
+    {
+     "tag_id": "b4f20ef8-6f3b-438e-8efb-91ccfca790ac",
+     "primary": false,
+     "evidence": "공식 인스타그램 모에다 입고 게시물(2026-08~09)"
+    },
+    {
+     "tag_id": "1027065f-cc43-424a-bc69-471cc38df7fd",
+     "primary": false,
+     "evidence": "공식 인스타그램 모에다 입고 게시물(2026-08~09)"
+    },
+    {
+     "tag_id": "b6a65af7-85e0-4390-9986-6057487c19d1",
+     "primary": false,
+     "evidence": "공식 인스타그램 모에다 입고 게시물(2026-08~09)"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://www.instagram.com/moeda_151/",
+     "fields": [
+      "name",
+      "floor_info",
+      "hours",
+      "description"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/DdaPwFnEvM_/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/DcC5gYhyP5n/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/DbkDk3uklUq/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/DbkDNGlkjbk/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "http://www.kecday.co.kr/bbs/board.php?bo_table=sisul",
+     "fields": [
+      "place_id",
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ],
+   "unconfirmed": [
+    "phone"
+   ],
+   "photo": "needed"
+  },
+  {
+   "action": "insert",
+   "key": "kukje-nizigen",
+   "fields": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/nizigen_store/",
+     "https://band.us/band/101694114"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "20:00"
+     }
+    },
+    "name": "니지겐상회",
+    "floor_info": "국제전자센터 8층 8031호",
+    "cats": [
+     "쿠지",
+     "굿즈샵",
+     "가챠"
+    ],
+    "shop_link": "https://www.instagram.com/nizigen_store/",
+    "description": "쿠지·경품 피규어(반프레스토·세가·후류·타이토)·굿즈·가챠를 파는 매장으로, 국제전자센터 8층 8031호에 있습니다. 평일 12:00~20:00, 주말 11:00~20:00 영업하며 매월 첫째·셋째 일요일은 휴무입니다(공식 인스타그램 안내). 인스타그램 DM으로 택배 주문을 받습니다."
+   },
+   "goods_types": [
+    "ichiban-kuji",
+    "figure-new",
+    "gacha-new",
+    "plushie-new"
+   ],
+   "works": [
+    {
+     "tag_id": "b507243e-1408-47a1-9aeb-f4245127d3dc",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-09-18~23)"
+    },
+    {
+     "tag_id": "b6a65af7-85e0-4390-9986-6057487c19d1",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-09-18~23)"
+    },
+    {
+     "tag_id": "65510a89-9bec-4b5c-8216-dc24c8ce230b",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-09-18~23)"
+    },
+    {
+     "tag_id": "e5e3810f-0e71-46c2-afb5-99f80b228541",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-09-18~23)"
+    },
+    {
+     "tag_id": "94dea875-614e-4e2d-ba30-ea509385603b",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-09-18~23)"
+    },
+    {
+     "tag_id": "b4f20ef8-6f3b-438e-8efb-91ccfca790ac",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-09-18~23)"
+    },
+    {
+     "tag_id": "e3f9dbfd-e491-4433-9af1-6c0b146f5746",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-09-18~23)"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://www.instagram.com/nizigen_store/",
+     "fields": [
+      "name",
+      "floor_info",
+      "hours",
+      "description"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/DXEV2CqD92a/",
+     "fields": [
+      "floor_info",
+      "hours"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/DdnxWWXPIKp/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/DdnWsLuT_DN/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/DdiayTqD1D_/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/DdiXJV-Puu9/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/Ddc8B00zqSt/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "http://www.kecday.co.kr/bbs/board.php?bo_table=sisul",
+     "fields": [
+      "place_id",
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ],
+   "unconfirmed": [
+    "phone"
+   ],
+   "photo": "needed"
+  },
+  {
+   "action": "insert",
+   "key": "kukje-otakusarangbang",
+   "fields": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/otaku_sarangbang/"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "오타쿠사랑방",
+    "floor_info": "국제전자센터 6층 45·46호",
+    "cats": [
+     "중고샵",
+     "굿즈샵"
+    ],
+    "shop_link": "https://m.smartstore.naver.com/otakusarangbang",
+    "description": "중고 피규어·굿즈와 제일복권 경품을 파는 중고 굿즈 매장으로, 국제전자센터 6층 45·46호에 있습니다. 죠죠의 기묘한 모험 상품을 특히 많이 다룹니다. 영업시간은 공식 안내가 없어 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요."
+   },
+   "goods_types": [
+    "figure-new",
+    "acrylic-stand",
+    "keyring"
+   ],
+   "works": [
+    {
+     "tag_id": "5cda9087-caa0-4010-8e9d-bb5d577e995b",
+     "primary": true,
+     "evidence": "공식 인스타그램 죠죠 제일복권·굿즈 입고 다수(2026-09-10~23)"
+    },
+    {
+     "tag_id": "b6a65af7-85e0-4390-9986-6057487c19d1",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-08-15·09-03)"
+    },
+    {
+     "tag_id": "94dea875-614e-4e2d-ba30-ea509385603b",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-08-15·09-03)"
+    },
+    {
+     "tag_id": "65510a89-9bec-4b5c-8216-dc24c8ce230b",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-08-15·09-03)"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://www.instagram.com/otaku_sarangbang/",
+     "fields": [
+      "name",
+      "floor_info",
+      "shop_link"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/DcP9FHuk-D8/",
+     "fields": [
+      "description"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/DdnnQbwE4Dk/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/Dc0JnseE_qh/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/DcDDXqBk1oW/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "http://www.kecday.co.kr/bbs/board.php?bo_table=sisul",
+     "fields": [
+      "place_id",
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ],
+   "unconfirmed": [
+    "hours",
+    "phone"
+   ],
+   "photo": "needed"
+  },
+  {
+   "action": "insert",
+   "key": "kukje-kaguteng",
+   "fields": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/kaguteng.club/",
+     "https://linktr.ee/kagutengclub"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "tue": null,
+     "wed": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "20:00"
+     }
+    },
+    "name": "카구탱",
+    "floor_info": "국제전자센터 7층 45호",
+    "cats": [
+     "굿즈샵",
+     "가챠"
+    ],
+    "shop_link": "https://smartstore.naver.com/kaguteng",
+    "description": "치이카와·산리오 등 일본 정품 캐릭터 굿즈를 소량 입고하는 셀렉샵 카구탱(Kaguteng Club)으로, 국제전자센터 7층 45호에 있습니다(2026년 6월 오픈). 피규어·가챠·마스코트 키링도 있습니다. 11:00~20:00 영업하며 매주 화요일과 매월 첫째·셋째 일요일은 휴무입니다(공식 인스타그램 안내)."
+   },
+   "goods_types": [
+    "plushie-new",
+    "keyring",
+    "gacha-new",
+    "figure-new"
+   ],
+   "works": [
+    {
+     "tag_id": "b507243e-1408-47a1-9aeb-f4245127d3dc",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-08)"
+    },
+    {
+     "tag_id": "f6dff3d1-5a30-409d-849c-9a34d111b1be",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-08)"
+    },
+    {
+     "tag_id": "483b0cad-f3f2-466c-881c-e5cacc05912f",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-08)"
+    },
+    {
+     "tag_id": "7e5ef00d-897e-4259-b449-264d374deca6",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-08)"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://www.instagram.com/kaguteng.club/",
+     "fields": [
+      "name",
+      "floor_info",
+      "hours",
+      "description"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://linktr.ee/kagutengclub",
+     "fields": [
+      "shop_link",
+      "sns_links"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/Dcm-3KCE9A-/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/DcU9I9hEwDO/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/p/DcKvBOvEwL3/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "http://www.kecday.co.kr/bbs/board.php?bo_table=sisul",
+     "fields": [
+      "place_id",
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ],
+   "unconfirmed": [
+    "phone"
+   ],
+   "photo": "needed"
+  },
+  {
+   "action": "insert",
+   "key": "kukje-toysky",
+   "fields": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://x.com/toysky9110_",
+     "https://www.instagram.com/kimhyun6283/"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "토이스카이",
+    "floor_info": "국제전자센터 9층 110호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://x.com/toysky9110_",
+    "description": "핫토이·반다이 피규어와 굿즈, 제일복권을 파는 매장으로, 국제전자센터 9층 110호에 있습니다(3층 스카이토이와 다른 매장). 구매 문의는 공식 계정 DM으로 받습니다. 영업시간은 공식 안내가 없어 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요."
+   },
+   "goods_types": [
+    "figure-new",
+    "ichiban-kuji"
+   ],
+   "works": [
+    {
+     "tag_id": "c0abe340-8f54-4c4d-b9e5-13dbb1ed7a47",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-07-14·16)"
+    },
+    {
+     "tag_id": "b6a65af7-85e0-4390-9986-6057487c19d1",
+     "primary": false,
+     "evidence": "공식 인스타그램 입고 게시물(2026-07-14·16)"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/toysky9110_",
+     "fields": [
+      "name",
+      "floor_info",
+      "description"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/kimhyun6283/",
+     "fields": [
+      "sns_links"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/kimhyun6283/p/Da2aPrsyeVL/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/kimhyun6283/p/DazBQ5cyb-y/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "http://www.kecday.co.kr/bbs/board.php?bo_table=sisul",
+     "fields": [
+      "place_id",
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ],
+   "unconfirmed": [
+    "hours",
+    "phone",
+    "second_unit"
+   ],
+   "photo": "needed",
+   "notes": "모에다 계정에 \"토이스카이 1·2호점\", \"9층 45호\" 표기 — 2호점 위치 확인 필요"
+  },
+  {
+   "action": "update",
+   "key": "kukje-figurepresso-ig",
+   "shop_id": "1bdef20f-f701-41d0-bab8-ccfc66c03d85",
+   "expect_updated_at": "2026-09-28T04:17:49.030303+00:00",
+   "fields": {
+    "sns_links": [
+     "https://x.com/figurepresso",
+     "https://www.instagram.com/figurepresso_official/"
+    ]
+   },
+   "overwrite": [
+    "sns_links"
+   ],
+   "reason": "공식 인스타그램(피규어프레소 서초 1호점) 추가 — 소개에 서초점 X 연결",
+   "sources": [
+    {
+     "url": "https://www.instagram.com/figurepresso_official/",
+     "fields": [
+      "sns_links"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ]
+  }
+ ]
+}

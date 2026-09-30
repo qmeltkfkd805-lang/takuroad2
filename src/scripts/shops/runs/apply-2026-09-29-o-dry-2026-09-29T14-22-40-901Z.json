@@ -1,0 +1,436 @@
+{
+ "plan": "2026-09-29-o",
+ "at": "2026-09-29T14:22:40.901Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "kotobukiya-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "road": "서울 용산구 한강대로23길 55",
+    "building": "용산역",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "코토부키야 아이파크몰 용산",
+    "addr": "서울 용산구 한강대로23길 55",
+    "floor_info": "아이파크몰 리빙파크 3층 도파민스테이션",
+    "cats": [
+     "피규어샵",
+     "프라모델",
+     "굿즈샵"
+    ],
+    "shop_link": "https://x.com/KOTOBUKIYA_YS",
+    "sns_links": [
+     "https://x.com/KOTOBUKIYA_YS",
+     "https://x.com/Kotobukiya_BH"
+    ],
+    "phone": "02-2012-1316",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "22:00"
+     }
+    },
+    "place_id": "045ed3e4-9d81-4f68-a4c7-e6815f0ccadc",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용",
+    "description": "일본 피규어·프라모델 브랜드 코토부키야의 국내 첫 공식 오프라인 매장입니다(2025년 8월 오픈, 정식 수입원 베스트하비 운영). 코토부키야 프라모델·스케일 피규어를 전시·판매합니다.\n매일 10:30~22:00(공식 X 안내). 입고 상품은 공식 X 와 베스트하비 네이버 카페 입고 안내로 공지됩니다.\n아이파크몰 리빙파크 3층 도파민스테이션, 이치방쿠지 매장 옆.",
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T14:22:40.901Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "최애의 아이",
+      "유희왕",
+      "우마무스메 프리티 더비"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "goodsmile-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "road": "서울 용산구 한강대로23길 55",
+    "building": "용산역",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "굿스마일스토어BH 용산 아이파크몰점",
+    "addr": "서울 용산구 한강대로23길 55",
+    "floor_info": "아이파크몰 리빙파크 3층 도파민스테이션",
+    "cats": [
+     "피규어샵",
+     "굿즈샵"
+    ],
+    "shop_link": "https://x.com/GoodSmile_YS",
+    "sns_links": [
+     "https://x.com/GoodSmile_YS",
+     "https://x.com/goodsmileinfoBH"
+    ],
+    "phone": "02-2012-1318",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "22:00"
+     }
+    },
+    "place_id": "045ed3e4-9d81-4f68-a4c7-e6815f0ccadc",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용",
+    "description": "굿스마일컴퍼니 상품을 판매하는 국내 첫 오프라인 매장입니다(2026년 2월 오픈, 베스트하비 운영). 넨도로이드·MODEROID·스케일 피규어 등을 전시·판매합니다.\n매일 10:30~22:00(공식 X 안내). 인기 상품 입고일에는 아이파크몰 입장 대기줄을 운영하니 공식 X 공지를 확인하세요.\n아이파크몰 리빙파크 3층 도파민스테이션.",
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T14:22:40.901Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "주술회전",
+      "블루 아카이브",
+      "카드캡터 사쿠라"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "smg-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8687083802364,
+    "lng": 128.598741541322,
+    "road": "대구 중구 동성로6길 61",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "SMG굿즈스토어 대구 동성로스파크점",
+    "addr": "대구 중구 동성로6길 61",
+    "floor_info": "동성로 스파크 3층",
+    "cats": [
+     "굿즈샵",
+     "쿠지",
+     "피규어샵"
+    ],
+    "shop_link": "https://x.com/SMGoods_Daegu",
+    "sns_links": [
+     "https://x.com/SMGoods_Daegu"
+    ],
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "22:00"
+     }
+    },
+    "place_id": "bd1a6fc0-7c55-4768-aca0-6e29f27a3dbf",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n기본 30분 2,400원, 이후 10분당 1,000원\n스파크몰 입점 매장 구매 시: 5만원 이상 1시간 무료 · 10만원 이상 2시간\n테마파크 이용·매장 구매 합산 하루 최대 3시간",
+    "description": "게임·애니메이션 굿즈 전문점 SMG굿즈스토어의 대구 매장입니다. 신상품과 이치방쿠지(제일복권) 입고 소식을 공식 X 로 알립니다.\n평일 12:00~21:00, 주말·공휴일 11:00~22:00(공식 X 안내). 공휴일이 평일이어도 주말 시간으로 운영합니다.\n동성로 스파크 3층.",
+    "lat": 35.8687083802364,
+    "lng": 128.598741541322,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T14:22:40.901Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "베르세르크",
+      "소녀전선2: 망명",
+      "드래곤볼",
+      "릴로 & 스티치",
+      "귀멸의 칼날"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "can-badge-new",
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "smg-busan",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1529239695577,
+    "lng": 129.059604905121,
+    "road": "부산 부산진구 중앙대로 672",
+    "building": "삼정타워",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "SMG굿즈스토어 부산 삼정타워점",
+    "addr": "부산 부산진구 중앙대로 672",
+    "floor_info": "삼정타워 9층",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://x.com/SMGoods_Busan",
+    "sns_links": [
+     "https://x.com/SMGoods_Busan"
+    ],
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "22:30"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "22:30"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "22:00"
+     }
+    },
+    "place_id": "6a3e3e01-c868-4948-b8a6-942678852eeb",
+    "parking": true,
+    "parking_note": "30분 무료 후 10분당 1,000원\n구매금액 1만원/3만원/5만원/10만원/20만원 이상 시 각각 1/2/3/4/5시간 무료",
+    "description": "게임·애니메이션 굿즈 전문점 SMG굿즈스토어의 부산 매장입니다. 원신·니케·하이큐!!·귀멸의 칼날·베르세르크·드래곤볼 등의 굿즈를 취급합니다(공식 X 소개).\n매일 11:00~22:00, 금·토 22:30까지(공식 X 안내).\n서면 삼정타워 9층.",
+    "lat": 35.1529239695577,
+    "lng": 129.059604905121,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T14:22:40.901Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "원신",
+      "승리의 여신: 니케",
+      "하이큐!!",
+      "귀멸의 칼날",
+      "베르세르크",
+      "드래곤볼",
+      "소녀전선2: 망명"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "can-badge-new",
+      "keyring"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "asemhobby-electroland",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5327888550584,
+    "lng": 126.959558538475,
+    "road": "서울 용산구 청파로 74",
+    "building": "전자랜드",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "아셈하비 전자랜드점",
+    "addr": "서울 용산구 청파로 74",
+    "floor_info": "용산 전자랜드 본관 4층 A-1호",
+    "cats": [
+     "프라모델"
+    ],
+    "shop_link": "https://www.asemhobby.co.kr/",
+    "sns_links": [
+     "https://www.asemhobby.co.kr/",
+     "https://www.facebook.com/asem.hobby/"
+    ],
+    "phone": "02-701-4293",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "19:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "19:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "19:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "19:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "19:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "19:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "19:00"
+     },
+     "yearRound": true
+    },
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n기본 30분 2,500원, 이후 10분당 1,000원\n전자랜드 매장 이용 시 매장에서 주차우대권 수령 — 최대 3시간 무료\n본관 주차장 08:00~22:00(이후 출차만)",
+    "description": "아카데미과학 용산 총판을 겸하는 프라모델 전문점(아셈하비 더하비샵)의 오프라인 매장입니다. 밀리터리·SF·캐릭터 프라모델과 도료·공구 등 모형 재료를 판매합니다.\n매장 영업 10:00~19:00 연중무휴(공식 사이트 안내, 명절·휴가 휴무는 공지).\n용산 전자랜드 본관 4층.",
+    "lat": 37.5327888550584,
+    "lng": 126.959558538475,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T14:22:40.901Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

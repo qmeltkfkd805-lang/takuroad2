@@ -1,0 +1,474 @@
+{
+ "name": "2026-09-29-g",
+ "items": [
+  {
+   "action": "insert",
+   "key": "popable-yongsan",
+   "brand": "팝퍼블",
+   "brand_links": [
+    "https://www.instagram.com/popable_cafe_/",
+    "https://x.com/popable_01",
+    "https://www.popcondplay.com/ip/store/13"
+   ],
+   "fields": {
+    "name": "팝퍼블 용산점",
+    "addr": "서울 용산구 한강대로23길 55",
+    "floor_info": "아이파크몰 6층 팝콘D스퀘어",
+    "cats": [
+     "콜라보카페"
+    ],
+    "phone": "02-6373-3360",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     }
+    },
+    "shop_link": "https://www.instagram.com/popable_cafe_/",
+    "sns_links": [
+     "https://www.instagram.com/popable_cafe_/",
+     "https://x.com/popable_01",
+     "https://www.popcondplay.com/ip/store/13"
+    ],
+    "place_id": "045ed3e4-9d81-4f68-a4c7-e6815f0ccadc",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용",
+    "description": "대원미디어가 운영하는 캐릭터 카페로, 기간마다 작품을 바꿔 콜라보 카페를 엽니다. 용산 아이파크몰 6층 팝콘D스퀘어에 있습니다.\n영업시간은 10:30~20:30(라스트오더 19:30)입니다(공식 매장 안내). 진행 중인 콜라보와 입장 방법은 공식 SNS 공지를 확인하세요."
+   },
+   "goods_types": [],
+   "works": [],
+   "sources": [
+    {
+     "url": "https://www.popcondplay.com/ip/store/13",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "hours",
+      "cats",
+      "sns_links"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "대원 팝콘디플레이 팝퍼블: \"캐릭터 카페 POPABLE(팝퍼블)\" — \"팝퍼블 용산점 | 평일/주말 10:30 ~ 20:30 (Last order 19:30) | 서울 용산구 한강대로23길 55 아이파크몰 테마파크 6층 팝콘D스퀘어 | 02-6373-3360\", 공식 IG popable_cafe_, X popable_01"
+    },
+    {
+     "url": "https://www.popcondplay.com/ip/news/13",
+     "fields": [
+      "description"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "팝퍼블 소식: [캐릭캐릭체인지 x 팝퍼블] 용산점 26.08.14~26.11.29, [타몬 군 지금 어느 쪽?! x 팝퍼블] 용산점 26.05.01~07.26 — 기간제 콜라보는 이벤트(작품 연결 안 함)"
+    },
+    {
+     "url": "https://www.iparkmall.co.kr/main/parking.do",
+     "fields": [
+      "parking",
+      "parking_note",
+      "place_id"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "아이파크몰 용산점 place(045ed3e4) 공식 주차 노트 그대로 복사(2026-09-26 등록분)"
+    }
+   ],
+   "unconfirmed": [
+    "closed_days"
+   ],
+   "photo": "needed",
+   "notes": "상설 캐릭터 카페(기간제 콜라보 순환). 작품은 기간제라 샵 취급 작품으로 넣지 않음 — 콜라보는 이벤트 작업 담당. floor_info 는 공식 \"테마파크 6층 팝콘D스퀘어\" 를 같은 몰 다른 샵 표기와 맞춰 \"아이파크몰 6층 팝콘D스퀘어\""
+  },
+  {
+   "action": "insert",
+   "key": "shinchan-bakery-popable-jamsil",
+   "brand": "팝퍼블",
+   "brand_links": [
+    "https://www.instagram.com/popable_cafe_/",
+    "https://www.popcondplay.com/ip/store/13"
+   ],
+   "fields": {
+    "name": "짱구 베이커리 카페 x 팝퍼블 잠실점",
+    "addr": "서울 송파구 올림픽로 240",
+    "floor_info": "롯데백화점 잠실점 2층",
+    "cats": [
+     "콜라보카페"
+    ],
+    "shop_link": "https://www.instagram.com/popable_cafe_/",
+    "sns_links": [
+     "https://www.instagram.com/popable_cafe_/",
+     "https://x.com/popable_01",
+     "https://www.popcondplay.com/ip/store/13",
+     "https://www.popcondplay.com/ip/store/11"
+    ],
+    "place_id": "3870e1eb-3d6e-4814-adc2-2e9652f6d8bc",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n구매 시 무료: 5만원 이상 1시간 · 10만원 이상 2시간 · 15만원 이상 3시간",
+    "description": "짱구는 못말려를 테마로 한 팝퍼블의 베이커리 카페로, 롯데백화점 잠실점 2층에 있습니다. 짱구·흰둥이를 모티브로 한 케이크와 음료, 카페 굿즈를 판매합니다.\n영업시간은 월~목 10:30~20:00, 주말·공휴일 10:30~20:30(라스트오더 19:30)입니다(공식 매장 안내). 롯데백화점 잠실점 정기 휴점일에는 쉽니다."
+   },
+   "goods_types": [],
+   "works": [
+    {
+     "tag_id": "5c4e930c-a5f4-4e5e-a9f0-93b3d705aae7",
+     "evidence": "공식 매장명 \"짱구 베이커리 카페 x 팝퍼블 잠실점\"(popcondplay ip/store/11 짱구는 못말려 IP 매장·ip/store/13 팝퍼블) — 짱구 테마 상설 카페",
+     "primary": true
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://www.popcondplay.com/ip/store/13",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "cats",
+      "sns_links",
+      "description"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "\"짱구 베이커리 카페 x 팝퍼블 잠실점 | 월~목 10:30 ~ 20:00 (last order 19:30) / 주말 및 공휴일 10:30 ~ 20:30 (last order 19:30) | 서울 송파구 올림픽로 240 롯데백화점 2층 짱구 베이커리 카페\" (전화 표기 없음)"
+    },
+    {
+     "url": "https://www.popcondplay.com/ip/store/11",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "짱구는 못말려 IP 매장 목록에 \"짱구 베이커리 카페\" 같은 주소"
+    },
+    {
+     "url": "https://www.popcondplay.com/ip/news/13",
+     "fields": [
+      "description"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "[#짱구는못말려 x #팝퍼블잠실점] 메뉴(흰둥이 마시멜로 케이크·딸기라떼 등)·시그니처 핸드 타올 굿즈, \"팝퍼블 잠실점 정기 휴점 안내 — 롯데백화점 잠실점 정기휴점으로 인하여 매장 휴점\""
+    },
+    {
+     "url": "https://www.popcondplay.com/ip/store/1",
+     "fields": [
+      "parking",
+      "parking_note",
+      "place_id"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "같은 롯데백화점 잠실점 2층 리락쿠마 스미코구라시 플러스(d040f1e2) 공식 주차 값 복사: 5만원 이상 1시간·10만원 이상 2시간·15만원 이상 3시간 무료"
+    }
+   ],
+   "unconfirmed": [
+    "hours",
+    "phone"
+   ],
+   "photo": "needed",
+   "notes": "공식 \"월~목 / 주말 및 공휴일\" 표기에 금요일이 어느 쪽인지 불명 → hours 비우고 설명에만. 전화 공식 미표기. 굿즈 분류(핸드 타올 등) 텍스트 1건뿐 → 분류 비움"
+  },
+  {
+   "action": "insert",
+   "key": "koriko-cafe-jeju",
+   "brand": "코리코카페",
+   "brand_links": [
+    "https://www.instagram.com/cafe_koriko/",
+    "https://www.popcondplay.com/ip/store/12"
+   ],
+   "fields": {
+    "name": "코리코카페 제주점",
+    "addr": "제주특별자치도 제주시 구좌읍 비자림로 1199",
+    "cats": [
+     "콜라보카페"
+    ],
+    "phone": "064-782-0143",
+    "hours": {
+     "mon": {
+      "open": "09:00",
+      "close": "18:00"
+     },
+     "tue": {
+      "open": "09:00",
+      "close": "18:00"
+     },
+     "wed": {
+      "open": "09:00",
+      "close": "18:00"
+     },
+     "thu": {
+      "open": "09:00",
+      "close": "18:00"
+     },
+     "fri": {
+      "open": "09:00",
+      "close": "18:00"
+     },
+     "sat": {
+      "open": "09:00",
+      "close": "18:00"
+     },
+     "sun": {
+      "open": "09:00",
+      "close": "18:00"
+     }
+    },
+    "shop_link": "https://www.instagram.com/cafe_koriko/",
+    "sns_links": [
+     "https://www.instagram.com/cafe_koriko/",
+     "https://www.popcondplay.com/ip/store/12"
+    ],
+    "description": "스튜디오 지브리 공식 \"마녀 배달부 키키\" 카페 제주점입니다. 작품을 테마로 한 음료와 디저트를 판매합니다.\n영업시간은 09:00~18:00(라스트오더 17:30)입니다(공식 매장 안내)."
+   },
+   "goods_types": [],
+   "works": [
+    {
+     "tag_id": "e3e443ac-c28e-48db-9037-f604abc352c2",
+     "evidence": "공식 소개 \"스튜디오 지브리 공식 '마녀배달부 키키' 카페\"(popcondplay ip/store/12) — 연남점과 같은 브랜드",
+     "primary": true
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://www.popcondplay.com/ip/store/12",
+     "fields": [
+      "name",
+      "addr",
+      "phone",
+      "hours",
+      "cats",
+      "works",
+      "sns_links",
+      "description"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "\"코리코카페 제주점 | 09:00 - 18:00 / 17:30 라스트오더 | 제주특별자치도 제주시 구좌읍 비자림로 1199 | 064-782-0143\" (매장 공식 SNS 버튼은 스크립트 링크 — 브랜드 IG cafe_koriko 사용)"
+    }
+   ],
+   "unconfirmed": [
+    "closed_days",
+    "goods_types",
+    "sns"
+   ],
+   "photo": "needed",
+   "notes": "상설 캐릭터 카페. 단독 건물 — place 없음. 굿즈 판매 공식 텍스트 없음 → 분류 비움. 연남점(93dc0757)과 별도 행"
+  },
+  {
+   "action": "insert",
+   "key": "tamashii-spot-seoul",
+   "brand": "반다이남코코리아",
+   "brand_links": [
+    "https://www.bnkrmall.co.kr/etc/bandainamcokorea_store.do"
+   ],
+   "fields": {
+    "name": "타마시이 스팟 서울",
+    "addr": "서울 용산구 한강대로23길 55",
+    "floor_info": "리빙파크 6층 반다이남코코리아 스토어 내",
+    "cats": [
+     "피규어샵",
+     "굿즈샵"
+    ],
+    "phone": "02-2012-2700",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     }
+    },
+    "shop_link": "https://www.bnkrmall.co.kr/etc/bandainamcokorea_store.do",
+    "sns_links": [
+     "https://www.bnkrmall.co.kr/etc/bandainamcokorea_store.do",
+     "https://www.instagram.com/bandainamcokoreamall/"
+    ],
+    "place_id": "045ed3e4-9d81-4f68-a4c7-e6815f0ccadc",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용",
+    "description": "반다이 스피리츠의 하이엔드 피규어 브랜드 타마시이 네이션스(TAMASHII NATIONS) 오피셜 숍으로, 용산 아이파크몰 리빙파크 6층 반다이남코코리아 스토어 안에 있습니다. 용산역과 연결됩니다.\n영업시간은 일~목 10:30~20:30, 금·토 10:30~21:00이며 공휴일은 아이파크몰 운영시간에 따라 바뀝니다(공식 매장 안내)."
+   },
+   "goods_types": [
+    "figure-new"
+   ],
+   "works": [],
+   "sources": [
+    {
+     "url": "https://www.bnkrmall.co.kr/etc/bandainamcokorea_store.do",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "hours",
+      "cats",
+      "goods_types",
+      "description"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "반다이남코코리아 스토어 매장안내: \"서울 용산구 한강로3가 40-999 아이파크 백화점 리빙파크 6층 | 02-2012-2700 | 평일(일~목) 10:30~20:30 / 주말(금, 토) 10:30~21:00 | 공휴일 변동\" — 스토어 안 상설 브랜드숍: 건담베이스·타마시이 스팟 서울(TAMASHII SPOT SEOUL)·가샤폰 반다이 오피셜 샵·반다이 카드 게임즈 샵·꼬마 곰 재키 오피셜 샵(The bear's school official shop)"
+    },
+    {
+     "url": "https://www.iparkmall.co.kr/main/parking.do",
+     "fields": [
+      "parking",
+      "parking_note",
+      "place_id"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "아이파크몰 용산점 place(045ed3e4) 공식 주차 노트 그대로 복사(2026-09-26 등록분)"
+    }
+   ],
+   "unconfirmed": [
+    "works",
+    "sns"
+   ],
+   "photo": "needed",
+   "notes": "반다이남코코리아 스토어 안 상설 브랜드숍 — 같은 스토어의 건담베이스·가샤폰·카드 게임샵과 같은 방식으로 따로 등록. 공식몰 타마시이 작품별 분류(건담·드래곤볼 등)는 온라인 기준이라 매장 취급 작품으로 넣지 않음(지점 미확인)"
+  },
+  {
+   "action": "insert",
+   "key": "bears-school-shop-yongsan",
+   "brand": "꼬마 곰 재키",
+   "brand_links": [
+    "https://the-bears-school.kr/",
+    "https://www.bnkrmall.co.kr/etc/bandainamcokorea_store.do"
+   ],
+   "fields": {
+    "name": "꼬마 곰 재키 오피셜 샵 용산 아이파크몰점",
+    "addr": "서울 용산구 한강대로23길 55",
+    "floor_info": "리빙파크 6층 반다이남코코리아 스토어 내",
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": "02-2012-2700",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     }
+    },
+    "shop_link": "https://the-bears-school.kr/",
+    "sns_links": [
+     "https://the-bears-school.kr/",
+     "https://www.bnkrmall.co.kr/etc/bandainamcokorea_store.do"
+    ],
+    "place_id": "045ed3e4-9d81-4f68-a4c7-e6815f0ccadc",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용",
+    "description": "그림책 캐릭터 꼬마 곰 재키(The Bear's School)의 국내 공식 숍으로, 용산 아이파크몰 리빙파크 6층 반다이남코코리아 스토어 안에 있습니다. 용산역과 연결됩니다.\n영업시간은 일~목 10:30~20:30, 금·토 10:30~21:00이며 공휴일은 아이파크몰 운영시간에 따라 바뀝니다(공식 매장 안내)."
+   },
+   "goods_types": [],
+   "works": [
+    {
+     "slug": "the-bears-school",
+     "evidence": "단일 IP 공식 숍(브랜드 기준): 반다이남코코리아 스토어 매장안내 \"꼬마 곰 재키 오피셜 샵(The bear's school official shop)\"",
+     "primary": true
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://www.bnkrmall.co.kr/etc/bandainamcokorea_store.do",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "hours",
+      "cats",
+      "works",
+      "description"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "반다이남코코리아 스토어 매장안내: \"서울 용산구 한강로3가 40-999 아이파크 백화점 리빙파크 6층 | 02-2012-2700 | 평일(일~목) 10:30~20:30 / 주말(금, 토) 10:30~21:00 | 공휴일 변동\" — 스토어 안 상설 브랜드숍: 건담베이스·타마시이 스팟 서울(TAMASHII SPOT SEOUL)·가샤폰 반다이 오피셜 샵·반다이 카드 게임즈 샵·꼬마 곰 재키 오피셜 샵(The bear's school official shop)"
+    },
+    {
+     "url": "https://the-bears-school.kr/",
+     "fields": [
+      "shop_link",
+      "works"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "꼬마곰 재키 국내 공식 홈페이지(반다이남코코리아 스토어 페이지 \"꼬마곰 재키 홈페이지\" 링크) — 그림책 소개·추천 상품"
+    },
+    {
+     "url": "https://www.iparkmall.co.kr/main/parking.do",
+     "fields": [
+      "parking",
+      "parking_note",
+      "place_id"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "아이파크몰 용산점 place(045ed3e4) 공식 주차 노트 그대로 복사(2026-09-26 등록분)"
+    }
+   ],
+   "unconfirmed": [
+    "goods_types",
+    "sns"
+   ],
+   "photo": "needed",
+   "notes": "작품 꼬마 곰 재키 신규 등록(works/2026-09-29-jackie.json, character_brand). 상품 분류는 공식 홈페이지 추천 상품이 브랜드 전체 기준이라 비움"
+  }
+ ]
+}

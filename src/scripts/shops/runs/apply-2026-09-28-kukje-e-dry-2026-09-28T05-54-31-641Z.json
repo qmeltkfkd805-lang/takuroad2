@@ -1,0 +1,241 @@
+{
+ "plan": "2026-09-28-kukje-e",
+ "at": "2026-09-28T05:54:31.641Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "kukje-thegoods",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/thegoods_kookjeon/"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "더굿즈 국전점",
+    "floor_info": "국제전자센터 5층",
+    "cats": [
+     "쿠지"
+    ],
+    "shop_link": "https://www.instagram.com/thegoods_kookjeon/",
+    "description": "프리미엄 가챠샵 더굿즈의 국제전자센터 매장으로, 5층에서 자체 쿠지를 판매합니다. 영업시간은 공식 안내가 없어 비워 두었습니다.\n국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T05:54:31.641Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "self-kuji"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-marogoods",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/maro_goods/"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "마로굿즈",
+    "floor_info": "국제전자센터 5층",
+    "cats": [
+     "가챠"
+    ],
+    "shop_link": "https://www.instagram.com/maro_goods/",
+    "description": "국제전자센터의 가챠샵 마로굿즈입니다. 영업시간은 공식 안내가 없어 비워 두었습니다.\n국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T05:54:31.641Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-noriter",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/noritergacha/"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "놀이터 가챠",
+    "floor_info": "국제전자센터 9층",
+    "cats": [
+     "가챠",
+     "게임샵"
+    ],
+    "shop_link": "https://www.instagram.com/noritergacha/",
+    "description": "국제전자센터 9층의 게임 매장 놀이터가 운영하는 가챠샵입니다. 공식 인스타그램에 새로 들어온 가챠를 올립니다. 영업시간은 공식 안내가 없어 비워 두었습니다.\n국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T05:54:31.641Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-adeco",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/funcity_adeco_official/"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "20:00"
+     }
+    },
+    "name": "아데꼬 국제전자센터점",
+    "floor_info": "국제전자센터 4층 · 8층",
+    "cats": [
+     "가챠"
+    ],
+    "shop_link": "https://www.instagram.com/funcity_adeco_official/",
+    "description": "가챠샵 아데꼬의 국제전자센터점으로, 같은 건물에 두 곳이 있습니다.\n· 4층: 가챠\n· 8층: 가챠\n10:00~20:00 영업하며 매월 첫째·셋째 일요일은 정기휴무입니다(공식 인스타그램 안내).",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T05:54:31.641Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-toysky-2",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "floor_info": "국제전자센터 9층 110호(1호점) · 45호(2호점)",
+    "sns_links": [
+     "https://x.com/toysky9110_",
+     "https://www.instagram.com/kimhyun6283/",
+     "https://www.instagram.com/toysky.9110/"
+    ],
+    "description": "핫토이·반다이 피규어와 굿즈, 제일복권을 파는 토이스카이의 국제전자센터 매장으로, 9층에 두 곳이 있습니다(3층 스카이토이와 다른 매장).\n· 9층 110호 1호점: 핫토이·반다이 피규어, 굿즈\n· 9층 45호 2호점: 이치방쿠지 중심(2026년 9월 12일 오픈, 1호점 맞은편 하늘색 바닥 매장)\n구매 문의는 공식 계정 DM으로 받습니다. 영업시간은 공식 안내가 없어 비워 두었습니다.\n국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요."
+   },
+   "extras": {
+    "goods_types": {
+     "added": [],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

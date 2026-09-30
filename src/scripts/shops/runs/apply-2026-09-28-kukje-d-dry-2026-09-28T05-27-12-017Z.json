@@ -1,0 +1,317 @@
+{
+ "plan": "2026-09-28-kukje-d",
+ "at": "2026-09-28T05:27:12.017Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "kukje-kyouma-9f-2",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://x.com/kyouma_gacha",
+     "https://www.instagram.com/kyouma_official/"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "쿄우마샵 카드가챠 2호점",
+    "floor_info": "국제전자센터 9층",
+    "cats": [
+     "가챠",
+     "쿠지"
+    ],
+    "shop_link": "https://litt.ly/kyouma",
+    "description": "쿄우마샵의 9층 2호점으로, 가챠·카드가챠와 제일복권을 판매합니다. 본점은 같은 건물 2층, 1호점도 9층에 있습니다. 영업시간은 공식 안내가 없어 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T05:27:12.017Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "페르소나5",
+      "드래곤볼",
+      "나츠메 우인장",
+      "최애의 아이",
+      "짱구는 못말려"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "card-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kyouma-main-unit",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "floor_info": "국제전자센터 2층 136호",
+    "sns_links": [
+     "https://x.com/kyoumashop",
+     "https://x.com/kyouma_gacha",
+     "https://www.instagram.com/kyouma_official/",
+     "https://litt.ly/kyouma"
+    ]
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "페르소나5",
+      "드래곤볼",
+      "나츠메 우인장",
+      "최애의 아이",
+      "짱구는 못말려"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kyouma-9f-1-works",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "sns_links": [
+     "https://x.com/kyouma_gacha",
+     "https://x.com/kyoumashop",
+     "https://www.instagram.com/kyouma_official/"
+    ]
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "페르소나5",
+      "드래곤볼",
+      "나츠메 우인장",
+      "최애의 아이",
+      "짱구는 못말려"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-thekuhouse",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/thekuhouse/",
+     "https://band.us/@thekuhouse"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "더쿠하우스 국제전자센터점",
+    "floor_info": "국제전자센터 3층 3009호",
+    "cats": [
+     "쿠지",
+     "굿즈샵"
+    ],
+    "shop_link": "https://band.us/@thekuhouse",
+    "description": "제일복권(이치방쿠지)·자체 쿠지와 일본·중국 피규어·굿즈, 블라인드 박스를 파는 더쿠하우스의 2호점으로, 국제전자센터 3층 3009호에 있습니다(1호점은 화성). 영업시간은 공식 안내가 지점별로 달라 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T05:27:12.017Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "self-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-itstoy",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/itstoy88/"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "잇츠토이",
+    "floor_info": "국제전자센터 3층 132호 (에스컬레이터 앞)",
+    "cats": [
+     "가챠",
+     "굿즈샵"
+    ],
+    "shop_link": "https://www.instagram.com/itstoy88/",
+    "description": "가챠(빅캡슐 포함)와 캐릭터 인형을 파는 매장 잇츠토이(It's toy)로, 국제전자센터 3층 에스컬레이터 앞 132호에 있습니다. 영업시간은 공식 안내가 없어 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T05:27:12.017Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와",
+      "짱구는 못말려",
+      "리락쿠마",
+      "봇치 더 록!"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "plushie-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kujirun",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/kuji_run/",
+     "https://band.us/@kujirun"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "20:00"
+     }
+    },
+    "name": "쿠지런",
+    "floor_info": "국제전자센터 6층",
+    "cats": [
+     "쿠지"
+    ],
+    "shop_link": "https://band.us/@kujirun",
+    "description": "이치방쿠지(제일복권)와 피규어·애니 굿즈를 파는 쿠지 전문점 쿠지런(KujiRun)으로, 국제전자센터 6층에 있습니다. 12:00~20:00 영업하며 매월 첫째·셋째 일요일은 휴무입니다(공식 인스타그램 안내).",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T05:27:12.017Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "은혼",
+      "에반게리온",
+      "드래곤볼",
+      "진격의 거인",
+      "승리의 여신: 니케"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

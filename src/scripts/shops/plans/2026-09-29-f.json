@@ -1,0 +1,11 @@
+{
+ "name": "2026-09-29-f",
+ "items": [
+  {"action":"update","key":"dotorisup-jamsil","shop_id":"0aacf913-5176-41f3-a0e3-7f49ef05e276","expect_updated_at":"2026-09-23T06:22:15.345365+00:00","fields":{},"reason":"순환 점검 — 공식 매장 안내와 주소·층·시간·전화 일치, 변경 없음",
+   "sources":[{"url":"https://www.popcondplay.com/ip/store/6","fields":["addr","floor_info","hours","phone"],"checked_at":"2026-09-29","note":"\"도토리숲 잠실 롯데월드몰점 | 10:30 ~ 22:00 | 서울 송파구 올림픽로 300 롯데월드몰 B1 | 02-3213-4747\""}],"photo":"needed"},
+  {"action":"update","key":"dotorisup-yongsan","shop_id":"19540c69-60e0-4cac-bd82-0c31faae4149","expect_updated_at":"2026-09-28T05:33:41.913149+00:00","fields":{},"reason":"순환 점검 — 주소·층·전화 일치. 시간 공식 표기 \"평일 10:30~20:30 / 주말 10:30~21:00\" ↔ 저장값 금·토 21:00(같은 팝콘D스퀘어 마블컬렉션 공식 \"평일/일요일 20:30, 금/토/공휴일 21:00\"과 같은 방식) — 모호해 변경 안 함",
+   "sources":[{"url":"https://www.popcondplay.com/ip/store/6","fields":["addr","floor_info","hours","phone"],"checked_at":"2026-09-29","note":"\"도토리숲 용산 아이파크몰점 | 평일 10:30 ~ 20:30 / 주말 10:30 ~ 21:00 | 서울 용산구 한강대로23길 55 아이파크몰 리빙파크 6층 팝콘D스퀘어 | 02-6373-3369\""}],"unconfirmed":["hours_weekend_split"],"photo":"needed"},
+  {"action":"update","key":"dotorisup-suwon","shop_id":"ff169fc0-f22e-4148-b61a-42039616dcc7","expect_updated_at":"2026-09-28T05:33:33.28925+00:00","fields":{},"reason":"순환 점검 — 공식 매장 안내와 주소·층·시간·전화 일치, 변경 없음",
+   "sources":[{"url":"https://www.popcondplay.com/ip/store/6","fields":["addr","floor_info","hours","phone"],"checked_at":"2026-09-29","note":"\"도토리숲 수원 AK플라자점 | 10:30 ~ 22:00 | 경기 수원시 팔달구 덕영대로 924 AK플라자 5층 | 031-240-1558\""}],"photo":"needed"}
+ ]
+}

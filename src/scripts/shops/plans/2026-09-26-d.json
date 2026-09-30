@@ -1,0 +1,44 @@
+{
+ "name": "2026-09-26-d",
+ "items": [
+  {
+   "action": "insert",
+   "key": "estaregg-kukje-2",
+   "brand_links": [
+    "https://estar-egg.com"
+   ],
+   "fields": {
+    "addr": "서울 서초구 효령로 304",
+    "name": "이스타에그 국전 2호점",
+    "floor_info": "국제전자센터 9층",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://estar-egg.com",
+    "sns_links": [
+     "https://x.com/E_stareggstore2"
+    ],
+    "description": "이스타에그의 오프라인 2호점으로 국제전자센터 9층에 있습니다. 매주 화요일 정기휴무입니다(공식 X). 본점은 같은 건물 7층에 있습니다."
+   },
+   "photo": "needed",
+   "sources": [
+    {
+     "url": "https://x.com/E_stareggstore2",
+     "fields": [
+      "name",
+      "floor_info",
+      "closed_days"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ],
+   "unconfirmed": [
+    "hours(공식 X 운영시간 14:30~19:30·점심 13:30~14:30 표기가 서로 맞지 않아 비움)",
+    "phone",
+    "works",
+    "goods_types"
+   ],
+   "notes": "본점(2f1321e8…, 7층)과 다른 매장 — 공식 X 가 각각 본점/2호점 계정으로 구분. brand 키는 같은 건물 본점과 이름 유사 중복 판정을 피하려 생략(확인 완료)"
+  }
+ ]
+}

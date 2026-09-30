@@ -1,0 +1,44 @@
+{
+ "plan": "2026-09-29-k2",
+ "at": "2026-09-29T10:21:40.838Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "ipark-parking-0",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "298c8675-96ea-409f-b768-f25818b64e91",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용"
+   },
+   "before": {
+    "parking_note": "10분당 1,300원 당일 영수증 최대 5시간 할인"
+   }
+  },
+  {
+   "key": "ipark-parking-1",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "2a9f7d7a-2b67-458a-ab6b-9364f32a90d1",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용"
+   },
+   "before": {
+    "parking_note": "10분당 1,300원 당일 영수증 최대 5시간 할인"
+   }
+  },
+  {
+   "key": "ipark-parking-2",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "ca2043d4-5891-44b3-9bec-c5a19369d14c",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용"
+   },
+   "before": {
+    "parking_note": "10분당 1,300원 당일 영수증 최대 5시간 할인"
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-k2-2026-09-29T10-21-40-838Z.json"
+}

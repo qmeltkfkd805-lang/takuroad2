@@ -1,0 +1,287 @@
+{
+ "name": "2026-09-23-c",
+ "items": [
+  {
+   "action": "update",
+   "key": "links-aenimeiteu-akpeulraja-suwonjeom",
+   "shop_id": "173a029b-fc61-4282-be89-58e4ade23cbf",
+   "fields": {},
+   "reason": "이 샵에서 열리는 이벤트 연결 + 그 이벤트 작품을 취급 작품으로",
+   "link_events": [
+    {
+     "event_id": "fa8f897e-8bd6-4117-bc09-e03effeb51ef",
+     "alias": "애니메이트 수원점",
+     "evidence": "place_detail 에 \"애니메이트 수원점\" 표기"
+    },
+    {
+     "event_id": "e12cc7a5-99be-4e7b-8ed0-ad0a52fd6c09",
+     "alias": "애니메이트 수원점",
+     "evidence": "place_detail 에 \"애니메이트 수원점\" 표기"
+    },
+    {
+     "event_id": "215afd5d-e071-4ab0-8df8-13f5ac5f8de5",
+     "alias": "애니메이트 수원점",
+     "evidence": "place_detail 에 \"애니메이트 수원점\" 표기"
+    }
+   ],
+   "works": [
+    {
+     "tag_id": "484a3af3-15f1-4618-8235-96053d307aec",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "f2658c7d-a3d0-4343-9b21-d0cab3d59ab8",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "ea7312a9-a75c-491c-9b21-dcabfa0f4257",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "cdab8396-5f6f-4107-baa5-46bdae17d1c5",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "77a9bc04-00de-4071-baf2-571f4fcef31d",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "523c581e-4f34-4426-818f-090894ccbf45",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "4526b69f-b69a-4070-b165-5d01a71d86eb",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "8ef907dc-37ce-4974-a2d7-37910d56f7dd",
+     "evidence": "이 매장 개최 이벤트 작품"
+    }
+   ],
+   "sources": [
+    {
+     "url": "events.place_detail (DB)",
+     "fields": [
+      "link_events",
+      "works"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "links-smg-akpeulraja-suwonjeom",
+   "shop_id": "1fcd053a-42a9-4a38-9d5d-89022c3add4b",
+   "fields": {},
+   "reason": "이 샵에서 열리는 이벤트 연결 + 그 이벤트 작품을 취급 작품으로",
+   "link_events": [
+    {
+     "event_id": "2cbb7b56-03bf-45ec-a0f3-2d6aeb8c72a3",
+     "alias": "SMG STORE",
+     "evidence": "place_detail 에 \"SMG STORE\" 표기"
+    },
+    {
+     "event_id": "fe1237d2-0c9f-427c-81e1-64e940744567",
+     "alias": "SMG STORE",
+     "evidence": "place_detail 에 \"SMG STORE\" 표기"
+    }
+   ],
+   "works": [
+    {
+     "tag_id": "cdc27204-c7f8-4f28-a4a7-fb7e8b7fc1b7",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "a44bc564-3245-452b-b4d0-20848daadbc0",
+     "evidence": "이 매장 개최 이벤트 작품"
+    }
+   ],
+   "sources": [
+    {
+     "url": "events.place_detail (DB)",
+     "fields": [
+      "link_events",
+      "works"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "links-aenimeiteu-kape-jamsilrotdejeom",
+   "shop_id": "3bd1292d-c560-4394-bca9-bca4c0c64bef",
+   "fields": {},
+   "reason": "이 샵에서 열리는 이벤트 연결 + 그 이벤트 작품을 취급 작품으로",
+   "link_events": [
+    {
+     "event_id": "92ad872c-3976-47cc-87bb-8b48d9c57859",
+     "evidence": "place_detail: 애니메이트 카페 잠실롯데점"
+    }
+   ],
+   "works": [
+    {
+     "tag_id": "a6db96d3-1aef-400d-991c-c63078181e62",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "4913fd41-a5e2-4c24-9297-2e799b1d16ce",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "6913a8ed-fc06-4625-89d4-74bdbdb7440e",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "94dea875-614e-4e2d-ba30-ea509385603b",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "f2658c7d-a3d0-4343-9b21-d0cab3d59ab8",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "5253fe7d-b5f1-4663-9982-1c71bd360f14",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "70ec9dbc-8eb6-41fd-bef2-9139a228fa86",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "0a52ab77-f2b5-4bbf-8d00-004d137525a7",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "1798e740-15b3-4875-ad2f-3929230ce058",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "a6059a41-b8c5-45c1-9f90-809f3893bb5e",
+     "evidence": "이 매장 개최 이벤트 작품"
+    }
+   ],
+   "sources": [
+    {
+     "url": "events.place_detail (DB)",
+     "fields": [
+      "link_events",
+      "works"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "links-aenimeiteu-jamsilrotdejeom",
+   "shop_id": "63d470eb-3a99-4028-b061-e29aeab28e7c",
+   "fields": {},
+   "reason": "이 샵에서 열리는 이벤트 연결 + 그 이벤트 작품을 취급 작품으로",
+   "link_events": [
+    {
+     "event_id": "2c2da745-890e-4644-a671-b5447a226df2",
+     "evidence": "place_detail: 롯데월드 쇼핑몰동 B1층 애니메이트 잠실롯데점"
+    },
+    {
+     "event_id": "baa10131-eccc-44e8-9354-4c578b6f2300",
+     "evidence": "place_detail: 롯데월드 쇼핑몰동 B1층 애니메이트 잠실롯데점"
+    },
+    {
+     "event_id": "de622d7c-f7e8-489f-9411-e833d0d3bd81",
+     "from_shop_id": "3bd1292d-c560-4394-bca9-bca4c0c64bef",
+     "evidence": "place_detail: 롯데월드 쇼핑몰동 B1층 애니메이트 잠실롯데점 — 카페에 잘못 연결돼 있던 매장 페어"
+    }
+   ],
+   "works": [
+    {
+     "tag_id": "fb8c03af-9bdc-4fb2-8fef-8d9a7792873c",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "773e2f96-cea4-4710-8d97-40eb09f239cb",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "4d4b02e7-2835-45ce-8357-c92992d69387",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "aedfd403-e50a-4717-b509-74ff2362eae5",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "d1e46be2-e283-4d48-bb49-61c16ce7faaf",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "8ef907dc-37ce-4974-a2d7-37910d56f7dd",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "77a9bc04-00de-4071-baf2-571f4fcef31d",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "cdab8396-5f6f-4107-baa5-46bdae17d1c5",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "0d2135c3-9e2d-4029-8ff0-05dd9e1d8155",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "63d2954e-2390-42ed-ad2c-af42c2a4b49c",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "35c6ae9c-8fcb-46c4-a8d7-d340b941e31e",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "4526b69f-b69a-4070-b165-5d01a71d86eb",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "cdc27204-c7f8-4f28-a4a7-fb7e8b7fc1b7",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "734c6726-5bdc-4457-90d8-54c1f6e52319",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "484a3af3-15f1-4618-8235-96053d307aec",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "523c581e-4f34-4426-818f-090894ccbf45",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "7fc6cb70-c059-40e3-86a4-39dc28b6b32c",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "ea7312a9-a75c-491c-9b21-dcabfa0f4257",
+     "evidence": "이 매장 개최 이벤트 작품"
+    },
+    {
+     "tag_id": "f2658c7d-a3d0-4343-9b21-d0cab3d59ab8",
+     "evidence": "이 매장 개최 이벤트 작품"
+    }
+   ],
+   "sources": [
+    {
+     "url": "events.place_detail (DB)",
+     "fields": [
+      "link_events",
+      "works"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  }
+ ]
+}

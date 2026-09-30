@@ -1,0 +1,409 @@
+[
+ {
+  "shop_id": "f194103b-ae01-456c-86f7-29224f17fe41",
+  "name": "팝마트 스타필드 수원점",
+  "works": [
+   {
+    "name": "라부부(더 몬스터즈)",
+    "evidence": "Opening news: '스타필드 수원점에서 라부부 만난다' - Labubu among main products at this store",
+    "url": "https://www.smedaily.co.kr/news/articleView.html?idxno=339766"
+   },
+   {
+    "name": "크라이베이비",
+    "evidence": "Suwon store opening promotion centered on Crybaby (find Crybaby in the new store, gift set)",
+    "url": "https://news.nate.com/view/20251001n07746"
+   },
+   {
+    "name": "디무",
+    "evidence": "Suwon store purchase gifts included DIMOO woven bag / phone stand; Dimoo listed as main product",
+    "url": "https://www.smedaily.co.kr/news/articleView.html?idxno=339766"
+   },
+   {
+    "name": "피치 라이엇",
+    "evidence": "Suwon store purchase gift: Peach Riot masking tape",
+    "url": "https://www.smedaily.co.kr/news/articleView.html?idxno=339766"
+   },
+   {
+    "name": "몰리",
+    "evidence": "Brand's own flagship IP on official POP MART Korea site (brand store)",
+    "url": "https://www.popmart.com/kr"
+   },
+   {
+    "name": "스컬판다",
+    "evidence": "Brand's own IP on official POP MART Korea site (brand store)",
+    "url": "https://www.popmart.com/kr"
+   },
+   {
+    "name": "하이로노",
+    "evidence": "Brand's own IP on official POP MART Korea site (brand store)",
+    "url": "https://www.popmart.com/kr"
+   },
+   {
+    "name": "트윙클 트윙클",
+    "evidence": "Brand's own IP on official POP MART Korea site (brand store)",
+    "url": "https://www.popmart.com/kr"
+   },
+   {
+    "name": "하치푸",
+    "evidence": "Brand's own IP (HACIPUPU) on official POP MART Korea site (brand store)",
+    "url": "https://www.popmart.com/kr"
+   }
+  ],
+  "goods_types": [
+   {
+    "slug": "keyring",
+    "evidence": "Visitor post of the Suwon store mentions figures and 키링; official site sells vinyl/plush keychain pendants",
+    "url": "https://fanplus.co.kr/community/misc/127177801"
+   },
+   {
+    "slug": "doll",
+    "evidence": "Official POP MART Korea site sells BJD (ball-jointed dolls)",
+    "url": "https://www.popmart.com/kr"
+   }
+  ],
+  "notes": "The first 4 works are specific to the Suwon store (opening news). The other 5 are brand-level IPs from the official POP MART Korea site; there is no Suwon-specific post for them. The doll entry is also brand-level only."
+ },
+ {
+  "shop_id": "3f622398-254d-4e57-94cc-b7ad6e2c1bb0",
+  "name": "가샤폰 수원스타필드점",
+  "works": [
+   {
+    "name": "왕님전대 킹오저",
+    "evidence": "DCinside Super Sentai gallery post titled '수원 스타필드 킹오저 가샤폰 반다이 오피셜샵' (Super Sentai King-Ohger gashapon at this shop)",
+    "url": "https://gall.dcinside.com/mgallery/board/view/?id=sentai2&no=130965"
+   },
+   {
+    "name": "폼폼푸린",
+    "evidence": "Blog post about the Suwon Fun Square + Gashapon shop: the visitor pulled a Pompompurin collab capsule at the Gashapon shop",
+    "url": "https://pandarank.net/contents/692119cd93ebe9fe2d7b756d"
+   }
+  ],
+  "goods_types": [],
+  "notes": "Blog damduck01.com/3295 only confirms Crayon Shin-chan capsules (already listed). This is a capsule-only shop, so there are no other goods types."
+ },
+ {
+  "shop_id": "384328ab-cb33-4682-93c1-f1c2076a036f",
+  "name": "펀 스퀘어 수원스타필드점",
+  "works": [
+   {
+    "name": "스파이×패밀리",
+    "evidence": "Store review lists One Piece, Demon Slayer, Spy x Family character figures among the lineup",
+    "url": "https://pandarank.net/contents/692119cd93ebe9fe2d7b756d"
+   }
+  ],
+  "goods_types": [
+   {
+    "slug": "plamodel-new",
+    "evidence": "Multiple sources: 건프라/건담 프라모델 displayed and sold (EG, MGSD pre-sale)",
+    "url": "https://damduck01.com/3295"
+   }
+  ],
+  "notes": "Additional Gunpla evidence: ruliweb posts about MGSD Aerial pre-sale and EG stock at this Fun Square (https://m.ruliweb.com/family/232/board/300079/read/30712232). The Pompompurin entry could also belong to the Gashapon shop next door, so it is lower confidence."
+ },
+ {
+  "shop_id": "c7946b62-197f-4aea-834f-2a6cfce9c233",
+  "name": "PLAY IN THE BOX 수원스타필드점",
+  "works": [
+   {
+    "name": "스누피",
+    "evidence": "Place guide for the Suwon store lists '짱구, 스누피, 산리오, 포켓몬, 도라에몽'",
+    "url": "https://mom-mom.net/travel/places/65d84f6f5e38fe79cab841ac"
+   },
+   {
+    "name": "도라에몽",
+    "evidence": "Same place guide for the Suwon store lists Doraemon",
+    "url": "https://mom-mom.net/travel/places/65d84f6f5e38fe79cab841ac"
+   },
+   {
+    "name": "브롤스타즈",
+    "evidence": "Same place guide for the Suwon store mentions Brawl Stars goods",
+    "url": "https://mom-mom.net/travel/places/65d84f6f5e38fe79cab841ac"
+   },
+   {
+    "name": "와사비베어",
+    "evidence": "Suwon store opening article: goods from creators like 리코더팩토리, 와사비베어, 멜앤로디 are tenants of the Suwon store",
+    "url": "https://www.enetnews.co.kr/news/articleView.html?idxno=19565"
+   },
+   {
+    "name": "멜앤로디",
+    "evidence": "Same Suwon store opening article (resident creator brand)",
+    "url": "https://www.dailysecu.com/news/articleView.html?idxno=152972"
+   }
+  ],
+  "goods_types": [
+   {
+    "slug": "figure-new",
+    "evidence": "Suwon store sells figures from Pokemon/Shin-chan/Sanrio figure brands; place guide: '피규어와 문구류, 생활 소품'",
+    "url": "https://www.enetnews.co.kr/news/articleView.html?idxno=19565"
+   },
+   {
+    "slug": "household-items",
+    "evidence": "Place guide: '피규어와 문구류, 생활 소품', 라이프 굿즈",
+    "url": "https://mom-mom.net/travel/places/65d84f6f5e38fe79cab841ac"
+   },
+   {
+    "slug": "gacha-new",
+    "evidence": "Store content includes 캡슐토이 (capsule toys)",
+    "url": "https://www.dailysecu.com/news/articleView.html?idxno=152972"
+   }
+  ],
+  "notes": "Recorder Factory, Wasabi Bear and Valley Bear were also run as pop-ups at the brand level. Wasabi Bear and Mel&Lody are described as resident creator goods at Suwon, but check whether they are still stocked. The Recorder Factory keyring zone was a pop-up, so it is excluded."
+ },
+ {
+  "shop_id": "76994976-bf17-45c4-a8a2-efe1a3715a2e",
+  "name": "더굿즈 수원점",
+  "works": [
+   {
+    "name": "보컬로이드",
+    "evidence": "Official Threads new-arrival post: 세가 하츠네 미쿠 FIGURIZMα 미쿠 펑크 입고 #더굿즈수원",
+    "url": "https://www.threads.com/@thegoods_suwon/post/Dbc9kbYmhiR"
+   },
+   {
+    "name": "오버로드",
+    "evidence": "Official X account new-arrival posts include Overlord figures",
+    "url": "https://x.com/thegoods_suwon"
+   }
+  ],
+  "goods_types": [
+   {
+    "slug": "card-new",
+    "evidence": "Official X account announced Japanese Pokemon card (Storm Emerald) arrivals; IG captions mention 카드",
+    "url": "https://x.com/thegoods_suwon"
+   }
+  ],
+  "notes": "Address mismatch: the official accounts (X 'thegoods_suwon' = 더굿즈 수원인계점) give 수원시 팔달구 효원로265번길 46 3층, but our DB has 갓매산로 51. The store may have moved, or there may be two branches. Confirm before linking. Most other X arrival posts (Demon Slayer, Hunter x Hunter, Chiikawa, Ensemble Stars) are works already listed."
+ },
+ {
+  "shop_id": "be171fd6-61e5-4f5c-8235-fa8680050534",
+  "name": "제이굿즈",
+  "works": [
+   {
+    "name": "명탐정 코난",
+    "evidence": "Official X: '명탐정 코난 - 트레이딩 여름축제 피규어 입고' and Conan 'Neo City Pop' kuji",
+    "url": "https://x.com/JGoods_SW/status/2034134292033679367"
+   },
+   {
+    "name": "장송의 프리렌",
+    "evidence": "Official X: 프리렌 에니마이 쿠지 / 컬러풀 피규어 / 데스크탑 큐트 피규어 입고 (repeated)",
+    "url": "https://x.com/JGoods_SW/status/2034837674490810785"
+   },
+   {
+    "name": "데스노트",
+    "evidence": "Official X: Death Note DMM kuji arrival (Misa figure, acrylic, clear file, stickers)",
+    "url": "https://x.com/jgoods_sw"
+   },
+   {
+    "name": "유희왕",
+    "evidence": "Official X: '유희왕 듀얼몬스터즈 - 듀얼리스트 피규어 컬렉션 입고'",
+    "url": "https://x.com/JGoods_SW/status/1896032262992642388"
+   },
+   {
+    "name": "실바니안 패밀리",
+    "evidence": "Official X: '실바니안 패밀리 - 캡슐 피겨 콜렉션 5 입고'",
+    "url": "https://x.com/JGoods_SW/status/1839933845707337850"
+   },
+   {
+    "name": "시나모롤",
+    "evidence": "Triple aggregated blog reviews of J Goods Suwon mention Cinnamoroll gacha",
+    "url": "https://triple.guide/attractions/d364ca1d-27f3-48a6-801f-26489e5b6537"
+   },
+   {
+    "name": "마이멜로디",
+    "evidence": "Same Triple reviews mention My Melody gacha",
+    "url": "https://triple.guide/attractions/d364ca1d-27f3-48a6-801f-26489e5b6537"
+   }
+  ],
+  "goods_types": [
+   {
+    "slug": "stationery",
+    "evidence": "Official X: MHA '상반되는 마음' kuji restock incl. I상 스테이셔너리, J상 스티커세트",
+    "url": "https://x.com/JGoods_SW/status/1955523885971149104"
+   }
+  ],
+  "notes": "The official X account @JGoods_SW is very active with 입고 posts. Its Hunter x Hunter and MHA posts cover works already listed."
+ },
+ {
+  "shop_id": "a5ec4a07-99a4-40f8-bad6-d5240a27d9b4",
+  "name": "오덕오덕",
+  "works": [],
+  "goods_types": [
+   {
+    "slug": "ichiban-kuji",
+    "evidence": "Official IG bio: '이치방쿠지/애니굿즈(블라인드 박스 및 피규어)/가챠(확정,랜덤,풀세트)/중국 BJD 블라인드 박스'",
+    "url": "https://www.instagram.com/ododgoods/"
+   }
+  ],
+  "notes": "No works found tied to this shop specifically (IG captions were not readable, and no blogs or X posts found). The bio also names Chinese BJD blind boxes, which falls under doll (already listed)."
+ },
+ {
+  "shop_id": "fb162c42-1fa2-4ae8-a706-a399f2f9f815",
+  "name": "캑티가챠샵 수원점",
+  "works": [],
+  "goods_types": [
+   {
+    "slug": "plushie-new",
+    "evidence": "Official IG bio: '매일 입고되는 신상 가챠, 인형과 이치방쿠지'; the 요기뽑 listing shows claw machines with character plush prizes",
+    "url": "https://www.instagram.com/cacti.gachashop/"
+   }
+  ],
+  "notes": "This is a chain account, so there is no Suwon-branch-specific IP evidence. The 수원역점 opening post (IG DQBeaXykhRu) mentions 200+ gacha machines only. The plushie-new entry is moderate confidence: '인형' could mean claw-machine plush."
+ },
+ {
+  "shop_id": "75142dc4-c8e8-4235-83f3-faf84477abb4",
+  "name": "키라키라토모 수원본점",
+  "works": [
+   {
+    "name": "아이돌리쉬 세븐",
+    "evidence": "Official X (수원본점): '아이나나 웨하스 카드 22탄 대량 재입고' #수원굿즈샵 (Feb 2024, after store opening)",
+    "url": "https://x.com/kirakiratomo_/status/1760540540540711223"
+   },
+   {
+    "name": "달빛천사",
+    "evidence": "Official IG bio lists specialties incl. 달빛천사 alongside 하나코군/귀칼/히로아카/코난/카드캡터사쿠라",
+    "url": "https://www.instagram.com/kirakiratomo_official"
+   }
+  ],
+  "goods_types": [
+   {
+    "slug": "card-new",
+    "evidence": "Official X: wafer trading cards (아이나나 웨하스 카드, 흑집사 트레이딩 웨하스 카드) arrivals",
+    "url": "https://x.com/kirakiratomo_/status/1915382266345513157"
+   }
+  ],
+  "notes": "The existing list is already large. Pre-Dec 2023 X posts (e.g. the 2020 Evangelion wafer post) came from the online mall before the Suwon store opened on 2023-12-14, so they were not used."
+ },
+ {
+  "shop_id": "f24cb094-56ec-4f22-9618-864551058904",
+  "name": "브라더굿즈 수원역점",
+  "works": [
+   {
+    "name": "귀멸의 칼날",
+    "evidence": "Official Suwon IG (brother.goods.suwon) arrival captions mention 귀멸의 칼날",
+    "url": "https://www.instagram.com/brother.goods.suwon/"
+   },
+   {
+    "name": "마인크래프트",
+    "evidence": "Official Suwon IG arrival captions mention 마인크래프트",
+    "url": "https://www.instagram.com/brother.goods.suwon/"
+   },
+   {
+    "name": "던전밥",
+    "evidence": "Official Suwon IG arrival captions mention 던전밥",
+    "url": "https://www.instagram.com/brother.goods.suwon/"
+   },
+   {
+    "name": "리락쿠마",
+    "evidence": "Official Suwon IG arrival captions mention Rilakkuma",
+    "url": "https://www.instagram.com/brother.goods.suwon/"
+   }
+  ],
+  "goods_types": [
+   {
+    "slug": "plushie-new",
+    "evidence": "Official Suwon IG captions: ぬいぐるみマスコット / 누이 mascot arrivals",
+    "url": "https://www.instagram.com/brother.goods.suwon/"
+   },
+   {
+    "slug": "keyring",
+    "evidence": "Official Suwon IG posts: mini figurines and keychains, mascots",
+    "url": "https://www.instagram.com/brother.goods.suwon/"
+   }
+  ],
+  "notes": "Evidence comes from the Suwon branch's own IG profile page (captions summarized by the fetch tool, not quoted in full). The IG bio gives the address as 향교로 8-2 1층, while the DB has 8-1."
+ },
+ {
+  "shop_id": "2f631c45-415c-4ee4-a3eb-9bcbab7c5599",
+  "name": "더쿠 수원점",
+  "works": [
+   {
+    "name": "보컬로이드",
+    "evidence": "Official X: '하츠네 미쿠 T-most 피규어 입고'; also 카사네 테토 figure",
+    "url": "https://x.com/the_ku_s/status/2085657218486301064"
+   },
+   {
+    "name": "프로젝트 세카이",
+    "evidence": "Official X: '프로젝트 세카이 H/Art Collection 클리어 카드vol.1 입고'",
+    "url": "https://x.com/the_ku_s/status/2082393026304074057"
+   },
+   {
+    "name": "개구리 중사 케로로",
+    "evidence": "Official X: '제일복권 개구리중사 케로로 3회차 시작합니다'",
+    "url": "https://x.com/the_ku_s/status/2084839470923395559"
+   },
+   {
+    "name": "데스노트",
+    "evidence": "Official X: '데스노트 PU레자 배지 컬렉션 vol.1/vol.2 재입고'",
+    "url": "https://x.com/the_ku_s/status/2050865374959432156"
+   },
+   {
+    "name": "텔레토비",
+    "evidence": "Official X: '텔레토비 마스코트 볼 체인 입고' and 텔레토비 스마로이드 입고 (repeated)",
+    "url": "https://x.com/the_ku_s/status/2084202784258503160"
+   },
+   {
+    "name": "리락쿠마",
+    "evidence": "Official X: capsule '리락쿠마x츄파춥스 버라이어티 컬렉션' 입고",
+    "url": "https://x.com/the_ku_s/status/2028038918562824232"
+   },
+   {
+    "name": "빨간 망토 차차",
+    "evidence": "Official X: capsule '빨간망토 차차 메지루시' 입고",
+    "url": "https://x.com/the_ku_s/status/2028038918562824232"
+   },
+   {
+    "name": "바키",
+    "evidence": "Official X: 제일복권 한마 바키 '거대한 심장 박동' 입고",
+    "url": "https://x.com/the_ku_s"
+   }
+  ],
+  "goods_types": [
+   {
+    "slug": "gacha-new",
+    "evidence": "Official X: capsule (캡슐/갸챠) arrivals, e.g. 산리오 캐릭터즈 캡슐 스틱, 그 비스크돌 캡슐 피규어",
+    "url": "https://x.com/the_ku_s/status/2048692847185125497"
+   }
+  ],
+  "notes": "Excluded the separate AK Plaza Suwon pop-up (@the_ku_AKs). Frieren, Chainsaw Man, Bisque Doll and One Piece posts cover works already listed."
+ },
+ {
+  "shop_id": "269ab652-ba44-41e5-b93f-1c20038d395a",
+  "name": "가챠 밍",
+  "works": [
+   {
+    "name": "치이카와",
+    "evidence": "Official IG (gacha_ming, 안양) captions mention 치이카와 in multiple posts",
+    "url": "https://www.instagram.com/gacha_ming"
+   }
+  ],
+  "goods_types": [],
+  "notes": "Limited evidence. The IG bio gives the address as 안양로314번길 10 광창빌딩 105호, matching the DB."
+ },
+ {
+  "shop_id": "8cdd8eb2-02f8-4991-ae7e-e0b811226e1d",
+  "name": "오늘의 타이밍 쿠지 ",
+  "works": [],
+  "goods_types": [],
+  "notes": "No online presence or reviews found."
+ },
+ {
+  "shop_id": "5fb9ea43-ea15-457b-8aa6-39078bee6af6",
+  "name": "토이유니버스",
+  "works": [],
+  "goods_types": [],
+  "notes": "Weak evidence: one IG caption. The bio says 리멘트, 굿즈, 캡슐가챠, 미소녀 피규어, 피규어, 쿠지, all already covered. There was a possible Gundam (Zaku) reference, but it was unclear, so it is excluded."
+ },
+ {
+  "shop_id": "72a29bf7-620b-4fa6-8198-692b4f2fced4",
+  "name": "도르륵 동탄 본점",
+  "works": [],
+  "goods_types": [],
+  "notes": "The IG bio describes a 24h gacha section plus an accessories shop (12-20), with a Naver SmartStore (doreureuk_store) that could not be fetched. No IP-specific evidence found beyond what is already listed."
+ },
+ {
+  "shop_id": "ffd89b54-96ea-4a09-8512-617c2257c550",
+  "name": "네오큐브 가챠샵 동탄점",
+  "works": [],
+  "goods_types": [],
+  "notes": "The IG (gacha_by_yoon, '윤언니 가챠') bio has no IP names, and captions were not readable. Nothing reliable found."
+ }
+]

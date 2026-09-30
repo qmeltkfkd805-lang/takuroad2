@@ -1,0 +1,1205 @@
+{
+ "plan": "2026-09-28-kukje",
+ "at": "2026-09-28T04:17:25.657Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "kukje-ichibankuji-seocho",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://x.com/ICHIBANKUJI_fp"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "20:00"
+     }
+    },
+    "name": "제일복권(이치방쿠지) 서초점",
+    "floor_info": "국제전자센터 8층",
+    "cats": [
+     "쿠지"
+    ],
+    "shop_link": "https://x.com/ICHIBANKUJI_fp",
+    "description": "반프레스토 제일복권(이치방쿠지) 공식 판매 매장으로, 국제전자센터 8층에 있습니다(운영 피규어프레소). 매일 11:00~20:00 영업하며 19:45에 결제를 마감합니다(공식 계정 안내). 문의는 공식 X DM으로 받습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "나루토",
+      "드래곤볼",
+      "짱구는 못말려",
+      "나의 히어로 아카데미아",
+      "약사의 혼잣말",
+      "별의 커비",
+      "북두의 권",
+      "블리치",
+      "원피스",
+      "헌터×헌터",
+      "승리의 여신: 니케"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kujibang",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://x.com/kujibang"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "쿠지방 국제전자센터점",
+    "floor_info": "국제전자센터 8층 8123호",
+    "cats": [
+     "쿠지"
+    ],
+    "shop_link": "https://smartstore.naver.com/kujibang",
+    "description": "정식판 이치방쿠지와 자체 쿠지, 경품 피규어를 파는 쿠지 전문점 쿠지방의 국제전자센터점으로, 8층 8123호에 있습니다. 실시간 온라인 쿠지 뽑기와 스마트스토어도 운영합니다(공식 계정 안내). 영업시간은 공식 안내가 없어 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "블루 록",
+      "드래곤볼"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "self-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-cutepeople",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://x.com/cutepeopleco",
+     "https://www.instagram.com/cutepeopleco",
+     "https://linktr.ee/cutepeopleco"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "큐트피플컴퍼니",
+    "floor_info": "국제전자센터 8층 115·116호",
+    "cats": [
+     "가챠",
+     "쿠지",
+     "굿즈샵"
+    ],
+    "shop_link": "https://smartstore.naver.com/cutepeopleco",
+    "description": "이치방쿠지·가챠·피규어·누이·리멘트·블라인드 굿즈를 파는 매장으로, 국제전자센터 8층 115·116호에 있습니다. 온라인 스마트스토어도 함께 운영합니다. 영업시간은 공식 계정이 네이버 스마트플레이스로 안내합니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "하이큐!!",
+      "귀멸의 칼날",
+      "동물의 숲",
+      "헌터×헌터",
+      "디지몬",
+      "치이카와",
+      "헬로키티",
+      "장송의 프리렌",
+      "데스노트",
+      "다마고치",
+      "개구리 중사 케로로",
+      "에반게리온"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "plushie-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kkuing",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/kkuing_shop2/",
+     "https://smartstore.naver.com/kkuing_shop"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "꾸잉양판점 국전점",
+    "floor_info": "국제전자센터 8층 80·87호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://www.instagram.com/kkuing_shop2/",
+    "description": "애니메이션 캐릭터 굿즈를 파는 꾸잉양판점의 2호점(국전점)으로, 국제전자센터 8층 80·87호에 있습니다. 본점은 홍대에 있습니다. 운영 시간은 공식 인스타그램 안내를 확인해 주세요. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "헌터×헌터",
+      "개구리 중사 케로로"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "acrylic-stand",
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-topiko",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/topiko.official"
+    ],
+    "phone": "0507-1449-0992",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "20:00"
+     }
+    },
+    "name": "토피코 국제전자센터점",
+    "floor_info": "국제전자센터 3층",
+    "cats": [
+     "가챠",
+     "쿠지"
+    ],
+    "shop_link": "https://app.topiko.me/store/173347407214417161",
+    "description": "캡슐토이(가챠)·쿠지 전문 체인 토피코(TOPIKO)의 국제전자센터점으로, 3층에 있습니다. 매일 10:00~20:00 영업하며 격주 일요일 휴무입니다(공식 매장 안내). 가챠 자판기는 카드 결제가 됩니다.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "울트라맨",
+      "카드캡터 사쿠라",
+      "산리오",
+      "홀로라이브",
+      "나의 히어로 아카데미아",
+      "다마고치",
+      "개구리 중사 케로로",
+      "주술회전",
+      "체인소맨",
+      "귀멸의 칼날",
+      "은혼",
+      "마인크래프트",
+      "피크민",
+      "원피스",
+      "승리의 여신: 니케"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-funhave",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://x.com/Yuzuriha_krUni"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "펀해브",
+    "floor_info": "국제전자센터 3층 3호 (전망 엘리베이터 앞)",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://x.com/Yuzuriha_krUni",
+    "description": "서브컬처 모바일 게임 굿즈(현지 콜라보 상품 위주)와 하츠네 미쿠 인형·굿즈를 주로 다루는 굿즈샵으로, 국제전자센터 3층 전망 엘리베이터 앞에 있습니다(2026년 2월 오픈). 문의는 카카오톡 오픈채팅으로 받습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "하츠네 미쿠",
+      "젠레스 존 제로"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "keyring",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-ggcomic",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://x.com/GG_comic_market",
+     "https://www.instagram.com/gg_comic_market/",
+     "https://band.us/@ggcomic"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "20:00"
+     }
+    },
+    "name": "지지코믹마켓 국전점",
+    "floor_info": "국제전자센터 3·6·7·9층",
+    "cats": [
+     "쿠지",
+     "굿즈샵",
+     "가챠"
+    ],
+    "shop_link": "https://band.us/@ggcomic",
+    "description": "자체 쿠지와 제일복권, 피규어·가챠·굿즈를 파는 지지코믹마켓의 국전점으로, 국제전자센터 3·6·7·9층에 매장이 나뉘어 있습니다. 3층은 하위상 교환·피규어 매입, 6층은 방문 수령, 7층은 고객센터를 맡습니다. 매일 11:00~20:00 영업합니다(공식 이용 안내). 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "이누야샤"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "self-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-conbiniani",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://www.instagram.com/conbiniani/",
+     "https://x.com/conbiniani",
+     "https://m.smartstore.naver.com/conbiniani"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "13:00",
+      "close": "19:00"
+     },
+     "tue": {
+      "open": "13:00",
+      "close": "19:00"
+     },
+     "wed": {
+      "open": "13:00",
+      "close": "19:00"
+     },
+     "thu": {
+      "open": "13:00",
+      "close": "19:00"
+     },
+     "fri": {
+      "open": "13:00",
+      "close": "19:00"
+     },
+     "sat": {
+      "open": "13:00",
+      "close": "19:00"
+     },
+     "sun": {
+      "open": "13:00",
+      "close": "19:00"
+     }
+    },
+    "name": "콘비니애니",
+    "floor_info": "국제전자센터 7층 7122호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://www.instagram.com/conbiniani/",
+    "description": "추억의 애니메이션 굿즈와 피규어를 주로 다루는 굿즈샵 CONBINI ANI(콘비니애니)로, 국제전자센터 7층 7122호에 있습니다. 13:00~19:00 영업하며 매월 첫째·셋째 일요일 휴무입니다(2025년 5월 공식 안내). 매주 인스타그램에 오프라인 입고 소식을 올립니다.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "은혼",
+      "하츠네 미쿠",
+      "Free!",
+      "어떤 과학의 초전자포",
+      "에반게리온",
+      "듀라라라!!",
+      "단간론파",
+      "헌터×헌터",
+      "케이온!",
+      "그 비스크 돌은 사랑을 한다"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "acrylic-stand",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-nonno21",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [],
+    "phone": "02-3465-0094",
+    "hours": null,
+    "name": "논노21",
+    "floor_info": "국제전자센터 9층",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://www.nonno21.com/",
+    "description": "애니메이션 캐릭터 피규어를 파는 논노21의 오프라인 매장으로, 국제전자센터 9층에 있습니다. 온라인 피규어몰도 함께 운영하며, 휴무는 국제전자센터 상가 휴무를 따릅니다(공식 공지). 영업시간은 공식 안내가 없어 비워 두었습니다.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-denden",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://x.com/figurebubble",
+     "https://www.instagram.com/denden_official__"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "덴덴샵&피규어버블 본점",
+    "floor_info": "국제전자센터 9층 26호",
+    "cats": [
+     "쿠지",
+     "굿즈샵",
+     "가챠"
+    ],
+    "shop_link": "https://x.com/figurebubble",
+    "description": "이치방쿠지·애니 굿즈·피규어·가챠를 파는 덴덴샵&피규어버블의 본점으로, 국제전자센터 9층 26호에 있습니다(남양주점은 별도). 영업시간은 공식 계정 소개에 없어 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "나의 히어로 아카데미아"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kyouma-main",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://x.com/kyoumashop",
+     "https://x.com/kyouma_gacha",
+     "https://www.instagram.com/kyouma_official/"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "쿄우마샵 본점",
+    "floor_info": "국제전자센터 2층",
+    "cats": [
+     "가챠",
+     "굿즈샵",
+     "쿠지"
+    ],
+    "shop_link": "https://m.smartstore.naver.com/kyouma",
+    "description": "서브컬처 피규어·가챠·굿즈 전문점 쿄우마샵의 본점으로, 국제전자센터 2층에 있습니다. 제일복권과 공식 MD도 판매하며, 같은 건물 9층에 카드가챠 매장이 있습니다. 영업시간은 공식 안내가 없어 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "체인소맨"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "acrylic-stand",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kyouma-9f-1",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://x.com/kyouma_gacha",
+     "https://x.com/kyoumashop"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "쿄우마샵 카드가챠 1호점",
+    "floor_info": "국제전자센터 9층",
+    "cats": [
+     "가챠"
+    ],
+    "shop_link": "https://x.com/kyouma_gacha",
+    "description": "쿄우마샵의 가챠·카드가챠 매장(1호점)으로, 국제전자센터 9층에 있습니다. 본점은 같은 건물 2층입니다. 영업시간은 공식 안내가 없어 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "아이카츠!"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-ilovetoyz",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://x.com/ilovetoyzobitsu"
+    ],
+    "phone": "02-3465-0880",
+    "hours": null,
+    "name": "아이러브토이즈 국전점",
+    "floor_info": "국제전자센터 9층 97호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://ilovetoyz.co.kr/",
+    "description": "정품 애니 굿즈·이치방쿠지·피규어를 파는 아이러브토이즈(오비츠 공식 파트너)의 국제전자센터점으로, 9층 97호에 있습니다. 평일 11:00~20:00 영업합니다(공식 안내, 주말 시간은 공식 표기 없음). 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "사이버펑크: 엣지러너"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-itemleo",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://x.com/item_leo",
+     "https://pf.kakao.com/_zllsxj"
+    ],
+    "phone": null,
+    "hours": null,
+    "name": "아이템레오",
+    "floor_info": "국제전자센터 9층 42·44호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://smartstore.naver.com/itemleo",
+    "description": "일본 애니메이션·만화 공식 굿즈와 피규어(경품·넨도로이드·스케일 피규어 등), 제일복권을 파는 매장으로, 국제전자센터 9층 42·44호(연결)에 있습니다. 스케일 피규어 예약 판매도 합니다. 문의는 카카오톡 채널로 받습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "도로헤도로",
+      "개구리 중사 케로로",
+      "사이키 쿠스오의 재난",
+      "나루토",
+      "하이큐!!",
+      "니지산지",
+      "체인소맨",
+      "프로젝트 세카이",
+      "산리오",
+      "주술회전",
+      "나의 히어로 아카데미아",
+      "약사의 혼잣말",
+      "케이온!"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "acrylic-stand",
+      "can-badge-new",
+      "keyring",
+      "figure-new",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kujimania",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [
+     "https://x.com/kuji_mania",
+     "https://pf.kakao.com/_exfXkn/chat"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "20:00"
+     }
+    },
+    "name": "쿠지매니아 국전점",
+    "floor_info": "국제전자센터 9층 중앙 에스컬레이터 앞",
+    "cats": [
+     "쿠지"
+    ],
+    "shop_link": "https://x.com/kuji_mania",
+    "description": "자체 복권(쿠지)·대리 쿠지와 엽서·클리어 카드·미니 피규어를 파는 쿠지 전문점으로, 국제전자센터 9층 중앙 에스컬레이터 쪽에 있습니다. 11:00~20:00 영업합니다(공식 계정 안내). 중고 굿즈 매입은 예약제입니다(금요일 제외). 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "코드기어스",
+      "헌터×헌터",
+      "아오오니 디 애니메이션",
+      "리락쿠마"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "self-kuji",
+      "figure-new",
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-hobbypark",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "sns_links": [],
+    "phone": "02-574-1901",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "19:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "19:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "19:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "19:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "19:00"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "19:00"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "19:00"
+     }
+    },
+    "name": "하비파크 국제전자점",
+    "floor_info": "국제전자센터 9층 34호",
+    "cats": [
+     "프라모델"
+    ],
+    "shop_link": "https://www.hobbypark.co.kr/",
+    "description": "건담 프라모델(HG·RG·MG·PG)과 전차·비행기·함선 프라모델, 넨도로이드·figma 등 완성품 피규어, 도료·공구, 철도모형을 파는 하비파크(동보하비파크)의 국제전자점으로, 9층 34호에 있습니다. 매일 10:30~19:00 영업하며 매월 첫째·셋째 일요일은 휴무입니다(공식 안내).",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T04:17:25.657Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-parking-15c0501e",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   }
+  },
+  {
+   "key": "kukje-parking-1868a417",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   }
+  },
+  {
+   "key": "kukje-parking-1bdef20f",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   }
+  },
+  {
+   "key": "kukje-parking-2f1321e8",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   }
+  },
+  {
+   "key": "kukje-parking-42123449",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   }
+  },
+  {
+   "key": "kukje-parking-94f6d97c",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   }
+  },
+  {
+   "key": "kukje-parking-abfc89ce",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   }
+  },
+  {
+   "key": "kukje-parking-cb797d3d",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   }
+  },
+  {
+   "key": "kukje-parking-da4b3714",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   }
+  },
+  {
+   "key": "kukje-parking-fcd66bed",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   }
+  }
+ ]
+}

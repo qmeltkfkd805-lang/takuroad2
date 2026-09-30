@@ -1,0 +1,128 @@
+{
+  "key": "iruma-clubdevil",
+  "official_urls": [
+    "https://x.com/animate_hongdae/status/2093534104146833783",
+    "https://m.animate-onlineshop.co.kr/main/html.php?htmid=service%2Fmap.html"
+  ],
+  "title_official": "악마에 입문했습니다! 이루마 군 if Episode of 魔fia POPUPSHOP 「클럽★데빌」",
+  "work": "악마에 입문했습니다! 이루마 군 if Episode of 마피아",
+  "type_guess": "popup",
+  "start_date": "2026-11-21",
+  "end_date": "2026-12-06",
+  "branches": [
+    {
+      "name": "animate 홍대점 (OS 개최 매장)",
+      "venue": "AK PLAZA 홍대 (애경타워)",
+      "address": "서울특별시 마포구 양화로 188",
+      "floor_detail": "5층",
+      "hours": "월-금 11:00~21:40 / 토·일 10:30~21:40 (unverified_popga)",
+      "start_date": "2026-11-21",
+      "end_date": "2026-12-06"
+    },
+    {
+      "name": "animate 잠실롯데점 (페어)",
+      "venue": "롯데월드몰 쇼핑몰동",
+      "address": "서울시 송파구 올림픽로 240",
+      "floor_detail": "B1층",
+      "hours": "일-목 10:00~21:00 / 금·토 10:00~21:30 (unverified_popga)",
+      "start_date": "2026-11-21",
+      "end_date": "2026-12-06"
+    },
+    {
+      "name": "animate 부산점 (페어)",
+      "venue": "삼정타워",
+      "address": "부산광역시 부산진구 중앙대로 672",
+      "floor_detail": "11층",
+      "hours": "일-목 11:00~21:40 / 금·토 11:00~22:10 (unverified_popga)",
+      "start_date": "2026-11-21",
+      "end_date": "2026-12-06"
+    },
+    {
+      "name": "animate 수원점 (페어)",
+      "venue": "AK플라자 수원",
+      "address": "경기도 수원시 팔달구 덕영대로 924",
+      "floor_detail": "5층",
+      "hours": "월-목 10:30~20:00 / 금-일 10:30~20:30 (unverified_popga)",
+      "start_date": "2026-11-21",
+      "end_date": "2026-12-06"
+    }
+  ],
+  "entry": "자유 입장(예약 안내 없음)",
+  "benefits": [
+    {
+      "condition": "기간 중 대상 상품 구매 15,000원당",
+      "item": "신규 일러스트 명함풍 카드 (랜덤, 선택 불가, 소진 시 종료)",
+      "count_kinds": "6종 (이루마·오페라·카르에고·알리스·클라라·아메리) - 이미지 기준"
+    }
+  ],
+  "menu": [],
+  "goods": [
+    {
+      "name": "캔뱃지 컬렉션 (랜덤, 전12종, 1팩 1개입)",
+      "price": 6000
+    },
+    {
+      "name": "아크릴 스탠드 (6종, 각)",
+      "price": 27000
+    },
+    {
+      "name": "아크릴 키홀더 (6종, 각)",
+      "price": 12000
+    },
+    {
+      "name": "클리어 파일 (6종, 각)",
+      "price": 6000
+    },
+    {
+      "name": "스티커 셀렉션 (랜덤, 전12종, 1팩 1매입)",
+      "price": 4500
+    },
+    {
+      "name": "아크릴 패널",
+      "price": 45000
+    },
+    {
+      "name": "지폐풍 메모 (100매 묶음)",
+      "price": 12000
+    },
+    {
+      "name": "의상 모티브 키홀더 (4종, 각)",
+      "price": 15000
+    }
+  ],
+  "notes": [
+    "포스터 표기: 'OS 개최 매장: animate 홍대점 / 페어 개최 매장: animate 부산점·잠실롯데점·수원점·온라인샵' (OS = 온리샵/POPUPSHOP)",
+    "온라인샵에서도 페어 개최",
+    "hiro자 작가 신규 일러스트 사용",
+    "굿즈 이미지는 예시로 실제와 다를 수 있음",
+    "명함풍 카드 종수는 공식 텍스트에 명시 없음(이미지상 6종)",
+    "굿즈가 매장별로 다른지(OS 한정 여부)는 공식 게시물에 명시 없음",
+    "animate_hongdae 타임라인(8/27~9/21) 확인 결과 후속 게시물 없음"
+  ],
+  "unverified_popga": [
+    "각 매장 영업시간"
+  ],
+  "images": [
+    {
+      "file": "poster.jpg",
+      "source_url": "https://pbs.twimg.com/media/HQtotnebMAATtBg.jpg?name=orig",
+      "what": "main poster (기간·OS/페어 매장)",
+      "width": 4096,
+      "height": 2304
+    },
+    {
+      "file": "goods-1.jpg",
+      "source_url": "https://pbs.twimg.com/media/HQtotxwbIAAeBol.jpg?name=orig",
+      "what": "goods list + prices",
+      "width": 2526,
+      "height": 3573
+    },
+    {
+      "file": "benefit.jpg",
+      "source_url": "https://pbs.twimg.com/media/HQtouUsaIAAzYSg.jpg?name=orig",
+      "what": "benefit (15,000원당 명함풍 카드)",
+      "width": 2400,
+      "height": 1800
+    }
+  ]
+}

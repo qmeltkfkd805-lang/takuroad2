@@ -1,0 +1,118 @@
+{
+ "plan": "2026-09-28-kukje-f",
+ "at": "2026-09-28T05:58:39.215Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "kukje-necoco",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "05ad9eca-f5ea-43e9-8c30-605a44fc56ef",
+   "slug": "nekokonecoco",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-gachanomori",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "3a10f5d8-96e0-470d-b161-07741616f9a5",
+   "slug": "gachyanomori",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-gachamaeul",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "1dcf2565-3b81-4f59-9e17-4e8e0fe28cdf",
+   "slug": "gachyamaeul",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-unotech",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "89fc20de-afb5-46c0-b343-b74d2ba3bff9",
+   "slug": "unotekeu",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-famicom",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "3d849a0a-180d-4026-b0e8-3f76645acb5d",
+   "slug": "paemikeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-28-kukje-f-2026-09-28T05-58-39-215Z.json"
+}

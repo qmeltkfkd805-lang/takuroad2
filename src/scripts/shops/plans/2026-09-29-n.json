@@ -1,0 +1,478 @@
+{
+ "name": "2026-09-29-n",
+ "items": [
+  {
+   "action": "insert",
+   "key": "aniplus-hapjeong",
+   "photo": "needed",
+   "brand": "애니플러스샵",
+   "brand_links": [
+    "https://aniplustv.com",
+    "https://x.com/ANIPLUS_SHOP"
+   ],
+   "fields": {
+    "name": "애니플러스샵 서울 합정점",
+    "addr": "서울 마포구 월드컵로3길 14",
+    "floor_info": "딜라이트스퀘어 지하 1층 B101~105호",
+    "cats": [
+     "굿즈샵",
+     "콜라보카페"
+    ],
+    "shop_link": "https://aniplustv.com/storeInfo/hapjung",
+    "sns_links": [
+     "https://x.com/ANIPLUS_SEOUL",
+     "https://x.com/ANIPLUS_SHOP"
+    ],
+    "phone": "070-7162-3000",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     }
+    },
+    "place_id": "9403b9d4-21e1-4614-a1c0-581d1284f619",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 마포한강2차푸르지오 지하주차장\n1만원 구매마다 30분 할인, 최대 4시간",
+    "description": "애니메이션 채널 애니플러스가 직영하는 굿즈샵으로, 직영점 중 가장 큰 매장입니다. 콜라보 카페 2곳이 함께 운영되어 작품별 콜라보 카페와 한정 굿즈 판매가 이어집니다.\n매일 10:00~22:00, 설·추석 당일 휴무(공식 안내).\n합정역 8번 출구 방향 건물 연결통로(에스컬레이터)로 지하 1층 이동, 교보문고 맞은편."
+   },
+   "goods_types": [],
+   "works": [
+    {
+     "slug": "project-sekai",
+     "evidence": "이 매장 콜라보 카페(이벤트 c0723fbe, 26.10.08~)"
+    },
+    {
+     "slug": "hololive",
+     "evidence": "공식 매장 페이지 현재 콜라보 카페 hololive FLOW GLOW(9/17~)·이벤트 ecd671cc"
+    },
+    {
+     "slug": "uma-musume",
+     "evidence": "공식 매장 페이지 현재 콜라보 카페 우마무스메(8/20~)·이벤트 fffe00a6"
+    }
+   ],
+   "link_events": [
+    {
+     "event_id": "c0723fbe-c1b2-4701-b99a-ff71e2ad46d7",
+     "alias": "애니플러스샵 서울1호합정점",
+     "evidence": "place_detail \"B1층 B101~105 애니플러스샵 서울1호합정점\""
+    },
+    {
+     "event_id": "ecd671cc-a248-475b-a4c5-857ae8a837a1",
+     "alias": "애니플러스샵 서울1호합정점",
+     "evidence": "place_detail \"B1층 B101~105 애니플러스샵 서울1호합정점\""
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://aniplustv.com/storeInfo/hapjung",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "hours",
+      "parking_note",
+      "description",
+      "sns_links"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 매장 페이지(브라우저): \"서울특별시 마포구 월드컵로 3길 14 딜라이트 스퀘어 B101-105 / 070-7162-3000 / 오전 10:00 ~ 오후 10:00(설, 추석 당일 휴무)\", 자가용 \"마포한강2차푸르지오 지하주차장 이용. 1만원 구매 시마다 30분 할인, 최대 4시간\", 매장 X twitter.com/ANIPLUS_SEOUL. 현재 콜라보 카페 우마무스메(8/20)·hololive FLOW GLOW(9/17)"
+    }
+   ],
+   "unconfirmed": [
+    "goods_types"
+   ],
+   "notes": "상품 분류는 매장 페이지에 분류 텍스트 없음 — 비움"
+  },
+  {
+   "action": "insert",
+   "key": "aniplus-seomyeon",
+   "photo": "needed",
+   "brand": "애니플러스샵",
+   "brand_links": [
+    "https://aniplustv.com",
+    "https://x.com/ANIPLUS_SHOP"
+   ],
+   "fields": {
+    "name": "애니플러스샵 부산 서면점",
+    "addr": "부산 부산진구 중앙대로 672",
+    "floor_info": "삼정타워 9층",
+    "cats": [
+     "굿즈샵",
+     "콜라보카페"
+    ],
+    "shop_link": "https://aniplustv.com/storeInfo/busan",
+    "sns_links": [
+     "https://x.com/ANIPLUS_BUSAN",
+     "https://x.com/ANIPLUS_SHOP"
+    ],
+    "phone": "070-7162-7048",
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "yearRound": true
+    },
+    "place_id": "6a3e3e01-c868-4948-b8a6-942678852eeb",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 삼정타워 지하주차장\n구매 금액별 할인: 1만원 1시간 · 3만원 2시간 · 5만원 3시간 · 10만원 4시간 · 20만원 5시간(최대 5시간)",
+    "description": "애니메이션 채널 애니플러스가 직영하는 굿즈샵으로, 인터랙티브 체험존과 콜라보 카페 2곳을 함께 운영하는 멀티형 매장입니다.\n매일 11:00~22:00, 연중무휴(공식 안내).\n서면역 2번 출구 방향 지하상가 끝 계단으로 나와 직진 도보 3분, 1층 스타벅스가 있는 삼정타워 9층."
+   },
+   "goods_types": [],
+   "works": [
+    {
+     "slug": "project-sekai",
+     "evidence": "이 매장 콜라보 카페(이벤트 89e25504, 26.10.08~)"
+    },
+    {
+     "slug": "hololive",
+     "evidence": "공식 매장 페이지 현재 콜라보 카페·이벤트 a0770baf"
+    },
+    {
+     "slug": "uma-musume",
+     "evidence": "공식 매장 페이지 현재 콜라보 카페·이벤트 c289de21"
+    }
+   ],
+   "link_events": [
+    {
+     "event_id": "89e25504-8687-44c6-b7ca-785fa40c768a",
+     "alias": "애니플러스샵 부산서면점",
+     "evidence": "place_detail \"9층 애니플러스샵 부산서면점\""
+    },
+    {
+     "event_id": "a0770baf-b2b1-42ad-b8b8-b58165f2cc1c",
+     "alias": "애니플러스샵 부산서면점",
+     "evidence": "place_detail \"9층 애니플러스샵 부산서면점\""
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://aniplustv.com/storeInfo/busan",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "hours",
+      "parking_note",
+      "description"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 매장 페이지(브라우저): \"부산시 부산진구 중앙대로 672 삼정타워 9층 / 070-7162-7048 / 오전 11:00 ~ 오후 10:00(연중무휴)\", 자가용 \"삼정타워 지하주차장 이용. 구매금액 1만원-1시간 / 3만원-2시간 / 5만원-3시간 / 10만원-4시간/ 20만원-5시간 할인, 최대 5시간까지 가능\""
+    },
+    {
+     "url": "https://x.com/ANIPLUS_BUSAN",
+     "fields": [
+      "sns_links"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "매장 공식 X(검색 결과 — 2026-05 헌터x헌터 콜라보 카페 안내 등 활동)"
+    }
+   ],
+   "unconfirmed": [
+    "goods_types"
+   ],
+   "notes": "같은 건물 애니메이트 부산점(11층)·건담베이스(7층)와 다른 매장"
+  },
+  {
+   "action": "insert",
+   "key": "gongteo-daegu",
+   "photo": "needed",
+   "fields": {
+    "name": "공터",
+    "addr": "대구 중구 교동2길 39",
+    "floor_info": "3층",
+    "cats": [
+     "굿즈샵",
+     "가챠",
+     "피규어샵"
+    ],
+    "shop_link": "https://x.com/gachashop",
+    "sns_links": [
+     "https://x.com/gachashop",
+     "https://www.instagram.com/gong.teo/"
+    ],
+    "phone": "010-9862-3012",
+    "description": "대구 동성로의 가챠·애니 굿즈샵입니다. 캡슐토이와 피규어, 애니메이션 굿즈를 취급합니다(공식 X 소개).\n영업시간은 공식 소개에 표기가 없어 방문 전 공식 SNS 공지를 확인하세요."
+   },
+   "goods_types": [
+    "gacha-new",
+    "figure-new",
+    "acrylic-stand",
+    "clear-file"
+   ],
+   "works": [
+    {
+     "slug": "full-moon-o-sagashite",
+     "evidence": "공식 X 2026-09-26 \"달빛천사 굿즈 2종 입고\"(클리어 파일·아크릴 블록)·아크릴 스탠드 3종 입고"
+    },
+    {
+     "slug": "hunter-x-hunter",
+     "evidence": "공식 X 2026-09-23 헌터×헌터 포트크린 입고"
+    },
+    {
+     "slug": "hatsune-miku",
+     "evidence": "공식 X 2026-09-23 하츠네 미쿠 SPM 피규어 재입고"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/gachashop",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "cats",
+      "goods_types",
+      "works",
+      "sns_links"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 X 프로필(브라우저): \"★대구 동성로 가챠 애니 굿즈샵 공터 ★대구 중구 교동2길 39 3층 ★문의 010-9862-3012 ★캡슐토이 피규어 애니굿즈\", instagram.com/gong.teo. 2026-09-23·26 입고 게시(주소 3층 표기)"
+    }
+   ],
+   "unconfirmed": [
+    "hours"
+   ],
+   "notes": "영업시간: 애니플러스 공식 X 2024-05 게시(평일 12:30~20:00·주말 11:30~21:00)는 오래돼 안 넣음. 2층 애니마켓(옛 공터 카페)과 별도 매장"
+  },
+  {
+   "action": "insert",
+   "key": "animarket-daegu",
+   "photo": "needed",
+   "fields": {
+    "name": "애니마켓",
+    "addr": "대구 중구 교동2길 39",
+    "floor_info": "2층",
+    "cats": [
+     "중고샵",
+     "굿즈샵",
+     "가챠",
+     "피규어샵"
+    ],
+    "shop_link": "https://x.com/aniimarket",
+    "sns_links": [
+     "https://x.com/aniimarket"
+    ],
+    "phone": "010-2263-1891",
+    "hours": {
+     "mon": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "13:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "13:00",
+      "close": "20:00"
+     }
+    },
+    "description": "대구 동성로의 애니메이션 굿즈 위탁 판매 매장입니다. 위탁 굿즈(TCG 카드·캔뱃지·키링·아크릴 스탠드·인형·피규어 등)와 가챠를 운영합니다. 2025년 공터 카페가 애니마켓으로 바뀌었습니다(공식 X).\n매일 13:00~20:00(공식 X 소개). 위탁 상품은 재고가 수시로 바뀝니다."
+   },
+   "goods_types": [
+    "keyring",
+    "acrylic-stand",
+    "can-badge-new",
+    "plushie-new",
+    "clear-file",
+    "figure-new",
+    "card-new",
+    "gacha-new"
+   ],
+   "works": [
+    {
+     "slug": "chiikawa",
+     "evidence": "공식 X 2026-09-26 치이카와 쿠션 담요 입고"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/aniimarket",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "hours",
+      "phone",
+      "goods_types",
+      "works",
+      "description"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 X 프로필(브라우저): \"▶대구 중구 교동2길 39 2층 ▶매일 13:00-20:00 ▶TEL: 010-2263-1891 📌 애니마켓의 위탁 상품은 재고 파악이 어렵습니다\". 2026-09-27~29 위탁 상품 게시(TCG 카드·캔뱃지·키링·아크릴 스탠드·인형·피규어·클리어 파일, \"매장에는 가챠도\")"
+    },
+    {
+     "url": "https://x.com/gachashop_cafe",
+     "fields": [
+      "description"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "GONGTEOcafe 고정글 2025-02-11 \"공터 카페가 애니마켓으로 변경\""
+    }
+   ],
+   "unconfirmed": [],
+   "notes": "위탁 매장이라 작품은 신규 입고 공지 기준만 연결"
+  },
+  {
+   "action": "insert",
+   "key": "kkomjirak-hwajeong",
+   "photo": "needed",
+   "fields": {
+    "name": "꼼지락 하비샵 화정점",
+    "addr": "경기 고양시 덕양구 백양로 84",
+    "floor_info": "옥빛12단지 파인트리 지하 1층 01호",
+    "cats": [
+     "피규어샵",
+     "프라모델",
+     "쿠지",
+     "굿즈샵"
+    ],
+    "shop_link": "https://pf.kakao.com/_xnvvvb",
+    "sns_links": [
+     "https://x.com/param_kkomjirak",
+     "https://pf.kakao.com/_xnvvvb",
+     "https://m.blog.naver.com/param04",
+     "https://smartstore.naver.com/hobby121"
+    ],
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "20:00"
+     }
+    },
+    "parking": true,
+    "parking_note": "주차 가능(조건은 매장 문의)",
+    "description": "고양 화정의 피규어·굿즈샵입니다. 피규어, 건담 프라모델, 제일복권(이치방쿠지), 애니메이션 굿즈를 취급하고 피규어 예약 판매도 합니다(공식 채널 소개).\n매일 12:00~20:00(공식 카카오톡 채널 운영시간). 화정 이마트 맞은편, 계단으로 지하 1층."
+   },
+   "goods_types": [
+    "figure-new",
+    "plamodel-new",
+    "ichiban-kuji"
+   ],
+   "works": [],
+   "sources": [
+    {
+     "url": "https://pf.kakao.com/_xnvvvb",
+     "fields": [
+      "addr",
+      "floor_info",
+      "hours",
+      "parking",
+      "cats",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 카카오톡 채널(운영자 등록 정보, 브라우저): \"고양시 화정 프라모델/제일복권/피규어\", 매장 주소 \"경기 고양시 덕양구 백양로 84 옥빛12단지아파트 파인트리 지하 1층 01호\", 운영시간 월~일 12:00~20:00, 운영 정보 \"주차\""
+    },
+    {
+     "url": "https://x.com/param_kkomjirak",
+     "fields": [
+      "name",
+      "sns_links",
+      "description"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 X 프로필 \"꼼지락 하비샵 | 일산·화정·신도림 피규어 굿즈샵 / 제일복권 / 애니굿즈 / 피규어 / 건담 / 화정 이마트 맞은편\", 2026-09-28·29 입고·예약 게시"
+    }
+   ],
+   "unconfirmed": [
+    "phone",
+    "works",
+    "closed_days"
+   ],
+   "notes": "입고 게시는 \"화정·신도림점 재고 상이\"로 지점 구분 없음 → 작품 연결 안 함. 방문 후기(2026-02) \"매달 첫 번째 수요일 정기휴무\"는 공식 확인 전 안 넣음. 신도림점 주소 미확인"
+  }
+ ]
+}

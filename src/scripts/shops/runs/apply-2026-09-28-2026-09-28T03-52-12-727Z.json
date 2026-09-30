@@ -1,0 +1,181 @@
+{
+ "plan": "2026-09-28",
+ "at": "2026-09-28T03:52:12.727Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "funsquare-timessquare",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5172332566615,
+    "lng": 126.903715993779,
+    "road": "서울 영등포구 영중로 15",
+    "building": "타임스퀘어",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "7272da96-7a10-455b-8e60-ce38e40019fe",
+   "slug": "peon-seukweeo-taimseukweeojeom"
+  },
+  {
+   "key": "funsquare-lotteworldmall",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5137129859207,
+    "lng": 127.104301829165,
+    "road": "서울 송파구 올림픽로 300",
+    "building": "롯데월드타워앤드롯데월드몰",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "fe899cee-0798-47b8-8cc0-cc2c53c8237c",
+   "slug": "peon-seukweeo-rotdewoldeumoljeom",
+   "extras": {
+    "works": {
+     "added": [
+      "건담"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "funsquare-gimpo",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5713695798026,
+    "lng": 126.802960133589,
+    "road": "서울 강서구 하늘길 38",
+    "building": "김포공항, 롯데몰, 스카이시티",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "46e62962-92ef-443e-a107-2d3920684e10",
+   "slug": "peon-seukweeo-rotdemol-gimpogonghangjeom"
+  },
+  {
+   "key": "pokemon-cardshop-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "road": "서울 용산구 한강대로23길 55",
+    "building": "용산역",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "a74054b9-d093-493a-b99b-e6de56a1347e",
+   "slug": "poketmon-kadeusyap-yongsan",
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pokemon-cardshop-mokdong",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5251989024917,
+    "lng": 126.858942755794,
+    "road": "서울 양천구 오목로 194",
+    "building": "정우빌딩",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "f33cd4ce-c12f-4cb0-85f9-6d05405e744f",
+   "slug": "poketmon-kadeusyap-kadeuchaempeu-mokdong",
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "recheck-bandai-cardgame-yongsan",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "55d7c8c3-0aa9-4096-bd51-60b5c8748191",
+   "patch": {
+    "phone": "02-2012-2700",
+    "floor_info": "리빙파크 6층 반다이남코코리아 스토어 내",
+    "parking_note": "주차 가능(유료)\n10분당 1,500원, 무료 회차 없음\n구매 시 할인(패션파크·리빙파크·면세점·이마트): 2만원 1시간 · 4만원 2시간 · 6만원 3시간 · 10만원 4시간 · 20만원 5시간\n당일 영수증 한정, 하루 최대 5시간",
+    "description": "반다이 공식 카드게임 매장 \"반다이 카드 게임즈 샵(BANDAI CARD GAMES SHOP)\"으로, 용산 아이파크몰 리빙파크 6층 반다이남코코리아 스토어 안에 있습니다. 일~목 10:30~20:30, 금·토 10:30~21:00 영업하며 공휴일은 아이파크몰 운영시간에 따릅니다(공식 안내). 용산역과 연결되어 있습니다."
+   },
+   "before": {
+    "phone": null,
+    "floor_info": "6층",
+    "parking_note": "10분당 1,300원 당일 영수증 최대 5시간 할인",
+    "description": "원피스 카드게임, 유희왕, 디지몬 등 다양한 공식 트레이딩 카드게임 상품을 즐길 수 있는 반다이남코 공식 카드게임 전문 매장입니다."
+   }
+  },
+  {
+   "key": "recheck-gbase-yongsan",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "c9fdb6e6-fc04-47db-9e77-7933be98d707",
+   "patch": {
+    "floor_info": "리빙파크 6층 반다이남코코리아 스토어 내",
+    "parking_note": "주차 가능(유료)\n10분당 1,500원, 무료 회차 없음\n구매 시 할인(패션파크·리빙파크·면세점·이마트): 2만원 1시간 · 4만원 2시간 · 6만원 3시간 · 10만원 4시간 · 20만원 5시간\n당일 영수증 한정, 하루 최대 5시간"
+   },
+   "before": {
+    "floor_info": "6층",
+    "parking_note": "10분당 1,300원 당일 영수증 최대 5시간 할인"
+   }
+  },
+  {
+   "key": "recheck-tamiya-yongsan",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "c1ae13b4-8e80-43a5-ab5e-e782a035d545",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n10분당 1,500원, 무료 회차 없음\n구매 시 할인(패션파크·리빙파크·면세점·이마트): 2만원 1시간 · 4만원 2시간 · 6만원 3시간 · 10만원 4시간 · 20만원 5시간\n당일 영수증 한정, 하루 최대 5시간"
+   },
+   "before": {
+    "parking_note": "10분당 1,300원 당일 영수증 최대 5시간 할인"
+   }
+  },
+  {
+   "key": "recheck-chiikawa-yongsan",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "4a115ed5-37bd-43ad-a87d-a5e85120f2fe",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n10분당 1,500원, 무료 회차 없음\n구매 시 할인(패션파크·리빙파크·면세점·이마트): 2만원 1시간 · 4만원 2시간 · 6만원 3시간 · 10만원 4시간 · 20만원 5시간\n당일 영수증 한정, 하루 최대 5시간"
+   },
+   "before": {
+    "parking_note": "10분당 1,300원 당일 영수증 최대 5시간 할인"
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-28-2026-09-28T03-52-12-727Z.json"
+}

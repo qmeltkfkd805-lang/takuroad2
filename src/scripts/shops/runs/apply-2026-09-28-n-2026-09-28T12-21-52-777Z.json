@@ -1,0 +1,186 @@
+{
+ "plan": "2026-09-28-n",
+ "at": "2026-09-28T12:21:52.777Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "hoka-sangjum",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5569119569559,
+    "lng": 126.926827016883,
+    "road": "서울 마포구 어울마당로 153-3",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "db966a65-b2db-4f92-8f1f-aa5f3797411e",
+   "slug": "hokasangjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "하이큐!!",
+      "나의 히어로 아카데미아"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "acrylic-stand",
+      "can-badge-new",
+      "plushie-new",
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "urara-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5562580269541,
+    "lng": 126.927727167722,
+    "road": "서울 마포구 와우산로29길 48-29",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "b7479aeb-c700-4224-a318-ad904657157b",
+   "slug": "seupeiseu-urara-hongdaejeom",
+   "extras": {
+    "works": {
+     "added": [
+      "한교동",
+      "귀멸의 칼날"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "urara-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8687083802364,
+    "lng": 128.598741541322,
+    "road": "대구 중구 동성로6길 61",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "7dc1aba6-3e87-49c8-915c-6ffd05b06a04",
+   "slug": "seupeiseu-urara-dongseongroseupakeujeom",
+   "extras": {
+    "works": {
+     "added": [
+      "나의 히어로 아카데미아",
+      "은혼",
+      "블루 록",
+      "블루 아카이브"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "urara-hwagok",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5412543091125,
+    "lng": 126.839889999096,
+    "road": "서울 강서구 화곡로 164",
+    "building": "화곡빌딩",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "fb5e67a6-f031-4cce-86b7-d549ce514c63",
+   "slug": "seupeiseu-urara-gangseohwagokjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "나의 히어로 아카데미아",
+      "명탐정 코난",
+      "봇치 더 록!"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "toygoods-ansan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.3180370975981,
+    "lng": 126.837728515812,
+    "road": "경기 안산시 단원구 고잔1길 40",
+    "building": "동원빌딩",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "f8fb92ea-d967-4f9a-b76c-cca75a124c50",
+   "slug": "toigutjeu-ansanjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "isekai-figure-cheonan",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.8328258539591,
+    "lng": 127.138833532982,
+    "road": "충남 천안시 서북구 두정상가1길 27",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "c1e9cca7-bb78-4789-92aa-2a79a107f83f",
+   "slug": "isegyepigyueo",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-28-n-2026-09-28T12-21-52-777Z.json"
+}

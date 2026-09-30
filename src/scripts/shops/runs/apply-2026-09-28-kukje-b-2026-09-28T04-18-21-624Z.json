@@ -1,0 +1,38 @@
+{
+ "plan": "2026-09-28-kukje-b",
+ "at": "2026-09-28T04:18:21.624Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "kukje-kyouma-9f-1",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "f6a9f356-69eb-45f2-b794-f91d4192a042",
+   "slug": "kyoumasyap-kadeugachya-1hojeom",
+   "extras": {
+    "works": {
+     "added": [
+      "아이카츠!"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-28-kukje-b-2026-09-28T04-18-21-624Z.json"
+}

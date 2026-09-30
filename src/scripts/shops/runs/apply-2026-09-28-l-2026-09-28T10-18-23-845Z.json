@@ -1,0 +1,161 @@
+{
+ "plan": "2026-09-28-l",
+ "at": "2026-09-28T10:18:23.845Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "theku-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8683511992817,
+    "lng": 128.598644356107,
+    "road": "대구 중구 동성로6길 60",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "dd7a5800-88df-4220-a8f5-160d05cd5fe0",
+   "slug": "deoku-daegujeom",
+   "extras": {
+    "works": {
+     "added": [
+      "고질라"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "theku-daejeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.3263385972602,
+    "lng": 127.427635278345,
+    "road": "대전 중구 대종로 468",
+    "building": "천우빌딩",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "f690ee27-8f08-4761-9031-a082f1478f28",
+   "slug": "deoku-daejeonjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "블루 록"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "can-badge-new",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "theku-yeontral",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.558996833997,
+    "lng": 126.92491338982,
+    "road": "서울 마포구 양화로21길 17",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "bf698062-36b4-449f-bd9d-c2e245fb8f42",
+   "slug": "deoku-yeonteureolpakeujeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "theku-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5558621607666,
+    "lng": 126.923766574558,
+    "road": "서울 마포구 홍익로6길 38",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "7a910e40-6822-4aab-b898-01a0b0723b8d",
+   "slug": "deoku-hongdaeipgujeom",
+   "extras": {
+    "works": {
+     "added": [
+      "바키",
+      "나루토",
+      "디즈니 트위스티드 원더랜드",
+      "골든 카무이"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "acrylic-stand",
+      "figure-new",
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "brothergoods-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5563132201209,
+    "lng": 126.929754298671,
+    "road": "서울 마포구 신촌로6길 24",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "6e9a97e2-9e65-468e-8976-11129e273eb3",
+   "slug": "beuradeogutjeu-hongdaejeom",
+   "extras": {
+    "works": {
+     "added": [
+      "에반게리온",
+      "몬스터 헌터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-28-l-2026-09-28T10-18-23-845Z.json"
+}

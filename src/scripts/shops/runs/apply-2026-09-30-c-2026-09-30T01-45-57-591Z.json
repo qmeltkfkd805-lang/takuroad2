@@ -1,0 +1,269 @@
+{
+ "plan": "2026-09-30-c",
+ "at": "2026-09-30T01:45:57.591Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "onefigure-gwangju",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1462999818575,
+    "lng": 126.916036035159,
+    "road": "전남광주통합특별시 동구 중앙로160번길 34",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "23ae82e2-8a30-4a59-91ca-12137ab9a2fb",
+   "slug": "wonpigyueo-gwangjujeom",
+   "extras": {
+    "works": {
+     "added": [
+      "나츠메 우인장",
+      "홀로라이브",
+      "가정교사 히트맨 리본",
+      "귀멸의 칼날"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kodawari-busan",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1546940524838,
+    "lng": 129.059969384072,
+    "road": "부산 부산진구 서전로10번길 71",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "afef2f2c-b1da-4ff7-8b41-ddd2bd33cccb",
+   "slug": "busan-gutjeusyap-kodawari",
+   "extras": {
+    "works": {
+     "added": [
+      "개구리 중사 케로로",
+      "카사네 테토",
+      "케이온!"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "jgoods-busan",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1537125496826,
+    "lng": 129.059760186721,
+    "road": "부산 부산진구 신천대로50번길 65",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "c609c812-84cf-4fa3-b156-f8496b5cd5cc",
+   "slug": "jeigutjeu-busanjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "주술회전",
+      "나의 히어로 아카데미아",
+      "산리오",
+      "사이키 쿠스오의 재난",
+      "체인소맨"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "jgoods-ulsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.5532845272506,
+    "lng": 129.319792255863,
+    "road": "울산 중구 젊음의2거리 29",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "f9ce4af2-1556-49c8-89f0-8f51598657df",
+   "slug": "jeigutjeu-ulsanjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와",
+      "카드캡터 사쿠라"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "jgoods-changwon",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.2234036133563,
+    "lng": 128.686652556827,
+    "road": "경남 창원시 성산구 원이대로 672",
+    "building": "성인빌딩",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "dabaf1c9-3551-4288-81de-c28050df9f50",
+   "slug": "jeigutjeu-changwonjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "은혼",
+      "하이큐!!",
+      "드래곤볼",
+      "에반게리온"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "jgoods-suwon",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "be171fd6-61e5-4f5c-8235-fa8680050534",
+   "patch": {
+    "name": "제이굿즈 수원점",
+    "floor_info": "헌욱빌딩 2층",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "yearRound": true
+    },
+    "sns_links": [
+     "https://www.instagram.com/jgoods_sw/",
+     "https://x.com/JGoods_SW"
+    ]
+   },
+   "before": {
+    "name": "제이굿즈",
+    "floor_info": "2층",
+    "hours": {
+     "fri": {
+      "open": "12:21",
+      "close": "20:00"
+     },
+     "mon": {
+      "open": "12:21",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "12:21",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "12:21",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "12:21",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "12:21",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "12:21",
+      "close": "20:00"
+     }
+    },
+    "sns_links": [
+     "https://www.instagram.com/jgoods_sw/",
+     "https://x.com/JGoods_SW?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPOTM2NjE5NzQzMzkyNDU5AAGnLVBJDxxwhGU3RoTgAMYTASCN8imixFgS-7ttutgemZbbHGo492vX_TeSr88_aem_SEmMVzvi9bDs-mKGnopHbg"
+    ]
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "이누야샤",
+      "하츠네 미쿠"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-30-c-2026-09-30T01-45-57-591Z.json"
+}

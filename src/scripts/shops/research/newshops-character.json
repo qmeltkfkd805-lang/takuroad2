@@ -1,0 +1,92 @@
+[
+  {
+    "brand": "도토리숲",
+    "name": "도토리숲 제주점",
+    "addr": "제주특별자치도 제주시 구좌읍 대천서길 16",
+    "floor": null,
+    "phone": "064-782-1325",
+    "hours_text": "09:00~19:00 (2026.07.01(수)부터 변경, 공식 공지 2026.06.26). 참고: 공식 매장 페이지에는 아직 10:00~18:00으로 표기되어 있음(공지와 불일치)",
+    "closed_days": null,
+    "links": ["https://www.popcondplay.com/ip/store/6", "https://www.popcondplay.com/ip/news/view/608", "http://dotorisup.com/guide/store"],
+    "status": "open",
+    "works": ["스튜디오 지브리", "이웃집 토토로"],
+    "goods": ["지브리 공식 굿즈", "제주점 한정 굿즈"],
+    "sources": [
+      {"url": "https://www.popcondplay.com/ip/store/6", "confirms": "도토리숲 공식 매장 목록(대원미디어 팝콘디플레이): 도토리숲 제주점, 주소 대천서길 16, 전화 064-782-1325, 영업시간 10:00~18:00(구표기)"},
+      {"url": "https://www.popcondplay.com/ip/news/view/608", "confirms": "공식 공지(2026.06.26): 7/1부터 OPEN 09:00 / CLOSE 19:00, 주소 대천서길 16(제주 동화마을)"},
+      {"url": "http://dotorisup.com/guide/store", "confirms": "dotorisup.com 매장안내 게시판(JS 로딩, board 213491)에 '도토리숲 제주점' 게시. 상세는 이미지뿐"},
+      {"url": "https://www.m-i.kr/news/articleView.html?idxno=1098541", "confirms": "(언론) 2024.03.02 오픈, 제주점 한정 굿즈"}
+    ]
+  },
+  {
+    "brand": "도토리숲(코리코 카페)",
+    "name": "코리코 카페 연남점",
+    "addr": "서울특별시 마포구 성미산로 165-7",
+    "floor": "지하1층~지상2층 + 루프탑 (2022년 보도자료 기준)",
+    "phone": null,
+    "hours_text": null,
+    "closed_days": null,
+    "links": ["https://daewonmedia.com/board/news-event/138", "http://dotorisup.com/guide/store"],
+    "status": "open",
+    "works": ["마녀배달부 키키", "스튜디오 지브리"],
+    "goods": ["카페(음료/디저트)"],
+    "sources": [
+      {"url": "https://daewonmedia.com/board/news-event/138", "confirms": "대원미디어 공식 보도자료: 주소 성미산로 165-7, 2022.10.14 오픈, 당시 영업 11:00~21:00(현재 시간은 미확인이라 null), 인스타 @cafe_koriko"},
+      {"url": "http://dotorisup.com/guide/store", "confirms": "dotorisup.com 매장안내에 '코리코카페 연남점' 현재 게시 중"}
+    ],
+    "note": "굿즈샵이 아니라 캐릭터 카페라서 등록 여부는 판단 필요. 코리코카페 제주점도 매장안내에 있지만 공식 텍스트 주소를 확인하지 못해 제외"
+  },
+  {
+    "brand": "카카오프렌즈",
+    "name": "카카오프렌즈 홍대 플래그십스토어",
+    "addr": "서울특별시 마포구 양화로 162",
+    "floor": "대아빌딩",
+    "phone": null,
+    "hours_text": "매일 10:30~22:00",
+    "closed_days": null,
+    "links": ["https://store.kakaofriends.com/kr/promotions/event/flagship"],
+    "status": "open",
+    "works": ["카카오프렌즈"],
+    "goods": null,
+    "sources": [
+      {"url": "https://store.kakaofriends.com/kr/promotions/event/flagship", "confirms": "공식 플래그십 페이지: 홍대 플래그십스토어, 양화로 162 대아빌딩, 매일 10:30-22:00, 2016.11.25 오픈"},
+      {"url": "https://www.inews24.com/view/1801375", "confirms": "(언론) 강남 플래그십은 2025.01.19 폐점해서 제외. 홍대 플래그십 중심 운영"}
+    ]
+  },
+  {"brand": "팝마트", "name": "팝마트 명동 프리미엄 테마샵", "addr": "서울특별시 중구 명동8길 36", "floor": null, "phone": "02-3199968 (공식 표기 그대로)", "hours_text": "매일 11:00-22:00", "closed_days": null, "links": ["https://www.popmart.com/kr/store-list"], "status": "open", "works": [], "goods": [], "sources": [{"url": "https://www.popmart.com/kr/store-list", "confirms": "공식 매장찾기: 이름, 주소, 전화, 요일별 영업시간"}]},
+  {"brand": "팝마트", "name": "팝마트 더현대 서울점", "addr": "서울특별시 영등포구 여의대로 108", "floor": "B2", "phone": "02-32770854 (공식 표기 그대로)", "hours_text": "월~목 10:30-20:00, 금~일 10:30-20:30", "closed_days": null, "links": ["https://www.popmart.com/kr/store-list"], "status": "open", "works": [], "goods": [], "sources": [{"url": "https://www.popmart.com/kr/store-list", "confirms": "공식 매장찾기: 여의대로 108 B2, 전화, 영업시간"}]},
+  {"brand": "팝마트", "name": "팝마트 스타필드 고양점", "addr": "경기도 고양시 덕양구 고양대로 1955", "floor": "스타필드 3층", "phone": "031-51733036 (공식 표기 그대로)", "hours_text": "매일 10:00-22:00", "closed_days": null, "links": ["https://www.popmart.com/kr/store-list"], "status": "open", "works": [], "goods": [], "sources": [{"url": "https://www.popmart.com/kr/store-list", "confirms": "공식 매장찾기"}]},
+  {"brand": "팝마트", "name": "팝마트 신세계 센텀시티점", "addr": "부산광역시 해운대구 센텀남대로 35", "floor": "B2 하이퍼그라운드", "phone": "051-7452383 (공식 표기 그대로)", "hours_text": "월~목 10:30-20:00, 금~일 10:30-20:30", "closed_days": null, "links": ["https://www.popmart.com/kr/store-list"], "status": "open", "works": [], "goods": [], "sources": [{"url": "https://www.popmart.com/kr/store-list", "confirms": "공식 매장찾기"}]},
+  {"brand": "팝마트", "name": "팝마트 히로노 광장마켓점", "addr": "서울특별시 종로구 창경궁로 88", "floor": null, "phone": null, "hours_text": "매일 10:00-20:00", "closed_days": null, "links": ["https://www.popmart.com/kr/store-list"], "status": "open", "works": ["히로노(HIRONO)"], "goods": [], "sources": [{"url": "https://www.popmart.com/kr/store-list", "confirms": "공식 매장찾기: 이름, 주소, 영업시간"}, {"url": "https://www.asiae.co.kr/article/2026060808424406664", "confirms": "(언론) 2026.06 히로노 국내 첫 정규 매장 개점, 광장시장 2층(층수는 공식 페이지에 없음)"}]},
+  {"brand": "팝마트", "name": "팝마트 안국점", "addr": "서울특별시 종로구 북촌로 5", "floor": null, "phone": null, "hours_text": "매일 10:00-21:00", "closed_days": null, "links": ["https://www.popmart.com/kr/store-list"], "status": "open", "works": [], "goods": [], "sources": [{"url": "https://www.popmart.com/kr/store-list", "confirms": "공식 매장찾기"}]},
+  {"brand": "팝마트", "name": "팝마트 스타필드 안성점", "addr": "경기도 안성시 공도읍 서동대로 3930-39", "floor": "2142호", "phone": "031-80921658 (공식 표기 그대로)", "hours_text": "매일 10:00-22:00", "closed_days": null, "links": ["https://www.popmart.com/kr/store-list"], "status": "open", "works": [], "goods": [], "sources": [{"url": "https://www.popmart.com/kr/store-list", "confirms": "공식 매장찾기"}]},
+  {"brand": "팝마트", "name": "팝마트 코엑스점", "addr": "서울특별시 강남구 봉은사로 524", "floor": "코엑스몰 B1층 메가박스 입구", "phone": "02-60026601 (공식 표기 그대로)", "hours_text": "월~목 11:00-21:00, 금~일 11:00-22:00", "closed_days": null, "links": ["https://www.popmart.com/kr/store-list"], "status": "open", "works": [], "goods": [], "sources": [{"url": "https://www.popmart.com/kr/store-list", "confirms": "공식 매장찾기"}]},
+  {"brand": "팝마트", "name": "팝마트 부산 삼정타워점", "addr": "부산광역시 부산진구 중앙대로 672", "floor": "삼정타워 1층", "phone": "051-8086606 (공식 표기 그대로)", "hours_text": "일~목 11:00-22:00, 금·토 11:00-22:30", "closed_days": null, "links": ["https://www.popmart.com/kr/store-list"], "status": "open", "works": [], "goods": [], "sources": [{"url": "https://www.popmart.com/kr/store-list", "confirms": "공식 매장찾기"}]},
+  {"brand": "팝마트", "name": "팝마트 홍대 플래그십 스토어", "addr": "서울특별시 마포구 와우산로23길 56", "floor": null, "phone": "02-63710702 (공식 표기 그대로)", "hours_text": "매일 11:00-22:00", "closed_days": null, "links": ["https://www.popmart.com/kr/store-list"], "status": "open", "works": [], "goods": [], "sources": [{"url": "https://www.popmart.com/kr/store-list", "confirms": "공식 매장찾기"}]},
+  {
+    "brand": "애니메이트",
+    "name": "애니메이트 부산점",
+    "addr": "부산광역시 부산진구 중앙대로 672",
+    "floor": "삼정타워 11층 (현 매장, 2026.10.11 영업 종료)",
+    "phone": "051-808-0993",
+    "hours_text": "11:00~21:40 (금·토 11:00~22:10), 현 매장 기준 공식 X 프로필",
+    "closed_days": null,
+    "links": ["https://x.com/animate_busan", "https://x.com/animate_busan/status/2100419483244646759", "https://www.animate-onlineshop.co.kr/board/view.php?bdId=notice2&sno=46"],
+    "status": "closing",
+    "works": [],
+    "goods": [],
+    "relocation": {
+      "current_store_last_day": "2026-10-11",
+      "new_store_open": "2026-10-30",
+      "new_location_official_text": "롯데백화점 부산 본점",
+      "new_addr": null,
+      "new_floor": null,
+      "note": "공식 텍스트에는 백화점 이름만 있고 도로명주소와 층수가 없음. 언론·커뮤니티는 지하1층이라고 하지만 공식 텍스트로는 확인 못함(공지 이미지에 있을 수 있음)"
+    },
+    "sources": [
+      {"url": "https://www.animate-onlineshop.co.kr/board/view.php?bdId=notice2&sno=46", "confirms": "공식 공지(2026.09.17): 현 매장 영업 종료 2026.10.11(일), 신규 매장 오픈 2026.10.30(금), 방문수령 중단 10.12~11.01, 11.02 재개"},
+      {"url": "https://x.com/animate_busan/status/2100419483244646759", "confirms": "공식 X: 10.30(금) 롯데백화점 부산 본점으로 이전 리뉴얼 오픈 확정, 현 매장 10.11 종료"},
+      {"url": "https://x.com/animate_busan", "confirms": "공식 X 프로필: 현 주소 중앙대로 672 삼정타워 11층, 영업시간, 문의 051-808-0993"}
+    ]
+  }
+]

@@ -1,0 +1,431 @@
+{
+ "name": "2026-09-26",
+ "items": [
+  {
+   "action": "insert",
+   "key": "popmart-anguk",
+   "brand": "팝마트",
+   "brand_links": [
+    "https://www.popmart.com/kr/store-list",
+    "https://www.popmart.com/kr"
+   ],
+   "fields": {
+    "name": "팝마트 안국점",
+    "addr": "서울 종로구 북촌로 5",
+    "floor_info": null,
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "description": "POP MART(팝마트) 공식 아트토이 매장입니다. 안국동(북촌로)에 있으며 매일 10:00~21:00 영업합니다(공식 매장 안내)."
+   },
+   "goods_types": [
+    "figure-new",
+    "keyring"
+   ],
+   "sources": [
+    {
+     "url": "https://www.popmart.com/kr/store-list",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "hours"
+     ],
+     "checked_at": "2026-09-26"
+    },
+    {
+     "url": "https://www.popmart.com/kr",
+     "fields": [
+      "goods_types"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ],
+   "unconfirmed": [
+    "closed_days",
+    "parking",
+    "phone",
+    "works(지점 취급 IP 공식 안내 없음 — 브랜드 전체 기준 연결 안 함)"
+   ],
+   "photo": "needed",
+   "notes": "전화번호는 공식 표기(하이픈 없음)의 숫자를 그대로 지역번호 형식으로 구분"
+  },
+  {
+   "action": "insert",
+   "key": "popmart-hirono-gwangjang",
+   "brand": "팝마트",
+   "brand_links": [
+    "https://www.popmart.com/kr/store-list",
+    "https://www.popmart.com/kr"
+   ],
+   "fields": {
+    "name": "팝마트 히로노 광장마켓점",
+    "addr": "서울 종로구 창경궁로 88",
+    "floor_info": null,
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "20:00"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "description": "POP MART(팝마트) 공식 아트토이 매장입니다. 히로노(HIRONO) 테마 매장으로, 매일 10:00~20:00 영업합니다(공식 매장 안내)."
+   },
+   "goods_types": [
+    "figure-new",
+    "keyring"
+   ],
+   "sources": [
+    {
+     "url": "https://www.popmart.com/kr/store-list",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "hours"
+     ],
+     "checked_at": "2026-09-26"
+    },
+    {
+     "url": "https://www.popmart.com/kr",
+     "fields": [
+      "goods_types"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ],
+   "unconfirmed": [
+    "closed_days",
+    "parking",
+    "phone"
+   ],
+   "photo": "needed",
+   "notes": "전화번호는 공식 표기(하이픈 없음)의 숫자를 그대로 지역번호 형식으로 구분",
+   "works": [
+    {
+     "tag_id": "668ff12d-9014-48fe-a07c-e40cf8071daa",
+     "primary": true,
+     "evidence": "팝마트 공식 매장 안내의 매장명 \"POP MART 히로노 광장마켓점\" (히로노 테마 매장) — 2026-09-26 확인"
+    }
+   ]
+  },
+  {
+   "action": "insert",
+   "key": "popmart-centum",
+   "brand": "팝마트",
+   "brand_links": [
+    "https://www.popmart.com/kr/store-list",
+    "https://www.popmart.com/kr"
+   ],
+   "fields": {
+    "name": "팝마트 신세계 센텀시티점",
+    "addr": "부산 해운대구 센텀남대로 35",
+    "floor_info": "신세계 센텀시티 B2 하이퍼그라운드",
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": "051-745-2383",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "description": "POP MART(팝마트) 공식 아트토이 매장입니다. 신세계 센텀시티 지하 2층 하이퍼그라운드에 있습니다. 금·토·일은 20:30까지 영업합니다(공식 매장 안내)."
+   },
+   "goods_types": [
+    "figure-new",
+    "keyring"
+   ],
+   "sources": [
+    {
+     "url": "https://www.popmart.com/kr/store-list",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "hours"
+     ],
+     "checked_at": "2026-09-26"
+    },
+    {
+     "url": "https://www.popmart.com/kr",
+     "fields": [
+      "goods_types"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ],
+   "unconfirmed": [
+    "closed_days",
+    "parking",
+    "works(지점 취급 IP 공식 안내 없음 — 브랜드 전체 기준 연결 안 함)"
+   ],
+   "photo": "needed",
+   "notes": "전화번호는 공식 표기(하이픈 없음)의 숫자를 그대로 지역번호 형식으로 구분"
+  },
+  {
+   "action": "insert",
+   "key": "popmart-busan-samjung",
+   "brand": "팝마트",
+   "brand_links": [
+    "https://www.popmart.com/kr/store-list",
+    "https://www.popmart.com/kr"
+   ],
+   "fields": {
+    "name": "팝마트 부산 삼정타워점",
+    "addr": "부산 부산진구 중앙대로 672",
+    "floor_info": "삼정타워 1층",
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": "051-808-6606",
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "22:30"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "22:30"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "description": "POP MART(팝마트) 공식 아트토이 매장입니다. 서면 삼정타워 1층에 있습니다. 금·토는 22:30까지 영업합니다(공식 매장 안내)."
+   },
+   "goods_types": [
+    "figure-new",
+    "keyring"
+   ],
+   "sources": [
+    {
+     "url": "https://www.popmart.com/kr/store-list",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "hours"
+     ],
+     "checked_at": "2026-09-26"
+    },
+    {
+     "url": "https://www.popmart.com/kr",
+     "fields": [
+      "goods_types"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ],
+   "unconfirmed": [
+    "closed_days",
+    "parking",
+    "works(지점 취급 IP 공식 안내 없음 — 브랜드 전체 기준 연결 안 함)"
+   ],
+   "photo": "needed",
+   "notes": "전화번호는 공식 표기(하이픈 없음)의 숫자를 그대로 지역번호 형식으로 구분"
+  },
+  {
+   "action": "insert",
+   "key": "popmart-starfield-anseong",
+   "brand": "팝마트",
+   "brand_links": [
+    "https://www.popmart.com/kr/store-list",
+    "https://www.popmart.com/kr"
+   ],
+   "fields": {
+    "name": "팝마트 스타필드 안성점",
+    "addr": "경기 안성시 공도읍 서동대로 3930-39",
+    "floor_info": "스타필드 안성 2142호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": "031-8092-1658",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "description": "POP MART(팝마트) 공식 아트토이 매장입니다. 스타필드 안성 2142호에 있으며 매일 10:00~22:00 영업합니다(공식 매장 안내)."
+   },
+   "goods_types": [
+    "figure-new",
+    "keyring"
+   ],
+   "sources": [
+    {
+     "url": "https://www.popmart.com/kr/store-list",
+     "fields": [
+      "name",
+      "addr",
+      "floor_info",
+      "phone",
+      "hours"
+     ],
+     "checked_at": "2026-09-26"
+    },
+    {
+     "url": "https://www.popmart.com/kr",
+     "fields": [
+      "goods_types"
+     ],
+     "checked_at": "2026-09-26"
+    }
+   ],
+   "unconfirmed": [
+    "closed_days",
+    "parking",
+    "works(지점 취급 IP 공식 안내 없음 — 브랜드 전체 기준 연결 안 함)"
+   ],
+   "photo": "needed",
+   "notes": "전화번호는 공식 표기(하이픈 없음)의 숫자를 그대로 지역번호 형식으로 구분"
+  }
+ ]
+}

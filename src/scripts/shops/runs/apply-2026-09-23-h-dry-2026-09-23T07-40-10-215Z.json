@@ -1,0 +1,396 @@
+{
+ "plan": "2026-09-23-h",
+ "at": "2026-09-23T07:40:10.215Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "gundam-base-goyang",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.6469771187284,
+    "lng": 126.89477806511,
+    "road": "경기 고양시 덕양구 고양대로 1955",
+    "building": "스타필드 고양",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "건담베이스 고양점",
+    "addr": "경기 고양시 덕양구 고양대로 1955",
+    "floor_info": "스타필드 고양 2층 (일렉트로마트 옆)",
+    "cats": [
+     "굿즈샵",
+     "프라모델"
+    ],
+    "phone": "031-5173-2479",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+    "sns_links": [
+     "https://cafe.naver.com/gbasekorea"
+    ],
+    "description": "반다이남코코리아가 운영하는 건담 프라모델(건프라) 공식 매장입니다. 스타필드 고양 2층 일렉트로마트 옆에 있습니다. 스타필드 고양 지정 휴일에는 휴무입니다(공식 안내).",
+    "lat": 37.6469771187284,
+    "lng": 126.89477806511,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-23T07:40:10.215Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "건담"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "gundam-base-pangyo",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.39279369494,
+    "lng": 127.112017130086,
+    "road": "경기 성남시 분당구 판교역로146번길 20",
+    "building": "현대백화점 판교점",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "건담베이스 판교점",
+    "addr": "경기 성남시 분당구 판교역로146번길 20",
+    "floor_info": "현대백화점 판교점 5층",
+    "cats": [
+     "굿즈샵",
+     "프라모델"
+    ],
+    "phone": "031-5170-1551",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     }
+    },
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+    "sns_links": [
+     "https://cafe.naver.com/gbasekorea"
+    ],
+    "description": "반다이남코코리아가 운영하는 건담 프라모델(건프라) 공식 매장입니다. 현대백화점 판교점 5층에 있습니다. 금·토·일·공휴일은 20:30까지 영업합니다(공식 안내).",
+    "lat": 37.39279369494,
+    "lng": 127.112017130086,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-23T07:40:10.215Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "건담"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "gundam-base-centum",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1688178394069,
+    "lng": 129.129523260187,
+    "road": "부산 해운대구 센텀남대로 35",
+    "building": "신세계백화점센텀시티점",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "건담베이스 센텀시티점",
+    "addr": "부산 해운대구 센텀남대로 35",
+    "floor_info": "신세계백화점 센텀시티몰 3층",
+    "cats": [
+     "굿즈샵",
+     "프라모델"
+    ],
+    "phone": "051-745-1468",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     }
+    },
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+    "sns_links": [
+     "https://cafe.naver.com/gbasekorea"
+    ],
+    "description": "반다이남코코리아가 운영하는 건담 프라모델(건프라) 공식 매장입니다. 신세계백화점 센텀시티몰 3층에 있습니다. 금·토·일·공휴일은 20:30까지 영업하며, 월 1회 월요일 휴무입니다(공식 안내).",
+    "lat": 35.1688178394069,
+    "lng": 129.129523260187,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-23T07:40:10.215Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "건담"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "gundam-base-daejeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.3512760051536,
+    "lng": 127.437518299333,
+    "road": "대전 동구 동서대로1695번길 30",
+    "building": "대전복합터미널(동관)",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "건담베이스 대전점",
+    "addr": "대전 동구 동서대로1695번길 30",
+    "floor_info": "대전복합터미널 동관 2층",
+    "cats": [
+     "굿즈샵",
+     "프라모델"
+    ],
+    "phone": "042-625-2805",
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gundam-base_store.do",
+    "sns_links": [
+     "https://cafe.naver.com/gbasekorea"
+    ],
+    "description": "반다이남코코리아가 운영하는 건담 프라모델(건프라) 공식 매장입니다. 대전복합터미널 동관 2층에 있습니다.",
+    "lat": 36.3512760051536,
+    "lng": 127.437518299333,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-23T07:40:10.215Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "건담"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "gashapon-gimpo-airport",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5713695798026,
+    "lng": 126.802960133589,
+    "road": "서울 강서구 하늘길 38",
+    "building": "김포공항, 롯데몰, 스카이시티",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "가샤폰 롯데몰 김포공항점",
+    "addr": "서울 강서구 하늘길 38",
+    "floor_info": "롯데몰 김포공항점 GF층 (펀스퀘어 롯데몰 김포공항점 내)",
+    "cats": [
+     "가챠"
+    ],
+    "phone": "02-6116-5053",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+    "description": "반다이 공식 캡슐토이 매장 \"가샤폰 반다이 오피셜숍\"입니다. 롯데몰 김포공항점 GF층 펀스퀘어 안에 있습니다.",
+    "lat": 37.5713695798026,
+    "lng": 126.802960133589,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-23T07:40:10.215Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,452 @@
+{
+ "plan": "2026-09-29-kukje-user",
+ "at": "2026-09-29T05:16:32.714Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "kukje-loginsoft",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "monthlyOff": {
+      "weeks": [
+       1,
+       3
+      ],
+      "days": [
+       "sun"
+      ]
+     }
+    },
+    "name": "로그인소프트",
+    "floor_info": "국제전자센터 9층 109호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "sns_links": [],
+    "shop_link": null,
+    "branches": [
+     {
+      "floor": "9층",
+      "name": "매장",
+      "room": "109호",
+      "items": [
+       "굿즈"
+      ]
+     }
+    ],
+    "description": "국제전자센터 9층 109호에 있는 굿즈 매장 로그인소프트입니다.\n영업시간은 국제전자센터 운영시간(10:00~20:00) 기준이며, 매월 첫째·셋째 일요일은 휴무입니다.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T05:16:32.714Z",
+    "info_confirmed_by_type": "admin"
+   }
+  },
+  {
+   "key": "kukje-capsule-impact",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "monthlyOff": {
+      "weeks": [
+       1,
+       3
+      ],
+      "days": [
+       "sun"
+      ]
+     }
+    },
+    "name": "캡슐임팩트",
+    "floor_info": "국제전자센터 9층 32호",
+    "cats": [
+     "가챠"
+    ],
+    "sns_links": [],
+    "shop_link": null,
+    "branches": [
+     {
+      "floor": "9층",
+      "name": "매장",
+      "room": "32호",
+      "items": [
+       "가챠"
+      ]
+     }
+    ],
+    "description": "국제전자센터 9층 32호에 있는 가챠샵 캡슐임팩트입니다.\n영업시간은 국제전자센터 운영시간(10:00~20:00) 기준이며, 매월 첫째·셋째 일요일은 휴무입니다.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T05:16:32.714Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-korokoro-gacha",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "monthlyOff": {
+      "weeks": [
+       1,
+       3
+      ],
+      "days": [
+       "sun"
+      ]
+     }
+    },
+    "name": "코로코로 가챠",
+    "floor_info": "국제전자센터 5층",
+    "cats": [
+     "가챠"
+    ],
+    "sns_links": [],
+    "shop_link": null,
+    "branches": [
+     {
+      "floor": "5층",
+      "name": "매장",
+      "items": [
+       "가챠"
+      ]
+     }
+    ],
+    "description": "국제전자센터 5층에 있는 가챠샵 코로코로 가챠입니다.\n영업시간은 국제전자센터 운영시간(10:00~20:00) 기준이며, 매월 첫째·셋째 일요일은 휴무입니다.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T05:16:32.714Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-tobito",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "monthlyOff": {
+      "weeks": [
+       1,
+       3
+      ],
+      "days": [
+       "sun"
+      ]
+     }
+    },
+    "name": "토비토",
+    "floor_info": "국제전자센터 8층 70호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "sns_links": [
+     "https://www.instagram.com/tobito_lab/"
+    ],
+    "shop_link": "https://www.instagram.com/tobito_lab/",
+    "branches": [
+     {
+      "floor": "8층",
+      "name": "매장",
+      "room": "70호",
+      "items": [
+       "말랑이"
+      ]
+     }
+    ],
+    "description": "말랑이를 파는 매장 토비토로, 국제전자센터 8층 70호에 있습니다.\n영업시간은 국제전자센터 운영시간(10:00~20:00) 기준이며, 매월 첫째·셋째 일요일은 휴무입니다.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T05:16:32.714Z",
+    "info_confirmed_by_type": "admin"
+   }
+  },
+  {
+   "key": "kukje-pc-repair-gacha",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "phone": null,
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "20:00"
+     },
+     "monthlyOff": {
+      "weeks": [
+       1,
+       3
+      ],
+      "days": [
+       "sun"
+      ]
+     }
+    },
+    "name": "PC조립수리",
+    "floor_info": "국제전자센터 8층 122호",
+    "cats": [
+     "가챠"
+    ],
+    "sns_links": [],
+    "shop_link": null,
+    "branches": [
+     {
+      "floor": "8층",
+      "name": "매장",
+      "room": "122호",
+      "items": [
+       "가챠"
+      ]
+     }
+    ],
+    "description": "국제전자센터 8층 122호의 PC 조립·수리 매장으로, 가챠 기계를 함께 운영합니다.\n영업시간은 국제전자센터 운영시간(10:00~20:00) 기준이며, 매월 첫째·셋째 일요일은 휴무입니다.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T05:16:32.714Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

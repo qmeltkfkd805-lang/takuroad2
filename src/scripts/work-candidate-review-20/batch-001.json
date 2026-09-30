@@ -1,0 +1,13 @@
+[
+  {"slug":"chrono-crusade-anime","name":"크로노 크루세이드","englishName":"Chrono Crusade","aliases":[],"description":"수녀 로제트와 악마 크로노가 실종된 동생을 찾으며 악마 사건을 해결한다.","genres":["판타지","액션","드라마"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"gunslinger-girl-anime","name":"건슬링거 걸","englishName":"Gunslinger Girl","aliases":[],"description":"개조된 소녀들이 정부 기관의 요원으로 임무를 수행하며 잃어버린 일상과 감정을 마주한다.","genres":["액션","드라마","SF"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"trinity-blood-anime","name":"트리니티 블러드","englishName":"Trinity Blood","aliases":[],"description":"인간과 흡혈귀가 대립하는 미래에서 신부 아벨이 전쟁을 막기 위한 임무를 수행한다.","genres":["판타지","액션","드라마"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"waiting-in-the-summer-anime","name":"그 여름에서 기다릴게","englishName":"Waiting in the Summer","aliases":[],"description":"영화 촬영을 시작한 고교생들이 여름방학 동안 사랑과 외계의 비밀을 마주한다.","genres":["로맨스","SF","학원","드라마"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"canaan-anime","name":"CANAAN",
+   "englishName":"Canaan","aliases":[],"description":"사진기자 마리아와 암살자 카난이 상하이에서 바이러스와 조직의 음모에 휘말린다.","genres":["액션","추리","드라마"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"wandering-son-anime","name":"방랑소년","englishName":"Wandering Son","aliases":[],"description":"성별에 대한 고민을 지닌 중학생들이 성장과 관계 속에서 자신의 모습을 찾아간다.","genres":["학원","일상","드라마"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"tiger-and-bunny-anime","name":"TIGER & BUNNY","englishName":"Tiger & Bunny","aliases":["타이거 앤 버니"],"description":"기업 후원을 받는 베테랑 히어로와 신예가 콤비가 되어 도시의 범죄와 음모에 맞선다.","genres":["액션","SF","코미디"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"gargantia-on-the-verdurous-planet-anime","name":"취성의 가르간티아","englishName":"Gargantia on the Verdurous Planet","aliases":["가르간티아"],"description":"우주 병사 레도가 바다로 뒤덮인 지구에 표류해 선단 사람들과 새로운 삶을 배운다.","genres":["SF","로봇/메카","모험"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"space-dandy-anime","name":"스페이스 댄디","englishName":"Space Dandy","aliases":[],"description":"외계인 사냥꾼 댄디와 동료들이 미지의 외계인을 찾아 우주를 떠돈다.","genres":["SF","모험","코미디"],"ipType":["애니"],"officialUrl":"","source":""},
+  {"slug":"tamayura-anime","name":"타마유라","englishName":"Tamayura","aliases":[],"description":"사진을 좋아하는 소녀 후우가 아버지의 고향에서 친구들과 따뜻한 추억을 쌓는다.","genres":["일상","학원","드라마"],"ipType":["애니"],"officialUrl":"","source":""}
+]

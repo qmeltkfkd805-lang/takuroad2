@@ -1,0 +1,170 @@
+[
+  {
+    "slug": "bye-bye-earth-anime",
+    "name": "바이바이, 어스",
+    "englishName": "Bye Bye, Earth",
+    "aliases": [],
+    "description": "동물의 특징이 없는 유일한 인간 소녀가 자신의 뿌리를 찾아 여행을 떠난다",
+    "genres": [
+      "판타지",
+      "모험",
+      "액션"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "dungeon-people-anime",
+    "name": "던전 관리인",
+    "englishName": "Dungeon People",
+    "aliases": [],
+    "description": "아버지를 찾던 도적이 던전 관리자의 제안을 받아 던전 운영을 돕는다",
+    "genres": [
+      "판타지",
+      "코미디",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "rising-impact-anime",
+    "name": "라이징 임팩트",
+    "englishName": "Rising Impact",
+    "aliases": [],
+    "description": "천부적인 비거리 감각을 지닌 소년이 골프 명문 학교에서 세계 정상에 도전한다",
+    "genres": [
+      "스포츠",
+      "소년물",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "lazarus-anime",
+    "name": "라자루스",
+    "englishName": "LAZARUS",
+    "aliases": [],
+    "description": "기적의 약이 치명적이라는 사실이 밝혀지자 특수팀이 개발자를 추적한다",
+    "genres": [
+      "액션",
+      "SF",
+      "추리"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "to-be-hero-x-anime",
+    "name": "투 비 히어로 X",
+    "englishName": "TO BE HERO X",
+    "aliases": [],
+    "description": "신뢰가 영웅의 힘을 결정하는 세계에서 영웅들이 최고의 자리를 두고 경쟁한다",
+    "genres": [
+      "액션",
+      "SF",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "kowloon-generic-romance-anime",
+    "name": "구룡 제네릭 로맨스",
+    "englishName": "Kowloon Generic Romance",
+    "aliases": [],
+    "description": "구룡성채의 부동산 직원들이 익숙한 도시에서 사랑과 기억의 비밀을 마주한다",
+    "genres": [
+      "로맨스",
+      "SF",
+      "추리"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "apocalypse-hotel-anime",
+    "name": "아포칼립스 호텔",
+    "englishName": "Apocalypse Hotel",
+    "aliases": [],
+    "description": "인류가 사라진 지구에서 로봇 직원들이 호텔을 지키며 손님을 기다린다",
+    "genres": [
+      "SF",
+      "코미디",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "moonrise-anime",
+    "name": "문라이즈",
+    "englishName": "Moonrise",
+    "aliases": [],
+    "description": "지구와 달의 갈등 속에서 청년 잭이 가족의 원수를 찾아 달 전쟁에 나선다",
+    "genres": [
+      "SF",
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "takopi-s-original-sin-anime",
+    "name": "타코피의 원죄",
+    "englishName": "Takopi’s Original Sin",
+    "aliases": [],
+    "description": "행복을 전하러 온 외계인이 고통받는 소녀를 돕다 돌이킬 수 없는 선택을 한다",
+    "genres": [
+      "SF",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "ruri-rocks-anime",
+    "name": "루리의 보석",
+    "englishName": "Ruri Rocks",
+    "aliases": [],
+    "description": "보석을 좋아하는 여고생이 대학원생과 광물을 찾아다니며 지질학을 배운다",
+    "genres": [
+      "일상",
+      "모험"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  }
+]

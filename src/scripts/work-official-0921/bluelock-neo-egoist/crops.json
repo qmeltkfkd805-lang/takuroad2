@@ -1,0 +1,301 @@
+[
+ {
+  "name": "블루 록 킥오프 팩 (1~3권 합본 세트 + 금박 캔뱃지 2종)",
+  "kind": "goods",
+  "price": 18000,
+  "file": "md_list_03_books.jpg",
+  "box": [
+   14,
+   464,
+   2123,
+   1533
+  ],
+  "note": "더현대 오프라인 ONLY, 500세트 한정"
+ },
+ {
+  "name": "블루 록 37권 한정판",
+  "kind": "goods",
+  "price": 45000,
+  "file": "md_list_03_books.jpg",
+  "box": [
+   14,
+   1541,
+   2123,
+   2630
+  ],
+  "note": "더현대 오프라인 선판매"
+ },
+ {
+  "name": "바스타드 뮌헨 듀오 유리컵 (300ml 2개입)",
+  "kind": "goods",
+  "price": 25000,
+  "file": "md_list_04_goods_01_02.jpg",
+  "box": [
+   84,
+   464,
+   2123,
+   1533
+  ],
+  "note": "1일 100개 한정"
+ },
+ {
+  "name": "바스타드 뮌헨 멀티 스탠드 세트",
+  "kind": "goods",
+  "price": 25000,
+  "file": "md_list_04_goods_01_02.jpg",
+  "box": [
+   84,
+   1561,
+   2123,
+   2630
+  ],
+  "note": "1일 100개 한정"
+ },
+ {
+  "name": "랜덤 미니자석 아크릴 스탠드 (8종, 각)",
+  "kind": "goods",
+  "price": 10000,
+  "file": "md_list_05_goods_03_05.jpg",
+  "box": [
+   127,
+   464,
+   2123,
+   1083
+  ]
+ },
+ {
+  "name": "랜덤 말랑 캔뱃지 (8종, 각)",
+  "kind": "goods",
+  "price": 8000,
+  "file": "md_list_05_goods_03_05.jpg",
+  "box": [
+   127,
+   1125,
+   2123,
+   1730
+  ]
+ },
+ {
+  "name": "랜덤 아크릴 시네마 (10종, 각)",
+  "kind": "goods",
+  "price": 9500,
+  "file": "md_list_05_goods_03_05.jpg",
+  "box": [
+   127,
+   1772,
+   2123,
+   2644
+  ]
+ },
+ {
+  "name": "아크릴 카라비너 (각)",
+  "kind": "goods",
+  "price": 10000,
+  "file": "md_list_06_goods_06_08.jpg",
+  "box": [
+   127,
+   464,
+   1111,
+   1519
+  ]
+ },
+ {
+  "name": "장면 아크릴 키링 (각)",
+  "kind": "goods",
+  "price": 10500,
+  "file": "md_list_06_goods_06_08.jpg",
+  "box": [
+   1139,
+   464,
+   2123,
+   1519
+  ]
+ },
+ {
+  "name": "원화 티셔츠 (이토시 사에 / 이토시 린 ver., 각)",
+  "kind": "goods",
+  "price": 43000,
+  "file": "md_list_06_goods_06_08.jpg",
+  "box": [
+   127,
+   1561,
+   2123,
+   2630
+  ]
+ },
+ {
+  "name": "진파치의 원석 콜렉트북",
+  "kind": "goods",
+  "price": 25000,
+  "file": "md_list_07_goods_09_13.jpg",
+  "box": [
+   127,
+   464,
+   2123,
+   1167
+  ]
+ },
+ {
+  "name": "말풍선 메모지 (각)",
+  "kind": "goods",
+  "price": 5000,
+  "file": "md_list_07_goods_09_13.jpg",
+  "box": [
+   127,
+   1209,
+   1111,
+   1907
+  ]
+ },
+ {
+  "name": "원화 판 스티커 (각)",
+  "kind": "goods",
+  "price": 5000,
+  "file": "md_list_07_goods_09_13.jpg",
+  "box": [
+   1111,
+   1176,
+   2123,
+   1907
+  ],
+  "note": "NEW VER."
+ },
+ {
+  "name": "사쉐 (각)",
+  "kind": "goods",
+  "price": 12000,
+  "file": "md_list_07_goods_09_13.jpg",
+  "box": [
+   127,
+   1941,
+   1111,
+   2644
+  ],
+  "note": "이토시 사에/카이저/바니 NEW VER."
+ },
+ {
+  "name": "원화 엽서 (각)",
+  "kind": "goods",
+  "price": 2000,
+  "file": "md_list_07_goods_09_13.jpg",
+  "box": [
+   1111,
+   1913,
+   2123,
+   2644
+  ],
+  "note": "NEW VER."
+ },
+ {
+  "name": "짐색+슬로건 세트 (각)",
+  "kind": "goods",
+  "price": 45000,
+  "file": "md_list_08_goods_14_18.jpg",
+  "box": [
+   127,
+   464,
+   2123,
+   1167
+  ]
+ },
+ {
+  "name": "원화 아크릴 디오라마",
+  "kind": "goods",
+  "price": 35000,
+  "file": "md_list_08_goods_14_18.jpg",
+  "box": [
+   127,
+   1209,
+   1111,
+   1907
+  ]
+ },
+ {
+  "name": "원화 L홀더 (각)",
+  "kind": "goods",
+  "price": 5000,
+  "file": "md_list_08_goods_14_18.jpg",
+  "box": [
+   1139,
+   1209,
+   2123,
+   1907
+  ]
+ },
+ {
+  "name": "원화 대사 스티커",
+  "kind": "goods",
+  "price": 2500,
+  "file": "md_list_08_goods_14_18.jpg",
+  "box": [
+   127,
+   1941,
+   1111,
+   2644
+  ]
+ },
+ {
+  "name": "원화 마스킹 테이프 (각)",
+  "kind": "goods",
+  "price": 8000,
+  "file": "md_list_08_goods_14_18.jpg",
+  "box": [
+   1139,
+   1941,
+   2123,
+   2644
+  ]
+ },
+ {
+  "name": "증명사진 (7종 랜덤, 3만원당 구매 특전)",
+  "kind": "goods",
+  "price": null,
+  "file": "benefit_novelty.jpg",
+  "box": [
+   169,
+   619,
+   1481,
+   1789
+  ],
+  "note": "온·오프라인 공통, 3만원당 1종"
+ },
+ {
+  "name": "쇼핑백 (7만원 이상 구매 특전)",
+  "kind": "goods",
+  "price": null,
+  "file": "benefit_novelty.jpg",
+  "box": [
+   1519,
+   619,
+   2831,
+   1789
+  ],
+  "note": "오프라인 한정, 1인 1개"
+ },
+ {
+  "name": "카드 스티커 (7종 랜덤, 구매 특전)",
+  "kind": "goods",
+  "price": null,
+  "file": "benefit_novelty.jpg",
+  "box": [
+   169,
+   2081,
+   1481,
+   3251
+  ],
+  "note": "오프라인 한정, 영수증당 1장 선착순, 1인 1회"
+ },
+ {
+  "name": "손목띠 (입장 특전)",
+  "kind": "goods",
+  "price": null,
+  "file": "benefit_novelty.jpg",
+  "box": [
+   1519,
+   2081,
+   2831,
+   3251
+  ],
+  "note": "오프라인 입장 고객 1인 1장"
+ }
+]

@@ -1,0 +1,56 @@
+[
+ {
+  "child": "labubu",
+  "parent": "the-monsters",
+  "kind": "series",
+  "overwrite": true,
+  "evidence": "라부부는 THE MONSTERS 시리즈 캐릭터 — 팝마트(판매사)보다 직접적인 상위",
+  "url": "https://www.popmart.com/kr",
+  "status": "SKIP_NOT_FOUND"
+ },
+ {
+  "child": "크라이베이비",
+  "parent": "(해제)",
+  "status": "DRY_UNSET"
+ },
+ {
+  "child": "디무",
+  "parent": "(해제)",
+  "status": "DRY_UNSET"
+ },
+ {
+  "child": "피치 라이엇",
+  "parent": "(해제)",
+  "status": "DRY_UNSET"
+ },
+ {
+  "child": "몰리",
+  "parent": "(해제)",
+  "status": "DRY_UNSET"
+ },
+ {
+  "child": "스컬판다",
+  "parent": "(해제)",
+  "status": "DRY_UNSET"
+ },
+ {
+  "child": "히로노",
+  "parent": "(해제)",
+  "status": "DRY_UNSET"
+ },
+ {
+  "child": "트윙클 트윙클",
+  "parent": "(해제)",
+  "status": "DRY_UNSET"
+ },
+ {
+  "child": "하치푸푸",
+  "parent": "(해제)",
+  "status": "DRY_UNSET"
+ },
+ {
+  "child": "리락쿠마",
+  "parent": "(해제)",
+  "status": "DRY_UNSET"
+ }
+]

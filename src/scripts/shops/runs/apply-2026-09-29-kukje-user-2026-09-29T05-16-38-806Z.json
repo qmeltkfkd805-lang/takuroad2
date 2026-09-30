@@ -1,0 +1,109 @@
+{
+ "plan": "2026-09-29-kukje-user",
+ "at": "2026-09-29T05:16:38.806Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "kukje-loginsoft",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "ad96d321-78d9-40fb-8b34-d4dce7b25d21",
+   "slug": "rogeuinsopeuteu"
+  },
+  {
+   "key": "kukje-capsule-impact",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "6117324b-7710-43b7-a012-ce394d888ed5",
+   "slug": "kaepsyulimpaekteu",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-korokoro-gacha",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "524b5f8b-f484-4eb0-82a7-b2c18124b11c",
+   "slug": "korokoro-gachya",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-tobito",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "c32e86db-dfd6-47d1-b0e3-3ba15c479353",
+   "slug": "tobito",
+   "extras": {
+    "custom_goods": {
+     "added": [
+      "말랑이"
+     ]
+    }
+   }
+  },
+  {
+   "key": "kukje-pc-repair-gacha",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "df296319-c76b-4309-b5e3-fc0a0045e783",
+   "slug": "pcjoripsuri",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-kukje-user-2026-09-29T05-16-38-806Z.json"
+}

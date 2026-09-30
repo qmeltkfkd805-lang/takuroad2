@@ -1,0 +1,323 @@
+{
+ "plan": "2026-09-27",
+ "at": "2026-09-27T14:21:07.418Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "popmart-daejeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.3406861255513,
+    "lng": 127.389548388967,
+    "road": "대전 서구 계룡로 598",
+    "building": "롯데백화점",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "009ec633-b849-49d9-9d9d-cb710720ca04",
+   "slug": "papmateu-daejeonjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "figurepresso-sindorim",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5071169087537,
+    "lng": 126.890222775625,
+    "road": "서울 구로구 새말로 97",
+    "building": "신도림테크노마트",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "cfe0608f-e9bf-4921-9b11-75064766fece",
+   "slug": "pigyueopeureso-sindorimjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "hanwoori-sindorim",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5071169087537,
+    "lng": 126.890222775625,
+    "road": "서울 구로구 새말로 97",
+    "building": "신도림테크노마트",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "222796b2-2977-49ee-aa79-8948b44a0f6d",
+   "slug": "hanuri-sindorim-tekeunomateujeom"
+  },
+  {
+   "key": "lashinbang-seoul-main",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5576896349106,
+    "lng": 126.925430561045,
+    "road": "서울 마포구 양화로 178-5",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "8bec0da0-aed2-4856-8d1c-7c689b81b013",
+   "slug": "rasinban-seoulbonjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "귀멸의 칼날"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "lashinbang-seoul-2",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5071169087537,
+    "lng": 126.890222775625,
+    "road": "서울 구로구 새말로 97",
+    "building": "신도림테크노마트",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "5da9534a-d3ff-48b7-a063-77ac3feff477",
+   "slug": "rasinban-seoul2hojeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "recheck-gashapon-jamsil",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "d98e6a5a-c257-44b7-bae6-82652377f658",
+   "patch": {
+    "floor_info": "롯데월드 쇼핑몰동 지하 1층 36호",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "yearRound": true
+    },
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+    "description": "반다이 공식 캡슐토이 매장(GASHAPON BANDAI OFFICIAL SHOP, 공식 표기 \"GBO 롯데월드점\")으로, 롯데월드 쇼핑몰동 지하 1층 36호에 있습니다. 연중무휴 10:00~21:00 영업합니다(공식 안내). 2호선 잠실역 4번 출구 롯데월드 정문 쪽입니다."
+   },
+   "before": {
+    "floor_info": "지하 1층",
+    "hours": {
+     "fri": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "mon": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "21:00"
+     }
+    },
+    "shop_link": null,
+    "description": null
+   }
+  },
+  {
+   "key": "recheck-funsquare-suwon",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "384328ab-cb33-4682-93c1-f1c2076a036f",
+   "patch": {
+    "phone": "031-690-1509",
+    "shop_link": "https://www.bnkrmall.co.kr/etc/funsquare_store.do",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "yearRound": true
+    }
+   },
+   "before": {
+    "phone": null,
+    "shop_link": null,
+    "hours": {
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     }
+    }
+   }
+  },
+  {
+   "key": "recheck-gashapon-yongsan",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "ca2043d4-5891-44b3-9bec-c5a19369d14c",
+   "patch": {
+    "phone": "02-2012-2700",
+    "floor_info": "리빙파크 6층 반다이남코코리아 스토어 내",
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+    "sns_links": [
+     "https://www.bnkrmall.co.kr/etc/bandainamcokorea_store.do"
+    ]
+   },
+   "before": {
+    "phone": null,
+    "floor_info": "6층 ",
+    "shop_link": "bandainamco-am.co.jp/ko/others/capsule-toy-store/",
+    "sns_links": [
+     "bandainamco-am.co.jp/ko/others/capsule-toy-store/"
+    ]
+   }
+  },
+  {
+   "key": "recheck-gbase-ak-suwon",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "3b042b45-de7c-429c-b786-3859c44b1757",
+   "patch": {
+    "description": "건담 프라모델부터 한정판 상품, 조립용품까지 한자리에서 만날 수 있는 건담 공식 전문 매장입니다. AK플라자 수원점 5층에 있으며 매일 10:30~22:00 영업하고, AK플라자 지정 휴일에 휴무합니다(공식 안내)."
+   },
+   "before": {
+    "description": "건담 프라모델부터 한정판 상품, 조립용품까지 한자리에서 만날 수 있는 건담 공식 전문 매장입니다."
+   }
+  },
+  {
+   "key": "recheck-animate-suwon",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "173a029b-fc61-4282-be89-58e4ade23cbf",
+   "patch": {
+    "shop_link": "https://x.com/animate_suwon",
+    "sns_links": [
+     "https://x.com/animate_suwon"
+    ]
+   },
+   "before": {
+    "shop_link": "https://www.animate.co.jp/",
+    "sns_links": [
+     "https://www.animate.co.jp/",
+     "https://x.com/animate_suwon"
+    ]
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-27-2026-09-27T14-21-07-418Z.json"
+}

@@ -1,0 +1,256 @@
+{
+ "plan": "2026-09-28-kukje-c",
+ "at": "2026-09-28T05:25:10.274Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "kukje-anilabs-5f",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "6774a8a7-1970-44d2-9060-f040ca0b81af",
+   "slug": "aeniraepseu-gukjejeonjasenteojeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "self-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-anilabs-3f",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "0a6505fe-0c2e-4a07-9f41-d483fc37c267",
+   "slug": "aeniraepseu-gachyajeom",
+   "extras": {
+    "works": {
+     "added": [
+      "하이큐!!",
+      "포켓몬스터",
+      "은혼",
+      "명탐정 코난",
+      "진격의 거인",
+      "산리오",
+      "사카모토 데이즈",
+      "미피"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-moeda",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "f9f1833f-4a15-4c11-9f13-0a64ea5511c1",
+   "slug": "moeda",
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와",
+      "체인소맨",
+      "블리치",
+      "나의 히어로 아카데미아"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-nizigen",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "32c022af-c42b-4861-b8f9-5b0dc7e7edb4",
+   "slug": "nijigensanghoe",
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와",
+      "나의 히어로 아카데미아",
+      "케이온!",
+      "그 비스크 돌은 사랑을 한다",
+      "하츠네 미쿠",
+      "체인소맨",
+      "귀멸의 칼날"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "plushie-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-otakusarangbang",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "09906df3-3210-4a6d-a9a4-81c30a6028c5",
+   "slug": "otakusarangbang",
+   "extras": {
+    "works": {
+     "added": [
+      "죠죠의 기묘한 모험",
+      "나의 히어로 아카데미아",
+      "하츠네 미쿠",
+      "케이온!"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "acrylic-stand",
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kaguteng",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "f54325f2-1187-458f-ac52-09e55e8d30ab",
+   "slug": "kagutaeng",
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와",
+      "산리오",
+      "헬로키티",
+      "동물의 숲"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new",
+      "plushie-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-toysky",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "eeaaec9c-9297-45c1-aa41-358cb03234ff",
+   "slug": "toiseukai",
+   "extras": {
+    "works": {
+     "added": [
+      "헌터×헌터",
+      "나의 히어로 아카데미아"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-figurepresso-ig",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "1bdef20f-f701-41d0-bab8-ccfc66c03d85",
+   "patch": {
+    "sns_links": [
+     "https://x.com/figurepresso",
+     "https://www.instagram.com/figurepresso_official/"
+    ]
+   },
+   "before": {
+    "sns_links": [
+     "https://x.com/figurepresso"
+    ]
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-28-kukje-c-2026-09-28T05-25-10-274Z.json"
+}

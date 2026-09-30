@@ -1,0 +1,164 @@
+{
+ "plan": "2026-09-28-o",
+ "at": "2026-09-28T14:21:51.338Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "hiddentoy-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8690098854669,
+    "lng": 128.595055764195,
+    "road": "대구 중구 동성로 23-1",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "0716ca5e-6b0d-4cae-bed7-743341318934",
+   "slug": "hideuntoi-daegubonjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "건담"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "hiddentoy-ilsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.6357731232175,
+    "lng": 126.831425031117,
+    "road": "경기 고양시 덕양구 화중로 98",
+    "building": "화정광성프라자",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "80a72c15-1dd0-420c-9342-045cee5dc399",
+   "slug": "hideuntoi-ilsanjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "승리의 여신: 니케",
+      "전생했더니 슬라임이었던 건에 대하여",
+      "원피스",
+      "산리오"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "parkseobang-daejeon",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.3398204804178,
+    "lng": 127.390645153057,
+    "road": "대전 서구 계룡로 616",
+    "building": "대전오렌지타운",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "54405a3c-4cb4-4190-bdc9-5f3aebffa3f8",
+   "slug": "bakseobang-daejeonbonjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "나의 히어로 아카데미아",
+      "승리의 여신: 니케",
+      "건담"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "manga",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "parkseobang-jeju",
+   "action": "insert",
+   "geocode": {
+    "lat": 33.4902322419752,
+    "lng": 126.474199468505,
+    "road": "제주특별자치도 제주시 월랑로 59",
+    "building": "세흔빌딩",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "a76696dc-31be-4cfe-b4fd-a8244cf63be0",
+   "slug": "bakseobang-jejujijeom",
+   "extras": {
+    "works": {
+     "added": [
+      "야마다 군과 Lv999의 사랑을 하다",
+      "원펀맨",
+      "하츠네 미쿠",
+      "바키"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "manga",
+      "light-novel",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "parkseobang-dongtan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.1669493066166,
+    "lng": 127.105305422682,
+    "road": "경기 화성시 동탄구 동탄대로5길 21",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "ee04f937-75e3-4536-b3e0-1dffc0d0114e",
+   "slug": "bakseobang-dongtanjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-28-o-2026-09-28T14-21-51-338Z.json"
+}

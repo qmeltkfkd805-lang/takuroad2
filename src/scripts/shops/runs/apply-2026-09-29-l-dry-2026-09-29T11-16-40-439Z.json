@@ -1,0 +1,245 @@
+{
+ "plan": "2026-09-29-l",
+ "at": "2026-09-29T11:16:40.439Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "neighborhobby",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5598714945494,
+    "lng": 126.926300212385,
+    "road": "서울 마포구 연희로 11",
+    "building": "한국특허기술진흥원빌딩",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "네이버하비 홍대점",
+    "addr": "서울 마포구 연희로 11",
+    "floor_info": "한국특허기술진흥원빌딩 1층",
+    "cats": [
+     "프라모델"
+    ],
+    "shop_link": "https://www.modelsale.com/",
+    "sns_links": [
+     "https://www.instagram.com/neighborhobby_korea/",
+     "https://www.facebook.com/neighborhobby",
+     "https://www.youtube.com/neighborhobby"
+    ],
+    "phone": "02-3141-9845",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "19:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "19:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "19:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "19:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "19:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "17:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "17:00"
+     },
+     "yearRound": true
+    },
+    "parking": true,
+    "parking_note": "주차 가능(건물 뒤편 실외주차장·주차 리프트)\n5만원 이상 구매 시 30분 무료",
+    "description": "1979년 신촌과학에서 시작한 프라모델 전문점 네이버하비(Neighbor Hobby Korea, (주)엔하비)의 홍대입구역 오프라인 매장입니다. 스케일 프라모델·도료·공구와 무선모형·캐릭터 모형을 취급하며, 한국타미야 공식 취급점 목록에도 올라 있습니다.\n연중무휴 — 평일 10:00~19:00, 주말·공휴일 10:00~17:00.\n2호선 홍대입구역 3번 출구에서 경의선숲길(연트럴파크) 건너편 골목으로 도보 3분.",
+    "lat": 37.5598714945494,
+    "lng": 126.926300212385,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T11:16:40.439Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "bigbox",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5233775468121,
+    "lng": 126.851677350643,
+    "road": "서울 양천구 중앙로 304",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "빅박스(BIG BOX)",
+    "addr": "서울 양천구 중앙로 304",
+    "floor_info": "지하 B01호",
+    "cats": [
+     "프라모델"
+    ],
+    "shop_link": "https://big-box.kr/",
+    "sns_links": [],
+    "phone": "02-6406-8278",
+    "description": "타미야 미니 4WD(미니카) 전문점이자 \"타미야 빅박스 서울공인경기장\"을 운영하는 매장입니다. 미니카 키트·파츠·가공 부품을 판매하고 정기 레이스를 엽니다.\n화·금요일은 정기 휴무(공식 홈페이지 기준)이며, 레이스·임시 휴무 일정은 공식 홈페이지 \"일정\" 에서 확인하세요.",
+    "lat": 37.5233775468121,
+    "lng": 126.851677350643,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T11:16:40.439Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "toyfactory-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8602471517516,
+    "lng": 128.646033793711,
+    "road": "대구 수성구 만촌로 6",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "토이팩토리 대구",
+    "addr": "대구 수성구 만촌로 6",
+    "floor_info": "2층",
+    "cats": [
+     "프라모델"
+    ],
+    "shop_link": "https://minicarshop.co.kr/",
+    "sns_links": [
+     "https://cafe.naver.com/tnfminicar"
+    ],
+    "phone": "010-2242-0700",
+    "description": "타미야 미니 4WD(미니카) 기본 킷·파츠·자체 가공 부품과 프라모델을 판매하는 미니카샵입니다(한국타미야 공식 취급점).\n신상품 입고·매장 오픈 소식은 토이팩토리 네이버 카페에 공지합니다.",
+    "lat": 35.8602471517516,
+    "lng": 128.646033793711,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T11:16:40.439Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "hobbyland-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8718103346644,
+    "lng": 128.594461000172,
+    "road": "대구 중구 중앙대로 434",
+    "building": "JS빌딩",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "하비랜드 대구",
+    "addr": "대구 중구 중앙대로 434",
+    "floor_info": "2층",
+    "cats": [
+     "프라모델"
+    ],
+    "shop_link": "https://tamiya.co.kr/sub/find_store.php",
+    "sns_links": [],
+    "description": "대구 중앙로의 프라모델 전문점으로, 한국타미야 공식 취급점 목록에 올라 있습니다. 매장 자체 공식 채널이 없어 영업시간·전화는 방문 전 확인하세요.",
+    "lat": 35.8718103346644,
+    "lng": 128.594461000172,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T11:16:40.439Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "hobbyhill-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8555752350143,
+    "lng": 128.600113155471,
+    "road": "대구 중구 명덕로 275",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "하비힐",
+    "addr": "대구 중구 명덕로 275",
+    "floor_info": "2층",
+    "cats": [
+     "프라모델"
+    ],
+    "shop_link": "https://tamiya.co.kr/sub/find_store.php",
+    "sns_links": [],
+    "phone": "010-3516-9456",
+    "description": "대구 건들바위역 인근의 스케일 모형 전문점으로, 한국타미야 공식 취급점 목록에 올라 있습니다. 매장 자체 공식 채널이 없어 영업시간은 방문 전 확인하세요.",
+    "lat": 35.8555752350143,
+    "lng": 128.600113155471,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T11:16:40.439Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "plan": "2026-09-29-f",
+ "at": "2026-09-29T06:20:52.393Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "dotorisup-jamsil",
+   "action": "update",
+   "status": "NO_CHANGE"
+  },
+  {
+   "key": "dotorisup-yongsan",
+   "action": "update",
+   "status": "NO_CHANGE"
+  },
+  {
+   "key": "dotorisup-suwon",
+   "action": "update",
+   "status": "NO_CHANGE"
+  }
+ ]
+}

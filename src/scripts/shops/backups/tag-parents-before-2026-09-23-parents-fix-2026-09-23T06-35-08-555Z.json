@@ -1,0 +1,57 @@
+[
+ {
+  "id": "221cf4e7-9adc-4817-b5a3-7f78635d4dbe",
+  "slug": "crybaby-popmart",
+  "parent_tag_id": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071"
+ },
+ {
+  "id": "891ba1c3-418c-460f-b84c-c86c48a0889a",
+  "slug": "dimoo",
+  "parent_tag_id": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071"
+ },
+ {
+  "id": "3181bebc-4f1f-4280-8c4c-a445ea3bf837",
+  "slug": "hacipupu",
+  "parent_tag_id": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071"
+ },
+ {
+  "id": "668ff12d-9014-48fe-a07c-e40cf8071daa",
+  "slug": "hirono",
+  "parent_tag_id": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071"
+ },
+ {
+  "id": "860fc76c-268f-479b-b104-7a571a53f554",
+  "slug": "labubu",
+  "parent_tag_id": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071"
+ },
+ {
+  "id": "8264adce-400a-4121-b449-b07a1b510f75",
+  "slug": "molly-popmart",
+  "parent_tag_id": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071"
+ },
+ {
+  "id": "078cb21b-d853-4b67-b898-e437ae2c1564",
+  "slug": "peach-riot",
+  "parent_tag_id": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071"
+ },
+ {
+  "id": "5018bb5f-1019-4ac2-825d-b98610269f81",
+  "slug": "rilakkuma",
+  "parent_tag_id": "e19a0f86-f091-4ca0-ae9b-497e75134657"
+ },
+ {
+  "id": "471ac5dc-783e-485c-98b6-f916e9364415",
+  "slug": "skullpanda",
+  "parent_tag_id": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071"
+ },
+ {
+  "id": "fb4b62be-674e-4902-839a-ba89d634f4ce",
+  "slug": "the-monsters",
+  "parent_tag_id": null
+ },
+ {
+  "id": "c2b393cf-8030-411d-a99a-e53b2e33ef0b",
+  "slug": "twinkle-twinkle-popmart",
+  "parent_tag_id": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071"
+ }
+]

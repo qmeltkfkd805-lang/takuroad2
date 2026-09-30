@@ -1,0 +1,296 @@
+{
+ "plan": "2026-09-26-e",
+ "at": "2026-09-26T14:18:00.883Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "place-1bdef20f",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "1bdef20f-f701-41d0-bab8-ccfc66c03d85",
+   "patch": {
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   },
+   "before": {
+    "place_id": null,
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-da4b3714",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "da4b3714-9c6f-490d-ba29-f8e6810d205f",
+   "patch": {
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   },
+   "before": {
+    "place_id": null,
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-94f6d97c",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "94f6d97c-e40c-45b6-8c42-9cb878897482",
+   "patch": {
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   },
+   "before": {
+    "place_id": null,
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-15c0501e",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "15c0501e-486c-42e5-965e-ff2dc2400bf1",
+   "patch": {
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   },
+   "before": {
+    "place_id": null,
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-2f1321e8",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "2f1321e8-39a4-4f29-8f50-6ee8a82c6e66",
+   "patch": {
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   },
+   "before": {
+    "place_id": null,
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-1868a417",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "1868a417-7312-4991-8d7a-6373c648f31f",
+   "patch": {
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   },
+   "before": {
+    "place_id": null,
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-fcd66bed",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "fcd66bed-838b-4de2-93f9-633a41e38600",
+   "patch": {
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   },
+   "before": {
+    "place_id": null,
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-cb797d3d",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "cb797d3d-4529-49d6-a889-36faf49d5654",
+   "patch": {
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   },
+   "before": {
+    "place_id": null,
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-abfc89ce",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "abfc89ce-5a75-4e84-b945-58df332651ce",
+   "patch": {
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   },
+   "before": {
+    "place_id": null,
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-42123449",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "42123449-2741-4314-8156-0689aff00bf0",
+   "patch": {
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   },
+   "before": {
+    "place_id": null,
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-a9be5ac1",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "a9be5ac1-8b44-4abb-8603-b2dee9223859",
+   "patch": {
+    "place_id": "6a3e3e01-c868-4948-b8a6-942678852eeb",
+    "parking": true,
+    "parking_note": "30분 무료 후 10분당 1,000원\n구매금액 1만원/3만원/5만원/10만원/20만원 이상 시 각각 1/2/3/4/5시간 무료"
+   },
+   "before": {
+    "place_id": null,
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-3f9d10ad",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "3f9d10ad-fdee-4bdf-a432-970feee895f6",
+   "patch": {
+    "place_id": "6a3e3e01-c868-4948-b8a6-942678852eeb",
+    "parking": true,
+    "parking_note": "30분 무료 후 10분당 1,000원\n구매금액 1만원/3만원/5만원/10만원/20만원 이상 시 각각 1/2/3/4/5시간 무료"
+   },
+   "before": {
+    "place_id": null,
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-47f9e27d",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "47f9e27d-c049-452e-9ed4-ee8a228acdf3",
+   "patch": {
+    "place_id": "055b4bb1-d3ab-4177-8cd3-e774c1f43bb1",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 초과 시 10분당 2,000원\n5만원 이상 구매 시 1시간, 10만원 이상 2시간, 15만원 이상 3시간 무료"
+   },
+   "before": {
+    "place_id": null,
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-5c97173d",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "5c97173d-ad29-471c-b99d-2935de0357d1",
+   "patch": {
+    "place_id": "15093c3e-1302-4f59-be17-6b8af208554c",
+    "parking": true,
+    "parking_note": "주차 가능\n최초 30분 무료, 이후 10분당 1,000원\n5만원 이상 구매 1시간·10만원 이상 2시간·15만원 이상 3시간·20만원 이상 5시간 무료"
+   },
+   "before": {
+    "place_id": null,
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-7b8bf8d5",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "7b8bf8d5-3df5-4034-900d-bb4e61c4dae9",
+   "patch": {
+    "place_id": "037ee556-bbf3-42f0-ae4a-b126d859d1c1",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n10:00~20:00 10분당 500원\n그 외 시간 10분당 200원"
+   },
+   "before": {
+    "place_id": null,
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-927de840",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "927de840-7ca5-4e62-8b79-440046a524a6",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 30분 2,000원\n이후 10분당 1,000원\n1만원 구매 시 1시간 무료\n3만원 구매 시 2시간 무료\n5만원 구매 시 3시간 무료"
+   },
+   "before": {
+    "parking_note": null
+   }
+  },
+  {
+   "key": "place-71d729af",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "71d729af-ad6d-435c-b482-6b43eaf1bdd2",
+   "patch": {
+    "place_id": "8fd05324-ea53-468a-88bc-2052ba3ce564"
+   },
+   "before": {
+    "place_id": null
+   }
+  },
+  {
+   "key": "place-b692c36b",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "b692c36b-4916-45be-811b-0c833d6d8c96",
+   "patch": {
+    "place_id": "81665bc1-d17b-4404-bd6c-2350835419c1"
+   },
+   "before": {
+    "place_id": null
+   }
+  },
+  {
+   "key": "place-93b5faae",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "93b5faae-36dc-480d-8875-b61619d12cf0",
+   "patch": {
+    "place_id": "81665bc1-d17b-4404-bd6c-2350835419c1"
+   },
+   "before": {
+    "place_id": null
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-26-e-2026-09-26T14-18-00-883Z.json"
+}

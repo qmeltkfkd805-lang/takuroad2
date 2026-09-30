@@ -1,0 +1,201 @@
+{
+ "plan": "2026-09-29-m",
+ "at": "2026-09-29T12:24:57.661Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "joyhobby-sindorim",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5071169087537,
+    "lng": 126.890222775625,
+    "road": "서울 구로구 새말로 97",
+    "building": "신도림테크노마트",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "06ae10c9-92f6-42a3-b1ee-f9a5d7647616",
+   "slug": "joihabi",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "plamodel-new"
+     ],
+     "unknown": []
+    },
+    "custom_goods": {
+     "added": [
+      "RC(무선모형)"
+     ]
+    }
+   }
+  },
+  {
+   "key": "figurepresso-fp",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5560818991805,
+    "lng": 126.92746137823,
+    "road": "서울 마포구 와우산로29길 48-11",
+    "building": "서교 엠투빌딩",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "b02bf7e5-5336-4043-82b5-290c9bd6f1bd",
+   "slug": "pigyueopeureso-epeupijeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "busanmodel",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.193373792282,
+    "lng": 129.066353045281,
+    "road": "부산 연제구 아시아드대로 99",
+    "building": "한림빌딩",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "e5b20e42-dfc3-4a2d-831d-dab98ba2e248",
+   "slug": "busanmohyeong",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    },
+    "custom_goods": {
+     "added": [
+      "RC(무선모형)"
+     ]
+    }
+   }
+  },
+  {
+   "key": "figurepresso-sindorim-closed",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "cfe0608f-e9bf-4921-9b11-75064766fece",
+   "patch": {
+    "description": "정품 피규어 전문 매장 피규어프레소의 신도림점으로, 신도림 테크노마트 3층 58호(에스컬레이터 바로 앞)에 있습니다. 2026년 5월 홍대 에프레소점이 이곳으로 확장 이전했습니다. 매일 12:00~21:00 영업하며, 매월 둘째·넷째 화요일은 휴무입니다(공식 안내). 신도림역 3번 출구에서 지하 통로로 연결됩니다."
+   },
+   "before": {
+    "description": "정품 피규어 전문 매장 피규어프레소의 신도림점으로, 신도림 테크노마트 3층 58호(에스컬레이터 바로 앞)에 있습니다. 2026년 5월 홍대 에프레소점이 이곳으로 확장 이전했습니다. 매일 12:00~21:00 영업하며, 매월 둘째·넷째 목요일은 휴무입니다(공식 안내). 신도림역 3번 출구에서 지하 통로로 연결됩니다."
+   }
+  },
+  {
+   "key": "gbase-coex-hours",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "9ac3f7bf-9d52-4250-9a84-c3f7140eedb1",
+   "patch": {
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "21:00"
+     }
+    }
+   },
+   "before": {
+    "hours": {
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     }
+    }
+   }
+  },
+  {
+   "key": "gbase-daegu-parking",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "20ad80ab-7fc7-4438-aea6-c02dd75bf6cf",
+   "patch": {
+    "parking": true,
+    "parking_note": "건물 주차 안내 없음 — 인근 동성로 중앙주차장(2·28공원 지하주차장) 이용(공식 안내)"
+   },
+   "before": {
+    "parking": null,
+    "parking_note": null
+   }
+  },
+  {
+   "key": "animate-lotte-sns",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "63d470eb-3a99-4028-b061-e29aeab28e7c",
+   "patch": {
+    "shop_link": "https://x.com/animate_lotte",
+    "sns_links": [
+     "https://x.com/animate_lotte"
+    ]
+   },
+   "before": {
+    "shop_link": "https://x.com/animate_lotte?s=20",
+    "sns_links": [
+     "https://x.com/animate_lotte?s=20",
+     "https://www.instagram.com/animatecafe_korea/"
+    ]
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-m-2026-09-29T12-24-57-661Z.json"
+}

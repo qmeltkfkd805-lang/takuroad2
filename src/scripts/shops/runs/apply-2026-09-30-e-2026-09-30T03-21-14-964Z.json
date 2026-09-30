@@ -1,0 +1,140 @@
+{
+ "plan": "2026-09-30-e",
+ "at": "2026-09-30T03:21:14.964Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "time-gacha-kondae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5412224148897,
+    "lng": 127.070365965299,
+    "road": "서울 광진구 아차산로33길 22",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "9027f92f-a8bf-47b2-b1c5-e67c965e119e",
+   "slug": "geondaegachyasyap-taim",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "chuplay-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5587712526005,
+    "lng": 126.924816169617,
+    "road": "서울 마포구 월드컵북로2길 93",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "3269e2e0-14df-45e2-a078-3f95d9b1739e",
+   "slug": "chyupeulrei",
+   "extras": {
+    "works": {
+     "added": [
+      "개구리 중사 케로로"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "keyring",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "otaku-early-edu-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5561258972383,
+    "lng": 126.927216313088,
+    "road": "서울 마포구 와우산로29길 56-6",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "3c9d57e6-9ef3-494d-8164-390961899558",
+   "slug": "otaku-jogigyoyuk",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kurostore-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5270404595814,
+    "lng": 126.964892234354,
+    "road": "서울 용산구 한강대로 69",
+    "building": "용산푸르지오써밋",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "c867888c-271e-47cb-bdfd-d7c5f6af7e69",
+   "slug": "kurosangjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "헌터×헌터",
+      "다마고치",
+      "은혼"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "yongtaku-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5270404595814,
+    "lng": 126.964892234354,
+    "road": "서울 용산구 한강대로 69",
+    "building": "용산푸르지오써밋",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "48bfb788-1feb-4d41-9bce-31b987eefe1f",
+   "slug": "yongtaku-bonjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-30-e-2026-09-30T03-21-14-964Z.json"
+}

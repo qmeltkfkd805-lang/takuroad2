@@ -1,0 +1,149 @@
+{
+ "plan": "2026-09-23-i",
+ "at": "2026-09-23T14:03:23.333Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "popmart-myeongdong",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5621035625291,
+    "lng": 126.984715370547,
+    "road": "서울 중구 명동8길 36",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "992a18ca-8cf5-4c07-af91-1d28c6654b68",
+   "slug": "papmateu-myeongdong-peurimieom-temasyap",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-thehyundai",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5252014942155,
+    "lng": 126.929108448093,
+    "road": "서울 영등포구 여의대로 108",
+    "building": "파크원",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "47f9e27d-c049-452e-9ed4-ee8a228acdf3",
+   "slug": "papmateu-deohyeondae-seouljeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-starfield-goyang",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.6469771187284,
+    "lng": 126.89477806511,
+    "road": "경기 고양시 덕양구 고양대로 1955",
+    "building": "스타필드 고양",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "93b5faae-36dc-480d-8875-b61619d12cf0",
+   "slug": "papmateu-seutapildeu-goyangjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-coex",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5129534255276,
+    "lng": 127.057115600619,
+    "road": "서울 강남구 봉은사로 524",
+    "building": "웨스틴 서울 파르나스",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "bc4db728-cbda-4058-b1c4-539b7975dde7",
+   "slug": "papmateu-koekseujeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5552669754859,
+    "lng": 126.923787665186,
+    "road": "서울 마포구 와우산로23길 56",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "e37fa683-47fe-422b-9c92-125910570a28",
+   "slug": "papmateu-hongdae-peulraegeusip-seutoeo",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-suwon",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "f194103b-ae01-456c-86f7-29224f17fe41",
+   "patch": {
+    "floor_info": "4층 4174호",
+    "phone": "0507-1406-1505"
+   },
+   "before": {
+    "floor_info": null,
+    "phone": null
+   }
+  },
+  {
+   "key": "popmart-yongsan",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "298c8675-96ea-409f-b768-f25818b64e91",
+   "patch": {
+    "floor_info": "아이파크몰 용산 리빙파크 6층"
+   },
+   "before": {
+    "floor_info": "6층"
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-23-i-2026-09-23T14-03-23-333Z.json"
+}

@@ -1,0 +1,142 @@
+{
+ "plan": "2026-09-28-kukje-g",
+ "at": "2026-09-28T06:33:32.883Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "kukje-haengpiso",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "phone": null,
+    "name": "행피소",
+    "floor_info": "국제전자센터 3층 49·50·51·149호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://www.instagram.com/haengpiso/",
+    "sns_links": [
+     "https://www.instagram.com/haengpiso/"
+    ],
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "20:00"
+     }
+    },
+    "description": "'행복의 피규어 소환소'라는 이름의 캐릭터 굿즈샵으로, 치이카와 인형·마스코트 등 굿즈를 판매합니다. 2026년 9월 국제전자센터 3층에 새로 문을 열었습니다(노란 바닥 매장).\n공식 소개 기준 영업시간은 12:00~20:00입니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T06:33:32.883Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-doorijoy",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "phone": null,
+    "name": "두리조이 가챠샵",
+    "floor_info": "국제전자센터 8층",
+    "cats": [
+     "가챠"
+    ],
+    "sns_links": [],
+    "shop_link": null,
+    "hours": null,
+    "description": "캡슐토이(가챠) 기계가 모여 있는 가챠샵 두리조이로, 국제전자센터 8층 엘리베이터 쪽 구석에 있습니다. 광주 충장로의 두리조이(현 가챠두리)와는 다른 매장입니다.\n공식 채널이 없어 방문 후기 기준으로 등록했으며, 영업시간은 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요.",
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T06:33:32.883Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kyouma-3f",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "floor_info": "국제전자센터 2층 136호(본점) · 3층 · 9층(1·2호점)",
+    "description": "서브컬처 피규어·가챠·굿즈 전문점 쿄우마샵의 국제전자센터 매장으로, 같은 건물 2·3·9층에 있습니다.\n· 2층 136호 본점: 피규어·가챠·굿즈, 제일복권·공식 MD\n· 3층: 가챠\n· 9층 1호점: 가챠·카드가챠\n· 9층 2호점: 가챠·카드가챠·제일복권\n영업시간은 공식 안내가 없어 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요."
+   }
+  }
+ ]
+}

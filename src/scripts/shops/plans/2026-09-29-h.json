@@ -1,0 +1,147 @@
+{
+ "name": "2026-09-29-h",
+ "items": [
+  {
+   "action": "update",
+   "key": "gashapon-suwon-starfield",
+   "shop_id": "3f622398-254d-4e57-94cc-b7ad6e2c1bb0",
+   "expect_updated_at": "2026-09-23T06:22:12.525653+00:00",
+   "fields": {
+    "floor_info": "스타필드 수원 5층 펀스퀘어 내",
+    "phone": "031-690-1509",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "yearRound": true
+    },
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+    "sns_links": [
+     "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+     "https://bandainamco-am.co.jp/ko/others/gashapon-bandai-officialshop/"
+    ],
+    "parking_note": "주차 가능(유료)\n6시간 무료, 이후 10분당 500원(1일 최대 18,000원)\n본건물 혼잡 시 대유평공원 B1~B2 주차장 이용 가능"
+   },
+   "overwrite": [
+    "floor_info",
+    "hours",
+    "shop_link",
+    "sns_links",
+    "parking_note"
+   ],
+   "reason": "반다이남코코리아 가샤폰 공식 매장 안내: GBO 스타필드 수원점(FUN SQUARE 내) 5F, 031-690-1509, 연중무휴 10:00~22:00, 주차 6시간 무료·이후 10분당 500원",
+   "sources": [
+    {
+     "url": "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+     "fields": [
+      "floor_info",
+      "phone",
+      "hours",
+      "shop_link",
+      "sns_links"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "\"GBO 스타필드 수원점 (FUN SQUARE 내) | 경기도 수원시 장안구 수성로 175, 5F (스타필드 수원 쇼핑몰) | 031-690-1509 | 운영시간(평일, 주말) : 연중무휴 오전 10:00~ 오후 10:00 | 수원 스타필드 주차 이용가능(주차 요금 6시간 무료, 이후 10분당 500원)\""
+    },
+    {
+     "url": "https://www.starfield.co.kr/suwon/about/parkingInfo.do",
+     "fields": [
+      "parking_note"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "스타필드 수원 place(96b189b6) 공식 주차 노트 그대로 복사 — 기존 샵 노트 \"스타필드 주차 6시간 무료\" 를 건물 공식 노트로 교체"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "pitb-suwon-starfield",
+   "shop_id": "c7946b62-197f-4aea-834f-2a6cfce9c233",
+   "expect_updated_at": "2026-09-28T05:33:43.94867+00:00",
+   "fields": {
+    "parking_note": "주차 가능(유료)\n6시간 무료, 이후 10분당 500원(1일 최대 18,000원)\n본건물 혼잡 시 대유평공원 B1~B2 주차장 이용 가능"
+   },
+   "overwrite": [
+    "parking_note"
+   ],
+   "reason": "공식 사이트 매장 목록 \"스타필드 수원점 | 경기도 수원시 장안구 수성로 175 스타필드 수원점 4F\" — 주소·층 일치. 주차 노트만 건물 공식 값으로",
+   "sources": [
+    {
+     "url": "https://playinthebox.co.kr/ko",
+     "fields": [
+      "addr",
+      "floor_info"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 사이트 매장 목록(10곳) \"starfield-suwon: 스타필드 수원점, 경기도 수원시 장안구 수성로 175 스타필드 수원점 4F\" — 영업시간·전화 표기 없음(기존 값 유지)"
+    },
+    {
+     "url": "https://www.starfield.co.kr/suwon/about/parkingInfo.do",
+     "fields": [
+      "parking_note"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "스타필드 수원 place(96b189b6) 공식 주차 노트 그대로 복사 — 기존 샵 노트 \"스타필드 주차 6시간 무료\" 를 건물 공식 노트로 교체"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "animate-cafe-jamsil",
+   "shop_id": "3bd1292d-c560-4394-bca9-bca4c0c64bef",
+   "expect_updated_at": "2026-09-23T06:22:14.363399+00:00",
+   "fields": {},
+   "reason": "공식 X @animatecafe_js 고정 게시(2026-08-21) 하츠네 미쿠 콜라보 9/4~10/13 개최 — 영업 중 확인. 프로필 소개(시간·층)는 비로그인 미표시라 기존 값 유지",
+   "sources": [
+    {
+     "url": "https://x.com/animatecafe_js",
+     "fields": [
+      "status"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "고정 게시 \"【하츠네 미쿠-Chocoanimal Miku Wagon×애니메이트 카페】 개최 기간 9월4일(금)~10월13일(화) #잠실롯데점\" (브라우저 확인)"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "popable-yongsan-link",
+   "shop_id": "74194916-1c7d-41bb-9e98-2ef230bbd6b2",
+   "expect_updated_at": "2026-09-29T07:20:49.437854+00:00",
+   "fields": {},
+   "reason": "이벤트 연결만",
+   "link_events": [
+    {
+     "event_id": "b0eb1ddb-c276-4a68-99b5-54327343f8bc",
+     "evidence": "place_detail \"테마파크 6층 팝콘D스퀘어 팝퍼블 용산점\", 같은 도로명, shop_id 비어 있음 (suggestShopLinks)"
+    }
+   ],
+   "sources": []
+  }
+ ]
+}

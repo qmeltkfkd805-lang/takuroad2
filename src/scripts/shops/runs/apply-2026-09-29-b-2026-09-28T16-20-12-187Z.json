@@ -1,0 +1,133 @@
+{
+ "plan": "2026-09-29-b",
+ "at": "2026-09-28T16:20:12.187Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "hoemarket-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5560017438305,
+    "lng": 126.927809919208,
+    "road": "서울 마포구 와우산로29길 48-14",
+    "building": "서교타운",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "c704b83e-d2fd-424e-bb33-28774b59d6d3",
+   "slug": "hoemaket-hongdaejeom",
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와",
+      "최애의 아이",
+      "스파이×패밀리",
+      "WIND BREAKER (니이 사토루)",
+      "앙상블 스타즈!!",
+      "우마무스메 프리티 더비",
+      "마슐"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "hoemarket-guui",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.550775692995,
+    "lng": 127.088710483489,
+    "road": "서울 광진구 천호대로130길 22",
+    "building": "구의동 Phil Heim",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "0e2df5db-651c-4046-a0b0-06b91cf9b261",
+   "slug": "hoemaket-guuijeom",
+   "extras": {
+    "works": {
+     "added": [
+      "주술회전",
+      "데스노트",
+      "나의 히어로 아카데미아",
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "plushie-new",
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "ittanstore-jeonju",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8201765300288,
+    "lng": 127.146028292868,
+    "road": "전북특별자치도 전주시 완산구 팔달로 199",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "8b7160b3-a3e9-4077-8724-1c75849d6840",
+   "slug": "ittangage",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kakagacha-gongneung",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.6289351122752,
+    "lng": 127.076658389084,
+    "road": "서울 노원구 공릉로51길 4",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "4246e968-ecf7-4da6-ba89-87f9eee92280",
+   "slug": "kkakkagachya",
+   "extras": {
+    "works": {
+     "added": [
+      "죠죠의 기묘한 모험",
+      "치이카와"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-b-2026-09-28T16-20-12-187Z.json"
+}

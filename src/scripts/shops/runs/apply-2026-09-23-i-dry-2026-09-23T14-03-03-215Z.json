@@ -1,0 +1,382 @@
+{
+ "plan": "2026-09-23-i",
+ "at": "2026-09-23T14:03:03.215Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "popmart-myeongdong",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5621035625291,
+    "lng": 126.984715370547,
+    "road": "서울 중구 명동8길 36",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "팝마트 명동 프리미엄 테마샵",
+    "addr": "서울 중구 명동8길 36",
+    "floor_info": null,
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": "02-319-9968",
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "description": "POP MART(팝마트) 공식 아트토이 매장입니다. 명동에 있으며 매일 11:00~22:00 영업합니다(공식 매장 안내).",
+    "lat": 37.5621035625291,
+    "lng": 126.984715370547,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-23T14:03:03.215Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-thehyundai",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5252014942155,
+    "lng": 126.929108448093,
+    "road": "서울 영등포구 여의대로 108",
+    "building": "파크원",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "팝마트 더현대 서울점",
+    "addr": "서울 영등포구 여의대로 108",
+    "floor_info": "더현대 서울 지하 2층",
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": "02-3277-0854",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "description": "POP MART(팝마트) 공식 아트토이 매장입니다. 더현대 서울 지하 2층에 있습니다. 금·토·일은 20:30까지 영업합니다(공식 매장 안내).",
+    "lat": 37.5252014942155,
+    "lng": 126.929108448093,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-23T14:03:03.215Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-starfield-goyang",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.6469771187284,
+    "lng": 126.89477806511,
+    "road": "경기 고양시 덕양구 고양대로 1955",
+    "building": "스타필드 고양",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "팝마트 스타필드 고양점",
+    "addr": "경기 고양시 덕양구 고양대로 1955",
+    "floor_info": "스타필드 고양 3층",
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": "031-5173-3036",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "description": "POP MART(팝마트) 공식 아트토이 매장입니다. 스타필드 고양 3층에 있습니다.",
+    "lat": 37.6469771187284,
+    "lng": 126.89477806511,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-23T14:03:03.215Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-coex",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5129534255276,
+    "lng": 127.057115600619,
+    "road": "서울 강남구 봉은사로 524",
+    "building": "웨스틴 서울 파르나스",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "팝마트 코엑스점",
+    "addr": "서울 강남구 봉은사로 524",
+    "floor_info": "코엑스몰 B1층 메가박스 입구",
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": "02-6002-6601",
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "description": "POP MART(팝마트) 공식 아트토이 매장입니다. 코엑스몰 지하 1층 메가박스 입구에 있습니다. 금·토·일은 22:00까지 영업합니다(공식 매장 안내).",
+    "lat": 37.5129534255276,
+    "lng": 127.057115600619,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-23T14:03:03.215Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "popmart-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5552669754859,
+    "lng": 126.923787665186,
+    "road": "서울 마포구 와우산로23길 56",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "팝마트 홍대 플래그십 스토어",
+    "addr": "서울 마포구 와우산로23길 56",
+    "floor_info": null,
+    "cats": [
+     "굿즈샵"
+    ],
+    "phone": "02-6371-0702",
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://www.popmart.com/kr",
+    "sns_links": [
+     "https://www.instagram.com/popmart_korea/"
+    ],
+    "description": "POP MART(팝마트) 공식 아트토이 매장입니다. 홍대 플래그십 스토어로, 매일 11:00~22:00 영업합니다(공식 매장 안내).",
+    "lat": 37.5552669754859,
+    "lng": 126.923787665186,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-23T14:03:03.215Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "action": "update",
+   "status": "ERROR",
+   "error": "invalid input syntax for type uuid: \"undefined\""
+  },
+  {
+   "action": "update",
+   "status": "ERROR",
+   "error": "invalid input syntax for type uuid: \"undefined\""
+  }
+ ]
+}

@@ -1,0 +1,125 @@
+{
+ "plan": "2026-09-28-kukje-e",
+ "at": "2026-09-28T05:54:39.941Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "kukje-thegoods",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "242fdebd-95c9-490a-b11e-4b8f16b7a3b2",
+   "slug": "deogutjeu-gukjeonjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "self-kuji"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-marogoods",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "55cceabf-51ca-4856-b454-79059620c615",
+   "slug": "marogutjeu",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-noriter",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "54903f15-a112-4ad9-a14c-1cb3d23b4083",
+   "slug": "noliteo-gachya",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-adeco",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "9b08d92b-1330-4f8b-89f6-1ee972a26042",
+   "slug": "adekko-gukjejeonjasenteojeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-toysky-2",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "eeaaec9c-9297-45c1-aa41-358cb03234ff",
+   "patch": {
+    "floor_info": "국제전자센터 9층 110호(1호점) · 45호(2호점)",
+    "sns_links": [
+     "https://x.com/toysky9110_",
+     "https://www.instagram.com/kimhyun6283/",
+     "https://www.instagram.com/toysky.9110/"
+    ],
+    "description": "핫토이·반다이 피규어와 굿즈, 제일복권을 파는 토이스카이의 국제전자센터 매장으로, 9층에 두 곳이 있습니다(3층 스카이토이와 다른 매장).\n· 9층 110호 1호점: 핫토이·반다이 피규어, 굿즈\n· 9층 45호 2호점: 이치방쿠지 중심(2026년 9월 12일 오픈, 1호점 맞은편 하늘색 바닥 매장)\n구매 문의는 공식 계정 DM으로 받습니다. 영업시간은 공식 안내가 없어 비워 두었습니다.\n국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요."
+   },
+   "before": {
+    "floor_info": "국제전자센터 9층 110호",
+    "sns_links": [
+     "https://x.com/toysky9110_",
+     "https://www.instagram.com/kimhyun6283/"
+    ],
+    "description": "핫토이·반다이 피규어와 굿즈, 제일복권을 파는 매장으로, 국제전자센터 9층 110호에 있습니다(3층 스카이토이와 다른 매장). 구매 문의는 공식 계정 DM으로 받습니다. 영업시간은 공식 안내가 없어 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요."
+   },
+   "extras": {
+    "goods_types": {
+     "added": [],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-28-kukje-e-2026-09-28T05-54-39-941Z.json"
+}

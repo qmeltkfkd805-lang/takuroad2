@@ -1,0 +1,373 @@
+{
+  "key": "bluelock-neo-egoist",
+  "official_urls": [
+    "https://www.instagram.com/p/Dc0VTb2k2Wd/",
+    "https://www.instagram.com/p/DdFm1EGnyl_/",
+    "https://www.instagram.com/p/DdQqIVflI44/",
+    "https://www.instagram.com/p/DdXoTZrE4iC/",
+    "https://www.instagram.com/p/Ddag_mCk1fO/",
+    "https://x.com/haksan_comic/status/2095421652838560243",
+    "https://x.com/haksan_comic/status/2095421993117962487",
+    "https://x.com/haksan_comic/status/2097490253372420472",
+    "https://x.com/haksan_comic/status/2097852662314389614",
+    "https://x.com/haksan_comic/status/2100132078113403352",
+    "https://x.com/haksan_comic/status/2100389209962111403",
+    "https://x.com/haksan_comic/status/2100794356257198099",
+    "https://m.booking.naver.com/booking/12/bizes/1736544/items/8054229"
+  ],
+  "title_official": "BLUE LOCK 2026 THE LAST POP-UP : NEO EGOIST LEAGUE",
+  "work": "블루 록",
+  "type_guess": "popup",
+  "start_date": "2026-10-01",
+  "end_date": "2026-10-07",
+  "branches": [
+    {
+      "name": "더현대 서울",
+      "venue": "더현대 서울 지하 2층 ATTAG!",
+      "address": "서울 영등포구 여의대로 108 (더현대 서울)",
+      "floor_detail": "B2 ATTAG! (여의도역 3번 출구 연결 지하통로 → 더현대 서울 방향)",
+      "hours": "월~목 10:30~20:00 / 금~일 & 공휴일 10:30~20:30 (10/5(월) 대체공휴일 운영). 날짜별: 10/1(목)·10/6(화)·10/7(수) 10:30~20:00 (입장마감 19:30), 10/2(금)~10/5(월) 10:30~20:30 (입장마감 20:00)",
+      "start_date": "2026-10-01",
+      "end_date": "2026-10-07"
+    }
+  ],
+  "entry": "사전예약 + 현장예약 병행. 사전예약(네이버 예약): 9/17(목) 11:00 오픈, 대상 10/1(목)~10/4(일), 1회차 10:30~11:15 / 2회차 11:15~12:00, 예약 1회당 본인 1인, 네이버 ID당 1회, 동반인은 별도 예약, 실물/모바일 신분증 필수(캡처·사본 불가), 만 14세 미만은 법정대리인 계정 예약 후 신분증+가족관계증명서 지참. 1회차 현장 대기 시작 10시, 2회차 11시. 링크: https://bit.ly/4rmhw2Y → https://m.booking.naver.com/booking/12/bizes/1736544/items/8054229. 현장예약: 10/1~10/4는 12:00 이후, 10/5(월)~10/7(수)는 종일; 접수 시작 오전 10시, 백화점 오픈 전(10:30 전)엔 지하 2층 여의도역 연결통로 입구, 오픈 후엔 지하 2층 ATTAG 입구에 비치된 QR로 등록, 카카오톡 알림톡/이메일로 호출, 호출 후 15분 이내 도착(9/3 안내는 10분). 1인 1명, 동반 불가. 입장 대기 없을 시 자율 입장으로 변경.",
+  "benefits": [
+    {
+      "condition": "[온·오프라인 공통] 팝업 기간 중 블루 록 상품 및 도서 구매 금액 3만원 당 (오프라인은 상품+도서 합산, 온라인은 상품 금액 기준)",
+      "item": "증명사진 랜덤 1종",
+      "count_kinds": "7종"
+    },
+    {
+      "condition": "[오프라인 한정 ①] 블루 록 상품 및 도서 7만원 이상 구매 시 1인 1개",
+      "item": "쇼핑백",
+      "count_kinds": "1종"
+    },
+    {
+      "condition": "[오프라인 한정 ②] 블루 록 상품 및 도서 구매 시 영수증당 1장, 선착순, 1인 1회 (일일 수량 소진 시 당일 종료)",
+      "item": "카드 스티커 랜덤 1종",
+      "count_kinds": "7종"
+    },
+    {
+      "condition": "[오프라인 입장 특전] 오프라인 팝업 방문 입장 고객 1인 1장",
+      "item": "손목띠",
+      "count_kinds": "1종"
+    }
+  ],
+  "menu": [],
+  "goods": [
+    {
+      "name": "블루 록 킥오프 팩 (1~3권 합본 세트 + 금박 캔뱃지 2종 이사기/린) - 더현대 오프라인 ONLY, 500세트 한정",
+      "price": 18000
+    },
+    {
+      "name": "블루 록 37권 한정판 (37권+아웃박스+미하엘 카이저 아크릴 스탠드+아크릴 카드 3종+캐릭터 빅 스티커 12종) - 더현대 오프라인 선판매",
+      "price": 45000
+    },
+    {
+      "name": "01 바스타드 뮌헨 듀오 유리컵 (300ml 2개입, 일 한정 100개)",
+      "price": 25000
+    },
+    {
+      "name": "02 바스타드 뮌헨 멀티 스탠드 세트 (일 한정 100개)",
+      "price": 25000
+    },
+    {
+      "name": "03 랜덤 미니자석 아크릴 스탠드 (전 8종)",
+      "price": 10000
+    },
+    {
+      "name": "04 랜덤 말랑 캔뱃지 (전 8종)",
+      "price": 8000
+    },
+    {
+      "name": "05 랜덤 아크릴 시네마 (전 10종)",
+      "price": 9500
+    },
+    {
+      "name": "06 아크릴 카라비너 (각)",
+      "price": 10000
+    },
+    {
+      "name": "07 장면 아크릴 키링 (각)",
+      "price": 10500
+    },
+    {
+      "name": "08 원화 티셔츠 (이토시 사에 ver. / 이토시 린 ver., 각)",
+      "price": 43000
+    },
+    {
+      "name": "09 진파치의 원석 콜렉트북",
+      "price": 25000
+    },
+    {
+      "name": "10 말풍선 메모지 (각)",
+      "price": 5000
+    },
+    {
+      "name": "11 원화 판 스티커 (각, NEW VER.)",
+      "price": 5000
+    },
+    {
+      "name": "12 사쉐 (각, 이토시 사에/카이저/바니 NEW VER. 포함)",
+      "price": 12000
+    },
+    {
+      "name": "13 원화 엽서 (각, NEW VER.)",
+      "price": 2000
+    },
+    {
+      "name": "14 짐색+슬로건 세트 (각)",
+      "price": 45000
+    },
+    {
+      "name": "15 원화 아크릴 디오라마",
+      "price": 35000
+    },
+    {
+      "name": "16 원화 L홀더 (각)",
+      "price": 5000
+    },
+    {
+      "name": "17 원화 대사 스티커",
+      "price": 2500
+    },
+    {
+      "name": "18 원화 마스킹 테이프 (각)",
+      "price": 8000
+    }
+  ],
+  "notes": [
+    "주최/판매: 학산문화사(학산) · 코믹팝, 라이선스 KODANSHA. 공식 채널: IG @haksan_comic, X @haksan_comic (X에 원본 고해상도 이미지와 IG 미노출 게시물이 있음).",
+    "행사장 내 판매 도서는 모두 10% 할인가 판매 (명시된 18,000원/45,000원이 할인 전/후 가격인지는 공식 자료에 명시 없음).",
+    "온라인 판매: 더현대Hi (https://bit.ly/bpop_0909), 10/01 10:30 ~ 10/07 20:00, 배송 2026.10.28부터 순차 발송. 온·오프라인 판매 상품 상이할 수 있음.",
+    "상품별 1인당 구매 수량 제한 적용(예: 바스타드 뮌헨 듀오 유리컵 1인 2개), 각 상품 이름표에서 확인. 결제수단: 신용카드/삼성페이/애플페이/위챗페이/네이버페이/카카오페이.",
+    "현장 예약 호출 후 도착 시간: 9/3 안내 '10분 이내' vs 9/18 운영안내 '15분 이내' — 최신(9/18) 기준 15분.",
+    "사전예약 링크는 9/17 10시 공개, 11시 이전 시스템 오류 예약은 자동 취소 (X 9/16 공지).",
+    "SNS 공유 이벤트 '에고이스트 모집' (~9/22, 추첨 5명 코믹팝 1만원 상품권) — 종료 임박/행사 전 이벤트.",
+    "Popga의 '금-일 10:30~20:30' 표기는 공식과 일치하며, 공식은 공휴일(10/5 대체공휴일)도 20:30까지."
+  ],
+  "unverified_popga": [
+    "도로명 주소 '서울 영등포구 여의대로 108' (공식 게시물엔 주소 텍스트 없음; 더현대 서울 주소)",
+    "popga preReservationEndedAt 2026-10-07T20:30 (공식 사전예약 대상은 10/1~10/4 오전 회차만)"
+  ],
+  "images": [
+    {
+      "file": "poster_main.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2095421652838560243",
+      "what": "main poster (IG https://www.instagram.com/p/Dc0VTb2k2Wd/ 동일, X 원본 고해상도)",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "reservation_guide_0903_cover.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2095421993117962487",
+      "what": "사전 예약/현장 예약 안내 cover (9/3)",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "reservation_guide_0903_schedule_hours_map.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2095421997052510479",
+      "what": "운영 일정/운영시간/장소 지도 (대체공휴일 10/5 운영)",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "reservation_guide_0903_timetable.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2095421997052510479",
+      "what": "예약 회차표 + 사전/현장 예약 안내",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "reservation_guide_0903_pre_rules.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2095421997052510479",
+      "what": "사전 예약 유의사항",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "reservation_guide_0903_onsite_rules.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2095421997052510479",
+      "what": "현장 예약 유의사항",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "md_list_01_cover.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097490253372420472",
+      "what": "MD LIST cover",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "md_list_02_sales_info.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097490253372420472",
+      "what": "현장/온라인(더현대Hi) 판매 정보 + 구매 유의사항",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "md_list_03_books.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097490253372420472",
+      "what": "goods - 킥오프 팩 / 37권 한정판",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "md_list_04_goods_01_02.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097490253372420472",
+      "what": "goods 01-02 (바스타드 뮌헨 듀오 유리컵 / 멀티 스탠드 세트)",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "md_list_05_goods_03_05.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097490257373741450",
+      "what": "goods 03-05",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "md_list_06_goods_06_08.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097490257373741450",
+      "what": "goods 06-08",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "md_list_07_goods_09_13.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097490257373741450",
+      "what": "goods 09-13",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "md_list_08_goods_14_18.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097490257373741450",
+      "what": "goods 14-18",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "benefit_novelty.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097490261253476588",
+      "what": "benefit - NOVELTY (증명사진/쇼핑백/카드스티커/손목띠)",
+      "width": 3000,
+      "height": 3750
+    },
+    {
+      "file": "special_book_01_overview.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097852662314389614",
+      "what": "special book - 킥오프 팩 & 37권 한정판 overview (IG DdFm1EGnyl_)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "special_book_02_kickoff_books.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097852662314389614",
+      "what": "special book - KICK-OFF PACK 구성1 (18,000원)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "special_book_03_kickoff_badges.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097852662314389614",
+      "what": "special book - KICK-OFF PACK 구성2 캔배지",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "special_book_04_vol37_book.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097852665493672005",
+      "what": "special book - 37권 한정판 구성1 (45,000원)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "special_book_05_vol37_acrylic.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097852665493672005",
+      "what": "special book - 37권 한정판 구성2 아크릴 스탠드",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "special_book_06_vol37_sticker_card.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097852665493672005",
+      "what": "special book - 37권 한정판 구성3-4",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "special_book_07_end.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2097852665493672005",
+      "what": "special book - end card",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "sns_share_event.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2099407811247735096",
+      "what": "SNS 공유 이벤트 (에고이스트 모집, ~9/22)",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "prereservation_open_poster.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2100389209962111403",
+      "what": "사전 예약 오픈 poster (9/17)",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "prereservation_open_rules.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2100389209962111403",
+      "what": "사전 예약 안내/유의사항",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "operation_guide_cover.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2100794356257198099",
+      "what": "운영 안내 cover (9/18)",
+      "width": 2250,
+      "height": 2813
+    },
+    {
+      "file": "operation_guide_entry_hours.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2100794356257198099",
+      "what": "입장 안내 (운영시간/회차표)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "operation_guide_waiting_map.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2100794359675527655",
+      "what": "대기 공간 및 입장 안내 (여의도역 연결통로)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "operation_guide_pre_rules.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2100794359675527655",
+      "what": "사전 예약 유의사항 (대기 시작 10시/11시)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "operation_guide_onsite_rules.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2100794359675527655",
+      "what": "현장 예약 유의사항 (접수 시작 10시)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "operation_guide_purchase.jpg",
+      "source_url": "https://x.com/haksan_comic/status/2100794359675527655",
+      "what": "관람 및 구매 (구매 수량 제한)",
+      "width": 2250,
+      "height": 2813
+    }
+  ]
+}

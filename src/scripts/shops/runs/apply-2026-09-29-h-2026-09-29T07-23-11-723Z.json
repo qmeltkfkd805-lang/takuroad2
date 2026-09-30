@@ -1,0 +1,127 @@
+{
+ "plan": "2026-09-29-h",
+ "at": "2026-09-29T07:23:11.723Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "gashapon-suwon-starfield",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "3f622398-254d-4e57-94cc-b7ad6e2c1bb0",
+   "patch": {
+    "floor_info": "스타필드 수원 5층 펀스퀘어 내",
+    "phone": "031-690-1509",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "yearRound": true
+    },
+    "shop_link": "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+    "sns_links": [
+     "https://www.bnkrmall.co.kr/etc/gashapon-official_store.do",
+     "https://bandainamco-am.co.jp/ko/others/gashapon-bandai-officialshop/"
+    ],
+    "parking_note": "주차 가능(유료)\n6시간 무료, 이후 10분당 500원(1일 최대 18,000원)\n본건물 혼잡 시 대유평공원 B1~B2 주차장 이용 가능"
+   },
+   "before": {
+    "floor_info": "5층",
+    "phone": null,
+    "hours": {
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://bandainamco-am.co.jp/ko/others/gashapon-bandai-officialshop/",
+    "sns_links": [
+     "https://bandainamco-am.co.jp/ko/others/gashapon-bandai-officialshop/"
+    ],
+    "parking_note": "스타필드 주차 6시간 무료"
+   }
+  },
+  {
+   "key": "pitb-suwon-starfield",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "c7946b62-197f-4aea-834f-2a6cfce9c233",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n6시간 무료, 이후 10분당 500원(1일 최대 18,000원)\n본건물 혼잡 시 대유평공원 B1~B2 주차장 이용 가능"
+   },
+   "before": {
+    "parking_note": "스타필드 주차 6시간 무료"
+   }
+  },
+  {
+   "key": "animate-cafe-jamsil",
+   "action": "update",
+   "status": "NO_CHANGE"
+  },
+  {
+   "key": "popable-yongsan-link",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "link_events": {
+     "linked": [
+      {
+       "id": "b0eb1ddb-c276-4a68-99b5-54327343f8bc",
+       "title": "캐릭캐릭체인지 × 팝퍼블 콜라보 카페"
+      }
+     ],
+     "skipped": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-h-2026-09-29T07-23-11-723Z.json"
+}

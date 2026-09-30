@@ -1,0 +1,222 @@
+{
+  "key": "kuroko-limition",
+  "official_urls": [
+    "https://www.instagram.com/p/DdTN4PlTH3Y/",
+    "https://www.instagram.com/p/DdaUBjZk7se/",
+    "https://www.instagram.com/p/DdXvNhlE3UT/",
+    "https://x.com/limition_pick/status/2097867659987554701",
+    "https://x.com/limition_pick/status/2100041986766197053",
+    "https://x.com/limition_pick/status/2100404372564005176",
+    "https://x.com/limition_pick/status/2100766759380738552"
+  ],
+  "title_official": "쿠로코의 농구 POP-UP STORE",
+  "work": "쿠로코의 농구",
+  "type_guess": "popup",
+  "start_date": "2026-10-15",
+  "end_date": "2026-11-10",
+  "branches": [
+    {
+      "name": "AK PLAZA 홍대 LIMITION",
+      "venue": "AK 플라자 홍대 LIMITION",
+      "address": "서울 마포구 양화로 188 (popga 기준)",
+      "floor_detail": "4F LIMITION",
+      "hours": "공식 미공개 (AK PLAZA 홍대 영업시간 따를 것으로 추정)",
+      "start_date": "2026-10-15",
+      "end_date": "2026-11-10"
+    }
+  ],
+  "entry": "공식 게시물에 사전예약/입장 방식 언급 없음 (2026-09-21 기준). 참고: 같은 매장의 직전 이누야샤 팝업은 네이버 사전예약(1인 1매)을 운영했음 — 쿠로코 팝업 적용 여부 미확인",
+  "benefits": [
+    {
+      "condition": "당일 영수증 기준 2만원 이상 구매 시 (2만원 당 1매, 영수증 합산 불가)",
+      "item": "특전 캐릭터 코스터 랜덤 1종",
+      "count_kinds": "7종 (쿠로코·카가미·키세·미도리마·아오미네·무라사키바라·아카시)"
+    },
+    {
+      "condition": "당일 영수증 기준 5만원 이상 구매 시 (5만원 당 1매, 영수증 합산 불가)",
+      "item": "특전 캐릭터 스티커 랜덤 1종",
+      "count_kinds": "7종"
+    }
+  ],
+  "menu": [],
+  "goods": [
+    {
+      "name": "랜덤 캔배지 (7종)",
+      "price": 5500
+    },
+    {
+      "name": "랜덤 아크릴 명찰 (7종)",
+      "price": 7000
+    },
+    {
+      "name": "랜덤 선수 티켓 (7종)",
+      "price": 4500
+    },
+    {
+      "name": "증명사진 세트 (1종)",
+      "price": 12000
+    },
+    {
+      "name": "아크릴 블록 (7종)",
+      "price": 10000
+    },
+    {
+      "name": "장면컷 아크릴 스탠드 (7종)",
+      "price": 17000
+    },
+    {
+      "name": "테츠야 2호 마우스 패드 (1종)",
+      "price": 8000
+    },
+    {
+      "name": "멀티클리너 (4종)",
+      "price": 5500
+    },
+    {
+      "name": "세이린 농구부 반팔 티셔츠 (1종)",
+      "price": 39000
+    },
+    {
+      "name": "A3 포스터 (1종)",
+      "price": 7500
+    },
+    {
+      "name": "데스크 장패드 (1종)",
+      "price": 28000
+    },
+    {
+      "name": "랜덤 아크릴 카드 (10종)",
+      "price": 7000
+    },
+    {
+      "name": "포토 스튜디오st. 엽서 세트 (1종)",
+      "price": 18000
+    },
+    {
+      "name": "명대사 키링 (7종)",
+      "price": 12000
+    },
+    {
+      "name": "유니폼 스트랩 키링 (7종)",
+      "price": 19000
+    }
+  ],
+  "notes": [
+    "굿즈 가격은 공식 GOODS LIST 이미지(IG DdaUBjZk7se / X 2100766759380738552)에서 판독. 7종 등은 '각' 가격.",
+    "특전: 랜덤 증정, 선택·교환 불가, 조기 소진 시 증정 종료.",
+    "한국 팝업스토어 오리지널 굿즈 (공식 문구).",
+    "운영사 LIMITION (@limition_pick, IG/X 동일 핸들).",
+    "md_preview_01~04는 X 원본(2980x2252, 더 고해상도), md_preview_05~08은 IG 캐러셀(1440x1440). 상품 리스트·포스터는 IG가 X(1200px)보다 고해상도라 IG 버전 사용."
+  ],
+  "unverified_popga": [
+    "운영시간 '월-금 11:00 ~ 22:00 / 토-일 10:30 ~ 22:00' (popga만 기재)",
+    "주소 서울 마포구 양화로 188 (popga)"
+  ],
+  "images": [
+    {
+      "file": "poster_schedule.jpg",
+      "source_url": "https://www.instagram.com/p/DdTN4PlTH3Y/",
+      "what": "main poster (일정·장소: 2026.10.15-11.10 AK 플라자 홍대 4F LIMITION)",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "teaser_coming_soon.jpg",
+      "source_url": "https://pbs.twimg.com/media/HR0HQbyaMAAuSEU?format=jpg&name=orig",
+      "what": "teaser poster COMING SOON (X 2097867659987554701)",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "file": "product_list_01.jpg",
+      "source_url": "https://www.instagram.com/p/DdaUBjZk7se/ (item 1)",
+      "what": "goods list 1/3 (prices)",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "product_list_02.jpg",
+      "source_url": "https://www.instagram.com/p/DdaUBjZk7se/ (item 2)",
+      "what": "goods list 2/3 (prices)",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "product_list_03.jpg",
+      "source_url": "https://www.instagram.com/p/DdaUBjZk7se/ (item 3)",
+      "what": "goods list 3/3 (prices)",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "product_list_04.jpg",
+      "source_url": "https://www.instagram.com/p/DdaUBjZk7se/ (item 4)",
+      "what": "benefit - 2만원 이상 캐릭터 코스터 7종",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "product_list_05.jpg",
+      "source_url": "https://www.instagram.com/p/DdaUBjZk7se/ (item 5)",
+      "what": "benefit - 5만원 이상 캐릭터 스티커 7종",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "md_preview_01.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSTfUM8bUAA616N?format=jpg&name=orig",
+      "what": "goods photo (엽서 세트·캔배지)",
+      "width": 2980,
+      "height": 2252
+    },
+    {
+      "file": "md_preview_02.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSTfVKObEAAZDFH?format=jpg&name=orig",
+      "what": "goods photo (데스크 장패드·마우스패드)",
+      "width": 2980,
+      "height": 2252
+    },
+    {
+      "file": "md_preview_03.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSTfWirawAAruw8?format=jpg&name=orig",
+      "what": "goods photo (선수 티켓·아크릴 블록)",
+      "width": 2980,
+      "height": 2252
+    },
+    {
+      "file": "md_preview_04.jpg",
+      "source_url": "https://pbs.twimg.com/media/HSTfXPcaIAArMOM?format=jpg&name=orig",
+      "what": "goods photo (아크릴 블록)",
+      "width": 2980,
+      "height": 2252
+    },
+    {
+      "file": "md_preview_05.jpg",
+      "source_url": "https://www.instagram.com/p/DdXvNhlE3UT/ (item 5)",
+      "what": "goods photo (아크릴 명찰)",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "md_preview_06.jpg",
+      "source_url": "https://www.instagram.com/p/DdXvNhlE3UT/ (item 6)",
+      "what": "goods photo (유니폼 스트랩 키링)",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "md_preview_07.jpg",
+      "source_url": "https://www.instagram.com/p/DdXvNhlE3UT/ (item 7)",
+      "what": "goods photo (명대사 키링·아크릴 카드/스탠드)",
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "file": "md_preview_08.jpg",
+      "source_url": "https://www.instagram.com/p/DdXvNhlE3UT/ (item 8)",
+      "what": "goods photo (세이린 반팔 티셔츠)",
+      "width": 1440,
+      "height": 1440
+    }
+  ]
+}

@@ -16,7 +16,7 @@ const SELECT = `
   primary_tag:tags!primary_tag_id ( name ),
   route_shops (
     id, sort_order, distance_from_prev_m, duration_from_prev_min, move_tip,
-    shops ( id, slug, name, addr, lat, lng, region, hours, status, floor, unit, floor_info,
+    shops ( id, slug, name, addr, lat, lng, region, hours, status, floor, unit, floor_info, place_id, places ( name ),
       shop_images ( image_url, is_cover, sort_order ),
       cats
     )

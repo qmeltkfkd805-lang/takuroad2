@@ -1,0 +1,67 @@
+{
+ "plan": "2026-09-28-g",
+ "at": "2026-09-28T06:23:59.095Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "tamiya-suwon",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "phone": "031-240-2277"
+   }
+  },
+  {
+   "key": "smg-suwon",
+   "action": "update",
+   "status": "NO_CHANGE"
+  },
+  {
+   "key": "brothergoods-suwon",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "addr": "경기 수원시 팔달구 향교로 8-2",
+    "lat": 37.2674982138756,
+    "lng": 127.0021093839
+   }
+  },
+  {
+   "key": "thegoods-suwon",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "22:00"
+     }
+    }
+   }
+  }
+ ]
+}

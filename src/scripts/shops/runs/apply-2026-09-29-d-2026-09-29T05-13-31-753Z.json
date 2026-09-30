@@ -1,0 +1,85 @@
+{
+ "plan": "2026-09-29-d",
+ "at": "2026-09-29T05:13:31.753Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "odeokodeok",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "블루 아카이브",
+      "무직전생",
+      "개구리 중사 케로로",
+      "카드캡터 사쿠라",
+      "그 비스크 돌은 사랑을 한다",
+      "단다단",
+      "진격의 거인",
+      "우마무스메 프리티 더비",
+      "붕괴: 스타레일",
+      "명일방주"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "cacti-suwon",
+   "action": "update",
+   "status": "NO_CHANGE"
+  },
+  {
+   "key": "kirakiratomo-suwon",
+   "action": "update",
+   "status": "NO_CHANGE",
+   "extras": {
+    "works": {
+     "added": [
+      "젠레스 존 제로",
+      "나츠메 우인장",
+      "학원 아이돌 마스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "gacha-ming",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "269ab652-ba44-41e5-b93f-1c20038d395a",
+   "patch": {
+    "floor_info": "광창빌딩 105호"
+   },
+   "before": {
+    "floor_info": "1층 5호"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "산리오",
+      "꼬마마법사 레미"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "cineshop-yongsan",
+   "action": "update",
+   "status": "NO_CHANGE"
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-d-2026-09-29T05-13-31-753Z.json"
+}

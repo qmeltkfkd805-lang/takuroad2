@@ -1,0 +1,31 @@
+{
+ "plan": "2026-09-29-k2",
+ "at": "2026-09-29T10:21:31.295Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "ipark-parking-0",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용"
+   }
+  },
+  {
+   "key": "ipark-parking-1",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용"
+   }
+  },
+  {
+   "key": "ipark-parking-2",
+   "action": "update",
+   "status": "DRY_UPDATE",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용"
+   }
+  }
+ ]
+}

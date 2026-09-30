@@ -1,0 +1,109 @@
+{
+  "key": "conan-wind-festival",
+  "official_urls": [
+    "https://www.instagram.com/p/DdQpj1kk4Co/"
+  ],
+  "title_official": "명탐정 코난 POP-UP STORE WIND FESTIVAL (윈드 페스티벌 팝업)",
+  "work": "명탐정 코난",
+  "type_guess": "popup",
+  "start_date": "2026-09-21",
+  "end_date": "2026-10-08",
+  "branches": [
+    {
+      "name": "AK PLAZA 홍대",
+      "venue": "AK PLAZA 홍대",
+      "address": "서울 마포구 양화로 188",
+      "floor_detail": "3F",
+      "hours": "월-금 11:00~22:00 / 토·일 10:30~22:00 (unverified_popga)",
+      "start_date": "2026-09-21",
+      "end_date": "2026-10-08"
+    }
+  ],
+  "entry": "자유 입장(예약 안내 없음)",
+  "benefits": [
+    {
+      "condition": "럭키드로우 1회 4,000원 (포토기기로 구매), 히든 당첨 시 스태프에게 보여주면 당일 판매 상품 중 원하는 1개 추가 증정(랜덤 상품은 랜덤 제공)",
+      "item": "랜덤 럭키드로우 카드 (54×86mm, 플라스틱)",
+      "count_kinds": "표기 불일치 - notes 참조 (일반 10~12 + 히든 2)"
+    }
+  ],
+  "menu": [],
+  "goods": [
+    {
+      "name": "렌티큘러 엽서-오프닝/엔딩 (2종, 각, 150×100mm)",
+      "price": 7000
+    },
+    {
+      "name": "랜덤 홀로그램 캔뱃지-스틸시리즈02 (10종, 58×58mm)",
+      "price": 7000
+    },
+    {
+      "name": "랜덤 홀로그램 거울버튼-오프닝엔딩01 (8종, 75×75mm)",
+      "price": 8000
+    },
+    {
+      "name": "랜덤 증명사진 아크릴 키링03 (5종, 37×52mm)",
+      "price": 10000
+    },
+    {
+      "name": "홀로그램 와이드 티켓 엽서 (3종, 각)",
+      "price": 4000
+    },
+    {
+      "name": "트래블 스티커 세트-2매입 (2종, 각)",
+      "price": 8000
+    },
+    {
+      "name": "투명 다꾸 스티커 (4종, 각)",
+      "price": 2300
+    },
+    {
+      "name": "아크릴 키링 (9종, 각, 깃털 장식)",
+      "price": 12000
+    },
+    {
+      "name": "랜덤 럭키드로우 (1회)",
+      "price": 4000
+    }
+  ],
+  "notes": [
+    "운영: MOMORY (@momory_store)",
+    "럭키드로우 종수 표기가 공식 자료 내에서 불일치: 이미지 상단 '12종(일반 10개/히든 2개)', 하단 주의사항 '총 14개(일반 12개/히든 2개)', 캡션 '랜덤 럭키드로우(12종+히든 2종)'",
+    "히든 럭키드로우 2종은 하루 각 1개씩 총 2개 배출, 미배출이어도 당일 종료 후 다음날 리셋",
+    "굿즈 목록은 '신상품'만 게재 - 기존 상품도 판매될 수 있음(가격 미게재)",
+    "굿즈 일부에 '명탐정 코난: 하이웨이의 타천사' 로고 사용"
+  ],
+  "unverified_popga": [
+    "영업시간 (AK PLAZA 홍대 영업시간으로 추정)"
+  ],
+  "images": [
+    {
+      "file": "poster.jpg",
+      "source_url": "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/808763817_18092962688312279_2405740576647463713_n.jpg",
+      "what": "main poster",
+      "width": 1400,
+      "height": 1750
+    },
+    {
+      "file": "goods-1.jpg",
+      "source_url": "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/809415427_18092962667312279_3202309760040901016_n.jpg",
+      "what": "goods list 1 (신상품 가격)",
+      "width": 1400,
+      "height": 1750
+    },
+    {
+      "file": "goods-2.jpg",
+      "source_url": "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/809201700_18092962694312279_8025658074491069314_n.jpg",
+      "what": "goods list 2 (신상품 가격)",
+      "width": 1400,
+      "height": 1750
+    },
+    {
+      "file": "luckydraw.jpg",
+      "source_url": "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/809201739_18092962691312279_5737464507564757487_n.jpg",
+      "what": "럭키드로우 이벤트 안내",
+      "width": 1400,
+      "height": 1750
+    }
+  ]
+}

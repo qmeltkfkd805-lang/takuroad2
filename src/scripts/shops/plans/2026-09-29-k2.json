@@ -1,0 +1,86 @@
+{
+ "name": "2026-09-29-k2",
+ "items": [
+  {
+   "action": "update",
+   "key": "ipark-parking-0",
+   "shop_id": "298c8675-96ea-409f-b768-f25818b64e91",
+   "expect_updated_at": "2026-09-28T05:33:37.022321+00:00",
+   "fields": {
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용"
+   },
+   "overwrite": [
+    "parking_note"
+   ],
+   "reason": "아이파크몰 공식 주차안내 요금 1,500원/10분 (기존 1,300원 표기는 옛 값) — 건물 place 공식 노트로 통일",
+   "sources": [
+    {
+     "url": "https://www.iparkmall.co.kr/main/parking.do",
+     "fields": [
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 주차안내 브라우저 렌더 \"주차요금 : 1,500원 /10분 (매장별 주차할인 상이)\" — place 045ed3e4 노트 복사"
+    }
+   ],
+   "photo": "needed",
+   "notes": "팝마트 용산 아이파크몰점 순환 점검(주차 요금 공식 대조)"
+  },
+  {
+   "action": "update",
+   "key": "ipark-parking-1",
+   "shop_id": "2a9f7d7a-2b67-458a-ab6b-9364f32a90d1",
+   "expect_updated_at": "2026-09-28T05:33:37.771484+00:00",
+   "fields": {
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용"
+   },
+   "overwrite": [
+    "parking_note"
+   ],
+   "reason": "아이파크몰 공식 주차안내 요금 1,500원/10분 (기존 1,300원 표기는 옛 값) — 건물 place 공식 노트로 통일",
+   "sources": [
+    {
+     "url": "https://www.iparkmall.co.kr/main/parking.do",
+     "fields": [
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 주차안내 브라우저 렌더 \"주차요금 : 1,500원 /10분 (매장별 주차할인 상이)\" — place 045ed3e4 노트 복사"
+    }
+   ],
+   "photo": "needed",
+   "notes": "실바니안 패밀리 용산 아이파크몰 순환 점검(주차 요금 공식 대조)"
+  },
+  {
+   "action": "update",
+   "key": "ipark-parking-2",
+   "shop_id": "ca2043d4-5891-44b3-9bec-c5a19369d14c",
+   "expect_updated_at": "2026-09-28T05:33:38.581723+00:00",
+   "fields": {
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용"
+   },
+   "overwrite": [
+    "parking_note"
+   ],
+   "reason": "아이파크몰 공식 주차안내 요금 1,500원/10분 (기존 1,300원 표기는 옛 값) — 건물 place 공식 노트로 통일",
+   "sources": [
+    {
+     "url": "https://www.iparkmall.co.kr/main/parking.do",
+     "fields": [
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-29",
+     "note": "공식 주차안내 브라우저 렌더 \"주차요금 : 1,500원 /10분 (매장별 주차할인 상이)\" — place 045ed3e4 노트 복사"
+    }
+   ],
+   "photo": "needed",
+   "notes": "가샤폰 용산 아이파크몰점 순환 점검(주차 요금 공식 대조)"
+  }
+ ]
+}

@@ -1,0 +1,172 @@
+[
+  {
+    "slug": "heat-guy-j-anime",
+    "name": "히트 가이 제이",
+    "englishName": "Heat Guy J",
+    "aliases": [],
+    "description": "수사관 다이스케와 안드로이드 제이가 범죄 조직에 맞선다",
+    "genres": [
+      "SF",
+      "액션",
+      "추리"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "gilgamesh-anime",
+    "name": "길가메시",
+    "englishName": "Gilgamesh",
+    "aliases": [],
+    "description": "하늘이 뒤틀린 세계에서 남매가 초능력자들의 전쟁에 휘말린다",
+    "genres": [
+      "SF",
+      "추리",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-melody-of-oblivion-anime",
+    "name": "망각의 선율",
+    "englishName": "The Melody of Oblivion",
+    "aliases": [],
+    "description": "괴물에게 지배당한 세계에서 소년이 전사가 되어 진실을 찾는다",
+    "genres": [
+      "판타지",
+      "액션",
+      "모험"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "le-chevalier-d-eon-anime",
+    "name": "르 슈발리에 데옹",
+    "englishName": "Le Chevalier D’Eon",
+    "aliases": [],
+    "description": "왕실 기사 데옹이 누나의 죽음과 왕국의 음모를 추적한다",
+    "genres": [
+      "판타지",
+      "추리",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "c-the-money-of-soul-and-possibility-control-anime",
+    "name": "C",
+    "englishName": "C: The Money of Soul and Possibility Control",
+    "aliases": [],
+    "description": "대학생이 미래를 담보로 싸우는 금융가에서 삶의 가치를 마주한다",
+    "genres": [
+      "SF",
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "fractale-anime",
+    "name": "프랙탈",
+    "englishName": "Fractale",
+    "aliases": [],
+    "description": "거대 네트워크가 지배하는 세계에서 소년이 수수께끼의 소녀와 여행한다",
+    "genres": [
+      "SF",
+      "모험",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "phi-brain-puzzle-of-god-anime",
+    "name": "파이 브레인 신의 퍼즐",
+    "englishName": "Phi Brain: Puzzle of God",
+    "aliases": [],
+    "description": "퍼즐 천재 고교생이 목숨을 건 퍼즐과 비밀 조직의 시험에 도전한다",
+    "genres": [
+      "추리",
+      "학원",
+      "모험"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "sunday-without-god-anime",
+    "name": "신이 없는 일요일",
+    "englishName": "Sunday Without God",
+    "aliases": [],
+    "description": "죽음과 탄생이 멈춘 세계에서 묘지기 소녀가 진실을 찾아 여행한다",
+    "genres": [
+      "판타지",
+      "모험",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "galilei-donna-anime",
+    "name": "갈릴레이 돈나",
+    "englishName": "Galilei Donna",
+    "aliases": [],
+    "description": "갈릴레오의 후손인 세 자매가 조직을 피해 유산을 찾는다",
+    "genres": [
+      "SF",
+      "모험",
+      "액션"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "samurai-flamenco-anime",
+    "name": "사무라이 플라멩코",
+    "englishName": "Samurai Flamenco",
+    "aliases": [],
+    "description": "히어로를 동경하는 모델이 가면을 쓰고 거리의 악과 싸운다",
+    "genres": [
+      "액션",
+      "코미디",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  }
+]

@@ -1,0 +1,169 @@
+[
+  {
+    "slug": "city-the-animation-anime",
+    "name": "시티 디 애니메이션",
+    "englishName": "CITY THE ANIMATION",
+    "aliases": [],
+    "description": "기묘한 주민들이 사는 도시에서 세 친구의 예측 불가능한 일상이 펼쳐진다",
+    "genres": [
+      "코미디",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "turkey-time-to-strike-anime",
+    "name": "터키!",
+    "englishName": "Turkey! Time to Strike",
+    "aliases": [],
+    "description": "볼링부 여고생들이 경기와 우정을 통해 각자의 고민을 넘어선다",
+    "genres": [
+      "스포츠",
+      "학원",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "clevatess-anime",
+    "name": "클레바테스",
+    "englishName": "Clevatess",
+    "aliases": [],
+    "description": "마수왕에게 멸망한 왕국에서 되살아난 용사와 아기가 세계의 운명을 바꾼다",
+    "genres": [
+      "판타지",
+      "액션",
+      "모험"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "bad-girl-anime",
+    "name": "배드 걸",
+    "englishName": "Bad Girl",
+    "aliases": [],
+    "description": "모범생 유우가 선배의 관심을 끌기 위해 불량학생처럼 행동하기 시작한다",
+    "genres": [
+      "코미디",
+      "학원",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "see-you-tomorrow-at-the-food-court-anime",
+    "name": "푸드코트에서, 내일 또 봐",
+    "englishName": "See You Tomorrow at the Food Court",
+    "aliases": [],
+    "description": "겉모습이 정반대인 두 여고생이 방과 후 푸드코트에서 솔직한 이야기를 나눈다",
+    "genres": [
+      "일상",
+      "학원",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "milky-subway-the-galactic-limited-express-anime",
+    "name": "은하특급 밀키 서브웨이",
+    "englishName": "MILKY SUBWAY: The Galactic Limited Express",
+    "aliases": [],
+    "description": "우주 열차 청소형을 받은 문제아들이 폭주하는 열차에서 탈출을 시도한다",
+    "genres": [
+      "SF",
+      "코미디",
+      "액션"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "hotel-inhumans-anime",
+    "name": "호텔 인휴먼즈",
+    "englishName": "Hotel Inhumans",
+    "aliases": [],
+    "description": "킬러 전용 호텔의 컨시어지들이 위험한 손님들의 마지막 소원을 수행한다",
+    "genres": [
+      "액션",
+      "드라마",
+      "추리"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "with-you-and-the-rain-anime",
+    "name": "비와 너와",
+    "englishName": "With You and the Rain",
+    "aliases": [],
+    "description": "혼자 사는 작가가 개처럼 행동하는 수상한 너구리와 조용한 일상을 보낸다",
+    "genres": [
+      "일상",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "anne-shirley-anime",
+    "name": "앤 셜리",
+    "englishName": "Anne Shirley",
+    "aliases": [],
+    "description": "상상력 풍부한 고아 앤이 초록지붕 집에서 가족과 꿈을 찾아 성장한다",
+    "genres": [
+      "드라마",
+      "가족",
+      "일상"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "mono-anime",
+    "name": "모노",
+    "englishName": "mono",
+    "aliases": [],
+    "description": "사진부 소녀들이 다양한 촬영 장비로 야마나시의 풍경과 일상을 기록한다",
+    "genres": [
+      "일상",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  }
+]

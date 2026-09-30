@@ -1,0 +1,111 @@
+{
+ "plan": "2026-09-28-g",
+ "at": "2026-09-28T06:24:07.847Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "tamiya-suwon",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "0c9666e5-9c1a-4c65-9856-93ef9fa210d0",
+   "patch": {
+    "phone": "031-240-2277"
+   },
+   "before": {
+    "phone": "0507-1349-2326"
+   }
+  },
+  {
+   "key": "smg-suwon",
+   "action": "update",
+   "status": "NO_CHANGE"
+  },
+  {
+   "key": "brothergoods-suwon",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "f24cb094-56ec-4f22-9618-864551058904",
+   "patch": {
+    "addr": "경기 수원시 팔달구 향교로 8-2",
+    "lat": 37.2674982138756,
+    "lng": 127.0021093839
+   },
+   "before": {
+    "addr": "경기 수원시 팔달구 향교로 8-1",
+    "lat": 37.2676626550022,
+    "lng": 127.002050763045
+   }
+  },
+  {
+   "key": "thegoods-suwon",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "76994976-bf17-45c4-a8a2-efe1a3715a2e",
+   "patch": {
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "22:00"
+     }
+    }
+   },
+   "before": {
+    "hours": {
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     }
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-28-g-2026-09-28T06-24-07-847Z.json"
+}

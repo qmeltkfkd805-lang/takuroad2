@@ -1,0 +1,1485 @@
+{
+ "name": "2026-09-23-d",
+ "items": [
+  {
+   "action": "update",
+   "key": "research-0c9666e5",
+   "shop_id": "0c9666e5-9c1a-4c65-9856-93ef9fa210d0",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [],
+   "goods_types": [
+    "clothing"
+   ],
+   "sources": [
+    {
+     "url": "https://yshobby.co.kr/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-ff169fc0",
+   "shop_id": "ff169fc0-f22e-4148-b61a-42039616dcc7",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "3d45ef56-38df-4eaf-81c6-06ad83fbda02",
+     "evidence": "Work category in the official Dotorisup online mall (https://www.dotorisup.com/)"
+    },
+    {
+     "tag_id": "f23e27a4-2a85-4bf7-860f-686e1910e7d8",
+     "evidence": "Work category in the official Dotorisup online mall (https://www.dotorisup.com/)"
+    },
+    {
+     "tag_id": "4cedee89-3f74-4252-a84d-783166cb44df",
+     "evidence": "Work category in the official Dotorisup online mall (https://www.dotorisup.com/)"
+    },
+    {
+     "tag_id": "665ae554-236e-49db-9c38-be39f66b1035",
+     "evidence": "Work category in the official Dotorisup online mall (https://www.dotorisup.com/)"
+    },
+    {
+     "tag_id": "83ecedb4-152c-4bac-bfe4-b3efa801b895",
+     "evidence": "Work category in the official Dotorisup online mall (https://www.dotorisup.com/)"
+    }
+   ],
+   "goods_types": [
+    "can-badge-new",
+    "cushion",
+    "household-items"
+   ],
+   "sources": [
+    {
+     "url": "https://www.dotorisup.com/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-29449d53",
+   "shop_id": "29449d53-4cd9-4cba-9eac-8a3d88c5c25d",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "7fc6cb70-c059-40e3-86a4-39dc28b6b32c",
+     "evidence": "Official X @the_ku_AKs: 주술회전 넨도로이드 게토 스구루 입고 (https://x.com/the_ku_AKs/status/1967515108382491095)"
+    },
+    {
+     "tag_id": "2ee1269f-0c23-49c1-8e2d-3af51376db1c",
+     "evidence": "Official X @the_ku_AKs: 아이돌 마스터 시리즈 증명 사진 입고 (https://x.com/the_ku_AKs/status/1981651089792675881)"
+    },
+    {
+     "tag_id": "d2281f8e-1fb3-40f6-a053-e6cfd7268e0f",
+     "evidence": "Official X @the_ku_AKs: 아이돌리쉬 세븐 캔배지 컬렉션+ vol.3 입고 (https://x.com/the_ku_AKs/status/2055941046715265225)"
+    },
+    {
+     "tag_id": "2622be14-383e-4fef-af44-d863989a9a2e",
+     "evidence": "Official X @the_ku_AKs, several posts: 다마고치 아크릴 키홀더, 누이구루미 마스코트, 누이 핀 입고 (https://x.com/the_ku_AKs/status/2057756411053158724)"
+    },
+    {
+     "tag_id": "f6dff3d1-5a30-409d-849c-9a34d111b1be",
+     "evidence": "Official X @the_ku_AKs: 산리오 도넛 패키지 아크릴 키체인 입고; Daum news also names 산리오 at the 더쿠 store (https://x.com/the_ku_AKs/status/1968244352205164674)"
+    }
+   ],
+   "goods_types": [],
+   "sources": [
+    {
+     "url": "https://x.com/the_ku_AKs/status/1967515108382491095",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/the_ku_AKs/status/1981651089792675881",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/the_ku_AKs/status/2055941046715265225",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/the_ku_AKs/status/2057756411053158724",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/the_ku_AKs/status/1968244352205164674",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-173a029b",
+   "shop_id": "173a029b-fc61-4282-be89-58e4ade23cbf",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "89409350-b9db-4d7d-9e10-c08cbf681f37",
+     "evidence": "AK/Daum article and AK animate store notice list 최애의 아이 among IPs sold at 애니메이트 AK수원 (https://v.daum.net/v/2KLv7e6blC)"
+    },
+    {
+     "tag_id": "339cc04d-61ca-4140-9d7d-03e2d5f84749",
+     "evidence": "Daum news: 애니메이트 AK수원 carries 하이큐, 주술회전, 히로아카, 슬램덩크, 귀멸의 칼날, 최애의 아이 (https://v.daum.net/v/2KLv7e6blC)"
+    },
+    {
+     "tag_id": "e3f9dbfd-e491-4433-9af1-6c0b146f5746",
+     "evidence": "Same Daum article, named in 애니메이트's IP list (https://v.daum.net/v/2KLv7e6blC)"
+    },
+    {
+     "tag_id": "2e4d2e67-1026-43d2-88d2-ebf781cde1c1",
+     "evidence": "AK플라자 수원 official Facebook: '애니메이트 주술회전, 나의히어로아카데미아, 괴수8호, 반딧불이의 혼례 등 소년만화' (https://www.facebook.com/akplaza.suwon.dep/posts/1264592725705511/)"
+    },
+    {
+     "tag_id": "0c1ecf9f-646d-4780-ba5f-80fdeb22a0c1",
+     "evidence": "AK플라자 공지·기사 (research-suwonAK)"
+    }
+   ],
+   "goods_types": [],
+   "sources": [
+    {
+     "url": "https://v.daum.net/v/2KLv7e6blC",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://www.facebook.com/akplaza.suwon.dep/posts/1264592725705511/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-3b042b45",
+   "shop_id": "3b042b45-de7c-429c-b786-3859c44b1757",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [],
+   "goods_types": [
+    "gacha-new",
+    "ichiban-kuji"
+   ],
+   "sources": [
+    {
+     "url": "https://www.instagram.com/p/DV0S9HaDnA5/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://www.facebook.com/bnkrmall/posts/1363475355809814/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-f7fc399e",
+   "shop_id": "f7fc399e-372c-469c-a81e-eb0c1874ad4b",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "519aa7e8-4169-45a7-ab8b-09a5cd40290e",
+     "evidence": "Official 웨차이굿즈 수원점 X: '수원점 시트러스 입고' random scene can badges (https://x.com/YUECHAI_SUWON/status/2081240448375595053)"
+    },
+    {
+     "tag_id": "844b7951-1223-4b4c-9387-8632b2ec54d0",
+     "evidence": "Official IG @yuechaigoods.suwon: '수원점 던전밥 입고' acrylic keyrings (https://www.instagram.com/yuechaigoods.suwon/p/DbvqxYACSWq/)"
+    },
+    {
+     "tag_id": "8ef907dc-37ce-4974-a2d7-37910d56f7dd",
+     "evidence": "Official IG @yuechaigoods.suwon: '수원점 제5인격 입고' trading cards (https://www.instagram.com/yuechaigoods.suwon/p/DbvpVVuiWr1/)"
+    },
+    {
+     "tag_id": "a4ba496d-ae3c-4666-a5f0-aba18d7d0fbb",
+     "evidence": "Official IG @yuechaigoods.suwon: '수원점 캐릭캐릭 체인지 (재)입고' keyrings, nui keyrings (https://www.instagram.com/yuechaigoods.suwon/p/Dbvu0OPCYME/)"
+    }
+   ],
+   "goods_types": [],
+   "sources": [
+    {
+     "url": "https://x.com/YUECHAI_SUWON/status/2081240448375595053",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DbvqxYACSWq/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/DbvpVVuiWr1/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://www.instagram.com/yuechaigoods.suwon/p/Dbvu0OPCYME/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-f194103b",
+   "shop_id": "f194103b-ae01-456c-86f7-29224f17fe41",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [],
+   "goods_types": [
+    "keyring",
+    "doll"
+   ],
+   "sources": [
+    {
+     "url": "https://fanplus.co.kr/community/misc/127177801",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://www.popmart.com/kr",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-3f622398",
+   "shop_id": "3f622398-254d-4e57-94cc-b7ad6e2c1bb0",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "cdb2b8fa-0a7f-4ecf-a1af-7f7287b85338",
+     "evidence": "Blog post about the Suwon Fun Square + Gashapon shop: the visitor pulled a Pompompurin collab capsule at the Gashapon shop (https://pandarank.net/contents/692119cd93ebe9fe2d7b756d)"
+    }
+   ],
+   "goods_types": [],
+   "sources": [
+    {
+     "url": "https://pandarank.net/contents/692119cd93ebe9fe2d7b756d",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-384328ab",
+   "shop_id": "384328ab-cb33-4682-93c1-f1c2076a036f",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "0c1ecf9f-646d-4780-ba5f-80fdeb22a0c1",
+     "evidence": "Store review lists One Piece, Demon Slayer, Spy x Family character figures among the lineup (https://pandarank.net/contents/692119cd93ebe9fe2d7b756d)"
+    }
+   ],
+   "goods_types": [
+    "plamodel-new"
+   ],
+   "sources": [
+    {
+     "url": "https://pandarank.net/contents/692119cd93ebe9fe2d7b756d",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://damduck01.com/3295",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-c7946b62",
+   "shop_id": "c7946b62-197f-4aea-834f-2a6cfce9c233",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "d65bf1c7-5b83-47c3-853c-5cb397ba7706",
+     "evidence": "Same place guide for the Suwon store lists Doraemon (https://mom-mom.net/travel/places/65d84f6f5e38fe79cab841ac)"
+    }
+   ],
+   "goods_types": [
+    "figure-new",
+    "household-items",
+    "gacha-new"
+   ],
+   "sources": [
+    {
+     "url": "https://mom-mom.net/travel/places/65d84f6f5e38fe79cab841ac",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://www.enetnews.co.kr/news/articleView.html?idxno=19565",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://www.dailysecu.com/news/articleView.html?idxno=152972",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-76994976",
+   "shop_id": "76994976-bf17-45c4-a8a2-efe1a3715a2e",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "10db4fd3-4305-440d-a2f8-ca9312b5d4e0",
+     "evidence": "Official Threads new-arrival post: 세가 하츠네 미쿠 FIGURIZMα 미쿠 펑크 입고 #더굿즈수원 (https://www.threads.com/@thegoods_suwon/post/Dbc9kbYmhiR)"
+    },
+    {
+     "tag_id": "f2b5d2ee-30bd-4c7a-8641-ba1d221ae1a5",
+     "evidence": "Official X account new-arrival posts include Overlord figures (https://x.com/thegoods_suwon)"
+    }
+   ],
+   "goods_types": [
+    "card-new"
+   ],
+   "sources": [
+    {
+     "url": "https://www.threads.com/@thegoods_suwon/post/Dbc9kbYmhiR",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/thegoods_suwon",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-be171fd6",
+   "shop_id": "be171fd6-61e5-4f5c-8235-fa8680050534",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "a48e942e-23f9-4900-ad93-adedb29d92ce",
+     "evidence": "Official X: '명탐정 코난 - 트레이딩 여름축제 피규어 입고' and Conan 'Neo City Pop' kuji (https://x.com/JGoods_SW/status/2034134292033679367)"
+    },
+    {
+     "tag_id": "fb8c03af-9bdc-4fb2-8fef-8d9a7792873c",
+     "evidence": "Official X: 프리렌 에니마이 쿠지 / 컬러풀 피규어 / 데스크탑 큐트 피규어 입고 (repeated) (https://x.com/JGoods_SW/status/2034837674490810785)"
+    },
+    {
+     "tag_id": "ed0008f9-e8c2-45b0-b98c-a2058c4ee70c",
+     "evidence": "Official X: Death Note DMM kuji arrival (Misa figure, acrylic, clear file, stickers) (https://x.com/jgoods_sw)"
+    },
+    {
+     "tag_id": "3d64da18-2032-46a2-9a39-729f5d94c58d",
+     "evidence": "Official X: '유희왕 듀얼몬스터즈 - 듀얼리스트 피규어 컬렉션 입고' (https://x.com/JGoods_SW/status/1896032262992642388)"
+    },
+    {
+     "tag_id": "1b6f3b0c-9e7b-470c-a588-f6d521c5a17e",
+     "evidence": "Triple aggregated blog reviews of J Goods Suwon mention Cinnamoroll gacha (https://triple.guide/attractions/d364ca1d-27f3-48a6-801f-26489e5b6537)"
+    },
+    {
+     "tag_id": "bbc3fdd4-63fe-4d0b-8090-48b064ae690b",
+     "evidence": "Same Triple reviews mention My Melody gacha (https://triple.guide/attractions/d364ca1d-27f3-48a6-801f-26489e5b6537)"
+    }
+   ],
+   "goods_types": [
+    "stationery"
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/JGoods_SW/status/2034134292033679367",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/JGoods_SW/status/2034837674490810785",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/jgoods_sw",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/JGoods_SW/status/1896032262992642388",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://triple.guide/attractions/d364ca1d-27f3-48a6-801f-26489e5b6537",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/JGoods_SW/status/1955523885971149104",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-a5ec4a07",
+   "shop_id": "a5ec4a07-99a4-40f8-bad6-d5240a27d9b4",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [],
+   "goods_types": [
+    "ichiban-kuji"
+   ],
+   "sources": [
+    {
+     "url": "https://www.instagram.com/ododgoods/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-fb162c42",
+   "shop_id": "fb162c42-1fa2-4ae8-a706-a399f2f9f815",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [],
+   "goods_types": [
+    "plushie-new"
+   ],
+   "sources": [
+    {
+     "url": "https://www.instagram.com/cacti.gachashop/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-75142dc4",
+   "shop_id": "75142dc4-c8e8-4235-83f3-faf84477abb4",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "d2281f8e-1fb3-40f6-a053-e6cfd7268e0f",
+     "evidence": "Official X (수원본점): '아이나나 웨하스 카드 22탄 대량 재입고' #수원굿즈샵 (Feb 2024, after store opening) (https://x.com/kirakiratomo_/status/1760540540540711223)"
+    },
+    {
+     "tag_id": "c1433d51-92db-428e-bda9-d8b060cc5f42",
+     "evidence": "Official IG bio lists specialties incl. 달빛천사 alongside 하나코군/귀칼/히로아카/코난/카드캡터사쿠라 (https://www.instagram.com/kirakiratomo_official)"
+    }
+   ],
+   "goods_types": [
+    "card-new"
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/kirakiratomo_/status/1760540540540711223",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://www.instagram.com/kirakiratomo_official",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/kirakiratomo_/status/1915382266345513157",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-f24cb094",
+   "shop_id": "f24cb094-56ec-4f22-9618-864551058904",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "e3f9dbfd-e491-4433-9af1-6c0b146f5746",
+     "evidence": "Official Suwon IG (brother.goods.suwon) arrival captions mention 귀멸의 칼날 (https://www.instagram.com/brother.goods.suwon/)"
+    },
+    {
+     "tag_id": "190cf353-e6f2-40ff-a66b-d7664555a949",
+     "evidence": "Official Suwon IG arrival captions mention 마인크래프트 (https://www.instagram.com/brother.goods.suwon/)"
+    },
+    {
+     "tag_id": "844b7951-1223-4b4c-9387-8632b2ec54d0",
+     "evidence": "Official Suwon IG arrival captions mention 던전밥 (https://www.instagram.com/brother.goods.suwon/)"
+    },
+    {
+     "tag_id": "5018bb5f-1019-4ac2-825d-b98610269f81",
+     "evidence": "Official Suwon IG arrival captions mention Rilakkuma (https://www.instagram.com/brother.goods.suwon/)"
+    }
+   ],
+   "goods_types": [
+    "plushie-new",
+    "keyring"
+   ],
+   "sources": [
+    {
+     "url": "https://www.instagram.com/brother.goods.suwon/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-2f631c45",
+   "shop_id": "2f631c45-415c-4ee4-a3eb-9bcbab7c5599",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "10db4fd3-4305-440d-a2f8-ca9312b5d4e0",
+     "evidence": "Official X: '하츠네 미쿠 T-most 피규어 입고'; also 카사네 테토 figure (https://x.com/the_ku_s/status/2085657218486301064)"
+    },
+    {
+     "tag_id": "f2658c7d-a3d0-4343-9b21-d0cab3d59ab8",
+     "evidence": "Official X: '프로젝트 세카이 H/Art Collection 클리어 카드vol.1 입고' (https://x.com/the_ku_s/status/2082393026304074057)"
+    },
+    {
+     "tag_id": "41e73c70-0c1c-4950-9a01-4c0fd75820c5",
+     "evidence": "Official X: '제일복권 개구리중사 케로로 3회차 시작합니다' (https://x.com/the_ku_s/status/2084839470923395559)"
+    },
+    {
+     "tag_id": "ed0008f9-e8c2-45b0-b98c-a2058c4ee70c",
+     "evidence": "Official X: '데스노트 PU레자 배지 컬렉션 vol.1/vol.2 재입고' (https://x.com/the_ku_s/status/2050865374959432156)"
+    },
+    {
+     "tag_id": "5018bb5f-1019-4ac2-825d-b98610269f81",
+     "evidence": "Official X: capsule '리락쿠마x츄파춥스 버라이어티 컬렉션' 입고 (https://x.com/the_ku_s/status/2028038918562824232)"
+    }
+   ],
+   "goods_types": [
+    "gacha-new"
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/the_ku_s/status/2085657218486301064",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/the_ku_s/status/2082393026304074057",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/the_ku_s/status/2084839470923395559",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/the_ku_s/status/2050865374959432156",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/the_ku_s/status/2028038918562824232",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/the_ku_s/status/2048692847185125497",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-269ab652",
+   "shop_id": "269ab652-ba44-41e5-b93f-1c20038d395a",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "b507243e-1408-47a1-9aeb-f4245127d3dc",
+     "evidence": "Official IG (gacha_ming, 안양) captions mention 치이카와 in multiple posts (https://www.instagram.com/gacha_ming)"
+    }
+   ],
+   "goods_types": [],
+   "sources": [
+    {
+     "url": "https://www.instagram.com/gacha_ming",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-c6eb6620",
+   "shop_id": "c6eb6620-b968-42e0-a256-fd4a49dfe4a0",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "c80c180f-4b11-4a6b-8a7f-ec4b412ecf42",
+     "evidence": "Opening event (2025-02-14) at Jamsil store offered One Piece / Shin-chan / Demon Slayer character prizes (https://x.com/ICHIBAN_KUJI_JS)"
+    },
+    {
+     "tag_id": "5c4e930c-a5f4-4e5e-a9f0-93b3d705aae7",
+     "evidence": "Named in Jamsil store opening event lineup (https://x.com/ICHIBAN_KUJI_JS)"
+    },
+    {
+     "tag_id": "e3f9dbfd-e491-4433-9af1-6c0b146f5746",
+     "evidence": "Official Jamsil account: '귀멸의 칼날 상현의 3' in stock 2025-07-18, '대 호평 판매 중' with samples displayed (https://x.com/ICHIBAN_KUJI_JS/status/1948607766878421397)"
+    },
+    {
+     "tag_id": "2fe288e5-d129-490b-83d5-20797ef22cae",
+     "evidence": "Official Jamsil account: FULLMETAL ALCHEMIST 문을 여는 자들 '대 호평 판매 중' (https://x.com/ICHIBAN_KUJI_JS/status/1890952808549040575)"
+    },
+    {
+     "tag_id": "b4f20ef8-6f3b-438e-8efb-91ccfca790ac",
+     "evidence": "Official Jamsil account: 체인소맨 극장판 kuji in stock 2025-09-30 (https://x.com/ICHIBAN_KUJI_JS/status/1972249196909793558)"
+    },
+    {
+     "tag_id": "5cda9087-caa0-4010-8e9d-bb5d577e995b",
+     "evidence": "Official Jamsil account: STARDUST CRUSADERS -STAND RUSH!- in stock 2025-09-27 (https://x.com/ICHIBAN_KUJI_JS/status/1970684117768691834)"
+    },
+    {
+     "tag_id": "52c7c3c1-ec2d-4813-a24c-a9108a697ee2",
+     "evidence": "Official Jamsil account: 가면라이더 ZEZTZ & GAVV kuji '대 호평 판매 중' (https://x.com/ICHIBAN_KUJI_JS/status/1999066779579216331)"
+    },
+    {
+     "tag_id": "35ab71ee-b520-4cfd-9915-70b2d598fa76",
+     "evidence": "Official Jamsil account post: Kaiju No.8 kuji arriving 2025-08-13 (search snippet only) (https://x.com/ICHIBAN_KUJI_JS/status/1955208037817520601)"
+    }
+   ],
+   "goods_types": [],
+   "sources": [
+    {
+     "url": "https://x.com/ICHIBAN_KUJI_JS",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/ICHIBAN_KUJI_JS/status/1948607766878421397",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/ICHIBAN_KUJI_JS/status/1890952808549040575",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/ICHIBAN_KUJI_JS/status/1972249196909793558",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/ICHIBAN_KUJI_JS/status/1970684117768691834",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/ICHIBAN_KUJI_JS/status/1999066779579216331",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/ICHIBAN_KUJI_JS/status/1955208037817520601",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-63d470eb",
+   "shop_id": "63d470eb-3a99-4028-b061-e29aeab28e7c",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "2a88af81-4e08-446f-befa-312110884a20",
+     "evidence": "Official store X: new Haikyu goods in stock (files, stands, keyholders, nuipal, can badges, etc.) (https://x.com/animate_lotte/status/1975117982625108330)"
+    },
+    {
+     "tag_id": "0ec61572-9a5b-47a6-9567-7d15a8433dd3",
+     "evidence": "Official store X: Naruto Shippuden can badge set in stock; Bandai Presto Naruto figure in stock (https://x.com/animate_lotte/status/1979460063543877888)"
+    },
+    {
+     "tag_id": "77a9bc04-00de-4071-baf2-571f4fcef31d",
+     "evidence": "Official store X: Nendoroid Surprise Blue Lock in stock (https://x.com/animate_lotte/status/2022989838941929690)"
+    },
+    {
+     "tag_id": "b6a65af7-85e0-4390-9986-6057487c19d1",
+     "evidence": "Official store X: Potekoro and nuipal mascots in stock (https://x.com/animate_lotte/status/1955091350753611991)"
+    },
+    {
+     "tag_id": "0288dabe-8b69-45f9-ad18-d447c1e2b7a9",
+     "evidence": "Official store X: acrylic stands, keyholders, hologram can badges in stock (https://x.com/animate_lotte/status/2038536340439269412)"
+    },
+    {
+     "tag_id": "90847dc6-345a-4888-ae23-f62933621dd0",
+     "evidence": "Official store X: Furyu BiCute Tokisaki Kurumi figure in stock (https://x.com/animate_lotte/status/2018944819259965444)"
+    },
+    {
+     "tag_id": "b4f20ef8-6f3b-438e-8efb-91ccfca790ac",
+     "evidence": "Official store X: Chainsaw Man special edition sold at the counter (https://x.com/animate_lotte/status/1991378472137302292)"
+    },
+    {
+     "tag_id": "adb8dfab-9e1b-4bbd-83a6-c6ce57a55f98",
+     "evidence": "Official store X: LIMBUS COMPANY fair in animate stores, delayed items arrived at this store (https://x.com/animate_lotte/status/2085289782486118569)"
+    },
+    {
+     "tag_id": "687cb7a1-97b3-45ac-a11d-36da83e4cb5b",
+     "evidence": "Visit blog: Quintessential Quintuplets goods fill a whole shelf at this store (https://www.crispystory.com/2025/02/JamsilAnimate.html)"
+    },
+    {
+     "tag_id": "46d1cc6a-f88b-46e2-b4ec-d70dcf0be740",
+     "evidence": "Visit blog: character goods displayed in store (https://www.crispystory.com/2025/02/JamsilAnimate.html)"
+    },
+    {
+     "tag_id": "34cbde21-1274-462b-8cab-4cea557915fd",
+     "evidence": "Visit blog: character goods displayed in store (https://www.crispystory.com/2025/02/JamsilAnimate.html)"
+    },
+    {
+     "tag_id": "a48e942e-23f9-4900-ad93-adedb29d92ce",
+     "evidence": "Visit blog: character goods displayed in store (https://www.crispystory.com/2025/02/JamsilAnimate.html)"
+    },
+    {
+     "tag_id": "fb8c03af-9bdc-4fb2-8fef-8d9a7792873c",
+     "evidence": "Visit blog: character goods displayed in store (https://www.crispystory.com/2025/02/JamsilAnimate.html)"
+    },
+    {
+     "tag_id": "c80c180f-4b11-4a6b-8a7f-ec4b412ecf42",
+     "evidence": "Visit blog: character goods displayed in store (https://www.crispystory.com/2025/02/JamsilAnimate.html)"
+    },
+    {
+     "tag_id": "49f4d824-0ef6-4926-80ea-8dd5f930000e",
+     "evidence": "Visit blog: game goods (Genshin, Star Rail, ZZZ, Blue Archive) in store (https://www.crispystory.com/2025/02/JamsilAnimate.html)"
+    },
+    {
+     "tag_id": "4613169d-2461-48a6-92fe-a97a674d2a34",
+     "evidence": "Visit blog: game goods section (https://www.crispystory.com/2025/02/JamsilAnimate.html)"
+    },
+    {
+     "tag_id": "32995c8f-a09f-4a45-8efc-47a5e3b51e8a",
+     "evidence": "Two visit blogs: Blue Archive goods and comics in store (https://nipa0711.net/438)"
+    },
+    {
+     "tag_id": "b351c970-1944-4128-9cd3-de89bb826ff3",
+     "evidence": "Named in two independent visit blogs of this store (https://nipa0711.net/438)"
+    }
+   ],
+   "goods_types": [
+    "figure-new"
+   ],
+   "sources": [
+    {
+     "url": "https://x.com/animate_lotte/status/1975117982625108330",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/animate_lotte/status/1979460063543877888",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/animate_lotte/status/2022989838941929690",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/animate_lotte/status/1955091350753611991",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/animate_lotte/status/2038536340439269412",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/animate_lotte/status/2018944819259965444",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/animate_lotte/status/1991378472137302292",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/animate_lotte/status/2085289782486118569",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://www.crispystory.com/2025/02/JamsilAnimate.html",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://nipa0711.net/438",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-3bd1292d",
+   "shop_id": "3bd1292d-c560-4394-bca9-bca4c0c64bef",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "a48e942e-23f9-4900-ad93-adedb29d92ce",
+     "evidence": "Collab cafe held 7/2-8/5 (2025) per official cafe X (https://x.com/animatecafe_js/status/1937797926702792947)"
+    },
+    {
+     "tag_id": "94dea875-614e-4e2d-ba30-ea509385603b",
+     "evidence": "HATSUNE MIKU EXPO 10th collab cafe 11/19-12/16; Chocoanimal Miku Wagon collab 9/4-10/13 (https://x.com/animatecafe_js/status/1985995504451240277)"
+    },
+    {
+     "tag_id": "63d2954e-2390-42ed-ad2c-af42c2a4b49c",
+     "evidence": "NIJISANJI Crystal Clockwork collab cafe 1/16-2/10 (https://x.com/animatecafe_js/status/2003390123522568258)"
+    },
+    {
+     "tag_id": "63f2a778-7dca-469d-a2c1-8b139d82637f",
+     "evidence": "NIKKE collab cafe 2/13-3/17 (https://x.com/animatecafe_js/status/2019697576765964675)"
+    },
+    {
+     "tag_id": "f5bc1b5a-5ca2-48bc-b7d3-2997958e308f",
+     "evidence": "Collab cafe 10/3-11/16 with collab goods (https://x.com/animatecafe_js/status/1971862374727799174)"
+    },
+    {
+     "tag_id": "7fc6cb70-c059-40e3-86a4-39dc28b6b32c",
+     "evidence": "Collab cafe at animate cafe Jamsil Lotte, 2025-03-14 to 04-15 (https://popga.co.kr/popup/2248)"
+    },
+    {
+     "tag_id": "77a9bc04-00de-4071-baf2-571f4fcef31d",
+     "evidence": "Butler-concept collab cafe 2026-06-20 to 07-05, followed by Blue Lock Gratte (https://popga.co.kr/popup/7441)"
+    },
+    {
+     "tag_id": "4d7c1af6-ee18-43f4-b022-8ad37918210a",
+     "evidence": "Gratte collab 2026-02-01 to 02-28 (https://popga.co.kr/popup/5290)"
+    },
+    {
+     "tag_id": "b2a7fe53-bc2c-4896-a8b9-ce14e26a3cad",
+     "evidence": "Collab cafe in Jamsil 2026-01-17 to 02-15 (https://dayforyou.com/getDetail?scheduleSeq=18953)"
+    },
+    {
+     "tag_id": "a6059a41-b8c5-45c1-9f90-809f3893bb5e",
+     "evidence": "Gratte collab 9/19-11/1 at Hongdae and Jamsil Lotte animate cafes (search summary; weaker) (https://x.com/animatecafe_js)"
+    },
+    {
+     "tag_id": "0c1ecf9f-646d-4780-ba5f-80fdeb22a0c1",
+     "evidence": "콜라보 카페 개최 (research-jamsil)"
+    }
+   ],
+   "goods_types": [],
+   "sources": [
+    {
+     "url": "https://x.com/animatecafe_js/status/1937797926702792947",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/animatecafe_js/status/1985995504451240277",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/animatecafe_js/status/2003390123522568258",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/animatecafe_js/status/2019697576765964675",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/animatecafe_js/status/1971862374727799174",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://popga.co.kr/popup/2248",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://popga.co.kr/popup/7441",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://popga.co.kr/popup/5290",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://dayforyou.com/getDetail?scheduleSeq=18953",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://x.com/animatecafe_js",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-d98e6a5a",
+   "shop_id": "d98e6a5a-c257-44b7-bae6-82652377f658",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "f6dff3d1-5a30-409d-849c-9a34d111b1be",
+     "evidence": "Main lineup of Gashapon Bandai Official Shop in Jamsil (Lotte World B1, across from Butter on the way to Lotte World Adventure) (https://mom-mom.net/travel/places/67c6d2e54721161bb4f579cd)"
+    },
+    {
+     "tag_id": "5c4e930c-a5f4-4e5e-a9f0-93b3d705aae7",
+     "evidence": "Listed in main lineup (https://mom-mom.net/travel/places/67c6d2e54721161bb4f579cd)"
+    },
+    {
+     "tag_id": "b507243e-1408-47a1-9aeb-f4245127d3dc",
+     "evidence": "Listed as 먼작귀 in main lineup (https://mom-mom.net/travel/places/67c6d2e54721161bb4f579cd)"
+    },
+    {
+     "tag_id": "98516d1a-f883-4cb0-95f8-e588dc3c5da7",
+     "evidence": "Listed in main lineup (https://mom-mom.net/travel/places/67c6d2e54721161bb4f579cd)"
+    },
+    {
+     "tag_id": "6200fb96-d722-4cbf-b09c-d5967f598ee7",
+     "evidence": "Described as full of Pokemon and Disney gacha machines (https://triple.guide/attractions/a38aaf66-af39-47be-b95b-7a8311e8c5f6)"
+    },
+    {
+     "tag_id": "e7c77b00-7cd8-49e8-9220-2af5cc545385",
+     "evidence": "Described as full of Pokemon and Disney gacha machines (https://triple.guide/attractions/a38aaf66-af39-47be-b95b-7a8311e8c5f6)"
+    }
+   ],
+   "goods_types": [],
+   "sources": [
+    {
+     "url": "https://mom-mom.net/travel/places/67c6d2e54721161bb4f579cd",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://triple.guide/attractions/a38aaf66-af39-47be-b95b-7a8311e8c5f6",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-0aacf913",
+   "shop_id": "0aacf913-5176-41f3-a0e3-7f49ef05e276",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "79423fbf-ca30-4231-a052-3e95414595f1",
+     "evidence": "Visit review of this Lotte World Mall B1 store mentions Totoro goods among general Ghibli goods; also on official dotorisup.com work menu (https://kr.trip.com/moments/detail/seoul-234-122031856/)"
+    },
+    {
+     "tag_id": "e3e443ac-c28e-48db-9037-f604abc352c2",
+     "evidence": "Official Dotorisup (Studio Ghibli official character shop) work menu (https://www.dotorisup.com/)"
+    },
+    {
+     "tag_id": "3d45ef56-38df-4eaf-81c6-06ad83fbda02",
+     "evidence": "Official Dotorisup work menu (https://www.dotorisup.com/)"
+    },
+    {
+     "tag_id": "e1026ee3-e183-4b35-b208-633c7703ee40",
+     "evidence": "Official Dotorisup work menu (https://www.dotorisup.com/)"
+    },
+    {
+     "tag_id": "f23e27a4-2a85-4bf7-860f-686e1910e7d8",
+     "evidence": "Official Dotorisup work menu (https://www.dotorisup.com/)"
+    },
+    {
+     "tag_id": "4cedee89-3f74-4252-a84d-783166cb44df",
+     "evidence": "Official Dotorisup work menu (https://www.dotorisup.com/)"
+    },
+    {
+     "tag_id": "665ae554-236e-49db-9c38-be39f66b1035",
+     "evidence": "Official Dotorisup work menu (https://www.dotorisup.com/)"
+    },
+    {
+     "tag_id": "83ecedb4-152c-4bac-bfe4-b3efa801b895",
+     "evidence": "Official Dotorisup work menu (https://www.dotorisup.com/)"
+    }
+   ],
+   "goods_types": [],
+   "sources": [
+    {
+     "url": "https://kr.trip.com/moments/detail/seoul-234-122031856/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://www.dotorisup.com/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-19540c69",
+   "shop_id": "19540c69-60e0-4cac-bd82-0c31faae4149",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "3d45ef56-38df-4eaf-81c6-06ad83fbda02",
+     "evidence": "도토리숲 공식몰 MOVIE 카테고리 (https://dotorisup.com/)"
+    },
+    {
+     "tag_id": "e1026ee3-e183-4b35-b208-633c7703ee40",
+     "evidence": "도토리숲 공식몰 MOVIE 카테고리 (https://dotorisup.com/)"
+    },
+    {
+     "tag_id": "f23e27a4-2a85-4bf7-860f-686e1910e7d8",
+     "evidence": "도토리숲 공식몰 MOVIE 카테고리 (https://dotorisup.com/)"
+    },
+    {
+     "tag_id": "4cedee89-3f74-4252-a84d-783166cb44df",
+     "evidence": "도토리숲 공식몰 MOVIE 카테고리 (https://dotorisup.com/)"
+    },
+    {
+     "tag_id": "83ecedb4-152c-4bac-bfe4-b3efa801b895",
+     "evidence": "도토리숲 공식몰 MOVIE 카테고리 (https://dotorisup.com/)"
+    }
+   ],
+   "goods_types": [
+    "etc"
+   ],
+   "sources": [
+    {
+     "url": "https://dotorisup.com/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-ca2043d4",
+   "shop_id": "ca2043d4-5891-44b3-9bec-c5a19369d14c",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "f6dff3d1-5a30-409d-849c-9a34d111b1be",
+     "evidence": "가챠맵 매장 라인업에 산리오 가챠 9종 이상(키링, 마스코트 등) (https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0)"
+    },
+    {
+     "tag_id": "5c4e930c-a5f4-4e5e-a9f0-93b3d705aae7",
+     "evidence": "가챠맵 라인업: 짱구는 못말려 미러 컬렉션 (https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0)"
+    },
+    {
+     "tag_id": "a48e942e-23f9-4900-ad93-adedb29d92ce",
+     "evidence": "가챠맵 라인업: 명탐정 코난 마킹 액세서리 2 (https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0)"
+    },
+    {
+     "tag_id": "e3f9dbfd-e491-4433-9af1-6c0b146f5746",
+     "evidence": "가챠맵 라인업: 귀멸의 칼날 잠자는 대열 3 (https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0)"
+    },
+    {
+     "tag_id": "97d9548f-4417-4e84-ace6-6715d00859f8",
+     "evidence": "가챠맵 라인업: 기동전사 건담 SD 건담 마스코트 키링 (https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0)"
+    },
+    {
+     "tag_id": "2622be14-383e-4fef-af44-d863989a9a2e",
+     "evidence": "가챠맵 라인업: 다마고치 캡슐리움, 다마고치 키링 (https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0)"
+    },
+    {
+     "tag_id": "8a27daf6-58c4-4edf-9444-332470b4cb2e",
+     "evidence": "가챠맵 라인업: 프리큐어 올스타즈 Q posket 미니어처 (https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0)"
+    },
+    {
+     "tag_id": "06c370c8-8630-4370-8db4-7691f6172d6e",
+     "evidence": "가챠맵 라인업: 카드캡터 체리 Q posket 미니어처 2 (https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0)"
+    },
+    {
+     "tag_id": "94dea875-614e-4e2d-ba30-ea509385603b",
+     "evidence": "가챠맵 라인업: 하츠네미쿠 해피 점프 피규어 (https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0)"
+    },
+    {
+     "tag_id": "82faacc1-27fc-4300-949a-f7742791e6b1",
+     "evidence": "가챠맵 라인업: 단다단 언제오려나 2 (https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0)"
+    },
+    {
+     "tag_id": "4913fd41-a5e2-4c24-9297-2e799b1d16ce",
+     "evidence": "가챠맵 라인업: 가정교사 히트맨 리본 캡슐 피규어 컬렉션 03 (https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0)"
+    },
+    {
+     "tag_id": "773e2f96-cea4-4710-8d97-40eb09f239cb",
+     "evidence": "가챠맵 라인업: 학원 아이돌마스터 마킹 액세서리 2 (https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0)"
+    },
+    {
+     "tag_id": "734c6726-5bdc-4457-90d8-54c1f6e52319",
+     "evidence": "가챠맵 라인업 IP 태그 (https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0)"
+    }
+   ],
+   "goods_types": [
+    "keyring",
+    "figure-new"
+   ],
+   "sources": [
+    {
+     "url": "https://www.gachamap.co.kr/store/45bcf436-d4de-4a8a-8b6a-db670a0df9e0",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-298c8675",
+   "shop_id": "298c8675-96ea-409f-b768-f25818b64e91",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "a48e942e-23f9-4900-ad93-adedb29d92ce",
+     "evidence": "당근 매장 프로필 후기: '명탐정코난 시리즈도 있길래', 괴도 키드 언급 (https://www.daangn.com/kr/local-profile/%ED%8C%9D%EB%A7%88%ED%8A%B8-%EC%95%84%EC%9D%B4%ED%8C%8C%ED%81%AC%EB%AA%B0-%EC%9A%A9%EC%82%B0%EC%A0%90-5gamo5k71xw6/)"
+    }
+   ],
+   "goods_types": [
+    "keyring",
+    "plushie-new"
+   ],
+   "sources": [
+    {
+     "url": "https://www.daangn.com/kr/local-profile/%ED%8C%9D%EB%A7%88%ED%8A%B8-%EC%95%84%EC%9D%B4%ED%8C%8C%ED%81%AC%EB%AA%B0-%EC%9A%A9%EC%82%B0%EC%A0%90-5gamo5k71xw6/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    },
+    {
+     "url": "https://popmart.co.kr/category/%EB%9D%BC%EB%B6%80%EB%B6%80/87/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-dedbd4fd",
+   "shop_id": "dedbd4fd-8b76-451b-9b2a-502adc705e62",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "6200fb96-d722-4cbf-b09c-d5967f598ee7",
+     "evidence": "CJ 뉴스룸(2022-12-08): 포켓몬 랜덤 배지를 'CGV 씨네샵 용산아이파크몰, 여의도, 왕십리'에서 먼저 판매 (https://cjnews.cj.net/cgv-%EC%94%A8%EB%84%A4%EC%83%B5-%ED%8F%AC%EC%BC%93%EB%AA%AC%EC%8A%A4%ED%84%B0-%EA%B5%BF%EC%A6%88-%EC%B2%AB-%EC%B6%9C%EC%8B%9C/)"
+    }
+   ],
+   "goods_types": [
+    "can-badge-new"
+   ],
+   "sources": [
+    {
+     "url": "https://cjnews.cj.net/cgv-%EC%94%A8%EB%84%A4%EC%83%B5-%ED%8F%AC%EC%BC%93%EB%AA%AC%EC%8A%A4%ED%84%B0-%EA%B5%BF%EC%A6%88-%EC%B2%AB-%EC%B6%9C%EC%8B%9C/",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  },
+  {
+   "action": "update",
+   "key": "research-d2d9693d",
+   "shop_id": "d2d9693d-7907-491e-af91-9c5df03c15de",
+   "fields": {},
+   "reason": "취급 작품·취급 상품 조사 반영",
+   "works": [
+    {
+     "tag_id": "d3b06335-41a9-487c-8a01-7d7bb70b7d1b",
+     "evidence": "나무위키 TCG 매장/수도권: 용산 아이파크몰 6층 TCG STATION(대원미디어 직영) 주요 취급 '유희왕 OCG, 유희왕 러시 듀얼, 카드파이트!! 뱅가드' (https://namu.wiki/w/%ED%8A%B8%EB%A0%88%EC%9D%B4%EB%94%A9%20%EC%B9%B4%EB%93%9C%20%EA%B2%8C%EC%9E%84/%EB%A7%A4%EC%9E%A5/%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD/%EC%88%98%EB%8F%84%EA%B6%8C)"
+    }
+   ],
+   "goods_types": [],
+   "sources": [
+    {
+     "url": "https://namu.wiki/w/%ED%8A%B8%EB%A0%88%EC%9D%B4%EB%94%A9%20%EC%B9%B4%EB%93%9C%20%EA%B2%8C%EC%9E%84/%EB%A7%A4%EC%9E%A5/%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD/%EC%88%98%EB%8F%84%EA%B6%8C",
+     "fields": [
+      "works",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-23"
+    }
+   ]
+  }
+ ]
+}

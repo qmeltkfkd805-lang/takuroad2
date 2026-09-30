@@ -1,0 +1,113 @@
+[
+ {
+  "name": "랜덤 캔배지 (쉬는 시간 ver.) (12종, 각)",
+  "kind": "goods",
+  "price": 5500,
+  "file": "goods_list.jpg",
+  "box": [
+   29,
+   223,
+   482,
+   763
+  ]
+ },
+ {
+  "name": "랜덤 아크릴 명찰 (쉬는 시간 ver.) (12종, 각)",
+  "kind": "goods",
+  "price": 7000,
+  "file": "goods_list.jpg",
+  "box": [
+   497,
+   223,
+   943,
+   763
+  ]
+ },
+ {
+  "name": "랜덤 학생증 카드 (쉬는 시간 ver.) (12종, 각)",
+  "kind": "goods",
+  "price": 6200,
+  "file": "goods_list.jpg",
+  "box": [
+   962,
+   223,
+   1411,
+   763
+  ]
+ },
+ {
+  "name": "랜덤 아크릴 키링 (학교 플래카드 st.) (5종, 각)",
+  "kind": "goods",
+  "price": 9500,
+  "file": "goods_list.jpg",
+  "box": [
+   29,
+   789,
+   482,
+   1332
+  ]
+ },
+ {
+  "name": "아크릴 스탠드 (쉬는 시간 ver.) (12종, 각)",
+  "kind": "goods",
+  "price": 19000,
+  "file": "goods_list.jpg",
+  "box": [
+   497,
+   789,
+   943,
+   1332
+  ]
+ },
+ {
+  "name": "메탈 배지 (교복 단추 st.) (5종, 각)",
+  "kind": "goods",
+  "price": 12000,
+  "file": "goods_list.jpg",
+  "box": [
+   962,
+   789,
+   1411,
+   1332
+  ]
+ },
+ {
+  "name": "랜덤 학교 엠블럼 와펜 (5종, 각)",
+  "kind": "goods",
+  "price": 6000,
+  "file": "flat_gacha_new_goods.jpg",
+  "box": [
+   29,
+   468,
+   706,
+   1325
+  ],
+  "note": "플랫 가챠 신상품"
+ },
+ {
+  "name": "랜덤 학생수첩 노트 & 스티커 (쉬는 시간 ver.) (12종, 각)",
+  "kind": "goods",
+  "price": 6000,
+  "file": "flat_gacha_new_goods.jpg",
+  "box": [
+   734,
+   468,
+   1411,
+   1325
+  ],
+  "note": "플랫 가챠 신상품"
+ },
+ {
+  "name": "캐릭터 북마크 (12종 랜덤, 2만원 이상 구매 특전)",
+  "kind": "goods",
+  "price": null,
+  "file": "benefit_bookmark.jpg",
+  "box": [
+   79,
+   295,
+   1346,
+   1174
+  ],
+  "note": "2만원 당 1매, 당일 영수증 기준, 플랫 가챠 결제 금액 제외"
+ }
+]

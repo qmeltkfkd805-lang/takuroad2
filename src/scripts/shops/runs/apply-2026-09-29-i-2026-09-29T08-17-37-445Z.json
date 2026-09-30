@@ -1,0 +1,123 @@
+{
+ "plan": "2026-09-29-i",
+ "at": "2026-09-29T08:17:37.445Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "pitb-thehyundai",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5252014942155,
+    "lng": 126.929108448093,
+    "road": "서울 영등포구 여의대로 108",
+    "building": "파크원",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "05a9af86-eb0b-4246-9f80-ceb7f829cd43",
+   "slug": "play-in-the-box-deohyeondae-seouljeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pitb-megabox-coex",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5118239121138,
+    "lng": 127.059159043842,
+    "road": "서울 강남구 영동대로 513",
+    "building": "코엑스",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "245559a7-6470-403e-9c1d-bf67ec7c6b98",
+   "slug": "play-in-the-box-megabakseu-koekseujeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pitb-ipark-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "road": "서울 용산구 한강대로23길 55",
+    "building": "용산역",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "d3fc3e99-6dc1-4dce-915e-02c162639753",
+   "slug": "play-in-the-box-yongsan-aipakeumoljeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pitb-songdo",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.3816291013573,
+    "lng": 126.657917047216,
+    "road": "인천 연수구 송도국제대로 123",
+    "building": "현대프리미엄 아울렛 송도점",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "a4425022-8807-4faf-bc9f-eba553744733",
+   "slug": "play-in-the-box-hyeondaepeurimieomaulret-songdojeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pitb-centum",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1688178394069,
+    "lng": 129.129523260187,
+    "road": "부산 해운대구 센텀남대로 35",
+    "building": "신세계백화점센텀시티점",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "00c35eff-61cc-4fe3-8343-926c9bf900c2",
+   "slug": "play-in-the-box-sinsegye-senteomsitijeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-i-2026-09-29T08-17-37-445Z.json"
+}

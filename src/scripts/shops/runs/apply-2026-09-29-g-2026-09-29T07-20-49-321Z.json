@@ -1,0 +1,113 @@
+{
+ "plan": "2026-09-29-g",
+ "at": "2026-09-29T07:20:49.321Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "popable-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "road": "서울 용산구 한강대로23길 55",
+    "building": "용산역",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "74194916-1c7d-41bb-9e98-2ef230bbd6b2",
+   "slug": "pappeobeul-yongsanjeom"
+  },
+  {
+   "key": "shinchan-bakery-popable-jamsil",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5113096112036,
+    "lng": 127.098141751177,
+    "road": "서울 송파구 올림픽로 240",
+    "building": "롯데월드",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "593606c3-7837-410f-bf12-9b0d03705638",
+   "slug": "jjanggu-beikeori-kape-x-pappeobeul-jamsiljeom",
+   "extras": {
+    "works": {
+     "added": [
+      "짱구는 못말려"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "koriko-cafe-jeju",
+   "action": "insert",
+   "geocode": {
+    "lat": 33.4364972821995,
+    "lng": 126.732512587659,
+    "road": "제주특별자치도 제주시 구좌읍 비자림로 1199",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "4647a3ba-5793-4463-8974-ea32dc71dd41",
+   "slug": "korikokape-jejujeom",
+   "extras": {
+    "works": {
+     "added": [
+      "마녀 배달부 키키"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "tamashii-spot-seoul",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "road": "서울 용산구 한강대로23길 55",
+    "building": "용산역",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "1e715190-23cd-4b39-aa36-487d746a0406",
+   "slug": "tamasii-seupat-seoul",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "bears-school-shop-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "road": "서울 용산구 한강대로23길 55",
+    "building": "용산역",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "614e44d3-6b77-4dc5-b2b2-177d5c5aaedf",
+   "slug": "kkoma-gom-jaeki-opisyeol-syap-yongsan-aipakeumoljeom",
+   "extras": {
+    "works": {
+     "added": [
+      "꼬마 곰 재키"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-29-g-2026-09-29T07-20-49-321Z.json"
+}

@@ -1,0 +1,344 @@
+{
+ "plan": "2026-09-29-j",
+ "at": "2026-09-29T09:29:54.613Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "pitb-connect-cheongju",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.6269631809148,
+    "lng": 127.430731962744,
+    "road": "충북 청주시 흥덕구 2순환로 1225",
+    "building": "청주센트럴시티(터미널복합)",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "PLAY IN THE BOX 커넥트현대 청주점",
+    "addr": "충북 청주시 흥덕구 2순환로 1225",
+    "floor_info": "커넥트현대 청주 3층",
+    "cats": [
+     "굿즈샵",
+     "가챠",
+     "피규어샵"
+    ],
+    "shop_link": "https://playinthebox.co.kr/ko",
+    "sns_links": [
+     "https://www.instagram.com/playinthebox_official/",
+     "https://playinthebox.co.kr/ko"
+    ],
+    "phone": "043-925-2429",
+    "place_id": "a4de1004-e4e6-45ae-8aa9-f69888824e7a",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n입차 후 30분 이내 출차 시 무료, 이후 10분당 1,000원(1일 최대 70,000원)\n구매 시 무료: 1만원 이상 1시간 · 3만원 이상 2시간 · 5만원 이상 3시간 · 10만원 이상 5시간 · 30만원 이상 당일",
+    "description": "캐릭터 굿즈·피규어·캡슐토이를 모아 파는 캐릭터 편집숍 PLAY IN THE BOX(플레이인더박스)의 매장으로, 커넥트현대 청주 3층(컬처 & 매니아)에 있습니다.\n청주고속버스터미널과 건물이 바로 연결되어 있습니다.\n영업시간은 공식 안내에 표기되어 있지 않아 비워 두었습니다. 방문 전 입점 건물 영업시간과 공식 SNS 공지를 확인하세요.",
+    "lat": 36.6269631809148,
+    "lng": 127.430731962744,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T09:29:54.613Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "tamiya-hanam",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5454041231797,
+    "lng": 127.223940331575,
+    "road": "경기 하남시 미사대로 750",
+    "building": "스타필드 하남",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "타미야 프라모델 팩토리 스타필드 하남점",
+    "addr": "경기 하남시 미사대로 750",
+    "floor_info": "스타필드 하남 2층",
+    "cats": [
+     "프라모델"
+    ],
+    "shop_link": "https://tamiya.co.kr/",
+    "sns_links": [
+     "https://tamiya.co.kr/"
+    ],
+    "phone": "031-8072-8886",
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     }
+    },
+    "place_id": "4c6da0d6-5461-4eab-a0f3-4d80eaba6145",
+    "parking": true,
+    "parking_note": "주차 가능(무료)\n트레이더스 이용 고객은 지하주차장 이용",
+    "description": "한국타미야 직영 프라모델 전문점 타미야 프라모델 팩토리의 하남점으로, 스타필드 하남 2층에 있습니다.\n프라모델과 관련 공구·도료 등을 판매합니다.",
+    "lat": 37.5454041231797,
+    "lng": 127.223940331575,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T09:29:54.613Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "tamiya-yangjae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.481137253899,
+    "lng": 127.041871983504,
+    "road": "서울 서초구 바우뫼로 215",
+    "building": "TAMIYA빌딩",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "타미야 프라모델 팩토리 양재 본점",
+    "addr": "서울 서초구 바우뫼로 215",
+    "floor_info": "TAMIYA빌딩 1층",
+    "cats": [
+     "프라모델"
+    ],
+    "shop_link": "https://tamiya.co.kr/",
+    "sns_links": [
+     "https://tamiya.co.kr/"
+    ],
+    "phone": "02-2135-3113",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     }
+    },
+    "description": "한국타미야 직영 프라모델 전문점 타미야 프라모델 팩토리의 본점으로, 양재동 TAMIYA빌딩 1층에 있습니다.\n프라모델과 관련 공구·도료 등을 판매합니다.",
+    "lat": 37.481137253899,
+    "lng": 127.041871983504,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T09:29:54.613Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "capsulepang-coex",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5118239121138,
+    "lng": 127.059159043842,
+    "road": "서울 강남구 영동대로 513",
+    "building": "코엑스",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "캡슐팡 스타필드 코엑스몰점",
+    "addr": "서울 강남구 영동대로 513",
+    "floor_info": "스타필드 코엑스몰 지하 1층 · 지하 2층",
+    "cats": [
+     "가챠"
+    ],
+    "phone": "02-562-5671",
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "22:00"
+     }
+    },
+    "place_id": "86c742e0-a1fa-42b7-8ee0-0de38b8bdb39",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n입차 후 20분 이내 출차 시 무료, 15분당 1,500원(1일 최대 60,000원)\n코엑스몰 구매 시: 5만원 이상 1시간 · 10만원 이상 2시간 · 15만원 이상 3시간 무료(일부 매장 제외)\n카카오T 주차 모바일 결제 시 20% 할인",
+    "description": "캡슐토이(가챠) 전문 매장 캡슐팡의 스타필드 코엑스몰 매장입니다.\n· 지하 1층: 메가박스·아쿠아리움 방면 통로\n· 지하 2층: 건담베이스 옆\n영업시간·전화는 스타필드 코엑스몰 공식 매장 안내 기준입니다(전화는 지하 2층 매장 표기).",
+    "lat": 37.5118239121138,
+    "lng": 127.059159043842,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T09:29:54.613Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "capsulepang-goyang",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.6469771187284,
+    "lng": 126.89477806511,
+    "road": "경기 고양시 덕양구 고양대로 1955",
+    "building": "스타필드 고양",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "캡슐팡 스타필드 고양점",
+    "addr": "경기 고양시 덕양구 고양대로 1955",
+    "floor_info": "스타필드 고양 지하 1층",
+    "cats": [
+     "가챠"
+    ],
+    "hours": {
+     "mon": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "10:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "10:00",
+      "close": "22:00"
+     }
+    },
+    "place_id": "81665bc1-d17b-4404-bd6c-2350835419c1",
+    "parking": true,
+    "parking_note": "주차 가능(무료)\n21시 이후 2F~RF층 입차 제한(1층 주차장 이용)\n트레이더스 이용 고객은 지하주차장 이용",
+    "description": "캡슐토이(가챠) 전문 매장 캡슐팡의 스타필드 고양 매장으로, 지하 1층에 있습니다.\n영업시간은 스타필드 고양 공식 매장 안내 기준입니다.",
+    "lat": 37.6469771187284,
+    "lng": 126.89477806511,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-29T09:29:54.613Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,132 @@
+// 2026-09-30 plan 생성 — MOAE:KU 신촌·용산, 일러스타 카페 신촌·동대문·부천
+import { writeFileSync } from 'fs'
+const D = '2026-09-30'
+const day = (o, c) => ({ open: o, close: c })
+const all = (o, c) => Object.fromEntries(['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'].map((k) => [k, day(o, c)]))
+const UPLEX = 'e5915b03-9aad-4b68-866b-cb6cdc42bbf8'
+const UPLEX_NOTE = '주차 가능(유료)\n최초 30분 무료, 초과 시 10분당 1,000원\n3만원 이상 구매 시 1시간, 5만원 이상 2시간, 10만원 이상 3시간 무료\n30만원 이상 구매 시 당일 무료'
+const IPARK = '045ed3e4-9d81-4f68-a4c7-e6815f0ccadc'
+const IPARK_NOTE = '주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용'
+const DDM = 'fe619e20-9280-4e6b-b0ff-af560671c803'
+const DDM_NOTE = '주차 가능(유료)\n최초 30분(평일)·1시간(주말) 무료, 이후 10분당 800원\n구매 시 무료: 1만원 이상 1시간 · 3만원 이상 2시간 · 5만원 이상 3시간 · 10만원 이상 5시간\n재출력 영수증은 할인 제외'
+const BUCHEON = '11a49bbe-9aab-4a8e-ba59-e0eb6dede71e'
+const T = { kaguya: '1e8c27c9-04c3-476e-b8b0-28f6765f094b', aipri: '1a2b61ce-c7e1-4a48-b911-b66be36a0b6e', hikaru: 'c7e7fb35-60e5-483d-925b-e1ff246794af', ouran: '4d4b02e7-2835-45ce-8357-c92992d69387', seeu: 'e8149a2d-db5e-4a3e-b884-17ecdfe706e1' }
+const MOAE_X = 'https://x.com/MOAEKU'
+const MOAE2_X = 'https://x.com/MOAEKU2'
+const IL_X = 'https://x.com/illustar_cafe'
+const IL_IG = 'https://www.instagram.com/illustar_cafe'
+const IL_SRC = { url: IL_X, fields: ['name', 'floor_info', 'sns_links'], checked_at: D, note: '공식 X 프로필(브라우저 비로그인): "【동대문점】현대시티아울렛 동대문점 2F 【신촌점】현대백화점 U-PLEX 신촌점 12F 【부천점】뉴코아아울렛 부천점 4F", 2026-09-23 이라스토야 콜라보(동대문점·신촌점) 공지, 09-22 SeeU 예약상품 신촌점 수령 안내' }
+
+const items = [
+  {
+    action: 'insert', key: 'moaeku-sinchon', photo: 'needed', brand: 'MOAE:KU', brand_links: ['https://moaeku.co.kr'],
+    fields: {
+      name: 'MOAE:KU 모애쿠 신촌점', addr: '서울 서대문구 연세로 13', floor_info: '현대백화점 신촌점 U-PLEX 지하 2층',
+      cats: ['콜라보카페', '굿즈샵'], shop_link: MOAE_X, sns_links: [MOAE_X, 'https://moaeku.co.kr'],
+      hours: all('10:30', '22:00'), place_id: UPLEX, parking: true, parking_note: UPLEX_NOTE,
+      description: '애니메이션·게임·만화·웹툰 콜라보 카페 & 팝업 스토어 MOAE:KU(모애쿠)의 신촌 매장입니다(드래곤미디어 운영). 작품별 공식 콜라보 카페·팝업 스토어가 기간마다 바뀌어 열리고, 지점 한정 MD 가 나오기도 합니다.\n매일 10:30~22:00, 20:45~21:30 은 테이크아웃만 가능(공식 X 안내). 콜라보별 예약·입장 방식과 임시 휴무는 공식 X 공지를 확인하세요.\n현대백화점 신촌점 U-PLEX 지하 2층.',
+    },
+    goods_types: [],
+    works: [
+      { tag_id: T.kaguya, evidence: '공식 X 2026-09-12 공지 — 초(超) 가구야 공주! 콜라보 카페 & 팝업 스토어 신촌점 2026-09-23~10-18' },
+      { tag_id: T.aipri, evidence: '공식 X 2026-09-29 — 비밀의 아이프리 신촌점 현장 예약 MD 수령 안내(콜라보 카페 2026-08-28~09-20)' },
+      { tag_id: T.hikaru, evidence: '이 샵 이벤트 7d6a4293 — 히카루가 죽은 여름 콜라보 카페 (신촌점) 2026-07-31~08-25' },
+    ],
+    link_events: [
+      { event_id: 'a2b7d552-eb49-47f1-9b5b-52989a93eb63', alias: 'MOAE:KU', evidence: 'place_detail "U-PLEX 지하 2층 MOAE:KU", 연세로 13' },
+      { event_id: '10dbdd5b-e116-4153-969d-7fbc85ff7418', alias: 'MOAE:KU', evidence: 'place_detail "지하 2층 MOAE:KU", 연세로 13' },
+      { event_id: '7d6a4293-07aa-40f2-a91d-8e24724020ee', alias: 'MOAE:KU', evidence: 'place_detail "지하 2층 MOAE:KU", 연세로 13' },
+    ],
+    sources: [
+      { url: MOAE_X, fields: ['name', 'floor_info', 'hours', 'sns_links', 'works'], checked_at: D, note: '공식 X 프로필: "애니메이션·게임·만화·웹툰 콜라보 카페 & 팝업 스토어 / 현대백화점 신촌 U-PLEX B2 / 운영 시간: 10:30~22:00 (20:45~21:30 T/O만 가능) / 서울 서대문구 연세로 13 현대백화점 유플렉스 B2층 / moaeku.co.kr", 09-24 "9월 25일(금) 휴무" 일회성 공지' },
+      { url: 'https://moaeku.co.kr', fields: ['description'], checked_at: D, note: '공식몰 하단 회사명 주식회사 드래곤미디어' },
+      { url: 'place e5915b03 현대백화점유플렉스 신촌점', fields: ['parking_note'], checked_at: D, note: '기존 place 노트 복사' },
+    ],
+    unconfirmed: ['goods_types', 'phone'],
+    notes: '2026-11 올리브영이 U-PLEX 지하에 입점 예정(보도) — B2 매장 유지 여부 다음 점검 때 확인',
+  },
+  {
+    action: 'insert', key: 'moaeku-ipark', photo: 'needed', brand: 'MOAE:KU', brand_links: ['https://moaeku.co.kr', MOAE_X],
+    fields: {
+      name: 'MOAE:KU 아이파크 모애쿠 용산점', addr: '서울 용산구 한강대로23길 55', floor_info: '아이파크몰 리빙파크 6층',
+      cats: ['굿즈샵', '콜라보카페'], shop_link: MOAE2_X, sns_links: [MOAE2_X, 'https://moaeku.co.kr'],
+      hours: all('10:30', '20:30'), place_id: IPARK, parking: true, parking_note: IPARK_NOTE,
+      description: '애니메이션·게임·만화·웹툰 팝업 스토어 MOAE:KU(모애쿠)의 용산 아이파크몰 매장입니다(드래곤미디어 운영). 작품별 공식 팝업 스토어·콜라보가 기간마다 바뀌어 열리고, 신촌점과 다른 지점 한정 MD 가 나오기도 합니다.\n운영 시간 10:30~20:30(공식 X 안내 — 행사에 따라 금·토 21:00까지 공지된 적 있음). 행사 일정은 공식 X 공지를 확인하세요.\n아이파크몰 용산점 리빙파크 6층.',
+    },
+    goods_types: [],
+    works: [
+      { tag_id: T.kaguya, evidence: '공식 X(@MOAEKU2) 2026-09-17 고정 공지 — 초(超) 가구야 공주! 콜라보 카페 & 팝업 스토어 신촌/용산 동시 OPEN(용산 09-29~)' },
+      { tag_id: T.aipri, evidence: '이 샵 이벤트 2dd86370 — 비밀의 아이프리 팝업스토어 (용산점) 2026-08-28~09-28' },
+      { tag_id: T.ouran, evidence: '공식 X(@MOAEKU2) 2026-04 공지 — 오란고교 사교클럽 용산 아이파크몰 스토어 2026-05-01~06-01, 리빙파크 6F MOAE:KU' },
+    ],
+    link_events: [
+      { event_id: 'cb0d37d4-7e46-4f47-96fe-ba4048dab58c', alias: 'MOAE:KU', evidence: 'place_detail "리빙파크 6층 MOAE:KU", 한강대로23길 55' },
+      { event_id: '2dd86370-23e2-4c42-af7e-7ff50e38d839', alias: 'MOAE:KU', evidence: 'place_detail "리빙파크 6층 MOAE:KU", 한강대로23길 55' },
+    ],
+    sources: [
+      { url: MOAE2_X, fields: ['name', 'floor_info', 'hours', 'sns_links', 'works'], checked_at: D, note: '공식 X 프로필 "MOAE:KU 아이파크 모애쿠": "아이파크몰 용산점 리빙파크 6F MOAE:KU / 운영 시간: 10:30AM ~ 08:30PM (KST) / 서울특별시 용산구 한강대로23길 아이파크몰 용산점 6층", 2025-09 가입, 09-17 가구야 공주 고정 공지' },
+      { url: 'https://x.com/MOAEKU2/status/2048722566760788348', fields: ['works', 'description'], checked_at: D, note: '오란고교 사교클럽 용산 아이파크몰 스토어 2026-05-01~06-01, 10:30~20:30 [금/토] ~21:00 (검색 결과 본문)' },
+      { url: 'place 045ed3e4 아이파크몰 용산점', fields: ['parking_note'], checked_at: D, note: '기존 place 노트 복사' },
+    ],
+    unconfirmed: ['goods_types', 'phone'],
+    notes: '같은 층 SUB.ST 스페이스 이벤트(c0920feb 케로로)는 다른 공간이라 연결 안 함',
+  },
+  {
+    action: 'insert', key: 'illustar-sinchon', photo: 'needed', brand: '일러스타 카페', brand_links: [IL_X, IL_IG, 'https://linktr.ee/illustarlink'],
+    fields: {
+      name: '일러스타 카페 신촌점', addr: '서울 서대문구 연세로 13', floor_info: '현대백화점 신촌점 U-PLEX 12층 스페이스 일러스타',
+      cats: ['콜라보카페'], shop_link: IL_X, sns_links: [IL_X, IL_IG],
+      place_id: UPLEX, parking: true, parking_note: UPLEX_NOTE,
+      description: '서브컬처 카페 일러스타 카페의 신촌점입니다(일러스타 페스 주최사 스타라이크 운영). 게임·버추얼·캐릭터 작품 콜라보 카페가 기간마다 열리고, 콜라보 굿즈 예약 상품을 매장에서 수령할 수 있습니다.\n현대백화점 신촌점 U-PLEX 12층(층별 안내 "SPACE ILLUSTAR"). 콜라보 일정·이용 안내는 공식 X 를 확인하세요.',
+    },
+    goods_types: [],
+    works: [
+      { tag_id: T.seeu, evidence: '공식 X 2026-07-28 — SeeU × 일러스타 카페 신촌점 2026-08-14~08-30, 09-22 예약 상품 신촌점 수령 안내' },
+    ],
+    link_events: [
+      { event_id: '2b10d991-6975-443e-b831-79fb916db4c3', evidence: 'place_detail "12층 일러스타 카페 신촌점", 연세로 13' },
+    ],
+    sources: [
+      IL_SRC,
+      { url: 'https://www.ehyundai.com/newPortal/uplex/DP/FG/FG000000_V.do?branchCd=B00127100', fields: ['floor_info'], checked_at: D, note: 'U-PLEX 층별 안내 12F "SPACE ILLUSTAR / 스페이스 일러스타"' },
+      { url: 'place e5915b03 현대백화점유플렉스 신촌점', fields: ['parking_note'], checked_at: D, note: '기존 place 노트 복사' },
+    ],
+    unconfirmed: ['hours', 'phone', 'goods_types'],
+    notes: '영업시간: 공식 IG 게시(검색 요약 "신촌점 영업시간 10:30~22:00")만 — 직접 확인 전 비움',
+  },
+  {
+    action: 'insert', key: 'illustar-dongdaemun', photo: 'needed', brand: '일러스타 카페', brand_links: [IL_X, IL_IG],
+    fields: {
+      name: '일러스타 카페 동대문점', addr: '서울 중구 장충단로13길 20', floor_info: '현대시티아울렛 동대문점 2층 SEOUL EDITION',
+      cats: ['콜라보카페'], shop_link: IL_X, sns_links: [IL_X, IL_IG], phone: '02-2283-2296',
+      place_id: DDM, parking: true, parking_note: DDM_NOTE,
+      description: '서브컬처 카페 일러스타 카페의 동대문점입니다(스타라이크 운영). 게임·버추얼·캐릭터 작품 콜라보 카페와 일일점장 게스트 행사가 열립니다.\n현대시티아울렛 동대문점 2층 SEOUL EDITION. 콜라보·게스트 일정은 공식 X 를 확인하세요.',
+    },
+    goods_types: [], works: [], link_events: [],
+    sources: [
+      IL_SRC,
+      { url: 'https://www.ehyundai.com/newPortal/outlet/DP/FG/FG000000_V.do?branchCd=B00173000', fields: ['floor_info', 'phone'], checked_at: D, note: '현대아울렛 동대문점 층별 안내 2F SEOUL EDITION "일러스타 카페 02-2283-2296"' },
+      { url: 'https://www.ehyundai.com/newPortal/outlet/DP/WC/WC000000_V.do?branchCd=B00173000', fields: ['parking', 'parking_note'], checked_at: D, note: '공식 주차장 이용안내(브라우저 렌더): 최초 30분(평일)·1시간(주말) 무료, 초과 10분당 800원, 구매 금액별 무료' },
+    ],
+    unconfirmed: ['hours', 'goods_types'],
+    notes: '이라스토야 콜라보(10월, 동대문·신촌) 작품 행 없음 — 연결 안 함',
+  },
+  {
+    action: 'insert', key: 'illustar-bucheon', photo: 'needed', brand: '일러스타 카페', brand_links: [IL_X, IL_IG],
+    fields: {
+      name: '일러스타 카페 부천점', addr: '경기 부천시 원미구 송내대로 239', floor_info: '뉴코아아울렛 부천점 4층 스페이스 일러스타 부천',
+      cats: ['콜라보카페'], shop_link: IL_X, sns_links: [IL_X, IL_IG],
+      place_id: BUCHEON, parking: true,
+      description: '서브컬처 복합문화공간 "스페이스 일러스타 부천" 의 일러스타 카페입니다(스타라이크 운영, 2026년 1월 23일 오픈). 카페형 공간으로 콜라보·팬 행사가 열립니다.\n뉴코아아울렛 부천점 4층, 테라스형 휴식 공간 블루밍스퀘어와 연결. 7호선 상동역 1번 출구에서 약 200m.',
+    },
+    goods_types: [], works: [], link_events: [],
+    sources: [
+      IL_SRC,
+      { url: 'https://v.daum.net/v/20260116160445110', fields: ['description'], checked_at: D, note: '보도: 스타라이크, 2026-01-23 뉴코아아울렛 부천점 4층 스페이스 일러스타 부천 오픈, 블루밍스퀘어 연결(검색 요약)' },
+      { url: 'https://www.elandretail.com/store09.do?branchID=00110012&lang=000600KO', fields: ['addr', 'description'], checked_at: D, note: '뉴코아 부천점 공식 오시는 길: 송내대로 239, 7호선 상동역 1번출구 200m. 주차 요금 표기 없음' },
+    ],
+    unconfirmed: ['hours', 'phone', 'goods_types', 'parking_note'],
+  },
+]
+writeFileSync(`scripts/shops/plans/${D}.json`, JSON.stringify({ name: D, items }, null, 1))
+console.log('wrote', items.length)

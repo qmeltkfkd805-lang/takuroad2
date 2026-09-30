@@ -1,0 +1,171 @@
+[
+  {
+    "slug": "lost-song-anime",
+    "name": "로스트 송",
+    "englishName": "LOST SONG",
+    "aliases": [],
+    "description": "노래로 기적을 일으키는 두 소녀의 운명이 전쟁 속에서 하나로 이어진다",
+    "genres": [
+      "판타지",
+      "음악",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "double-decker-doug-kirill-anime",
+    "name": "더블데커! 더그&키릴",
+    "englishName": "DOUBLE DECKER! Doug & Kirill",
+    "aliases": [],
+    "description": "베테랑 형사와 신참이 특수 약물 범죄를 수사하며 콤비로 성장한다",
+    "genres": [
+      "액션",
+      "추리",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-price-of-smiles-anime",
+    "name": "미소의 대가",
+    "englishName": "The Price of Smiles",
+    "aliases": [],
+    "description": "왕녀와 제국군 소녀의 시점으로 전쟁이 빼앗는 삶과 선택을 그린다",
+    "genres": [
+      "로봇/메카",
+      "드라마",
+      "SF"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "the-magnificent-kotobuki-anime",
+    "name": "황야의 코토부키 비행대",
+    "englishName": "The Magnificent Kotobuki",
+    "aliases": [],
+    "description": "여성 조종사들이 황야의 하늘에서 수송선을 호위하고 공적과 싸운다",
+    "genres": [
+      "액션",
+      "모험"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "robihachi-anime",
+    "name": "로비하치",
+    "englishName": "RobiHachi",
+    "aliases": [],
+    "description": "빚쟁이 로비와 추심자 하치가 우주선을 타고 행운의 행성을 향해 여행한다",
+    "genres": [
+      "SF",
+      "모험",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "gibiate-anime",
+    "name": "기비아테",
+    "englishName": "GIBIATE",
+    "aliases": [],
+    "description": "괴물로 변하는 전염병이 퍼진 미래 일본에서 사무라이와 닌자가 생존한다",
+    "genres": [
+      "액션",
+      "SF",
+      "호러"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "magatsu-wahrheit-anime",
+    "name": "마가츠 바르하이트",
+    "englishName": "MAGATSU WAHRHEIT",
+    "aliases": [],
+    "description": "제국의 두 청년이 밀수 사건과 괴물 재앙에 휘말려 서로 다른 길을 걷는다",
+    "genres": [
+      "판타지",
+      "액션",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "estab-life-great-escape-anime",
+    "name": "에스타브 라이프 그레이트 이스케이프",
+    "englishName": "ESTAB LIFE: Great Escape",
+    "aliases": [],
+    "description": "인공지능이 나눈 도시에서 탈출업자들이 의뢰인을 다른 구역으로 빼돌린다",
+    "genres": [
+      "SF",
+      "액션",
+      "코미디"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "shine-on-bakumatsu-bad-boys-anime",
+    "name": "부치기레!",
+    "englishName": "Shine On! Bakumatsu Bad Boys",
+    "aliases": [],
+    "description": "죄수들이 처형을 면하는 조건으로 신선조의 대역이 되어 교토를 지킨다",
+    "genres": [
+      "액션",
+      "코미디",
+      "드라마"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  },
+  {
+    "slug": "protocol-rain-anime",
+    "name": "우리의 비 내리는 프로토콜",
+    "englishName": "Protocol: Rain",
+    "aliases": [],
+    "description": "가족을 돕는 청년이 옛 친구들과 e스포츠 대회 우승에 도전한다",
+    "genres": [
+      "스포츠",
+      "드라마",
+      "학원"
+    ],
+    "ipType": [
+      "애니"
+    ],
+    "officialUrl": "",
+    "source": ""
+  }
+]

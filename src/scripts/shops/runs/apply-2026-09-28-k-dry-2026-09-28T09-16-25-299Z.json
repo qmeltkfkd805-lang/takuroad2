@@ -1,0 +1,367 @@
+{
+ "plan": "2026-09-28-k",
+ "at": "2026-09-28T09:16:25.299Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "pokemon-cardshop-pyeongtaek",
+   "action": "insert",
+   "geocode": {
+    "lat": 36.9927382180489,
+    "lng": 127.088356629156,
+    "road": "경기 평택시 평택2로 16",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "포켓몬 카드샵 카드홀릭 평택",
+    "addr": "경기 평택시 평택2로 16",
+    "floor_info": "3층",
+    "cats": [
+     "카드/TCG"
+    ],
+    "phone": "010-2712-8884",
+    "hours": null,
+    "shop_link": "https://pokemonkorea.co.kr/pokemon_cardshop/menu214",
+    "sns_links": [],
+    "description": "포켓몬코리아 공식 인증 포켓몬 카드 게임 전문 매장 \"POKÉMON CARD SHOP\"으로, 평택시 평택2로 16 3층에 2022년 10월 29일 문을 열었습니다.\n영업시간은 공식 안내 이미지가 오픈 당시 기준이라 비워 두었습니다. 방문 전 매장에 확인해 주세요. 공식 대회·리그는 포켓몬 카드 게임 공식 예약 사이트에서 신청합니다.",
+    "lat": 36.9927382180489,
+    "lng": 127.088356629156,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T09:16:25.299Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pokemon-cardshop-ulsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.5625881404436,
+    "lng": 129.333935689878,
+    "road": "울산 중구 번영로 454-1",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "포켓몬 카드샵 TCG 팩토리 울산",
+    "addr": "울산 중구 번영로 454-1",
+    "floor_info": "1층",
+    "cats": [
+     "카드/TCG"
+    ],
+    "phone": "052-710-4083",
+    "hours": null,
+    "shop_link": "https://pokemonkorea.co.kr/pokemon_cardshop/menu226",
+    "sns_links": [],
+    "description": "포켓몬코리아 공식 인증 포켓몬 카드 게임 전문 매장 \"POKÉMON CARD SHOP\"으로, 중구 번영로 454-1 1층에 2022년 12월 3일 문을 열었습니다.\n영업시간은 공식 안내 이미지가 오픈 당시 기준이라 비워 두었습니다. 방문 전 매장에 확인해 주세요. 공식 대회·리그는 포켓몬 카드 게임 공식 예약 사이트에서 신청합니다.",
+    "lat": 35.5625881404436,
+    "lng": 129.333935689878,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T09:16:25.299Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pokemon-cardshop-daegu",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.8416974948559,
+    "lng": 128.553045885086,
+    "road": "대구 달서구 야외음악당로 50",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "포켓몬 카드샵 트레이너 스쿨 대구",
+    "addr": "대구 달서구 야외음악당로 50",
+    "floor_info": "2층",
+    "cats": [
+     "카드/TCG"
+    ],
+    "phone": "010-4836-2223",
+    "hours": null,
+    "shop_link": "https://pokemonkorea.co.kr/pokemon_cardshop/menu246",
+    "sns_links": [],
+    "description": "포켓몬코리아 공식 인증 포켓몬 카드 게임 전문 매장 \"POKÉMON CARD SHOP\"으로, 달서구 야외음악당로 50(성당동 488-1) 2층에 2023년 1월 14일 문을 열었습니다.\n영업시간은 공식 안내 이미지가 오픈 당시 기준이라 비워 두었습니다. 방문 전 매장에 확인해 주세요. 공식 대회·리그는 포켓몬 카드 게임 공식 예약 사이트에서 신청합니다.",
+    "lat": 35.8416974948559,
+    "lng": 128.553045885086,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T09:16:25.299Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "ichibankuji-yongsan",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "road": "서울 용산구 한강대로23길 55",
+    "building": "용산역",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "이치방쿠지 용산점",
+    "addr": "서울 용산구 한강대로23길 55",
+    "floor_info": "아이파크몰 3층 도파민 스테이션",
+    "cats": [
+     "쿠지"
+    ],
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "20:30"
+     }
+    },
+    "shop_link": "https://ichibankuji.kr/shop",
+    "sns_links": [],
+    "place_id": "045ed3e4-9d81-4f68-a4c7-e6815f0ccadc",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n기본요금 10분당 1,500원\n무료 회차 없음\n당일 영수증 할인은 최대 5시간까지 적용",
+    "description": "반다이 남코의 캐릭터 경품 복권 \"이치방쿠지\" 공식 매장(ICHIBANKUJI OFFICIAL SHOP)으로, 용산 아이파크몰 3층 도파민 스테이션 안에 있습니다. 영업시간은 매일 10:30~20:30입니다(공식 매장정보).\n국내 이치방쿠지 판매처 안내(대원미디어 이치방쿠지 더블찬스 매장정보)에 등록된 매장입니다.",
+    "lat": 37.5297718014452,
+    "lng": 126.964741503485,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T09:16:25.299Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "ichibankuji-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5577458058734,
+    "lng": 126.926498328277,
+    "road": "서울 마포구 양화로 188",
+    "building": "애경타워",
+    "count": 2
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "이치방쿠지 홍대점",
+    "addr": "서울 마포구 양화로 188",
+    "floor_info": "AK플라자 홍대 5층",
+    "cats": [
+     "쿠지"
+    ],
+    "hours": {
+     "mon": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "tue": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "wed": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "thu": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "fri": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "sat": {
+      "open": "11:00",
+      "close": "22:00"
+     },
+     "sun": {
+      "open": "11:00",
+      "close": "22:00"
+     }
+    },
+    "shop_link": "https://ichibankuji.kr/shop",
+    "sns_links": [],
+    "place_id": "6c9bad49-7a5b-43d3-b2df-405a2e5df390",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 2,000원\n이후 10분당 1,000원\n1만원 구매 시 1시간 무료\n3만원 구매 시 2시간 무료\n5만원 구매 시 3시간 무료",
+    "description": "반다이 남코의 캐릭터 경품 복권 \"이치방쿠지\" 공식 매장(ICHIBANKUJI OFFICIAL SHOP)으로, AK플라자 홍대(AK&홍대) 5층에 있습니다. 영업시간은 매일 11:00~22:00입니다(공식 매장정보). 같은 층 애니메이트 홍대점과는 다른 매장입니다.\n국내 이치방쿠지 판매처 안내(대원미디어 이치방쿠지 더블찬스 매장정보)에 등록된 매장입니다.",
+    "lat": 37.5577458058734,
+    "lng": 126.926498328277,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T09:16:25.299Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "ichibankuji-haeundae",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1688178394069,
+    "lng": 129.129523260187,
+    "road": "부산 해운대구 센텀남대로 35",
+    "building": "신세계백화점센텀시티점",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "이치방쿠지 해운대점",
+    "addr": "부산 해운대구 센텀남대로 35",
+    "floor_info": "신세계백화점 센텀시티 지하 2층",
+    "cats": [
+     "쿠지"
+    ],
+    "hours": {
+     "mon": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "tue": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "wed": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "10:30",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "10:30",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "10:30",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "10:30",
+      "close": "21:00"
+     }
+    },
+    "shop_link": "https://ichibankuji.kr/shop",
+    "sns_links": [],
+    "place_id": "3a89dba6-6afb-40fa-9a42-9d20aeecafd1",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 30분 무료, 이후 10분당 1,000원\n구매 시 무료: 1만원 이상 1시간 · 3만원 이상 2시간 · 5만원 이상 3시간 · 10만원 이상 4시간 · 20만원 이상 5시간\n식당가 이용 시 2시간 무료\n센텀시티몰(센텀4로 15) 포함 같은 주차 기준",
+    "description": "반다이 남코의 캐릭터 경품 복권 \"이치방쿠지\" 공식 매장(ICHIBANKUJI OFFICIAL SHOP)으로, 부산 신세계백화점 센텀시티 지하 2층에 있습니다. 영업시간은 월~목 10:30~20:30, 금~일 10:30~21:00입니다(공식 매장정보). 백화점 휴점일은 백화점 안내를 확인해 주세요.\n국내 이치방쿠지 판매처 안내(대원미디어 이치방쿠지 더블찬스 매장정보)에 등록된 매장입니다.",
+    "lat": 35.1688178394069,
+    "lng": 129.129523260187,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-28T09:16:25.299Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

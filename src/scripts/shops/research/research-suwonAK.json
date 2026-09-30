@@ -1,0 +1,274 @@
+[
+ {
+  "shop_id": "0c9666e5-9c1a-4c65-9856-93ef9fa210d0",
+  "name": "타미야 프라모델 팩토리 ak플라자 수원점",
+  "works": [],
+  "goods_types": [
+   {
+    "slug": "clothing",
+    "evidence": "Official YS Hobby (AK플라자 5층 operator) site has a Goods menu with apparel and bags",
+    "url": "https://yshobby.co.kr/"
+   }
+  ],
+  "notes": "The official site (yshobby.co.kr, footer address: AK플라자 5층) lists only Tamiya/Italeri scale models, Mini 4WD, RC, science kits and paints. No anime/manga licensed IPs found. Mini 4WD, RC and paint are already in custom_goods."
+ },
+ {
+  "shop_id": "ff169fc0-f22e-4148-b61a-42039616dcc7",
+  "name": "도토리숲 ak플라자 수원점",
+  "works": [
+   {
+    "name": "센과 치히로의 행방불명",
+    "evidence": "Work category in the official Dotorisup online mall",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "천공의 성 라퓨타",
+    "evidence": "Work category in the official Dotorisup online mall",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "붉은 돼지",
+    "evidence": "Work category in the official Dotorisup online mall",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "원령공주",
+    "evidence": "Work category in the official Dotorisup online mall",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "벼랑 위의 포뇨",
+    "evidence": "Work category in the official Dotorisup online mall",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "귀를 기울이면",
+    "evidence": "Work category in the official Dotorisup online mall",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "바람계곡의 나우시카",
+    "evidence": "Work category in the official Dotorisup online mall",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "마루 밑 아리에티",
+    "evidence": "Work category in the official Dotorisup online mall",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "고양이의 보은",
+    "evidence": "Work category in the official Dotorisup online mall",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "name": "그대들은 어떻게 살 것인가",
+    "evidence": "Work category in the official Dotorisup online mall",
+    "url": "https://www.dotorisup.com/"
+   }
+  ],
+  "goods_types": [
+   {
+    "slug": "can-badge-new",
+    "evidence": "Official mall product category '뱃지'",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "slug": "cushion",
+    "evidence": "Official mall product category '쿠션'",
+    "url": "https://www.dotorisup.com/"
+   },
+   {
+    "slug": "household-items",
+    "evidence": "Official mall product categories '타올', '가방', '파우치'",
+    "url": "https://www.dotorisup.com/"
+   }
+  ],
+  "notes": "This is a brand store (the official Korean Ghibli shop run by 대원미디어), so the evidence comes from the brand's official online mall. The mall also lists 코쿠리코 언덕에서 and 아야와 마녀, which were left out to stay at 10. The mall also has 오르골, 디오라마 and 퍼즐 categories, which have no matching slug."
+ },
+ {
+  "shop_id": "1fcd053a-42a9-4a38-9d5d-89022c3add4b",
+  "name": "SMG ak플라자 수원점",
+  "works": [],
+  "goods_types": [],
+  "notes": "Press coverage of AK 팝토피아 describes SMG스토어 as a shop that specializes in popular-IP pop-up stores ('인기 IP 팝업스토어를 전문으로 전개'). The only Suwon-specific lineup found was the 이누야샤 pop-up (2026-09-01 to about 09-22, 'AK플라자 수원점 5층 SMG STORE'), which was excluded as a pop-up. Source: https://eduwise.tourbounce.com/2026/08/blog-post_19.html and https://www.dailian.co.kr/news/view/1683304. Also note that smgstore.co.kr is an unrelated outdoor/Zippo shop with a similar name."
+ },
+ {
+  "shop_id": "29df3da7-b543-48b6-9b4a-b703837a24ad",
+  "name": "이치방쿠지 AK PLAZA 수원점",
+  "works": [],
+  "goods_types": [],
+  "notes": "No branch-specific title lineup was found. The AK news about 드래곤볼, 원피스 and 에반게리온 kuji refers to an earlier 이치방쿠지 pop-up at 건담베이스 (https://m.akplaza.com/board/news/view?store=02&seq=17636), so it was excluded. A 2024 dcinside post mentions 우마무스메 kuji bought at 건담베이스 AK수원 (https://gall.dcinside.com/mgallery/board/view/?id=umamusu&no=3207520). That predates this standalone store, so it was left out."
+ },
+ {
+  "shop_id": "29449d53-4cd9-4cba-9eac-8a3d88c5c25d",
+  "name": "더쿠 ak플라자 수원점",
+  "works": [
+   {
+    "name": "주술회전",
+    "evidence": "Official X @the_ku_AKs: 주술회전 넨도로이드 게토 스구루 입고",
+    "url": "https://x.com/the_ku_AKs/status/1967515108382491095"
+   },
+   {
+    "name": "아이돌마스터",
+    "evidence": "Official X @the_ku_AKs: 아이돌 마스터 시리즈 증명 사진 입고",
+    "url": "https://x.com/the_ku_AKs/status/1981651089792675881"
+   },
+   {
+    "name": "아이돌리쉬 세븐",
+    "evidence": "Official X @the_ku_AKs: 아이돌리쉬 세븐 캔배지 컬렉션+ vol.3 입고",
+    "url": "https://x.com/the_ku_AKs/status/2055941046715265225"
+   },
+   {
+    "name": "다마고치",
+    "evidence": "Official X @the_ku_AKs, several posts: 다마고치 아크릴 키홀더, 누이구루미 마스코트, 누이 핀 입고",
+    "url": "https://x.com/the_ku_AKs/status/2057756411053158724"
+   },
+   {
+    "name": "산리오",
+    "evidence": "Official X @the_ku_AKs: 산리오 도넛 패키지 아크릴 키체인 입고; Daum news also names 산리오 at the 더쿠 store",
+    "url": "https://x.com/the_ku_AKs/status/1968244352205164674"
+   },
+   {
+    "name": "아이카츠!",
+    "evidence": "Official X @the_ku_AKs: 아이카츠x프리파라 캐러냅 컬렉션 입고",
+    "url": "https://x.com/the_ku_AKs/status/1993977295707705435"
+   },
+   {
+    "name": "에일리언 스테이지",
+    "evidence": "Official X @the_ku_AKs: 에일리언 스테이지 넨도로이드 서프라이즈 입고",
+    "url": "https://x.com/the_ku_AKs/status/2049413408769114162"
+   }
+  ],
+  "goods_types": [],
+  "notes": "Only @the_ku_AKs (더쿠 수원AK점) was used. @the_ku_s is a different 더쿠 수원점 near 수원역 rodeo street and was excluded. An Ado keyholder post was skipped because Ado is a musician, not a work. Items seen (can badges, acrylic keyholders, nendoroids, nui) are all covered by the current goods."
+ },
+ {
+  "shop_id": "0dfde34a-df7b-4c52-af43-2c5f3d255c98",
+  "name": "그린북 만화카페 ak플라자 수원점",
+  "works": [],
+  "goods_types": [],
+  "notes": "Manga cafe. No reliable title-level evidence found."
+ },
+ {
+  "shop_id": "173a029b-fc61-4282-be89-58e4ade23cbf",
+  "name": "애니메이트 ak플라자 수원점",
+  "works": [
+   {
+    "name": "최애의 아이",
+    "evidence": "AK/Daum article and AK animate store notice list 최애의 아이 among IPs sold at 애니메이트 AK수원",
+    "url": "https://v.daum.net/v/2KLv7e6blC"
+   },
+   {
+    "name": "슬램덩크",
+    "evidence": "Daum news: 애니메이트 AK수원 carries 하이큐, 주술회전, 히로아카, 슬램덩크, 귀멸의 칼날, 최애의 아이",
+    "url": "https://v.daum.net/v/2KLv7e6blC"
+   },
+   {
+    "name": "귀멸의 칼날",
+    "evidence": "Same Daum article, named in 애니메이트's IP list",
+    "url": "https://v.daum.net/v/2KLv7e6blC"
+   },
+   {
+    "name": "스파이 패밀리",
+    "evidence": "AK플라자 official notice for 애니메이트 수원 lists 스파이 패밀리 among the IPs sold",
+    "url": "https://www.akplaza.com/board/news/view?store=02&seq=18369&pre=main"
+   },
+   {
+    "name": "반딧불이의 혼례",
+    "evidence": "AK플라자 수원 official Facebook: '애니메이트 주술회전, 나의히어로아카데미아, 괴수8호, 반딧불이의 혼례 등 소년만화'",
+    "url": "https://www.facebook.com/akplaza.suwon.dep/posts/1264592725705511/"
+   }
+  ],
+  "goods_types": [],
+  "notes": "Animate ran as a pop-up from 2025-09-19 to 2026-03-19 and reopened as a permanent 수원점 on 2026-07-16. The IP evidence comes from Animate's own store at this location, not from the separate 은혼 or 코난 pop-up events, which were excluded. Goods are already fully covered."
+ },
+ {
+  "shop_id": "7a9c0108-bbaf-47a0-9a27-601b0c0b432d",
+  "name": "가샤폰 ak플라자 수원점",
+  "works": [],
+  "goods_types": [],
+  "notes": "가샤폰 스트리트 opened in March 2026 (AK news). No branch-specific capsule lineup evidence was found. The Bandai official page does not list Korean stores."
+ },
+ {
+  "shop_id": "582df543-3ec9-467a-9199-2952fe3eaa57",
+  "name": "애니랜드 ak플라자 수원점",
+  "works": [],
+  "goods_types": [],
+  "notes": "애니랜드 (대원캐릭터리, run by 대원미디어) opened on 2023-09-01 alongside 도토리숲 at AK 5F as a 'mart-concept' character goods store (namu.wiki). Instagram @aniland_market confirms the location (AK플라자 5F, inside 도토리숲). No post-level IP evidence was retrievable."
+ },
+ {
+  "shop_id": "774b9e7a-f95b-417c-8610-99f48d81b600",
+  "name": "오늘의 귀여움 ak플라자 수원점",
+  "works": [
+   {
+    "name": "오둥이",
+    "evidence": "Character line in the official 오늘의 귀여움 Coupang brand store",
+    "url": "https://shop.coupang.com/dailycuteness/131165"
+   },
+   {
+    "name": "치즈덕",
+    "evidence": "Character line in the official 오늘의 귀여움 brand store",
+    "url": "https://shop.coupang.com/dailycuteness/131165"
+   },
+   {
+    "name": "김바덕",
+    "evidence": "Character line in the official 오늘의 귀여움 brand store",
+    "url": "https://shop.coupang.com/dailycuteness/131165"
+   },
+   {
+    "name": "찌그렁오리",
+    "evidence": "Character line in the official 오늘의 귀여움 brand store",
+    "url": "https://shop.coupang.com/dailycuteness/131165"
+   }
+  ],
+  "goods_types": [],
+  "notes": "The evidence is at brand level, not branch-specific. These are Korean emoticon-style characters, not anime. The brand's 9-character lineup, per the LINE FRIENDS joint pop-up (https://popga.co.kr/popup/4050), also includes 깜자, 복슬이, 부실감자, GO라니&DA람쥐 and 몰티즈. Only the four confirmed in the brand store were included. The brand store also has a large 오둥이 cushion, but cushion was not added because the AK store is listed as gacha-focused. Drop the works if brand-level evidence is not acceptable."
+ },
+ {
+  "shop_id": "3b042b45-de7c-429c-b786-3859c44b1757",
+  "name": "건담베이스 ak플라자 수원점",
+  "works": [],
+  "goods_types": [
+   {
+    "slug": "gacha-new",
+    "evidence": "Official 건담베이스 수원점 renewal notice (2026-03-20): 건프라, 피규어, 캡슐 토이; gashapon showcase gift for 5+ capsule plays",
+    "url": "https://www.instagram.com/p/DV0S9HaDnA5/"
+   },
+   {
+    "slug": "ichiban-kuji",
+    "evidence": "Official 반다이남코코리아몰 post on the 수원점 renewal: '건프라 피규어 캡슐 이치방쿠지까지'",
+    "url": "https://www.facebook.com/bnkrmall/posts/1363475355809814/"
+   }
+  ],
+  "notes": "The official renewal post also mentions 원피스 카드게임 demo sessions (원피스 is already listed) and TAMASHII Spot Item sales (figures are already listed). 기동전사 건담 is already covered by '건담'. The 드래곤볼, 원피스 and 에반게리온 kuji pop-up at 건담베이스 was excluded as a pop-up."
+ },
+ {
+  "shop_id": "f7fc399e-372c-469c-a81e-eb0c1874ad4b",
+  "name": "웨차이굿즈 ak플라자 수원점",
+  "works": [
+   {
+    "name": "시트러스",
+    "evidence": "Official 웨차이굿즈 수원점 X: '수원점 시트러스 입고' random scene can badges",
+    "url": "https://x.com/YUECHAI_SUWON/status/2081240448375595053"
+   },
+   {
+    "name": "던전밥",
+    "evidence": "Official IG @yuechaigoods.suwon: '수원점 던전밥 입고' acrylic keyrings",
+    "url": "https://www.instagram.com/yuechaigoods.suwon/p/DbvqxYACSWq/"
+   },
+   {
+    "name": "제5인격",
+    "evidence": "Official IG @yuechaigoods.suwon: '수원점 제5인격 입고' trading cards",
+    "url": "https://www.instagram.com/yuechaigoods.suwon/p/DbvpVVuiWr1/"
+   },
+   {
+    "name": "캐릭캐릭 체인지",
+    "evidence": "Official IG @yuechaigoods.suwon: '수원점 캐릭캐릭 체인지 (재)입고' keyrings, nui keyrings",
+    "url": "https://www.instagram.com/yuechaigoods.suwon/p/Dbvu0OPCYME/"
+   }
+  ],
+  "goods_types": [],
+  "notes": "Only posts from the Suwon branch accounts (@YUECHAI_SUWON, @yuechaigoods.suwon) were used. The Hongdae-branch posts (에일리언 스테이지, Free!, 하이큐 쿠지) were excluded. The goods seen are already covered."
+ }
+]

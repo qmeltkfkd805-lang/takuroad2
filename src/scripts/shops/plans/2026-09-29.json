@@ -1,0 +1,195 @@
+{
+ "name": "2026-09-29",
+ "items": [
+  {
+   "action": "insert",
+   "key": "tunstoks-jeju",
+   "brand": "턴스톡스",
+   "brand_links": [],
+   "fields": {
+    "name": "턴스톡스 제주점",
+    "addr": "제주특별자치도 제주시 중앙로 281",
+    "floor_info": "남정빌딩 2층 202호",
+    "cats": ["쿠지", "가챠", "굿즈샵", "피규어샵"],
+    "phone": "064-746-1246",
+    "hours": {
+     "mon": { "open": "14:00", "close": "18:30" },
+     "tue": { "open": "14:00", "close": "18:30" },
+     "wed": null,
+     "thu": { "open": "14:00", "close": "18:30" },
+     "fri": { "open": "14:00", "close": "18:30" },
+     "sat": { "open": "13:00", "close": "18:00" },
+     "sun": { "open": "13:00", "close": "18:00" }
+    },
+    "shop_link": "https://x.com/TunstoksJeju",
+    "sns_links": ["https://x.com/TunstoksJeju", "https://pf.kakao.com/_xaxbPaj", "https://www.instagram.com/tunstoks_jeju/", "https://www.facebook.com/tunstoksjeju/"],
+    "description": "제주시 중앙로의 제일복권(이치방쿠지)·가챠·애니 굿즈 전문점으로, 새로 나온 경품 피규어와 가챠를 공식 X 로 안내합니다. 남정빌딩 2층 202호에 있습니다.\n영업시간은 평일 14:00~18:30, 주말 13:00~18:00이고 수요일은 정기 휴무입니다(공식 계정 안내). 명절 영업시간은 공식 X 공지를 확인해 주세요."
+   },
+   "goods_types": ["ichiban-kuji", "gacha-new", "figure-new", "can-badge-new"],
+   "works": [
+    { "tag_id": "cdc27204-c7f8-4f28-a4a7-fb7e8b7fc1b7", "evidence": "공식 X 2026-09-24 은혼 20주년 기념 PART2 제일복권 9/25 시작" },
+    { "tag_id": "0288dabe-8b69-45f9-ad18-d447c1e2b7a9", "evidence": "공식 X 2026-09-20 문호 스트레이독스 캔뱃지 가챠" },
+    { "tag_id": "b6a65af7-85e0-4390-9986-6057487c19d1", "evidence": "공식 X 2026-09-19 나의 히어로 아카데미아 쿠지 새판" },
+    { "tag_id": "1027065f-cc43-424a-bc69-471cc38df7fd", "evidence": "공식 X 2026-09-19 블리치 쿠지 Stirring Souls vol.4 새판" },
+    { "tag_id": "7fc6cb70-c059-40e3-86a4-39dc28b6b32c", "evidence": "공식 X 2026-09-19 피규어 입고(주술회전)" },
+    { "tag_id": "c80c180f-4b11-4a6b-8a7f-ec4b412ecf42", "evidence": "공식 X 2026-09-19 피규어 입고(원피스)" },
+    { "tag_id": "fb8c03af-9bdc-4fb2-8fef-8d9a7792873c", "evidence": "공식 X 2026-09-19 피규어 입고(장송의 프리렌)" },
+    { "tag_id": "e5e3810f-0e71-46c2-afb5-99f80b228541", "evidence": "공식 X 2026-09-19 피규어 입고(그 비스크 돌은 사랑을 한다)" },
+    { "tag_id": "32995c8f-a09f-4a45-8efc-47a5e3b51e8a", "evidence": "공식 X 2026-09-19 피규어 입고(블루 아카이브)" }
+   ],
+   "sources": [
+    { "url": "https://x.com/TunstoksJeju", "fields": ["name", "addr", "floor_info", "phone", "hours", "cats", "description", "works", "goods_types"], "checked_at": "2026-09-29", "note": "공식 X 프로필 \"이치방쿠지,가챠,굿즈샵 064-746-1246 평일 오후2시~6시30분 주말 오후1시~6시 정기휴일 수요일 / 제주도 제주시 중앙로 281 남정빌딩 202호\" + 2026-09-19~24 게시물(브라우저 렌더)" },
+    { "url": "https://ichibankuji.kr/shop", "fields": ["goods_types"], "checked_at": "2026-09-29", "note": "이치방쿠지 공식 판매처 목록 \"턴스톡스 제주 | 제주시 중앙로 281 남정빌딩 202호 | 064-746-1246 | 매주 수요일 정기휴일\"" }
+   ],
+   "unconfirmed": ["parking"],
+   "photo": "needed",
+   "notes": "서울 중랑 턴스톡스 본점(@tunstoks)은 X 마지막 게시 2023 — 2026 영업 확인 전 미등록. 단독 빌딩 — place 없음"
+  },
+  {
+   "action": "insert",
+   "key": "mowazeul-daegu",
+   "brand": "모와즐",
+   "brand_links": [],
+   "fields": {
+    "name": "모와즐 대구점",
+    "addr": "대구 중구 경상감영길 170",
+    "floor_info": "지하 1층",
+    "cats": ["쿠지", "가챠", "굿즈샵", "피규어샵"],
+    "phone": "0507-1400-3402",
+    "hours": {
+     "mon": { "open": "12:00", "close": "20:00" },
+     "tue": { "open": "12:00", "close": "20:00" },
+     "wed": { "open": "12:00", "close": "20:00" },
+     "thu": { "open": "12:00", "close": "20:00" },
+     "fri": { "open": "12:00", "close": "20:00" },
+     "sat": { "open": "12:00", "close": "20:00" },
+     "sun": { "open": "12:00", "close": "20:00" }
+    },
+    "shop_link": "https://x.com/MoWaKIN_Daegu",
+    "sns_links": ["https://x.com/MoWaKIN_Daegu"],
+    "description": "\"모두 와서 즐겨봐!\"를 내건 대구 중구의 가챠·피규어·굿즈·제일복권(이치방쿠지) 매장으로, 경상감영길 건물 지하 1층에 있습니다. 새 제일복권 회차와 입고 소식은 공식 X 에 올라옵니다.\n영업시간은 12:00~20:00입니다(공식 계정 안내). 통신판매·가격 문의는 공식 X DM 으로 받습니다."
+   },
+   "goods_types": ["ichiban-kuji", "gacha-new", "figure-new"],
+   "works": [
+    { "tag_id": "cdc27204-c7f8-4f28-a4a7-fb7e8b7fc1b7", "evidence": "공식 X 2026-09-24 은혼 20주년 기념 제일복권 입고" },
+    { "tag_id": "1a97869d-63fb-4d86-a098-2551356d835b", "evidence": "공식 X 2026-09-24 에반게리온 신극장판: 서 제일복권 입고" },
+    { "tag_id": "2a88af81-4e08-446f-befa-312110884a20", "evidence": "공식 X 2026-09-24 하이큐!! -카라스노의 미래- 제일복권 입고" },
+    { "tag_id": "63f2a778-7dca-469d-a2c1-8b139d82637f", "evidence": "공식 X 2026-09-20 승리의 여신: 니케 CHAPTER6 제일복권 새 회차" }
+   ],
+   "sources": [
+    { "url": "https://x.com/MoWaKIN_Daegu", "fields": ["name", "addr", "floor_info", "hours", "cats", "description", "works", "goods_types"], "checked_at": "2026-09-29", "note": "공식 X 프로필 \"가챠 & 피규어 & 굿즈 & 제일복권 / 영업시간 open 오전12시 close 오후8시 / 대구시 중구 경상감영길 170 지하1층\" + 2026-09-23 추석 공지 \"12시~20시\" + 2026-09-20~24 입고 게시(브라우저 렌더)" },
+    { "url": "https://ichibankuji.kr/shop", "fields": ["phone"], "checked_at": "2026-09-29", "note": "이치방쿠지 공식 판매처 목록 \"모와즐 대구점 | 대구 중구 경상감영길 170 지하1층 | 0507-1400-3402 | 턴스톡스 대구\"" }
+   ],
+   "unconfirmed": ["regular_holiday", "parking"],
+   "photo": "needed",
+   "notes": "판매처 목록 설명 \"턴스톡스 대구\" — 턴스톡스와의 관계 미확인(이름은 공식 X 기준). 검색 요약상 부산·수원 지점 있음 — 공식 확인 후 별도 후보. 단독 건물 — place 없음"
+  },
+  {
+   "action": "insert",
+   "key": "longlongliebe-cheongna",
+   "brand": "롱롱리베게임즈",
+   "brand_links": [],
+   "fields": {
+    "name": "롱롱리베게임즈",
+    "addr": "인천 서구 청라에메랄드로 99",
+    "floor_info": "지젤엠청라 A동 2층 42호",
+    "cats": ["게임샵", "쿠지"],
+    "phone": "032-623-4470",
+    "hours": {
+     "mon": null,
+     "tue": { "open": "11:00", "close": "21:00" },
+     "wed": { "open": "11:00", "close": "21:00" },
+     "thu": { "open": "11:00", "close": "21:00" },
+     "fri": { "open": "11:00", "close": "21:00" },
+     "sat": { "open": "11:00", "close": "21:00" },
+     "sun": { "open": "11:00", "close": "20:00" }
+    },
+    "shop_link": "https://www.threads.com/@longlongliebe",
+    "sns_links": ["https://www.threads.com/@longlongliebe", "https://cafe.naver.com/longlongliebe", "https://longlongliebe.co.kr/"],
+    "description": "청라의 닌텐도·플레이스테이션 게임 전문 판매점으로, 신작 게임과 예약 판매, 중고 게임기·중고 게임 판매·매입, 아미보, 게임 액세서리와 함께 제일복권(이치방쿠지)도 취급합니다. 지젤엠청라 A동 2층 엘리베이터 바로 앞에 있습니다.\n영업시간은 화~토 11:00~21:00, 일 11:00~20:00이며 월요일은 쉬는 날입니다(공식 계정 안내, 임시 휴무·월요일 영업은 공식 Threads 공지)."
+   },
+   "goods_types": ["ichiban-kuji"],
+   "add_custom_goods": ["비디오게임", "게임기·게임 액세서리"],
+   "works": [
+    { "tag_id": "7bd35887-9d63-4591-a390-7d75e9fe8bd7", "evidence": "공식 Threads 프로필 \"청라닌텐도 플스전문판매점\" — 닌텐도 게임·아미보 판매", "primary": true }
+   ],
+   "sources": [
+    { "url": "https://www.threads.com/@longlongliebe", "fields": ["name", "addr", "floor_info", "phone", "hours", "cats", "description", "goods_types", "works"], "checked_at": "2026-09-29", "note": "공식 Threads 프로필 \"신작게임및예약판매 / 중고기기·중고게임판매 / 아미보,제일복권,게임악세사리 / 구매금액1%적립,주차4시간 / 지젤엠청라A동 2층 엘베 바로앞 / T.0326234470 / 월~토 am11~pm9 일 am11~pm8\" + 2026-09-06 공지 \"9월 7일(월), 14(월) 원래는 휴무지만 정상영업\" → 월요일 정기 휴무로 반영(브라우저 렌더)" },
+    { "url": "https://ichibankuji.kr/shop", "fields": ["addr", "floor_info", "goods_types"], "checked_at": "2026-09-29", "note": "이치방쿠지 공식 판매처 목록 \"롱롱리베게임즈 | 인천 서구 청라에메랄드로 99 지젤엠청라 A동 2층 42호 | 032-623-4470 | (11:00~21:00) 제일복권 전문매장, 닌텐도 비디오게임도 같이 취급\"" }
+   ],
+   "unconfirmed": ["parking_detail"],
+   "photo": "needed",
+   "notes": "공식 프로필 \"주차4시간\"은 조건 불명 — parking 비움. 피규어 판매 공식 표기 없음 → figure-new·피규어샵 안 넣음. 닌텐도 연결은 사이트 관행(닌텐도→게임, C유형 기존 항목) 기준 작품 행 재사용"
+  },
+  {
+   "action": "insert",
+   "key": "jjanganime-cheonan",
+   "brand": "짱아네애니굿즈",
+   "brand_links": [],
+   "fields": {
+    "name": "짱아네애니굿즈",
+    "addr": "충남 천안시 서북구 쌍용대로 77",
+    "floor_info": "101호",
+    "cats": ["굿즈샵", "쿠지", "가챠", "피규어샵"],
+    "phone": "0507-1490-4572",
+    "hours": {
+     "mon": { "open": "12:30", "close": "20:30" },
+     "tue": { "open": "12:30", "close": "20:30" },
+     "wed": { "open": "12:30", "close": "20:30" },
+     "thu": { "open": "12:30", "close": "20:30" },
+     "fri": { "open": "12:30", "close": "20:30" },
+     "sat": { "open": "12:00", "close": "20:30" },
+     "sun": { "open": "12:00", "close": "20:30" }
+    },
+    "shop_link": "https://www.instagram.com/jjang_anime/",
+    "sns_links": ["https://www.instagram.com/jjang_anime/", "https://www.threads.com/@jjang_anime"],
+    "description": "천안 쌍용동의 애니 굿즈샵으로, 쿠지(제일복권)·피규어·가챠를 팝니다. 신상 피규어 입고 소식은 공식 Instagram·Threads 에, 쿠지 현황은 네이버 밴드에 올라옵니다.\n영업시간은 평일 12:30~20:30, 주말 12:00~20:30이며 휴무 없이 운영하고 쉬는 날은 따로 공지합니다(공식 계정 안내)."
+   },
+   "goods_types": ["ichiban-kuji", "figure-new", "gacha-new"],
+   "works": [
+    { "tag_id": "b4f20ef8-6f3b-438e-8efb-91ccfca790ac", "evidence": "공식 Threads 2026-09-28 체인소맨 포치타 신규 피규어 입고" },
+    { "tag_id": "94dea875-614e-4e2d-ba30-ea509385603b", "evidence": "공식 Threads 2026-09-24 미쿠 신상 피규어 입고" },
+    { "tag_id": "fb8c03af-9bdc-4fb2-8fef-8d9a7792873c", "evidence": "공식 Threads 2026-09-24 프리렌·페른 신상 피규어 입고" },
+    { "tag_id": "70ec9dbc-8eb6-41fd-bef2-9139a228fa86", "evidence": "공식 Threads 2026-09-24 진시(약사의 혼잣말) 신상 피규어 입고" }
+   ],
+   "sources": [
+    { "url": "https://www.threads.com/@jjang_anime", "fields": ["name", "addr", "floor_info", "hours", "cats", "description", "works", "goods_types"], "checked_at": "2026-09-29", "note": "공식 Threads 프로필 \"천안) 짱아네애니굿즈 / 쿠지 / 피규어 / 가챠, 충남 천안시 서북구 쌍용대로 77, 101호\" + 게시물 \"운영시간 평일 12:30~20:30 / 주말 12:00~20:30 휴무없음 / 별도공지\", 2026-09-24·28 입고(브라우저 렌더)" },
+    { "url": "https://ichibankuji.kr/shop", "fields": ["phone"], "checked_at": "2026-09-29", "note": "이치방쿠지 공식 판매처 목록 \"짱아네 애니굿즈 | 쌍용대로 77 101호 | 0507-1490-4572\" (검색 요약상 0504-2525-6177 도 있음 — 판매처 목록 값 사용)" }
+   ],
+   "unconfirmed": ["parking", "phone"],
+   "photo": "needed",
+   "notes": "단독 건물 — place 없음"
+  },
+  {
+   "action": "insert",
+   "key": "adultpark-gunpo",
+   "brand": "어른이대공원",
+   "brand_links": [],
+   "fields": {
+    "name": "어른이대공원",
+    "addr": "경기 군포시 산본천로 230",
+    "floor_info": "3층",
+    "cats": ["쿠지", "굿즈샵", "피규어샵"],
+    "phone": "010-3694-8881",
+    "shop_link": "https://x.com/kitultpark",
+    "sns_links": ["https://x.com/kitultpark", "https://smartstore.naver.com/cheesemong"],
+    "description": "1호선 금정역 5번 출구 가까이 있는 제일복권(이치방쿠지) 전문점으로, 경품 피규어 등 애니 굿즈도 함께 팝니다. 쿠지 현황판은 네이버 밴드에서 확인할 수 있습니다.\n영업시간은 공식 채널에 표기되어 있지 않아 방문 전 확인해 주세요."
+   },
+   "goods_types": ["ichiban-kuji", "figure-new"],
+   "works": [
+    { "tag_id": "b6a65af7-85e0-4390-9986-6057487c19d1", "evidence": "공식 X 2026-05-07 나의 히어로 아카데미아 MAXIMATIC 토도로키 입고" },
+    { "tag_id": "7fc6cb70-c059-40e3-86a4-39dc28b6b32c", "evidence": "공식 X 2026-05-07 킹오브아티스트 주술회전 켄자쿠 입고" },
+    { "tag_id": "c0abe340-8f54-4c4d-b9e5-13dbb1ed7a47", "evidence": "공식 X 2026-04-28 헌터×헌터 G.I.편 3종 입고" },
+    { "tag_id": "0ec61572-9a5b-47a6-9567-7d15a8433dd3", "evidence": "공식 X 2026-04-28 나루토 경품 피규어 입고" },
+    { "tag_id": "e3f9dbfd-e491-4433-9af1-6c0b146f5746", "evidence": "공식 X 2026-04-28 귀멸의 칼날 VIBRATION STARS PLUS 입고" }
+   ],
+   "sources": [
+    { "url": "https://x.com/kitultpark", "fields": ["name", "cats", "description", "works", "goods_types", "shop_link"], "checked_at": "2026-09-29", "note": "공식 X 프로필 \"금정역 5번출구 제일복권 전문점 어른이대공원 / 밴드에서 현황판 확인\" + 2026-04-28·05-07 입고 게시(브라우저 렌더)" },
+    { "url": "https://ichibankuji.kr/shop", "fields": ["addr", "floor_info", "phone"], "checked_at": "2026-09-29", "note": "이치방쿠지 공식 판매처 목록(판매처 등록) \"어른이대공원 | 경기도 군포시 산본천로 230, 3층 | 010-3694-8881 | 제일복권 전문샵 금정역 5번출구 30m\"" }
+   ],
+   "unconfirmed": ["hours", "parking"],
+   "photo": "needed",
+   "notes": "영업시간: 검색 요약 11~17·월 휴무(당근 업체 정보) — 공식 대조 전 비움. X 입고 글은 스마트스토어 링크 포함 — 매장 취급 기준으로 봄(판매처 목록상 오프라인 전문샵). 단독 건물 — place 없음"
+  }
+ ]
+}

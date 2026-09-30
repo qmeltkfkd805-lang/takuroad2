@@ -1,0 +1,121 @@
+{
+ "plan": "2026-09-30-d",
+ "at": "2026-09-30T02:19:22.834Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "jsstore-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5563066295401,
+    "lng": 126.928085884376,
+    "road": "서울 마포구 와우산로29길 48-24",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "f6d4c064-0c6a-4b04-843f-9544f4e705b0",
+   "slug": "jeieseu-seutoeo-hongdaebonjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "lastone-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5553408014226,
+    "lng": 126.927857863176,
+    "road": "서울 마포구 와우산로29길 37",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "73f53e7f-fa4e-40b4-baef-41e478a2e53b",
+   "slug": "raseuteuwon-hongdaejeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "woojugacha-gangnam",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5037156735737,
+    "lng": 127.025885913594,
+    "road": "서울 강남구 봉은사로2길 13",
+    "building": "화성빌딩",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "6582916b-489a-4ff7-8dd5-69cde4d62f29",
+   "slug": "ujugachya-gangnamjeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "woojugacha-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5563058620304,
+    "lng": 126.926691347277,
+    "road": "서울 마포구 와우산로29길 66",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "bbc6372e-3d46-4843-83fe-efdb46d220a7",
+   "slug": "ujugachya-hongdaejeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "woojugacha-kondae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5399325479221,
+    "lng": 127.069903667359,
+    "road": "서울 광진구 아차산로 242",
+    "building": "아차산로",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "55c91926-04b9-4a99-a1e9-482e300a3a0c",
+   "slug": "ujugachya-geondaejeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-30-d-2026-09-30T02-19-22-834Z.json"
+}

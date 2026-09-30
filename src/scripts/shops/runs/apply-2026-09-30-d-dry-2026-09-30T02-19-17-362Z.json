@@ -1,0 +1,370 @@
+{
+ "plan": "2026-09-30-d",
+ "at": "2026-09-30T02:19:17.362Z",
+ "dry": true,
+ "items": [
+  {
+   "key": "jsstore-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5563066295401,
+    "lng": 126.928085884376,
+    "road": "서울 마포구 와우산로29길 48-24",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "제이에스 스토어 홍대본점",
+    "addr": "서울 마포구 와우산로29길 48-24",
+    "floor_info": "1층",
+    "cats": [
+     "피규어샵",
+     "굿즈샵",
+     "쿠지"
+    ],
+    "shop_link": "https://www.instagram.com/jsstore_hongdae/",
+    "sns_links": [
+     "https://www.instagram.com/jsstore_hongdae/",
+     "https://www.instagram.com/js_store_official/"
+    ],
+    "phone": "02-337-3338",
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "yearRound": true
+    },
+    "description": "피규어·이치방쿠지(제일복권)를 파는 제이에스 스토어의 홍대 본점입니다.\n연중무휴 12:00~21:00(결제 마감 20:45, 공식 인스타그램 안내).\n마포구 와우산로29길 48-24 1층.",
+    "lat": 37.5563066295401,
+    "lng": 126.928085884376,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-30T02:19:17.362Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "lastone-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5553408014226,
+    "lng": 126.927857863176,
+    "road": "서울 마포구 와우산로29길 37",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "라스트원 홍대점",
+    "addr": "서울 마포구 와우산로29길 37",
+    "floor_info": "2층",
+    "cats": [
+     "가챠",
+     "피규어샵",
+     "쿠지",
+     "굿즈샵"
+    ],
+    "shop_link": "https://www.instagram.com/last1_hongdae/",
+    "sns_links": [
+     "https://www.instagram.com/last1_hongdae/"
+    ],
+    "hours": {
+     "mon": {
+      "open": "13:00",
+      "close": "20:30"
+     },
+     "tue": null,
+     "wed": {
+      "open": "13:00",
+      "close": "20:30"
+     },
+     "thu": {
+      "open": "13:00",
+      "close": "20:30"
+     },
+     "fri": {
+      "open": "13:00",
+      "close": "20:30"
+     },
+     "sat": {
+      "open": "13:00",
+      "close": "20:30"
+     },
+     "sun": {
+      "open": "13:00",
+      "close": "20:30"
+     }
+    },
+    "description": "가챠·피규어·쿠지와 소품을 파는 홍대 매장 라스트원입니다.\n13:00~20:30, 매주 화요일 정기휴무(공식 인스타그램 안내). 문의는 인스타그램 DM(팔로우 후 가능).\n마포구 와우산로29길 37 2층. 자매 매장으로 합정의 퍼스트원이 있습니다.",
+    "lat": 37.5553408014226,
+    "lng": 126.927857863176,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-30T02:19:17.362Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "woojugacha-gangnam",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5037156735737,
+    "lng": 127.025885913594,
+    "road": "서울 강남구 봉은사로2길 13",
+    "building": "화성빌딩",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "우주가챠 강남점",
+    "addr": "서울 강남구 봉은사로2길 13",
+    "cats": [
+     "가챠"
+    ],
+    "shop_link": "https://x.com/wouldyougacha",
+    "sns_links": [
+     "https://x.com/wouldyougacha",
+     "https://www.instagram.com/wouldyougacha/"
+    ],
+    "hours": {
+     "mon": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     }
+    },
+    "description": "캡슐토이(가챠) 전문점 우주가챠의 강남(신논현역) 매장입니다. 매달 신상 가챠를 들여오며, 정품만 취급한다고 안내하고 있습니다.\n평일 13:00~21:00 · 토·일 12:00~21:00(공식 X 안내). 가격·재고 문의는 공식 X 메시지로 받습니다.\n신논현역 4번 출구 · 강남구 봉은사로2길 13. 우주가챠 강남점·홍대점·건대점은 같은 브랜드(통합 계정)입니다.",
+    "lat": 37.5037156735737,
+    "lng": 127.025885913594,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-30T02:19:17.362Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "woojugacha-hongdae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5563058620304,
+    "lng": 126.926691347277,
+    "road": "서울 마포구 와우산로29길 66",
+    "building": "",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "우주가챠 홍대점",
+    "addr": "서울 마포구 와우산로29길 66",
+    "cats": [
+     "가챠"
+    ],
+    "shop_link": "https://x.com/wouldyougacha",
+    "sns_links": [
+     "https://x.com/wouldyougacha",
+     "https://www.instagram.com/wouldyougacha/"
+    ],
+    "hours": {
+     "mon": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     }
+    },
+    "description": "캡슐토이(가챠) 전문점 우주가챠의 홍대 매장입니다. 매달 신상 가챠를 들여오며, 정품만 취급한다고 안내하고 있습니다.\n평일 13:00~21:00 · 토·일 12:00~21:00(공식 X 안내). 가격·재고 문의는 공식 X 메시지로 받습니다.\n홍대입구역 7번 출구 · 마포구 와우산로29길 66. 우주가챠 강남점·홍대점·건대점은 같은 브랜드(통합 계정)입니다.",
+    "lat": 37.5563058620304,
+    "lng": 126.926691347277,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-30T02:19:17.362Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "woojugacha-kondae",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.5399325479221,
+    "lng": 127.069903667359,
+    "road": "서울 광진구 아차산로 242",
+    "building": "아차산로",
+    "count": 1
+   },
+   "status": "DRY_INSERT",
+   "row": {
+    "name": "우주가챠 건대점",
+    "addr": "서울 광진구 아차산로 242",
+    "cats": [
+     "가챠"
+    ],
+    "shop_link": "https://x.com/wouldyougacha",
+    "sns_links": [
+     "https://x.com/wouldyougacha",
+     "https://www.instagram.com/wouldyougacha/"
+    ],
+    "hours": {
+     "mon": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "tue": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "wed": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "thu": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "fri": {
+      "open": "13:00",
+      "close": "21:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "21:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "21:00"
+     }
+    },
+    "description": "캡슐토이(가챠) 전문점 우주가챠의 건대 매장입니다. 매달 신상 가챠를 들여오며, 정품만 취급한다고 안내하고 있습니다.\n평일 13:00~21:00 · 토·일 12:00~21:00(공식 X 안내). 가격·재고 문의는 공식 X 메시지로 받습니다.\n건대입구역 5번 출구 · 광진구 아차산로 242. 우주가챠 강남점·홍대점·건대점은 같은 브랜드(통합 계정)입니다.",
+    "lat": 37.5399325479221,
+    "lng": 127.069903667359,
+    "status": "active",
+    "country": "KR",
+    "added_by": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "owner_id": "e1ffdf30-345a-42c0-8e85-48eb1f9d915d",
+    "info_last_confirmed_at": "2026-09-30T02:19:17.362Z",
+    "info_confirmed_by_type": "admin"
+   },
+   "extras": {
+    "goods_types": {
+     "added": [
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ]
+}

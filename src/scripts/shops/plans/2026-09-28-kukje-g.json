@@ -1,0 +1,234 @@
+{
+ "name": "2026-09-28-kukje-g",
+ "items": [
+  {
+   "action": "insert",
+   "key": "kukje-haengpiso",
+   "fields": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "phone": null,
+    "name": "행피소",
+    "floor_info": "국제전자센터 3층 49·50·51·149호",
+    "cats": [
+     "굿즈샵"
+    ],
+    "shop_link": "https://www.instagram.com/haengpiso/",
+    "sns_links": [
+     "https://www.instagram.com/haengpiso/"
+    ],
+    "hours": {
+     "mon": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "tue": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "wed": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "thu": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "fri": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sat": {
+      "open": "12:00",
+      "close": "20:00"
+     },
+     "sun": {
+      "open": "12:00",
+      "close": "20:00"
+     }
+    },
+    "description": "'행복의 피규어 소환소'라는 이름의 캐릭터 굿즈샵으로, 치이카와 인형·마스코트 등 굿즈를 판매합니다. 2026년 9월 국제전자센터 3층에 새로 문을 열었습니다(노란 바닥 매장).\n공식 소개 기준 영업시간은 12:00~20:00입니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요."
+   },
+   "works": [
+    {
+     "tag_id": "b507243e-1408-47a1-9aeb-f4245127d3dc",
+     "primary": true,
+     "evidence": "공식 IG 릴스(2026-09-21·09-23) #치이카와 굿즈 진열 + 방문 후기 2건(치이카와 인형)"
+    }
+   ],
+   "goods_types": [
+    "plushie-new"
+   ],
+   "sources": [
+    {
+     "url": "https://www.instagram.com/haengpiso/",
+     "fields": [
+      "name",
+      "floor_info",
+      "hours",
+      "shop_link"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/reel/Ddp1tBjT4iZ/",
+     "fields": [
+      "floor_info",
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/reel/DdlGFhwzRC5/",
+     "fields": [
+      "works"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://www.instagram.com/reel/DdjD9z7J9_9/",
+     "fields": [
+      "floor_info",
+      "goods_types"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://m.blog.naver.com/qweqwe7377/224419893160",
+     "fields": [
+      "floor_info",
+      "goods_types",
+      "description"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "http://www.kecday.co.kr/bbs/board.php?bo_table=sisul",
+     "fields": [
+      "place_id",
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ],
+   "unconfirmed": [
+    "hours_weekend_wording",
+    "phone"
+   ],
+   "photo": "needed",
+   "notes": "공식 IG 소개는 검색 스니펫으로 확인(\"평일 (주말) 12:00 ~20:00\" — 주말 표기 모호, 매일로 둠). 2026-09 가오픈"
+  },
+  {
+   "action": "insert",
+   "key": "kukje-doorijoy",
+   "fields": {
+    "addr": "서울 서초구 효령로 304",
+    "place_id": "1fee0987-c92d-4bdd-8273-dc4c01207c89",
+    "parking": true,
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원",
+    "phone": null,
+    "name": "두리조이 가챠샵",
+    "floor_info": "국제전자센터 8층",
+    "cats": [
+     "가챠"
+    ],
+    "sns_links": [],
+    "shop_link": null,
+    "hours": null,
+    "description": "캡슐토이(가챠) 기계가 모여 있는 가챠샵 두리조이로, 국제전자센터 8층 엘리베이터 쪽 구석에 있습니다. 광주 충장로의 두리조이(현 가챠두리)와는 다른 매장입니다.\n공식 채널이 없어 방문 후기 기준으로 등록했으며, 영업시간은 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요."
+   },
+   "goods_types": [
+    "gacha-new"
+   ],
+   "sources": [
+    {
+     "url": "https://m.blog.naver.com/lsm2474/224041683443",
+     "fields": [
+      "name",
+      "floor_info"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://m.blog.naver.com/episodehous/224112729766",
+     "fields": [
+      "floor_info",
+      "description"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://m.blog.naver.com/ssony0475/224121126877",
+     "fields": [
+      "floor_info"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://m.blog.naver.com/haxjimin/224195091015",
+     "fields": [
+      "floor_info"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "http://www.kecday.co.kr/bbs/board.php?bo_table=sisul",
+     "fields": [
+      "place_id",
+      "parking",
+      "parking_note"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ],
+   "unconfirmed": [
+    "official_channel",
+    "unit",
+    "hours",
+    "phone"
+   ],
+   "photo": "needed",
+   "notes": "8층 방문 후기 4건(2025-10-15~2026-02-25). 체크인 태그 8층 46·47호(후기라 호수 비움). IG @doorijoy_gn/@doorijoy_gangnam 추정 — 로그인 벽으로 미확인"
+  },
+  {
+   "action": "update",
+   "key": "kyouma-3f",
+   "shop_id": "fb2ed90d-e09e-4810-bd87-a941252e17db",
+   "expect_updated_at": "2026-09-28T05:52:52.324978+00:00",
+   "fields": {
+    "floor_info": "국제전자센터 2층 136호(본점) · 3층 · 9층(1·2호점)",
+    "description": "서브컬처 피규어·가챠·굿즈 전문점 쿄우마샵의 국제전자센터 매장으로, 같은 건물 2·3·9층에 있습니다.\n· 2층 136호 본점: 피규어·가챠·굿즈, 제일복권·공식 MD\n· 3층: 가챠\n· 9층 1호점: 가챠·카드가챠\n· 9층 2호점: 가챠·카드가챠·제일복권\n영업시간은 공식 안내가 없어 비워 두었습니다. 국제전자센터 상가는 매월 첫째·셋째 일요일 휴무이니 방문 전 확인해 주세요."
+   },
+   "overwrite": [
+    "floor_info",
+    "description"
+   ],
+   "reason": "공식 X 소개 @kyouma_gacha \"국제전자센터 | 2F · 3F · 9F\", @kyoumashop \"2F & 3F & 9F\" — 3층 매장 추가(같은 이름 = 한 행)",
+   "sources": [
+    {
+     "url": "https://x.com/kyouma_gacha",
+     "fields": [
+      "floor_info",
+      "description"
+     ],
+     "checked_at": "2026-09-28"
+    },
+    {
+     "url": "https://x.com/kyoumashop",
+     "fields": [
+      "floor_info"
+     ],
+     "checked_at": "2026-09-28"
+    }
+   ],
+   "unconfirmed": [
+    "unit_3f",
+    "hours"
+   ],
+   "notes": "3층 호수 미확인(나무위키 3층 \"쿄우마 (가챠)\"). 9층 3호점은 검색 요약뿐 → 보류"
+  }
+ ]
+}

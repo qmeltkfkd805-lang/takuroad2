@@ -1,0 +1,153 @@
+{
+ "plan": "2026-09-28-j",
+ "at": "2026-09-28T08:16:32.572Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "pokemon-cardshop-yeoksam",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4967904176916,
+    "lng": 127.037722820625,
+    "road": "서울 강남구 논현로77길 9",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "7c343f43-1bbb-4175-8d18-069405161b8f",
+   "slug": "poketmon-kadeusyap-kadeunyang-yeoksam",
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pokemon-cardshop-suwon",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.253558112025,
+    "lng": 127.079068037672,
+    "road": "경기 수원시 영통구 청명로 73-1",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "708db411-197a-4c3b-be4d-dc6f0ab00d5e",
+   "slug": "poketmon-kadeusyap-kadeupeulraenit-suwon",
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pokemon-cardshop-wonju",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.3338314741761,
+    "lng": 127.929225425066,
+    "road": "강원특별자치도 원주시 능라동길 42",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "683a4e1a-7659-437b-adcb-93370c6dd6de",
+   "slug": "poketmon-kadeusyap-kadeuseupeiseu-wonju",
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pokemon-cardshop-incheon",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4930930428809,
+    "lng": 126.723935150309,
+    "road": "인천 부평구 부평문화로66번길 21",
+    "building": "",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "63488893-eacb-4c4b-95ea-bff4b13d274c",
+   "slug": "poketmon-kadeusyap-kadeupap-incheon",
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "pokemon-cardshop-gwangju",
+   "action": "insert",
+   "geocode": {
+    "lat": 35.1469716555259,
+    "lng": 126.91510069175,
+    "road": "전남광주통합특별시 동구 중앙로160번길 22",
+    "building": "우성빌딩",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "5428f773-147c-49b1-9b94-dd289aa7fea3",
+   "slug": "poketmon-kadeusyap-hwaseongseutoeotcg-gwangju",
+   "extras": {
+    "works": {
+     "added": [
+      "포켓몬스터"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-28-j-2026-09-28T08-16-32-572Z.json"
+}

@@ -1,0 +1,657 @@
+{
+ "plan": "2026-09-28-kukje",
+ "at": "2026-09-28T04:17:36.840Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "kukje-ichibankuji-seocho",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "11576ecf-d4b8-4038-97c1-344f754e5c4e",
+   "slug": "jeilbokgwonichibangkuji-seochojeom",
+   "extras": {
+    "works": {
+     "added": [
+      "나루토",
+      "드래곤볼",
+      "짱구는 못말려",
+      "나의 히어로 아카데미아",
+      "약사의 혼잣말",
+      "별의 커비",
+      "북두의 권",
+      "블리치",
+      "원피스",
+      "헌터×헌터",
+      "승리의 여신: 니케"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kujibang",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "2fd0ee28-33db-465c-9670-988ef7e67977",
+   "slug": "kujibang-gukjejeonjasenteojeom",
+   "extras": {
+    "works": {
+     "added": [
+      "블루 록",
+      "드래곤볼"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "self-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-cutepeople",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "4cf43796-d919-4a34-97e4-4cfcd4096a96",
+   "slug": "kyuteupipeulkeompeoni",
+   "extras": {
+    "works": {
+     "added": [
+      "하이큐!!",
+      "귀멸의 칼날",
+      "동물의 숲",
+      "헌터×헌터",
+      "디지몬",
+      "치이카와",
+      "헬로키티",
+      "장송의 프리렌",
+      "데스노트",
+      "다마고치",
+      "개구리 중사 케로로",
+      "에반게리온"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "plushie-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kkuing",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "8573e461-8aad-49f8-ad84-00dc8e88e21a",
+   "slug": "kkuingyangpanjeom-gukjeonjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "헌터×헌터",
+      "개구리 중사 케로로"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "acrylic-stand",
+      "keyring",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-topiko",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "1544e21f-adce-44d9-ba2d-74ddbb2a8aea",
+   "slug": "topiko-gukjejeonjasenteojeom",
+   "extras": {
+    "works": {
+     "added": [
+      "울트라맨",
+      "카드캡터 사쿠라",
+      "산리오",
+      "홀로라이브",
+      "나의 히어로 아카데미아",
+      "다마고치",
+      "개구리 중사 케로로",
+      "주술회전",
+      "체인소맨",
+      "귀멸의 칼날",
+      "은혼",
+      "마인크래프트",
+      "피크민",
+      "원피스",
+      "승리의 여신: 니케"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-funhave",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "07fd4a96-534c-4567-8605-3e556aaed572",
+   "slug": "peonhaebeu",
+   "extras": {
+    "works": {
+     "added": [
+      "하츠네 미쿠",
+      "젠레스 존 제로"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "keyring",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-ggcomic",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "2a0353e9-87c0-4897-9343-e101220449d9",
+   "slug": "jijikomikmaket-gukjeonjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "이누야샤"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "self-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-conbiniani",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "50bec545-5c7c-427b-ad2b-f5ea95aa0a73",
+   "slug": "konbiniaeni",
+   "extras": {
+    "works": {
+     "added": [
+      "은혼",
+      "하츠네 미쿠",
+      "Free!",
+      "어떤 과학의 초전자포",
+      "에반게리온",
+      "듀라라라!!",
+      "단간론파",
+      "헌터×헌터",
+      "케이온!",
+      "그 비스크 돌은 사랑을 한다"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "acrylic-stand",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-nonno21",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "f380e438-fde5-4af6-a81c-18375b2a5f4b",
+   "slug": "nonno21",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-denden",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "14fe688a-e989-4bf8-9f9f-bf1325b1197d",
+   "slug": "dendensyappigyueobeobeul-bonjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "나의 히어로 아카데미아"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kyouma-main",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "fb2ed90d-e09e-4810-bd87-a941252e17db",
+   "slug": "kyoumasyap-bonjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "체인소맨"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "acrylic-stand",
+      "figure-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kyouma-9f-1",
+   "action": "insert",
+   "status": "SKIP_DUPLICATE",
+   "duplicates": [
+    {
+     "id": "fb2ed90d-e09e-4810-bd87-a941252e17db",
+     "name": "쿄우마샵 본점",
+     "addr": "서울 서초구 효령로 304",
+     "status": "active",
+     "reasons": [
+      "same-address+similar-name",
+      "same-link+address"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "kukje-ilovetoyz",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "cda3407d-c01c-4b3d-a93a-e2fe9686154b",
+   "slug": "aireobeutoijeu-gukjeonjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "사이버펑크: 엣지러너"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-itemleo",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "d63eb21a-47a4-4272-b720-b3b1e65e4c46",
+   "slug": "aitemreo",
+   "extras": {
+    "works": {
+     "added": [
+      "도로헤도로",
+      "개구리 중사 케로로",
+      "사이키 쿠스오의 재난",
+      "나루토",
+      "하이큐!!",
+      "니지산지",
+      "체인소맨",
+      "프로젝트 세카이",
+      "산리오",
+      "주술회전",
+      "나의 히어로 아카데미아",
+      "약사의 혼잣말",
+      "케이온!"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "acrylic-stand",
+      "can-badge-new",
+      "keyring",
+      "figure-new",
+      "plushie-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kujimania",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "bb3e223a-35e8-4afb-9162-5274adb8f952",
+   "slug": "kujimaenia-gukjeonjeom",
+   "extras": {
+    "works": {
+     "added": [
+      "코드기어스",
+      "헌터×헌터",
+      "아오오니 디 애니메이션",
+      "리락쿠마"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "self-kuji",
+      "figure-new",
+      "card-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-hobbypark",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "0a8cbca8-f2c7-48f0-bc99-80af2f1e90dc",
+   "slug": "habipakeu-gukjejeonjajeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "plamodel-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-parking-15c0501e",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "15c0501e-486c-42e5-965e-ff2dc2400bf1",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   },
+   "before": {
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   }
+  },
+  {
+   "key": "kukje-parking-1868a417",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "1868a417-7312-4991-8d7a-6373c648f31f",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   },
+   "before": {
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   }
+  },
+  {
+   "key": "kukje-parking-1bdef20f",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "1bdef20f-f701-41d0-bab8-ccfc66c03d85",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   },
+   "before": {
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   }
+  },
+  {
+   "key": "kukje-parking-2f1321e8",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "2f1321e8-39a4-4f29-8f50-6ee8a82c6e66",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   },
+   "before": {
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   }
+  },
+  {
+   "key": "kukje-parking-42123449",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "42123449-2741-4314-8156-0689aff00bf0",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   },
+   "before": {
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   }
+  },
+  {
+   "key": "kukje-parking-94f6d97c",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "94f6d97c-e40c-45b6-8c42-9cb878897482",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   },
+   "before": {
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   }
+  },
+  {
+   "key": "kukje-parking-abfc89ce",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "abfc89ce-5a75-4e84-b945-58df332651ce",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   },
+   "before": {
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   }
+  },
+  {
+   "key": "kukje-parking-cb797d3d",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "cb797d3d-4529-49d6-a889-36faf49d5654",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   },
+   "before": {
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   }
+  },
+  {
+   "key": "kukje-parking-da4b3714",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "da4b3714-9c6f-490d-ba29-f8e6810d205f",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   },
+   "before": {
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   }
+  },
+  {
+   "key": "kukje-parking-fcd66bed",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "fcd66bed-838b-4de2-93f9-633a41e38600",
+   "patch": {
+    "parking_note": "주차 가능(유료)\n최초 40분 무료, 이후 10분당 1,000원"
+   },
+   "before": {
+    "parking_note": "주차 가능(유료) — 건물 지하 주차장\n최초 40분 무료\n이후 10분당 1,000원\n매장 구매·롯데마트 이용 시 주차 할인권 제공\n(2026년 1월 방문 기준 정보 — 변동 가능)"
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-28-kukje-2026-09-28T04-17-36-840Z.json"
+}

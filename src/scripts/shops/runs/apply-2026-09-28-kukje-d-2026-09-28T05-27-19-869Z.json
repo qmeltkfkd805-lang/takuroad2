@@ -1,0 +1,203 @@
+{
+ "plan": "2026-09-28-kukje-d",
+ "at": "2026-09-28T05:27:19.869Z",
+ "dry": false,
+ "items": [
+  {
+   "key": "kukje-kyouma-9f-2",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "7a5bf144-eed4-416a-9d6c-64540a555054",
+   "slug": "kyoumasyap-kadeugachya-2hojeom",
+   "extras": {
+    "works": {
+     "added": [
+      "페르소나5",
+      "드래곤볼",
+      "나츠메 우인장",
+      "최애의 아이",
+      "짱구는 못말려"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "card-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kyouma-main-unit",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "fb2ed90d-e09e-4810-bd87-a941252e17db",
+   "patch": {
+    "floor_info": "국제전자센터 2층 136호",
+    "sns_links": [
+     "https://x.com/kyoumashop",
+     "https://x.com/kyouma_gacha",
+     "https://www.instagram.com/kyouma_official/",
+     "https://litt.ly/kyouma"
+    ]
+   },
+   "before": {
+    "floor_info": "국제전자센터 2층",
+    "sns_links": [
+     "https://x.com/kyoumashop",
+     "https://x.com/kyouma_gacha",
+     "https://www.instagram.com/kyouma_official/"
+    ]
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "페르소나5",
+      "드래곤볼",
+      "나츠메 우인장",
+      "최애의 아이",
+      "짱구는 못말려"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kyouma-9f-1-works",
+   "action": "update",
+   "status": "UPDATED",
+   "id": "f6a9f356-69eb-45f2-b794-f91d4192a042",
+   "patch": {
+    "sns_links": [
+     "https://x.com/kyouma_gacha",
+     "https://x.com/kyoumashop",
+     "https://www.instagram.com/kyouma_official/"
+    ]
+   },
+   "before": {
+    "sns_links": [
+     "https://x.com/kyouma_gacha",
+     "https://x.com/kyoumashop"
+    ]
+   },
+   "extras": {
+    "works": {
+     "added": [
+      "페르소나5",
+      "드래곤볼",
+      "나츠메 우인장",
+      "최애의 아이",
+      "짱구는 못말려"
+     ],
+     "already": 0,
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-thekuhouse",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "9f394800-95f2-44c6-b754-7fb0d756b4cc",
+   "slug": "deokuhauseu-gukjejeonjasenteojeom",
+   "extras": {
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "self-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-itstoy",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "eb2b57de-cfb5-4d3b-bbed-79ffd87522e2",
+   "slug": "itcheutoi",
+   "extras": {
+    "works": {
+     "added": [
+      "치이카와",
+      "짱구는 못말려",
+      "리락쿠마",
+      "봇치 더 록!"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "figure-new",
+      "plushie-new",
+      "gacha-new"
+     ],
+     "unknown": []
+    }
+   }
+  },
+  {
+   "key": "kukje-kujirun",
+   "action": "insert",
+   "geocode": {
+    "lat": 37.4847315992014,
+    "lng": 127.017803806463,
+    "road": "서울 서초구 효령로 304",
+    "building": "국제전자센터",
+    "count": 1
+   },
+   "status": "INSERTED",
+   "id": "e1c622c2-3830-47e3-a694-7d388ec6181f",
+   "slug": "kujireon",
+   "extras": {
+    "works": {
+     "added": [
+      "은혼",
+      "에반게리온",
+      "드래곤볼",
+      "진격의 거인",
+      "승리의 여신: 니케"
+     ],
+     "already": 0,
+     "unknown": []
+    },
+    "goods_types": {
+     "added": [
+      "ichiban-kuji",
+      "figure-new"
+     ],
+     "unknown": []
+    }
+   }
+  }
+ ],
+ "backup": "scripts/shops/backups/shops-before-2026-09-28-kukje-d-2026-09-28T05-27-19-869Z.json"
+}

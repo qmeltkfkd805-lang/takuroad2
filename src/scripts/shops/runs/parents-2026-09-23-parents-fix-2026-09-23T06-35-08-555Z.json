@@ -1,0 +1,74 @@
+[
+ {
+  "child": "라부부",
+  "parent": "더 몬스터즈",
+  "status": "SET",
+  "kind": "series",
+  "before": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071",
+  "evidence": "라부부는 THE MONSTERS 시리즈 캐릭터 — 팝마트(판매사)보다 직접적인 상위",
+  "url": "https://www.popmart.com/kr"
+ },
+ {
+  "child": "크라이베이비",
+  "parent": "(해제)",
+  "status": "UNSET",
+  "before": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071",
+  "reason": "팝마트=판매사/IP 운영사(C유형), 사이트 선례 없음 — 보류"
+ },
+ {
+  "child": "디무",
+  "parent": "(해제)",
+  "status": "UNSET",
+  "before": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071",
+  "reason": "C유형 보류"
+ },
+ {
+  "child": "피치 라이엇",
+  "parent": "(해제)",
+  "status": "UNSET",
+  "before": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071",
+  "reason": "C유형 보류"
+ },
+ {
+  "child": "몰리",
+  "parent": "(해제)",
+  "status": "UNSET",
+  "before": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071",
+  "reason": "C유형 보류"
+ },
+ {
+  "child": "스컬판다",
+  "parent": "(해제)",
+  "status": "UNSET",
+  "before": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071",
+  "reason": "C유형 보류"
+ },
+ {
+  "child": "히로노",
+  "parent": "(해제)",
+  "status": "UNSET",
+  "before": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071",
+  "reason": "C유형 보류"
+ },
+ {
+  "child": "트윙클 트윙클",
+  "parent": "(해제)",
+  "status": "UNSET",
+  "before": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071",
+  "reason": "C유형 보류"
+ },
+ {
+  "child": "하치푸푸",
+  "parent": "(해제)",
+  "status": "UNSET",
+  "before": "6a75e0ce-251f-4cf0-98f6-1e5bc2ca5071",
+  "reason": "C유형 보류"
+ },
+ {
+  "child": "리락쿠마",
+  "parent": "(해제)",
+  "status": "UNSET",
+  "before": "e19a0f86-f091-4ca0-ae9b-497e75134657",
+  "reason": "산엑스를 산리오 같은 캐릭터 브랜드(B)로 볼지 기준 미정 — 보류"
+ }
+]

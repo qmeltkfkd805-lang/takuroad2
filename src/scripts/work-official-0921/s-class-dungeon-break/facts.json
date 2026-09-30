@@ -1,0 +1,322 @@
+{
+  "key": "s-class-dungeon-break",
+  "official_urls": [
+    "https://www.instagram.com/p/DdD_agFmPv3/",
+    "https://www.instagram.com/p/DdEAkM-mMGI/",
+    "https://www.instagram.com/p/DdGTxjZI93p/",
+    "https://www.instagram.com/p/DdInH02GERK/",
+    "https://www.instagram.com/reel/DdTZZ4rIb-Z/",
+    "https://www.instagram.com/p/DdV0c5XmFJy/",
+    "https://www.instagram.com/reel/DdYmZKyI9Wj/",
+    "https://linktr.ee/webtoonfriends",
+    "https://booking.naver.com/booking/12/bizes/1729351"
+  ],
+  "title_official": "〈내가 키운 S급들〉 던전 브레이크: 용산 (웹툰프렌즈 릴레이팝업 #3)",
+  "work": "내가 키운 S급들",
+  "type_guess": "popup",
+  "start_date": "2026-09-23",
+  "end_date": "2026-10-15",
+  "branches": [
+    {
+      "name": "던전 브레이크: 용산",
+      "venue": "용산 아이파크몰 리빙파크 3층 도파민스테이션",
+      "address": "서울 용산구 한강대로23길 55 (용산 아이파크몰)",
+      "floor_detail": "리빙파크 3F 도파민스테이션 (위치도상 닌텐도 매장 아래, 플레이스테이션 옆 코너)",
+      "hours": "매일 10:30~22:00 (사전예약 기간 입장은 10:30~21:00까지)",
+      "start_date": "2026-09-23",
+      "end_date": "2026-10-15"
+    }
+  ],
+  "entry": "사전예약 입장 9/23(수)~9/25(금): 네이버 예약 (예약 오픈 9/11(금) 14:00, 예약기간 9/11~9/25), 30분 단위, 예약 1회당 본인 1인 입장, 네이버 ID당 최대 2회 예약(동반 입장은 같은 시간대 2회 예약), 만 14세 이상(미만은 법정 보호자 예약 후 동반), 예약시간 10분 전후 입장, 20분 경과 시 자동취소 가능. 현장 입장 9/26(토)~10/15(목): 별도 예약 없이 방문, 상황에 따라 대기 등록 발생 가능. 예약 링크: https://booking.naver.com/booking/12/bizes/1729351 (웹툰프렌즈 linktree '릴레이팝업 #3. <내가 키운 S급들> 사전예약').",
+  "benefits": [
+    {
+      "condition": "7만원 이상 구매 시 (영수증 당 1장, 1인 1회, 영수증 합산 불가, 도서·포토카드 키오스크·가챠기기 제품은 특전 대상 제외)",
+      "item": "에폭시 스티커팩 1세트",
+      "count_kinds": "7종 1세트"
+    },
+    {
+      "condition": "포토카드 키오스크 이용",
+      "item": "〈내가 키운 S급들〉 한정 포토카드 (키오스크 판매 상품)",
+      "count_kinds": "10종"
+    },
+    {
+      "condition": "현장 공략 임무(MISSION 01 숨은 캐릭터를 맞혀라 / 02 키워드 감화 / 03 기승수 키우기) 성공 시",
+      "item": "용산 브레이크 한정 헌터 자격증",
+      "count_kinds": "이미지상 3종 표시"
+    },
+    {
+      "condition": "현장 게임 참여 시",
+      "item": "주차별 디지털 배경화면",
+      "count_kinds": "매주 1종, 총 3종"
+    }
+  ],
+  "menu": [],
+  "goods": [
+    {
+      "name": "랜덤 사각 캔뱃지 (가챠)",
+      "price": 4000
+    },
+    {
+      "name": "아크릴 스탠드",
+      "price": 15000
+    },
+    {
+      "name": "시팅인형키링",
+      "price": 16000
+    },
+    {
+      "name": "장패드",
+      "price": 18000
+    },
+    {
+      "name": "빅 스티커",
+      "price": 3500
+    },
+    {
+      "name": "아크릴 쉐이커 키링",
+      "price": 13000
+    },
+    {
+      "name": "홀로그램 포토카드 세트",
+      "price": 9000
+    },
+    {
+      "name": "미니 아크릴 스탠드",
+      "price": 12000
+    },
+    {
+      "name": "아크릴 키링",
+      "price": 8000
+    },
+    {
+      "name": "25cm 아크릴 스탠드",
+      "price": 25000
+    },
+    {
+      "name": "마우스패드",
+      "price": 6000
+    },
+    {
+      "name": "젤펜",
+      "price": 5500
+    },
+    {
+      "name": "포토카드 키오스크 전용 〈내가 키운 S급들〉 포토카드 10종",
+      "price": null
+    },
+    {
+      "name": "웹툰 단행본 / 하이라이트픽 / 웹툰프렌즈 오리지널스 상품",
+      "price": null
+    }
+  ],
+  "notes": [
+    "캡션: '신제품 MD 50종 공개' — 이미지에 표시된 가격 품목은 12개 라인(캐릭터별 variant 합산 시 50종으로 추정, 공식 명시 없음).",
+    "〈내가 키운 S급들〉 신제품은 종당 1인 2개 제한. 도서·포토카드·가챠기기·일반 상품은 수량 제한 없음. 일일 판매 수량 없음. 팝업 종료 후 온라인 판매 여부 미정, 재입고 미정.",
+    "현금 없는 매장 (카드/삼성페이/애플페이/카카오페이/네이버페이/위챗페이/은련카드/아이파크 포인트). 아이파크몰 앱 포인트 적립 가능. 비닐 쇼핑백 100원 유상.",
+    "교환/환불: 구매일로부터 14일 이내 제품·영수증·결제수단 지참. 랜덤 제품은 미개봉 새제품만 교환. 환불 시 구매특전 반납.",
+    "음식물 반입 불가, 반려동물 동반 불가(시각장애인 안내견 제외). 문의: 웹툰프렌즈 linktree '릴레이팝업 CS 접수처'(네이버폼).",
+    "원작 크레딧: ©비완·seri ©근서 | NAVER WEBTOON. 웹툰프렌즈 '릴레이팝업' 3번째.",
+    "MD 실물 영상 2편(릴스)은 썸네일만 저장."
+  ],
+  "unverified_popga": [
+    "도로명 주소 '서울 용산구 한강대로23길 55' (공식 게시물엔 주소 텍스트 없음, 아이파크몰 주소로 일반 사실)"
+  ],
+  "images": [
+    {
+      "file": "poster_main.jpg",
+      "source_url": "https://www.instagram.com/p/DdD_agFmPv3/",
+      "what": "main poster (팝업 정보/최초 공개 MD)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "venue_map_hours.jpg",
+      "source_url": "https://www.instagram.com/p/DdD_agFmPv3/",
+      "what": "venue - 리빙파크 3층 위치도 + 기간/운영시간",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "md_list_1.jpg",
+      "source_url": "https://www.instagram.com/p/DdD_agFmPv3/",
+      "what": "goods list 1 (사각캔뱃지/아크릴스탠드/시팅인형키링/장패드)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "md_list_2.jpg",
+      "source_url": "https://www.instagram.com/p/DdD_agFmPv3/",
+      "what": "goods list 2 (빅스티커/쉐이커키링/홀로그램포토카드/미니아크릴스탠드)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "md_list_3.jpg",
+      "source_url": "https://www.instagram.com/p/DdD_agFmPv3/",
+      "what": "goods list 3 (아크릴키링/25cm아크릴스탠드/마우스패드/젤펜)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "benefit_epoxy_sticker.jpg",
+      "source_url": "https://www.instagram.com/p/DdD_agFmPv3/",
+      "what": "benefit - 7만원 이상 에폭시 스티커팩(7종)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "md_list_4_photocard_kiosk_books.jpg",
+      "source_url": "https://www.instagram.com/p/DdD_agFmPv3/",
+      "what": "goods list 4 - 포토카드 키오스크 10종/단행본",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "exchange_refund.jpg",
+      "source_url": "https://www.instagram.com/p/DdD_agFmPv3/",
+      "what": "교환/환불 안내",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "purchase_guide.jpg",
+      "source_url": "https://www.instagram.com/p/DdD_agFmPv3/",
+      "what": "구매 안내",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "reservation_open_dminus1_poster.jpg",
+      "source_url": "https://www.instagram.com/p/DdGTxjZI93p/",
+      "what": "입장 예약 오픈 D-1 poster",
+      "width": 1350,
+      "height": 1687
+    },
+    {
+      "file": "reservation_poster.jpg",
+      "source_url": "https://www.instagram.com/p/DdEAkM-mMGI/",
+      "what": "사전예약 및 운영 안내 poster",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "reservation_schedule.jpg",
+      "source_url": "https://www.instagram.com/p/DdEAkM-mMGI/",
+      "what": "reservation - 사전예약/현장입장 일정",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "reservation_rules_1.jpg",
+      "source_url": "https://www.instagram.com/p/DdEAkM-mMGI/",
+      "what": "reservation - 사전예약 안내(예약) 1",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "reservation_rules_2.jpg",
+      "source_url": "https://www.instagram.com/p/DdEAkM-mMGI/",
+      "what": "reservation - 사전예약 안내(예약) 2 (만14세)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "reservation_rules_3_entry.jpg",
+      "source_url": "https://www.instagram.com/p/DdEAkM-mMGI/",
+      "what": "reservation - 사전예약 안내(입장) 1",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "reservation_rules_4_entry.jpg",
+      "source_url": "https://www.instagram.com/p/DdEAkM-mMGI/",
+      "what": "reservation - 사전예약 안내(입장) 2",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "payment_points.jpg",
+      "source_url": "https://www.instagram.com/p/DdEAkM-mMGI/",
+      "what": "결제/적립 안내",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "other_notice.jpg",
+      "source_url": "https://www.instagram.com/p/DdEAkM-mMGI/",
+      "what": "기타 안내",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "reservation_open_dday_poster.jpg",
+      "source_url": "https://www.instagram.com/p/DdInH02GERK/",
+      "what": "입장 예약 오픈 D-DAY poster",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "reservation_open_info.jpg",
+      "source_url": "https://www.instagram.com/p/DdInH02GERK/",
+      "what": "reservation - 예약 안내 (입장시간 10:30-21:00)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "benefit_epoxy_sticker_v2.jpg",
+      "source_url": "https://www.instagram.com/p/DdInH02GERK/",
+      "what": "benefit - 구매 특전 (재게시 버전)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "onsite_event_poster.jpg",
+      "source_url": "https://www.instagram.com/p/DdV0c5XmFJy/",
+      "what": "현장 이벤트 공개 poster",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "onsite_event_mission1.jpg",
+      "source_url": "https://www.instagram.com/p/DdV0c5XmFJy/",
+      "what": "현장 이벤트 MISSION 01",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "onsite_event_mission2.jpg",
+      "source_url": "https://www.instagram.com/p/DdV0c5XmFJy/",
+      "what": "현장 이벤트 MISSION 02",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "onsite_event_mission3.jpg",
+      "source_url": "https://www.instagram.com/p/DdV0c5XmFJy/",
+      "what": "현장 이벤트 MISSION 03",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "onsite_event_reward.jpg",
+      "source_url": "https://www.instagram.com/p/DdV0c5XmFJy/",
+      "what": "현장 이벤트 보상 (헌터 자격증/디지털 배경화면)",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "file": "reel_md1_thumbnail.jpg",
+      "source_url": "https://www.instagram.com/reel/DdTZZ4rIb-Z/",
+      "what": "1차 MD 실물 영상 썸네일",
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "file": "reel_md2_thumbnail.jpg",
+      "source_url": "https://www.instagram.com/reel/DdYmZKyI9Wj/",
+      "what": "2차 MD 실물 영상 썸네일",
+      "width": 720,
+      "height": 1280
+    }
+  ]
+}
