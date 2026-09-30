@@ -31,6 +31,18 @@ function fmtDur(min: number | null | undefined): string | null {
   return h && m ? `약 ${h}시간 ${m}분` : h ? `약 ${h}시간` : `약 ${m}분`
 }
 
+/** 지도 목록용 짧은 층 표시 — 호수·(본점) 같은 괄호는 빼고 층만 ("국제전자센터 2층 136호(본점)·3층" → "국제전자센터 2층·3층") */
+function floorNoUnit(text: string): string {
+  return text
+    .replace(/\([^)]*\)/g, '')                      // (본점) (1·2호점)
+    .replace(/\s*[0-9A-Za-z~\-,]+\s*호(?!점)/g, '')   // 136호, 3023~3024호
+    .replace(/\s*([·,/])\s*/g, '$1')
+    .replace(/([·,/])+/g, '$1')
+    .replace(/^[\s·,/]+|[\s·,/]+$/g, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim()
+}
+
 export default function RouteMapMode({ routeId }: { routeId: string }) {
   const router = useRouter()
   const params = useSearchParams()
@@ -288,7 +300,7 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
                     <div className={styles.thumb}>{shop.shop_images?.[0]?.image_url ? <img src={shop.shop_images[0].image_url} alt="" loading="lazy" /> : <span className={styles.noImg} />}</div>
                     <div className={styles.spotBody}>
                       <span className={styles.spotName}>{shop.name}</span>
-                      {(() => { const fl = shop.floor_info || [shop.floor, shop.unit].filter(Boolean).join(' '); return fl ? <div className={styles.spotFloor}>{fl}</div> : null })()}
+                      {(() => { const fl = floorNoUnit(shop.floor_info || shop.floor || ''); return fl ? <div className={styles.spotFloor}>{fl}</div> : null })()}
                       {shop.addr && <div className={styles.spotAddr}>{shop.addr}</div>}
                       {showAccess && <div className={styles.accessNote}>가는 길 · {accessNote}</div>}
                       {cats.length > 0 && <div className={styles.spotTags}>{cats.slice(0, 2).map(c => { const cc = (CATEGORY_NAME_MAP as any)[c]; return <span key={c} className={styles.spotTag} style={cc ? { color: cc.color, background: cc.bgColor, border: 'none' } : undefined}>{c}</span> })}</div>}
