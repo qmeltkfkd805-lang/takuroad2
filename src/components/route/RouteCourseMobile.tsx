@@ -96,8 +96,9 @@ export default function RouteCourseMobile({ stops, visitedIds, selectedId, onSel
             {showHead && (
               <>
                 <div className={s.railGap} aria-hidden>{!first && <span className={s.line} />}</div>
-                <div className={s.groupHead}>
+                <div className={`${s.groupHead} ${!first ? s.groupHeadSep : ''}`}>
                   <span className={s.groupLabel}>{gLabel}</span>
+                  <span className={s.groupRule} aria-hidden />
                   {fm && (
                     <button type="button" className={s.groupMapBtn} onClick={() => setMapView(gKey)}>
                       <MapIcon size={14} />층 지도 보기

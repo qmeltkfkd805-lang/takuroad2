@@ -347,8 +347,9 @@ export default function RouteDetailPage({ route }: { route: any }) {
         return (
           <li key={rs.id} className={styles.stop}>
             {showHead && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: first ? '0 0 8px 44px' : '14px 0 8px 44px' }}>
-                <span style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l)', borderRadius: 9999, padding: '4px 10px' }}>{floorGroupLabel(shop)}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: first ? '0 0 10px 44px' : '18px 0 10px 44px' }}>
+                <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l)', borderRadius: 9999, padding: '5px 12px', whiteSpace: 'nowrap' }}>{floorGroupLabel(shop)}</span>
+                <span aria-hidden style={{ flex: '1 1 auto', minWidth: 12, height: 1, background: 'var(--border)' }} />
                 {fmap && <button type="button" onClick={() => setFloorMapOpen(gKey)} style={{ cursor: 'pointer', background: 'var(--surface, #fff)',  fontSize: 12.5, fontWeight: 700, color: 'var(--text)', border: '1px solid var(--border)', borderRadius: 9999, padding: '4px 10px', textDecoration: 'none' }}>층 지도 보기</button>}
               </div>
             )}
