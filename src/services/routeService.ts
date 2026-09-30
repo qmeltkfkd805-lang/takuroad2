@@ -146,6 +146,27 @@ export async function adminDeleteRoute(routeId: string): Promise<boolean> {
   })
   return res.ok
 }
+// 관리자: 작성자 넘기기 (출처 주인이 가입했을 때)
+export async function adminFindUsers(query: string): Promise<{ id: string; nickname: string | null; avatar_url?: string | null }[]> {
+  try {
+    const res = await fetch('/api/admin/route-action', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'findUser', query }),
+    })
+    if (!res.ok) return []
+    return (await res.json()).users ?? []
+  } catch { return [] }
+}
+export async function adminTransferRoute(routeId: string, targetUserId: string): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const res = await fetch('/api/admin/route-action', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ routeId, action: 'transferOwner', targetUserId }),
+    })
+    const j = await res.json().catch(() => ({}))
+    return res.ok ? { ok: true } : { ok: false, error: j.error }
+  } catch { return { ok: false, error: '네트워크 오류' } }
+}
 export async function adminSetRouteShared(routeId: string, shared: boolean): Promise<boolean> {
   const res = await fetch('/api/admin/route-action', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },

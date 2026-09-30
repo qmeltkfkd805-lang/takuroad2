@@ -18,6 +18,7 @@ import RouteCourseMobile from './RouteCourseMobile'
 import { getRouteFloorMaps, getRouteSources, type RouteSource } from '@/services/routeService'
 import { floorGroupKey, floorGroupLabel, hasFloorGroups } from '@/lib/route/autoOrder'
 import FloorMapViewer, { collectFloorMaps } from './FloorMapViewer'
+import TransferOwnerModal from './TransferOwnerModal'
 import styles from './RouteDetailPage.module.css'
 
 import AppIcon from '@/components/tds/AppIcon'
@@ -285,6 +286,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
   // 층 지도 이미지 (루트 만들 때 층별 묶음마다 올린 참고 이미지) — 키 → 주소
   const [sources, setSources] = useState<RouteSource[]>([])   // 루트 출처 (참고한 인스타·블로그)
   const [floorMaps, setFloorMaps] = useState<Record<string, { url: string; sourceName?: string | null; sourceUrl?: string | null }>>({})
+  const [transferOpen, setTransferOpen] = useState(false)   // 관리자: 작성자 넘기기
   const [floorMapOpen, setFloorMapOpen] = useState<string | null>(null)   // PC 층 지도 모달 (묶음 키)
   useEffect(() => {
     if (!route?.id) return
@@ -459,6 +461,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
                   {canEdit && <Link href={`/route/${route.share_token}/edit`} className={styles.kebabItem} role="menuitem"><PencilIcon size={15} />수정하기</Link>}
                   {!shared && <button className={styles.kebabItem} role="menuitem" onClick={handleTogglePublish} disabled={publishBusy}><GlobeIcon size={15} />공개하기</button>}
                   {!isAuthor && isAdmin && <div className={styles.kebabNote}>관리자 권한</div>}
+{isAdmin && <button className={styles.kebabItem} role="menuitem" onClick={() => { setMenuOpen(false); setTransferOpen(true) }}><PencilIcon size={15} />작성자 넘기기</button>}
                   <button className={`${styles.kebabItem} ${styles.kebabDanger}`} role="menuitem" onClick={handleDelete} disabled={deleteBusy}><TrashIcon size={15} />삭제하기</button>
                 </div>
               )}
@@ -620,6 +623,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
                             </button>
                           )}
                           {!isAuthor && isAdmin && <div className={styles.kebabNote}>관리자 권한</div>}
+{isAdmin && <button className={styles.kebabItem} role="menuitem" onClick={() => { setMenuOpen(false); setTransferOpen(true) }}><PencilIcon size={15} />작성자 넘기기</button>}
                           <button className={`${styles.kebabItem} ${styles.kebabDanger}`} role="menuitem" onClick={handleDelete} disabled={deleteBusy}><TrashIcon size={15} />삭제하기</button>
                         </div>
                       )}
@@ -796,6 +800,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
           </div>
         </div>
       )}
+      {transferOpen && <TransferOwnerModal routeId={route.id} currentOwnerId={route.user_id} currentName={route.profiles?.nickname ?? null} sources={sources} onClose={() => setTransferOpen(false)} onDone={nick => { setTransferOpen(false); setToast(`${nick}님에게 넘겼어요.`); setTimeout(() => window.location.reload(), 800) }} />}
       {floorMapOpen && <FloorMapViewer slides={collectFloorMaps(sortedStops.map((x: any) => x.shops), floorMaps)} startKey={floorMapOpen} onClose={() => setFloorMapOpen(null)} />}
     </div>
   )
