@@ -848,7 +848,7 @@ function SourceCredits({ list }: { list: RouteSource[] }) {
           <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
             {i > 0 && <span aria-hidden>·</span>}
             {x.url
-              ? <a href={x.url} target="_blank" rel="noopener noreferrer nofollow" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--text)', fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: 2, overflowWrap: 'anywhere' }}>
+              ? <a href={x.url} target="_blank" rel="noopener noreferrer nofollow" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--accent)', fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: 2, overflowWrap: 'anywhere' }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   {icon === 'blog'
                     ? <BlogIcon />
