@@ -790,7 +790,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
 }
 
 /* 출처 링크 옆 아이콘 — 사이트에 이미 있는 SNS 아이콘(public/icons) 재사용 */
-function sourceIcon(url: string | null): { src: string; alt: string } | null {
+function sourceIcon(url: string | null): { src: string; alt: string } | 'blog' | null {
   if (!url) return null
   let host = ''
   try { host = new URL(url).hostname.replace(/^www\./, '').toLowerCase() } catch { return null }
@@ -798,7 +798,20 @@ function sourceIcon(url: string | null): { src: string; alt: string } | null {
   if (host === 'x.com' || host.endsWith('twitter.com')) return { src: '/icons/X.png', alt: 'X' }
   if (host.endsWith('youtube.com') || host === 'youtu.be') return { src: '/icons/youtube.png', alt: '유튜브' }
   if (host === 'cafe.naver.com') return { src: '/icons/navercafe.png', alt: '네이버 카페' }
+  if (host === 'blog.naver.com' || host === 'm.blog.naver.com') return { src: '/icons/naverblog.png', alt: '네이버 블로그' }
+  if (host.endsWith('tistory.com') || host.endsWith('velog.io') || host === 'brunch.co.kr' || host.endsWith('blogspot.com')) return 'blog'
   return { src: '/icons/homepage.png', alt: '웹사이트' }
+}
+
+/* 블로그 아이콘 (네이버 블로그·티스토리 등) — 둥근 초록 배지에 펜 */
+function BlogIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="블로그" style={{ flexShrink: 0 }}>
+      <rect x="1" y="1" width="22" height="22" rx="6" fill="#03C75A" />
+      <path d="M7 17l1-3.5 6.6-6.6a1.4 1.4 0 0 1 2 2L10 15.5 7 17Z" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinejoin="round" />
+      <path d="M13.5 8l2.5 2.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  )
 }
 
 /* 루트 출처 — "출처 @계정 · OO 블로그" (링크가 있으면 새 창으로) */
@@ -816,7 +829,9 @@ function SourceCredits({ list }: { list: RouteSource[] }) {
             {x.url
               ? <a href={x.url} target="_blank" rel="noopener noreferrer nofollow" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--text)', fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: 2, overflowWrap: 'anywhere' }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  {icon && <img src={icon.src} alt={icon.alt} width={16} height={16} style={{ width: 16, height: 16, objectFit: 'contain', flexShrink: 0 }} />}
+                  {icon === 'blog'
+                    ? <BlogIcon />
+                    : icon && <img src={icon.src} alt={icon.alt} width={16} height={16} style={{ width: 16, height: 16, objectFit: 'contain', flexShrink: 0 }} />}
                   {label}
                 </a>
               : <span style={{ color: 'var(--text)', fontWeight: 700, overflowWrap: 'anywhere' }}>{label}</span>}
