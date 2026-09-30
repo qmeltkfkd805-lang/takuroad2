@@ -49,7 +49,7 @@ export async function createRoute(
       distance_from_prev_m: distFromPrev,
       duration_from_prev_min: durFromPrev,
       move_tip: i < shops.length - 1 ? (shop.moveTip?.trim() || null) : null,
-      ...(shop.stopFloor?.trim() ? { stop_floor: shop.stopFloor.trim() } : {}),
+      stop_floor: shop.stopFloor?.trim() || '',   // 여러 행을 한 번에 넣을 땐 모든 행의 칸이 같아야 한다
     }
   })
 
@@ -314,16 +314,25 @@ export async function updateRoute(routeId: string, title: string, description: s
       dur = estimateWalkMinutes(d)
       totalDistance += d; totalDuration += dur
     }
-    return { route_id: routeId, shop_id: shop.shopId, sort_order: i, distance_from_prev_m: d, duration_from_prev_min: dur, move_tip: i < shops.length - 1 ? (shop.moveTip?.trim() || null) : null, ...(shop.stopFloor?.trim() ? { stop_floor: shop.stopFloor.trim() } : {}) }
+    return { route_id: routeId, shop_id: shop.shopId, sort_order: i, distance_from_prev_m: d, duration_from_prev_min: dur, move_tip: i < shops.length - 1 ? (shop.moveTip?.trim() || null) : null, stop_floor: shop.stopFloor?.trim() || '' }
   })
   const { error: upErr } = await supabase.from('routes').update({
     title, description: description || null, official_difficulty: difficulty,
     total_distance_m: totalDistance, total_duration_min: totalDuration,
   } as any).eq('id', routeId)
   if (upErr) { console.error('[route update]', upErr); return false }
+  // 새 순서로 갈아끼우기 — 넣기에 실패하면 지우기 전 순서로 되돌린다(루트가 빈 채로 남지 않게)
+  const { data: before } = await supabase.from('route_shops').select('*').eq('route_id', routeId)
   await supabase.from('route_shops').delete().eq('route_id', routeId)
   const { error: insErr } = await supabase.from('route_shops').insert(rows as any)
-  if (insErr) { console.error('[route shops update]', insErr); return false }
+  if (insErr) {
+    console.error('[route shops update]', insErr.code, insErr.message, insErr.details)
+    if (before?.length) {
+      const { error: backErr } = await supabase.from('route_shops').insert((before as any[]).map(({ id, created_at, ...r }) => r) as any)
+      if (backErr) console.error('[route shops restore]', backErr.code, backErr.message)
+    }
+    return false
+  }
   return true
 }
 

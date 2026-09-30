@@ -19,9 +19,7 @@ export async function addProgress(client: Client, routeId: string, userId: strin
   const have = await progressKeys(client, routeId, userId)
   const rows = Array.from(new Set(keys)).filter(k => !have.has(k)).map(k => {
     const { shopId, stopFloor } = parseStopKey(k)
-    return stopFloor
-      ? { route_id: routeId, user_id: userId, shop_id: shopId, stop_floor: stopFloor }
-      : { route_id: routeId, user_id: userId, shop_id: shopId }
+    return { route_id: routeId, user_id: userId, shop_id: shopId, stop_floor: stopFloor }
   })
   if (!rows.length) return true
   const { error } = await client.from('route_progress').insert(rows as any)
