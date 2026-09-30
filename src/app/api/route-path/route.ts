@@ -32,12 +32,16 @@ export async function GET(request: NextRequest) {
   const allCoords: (LatLng | null)[] = stops.map((rs: any) =>
     rs.shops && typeof rs.shops.lat === 'number' && typeof rs.shops.lng === 'number'
       ? { lat: rs.shops.lat, lng: rs.shops.lng } : null)
-  const valid = allCoords.filter(Boolean) as LatLng[]
+  const rawValid = allCoords.filter(Boolean) as LatLng[]
+  // 같은 건물(같은 좌표)에 연달아 있는 곳은 하나로 — 거리 0 구간은 도보 경로 API가 실패한다
+  const valid: LatLng[] = rawValid.filter((p, i) => i === 0 || Math.abs(p.lat - rawValid[i - 1].lat) > 1e-5 || Math.abs(p.lng - rawValid[i - 1].lng) > 1e-5)
   const missing = allCoords.length - valid.length
 
   const base = { provider: ORS_PROVIDER, attribution: ORS_ATTRIBUTION, missing_stops: missing }
 
   if (valid.length < 2) {
+    // 한 곳뿐이거나 모두 같은 건물 → 그릴 도보 경로가 없음 (실패 아님)
+    if (rawValid.length >= 2) return NextResponse.json({ ...base, status: 'same_place', geometry: [], distance_m: 0, duration_min: 0 })
     return NextResponse.json({ ...base, status: 'insufficient', geometry: [], distance_m: null, duration_min: null })
   }
 

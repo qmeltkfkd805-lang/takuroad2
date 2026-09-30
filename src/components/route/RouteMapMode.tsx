@@ -242,7 +242,7 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
   const metaDist = realDist ?? route.total_distance_m
   const metaLine = [region, `${spotCount}곳`, fmtDur(realDur ?? route.total_duration_min), metaDist ? `도보 ${formatDistance(metaDist)}` : null].filter(Boolean).join(' · ')
   const pathLine = path && (path.status === 'ok' || path.status === 'partial') && path.geometry.length ? path.geometry : null
-  const pathFailed = !!path && (path.status === 'failed' || path.status === 'insufficient')
+  const pathFailed = !!path && path.status === 'failed'   // 한 곳뿐·같은 건물(insufficient/same_place)은 실패가 아님
   const selIdx = coordIndexOf(selectedShopId)
   const selectedShop = selectedShopId ? stops.find((rs: any) => rs.shops?.id === selectedShopId)?.shops ?? null : null
 

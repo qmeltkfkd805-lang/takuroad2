@@ -62,7 +62,12 @@ export async function recordRouteProgressOnCheckIn(userId: string, shopId: strin
       .maybeSingle()
     if (existing) continue
 
-    await supabase
+    // 이미 체크된 곳이면 넘어감 (중복 insert → 409 방지)
+    const { data: already } = await supabase
+      .from('route_progress').select('shop_id')
+      .eq('route_id', route.id).eq('user_id', userId).eq('shop_id', shopId)
+      .maybeSingle()
+    if (!already) await supabase
       .from('route_progress')
       .insert({ route_id: route.id, user_id: userId, shop_id: shopId } as any)
       .select()
