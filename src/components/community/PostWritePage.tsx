@@ -10,6 +10,7 @@ import { createPost, updatePost, getPost, uploadPostImage } from '@/services/com
 import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import { createPoll } from '@/services/pollService'
 import { Board, BOARDS, BOARD_FLAIRS, CREATION_BOARDS, boardMeta, NewPost, NewPoll } from '@/types/community-post'
+import DraftNotice from '@/components/common/DraftNotice'
 
 type Tag = { id: string; name: string; slug: string }
 const DRAFT_KEY = 'takuroad_community_draft'
@@ -110,15 +111,25 @@ export default function PostWritePage() {
   const isGoods = board === 'goods'
 
   useEffect(() => { getAllTagsForSelect().then((t) => setTags(t as Tag[])).catch(() => setTags([])) }, [])
+  // 새 글: 쓰던 글이 있으면 들어오자마자 자동으로 채워 넣는다(다른 화면에 다녀오거나 새로고침해도 그대로).
+  // 기존 굿즈로 쓰는 글(goodsId)은 그 굿즈 내용이 먼저라 예전처럼 "불러오기" 안내만 띄운다.
+  const autoLoadRef = useRef(false)
+  const draftBlocked = useRef(false)   // 등록이 끝나면 자동 저장 멈춤
+  const [draftAuto, setDraftAuto] = useState(false)
   useEffect(() => {
     if (editId) return
     try {
       const raw = localStorage.getItem(DRAFT_KEY)
-      if (raw) { setHasDraft(true); setShowDraftBanner(true) }
+      if (raw) {
+        setHasDraft(true)
+        if (goodsIdParam) setShowDraftBanner(true)
+        else autoLoadRef.current = true
+      }
     } catch { /* noop */ }
   }, [editId])
   useEffect(() => {
     if (editId) return
+    if (autoLoadRef.current) { loadDraft(); setDraftAuto(true); return }
     applyBoardTemplate(board)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -298,11 +309,56 @@ export default function PostWritePage() {
     return out
   }
 
+  // ── 자동 임시저장 (새 글만) ── 입력이 멈추고 0.5초 뒤, 화면을 떠나거나 숨길 때 바로
+  const draftState = { board, tagIds, title, images, poll: pollData, spoiler, flair, goodsChars, goodsTypeList, goodsStore, goodsPrice }
+  const draftStateRef = useRef(draftState)
+  draftStateRef.current = draftState
+  const writeDraftSilent = useCallback(() => {
+    if (editId || draftBlocked.current) return
+    const d = draftStateRef.current
+    const el = editorRef.current
+    const html = el ? el.innerHTML : null
+    if (html === null) return   // 에디터가 없으면(화면 전환 중) 건드리지 않음
+    const tmpl = BOARD_TEMPLATES[d.board] ?? ''
+    const bodyEmpty = !html || html === tmpl || (!(el!.innerText || '').trim() && !el!.querySelector('img,video,a,table'))
+    const empty = bodyEmpty && !d.title.trim() && d.images.length === 0 && !d.poll && d.goodsChars.length === 0 && d.goodsTypeList.length === 0 && !d.goodsStore && !d.goodsPrice
+    try {
+      if (empty) return
+      localStorage.setItem(DRAFT_KEY, JSON.stringify({ ...d, html, savedAt: Date.now() }))
+    } catch { /* noop */ }
+  }, [editId])
+  useEffect(() => {
+    if (editId || goodsIdParam) return
+    const t = setTimeout(writeDraftSilent, 500)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [board, tagIds, title, images, pollData, spoiler, flair, goodsChars, goodsTypeList, goodsStore, goodsPrice])
+  useEffect(() => {
+    if (editId || goodsIdParam) return
+    const el = editorRef.current
+    let t: ReturnType<typeof setTimeout> | null = null
+    const mo = el ? new MutationObserver(() => { if (t) clearTimeout(t); t = setTimeout(writeDraftSilent, 500) }) : null
+    if (el && mo) mo.observe(el, { childList: true, subtree: true, characterData: true })
+    const onHide = () => { if (document.visibilityState === 'hidden') writeDraftSilent() }
+    window.addEventListener('pagehide', writeDraftSilent)
+    document.addEventListener('visibilitychange', onHide)
+    return () => { mo?.disconnect(); if (t) clearTimeout(t); window.removeEventListener('pagehide', writeDraftSilent); document.removeEventListener('visibilitychange', onHide) }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editId, goodsIdParam])
+  // "새로 쓰기" — 불러온 글을 지우고 빈 글로
+  const startOver = () => {
+    try { localStorage.removeItem(DRAFT_KEY) } catch { /* noop */ }
+    setHasDraft(false); setDraftAuto(false)
+    setTitle(''); setImages([]); setPollData(null); setSpoiler(false); setFlair(null); setTagIds(sp.get('tag') ? [sp.get('tag')!] : [])
+    setGoodsChars([]); setGoodsTypeList([]); setGoodsStore(''); setGoodsPrice('')
+    if (editorRef.current) { editorRef.current.innerHTML = ''; applyBoardTemplate(board) }
+  }
+
   // ── 임시저장 ──
   const saveDraft = () => {
     const html = editorRef.current?.innerHTML ?? ''
     try {
-      localStorage.setItem(DRAFT_KEY, JSON.stringify({ board, tagIds, title, html, images, poll: pollData, spoiler, flair, savedAt: Date.now() }))
+      localStorage.setItem(DRAFT_KEY, JSON.stringify({ board, tagIds, title, html, images, poll: pollData, spoiler, flair, goodsChars, goodsTypeList, goodsStore, goodsPrice, savedAt: Date.now() }))
       setHasDraft(true); setShowDraftBanner(false)
       window.alert('임시저장되었어요.')
     } catch { window.alert('임시저장에 실패했어요.') }
@@ -312,6 +368,10 @@ export default function PostWritePage() {
       const raw = localStorage.getItem(DRAFT_KEY); if (!raw) return
       const d = JSON.parse(raw)
       setBoard(d.board ?? 'free'); setTagIds(d.tagIds ?? []); setTitle(d.title ?? ''); setImages(d.images ?? []); setPollData(d.poll ?? null); setSpoiler(d.spoiler ?? false); setFlair(d.flair ?? null)
+      if (Array.isArray(d.goodsChars)) setGoodsChars(d.goodsChars)
+      if (Array.isArray(d.goodsTypeList)) setGoodsTypeList(d.goodsTypeList)
+      if (typeof d.goodsStore === 'string') setGoodsStore(d.goodsStore)
+      if (typeof d.goodsPrice === 'string') setGoodsPrice(d.goodsPrice)
       if (editorRef.current) editorRef.current.innerHTML = d.html ?? ''
       setShowDraftBanner(false)
     } catch { /* noop */ }
@@ -380,7 +440,7 @@ export default function PostWritePage() {
         } catch (e) { console.error('[굿즈 갱신 실패]', e) }
       }
       setSaving(false)
-      if (ok) { clearDraft(); router.push(`/community/${editId}`) } else setErr('수정에 실패했어요.')
+      if (ok) { draftBlocked.current = true; clearDraft(); router.push(`/community/${editId}`) } else setErr('수정에 실패했어요.')
       return
     }
     const payload: NewPost = { board: finalBoard, tagIds, title, content: html, images: imgs, showOnWork, isNotice: notice, noticeAll: notice && noticeScope === 'all', spoiler, flair: BOARD_FLAIRS[finalBoard] ? flair : null }
@@ -401,7 +461,7 @@ export default function PostWritePage() {
         try { const { deletePost } = await import('@/services/communityPostService'); await deletePost(id) } catch { /* 보상 삭제 실패 무시 */ }
         setSaving(false); setErr('굿즈 연결에 실패했어요. 잠시 후 다시 시도해주세요.'); return
       }
-      setSaving(false); clearDraft(); router.push(`/community/${id}`); return
+      setSaving(false); draftBlocked.current = true; clearDraft(); router.push(`/community/${id}`); return
     }
 
     // 굿즈자랑 새 글은 내 굿즈·컬렉션에도 자동 등록 (실패해도 글 자체는 유지)
@@ -412,7 +472,7 @@ export default function PostWritePage() {
       } catch (e) { console.error('[굿즈 연동 실패]', e) }
     }
     setSaving(false)
-    clearDraft(); router.push('/community')
+    draftBlocked.current = true; clearDraft(); router.push('/community')
   }
 
   const standaloneBoards = BOARDS.filter(b => !CREATION_BOARDS.includes(b.value))
@@ -567,6 +627,7 @@ export default function PostWritePage() {
             </span>
           </div>
         )}
+        {draftAuto && <DraftNotice text="작성 중이던 글을 불러왔어요." onDiscard={startOver} onClose={() => setDraftAuto(false)} />}
         {err && <div style={{ fontSize: 14, color: '#c0392b', background: 'rgba(239,90,90,.08)', borderRadius: 10, padding: '11px 14px', marginBottom: 16 }}>{err}</div>}
 
         {existingGoodsId && (

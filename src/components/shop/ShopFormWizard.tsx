@@ -20,6 +20,8 @@ import PhotosManage from './PhotosManage'
 import CompletenessIndicator from './CompletenessIndicator'
 import ShopHoursEditor, { HOURS_HINT } from './ShopHoursEditor'
 import { ShopBranchEditor } from './ShopBranches'
+import { useFormDraft } from '@/hooks/useFormDraft'
+import DraftNotice from '@/components/common/DraftNotice'
 
 interface Props {
   mode: 'create' | 'edit'
@@ -91,6 +93,26 @@ export default function ShopFormWizard({ mode, shop }: Props) {
       setLinks(initLinks.length ? initLinks : [''])
     }
   }, [mode, shop])
+
+  /* 새 샵 등록: 쓰던 내용 자동 임시저장 — 다른 화면에 다녀오거나 새로고침해도 그대로.
+     1단계 저장 후(비공개 샵이 이미 만들어진 뒤)에는 그 샵 id 도 기억해서, 돌아와도 같은 샵을 이어서 채운다(중복 등록 방지). */
+  type WizardDraft = { form: ShopFormData; links: string[]; step: number; createdShopId: string | null; createdShopSlug: string | null }
+  const draft = useFormDraft<WizardDraft>(
+    mode === 'create' && user ? `taku:draft:shop-new:${user.id}` : null,
+    { form, links, step, createdShopId, createdShopSlug },
+    d => {
+      if (d.form) setForm({ ...EMPTY_FORM, ...d.form })
+      if (Array.isArray(d.links) && d.links.length) setLinks(d.links)
+      if (d.createdShopId) { setCreatedShopId(d.createdShopId); setCreatedShopSlug(d.createdShopSlug ?? null) }
+      if (d.step && (d.step === 1 || d.createdShopId)) setStep(d.step)
+    },
+    d => !d.createdShopId && JSON.stringify(d.form) === JSON.stringify(EMPTY_FORM) && d.links.every(l => !l.trim()),
+  )
+  function startOver() {
+    // 이미 만들어 둔 비공개 샵이 있으면 그건 그대로 두고(내 샵 목록에서 이어 쓰기 가능) 폼만 비운다
+    draft.discard()
+    setForm(EMPTY_FORM); setLinks(['']); setStep(1); setCreatedShopId(null); setCreatedShopSlug(null)
+  }
 
   const shopId = mode === 'edit' ? shop?.id ?? null : createdShopId
   const shopSlug = mode === 'edit' ? shop?.slug ?? null : createdShopSlug
@@ -186,6 +208,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
     if (mode === 'edit') { if (!(await saveCore())) return; router.push(ROUTES.shop(shop!.slug)); return }
     // 신규: 여기(등록 완료)서야 비공개 임시 → active로 공개된다
     if (createdShopId) { setSaving(true); await publishShop(createdShopId); setSaving(false) }
+    draft.clear()   // 등록 끝 — 임시저장본 삭제
     // "이 샵의 사장님입니까?" 물어보고, 네면 바로 인증 신청으로
     setOwnerAsk(true)
   }
@@ -274,6 +297,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
           <button onClick={() => router.back()} style={ghostBtn}>나가기</button>
         </div>
       </div>
+      {draft.restored && <DraftNotice onDiscard={startOver} onClose={draft.dismiss} />}
 
       {/* 스텝바 */}
       <div style={{ display: 'flex', gap: 8, overflowX: 'auto', marginBottom: 28, paddingBottom: 6 }}>

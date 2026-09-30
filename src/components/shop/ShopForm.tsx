@@ -20,6 +20,8 @@ import ShopMainImageUploader from './ShopMainImageUploader'
 import ShopFormWizard from './ShopFormWizard'
 import { useIsDesktop } from '@/hooks/useIsDesktop'
 import AppIcon from '@/components/tds/AppIcon'
+import { useFormDraft } from '@/hooks/useFormDraft'
+import DraftNotice from '@/components/common/DraftNotice'
 
 interface Props {
   mode: 'create' | 'edit'
@@ -138,6 +140,24 @@ export default function ShopForm({ mode, shop }: Props) {
     }
   }
 
+  /* 새 샵 등록(모바일): 쓰던 내용 자동 임시저장 — 다른 화면에 다녀오거나 새로고침해도 그대로.
+     등록 후 사진·추가 정보 단계면 만든 샵 id 도 기억해서 같은 샵을 이어서 채운다.
+     PC 는 ShopFormWizard 가 따로 저장한다 */
+  type MobileDraft = { form: ShopFormData; createdShopId: string | null; createdShopSlug: string | null }
+  const draft = useFormDraft<MobileDraft>(
+    mode === 'create' && user && !isDesktop ? `taku:draft:shop-new-m:${user.id}` : null,
+    { form, createdShopId, createdShopSlug },
+    d => {
+      if (d.form) setForm({ ...EMPTY_FORM, ...d.form })
+      if (d.createdShopId) { setCreatedShopId(d.createdShopId); setCreatedShopSlug(d.createdShopSlug ?? null) }
+    },
+    d => !d.createdShopId && JSON.stringify(d.form) === JSON.stringify(EMPTY_FORM),
+  )
+  function startOver() {
+    draft.discard()
+    setForm(EMPTY_FORM); setCreatedShopId(null); setCreatedShopSlug(null)
+  }
+
   const enrichmentShopId = mode === 'edit' ? shop?.id : createdShopId
 
   if (isDesktop) return <ShopFormWizard mode={mode} shop={shop} />
@@ -158,6 +178,7 @@ export default function ShopForm({ mode, shop }: Props) {
       </div>
 
       <div style={{ padding: '20px 16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        {draft.restored && <DraftNotice onDiscard={startOver} onClose={draft.dismiss} />}
 
         {mode === 'edit' && shop && user && (
           <>
@@ -503,7 +524,7 @@ export default function ShopForm({ mode, shop }: Props) {
             
             {createdShopId && createdShopSlug && (
               <button
-                onClick={() => router.push('/profile?tab=shops')}
+                onClick={() => { draft.clear(); router.push('/profile?tab=shops') }}
                 style={{
                   width: '100%', padding: '12px', borderRadius: '10px',
                   border: '1px solid var(--border)', background: 'var(--surface)',
