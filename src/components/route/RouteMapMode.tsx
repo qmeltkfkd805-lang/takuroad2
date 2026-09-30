@@ -269,6 +269,9 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
               const noCoord = !shop.lat || !shop.lng
               const cats: string[] = Array.isArray(shop.cats) ? shop.cats : []
               const walkMin = rs.duration_from_prev_min, walkM = rs.distance_from_prev_m
+              // 가는 길 — 같은 건물(같은 설명)이 이어지면 첫 곳에만 보여준다
+              const accessNote: string | null = shop.places?.access_note ?? null
+              const showAccess = !!accessNote && (i === 0 || stops[i - 1]?.shops?.places?.access_note !== accessNote)
               return (
                 <li key={rs.id}>
                   {i > 0 && (walkMin != null || walkM != null) && (
@@ -287,7 +290,7 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
                       <span className={styles.spotName}>{shop.name}</span>
                       {(() => { const fl = shop.floor_info || [shop.floor, shop.unit].filter(Boolean).join(' '); return fl ? <div className={styles.spotFloor}>{fl}</div> : null })()}
                       {shop.addr && <div className={styles.spotAddr}>{shop.addr}</div>}
-                      {shop.places?.access_note && <div className={styles.accessNote}>가는 길 · {shop.places.access_note}</div>}
+                      {showAccess && <div className={styles.accessNote}>가는 길 · {accessNote}</div>}
                       {cats.length > 0 && <div className={styles.spotTags}>{cats.slice(0, 2).map(c => { const cc = (CATEGORY_NAME_MAP as any)[c]; return <span key={c} className={styles.spotTag} style={cc ? { color: cc.color, background: cc.bgColor, border: 'none' } : undefined}>{c}</span> })}</div>}
                       {noCoord && <div className={styles.noCoord}>지도 위치 없음</div>}
                     </div>
