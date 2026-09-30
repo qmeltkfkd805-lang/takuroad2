@@ -601,14 +601,17 @@ export default function RouteDetailPage({ route }: { route: any }) {
           <div className={styles.topBox}>
           <div className={styles.topGrid}>
             <div className={styles.infoCard}>
+              {/* 배지가 없으면 제목을 공유·더보기 버튼과 같은 줄에 둔다 (제목 위 빈칸 없애기) */}
               <div className={styles.infoTop}>
-                <div className={styles.badgeRow}>
-                  {route.is_official
-                    ? <span className={styles.officialBadge}><MaskIcon name="star" size={12} color="#fff" />추천</span>
-                    : canManage && !shared
-                      ? <span className={`${styles.statusBadge} ${styles.statusDraft}`}>임시 저장</span>
-                      : null}
-                </div>
+                {(route.is_official || (canManage && !shared)) ? (
+                  <div className={styles.badgeRow}>
+                    {route.is_official
+                      ? <span className={styles.officialBadge}><MaskIcon name="star" size={12} color="#fff" />추천</span>
+                      : <span className={`${styles.statusBadge} ${styles.statusDraft}`}>임시 저장</span>}
+                  </div>
+                ) : (
+                  <h1 className={`${styles.infoTitle} ${styles.infoTitleInline}`}>{route.title}</h1>
+                )}
                 <div className={styles.infoTopActions}>
                   <button className={styles.topIconBtn} onClick={doShare} aria-label="공유하기" title="공유하기"><ShareIcon size={16} /></button>
                   {canManage && (
@@ -631,7 +634,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
                   )}
                 </div>
               </div>
-              <h1 className={styles.infoTitle}>{route.title}</h1>
+              {(route.is_official || (canManage && !shared)) && <h1 className={styles.infoTitle}>{route.title}</h1>}
               <div className={styles.infoAuthor}>{author ? `${author}의 루트` : '타쿠로드 루트'}{route.created_at && <> · {fmtDate(route.created_at)}</>}</div>
               {myRuns.count > 0 && <div className={styles.infoAuthor} style={{ marginTop: 4 }}>내 완주 <b style={{ color: 'var(--accent)' }}>{myRuns.count}번</b>{myRuns.lastDate && <> · 마지막 {myRuns.lastDate.replace(/-/g, '.')}</>}</div>}
               {route.description && <p className={styles.infoDesc}>{route.description}</p>}

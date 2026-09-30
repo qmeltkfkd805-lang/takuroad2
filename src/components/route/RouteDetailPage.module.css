@@ -32,6 +32,7 @@
 .kebabNote { padding: 4px 11px 2px; font-size: 11px; font-weight: 800; color: var(--accent); }
 .officialBadge { display: inline-flex; align-items: center; gap: 4px; background: var(--accent); color: #fff; font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 9999px; }
 .infoTitle { margin: 8px 0 6px; font-size: 26px; font-weight: 900; line-height: 1.25; letter-spacing: -.02em; }
+.infoTitle.infoTitleInline { margin: 0; flex: 1 1 auto; min-width: 0; }
 .infoAuthor { font-size: 13px; color: var(--muted); font-weight: 600; margin-bottom: 12px; }
 .infoDesc { margin: 0 0 14px; font-size: 14px; color: var(--text); line-height: 1.6; }
 .tagRow { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
