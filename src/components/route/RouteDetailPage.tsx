@@ -161,17 +161,6 @@ export default function RouteDetailPage({ route }: { route: any }) {
     return () => { alive = false }
   }, [route.id])
 
-  // 앵커 활성 감지
-  useEffect(() => {
-    const els = ANCHORS.map(a => sectionRefs[a.key as keyof typeof sectionRefs].current).filter(Boolean) as Element[]
-    if (!els.length) return
-    const io = new IntersectionObserver(entries => {
-      const vis = entries.filter(e => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-      if (vis) setActiveAnchor((vis.target as HTMLElement).dataset.anchor || 'course')
-    }, { rootMargin: '-120px 0px -60% 0px', threshold: [0.05, 0.3] })
-    els.forEach(el => io.observe(el))
-    return () => io.disconnect()
-  }, [related.length])
 
   const visitedCount = useMemo(() => sortedStops.filter((rs: any) => rs.shops && visitedIds.has(rs.shops.id)).length, [sortedStops, visitedIds])
   const firstShop = shopsWithCoords[0]
@@ -188,7 +177,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
   async function openReview() {
     setShowComplete(false)
     if (completionRef.current) await completionRef.current   // 방금 완주했으면 기록이 끝난 뒤에 연다
-    setMobileTab('reviews')
+    setMobileTab('reviews'); setActiveAnchor('reviews')
     setReviewSignal(n => n + 1)
     setTimeout(() => document.getElementById('reviews')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
   }
@@ -196,7 +185,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
   useEffect(() => {
     if (typeof window === 'undefined') return
     if (new URLSearchParams(window.location.search).get('review') === '1') {
-      setMobileTab('reviews'); setReviewSignal(n => n + 1)
+      setMobileTab('reviews'); setActiveAnchor('reviews'); setReviewSignal(n => n + 1)
       const u = new URL(window.location.href); u.searchParams.delete('review'); window.history.replaceState(null, '', u.toString())
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -318,9 +307,13 @@ export default function RouteDetailPage({ route }: { route: any }) {
     return () => io.disconnect()
   }, [isDesktop])
 
+  // PC 탭 — 코스 안내 / 후기 / 관련 루트를 스크롤 대신 탭으로 바꿔 보여준다
+  const anchorNavRef = useRef<HTMLElement>(null)
   const scrollTo = (key: string) => {
-    const el = sectionRefs[key as keyof typeof sectionRefs].current
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    setActiveAnchor(key)
+    // 탭 줄이 화면 위로 지나가 있으면 탭 위치로만 올려준다
+    const nav = anchorNavRef.current
+    if (nav && nav.getBoundingClientRect().top < 0) nav.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   const SaveBtn = ({ cls }: { cls: string }) => (
@@ -666,16 +659,16 @@ export default function RouteDetailPage({ route }: { route: any }) {
           </div>
 
           {/* 앵커 내비 */}
-          <nav className={styles.anchorNav} aria-label="섹션">
-            {ANCHORS.map(a => (
-              <button key={a.key} className={activeAnchor === a.key ? styles.anchorOn : styles.anchorBtn} aria-current={activeAnchor === a.key} onClick={() => scrollTo(a.key)}>
+          <nav className={styles.anchorNav} aria-label="섹션" ref={anchorNavRef} role="tablist">
+            {ANCHORS.filter(a => a.key !== 'related' || related.length > 0).map(a => (
+              <button key={a.key} className={activeAnchor === a.key ? styles.anchorOn : styles.anchorBtn} role="tab" aria-selected={activeAnchor === a.key} onClick={() => scrollTo(a.key)}>
                 {a.label}{a.key === 'reviews' && ''}
               </button>
             ))}
           </nav>
 
           {/* 코스 안내 */}
-          <section id="course" data-anchor="course" ref={sectionRefs.course} className={styles.section}>
+          <section id="course" data-anchor="course" ref={sectionRefs.course} className={styles.section} style={activeAnchor === 'course' ? undefined : { display: 'none' }}>
             {(route.description || sources.length > 0) && (
               <div className={styles.block}>
                 <h2 className={styles.blockTitle}>루트 소개</h2>
@@ -706,7 +699,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
           </section>
 
           {/* 후기 */}
-          <section id="reviews" data-anchor="reviews" ref={sectionRefs.reviews} className={styles.section}>
+          <section id="reviews" data-anchor="reviews" ref={sectionRefs.reviews} className={styles.section} style={activeAnchor === 'reviews' ? undefined : { display: 'none' }}>
             <div className={styles.block}>
               <h2 className={styles.blockTitle}>후기</h2>
               <RouteReviews routeId={route.id} routeTitle={route.title} openSignal={reviewSignal} onOpened={() => setReviewSignal(0)} />
@@ -715,7 +708,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
 
           {/* 관련 루트 */}
           {related.length > 0 && (
-            <section id="related" data-anchor="related" ref={sectionRefs.related} className={styles.section}>
+            <section id="related" data-anchor="related" ref={sectionRefs.related} className={styles.section} style={activeAnchor === 'related' ? undefined : { display: 'none' }}>
               <div className={styles.block}>
                 <h2 className={styles.blockTitle}>관련 루트</h2>
                 <div className={styles.relatedGrid}>
