@@ -789,6 +789,18 @@ export default function RouteDetailPage({ route }: { route: any }) {
   )
 }
 
+/* 출처 링크 옆 아이콘 — 사이트에 이미 있는 SNS 아이콘(public/icons) 재사용 */
+function sourceIcon(url: string | null): { src: string; alt: string } | null {
+  if (!url) return null
+  let host = ''
+  try { host = new URL(url).hostname.replace(/^www\./, '').toLowerCase() } catch { return null }
+  if (host.endsWith('instagram.com')) return { src: '/icons/instargram.png', alt: '인스타그램' }
+  if (host === 'x.com' || host.endsWith('twitter.com')) return { src: '/icons/X.png', alt: 'X' }
+  if (host.endsWith('youtube.com') || host === 'youtu.be') return { src: '/icons/youtube.png', alt: '유튜브' }
+  if (host === 'cafe.naver.com') return { src: '/icons/navercafe.png', alt: '네이버 카페' }
+  return { src: '/icons/homepage.png', alt: '웹사이트' }
+}
+
 /* 루트 출처 — "출처 @계정 · OO 블로그" (링크가 있으면 새 창으로) */
 function SourceCredits({ list }: { list: RouteSource[] }) {
   if (!list.length) return null
@@ -797,11 +809,16 @@ function SourceCredits({ list }: { list: RouteSource[] }) {
       <span style={{ fontWeight: 700 }}>출처</span>
       {list.map((x, i) => {
         const label = x.name || (x.url ?? '').replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')
+        const icon = sourceIcon(x.url)
         return (
           <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
             {i > 0 && <span aria-hidden>·</span>}
             {x.url
-              ? <a href={x.url} target="_blank" rel="noopener noreferrer nofollow" style={{ color: 'var(--text)', fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: 2, overflowWrap: 'anywhere' }}>{label}</a>
+              ? <a href={x.url} target="_blank" rel="noopener noreferrer nofollow" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--text)', fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: 2, overflowWrap: 'anywhere' }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  {icon && <img src={icon.src} alt={icon.alt} width={16} height={16} style={{ width: 16, height: 16, objectFit: 'contain', flexShrink: 0 }} />}
+                  {label}
+                </a>
               : <span style={{ color: 'var(--text)', fontWeight: 700, overflowWrap: 'anywhere' }}>{label}</span>}
           </span>
         )
