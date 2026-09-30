@@ -7,6 +7,7 @@ import { formatDistance } from '@/hooks/useCurrentLocation'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import AppIcon from '@/components/tds/AppIcon'
 import s from './RouteCourseMobile.module.css'
+import FloorMapViewer, { collectFloorMaps } from './FloorMapViewer'
 
 /* ============================================================
    📱 모바일 루트 상세 > 코스 안내
@@ -53,7 +54,8 @@ export default function RouteCourseMobile({ stops, visitedIds, selectedId, onSel
 }) {
   const list = stops.filter(rs => rs?.shops)
   const grouped = hasFloorGroups(list.map(rs => rs.shops))
-  const [mapView, setMapView] = useState<{ url: string; label: string; sourceName?: string | null; sourceUrl?: string | null } | null>(null)
+  const [mapView, setMapView] = useState<string | null>(null)   // 열어둔 층 지도 묶음 키
+  const mapSlides = collectFloorMaps(list.map(rs => rs.shops), floorMaps)
   return (
     <>
     <ol className={s.list}>
@@ -97,7 +99,7 @@ export default function RouteCourseMobile({ stops, visitedIds, selectedId, onSel
                 <div className={s.groupHead}>
                   <span className={s.groupLabel}>{gLabel}</span>
                   {fm && (
-                    <button type="button" className={s.groupMapBtn} onClick={() => setMapView({ ...fm, label: gLabel })}>
+                    <button type="button" className={s.groupMapBtn} onClick={() => setMapView(gKey)}>
                       <MapIcon size={14} />층 지도 보기
                     </button>
                   )}
@@ -152,16 +154,7 @@ export default function RouteCourseMobile({ stops, visitedIds, selectedId, onSel
         )
       })}
     </ol>
-    {mapView && (
-      <div className={s.mapView} role="dialog" aria-modal="true" aria-label={`${mapView.label} 층 지도`} onClick={() => setMapView(null)}>
-        <div className={s.mapViewHead}>
-          <span>{mapView.label}</span>
-          <button type="button" onClick={() => setMapView(null)} aria-label="닫기">✕</button>
-        </div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={mapView.url} alt={`${mapView.label} 층 지도`} onClick={e => e.stopPropagation()} />
-      </div>
-    )}
+    {mapView && <FloorMapViewer slides={mapSlides} startKey={mapView} onClose={() => setMapView(null)} />}
     </>
   )
 }
