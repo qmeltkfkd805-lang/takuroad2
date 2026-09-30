@@ -39,7 +39,7 @@ export default function RouteResultCard({
 
   const heart = (
     <button className={styles.heart} onClick={onToggleSave} aria-pressed={saved} aria-label={saved ? '저장 해제' : '저장'}>
-      <HeartIcon size={16} filled={saved} color={saved ? 'var(--accent)' : '#fff'} />
+      <HeartIcon size={17} filled={saved} color={saved ? 'var(--accent)' : '#8b8f99'} />   {/* 저장 전: 회색 선, 저장 후: 핑크 채움 */}
     </button>
   )
   // 같은 건물 등 이동 거리가 0이어도 도보 루트임을 표시 (좌표가 있는 도보 루트)
