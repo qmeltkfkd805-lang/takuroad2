@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { getHallOfFame, HallItem } from '@/services/fanartService'
+import LogoLoader from '@/components/common/LogoLoader'
 
 // '2026-07A' → '2026.07 상반기'
 function seasonLabel(key: string | null, seasonStart: string): string {
@@ -101,7 +102,7 @@ export default function HallOfFamePage() {
       </div>
 
       {items === null ? (
-        <div style={{ padding: '60px', textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
+        <LogoLoader size="sm" />
       ) : items.length === 0 ? (
         <div style={{ padding: '90px 20px', textAlign: 'center' }}>
           <Trophy size={44} color="var(--border)" />

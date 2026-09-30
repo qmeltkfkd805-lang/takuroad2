@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getExpLogs, REASON_LABEL, XP_RULES } from '@/services/expService'
 import { ROUTES } from '@/lib/constants/routes'
+import LogoLoader from '@/components/common/LogoLoader'
 
 type Log = { id: string; reason: string; amount: number; related_type: string | null; created_at: string }
 
@@ -52,7 +53,7 @@ export default function XpHistoryPage() {
       </div>
 
       {logs === null ? (
-        <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
+        <LogoLoader size="sm" />
       ) : visible.length === 0 ? (
         <div style={{ padding: '80px 20px', textAlign: 'center', color: 'var(--muted)' }}>아직 XP 내역이 없어요</div>
       ) : (

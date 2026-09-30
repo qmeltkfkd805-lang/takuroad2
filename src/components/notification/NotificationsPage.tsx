@@ -6,6 +6,7 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { getNotifications, markAsRead, markAllAsRead, getNotificationLink, Notification } from '@/services/notificationService'
 import { ROUTES } from '@/lib/constants/routes'
 import AppIcon from '@/components/tds/AppIcon'
+import LogoLoader from '@/components/common/LogoLoader'
 
 /* 알림 — 날짜 그룹형 리스트 (카드 없이, 왼쪽 정렬, 타입별 아이콘)
    ⭐ 타쿠로드는 이미 카드가 많다. 알림은 리스트가 더 깔끔하다. */
@@ -83,7 +84,7 @@ export default function NotificationsPage() {
   }
 
   if (loading || authLoading) {
-    return <div style={{ padding: '60px', textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
+    return <LogoLoader size="md" />
   }
 
   const hasUnread = notifications.some(n => !n.is_read)

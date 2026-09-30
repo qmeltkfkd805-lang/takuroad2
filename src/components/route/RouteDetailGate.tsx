@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import RouteDetailPage from './RouteDetailPage'
+import LogoLoader from '@/components/common/LogoLoader'
 
 export default function RouteDetailGate({ route }: { route: any }) {
   const router = useRouter()
@@ -12,7 +13,7 @@ export default function RouteDetailGate({ route }: { route: any }) {
 
   // 비공개 루트인데 작성자도 아니면 접근 차단
   if (!viewable && !isAuthor) {
-    if (loading) return <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
+    if (loading) return <LogoLoader size="md" />
     return (
       <div style={{ padding: '80px 20px', textAlign: 'center', color: 'var(--muted)', maxWidth: 480, margin: '0 auto' }}>
         <div style={{ marginBottom: 12, display: 'flex', justifyContent: 'center' }}>

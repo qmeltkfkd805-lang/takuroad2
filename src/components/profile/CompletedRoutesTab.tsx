@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { getCompletedRoutes, CompletedRoute } from '@/services/routeVisitService'
 import RouteBrowser from './RouteBrowser'
 import type { UIRoute } from './RouteCard'
+import LogoLoader from '@/components/common/LogoLoader'
 
 export default function CompletedRoutesTab({ userId }: { userId: string }) {
   const [routes, setRoutes] = useState<CompletedRoute[]>([])
@@ -12,7 +13,7 @@ export default function CompletedRoutesTab({ userId }: { userId: string }) {
     getCompletedRoutes(userId).then((d) => { setRoutes(d); setLoading(false) }).catch(() => setLoading(false))
   }, [userId])
 
-  if (loading) return <div style={{ padding: 40, textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
+  if (loading) return <LogoLoader size="md" />
   if (routes.length === 0) return <div style={{ padding: '50px 20px', textAlign: 'center', color: 'var(--muted)', fontSize: 14 }}>아직 완료한 루트가 없어요.<br />루트를 시작해서 모든 스팟을 방문해보세요!</div>
 
   const ui: UIRoute[] = routes.map((r) => ({

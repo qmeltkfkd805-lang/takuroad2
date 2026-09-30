@@ -13,6 +13,7 @@ import {
 } from '@/services/routeReviewService'
 import m from '@/components/event/EventVisitButton.module.css'
 import s from './RouteReviews.module.css'
+import LogoLoader from '@/components/common/LogoLoader'
 
 /* ============================================================
    루트 상세 > 후기 — 완주 후기(글 + 사진 3장)
@@ -86,7 +87,7 @@ export default function RouteReviews({ routeId, routeTitle, openSignal = 0, onOp
       )}
 
       {list === null ? (
-        <div className={s.empty}>불러오는 중…</div>
+        <LogoLoader size="sm" />
       ) : list.length === 0 ? (
         <div className={s.empty}>아직 후기가 없어요.<br />루트를 완주하면 사진과 함께 후기를 남길 수 있어요.</div>
       ) : (

@@ -10,6 +10,7 @@ import { getAffinitiesForTags } from '@/services/workRelationshipService'
 import { WorkCard, WorkCardData } from '@/components/tds/WorkCard'
 import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { IP_TYPES, normIpType, ipTypeList } from '@/lib/constants/ipType'
+import LogoLoader from '@/components/common/LogoLoader'
 
 // 작품 홈 — 등록된 작품을 카드로 쭉.
 //   최애 작품 → 관심 작품 → 나머지 등록 작품 순서.
@@ -142,7 +143,7 @@ export default function MyWorksPage() {
         </div>
 
         {loading ? (
-          <p style={{ color: 'var(--muted)', padding: '32px 16px', textAlign: 'center' }}>불러오는 중…</p>
+          <LogoLoader size="sm" />
         ) : works.length === 0 ? (
           <div style={{ padding: '0 16px' }}>
             <EmptyBox title="아직 등록된 작품이 없어요" desc={isAdmin ? '첫 작품을 등록해보세요.' : '찾는 작품이 없으면 추가 요청을 남겨주세요.'} action={<Link href={isAdmin ? '/work/new' : '/work/request'} style={primaryBtn}>{isAdmin ? '작품 등록하기' : '작품 추가 요청'}</Link>} />
@@ -305,7 +306,7 @@ export default function MyWorksPage() {
       )}
 
       {loading ? (
-        <p style={{ color: 'var(--muted)', fontSize: 14 }}>불러오는 중…</p>
+        <LogoLoader size="sm" />
       ) : works.length === 0 ? (
         <EmptyBox
           title="아직 등록된 작품이 없어요"

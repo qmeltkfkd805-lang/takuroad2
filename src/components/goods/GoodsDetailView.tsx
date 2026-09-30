@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import GoodsPageShell from './GoodsPageShell'
 import { getGoodsDetail, type GoodsDetail } from '@/services/goodsService'
 import { useAuth } from '@/components/layout/AuthProvider'
+import LogoLoader from '@/components/common/LogoLoader'
 
 /* 읽기 전용 굿즈 상세 — 연결된 굿즈자랑 글이 삭제됐거나 직접 등록한 굿즈를 "올라갔을 때처럼" 보여줌.
    사진은 인라인 세로 나열, 아래 흰색 굿즈 정보 카드. 소장 정보(구입처·가격·구매일·메모)는 소유자에게만 RPC가 반환. */
@@ -80,7 +81,7 @@ export default function GoodsDetailView({ id }: { id: string }) {
       right={state === 'ok' && isOwner ? editBtn : undefined}
     >
       {state === 'loading' && (
-        <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>불러오는 중…</div>
+        <LogoLoader size="sm" />
       )}
       {state === 'error' && (
         <div style={{ padding: 48, textAlign: 'center' }}>

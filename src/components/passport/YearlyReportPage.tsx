@@ -7,6 +7,7 @@ import SettingsSubShell from '@/components/settings/SettingsSubShell'
 import { getReportCardData, getAvailableYears, type ReportCardData } from '@/services/yearlyReportService'
 import ReportShareCard from '@/components/report/ReportShareCard'
 import styles from './YearlyReportPage.module.css'
+import LogoLoader from '@/components/common/LogoLoader'
 
 interface Props { year: number }
 
@@ -45,7 +46,7 @@ export default function YearlyReportPage({ year }: Props) {
         <p className={styles.desc}>한 해 동안의 덕질 발자국을 이미지 한 장으로 저장하고 공유해요.</p>
 
         {loading || !data ? (
-          <div className={styles.loading}>불러오는 중...</div>
+          <LogoLoader size="sm" />
         ) : !data.hasAnyActivity ? (
           <div className={styles.state}>
             <div className={styles.stateTitle}>{year}년에는 아직 활동 기록이 없어요</div>

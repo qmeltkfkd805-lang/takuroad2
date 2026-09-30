@@ -29,6 +29,7 @@ import MyPostsTab from './MyPostsTab'
 import MyShopsTab from './MyShopsTab'
 import VerifyStatusTab from './VerifyStatusTab'
 import styles from './ProfileDesktop.module.css'
+import LogoLoader from '@/components/common/LogoLoader'
 
 type Sub =
   | 'saved' | 'savedroutes' | 'routes' | 'completed' | 'visited'
@@ -606,7 +607,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
               <button className={styles.modalClose} onClick={() => setModal(null)} aria-label="닫기">✕</button>
             </div>
             {modal.list === null ? (
-              <div className={styles.modalEmpty}>불러오는 중...</div>
+              <LogoLoader size="sm" />
             ) : modal.list.length === 0 ? (
               <div className={styles.modalEmpty}>{modal.type === 'followers' ? '아직 팔로워가 없어요.' : '아직 팔로우한 유저가 없어요.'}</div>
             ) : (

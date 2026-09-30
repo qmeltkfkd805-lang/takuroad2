@@ -10,6 +10,7 @@ import { Shop } from '@/types/shop'
 import { generateSlug } from '@/lib/utils/shop'
 import { CATEGORIES } from '@/lib/constants/categories'
 import AppIcon from '@/components/tds/AppIcon'
+import LogoLoader from '@/components/common/LogoLoader'
 
 const TYPE_LABEL: Record<string, string> = {
   popup: '🎪 팝업스토어', collab_cafe: '☕ 콜라보 카페', exhibition: '🖼️ 전시',
@@ -66,7 +67,7 @@ export default function EventReviewPage() {
   }
 
   if (authLoading || loading) {
-    return <Centered>불러오는 중...</Centered>
+    return <LogoLoader size="md" />
   }
   if (!isAdmin || !user) {
     return <Centered>관리자만 접근할 수 있어요.</Centered>

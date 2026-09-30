@@ -29,6 +29,7 @@ import HomeFeedCard from './HomeFeedCard'
 import { Icon } from '@/components/tds'
 import styles from './HomeFeed.module.css'
 import RankList from './RankList'
+import LogoLoader from '@/components/common/LogoLoader'
 
 const PALETTE = [
   { bg: '#EEEDFE', fg: '#3C3489' }, { bg: '#E1F5EE', fg: '#0F6E56' },
@@ -296,7 +297,7 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
           <button className={styles.newsMore} onClick={() => { window.location.href = ROUTES.myNews }}>전체 보기 ›</button>
         </div>
         {loading ? (
-          <Muted>불러오는 중...</Muted>
+          <LogoLoader size="sm" />
         ) : !user ? (
           <PromptBox text="로그인하면 좋아하는 작품·이벤트 소식을 모아볼 수 있어요" href="/login" cta="로그인" />
         ) : myWorks.length === 0 ? (

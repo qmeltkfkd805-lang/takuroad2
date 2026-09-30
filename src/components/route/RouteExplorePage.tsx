@@ -12,6 +12,7 @@ import RouteResultCard, { HeartIcon } from './RouteResultCard'
 import { rtStops, rtRegions, fmtDur, metaShort } from './routeMeta'
 import { buildRouteHero, byRoutePopularity, routeInfoScore, ROUTE_HERO_MAX } from '@/lib/route/heroOrder'
 import styles from './RouteExplorePage.module.css'
+import LogoLoader from '@/components/common/LogoLoader'
 
 /* 마스크 아이콘 (히어로 메타용) */
 function MaskIcon({ name, size = 15, color = 'currentColor' }: { name: string; size?: number; color?: string }) {
@@ -156,7 +157,7 @@ export default function RouteExplorePage() {
   const toAll = (qs?: string) => router.push(qs ? `/routes/all?${qs}` : '/routes/all')
   const submitSearch = (e: React.FormEvent) => { e.preventDefault(); toAll(search.trim() ? `q=${encodeURIComponent(search.trim())}` : undefined) }
 
-  if (loading) return <div className={styles.loading}>루트 불러오는 중…</div>
+  if (loading) return <LogoLoader size="md" text="루트 불러오는 중…" />
 
   /* ───────────── 📱 모바일: 탐색 중심 홈 ───────────── */
   if (!isDesktop) {

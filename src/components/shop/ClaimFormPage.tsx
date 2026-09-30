@@ -7,6 +7,7 @@ import { getShopBySlug, requestShopVerify, getMyVerifyRequest } from '@/services
 import { Shop } from '@/types/shop'
 import styles from './claimForm.module.css'
 import AppIcon from '@/components/tds/AppIcon'
+import LogoLoader from '@/components/common/LogoLoader'
 
 const MANAGE_FEATURES = [
   '영업시간 수정', '휴무 공지', '이벤트 등록', '매장 사진 관리', '굿즈 입고 소식', '댓글 답변',
@@ -124,7 +125,7 @@ export default function ClaimFormPage({ slug }: { slug: string }) {
     else alert('신청에 실패했어요. 잠시 후 다시 시도해 주세요.')
   }
 
-  if (loading) return <div className={styles.wrap}><p className={styles.msg}>불러오는 중…</p></div>
+  if (loading) return <div className={styles.wrap}><LogoLoader size="md" /></div>
   if (!shop) return <div className={styles.wrap}><p className={styles.msg}>매장을 찾을 수 없어요.</p></div>
   if (!user) return <div className={styles.wrap}><p className={styles.msg}>로그인 후 이용해 주세요.</p></div>
 

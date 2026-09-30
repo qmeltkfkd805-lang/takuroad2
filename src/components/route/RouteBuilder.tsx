@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import { shopRegion } from '@/lib/shop/quickCompleteness'
 import { Shop } from '@/types/shop'
 import RouteMiniMap from '@/components/admin/RouteMiniMap'
+import LogoLoader from '@/components/common/LogoLoader'
 
 const DIFF = [
   { v: 1, l: '가볍게', c: '#0E7A63' },
@@ -283,7 +284,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   }
 
   if (!user) return <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>로그인하면 루트를 만들 수 있어요.</div>
-  if (editing && loadingEdit) return <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>루트 불러오는 중...</div>
+  if (editing && loadingEdit) return <LogoLoader size="md" text="루트 불러오는 중…" />
   /* 수정 권한: 관리자는 모든 루트, 작성자는 추천(공식) 지정 전 루트만 (추천 지정 때 "이후 관리자만 편집" 약속) */
   if (editing && !(isAdmin || (isOwner && !isOfficial))) return <div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>{isOfficial ? '추천 루트는 관리자만 수정할 수 있어요.' : '이 루트를 수정할 권한이 없어요.'}</div>
 

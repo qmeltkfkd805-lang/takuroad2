@@ -18,6 +18,7 @@ import { getPollByPost, votePoll } from '@/services/pollService'
 import { getPostGoods, getGoodsDetail, type GoodsDetail } from '@/services/goodsService'
 import { getExhibitEntryIdForPost, addExhibitEntry, deleteExhibit, exhibitRemoveConfirmText } from '@/services/exhibitService'
 import AppIcon from '@/components/tds/AppIcon'
+import LogoLoader from '@/components/common/LogoLoader'
 
 // ── 대표 팬아트 배지 ──
 export function FeaturedTag({ kind, inline }: { kind: 'current' | 'past'; inline?: boolean }) {
@@ -503,7 +504,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
         {/* 상단 "‹ 커뮤니티" 줄은 없앴다 — 제목 헤더의 게시판 이름이 그 역할을 한다 */}
         <style>{`.taku-post-body img{max-width:100%;border-radius:10px}.taku-post-body video{max-width:100%;border-radius:10px}.taku-post-body blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}.taku-post-body a{color:var(--accent)}`}</style>
         {isGoodsBoard && goodsLoading
-          ? <div style={{ padding: '56px 0', textAlign: 'center', color: 'var(--muted)', fontSize: 14 }}>불러오는 중…</div>
+          ? <LogoLoader size="sm" />
           : isGoods ? goodsBody : genericBody}
       </div>
 

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getNotices, deleteNotice, Notice } from '@/services/noticeService'
 import styles from './noticeBoard.module.css'
+import LogoLoader from '@/components/common/LogoLoader'
 
 function fmt(s: string) {
   return new Date(s).toLocaleDateString('ko-KR')
@@ -47,7 +48,7 @@ export default function NoticeBoard() {
       )}
 
       {loading ? (
-        <p className={styles.empty}>불러오는 중…</p>
+        <LogoLoader size="sm" />
       ) : notices.length === 0 ? (
         <p className={styles.empty}>아직 등록된 공지가 없어요.</p>
       ) : (

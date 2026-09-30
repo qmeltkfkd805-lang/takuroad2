@@ -8,6 +8,7 @@ import { approveOfficialRoute } from '@/services/adminRouteService'
 import { shopRegion } from '@/lib/shop/quickCompleteness'
 import { Shop } from '@/types/shop'
 import RouteMiniMap from './RouteMiniMap'
+import LogoLoader from '@/components/common/LogoLoader'
 
 const DIFF = [{ v: 1, l: '가볍게' }, { v: 2, l: '반나절' }, { v: 3, l: '하루' }]
 const THEMES = ['카페', '굿즈', '사진명소', '가족', '커플', '혼자', '실내', '비오는날']
@@ -171,7 +172,7 @@ export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRo
     }
   }
 
-  if (loadingEdit) return <div style={{ padding: 40, textAlign: 'center', color: 'var(--muted)' }}>루트 불러오는 중...</div>
+  if (loadingEdit) return <LogoLoader size="md" text="루트 불러오는 중…" />
 
   const searchPlaceholder = sourceMode === 'saved' ? '저장한 샵에서 검색 (이름·지역)' : '지역·이름 검색 (예: 홍대, 강남)'
 

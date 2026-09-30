@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getExhibitDetail, getExhibits, deleteExhibit, exhibitRemoveConfirmText, type ExhibitDetail, type ExhibitCard } from '@/services/exhibitService'
+import LogoLoader from '@/components/common/LogoLoader'
 
 const P = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
 const VIS_LABEL: Record<string, string> = { public: '전체 공개', followers: '팔로워 공개', private: '나만 보기' }
@@ -73,7 +74,7 @@ export default function ExhibitDetailView({ id, homeHref = '/profile/exhibit' }:
         )}
       </div>
 
-      {state === 'loading' && <div style={{ padding: 56, textAlign: 'center', color: 'var(--muted)' }}>불러오는 중…</div>}
+      {state === 'loading' && <LogoLoader size="sm" />}
       {state === 'notfound' && (
         <div style={{ padding: 48, textAlign: 'center' }}>
           <p style={{ margin: '0 0 16px', color: 'var(--muted)' }}>전시를 찾을 수 없거나 볼 수 없는 전시예요.</p>

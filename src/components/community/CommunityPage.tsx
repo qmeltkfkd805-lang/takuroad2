@@ -20,6 +20,7 @@ import { PostCard } from '@/components/community/PostUI'
 import { getFollowingIds } from '@/services/followService'
 import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import AppIcon from '@/components/tds/AppIcon'
+import LogoLoader from '@/components/common/LogoLoader'
 
 type Scope = 'all' | 'popular' | 'mine' | 'subscribed' | 'worksub'
 type View = 'list' | 'grid'
@@ -319,7 +320,7 @@ export default function CommunityPage() {
         {/* 리스트 */}
         <div style={{ background: 'var(--surface)' }}>
           {loading ? (
-            <p style={{ color: 'var(--muted)', padding: '32px 16px', textAlign: 'center' }}>불러오는 중…</p>
+            <LogoLoader size="sm" />
           ) : posts.length === 0 ? (
             <div style={{ padding: '48px 20px', textAlign: 'center', color: 'var(--muted)' }}>
               <p style={{ margin: '0 0 16px', fontSize: 14 }}>{

@@ -4,6 +4,7 @@ import { ReactNode, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import styles from './Goods.module.css'
+import LogoLoader from '@/components/common/LogoLoader'
 
 /* 굿즈 브라우징 페이지 공용 셸 — 기본 앱 셸(사이드바) 안에서 사용.
    데스크톱: 브레드크럼. 모바일: sticky 뒤로+제목 헤더. 로그인 가드 포함. */
@@ -21,7 +22,7 @@ export default function GoodsPageShell({
   useEffect(() => { if (!loading && !user) router.replace('/login') }, [loading, user, router])
 
   if (loading || !user) {
-    return <div className={styles.page}><div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div></div>
+    return <div className={styles.page}><LogoLoader size="md" /></div>
   }
 
   return (

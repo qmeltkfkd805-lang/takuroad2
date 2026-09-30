@@ -11,6 +11,7 @@ import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { getExhibits, type ExhibitCard } from '@/services/exhibitService'
 import ExhibitLightbox from './ExhibitLightbox'
 import styles from './Exhibit.module.css'
+import LogoLoader from '@/components/common/LogoLoader'
 
 const P = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
 
@@ -75,7 +76,7 @@ export default function ExhibitPublicPage({ nickname }: { nickname: string }) {
     } catch { /* 취소 */ }
   }
 
-  if (owner === null) return <div style={{ padding: 56, textAlign: 'center', color: 'var(--muted)' }}>불러오는 중…</div>
+  if (owner === null) return <LogoLoader size="md" />
   if (owner === 'notfound') return (
     <div style={{ padding: 56, textAlign: 'center', color: 'var(--muted)' }}>존재하지 않는 사용자예요.</div>
   )

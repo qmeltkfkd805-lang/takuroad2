@@ -6,6 +6,7 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { getPost } from '@/services/communityPostService'
 import { CommunityPost } from '@/types/community-post'
 import { PostDetailModal } from '@/components/community/PostUI'
+import LogoLoader from '@/components/common/LogoLoader'
 
 export default function PostDetailPage() {
   const { user } = useAuth()
@@ -22,7 +23,7 @@ export default function PostDetailPage() {
   }, [id, user?.id])
   useEffect(() => { load() }, [load])
 
-  if (loading) return <div style={{ padding: 48, textAlign: 'center', color: 'var(--muted)' }}>불러오는 중…</div>
+  if (loading) return <LogoLoader size="md" />
   if (!post) return (
     <div style={{ padding: 48, textAlign: 'center', color: 'var(--muted)' }}>
       <p style={{ marginBottom: 16 }}>글을 찾을 수 없어요.</p>

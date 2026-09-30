@@ -5,6 +5,7 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import SettingsSubShell from './SettingsSubShell'
 import { getBlockedUsers, unblockUser, type BlockedUser } from '@/services/blockService'
 import ctl from './settingsControls.module.css'
+import LogoLoader from '@/components/common/LogoLoader'
 
 export default function BlockedSettingsPage() {
   const { user } = useAuth()
@@ -27,7 +28,7 @@ export default function BlockedSettingsPage() {
     <SettingsSubShell title="차단 관리">
       <p className={ctl.sectionDesc}>차단한 사용자의 글·프로필·활동은 서로에게 보이지 않아요.</p>
       {list === null
-        ? <div className={ctl.empty}>불러오는 중...</div>
+        ? <LogoLoader size="sm" />
         : list.length === 0
           ? <div className={ctl.empty}>차단한 사용자가 없어요.</div>
           : <div className={ctl.cardList}>

@@ -13,6 +13,7 @@ import {
 import {
   saveProfileEdit, checkNicknameAvailable, type ProfileEditSnapshot, type AvatarChange,
 } from '@/services/profileEditService'
+import LogoLoader from '@/components/common/LogoLoader'
 
 const NICK_MIN = 2
 const NICK_MAX = 12
@@ -193,7 +194,7 @@ export default function ProfileEditPage() {
   )
 
   if (!ready) {
-    return <SettingsSubShell title="프로필 편집"><div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div></SettingsSubShell>
+    return <SettingsSubShell title="프로필 편집"><LogoLoader size="md" /></SettingsSubShell>
   }
 
   const avatarInitial = (form.nickname.trim()[0] ?? profile?.nickname?.[0] ?? '?')

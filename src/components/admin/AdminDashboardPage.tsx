@@ -12,6 +12,7 @@ import BadgeReevalButton from './BadgeReevalButton'
 import StorageSection from './StorageSection'
 import AdminIcon, { AdminIconName } from './AdminIcon'
 import styles from './adminDashboard.module.css'
+import LogoLoader from '@/components/common/LogoLoader'
 
 /* 관리자 대시보드.
    숫자는 전부 실제 조회값이다. 하드코딩된 수치는 없다.
@@ -151,7 +152,7 @@ export default function AdminDashboardPage({ onNavigate, todo, pendingVerify, ba
             <span className={styles.cardNote}>180일 넘게 확인 안 된 샵</span>
           </div>
           {todo === null ? (
-            <div className={styles.empty}>불러오는 중…</div>
+            <LogoLoader size="sm" />
           ) : staleShops.length === 0 ? (
             <div className={styles.empty}>확인이 밀린 샵이 없어요.</div>
           ) : (
@@ -180,7 +181,7 @@ export default function AdminDashboardPage({ onNavigate, todo, pendingVerify, ba
             <h2 className={styles.cardTitle}>인기 작품 TOP 5</h2>
             <span className={styles.cardNote}>최근 7일 활동</span>
           </div>
-          {topWorks === null ? <div className={styles.empty}>불러오는 중…</div>
+          {topWorks === null ? <LogoLoader size="sm" />
             : topWorks.length === 0 ? <div className={styles.empty}>활동 데이터가 쌓이면 표시돼요.</div> : (
             <table className={styles.table}>
               <thead><tr><th>순위</th><th>작품</th></tr></thead>
@@ -203,7 +204,7 @@ export default function AdminDashboardPage({ onNavigate, todo, pendingVerify, ba
             <h2 className={styles.cardTitle}>인기 장소 TOP 5</h2>
             <span className={styles.cardNote}>누적 방문 수</span>
           </div>
-          {topShops === null ? <div className={styles.empty}>불러오는 중…</div>
+          {topShops === null ? <LogoLoader size="sm" />
             : topShops.length === 0 ? <div className={styles.empty}>아직 샵이 없어요.</div> : (
             <table className={styles.table}>
               <thead><tr><th>순위</th><th>장소</th><th className={styles.num}>방문</th></tr></thead>

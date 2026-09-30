@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import styles from './settings.module.css'
+import LogoLoader from '@/components/common/LogoLoader'
 
 /* 계정 설정 홈 — DB 변경 없는 Phase 1. 실제로 동작하는 항목만 노출한다.
    (차단·세부알림·공개범위 세분화·위치·기기관리·데이터 다운로드·테마는 Phase 2에서 추가) */
@@ -39,7 +40,7 @@ export default function SettingsPage() {
   }, [loading, user, router])
 
   if (loading || !user || !profile) {
-    return <div className={styles.page}><div style={{ padding: 60, textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div></div>
+    return <div className={styles.page}><LogoLoader size="md" /></div>
   }
 
   const email = user.email ?? ''

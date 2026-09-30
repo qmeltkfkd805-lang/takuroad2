@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { getMyChronicle, getMemoriesOnThisDay, ChronicleMonth } from '@/services/chronicleService'
 import AppIcon from '@/components/tds/AppIcon'
+import LogoLoader from '@/components/common/LogoLoader'
 
 const TYPE_ICON: Record<string, string> = {
   check_in: 'pin',
@@ -39,7 +40,7 @@ export default function ChronicleTimeline({ userId }: Props) {
   }, [userId])
 
   if (loading) {
-    return <div style={{ padding: '40px', textAlign: 'center', color: 'var(--muted)' }}>불러오는 중...</div>
+    return <LogoLoader size="md" />
   }
 
   return (

@@ -19,6 +19,7 @@ import RouteRunComplete from './run/RouteRunComplete'
 import { getVisitedShopIds, setShopVisited, recordRouteCompletion, resetRouteProgress } from '@/services/routeVisitService'
 import { createCheckIn } from '@/services/checkInService'
 import styles from './RouteMapMobile.module.css'
+import LogoLoader from '@/components/common/LogoLoader'
 
 function fmtDur(min: number | null | undefined): string | null {
   if (min == null) return null
@@ -366,7 +367,7 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
     try { await navigator.clipboard.writeText(url); setToast('링크를 복사했어요') } catch { setToast('복사에 실패했어요') }
   }
 
-  if (loading) return <div className={styles.wrap}><div className={styles.center}>불러오는 중…</div></div>
+  if (loading) return <div className={styles.wrap}><LogoLoader size="md" /></div>
   if (denied || !route) return (
     <div className={styles.wrap}><div className={styles.center}><p>루트를 찾을 수 없어요.</p><button className={styles.back} onClick={() => router.back()}>← 뒤로</button></div></div>
   )

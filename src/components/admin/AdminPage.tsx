@@ -25,6 +25,7 @@ import WorkRequestAdminTab from './WorkRequestAdminTab'
 import AdminSidebar from './AdminSidebar'
 import { getAdminTodoSummary, getAdminBadgeCounts, AdminBadgeCounts, AdminTodoSummary } from '@/services/adminDashboardService'
 import styles from './admin.module.css'
+import LogoLoader from '@/components/common/LogoLoader'
 
 /* 탭 목록을 배열로 둔다 — 주소창의 ?tab= 값이 진짜 탭인지 런타임에 확인해야 해서.
    (타입만 있으면 검사할 수가 없다. 유니온 타입은 배열에서 뽑는다) */
@@ -128,9 +129,7 @@ export default function AdminPage() {
 
   if (!ready) {
     return (
-      <div style={{ padding: '60px', textAlign: 'center', color: 'var(--muted)' }}>
-        불러오는 중...
-      </div>
+      <LogoLoader size="md" />
     )
   }
 

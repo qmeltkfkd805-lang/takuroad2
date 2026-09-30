@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getNoticeById, deleteNotice, Notice } from '@/services/noticeService'
+import LogoLoader from '@/components/common/LogoLoader'
 
 export default function NoticeDetailPage({ id }: { id: string }) {
   const { isAdmin } = useAuth()
@@ -25,7 +26,7 @@ export default function NoticeDetailPage({ id }: { id: string }) {
   }
 
   if (loading) {
-    return <div style={{ padding: '80px 24px', textAlign: 'center', color: 'var(--muted)' }}>불러오는 중…</div>
+    return <LogoLoader size="md" />
   }
   if (!notice) {
     return (

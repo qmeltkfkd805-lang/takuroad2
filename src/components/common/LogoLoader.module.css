@@ -1,0 +1,19 @@
+.wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; width: 100%; box-sizing: border-box; text-align: center; }
+.page { min-height: 100dvh; background: var(--bg); }
+.md { min-height: 45vh; padding: 40px 16px; }
+.sm { padding: 28px 16px; gap: 8px; }
+
+.logo { display: block; height: auto; max-width: 70%; animation: hop 1.1s ease-in-out infinite; }
+.page .logo { width: 220px; }
+.md .logo { width: 170px; }
+.sm .logo { width: 110px; }
+
+.text { color: var(--muted); font-size: 13px; font-weight: 600; }
+.sm .text { font-size: 12.5px; }
+
+@keyframes hop {
+  0%, 100% { transform: translateY(0) scale(1); }
+  40% { transform: translateY(-7px) scale(1.03); }
+  60% { transform: translateY(0) scale(.98, 1.02); }
+}
+@media (prefers-reduced-motion: reduce) { .logo { animation: none; } }
