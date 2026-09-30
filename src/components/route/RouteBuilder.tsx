@@ -1,10 +1,10 @@
 'use client'
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useEffect, useMemo, useRef, Fragment } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getAllTagsFull, AdminTag } from '@/services/workAdminService'
 import { getShops, getSavedShops } from '@/services/shopService'
-import { autoOrder, floorNumber, type AutoOrderMode } from '@/lib/route/autoOrder'
-import { createRoute, updateRouteMeta, updateRoute, getRouteForEdit, getRouteMeta, deleteRoute, toggleRouteShare } from '@/services/routeService'
+import { autoOrder, floorNumber, floorGroupKey, floorGroupLabel, hasFloorGroups, type AutoOrderMode } from '@/lib/route/autoOrder'
+import { createRoute, updateRouteMeta, updateRoute, getRouteForEdit, getRouteMeta, deleteRoute, toggleRouteShare, getRouteFloorMaps, saveRouteFloorMaps, uploadFloorMap, getRouteSources, saveRouteSources, type FloorMap, type RouteSource } from '@/services/routeService'
 import { useRouter } from 'next/navigation'
 import { shopRegion } from '@/lib/shop/quickCompleteness'
 import { Shop } from '@/types/shop'
@@ -68,6 +68,39 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   const autoResultRef = useRef<Shop[] | null>(null)
   const [orderNote, setOrderNote] = useState<string | null>(null)
   const [tipsOpen, setTipsOpen] = useState(false)   // 구간 이동 팁 — 평소엔 접어 두고 펼치면 입력
+  // 층 지도 — 루트 순서의 층별 묶음(같은 건물·같은 층)마다 참고용 이미지 1장 (키 = floorGroupKey)
+  const showFloorGroups = hasFloorGroups(added as any)
+  const [floorMaps, setFloorMaps] = useState<Record<string, FloorMap>>({})
+  const [floorMapBusy, setFloorMapBusy] = useState<string | null>(null)
+  const floorMapInput = useRef<HTMLInputElement>(null)
+  const floorMapTarget = useRef<{ key: string; label: string } | null>(null)
+  function pickFloorMap(key: string, label: string) { floorMapTarget.current = { key, label }; floorMapInput.current?.click() }
+  async function onFloorMapFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]; e.target.value = ''
+    const t = floorMapTarget.current
+    if (!file || !t || !user || !file.type.startsWith('image/')) return
+    setFloorMapBusy(t.key)
+    const url = await uploadFloorMap(user.id, file).catch(() => null)
+    setFloorMapBusy(null)
+    if (!url) { setMsg('층 지도 이미지를 올리지 못했어요. 잠시 후 다시 시도해 주세요.'); return }
+    setFloorMaps(prev => ({ ...prev, [t.key]: { ...(prev[t.key] ?? {}), key: t.key, label: t.label, url } }))   // 사진만 바꿔도 적어 둔 출처는 유지
+  }
+  /** 저장할 층 지도 — 지금 루트에 있는 묶음 것만, 제목은 최신으로. 출처 링크는 http(s) 만 */
+  function floorMapsToSave(): FloorMap[] {
+    const labels = new Map(added.map(s => [floorGroupKey(s as any), floorGroupLabel(s as any)]))
+    return Object.values(floorMaps).filter(m => labels.has(m.key)).map(m => {
+      const link = (m.sourceUrl ?? '').trim()
+      return { ...m, label: labels.get(m.key)!, sourceName: (m.sourceName ?? '').trim() || null, sourceUrl: link ? (/^https?:\/\//i.test(link) ? link : `https://${link}`) : null }
+    })
+  }
+  // 루트 출처 — 다른 분의 인스타·블로그 코스를 참고했다면 (루트 소개에 링크로 표시)
+  const [sources, setSources] = useState<{ name: string; url: string }[]>([])
+  function sourcesToSave(): RouteSource[] {
+    return sources.map(x => {
+      const link = x.url.trim()
+      return { name: x.name.trim(), url: link ? (/^https?:\/\//i.test(link) ? link : `https://${link}`) : null }
+    }).filter(x => x.name || x.url)
+  }
   // 자동 정렬 뒤 직접 옮기거나 샵을 더하고 빼면 → 그 순서가 새 기준 (되돌리기 대상 없음)
   useEffect(() => {
     if (autoResultRef.current && added !== autoResultRef.current) { autoResultRef.current = null; setOrderBefore(null); setOrderMode(null); setOrderNote(null) }
@@ -121,6 +154,8 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
       }
       setLoadingEdit(false)
     }).catch(() => setLoadingEdit(false))
+    getRouteSources(editRouteId).then(list => { if (alive) setSources(list.map(x => ({ name: x.name, url: x.url ?? '' }))) }).catch(() => {})
+    getRouteFloorMaps(editRouteId).then(list => { if (alive) setFloorMaps(Object.fromEntries(list.map(m => [m.key, m]))) }).catch(() => {})
     getRouteMeta(editRouteId).then((m: any) => {
       if (!alive) return
       setCoverUrl(m.cover ?? ''); setThemes(m.themes ?? [])
@@ -276,6 +311,8 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
       const ok = await updateRoute(editRouteId, title.trim(), desc.trim(), difficulty, shopInput)
       if (!ok) { setSaving(false); setMsg('수정 저장 실패'); return }
       await updateRouteMeta(editRouteId, meta)
+      { const maps = floorMapsToSave(); const ok2 = await saveRouteFloorMaps(editRouteId, maps); if (!ok2 && maps.length) window.alert('층 지도 이미지는 저장하지 못했어요. (DB에 floor_maps 칸이 필요해요)') }
+      { const src = sourcesToSave(); const ok3 = await saveRouteSources(editRouteId, src); if (!ok3 && src.length) window.alert('출처는 저장하지 못했어요. (DB에 source_credits 칸이 필요해요)') }
       // 임시 저장 루트를 "공개하기"로 저장하면 공개로 바꾼다 (작성자만 — 추천 루트는 이미 공개)
       if (!asDraft && !shared && isOwner) {
         const pub = await toggleRouteShare(editRouteId, user.id, true)
@@ -289,6 +326,8 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
     const res = await createRoute(user.id, title.trim(), desc.trim(), shopInput, difficulty)
     if (!res) { setSaving(false); setMsg('루트 생성 실패'); return }
     await updateRouteMeta(res.id, meta)
+    { const maps = floorMapsToSave(); if (maps.length && !(await saveRouteFloorMaps(res.id, maps))) window.alert('층 지도 이미지는 저장하지 못했어요. (DB에 floor_maps 칸이 필요해요)') }
+    { const src = sourcesToSave(); if (src.length && !(await saveRouteSources(res.id, src))) window.alert('출처는 저장하지 못했어요. (DB에 source_credits 칸이 필요해요)') }
     if (!asDraft) {
       const pub = await toggleRouteShare(res.id, user.id, true)
       if (!pub) { setSaving(false); setMsg('저장은 됐지만 공개하지 못했어요. 내 루트에서 이어서 공개해 주세요.'); router.push('/profile?tab=routes'); return }
@@ -398,6 +437,27 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
               <Label>한 줄 소개</Label>
               <textarea value={desc} onChange={(e) => setDesc(e.target.value)} maxLength={80} placeholder="이 루트를 한 줄로 소개해보세요! (선택)" style={{ ...inp, minHeight: 60, marginBottom: 18, resize: 'vertical' }} />
 
+              {/* 출처 — 다른 분의 인스타·블로그 코스를 참고했다면 (루트 소개에 링크로 보여요) */}
+              <Label>출처 <span style={{ fontWeight: 600, color: 'var(--muted)' }}>· 선택</span></Label>
+              <div style={{ fontSize: 12, color: 'var(--muted)', margin: '-2px 0 8px', lineHeight: 1.5 }}>다른 분의 인스타·블로그 코스를 참고했다면 남겨주세요. 루트 소개에 링크로 보여요.</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 18 }}>
+                {sources.map((x, i) => (
+                  <div key={i} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 3fr) auto', gap: 6, alignItems: 'center' }}>
+                    <input value={x.name} onChange={e => setSources(prev => prev.map((y, j) => j === i ? { ...y, name: e.target.value } : y))} maxLength={40}
+                      placeholder="이름 (예: @계정, OO 블로그)" aria-label={`출처 ${i + 1} 이름`} style={{ ...inp, marginBottom: 0 }} />
+                    <input value={x.url} onChange={e => setSources(prev => prev.map((y, j) => j === i ? { ...y, url: e.target.value } : y))} maxLength={300} inputMode="url"
+                      placeholder="링크 (인스타·블로그 주소)" aria-label={`출처 ${i + 1} 링크`} style={{ ...inp, marginBottom: 0 }} />
+                    <button type="button" onClick={() => setSources(prev => prev.filter((_, j) => j !== i))} style={{ ...smallBtn, color: 'var(--red)' }} aria-label={`출처 ${i + 1} 삭제`}><Svg size={13}><path d="M6 6l12 12M18 6 6 18" /></Svg></button>
+                  </div>
+                ))}
+                {sources.length < 5 && (
+                  <button type="button" onClick={() => setSources(prev => [...prev, { name: '', url: '' }])}
+                    style={{ ...ghostBtn, alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                    <Svg size={14}><path d="M12 5v14M5 12h14" /></Svg>출처 추가
+                  </button>
+                )}
+              </div>
+
               {/* 샵 불러오기 — 샵 검색 / 저장한 샵 */}
               <Label>샵 불러오기</Label>
               <div style={{ display: 'flex', gap: 4, marginBottom: 16, padding: 4, background: 'var(--surface2)', borderRadius: 12 }}>
@@ -470,7 +530,11 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
               {added.length >= 2 && (
                 <div style={{ marginBottom: 16 }}><RouteMiniMap stops={mapStops} /></div>
               )}
-              <Label>루트 순서 ({added.length}) · 꾹 눌러 이동</Label>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 6 }}>
+                <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--muted)' }}>루트 순서 ({added.length}) · 꾹 눌러 이동</div>
+                <input ref={floorMapInput} type="file" accept="image/*" hidden onChange={onFloorMapFile} />
+                <button onClick={() => setStep(1)} style={{ ...ghostBtn, flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 5 }}><Svg size={14}><path d="M12 5v14M5 12h14" /></Svg>샵 더 담기</button>
+              </div>
               {added.length === 0 ? (
                 <div style={{ padding: 20, textAlign: 'center', color: 'var(--muted)', fontSize: 13, border: '1px dashed var(--border)', borderRadius: 10 }}>1단계에서 샵을 담아주세요</div>
               ) : (
@@ -478,8 +542,37 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
                   {added.map((s, i) => {
                     const dragging = drag?.id === s.id
                     const transform = dragging ? `translateY(${drag!.dy}px)` : undefined
+                    // 층별 묶음 제목 — 앞 샵과 건물·층이 달라지는 곳마다 (끄는 중엔 숨겨서 순서 계산이 흔들리지 않게)
+                    const gKey = floorGroupKey(s as any)
+                    const showHead = !drag && showFloorGroups && (i === 0 || floorGroupKey(added[i - 1] as any) !== gKey)
+                    const gLabel = floorGroupLabel(s as any)
+                    const fm = floorMaps[gKey]
                     return (
-                    <div key={s.id} ref={(el) => { rowRefs.current[i] = el }}
+                    <Fragment key={s.id}>
+                    {showHead && (
+                      <>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: i === 0 ? '4px 2px 8px' : '14px 2px 8px' }}>
+                        <span style={{ minWidth: 0, fontSize: 12.5, fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l)', borderRadius: 9999, padding: '4px 10px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{gLabel}</span>
+                        <span style={{ flex: 1 }} />
+                        {fm ? (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+                            <a href={fm.url} target="_blank" rel="noreferrer" title="층 지도 크게 보기" style={{ display: 'block', width: 40, height: 40, borderRadius: 8, overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--surface2)' }}>
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={fm.url} alt={`${gLabel} 층 지도`} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                            </a>
+                            <button type="button" onClick={() => pickFloorMap(gKey, gLabel)} disabled={floorMapBusy === gKey} style={smallBtn}>{floorMapBusy === gKey ? '올리는 중…' : '사진 바꾸기'}</button>
+                            <button type="button" onClick={() => setFloorMaps(prev => { const n = { ...prev }; delete n[gKey]; return n })} style={{ ...smallBtn, color: 'var(--red)' }}>삭제</button>
+                          </span>
+                        ) : (
+                          <button type="button" onClick={() => pickFloorMap(gKey, gLabel)} disabled={floorMapBusy === gKey}
+                            style={{ ...smallBtn, flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                            <Svg size={14}><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="9" cy="10" r="1.6" /><path d="m21 16-5-5-8 8" /></Svg>{floorMapBusy === gKey ? '올리는 중…' : '층 지도 사진 추가'}
+                          </button>
+                        )}
+                      </div>
+                      </>
+                    )}
+                    <div ref={(el) => { rowRefs.current[i] = el }}
                       onPointerDown={(e) => startDrag(e, i)}
                       draggable={false} onDragStart={(e) => e.preventDefault()}
                       style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 4px', borderBottom: '1px solid var(--border)', background: dragging ? 'var(--accent-l, #FFE6EF)' : 'var(--surface)', boxShadow: dragging ? '0 6px 18px rgba(0,0,0,.16)' : 'none', borderRadius: dragging ? 10 : 0, position: 'relative', zIndex: dragging ? 20 : 1, transform, transition: dragging ? 'none' : 'transform .15s', cursor: 'grab', userSelect: 'none', WebkitUserSelect: 'none', WebkitTouchCallout: 'none' }}>
@@ -489,6 +582,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
                       <button onPointerDown={(e) => e.stopPropagation()} onClick={() => move(i, 1)} disabled={i === added.length - 1} style={{ ...smallBtn, opacity: i === added.length - 1 ? 0.3 : 1 }} aria-label="아래로"><Svg size={13}><path d="m6 9 6 6 6-6" /></Svg></button>
                       <button onPointerDown={(e) => e.stopPropagation()} onClick={() => remove(s.id)} style={{ ...smallBtn, color: 'var(--red)' }} aria-label="삭제"><Svg size={13}><path d="M6 6l12 12M18 6 6 18" /></Svg></button>
                     </div>
+                    </Fragment>
                     )
                   })}
                 </div>
@@ -528,7 +622,6 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
                   )}
                 </div>
               )}
-              <button onClick={() => setStep(1)} style={{ ...ghostBtn, marginTop: 12, display: 'inline-flex', alignItems: 'center', gap: 5 }}><Svg size={14}><path d="M12 5v14M5 12h14" /></Svg>샵 더 담기</button>
             </>
           )}
 

@@ -15,6 +15,8 @@ import { getVisitedShopIds, setShopVisited, recordRouteCompletion, getMyRouteRun
 import { createCheckIn } from '@/services/checkInService'
 import RouteReviews from './RouteReviews'
 import RouteCourseMobile from './RouteCourseMobile'
+import { getRouteFloorMaps, getRouteSources, type RouteSource } from '@/services/routeService'
+import { floorGroupKey, floorGroupLabel, hasFloorGroups } from '@/lib/route/autoOrder'
 import styles from './RouteDetailPage.module.css'
 
 import AppIcon from '@/components/tds/AppIcon'
@@ -270,6 +272,16 @@ export default function RouteDetailPage({ route }: { route: any }) {
   // 지도 관련 액션은 모두 타쿠로드 내부 지도로 이동
   // 완주 초기화 — 방문 체크·멈춘 따라가기만 풀고, 방문·완주 기록과 후기는 남긴다 (서버: /api/route/reset)
   const [resetting, setResetting] = useState(false)
+  // 층 지도 이미지 (루트 만들 때 층별 묶음마다 올린 참고 이미지) — 키 → 주소
+  const [sources, setSources] = useState<RouteSource[]>([])   // 루트 출처 (참고한 인스타·블로그)
+  const [floorMaps, setFloorMaps] = useState<Record<string, { url: string; sourceName?: string | null; sourceUrl?: string | null }>>({})
+  useEffect(() => {
+    if (!route?.id) return
+    let alive = true
+    getRouteSources(route.id).then(list => { if (alive) setSources(list) }).catch(() => {})
+    getRouteFloorMaps(route.id).then(list => { if (alive) setFloorMaps(Object.fromEntries(list.map(m => [m.key, { url: m.url, sourceName: m.sourceName ?? null, sourceUrl: m.sourceUrl ?? null }]))) }).catch(() => {})
+    return () => { alive = false }
+  }, [route?.id])
   async function resetCourse() {
     if (!user || resetting) return
     if (!window.confirm('방문 체크를 모두 풀고 처음부터 다시 도전할까요?\n방문 기록·완주 기록·후기는 그대로 남아요.')) return
@@ -316,8 +328,17 @@ export default function RouteDetailPage({ route }: { route: any }) {
         const first = i === 0, last = i === sortedStops.length - 1
         const walkMin = rs.duration_from_prev_min, walkM = rs.distance_from_prev_m
         const visited = visitedIds.has(shop.id)
+        const gKey = floorGroupKey(shop)
+        const showHead = hasFloorGroups(sortedStops.map((x: any) => x.shops).filter(Boolean)) && (first || floorGroupKey(sortedStops[i - 1]?.shops ?? {}) !== gKey)
+        const fmap = floorMaps[gKey]
         return (
           <li key={rs.id} className={styles.stop}>
+            {showHead && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: first ? '0 0 8px 44px' : '14px 0 8px 44px' }}>
+                <span style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l)', borderRadius: 9999, padding: '4px 10px' }}>{floorGroupLabel(shop)}</span>
+                {fmap && <a href={fmap.url} target="_blank" rel="noreferrer" style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--text)', border: '1px solid var(--border)', borderRadius: 9999, padding: '4px 10px', textDecoration: 'none' }}>층 지도 보기</a>}
+              </div>
+            )}
             {!first && !singleSpot && (walkMin != null || walkM != null) && (
               <div className={styles.travel}><AppIcon name="route" size={12} color="var(--muted)" />도보{walkMin != null ? ` ${walkMin}분` : ''}{walkM != null ? ` · ${formatDistance(walkM)}` : ''}</div>
             )}
@@ -441,6 +462,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
           <div className={styles.mAuthor}>{author ? `${author}의 루트` : '타쿠로드 루트'}{route.created_at && <> · {fmtDate(route.created_at)}</>}</div>
           {myRuns.count > 0 && <div className={styles.mAuthor} style={{ marginTop: 4 }}>내 완주 <b style={{ color: 'var(--accent)' }}>{myRuns.count}번</b>{myRuns.lastDate && <> · 마지막 {myRuns.lastDate.replace(/-/g, '.')}</>}</div>}
           {route.description && <p className={styles.mDesc}>{route.description}</p>}
+          <SourceCredits list={sources} />
           {tags.length > 0 && <div className={styles.mTags}>{tags.map(t => <span key={t as string} className={styles.mTag}>{t as string}</span>)}</div>}
           <div className={styles.mStats}>
             <span><MaskIcon name="shop" size={15} color="var(--accent)" />{spotCount}곳</span>
@@ -495,6 +517,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
                 stops={sortedStops} visitedIds={visitedIds} selectedId={selectedShopId}
                 onSelect={setSelectedShopId} onToggleVisit={toggleVisited} onOpenMap={openInternalMap}
                 statusOf={(shop: any) => (shop.hours || shop.status ? statusPill(getShopStatus(shop, now).kind) : null)}
+                floorMaps={floorMaps}
               />
               {tipsBlock}
             </>
@@ -634,10 +657,11 @@ export default function RouteDetailPage({ route }: { route: any }) {
 
           {/* 코스 안내 */}
           <section id="course" data-anchor="course" ref={sectionRefs.course} className={styles.section}>
-            {route.description && (
+            {(route.description || sources.length > 0) && (
               <div className={styles.block}>
                 <h2 className={styles.blockTitle}>루트 소개</h2>
-                <p className={styles.introText}>{route.description}</p>
+                {route.description && <p className={styles.introText}>{route.description}</p>}
+                <SourceCredits list={sources} />
               </div>
             )}
 
@@ -761,6 +785,27 @@ export default function RouteDetailPage({ route }: { route: any }) {
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+/* 루트 출처 — "출처 @계정 · OO 블로그" (링크가 있으면 새 창으로) */
+function SourceCredits({ list }: { list: RouteSource[] }) {
+  if (!list.length) return null
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4px 6px', marginTop: 8, fontSize: 12.5, color: 'var(--muted)', lineHeight: 1.5 }}>
+      <span style={{ fontWeight: 700 }}>출처</span>
+      {list.map((x, i) => {
+        const label = x.name || (x.url ?? '').replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')
+        return (
+          <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+            {i > 0 && <span aria-hidden>·</span>}
+            {x.url
+              ? <a href={x.url} target="_blank" rel="noopener noreferrer nofollow" style={{ color: 'var(--text)', fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: 2, overflowWrap: 'anywhere' }}>{label}</a>
+              : <span style={{ color: 'var(--text)', fontWeight: 700, overflowWrap: 'anywhere' }}>{label}</span>}
+          </span>
+        )
+      })}
     </div>
   )
 }

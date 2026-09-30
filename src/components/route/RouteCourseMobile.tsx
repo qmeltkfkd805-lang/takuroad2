@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
+import { floorGroupKey, floorGroupLabel, hasFloorGroups } from '@/lib/route/autoOrder'
 import { formatDistance } from '@/hooks/useCurrentLocation'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import AppIcon from '@/components/tds/AppIcon'
@@ -39,7 +40,7 @@ export function statusPillOf(kind: string | null | undefined): CourseStatus | nu
   }
 }
 
-export default function RouteCourseMobile({ stops, visitedIds, selectedId, onSelect, onToggleVisit, onOpenMap, statusOf }: {
+export default function RouteCourseMobile({ stops, visitedIds, selectedId, onSelect, onToggleVisit, onOpenMap, statusOf, floorMaps = {} }: {
   stops: any[]
   visitedIds: Set<string>
   selectedId: string | null
@@ -47,9 +48,14 @@ export default function RouteCourseMobile({ stops, visitedIds, selectedId, onSel
   onToggleVisit: (shopId: string) => void
   onOpenMap: (shopId: string) => void
   statusOf: (shop: any) => CourseStatus | null
+  /** 층 지도 이미지 — 층별 묶음 키(floorGroupKey) → 이미지 주소 */
+  floorMaps?: Record<string, { url: string; sourceName?: string | null; sourceUrl?: string | null }>
 }) {
   const list = stops.filter(rs => rs?.shops)
+  const grouped = hasFloorGroups(list.map(rs => rs.shops))
+  const [mapView, setMapView] = useState<{ url: string; label: string; sourceName?: string | null; sourceUrl?: string | null } | null>(null)
   return (
+    <>
     <ol className={s.list}>
       {list.map((rs: any, i: number) => {
         const shop = rs.shops
@@ -64,6 +70,11 @@ export default function RouteCourseMobile({ stops, visitedIds, selectedId, onSel
         const fl = shop.floor_info || [shop.floor, shop.unit].filter(Boolean).join(' ')
         const img: string | undefined = shop.shop_images?.[0]?.image_url
         const hasTravel = !first && (walkMin != null || walkM != null)
+        // 층별 묶음 제목 — 앞 샵과 건물·층이 달라지는 곳마다 ("AK플라자 · 5층" + 층 지도)
+        const gKey = floorGroupKey(shop)
+        const showHead = grouped && (first || floorGroupKey(list[i - 1].shops) !== gKey)
+        const gLabel = floorGroupLabel(shop)
+        const fm = floorMaps[gKey]
         return (
           <li key={rs.id ?? shop.id} className={s.item}>
             {(hasTravel || tip) && (
@@ -77,6 +88,19 @@ export default function RouteCourseMobile({ stops, visitedIds, selectedId, onSel
                     </div>
                   )}
                   {tip && <div className={s.tip}><b>이동 팁</b>{tip}</div>}
+                </div>
+              </>
+            )}
+            {showHead && (
+              <>
+                <div className={s.railGap} aria-hidden>{!first && <span className={s.line} />}</div>
+                <div className={s.groupHead}>
+                  <span className={s.groupLabel}>{gLabel}</span>
+                  {fm && (
+                    <button type="button" className={s.groupMapBtn} onClick={() => setMapView({ ...fm, label: gLabel })}>
+                      <MapIcon size={14} />층 지도 보기
+                    </button>
+                  )}
                 </div>
               </>
             )}
@@ -128,5 +152,16 @@ export default function RouteCourseMobile({ stops, visitedIds, selectedId, onSel
         )
       })}
     </ol>
+    {mapView && (
+      <div className={s.mapView} role="dialog" aria-modal="true" aria-label={`${mapView.label} 층 지도`} onClick={() => setMapView(null)}>
+        <div className={s.mapViewHead}>
+          <span>{mapView.label}</span>
+          <button type="button" onClick={() => setMapView(null)} aria-label="닫기">✕</button>
+        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={mapView.url} alt={`${mapView.label} 층 지도`} onClick={e => e.stopPropagation()} />
+      </div>
+    )}
+    </>
   )
 }

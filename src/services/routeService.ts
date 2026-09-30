@@ -271,7 +271,7 @@ export async function getRouteForEdit(routeId: string) {
   const { data, error } = await supabase
     .from('routes')
     .select(`id, title, description, official_difficulty,
-      route_shops ( sort_order, move_tip, shops ( id, name, lat, lng, addr, region ) )`)
+      route_shops ( sort_order, move_tip, shops ( id, name, lat, lng, addr, region, place_id, floor, unit, floor_info, places ( name ) ) )`)
     .eq('id', routeId)
     .maybeSingle()
   if (error || !data) { console.error('[route edit load]', error); return null }
@@ -408,4 +408,65 @@ export async function getSavedRoutes(userId: string) {
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
   return (data ?? []).map((r: any) => r.routes).filter(Boolean)
+}
+
+/* ── 층 지도 이미지 (routes.floor_maps) ── SQL: migrations/route_floor_maps.sql
+   루트 순서의 층별 묶음(같은 건물·같은 층, 키 = floorGroupKey)마다 참고용 지도 이미지 1장.
+   SQL 적용 전이면 조회는 빈 목록, 저장은 false 를 돌려준다(루트 저장 자체는 막지 않음). */
+/** sourceName: 출처 표시(예: @계정, OO 블로그) · sourceUrl: 출처 링크(인스타·블로그 등 https 주소) */
+export interface FloorMap { key: string; label: string; url: string; sourceName?: string | null; sourceUrl?: string | null }
+
+export async function getRouteFloorMaps(routeId: string): Promise<FloorMap[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase.from('routes').select('floor_maps').eq('id', routeId).maybeSingle()
+  if (error || !data) return []
+  const list = (data as any).floor_maps
+  if (!Array.isArray(list)) return []
+  // 출처 링크는 http(s) 만 통과 (javascript: 같은 링크 차단)
+  return list.filter((m: any) => m && typeof m.key === 'string' && typeof m.url === 'string')
+    .map((m: any) => ({ ...m, sourceUrl: typeof m.sourceUrl === 'string' && /^https?:\/\//i.test(m.sourceUrl) ? m.sourceUrl : null, sourceName: typeof m.sourceName === 'string' ? m.sourceName : null }))
+}
+
+export async function saveRouteFloorMaps(routeId: string, maps: FloorMap[]): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase.from('routes').update({ floor_maps: maps } as any).eq('id', routeId)
+  if (error) console.error('[floor maps save]', error.message)
+  return !error
+}
+
+/** 층 지도 이미지 올리기 — 공개 버킷 route-photos/{userId}/floormaps/… (브라우저에서 줄여 다시 그림 → 위치정보 제거) */
+export async function uploadFloorMap(userId: string, file: File): Promise<string | null> {
+  const supabase = createClient()
+  const { shrink } = await import('./eventVisitPhotoService')
+  const { blob, ext, type } = await shrink(file)
+  const id = (() => { try { return crypto.randomUUID() } catch { return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}` } })()
+  const path = `${userId}/floormaps/${id}.${ext}`
+  const { error } = await supabase.storage.from('route-photos').upload(path, blob, { contentType: type, upsert: false })
+  if (error) { console.error('[floor map upload]', error.message); return null }
+  return supabase.storage.from('route-photos').getPublicUrl(path).data.publicUrl
+}
+
+/* ── 루트 출처 (routes.source_credits) ── SQL: migrations/route_sources.sql
+   다른 분의 인스타·블로그 코스를 참고해 만든 루트면 출처를 남겨 루트 소개에 보여준다. */
+export interface RouteSource { name: string; url: string | null }
+
+const cleanSources = (list: any): RouteSource[] => (Array.isArray(list) ? list : [])
+  .map((m: any) => ({
+    name: typeof m?.name === 'string' ? m.name.trim().slice(0, 40) : '',
+    url: typeof m?.url === 'string' && /^https?:\/\//i.test(m.url.trim()) ? m.url.trim().slice(0, 300) : null,   // http(s) 만
+  }))
+  .filter(m => m.name || m.url)
+
+export async function getRouteSources(routeId: string): Promise<RouteSource[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase.from('routes').select('source_credits').eq('id', routeId).maybeSingle()
+  if (error || !data) return []
+  return cleanSources((data as any).source_credits)
+}
+
+export async function saveRouteSources(routeId: string, list: RouteSource[]): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase.from('routes').update({ source_credits: cleanSources(list) } as any).eq('id', routeId)
+  if (error) console.error('[route sources save]', error.message)
+  return !error
 }
