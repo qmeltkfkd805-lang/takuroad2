@@ -595,7 +595,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
 
       <div className={styles.layout}>
         <div className={styles.main}>
-          {/* 상단: 정보 40 + 지도 60 (한 박스 안에) */}
+          {/* 상단: 정보(제목 한 줄로 길게) → 아래에 코스 미리보기 지도 (한 박스 안에) */}
           <div className={styles.topBox}>
           <div className={styles.topGrid}>
             <div className={styles.infoCard}>
@@ -637,6 +637,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
               {myRuns.count > 0 && <div className={styles.infoAuthor} style={{ marginTop: 4 }}>내 완주 <b style={{ color: 'var(--accent)' }}>{myRuns.count}번</b>{myRuns.lastDate && <> · 마지막 {myRuns.lastDate.replace(/-/g, '.')}</>}</div>}
               {route.description && <p className={styles.infoDesc}>{route.description}</p>}
               {tags.length > 0 && <div className={styles.tagRow}>{tags.map(t => <span key={t as string} className={styles.tag}>{t as string}</span>)}</div>}
+              <div className={styles.infoBottom}>
               <div className={styles.metaRow}>
                 {region && <span className={styles.metaItem}><MaskIcon name="map" size={14} color="var(--accent)" />{region}</span>}
                 <span className={styles.metaItem}><MaskIcon name="shop" size={14} color="var(--accent)" />{spotCount}곳</span>
@@ -647,13 +648,19 @@ export default function RouteDetailPage({ route }: { route: any }) {
                 <button className={styles.btnPrimary} onClick={handleStart}><PinIcon size={16} color="#fff" />루트 시작하기</button>
                 <SaveBtn cls={`${styles.btnGhost} ${saved ? styles.btnGhostActive : ''}`} />
               </div>
+              </div>
             </div>
 
+            <div className={styles.previewHead}>
+              <h2 className={styles.previewTitle}>코스 미리보기</h2>
+              {shopsWithCoords.length > 0 && (
+                <button className={styles.previewMore} onClick={() => router.push(`/map?routeId=${route.share_token}`)}>타쿠로드 지도에서 크게 보기<ExpandIcon size={13} /></button>
+              )}
+            </div>
             <div className={styles.mapWrap}>
               {shopsWithCoords.length > 0 ? (
                 <>
-                  <RouteThumb stops={rtStops(route)} showEnds height={340} variant="detail" />
-                  <button className={styles.bigMapBtn} onClick={() => router.push(`/map?routeId=${route.share_token}`)}><ExpandIcon size={15} />타쿠로드 지도에서 보기</button>
+                  <RouteThumb stops={rtStops(route)} showEnds height={420} variant="detail" />
                 </>
               ) : (
                 <div className={styles.mapPlaceholder}><ColorIcon name="colormap" size={30} /><span>좌표 정보가 없어요</span></div>
