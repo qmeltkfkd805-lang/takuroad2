@@ -145,8 +145,9 @@ export default function Page() {
         개인정보와 관련한 문의, 불만 처리, 피해 구제는 아래로 연락해 주세요. 빠르게 답변하고 처리하겠습니다.
       </p>
       <ul>
-        <li>개인정보 보호책임자: 타쿠로드 운영자</li>
-        <li>연락: 아래 문의하기 버튼 (문의 유형에서 &lsquo;일반 문의&rsquo;를 고르고 &lsquo;개인정보&rsquo;라고 적어 주세요)</li>
+        <li>개인정보 보호책임자: 박지현 (대표)</li>
+        <li>이메일: <a href="mailto:ttakuroad@gmail.com">ttakuroad@gmail.com</a></li>
+        <li>온라인: 아래 문의하기 버튼 (문의 유형에서 &lsquo;일반 문의&rsquo;를 고르고 &lsquo;개인정보&rsquo;라고 적어 주세요)</li>
       </ul>
       <p>개인정보 침해에 대한 상담이 더 필요하면 아래 기관에 문의할 수 있습니다.</p>
       <ul>
