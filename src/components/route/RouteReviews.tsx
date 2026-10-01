@@ -225,6 +225,12 @@ function ReviewModal({ routeId, routeTitle, userId, existing, onClose, onSaved }
         <input ref={cameraRef} type="file" accept="image/*" capture="environment" hidden onChange={onPick} />
         <input ref={albumRef} type="file" accept="image/*" multiple hidden onChange={onPick} />
         <p className={s.hint}>사진은 {MAX_ROUTE_PHOTOS}장까지, 루트 후기와 내 방문 기록에 함께 공개돼요.</p>
+        {/* 완주 경험치 — 후기 글 + 사진 3장을 남기면 루트당 한 번 (서버 트리거가 지급: migrations/route_review_exp.sql) */}
+        <p className={s.hint} style={{ color: kept.length + picked.length >= MAX_ROUTE_PHOTOS && text.trim() ? 'var(--accent)' : undefined, fontWeight: 700 }}>
+          {kept.length + picked.length >= MAX_ROUTE_PHOTOS && text.trim()
+            ? '✓ 후기와 사진 3장 — 완주 경험치 15를 받아요 (루트당 한 번)'
+            : `후기 글과 사진 ${MAX_ROUTE_PHOTOS}장을 남기면 완주 경험치 15를 받아요 (루트당 한 번)`}
+        </p>
 
         {err && <p className={s.err}>{err}</p>}
         <div className={m.modalActions}>

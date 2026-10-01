@@ -811,6 +811,7 @@ function sourceIcon(url: string | null): { src: string; alt: string } | 'blog' |
   let host = ''
   try { host = new URL(url).hostname.replace(/^www\./, '').toLowerCase() } catch { return null }
   if (host.endsWith('instagram.com')) return { src: '/icons/instargram.png', alt: '인스타그램' }
+  if (host.endsWith('threads.net') || host.endsWith('threads.com')) return { src: '/icons/threads.png', alt: '스레드' }
   if (host === 'x.com' || host.endsWith('twitter.com')) return { src: '/icons/X.png', alt: 'X' }
   if (host.endsWith('youtube.com') || host === 'youtu.be') return { src: '/icons/youtube.png', alt: '유튜브' }
   if (host === 'cafe.naver.com') return { src: '/icons/navercafe.png', alt: '네이버 카페' }

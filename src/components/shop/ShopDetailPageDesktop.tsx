@@ -58,6 +58,7 @@ const TIPS: { icon: IconName; title: string; body: string }[] = [
 function detectSns(url: string | null): { name: string; url: string } | null {
   if (!url) return null
   const u = url.toLowerCase()
+  if (u.includes('threads.net') || u.includes('threads.com')) return { name: 'threads', url }
   if (u.includes('instagram.com')) return { name: 'instagram', url }
   if (u.includes('x.com') || u.includes('twitter.com')) return { name: 'x', url }
   if (u.includes('youtube.com') || u.includes('youtu.be')) return { name: 'youtube', url }
@@ -1120,6 +1121,7 @@ function CatIcon({ name, color, size = 18 }: { name: string; color: string; size
 
 const SNS_ICON_FILES: Record<string, string[]> = {
   instagram: ['instagram', 'instargram'],
+  threads: ['threads'],
   x: ['x', 'X'],
   kakao: ['kakao', 'kakaotalk'],
   youtube: ['youtube'],
