@@ -217,6 +217,27 @@ export default function RouteExplorePage() {
               </section>
             )}
 
+            {/* 추천(기본) 탭: 히어로에만 추천 루트, 아래는 PC처럼 '인기 있는 루트' · '새로 등록된 루트' */}
+            {sort === 'recommended' ? (
+              <>
+                {[
+                  { key: 'popular', title: '지금 인기 있는 루트', list: popular.filter(r => r.id !== hero?.id).slice(0, 4), more: 'sort=popular' },
+                  { key: 'new', title: '새로 등록된 루트', list: recent.filter(r => r.id !== hero?.id).slice(0, 4), more: 'sort=latest' },
+                ].filter(sec => sec.list.length > 0).map(sec => (
+                  <section key={sec.key} className={styles.mlist}>
+                    <div className={styles.mlistHead}>
+                      <h2 className={styles.mlistTitle}>{sec.title}</h2>
+                      <button className={styles.mlistMore} onClick={() => toAll(sec.more)}>전체 보기<ChevR size={12} /></button>
+                    </div>
+                    <div className={styles.mcards}>
+                      {sec.list.map(r => (
+                        <RouteResultCard key={r.id} route={r} view="list" mapVariant="preview" saved={savedIds.has(r.id)} onOpen={() => go(r)} onToggleSave={e => onSave(e, r)} />
+                      ))}
+                    </div>
+                  </section>
+                ))}
+              </>
+            ) : (
             <section className={styles.mlist}>
               <h2 className={styles.mlistTitle}>{SORT_TITLE[sort]}</h2>
               {nearbyWaiting ? (
@@ -251,6 +272,7 @@ export default function RouteExplorePage() {
                 </div>
               )}
             </section>
+            )}
 
             {byTag.length > 0 && (
               <section className={styles.mDiscover}>

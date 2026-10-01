@@ -8,12 +8,19 @@ export default function LoginForm() {
   const [loading, setLoading] = useState<'google' | 'kakao' | null>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirect = searchParams.get('redirect') || '/'
+  /* 로그인 후 돌아갈 곳 — ?redirect= 가 있으면 그곳, 없으면 로그인 누르기 전에 보던 화면(AuthProvider 가 기억).
+     같은 사이트 안의 경로만 허용한다. */
+  const safePath = (v: string | null | undefined) => (v && v.startsWith('/') && !v.startsWith('//') && !v.startsWith('/login') ? v : null)
+  const redirect = (() => {
+    const fromParam = safePath(searchParams.get('redirect'))
+    if (fromParam) return fromParam
+    try { return safePath(typeof window !== 'undefined' ? sessionStorage.getItem('taku:returnTo') : null) ?? '/' } catch { return '/' }
+  })()
 
   async function loginWith(provider: 'google' | 'kakao') {
     setLoading(provider)
     const supabase = createClient()
-    const redirectUrl = `${location.origin}/auth/callback?redirect=${redirect}`
+    const redirectUrl = `${location.origin}/auth/callback?redirect=${encodeURIComponent(redirect)}`
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {

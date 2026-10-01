@@ -10,7 +10,7 @@ import { getRouteByShareToken, toggleRouteSave, getMySavedRouteIds } from '@/ser
 import { getVisitedShopIds, setShopVisited, isRouteCompleted, recordRouteCompletion, resetRouteProgress } from '@/services/routeVisitService'
 import { createCheckIn } from '@/services/checkInService'
 import { requestBadgeEvaluation } from '@/services/badgeService'
-import { formatDistance } from '@/hooks/useCurrentLocation'
+import { formatDistance, calcDistance } from '@/hooks/useCurrentLocation'
 import { shopRegion } from '@/lib/utils/region'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import MapControls from './map/MapControls'
@@ -110,6 +110,12 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
   }, [route?.id, pathReload])
 
   const stops = useMemo(() => (route?.route_shops ?? []).slice().sort((a: any, b: any) => a.sort_order - b.sort_order), [route])
+  // 따라가기 '다음 장소' — 직접 체크하지 않은 첫 장소 (GPS 자동 확인은 쓰지 않는다)
+  const runStops = useMemo(() => stops.map((rs: any) => rs.shops).filter((s: any) => s && s.id), [stops])
+  const runNextShop = runStops.find((s: any) => !run.confirmedShopIds.has(s.id) && !visitedIds.has(s.id)) ?? null
+  const runNext = runNextShop && typeof runNextShop.lat === 'number' && typeof runNextShop.lng === 'number'
+    ? { key: `shop:${runNextShop.id}`, kind: 'shop' as const, label: runNextShop.name, lat: runNextShop.lat, lng: runNextShop.lng, shopIds: [runNextShop.id] }
+    : null
   const shopsWithCoords = useMemo(() => stops.map((rs: any) => rs.shops).filter((s: any) => s && s.lat && s.lng).map((s: any) => ({ id: s.id, name: s.name, lat: s.lat, lng: s.lng })), [stops])
   const region = useMemo(() => { for (const rs of stops) { const r = rs.shops ? shopRegion(rs.shops) : null; if (r && r !== '지역 미정') return r } return null }, [stops])
   const author = route?.profiles?.nickname
@@ -360,10 +366,10 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
           <ArrivalToast arrivals={run.arrivals} onUndo={run.undo} onDismiss={run.dismissArrival} />
           <RouteRunSheet
             phase={run.phase}
-            verifiedCount={run.verifiedCount}
-            totalCheckpoints={run.totalCheckpoints}
-            nextCheckpoint={run.nextCheckpoint}
-            nextDistanceM={run.nextDistanceM}
+            verifiedCount={runStops.filter(s => run.confirmedShopIds.has(s.id)).length}
+            totalCheckpoints={runStops.length}
+            nextCheckpoint={runNext}
+            nextDistanceM={runNext && run.location ? Math.round(calcDistance(run.location.lat, run.location.lng, runNext.lat, runNext.lng)) : null}
             geoDenied={run.geoDenied}
             hasFix={run.hasFix}
             onRequestLocation={run.requestLocationNow}

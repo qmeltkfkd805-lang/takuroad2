@@ -1,6 +1,6 @@
 'use client'
-/* 진행 중 하단 미니시트 — 현장 확인 n/m, 다음 추천지, 거리/도보시간, 일시중지/루트 종료.
-   방문 인증 버튼은 두지 않음(자동 감지). 화면에 고정 오버레이라 기존 레이아웃은 건드리지 않음. */
+/* 진행 중 하단 미니시트 — 방문 n/m, 다음 장소, 거리/도보시간, 일시중지/루트 종료.
+   GPS 자동 확인은 쓰지 않는다 — 방문은 목록에서 직접 체크. 위치는 내 위치·거리 표시에만 (기기 안에서만). 화면에 고정 오버레이라 기존 레이아웃은 건드리지 않음. */
 import type { RunCheckpoint, RunPhase } from '@/lib/routeRun/useRouteRun'
 import { formatDistance } from '@/hooks/useCurrentLocation'
 import styles from './RouteRunSheet.module.css'
@@ -35,7 +35,7 @@ export default function RouteRunSheet(props: {
       <div className={styles.head}>
         <div className={styles.headLeft}>
           <span className={styles.badge}>{paused ? '일시중지' : '진행 중'}</span>
-          <span className={styles.count}>현장 확인 {verifiedCount}/{totalCheckpoints}</span>
+          <span className={styles.count}>방문 {verifiedCount}/{totalCheckpoints}</span>
         </div>
         <span className={styles.pct}>{pct}%</span>
       </div>
@@ -43,12 +43,12 @@ export default function RouteRunSheet(props: {
 
       {!hasFix && !geoDenied && (
         <button className={styles.perm} onClick={onRequestLocation}>
-          📍 위치 권한 허용하고 자동 확인 켜기
+          📍 내 위치를 지도에 표시하기
         </button>
       )}
       {geoDenied && (
         <div className={styles.notice}>
-          위치 권한이 꺼져 있어 자동 확인이 안 돼요. 그래도 <b>루트 종료</b>에서 방문한 곳을 직접 확인하고 완주할 수 있어요.
+          위치 권한이 꺼져 있어 내 위치를 지도에 표시할 수 없어요. 방문한 곳은 목록에서 직접 체크해 주세요.
           <button className={styles.retry} onClick={onRequestLocation}>위치 다시 시도</button>
         </div>
       )}

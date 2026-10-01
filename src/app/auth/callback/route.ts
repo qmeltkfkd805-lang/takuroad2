@@ -4,7 +4,9 @@ import { createClient } from '@/lib/supabase/server'
 export async function GET(request: Request) {
   const { searchParams, origin: rawOrigin } = new URL(request.url)
   const code = searchParams.get('code')
-  const redirect = searchParams.get('redirect') || '/shop/new'
+  // 로그인 후 돌아갈 곳 — 같은 사이트 경로만 (바깥 주소로 보내지 않는다)
+  const raw = searchParams.get('redirect') || '/'
+  const redirect = raw.startsWith('/') && !raw.startsWith('//') ? raw : '/'
 
   // Vercel 프록시 뒤에서는 request.url의 origin이 내부주소로 잡힐 수 있어
   // forwarded 헤더가 있으면 그걸로 실제 접속 origin을 재구성한다.
@@ -22,7 +24,8 @@ export async function GET(request: Request) {
         .eq('id', data.user.id)
         .maybeSingle()
       if (!profile) {
-        return NextResponse.redirect(`${origin}/profile/setup`)
+        // 처음 가입 — 닉네임·동의를 마치면 보던 화면으로
+        return NextResponse.redirect(`${origin}/profile/setup?redirect=${encodeURIComponent(redirect)}`)
       }
       return NextResponse.redirect(`${origin}${redirect}`)
     }

@@ -74,7 +74,9 @@ export default function ProfileSetupPage() {
     // 가입 동의 기록 (필수 4개 + 선택 알림). 실패해도 가입은 진행 — 다음 접속 때 동의 화면이 다시 뜬다
     await recordConsents(consent.marketing)
 
-    window.location.href = '/'
+    // 가입 전에 보던 화면으로 돌아간다 (/auth/callback 이 ?redirect= 로 넘겨준다)
+    const back = new URLSearchParams(window.location.search).get('redirect')
+    window.location.href = back && back.startsWith('/') && !back.startsWith('//') ? back : '/'
   }
 
   return (

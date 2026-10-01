@@ -86,33 +86,13 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
     })
   }, [])
 
-  // 위치 표본 처리 → running이면 서버 ping까지
-  const handlePosition = useCallback(async (pos: GeolocationPosition) => {
+  /* 위치는 이 기기 안에서만 쓴다 (지도에 내 위치·다음 장소까지 거리 표시).
+     GPS 자동 방문 확인은 하지 않는다 — 서버로 위치를 보내지 않고, 방문은 직접 체크로만 남긴다. */
+  const handlePosition = useCallback((pos: GeolocationPosition) => {
     const lat = pos.coords.latitude, lng = pos.coords.longitude
     const accuracy = pos.coords.accuracy ?? 9999
     setGeoDenied(false)
     setLocation({ lat, lng, accuracy })
-    const sid = sessionRef.current
-    if (!sid || phaseRef.current !== 'running') return
-    const { ok, data } = await postJson('/api/route-session/ping', { sessionId: sid, lat, lng, accuracy })
-    if (ok && Array.isArray(data.confirmed) && data.confirmed.length) {
-      const cps = checkpointsRef.current
-      setVisitStatus(vsPrev => {
-        const m = new Map(vsPrev)
-        for (const c of data.confirmed) {
-          const cp = cps.find(x => x.key === c.key)
-          m.set(c.key, cp?.kind === 'building' ? 'checkpoint_verified' : 'proximity_verified')
-        }
-        return m
-      })
-      setArrivals(prev => {
-        const seen = new Set(prev.map(a => a.key))
-        const add = data.confirmed
-          .filter((c: any) => !seen.has(c.key))
-          .map((c: any) => ({ id: `${c.key}:${pos.timestamp}`, key: c.key, label: c.label ?? '도착', distanceM: Math.round(c.distanceM ?? 0) }))
-        return [...prev, ...add]
-      })
-    }
   }, [])
 
   const handleGeoError = useCallback((err: GeolocationPositionError) => {

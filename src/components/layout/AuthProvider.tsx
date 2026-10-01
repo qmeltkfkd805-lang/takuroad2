@@ -98,6 +98,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => { active = false; subscription.unsubscribe() }
   }, [])
 
+  // 로그인하고 돌아올 곳 — 로그인·가입 관련 화면이 아닌 마지막으로 본 화면을 기억해 둔다 (/login 이 읽는다)
+  useEffect(() => {
+    if (!pathname || typeof window === 'undefined') return
+    if (CONSENT_EXEMPT.some((p) => p !== '/policies' && pathname.startsWith(p))) return
+    try { sessionStorage.setItem('taku:returnTo', pathname + window.location.search) } catch { /* 저장소 막힘 */ }
+  }, [pathname])
+
   // 로그인했는데 프로필이 없으면 → 닉네임 설정으로 강제 이동
   useEffect(() => {
     if (loading || !profileLoaded) return   // 아직 판단할 준비 안 됨
