@@ -221,17 +221,20 @@ export default function RouteExplorePage() {
             {sort === 'recommended' ? (
               <>
                 {[
-                  { key: 'popular', title: '지금 인기 있는 루트', list: popular.filter(r => r.id !== hero?.id).slice(0, 4), more: 'sort=popular' },
-                  { key: 'new', title: '새로 등록된 루트', list: recent.filter(r => r.id !== hero?.id).slice(0, 4), more: 'sort=latest' },
+                  { key: 'popular', title: '지금 인기 있는 루트', list: popular.filter(r => r.id !== hero?.id).slice(0, 8), more: 'sort=popular' },
+                  { key: 'new', title: '새로 등록된 루트', list: recent.filter(r => r.id !== hero?.id).slice(0, 8), more: 'sort=latest' },
                 ].filter(sec => sec.list.length > 0).map(sec => (
                   <section key={sec.key} className={styles.mlist}>
                     <div className={styles.mlistHead}>
                       <h2 className={styles.mlistTitle}>{sec.title}</h2>
                       <button className={styles.mlistMore} onClick={() => toAll(sec.more)}>전체 보기<ChevR size={12} /></button>
                     </div>
-                    <div className={styles.mcards}>
+                    {/* PC처럼 카드형 — 가로로 놓고 옆으로 밀어서 넘긴다 */}
+                    <div className={styles.mrail}>
                       {sec.list.map(r => (
-                        <RouteResultCard key={r.id} route={r} view="list" mapVariant="preview" saved={savedIds.has(r.id)} onOpen={() => go(r)} onToggleSave={e => onSave(e, r)} />
+                        <div key={r.id} className={styles.mrailItem}>
+                          <RouteResultCard route={r} mapVariant="preview" saved={savedIds.has(r.id)} onOpen={() => go(r)} onToggleSave={e => onSave(e, r)} />
+                        </div>
                       ))}
                     </div>
                   </section>

@@ -260,3 +260,8 @@
 .mlocRegion { border: 1px solid var(--border); background: var(--surface); color: var(--text); }
 
 .mDiscover { margin-top: 28px; }
+
+/* 모바일 가로 카드 줄 (인기·새 루트) — 옆으로 밀어서 넘기기 */
+.mrail { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; margin: 0 -16px; padding: 2px 16px 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.mrail::-webkit-scrollbar { display: none; }
+.mrailItem { flex: 0 0 78%; max-width: 300px; scroll-snap-align: start; min-width: 0; }
