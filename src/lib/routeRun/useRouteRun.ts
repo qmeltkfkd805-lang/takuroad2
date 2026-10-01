@@ -63,6 +63,7 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
   const [location, setLocation] = useState<RunLocation | null>(null)
   const [geoDenied, setGeoDenied] = useState(false)
   const [arrivals, setArrivals] = useState<Arrival[]>([])
+  const [startError, setStartError] = useState<string | null>(null)   // 시작 실패 이유(서버 error 코드 또는 'network')
   const [hasExistingSession, setHasExistingSession] = useState(false)   // 이어갈 수 있는 세션이 있음(자동 진입은 안 함)
 
   const sessionRef = useRef<string | null>(null)
@@ -155,9 +156,13 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
 
   const start = useCallback(async () => {
     if (!routeId) return
-    setPhase('loading')
+    setPhase('loading'); setStartError(null)
     const { ok, data } = await postJson('/api/route-session/start', { routeId })
-    if (!ok || !data.session) { setPhase('error'); return }
+    if (!ok || !data.session) {
+      console.error('[루트 시작 실패]', data?.error ?? 'network')
+      setStartError(String(data?.error ?? 'network'))
+      setPhase('error'); return
+    }
     applyStart(data)
     setHasExistingSession(false)
     setPhase('running')
@@ -290,6 +295,7 @@ export function useRouteRun(routeId: string | null, opts: { autoStart: boolean; 
     location,
     hasFix: !!location,
     hasExistingSession,
+    startError,
     geoDenied,
     arrivals,
     requestLocationNow,

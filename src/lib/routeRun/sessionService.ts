@@ -75,13 +75,14 @@ export async function createOrResumeSession(client: SupabaseClient, routeId: str
   const { data: session, error } = await client.from('route_sessions')
     .insert({ route_id: routeId, user_id: userId, status: 'active', checkpoints: stored } as any)
     .select('*').single()
-  if (error || !session) return { error: 'create_failed' as const }
+  if (error || !session) { console.error('[route session] create', error?.code, error?.message); return { error: 'create_failed' as const } }
 
   const visitRows = stored.map(c => ({
     session_id: (session as any).id, checkpoint_key: c.key,
     shop_id: c.kind === 'shop' ? shopIdOf(c.shopIds[0]) : null, status: 'pending',
   }))
-  await client.from('route_session_visits').insert(visitRows as any)
+  const { error: vErr } = await client.from('route_session_visits').insert(visitRows as any)
+  if (vErr) console.error('[route session] visits', vErr.code, vErr.message)
   return { session, visits: await loadVisits(client, (session as any).id), resumed: false }
 }
 

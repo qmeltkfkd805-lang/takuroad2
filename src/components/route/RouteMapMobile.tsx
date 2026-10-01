@@ -118,7 +118,19 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
     return () => { cancelled = true }
   }, [route?.id, pathReload])
 
-  useEffect(() => { if (!toast) return; const t = setTimeout(() => setToast(null), 1500); return () => clearTimeout(t) }, [toast])
+  useEffect(() => { if (!toast) return; const t = setTimeout(() => setToast(null), toast.startsWith('루트를 시작하지') ? 5000 : 1500); return () => clearTimeout(t) }, [toast])
+  // 루트 시작이 실패하면 이유를 보여준다 (그냥 아무 일 없는 것처럼 보이지 않게)
+  useEffect(() => {
+    if (run.phase !== 'error') return
+    const why: Record<string, string> = {
+      network: '인터넷 연결을 확인해 주세요',
+      route_not_found: '루트를 찾지 못했어요',
+      no_coords: '위치가 있는 장소가 없어요',
+      create_failed: '진행 기록을 만들지 못했어요',
+    }
+    const code = run.startError ?? 'network'
+    setToast(`루트를 시작하지 못했어요 — ${why[code] ?? code}. 다시 눌러 주세요.`)
+  }, [run.phase, run.startError])
   useEffect(() => {
     if (!menuOpen) return
     const h = (e: MouseEvent) => { if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false) }
