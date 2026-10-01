@@ -4,11 +4,15 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { readFirstTouch, channelOf } from '@/lib/utils/firstTouch'
+import ConsentChecklist, { EMPTY_CONSENT, requiredDone, type ConsentValue } from '@/components/auth/ConsentChecklist'
+import { recordConsents } from '@/lib/consent'
 
 export default function ProfileSetupPage() {
   const [nickname, setNickname] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [consent, setConsent] = useState<ConsentValue>(EMPTY_CONSENT)
+  const consentOk = requiredDone(consent)
   const router = useRouter()
 
   async function handleSubmit() {
@@ -19,6 +23,7 @@ export default function ProfileSetupPage() {
     if (trimmed.length > 20) return setError('닉네임은 20자 이하여야 해요')
     if (!/^[a-zA-Z0-9가-힣_]+$/.test(trimmed))
       return setError('한글, 영문, 숫자, 언더바(_)만 사용 가능해요')
+    if (!consentOk) return setError('필수 동의 항목에 모두 동의해 주세요')
 
     setLoading(true)
     setError('')
@@ -66,6 +71,9 @@ export default function ProfileSetupPage() {
       return
     }
 
+    // 가입 동의 기록 (필수 4개 + 선택 알림). 실패해도 가입은 진행 — 다음 접속 때 동의 화면이 다시 뜬다
+    await recordConsents(consent.marketing)
+
     window.location.href = '/'
   }
 
@@ -80,21 +88,14 @@ export default function ProfileSetupPage() {
     }}>
       <div style={{
         width: '100%',
-        maxWidth: '360px',
+        maxWidth: '520px',
         background: 'var(--surface)',
         border: '1.5px solid var(--border)',
         borderRadius: '16px',
         padding: '32px 24px',
       }}>
-        <div style={{
-          fontFamily: "'Cute Font', cursive",
-          fontSize: '28px',
-          color: 'var(--accent)',
-          letterSpacing: '2px',
-          marginBottom: '4px',
-        }}>
-          TAKUROAD
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/brand/takuroad-logo.png" alt="타쿠로드 TAKUROAD" style={{ display: 'block', height: 40, width: 'auto', marginBottom: 12 }} />
         <h1 style={{ fontSize: '18px', fontWeight: 900, marginBottom: '8px' }}>
           닉네임을 설정해주세요
         </h1>
@@ -130,23 +131,27 @@ export default function ProfileSetupPage() {
           </p>
         )}
 
+        <div style={{ margin: '20px 0 18px' }}>
+          <ConsentChecklist value={consent} onChange={v => { setConsent(v); setError('') }} />
+        </div>
+
         <button
           onClick={handleSubmit}
-          disabled={loading || !nickname.trim()}
+          disabled={loading || !nickname.trim() || !consentOk}
           style={{
             width: '100%',
             padding: '12px',
-            background: loading || !nickname.trim() ? 'var(--border)' : 'var(--accent)',
+            background: loading || !nickname.trim() || !consentOk ? 'var(--border)' : 'var(--accent)',
             color: '#fff',
             border: 'none',
             borderRadius: '10px',
             fontSize: '15px',
             fontFamily: 'inherit',
             fontWeight: 700,
-            cursor: loading || !nickname.trim() ? 'not-allowed' : 'pointer',
+            cursor: loading || !nickname.trim() || !consentOk ? 'not-allowed' : 'pointer',
           }}
         >
-          {loading ? '설정 중...' : '시작하기'}
+          {loading ? '설정 중...' : '동의하고 시작하기'}
         </button>
 
         <p style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '12px', textAlign: 'center' }}>

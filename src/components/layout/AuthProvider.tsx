@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { User } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
 import { Profile } from '@/types/database'
+import { getConsentStatus } from '@/lib/consent'
 
 interface AuthContextType {
   user: User | null
@@ -14,6 +15,8 @@ interface AuthContextType {
   signOut: () => Promise<void>
   /** 현재 로그인 유저의 프로필을 다시 읽어 전역 상태를 갱신한다(저장 후 즉시 반영용). */
   refreshProfile: () => Promise<void>
+  /** 동의를 남긴 뒤 다시 확인 (/consent 에서 부른다) */
+  refreshConsent: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -23,16 +26,22 @@ const AuthContext = createContext<AuthContextType>({
   isAdmin: false,
   signOut: async () => {},
   refreshProfile: async () => {},
+  refreshConsent: async () => {},
 })
 
 // 프로필 없이도 머무를 수 있는 경로 (닉네임 설정 강제 이동 제외)
 const SETUP_EXEMPT = ['/profile/setup', '/login', '/auth']
+// 동의 전에도 볼 수 있는 경로 (동의 화면 · 약관 전문 · 로그인)
+const CONSENT_EXEMPT = ['/consent', '/policies', '/profile/setup', '/login', '/auth']
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
   const [profileLoaded, setProfileLoaded] = useState(false)
+  // 지금 버전 동의 여부 — null = 아직 모름 (확인이 안 되면 막지 않는다)
+  const [consentOk, setConsentOk] = useState<boolean | null>(null)
+  const [consentFor, setConsentFor] = useState<string | null>(null)
 
   const router = useRouter()
   const pathname = usePathname()
@@ -98,6 +107,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.replace('/profile/setup')
   }, [loading, profileLoaded, user, profile, pathname, router])
 
+  // 가입 동의 확인 — 프로필이 있는 회원이 지금 버전에 동의하지 않았으면 동의 화면으로 (기존 회원 포함, 한 번만)
+  async function checkConsent(uid: string) {
+    const st = await getConsentStatus()
+    setConsentFor(uid)
+    setConsentOk(st ? st.current : true)
+  }
+  useEffect(() => {
+    if (!user || !profile) { setConsentOk(null); setConsentFor(null); return }
+    if (consentFor === user.id) return
+    checkConsent(user.id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, profile])
+  useEffect(() => {
+    if (consentOk !== false || !user || !profile || !pathname) return
+    if (CONSENT_EXEMPT.some((p) => pathname.startsWith(p))) return
+    const here = pathname + (typeof window !== 'undefined' ? window.location.search : '')
+    router.replace(`/consent?redirect=${encodeURIComponent(here)}`)
+  }, [consentOk, user, profile, pathname, router])
+  async function refreshConsent() {
+    const { data: { user: cur } } = await supabase.auth.getUser()
+    if (cur) await checkConsent(cur.id)
+  }
+
   async function signOut() {
     await supabase.auth.signOut()
     setUser(null)
@@ -120,6 +152,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAdmin: profile?.role === 'admin',
       signOut,
       refreshProfile,
+      refreshConsent,
     }}>
       {children}
     </AuthContext.Provider>
