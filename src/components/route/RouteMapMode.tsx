@@ -111,7 +111,7 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
 
   const stops = useMemo(() => (route?.route_shops ?? []).slice().sort((a: any, b: any) => a.sort_order - b.sort_order), [route])
   // 따라가기 '다음 장소' — 직접 체크하지 않은 첫 장소 (GPS 자동 확인은 쓰지 않는다)
-  const runStops = useMemo(() => stops.map((rs: any) => rs.shops).filter((s: any) => s && s.id), [stops])
+  const runStops: any[] = useMemo(() => stops.map((rs: any) => rs.shops).filter((s: any) => s && s.id), [stops])
   const runNextShop = runStops.find((s: any) => !run.confirmedShopIds.has(s.id) && !visitedIds.has(s.id)) ?? null
   const runNext = runNextShop && typeof runNextShop.lat === 'number' && typeof runNextShop.lng === 'number'
     ? { key: `shop:${runNextShop.id}`, kind: 'shop' as const, label: runNextShop.name, lat: runNextShop.lat, lng: runNextShop.lng, shopIds: [runNextShop.id] }
@@ -366,7 +366,7 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
           <ArrivalToast arrivals={run.arrivals} onUndo={run.undo} onDismiss={run.dismissArrival} />
           <RouteRunSheet
             phase={run.phase}
-            verifiedCount={runStops.filter(s => run.confirmedShopIds.has(s.id)).length}
+            verifiedCount={runStops.filter((s: any) => run.confirmedShopIds.has(s.id)).length}
             totalCheckpoints={runStops.length}
             nextCheckpoint={runNext}
             nextDistanceM={runNext && run.location ? Math.round(calcDistance(run.location.lat, run.location.lng, runNext.lat, runNext.lng)) : null}
