@@ -7,6 +7,7 @@ import {
   getEventGoods, createEventGoods, updateEventGoods, hideEventGoods, uploadGoodsImage,
 } from '@/services/eventGoodsService'
 import { EventIcon } from './EventIcon'
+import PhotoViewer from '@/components/route/FloorMapViewer'
 
 const EMPTY: GoodsInput = { name: '', kind: 'goods', price: null, imageUrl: null }
 const won = (n: number) => `${n.toLocaleString('ko-KR')}원`
@@ -69,55 +70,21 @@ export default function EventGoodsTab({ eventId }: { eventId: string }) {
         </button>
       )}
 
-      {zoom && <Lightbox src={zoom} onClose={() => setZoom(null)} />}
-    </div>
-  )
-}
-
-/** 이미지 확대 — 바깥 클릭·ESC·× 로 닫힘 */
-function Lightbox({ src, onClose }: { src: string; onClose: () => void }) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
-    document.addEventListener('keydown', onKey)
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = prev
-    }
-  }, [onClose])
-
-  return (
-    <div
-      onClick={onClose}
-      style={{
-        position: 'fixed', inset: 0, zIndex: 1000,
-        background: 'rgba(16,16,24,.86)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: 24, cursor: 'zoom-out',
-      }}
-    >
-      <img
-        src={src}
-        alt=""
-        onClick={e => e.stopPropagation()}
-        style={{
-          maxWidth: '100%', maxHeight: '100%', objectFit: 'contain',
-          borderRadius: 12, cursor: 'default',
-        }}
-      />
-      <button
-        onClick={onClose}
-        aria-label="닫기"
-        style={{
-          position: 'absolute', top: 20, right: 20,
-          width: 40, height: 40, borderRadius: 9999, border: 'none',
-          background: 'rgba(255,255,255,.14)', color: '#fff',
-          fontSize: 20, cursor: 'pointer', lineHeight: 1,
-        }}
-      >
-        ×
-      </button>
+      {/* 사진 크게 보기 — 메뉴·굿즈 사진을 옆으로 넘기며 본다 (목록 순서: 메뉴 → 굿즈) */}
+      {zoom && (
+        <PhotoViewer
+          name="메뉴·굿즈"
+          card
+          slides={[...menus, ...goods].filter(r => r.imageUrl).map(r => ({
+            key: r.id, url: r.imageUrl as string,
+            label: r.name || (r.kind === 'menu' ? '메뉴' : '굿즈'),
+            title: r.name || null,
+            sub: r.price != null ? won(r.price) : null,
+          }))}
+          startKey={zoom}
+          onClose={() => setZoom(null)}
+        />
+      )}
     </div>
   )
 }
@@ -131,7 +98,7 @@ function Group({
   setEditing: (v: string | 'new' | null) => void
   onSaved: () => void
   onHide: (id: string) => void
-  onZoom: (src: string) => void
+  onZoom: (id: string) => void
   eventId: string
   userId?: string
 }) {
@@ -154,7 +121,7 @@ function Group({
             <div key={item.id} style={card}>
               <div
                 style={{ ...thumb, cursor: item.imageUrl ? 'zoom-in' : 'default' }}
-                onClick={() => item.imageUrl && onZoom(item.imageUrl)}
+                onClick={() => item.imageUrl && onZoom(item.id)}
               >
                 {item.imageUrl
                   ? <img src={item.imageUrl} alt={item.name ?? ''} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
