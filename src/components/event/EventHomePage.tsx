@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useIsDesktop } from '@/hooks/useIsDesktop'
@@ -241,6 +241,14 @@ export default function EventHomePage() {
 
   const [tab, setTab] = useState<StatusTab>('all')
   const [search, setSearch] = useState('')
+  // 검색하는 동안 결과 칸 높이를 줄이지 않는다 — 결과 수에 따라 페이지가 줄었다 늘었다 하며 화면이 튀지 않게
+  const resultsRef = useRef<HTMLDivElement>(null)
+  const [resultsMinH, setResultsMinH] = useState(0)
+  const onSearchChange = (v: string) => {
+    if (!v.trim()) setResultsMinH(0)
+    else setResultsMinH(h => Math.max(h, resultsRef.current?.offsetHeight ?? 0))
+    setSearch(v)
+  }
   const [region, setRegion] = useState<string | null>(null)
   const [type, setType] = useState<string | null>(null)
   const [period, setPeriod] = useState<Period>('all')
@@ -451,7 +459,7 @@ export default function EventHomePage() {
       <div className={styles.controls}>
         <div className={styles.search}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3-3" /></svg>
-          <input className={styles.searchInput} placeholder="이벤트명·작품 검색" value={search} onChange={e => setSearch(e.target.value)} />
+          <input className={styles.searchInput} placeholder="이벤트명·작품 검색" value={search} onChange={e => onSearchChange(e.target.value)} />
         </div>
         {isDesktop ? (
           <>
@@ -479,6 +487,7 @@ export default function EventHomePage() {
       </div>
 
       {/* 포스터 그리드 */}
+      <div ref={resultsRef} style={resultsMinH ? { minHeight: resultsMinH } : undefined}>
       {(tab === 'ended' ? endedState !== 'done' : loading) ? (
         <div className={styles.grid}>
           {[0, 1, 2, 3].map(i => <div key={i} className={styles.skel} />)}
@@ -490,7 +499,7 @@ export default function EventHomePage() {
             : tab === 'ended'
               ? `최근 ${ENDED_WINDOW_DAYS}일 안에 끝난 이벤트가 없어요.`
               : '선택한 조건의 이벤트가 없어요.'}
-          {activeChips.length > 0 && <button className={styles.emptyReset} onClick={() => { setRegion(null); setType(null); setPeriod('all'); setWorkId(null); setSelectedDay(null); setSearch('') }}>필터 초기화</button>}
+          {activeChips.length > 0 && <button className={styles.emptyReset} onClick={() => { setRegion(null); setType(null); setPeriod('all'); setWorkId(null); setSelectedDay(null); onSearchChange('') }}>필터 초기화</button>}
         </div>
       ) : (
         <div className={styles.grid}>
@@ -500,6 +509,7 @@ export default function EventHomePage() {
           ))}
         </div>
       )}
+      </div>
 
       {/* 필터 시트 (작품 + 기간 + 지역/종류(모바일) + 초기화) */}
       {sheet && (
