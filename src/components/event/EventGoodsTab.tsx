@@ -9,6 +9,7 @@ import {
 import { EventIcon } from './EventIcon'
 import PhotoViewer from '@/components/route/FloorMapViewer'
 
+const KIND_LABEL: Record<GoodsKind, string> = { perk: '특전', menu: '메뉴', goods: '굿즈' }
 const EMPTY: GoodsInput = { name: '', kind: 'goods', price: null, imageUrl: null }
 const won = (n: number) => `${n.toLocaleString('ko-KR')}원`
 
@@ -32,21 +33,23 @@ export default function EventGoodsTab({ eventId }: { eventId: string }) {
     if (await hideEventGoods(id, user.id)) load()
   }
 
+  const perks = rows.filter(r => r.kind === 'perk')   // 특전이 제일 위
   const menus = rows.filter(r => r.kind === 'menu')
   const goods = rows.filter(r => r.kind === 'goods')
 
   return (
     <div>
       <p style={notice}>
-        이벤트에 등록된 메뉴·굿즈예요. <strong>틀린 정보가 있으면 누구나 고칠 수 있습니다.</strong>
+        이벤트에 등록된 특전·메뉴·굿즈예요. <strong>틀린 정보가 있으면 누구나 고칠 수 있습니다.</strong>
       </p>
 
       {loading ? (
         <p style={muted}>불러오는 중…</p>
       ) : rows.length === 0 && editing !== 'new' ? (
-        <p style={muted}>아직 등록된 메뉴·굿즈가 없어요. 다녀오셨다면 먼저 등록해주세요.</p>
+        <p style={muted}>아직 등록된 특전·메뉴·굿즈가 없어요. 다녀오셨다면 먼저 등록해주세요.</p>
       ) : (
         <>
+          {perks.length > 0 && <Group title="특전" items={perks} editing={editing} setEditing={setEditing} onSaved={load} onHide={hide} onZoom={setZoom} eventId={eventId} userId={user?.id} />}
           {menus.length > 0 && <Group title="메뉴" items={menus} editing={editing} setEditing={setEditing} onSaved={load} onHide={hide} onZoom={setZoom} eventId={eventId} userId={user?.id} />}
           {goods.length > 0 && <Group title="굿즈" items={goods} editing={editing} setEditing={setEditing} onSaved={load} onHide={hide} onZoom={setZoom} eventId={eventId} userId={user?.id} />}
         </>
@@ -66,18 +69,18 @@ export default function EventGoodsTab({ eventId }: { eventId: string }) {
           onClick={() => (user ? setEditing('new') : router.push('/login'))}
           style={addBtn}
         >
-          + 메뉴·굿즈 추가하기
+          + 특전·메뉴·굿즈 추가하기
         </button>
       )}
 
-      {/* 사진 크게 보기 — 메뉴·굿즈 사진을 옆으로 넘기며 본다 (목록 순서: 메뉴 → 굿즈) */}
+      {/* 사진 크게 보기 — 옆으로 넘기며 본다 (목록 순서: 특전 → 메뉴 → 굿즈) */}
       {zoom && (
         <PhotoViewer
-          name="메뉴·굿즈"
+          name="특전·메뉴·굿즈"
           card
-          slides={[...menus, ...goods].filter(r => r.imageUrl).map(r => ({
+          slides={[...perks, ...menus, ...goods].filter(r => r.imageUrl).map(r => ({
             key: r.id, url: r.imageUrl as string,
-            label: r.name || (r.kind === 'menu' ? '메뉴' : '굿즈'),
+            label: r.name || KIND_LABEL[r.kind],
             title: r.name || null,
             sub: r.price != null ? won(r.price) : null,
           }))}
@@ -195,7 +198,7 @@ function GoodsForm({
   return (
     <div style={{ background: 'var(--surface2)', borderRadius: 14, padding: 16 }}>
       <div style={{ display: 'flex', gap: 6, marginBottom: 12 }}>
-        {(['goods', 'menu'] as GoodsKind[]).map(k => (
+        {(['perk', 'goods', 'menu'] as GoodsKind[]).map(k => (
           <button
             key={k}
             onClick={() => setForm(f => ({ ...f, kind: k }))}
@@ -207,7 +210,7 @@ function GoodsForm({
               color: form.kind === k ? 'var(--accent)' : 'var(--text)',
             }}
           >
-            {k === 'goods' ? '굿즈' : '메뉴'}
+            {KIND_LABEL[k]}
           </button>
         ))}
       </div>

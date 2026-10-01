@@ -2,7 +2,8 @@ import { createClient } from '@/lib/supabase/client'
 import { prepareImage } from '@/lib/storage/compressImage'
 import { uploadContentAddressed } from '@/lib/storage/contentAddressed'
 
-export type GoodsKind = 'menu' | 'goods'
+/** perk = 특전 (구매·입장 시 받는 증정품) — migrations/event_goods_perk.sql */
+export type GoodsKind = 'perk' | 'menu' | 'goods'
 
 export interface EventGoods {
   id: string
