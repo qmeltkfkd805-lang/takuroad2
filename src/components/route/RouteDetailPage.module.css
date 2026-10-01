@@ -67,7 +67,7 @@
 .publishAction { display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 9px; border-radius: 9px; border: none; background: var(--accent); color: #fff; font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
 
 /* ── 지도 ── */
-.mapWrap { position: relative; height: 420px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: var(--surface2); }
+.mapWrap { position: relative; height: 210px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: var(--surface2); }
 .bigMapBtn { position: absolute; top: 12px; right: 12px; z-index: 3; display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,.95); color: var(--text); font-family: inherit; font-size: 12.5px; font-weight: 800; cursor: pointer; }
 .bigMapBtn:hover { border-color: var(--accent); color: var(--accent); }
 .mapPlaceholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--muted); font-size: 13px; }
@@ -223,7 +223,7 @@
 .toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); z-index: 80; background: rgba(30,30,35,.94); color: #fff; padding: 11px 18px; border-radius: 9999px; font-size: 13.5px; font-weight: 700; box-shadow: 0 6px 20px rgba(0,0,0,.25); }
 
 /* ── 반응형 ── */
-@media (max-width: 1180px) { .mapWrap { height: 360px; } }
+@media (max-width: 1180px) { .mapWrap { height: 210px; } }
 @media (max-width: 1024px) {
   .rail { display: none; }
   .main { flex-basis: 100%; }

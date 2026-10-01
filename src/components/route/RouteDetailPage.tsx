@@ -660,7 +660,7 @@ export default function RouteDetailPage({ route }: { route: any }) {
             <div className={styles.mapWrap}>
               {shopsWithCoords.length > 0 ? (
                 <>
-                  <RouteThumb stops={rtStops(route)} showEnds height={420} variant="detail" />
+                  <RouteThumb stops={rtStops(route)} showEnds height={210} variant="detail" />
                 </>
               ) : (
                 <div className={styles.mapPlaceholder}><ColorIcon name="colormap" size={30} /><span>좌표 정보가 없어요</span></div>
