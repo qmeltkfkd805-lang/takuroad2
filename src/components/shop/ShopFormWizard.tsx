@@ -15,7 +15,6 @@ import AdminPlaceAccessNote from './AdminPlaceAccessNote'
 import { getTodayStatus } from '@/lib/utils/date'
 import ShopEnrichmentSection from './ShopEnrichmentSection'
 import ShopEventLinkPanel from './ShopEventLinkPanel'
-import ShopHighlightManager from './ShopHighlightManager'
 import PhotosManage from './PhotosManage'
 import CompletenessIndicator from './CompletenessIndicator'
 import ShopHoursEditor, { HOURS_HINT } from './ShopHoursEditor'
@@ -32,8 +31,7 @@ const STEPS = [
   { n: 1, label: '기본 정보' },
   { n: 2, label: '사진' },
   { n: 3, label: '취급 작품 & 상품' },
-  { n: 4, label: '추천 코너' },
-  { n: 5, label: '확인 & 등록' },
+  { n: 4, label: '확인 & 등록' },
 ]
 
 const TIPS = [
@@ -104,7 +102,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
       if (d.form) setForm({ ...EMPTY_FORM, ...d.form })
       if (Array.isArray(d.links) && d.links.length) setLinks(d.links)
       if (d.createdShopId) { setCreatedShopId(d.createdShopId); setCreatedShopSlug(d.createdShopSlug ?? null) }
-      if (d.step && (d.step === 1 || d.createdShopId)) setStep(d.step)
+      if (d.step && (d.step === 1 || d.createdShopId)) setStep(Math.min(STEPS.length, d.step))
     },
     d => !d.createdShopId && JSON.stringify(d.form) === JSON.stringify(EMPTY_FORM) && d.links.every(l => !l.trim()),
   )
@@ -489,16 +487,8 @@ export default function ShopFormWizard({ mode, shop }: Props) {
           </>
         )}
 
-        {/* STEP 4 — 추천 코너 (사진 관리는 2단계) */}
+        {/* STEP 4 — 확인 & 등록 */}
         {step === 4 && (
-          <>
-            <StepHead icon={<Svg size={20} color="var(--accent)"><path d="m12 3 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9z" /></Svg>} title="추천 코너" sub="“이 샵 가면 이것만큼은 꼭 보세요” — 가본 사람만 아는 포인트를 알려주세요." />
-            {canEnrich && shopId && shopSlug ? <ShopHighlightManager shopId={shopId} shopSlug={shopSlug} /> : <NeedSave />}
-          </>
-        )}
-
-        {/* STEP 5 — 확인 & 등록 */}
-        {step === 5 && (
           <>
             <StepHead icon={<Svg size={20} color="var(--accent)"><path d="m5 12 5 5L20 6" /></Svg>} title="마지막으로 확인해요" sub="입력한 정보를 확인하고 등록을 완료해주세요." />
             {shopId && <div style={{ marginBottom: 16 }}><CompletenessIndicator shopId={shopId} /></div>}
