@@ -1,6 +1,7 @@
-import { BusinessHours } from '@/types/database'
+import { BusinessHours, DayHours } from '@/types/database'
 import { WEEKDAYS, WEEKDAY_LABEL } from '@/lib/constants/categories'
 import { isMonthlyOffDate } from './monthlyOff'
+import { holidayName } from './krHolidays'
 
 const DAY_INDEX: Record<string, number> = {
   sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6,
@@ -29,7 +30,13 @@ export function getTodayStatus(hours: BusinessHours | null): {
   const dayNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
   const todayKey = dayNames[today.getDay()] as keyof BusinessHours
 
-  const todayData = hours[todayKey]
+  // 공휴일(빨간날)이면 매장이 정해 둔 공휴일 규칙(휴무 / 다른 시간)을 먼저 따른다
+  const hol = holidayName(today)
+  const rule = hol ? getHolidayRule(hours) : null
+  if (rule === 'closed' && !isMonthlyOffDate(hours, today)) {
+    return { isOpen: false, label: '오늘 공휴일 휴무', todayHours: null }
+  }
+  const todayData = rule && rule !== 'closed' ? rule : hours[todayKey]
 
   // 키 자체가 없으면 정보 없음
   if (todayData === undefined) {
@@ -72,6 +79,71 @@ export function getTodayStatus(hours: BusinessHours | null): {
     label: inBreak ? '휴게시간' : isOpen ? '영업중' : '영업 종료',
     todayHours,
   }
+}
+
+/* ── 공휴일(빨간날) 영업시간 ─────────────────────────────
+   hours.holiday = 'closed'                → 공휴일 휴무
+   hours.holiday = { open, close, break? } → 공휴일엔 이 시간에 연다
+   없으면 공휴일도 평소 요일 시간대로. 공휴일 날짜는 krHolidays.ts. */
+export type HolidayRule = 'closed' | DayHours
+
+export function getHolidayRule(hours: unknown): HolidayRule | null {
+  const h = (hours as any)?.holiday
+  if (h === 'closed') return 'closed'
+  if (h && typeof h === 'object' && h.open && h.close) {
+    const dh: DayHours = { open: h.open, close: h.close }
+    if (h.breakStart && h.breakEnd) { dh.breakStart = h.breakStart; dh.breakEnd = h.breakEnd }
+    return dh
+  }
+  return null
+}
+
+/** 하루 영업시간 → "10:30 ~ 22:00" (휴게 있으면 "10:30 ~ 15:00, 16:00 ~ 22:00") */
+export function formatDayHours(dh: DayHours): string {
+  return dh.breakStart && dh.breakEnd
+    ? `${dh.open} ~ ${dh.breakStart}, ${dh.breakEnd} ~ ${displayClose(dh.open, dh.close)}`
+    : `${dh.open} ~ ${displayClose(dh.open, dh.close)}`
+}
+
+/** 그 날짜의 영업시간 — 정기휴무 > 공휴일 규칙 > 요일 시간. null = 휴무, undefined = 정보 없음 */
+export function hoursForDate(hours: BusinessHours | null, date: Date): DayHours | null | undefined {
+  if (!hours) return undefined
+  if (isMonthlyOffDate(hours, date)) return null
+  if (holidayName(date)) {
+    const rule = getHolidayRule(hours)
+    if (rule === 'closed') return null
+    if (rule) return rule
+  }
+  return hours[DAY_KEYS[date.getDay()]]
+}
+const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const
+
+/** 요약 문구 — "공휴일 휴무" / "공휴일 10:30 ~ 22:00". 규칙이 없으면 null */
+export function holidayRuleLabel(hours: unknown): string | null {
+  const rule = getHolidayRule(hours)
+  if (!rule) return null
+  return rule === 'closed' ? '공휴일 휴무' : `공휴일 ${formatDayHours(rule)}`
+}
+
+/** 앞으로 n일 안의 공휴일과 그날 영업시간 — 공휴일 규칙이 있는 매장만.
+    예) [{ label: '10/3(토)', name: '개천절', hours: '10:30 ~ 22:00', closed: false }] */
+export function upcomingHolidays(hours: BusinessHours | null, now: Date = new Date(), days = 7) {
+  if (!hours || !getHolidayRule(hours)) return []
+  const out: { key: string; label: string; name: string; hours: string; closed: boolean }[] = []
+  for (let i = 0; i < days; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i)
+    const name = holidayName(d)
+    if (!name) continue
+    const dh = hoursForDate(hours, d)
+    out.push({
+      key: `${d.getMonth() + 1}-${d.getDate()}`,
+      label: `${d.getMonth() + 1}/${d.getDate()}(${'일월화수목금토'[d.getDay()]})`,
+      name,
+      hours: dh ? formatDayHours(dh) : dh === null ? '휴무' : '정보 없음',
+      closed: dh === null,
+    })
+  }
+  return out
 }
 
 /**

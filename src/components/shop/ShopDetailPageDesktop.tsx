@@ -5,7 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Shop } from '@/types/shop'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
-import { getTodayStatus, getPopupStatus, formatBusinessHours } from '@/lib/utils/date'
+import { getTodayStatus, getPopupStatus, formatBusinessHours, holidayRuleLabel } from '@/lib/utils/date'
+import HolidayHoursRows from './HolidayHoursRows'
 import { monthlyOffLabel } from '@/lib/utils/monthlyOff'
 import { parseParkingRows } from '@/lib/utils/parkingNote'
 import { ROUTES } from '@/lib/constants/routes'
@@ -86,7 +87,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
   const snsAll = (shop.sns_links?.length ? shop.sns_links : (shop.shop_link ? [shop.shop_link] : []))
     .map(detectSns).filter(Boolean) as { name: string; url: string }[]
   const homepage = snsAll.find(x => x.name === 'globe') ?? null
-  const holidayClosed = (shop.hours as any)?.holiday === 'closed'
+  const holidayLabel = holidayRuleLabel(shop.hours)   // "공휴일 휴무" / "공휴일 10:30 ~ 22:00"
   const yearRound = (shop.hours as any)?.yearRound === true
   const monthlyOff = monthlyOffLabel(shop.hours)   // 예: "매월 둘째·넷째 일요일 휴무"
 
@@ -322,7 +323,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                     <span style={{ width: 7, height: 7, borderRadius: 9999, background: todayStatus.isOpen ? '#3ddc97' : '#ff8a8a' }} />
                     <strong style={{ color: todayStatus.isOpen ? '#3ddc97' : '#ff8a8a' }}>{todayStatus.label}</strong>
                     {todayStatus.todayHours && <span>· {todayStatus.todayHours}</span>}
-                    {holidayClosed && <span style={{ color: '#ffd0d0', fontWeight: 700 }}>· 공휴일 휴무</span>}
+                    {holidayLabel && <span style={{ color: '#ffd0d0', fontWeight: 700 }}>· {holidayLabel}</span>}
                     {yearRound && <span style={{ color: 'rgba(255,255,255,.9)' }}>· 연중무휴</span>}
                     {monthlyOff && <span style={{ color: '#ffd0d0', fontWeight: 700 }}>· {monthlyOff}</span>}
                   </span>
@@ -461,7 +462,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                               >
                                 <span style={{ color: todayStatus.isOpen ? '#14b8a0' : '#ef5a5a', fontWeight: 800 }}>{todayStatus.label}</span>
                                 {todayStatus.todayHours && <span style={{ color: 'var(--muted)' }}>· {todayStatus.todayHours}</span>}
-                                {holidayClosed && <span style={{ color: '#c0392b', fontWeight: 800 }}>· 공휴일 휴무</span>}
+                                {holidayLabel && <span style={{ color: '#c0392b', fontWeight: 800 }}>· {holidayLabel}</span>}
                                 {yearRound && <span style={{ color: 'var(--muted)', fontWeight: 700 }}>· 연중무휴</span>}
                                 {monthlyOff && <span style={{ color: '#c0392b', fontWeight: 800 }}>· {monthlyOff}</span>}
                                 {hasHours && (
@@ -485,6 +486,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                                       <span style={{ color: h.isOpen ? 'var(--text)' : 'var(--muted)', fontWeight: h.isOpen ? 600 : 400 }}>{h.hours}</span>
                                     </div>
                                   ))}
+                                  <HolidayHoursRows hours={shop.hours} />
                                 </div>
                               )}
                             </>
@@ -520,11 +522,6 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                           </span>
                     } />
                   </div>
-                  {holidayClosed && (
-                    <div style={{ marginTop: 12, padding: '10px 12px', borderRadius: 10, background: 'rgba(239,90,90,.09)', color: '#c0392b', fontSize: 13, fontWeight: 700 }}>
-                      영업 중으로 표시되어 있어도 공휴일은 휴무입니다.
-                    </div>
-                  )}
                   {!shop.is_claimed && <VerifyRequestButton shopId={shop.id} shopName={shop.name} slug={shop.slug} accentColor={color} />}
                 </Section>
 

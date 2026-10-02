@@ -18,11 +18,14 @@ import { getMonthlyOff, monthlyOffLabel, WEEK_KO, type MonthlyOff } from '@/lib/
    묶음은 편집용 화면 상태일 뿐, 저장할 때 요일별로 풀어서 넣는다.
    불러올 때는 같은 시간(휴게 포함)을 가진 요일끼리 다시 묶어 보여준다.
 
+   공휴일(빨간날): hours.holiday = 'closed'(휴무) 또는 { open, close, breakStart?, breakEnd? }(그날만 다른 시간).
+   없으면 공휴일도 평소 요일 시간대로. 공휴일 날짜 목록은 lib/utils/krHolidays.ts.
+
    ⚠️ hours(jsonb)에는 요일 키 외에 holiday·yearRound도 함께 들어간다.
       요일 키만 있다고 가정하는 코드를 새로 만들지 말 것. */
 
 type Day = typeof WEEKDAYS[number]
-type HoursMap = BusinessHours & { holiday?: 'closed'; yearRound?: boolean; monthlyOff?: MonthlyOff }
+type HoursMap = BusinessHours & { holiday?: 'closed' | DayHours; yearRound?: boolean; monthlyOff?: MonthlyOff }
 
 interface Group {
   id: number
@@ -71,6 +74,12 @@ function toHours(groups: Group[], extras: Extras): HoursMap {
     next[d] = dh
   }
   if (extras.holiday === 'closed') next.holiday = 'closed'
+  else if (extras.holiday && typeof extras.holiday === 'object') {
+    const h = extras.holiday
+    const dh: DayHours = { open: h.open, close: h.close }
+    if (h.breakStart && h.breakEnd) { dh.breakStart = h.breakStart; dh.breakEnd = h.breakEnd }
+    next.holiday = dh
+  }
   if (extras.yearRound) next.yearRound = true
   if (extras.monthlyOff && extras.monthlyOff.weeks.length && extras.monthlyOff.days.length) next.monthlyOff = extras.monthlyOff
   return next
@@ -116,6 +125,8 @@ export default function ShopHoursEditor({ value, onChange }: {
   const monthlyOff = getMonthlyOff(hours)
   const extras: Extras = { holiday: hours.holiday, yearRound: hours.yearRound, monthlyOff: monthlyOff ?? undefined }
   const holidayClosed = hours.holiday === 'closed'
+  const holidayHours: DayHours | null = hours.holiday && typeof hours.holiday === 'object' ? hours.holiday : null
+  const holidayMode: 'same' | 'closed' | 'custom' = holidayClosed ? 'closed' : holidayHours ? 'custom' : 'same'
   const yearRound = !!hours.yearRound
   /* 정기휴무를 켰지만 주·요일을 다 빼버린 상태도 화면에선 유지해야 해서 로컬로 들고 있는다.
      (저장값엔 주·요일이 하나 이상일 때만 들어간다) */
@@ -152,13 +163,25 @@ export default function ShopHoursEditor({ value, onChange }: {
     const rest = groups.filter(g => g.id !== id)
     emit(rest.length ? rest : [newGroup()])
   }
-  function toggleHoliday() {
-    emit(groups, holidayClosed ? { ...extras, holiday: undefined } : { ...extras, holiday: 'closed', yearRound: undefined })
+  /* 공휴일(빨간날): 평소와 같음 / 휴무 / 다른 시간 */
+  function setHolidayMode(mode: 'same' | 'closed' | 'custom') {
+    if (mode === 'same') emit(groups, { ...extras, holiday: undefined })
+    else if (mode === 'closed') emit(groups, { ...extras, holiday: 'closed', yearRound: undefined })
+    else if (!holidayHours) {
+      // 처음 고르면 주말(없으면 첫 번째) 영업시간을 가져와 시작한다
+      const base = groups.find(g => g.days.includes('sun') || g.days.includes('sat')) ?? groups.find(g => g.days.length) ?? groups[0]
+      emit(groups, { ...extras, holiday: { open: base?.open ?? DEFAULT_OPEN, close: base?.close ?? DEFAULT_CLOSE } })
+    }
+  }
+  function patchHolidayHours(patch: Partial<DayHours>) {
+    if (!holidayHours) return
+    emit(groups, { ...extras, holiday: { ...holidayHours, ...patch } })
   }
   function toggleYearRound() {
     // 연중무휴 ↔ 공휴일 휴무·정기휴무는 함께 쓸 수 없다
     if (!yearRound) setMonthlyDraft(null)
-    emit(groups, yearRound ? { ...extras, yearRound: undefined } : { holiday: undefined, yearRound: true, monthlyOff: undefined })
+    // 공휴일에 시간만 다른 건 연중무휴와 함께 쓸 수 있다
+    emit(groups, yearRound ? { ...extras, yearRound: undefined } : { holiday: holidayHours ?? undefined, yearRound: true, monthlyOff: undefined })
   }
   function toggleMonthly() {
     if (monthlyOn) {
@@ -268,9 +291,50 @@ export default function ShopHoursEditor({ value, onChange }: {
         </button>
       )}
 
-      {/* 공휴일·연중무휴 */}
+      {/* 공휴일(빨간날) — 대체공휴일 포함 */}
+      <div style={{ padding: '14px 16px', borderRadius: 14, border: '1.5px solid var(--border)', background: 'var(--surface)', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6 }}>
+          <span style={{ ...stepLabel, fontSize: 14 }}>공휴일 (빨간날)</span>
+          <SoftChip on={holidayMode === 'same'} onClick={() => setHolidayMode('same')} label="평소와 같아요" wide />
+          <SoftChip on={holidayMode === 'closed'} onClick={() => setHolidayMode('closed')} label="쉬어요" wide />
+          <SoftChip on={holidayMode === 'custom'} onClick={() => setHolidayMode('custom')} label="시간이 달라요" wide />
+        </div>
+        {holidayHours && (
+          <>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+              <span style={{ ...stepLabel, fontSize: 13.5 }}>공휴일 시간</span>
+              <TimeField value={holidayHours.open} onChange={v => patchHolidayHours({ open: v })} />
+              <span style={{ color: 'var(--muted)', fontSize: 15 }}>~</span>
+              <TimeField value={holidayHours.close} onChange={v => patchHolidayHours({ close: v })} />
+            </div>
+            {holidayHours.breakStart && holidayHours.breakEnd ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                <span style={{ ...stepLabel, fontSize: 13.5 }}>휴게시간</span>
+                <TimeField value={holidayHours.breakStart} onChange={v => patchHolidayHours({ breakStart: v })} />
+                <span style={{ color: 'var(--muted)', fontSize: 15 }}>~</span>
+                <TimeField value={holidayHours.breakEnd} onChange={v => patchHolidayHours({ breakEnd: v })} />
+                <button type="button" onClick={() => patchHolidayHours({ breakStart: null, breakEnd: null })}
+                  style={{ padding: '6px 11px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--muted)', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 700 }}>
+                  휴게 없음
+                </button>
+              </div>
+            ) : (
+              <button type="button" onClick={() => patchHolidayHours({ breakStart: DEFAULT_BREAK_START, breakEnd: DEFAULT_BREAK_END })}
+                style={{ alignSelf: 'flex-start', padding: '7px 12px', borderRadius: 8, border: '1.5px dashed var(--border)', background: 'var(--surface)', color: 'var(--muted)', cursor: 'pointer', fontFamily: 'inherit', fontWeight: 700, fontSize: 13 }}>
+                + 휴게시간 (브레이크 타임)
+              </button>
+            )}
+          </>
+        )}
+        <div style={{ fontSize: 12.5, color: 'var(--muted)' }}>
+          {holidayMode === 'custom' ? '설날·추석·대체공휴일 같은 빨간날엔 요일과 상관없이 이 시간으로 보여줘요.'
+            : holidayMode === 'closed' ? '빨간날(대체공휴일 포함)엔 휴무로 보여줘요.'
+            : '빨간날에도 요일별 영업시간 그대로 보여줘요.'}
+        </div>
+      </div>
+
+      {/* 정기휴무·연중무휴 */}
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
-        <ToggleBtn on={holidayClosed} onClick={toggleHoliday} label="공휴일 휴무" />
         <ToggleBtn on={monthlyOn} onClick={toggleMonthly} label="매달 정기휴무" />
         <ToggleBtn on={yearRound} onClick={toggleYearRound} label="연중무휴" />
       </div>
@@ -304,7 +368,9 @@ export default function ShopHoursEditor({ value, onChange }: {
             {summary.map((line, i) => <div key={i}>{line}</div>)}
             <div style={{ color: 'var(--muted)' }}>
               {closedDays.length ? `쉬는 요일: ${daysLabel(closedDays)}` : '쉬는 요일 없음'}
-              {holidayClosed ? ' · 공휴일 휴무' : ''}{yearRound ? ' · 연중무휴' : ''}
+              {holidayClosed ? ' · 공휴일 휴무' : ''}
+              {holidayHours ? ` · 공휴일 ${holidayHours.open}~${holidayHours.close}${holidayHours.breakStart && holidayHours.breakEnd ? ` (휴게 ${holidayHours.breakStart}~${holidayHours.breakEnd})` : ''}` : ''}
+              {yearRound ? ' · 연중무휴' : ''}
               {monthlyOffLabel(hours) ? ` · ${monthlyOffLabel(hours)}` : ''}
             </div>
           </>

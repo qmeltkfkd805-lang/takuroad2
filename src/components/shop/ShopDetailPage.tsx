@@ -132,6 +132,7 @@ export default function ShopDetailPage({ shop }: Props) {
           todayStatus={todayStatus}
           hoursFormatted={hoursFormatted}
           monthlyOff={monthlyOffLabel(shop.hours)}
+          hours={shop.hours}
           color={color}
         />
 

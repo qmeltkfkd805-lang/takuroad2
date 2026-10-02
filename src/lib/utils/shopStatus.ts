@@ -1,5 +1,7 @@
 ﻿import { Shop } from '@/types/shop'
 import { isMonthlyOffDate } from './monthlyOff'
+import { holidayName } from './krHolidays'
+import { hoursForDate } from './date'
 
 export type ShopStatusKind =
   | 'open'
@@ -41,7 +43,8 @@ export function getShopStatus(shop: Shop, now: Date = new Date()): ShopStatusRes
   const dow = now.getDay()
   const nowMin = now.getHours() * 60 + now.getMinutes()
 
-  const y = hours[DAY[(dow + 6) % 7]]
+  const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
+  const y = hoursForDate(hours, yesterday)
   if (y) {
     const yo = toMin(y.open)
     const yc = toMin(y.close)
@@ -53,9 +56,11 @@ export function getShopStatus(shop: Shop, now: Date = new Date()): ShopStatusRes
     }
   }
 
-  // 오늘이 매달 정기휴무(예: 둘째·넷째 일요일)면 오늘 영업시간은 없는 것으로 본다
+  // 오늘이 매달 정기휴무(예: 둘째·넷째 일요일)거나 공휴일 휴무면 오늘 영업시간은 없다.
+  // 공휴일에 시간이 다른 매장은 그 시간을 쓴다 (hoursForDate)
   const offToday = isMonthlyOffDate(hours, now)
-  const t = offToday ? null : hours[DAY[dow]]
+  const t = hoursForDate(hours, now)
+  const holidayOff = !offToday && t === null && !!holidayName(now) && !!hours[DAY[dow]]
   if (t) {
     const o = toMin(t.open)
     let c = toMin(t.close)
@@ -72,13 +77,13 @@ export function getShopStatus(shop: Shop, now: Date = new Date()): ShopStatusRes
   // 다음 오픈일 — 정기휴무 날은 건너뛴다(한 주 전체가 걸릴 수 있어 최대 14일 탐색)
   for (let i = 1; i <= 14; i++) {
     const nd = (dow + i) % 7
-    const nh = hours[DAY[nd]]
     const day = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i)
-    if (nh && !isMonthlyOffDate(hours, day)) {
+    const nh = hoursForDate(hours, day)
+    if (nh) {
       const when = i === 1 ? '내일' : i < 7 ? DAY_KO[nd] : `${day.getMonth() + 1}/${day.getDate()}(${DAY_KO[nd]})`
       return t
         ? { kind: 'closed', label: '영업 종료', detail: `${when} ${fmt(toMin(nh.open))} 오픈` }
-        : { kind: 'dayoff', label: offToday ? '정기휴무' : '휴무', detail: `${when} ${fmt(toMin(nh.open))} 오픈` }
+        : { kind: 'dayoff', label: offToday ? '정기휴무' : holidayOff ? '공휴일 휴무' : '휴무', detail: `${when} ${fmt(toMin(nh.open))} 오픈` }
     }
   }
   return { kind: 'unknown', label: '', detail: '' }

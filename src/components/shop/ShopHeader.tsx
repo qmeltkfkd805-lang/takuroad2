@@ -2,6 +2,9 @@
 import { useState } from 'react'
 import { CategoryChip } from './CategoryChip'
 import VerifiedBadge from './VerifiedBadge'
+import HolidayHoursRows from './HolidayHoursRows'
+import { BusinessHours } from '@/types/database'
+import { getHolidayRule, holidayRuleLabel } from '@/lib/utils/date'
 
 interface TodayStatus {
   isOpen: boolean
@@ -27,17 +30,19 @@ interface ShopHeaderProps {
   hoursFormatted: HourRow[]
   color: string
   monthlyOff?: string | null   // 매달 정기휴무 문구 (예: "매월 둘째·넷째 일요일 휴무")
+  hours?: BusinessHours | null  // 공휴일 규칙(hours.holiday) 표시용
 }
 
 export default function ShopHeader({
-  name, isVerified, isClaimed, cats, ratingAvg, ratingCount, todayStatus, hoursFormatted, color, monthlyOff,
+  name, isVerified, isClaimed, cats, ratingAvg, ratingCount, todayStatus, hoursFormatted, color, monthlyOff, hours = null,
 }: ShopHeaderProps) {
   const [hoursOpen, setHoursOpen] = useState(false)
 
   // 연중무휴 판단: 7일 모두 영업 + 시간 동일
   const allOpen = hoursFormatted.length === 7 && hoursFormatted.every(h => h.isOpen)
   const sameHours = allOpen && hoursFormatted.every(h => h.hours === hoursFormatted[0].hours)
-  const isAlwaysOpen = sameHours && !monthlyOff   // 정기휴무가 있으면 연중무휴가 아니다
+  const holidayLabel = holidayRuleLabel(hours)   // "공휴일 휴무" / "공휴일 10:30 ~ 22:00"
+  const isAlwaysOpen = sameHours && !monthlyOff && getHolidayRule(hours) !== 'closed'   // 정기휴무·공휴일 휴무가 있으면 연중무휴가 아니다
   const hasHours = hoursFormatted.length > 0
 
   return (
@@ -111,6 +116,9 @@ export default function ShopHeader({
           {monthlyOff && (
             <span style={{ fontSize: 13, color: '#C0392B', fontWeight: 700 }}>· {monthlyOff}</span>
           )}
+          {holidayLabel && (
+            <span style={{ fontSize: 13, color: '#C0392B', fontWeight: 700 }}>· {holidayLabel}</span>
+          )}
           {hasHours && (
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"
               style={{ marginLeft: 'auto', flexShrink: 0, transform: hoursOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform .2s' }}>
@@ -131,6 +139,7 @@ export default function ShopHeader({
                 <span style={{ color: h.isOpen ? 'var(--text)' : 'var(--muted)', fontWeight: h.isOpen ? 600 : 400 }}>{h.hours}</span>
               </div>
             ))}
+            <HolidayHoursRows hours={hours} />
             {monthlyOff && (
               <div style={{ fontSize: 13, color: '#C0392B', fontWeight: 700, marginTop: 4 }}>{monthlyOff}</div>
             )}
