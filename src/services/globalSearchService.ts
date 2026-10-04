@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { isEventLikeIpType } from '@/lib/constants/ipType'
 
 export interface GlobalSearchResult {
   shops: { id: string; name: string; slug: string }[]
@@ -32,12 +33,12 @@ function stripSpaces(s: string): string {
   return (s ?? '').toLowerCase().replace(/\s+/g, '')
 }
 
-type TagSearchRow = { id: string; name: string; slug: string }
+type TagSearchRow = { id: string; name: string; slug: string; ip_type: string | null }
 
 async function searchTags(query: string): Promise<TagSearchRow[]> {
   const supabase = createClient()
   const terms = parseSearchTerms(query)
-  const select = 'id, name, slug'
+  const select = 'id, name, slug, ip_type'
 
   let byName = supabase.from('tags').select(select)
   let byEnglishName = supabase.from('tags').select(select)
@@ -56,7 +57,7 @@ async function searchTags(query: string): Promise<TagSearchRow[]> {
     if (result.error) continue
     for (const row of result.data ?? []) unique.set(row.id, row as TagSearchRow)
   }
-  return [...unique.values()].slice(0, 5)
+  return [...unique.values()].filter((row) => !isEventLikeIpType(row.ip_type)).slice(0, 5)
 }
 
 export async function globalSearch(query: string, userId?: string | null, anonymousId?: string): Promise<GlobalSearchResult> {
@@ -67,13 +68,24 @@ export async function globalSearch(query: string, userId?: string | null, anonym
     return { shops: [], products: [], tags: [], characters: [], totalCount: 0 }
   }
 
-  // 1. 샵 이름 검색 (첫 단어 기준, 가장 일반적인 검색)
-  const { data: shopsData } = await supabase
+  // 1. 샵 이름 검색 — 한글 이름 또는 영문 이름(name_en). 예: "animate" → 애니메이트
+  const shopTerm = query.trim().replace(/[,()%*]/g, '')
+  let shopRes = await supabase
     .from('shops')
     .select('id, name, slug')
     .eq('status', 'active')
-    .ilike('name', `%${query.trim()}%`)
+    .or(`name.ilike.%${shopTerm}%,name_en.ilike.%${shopTerm}%`)
     .limit(10)
+  // 영문 이름 컬럼 추가 전(migrations/shop_name_en.sql)이면 한글 이름만으로
+  if (shopRes.error && String(shopRes.error.message ?? '').includes('name_en')) {
+    shopRes = await supabase
+      .from('shops')
+      .select('id, name, slug')
+      .eq('status', 'active')
+      .ilike('name', `%${shopTerm}%`)
+      .limit(10)
+  }
+  const shopsData = shopRes.data
 
   // 2. 작품(tags) 매칭 — 띄어쓰기 무시 (공백 떼고 첫 단어 포함). "가정교사히트맨리본"도 "가정교사 히트맨 리본" 매칭
   const term0 = stripSpaces(terms[0])

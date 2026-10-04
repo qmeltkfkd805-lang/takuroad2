@@ -272,6 +272,9 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                     <span style={{ whiteSpace: 'nowrap', marginLeft: 8 }}><VerifiedBadge size={20} color={color} /></span>
                   )}
                 </h1>
+                {shop.name_en && (
+                  <div lang="en" style={{ marginTop: -6, marginBottom: 10, fontSize: 14, fontWeight: 600, color: 'rgba(255,255,255,.85)', textShadow: '0 1px 8px rgba(0,0,0,.4)' }}>{shop.name_en}</div>
+                )}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 9, flexWrap: 'wrap' }}>
                   {shop.rating_count > 0 && (
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: color, color: '#fff', fontWeight: 800, fontSize: 12.5, padding: '4px 10px', borderRadius: 9999 }}>

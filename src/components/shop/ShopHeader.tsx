@@ -21,6 +21,8 @@ interface HourRow {
 
 interface ShopHeaderProps {
   name: string
+  /** 영문 이름 (있으면 이름 아래 작게) */
+  nameEn?: string | null
   isVerified: boolean
   isClaimed?: boolean
   cats: string[]
@@ -34,7 +36,7 @@ interface ShopHeaderProps {
 }
 
 export default function ShopHeader({
-  name, isVerified, isClaimed, cats, ratingAvg, ratingCount, todayStatus, hoursFormatted, color, monthlyOff, hours = null,
+  name, nameEn = null, isVerified, isClaimed, cats, ratingAvg, ratingCount, todayStatus, hoursFormatted, color, monthlyOff, hours = null,
 }: ShopHeaderProps) {
   const [hoursOpen, setHoursOpen] = useState(false)
 
@@ -52,6 +54,9 @@ export default function ShopHeader({
           <span style={{ minWidth: 0 }}>{name}</span>
           {isClaimed && <VerifiedBadge size={19} color={color} />}
         </h1>
+        {nameEn && (
+          <div lang="en" style={{ order: 10, flexBasis: '100%', marginTop: -4, fontSize: 13.5, fontWeight: 600, color: 'var(--muted)' }}>{nameEn}</div>
+        )}
         {isVerified && (
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: 3,

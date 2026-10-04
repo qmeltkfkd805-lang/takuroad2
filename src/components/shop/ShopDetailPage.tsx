@@ -122,6 +122,7 @@ export default function ShopDetailPage({ shop }: Props) {
         {/* === Header === */}
         <ShopHeader
           name={shop.name}
+          nameEn={shop.name_en}
           isVerified={shop.is_verified}
           isClaimed={shop.is_claimed}
           cats={shop.cats}

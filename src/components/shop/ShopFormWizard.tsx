@@ -44,7 +44,7 @@ const TIPS = [
 ]
 
 const EMPTY_FORM: ShopFormData = {
-  name: '', slug: '', description: '', addr: '',
+  name: '', name_en: '', slug: '', description: '', addr: '',
   lat: null, lng: null, cats: [],
   hours: null, parking: null, parking_note: '',
   shop_link: '', sns_links: [], phone: '', floor_info: '', start_date: '', end_date: '', event_info: '',
@@ -80,7 +80,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
   useEffect(() => {
     if (mode === 'edit' && shop) {
       setForm({
-        name: shop.name, slug: shop.slug, description: shop.description ?? '', addr: shop.addr ?? '',
+        name: shop.name, name_en: shop.name_en ?? '', slug: shop.slug, description: shop.description ?? '', addr: shop.addr ?? '',
         lat: shop.lat, lng: shop.lng, cats: shop.cats, hours: shop.hours,
         parking: shop.parking, parking_note: shop.parking_note ?? '',
         shop_link: shop.shop_link ?? '', sns_links: (shop as any).sns_links?.length ? (shop as any).sns_links : (shop.shop_link ? [shop.shop_link] : []), phone: shop.phone ?? '', floor_info: shop.floor_info ?? '',
@@ -338,6 +338,10 @@ export default function ShopFormWizard({ mode, shop }: Props) {
 
             <Field label="샵 이름 *">
               <input value={form.name ?? ''} onChange={e => handleNameChange(e.target.value)} maxLength={50} placeholder="예: 애니메이트 홍대점" style={inp} />
+            </Field>
+
+            <Field label="영문 이름 (선택)" hint="영어로 검색해도 이 샵이 나오게 해요. 간판·공식 SNS에 쓰는 영문 이름이 있으면 적어 주세요.">
+              <input value={form.name_en ?? ''} onChange={e => set('name_en', e.target.value)} maxLength={80} placeholder="예: animate Hongdae" autoCapitalize="off" spellCheck={false} lang="en" style={inp} />
             </Field>
 
             <Field label="샵 한 줄 소개">

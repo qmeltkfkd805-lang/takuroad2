@@ -8,6 +8,8 @@ export interface Shop {
   id: string
   slug: string
   name: string
+  /** 영문 이름 (선택) — 영문 검색용. 예: "animate Hongdae" */
+  name_en?: string | null
   description: string | null
   addr: string | null
   country: string
@@ -81,6 +83,8 @@ export interface Shop {
 // 샵 등록/수정 폼
 export interface ShopFormData {
   name: string
+  /** 영문 이름 (선택) */
+  name_en?: string
   slug: string
   description: string
   addr: string

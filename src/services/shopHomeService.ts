@@ -1,7 +1,7 @@
 'use client'
 import { createClient } from '@/lib/supabase/client'
 import { Shop } from '@/types/shop'
-import { toShop } from '@/services/shopService'
+import { toShop, isMissingNameEn } from '@/services/shopService'
 import { shopRegion, shopDistrict } from '@/lib/utils/region'
 import { resolveEventCover } from '@/lib/event/eventCover'
 
@@ -40,7 +40,7 @@ export function hotScore(s: ShopHomeItem): number {
 }
 
 const SHOP_SELECT = `
-  id, slug, name, description,
+  id, slug, name, name_en, description,
   addr, country, region, city, district,
   lat, lng, google_place_id,
   hours, parking, parking_note, shop_link, sns_links, phone,
@@ -59,7 +59,7 @@ export async function getShopHomeItems(): Promise<ShopHomeItem[]> {
   const supabase = createClient()
   const today = new Date().toISOString().slice(0, 10)
 
-  const [shopRes, tagRes, goodsRes, goodsCatRes, evRes] = await Promise.all([
+  const [shopRes0, tagRes, goodsRes, goodsCatRes, evRes] = await Promise.all([
     supabase.from('shops').select(SHOP_SELECT).eq('status', 'active'),
     supabase.from('shop_tags').select('shop_id, tags ( id, name, slug )'),
     supabase.from('shop_products').select('shop_id, goods_types ( slug )'),
@@ -72,6 +72,10 @@ export async function getShopHomeItems(): Promise<ShopHomeItem[]> {
       .or(`end_date.is.null,end_date.gte.${today}`),
   ] as const)
 
+  // 영문 이름 컬럼 추가 전이면 그 컬럼만 빼고 다시 (migrations/shop_name_en.sql)
+  const shopRes = isMissingNameEn(shopRes0.error)
+    ? await supabase.from('shops').select(SHOP_SELECT.replace('name_en, ', '')).eq('status', 'active')
+    : shopRes0
   if (shopRes.error) {
     console.error('[샵 홈] 샵 조회 실패:', shopRes.error.message)
     return []

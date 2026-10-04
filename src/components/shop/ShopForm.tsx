@@ -28,7 +28,7 @@ interface Props {
 }
 
 const EMPTY_FORM: ShopFormData = {
-  name: '', slug: '', description: '', addr: '',
+  name: '', name_en: '', slug: '', description: '', addr: '',
   lat: null, lng: null, cats: [],
   hours: null, parking: null, parking_note: '',
   shop_link: '', floor_info: '', start_date: '', end_date: '', event_info: '', sns_links: [], phone: '',
@@ -55,6 +55,7 @@ export default function ShopForm({ mode, shop }: Props) {
     if (mode === 'edit' && shop) {
       setForm({
         name: shop.name,
+        name_en: shop.name_en ?? '',
         slug: shop.slug,
         description: shop.description ?? '',
         addr: shop.addr ?? '',
@@ -207,6 +208,20 @@ export default function ShopForm({ mode, shop }: Props) {
                 value={form.name}
                 onChange={e => handleNameChange(e.target.value)}
                 placeholder="예: 애니메이트 홍대"
+                style={inputStyle}
+              />
+            </Field>
+
+            <Field label="영문 이름 (선택)" hint="영어로 검색해도 이 샵이 나오게 해요 (예: animate Hongdae)">
+              <input
+                type="text"
+                value={form.name_en ?? ''}
+                onChange={e => set('name_en', e.target.value)}
+                maxLength={80}
+                placeholder="예: animate Hongdae"
+                autoCapitalize="off"
+                spellCheck={false}
+                lang="en"
                 style={inputStyle}
               />
             </Field>

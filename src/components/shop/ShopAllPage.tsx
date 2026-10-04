@@ -144,7 +144,7 @@ export default function ShopAllPage() {
     const rows = applyShopFilters(items, filters, userCtx)
     const query = norm(qDebounced)
     if (!query) return rows
-    return rows.filter(s => norm(s.name).includes(query) || norm(placeLabel(s)).includes(query))
+    return rows.filter(s => norm(s.name).includes(query) || norm(s.name_en ?? '').includes(query) || norm(placeLabel(s)).includes(query))
   }, [items, filters, userCtx, qDebounced])
 
   // ── 이벤트 결과 (샵 전용 필터가 걸리면 제외, 지역·카테고리만 매칭) ──
