@@ -17,7 +17,7 @@ import ShopEnrichmentSection from './ShopEnrichmentSection'
 import ShopEventLinkPanel from './ShopEventLinkPanel'
 import PhotosManage from './PhotosManage'
 import CompletenessIndicator from './CompletenessIndicator'
-import ShopHoursEditor, { HOURS_HINT } from './ShopHoursEditor'
+import ShopHoursEditor, { HOURS_HINT, needsLastOrder } from './ShopHoursEditor'
 import { ShopBranchEditor } from './ShopBranches'
 import { useFormDraft } from '@/hooks/useFormDraft'
 import DraftNotice from '@/components/common/DraftNotice'
@@ -431,7 +431,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
             {/* 영업시간 편집기는 ShopHoursEditor로 분리했다 —
                 사장님 매장 관리(HoursManage)와 같은 걸 쓴다. 표시·동작은 그대로다. */}
             <Field label="영업시간" hint={HOURS_HINT}>
-              <ShopHoursEditor value={form.hours} onChange={h => set('hours', h)} />
+              <ShopHoursEditor value={form.hours} onChange={h => set('hours', h)} lastOrder={needsLastOrder(form.cats)} />
             </Field>
 
             <Field label="주차">
