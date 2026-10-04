@@ -5,10 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Shop } from '@/types/shop'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
-import { getTodayStatus, getPopupStatus, formatBusinessHours, holidayRuleLabel } from '@/lib/utils/date'
-import HolidayHoursRows from './HolidayHoursRows'
+import { getTodayStatus, getPopupStatus, holidayRuleLabel } from '@/lib/utils/date'
 import { monthlyOffLabel } from '@/lib/utils/monthlyOff'
-import { parseParkingRows } from '@/lib/utils/parkingNote'
 import { ROUTES } from '@/lib/constants/routes'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useSaved } from '@/hooks/useSaved'
@@ -26,12 +24,12 @@ import { EventStatusBadge } from '@/components/tds/EventStatusBadge'
 import ShopHighlights from './ShopHighlights'
 import ShopAmenityBadges from './ShopAmenityBadges'
 import ReviewSection from './ReviewSection'
-import VerifyRequestButton from './VerifyRequestButton'
 import ReportIssueButton from './ReportIssueButton'
 import VerifiedBadge from './VerifiedBadge'
 import AppIcon from '@/components/tds/AppIcon'
 import CheckInButton from './CheckInButton'
 import { ShopBranchList } from './ShopBranches'
+import ShopBasicInfo from './ShopBasicInfo'
 
 interface Props {
   shop: Shop
@@ -56,18 +54,6 @@ const TIPS: { icon: IconName; title: string; body: string }[] = [
   { icon: 'refund', title: '환불 / 교환', body: '교환·환불은 매장 정책에 따라 달라요. 방문 전 미리 확인하는 걸 추천해요.' },
 ]
 
-function detectSns(url: string | null): { name: string; url: string } | null {
-  if (!url) return null
-  const u = url.toLowerCase()
-  if (u.includes('threads.net') || u.includes('threads.com')) return { name: 'threads', url }
-  if (u.includes('instagram.com')) return { name: 'instagram', url }
-  if (u.includes('x.com') || u.includes('twitter.com')) return { name: 'x', url }
-  if (u.includes('youtube.com') || u.includes('youtu.be')) return { name: 'youtube', url }
-  if (u.includes('kakao')) return { name: 'kakao', url }
-  if (u.includes('cafe.naver')) return { name: 'navercafe', url }
-  if (u.includes('naver')) return { name: 'naver', url }
-  return { name: 'globe', url }
-}
 
 export default function ShopDetailPageDesktop({ shop }: Props) {
   const router = useRouter()
@@ -84,17 +70,10 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
   const canManage = isAdmin || (!!user && shop.owner_id === user.id)
   const region = [shop.region, shop.district ?? shop.city].filter(Boolean)
 
-  const snsAll = (shop.sns_links?.length ? shop.sns_links : (shop.shop_link ? [shop.shop_link] : []))
-    .map(detectSns).filter(Boolean) as { name: string; url: string }[]
-  const homepage = snsAll.find(x => x.name === 'globe') ?? null
   const holidayLabel = holidayRuleLabel(shop.hours)   // "공휴일 휴무" / "공휴일 10:30 ~ 22:00"
   const yearRound = (shop.hours as any)?.yearRound === true
   const monthlyOff = monthlyOffLabel(shop.hours)   // 예: "매월 둘째·넷째 일요일 휴무"
 
-  // 기본 정보의 '영업 상태'를 펼치면 요일별 시간표가 나온다 (모바일 ShopHeader와 같은 방식)
-  const hoursFormatted = formatBusinessHours(shop.hours)
-  const hasHours = hoursFormatted.length > 0
-  const [hoursOpen, setHoursOpen] = useState(false)
 
   const [idx, setIdx] = useState(0)
   const images = shop.images ?? []
@@ -437,93 +416,10 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                   </Section>
                 )}
 
-                {/* 기본 정보 */}
-                <Section title="기본 정보">
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px 40px' }}>
-                    <InfoItem label="영업 상태" value={
-                      shop.status === 'closed'
-                        ? <span style={{ color: '#ef5a5a', fontWeight: 800 }}>폐점</span>
-                        : shop.status === 'temporary_closed'
-                          ? <span style={{ color: '#3e8fc9', fontWeight: 800 }}>임시 휴업</span>
-                          : <>
-                              {/* 오늘 상태 줄. 요일별 시간표가 있으면 눌러서 펼친다 */}
-                              <button
-                                type="button"
-                                onClick={() => hasHours && setHoursOpen(o => !o)}
-                                aria-expanded={hasHours ? hoursOpen : undefined}
-                                aria-label={hasHours ? (hoursOpen ? '요일별 영업시간 접기' : '요일별 영업시간 펼치기') : undefined}
-                                disabled={!hasHours}
-                                style={{
-                                  display: 'inline-flex', alignItems: 'center', gap: 4, flexWrap: 'wrap',
-                                  border: 'none', background: 'none', padding: 0, margin: 0,
-                                  font: 'inherit', fontSize: 14, lineHeight: 1.6, color: 'var(--text)',
-                                  textAlign: 'left', cursor: hasHours ? 'pointer' : 'default',
-                                }}
-                              >
-                                <span style={{ color: todayStatus.isOpen ? '#14b8a0' : '#ef5a5a', fontWeight: 800 }}>{todayStatus.label}</span>
-                                {todayStatus.todayHours && <span style={{ color: 'var(--muted)' }}>· {todayStatus.todayHours}</span>}
-                                {holidayLabel && <span style={{ color: '#c0392b', fontWeight: 800 }}>· {holidayLabel}</span>}
-                                {yearRound && <span style={{ color: 'var(--muted)', fontWeight: 700 }}>· 연중무휴</span>}
-                                {monthlyOff && <span style={{ color: '#c0392b', fontWeight: 800 }}>· {monthlyOff}</span>}
-                                {hasHours && (
-                                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2.4"
-                                    strokeLinecap="round" strokeLinejoin="round" aria-hidden
-                                    style={{ flexShrink: 0, transform: hoursOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform .2s' }}>
-                                    <path d="M6 9l6 6 6-6" />
-                                  </svg>
-                                )}
-                              </button>
-
-                              {/* 요일별 시간표 (펼침) */}
-                              {hoursOpen && hasHours && (
-                                <div style={{
-                                  marginTop: 8, padding: '10px 12px', borderRadius: 10,
-                                  background: 'var(--surface2)', display: 'flex', flexDirection: 'column', gap: 5,
-                                }}>
-                                  {hoursFormatted.map(h => (
-                                    <div key={h.day} style={{ display: 'flex', gap: 14, fontSize: 13 }}>
-                                      <span style={{ width: 22, flexShrink: 0, color: 'var(--muted)', fontWeight: 700 }}>{h.label}</span>
-                                      <span style={{ color: h.isOpen ? 'var(--text)' : 'var(--muted)', fontWeight: h.isOpen ? 600 : 400 }}>{h.hours}</span>
-                                    </div>
-                                  ))}
-                                  <HolidayHoursRows hours={shop.hours} />
-                                </div>
-                              )}
-                            </>
-                    } />
-                    <InfoItem label="공식 홈페이지" value={homepage
-                      ? <a href={homepage.url} target="_blank" rel="noopener noreferrer" style={{ color }}>{homepage.url.replace(/^https?:\/\//, '')}</a>
-                      : <span style={{ color: 'var(--muted)' }}>정보 없음</span>} />
-                    <InfoItem label="전화번호" value={shop.phone ? <a href={`tel:${shop.phone}`} style={{ color }}>{shop.phone}</a> : <span style={{ color: 'var(--muted)' }}>정보 없음</span>} />
-                    <InfoItem label="SNS" value={snsAll.length
-                      ? <span style={{ display: 'inline-flex', flexWrap: 'wrap', gap: 14, alignItems: 'center' }}>
-                          {snsAll.map((e, i) => (
-                            <a key={i} href={e.url} target="_blank" rel="noopener noreferrer" aria-label={e.name} title={e.url}
-                              style={{ display: 'inline-flex', color }}>
-                              <SnsIcon name={e.name} size={24} />
-                            </a>
-                          ))}
-                        </span>
-                      : <span style={{ color: 'var(--muted)' }}>정보 없음</span>} />
-                    <InfoItem label="주소" value={shop.addr ? `${shop.addr}${shop.floor_info ? ` (${shop.floor_info})` : ''}` : <span style={{ color: 'var(--muted)' }}>정보 없음</span>} />
-                    {shop.place_slug && shop.place_name && (
-                      <InfoItem label="장소" value={
-                        <a href={`/place/${shop.place_slug}`} style={{ color: 'var(--accent)', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                          <Ico name="pin" size={13} /> {shop.place_name} ›
-                        </a>
-                      } />
-                    )}
-                    <InfoItem label="주차" value={
-                      shop.parking === null && !shop.parking_note
-                        ? <span style={{ color: 'var(--muted)' }}>정보 없음</span>
-                        : <span>
-                            {shop.parking === null ? <span style={{ color: 'var(--muted)' }}>정보 없음</span> : shop.parking ? '주차 가능' : '주차 불가'}
-                            {shop.parking_note && <ParkingNote note={shop.parking_note} />}
-                          </span>
-                    } />
-                  </div>
-                  {!shop.is_claimed && <VerifyRequestButton shopId={shop.id} shopName={shop.name} slug={shop.slug} accentColor={color} />}
-                </Section>
+                {/* 기본 정보 — 정보별 가로 행 (ShopBasicInfo: 모바일과 같이 씀) */}
+                <div style={cardStyle}>
+                  <ShopBasicInfo shop={shop} todayStatus={todayStatus} />
+                </div>
 
                 {/* 편의시설 / 서비스 */}
                 <div style={cardStyle}>
@@ -988,46 +884,7 @@ function SideCard({ title, action, children }: { title: string; action?: React.R
 }
 
 
-function InfoItem({ label, value }: { label: string; value: React.ReactNode }) {
-  return (
-    <div>
-      <div style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 700, marginBottom: 4 }}>{label}</div>
-      <div style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--text)', wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>{value}</div>
-    </div>
-  )
-}
 
-// 주차 메모를 조건 : 값 형태의 깔끔한 목록으로
-function ParkingNote({ note }: { note: string }) {
-  // 사장님이 줄바꿈으로 입력했다면 그 줄바꿈 그대로 보여준다
-  if (/\r?\n/.test(note)) {
-    return (
-      <div style={{ marginTop: 6, color: 'var(--text)', fontSize: 13, lineHeight: 1.6, whiteSpace: 'pre-line', wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>
-        {note}
-      </div>
-    )
-  }
-  const rows = parseParkingRows(note)
-  if (rows.length <= 1) {
-    return (
-      <div style={{ marginTop: 4, color: 'var(--muted)', fontSize: 13, lineHeight: 1.5, wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>
-        {rows[0]?.value ?? note}
-      </div>
-    )
-  }
-  return (
-    <ul style={{ listStyle: 'none', margin: '8px 0 0', padding: 0, display: 'flex', flexDirection: 'column', gap: 5 }}>
-      {rows.map((r, i) => (
-        <li key={i} style={{ display: 'flex', gap: 10, fontSize: 13, lineHeight: 1.5, alignItems: 'baseline' }}>
-          {r.label != null && (
-            <span style={{ color: 'var(--muted)', minWidth: 76, flexShrink: 0, wordBreak: 'keep-all' }}>{r.label}</span>
-          )}
-          <span style={{ color: 'var(--text)', fontWeight: 600, wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>{r.value}</span>
-        </li>
-      ))}
-    </ul>
-  )
-}
 
 function Stars({ value }: { value: number }) {
   const full = Math.round(value)
@@ -1116,27 +973,7 @@ function CatIcon({ name, color, size = 18 }: { name: string; color: string; size
   )
 }
 
-const SNS_ICON_FILES: Record<string, string[]> = {
-  instagram: ['instagram', 'instargram'],
-  threads: ['threads'],
-  x: ['x', 'X'],
-  kakao: ['kakao', 'kakaotalk'],
-  youtube: ['youtube'],
-  naver: ['naver'],
-  navercafe: ['navercafe', 'naver'],
-  globe: ['homepage', 'globe'],
-  homepage: ['homepage', 'globe'],
-}
 
-function SnsIcon({ name, size = 17 }: { name: string; size?: number }) {
-  const files = SNS_ICON_FILES[name] ?? [name]
-  const [idx, setIdx] = useState(0)
-  if (idx < files.length) {
-    return <img src={`/icons/${files[idx]}.png`} width={size} height={size} alt="" onError={() => setIdx(i => i + 1)} style={{ display: 'block', objectFit: 'contain', flexShrink: 0 }} />
-  }
-  const known = ['instagram', 'x', 'kakao', 'youtube', 'globe']
-  return <Ico name={(known.includes(name) ? name : 'globe') as IconName} size={size} />
-}
 
 function evLabel(type: string): string {
   const m: Record<string, string> = { popup: '팝업', collab_cafe: '콜라보 카페', exhibition: '전시', notice: '공지', event: '이벤트', restock: '재입고', new_arrival: '신상품', sold_out: '품절', discount: '할인', reservation: '예약', exchange_meet: '교환회', fan_meet: '팬모임' }

@@ -1,0 +1,150 @@
+/* 샵 상세 '기본 정보' — 정보별 가로 행 (영업시간 / 주소·장소 / 전화 / 주차 / 공식 채널 / 사장님 인증)
+   행 구조: [아이콘] [라벨 · 본문] [오른쪽 버튼]
+   좁은 화면(카드 폭 520px 미만)에선 버튼을 라벨 줄 오른쪽으로 올려 본문이 전체 폭을 쓰게 한다. */
+.card {
+  container-type: inline-size;
+}
+
+.head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-bottom: 6px;
+}
+.title { font-size: 19px; font-weight: 900; color: var(--text); margin: 0; }
+.suggest {
+  display: inline-flex; align-items: center; gap: 5px;
+  border: none; background: none; padding: 4px 0; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 600; color: var(--muted);
+}
+.suggest:hover { color: var(--text); }
+
+.rows { display: flex; flex-direction: column; }
+
+.row {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  grid-template-areas:
+    "icon label action"
+    "icon body  action";
+  column-gap: 14px;
+  align-items: start;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+}
+.row:first-child { border-top: none; }
+.icon { grid-area: icon; color: var(--text); display: flex; padding-top: 1px; }
+.icon svg { width: 19px; height: 19px; display: block; }
+.label {
+  grid-area: label; min-width: 0;
+  font-size: 12.5px; font-weight: 600; color: var(--muted); line-height: 1.4;
+  margin-bottom: 3px;
+}
+.body {
+  grid-area: body; min-width: 0;
+  font-size: 14.5px; line-height: 1.55; color: var(--text);
+  word-break: keep-all; overflow-wrap: anywhere;
+}
+.action { grid-area: action; align-self: center; display: flex; align-items: center; justify-content: flex-end; }
+
+
+.strong { font-weight: 700; }
+.muted { color: var(--muted); }
+.sub { margin-top: 2px; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+.subWarn { color: #c0392b; font-weight: 700; }
+
+/* ── 영업시간 ── */
+.hoursBtn {
+  display: block; width: 100%; text-align: left;
+  border: none; background: none; padding: 0; margin: 0;
+  font: inherit; color: inherit; cursor: pointer;
+}
+.hoursBtn:disabled { cursor: default; }
+.status { display: block; font-size: 12.5px; font-weight: 800; line-height: 1.4; margin-bottom: 2px; }
+.today { display: block; font-size: 15px; font-weight: 700; color: var(--text); }
+.chevBtn {
+  width: 32px; height: 32px; border-radius: 9999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: none; background: none; color: var(--muted); cursor: pointer; padding: 0;
+}
+.chevBtn:hover { background: var(--surface2); }
+.chev { transition: transform .2s; }
+.chevOpen { transform: rotate(180deg); }
+.rowHours .action { align-self: start; }
+.week {
+  max-width: 420px;
+  margin-top: 10px; padding: 10px 12px; border-radius: 10px;
+  background: var(--surface2); display: flex; flex-direction: column; gap: 5px;
+}
+.weekRow { display: flex; gap: 14px; font-size: 13px; }
+.weekDay { width: 22px; flex-shrink: 0; color: var(--muted); font-weight: 700; }
+
+/* ── 주소 ── */
+.floor {
+  display: inline-block; margin-left: 2px; padding: 0 7px;
+  border: 1px solid var(--border); border-radius: 6px;
+  font-size: 12px; font-weight: 700; line-height: 20px; color: var(--text);
+  white-space: nowrap; vertical-align: 1px;
+}
+.place {
+  display: inline-block; margin-top: 6px;
+  font-size: 13.5px; font-weight: 700; line-height: 1.5; color: var(--accent); text-decoration: none;
+}
+.place:hover { text-decoration: underline; }
+/* 장소 이름이 길면 글자처럼 자연스럽게 줄바꿈 (아이콘·화살표는 글자 옆에 붙어 다님) */
+.place svg { display: inline-block !important; width: 15px; height: 15px; vertical-align: -3px; }
+.place svg:first-child { margin-right: 4px; }
+.place svg:last-child { width: 13px; height: 13px; margin-left: 2px; vertical-align: -2px; }
+
+/* 오른쪽 작은 버튼 (복사 · 전화하기) */
+.ghostBtn {
+  display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+  min-height: 34px; padding: 0 11px; border-radius: 9px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none;
+}
+.ghostBtn:hover { border-color: var(--accent); color: var(--accent); }
+.ghostBtn svg { width: 15px; height: 15px; flex-shrink: 0; }
+.textBtn {
+  display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
+  min-height: 30px; padding: 0 2px; border: none; background: none; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 600; color: var(--muted);
+}
+.textBtn:hover { color: var(--text); }
+.textBtn svg { width: 15px; height: 15px; flex-shrink: 0; }
+.copied { color: #14b8a0; }
+
+/* ── 주차 메모 ── */
+.note { margin-top: 4px; font-size: 13.5px; line-height: 1.6; color: var(--muted); white-space: pre-line; word-break: keep-all; overflow-wrap: anywhere; }
+.noteList { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.noteItem { display: flex; gap: 10px; font-size: 13.5px; line-height: 1.5; align-items: baseline; }
+.noteKey { color: var(--muted); min-width: 72px; flex-shrink: 0; word-break: keep-all; }
+.noteVal { color: var(--text); font-weight: 600; word-break: keep-all; overflow-wrap: anywhere; min-width: 0; }
+
+/* ── 공식 채널 ── */
+.channels { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
+.channel {
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 36px; padding: 0 12px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--surface);
+  font-size: 13.5px; font-weight: 700; color: var(--text); text-decoration: none;
+  max-width: 100%;
+}
+.channel:hover { border-color: var(--accent); }
+.channelName { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.ext { width: 12px; height: 12px; color: var(--muted); flex-shrink: 0; }
+
+/* 좁은 카드(모바일): 버튼은 라벨 줄 오른쪽 위로 → 본문은 아이콘 옆 전체 폭 */
+@container (max-width: 519px) {
+  .row {
+    grid-template-columns: 20px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "icon label action"
+      "icon body  body";
+    column-gap: 12px;
+    padding: 13px 0;
+  }
+  .action { align-self: start; margin-top: -6px; }
+  .week { max-width: none; }
+  .body { font-size: 14px; }
+  .today { font-size: 14.5px; }
+  .ghostBtn { min-height: 30px; padding: 0 9px; font-size: 12.5px; }
+}

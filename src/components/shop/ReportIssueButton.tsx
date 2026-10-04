@@ -18,6 +18,9 @@ interface Props {
    *  열 때가 아니라 닫을 때 부른다 — 열면서 메뉴를 닫으면 이 컴포넌트가 통째로
    *  언마운트되어 모달까지 사라진다. */
   onClose?: () => void
+  /** menu 모양일 때 글자 앞에 붙일 아이콘 (예: 기본 정보 제목줄의 '정보 수정 제안') */
+  icon?: React.ReactNode
+  className?: string
 }
 
 const REASONS = [
@@ -34,7 +37,7 @@ const REASONS = [
 
 export default function ReportIssueButton({
   shopId, label = '정보가 달라요', variant = 'default',
-  accentColor = 'var(--accent)', style, onClose,
+  accentColor = 'var(--accent)', style, onClose, icon, className,
 }: Props) {
   const router = useRouter()
   const { user } = useAuth()
@@ -80,7 +83,7 @@ export default function ReportIssueButton({
   return (
     <>
       {variant === 'menu' ? (
-        <button onClick={handleOpen} style={style}>{label}</button>
+        <button onClick={handleOpen} style={style} className={className}>{icon}{label}</button>
       ) : variant === 'dashed' ? (
         <button
           onClick={handleOpen}

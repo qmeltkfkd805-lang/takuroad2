@@ -7,11 +7,9 @@ import { deleteShop } from '@/services/shopService'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import { getTodayStatus, formatBusinessHours, getPopupStatus } from '@/lib/utils/date'
 import { monthlyOffLabel } from '@/lib/utils/monthlyOff'
-import { parseParkingRows } from '@/lib/utils/parkingNote'
 import { ROUTES } from '@/lib/constants/routes'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useSaved } from '@/hooks/useSaved'
-import VerifyRequestButton from './VerifyRequestButton'
 import ReportIssueButton from './ReportIssueButton'
 import CheckInButton from './CheckInButton'
 import ReviewSection from './ReviewSection'
@@ -22,6 +20,7 @@ import ShopTagBadges from './ShopTagBadges'
 import ShopGallery from './ShopGallery'
 import ShopHeader from './ShopHeader'
 import ShopDetailPageDesktop from './ShopDetailPageDesktop'
+import ShopBasicInfo from './ShopBasicInfo'
 import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { ShopBranchList } from './ShopBranches'
 import { Button } from '@/components/tds/Button'
@@ -153,37 +152,10 @@ export default function ShopDetailPage({ shop }: Props) {
                 <span style={{ color: shop.parking ? 'var(--text)' : 'var(--muted)' }}>
                   {shop.parking ? '주차 가능' : '주차 불가'}
                 </span>
-                {shop.parking_note && !/\r?\n/.test(shop.parking_note) && parseParkingRows(shop.parking_note).length <= 1 && (
-                  <span style={{ color: 'var(--muted)', fontWeight: 400 }}>· {shop.parking_note}</span>
-                )}
               </span>
             )}
           </div>
         )}
-        {shop.parking_note && /\r?\n/.test(shop.parking_note) ? (
-          <div style={{
-            margin: '10px 0 0', padding: '10px 12px', background: 'var(--surface2)', borderRadius: 10,
-            fontSize: '13px', lineHeight: 1.6, color: 'var(--text)', whiteSpace: 'pre-line',
-            wordBreak: 'keep-all', overflowWrap: 'anywhere',
-          }}>
-            {shop.parking_note}
-          </div>
-        ) : shop.parking_note && parseParkingRows(shop.parking_note).length > 1 ? (
-          <ul style={{
-            listStyle: 'none', margin: '10px 0 0', padding: '10px 12px',
-            background: 'var(--surface2)', borderRadius: 10,
-            display: 'flex', flexDirection: 'column', gap: 5,
-          }}>
-            {parseParkingRows(shop.parking_note).map((r, i) => (
-              <li key={i} style={{ display: 'flex', gap: 10, fontSize: 13, lineHeight: 1.5, alignItems: 'baseline' }}>
-                {r.label != null && (
-                  <span style={{ color: 'var(--muted)', minWidth: 72, flexShrink: 0, wordBreak: 'keep-all' }}>{r.label}</span>
-                )}
-                <span style={{ color: 'var(--text)', fontWeight: 600, wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>{r.value}</span>
-              </li>
-            ))}
-          </ul>
-        ) : null}
         {/* === ActionBar (체크인 + 길찾기 + 저장) === */}
         <div style={{ marginTop: '20px' }}>
 
@@ -265,46 +237,9 @@ export default function ShopDetailPage({ shop }: Props) {
 
         <div style={{ height: '1px', background: 'var(--border)', margin: '24px 0 20px' }} />
 
-        {/* === 상세 정보 === */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
-
-          {shop.place_slug && shop.place_name && (
-            <a
-              href={`/place/${shop.place_slug}`}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '8px',
-                padding: '11px 13px', borderRadius: '12px',
-                background: 'var(--accent-l)', textDecoration: 'none',
-              }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11a3 3 0 1 0 6 0 3 3 0 0 0-6 0z" /><path d="M17.7 16.7 12 22l-5.7-5.3a8 8 0 1 1 11.4 0z" /></svg>
-              <span style={{ flex: 1, minWidth: 0 }}>
-                <span style={{ display: 'block', fontSize: '13.5px', fontWeight: 800, color: 'var(--accent)' }}>{shop.place_name}</span>
-                <span style={{ display: 'block', fontSize: '11.5px', color: 'var(--muted)' }}>이 장소의 다른 샵·이벤트 보기</span>
-              </span>
-              <span style={{ color: 'var(--accent)', fontSize: '16px' }}>›</span>
-            </a>
-          )}
-
-          {shop.addr && (
-            <InfoRow icon={<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11a3 3 0 1 0 6 0 3 3 0 0 0-6 0z" /><path d="M17.7 16.7 12 22l-5.7-5.3a8 8 0 1 1 11.4 0z" /></svg>} label="주소">
-              {shop.addr}
-              {shop.floor_info && (
-                <span style={{ color: 'var(--accent)', fontWeight: 700, marginLeft: '6px' }}>
-                  ({shop.floor_info})
-                </span>
-              )}
-            </InfoRow>
-          )}
-
-          {shop.shop_link && (
-            <InfoRow icon={<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 15l6-6" /><path d="M11 6l1-1a4 4 0 0 1 6 6l-1 1" /><path d="M13 18l-1 1a4 4 0 0 1-6-6l1-1" /></svg>} label="링크">
-              <a href={shop.shop_link} target="_blank" rel="noopener noreferrer"
-                style={{ color: color, wordBreak: 'break-all' }}>
-                {shop.shop_link}
-              </a>
-            </InfoRow>
-          )}
+        {/* === 기본 정보 — 주소·장소 / 전화 / 주차 / 공식 채널 / 사장님 인증 (영업시간은 위 카드에 있어 생략) === */}
+        <div style={{ marginBottom: '24px' }}>
+          <ShopBasicInfo shop={shop} todayStatus={todayStatus} showHours={false} />
         </div>
 
         {/* === 소개 === */}
@@ -334,9 +269,6 @@ export default function ShopDetailPage({ shop }: Props) {
         <div style={{ height: '1px', background: 'var(--border)', margin: '0 0 24px' }} />
 
         {/* === 리뷰 === */}
-        {!shop.is_claimed && (
-          <VerifyRequestButton shopId={shop.id} shopName={shop.name} slug={shop.slug} accentColor={color} />
-        )}
 
         <ReviewSection shopId={shop.id} shopName={shop.name} accentColor={color} />
 
@@ -353,21 +285,6 @@ const sheetItem: React.CSSProperties = {
   color: 'var(--text)', cursor: 'pointer',
 }
 
-function InfoRow({ icon, label, children }: {
-  icon: React.ReactNode
-  label: string
-  children: React.ReactNode
-}) {
-  return (
-    <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-      <span style={{ flexShrink: 0, marginTop: '1px', display: 'flex' }}>{icon}</span>
-      <div style={{ flex: 1 }}>
-        <div style={{ fontSize: '11px', color: 'var(--muted)', fontWeight: 700, marginBottom: '2px' }}>{label}</div>
-        <div style={{ fontSize: '14px', lineHeight: 1.6 }}>{children}</div>
-      </div>
-    </div>
-  )
-}
 
 
 
