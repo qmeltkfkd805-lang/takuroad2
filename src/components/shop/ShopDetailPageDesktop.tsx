@@ -10,7 +10,6 @@ import { monthlyOffLabel } from '@/lib/utils/monthlyOff'
 import { ROUTES } from '@/lib/constants/routes'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useSaved } from '@/hooks/useSaved'
-import { getShopAmenities } from '@/services/shopAmenityService'
 import { getShopTags, getAllGoodsTypes, getShopGoodsCategories, getShopCustomGoods } from '@/services/shopProductService'
 import { getReviews } from '@/services/reviewService'
 import { deleteShop } from '@/services/shopService'
@@ -22,7 +21,6 @@ import { getActiveShopEvents, EVENT_TYPE_LABEL } from '@/services/shopEventServi
 import { getEventsByShop } from '@/services/eventService'
 import { EventStatusBadge } from '@/components/tds/EventStatusBadge'
 import ShopHighlights from './ShopHighlights'
-import ShopAmenityBadges from './ShopAmenityBadges'
 import ReviewSection from './ReviewSection'
 import ReportIssueButton from './ReportIssueButton'
 import VerifiedBadge from './VerifiedBadge'
@@ -107,10 +105,6 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
     if (images.length > 1 && Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) go(dx < 0 ? 1 : -1)
   }
 
-  const [highlights, setHighlights] = useState<{ id: string; name: string }[]>([])
-  useEffect(() => {
-    getShopAmenities(shop.id).then(g => setHighlights((g['highlight'] as { id: string; name: string }[]) ?? []))
-  }, [shop.id])
 
   const [works, setWorks] = useState<{ id: string; name: string; slug: string; cover_url?: string | null }[]>([])
   useEffect(() => { getShopTags(shop.id).then(setWorks) }, [shop.id])
@@ -388,25 +382,11 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                     </div>
                   </div>
                 )}
-                {/* 소개 (+ 특징 칩) */}
+                {/* 소개 */}
                 <Section title="샵 소개">
                   {shop.description
                     ? <p style={{ fontSize: 15, lineHeight: 1.8, color: 'var(--text)', whiteSpace: 'pre-wrap' }}>{shop.description}</p>
                     : <p style={{ color: 'var(--muted)' }}>아직 소개가 등록되지 않았어요.</p>}
-                  {highlights.length > 0 && (
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 16 }}>
-                      {highlights.map(h => (
-                        <span key={h.id} style={{
-                          display: 'inline-flex', alignItems: 'center', gap: 7,
-                          padding: '8px 14px', borderRadius: 9999,
-                          background: 'rgba(232,0,111,.08)', color, fontSize: 13, fontWeight: 800,
-                        }}>
-                          <span style={{ width: 6, height: 6, borderRadius: 9999, background: color }} />
-                          {h.name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
                 </Section>
 
                 {/* 층별 매장 구성 — 같은 건물의 본점·1호점·2호점 */}
@@ -419,11 +399,6 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                 {/* 기본 정보 — 정보별 가로 행 (ShopBasicInfo: 모바일과 같이 씀) */}
                 <div style={cardStyle}>
                   <ShopBasicInfo shop={shop} todayStatus={todayStatus} />
-                </div>
-
-                {/* 편의시설 / 서비스 */}
-                <div style={cardStyle}>
-                  <ShopAmenityBadges shopId={shop.id} />
                 </div>
 
                 {/* 이용 팁 */}

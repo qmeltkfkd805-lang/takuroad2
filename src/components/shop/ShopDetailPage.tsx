@@ -14,7 +14,6 @@ import ReportIssueButton from './ReportIssueButton'
 import CheckInButton from './CheckInButton'
 import ReviewSection from './ReviewSection'
 import ShopEventList from './ShopEventList'
-import ShopAmenityBadges from './ShopAmenityBadges'
 import ShopHighlights from './ShopHighlights'
 import ShopTagBadges from './ShopTagBadges'
 import ShopGallery from './ShopGallery'
@@ -231,9 +230,6 @@ export default function ShopDetailPage({ shop }: Props) {
         {/* === 취급 작품 / 굿즈 === */}
         <ShopHighlights shopId={shop.id} />
         <ShopTagBadges shopId={shop.id} />
-
-        {/* === 편의시설 === */}
-        <ShopAmenityBadges shopId={shop.id} />
 
         <div style={{ height: '1px', background: 'var(--border)', margin: '24px 0 20px' }} />
 
