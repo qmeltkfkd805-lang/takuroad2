@@ -79,3 +79,9 @@
 
 .dropText { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+/* 📱 모바일 상단바에서 내 프로필(아바타·닉네임) 숨김 — 하단 탭 '마이'로 들어간다 */
+@media (hover: none) and (pointer: coarse) {
+  .userHideMobile { display: none !important; }
+}
+/* 지도 화면 검색 — 샵은 지도에서 위치 보기 */
+.dropMapHint { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--accent); }

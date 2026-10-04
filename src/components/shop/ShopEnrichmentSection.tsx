@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { getAllTags } from '@/services/shopService'
 import {
   getShopTags, updateShopTags, getAllGoodsTypes,
@@ -33,6 +33,22 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
   const [primarySearch, setPrimarySearch] = useState('')
   const [goodsTagSearch, setGoodsTagSearch] = useState('')
   const [openTagId, setOpenTagId] = useState<string | null>(null)
+  // 📱 검색하면서 칩을 눌러 담을 때 키보드가 내려가지 않게 — 입력창 포커스를 유지한다
+  const tagInputRef = useRef<HTMLInputElement>(null)
+  const primaryInputRef = useRef<HTMLInputElement>(null)
+  const etcInputRef = useRef<HTMLInputElement>(null)
+  // 버튼을 누를 때 입력창이 포커스를 잃지 않게 (안드로이드·PC)
+  const keepFocus = (e: React.MouseEvent | React.PointerEvent) => e.preventDefault()
+  // 그래도 포커스가 빠졌으면(iOS) 같은 탭 안에서 다시 넣어 키보드를 유지
+  const refocus = (ref: React.RefObject<HTMLInputElement | null>) => {
+    const el = ref.current
+    if (el && document.activeElement !== el && el.dataset.typing === '1') el.focus({ preventScroll: true })
+  }
+  const typingProps = {
+    onFocus: (e: React.FocusEvent<HTMLInputElement>) => { e.currentTarget.dataset.typing = '1' },
+    // 다른 입력칸이나 바깥을 눌러 떠난 경우만 '입력 중' 해제 (칩 버튼은 keepFocus 로 포커스를 안 뺏는다)
+    onBlur: (e: React.FocusEvent<HTMLInputElement>) => { const el = e.currentTarget; setTimeout(() => { if (document.activeElement !== el) el.dataset.typing = '' }, 400) },
+  }
 
   useEffect(() => {
     loadAll()
@@ -195,6 +211,8 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
             <div style={{ display: 'flex', gap: '6px' }}>
               <input
                 type="text"
+                ref={etcInputRef}
+                {...typingProps}
                 value={etcInput}
                 onChange={e => setEtcInput(e.target.value)}
                 onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomGood() } }}
@@ -209,7 +227,8 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
                 }}
               />
               <button
-                onClick={addCustomGood}
+                onMouseDown={keepFocus}
+                onClick={() => { refocus(etcInputRef); addCustomGood() }}
                 disabled={!etcInput.trim()}
                 style={{ padding: '0 16px', borderRadius: '8px', border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 700, fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0, opacity: etcInput.trim() ? 1 : 0.5 }}
               >
@@ -240,7 +259,8 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
             {primaryTags.map(tag => (
               <span
                 key={tag.id}
-                onClick={() => togglePrimary(tag)}
+                onMouseDown={keepFocus}
+                onClick={() => { refocus(primaryInputRef); togglePrimary(tag) }}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: '5px',
                   padding: '7px 12px', borderRadius: '16px', cursor: 'pointer',
@@ -263,6 +283,8 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
           <>
             <input
               type="text"
+              ref={primaryInputRef}
+              {...typingProps}
               value={primarySearch}
               onChange={e => setPrimarySearch(e.target.value)}
               placeholder="주력 작품 검색 (예: 원피스, 산리오)"
@@ -281,7 +303,8 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
                 ) : primaryCandidates.map(tag => (
                   <button
                     key={tag.id}
-                    onClick={() => togglePrimary(tag)}
+                    onMouseDown={keepFocus}
+                    onClick={() => { refocus(primaryInputRef); togglePrimary(tag) }}
                     style={{
                       padding: '6px 12px', borderRadius: '20px', cursor: 'pointer',
                       border: '1.5px solid var(--border)', background: 'var(--surface)',
@@ -313,7 +336,8 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
             {myTags.map(tag => (
               <span
                 key={tag.id}
-                onClick={() => toggleTag(tag)}
+                onMouseDown={keepFocus}
+                onClick={() => { refocus(tagInputRef); toggleTag(tag) }}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: '4px',
                   padding: '6px 10px', borderRadius: '16px', cursor: 'pointer',
@@ -330,6 +354,8 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
 
         <input
           type="text"
+          ref={tagInputRef}
+          {...typingProps}
           value={tagSearch}
           onChange={e => setTagSearch(e.target.value)}
           placeholder="작품 이름으로 검색 (예: 원피스, 산리오)"
@@ -355,7 +381,8 @@ export default function ShopEnrichmentSection({ shopId }: Props) {
               return (
                 <button
                   key={tag.id}
-                  onClick={() => toggleTag(tag)}
+                  onMouseDown={keepFocus}
+                  onClick={() => { refocus(tagInputRef); toggleTag(tag) }}
                   style={{
                     padding: '6px 12px', borderRadius: '20px', cursor: 'pointer',
                     border: '1.5px solid var(--border)',

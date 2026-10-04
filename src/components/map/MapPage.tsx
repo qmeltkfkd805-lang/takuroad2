@@ -16,7 +16,7 @@ import { ROUTES } from '@/lib/constants/routes'
 import { shopRegion, shopDistrict } from '@/lib/utils/region'
 import styles from './MapPage.module.css'
 import fab from './MapFab.module.css'
-import { CATEGORY_NAME_MAP, catInfoOf } from '@/lib/constants/categories'
+import { CATEGORY_NAME_MAP, CATEGORIES, catInfoOf } from '@/lib/constants/categories'
 import MapBottomSheet from './MapBottomSheet'
 import MapPinModal from './MapPinModal'
 import { getOngoingMapEvents, MapEvent } from '@/services/mapEventService'
@@ -28,9 +28,27 @@ import { useIsDesktop } from '@/hooks/useIsDesktop'
 const dispLat = (s: any) => s.displayLat ?? s.lat
 const dispLng = (s: any) => s.displayLng ?? s.lng
 
+const EMPTY_SHOPS: Shop[] = []
+const EMPTY_EVENTS: MapEvent[] = []
+
 // 이벤트 type → 샵 카테고리 이름 (카테고리 필터 매칭용)
 const EV_CAT_NAME: Record<string, string> = { popup: '팝업스토어', collab_cafe: '콜라보카페', exhibition: '전시', official_event: '행사' }
 
+
+// 지도에 보이는 종류 — 전체 / 샵만 / 이벤트만
+type Layer = 'all' | 'shop' | 'event'
+const LAYERS: { v: Layer; label: string }[] = [
+  { v: 'all', label: '전체' },
+  { v: 'shop', label: '샵만' },
+  { v: 'event', label: '이벤트만' },
+]
+
+// URL 의 카테고리 값 → 카테고리 이름 (이름이나 slug 둘 다 받음)
+function catNameOf(v: string | null | undefined): string | null {
+  if (!v) return null
+  const c = CATEGORIES.find(c => c.name === v) ?? CATEGORIES.find(c => c.slug === v)
+  return c ? c.name : null
+}
 
 // 샵들이 퍼져 있는 정도에 맞춰 카카오 지도 레벨을 고름 (작을수록 확대)
 function levelForSpan(span: number) {
@@ -63,12 +81,53 @@ export default function MapPage() {
   const [sheetState, setSheetState] = useState<'closed' | 'peek' | 'expanded'>('peek')
   const [mapEvents, setMapEvents] = useState<MapEvent[]>([])
   const [selectedEvent, setSelectedEvent] = useState<MapEvent | null>(null)
+  const [layer, setLayer] = useState<Layer>('all')
+  // 📱 위쪽 바(검색 헤더) 숨김 — 위로 밀면 숨기고 아래로 당기면 다시
+  const [barHidden, setBarHidden] = useState(false)
 
-  // 선택한 카테고리에 맞는 이벤트만 (전체면 모두, 팝업/콜라보/전시/행사면 해당 타입만)
+  // 선택한 카테고리·지역에 맞는 이벤트만 (전체면 모두, 팝업/콜라보/전시/행사면 해당 타입만)
   const filteredEvents = useMemo(() => {
-    if (!selectedCat || selectedCat === '전체') return mapEvents
-    return mapEvents.filter(ev => !!ev.type && EV_CAT_NAME[ev.type] === selectedCat)
-  }, [mapEvents, selectedCat])
+    return mapEvents.filter(ev => {
+      if (selectedCat && selectedCat !== '전체' && !(!!ev.type && EV_CAT_NAME[ev.type] === selectedCat)) return false
+      if (selectedRegion !== '전체' && ev.region && ev.region !== selectedRegion) return false
+      if (selectedDistrict !== '전체' && ev.district && ev.district !== selectedDistrict) return false
+      return true
+    })
+  }, [mapEvents, selectedCat, selectedRegion, selectedDistrict])
+
+  // 샵만/이벤트만 보기
+  const shownShops = layer === 'event' ? EMPTY_SHOPS : mapShops
+  const shownListShops = layer === 'event' ? EMPTY_SHOPS : filtered
+  const shownEvents = layer === 'shop' ? EMPTY_EVENTS : filteredEvents
+
+  // 지역별 샵 수 (지금 카테고리 기준, 지도에 표시되는 샵만) — 지역 고르는 창에 숫자로
+  const { regionCounts, districtCounts } = useMemo(() => {
+    const rc: Record<string, number> = { '전체': 0 }
+    const dc: Record<string, Record<string, number>> = {}
+    for (const r of regions) if (r !== '전체') rc[r] = 0
+    for (const s of shops) {
+      if (!dispLat(s) || !dispLng(s) || s.cats.includes('온라인샵')) continue
+      if (selectedCat !== '전체' && !s.cats.includes(selectedCat)) continue
+      rc['전체']++
+      const r = shopRegion(s), d = shopDistrict(s)
+      if (!r) continue
+      rc[r] = (rc[r] ?? 0) + 1
+      if (d) { const m = (dc[r] ??= {}); m[d] = (m[d] ?? 0) + 1 }
+    }
+    return { regionCounts: rc, districtCounts: dc }
+  }, [shops, regions, selectedCat])
+  const regionLabel = selectedRegion === '전체' ? null
+    : selectedDistrict !== '전체' ? `${selectedRegion} ${selectedDistrict}` : selectedRegion
+
+  // 지도가 준비된 뒤에 실행 (URL 로 들어오면 샵 목록이 지도보다 먼저 올 수 있음)
+  const whenMapReady = useCallback((fn: () => void) => {
+    let tries = 0
+    const tick = () => {
+      if (mapRef.current?.isReady()) { fn(); return }
+      if (++tries < 60) setTimeout(tick, 100)
+    }
+    tick()
+  }, [])
 
   // 진행중 이벤트를 지도에 핀으로 (전시 등 — 샵과 별개로 자체 좌표로 표시)
   useEffect(() => {
@@ -105,9 +164,10 @@ export default function MapPage() {
       const slug = CATEGORY_NAME_MAP[selectedCat]?.slug
       if (slug) params.set('cat', slug)
     }
+    if (layer === 'event') params.set('tab', 'event')
     const qs = params.toString()
     router.push(qs ? `/shops/all?${qs}` : '/shops/all')
-  }, [selectedRegion, selectedDistrict, selectedCat, router])
+  }, [selectedRegion, selectedDistrict, selectedCat, layer, router])
 
   const handleSelectGroup = useCallback((shops: Shop[]) => {
     setGroupShops(shops)
@@ -171,24 +231,109 @@ export default function MapPage() {
     }
   }, [location])
 
-  // URL의 ?shop=slug 파라미터로 특정 샵 위치로 이동
+  // URL의 ?shop=slug — 특정 샵 위치로 이동 (상단 검색에서 샵을 고르면 상세 대신 여기로 옴)
+  // 필터에 가려진 샵이면 필터를 풀어서라도 보여준다. 같은 샵을 다시 검색해도 동작하게 t 값까지 키로 씀
+  const handledShopKey = useRef<string | null>(null)
   useEffect(() => {
     const shopSlug = searchParams.get('shop')
-    if (!shopSlug || mapShops.length === 0) return
+    if (!shopSlug) { handledShopKey.current = null; return }
+    if (shops.length === 0) return
+    const key = `${shopSlug}|${searchParams.get('t') ?? ''}`
+    if (handledShopKey.current === key) return
+    const target = shops.find(s => s.slug === shopSlug)
+    if (!target) return
+    handledShopKey.current = key
+    const tla = dispLat(target), tln = dispLng(target)
+    if (!tla || !tln) return
+    const catOk = selectedCat === '전체' || target.cats.includes(selectedCat)
+    const regionOk = selectedRegion === '전체' || shopRegion(target) === selectedRegion
+    const districtOk = selectedDistrict === '전체' || shopDistrict(target) === selectedDistrict
+    if (!catOk) setSelectedCat('전체')
+    if (!regionOk || !districtOk) { setSelectedRegion('전체'); setSelectedDistrict('전체') }
+    if (layer === 'event') setLayer('all')
+    setSelectedEvent(null)
+    setGroupShops(null)
+    setBarHidden(false)
+    whenMapReady(() => mapRef.current?.moveCenter(tla, tln, 3))
+    setSelectedShop(target)
+  }, [searchParams, shops, selectedCat, selectedRegion, selectedDistrict, layer, whenMapReady, setSelectedCat, setSelectedRegion, setSelectedDistrict, setSelectedShop])
 
-    const target = mapShops.find(s => s.slug === shopSlug)
-    const tla = target ? dispLat(target) : null, tln = target ? dispLng(target) : null
-    if (target && tla && tln) {
-      mapRef.current?.moveCenter(tla, tln, 3)
-      setSelectedShop(target)
-    }
-  }, [searchParams, mapShops, setSelectedShop])
-
-  // URL의 ?cat=이름 파라미터로 카테고리 선택 (덕질 지도 칩에서 진입)
+  // URL의 카테고리·지역·탭 — 덕질 지도 칩(?cat=이름), 전체 샵 목록의 '지도 보기'(?region=&district=&cats=&tab=)에서 진입
+  const appliedFilterQs = useRef<string | null>(null)
   useEffect(() => {
-    const cat = searchParams.get('cat')
+    if (shops.length === 0) return
+    const qs = ['cat', 'cats', 'region', 'district', 'tab'].map(k => `${k}=${searchParams.get(k) ?? ''}`).join('&')
+    if (appliedFilterQs.current === qs) return
+    appliedFilterQs.current = qs
+
+    const cat = catNameOf(searchParams.get('cat')) ?? catNameOf(searchParams.get('cats')?.split(',')[0])
     if (cat) setSelectedCat(cat)
-  }, [searchParams, setSelectedCat])
+    if (searchParams.get('tab') === 'event') setLayer('event')
+
+    // region 은 "서울" 또는 "서울 마포구" 형태 둘 다
+    let region = searchParams.get('region')
+    let district = searchParams.get('district')
+    if (region && region.includes(' ')) { const p = region.split(' '); region = p[0]; district = district || p.slice(1).join(' ') }
+    if (!region) return
+    setSelectedRegion(region)
+    setSelectedDistrict(district || '전체')
+    setSelectedShop(null)
+    const pts = shops.filter(s =>
+      onMap(s) && shopRegion(s) === region &&
+      (!district || shopDistrict(s) === district) &&
+      (!cat || s.cats.includes(cat)),
+    )
+    const fallback = pts.length ? pts : shops.filter(s => onMap(s) && shopRegion(s) === region)
+    whenMapReady(() => fitToShops(fallback))
+  }, [searchParams, shops, onMap, fitToShops, whenMapReady, setSelectedCat, setSelectedRegion, setSelectedDistrict, setSelectedShop])
+
+  // 📱 위쪽 바 숨김 — 전역 헤더는 html 속성으로 숨긴다(AppShell CSS). 지도 크기가 바뀌니 다시 맞춤
+  useEffect(() => {
+    const root = document.documentElement
+    if (barHidden) root.dataset.mapBar = 'hidden'
+    else delete root.dataset.mapBar
+    const t = setTimeout(() => mapRef.current?.relayout(), 300)
+    return () => clearTimeout(t)
+  }, [barHidden])
+  useEffect(() => () => { delete document.documentElement.dataset.mapBar }, [])
+
+  // 위쪽 바(검색 헤더·필터) 위에서 위로 쓸면 숨김, 아래로 쓸면 보임
+  const topZoneRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    let sx = 0, sy = 0, active = false
+    const inZone = (t: EventTarget | null) => {
+      const el = t as Element | null
+      if (!el || !el.closest) return false
+      if (el.closest('[role="dialog"]')) return false   // 지역 고르는 창 안 스크롤은 제외
+      return !!(el.closest('header') || (topZoneRef.current && topZoneRef.current.contains(el)))
+    }
+    const onStart = (e: TouchEvent) => {
+      active = inZone(e.target)
+      if (!active) return
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY
+    }
+    const onEnd = (e: TouchEvent) => {
+      if (!active) return
+      active = false
+      const t = e.changedTouches[0]
+      const dx = t.clientX - sx, dy = t.clientY - sy
+      if (Math.abs(dy) < 36 || Math.abs(dy) < Math.abs(dx) * 1.4) return   // 칩 가로 스크롤은 무시
+      setBarHidden(dy < 0)
+    }
+    document.addEventListener('touchstart', onStart, { passive: true })
+    document.addEventListener('touchend', onEnd, { passive: true })
+    return () => {
+      document.removeEventListener('touchstart', onStart)
+      document.removeEventListener('touchend', onEnd)
+    }
+  }, [])
+
+  const changeLayer = useCallback((v: Layer) => {
+    setLayer(v)
+    if (v === 'event') setSelectedShop(null)
+    if (v === 'shop') setSelectedEvent(null)
+    setGroupShops(null)
+  }, [setSelectedShop])
 
   // 루트 보기 모드: URL에 routeId가 있으면 일반 지도 대신 루트 전용 뷰
   // 모바일은 지도 중심 전체화면(RouteMapMobile), 데스크톱은 기존 2단 레이아웃(RouteMapMode)
@@ -196,28 +341,54 @@ export default function MapPage() {
   if (routeId) return isDesktop ? <RouteMapMode routeId={routeId} /> : <RouteMapMobile routeId={routeId} />
 
   return (
-    <div className={styles.layout}>
+    <div className={`${styles.layout}${barHidden ? ' ' + styles.layoutFull : ''}`}>
       {/* 지도 컬럼 (absolute 자식들의 기준점) */}
       <div className={styles.mapCol}>
 
-        {/* 카테고리 필터 + 지역 필터 (TopBar 바로 아래) */}
-        <div style={{
-          position: 'absolute', top: 10, left: 10, right: 10, zIndex: 140,
-          background: 'var(--surface)', borderRadius: 16,
-          boxShadow: '0 2px 12px rgba(0,0,0,.12)',
-          display: 'flex', alignItems: 'center',
-        }}>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <CategoryFilter
-              selected={selectedCat}
-              onChange={setSelectedCat}
-              regions={regions}
-              districtsByRegion={districtsByRegion}
-              selectedRegion={selectedRegion}
-              selectedDistrict={selectedDistrict}
-              onChangeRegion={handleSelectRegion}
-              onChangeDistrict={handleSelectDistrict}
-            />
+        {/* 카테고리 필터 + 지역 필터 (TopBar 바로 아래) + 샵/이벤트 보기 */}
+        <div ref={topZoneRef} className={styles.topZone}>
+          <div className={styles.filterCard}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <CategoryFilter
+                  selected={selectedCat}
+                  onChange={setSelectedCat}
+                  regions={regions}
+                  districtsByRegion={districtsByRegion}
+                  selectedRegion={selectedRegion}
+                  selectedDistrict={selectedDistrict}
+                  onChangeRegion={handleSelectRegion}
+                  onChangeDistrict={handleSelectDistrict}
+                  regionCounts={regionCounts}
+                  districtCounts={districtCounts}
+                />
+              </div>
+            </div>
+            {/* 📱 손잡이 — 탭하거나 위아래로 쓸어서 위쪽 검색 바 숨기기/보이기 */}
+            <button
+              type="button"
+              className={styles.barGrip}
+              onClick={() => setBarHidden(h => !h)}
+              aria-label={barHidden ? '위쪽 검색 바 보이기' : '위쪽 검색 바 숨기기'}
+            >
+              <span />
+            </button>
+          </div>
+          <div className={styles.layerRow}>
+            <div className={styles.layerSeg} role="group" aria-label="지도에 보일 것">
+              {LAYERS.map(l => (
+                <button key={l.v} type="button" aria-pressed={layer === l.v}
+                  className={layer === l.v ? styles.layerOn : styles.layerBtn}
+                  onClick={() => changeLayer(l.v)}>
+                  {l.label}
+                </button>
+              ))}
+            </div>
+            {regionLabel && (
+              <div className={styles.regionPill}>
+                {regionLabel} · {layer === 'event' ? `이벤트 ${shownEvents.length}` : `샵 ${shownListShops.length}`}곳
+              </div>
+            )}
           </div>
         </div>
 
@@ -225,8 +396,8 @@ export default function MapPage() {
         <div style={{ position: 'absolute', inset: 0 }}>
           <KakaoMap
             ref={mapRef}
-            shops={mapShops}
-            events={filteredEvents}
+            shops={shownShops}
+            events={shownEvents}
             activeShopId={selectedShop?.id ?? null}
             myLocation={location}
             onSelectShop={handleSelectShop}
@@ -294,7 +465,8 @@ export default function MapPage() {
           </div>
         )}
         {!selectedShop && (
-          <MapBottomSheet shops={filtered} events={filteredEvents} onSelectShop={handleSelectShop} onSelectEvent={handleSelectEvent} onStateChange={setSheetState} onListClick={goToFilteredList} />
+          <MapBottomSheet shops={shownListShops} events={shownEvents} onSelectShop={handleSelectShop} onSelectEvent={handleSelectEvent} onStateChange={setSheetState} onListClick={goToFilteredList}
+            regionLabel={regionLabel} layer={layer} onListScrollDir={dir => setBarHidden(dir === 'down')} />
         )}
 
         {/* 핀 클릭 — 샵/이벤트 요약 모달 (전체보기 → 상세) */}

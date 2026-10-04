@@ -35,6 +35,10 @@ interface Props {
   bottomPadding?: number
   /** geometry 가 바뀔 때 전체 루트로 다시 맞출지(기본 true). 따라가기 중엔 끄고 fitPoints 로 구간만 맞춘다 */
   fitOnGeometryChange?: boolean
+  /** 따라가기 중 지금 가는 구간 [lng, lat][] — 전체 경로는 흐리게, 이 구간만 진하게 */
+  highlight?: [number, number][] | null
+  /** 내 위치 → 다음 장소 안내선 [lng, lat][] (파란 점선) */
+  guide?: [number, number][] | null
 }
 
 export interface RouteMapRef {
@@ -50,7 +54,7 @@ export interface RouteMapRef {
    · 마커: 작은 흰색 번호 원 / 출발·도착 플래그 / 선택 강조 + 나머지 약화 (routeMarker)
    · 경로: 흰색 외곽선 + 핑크 실선 2중 + 진행방향 화살표
    · 컨테이너 크기 확정 후 relayout + setBounds 재맞춤 */
-const RouteMap = forwardRef<RouteMapRef, Props>(function RouteMap({ shops, selectedIndex = null, onSelectIndex, geometry = null, variant = 'route', onHasReturn, myLocation = null, bottomPadding = 40, fitOnGeometryChange = true }: Props, ref) {
+const RouteMap = forwardRef<RouteMapRef, Props>(function RouteMap({ shops, selectedIndex = null, onSelectIndex, geometry = null, variant = 'route', onHasReturn, myLocation = null, bottomPadding = 40, fitOnGeometryChange = true, highlight = null, guide = null }: Props, ref) {
   const preview = variant === 'preview'
   const onHasReturnRef = useRef(onHasReturn)
   onHasReturnRef.current = onHasReturn
@@ -69,6 +73,12 @@ const RouteMap = forwardRef<RouteMapRef, Props>(function RouteMap({ shops, selec
   const didSelectRef = useRef(false)
   const geoRef = useRef<[number, number][] | null>(geometry)
   geoRef.current = geometry
+  const hlGeoRef = useRef<[number, number][] | null>(highlight)
+  hlGeoRef.current = highlight
+  const guideGeoRef = useRef<[number, number][] | null>(guide)
+  guideGeoRef.current = guide
+  const hlRef = useRef<any[]>([])       // 따라가기 구간 폴리라인
+  const guideRef = useRef<any[]>([])    // 내 위치 안내선
   const onSelectRef = useRef(onSelectIndex)
   onSelectRef.current = onSelectIndex
   const selRef = useRef<number | null>(selectedIndex)
@@ -120,6 +130,7 @@ const RouteMap = forwardRef<RouteMapRef, Props>(function RouteMap({ shops, selec
     }
     const geo = geoRef.current
     if (!geo || geo.length < 2) return
+    if (hlGeoRef.current && hlGeoRef.current.length > 1) dim = true   // 따라가는 중: 전체는 흐리게, 지금 구간만 진하게
     const opUnder = dim ? 0.5 : 0.95, opMain = dim ? 0.28 : 0.95, opRet = dim ? 0.3 : 0.95
     // 1) 전체 경로를 하나의 연속 리본으로 (흰색 8px 외곽선 + 핑크 5px 본선)
     const full = geo.map(([lng, lat]) => new K.LatLng(lat, lng))
@@ -169,8 +180,34 @@ const RouteMap = forwardRef<RouteMapRef, Props>(function RouteMap({ shops, selec
     line.setMap(map); focusRef.current.push(line)
   }
 
+  // 따라가기 — 지금 가는 구간(진하게) + 내 위치 안내선(파란 점선)
+  function paintRun() {
+    const map = mapRef.current
+    hlRef.current.forEach(p => { try { p.setMap(null) } catch { /* noop */ } })
+    guideRef.current.forEach(p => { try { p.setMap(null) } catch { /* noop */ } })
+    hlRef.current = []; guideRef.current = []
+    if (!map || !window.kakao?.maps || preview) return
+    const K = window.kakao.maps
+    const hl = hlGeoRef.current
+    if (hl && hl.length > 1) {
+      const path = hl.map(([lng, lat]) => new K.LatLng(lat, lng))
+      const under = new K.Polyline({ path, strokeWeight: 10, strokeColor: '#ffffff', strokeOpacity: 0.95, strokeStyle: 'solid', zIndex: 6 })
+      under.setMap(map); hlRef.current.push(under)
+      const line = new K.Polyline({ path, strokeWeight: 6, strokeColor: ACCENT, strokeOpacity: 1, strokeStyle: 'solid', zIndex: 6 })
+      line.setMap(map); hlRef.current.push(line)
+    }
+    const gd = guideGeoRef.current
+    if (gd && gd.length > 1) {
+      const path = gd.map(([lng, lat]) => new K.LatLng(lat, lng))
+      const under = new K.Polyline({ path, strokeWeight: 7, strokeColor: '#ffffff', strokeOpacity: 0.9, strokeStyle: 'solid', zIndex: 7 })
+      under.setMap(map); guideRef.current.push(under)
+      const line = new K.Polyline({ path, strokeWeight: 4, strokeColor: '#338bff', strokeOpacity: 1, strokeStyle: 'shortdash', zIndex: 7 })
+      line.setMap(map); guideRef.current.push(line)
+    }
+  }
+
   // geometry 변경/초기: 구간 계산 + 그리기
-  function drawPath() { computeRuns(); computeSpotIdx(); paintPath(selRef.current != null && !preview); paintFocus(selRef.current) }
+  function drawPath() { computeRuns(); computeSpotIdx(); paintPath(selRef.current != null && !preview); paintFocus(selRef.current); paintRun() }
 
   // 진행방향 화살표
   function drawArrows() {
@@ -299,6 +336,10 @@ const RouteMap = forwardRef<RouteMapRef, Props>(function RouteMap({ shops, selec
     // shops 변경 시에만 지도 재생성
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shops])
+
+  // 따라가기 구간·안내선만 바뀌면 그 선만 다시 (전체 경로 흐림 여부도 같이)
+  useEffect(() => { paintPath(selRef.current != null && !preview); paintRun() // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [highlight, guide])
 
   // geometry 변경 → 경로선/화살표 다시 그리고 범위 재맞춤
   useEffect(() => { drawPath(); drawArrows(); if (fitOnGeometryChange) fitToBounds() // eslint-disable-next-line react-hooks/exhaustive-deps

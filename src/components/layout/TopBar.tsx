@@ -15,7 +15,7 @@ import styles from './TopBar.module.css'
 
 const EMPTY: GlobalSearchResult = { shops: [], products: [], tags: [], characters: [], totalCount: 0 }
 
-type Suggestion = { kind: 'work' | 'shop' | 'goods'; label: string; href: string; sub?: string }
+type Suggestion = { kind: 'work' | 'shop' | 'goods'; label: string; href: string; sub?: string; mapSlug?: string }
 const TYPE_RANK: Record<string, number> = { work: 0, shop: 1, goods: 2 }
 const KIND_ICON: Record<string, string> = { work: 'work', shop: 'colorshop', goods: 'colorgift' }
 const NOTI_ICON: Record<string, string> = { review_comment: 'commentbox', shop_comment: 'commentbox', comment: 'commentbox', post_comment: 'commentbox', like: 'heart', post_like: 'heart', review_like: 'heart', check_in: 'pushpin', checkin: 'pushpin', goods: 'gift', goods_restock: 'gift', product_restock: 'gift', shop_approved: 'shop', shop_review: 'pencil', verify_approved: 'check', verify_rejected: 'close', event: 'event', notice: 'megaphone', announcement: 'megaphone', report: 'warning', report_resolved: 'warning', post_report: 'warning', follow: 'bell', follow_post: 'bell', follow_route: 'bell', badge: 'medal', badge_earned: 'medal', route_completed: 'road', route_saved: 'road', review: 'pencil', contact_answered: 'commentbox' }
@@ -25,8 +25,8 @@ function buildSuggestions(r: GlobalSearchResult, term: string): Suggestion[] {
   const t = stripSpaces(term)
   const items: Suggestion[] = []
   r.tags.forEach(x => items.push({ kind: 'work', label: x.name, href: `/work/${x.slug}` }))
-  r.shops.forEach(x => items.push({ kind: 'shop', label: x.name, href: `/shop/${x.slug}` }))
-  r.products.forEach(p => items.push({ kind: 'goods', label: `${p.tagName} ${p.goodsTypeName}`.trim(), href: `/shop/${p.shopSlug}`, sub: p.shopName }))
+  r.shops.forEach(x => items.push({ kind: 'shop', label: x.name, href: `/shop/${x.slug}`, mapSlug: x.slug }))
+  r.products.forEach(p => items.push({ kind: 'goods', label: `${p.tagName} ${p.goodsTypeName}`.trim(), href: `/shop/${p.shopSlug}`, sub: p.shopName, mapSlug: p.shopSlug }))
   const seen = new Set<string>()
   const uniq = items.filter(it => { const k = it.kind + '|' + it.label; if (seen.has(k)) return false; seen.add(k); return true })
   uniq.sort((a, b) => {
@@ -44,6 +44,7 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
   const router = useRouter()
   const pathname = usePathname() ?? ''
   const isProfile = pathname.startsWith('/profile')   // 📱 마이페이지에선 모바일 검색창 숨김 (자체 헤더가 있어 중복)
+  const onMap = pathname === '/map'   // 지도에서 검색하면 샵 상세 대신 지도에서 위치를 보여준다
   const { user, profile, isAdmin } = useAuth()
   const [q, setQ] = useState('')
   const [unread, setUnread] = useState(0)
@@ -96,6 +97,16 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
   function onSearch(e: FormEvent) { e.preventDefault(); goAll() }
   function goAll() { if (term) { setOpen(false); router.push('/search?q=' + encodeURIComponent(term)) } }
   function go(href: string) { setOpen(false); setQ(''); router.push(href) }
+  // 지도 화면: 샵·굿즈는 지도에서 그 샵 위치로 (t = 같은 샵을 다시 골라도 다시 이동하게)
+  function goSuggestion(s: Suggestion) {
+    if (onMap && s.mapSlug) {
+      setOpen(false); setQ('')
+      ;(document.activeElement as HTMLElement | null)?.blur?.()   // 📱 키보드 내리기
+      router.replace(`/map?shop=${encodeURIComponent(s.mapSlug)}&t=${Date.now()}`, { scroll: false })
+      return
+    }
+    go(s.href)
+  }
 
   function toggleNoti() {
     const next = !notiOpen
@@ -138,10 +149,11 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
             {!searching && suggestions.length === 0 && <div className={styles.dropEmpty}>검색 결과가 없어요</div>}
 
             {suggestions.map((s, i) => (
-              <button key={i} type="button" className={styles.dropItem} onClick={() => go(s.href)}>
+              <button key={i} type="button" className={styles.dropItem} onClick={() => goSuggestion(s)}>
                 {s.kind === 'work' ? <WorkIcon size={18} /> : <Icon name={KIND_ICON[s.kind]} size={18} />}
                 <span className={styles.dropText}>{s.label}</span>
                 {s.sub && <span className={styles.dropSub}>{s.sub}</span>}
+                {onMap && s.mapSlug && <span className={styles.dropMapHint}>지도에서 보기</span>}
               </button>
             ))}
 
@@ -232,7 +244,7 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
               )}
             </div>
 
-            <Link href="/profile" className={styles.user}>
+            <Link href="/profile" className={`${styles.user} ${styles.userHideMobile}`}>
               <span className={styles.avatar}>
                 <UserAvatar
                   userId={user?.id}

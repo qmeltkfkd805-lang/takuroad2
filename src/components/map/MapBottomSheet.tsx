@@ -21,7 +21,17 @@ interface MapBottomSheetProps {
   onSelectEvent?: (ev: MapEvent) => void
   onStateChange?: (state: SheetState) => void
   onListClick?: () => void   // '전체보기' → 필터 걸린 /shops/all
+  /** 고른 지역 이름 (예: "서울 마포구") — 있으면 "서울 마포구 샵 12곳"으로 */
+  regionLabel?: string | null
+  /** 지도에 보이는 종류 — 샵만/이벤트만이면 제목도 맞춘다 */
+  layer?: 'all' | 'shop' | 'event'
+  /** 펼친 목록을 아래로 스크롤하면 위 바를 숨기고, 맨 위로 오면 다시 보이게 */
+  onListScrollDir?: (dir: 'down' | 'up') => void
 }
+
+// 📱 렉 줄이기 — 접힌 가로 카드는 앞쪽 몇 개만, 펼친 목록은 스크롤하면서 조금씩 더 그린다
+const PEEK_LIMIT = 24
+const LIST_STEP = 40
 
 // 이벤트 type → 라벨/칩 톤 (샵 카드 칩과 같은 Chip 컴포넌트 사용)
 const EV_LABEL: Record<string, string> = { popup: '팝업스토어', collab_cafe: '콜라보 카페', exhibition: '전시', official_event: '행사' }
@@ -77,7 +87,7 @@ function EventRow({ ev, onClick }: { ev: MapEvent; onClick: () => void }) {
   )
 }
 
-export default function MapBottomSheet({ shops, events = [], onSelectShop, onSelectEvent, onStateChange, onListClick }: MapBottomSheetProps) {
+export default function MapBottomSheet({ shops, events = [], onSelectShop, onSelectEvent, onStateChange, onListClick, regionLabel = null, layer = 'all', onListScrollDir }: MapBottomSheetProps) {
   const { isSaved, toggleSave } = useSaved()
   const { user } = useAuth()
   const router = useRouter()
@@ -85,6 +95,17 @@ export default function MapBottomSheet({ shops, events = [], onSelectShop, onSel
   useEffect(() => { onStateChange?.(state) }, [state, onStateChange])
   const startY = useRef<number | null>(null)
   const movedRef = useRef(0)
+
+  // 펼친 목록 — 처음엔 LIST_STEP 개, 바닥 근처에 오면 더
+  const [listCount, setListCount] = useState(LIST_STEP)
+  useEffect(() => { setListCount(LIST_STEP) }, [shops, events, state])
+  const lastScroll = useRef(0)
+  const onListScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const el = e.currentTarget
+    if (el.scrollTop + el.clientHeight > el.scrollHeight - 600) setListCount(c => c + LIST_STEP)
+    const d = el.scrollTop - lastScroll.current
+    if (Math.abs(d) > 12) { onListScrollDir?.(d > 0 && el.scrollTop > 40 ? 'down' : 'up'); lastScroll.current = el.scrollTop }
+  }
 
   // 가로 카드 영역 마우스 드래그 스크롤
   const rowRef = useRef<HTMLDivElement>(null)
@@ -164,18 +185,20 @@ export default function MapBottomSheet({ shops, events = [], onSelectShop, onSel
         <div className={styles.handle} onClick={() => step(-1)} />
         <div className={styles.header}>
           <div className={styles.title}>
-            주변 샵 <strong>{shops.length}</strong>개{events.length > 0 && <> · 이벤트 <strong>{events.length}</strong></>}
+            {layer === 'event'
+              ? <>{regionLabel ? `${regionLabel} ` : '진행 중 '}이벤트 <strong>{events.length}</strong>개</>
+              : <>{regionLabel ? `${regionLabel} ` : '주변 '}샵 <strong>{shops.length}</strong>개{layer === 'all' && events.length > 0 && <> · 이벤트 <strong>{events.length}</strong></>}</>}
           </div>
           <div className={styles.headBtns}><button className={styles.routeBtn} onClick={() => router.push(ROUTES.routes)}>루트 보기</button><button className={styles.listBtn} onClick={onListClick}>목록 보기</button></div>
         </div>
       </div>
 
       {expanded ? (
-        <div className={styles.list}>
-          {shops.map(shop => (
+        <div className={styles.list} onScroll={onListScroll}>
+          {shops.slice(0, listCount).map(shop => (
             <ShopRow key={shop.id} shop={shop} isActive={false} onClick={onSelectShop} />
           ))}
-          {events.map(ev => (
+          {listCount > shops.length && events.slice(0, listCount - shops.length).map(ev => (
             <EventRow key={`e-${ev.id}`} ev={ev} onClick={() => onSelectEvent?.(ev)} />
           ))}
         </div>
@@ -189,16 +212,24 @@ export default function MapBottomSheet({ shops, events = [], onSelectShop, onSel
           onMouseLeave={endRowDrag}
           onClickCapture={onRowClickCapture}
         >
-          {shops.map(shop => (
+          {shops.slice(0, PEEK_LIMIT).map(shop => (
             <div key={shop.id} className={styles.cardWrap}>
               <ShopCard shop={{ ...shop, isSaved: isSaved(shop.id) } as Shop} meta="distance" onClick={onSelectShop} onToggleSave={(sh) => { if (!user) { router.push(ROUTES.login); return } toggleSave(sh.id) }} />
             </div>
           ))}
-          {events.map(ev => (
+          {events.slice(0, Math.max(0, PEEK_LIMIT - Math.min(shops.length, PEEK_LIMIT))).map(ev => (
             <div key={`e-${ev.id}`} className={styles.cardWrap}>
               <EventCard ev={ev} onClick={() => onSelectEvent?.(ev)} />
             </div>
           ))}
+          {shops.length + events.length > PEEK_LIMIT && (
+            <div className={styles.cardWrap}>
+              <button type="button" className={styles.moreCard} onClick={() => setState('expanded')}>
+                <span className={styles.moreNum}>+{shops.length + events.length - PEEK_LIMIT}</span>
+                전체 목록 보기
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

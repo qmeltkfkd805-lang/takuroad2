@@ -124,6 +124,21 @@ export default function ShopAllPage() {
     return Object.fromEntries(Object.entries(map).map(([k, v]) => [k, [...v].sort()]))
   }, [items])
 
+  // 지역별 샵 수 — 지역만 빼고 나머지 필터는 그대로 적용한 개수 (지역 고르는 창에 숫자로)
+  const regionCounts = useMemo(() => {
+    const rows = applyShopFilters(items, { ...filters, region: null, district: null }, userCtx)
+    const rc: Record<string, number> = {}
+    const dc: Record<string, Record<string, number>> = {}
+    for (const s of rows) {
+      const r = shopRegion(s), d = shopDistrict(s)
+      if (!r) continue
+      rc[r] = (rc[r] ?? 0) + 1
+      if (d) { const m = (dc[r] ??= {}); m[d] = (m[d] ?? 0) + 1 }
+    }
+    return { total: rows.length, rc, dc }
+  }, [items, filters, userCtx])
+  const regionName = filters.region ? (filters.district ? `${filters.region} ${filters.district}` : filters.region) : null
+
   // ── 샵 결과 ──
   const shopRows = useMemo(() => {
     const rows = applyShopFilters(items, filters, userCtx)
@@ -178,9 +193,11 @@ export default function ShopAllPage() {
     req.catch(() => setSavedSet(prev => { const n = new Set(prev); wasSaved ? n.add(shop.id) : n.delete(shop.id); return n }))
   }
 
+  // 지도 보기 — 지금 걸린 지역·구·카테고리(·이벤트 탭)를 그대로 들고 지도로 (지도가 그 지역으로 이동)
   const openMap = () => {
     const p = filtersToParams(filters)
     if (qDebounced) p.set('q', qDebounced)
+    if (tab === 'event') p.set('tab', 'event')
     const qs = p.toString()
     router.push(qs ? `/map?${qs}` : '/map')
   }
@@ -198,7 +215,9 @@ export default function ShopAllPage() {
         <div className={styles.titleWrap}>
           <h1 className={styles.title}>전체 샵</h1>
           <span className={styles.resultCount}>
-            {loading ? '불러오는 중…' : `${shopRows.length}개의 샵을 찾았어요`}
+            {loading ? '불러오는 중…' : regionName
+              ? <><b className={styles.regionCountName}>{regionName}</b>에 샵 <b className={styles.regionCountNum}>{shopRows.length}</b>곳이 있어요</>
+              : `${shopRows.length}개의 샵을 찾았어요`}
           </span>
         </div>
         <button className={styles.mapBtn} onClick={openMap}>
@@ -259,6 +278,7 @@ export default function ShopAllPage() {
                 region={filters.region}
                 district={filters.district}
                 districtsByRegion={districtsByRegion}
+                counts={regionCounts}
                 onPick={(region, district) => apply({ ...filters, region, district })}
                 close={close}
               />
@@ -407,10 +427,11 @@ function pageNumbers(cur: number, total: number): (number | '…')[] {
 }
 
 /* ───────── 지역 2단계 패널 (지도 CategoryFilter와 같은 구조: 좌 시/도, 우 구·군) ───────── */
-function RegionPanel({ region, district, districtsByRegion, onPick, close }: {
+function RegionPanel({ region, district, districtsByRegion, counts, onPick, close }: {
   region: string | null
   district: string | null
   districtsByRegion: Record<string, string[]>
+  counts: { total: number; rc: Record<string, number>; dc: Record<string, Record<string, number>> }
   onPick: (region: string | null, district: string | null) => void
   close: () => void
 }) {
@@ -433,10 +454,10 @@ function RegionPanel({ region, district, districtsByRegion, onPick, close }: {
         {/* 왼쪽 — 시/도 */}
         <div className={styles.regionCol}>
           <button className={!region ? styles.regionItemOn : styles.regionItem}
-            onClick={() => { onPick(null, null); close() }}>전체 지역</button>
+            onClick={() => { onPick(null, null); close() }}>전체 지역<span className={styles.regionNum}>{counts.total}</span></button>
           {SIDO.map(s => (
             <button key={s} className={viewRegion === s ? styles.regionItemOn : styles.regionItem}
-              onClick={() => pickRegion(s)}>{s}</button>
+              onClick={() => pickRegion(s)}>{s}<span className={styles.regionNum}>{counts.rc[s] ?? 0}</span></button>
           ))}
         </div>
         {/* 오른쪽 — 시/군/구 */}
@@ -450,12 +471,12 @@ function RegionPanel({ region, district, districtsByRegion, onPick, close }: {
               <button
                 className={viewRegion === region && !district ? styles.districtItemOn : styles.districtItem}
                 onClick={() => { onPick(viewRegion, null); close() }}
-              >{viewRegion} 전체</button>
+              >{viewRegion} 전체<span className={styles.regionNum}>{counts.rc[viewRegion] ?? 0}</span></button>
               {districts.map(d => (
                 <button key={d}
                   className={viewRegion === region && district === d ? styles.districtItemOn : styles.districtItem}
                   onClick={() => { onPick(viewRegion, d); close() }}
-                >{d}</button>
+                >{d}<span className={styles.regionNum}>{counts.dc[viewRegion]?.[d] ?? 0}</span></button>
               ))}
             </>
           )}

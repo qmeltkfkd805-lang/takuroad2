@@ -47,6 +47,8 @@ export default function ShopCard({ shop, isActive, onClick }: ShopCardProps) {
           <img
             src={shop.eventCover ?? shop.images[0]}
             alt={shop.name}
+            loading="lazy"
+            decoding="async"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         ) : (

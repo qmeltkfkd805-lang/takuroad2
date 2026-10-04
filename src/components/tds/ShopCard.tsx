@@ -44,7 +44,7 @@ export function ShopCard({ shop, meta = 'region', badge, onClick, onToggleSave, 
     >
       <div style={{ position: 'relative', height: 120, background: '#F7F7F8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {cover ? (
-          <img src={cover} alt={shop.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src={cover} alt={shop.name} loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         ) : (
           <Icon name="shop" size={40} style={{ opacity: 0.4 }} />
         )}

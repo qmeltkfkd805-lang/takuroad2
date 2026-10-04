@@ -143,3 +143,49 @@
 .foldBtn { flex-shrink: 0; display: inline-flex; align-items: center; gap: 3px; min-height: 32px; padding: 0 10px; border-radius: 9999px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
 .sumTitleRow { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .sumTitleRow .sumTitle { min-width: 0; }
+
+/* ── 📱 진행 중 — 지도를 넓게 보이도록 작게 ── */
+.nextCard { border: 1px solid var(--border); border-radius: 13px; background: var(--surface); padding: 10px 10px 10px 12px; margin-bottom: 8px; }
+.nextCardDone { border-color: #bbf7d0; background: #f0fdf4; }
+.nextTop { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.nextBody { flex: 1; min-width: 0; }
+.nextTitle { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
+.nextKicker { flex-shrink: 0; font-size: 10.5px; font-weight: 800; color: var(--accent); }
+.nextTitleText { min-width: 0; font-size: 14.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nextSub { display: flex; align-items: center; gap: 6px; margin-top: 2px; font-size: 12px; font-weight: 700; color: var(--muted); min-width: 0; white-space: nowrap; overflow: hidden; }
+.nextFloor { min-width: 0; overflow: hidden; text-overflow: ellipsis; padding: 1px 6px; border-radius: 5px; background: var(--surface2); color: var(--text); font-size: 11px; }
+.nextVisit, .nextVisitDone {
+  flex-shrink: 0; min-height: 40px; padding: 0 11px; border-radius: 11px;
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer; white-space: nowrap; -webkit-tap-highlight-color: transparent;
+}
+.nextVisit { border: 1.5px solid var(--accent); background: var(--surface); color: var(--accent); }
+.nextVisitDone, .nextVisitDone:disabled { opacity: 1; border: 1.5px solid #16a34a; background: #16a34a; color: #fff; }
+.nextVisit:disabled { opacity: .6; }
+.nextExtras { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.nextExtras .spotFloorMapBtn { margin-left: 0; min-height: 26px; }
+.nextTipLine { flex-basis: 100%; font-size: 12px; line-height: 1.45; color: var(--text); background: var(--accent-l); border-radius: 8px; padding: 6px 9px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.nextTipLine b { color: var(--accent); font-size: 10.5px; font-weight: 800; }
+.runBtnsRow { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 2px; }
+.ghostSm, .endSm { min-height: 38px; border-radius: 10px; font-family: inherit; font-size: 12.5px; font-weight: 800; cursor: pointer; white-space: nowrap; }
+.ghostSm { border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+.ghostSm:disabled { opacity: .5; cursor: default; }
+.endSm { border: none; background: var(--accent); color: #fff; }
+
+/* ── 추천 시작 위치 (내 위치에서 가장 가까운 곳) ── */
+.nearRow { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; padding: 9px 10px 9px 12px; border-radius: 12px; background: #eff6ff; border: 1px solid #bfdbfe; }
+.nearInfo { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.nearKicker { font-size: 10.5px; font-weight: 800; color: #1d4ed8; }
+.nearName { font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nearBtn { flex-shrink: 0; min-height: 36px; padding: 0 12px; border-radius: 10px; border: none; background: #338bff; color: #fff; font-family: inherit; font-size: 12.5px; font-weight: 800; cursor: pointer; }
+.nearBtn:disabled { opacity: .6; }
+.nearFind { width: 100%; min-height: 40px; margin: 0 0 10px; border-radius: 11px; border: 1px dashed #93c5fd; background: #f8fbff; color: #1d4ed8; font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
+.nearFind:disabled { opacity: .6; }
+.startFromBtn { width: 100%; min-height: 42px; margin-top: 8px; border-radius: 12px; border: 1.5px solid #93c5fd; background: #eff6ff; color: #1d4ed8; font-family: inherit; font-size: 13.5px; font-weight: 800; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 12px; }
+
+/* 코스 목록 정렬 · 거리 */
+.sortBar { display: inline-flex; gap: 2px; padding: 3px; margin: 4px 0 2px; border-radius: 9999px; background: var(--surface2); }
+.sortBtn, .sortOn { border: none; border-radius: 9999px; padding: 6px 12px; font-family: inherit; font-size: 12px; font-weight: 800; cursor: pointer; }
+.sortBtn { background: transparent; color: var(--muted); }
+.sortOn { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+.rowDist { color: #1d4ed8; font-weight: 800; }

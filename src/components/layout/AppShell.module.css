@@ -12,6 +12,9 @@
 /* 📱 마이페이지: 자체 헤더가 있어 모바일에선 전역 상단바 전체 숨김 */
 @media (hover: none) and (pointer: coarse) {
   .headerHiddenMobile { display: none !important; }
+  /* 📱 지도에서 위로 쓸어 올리면 검색 바를 위로 밀어 숨김 (MapPage 가 html[data-map-bar] 설정) */
+  .header { transition: transform .25s cubic-bezier(.32,.72,0,1); }
+  :global(html[data-map-bar="hidden"]) .header { transform: translateY(-100%); }
 }
 .body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .main { min-width: 0; flex: 1; min-height: 0; display: flex; flex-direction: column; padding-bottom: calc(58px + env(safe-area-inset-bottom)); }

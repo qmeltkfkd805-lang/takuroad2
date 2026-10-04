@@ -19,6 +19,8 @@ interface KakaoMapProps {
 export interface KakaoMapRef {
   moveCenter: (lat: number, lng: number, level?: number) => void
   relayout: () => void
+  /** 카카오 지도가 다 준비됐는지 */
+  isReady: () => boolean
 }
 
 const KakaoMap = forwardRef<KakaoMapRef, KakaoMapProps>(function KakaoMap({
@@ -32,11 +34,20 @@ const KakaoMap = forwardRef<KakaoMapRef, KakaoMapProps>(function KakaoMap({
   onSelectGroup,
 }, ref) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const { isLoaded, renderMarkers, renderEventMarkers, onMapClick: registerClick, moveCenter, setMyLocation, relayout } = useMap(containerRef)
+  const { isLoaded, renderMarkers, setActive, renderEventMarkers, onMapClick: registerClick, moveCenter, setMyLocation, relayout } = useMap(containerRef)
+  // 핸들러·선택값은 ref 로 — 핀 다시 그리기는 샵 목록이 바뀔 때만
+  const activeRef = useRef(activeShopId)
+  activeRef.current = activeShopId
+  const selShopRef = useRef(onSelectShop); selShopRef.current = onSelectShop
+  const selGroupRef = useRef(onSelectGroup); selGroupRef.current = onSelectGroup
+  const selEventRef = useRef(onSelectEvent); selEventRef.current = onSelectEvent
 
+  const loadedRef = useRef(false)
+  loadedRef.current = isLoaded
   useImperativeHandle(ref, () => ({
     moveCenter,
     relayout,
+    isReady: () => loadedRef.current,
   }), [moveCenter, relayout])
 
   useEffect(() => {
@@ -46,13 +57,19 @@ const KakaoMap = forwardRef<KakaoMapRef, KakaoMapProps>(function KakaoMap({
 
   useEffect(() => {
     if (!isLoaded) return
-    renderMarkers(shops, activeShopId, onSelectShop, onSelectGroup)
-  }, [isLoaded, shops, activeShopId, renderMarkers, onSelectShop, onSelectGroup])
+    renderMarkers(shops, activeRef.current, s => selShopRef.current(s), g => selGroupRef.current(g))
+  }, [isLoaded, shops, renderMarkers])
+
+  // 선택만 바뀌면 핀 크기만 바꾼다
+  useEffect(() => {
+    if (!isLoaded) return
+    setActive(activeShopId)
+  }, [isLoaded, activeShopId, setActive])
 
   useEffect(() => {
     if (!isLoaded) return
-    renderEventMarkers(events ?? [], onSelectEvent ?? (() => {}))
-  }, [isLoaded, events, renderEventMarkers, onSelectEvent])
+    renderEventMarkers(events ?? [], ev => selEventRef.current?.(ev))
+  }, [isLoaded, events, renderEventMarkers])
 
   useEffect(() => {
     if (!isLoaded || !myLocation) return

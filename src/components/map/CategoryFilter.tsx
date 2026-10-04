@@ -12,6 +12,16 @@ interface CategoryFilterProps {
   selectedDistrict: string
   onChangeRegion: (region: string) => void
   onChangeDistrict: (district: string) => void
+  /** 지역별 샵 수 (지금 고른 카테고리 기준) — '전체' 키는 전체 수 */
+  regionCounts?: Record<string, number>
+  /** 시/도 → 구/군별 샵 수 */
+  districtCounts?: Record<string, Record<string, number>>
+}
+
+// 지역 이름 옆 작은 숫자
+function Cnt({ n, on }: { n: number | undefined; on?: boolean }) {
+  if (n == null) return null
+  return <span style={{ marginLeft: 'auto', paddingLeft: 6, fontSize: 11.5, fontWeight: 700, color: on ? 'var(--accent)' : 'var(--muted)', flexShrink: 0 }}>{n}</span>
 }
 
 // 라인아트 아이콘을 mask로 색칠 (선택=흰색, 비선택=카테고리색)
@@ -40,6 +50,8 @@ export default function CategoryFilter({
   selectedDistrict,
   onChangeRegion,
   onChangeDistrict,
+  regionCounts,
+  districtCounts,
 }: CategoryFilterProps) {
   const isAll = selected === '전체'
   const regionOn = selectedRegion !== '전체'
@@ -242,7 +254,7 @@ export default function CategoryFilter({
                         key={r}
                         onClick={() => pickRegion(r)}
                         style={{
-                          display: 'block', width: '100%', textAlign: 'left',
+                          display: 'flex', alignItems: 'center', width: '100%', textAlign: 'left',
                           padding: '9px 10px', marginBottom: GAP, borderRadius: 9, border: 'none',
                           background: viewing ? 'var(--accent-l)' : 'transparent',
                           color: viewing ? 'var(--accent)' : 'var(--text)',
@@ -250,7 +262,8 @@ export default function CategoryFilter({
                           cursor: 'pointer', fontFamily: 'inherit',
                         }}
                       >
-                        {r}
+                        <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r}</span>
+                        <Cnt n={regionCounts?.[r]} on={viewing} />
                       </button>
                     )
                   })}
@@ -277,9 +290,11 @@ export default function CategoryFilter({
                           color: !districtOn && viewRegion === selectedRegion ? 'var(--accent)' : 'var(--text)',
                           fontSize: 12.5, fontWeight: 700, cursor: 'pointer',
                           fontFamily: 'inherit', textAlign: 'left', flexShrink: 0,
+                          display: 'flex', alignItems: 'center',
                         }}
                       >
                         {viewRegion} 전체
+                        <Cnt n={regionCounts?.[viewRegion]} on={!districtOn && viewRegion === selectedRegion} />
                       </button>
                       {districts.map(d => {
                         const on = viewRegion === selectedRegion && selectedDistrict === d
@@ -295,9 +310,11 @@ export default function CategoryFilter({
                               fontSize: 12.5, fontWeight: 700, cursor: 'pointer',
                               fontFamily: 'inherit', textAlign: 'left', flexShrink: 0,
                               whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                              display: 'flex', alignItems: 'center',
                             }}
                           >
-                            {d}
+                            <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>{d}</span>
+                            <Cnt n={districtCounts?.[viewRegion]?.[d] ?? (districtCounts ? 0 : undefined)} on={on} />
                           </button>
                         )
                       })}

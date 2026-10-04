@@ -10,17 +10,57 @@ import { loadMaps, createMap, createOverlay, MapInstance, OverlayHandle } from '
 const dispLat = (s: any) => s.displayLat ?? s.lat ?? 0
 const dispLng = (s: any) => s.displayLng ?? s.lng ?? 0
 
-interface MarkerRef {
+/* 📱 지도 렉 줄이기
+   - 핀은 한 번 만든 DOM 을 재사용한다 (필터·선택이 바뀔 때마다 전부 지우고 다시 만들지 않음)
+   - 화면 밖(여유 40%) 핀은 지도에서 떼어 두고, 이동·줌이 끝나면(idle) 다시 붙인다
+   - 선택(active) 표시는 그 핀의 크기만 바꾼다 */
+interface PinEntry {
   handle: OverlayHandle
-  id: string
+  el: HTMLElement
+  sig: string            // 묶인 샵 id 목록 + 색 — 바뀌면 다시 만든다
+  lat: number
+  lng: number
+  single: boolean
+  ids: string[]
+  shops: Shop[]
 }
+
+interface EventPinEntry {
+  handle: OverlayHandle
+  sig: string
+  lat: number
+  lng: number
+}
+
+const PAD_RATIO = 0.4
 
 export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
   const mapRef = useRef<MapInstance | null>(null)
-  const markersRef = useRef<MarkerRef[]>([])
-  const eventMarkersRef = useRef<OverlayHandle[]>([])
+  const pinsRef = useRef<Map<string, PinEntry>>(new Map())
+  const eventPinsRef = useRef<Map<string, EventPinEntry>>(new Map())
   const myLocRef = useRef<OverlayHandle | null>(null)
+  const activeIdRef = useRef<string | null>(null)
+  // 클릭 핸들러는 ref 로 들고 있다가 최신 것을 부른다 (핀 DOM 재사용용)
+  const onShopClickRef = useRef<(shop: Shop) => void>(() => {})
+  const onGroupClickRef = useRef<(shops: Shop[]) => void>(() => {})
+  const onEventClickRef = useRef<(ev: MapEvent) => void>(() => {})
+  const clickRegisteredRef = useRef(false)
+  const clickCbRef = useRef<() => void>(() => {})
   const [isLoaded, setIsLoaded] = useState(false)
+
+  // 화면 안(+여유)에 있는지
+  const inView = useCallback((lat: number, lng: number) => {
+    const b = mapRef.current?.getBounds()
+    if (!b) return true
+    const dLat = (b.neLat - b.swLat) * PAD_RATIO, dLng = (b.neLng - b.swLng) * PAD_RATIO
+    return lat >= b.swLat - dLat && lat <= b.neLat + dLat && lng >= b.swLng - dLng && lng <= b.neLng + dLng
+  }, [])
+
+  const cull = useCallback(() => {
+    if (!mapRef.current) return
+    pinsRef.current.forEach(p => { if (inView(p.lat, p.lng)) p.handle.show(); else p.handle.hide() })
+    eventPinsRef.current.forEach(p => { if (inView(p.lat, p.lng)) p.handle.show(); else p.handle.hide() })
+  }, [inView])
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -28,46 +68,28 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     loadMaps().then(() => {
       if (cancelled || !containerRef.current) return
       mapRef.current = createMap(containerRef.current, { lat: 37.5519, lng: 127.0738, level: 8 })
+      mapRef.current.addIdleListener(cull)
       setIsLoaded(true)
     })
     return () => { cancelled = true }
-  }, [containerRef])
+  }, [containerRef, cull])
 
-  // 단일 샵 마커 — 카테고리 컬러 물방울 핀 + 흰색 solid 아이콘
-  const addMarker = useCallback((
-    shop: Shop,
-    onClick: (shop: Shop) => void,
-    isActive: boolean
-  ) => {
-    if (!mapRef.current) return
-
-    const color = catColor((shop as any).cat ?? (shop.cats && shop.cats[0]))
-
+  // 단일 샵 핀 — 카테고리 컬러 물방울 + 흰 점
+  const buildSingleEl = (shop: Shop, color: string) => {
     const el = document.createElement('div')
     el.style.cssText = 'cursor:pointer;position:relative;width:16px;height:21px'
     el.innerHTML = `
-      <svg width="16" height="21" viewBox="0 0 28 36" style="display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));transform:${isActive ? 'scale(1.25)' : 'scale(1)'};transform-origin:center bottom">
+      <svg width="16" height="21" viewBox="0 0 28 36" style="display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));transform-origin:center bottom;transition:transform .12s ease">
         <path d="M14 0C6.3 0 0 6.3 0 14c0 9.5 14 22 14 22s14-12.5 14-22C28 6.3 21.7 0 14 0z" fill="${color}"/>
         <circle cx="14" cy="14" r="5" fill="#fff"/>
       </svg>
     `
-    el.addEventListener('click', () => onClick(shop))
+    el.addEventListener('click', () => onShopClickRef.current(shop))
+    return el
+  }
 
-    const handle = createOverlay(mapRef.current, {
-      lat: dispLat(shop), lng: dispLng(shop), content: el, yAnchor: 1,
-    })
-    markersRef.current.push({ handle, id: shop.id })
-  }, [])
-
-  // 같은 위치 여러 샵 — 컬러 물방울 핀 + 숫자
-  const addGroupMarker = useCallback((
-    shops: Shop[],
-    onClick: (shops: Shop[]) => void
-  ) => {
-    if (!mapRef.current) return
-    const first = shops[0]
-    const color = catColor((first as any).cat ?? (first.cats && first.cats[0]))
-
+  // 같은 위치 여러 샵 — 컬러 물방울 + 숫자
+  const buildGroupEl = (shops: Shop[], color: string) => {
     const el = document.createElement('div')
     el.style.cssText = 'cursor:pointer;position:relative;width:24px;height:30px'
     el.innerHTML = `
@@ -77,45 +99,115 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
         <text x="14" y="14" text-anchor="middle" dominant-baseline="central" font-size="9" font-weight="900" fill="${color}">${shops.length}</text>
       </svg>
     `
-    el.addEventListener('click', () => onClick(shops))
+    el.addEventListener('click', () => onGroupClickRef.current(shops))
+    return el
+  }
 
-    const handle = createOverlay(mapRef.current, {
-      lat: dispLat(first), lng: dispLng(first), content: el, yAnchor: 1,
-    })
-    shops.forEach(s => markersRef.current.push({ handle, id: s.id }))
-  }, [])
+  const setPinActive = (p: PinEntry | undefined, on: boolean) => {
+    if (!p || !p.single) return
+    const svg = p.el.firstElementChild as SVGElement | null
+    if (svg) svg.style.transform = on ? 'scale(1.25)' : 'scale(1)'
+    try { p.handle.raw.setZIndex?.(on ? 10 : 1) } catch { /* noop */ }
+  }
 
   const clearMarkers = useCallback(() => {
-    markersRef.current.forEach(m => m.handle.remove())
-    markersRef.current = []
+    pinsRef.current.forEach(p => p.handle.remove())
+    pinsRef.current = new Map()
+  }, [])
+
+  // 같은 위치(소수점 반올림 기준) 샵들을 묶어 핀 렌더 — 바뀐 핀만 새로 만든다
+  const renderMarkers = useCallback((
+    shops: Shop[],
+    activeId: string | null,
+    onClick: (shop: Shop) => void,
+    onGroupClick: (shops: Shop[]) => void
+  ) => {
+    onShopClickRef.current = onClick
+    onGroupClickRef.current = onGroupClick
+    const map = mapRef.current
+    if (!map) return
+
+    const posMap = new Map<string, Shop[]>()
+    for (const s of shops) {
+      const la = dispLat(s), ln = dispLng(s)
+      if (!la || !ln) continue
+      const key = `${Math.round(la * 1000)},${Math.round(ln * 1000)}`
+      const g = posMap.get(key)
+      if (g) g.push(s); else posMap.set(key, [s])
+    }
+
+    const next = new Map<string, PinEntry>()
+    posMap.forEach((group, key) => {
+      const first = group[0]
+      const color = catColor((first as any).cat ?? (first.cats && first.cats[0]))
+      const ids = group.map(s => s.id)
+      const sig = ids.join('|') + '#' + color
+      const old = pinsRef.current.get(key)
+      if (old && old.sig === sig) {
+        old.shops = group
+        next.set(key, old)
+        pinsRef.current.delete(key)
+        return
+      }
+      const single = group.length === 1
+      const el = single ? buildSingleEl(first, color) : buildGroupEl(group, color)
+      const lat = dispLat(first), lng = dispLng(first)
+      const handle = createOverlay(map, { lat, lng, content: el, yAnchor: 1, hidden: !inView(lat, lng) })
+      next.set(key, { handle, el, sig, lat, lng, single, ids, shops: group })
+    })
+    // 남은 옛 핀 정리
+    pinsRef.current.forEach(p => p.handle.remove())
+    pinsRef.current = next
+
+    // 선택 표시
+    activeIdRef.current = activeId
+    next.forEach(p => setPinActive(p, !!activeId && p.single && p.ids[0] === activeId))
+  }, [inView])
+
+  // 선택만 바뀌었을 때 — 핀 두 개만 크기 변경
+  const setActive = useCallback((activeId: string | null) => {
+    const prev = activeIdRef.current
+    if (prev === activeId) return
+    activeIdRef.current = activeId
+    pinsRef.current.forEach(p => {
+      if (!p.single) return
+      if (p.ids[0] === prev) setPinActive(p, false)
+      if (activeId && p.ids[0] === activeId) setPinActive(p, true)
+    })
   }, [])
 
   // 이벤트 마커 — 샵 물방울 핀과 구분되게 '원형 포스터/별 배지'로.
   const clearEventMarkers = useCallback(() => {
-    eventMarkersRef.current.forEach(h => h.remove())
-    eventMarkersRef.current = []
+    eventPinsRef.current.forEach(p => p.handle.remove())
+    eventPinsRef.current = new Map()
   }, [])
 
   const renderEventMarkers = useCallback((
     events: MapEvent[],
     onClick: (ev: MapEvent) => void
   ) => {
-    clearEventMarkers()
-    if (!mapRef.current) return
+    onEventClickRef.current = onClick
+    const map = mapRef.current
+    if (!map) return
+    const next = new Map<string, EventPinEntry>()
     events.forEach(ev => {
       if (!ev.lat || !ev.lng) return
+      const key = String(ev.id)
+      const sig = `${ev.lat},${ev.lng},${ev.coverUrl ?? ''}`
+      const old = eventPinsRef.current.get(key)
+      if (old && old.sig === sig) { next.set(key, old); eventPinsRef.current.delete(key); return }
       const el = document.createElement('div')
       el.style.cssText = 'cursor:pointer;width:34px;height:34px'
       el.innerHTML = ev.coverUrl
-        ? `<div style="width:34px;height:34px;border-radius:50%;border:2.5px solid #e8006f;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.35);background:#fff"><img src="${ev.coverUrl}" style="width:100%;height:100%;object-fit:cover" /></div>`
+        ? `<div style="width:34px;height:34px;border-radius:50%;border:2.5px solid #e8006f;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.35);background:#fff"><img src="${ev.coverUrl}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover" /></div>`
         : `<div style="width:30px;height:30px;border-radius:50%;border:2.5px solid #fff;background:#e8006f;box-shadow:0 1px 3px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.7 1.4 6.8L12 17.8 5.9 21.2l1.4-6.8L2.2 9.7l6.9-.7z"/></svg></div>`
-      el.addEventListener('click', () => onClick(ev))
-      const handle = createOverlay(mapRef.current!, {
-        lat: ev.lat, lng: ev.lng, content: el, yAnchor: 0.5, xAnchor: 0.5,
-      })
-      eventMarkersRef.current.push(handle)
+      el.addEventListener('click', () => onEventClickRef.current(ev))
+      const handle = createOverlay(map, { lat: ev.lat, lng: ev.lng, content: el, yAnchor: 0.5, xAnchor: 0.5, hidden: !inView(ev.lat, ev.lng) })
+      next.set(key, { handle, sig, lat: ev.lat, lng: ev.lng })
     })
-  }, [clearEventMarkers])
+    eventPinsRef.current.forEach(p => p.handle.remove())
+    eventPinsRef.current = next
+  }, [inView])
 
   // 현재 위치 — 파란 점 + 퍼지는 원
   const setMyLocation = useCallback((lat: number, lng: number) => {
@@ -136,7 +228,7 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     }
 
     myLocRef.current = createOverlay(mapRef.current, {
-      lat, lng, content: el, yAnchor: 0.5, xAnchor: 0.5,
+      lat, lng, content: el, yAnchor: 0.5, xAnchor: 0.5, zIndex: 20,
     })
   }, [])
 
@@ -146,37 +238,13 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     mapRef.current.setLevel(level)
   }, [])
 
+  // 지도 클릭 — 리스너는 한 번만 달고, 콜백은 ref 로 최신 유지 (중복 등록 방지)
   const onMapClick = useCallback((cb: () => void) => {
-    if (!mapRef.current) return
-    mapRef.current.addClickListener(cb)
+    clickCbRef.current = cb
+    if (!mapRef.current || clickRegisteredRef.current) return
+    clickRegisteredRef.current = true
+    mapRef.current.addClickListener(() => clickCbRef.current())
   }, [])
-
-  // 같은 위치(소수점 반올림 기준) 샵들을 묶어 마커 렌더
-  const renderMarkers = useCallback((
-    shops: Shop[],
-    activeId: string | null,
-    onClick: (shop: Shop) => void,
-    onGroupClick: (shops: Shop[]) => void
-  ) => {
-    clearMarkers()
-    const posMap: Record<string, Shop[]> = {}
-    shops.forEach(s => {
-      const la = dispLat(s), ln = dispLng(s)
-      if (!la || !ln) return
-      const key = `${Math.round(la * 1000)},${Math.round(ln * 1000)}`
-      if (!posMap[key]) posMap[key] = []
-      posMap[key].push(s)
-    })
-
-    Object.values(posMap).forEach(group => {
-      if (group.length === 1) {
-        const s = group[0]
-        addMarker(s, onClick, s.id === activeId)
-      } else {
-        addGroupMarker(group, onGroupClick)
-      }
-    })
-  }, [clearMarkers, addMarker, addGroupMarker])
 
   const relayout = useCallback(() => {
     if (!mapRef.current) return
@@ -185,5 +253,5 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     mapRef.current.setCenter(c.lat, c.lng)
   }, [])
 
-  return { isLoaded, moveCenter, onMapClick, renderMarkers, renderEventMarkers, clearMarkers, setMyLocation, relayout }
+  return { isLoaded, moveCenter, onMapClick, renderMarkers, setActive, renderEventMarkers, clearMarkers, clearEventMarkers, setMyLocation, relayout }
 }

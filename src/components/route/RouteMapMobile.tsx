@@ -75,8 +75,19 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
   const menuRef = useRef<HTMLDivElement>(null)
 
   const run = useRouteRun(route?.id ?? null, { autoStart: false, enabled: !!route?.id })
-  const { location: idleLoc, requestLocation } = useCurrentLocation()
+  const { location: idleLoc, requestLocation, loading: locating } = useCurrentLocation()
   const myLoc = run.location ?? idleLoc
+
+  // 위치 권한을 이미 허용해 둔 사람은 들어오자마자 내 위치를 잡아 '가까운 시작 장소'를 보여준다 (팝업 없이)
+  useEffect(() => {
+    let alive = true
+    try {
+      (navigator as any).permissions?.query({ name: 'geolocation' })
+        .then((st: any) => { if (alive && st?.state === 'granted') requestLocation() })
+        .catch(() => {})
+    } catch { /* noop */ }
+    return () => { alive = false }
+  }, [requestLocation])
 
   // 배경 스크롤 잠금(전체화면 지도)
   useEffect(() => {
@@ -202,6 +213,25 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
     return m
   }, [rawStops])
 
+  // 내 위치에서 각 장소까지 거리 — 코스 목록 '가까운 순' · 추천 시작 위치
+  const distanceById = useMemo(() => {
+    if (!myLoc) return null
+    const m = new Map<string, number>()
+    shopCoord.forEach((c, id) => m.set(id, Math.round(calcDistance(myLoc.lat, myLoc.lng, c.lat, c.lng))))
+    return m
+  }, [myLoc?.lat, myLoc?.lng, shopCoord])   // eslint-disable-line react-hooks/exhaustive-deps
+  const nearest = useMemo(() => {
+    if (!distanceById) return null
+    let best: { id: string; order: number; name: string; distM: number } | null = null
+    for (const st of sheetStops) {
+      if (st.visited) continue
+      const d = distanceById.get(st.id)
+      if (d == null) continue
+      if (!best || d < best.distM) best = { id: st.id, order: st.order, name: st.name, distM: d }
+    }
+    return best
+  }, [distanceById, sheetStops])
+
   // 다음 안내 = 전체 샵 순서에서 아직 안 지나갔고(도착/확인) 건너뛰지 않은 첫 샵
   // 코스 목록에서 고른 곳이 있으면 그곳부터(끝까지 다 갔으면 앞쪽 남은 곳으로 돌아감)
   const isPending = (s: SheetStop) => !run.arrivedShopIds.has(s.id) && !s.visited && !skippedShops.has(s.id)
@@ -237,6 +267,16 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
     return [[a.lng, a.lat], [b.lng, b.lat]]
   }, [running, nextShop, prevStop, shopCoord, path])
 
+  // 내 위치 → 다음 장소 안내선 (가까이 오면 안 그림)
+  const guideLine = useMemo((): [number, number][] | null => {
+    if (!running || !myLoc || !nextCoord) return null
+    if (nextDistanceM != null && nextDistanceM < 25) return null
+    return [[myLoc.lng, myLoc.lat], [nextCoord.lng, nextCoord.lat]]
+  }, [running, myLoc?.lat, myLoc?.lng, nextCoord?.lat, nextCoord?.lng, nextDistanceM])   // eslint-disable-line react-hooks/exhaustive-deps
+
+  // 따라가는 중엔 하단 탭을 가려 지도를 넓게 (시트가 화면 맨 아래까지)
+  const navHidden = running
+
   // "다음" 장소가 바뀌면 그 구간(이전→다음)이 보이게 지도 확대 — "방문 완료" 표시(1.4초)가 끝난 뒤 넘어가게
   const prevNextRef = useRef<string | null>(null)
   useEffect(() => {
@@ -248,7 +288,10 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
     const c = shopCoord.get(id)
     if (!c) return
     const p = prevStop ? shopCoord.get(prevStop.id) : null
-    const t = setTimeout(() => mapRef.current?.fitPoints(p ? [p, c] : [c], sheetH + 24), first ? 400 : 1500)
+    // 이전 장소가 없으면(첫 장소·목록에서 고른 곳) 내 위치와 함께 보이게
+    const me = !p && myLoc ? { lat: myLoc.lat, lng: myLoc.lng } : null
+    const pts = p ? [p, c] : me ? [me, c] : [c]
+    const t = setTimeout(() => mapRef.current?.fitPoints(pts, sheetH + 24), first ? 400 : 1500)
     return () => clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [running, nextShop?.id, shopCoord])
@@ -303,6 +346,15 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
     run.requestLocationNow()   // 사용자 탭(제스처)에서 위치 권한 요청 → iOS 팝업 확실히
     if (resuming) run.resume(); else { setSkippedShops(new Set()); setAnchorId(null); setJumpedId(null); run.start() }
     setSelectedId(null)
+  }
+  // 고른 장소(추천 시작 위치 등)부터 시작 — 그곳을 첫 '다음 장소'로, 이후는 코스 순서대로
+  function onStartFrom(id: string) {
+    run.requestLocationNow()
+    const st = sheetStops.find(s => s.id === id)
+    if (resuming) run.resume(); else { setSkippedShops(new Set()); run.start() }
+    setAnchorId(id); setJumpedId(id)
+    setSelectedId(null)
+    if (st) setToast(`${st.order}번 ${st.name}부터 안내할게요`)
   }
   // 따라가는 중 코스 목록에서 장소를 고르면 → 그곳을 "다음 장소"로 (새 창·다시 시작 없이)
   const chooseNext = (id: string) => {
@@ -415,7 +467,7 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
   const pathLine = path && (path.status === 'ok' || path.status === 'partial') && path.geometry.length ? path.geometry : null
 
   return (
-    <div className={styles.wrap}>
+    <div className={styles.wrap} style={navHidden ? { zIndex: 41 } : undefined}>
       {/* 컴팩트 앱바 */}
       <div className={styles.appbar}>
         <button className={styles.iconBtn} onClick={() => router.back()} aria-label="뒤로">
@@ -444,7 +496,9 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
           <RouteMap
             ref={mapRef}
             shops={shopsWithCoords}
-            geometry={running ? segmentLine : pathLine}
+            geometry={pathLine}
+            highlight={running ? segmentLine : null}
+            guide={guideLine}
             fitOnGeometryChange={!running}
             selectedIndex={selIdx >= 0 ? selIdx : null}
             onSelectIndex={(i: number) => selectSpot(shopsWithCoords[i]?.id ?? null)}
@@ -455,7 +509,7 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
       </div>
 
       {/* 우측 플로팅 버튼 */}
-      <div className={styles.fabs} style={{ bottom: sheetH + 70 }}>
+      <div className={styles.fabs} style={{ bottom: sheetH + (navHidden ? 12 : 70) }}>
         <button className={styles.fab} onClick={() => mapRef.current?.fit(sheetH + 24)} aria-label="전체 루트 맞추기">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3" /></svg>
         </button>
@@ -465,7 +519,7 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
       </div>
 
       {run.geoDenied && running && (
-        <div className={styles.geoWarn} style={{ bottom: sheetH + 70 }}>위치 권한이 꺼져 있어요. 종료 시 직접 확인할 수 있어요.</div>
+        <div className={styles.geoWarn} style={{ bottom: sheetH + (navHidden ? 12 : 70) }}>위치 권한이 꺼져 있어요. 종료 시 직접 확인할 수 있어요.</div>
       )}
 
       <RouteSheet
@@ -497,6 +551,12 @@ export default function RouteMapMobile({ routeId }: { routeId: string }) {
         onChooseNext={running ? chooseNext : undefined}
         nextId={nextShop?.id ?? null}
         onOpenFloorMap={(id: string) => { const sh = rawStops.find((rs: any) => rs.shops?.id === id)?.shops; if (sh) setFloorMapOpen(floorGroupKey(sh)) }}
+        navHidden={navHidden}
+        distanceById={distanceById}
+        nearest={nearest}
+        onFindNearby={() => { wantCenter.current = false; requestLocation() }}
+        locating={locating}
+        onStartFrom={onStartFrom}
       />
       {floorMapOpen && <FloorMapViewer slides={floorSlides} startKey={floorMapOpen} onClose={() => setFloorMapOpen(null)} />}
 

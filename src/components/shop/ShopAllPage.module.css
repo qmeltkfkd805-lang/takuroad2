@@ -118,6 +118,13 @@
 }
 .districtItem:hover { border-color: var(--accent); }
 .districtItemOn { border-color: var(--accent); background: var(--accent-l); color: var(--accent); }
+/* 지역 이름 옆 샵 수 */
+.regionItem, .regionItemOn, .districtItem, .districtItemOn { display: flex; align-items: center; gap: 6px; }
+.regionNum { margin-left: auto; flex-shrink: 0; font-size: 11.5px; font-weight: 700; color: var(--muted); }
+.regionItemOn .regionNum, .districtItemOn .regionNum { color: var(--accent); }
+/* 헤더의 "서울 마포구에 샵 12곳이 있어요" */
+.regionCountName { color: var(--text); font-weight: 800; }
+.regionCountNum { color: var(--accent); font-weight: 900; }
 .regionHint { padding: 14px 10px; font-size: 12.5px; color: var(--muted); line-height: 1.6; }
 
 .popList { display: flex; flex-direction: column; }

@@ -83,13 +83,30 @@ export default function RouteSheet(props: {
   onChooseNext?: (id: string) => void
   /** 층 지도 사진 보기 (장소 id) */
   onOpenFloorMap?: (id: string) => void
+  /** 하단 탭을 가렸을 때(따라가는 중) — 시트를 화면 맨 아래까지 */
+  navHidden?: boolean
+  /** 내 위치에서 각 장소까지 거리(m) — 있으면 목록에 거리 표시 + '가까운 순' 정렬 */
+  distanceById?: Map<string, number> | null
+  /** 추천 시작 위치 — 내 위치에서 가장 가까운 (아직 안 간) 장소 */
+  nearest?: { id: string; order: number; name: string; distM: number } | null
+  /** 내 위치 찾기 (추천 시작 위치용) */
+  onFindNearby?: () => void
+  locating?: boolean
+  /** 고른 장소부터 루트 시작 */
+  onStartFrom?: (id: string) => void
 }) {
   const {
     onHeightChange, title, metaLine, stops, selectedId, onSelect, onOpenDetail,
     running, phase, onStart, startLabel, starting, visitedCount, totalStops,
     nextLabel, nextDistanceM, onSkip, onPauseResume, onEnd,
     onToggleVisit, busyVisitId = null, showProgress = false, nextId = null, onReset, onChooseNext, onOpenFloorMap,
+    navHidden = false, distanceById = null, nearest = null, onFindNearby, locating = false, onStartFrom,
   } = props
+  const NAV_H = navHidden ? 0 : 58
+  // 코스 목록 정렬 — 코스 순 / 내 위치에서 가까운 순
+  const [sortNear, setSortNear] = useState(false)
+  const canSortNear = !!distanceById && distanceById.size > 0
+  const showNearRow = !running && !selectedId && (!!nearest || !!onFindNearby)
   const pct = totalStops ? Math.round((visitedCount / totalStops) * 100) : 0
 
   // 다음 장소로 가는 길 메모 — 루트 작성자가 앞 장소에 적어 둔 이동 설명(move_tip)
@@ -133,17 +150,17 @@ export default function RouteSheet(props: {
   const listRef = useRef<HTMLOListElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
-  // 뷰포트에 맞춰 3단 높이 계산 (앱바 54 + 하단탭 58 제외 영역 기준)
+  // 뷰포트에 맞춰 3단 높이 계산 (앱바 54 + 하단탭 58 제외 영역 기준 — 따라가는 중엔 하단탭을 가려서 0)
   useEffect(() => {
     const calc = () => {
       const vh = window.innerHeight
-      const avail = vh - 54 - 58
+      const avail = vh - 54 - NAV_H
       setHeights({
         mini: MINI_H,
         // 진행 중: 위쪽 내용 높이(손잡이 18 + 내용 + 코스 목록 줄 여유) — 화면의 86%를 넘지 않게
         collapsed: running
-          ? Math.min(Math.round(avail * 0.86), runTopH ? runTopH + 18 + 44 : (hasArrive ? 262 : 200) + (hasTip ? 58 : 0))
-          : (showProgress ? 262 : 196),   // 진행률 줄만큼 더 높게
+          ? Math.min(Math.round(avail * 0.6), runTopH ? runTopH + 18 + 40 : (hasArrive ? 196 : 160) + (hasTip ? 34 : 0))
+          : (showProgress ? 262 : 196) + (showNearRow ? 60 : 0),   // 진행률 줄 · 추천 시작 위치 줄만큼 더 높게
         // 선택한 스팟 카드(사진·이름 / 상태·층 / 주소 / 태그 / 버튼 + 시작 버튼)가 잘리지 않게 최소 430px
         half: Math.min(Math.round(avail * 0.86), Math.max(Math.round(avail * 0.5), 430)),
         expanded: Math.round(avail * 0.86),
@@ -152,7 +169,7 @@ export default function RouteSheet(props: {
     calc()
     window.addEventListener('resize', calc)
     return () => window.removeEventListener('resize', calc)
-  }, [running, showProgress, hasArrive, hasTip, runTopH])
+  }, [running, showProgress, hasArrive, hasTip, runTopH, NAV_H, showNearRow])
 
   const curH = dragH ?? heights[snap]
   useEffect(() => { onHeightChange(curH) }, [curH, onHeightChange])
@@ -197,10 +214,20 @@ export default function RouteSheet(props: {
   const listSelect = running && onChooseNext
     ? (id: string | null) => { if (id) { onChooseNext(id); setSnap('collapsed'); contentRef.current?.scrollTo({ top: 0 }) } }
     : onSelect
-  const listProps = { stops, selectedId: running ? nextId : selectedId, onSelect: listSelect, onOpenDetail, listRef, onToggleVisit, busyVisitId }
+  const sortedStops = sortNear && canSortNear
+    ? [...stops].sort((a, b) => (distanceById!.get(a.id) ?? Infinity) - (distanceById!.get(b.id) ?? Infinity))
+    : stops
+  const listProps = { stops: sortedStops, selectedId: running ? nextId : selectedId, onSelect: listSelect, onOpenDetail, listRef, onToggleVisit, busyVisitId, distanceById, nearOrder: sortNear && canSortNear }
+  // 코스 목록 위 정렬 토글
+  const sortBar = canSortNear ? (
+    <div className={styles.sortBar} role="group" aria-label="목록 정렬">
+      <button type="button" className={!sortNear ? styles.sortOn : styles.sortBtn} onClick={() => setSortNear(false)}>코스 순</button>
+      <button type="button" className={sortNear ? styles.sortOn : styles.sortBtn} onClick={() => setSortNear(true)}>내 위치에서 가까운 순</button>
+    </div>
+  ) : null
 
   return (
-    <div className={styles.sheet} style={{ height: curH, transition: dragH == null ? 'height .28s cubic-bezier(.32,.72,0,1)' : 'none' }}>
+    <div className={styles.sheet} style={{ height: curH, transition: dragH == null ? 'height .28s cubic-bezier(.32,.72,0,1)' : 'none', ...(navHidden ? { bottom: 0 } : null) }}>
       <div className={styles.handleZone} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
         onClick={cycle} role="button" aria-label="시트 열기/닫기" tabIndex={0}>
         <div className={styles.handle} />
@@ -217,34 +244,54 @@ export default function RouteSheet(props: {
             <FoldBtn folded={snap === 'mini'} onClick={() => snapTo(snap === 'mini' ? 'collapsed' : 'mini')} />
           </div>
           <div className={styles.bar}><div className={styles.barFill} style={{ width: `${pct}%` }} /></div>
+          {/* 📱 진행 중엔 지도를 넓게 — 다음 장소를 한 줄 카드로, 버튼은 한 줄로 */}
           {shownStop ? (
-            <SpotCard stop={shownStop} label={arrived ? '방금 방문' : '다음 장소'}
-              floorMove={!arrived ? shownStop.floorMove ?? null : null}
-              onFloorMap={!arrived && shownStop.hasFloorMap && onOpenFloorMap ? () => onOpenFloorMap(shownStop.id) : undefined}
-              distance={arrived ? <span style={{ color: '#16a34a' }}>도착</span>
-                : <>지금 위치에서 {nextDistanceM != null ? walkText(Math.round(nextDistanceM / 75), nextDistanceM) : '위치 확인 중…'}</>}
-              tip={!arrived ? nextTip : null}
-              left={null /* 외부 지도 앱 길안내는 두지 않는다 — 타쿠로드 지도 안에서 안내 */}
-              right={onToggleVisit ? (
-                <button type="button" className={arrived ? styles.spotVisitDone : styles.spotVisit} onClick={onArrive}
-                  disabled={arrived || busyVisitId === nextId} aria-label={`${shownStop.name} 방문 체크`}>
-                  {arrived ? <CheckIcon size={16} /> : <PinSvg />}{arrived ? '방문 완료!' : '방문 체크'}
-                </button>
-              ) : null} />
+            <div className={`${styles.nextCard} ${arrived ? styles.nextCardDone : ''}`}>
+              <div className={styles.nextTop}>
+                <span className={`${styles.spotNum} ${arrived || shownStop.visited ? styles.spotNumDone : ''}`}>{arrived || shownStop.visited ? <CheckIcon size={12} /> : shownStop.order}</span>
+                <div className={styles.nextBody}>
+                  <div className={styles.nextTitle}>
+                    <span className={styles.nextKicker}>{arrived ? '방금 방문' : '다음'}</span>
+                    <span className={styles.nextTitleText}>{shownStop.name}</span>
+                  </div>
+                  <div className={styles.nextSub}>
+                    {arrived ? <span style={{ color: '#16a34a' }}>도착</span>
+                      : <span>{nextDistanceM != null ? walkText(Math.round(nextDistanceM / 75), nextDistanceM) : '위치 확인 중…'}</span>}
+                    {shownStop.floor && <span className={styles.nextFloor}>{shownStop.floor}</span>}
+                  </div>
+                </div>
+                {onToggleVisit && (
+                  <button type="button" className={arrived ? styles.nextVisitDone : styles.nextVisit} onClick={onArrive}
+                    disabled={arrived || busyVisitId === nextId} aria-label={`${shownStop.name} 방문 체크`}>
+                    {arrived ? <CheckIcon size={15} /> : <PinSvg size={15} />}{arrived ? '완료!' : '방문 체크'}
+                  </button>
+                )}
+              </div>
+              {!arrived && (shownStop.floorMove || (shownStop.hasFloorMap && onOpenFloorMap) || nextTip) && (
+                <div className={styles.nextExtras}>
+                  {shownStop.floorMove && <span className={styles.spotFloorMove}>{shownStop.floorMove}</span>}
+                  {shownStop.hasFloorMap && onOpenFloorMap && (
+                    <button type="button" className={styles.spotFloorMapBtn} onClick={() => onOpenFloorMap(shownStop.id)}>층 지도</button>
+                  )}
+                  {nextTip && <div className={styles.nextTipLine}><b>가는 길</b> {nextTip}</div>}
+                </div>
+              )}
+            </div>
           ) : shownNext ? (
             <div className={styles.nextRow}><div className={styles.nextInfo}><span className={styles.nextLabel}>다음</span><span className={styles.nextName}>{shownNext}</span></div></div>
           ) : (
-            <div className={styles.runNote}>방문한 곳은 아래 목록에서 체크하거나 ‘오늘 루트 종료’에서 확인해 주세요.</div>
+            <div className={styles.runNote}>방문한 곳은 아래 목록에서 체크하거나 ‘종료’에서 확인해 주세요.</div>
           )}
-          <div className={styles.runBtns}>
-            <button className={styles.ghost} onClick={onSkip} disabled={!nextLabel}>건너뛰기</button>
-            <button className={styles.ghost} onClick={onPauseResume}>{phase === 'paused' ? '다시 시작' : '일시중지'}</button>
+          <div className={styles.runBtnsRow}>
+            <button className={styles.ghostSm} onClick={onSkip} disabled={!nextLabel}>건너뛰기</button>
+            <button className={styles.ghostSm} onClick={onPauseResume}>{phase === 'paused' ? '다시 시작' : '일시중지'}</button>
+            <button className={styles.endSm} onClick={onEnd}>오늘 종료</button>
           </div>
-          <button className={styles.endBtn} onClick={onEnd}>오늘 루트 종료</button>
           </div>
           <button className={styles.listToggle} onClick={() => snapTo(snap === 'expanded' ? 'collapsed' : 'expanded')}>
             코스 목록 {snap === 'expanded' ? '▾' : '▸'}
           </button>
+          {snap === 'expanded' && sortBar}
           {snap === 'expanded' && <CourseList {...listProps} />}
         </div>
       ) : selected ? (
@@ -261,6 +308,11 @@ export default function RouteSheet(props: {
               </button>
             ) : null} />
           <button className={styles.cta} onClick={onStart} disabled={starting}>{starting ? '준비 중…' : startLabel}</button>
+          {onStartFrom && selected.order > 1 && !selected.visited && (
+            <button type="button" className={styles.startFromBtn} onClick={() => onStartFrom(selected.id)} disabled={starting}>
+              {selected.order}번 {selected.name}부터 시작
+            </button>
+          )}
           {snap === 'expanded' && <CourseList {...listProps} />}
         </div>
       ) : (
@@ -282,10 +334,27 @@ export default function RouteSheet(props: {
               <span className={styles.bar} style={{ marginBottom: 0 }}><span className={styles.barFill} style={{ width: `${pct}%`, display: 'block' }} /></span>
             </button>
           )}
+          {/* 추천 시작 위치 — 내 위치에서 가장 가까운 곳 */}
+          {showNearRow && (nearest ? (
+            <div className={styles.nearRow}>
+              <div className={styles.nearInfo}>
+                <span className={styles.nearKicker}>내 위치에서 가장 가까운 곳</span>
+                <span className={styles.nearName}>{nearest.order}. {nearest.name} · {formatDistance(nearest.distM)}</span>
+              </div>
+              {onStartFrom && (
+                <button type="button" className={styles.nearBtn} onClick={() => onStartFrom(nearest.id)} disabled={starting}>여기서 시작</button>
+              )}
+            </div>
+          ) : (
+            <button type="button" className={styles.nearFind} onClick={onFindNearby} disabled={locating}>
+              <PinSvg size={14} />{locating ? '내 위치 찾는 중…' : '내 위치에서 가까운 시작 장소 찾기'}
+            </button>
+          ))}
           <button className={styles.cta} onClick={onStart} disabled={starting}>{starting ? '준비 중…' : startLabel}</button>
           <button className={styles.listToggle} onClick={() => snapTo(snap === 'expanded' ? 'collapsed' : 'expanded')}>
             코스 목록 {snap === 'expanded' ? '▾' : '▸'}
           </button>
+          {snap === 'expanded' && sortBar}
           {snap === 'expanded' && <CourseList {...listProps} />}
           {snap === 'expanded' && onReset && visitedCount > 0 && (
             <button type="button" className={styles.resetBtn} onClick={onReset}>완주 초기화</button>
@@ -376,8 +445,11 @@ function VisitCheck({ on, busy, name, onClick, big = false }: { on: boolean; bus
   )
 }
 
-function CourseList({ stops, selectedId, onSelect, onOpenDetail, listRef, onToggleVisit, busyVisitId }: {
+function CourseList({ stops, selectedId, onSelect, onOpenDetail, listRef, onToggleVisit, busyVisitId, distanceById = null, nearOrder = false }: {
   stops: SheetStop[]
+  distanceById?: Map<string, number> | null
+  /** 가까운 순으로 정렬된 목록 — 장소 사이 이동 정보는 숨긴다 */
+  nearOrder?: boolean
   selectedId: string | null
   onSelect: (id: string | null) => void
   onOpenDetail: (slug: string) => void
@@ -391,10 +463,10 @@ function CourseList({ stops, selectedId, onSelect, onOpenDetail, listRef, onTogg
         const sel = s.id === selectedId
         return (
           <li key={s.id}>
-            {i > 0 && (s.walkMin != null || s.walkM != null) && (
+            {!nearOrder && i > 0 && (s.walkMin != null || s.walkM != null) && (
               <div className={styles.travel}>{walkText(s.walkMin, s.walkM)}</div>
             )}
-            {i > 0 && stops[i - 1]?.moveTip && <div className={styles.tip}>{stops[i - 1].moveTip}</div>}
+            {!nearOrder && i > 0 && stops[i - 1]?.moveTip && <div className={styles.tip}>{stops[i - 1].moveTip}</div>}
             <div className={`${styles.row} ${sel ? styles.rowSel : ''} ${s.visited ? styles.rowDone : ''}`} role="button" tabIndex={0}
               onClick={() => onSelect(sel ? null : s.id)}
               onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(sel ? null : s.id) } }}>
@@ -403,6 +475,7 @@ function CourseList({ stops, selectedId, onSelect, onOpenDetail, listRef, onTogg
               <div className={styles.rowBody}>
                 <div className={styles.rowName}>{s.name}</div>
                 <div className={styles.rowMeta}>
+                  {distanceById?.get(s.id) != null && <span className={styles.rowDist}>{formatDistance(distanceById.get(s.id)!)}</span>}
                   {s.floor && <span>{s.floor}</span>}
                   {s.cats.slice(0, 2).map(c => <Tag key={c} c={c} />)}
                   <button className={styles.rowDetail} onClick={e => { e.stopPropagation(); onOpenDetail(s.slug) }}>상세 ›</button>
