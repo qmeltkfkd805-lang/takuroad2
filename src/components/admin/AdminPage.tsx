@@ -155,6 +155,8 @@ export default function AdminPage() {
     postreports: badges?.pendingPostReports ?? null,
     contacts: badges?.openContacts ?? null,
     partners: badges?.openPartners ?? null,
+    workrequests: badges?.pendingWorkRequests ?? null,
+    suggestions: badges?.newSuggestions ?? null,
   }
 
   return (
@@ -234,8 +236,8 @@ export default function AdminPage() {
       {tab === 'postreports' && <PostReportsTab onResolved={refreshBadges} />}
       {tab === 'contacts' && <ContactAdminTab excludeType="partner" onSaved={refreshBadges} />}
       {tab === 'partners' && <ContactAdminTab onlyType="partner" onSaved={refreshBadges} />}
-      {tab === 'suggestions' && <SuggestionAdminTab />}
-      {tab === 'workrequests' && <WorkRequestAdminTab />}
+      {tab === 'suggestions' && <SuggestionAdminTab onChanged={refreshBadges} />}
+      {tab === 'workrequests' && <WorkRequestAdminTab onChanged={refreshBadges} />}
       {tab === 'routes' && <OfficialRouteTab />}
       {tab === 'events' && <SeasonalEventTab />}
       </div>

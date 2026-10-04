@@ -95,6 +95,8 @@ const CONTACT_STATUS_DONE = 'done'      // ContactAdminTab / updateContactMessag
 const CONTACT_TYPE_PARTNER = 'partner'  // AdminPage의 onlyType/excludeType
 const POST_REPORT_PENDING = 'pending'   // post_reports.status — migrations/post_report_review.sql
 const SHOP_REVIEW_PENDING = 'pending'   // shops.review_status — migrations/shop_review.sql
+const WORK_REQUEST_PENDING = 'pending'  // work_requests.status — workRequestService '검토 중'
+const SUGGESTION_NEW = 'new'            // feature_suggestions.status — suggestionService '새 제안'
 
 /** null = 조회 실패 또는 아직 안 옴 (UI에서 '—' 처리) */
 export interface AdminBadgeCounts {
@@ -104,6 +106,10 @@ export interface AdminBadgeCounts {
   openPartners: number | null
   /** 신규 샵 검수 대기 (review_status='pending'). 기능 도입 전 샵은 NULL이라 안 잡힌다 */
   shopReview: number | null
+  /** 작품 추가 요청 중 검토 대기 (work_requests.status='pending' — WorkRequestAdminTab '검토 중') */
+  pendingWorkRequests: number | null
+  /** 아직 아무도 안 본 새 제안 (feature_suggestions.status='new' — SuggestionAdminTab '새 제안') */
+  newSuggestions: number | null
 }
 
 // supabase count 응답에서 필요한 부분만 좁게 본다 (Database 타입이 any라 여기서 형태를 명시한다)
@@ -131,6 +137,10 @@ export async function getAdminBadgeCounts(): Promise<AdminBadgeCounts> {
       .neq('status', CONTACT_STATUS_DONE).eq('type', CONTACT_TYPE_PARTNER),
     supabase.from('shops').select('id', { count: 'exact', head: true })
       .eq('review_status', SHOP_REVIEW_PENDING).neq('status', 'deleted'),
+    supabase.from('work_requests').select('id', { count: 'exact', head: true })
+      .eq('status', WORK_REQUEST_PENDING),
+    supabase.from('feature_suggestions').select('id', { count: 'exact', head: true })
+      .eq('status', SUGGESTION_NEW),
   ])
 
   const pick = (r: PromiseSettledResult<CountResult>, tag: string): number | null => {
@@ -148,6 +158,8 @@ export async function getAdminBadgeCounts(): Promise<AdminBadgeCounts> {
     openContacts: pick(results[0], '문의'),
     openPartners: pick(results[1], '제휴 문의'),
     shopReview: pick(results[2], '신규 샵 검수'),
+    pendingWorkRequests: pick(results[3], '작품 추가 요청'),
+    newSuggestions: pick(results[4], '새 제안'),
   }
 }
 

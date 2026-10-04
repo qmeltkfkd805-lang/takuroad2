@@ -44,16 +44,24 @@ export default function AdminDashboardPage({ onNavigate, todo, pendingVerify, ba
     getTodayCounts().then(setToday).catch(() => setToday(null))
   }, [])
 
-  // 처리해야 할 업무 — 각 값의 출처는 기존 관리 화면과 같다
-  const todos: { key: string; label: string; icon: AdminIconName; count: number | null; tab?: string }[] = [
+  // 처리해야 할 업무 — 사이드바 배지와 같은 값(같은 출처). 1건 이상인 업무만 보여준다
+  const allTodos: { key: string; label: string; icon: AdminIconName; count: number | null; tab?: string }[] = [
     // 옛 '샵 승인'(status='pending')은 뺐다 — 선등록 후검수로 정책이 바뀌었다
     { key: 'shopreview', label: '신규 샵 검수',  icon: 'approve',  count: badges ? badges.shopReview : null, tab: 'shopreview' },
     { key: 'verify',   label: '인증 심사',       icon: 'verify',   count: pendingVerify, tab: 'verify' },
+    { key: 'reported', label: '샵 신고',         icon: 'flagShop', count: todo ? todo.pendingSuggestions : null, tab: 'reported' },
+    { key: 'postreports', label: '게시글 신고',  icon: 'flagPost', count: badges ? badges.pendingPostReports : null, tab: 'postreports' },
+    { key: 'workrequests', label: '작품 추가 요청', icon: 'work',  count: badges ? badges.pendingWorkRequests : null, tab: 'workrequests' },
     { key: 'contacts', label: '문의',            icon: 'contact',  count: badges ? badges.openContacts : null, tab: 'contacts' },
+    { key: 'partners', label: '제휴 문의',       icon: 'partner',  count: badges ? badges.openPartners : null, tab: 'partners' },
+    { key: 'suggestions', label: '새 제안',      icon: 'idea',     count: badges ? badges.newSuggestions : null, tab: 'suggestions' },
   ]
+  // 0건·조회 실패/로딩(null)은 숨긴다
+  const todos = allTodos.filter(t => typeof t.count === 'number' && t.count > 0)
+  const todoLoading = todo === null && badges === null
 
   // 처리 필요 합계 — 아직 안 온 값은 빼고 센다(없는 수를 지어내지 않는다)
-  const knownTodos = todos.map(t => t.count).filter((n): n is number => typeof n === 'number')
+  const knownTodos = allTodos.map(t => t.count).filter((n): n is number => typeof n === 'number')
   const todoTotal = knownTodos.length > 0 ? knownTodos.reduce((a, b) => a + b, 0) : null
 
   // 신규 회원 전일 대비 — 오늘 값은 기존 통계(newMembersToday), 어제 값은 시계열
@@ -103,6 +111,11 @@ export default function AdminDashboardPage({ onNavigate, todo, pendingVerify, ba
             <h2 className={styles.cardTitle}>처리해야 할 업무</h2>
           </div>
           <div className={styles.todoList}>
+            {todos.length === 0 && (
+              todoLoading
+                ? <LogoLoader size="sm" />
+                : <div className={styles.empty}>지금 처리할 업무가 없어요.</div>
+            )}
             {todos.map(t => (
               <button
                 key={t.key}

@@ -21,7 +21,8 @@ const BADGE_CLASS: Record<string, string> = {
   rejected: styles.badgeAttention,
 }
 
-export default function WorkRequestAdminTab() {
+/** onChanged: 상태를 바꾸면 관리자 배지·'처리해야 할 업무' 숫자를 다시 센다 */
+export default function WorkRequestAdminTab({ onChanged }: { onChanged?: () => void } = {}) {
   const { user } = useAuth()
   const [tab, setTab] = useState<string>('pending')
   const [rows, setRows] = useState<any[]>([])
@@ -41,7 +42,7 @@ export default function WorkRequestAdminTab() {
   async function change(id: string, status: WorkRequestStatus) {
     if (!user) return
     const ok = await updateWorkRequest(id, { status }, user.id)
-    if (ok) setRows(prev => prev.map(r => (r.id === id ? { ...r, status } : r)))
+    if (ok) { setRows(prev => prev.map(r => (r.id === id ? { ...r, status } : r))); onChanged?.() }
     else window.alert('상태 변경에 실패했어요.')
   }
 

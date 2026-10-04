@@ -5,7 +5,8 @@ import { getAllSuggestions, updateSuggestion, rewardSuggestionExp, SUGGESTION_ST
 const STATUS_LABEL: Record<string, string> = Object.fromEntries(SUGGESTION_STATUS.map(s => [s.key, s.label]))
 const FILTERS = [{ key: 'all', label: '전체' }, ...SUGGESTION_STATUS]
 
-export default function SuggestionAdminTab() {
+/** onChanged: 상태를 바꾸면 관리자 배지·'처리해야 할 업무' 숫자를 다시 센다 */
+export default function SuggestionAdminTab({ onChanged }: { onChanged?: () => void } = {}) {
   const [filter, setFilter] = useState<string>('all')
   const [rows, setRows] = useState<any[]>([])
   // 어떤 필터의 결과를 갖고 있는지로 로딩 여부를 판단한다 (effect 안에서 곧바로 setState 하지 않기 위해)
@@ -23,6 +24,7 @@ export default function SuggestionAdminTab() {
   async function changeStatus(id: string, status: string) {
     await updateSuggestion(id, { status })
     setRows(prev => prev.map(r => (r.id === id ? { ...r, status } : r)))
+    onChanged?.()
   }
   async function saveNote(id: string, adminNote: string) {
     await updateSuggestion(id, { adminNote })
