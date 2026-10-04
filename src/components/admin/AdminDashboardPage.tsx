@@ -46,7 +46,6 @@ export default function AdminDashboardPage({ onNavigate, todo, pendingVerify, ba
 
   // 처리해야 할 업무 — 각 값의 출처는 기존 관리 화면과 같다
   const todos: { key: string; label: string; icon: AdminIconName; count: number | null; tab?: string }[] = [
-    { key: 'goods',    label: '미확인 굿즈 정보', icon: 'inbox',    count: todo ? todo.unconfirmedProducts : null },
     // 옛 '샵 승인'(status='pending')은 뺐다 — 선등록 후검수로 정책이 바뀌었다
     { key: 'shopreview', label: '신규 샵 검수',  icon: 'approve',  count: badges ? badges.shopReview : null, tab: 'shopreview' },
     { key: 'verify',   label: '인증 심사',       icon: 'verify',   count: pendingVerify, tab: 'verify' },
