@@ -69,14 +69,16 @@ export function getTodayStatus(hours: BusinessHours | null): {
   const inBreak = hasBreak && nowAdj >= breakStartMin! && nowAdj < breakEndMin!
 
   const isOpen = nowAdj >= openMin && nowAdj < closeMin && !inBreak
-  const closeLabel = displayClose(open, close)
-  const todayHours = hasBreak
-    ? `${open} ~ ${todayData.breakStart}, ${todayData.breakEnd} ~ ${closeLabel}`
-    : `${open} ~ ${closeLabel}`
+  const todayHours = formatDayHours(todayData)
+
+  // 라스트 오더가 지났으면 문은 열려 있어도 주문은 끝났다
+  let loMin = todayData.lastOrder ? toMin(todayData.lastOrder) : null
+  if (loMin !== null && loMin < openMin) loMin += 1440
+  const pastLastOrder = isOpen && loMin !== null && nowAdj >= loMin
 
   return {
     isOpen,
-    label: inBreak ? '휴게시간' : isOpen ? '영업중' : '영업 종료',
+    label: inBreak ? '휴게시간' : pastLastOrder ? '주문 마감' : isOpen ? '영업중' : '영업 종료',
     todayHours,
   }
 }
@@ -93,6 +95,7 @@ export function getHolidayRule(hours: unknown): HolidayRule | null {
   if (h && typeof h === 'object' && h.open && h.close) {
     const dh: DayHours = { open: h.open, close: h.close }
     if (h.breakStart && h.breakEnd) { dh.breakStart = h.breakStart; dh.breakEnd = h.breakEnd }
+    if (h.lastOrder) dh.lastOrder = h.lastOrder
     return dh
   }
   return null
@@ -100,9 +103,10 @@ export function getHolidayRule(hours: unknown): HolidayRule | null {
 
 /** 하루 영업시간 → "10:30 ~ 22:00" (휴게 있으면 "10:30 ~ 15:00, 16:00 ~ 22:00") */
 export function formatDayHours(dh: DayHours): string {
-  return dh.breakStart && dh.breakEnd
+  const base = dh.breakStart && dh.breakEnd
     ? `${dh.open} ~ ${dh.breakStart}, ${dh.breakEnd} ~ ${displayClose(dh.open, dh.close)}`
     : `${dh.open} ~ ${displayClose(dh.open, dh.close)}`
+  return dh.lastOrder ? `${base} (라스트 오더 ${dh.lastOrder})` : base
 }
 
 /** 그 날짜의 영업시간 — 정기휴무 > 공휴일 규칙 > 요일 시간. null = 휴무, undefined = 정보 없음 */
@@ -162,9 +166,7 @@ export function formatBusinessHours(hours: BusinessHours | null) {
         ? '정보 없음'
         : data === null
           ? '휴무'
-          : data.breakStart && data.breakEnd
-            ? `${data.open} ~ ${data.breakStart}, ${data.breakEnd} ~ ${displayClose(data.open, data.close)}`
-            : `${data.open} ~ ${displayClose(data.open, data.close)}`,
+          : formatDayHours(data),
       isOpen: data !== null && data !== undefined,
     }
   })

@@ -7,7 +7,7 @@ import { updateShopFields } from '@/services/shopService'
 import { ROUTES } from '@/lib/constants/routes'
 import { BusinessHours } from '@/types/database'
 import { Shop } from '@/types/shop'
-import ShopHoursEditor, { HOURS_HINT } from './ShopHoursEditor'
+import ShopHoursEditor, { HOURS_HINT, needsLastOrder } from './ShopHoursEditor'
 import styles from './hoursManage.module.css'
 
 /* 사장님 매장 관리 > 영업시간.
@@ -45,7 +45,7 @@ export default function HoursManage({ shop }: { shop: Shop }) {
       <h1 className={styles.title}>영업시간</h1>
       <p className={styles.desc}>{HOURS_HINT}</p>
 
-      <ShopHoursEditor value={hours} onChange={setHours} />
+      <ShopHoursEditor value={hours} onChange={setHours} lastOrder={needsLastOrder(shop.cats)} />
 
       <button className={styles.saveBtn} onClick={save} disabled={saving}>
         {saving ? '저장 중…' : '저장하기'}

@@ -12,6 +12,8 @@ export interface DayHours {
   close: string
   breakStart?: string | null
   breakEnd?: string | null
+  /** 라스트 오더(주문 마감) — 음식점·카페만. 없으면 필드 자체가 없음 */
+  lastOrder?: string | null
 }
 
 export interface BusinessHours {

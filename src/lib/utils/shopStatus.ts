@@ -50,6 +50,8 @@ export function getShopStatus(shop: Shop, now: Date = new Date()): ShopStatusRes
     const yc = toMin(y.close)
     if (yc <= yo && nowMin < yc) {
       const remain = yc - nowMin
+      const ylo = y.lastOrder ? toMin(y.lastOrder) : null
+      if (ylo !== null && ylo < yo && nowMin >= ylo) return { kind: 'closing_soon', label: '주문 마감', detail: `${fmt(yc)}까지` }
       return remain <= SOON
         ? { kind: 'closing_soon', label: '곧 마감', detail: `${fmt(yc)}까지` }
         : { kind: 'open', label: '영업중', detail: `${fmt(yc)}까지` }
@@ -67,6 +69,10 @@ export function getShopStatus(shop: Shop, now: Date = new Date()): ShopStatusRes
     if (c <= o) c += 1440
     if (nowMin >= o && nowMin < c) {
       const remain = c - nowMin
+      // 라스트 오더가 지났으면 "주문 마감"
+      let lo = t.lastOrder ? toMin(t.lastOrder) : null
+      if (lo !== null && lo < o) lo += 1440
+      if (lo !== null && nowMin >= lo) return { kind: 'closing_soon', label: '주문 마감', detail: `${fmt(c)}까지` }
       return remain <= SOON
         ? { kind: 'closing_soon', label: '곧 마감', detail: `${fmt(c)}까지` }
         : { kind: 'open', label: '영업중', detail: `${fmt(c)}까지` }

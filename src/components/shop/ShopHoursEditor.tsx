@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { WEEKDAYS, WEEKDAY_LABEL } from '@/lib/constants/categories'
 import { BusinessHours, DayHours } from '@/types/database'
 import { getMonthlyOff, monthlyOffLabel, WEEK_KO, type MonthlyOff } from '@/lib/utils/monthlyOff'
+import { catInfoOf } from '@/lib/constants/categories'
 
 /* 영업시간 편집기 — 샵 등록 위저드와 사장님 매장 관리가 같은 걸 쓴다.
 
@@ -34,6 +35,20 @@ interface Group {
   close: string
   breakStart: string | null
   breakEnd: string | null
+  lastOrder: string | null
+}
+
+/* 라스트 오더 입력을 보여줄 카테고리 — 음식점/카페, 콜라보카페 */
+const LAST_ORDER_SLUGS = ['restaurant', 'collab-cafe']
+export function needsLastOrder(cats: string[] | null | undefined): boolean {
+  return (cats ?? []).some(c => LAST_ORDER_SLUGS.includes(catInfoOf(c)?.slug ?? ''))
+}
+
+/* 마감 30분 전 (라스트 오더 기본값) */
+function before30(close: string): string {
+  const [h, m] = close.split(':').map(Number)
+  const t = ((h * 60 + m - 30) % 1440 + 1440) % 1440
+  return `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`
 }
 
 const DEFAULT_OPEN = '10:00'
@@ -43,7 +58,7 @@ const DEFAULT_BREAK_END = '16:00'
 
 let groupSeq = 1
 const newGroup = (patch: Partial<Group> = {}): Group => ({
-  id: groupSeq++, days: [], open: DEFAULT_OPEN, close: DEFAULT_CLOSE, breakStart: null, breakEnd: null, ...patch,
+  id: groupSeq++, days: [], open: DEFAULT_OPEN, close: DEFAULT_CLOSE, breakStart: null, breakEnd: null, lastOrder: null, ...patch,
 })
 
 /* 저장된 hours → 같은 시간끼리 묶음. 여는 요일이 없으면 빈 묶음 하나(요일 미선택). */
@@ -53,10 +68,10 @@ function toGroups(value: BusinessHours | null): Group[] {
   for (const d of WEEKDAYS) {
     const dh = hours[d]
     if (!dh) continue
-    const key = [dh.open, dh.close, dh.breakStart ?? '', dh.breakEnd ?? ''].join('|')
+    const key = [dh.open, dh.close, dh.breakStart ?? '', dh.breakEnd ?? '', dh.lastOrder ?? ''].join('|')
     const g = byKey.get(key)
     if (g) g.days.push(d)
-    else byKey.set(key, newGroup({ days: [d], open: dh.open, close: dh.close, breakStart: dh.breakStart ?? null, breakEnd: dh.breakEnd ?? null }))
+    else byKey.set(key, newGroup({ days: [d], open: dh.open, close: dh.close, breakStart: dh.breakStart ?? null, breakEnd: dh.breakEnd ?? null, lastOrder: dh.lastOrder ?? null }))
   }
   const list = [...byKey.values()]
   return list.length ? list : [newGroup()]
@@ -71,6 +86,7 @@ function toHours(groups: Group[], extras: Extras): HoursMap {
     if (!g) { next[d] = null; continue }
     const dh: DayHours = { open: g.open, close: g.close }
     if (g.breakStart && g.breakEnd) { dh.breakStart = g.breakStart; dh.breakEnd = g.breakEnd }
+    if (g.lastOrder) dh.lastOrder = g.lastOrder
     next[d] = dh
   }
   if (extras.holiday === 'closed') next.holiday = 'closed'
@@ -78,6 +94,7 @@ function toHours(groups: Group[], extras: Extras): HoursMap {
     const h = extras.holiday
     const dh: DayHours = { open: h.open, close: h.close }
     if (h.breakStart && h.breakEnd) { dh.breakStart = h.breakStart; dh.breakEnd = h.breakEnd }
+    if (h.lastOrder) dh.lastOrder = h.lastOrder
     next.holiday = dh
   }
   if (extras.yearRound) next.yearRound = true
@@ -105,9 +122,11 @@ const PRESETS: { label: string; days: Day[] }[] = [
   { label: '주말', days: ['sat', 'sun'] },
 ]
 
-export default function ShopHoursEditor({ value, onChange }: {
+export default function ShopHoursEditor({ value, onChange, lastOrder = false }: {
   value: BusinessHours | null
   onChange: (next: BusinessHours) => void
+  /** 음식점·카페면 true — 라스트 오더 입력을 보여준다 (needsLastOrder(cats)) */
+  lastOrder?: boolean
 }) {
   const hours: HoursMap = value ?? {}
   const [groups, setGroups] = useState<Group[]>(() => toGroups(value))
@@ -206,13 +225,16 @@ export default function ShopHoursEditor({ value, onChange }: {
     setMonthly({ ...monthlyView, days: ds })
   }
 
+  // 이미 라스트 오더가 저장된 매장은 카테고리가 바뀌어도 보여줘서 지울 수 있게 한다
+  const showLastOrder = lastOrder || groups.some(g => !!g.lastOrder) || !!holidayHours?.lastOrder
+
   const usedDays = new Set(groups.flatMap(g => g.days))
   const closedDays = WEEKDAYS.filter(d => !usedDays.has(d))
   const anyOpen = usedDays.size > 0
   const summary = groups
     .filter(g => g.days.length)
     .sort((a, b) => Math.min(...a.days.map(d => WEEKDAYS.indexOf(d))) - Math.min(...b.days.map(d => WEEKDAYS.indexOf(d))))
-    .map(g => `${daysLabel(g.days)} ${g.open}~${g.close}${g.breakStart && g.breakEnd ? ` (휴게 ${g.breakStart}~${g.breakEnd})` : ''}`)
+    .map(g => `${daysLabel(g.days)} ${g.open}~${g.close}${g.breakStart && g.breakEnd ? ` (휴게 ${g.breakStart}~${g.breakEnd})` : ''}${g.lastOrder ? ` (라스트 오더 ${g.lastOrder})` : ''}`)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -280,6 +302,13 @@ export default function ShopHoursEditor({ value, onChange }: {
               </button>
             )}
           </div>
+
+          {/* 4) 라스트 오더(음식점·카페) */}
+          {showLastOrder && (
+            <div style={{ marginTop: 10 }}>
+              <LastOrderField value={g.lastOrder} close={g.close} onChange={v => patchGroup(g.id, { lastOrder: v })} />
+            </div>
+          )}
         </div>
       ))}
 
@@ -323,6 +352,9 @@ export default function ShopHoursEditor({ value, onChange }: {
                 style={{ alignSelf: 'flex-start', padding: '7px 12px', borderRadius: 8, border: '1.5px dashed var(--border)', background: 'var(--surface)', color: 'var(--muted)', cursor: 'pointer', fontFamily: 'inherit', fontWeight: 700, fontSize: 13 }}>
                 + 휴게시간 (브레이크 타임)
               </button>
+            )}
+            {showLastOrder && (
+              <LastOrderField value={holidayHours.lastOrder ?? null} close={holidayHours.close} onChange={v => patchHolidayHours({ lastOrder: v })} />
             )}
           </>
         )}
@@ -369,7 +401,7 @@ export default function ShopHoursEditor({ value, onChange }: {
             <div style={{ color: 'var(--muted)' }}>
               {closedDays.length ? `쉬는 요일: ${daysLabel(closedDays)}` : '쉬는 요일 없음'}
               {holidayClosed ? ' · 공휴일 휴무' : ''}
-              {holidayHours ? ` · 공휴일 ${holidayHours.open}~${holidayHours.close}${holidayHours.breakStart && holidayHours.breakEnd ? ` (휴게 ${holidayHours.breakStart}~${holidayHours.breakEnd})` : ''}` : ''}
+              {holidayHours ? ` · 공휴일 ${holidayHours.open}~${holidayHours.close}${holidayHours.breakStart && holidayHours.breakEnd ? ` (휴게 ${holidayHours.breakStart}~${holidayHours.breakEnd})` : ''}${holidayHours.lastOrder ? ` (라스트 오더 ${holidayHours.lastOrder})` : ''}` : ''}
               {yearRound ? ' · 연중무휴' : ''}
               {monthlyOffLabel(hours) ? ` · ${monthlyOffLabel(hours)}` : ''}
             </div>
@@ -378,6 +410,28 @@ export default function ShopHoursEditor({ value, onChange }: {
           <span style={{ color: 'var(--muted)' }}>아직 여는 요일을 고르지 않았어요. 요일을 누르면 여기에 정리돼요.</span>
         )}
       </div>
+    </div>
+  )
+}
+
+/* 라스트 오더 — 없으면 "+ 라스트 오더" 버튼, 있으면 시간 입력 + 없음 */
+function LastOrderField({ value, close, onChange }: { value: string | null; close: string; onChange: (v: string | null) => void }) {
+  if (!value) {
+    return (
+      <button type="button" onClick={() => onChange(before30(close))}
+        style={{ padding: '7px 12px', borderRadius: 8, border: '1.5px dashed var(--border)', background: 'var(--surface)', color: 'var(--muted)', cursor: 'pointer', fontFamily: 'inherit', fontWeight: 700, fontSize: 13 }}>
+        + 라스트 오더
+      </button>
+    )
+  }
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+      <span style={{ ...stepLabel, fontSize: 13.5 }}>라스트 오더</span>
+      <TimeField value={value} onChange={v => onChange(v)} />
+      <button type="button" onClick={() => onChange(null)}
+        style={{ padding: '6px 11px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--muted)', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 700 }}>
+        없음
+      </button>
     </div>
   )
 }
