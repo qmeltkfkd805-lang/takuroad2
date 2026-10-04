@@ -14,6 +14,7 @@ import UnlockModal from '@/components/cosmetic/UnlockModal'
 import LevelUpModal from '@/components/growth/LevelUpModal'
 import { logVisit } from '@/services/trafficService'
 import { captureFirstTouch } from '@/lib/utils/firstTouch'
+import { trackNav } from '@/lib/nav/leaveEdit'
 
 const NO_SHELL = ['/login', '/admin', '/dev', '/test']
 
@@ -42,6 +43,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const evalOnceRef = useRef(false)
   // 유입 경로는 랜딩 순간에 한 번만 — /login 같은 bare 화면에서도 잡아야 하므로 bare 체크 위에서 실행
   useEffect(() => { captureFirstTouch() }, [])
+  // 바로 전 페이지 기록 — 수정 화면에서 저장 후 나갈 때(leaveEditTo) 뒤로가기 기록을 정리하는 데 쓴다
+  useEffect(() => { trackNav(pathname) }, [pathname])
   useEffect(() => {
     if (bare) return
     logVisit(pathname, user?.id ?? null).catch(() => {}).then(() => {

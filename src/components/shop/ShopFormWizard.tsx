@@ -21,6 +21,7 @@ import ShopHoursEditor, { HOURS_HINT, needsLastOrder } from './ShopHoursEditor'
 import { ShopBranchEditor } from './ShopBranches'
 import { useFormDraft } from '@/hooks/useFormDraft'
 import DraftNotice from '@/components/common/DraftNotice'
+import { leaveEditTo } from '@/lib/nav/leaveEdit'
 
 interface Props {
   mode: 'create' | 'edit'
@@ -191,7 +192,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
     // 수정 모드: 저장하면 이 화면에 머무르지 않고 방금 저장한 샵 상세로 이동
     if (mode === 'edit' && shop?.slug) {
       if (photosDirty && !window.confirm('사진 순서가 아직 저장되지 않았어요.\n저장하지 않고 샵 화면으로 갈까요?')) return
-      router.push(ROUTES.shop(shop.slug))
+      leaveEditTo(router, ROUTES.shop(shop.slug))   // 뒤로가기로 수정 화면이 다시 나오지 않게
       return
     }
     setSavedNote('임시저장됐어요'); setTimeout(() => setSavedNote(''), 2000)
@@ -203,7 +204,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
   function goPrev() { setStep(s => Math.max(1, s - 1)) }
   function goToStep(n: number) { if (n === 1 || canEnrich) setStep(n) }
   async function finish() {
-    if (mode === 'edit') { if (!(await saveCore())) return; router.push(ROUTES.shop(shop!.slug)); return }
+    if (mode === 'edit') { if (!(await saveCore())) return; leaveEditTo(router, ROUTES.shop(shop!.slug)); return }
     // 신규: 여기(등록 완료)서야 비공개 임시 → active로 공개된다
     if (createdShopId) { setSaving(true); await publishShop(createdShopId); setSaving(false) }
     draft.clear()   // 등록 끝 — 임시저장본 삭제

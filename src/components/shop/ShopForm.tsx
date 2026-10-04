@@ -21,6 +21,7 @@ import { useIsDesktop } from '@/hooks/useIsDesktop'
 import AppIcon from '@/components/tds/AppIcon'
 import { useFormDraft } from '@/hooks/useFormDraft'
 import DraftNotice from '@/components/common/DraftNotice'
+import { leaveEditTo } from '@/lib/nav/leaveEdit'
 
 interface Props {
   mode: 'create' | 'edit'
@@ -135,7 +136,7 @@ export default function ShopForm({ mode, shop }: Props) {
         setSubmitting(false)
         return
       }
-      router.push(ROUTES.shop(shop.slug))
+      leaveEditTo(router, ROUTES.shop(shop.slug))   // 뒤로가기로 수정 화면이 다시 나오지 않게
     }
   }
 
