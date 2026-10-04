@@ -6,12 +6,6 @@ import { resolveEventCover } from '@/lib/event/eventCover'
 import { Shop, ShopBranch } from '@/types/shop'
 import { UploadErrorCode, extOfMime, uuid } from '@/lib/utils/imageEncode'
 
-/** shops.name_en 컬럼이 아직 없을 때(migrations/shop_name_en.sql 실행 전) → 그 컬럼을 빼고 다시 조회·저장한다 */
-export function isMissingNameEn(e: any): boolean {
-  const msg = String(e?.message ?? '')
-  return !!e && (e.code === '42703' || e.code === 'PGRST204') && msg.includes('name_en')
-}
-
 export function toShop(raw: any): Shop {
   // 카테고리는 shops.cats(text[]) 컬럼에 직접 저장 — categories/shop_categories 테이블 의존 제거.
   // 표시용 색/아이콘은 코드 상수(CATEGORY_NAME_MAP)에서 이름으로 조회한다.
@@ -102,10 +96,10 @@ export function normalizeBranches(v: unknown): ShopBranch[] {
 export async function getShops(): Promise<Shop[]> {
   const supabase = createClient()
 
-  const run = (withEn: boolean) => supabase
+  const { data, error } = await supabase
     .from('shops')
     .select(`
-      id, slug, name, ${withEn ? 'name_en, ' : ''}description,
+      id, slug, name, name_en, description,
       addr, country, region, city, district,
       lat, lng, google_place_id,
       place_id, floor, unit, floor_info,
@@ -123,9 +117,6 @@ export async function getShops(): Promise<Shop[]> {
     .eq('status', 'active')
     .order('created_at', { ascending: false })
 
-  let { data, error } = await run(true)
-  if (isMissingNameEn(error)) ({ data, error } = await run(false))
-
   if (error) {
     console.error('getShops error:', error)
     return []
@@ -138,10 +129,10 @@ export async function getShops(): Promise<Shop[]> {
 export async function getShopBySlug(slug: string): Promise<Shop | null> {
   const supabase = createClient()
 
-  const run = (withEn: boolean) => supabase
+  const { data, error } = await supabase
     .from('shops')
     .select(`
-      id, slug, name, ${withEn ? 'name_en, ' : ''}description,
+      id, slug, name, name_en, description,
       addr, country, region, city, district,
       lat, lng, google_place_id,
       place_id, floor, unit, floor_info,
@@ -160,9 +151,6 @@ export async function getShopBySlug(slug: string): Promise<Shop | null> {
     .eq('status', 'active')
     .maybeSingle()
 
-  let { data, error } = await run(true)
-  if (isMissingNameEn(error)) ({ data, error } = await run(false))
-
   if (error || !data) return null
   return toShop(data)
 }
@@ -174,27 +162,24 @@ export async function searchShops(query: string): Promise<Shop[]> {
 
   const supabase = createClient()
 
-  const run = (withEn: boolean) => {
-    let q = supabase
-      .from('shops')
-      .select(`
-        id, slug, name, ${withEn ? 'name_en, ' : ''}addr, lat, lng,
-        rating_avg, rating_count, status,
-        shop_images ( image_url, is_cover, sort_order ),
-        cats
-      `)
-      .in('status', ['active', 'temporary_closed', 'closed'])
-    // 단어마다 (한글 이름 또는 영문 이름)에 들어 있어야 함 → 여러 단어는 AND
-    for (const token of tokens) {
-      const t = token.replace(/[,()%*]/g, '')
-      if (!t) continue
-      q = withEn ? q.or(`name.ilike.%${t}%,name_en.ilike.%${t}%`) : q.ilike('name', `%${t}%`)
-    }
-    return q.limit(20)
+  let q = supabase
+    .from('shops')
+    .select(`
+      id, slug, name, name_en, addr, lat, lng,
+      rating_avg, rating_count, status,
+      shop_images ( image_url, is_cover, sort_order ),
+      cats
+    `)
+    .in('status', ['active', 'temporary_closed', 'closed'])
+
+  // 단어마다 (한글 이름 또는 영문 이름)에 들어 있어야 함 → 여러 단어는 AND
+  for (const token of tokens) {
+    const t = token.replace(/[,()%*]/g, '')
+    if (!t) continue
+    q = q.or(`name.ilike.%${t}%,name_en.ilike.%${t}%`)
   }
 
-  let { data, error } = await run(true)
-  if (isMissingNameEn(error)) ({ data, error } = await run(false))
+  const { data, error } = await q.limit(20)
 
   if (error) return []
   return (data ?? []).map(toShop)
@@ -241,7 +226,7 @@ export async function createShop(
   const nameEn = String(data.name_en ?? '').trim()
   const payload = {
       name:         data.name,
-      // 영문 이름은 입력했을 때만 보낸다 (컬럼 추가 전에도 영문 없이 등록은 되게)
+      // 영문 이름 (선택) — 입력했을 때만
       ...(nameEn ? { name_en: nameEn } : {}),
       description:  data.description || null,
       addr:         data.addr || null,
@@ -343,13 +328,13 @@ export async function updateShop(
   const { data: prof } = await supabase.from('profiles').select('role').eq('id', userId).maybeSingle()
   const isAdmin = (prof as any)?.role === 'admin'
 
-  // 영문 이름 — 폼에서 넘어온 경우만 (지우면 null). 컬럼 추가 전이면 아래에서 빼고 다시 저장
+  // 영문 이름 — 폼에서 넘어온 경우만 (지우면 null)
   const nameEnPatch = data.name_en !== undefined ? { name_en: String(data.name_en ?? '').trim() || null } : {}
-  const buildUpdate = (withEn: boolean) => supabase
+  let updateQuery = supabase
     .from('shops')
     .update({
       name:         data.name,
-      ...(withEn ? nameEnPatch : {}),
+      ...nameEnPatch,
       description:  data.description || null,
       addr:         data.addr || null,
       lat:          data.lat,
@@ -376,23 +361,18 @@ export async function updateShop(
       info_confirmed_by_type: isAdmin ? 'admin' : 'owner',
     } as any)
     .eq('id', shopId)
-  const claimed = (before as any)?.is_claimed === true
   if (!isAdmin) {
+    const claimed = (before as any)?.is_claimed === true
     const ownerId = (before as any)?.owner_id
     // 인증된 매장은 사장님(owner_id)만 수정 가능. 다른 사람은 저장 자체를 막는다.
     if (claimed && ownerId !== userId) {
       console.warn('[updateShop] 인증된 매장은 사장님만 수정할 수 있어요.')
       return false
     }
+    if (claimed) updateQuery = updateQuery.eq('owner_id', userId)
     // 미인증 매장은 로그인 사용자 누구나 수정 가능 (필터 없음)
   }
-  const runUpdate = (withEn: boolean) => {
-    let q = buildUpdate(withEn)
-    if (!isAdmin && claimed) q = q.eq('owner_id', userId)
-    return q
-  }
-  let { error } = await runUpdate(true)
-  if (isMissingNameEn(error)) ({ error } = await runUpdate(false))
+  const { error } = await updateQuery
 
   if (error) return false
 

@@ -70,22 +70,12 @@ export async function globalSearch(query: string, userId?: string | null, anonym
 
   // 1. 샵 이름 검색 — 한글 이름 또는 영문 이름(name_en). 예: "animate" → 애니메이트
   const shopTerm = query.trim().replace(/[,()%*]/g, '')
-  let shopRes = await supabase
+  const { data: shopsData } = await supabase
     .from('shops')
     .select('id, name, slug')
     .eq('status', 'active')
     .or(`name.ilike.%${shopTerm}%,name_en.ilike.%${shopTerm}%`)
     .limit(10)
-  // 영문 이름 컬럼 추가 전(migrations/shop_name_en.sql)이면 한글 이름만으로
-  if (shopRes.error && String(shopRes.error.message ?? '').includes('name_en')) {
-    shopRes = await supabase
-      .from('shops')
-      .select('id, name, slug')
-      .eq('status', 'active')
-      .ilike('name', `%${shopTerm}%`)
-      .limit(10)
-  }
-  const shopsData = shopRes.data
 
   // 2. 작품(tags) 매칭 — 띄어쓰기 무시 (공백 떼고 첫 단어 포함). "가정교사히트맨리본"도 "가정교사 히트맨 리본" 매칭
   const term0 = stripSpaces(terms[0])
