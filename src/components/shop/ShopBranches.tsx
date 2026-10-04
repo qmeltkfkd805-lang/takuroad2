@@ -88,8 +88,26 @@ function ItemsInput({ items, onChange }: { items: string[]; onChange: (next: str
 }
 
 /* ── 표시 ───────────────────────────────────────────────── */
+/* 층 글자 → 정렬용 숫자. 지하(B1·지하 1층)는 음수, 지상(1층·1F·2)은 양수.
+   옥상(RF·옥상)은 맨 위, 층을 알 수 없으면 맨 뒤로. */
+function floorRank(floor: string): number {
+  const t = (floor ?? '').toUpperCase().replace(/\s+/g, '')
+  if (!t) return Number.POSITIVE_INFINITY
+  if (/^(RF|R|옥상|루프탑)/.test(t)) return 10000
+  let m = t.match(/(?:B|지하)(\d+)/)
+  if (m) return -Number(m[1])
+  m = t.match(/(\d+)(?:F|층)?/)
+  if (m) return Number(m[1])
+  return Number.POSITIVE_INFINITY
+}
+
 export function ShopBranchList({ branches, compact }: { branches: ShopBranch[] | undefined; compact?: boolean }) {
-  const rows = (branches ?? []).filter(b => b.floor || b.name || b.items.length)
+  // 낮은 층 → 높은 층 순서로 (같은 층이면 입력한 순서 그대로)
+  const rows = (branches ?? [])
+    .filter(b => b.floor || b.name || b.items.length)
+    .map((b, i) => ({ b, i, r: floorRank(b.floor) }))
+    .sort((x, y) => (x.r - y.r) || (x.i - y.i))
+    .map(x => x.b)
   if (!rows.length) return null
   return (
     <div style={{ display: 'flex', flexDirection: 'column', border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden' }}>
