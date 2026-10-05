@@ -30,3 +30,17 @@
     background: var(--accent); border: 1.5px solid var(--surface);
   }
 }
+
+/* 📱 지도 위에 떠 있는 칩 — 칩마다 흰 알약 + 그림자 (카드 배경 없음) */
+@media (hover: none) and (pointer: coarse) and (max-width: 1023px) {
+  .chipRow { padding: 4px 12px 10px !important; }
+  .chip {
+    padding: 8px 14px !important; font-size: 13px !important;
+    border-color: transparent !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.15);
+  }
+  .filterBtn {
+    width: 38px; height: 38px; margin: -6px 12px 0 0;
+    border-color: transparent; box-shadow: 0 2px 8px rgba(0,0,0,.15);
+  }
+}

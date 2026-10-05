@@ -83,7 +83,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <UnlockModal />
     <LevelUpModal />
     <div className={styles.shell}>
-      <header className={`${styles.header}${hideHeaderMobile ? ' ' + styles.headerHiddenMobile : ''}`}>
+      <header className={`${styles.header}${hideHeaderMobile ? ' ' + styles.headerHiddenMobile : ''}${pathname === '/map' ? ' ' + styles.headerMap : ''}`}>
         <Link href="/" className={styles.logo}>
           <img src="/brand/takuroad-logo.png" alt="TAKUROAD" />
         </Link>

@@ -68,3 +68,18 @@
     display: flex; flex-direction: column; align-items: center; /* 광고 가운데 정렬 */
   }
 }
+
+/* 📱 지도 위 떠 있는 검색창·카테고리 (흰 상단바 없음)
+   - 지도는 화면 맨 위부터. 검색창(AppShell 헤더)이 그 위에 떠 있고, 카테고리 칩은 그 아래 한 줄로 따로따로 떠 있다
+   - 위로 쓸어 검색창을 숨기면 칩 줄이 맨 위로 올라간다 */
+@media (hover: none) and (pointer: coarse) and (max-width: 1023px) {
+  .layout, .layoutFull { top: 0; }
+  .topZone {
+    top: calc(64px + env(safe-area-inset-top)); left: 0; right: 0; gap: 4px;
+    transition: top .25s cubic-bezier(.32,.72,0,1);
+  }
+  .layoutFull .topZone { top: calc(8px + env(safe-area-inset-top)); }
+  .filterCard { background: transparent; box-shadow: none; border-radius: 0; }
+  .barGrip { display: none; }
+  .layerRow { padding: 0 12px; }
+}

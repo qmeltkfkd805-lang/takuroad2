@@ -38,3 +38,14 @@
     background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
   }
 }
+
+/* 📱 지도: 흰 상단바 대신 지도 위에 검색창만 둥둥 떠 있게 (지도가 화면 맨 위까지) */
+@media (hover: none) and (pointer: coarse) and (max-width: 1023px) {
+  .headerMap {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: auto; padding: calc(10px + env(safe-area-inset-top)) 12px 0;
+    background: transparent; border-bottom: none;
+    pointer-events: none;
+  }
+  .headerMap > * { pointer-events: auto; }
+}

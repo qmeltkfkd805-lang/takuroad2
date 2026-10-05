@@ -136,6 +136,7 @@ export default function CategoryFilter({
         onMouseUp={endDrag}
         onMouseLeave={endDrag}
         onClickCapture={onClickCapture}
+        className={styles.chipRow}
         style={{
           display: 'flex', gap: '6px', overflowX: 'auto',
           padding: '8px 12px', scrollbarWidth: 'none', flex: 1, minWidth: 0,
@@ -145,6 +146,7 @@ export default function CategoryFilter({
         {/* 전체 */}
         <button
           onClick={() => onChange('전체')}
+          className={styles.chip}
           style={{
             display: 'flex', alignItems: 'center', gap: '5px',
             padding: '6px 13px', borderRadius: '20px',
@@ -165,6 +167,7 @@ export default function CategoryFilter({
             <button
               key={cat.slug}
               onClick={() => onChange(cat.name)}
+              className={styles.chip}
               style={{
                 display: 'flex', alignItems: 'center', gap: '5px',
                 padding: '6px 13px', borderRadius: '20px',
