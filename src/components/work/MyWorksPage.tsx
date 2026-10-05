@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import { useSessionState } from '@/hooks/useSessionState'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -43,14 +44,15 @@ export default function MyWorksPage() {
   const favRowRef = useRef<HTMLDivElement>(null)
   const [favOverflow, setFavOverflow] = useState(false)
   const scrollFav = (dir: number) => favRowRef.current?.scrollBy({ left: dir * 480, behavior: 'smooth' })
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([])
+  // 필터·정렬은 이 탭에 기억 — 📱 탐색 메뉴를 오가거나 작품 상세에 다녀와도 그대로
+  const [selectedGenres, setSelectedGenres] = useSessionState<string[]>('taku:wk:genres', [])
   const toggleGenre = (g: string) => setSelectedGenres(p => p.includes(g) ? p.filter(x => x !== g) : [...p, g])
   // 📱 모바일 그리드 전용 상태 (유형·연도 필터 + 정렬 + 드로어). PC는 selectedTypes/Years가 항상 비어 영향 없음
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([])
-  const [selectedYears, setSelectedYears] = useState<number[]>([])
+  const [selectedTypes, setSelectedTypes] = useSessionState<string[]>('taku:wk:types', [])
+  const [selectedYears, setSelectedYears] = useSessionState<number[]>('taku:wk:years', [])
   const toggleType = (t: string) => setSelectedTypes(p => p.includes(t) ? p.filter(x => x !== t) : [...p, t])
   const [mFilterOpen, setMFilterOpen] = useState(false)
-  const [mSort, setMSort] = useState<'complete' | 'name' | 'year'>('complete')
+  const [mSort, setMSort] = useSessionState<'complete' | 'name' | 'year'>('taku:wk:sort', 'complete')
   const [mSortOpen, setMSortOpen] = useState(false)
   const [openSec, setOpenSec] = useState<string | null>('장르')
   const [filterOpen, setFilterOpen] = useState(false)

@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
+import { useSessionState } from '@/hooks/useSessionState'
 import { getPublicRoutes, toggleRouteSave, getMySavedRouteIds, getSavedRoutes } from '@/services/routeService'
 import { getMyFavoriteTagIds } from '@/services/shopHomeService'
 import { formatDistance, calcDistance, useCurrentLocation } from '@/hooks/useCurrentLocation'
@@ -64,7 +65,8 @@ export default function RouteExplorePage() {
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
   const [savedRoutes, setSavedRoutes] = useState<any[]>([])
   const [favTagIds, setFavTagIds] = useState<Set<string>>(new Set())
-  const [search, setSearch] = useState('')
+  // 검색어는 이 탭에 기억 — 📱 탐색 메뉴를 오가거나 상세에 다녀와도 그대로 (다른 필터는 주소 ?쿼리에 있다)
+  const [search, setSearch] = useSessionState('taku:rt:q', '')
 
   // 위치 (내 주변 필터용)
   const { location, error: locError, requestLocation } = useCurrentLocation()
