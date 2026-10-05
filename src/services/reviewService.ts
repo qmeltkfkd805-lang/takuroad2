@@ -73,6 +73,7 @@ export async function createReview(
   if (error || !data) return null
 
   // 성장 Activity — 기록·스냅샷·EXP 를 서버가 정한다. 실패해도 리뷰 작성은 막지 않는다
+  // 정성 리뷰(사진 포함 또는 150자 이상)만 EXP — 사진은 이 뒤에 올라가므로 recordReviewPhotos 에서 한 번 더 확인한다
   await recordActivity('review', (data as any).id, userId)
 
   return toReview(data)
@@ -81,6 +82,8 @@ export async function createReview(
 /** 리뷰에 사진을 붙였을 때 — 업로드 성공 후 컴포넌트가 호출 */
 export async function recordReviewPhotos(reviewId: string, shopId: string, userId: string, count: number) {
   if (count <= 0) return
+  // 사진이 붙었으니 짧은 리뷰도 이제 '정성 리뷰' — 작성 때 못 받은 리뷰 EXP 를 여기서 받는다(이미 받았으면 서버가 무시)
+  await recordActivity('review', reviewId, userId)
   // 사진 장수·스냅샷은 서버가 원본(review_images)에서 직접 센다.
   await recordActivity('photo_upload', reviewId, userId)
 }
@@ -96,6 +99,8 @@ export async function updateReview(
     .update({ stars: formData.stars, content: formData.content } as never)
     .eq('id', id)
     .eq('user_id', userId)
+  // 수정으로 150자를 넘겼으면 그때 리뷰 EXP (이미 받았거나 아직 짧으면 서버가 무시)
+  await recordActivity('review', id, userId)
 }
 
 export async function deleteReview(id: string, userId: string): Promise<void> {

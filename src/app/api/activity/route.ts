@@ -80,6 +80,20 @@ export async function POST(req: NextRequest) {
 
   const svc = serviceClient()
 
+  // 리뷰 경험치는 '정성 리뷰'만 — 사진이 붙었거나 글이 REVIEW_MIN_CHARS자 이상.
+  // 조건이 안 되면 기록·EXP 없이 돌려보낸다. 나중에 사진을 붙이거나 글을 늘리면
+  // 클라이언트가 다시 부르고, 그때 조건이 맞으면 한 번만 지급된다(RPC 가 source 기준으로 중복을 막는다).
+  if (type === 'review') {
+    try {
+      if (!(await reviewQualifies(svc, sourceId, user.id))) {
+        return NextResponse.json({ recorded: false, rewarded: false, gained: 0, skipped: 'review_quality' })
+      }
+    } catch (e) {
+      console.error('[activity] 리뷰 조건 확인 실패', sourceId, e)
+      return NextResponse.json({ error: '리뷰 정보를 읽지 못했어요' }, { status: 500 })
+    }
+  }
+
   let built: Built
   try {
     built = await buildSnapshot(svc, type, sourceId, user.id)
@@ -132,6 +146,33 @@ export async function POST(req: NextRequest) {
     toLevel: row.to_level,
     totalExp: row.total_exp,
   })
+}
+
+
+/* ------------------------------------------------------------
+   정성 리뷰 조건 — 사진 1장 이상 또는 글 REVIEW_MIN_CHARS자 이상
+   · 샵 리뷰: reviews.content + review_images
+   · 이벤트 후기: event_reviews.content (사진 기능이 없어 글자 수만)
+   글자 수는 앞뒤 공백을 빼고, 연속 공백·줄바꿈은 한 칸으로 센다.
+   원본을 못 찾으면 true — 소유자 확인과 거부는 RPC 가 한다.
+   ------------------------------------------------------------ */
+const REVIEW_MIN_CHARS = 150
+
+function textLength(s: unknown): number {
+  return typeof s === 'string' ? s.replace(/\s+/g, ' ').trim().length : 0
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function reviewQualifies(svc: any, sourceId: string, userId: string): Promise<boolean> {
+  const { data: r } = await svc.from('reviews').select('content').eq('id', sourceId).eq('user_id', userId).maybeSingle()
+  if (r) {
+    if (textLength(r.content) >= REVIEW_MIN_CHARS) return true
+    const { count } = await svc.from('review_images').select('id', { count: 'exact', head: true }).eq('review_id', sourceId)
+    return (count ?? 0) > 0
+  }
+  const { data: er } = await svc.from('event_reviews').select('content').eq('id', sourceId).eq('user_id', userId).maybeSingle()
+  if (er) return textLength(er.content) >= REVIEW_MIN_CHARS
+  return true
 }
 
 

@@ -162,7 +162,8 @@ export default function RouteExplorePage() {
   /* ───────────── 📱 모바일: 탐색 중심 홈 ───────────── */
   if (!isDesktop) {
     const mainRaw = sort === 'popular' ? popular : sort === 'new' ? recent : sort === 'nearby' ? nearby : recommended
-    const mainList = sort === 'recommended' && hero ? mainRaw.filter(r => r.id !== hero.id) : mainRaw
+    // 목록은 히어로 회전과 상관없이 고정 — 예전엔 '지금 히어로에 뜬 루트'를 빼서 6초마다 목록이 바뀌었다
+    const mainList = mainRaw
     const nearbyWaiting = sort === 'nearby' && !location
     return (
       <div className={styles.mwrap}>
@@ -221,8 +222,8 @@ export default function RouteExplorePage() {
             {sort === 'recommended' ? (
               <>
                 {[
-                  { key: 'popular', title: '지금 인기 있는 루트', list: popular.filter(r => r.id !== hero?.id).slice(0, 8), more: 'sort=popular' },
-                  { key: 'new', title: '새로 등록된 루트', list: recent.filter(r => r.id !== hero?.id).slice(0, 8), more: 'sort=latest' },
+                  { key: 'popular', title: '지금 인기 있는 루트', list: popular.slice(0, 8), more: 'sort=popular' },
+                  { key: 'new', title: '새로 등록된 루트', list: recent.slice(0, 8), more: 'sort=latest' },
                 ].filter(sec => sec.list.length > 0).map(sec => (
                   <section key={sec.key} className={styles.mlist}>
                     <div className={styles.mlistHead}>
