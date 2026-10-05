@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
 import { usePathname } from 'next/navigation'
 import styles from './AppShell.module.css'
 import Sidebar from './Sidebar'
@@ -15,6 +15,8 @@ import LevelUpModal from '@/components/growth/LevelUpModal'
 import { logVisit } from '@/services/trafficService'
 import { captureFirstTouch } from '@/lib/utils/firstTouch'
 import { trackNav } from '@/lib/nav/leaveEdit'
+import { exploreListOf } from '@/lib/nav/explore'
+import ExploreNav from './ExploreNav'
 
 const NO_SHELL = ['/login', '/admin', '/dev', '/test']
 
@@ -34,10 +36,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   // 글쓰기·루트작성·프로필 편집·내 활동 기록: 하단 네비 숨김
   const isProfileEdit = pathname === '/profile/settings/profile'
   const hideBottomNav = pathname === '/community/write' || isRouteBuilder || isProfileEdit || isBareProfile
-  // 모바일 전역 상단바: 홈·지도·작품에서만 노출, 그 외 화면은 모두 숨김
-  // (커뮤니티는 자체 헤더+검색이 있어 전역 상단바 제외)
+  // 모바일 전역 상단바: 홈·지도에서만 노출, 그 외 화면은 모두 숨김
+  // (커뮤니티는 자체 헤더+검색이 있어 전역 상단바 제외. 작품은 탐색 화면이라 위에 탐색 메뉴가 붙는다)
   const showHeaderMobile = pathname === '/' || pathname === '/map'
-    || pathname === '/my-works' || pathname.startsWith('/my-works/')
+  // 📱 탐색 목록 화면(샵·이벤트·루트·작품) — 본문 위에 탐색 네 메뉴 (PC에선 CSS로 숨김)
+  const exploreList = exploreListOf(pathname)
   const hideHeaderMobile = !showHeaderMobile
   const { user } = useAuth()
   const evalOnceRef = useRef(false)
@@ -91,7 +94,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       </header>
       <div className={styles.body}>
         <aside className={styles.sidebar}><Sidebar /></aside>
-        <main className={styles.main}>{children}</main>
+        <main className={styles.main}>
+          {exploreList && <Suspense fallback={null}><ExploreNav /></Suspense>}
+          {children}
+        </main>
       </div>
       {!hideBottomNav && <BottomNav />}
     </div>

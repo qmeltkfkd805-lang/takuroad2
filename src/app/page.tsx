@@ -7,6 +7,7 @@ import { pickHotMap } from '@/lib/home/hotMap'
 import HomeFeed from '@/components/home/HomeFeed'
 import HomeRail from '@/components/home/HomeRail'
 import HeroCarousel from '@/components/home/HeroCarousel'
+import HomeShortcuts from '@/components/home/HomeShortcuts'
 import styles from '@/components/home/rail.module.css'
 
 // 홈은 배너·이벤트·인기샵 등 실시간 Supabase 데이터를 쓰므로 항상 최신으로 렌더
@@ -26,6 +27,8 @@ export default async function HomePage() {
   const hotMap = pickHotMap(allShops)
   return (
     <>
+      {/* 📱 검색창 아래 바로가기 — 샵·이벤트·루트·작품 (PC에선 숨김) */}
+      <HomeShortcuts />
       <div className={styles.heroFull}>
         <HeroCarousel slots={hero} />
       </div>

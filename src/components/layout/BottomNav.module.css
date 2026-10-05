@@ -9,54 +9,52 @@
   background: none; border: none; font-family: inherit; cursor: pointer;
 }
 .active { color: var(--accent); }
+.active .label { font-weight: 800; }
+.item { -webkit-tap-highlight-color: transparent; }
 .disabled { color: var(--muted); opacity: .4; cursor: default; }
 .icon { display: inline-flex; }
 .icon svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .label { font-size: 10px; font-weight: 700; }
 
-/* 지도 탭 → 덕질지도 / 루트 선택 말풍선 팝오버 (지도 탭 바로 위에 작게) */
-.overlay {
-  position: fixed; inset: 0; z-index: 1000;
-  background: transparent;                 /* 바깥 탭하면 닫힘 (어둡게 X) */
-}
-/* 하단탭 5칸 중 2번째(지도) 중앙 = 화면 30% 지점 위에 앵커 */
-.popover {
-  position: fixed;
-  left: 30%; transform: translateX(-50%);
-  bottom: calc(62px + env(safe-area-inset-bottom));   /* 하단탭 높이 + 꼬리 여유 */
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  box-shadow: 0 6px 22px rgba(0,0,0,.18);
-  padding: 5px;
-  min-width: 148px;
-  transform-origin: bottom center;
-  animation: bnPop .14s ease;
-}
-/* 말풍선 꼬리 — 아래를 향하는 삼각형 (테두리용 + 채움용 2겹) */
-.popover::before {
-  content: ''; position: absolute; left: 50%; bottom: -10px; transform: translateX(-50%);
-  border-left: 10px solid transparent; border-right: 10px solid transparent;
-  border-top: 10px solid var(--border);
-}
-.popover::after {
-  content: ''; position: absolute; left: 50%; bottom: -8px; transform: translateX(-50%);
-  border-left: 9px solid transparent; border-right: 9px solid transparent;
-  border-top: 9px solid var(--surface);
-}
-.popItem {
-  display: flex; align-items: center; gap: 10px;
-  padding: 11px 14px; border-radius: 10px;
-  text-decoration: none; color: var(--text);
-  font-size: 14px; font-weight: 700; white-space: nowrap;
-}
-.popItem:active { background: var(--surface2); }
-.popIcon { display: inline-flex; }
-.popIcon svg { width: 20px; height: 20px; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.popDivider { height: 1px; background: var(--border); margin: 2px 8px; }
-@keyframes bnPop { from { opacity: 0; transform: translateX(-50%) translateY(6px) scale(.96) } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1) } }
-
 /* PC(마우스 기기)에선 하단탭 숨김 (사이드바가 대신). 폭이 아니라 기기 기준이라 창을 줄여도 유지 */
 @media (hover: hover) and (pointer: fine) {
   .nav { display: none; }
 }
+
+/* 탐색 — 누르면 위로 말풍선 메뉴 (샵·이벤트·루트·작품) */
+.exploreWrap { flex: 1; position: relative; display: flex; }
+.exploreWrap > .item { width: 100%; }
+.pop {
+  position: absolute; bottom: calc(100% + 10px); left: 50%;
+  transform: translateX(-50%);
+  width: 168px; padding: 6px;
+  background: var(--surface); border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.16), 0 0 0 1px rgba(0,0,0,.04);
+  display: flex; flex-direction: column;
+  animation: popIn .16s cubic-bezier(.32,.72,0,1);
+  transform-origin: 50% 100%;
+}
+/* 꼬리 — 탐색 버튼을 가리킨다 */
+.pop::after {
+  content: ''; position: absolute; left: 50%; bottom: -6px;
+  width: 14px; height: 14px; background: var(--surface);
+  transform: translateX(-50%) rotate(45deg); border-radius: 0 0 3px 0;
+  box-shadow: 3px 3px 6px rgba(0,0,0,.05);
+}
+@keyframes popIn { from { opacity: 0; transform: translateX(-50%) translateY(6px) scale(.96); } to { opacity: 1; transform: translateX(-50%); } }
+.popItem {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 14px; border-radius: 12px;
+  text-decoration: none; color: var(--text);
+  font-size: 15px; font-weight: 800;
+  -webkit-tap-highlight-color: transparent;
+}
+.popItem + .popItem::before {
+  content: ''; position: absolute; top: 0; left: 12px; right: 12px;
+  border-top: 1px solid var(--border);
+}
+.popItem:active { background: var(--surface2); }
+.popOn { color: var(--accent); }
+.popIcon { display: inline-flex; color: var(--accent); }
+.popIcon svg { width: 22px; height: 22px; }
