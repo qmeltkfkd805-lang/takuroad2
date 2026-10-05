@@ -604,7 +604,9 @@ export default function EventDetailPage() {
         </div>
 
         {/* 우측 레일 */}
-        <aside className={styles.rail}>
+        {/* 📱 모바일은 한 줄로 쌓여서 레일(장소·예매·일정)이 탭 내용 밑에 붙는다 →
+            '소개' 탭에서만 보이게 (장소 정보·이벤트 정보 탭과 겹치고, 후기·Q&A 밑에 뜨면 어색함) */}
+        <aside className={`${styles.rail}${tab !== 'about' ? ' ' + styles.railMobileHide : ''}`}>
           <section className={styles.railCard}>
             <div className={styles.railHead}>
               <h3><EventIcon name="pin" size={16} color="var(--accent)" />장소 정보</h3>

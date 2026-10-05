@@ -358,3 +358,19 @@
 }
 .editedBy strong { color: var(--text); font-weight: 700; }
 .editedHint { font-size: 12px; color: var(--muted); opacity: .8; }
+
+/* 📱 모바일 — 포스터 히어로를 화면 가로·위까지 꽉 채운다
+   - 브레드크럼(홈 › 이벤트 › …)은 숨김: 이벤트 이름은 포스터 위 제목으로 보인다
+   - 소개 글은 포스터 위에 올리지 않는다 (아래 '이벤트 소개' 카드에 그대로 있음) */
+@media (hover: none) and (pointer: coarse) and (max-width: 1023px) {
+  .page { padding-top: 0; }
+  .crumbs { display: none; }
+  .hero, .heroPhoto {
+    width: auto; max-width: none;
+    margin-inline: -24px;
+    border-radius: 0;
+  }
+  .heroDesc { display: none; }
+  .heroPhoto .heroText { padding: 56px 20px 22px; }
+  .railMobileHide { display: none; }
+}
