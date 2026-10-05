@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { isEventLikeIpType } from '@/lib/constants/ipType'
 export { uploadWorkImage } from '@/services/workAdminService'
 
 export interface NewWork {
@@ -156,12 +157,12 @@ export async function searchParentWorks(q: string, excludeId?: string): Promise<
   const s = q.trim()
   if (!s) return []
   const supabase = createClient()
-  let query = supabase.from('tags').select('id, name, slug')
+  let query = supabase.from('tags').select('id, name, slug, ip_type')
     .or(`name.ilike.%${s}%,english_name.ilike.%${s}%`)
   if (excludeId) query = query.neq('id', excludeId)
   const { data, error } = await query.order('name').limit(20)
   if (error) { console.error('[searchParentWorks]', error.message); return [] }
-  return (data ?? []) as ParentOption[]
+  return (data ?? []).filter((row: any) => !isEventLikeIpType(row.ip_type)) as ParentOption[]
 }
 
 // 선택된 상위 작품 한 건 (수정 화면에서 이름 표시용)

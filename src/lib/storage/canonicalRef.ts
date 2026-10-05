@@ -188,6 +188,8 @@ export type RefSource =
   | { kind: 'path'; table: string; column: string; bucket: string }
   | { kind: 'pathWithBucketColumn'; table: string; column: string; bucketColumn: string }
   | { kind: 'urlOrPath'; table: string; column: string; fallbackBucket: string }
+  /** JSON 배열 안의 객체에서 한 칸(URL)을 읽는다 — 예: routes.floor_maps = [{ key, url, … }] */
+  | { kind: 'jsonObjectArray'; table: string; column: string; field: string }
 
 export const REF_SOURCES: RefSource[] = [
   // ── 단일 URL 컬럼 ──
@@ -246,6 +248,14 @@ export const REF_SOURCES: RefSource[] = [
   { kind: 'path',                 table: 'exhibit_images',   column: 'object_path', bucket: 'exhibit-images' },
   { kind: 'pathWithBucketColumn', table: 'goods_item_images', column: 'object_path', bucketColumn: 'bucket_name' },
   { kind: 'pathWithBucketColumn', table: 'shop_images',       column: 'storage_path', bucketColumn: 'storage_bucket' },
+  // 루트 완주 후기 사진 (route-photos/{user}/{route}/…) — migrations/route_reviews.sql
+  { kind: 'path',                 table: 'route_review_photos', column: 'object_path', bucket: 'route-photos' },
+  // 이벤트 방문 사진(나만 보는 비공개 버킷) — migrations/event_visit_photos.sql
+  { kind: 'path',                 table: 'event_visit_photos',  column: 'object_path', bucket: 'visit-photos' },
+
+  // ── JSON 배열 속 객체 ──
+  // 루트 층 지도 사진 (route-photos/{user}/floormaps/…) — migrations/route_floor_maps.sql
+  { kind: 'jsonObjectArray', table: 'routes', column: 'floor_maps', field: 'url' },
 
   // ── URL 또는 path ──
   { kind: 'urlOrPath', table: 'shop_verify_requests', column: 'evidence_url', fallbackBucket: 'verify-documents' },
@@ -339,6 +349,14 @@ export async function buildReferenceSnapshot(
         case 'urlOrPath':
           if (typeof v === 'string') {
             pushValue(snap, label, parseUrlOrPathRef(v, s.fallbackBucket, supabaseHost))
+          }
+          break
+        case 'jsonObjectArray':
+          if (Array.isArray(v)) {
+            for (const item of v) {
+              const u = item && typeof item === 'object' ? (item as Record<string, unknown>)[s.field] : null
+              if (typeof u === 'string') pushValue(snap, label, parseUrlRef(u, supabaseHost))
+            }
           }
           break
       }

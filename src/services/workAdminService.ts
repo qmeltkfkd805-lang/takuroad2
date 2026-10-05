@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { isEventLikeIpType } from '@/lib/constants/ipType'
 
 export interface AdminTag {
   id: string
@@ -32,7 +33,7 @@ export async function getAllTagsFull(): Promise<AdminTag[]> {
     if ((data?.length ?? 0) < pageSize) break
   }
 
-  return rows
+  return rows.filter((row) => !isEventLikeIpType(row.ip_type))
 }
 
 // 이미지 업로드 (샵과 동일한 shop-images 버킷 재사용, works/ 경로로 정리)

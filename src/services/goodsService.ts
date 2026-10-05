@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { isEventLikeIpType } from '@/lib/constants/ipType'
 import { createPost } from './communityPostService'
 
 /* ============================================================
@@ -366,12 +367,15 @@ export interface WorkRef { id: string; name: string; slug: string | null }
 /* 작품(태그) 검색 — 등록 폼의 작품 선택 */
 export async function searchWorks(query: string): Promise<WorkRef[]> {
   const supabase = createClient()
-  let q = supabase.from('tags').select('id, name, slug').order('name', { ascending: true }).limit(20)
+  let q = supabase.from('tags').select('id, name, slug, ip_type').order('name', { ascending: true }).limit(40)
   const term = query.trim()
   if (term) q = q.ilike('name', `%${term}%`)
   const { data, error } = await q
   if (error) throw error
-  return (data ?? []).map((r: any) => ({ id: r.id, name: r.name, slug: r.slug ?? null }))
+  return (data ?? [])
+    .filter((r: any) => !isEventLikeIpType(r.ip_type))
+    .slice(0, 20)
+    .map((r: any) => ({ id: r.id, name: r.name, slug: r.slug ?? null }))
 }
 
 /* 이미지 EXIF 제거 + 리사이즈 → webp Blob (브라우저) */
