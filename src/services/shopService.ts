@@ -54,6 +54,8 @@ export function toShop(raw: any): Shop {
     shop_link:      raw.shop_link,
     sns_links:      raw.sns_links ?? [],
     phone:          raw.phone ?? null,
+    reservation_url:      raw.reservation_url ?? null,
+    reservation_required: raw.reservation_required === true,
     floor_info:     raw.floor_info,
     branches:       normalizeBranches(raw.branches),
     start_date:     raw.start_date,
@@ -74,6 +76,20 @@ export function toShop(raw: any): Shop {
     created_at:     raw.created_at,
     updated_at:     raw.updated_at,
   }
+}
+
+/** 예약 링크 — 폼에서 넘어온 경우만 저장. http(s) 주소가 아니면 앞에 https:// 를 붙이고, 비우면 null */
+export function normalizeReservationUrl(v: unknown): string | null {
+  const s = String(v ?? '').trim()
+  if (!s) return null
+  const url = /^https?:\/\//i.test(s) ? s : `https://${s}`
+  return url.slice(0, 500)
+}
+function reservationPatch(data: any): Record<string, unknown> {
+  const out: Record<string, unknown> = {}
+  if (data.reservation_url !== undefined) out.reservation_url = normalizeReservationUrl(data.reservation_url)
+  if (data.reservation_required !== undefined) out.reservation_required = !!data.reservation_required
+  return out
 }
 
 /** 층별 매장 구성 정리 — 빈 줄 제거, 글자 길이·개수 제한 (DB check: 배열 · 최대 20줄) */
@@ -137,7 +153,7 @@ export async function getShopBySlug(slug: string): Promise<Shop | null> {
       lat, lng, google_place_id,
       place_id, floor, unit, floor_info,
       places ( slug, name, lat, lng, access_note ),
-      hours, parking, parking_note, shop_link, sns_links, phone, branches,
+      hours, parking, parking_note, shop_link, sns_links, phone, branches, reservation_url, reservation_required,
       start_date, end_date, event_info,
       rating_avg, rating_count, visit_count, bookmark_count,
       is_verified, is_claimed, status,
@@ -238,6 +254,7 @@ export async function createShop(
       shop_link:    data.shop_link || null,
       sns_links:    data.sns_links ?? [],
       phone:        data.phone || null,
+      ...reservationPatch(data),
       floor_info:   data.floor_info || null,
       ...(data.branches !== undefined ? { branches: normalizeBranches(data.branches) } : {}),
       start_date:   data.start_date || null,
@@ -345,6 +362,7 @@ export async function updateShop(
       shop_link:    data.shop_link || null,
       sns_links:    data.sns_links ?? [],
       phone:        data.phone || null,
+      ...reservationPatch(data),
       floor_info:   data.floor_info || null,
       ...(data.branches !== undefined ? { branches: normalizeBranches(data.branches) } : {}),
       start_date:   data.start_date || null,

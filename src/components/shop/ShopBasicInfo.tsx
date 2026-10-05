@@ -61,6 +61,18 @@ function ChannelIcon({ kind }: { kind: string }) {
   return <Svg><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.6 2.7 2.6 15 0 18M12 3c-2.6 2.7-2.6 15 0 18" /></Svg>
 }
 
+/* 예약 사이트 이름 — 주소로 알아본다 (모르면 '예약 페이지') */
+function reservationSite(url: string): string {
+  const u = url.toLowerCase()
+  if (u.includes('booking.naver') || u.includes('naver.me') || u.includes('m.place.naver') || u.includes('map.naver')) return '네이버 예약'
+  if (u.includes('catchtable')) return '캐치테이블'
+  if (u.includes('tabling')) return '테이블링'
+  if (u.includes('kakao')) return '카카오 예약'
+  if (u.includes('instagram.com')) return '인스타그램 DM 예약'
+  if (u.includes('forms.gle') || u.includes('docs.google.com/forms')) return '구글폼 예약'
+  return '예약 페이지'
+}
+
 export default function ShopBasicInfo({ shop, todayStatus, showHours = true, showSuggest = true }: Props) {
   const color = 'var(--accent)'
 
@@ -228,6 +240,29 @@ export default function ShopBasicInfo({ shop, todayStatus, showHours = true, sho
             </div>
           )}
         </div>
+
+        {/* 예약 — 예약 링크나 '예약 필수'가 있을 때만 */}
+        {(shop.reservation_url || shop.reservation_required) && (
+          <div className={styles.row}>
+            <span className={styles.icon} aria-hidden><Svg><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2.5v4M16 2.5v4" /><path d="m9 15 2 2 4-4" /></Svg></span>
+            <span className={styles.label}>
+              예약{shop.reservation_required && <span className={styles.reserveReq}>예약 필수</span>}
+            </span>
+            <div className={styles.body}>
+              {shop.reservation_url
+                ? <span className={styles.strong}>{reservationSite(shop.reservation_url)}</span>
+                : <span>방문 전에 예약이 필요해요</span>}
+            </div>
+            {shop.reservation_url && (
+              <div className={styles.action}>
+                <a href={shop.reservation_url} target="_blank" rel="noopener noreferrer" className={styles.primaryBtn}>
+                  예약하기
+                  <svg className={styles.ext} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ color: '#fff' }}><path d="M7 17 17 7M8 7h9v9" /></svg>
+                </a>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* 4. 주차 — 가능 여부 + 저장된 안내 문구 그대로 */}
         <div className={styles.row}>

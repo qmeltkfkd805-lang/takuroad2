@@ -50,6 +50,10 @@ export interface Shop {
   shop_link: string | null
   sns_links: string[]
   phone: string | null
+  /** 예약 페이지 (네이버 예약·캐치테이블 등) */
+  reservation_url?: string | null
+  /** 예약해야만 입장 가능 */
+  reservation_required?: boolean
   floor_info: string | null
   /** 층별 매장 구성 — 같은 건물의 본점·1호점·2호점 (shops.branches jsonb) */
   branches?: ShopBranch[]
@@ -97,6 +101,10 @@ export interface ShopFormData {
   shop_link: string
   sns_links: string[]
   phone: string
+  /** 예약 페이지 주소 (선택) */
+  reservation_url?: string
+  /** 예약 필수 */
+  reservation_required?: boolean
   floor_info: string
   start_date: string
   end_date: string

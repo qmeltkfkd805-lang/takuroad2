@@ -28,7 +28,7 @@ interface Props {
 }
 
 const EMPTY_FORM: ShopFormData = {
-  name: '', name_en: '', slug: '', description: '', addr: '',
+  name: '', name_en: '', slug: '', description: '', addr: '', reservation_url: '', reservation_required: false,
   lat: null, lng: null, cats: [],
   hours: null, parking: null, parking_note: '',
   shop_link: '', floor_info: '', start_date: '', end_date: '', event_info: '', sns_links: [], phone: '',
@@ -56,6 +56,8 @@ export default function ShopForm({ mode, shop }: Props) {
       setForm({
         name: shop.name,
         name_en: shop.name_en ?? '',
+        reservation_url: shop.reservation_url ?? '',
+        reservation_required: shop.reservation_required === true,
         slug: shop.slug,
         description: shop.description ?? '',
         addr: shop.addr ?? '',
@@ -418,6 +420,22 @@ export default function ShopForm({ mode, shop }: Props) {
                 placeholder="https://..."
                 style={inputStyle}
               />
+            </Field>
+
+            <Field label="예약 링크" hint="네이버 예약·캐치테이블처럼 미리 예약하는 곳이면 예약 페이지 주소를 넣어 주세요">
+              <input
+                type="url"
+                value={form.reservation_url ?? ''}
+                onChange={e => set('reservation_url', e.target.value)}
+                placeholder="예: https://booking.naver.com/..."
+                autoCapitalize="off"
+                spellCheck={false}
+                style={inputStyle}
+              />
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px', fontSize: '13.5px', fontWeight: 700, color: 'var(--text)', cursor: 'pointer' }}>
+                <input type="checkbox" checked={!!form.reservation_required} onChange={e => set('reservation_required', e.target.checked)} style={{ width: '18px', height: '18px', accentColor: 'var(--accent)' }} />
+                예약해야만 입장할 수 있어요
+              </label>
             </Field>
 
             <Field label="주차">

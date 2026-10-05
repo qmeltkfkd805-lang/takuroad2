@@ -44,7 +44,7 @@ const TIPS = [
 ]
 
 const EMPTY_FORM: ShopFormData = {
-  name: '', name_en: '', slug: '', description: '', addr: '',
+  name: '', name_en: '', slug: '', description: '', addr: '', reservation_url: '', reservation_required: false,
   lat: null, lng: null, cats: [],
   hours: null, parking: null, parking_note: '',
   shop_link: '', sns_links: [], phone: '', floor_info: '', start_date: '', end_date: '', event_info: '',
@@ -81,6 +81,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
     if (mode === 'edit' && shop) {
       setForm({
         name: shop.name, name_en: shop.name_en ?? '', slug: shop.slug, description: shop.description ?? '', addr: shop.addr ?? '',
+        reservation_url: shop.reservation_url ?? '', reservation_required: shop.reservation_required === true,
         lat: shop.lat, lng: shop.lng, cats: shop.cats, hours: shop.hours,
         parking: shop.parking, parking_note: shop.parking_note ?? '',
         shop_link: shop.shop_link ?? '', sns_links: (shop as any).sns_links?.length ? (shop as any).sns_links : (shop.shop_link ? [shop.shop_link] : []), phone: shop.phone ?? '', floor_info: shop.floor_info ?? '',
@@ -431,6 +432,14 @@ export default function ShopFormWizard({ mode, shop }: Props) {
                 ))}
                 <button onClick={() => setLinks([...links, ''])} style={{ alignSelf: 'flex-start', padding: '9px 14px', borderRadius: 10, border: '1.5px dashed var(--border)', background: 'transparent', color: 'var(--accent)', fontWeight: 800, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>+ 공식 SNS / 링크 추가</button>
               </div>
+            </Field>
+
+            <Field label="예약 링크" hint="네이버 예약·캐치테이블처럼 미리 예약하는 곳이면 예약 페이지 주소를 넣어 주세요. 샵 상세에 '예약하기' 버튼이 생겨요.">
+              <input type="url" value={form.reservation_url ?? ''} onChange={e => set('reservation_url', e.target.value)} placeholder="예: https://booking.naver.com/..." autoCapitalize="off" spellCheck={false} style={inp} />
+              <label style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 10, fontSize: 13.5, fontWeight: 700, color: 'var(--text)', cursor: 'pointer' }}>
+                <input type="checkbox" checked={!!form.reservation_required} onChange={e => set('reservation_required', e.target.checked)} style={{ width: 17, height: 17, accentColor: 'var(--accent)' }} />
+                예약해야만 입장할 수 있어요
+              </label>
             </Field>
 
             {/* 영업시간 편집기는 ShopHoursEditor로 분리했다 —

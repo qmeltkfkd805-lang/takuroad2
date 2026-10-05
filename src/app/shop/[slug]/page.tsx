@@ -14,12 +14,12 @@ async function getShopBySlugServer(slug: string) {
   const { data } = await supabase
     .from('shops')
     .select(`
-      id, slug, name, description,
+      id, slug, name, name_en, description,
       addr, country, region, city, district,
       lat, lng, google_place_id,
       place_id, floor, unit,
       places ( slug, name, lat, lng ),
-      hours, parking, parking_note, shop_link, sns_links, phone, floor_info, branches, start_date, end_date, event_info,
+      hours, parking, parking_note, shop_link, sns_links, phone, reservation_url, reservation_required, floor_info, branches, start_date, end_date, event_info,
       rating_avg, rating_count, visit_count, bookmark_count,
       is_verified, is_claimed, status,
       temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
