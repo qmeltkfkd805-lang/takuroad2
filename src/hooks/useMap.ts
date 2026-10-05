@@ -196,15 +196,34 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     onEventClickRef.current = onClick
     const map = mapRef.current
     if (!map) return
+
+    /* 같은 건물에 샵과 이벤트가 같이 있으면 이벤트 원이 샵 핀을 덮어 샵이 안 보였다.
+       → 샵 핀 근처(약 15m)의 이벤트 핀은 샵 핀 오른쪽 위로 비켜 놓고,
+         같은 자리 이벤트가 여럿이면 옆으로 나란히 늘어놓는다. (화면 픽셀 기준이라 확대/축소해도 같은 모양) */
+    const shopPts: { lat: number; lng: number }[] = []
+    pinsRef.current.forEach(p => shopPts.push({ lat: p.lat, lng: p.lng }))
+    const NEAR_LAT = 0.00014, NEAR_LNG = 0.00017
+    const nearShop = (lat: number, lng: number) => shopPts.some(p => Math.abs(p.lat - lat) < NEAR_LAT && Math.abs(p.lng - lng) < NEAR_LNG)
+    const slotCount = new Map<string, number>()
+    const offsetOf = (lat: number, lng: number) => {
+      const k = `${Math.round(lat * 7000)},${Math.round(lng * 6000)}`   // ≈15m 칸
+      const i = slotCount.get(k) ?? 0
+      slotCount.set(k, i + 1)
+      if (nearShop(lat, lng)) return { dx: 24 + i * 22, dy: -22 }
+      return { dx: i * 22, dy: 0 }
+    }
+
     const next = new Map<string, EventPinEntry>()
     events.forEach(ev => {
       if (!ev.lat || !ev.lng) return
       const key = String(ev.id)
-      const sig = `${ev.lat},${ev.lng},${ev.coverUrl ?? ''}`
+      const off = offsetOf(ev.lat, ev.lng)
+      const sig = `${ev.lat},${ev.lng},${ev.coverUrl ?? ''},${off.dx},${off.dy}`
       const old = eventPinsRef.current.get(key)
       if (old && old.sig === sig) { next.set(key, old); eventPinsRef.current.delete(key); return }
       const el = document.createElement('div')
       el.style.cssText = 'cursor:pointer;width:34px;height:34px'
+      if (off.dx || off.dy) el.style.transform = `translate(${off.dx}px, ${off.dy}px)`
       el.innerHTML = ev.coverUrl
         ? `<div style="width:34px;height:34px;border-radius:50%;border:2.5px solid #e8006f;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.35);background:#fff"><img src="${ev.coverUrl}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover" /></div>`
         : `<div style="width:30px;height:30px;border-radius:50%;border:2.5px solid #fff;background:#e8006f;box-shadow:0 1px 3px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.7 1.4 6.8L12 17.8 5.9 21.2l1.4-6.8L2.2 9.7l6.9-.7z"/></svg></div>`

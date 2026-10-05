@@ -4,6 +4,7 @@ import { Shop } from '@/types/shop'
 import { toShop } from '@/services/shopService'
 import { shopRegion, shopDistrict } from '@/lib/utils/region'
 import { resolveEventCover } from '@/lib/event/eventCover'
+import { imagesFirst } from '@/lib/utils/shopOrder'
 
 /**
  * 샵 홈은 "발견", 지도는 "내 주변".
@@ -152,21 +153,21 @@ export async function getMyFavoriteTagIds(userId: string): Promise<string[]> {
 /* ---- 섹션 만들기 (전부 클라이언트에서 계산 — 쿼리는 위 세 개뿐) ---- */
 
 export const hotShops = (items: ShopHomeItem[], n = 10) =>
-  [...items].sort((a, b) => hotScore(b) - hotScore(a)).slice(0, n)
+  imagesFirst([...items].sort((a, b) => hotScore(b) - hotScore(a))).slice(0, n)   // 사진 있는 샵 먼저
 
 /** "새로 등록된 샵" — 등록한 지 2주(14일) 이내인 샵만, 최신순. 2주가 지나면 자동으로 빠진다.
     해당하는 샵이 없으면 빈 배열 → 샵 홈에서 섹션 자체가 숨겨진다. */
 export const NEW_SHOP_DAYS = 14
 export const newShops = (items: ShopHomeItem[], n = 8, now: Date = new Date()) => {
   const cutoff = now.getTime() - NEW_SHOP_DAYS * 24 * 60 * 60 * 1000
-  return items
+  return imagesFirst(items
     .filter(s => { const t = Date.parse(s.created_at); return Number.isFinite(t) && t >= cutoff })
-    .sort((a, b) => b.created_at.localeCompare(a.created_at))
+    .sort((a, b) => b.created_at.localeCompare(a.created_at)))
     .slice(0, n)
 }
 
 export const eventShops = (items: ShopHomeItem[], n = 8) =>
-  items.filter(s => s.hasEvent).sort((a, b) => hotScore(b) - hotScore(a)).slice(0, n)
+  imagesFirst(items.filter(s => s.hasEvent).sort((a, b) => hotScore(b) - hotScore(a))).slice(0, n)
 
 export const featuredShops = (items: ShopHomeItem[]) =>
   items
@@ -201,7 +202,7 @@ export function regionGroups(items: ShopHomeItem[], groupCount = 5, topN = 3): R
       region: key.split(' ')[0],
       district: key.split(' ').slice(1).join(' '),
       count: list.length,
-      top: [...list].sort((a, b) => hotScore(b) - hotScore(a)).slice(0, topN),
+      top: imagesFirst([...list].sort((a, b) => hotScore(b) - hotScore(a))).slice(0, topN),
     }))
     .sort((a, b) => b.count - a.count)
     .slice(0, groupCount)
@@ -232,7 +233,7 @@ export function favoriteWorkGroups(items: ShopHomeItem[], favoriteTagIds: string
     .map(({ work, list }) => ({
       work,
       count: list.length,
-      top: [...list].sort((a, b) => hotScore(b) - hotScore(a)).slice(0, topN),
+      top: imagesFirst([...list].sort((a, b) => hotScore(b) - hotScore(a))).slice(0, topN),
     }))
     .sort((a, b) => b.count - a.count)
 }

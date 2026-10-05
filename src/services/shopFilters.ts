@@ -2,6 +2,7 @@ import { shopRegion, shopDistrict } from '@/lib/utils/region'
 import { getShopStatus } from '@/lib/utils/shopStatus'
 import { ShopHomeItem, hotScore } from '@/services/shopHomeService'
 import { CATEGORIES } from '@/lib/constants/categories'
+import { imagesFirst } from '@/lib/utils/shopOrder'
 
 const CAT_BY_SLUG: Record<string, string> =
   Object.fromEntries(CATEGORIES.map(c => [c.slug, c.name]))
@@ -108,7 +109,8 @@ export function applyShopFilters(
     case 'recent':  sorted.sort((a, b) => b.created_at.localeCompare(a.created_at)); break
     default:        sorted.sort((a, b) => hotScore(b) - hotScore(a))
   }
-  return sorted
+  // 어떤 정렬이든 사진 있는 샵을 앞으로 (같은 그룹 안에선 위 정렬 순서 유지)
+  return imagesFirst(sorted)
 }
 
 /* ───────── 프리셋 : "오늘 뭐 사러 갈까?" ───────── */

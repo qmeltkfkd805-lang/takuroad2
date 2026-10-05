@@ -11,6 +11,8 @@ import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import { createPoll } from '@/services/pollService'
 import { Board, BOARDS, BOARD_FLAIRS, CREATION_BOARDS, boardMeta, NewPost, NewPoll } from '@/types/community-post'
 import DraftNotice from '@/components/common/DraftNotice'
+import CompanionEventPicker from './CompanionEventPicker'
+import { getPostEvent, setPostEvent, PostEventSummary } from '@/services/postEventService'
 
 type Tag = { id: string; name: string; slug: string }
 const DRAFT_KEY = 'takuroad_community_draft'
@@ -52,6 +54,7 @@ export default function PostWritePage() {
   const [tagOpen, setTagOpen] = useState(false)
   const [boardOpen, setBoardOpen] = useState(false)
   const [myWorks, setMyWorks] = useState<{ id: string; name: string }[]>([])   // 내 최애·관심 작품 (빠른 태그)
+  const [companionEvent, setCompanionEvent] = useState<PostEventSummary | null>(null)   // 덕메게시판: 같이 갈 이벤트
 
   const [title, setTitle] = useState('')
   const [images, setImages] = useState<string[]>([])
@@ -137,6 +140,7 @@ export default function PostWritePage() {
     if (!editId || !user) return
     getPost(editId, user.id).then(pp => {
       if (!pp) return
+      if (pp.board === 'companion') getPostEvent(editId).then(ev => setCompanionEvent(ev))
       setBoard(pp.board); setTagIds(pp.tagIds?.length ? pp.tagIds : (pp.tagId ? [pp.tagId] : [])); setTitle(pp.title ?? ''); setImages(pp.images ?? []); setSpoiler(pp.isSpoiler); setFlair(pp.flair ?? null)
       if (editorRef.current) editorRef.current.innerHTML = (pp.content ?? '').replace(/<div data-gm="1"[\s\S]*?<\/div>/gi, '')
       // 굿즈자랑 글이면 연결된 굿즈의 캐릭터·태그 프리필
@@ -432,6 +436,8 @@ export default function PostWritePage() {
     const finalBoard: Board = (notice && noticeScope !== 'all') ? noticeScope : board
     if (editId) {
       const ok = await updatePost(editId, { board: finalBoard, tagIds, title, content: html, images: imgs, showOnWork, spoiler, flair: BOARD_FLAIRS[finalBoard] ? flair : null })
+      // 덕메게시판: 같이 갈 이벤트 연결 갱신 (다른 게시판으로 옮기면 연결 해제)
+      if (ok) await setPostEvent(editId, finalBoard === 'companion' ? companionEvent?.id ?? null : null)
       // 굿즈자랑 글이면 연결된 굿즈의 이름·캐릭터·태그도 함께 갱신
       if (ok && finalBoard === 'goods' && goodsId) {
         try {
@@ -447,6 +453,7 @@ export default function PostWritePage() {
     const id = await createPost(user.id, payload)
     if (!id) { setSaving(false); setErr('등록에 실패했어요. 잠시 후 다시 시도해주세요.'); return }
     if (pollData) { await createPoll(id, pollData) }
+    if (finalBoard === 'companion' && companionEvent) { await setPostEvent(id, companionEvent.id) }
 
     if (finalBoard === 'goods' && !notice && existingGoodsId) {
       // 기존 굿즈로 새 글 작성: 새 굿즈 생성 없이 post_goods_links만 연결
@@ -708,6 +715,8 @@ export default function PostWritePage() {
                 </div>
               </div>
             )}
+            {/* 덕메게시판: 작품과 함께 '같이 갈 이벤트'도 고를 수 있게 */}
+            {board === 'companion' && <CompanionEventPicker value={companionEvent} onChange={setCompanionEvent} />}
             </div>
 
             {BOARD_FLAIRS[board] && (

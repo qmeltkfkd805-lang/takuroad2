@@ -199,11 +199,27 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
 
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100dvh' }}>
-      <div style={{ maxWidth: 1240, margin: '0 auto', padding: '20px 24px 64px' }}>
-        <style>{`.taku-page-2col{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}@media (hover:none) and (pointer:coarse) and (max-width:900px){.taku-page-2col{grid-template-columns:1fr}}`}</style>
+      <div className="sdp-wrap" style={{ maxWidth: 1240, margin: '0 auto', padding: '20px 24px 64px' }}>
+        <style>{`.taku-page-2col{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
+        .sdp-back{display:none}
+        @media (hover:none) and (pointer:coarse) and (max-width:900px){.taku-page-2col{grid-template-columns:1fr}}
+        /* 📱 모바일도 PC와 같은 상세 화면 — 폭만 맞춘다 */
+        @media (hover:none) and (pointer:coarse) and (max-width:1023px){
+          .sdp-wrap{ padding:0 16px calc(96px + env(safe-area-inset-bottom)) !important; }
+          .sdp-crumb{ display:none !important; }
+          .sdp-hero{ margin:0 -16px !important; border-radius:0 !important; height:calc(330px + env(safe-area-inset-top)) !important; }
+          .sdp-hero-info{ left:16px !important; right:16px !important; bottom:18px !important; }
+          .sdp-hero-info h1{ font-size:23px !important; }
+          .sdp-more{ top:calc(12px + env(safe-area-inset-top)) !important; right:12px !important; }
+          .sdp-back{ display:flex; position:absolute; z-index:6; top:calc(12px + env(safe-area-inset-top)); left:12px; width:36px; height:36px; border-radius:9999px; border:none; background:rgba(0,0,0,.45); color:#fff; align-items:center; justify-content:center; cursor:pointer; padding:0; }
+          .sdp-tabs{ top:0 !important; margin-left:-16px !important; margin-right:-16px !important; padding:0 8px; overflow-x:auto; scrollbar-width:none; }
+          .sdp-tabs::-webkit-scrollbar{ display:none; }
+          .sdp-tabs > button{ flex-shrink:0; padding:13px 12px !important; }
+          .sdp-aside{ position:static !important; margin-top:24px; }
+        }`}</style>
 
         {/* Breadcrumb */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--muted)', marginBottom: 16 }}>
+        <nav className="sdp-crumb" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--muted)', marginBottom: 16 }}>
           <Link href={ROUTES.home} style={{ color: 'inherit' }}>홈</Link>
           <span>›</span>
           <Link href="/map" style={{ color: 'inherit' }}>지도</Link>
@@ -227,6 +243,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
               onTouchStart={heroTouchStart}
               onTouchMove={heroTouchMove}
               onTouchEnd={heroTouchEnd}
+              className="sdp-hero"
               style={{ position: 'relative', height: 300, borderRadius: 18, overflow: 'hidden', background: catInfo?.bgColor ?? 'var(--surface2)', touchAction: 'pan-y' }}
             >
               {hasImages ? (
@@ -239,7 +256,11 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, rgba(0,0,0,.72) 0%, rgba(0,0,0,.25) 42%, rgba(0,0,0,0) 70%)', pointerEvents: 'none' }} />
               {/* 더보기 — 예전에는 canManage 일 때만 그려서 일반 사용자에겐 메뉴가 아예 없었다.
                   신고하기를 여기 넣기 위해 항상 그리고, 관리 항목만 조건부로 둔다. */}
-              <div style={{ position: 'absolute', top: 16, right: 16, zIndex: 6 }}>
+              {/* 📱 모바일엔 전역 상단바가 없어서 히어로 위에 뒤로가기 */}
+              <button className="sdp-back" onClick={() => router.back()} aria-label="뒤로">
+                <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+              </button>
+              <div className="sdp-more" style={{ position: 'absolute', top: 16, right: 16, zIndex: 6 }}>
                 <button onClick={() => setMenuOpen(o => !o)} aria-label="더보기" aria-expanded={menuOpen} style={{ width: 36, height: 36, borderRadius: 9999, border: 'none', background: 'rgba(0,0,0,.45)', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <svg width={20} height={20} viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="19" cy="12" r="2" /></svg>
                 </button>
@@ -265,7 +286,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                   </div>
                 )}
               </div>
-              <div style={{ position: 'absolute', left: 24, bottom: 22, right: 24, color: '#fff' }}>
+              <div className="sdp-hero-info" style={{ position: 'absolute', left: 24, bottom: 22, right: 24, color: '#fff' }}>
                 <h1 style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 27, fontWeight: 900, lineHeight: 1.2, marginBottom: 10, textShadow: '0 2px 12px rgba(0,0,0,.4)' }}>
                   <span style={{ minWidth: 0 }}>{shop.name}</span>
                   {shop.is_claimed && (
@@ -275,6 +296,14 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                 {shop.name_en && (
                   <div lang="en" style={{ marginTop: -6, marginBottom: 10, fontSize: 14, fontWeight: 600, color: 'rgba(255,255,255,.85)', textShadow: '0 1px 8px rgba(0,0,0,.4)' }}>{shop.name_en}</div>
                 )}
+                {shop.cats?.length > 0 && (
+                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 9 }}>
+                    {shop.cats.map(c => (
+                      <span key={c} style={{ fontSize: 11.5, fontWeight: 700, padding: '3px 9px', borderRadius: 9999, background: 'rgba(255,255,255,.16)', color: '#fff' }}>{c}</span>
+                    ))}
+                  </div>
+                )}
+                {/* 평점·저장 — 카테고리 아래 */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 9, flexWrap: 'wrap' }}>
                   {shop.rating_count > 0 && (
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: color, color: '#fff', fontWeight: 800, fontSize: 12.5, padding: '4px 10px', borderRadius: 9999 }}>
@@ -287,13 +316,6 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                     </span>
                   )}
                 </div>
-                {shop.cats?.length > 0 && (
-                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 9 }}>
-                    {shop.cats.map(c => (
-                      <span key={c} style={{ fontSize: 11.5, fontWeight: 700, padding: '3px 9px', borderRadius: 9999, background: 'rgba(255,255,255,.16)', color: '#fff' }}>{c}</span>
-                    ))}
-                  </div>
-                )}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 5, fontSize: 13, color: 'rgba(255,255,255,.95)' }}>
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                     <span style={{ width: 7, height: 7, borderRadius: 9999, background: todayStatus.isOpen ? '#3ddc97' : '#ff8a8a' }} />
@@ -353,7 +375,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                 예전에는 top 0 / zIndex 50 이라 스크롤하면 헤더 위를 덮었고, 그 탓에
                 상단바의 알림 드롭다운이 이 바에 가려졌다 — 드롭다운의 zIndex 100 은
                 헤더라는 stacking context 안의 값이라 바깥에서는 헤더 전체가 30 으로 취급된다. */}
-            <div style={{
+            <div className="sdp-tabs" style={{
               position: 'sticky', top: 61, zIndex: 20, background: 'var(--surface)',
               borderBottom: '1px solid var(--border)', marginBottom: 24, display: 'flex', gap: 4,
             }}>
@@ -665,7 +687,7 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
           </main>
 
           {/* ===== Sticky 사이드바 (히어로 옆) ===== */}
-          <aside style={{ position: 'sticky', top: 20, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <aside className="sdp-aside" style={{ position: 'sticky', top: 20, display: 'flex', flexDirection: 'column', gap: 16 }}>
             <SideCard title="위치">
               <div style={{ height: 160, borderRadius: 12, overflow: 'hidden', marginBottom: 12, background: 'var(--surface2)' }}>
                 {shop.lat && shop.lng ? (

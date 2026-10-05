@@ -24,6 +24,7 @@ import { getOngoingMapEvents, MapEvent } from '@/services/mapEventService'
 import RouteMapMode from '@/components/route/RouteMapMode'
 import RouteMapMobile from '@/components/route/RouteMapMobile'
 import { useIsDesktop } from '@/hooks/useIsDesktop'
+import { imagesFirst } from '@/lib/utils/shopOrder'
 
 // Place 소속 샵은 place 좌표로 접어서 표시한다 (저장 좌표 lat/lng 은 안 건드림)
 const dispLat = (s: any) => s.displayLat ?? s.lat
@@ -98,7 +99,9 @@ export default function MapPage() {
 
   // 샵만/이벤트만 보기
   const shownShops = layer === 'event' ? EMPTY_SHOPS : mapShops
-  const shownListShops = layer === 'event' ? EMPTY_SHOPS : filtered
+  // 목록(하단 시트)은 사진 있는 샵 먼저
+  const listShopsSorted = useMemo(() => imagesFirst(filtered), [filtered])
+  const shownListShops = layer === 'event' ? EMPTY_SHOPS : listShopsSorted
   const shownEvents = layer === 'shop' ? EMPTY_EVENTS : filteredEvents
 
   // 지역별 샵 수 (지금 카테고리 기준, 지도에 표시되는 샵만) — 지역 고르는 창에 숫자로
@@ -226,10 +229,21 @@ export default function MapPage() {
     fitToShops(pts)
   }, [shops, selectedRegion, onMap, fitToShops, setSelectedDistrict, setSelectedShop])
 
+  // 📱 지도 화면에선 화면 전체가 끌려 내려가거나 '당겨서 새로고침' 되지 않게
+  useEffect(() => {
+    const html = document.documentElement, body = document.body
+    const prev = [html.style.overscrollBehavior, body.style.overscrollBehavior]
+    html.style.overscrollBehavior = 'none'
+    body.style.overscrollBehavior = 'none'
+    return () => { html.style.overscrollBehavior = prev[0]; body.style.overscrollBehavior = prev[1] }
+  }, [])
+
   // 현재 위치를 받아오면 지도 이동
   useEffect(() => {
     if (location) {
       mapRef.current?.moveCenter(location.lat, location.lng, 4)
+      // 'IP 기반이라 다를 수 있어요' 안내는 PC에서만 — 폰은 GPS라 정확하다
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
       setLocToast(true)
       const t = setTimeout(() => setLocToast(false), 5000)
       return () => clearTimeout(t)

@@ -76,7 +76,8 @@ const KakaoMap = forwardRef<KakaoMapRef, KakaoMapProps>(function KakaoMap({
   useEffect(() => {
     if (!isLoaded) return
     renderEventMarkers(events ?? [], ev => selEventRef.current?.(ev))
-  }, [isLoaded, events, renderEventMarkers])
+    // shops 도 의존 — 샵 핀이 바뀌면 같은 건물의 이벤트 핀을 다시 비켜 놓는다 (샵 핀 다음에 실행됨)
+  }, [isLoaded, events, shops, renderEventMarkers])
 
   useEffect(() => {
     if (!isLoaded || !myLocation) return

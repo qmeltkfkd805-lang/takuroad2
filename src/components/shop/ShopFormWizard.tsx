@@ -250,6 +250,15 @@ export default function ShopFormWizard({ mode, shop }: Props) {
         .taku-page-2col{ grid-template-columns:1fr; gap:0 }
         .taku-page-2col > aside{ display:none !important; }           /* 모바일: 샵 미리보기·TIP 숨김 */
         .taku-page-2col > div{ border:none !important; border-radius:0 !important; padding:0 !important; background:transparent !important; }  /* 폼 네모칸 제거 */
+        .sw-head{ top:0 !important; margin:0 -14px 12px !important; padding:8px 14px !important; padding-top:calc(8px + env(safe-area-inset-top)) !important; }
+        .sw-title{ font-size:19px !important; }
+        .sw-root input:not([type=checkbox]):not([type=radio]), .sw-root textarea, .sw-root select{ font-size:16px !important; }  /* iOS 입력 시 화면 확대 방지 */
+        .sw-exit{ display:none !important; }
+        .sw-steps{ margin:0 -14px 16px !important; padding:0 8px 2px !important; gap:2px !important; scrollbar-width:none; }
+        .sw-steps::-webkit-scrollbar{ display:none; }
+        .sw-steps > button{ padding:8px 8px !important; gap:5px !important; }
+        .sw-steps > button > span:first-child{ width:22px !important; height:22px !important; font-size:12px !important; }
+        .sw-steps > button > span:last-child{ font-size:13px !important; }
       }`}</style>
 
       {/* 등록 완료 → "이 샵의 사장님입니까?" 모달 */}
@@ -293,21 +302,21 @@ export default function ShopFormWizard({ mode, shop }: Props) {
       )}
 
       {/* 헤더 */}
-      <div style={{ position: 'sticky', top: 64, zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18, padding: '12px 0', background: 'var(--bg, var(--surface))', borderBottom: '1px solid var(--border)' }}>
+      <div className="sw-head" style={{ position: 'sticky', top: 64, zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18, padding: '12px 0', background: 'var(--bg, var(--surface))', borderBottom: '1px solid var(--border)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <button onClick={() => router.back()} style={iconBtn} aria-label="뒤로"><Svg><path d="m15 18-6-6 6-6" /></Svg></button>
-          <h1 style={{ fontSize: 26, fontWeight: 900, margin: 0 }}>{mode === 'edit' ? '샵 수정' : '샵 등록'}</h1>
+          <h1 className="sw-title" style={{ fontSize: 26, fontWeight: 900, margin: 0 }}>{mode === 'edit' ? '샵 수정' : '샵 등록'}</h1>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           {savedNote && <span style={{ fontSize: 13, color: 'var(--green)', fontWeight: 700 }}>{savedNote}</span>}
           <button onClick={handleTempSave} disabled={saving} style={mode === 'edit' ? { ...ghostBtn, background: 'var(--accent)', color: '#fff', border: 'none', fontWeight: 800 } : ghostBtn}>{saving ? '저장 중...' : mode === 'edit' ? '저장하기' : '임시저장'}</button>
-          <button onClick={() => router.back()} style={ghostBtn}>나가기</button>
+          <button className="sw-exit" onClick={() => router.back()} style={ghostBtn}>나가기</button>
         </div>
       </div>
       {draft.restored && <DraftNotice onDiscard={startOver} onClose={draft.dismiss} />}
 
       {/* 스텝바 */}
-      <div style={{ display: 'flex', gap: 8, overflowX: 'auto', marginBottom: 28, paddingBottom: 6 }}>
+      <div className="sw-steps" style={{ display: 'flex', gap: 8, overflowX: 'auto', marginBottom: 28, paddingBottom: 6 }}>
         {STEPS.map((s) => {
           const active = step === s.n
           const done = step > s.n

@@ -21,6 +21,8 @@
   transition: top .28s cubic-bezier(.32,.72,0,1);
 }
 .dragZone { flex-shrink: 0; touch-action: none; cursor: grab; }
+/* 시트 위에서의 위아래 끌기는 시트가 처리 — 화면(페이지)으로 넘어가 당겨서 새로고침 되지 않게 */
+.sheet, .sheetExpanded { overscroll-behavior: contain; }
 .handle {
   width: 40px; height: 4px;
   background: var(--border); border-radius: 2px;
@@ -48,6 +50,8 @@
   padding: 2px 16px;
   scrollbar-width: none;
   align-items: stretch;
+  touch-action: pan-x;               /* 카드 줄: 가로 스크롤만 브라우저가, 위아래는 시트가 */
+  overscroll-behavior-x: contain;
 }
 .row::-webkit-scrollbar { display: none; }
 .cardWrap { width: 200px; height: 280px; flex-shrink: 0; }
@@ -70,6 +74,7 @@
 /* 펼침: 세로 목록 */
 .list {
   flex: 1; min-height: 0; overflow-y: auto;
+  overscroll-behavior: contain;      /* 목록 끝에서 화면 전체로 스크롤이 번지지 않게 */
 }
 
 /* 닫힘: 작은 핸들만 */

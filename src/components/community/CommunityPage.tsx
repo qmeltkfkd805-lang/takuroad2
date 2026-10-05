@@ -44,6 +44,16 @@ export default function CommunityPage() {
   const searchParams = useSearchParams()
   const isDesktop = useIsDesktop()
   const [drawerOpen, setDrawerOpen] = useState(false)
+  // 서랍(메뉴)이 열려 있는 동안 뒤의 게시글 화면이 같이 스크롤되지 않게 잠근다
+  useEffect(() => {
+    if (!drawerOpen) return
+    const html = document.documentElement, body = document.body
+    const prev = [html.style.overflow, body.style.overflow, html.style.overscrollBehavior]
+    html.style.overflow = 'hidden'
+    body.style.overflow = 'hidden'
+    html.style.overscrollBehavior = 'none'
+    return () => { html.style.overflow = prev[0]; body.style.overflow = prev[1]; html.style.overscrollBehavior = prev[2] }
+  }, [drawerOpen])
   const [creationOpen, setCreationOpen] = useState(false)   // 서랍: 창작게시판 아코디언
   const [board, setBoard] = useState<Sel>('all')
   // 카테고리 칸은 '전체'에서만 의미가 있다 (게시판을 고르면 전부 같은 카테고리)
@@ -350,8 +360,8 @@ export default function CommunityPage() {
 
         {/* 왼쪽 서랍 — 카테고리 */}
         {drawerOpen && typeof document !== 'undefined' && createPortal(
-          <div onClick={() => setDrawerOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,.45)' }}>
-            <div onClick={e => e.stopPropagation()} style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '80%', maxWidth: 320, background: 'var(--surface)', boxShadow: '2px 0 24px rgba(0,0,0,.2)', overflowY: 'auto' }}>
+          <div onClick={() => setDrawerOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,.45)', overscrollBehavior: 'contain', touchAction: 'none' }}>
+            <div onClick={e => e.stopPropagation()} style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '80%', maxWidth: 320, background: 'var(--surface)', boxShadow: '2px 0 24px rgba(0,0,0,.2)', overflowY: 'auto', overscrollBehavior: 'contain' }}>
               <div style={{ padding: '18px 18px 12px', fontSize: 18, fontWeight: 900 }}>커뮤니티</div>
               <DrawerGroup label="게시판">
                 <DrawerItem label="전체" active={board === 'all'} onClick={() => { setBoard('all'); setScope('all'); setDrawerOpen(false) }} />

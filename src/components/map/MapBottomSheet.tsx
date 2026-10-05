@@ -123,23 +123,63 @@ export default function MapBottomSheet({ shops, events = [], onSelectShop, onSel
     })
   }
 
-  // 시트 위아래 터치 드래그
-  const onTouchStart = (e: React.TouchEvent) => {
-    startY.current = e.touches[0].clientY
-    movedRef.current = 0
-  }
-  const onTouchMove = (e: React.TouchEvent) => {
-    if (startY.current === null) return
-    movedRef.current = e.touches[0].clientY - startY.current
-  }
-  const onTouchEnd = () => {
-    const dy = movedRef.current
-    const THRESHOLD = 40
-    if (dy < -THRESHOLD) step(1)
-    else if (dy > THRESHOLD) step(-1)
-    startY.current = null
-    movedRef.current = 0
-  }
+  /* 시트 위아래 터치 드래그 — 시트 어디를 잡아도(제목 줄·가로 카드 줄·펼친 목록의 맨 위) 시트만 움직인다.
+     예전엔 제목 줄에서만 잡혀서, 카드 줄을 위아래로 끌면 화면 전체가 끌려 내려가 새로고침이 됐다.
+     touchmove 에서 preventDefault 를 해야 하므로 React 이벤트(수동 passive) 대신 직접 붙인다. */
+  const rootRef = useRef<HTMLDivElement>(null)
+  const stepRef = useRef(step)
+  stepRef.current = step
+  useEffect(() => {
+    const root = rootRef.current
+    if (!root) return
+    let sx = 0, sy = 0
+    let axis: 'x' | 'y' | 'list' | null = null
+    let listEl: HTMLElement | null = null
+    const onStart = (e: TouchEvent) => {
+      if (e.touches.length !== 1) { startY.current = null; return }
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY
+      startY.current = sy
+      movedRef.current = 0
+      axis = null
+      listEl = (e.target as HTMLElement).closest('[data-sheet-list]')
+    }
+    const onMove = (e: TouchEvent) => {
+      if (startY.current === null) return
+      const dx = e.touches[0].clientX - sx
+      const dy = e.touches[0].clientY - sy
+      if (!axis) {
+        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return
+        if (Math.abs(dx) > Math.abs(dy)) axis = 'x'
+        // 펼친 목록 안: 맨 위에서 아래로 끌 때만 시트를 접고, 나머지는 목록 스크롤
+        else if (listEl && !(listEl.scrollTop <= 0 && dy > 0)) axis = 'list'
+        else axis = 'y'
+      }
+      if (axis !== 'y') return
+      if (e.cancelable) e.preventDefault()   // 화면이 끌려 내려가거나 당겨서 새로고침 되지 않게
+      movedRef.current = dy
+    }
+    const onEnd = () => {
+      if (axis === 'y') {
+        const dy = movedRef.current
+        const THRESHOLD = 40
+        if (dy < -THRESHOLD) stepRef.current(1)
+        else if (dy > THRESHOLD) stepRef.current(-1)
+      }
+      startY.current = null
+      movedRef.current = 0
+      axis = null
+    }
+    root.addEventListener('touchstart', onStart, { passive: true })
+    root.addEventListener('touchmove', onMove, { passive: false })
+    root.addEventListener('touchend', onEnd)
+    root.addEventListener('touchcancel', onEnd)
+    return () => {
+      root.removeEventListener('touchstart', onStart)
+      root.removeEventListener('touchmove', onMove)
+      root.removeEventListener('touchend', onEnd)
+      root.removeEventListener('touchcancel', onEnd)
+    }
+  }, [])
 
   // 가로 카드 마우스 드래그
   const onRowMouseDown = (e: React.MouseEvent) => {
@@ -164,14 +204,11 @@ export default function MapBottomSheet({ shops, events = [], onSelectShop, onSel
   const collapsed = state === 'closed'   // 접힘: '주변 샵 N개 · 이벤트 N / 루트 보기 / 목록 보기' 줄만
 
   return (
-    <div className={expanded ? styles.sheetExpanded : styles.sheet}>
+    <div ref={rootRef} className={expanded ? styles.sheetExpanded : styles.sheet}>
       <div
         className={styles.dragZone}
         // 접혀 있을 땐 제목 줄 아무 데나 눌러도 카드 줄이 펼쳐진다 (루트 보기·목록 보기 버튼은 제외)
         onClick={e => { if (collapsed && !(e.target as HTMLElement).closest('button')) setState('peek') }}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
       >
         <div className={styles.handle} onClick={() => step(collapsed ? 1 : -1)}
           role="button" aria-label={collapsed ? '샵 카드 펼치기' : '접기'} />
@@ -186,7 +223,7 @@ export default function MapBottomSheet({ shops, events = [], onSelectShop, onSel
       </div>
 
       {collapsed ? null : expanded ? (
-        <div className={styles.list} onScroll={onListScroll}>
+        <div className={styles.list} data-sheet-list onScroll={onListScroll}>
           {shops.slice(0, listCount).map(shop => (
             <ShopRow key={shop.id} shop={shop} isActive={false} onClick={onSelectShop} />
           ))}

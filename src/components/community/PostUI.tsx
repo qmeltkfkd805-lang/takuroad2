@@ -19,6 +19,8 @@ import { getPostGoods, getGoodsDetail, type GoodsDetail } from '@/services/goods
 import { getExhibitEntryIdForPost, addExhibitEntry, deleteExhibit, exhibitRemoveConfirmText } from '@/services/exhibitService'
 import AppIcon from '@/components/tds/AppIcon'
 import LogoLoader from '@/components/common/LogoLoader'
+import { PostEventLinkCard } from './CompanionEventPicker'
+import { getPostEvent, PostEventSummary } from '@/services/postEventService'
 
 // ── 대표 팬아트 배지 ──
 export function FeaturedTag({ kind, inline }: { kind: 'current' | 'past'; inline?: boolean }) {
@@ -79,6 +81,14 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
   const { user, isAdmin } = useAuth()
   const router = useRouter()
   const [post, setPost] = useState(initial)
+  // 덕메게시판 글: 같이 갈 이벤트
+  const [companionEvent, setCompanionEvent] = useState<PostEventSummary | null>(null)
+  useEffect(() => {
+    if (initial.board !== 'companion') { setCompanionEvent(null); return }
+    let alive = true
+    getPostEvent(initial.id).then(ev => { if (alive) setCompanionEvent(ev) })
+    return () => { alive = false }
+  }, [initial.id, initial.board])
 
   /* 부모가 다시 조회해서 넘겨준 값을 반영한다.
      예전에는 useState(initial) 로 처음 한 번만 복사하고 끝이라, 부모가 새 글 정보를
@@ -484,6 +494,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
           </>
         )}
         <div style={{ minHeight: isPage ? 160 : undefined, marginBottom: isPage ? 28 : 16, padding: isPage ? '0 4px' : undefined }}>
+          {companionEvent && <PostEventLinkCard ev={companionEvent} />}
           {post.content && (isHtml
             ? <div className="taku-post-body" onClick={lb.onBodyClick} style={{ fontSize: isPage ? 16 : 14.5, lineHeight: isPage ? 1.8 : 1.65, margin: 0, wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
             : <p style={{ fontSize: isPage ? 16 : 14.5, lineHeight: isPage ? 1.8 : 1.65, whiteSpace: 'pre-wrap', margin: 0 }}>{post.content}</p>)}
