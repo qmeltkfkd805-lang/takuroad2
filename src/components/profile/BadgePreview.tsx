@@ -41,7 +41,7 @@ export default function BadgePreview({ userId }: { userId: string }) {
           ))}
         </div>
       )}
-      <Link href="/cosmetic" className={styles.more}>모든 배지 보기 ›</Link>
+      <Link href="/profile?tab=badges" className={styles.more}>모든 배지 보기 ›</Link>
 
       {next && (
         <Link href="/growth" className={styles.nextGoal}>

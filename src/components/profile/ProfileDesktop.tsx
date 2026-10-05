@@ -614,7 +614,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
               <div className={styles.modalList}>
                 {modal.list.map(u => (
                   <button key={u.id} className={styles.followUser} onClick={() => { setModal(null); router.push(`/user/${encodeURIComponent(u.nickname)}`) }}>
-                    <UserAvatar userId={u.id} src={u.avatarUrl} name={u.nickname} size={40} showEffect={false} />
+                    <UserAvatar userId={u.id} src={u.avatarUrl} name={u.nickname} size={40} />
                     <span className={styles.fuName}>{u.nickname}</span>
                   </button>
                 ))}

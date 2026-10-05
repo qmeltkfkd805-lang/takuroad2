@@ -131,7 +131,6 @@ export default function EventReviewTab({ eventId, onCountChange }: { eventId: st
                   src={r.author?.avatarUrl}
                   name={r.author?.nickname}
                   size={30}
-                  showEffect={false}
                 />
                 <span style={{ fontSize: 13, fontWeight: 700 }}>{r.author?.nickname ?? '알 수 없음'}</span>
                 <UserTitle userId={r.author?.id} />

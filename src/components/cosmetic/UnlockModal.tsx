@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { UNLOCK_EVENT, UnlockPayload, UnlockedTier, loadUnlock } from '@/services/unlockService'
 import { equipCosmetic } from '@/services/cosmeticService'
-import { previewStyle, RARITY_LABEL, fxClass } from '@/lib/cosmetics/style'
+import { RARITY_LABEL } from '@/lib/cosmetics/style'
 import { Icon, Taku } from '@/components/tds'
 import { AXIS_VERB } from '@/lib/work/workProgress'
 import styles from './UnlockModal.module.css'
@@ -18,13 +18,8 @@ import styles from './UnlockModal.module.css'
       획득의 기쁨이 최고조일 때 다음 문을 열어준다 — "좋아, 하나만 더 해볼까?"
    ⭐ 여러 개를 동시에 딸 수 있다 (리뷰 10개 + 탐험가 Lv2). 그것도 지원한다. */
 
-const TYPE_LABEL: Record<string, string> = {
-  frame: '프로필 프레임',
-  background: '프로필 배경',
-  title: '칭호',
-  effect: '프로필 효과',
-  theme: '프로필 테마',
-}
+// 보상은 칭호만 남았다 (프레임·배경·효과·테마 없앰 — unlockService 가 칭호만 넘긴다)
+const TYPE_LABEL: Record<string, string> = { title: '칭호' }
 
 export default function UnlockModal() {
   const { user } = useAuth()
@@ -114,7 +109,7 @@ export default function UnlockModal() {
                 <button className={styles.primary} onClick={equipAll} disabled={equipping}>
                   {equipping ? '착용하는 중…' : (multi ? '모두 착용하기' : '지금 착용하기')}
                 </button>
-                <button className={styles.ghost} onClick={() => { close(); router.push('/cosmetic') }}>
+                <button className={styles.ghost} onClick={() => { close(); router.push('/profile/settings/profile') }}>
                   {multi ? '하나씩 보기' : '나중에'}
                 </button>
               </>
@@ -143,17 +138,11 @@ export default function UnlockModal() {
 
 function RewardCard({ t, big }: { t: UnlockedTier; big: boolean }) {
   const c = t.cosmetic!
-  const fx = c.type === 'effect' ? fxClass(c.slug) : ''
 
   return (
     <div className={`${styles.reward} ${big ? styles.rewardBig : ''}`}>
-      <div
-        className={`${styles.preview} ${fx ? styles[fx] : ''}`}
-        style={previewStyle(c.type, c.slug)}
-      >
-        {c.type === 'title' && <span className={styles.previewTitle}>{c.name}</span>}
-        {c.type === 'effect' && <span className={styles.previewFx} />}
-        {c.type === 'frame' && <span className={styles.previewFace} />}
+      <div className={styles.preview}>
+        <span className={styles.previewTitle}>{c.name}</span>
       </div>
 
       <div className={styles.rewardType}>{TYPE_LABEL[c.type] ?? c.type}</div>

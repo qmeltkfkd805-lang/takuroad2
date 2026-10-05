@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { LEVELUP_EVENT, getMyLevelInfo, getNextReward, levelTier, LevelInfo, LevelReward } from '@/services/expService'
-import { bgStyle, fxClass, FRAME_STYLE, RARITY_LABEL } from '@/lib/cosmetics/style'
+import { RARITY_LABEL } from '@/lib/cosmetics/style'
 import { Taku } from '@/components/tds'
 
 /* 레벨업 축하 모달 — 해금 모달과 같은 전역 리스너 패턴.
@@ -12,14 +12,11 @@ import { Taku } from '@/components/tds'
 
 const RANK_STEPS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 const RARITY_COLOR: Record<string, string> = { common: '#9aa0aa', rare: '#3d7fe0', epic: '#b45cff', legendary: '#ffb02e' }
-const TYPE_LABEL: Record<string, string> = { background: '배경', effect: '효과', frame: '프레임', title: '칭호', theme: '테마' }
+// 레벨 보상은 칭호만 남았다 (프레임·배경·효과·테마 없앰)
+const TYPE_LABEL: Record<string, string> = { title: '칭호' }
 
 function RewardSwatch({ r }: { r: LevelReward }) {
-  let inner: React.ReactNode = null
-  if (r.type === 'background') inner = <div style={{ position: 'absolute', inset: 0, ...bgStyle(r.slug, r.assetUrl) }} />
-  else if (r.type === 'frame') inner = <div style={{ position: 'absolute', inset: 6, borderRadius: 8, background: '#fff', ...(FRAME_STYLE[r.slug] || {}) }} />
-  else if (r.type === 'effect') inner = <div className={`tkfx-preview ${fxClass(r.slug)}`} style={{ position: 'absolute', inset: 0, background: '#161b2e' }} />
-  else inner = <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>🏷️</div>
+  const inner = <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>🏷️</div>
   return (
     <div style={{ position: 'relative', width: 46, height: 46, borderRadius: 10, overflow: 'hidden', border: `2px solid ${RARITY_COLOR[r.rarity] ?? '#ccc'}`, flexShrink: 0 }}>
       {inner}

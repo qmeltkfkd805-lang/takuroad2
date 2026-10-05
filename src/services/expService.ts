@@ -205,7 +205,7 @@ export interface LevelReward {
   id: string; type: string; slug: string; name: string; rarity: string; assetUrl: string | null
 }
 
-/** 레벨 구간(from < lv <= to)의 보상 코스메틱 — 레벨업 축하 🎁용. */
+/** 레벨 구간(from < lv <= to)의 보상 칭호 — 레벨업 축하 🎁용. (프레임·배경·효과는 없앴다) */
 export async function getLevelRewards(fromLevel: number, toLevel: number): Promise<LevelReward[]> {
   const supabase = createClient()
   const { data: rows } = await supabase
@@ -214,7 +214,7 @@ export async function getLevelRewards(fromLevel: number, toLevel: number): Promi
   const ids = (rows ?? []).map((r: any) => r.reward_id)
   if (ids.length === 0) return []
   const { data: cos } = await supabase
-    .from('cosmetics').select('id, type, slug, name, rarity, asset_url').in('id', ids)
+    .from('cosmetics').select('id, type, slug, name, rarity, asset_url').eq('type', 'title').in('id', ids)
   return (cos ?? []).map((c: any) => ({
     id: c.id, type: c.type, slug: c.slug, name: c.name, rarity: c.rarity ?? 'common', assetUrl: c.asset_url ?? null,
   }))
@@ -223,15 +223,18 @@ export async function getLevelRewards(fromLevel: number, toLevel: number): Promi
 /** 내 레벨보다 높은 가장 가까운 레벨 보상 (다음 목표 표시용). */
 export async function getNextReward(myLevel: number): Promise<{ level: number; reward: LevelReward } | null> {
   const supabase = createClient()
+  // 칭호 보상만 — 다음 칭호가 걸린 가장 가까운 레벨
   const { data: rows } = await supabase
     .from('level_rewards').select('level, reward_id')
-    .eq('reward_type', 'cosmetic').gt('level', myLevel).order('level').limit(1)
-  const row: any = (rows ?? [])[0]
+    .eq('reward_type', 'cosmetic').gt('level', myLevel).order('level').limit(50)
+  const list = (rows ?? []) as any[]
+  if (list.length === 0) return null
+  const { data: cos } = await supabase
+    .from('cosmetics').select('id, type, slug, name, rarity, asset_url').eq('type', 'title').in('id', list.map(r => r.reward_id))
+  const byId = new Map(((cos ?? []) as any[]).map(c => [c.id, c]))
+  const row = list.find(r => byId.has(r.reward_id))
   if (!row) return null
-  const { data: c } = await supabase
-    .from('cosmetics').select('id, type, slug, name, rarity, asset_url').eq('id', row.reward_id).maybeSingle()
-  if (!c) return null
-  const cc: any = c
+  const cc: any = byId.get(row.reward_id)
   return { level: row.level, reward: { id: cc.id, type: cc.type, slug: cc.slug, name: cc.name, rarity: cc.rarity ?? 'common', assetUrl: cc.asset_url ?? null } }
 }
 

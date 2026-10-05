@@ -414,7 +414,6 @@ function ReviewItem({ review, currentUserId, onDelete, accentColor }: {
                 src={c.author?.avatar_url}
                 name={c.author?.nickname}
                 size={24}
-                showEffect={false}
               />
               <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>

@@ -96,7 +96,7 @@ export default function RouteReviews({ routeId, routeTitle, openSignal = 0, onOp
           {list.map(r => (
             <li key={r.id} className={s.item}>
               <div className={s.head}>
-                <UserAvatar userId={r.userId} src={r.avatarUrl} name={r.nickname} size={32} showEffect={false} />
+                <UserAvatar userId={r.userId} src={r.avatarUrl} name={r.nickname} size={32} />
                 <span className={s.name}>{r.nickname}</span>
                 <span className={s.date}>{fmt(r.createdAt)} {user && r.userId === user.id && mine.length > 1 ? `${mineNo.get(r.id)}번째 완주` : '완주'}</span>
                 {user && r.userId === user.id && (

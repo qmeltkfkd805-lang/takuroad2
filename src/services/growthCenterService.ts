@@ -71,15 +71,9 @@ export interface GrowthCenter {
   totalSteps: number
 }
 
-const COSMETIC_LABEL: Record<string, string> = {
-  frame: '프레임',
-  background: '프로필 배경',
-  title: '칭호',
-  effect: '프로필 효과',
-  theme: '프로필 테마',
-}
-
-const COSMETIC_ORDER = ['frame', 'background', 'title', 'effect', 'theme']
+// 꾸미기 보상은 칭호만 남았다 (프레임·배경·효과·테마 없앰)
+const COSMETIC_LABEL: Record<string, string> = { title: '칭호' }
+const COSMETIC_ORDER = ['title']
 
 export async function getGrowthCenter(userId: string): Promise<GrowthCenter> {
   const supabase = createClient()

@@ -71,7 +71,7 @@ export default function Sidebar() {
    ⭐ LvCard의 등급 아이콘 자리를 뺏지 않는다. 그건 레벨 시스템의 얼굴이다. */
 function MeCard({ userId, src, name }: { userId: string; src?: string | null; name?: string | null }) {
   return (
-    <Link href="/cosmetic" className={styles.me}>
+    <Link href="/profile" className={styles.me}>
       <UserAvatar userId={userId} src={src} name={name} size={40} />
       <span className={styles.meBody}>
         <span className={styles.meNick}>{name ?? '사용자'}</span>

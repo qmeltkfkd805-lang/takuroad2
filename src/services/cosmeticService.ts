@@ -2,7 +2,10 @@ import { createClient } from '@/lib/supabase/client'
 import { tierHintFromCondition } from './badgeService'
 
 /* ============================================================
-   코스메틱 — 프로필 꾸미기
+   코스메틱 — 칭호 (프로필 꾸미기 중 남긴 것)
+
+   ⭐ 2026-10: 프레임·배경·효과·테마는 없앴다. 칭호와 대표 배지만 남긴다.
+      DB(cosmetics·profiles.equipped)는 그대로 두고, 코드에서 칭호(type='title')만 다룬다.
 
    ⭐⭐ 해금 테이블이 없다. user_badge_tiers(땄다) = 해금됐다.
       별도 user_cosmetics를 두면 이중 진실이 된다.
@@ -16,7 +19,7 @@ import { tierHintFromCondition } from './badgeService'
       asset_url이 채워지면 그게 우선한다. 가짜 이미지보다 진짜 CSS가 낫다.
    ============================================================ */
 
-export type CosmeticType = 'frame' | 'background' | 'title' | 'effect' | 'theme' | string
+export type CosmeticType = 'title' | string
 
 /**
  * 관리자는 전부 해금 상태로 본다.
@@ -49,7 +52,7 @@ export async function getMyCosmetics(userId: string): Promise<Cosmetic[]> {
   const supabase = createClient()
 
   const [cosRes, tierRes, earnedRes, admin, lvlRewRes, expRes] = await Promise.all([
-    supabase.from('cosmetics').select('*').eq('is_hidden', false).order('type').order('sort_order'),
+    supabase.from('cosmetics').select('*').eq('is_hidden', false).eq('type', 'title').order('sort_order'),
     supabase.from('badge_tiers').select('id, name, reward_cosmetic_id').not('reward_cosmetic_id', 'is', null),
     supabase.from('user_badge_tiers').select('badge_tier_id').eq('user_id', userId),
     isAdmin(userId),
@@ -142,6 +145,7 @@ export async function getCosmeticById(id: string): Promise<Cosmetic | null> {
   const { data } = await supabase.from('cosmetics').select('*').eq('id', id).maybeSingle()
   if (!data) return null
   const c: any = data
+  if (c.type !== 'title') return null   // 칭호만 남김 — 프레임·배경·효과 보상은 보여주지 않는다
   return {
     id: c.id, type: c.type, slug: c.slug, name: c.name,
     description: c.description, rarity: c.rarity ?? 'common',
@@ -165,11 +169,7 @@ export interface WornItem {
 }
 
 export interface WornSet {
-  frame?: WornItem
-  background?: WornItem
   title?: WornItem
-  effect?: WornItem
-  theme?: WornItem
 }
 
 export async function getWornBatch(userIds: string[]): Promise<Map<string, WornSet>> {
@@ -187,10 +187,8 @@ export async function getWornBatch(userIds: string[]): Promise<Map<string, WornS
   const cosIds = new Set<string>()
   for (const p of rows) {
     const eq = (p.equipped ?? {}) as Record<string, any>
-    for (const k of ['frame', 'background', 'title', 'effect']) {
-      const v = eq[k]
-      if (typeof v === 'string' && v) cosIds.add(v)
-    }
+    const v = eq.title
+    if (typeof v === 'string' && v) cosIds.add(v)
   }
 
   if ([...cosIds].filter(Boolean).length === 0) {
@@ -199,19 +197,16 @@ export async function getWornBatch(userIds: string[]): Promise<Map<string, WornS
   }
 
   const { data: cos } = await supabase
-    .from('cosmetics').select('id, type, slug, name, asset_url').in('id', [...cosIds].filter(Boolean))
+    .from('cosmetics').select('id, type, slug, name, asset_url').eq('type', 'title').in('id', [...cosIds].filter(Boolean))
 
   const byId = new Map(((cos ?? []) as any[]).map(c => [c.id, c]))
 
   for (const p of rows) {
     const worn: WornSet = {}
     const eq2 = (p.equipped ?? {}) as Record<string, any>
-      for (const type of ['frame', 'background', 'title', 'effect']) {
-        const id = eq2[type]
-        if (typeof id !== 'string' || !id) continue
-        const c: any = byId.get(id)
-        if (c) (worn as any)[type] = { slug: c.slug, name: c.name, assetUrl: c.asset_url ?? null }
-      }
+      const id = eq2.title
+      const c: any = typeof id === 'string' && id ? byId.get(id) : null
+      if (c) worn.title = { slug: c.slug, name: c.name, assetUrl: c.asset_url ?? null }
     out.set(p.id, worn)
   }
   return out
@@ -224,7 +219,7 @@ export async function getWornBatch(userIds: string[]): Promise<Map<string, WornS
       칭호   = 내가 고른 이름       "덕질 장인"
       대표배지 = 내가 자랑할 성취     "리뷰 마스터 Lv3"
 
-   ⭐ 그래도 설정 화면은 하나다. /cosmetic에서 다 바꾼다.
+   ⭐ 그래도 설정 화면은 하나다. 프로필 수정(/profile/settings/profile)에서 다 바꾼다.
       역할은 나누되 입구는 하나 — 사용자가 두 군데를 찾아다니면 안 된다.
 
    ⭐ 새 테이블·새 컬럼 없음. equipped jsonb의 showcase 배열에 담는다.

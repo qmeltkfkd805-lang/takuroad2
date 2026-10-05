@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getGrowthCenter, GrowthCenter, CosmeticProgress } from '@/services/growthCenterService'
 import { Challenge, EarnedBadge, GrowthSeries } from '@/services/growthService'
-import { RARITY_LABEL, fxClass, bgStyle, FRAME_STYLE } from '@/lib/cosmetics/style'
+import { RARITY_LABEL } from '@/lib/cosmetics/style'
 import { Icon, Taku } from '@/components/tds'
 import { MaskIcon } from '@/components/collection/MaskIcon'
 import { ROUTES } from '@/lib/constants/routes'
@@ -20,10 +20,8 @@ import styles from './GrowthPage.module.css'
    ⭐ LV/XP는 안 넣는다 (사이드바에 이미 항상 보인다).
    ⭐ 커뮤니티 카테고리는 없다 (덕질 활동이 정체성). */
 
-const TYPE_LABEL: Record<string, string> = {
-  frame: '프로필 프레임', background: '프로필 배경',
-  title: '칭호', effect: '프로필 효과', theme: '프로필 테마',
-}
+// 보상은 칭호만 남았다 (프레임·배경·효과·테마 없앰)
+const TYPE_LABEL: Record<string, string> = { title: '칭호' }
 
 export default function GrowthPage() {
   const { user } = useAuth()
@@ -125,12 +123,9 @@ export default function GrowthPage() {
               return (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 14, padding: '12px 14px', borderRadius: 14, border: '1px solid #F1D48A', background: 'linear-gradient(135deg, rgba(255,224,138,.20), rgba(255,198,75,.05))' }}>
                   <div
-                    className={r.type === 'effect' ? 'tkfx-preview ' + fxClass(r.slug) : undefined}
-                    style={{ position: 'relative', width: 62, height: 62, borderRadius: 12, overflow: 'hidden', flexShrink: 0, border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      ...(r.type === 'background' ? bgStyle(r.slug, r.assetUrl) : { background: r.type === 'effect' ? '#161b2e' : 'var(--surface2)' }) }}
+                    style={{ position: 'relative', width: 62, height: 62, borderRadius: 12, overflow: 'hidden', flexShrink: 0, border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface2)' }}
                   >
-                    {r.type === 'frame' && <span style={{ width: 34, height: 34, borderRadius: '50%', background: '#fff', ...(FRAME_STYLE[r.slug] || {}) }} />}
-                    {r.type === 'title' && <span style={{ fontSize: 22 }}>🏷️</span>}
+                    <span style={{ fontSize: 22 }}>🏷️</span>
                   </div>
                   <div style={{ minWidth: 0, flex: 1 }}>
                     <div style={{ fontSize: 11.5, fontWeight: 900, color: '#C98A00' }}>🎁 다음 레벨 보상</div>
@@ -249,7 +244,7 @@ export default function GrowthPage() {
             <section className={styles.block}>
               <div className={styles.blockHead}>
                 <h2>최근 해금</h2>
-                <button className={styles.ghostSm} onClick={() => router.push('/cosmetic')}>전체 보기 ›</button>
+                <button className={styles.ghostSm} onClick={() => router.push('/profile?tab=badges')}>전체 보기 ›</button>
               </div>
               {loading ? (
                 <div className={styles.badgeRow}>{[0,1,2].map(i => <div key={i} className={styles.skelBadge} />)}</div>
@@ -273,23 +268,8 @@ export default function GrowthPage() {
                 <p className={styles.dim}>도전을 시작하면 보상이 보여요.</p>
               ) : (
                 <div className={styles.preview}>
-                  <div
-                    className={[
-                      styles.previewBox,
-                      d.nextReward.cosmetic.type === 'effect'
-                        ? 'tkfx-preview ' + fxClass(d.nextReward.cosmetic.slug) + ' ' + styles.previewDark
-                        : '',
-                    ].join(' ')}
-                    style={d.nextReward.cosmetic.type === 'background'
-                      ? bgStyle(d.nextReward.cosmetic.slug, (d.nextReward.cosmetic as any).assetUrl)
-                      : undefined}
-                  >
-                    {d.nextReward.cosmetic.type === 'title' && (
-                      <span className={styles.previewTitle}>{d.nextReward.cosmetic.name}</span>
-                    )}
-                    {d.nextReward.cosmetic.type === 'frame' && (
-                      <span className={styles.previewFace} style={FRAME_STYLE[d.nextReward.cosmetic.slug]} />
-                    )}
+                  <div className={styles.previewBox}>
+                    <span className={styles.previewTitle}>{d.nextReward.cosmetic.name}</span>
                   </div>
                   <div className={styles.previewBody}>
                     <div className={styles.previewType}>{TYPE_LABEL[d.nextReward.cosmetic.type]}</div>
@@ -338,17 +318,17 @@ export default function GrowthPage() {
             </section>
           )}
 
-          {/* 꾸미기 보상 */}
+          {/* 칭호 보상 — 모은 칭호는 프로필 수정에서 고른다 */}
           <section className={styles.block}>
             <div className={styles.blockHead}>
-              <h2>꾸미기 보상</h2>
-              <button className={styles.ghostSm} onClick={() => router.push('/cosmetic')}>전체 보기 ›</button>
+              <h2>칭호 보상</h2>
+              <button className={styles.ghostSm} onClick={() => router.push('/profile/settings/profile')}>칭호 고르기 ›</button>
             </div>
             {loading ? (
               <div className={styles.cosList}>{[0,1,2,3].map(i => <div key={i} className={styles.skelRow} />)}</div>
             ) : (
               <div className={styles.cosList}>
-                {(d?.cosmetics ?? []).map(c => <CosRow key={c.type} c={c} onClick={() => router.push('/cosmetic')} />)}
+                {(d?.cosmetics ?? []).map(c => <CosRow key={c.type} c={c} onClick={() => router.push('/profile/settings/profile')} />)}
               </div>
             )}
           </section>
