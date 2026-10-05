@@ -18,6 +18,8 @@ export interface VisitSessionRow {
   exitPath: string | null
 }
 export interface SessionStep { path: string; at: string }
+/** 검색 유입 — engine 은 '네이버'·'다음'·'구글'…, keyword 가 null 이면 검색엔진이 검색어를 안 넘겨준 것(구글 등) */
+export interface SearchKeywordRow { engine: string; keyword: string | null; visits: number; landingPath: string | null; lastAt: string | null }
 
 /* RPC 응답은 Database 타입이 any라 형태가 안 잡힌다. 여기서 필요한 필드만 명시한다. */
 type PgErrorLike = { message?: string; code?: string; details?: string; hint?: string }
@@ -91,4 +93,18 @@ export async function getVisitSessionPath(sessionId: string): Promise<SessionSte
   const { data, error } = await supabase.rpc('get_visit_session_path', { p_session_id: sessionId })
   if (error) { logRpcError('세션 경로', error); return [] }
   return ((data ?? []) as RawRow[]).map(r => ({ path: str(r.path) ?? '/', at: str(r.created_at) ?? '' }))
+}
+
+/** 검색어별 유입 — 네이버·다음 등 검색 결과에서 들어온 방문을 검색어로 묶는다 (migrations/visit_search_keywords.sql) */
+export async function getSearchKeywords(days = 30, limit = 150): Promise<SearchKeywordRow[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase.rpc('get_search_keywords', { days, limit_n: limit })
+  if (error) { logRpcError('검색어', error); return [] }
+  return ((data ?? []) as RawRow[]).map(r => ({
+    engine: str(r.engine) ?? '검색',
+    keyword: str(r.keyword),
+    visits: num(r.visits),
+    landingPath: str(r.landing_path),
+    lastAt: str(r.last_at),
+  }))
 }

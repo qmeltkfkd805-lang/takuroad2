@@ -1,16 +1,17 @@
 'use client'
 import { useState, useEffect, useMemo } from 'react'
 import {
-  getTopPaths, getVisitReferrers, getExitPaths, getRecentVisitSessions, getVisitSessionPath,
-  TopPathRow, ReferrerRow, ExitPathRow, VisitSessionRow, SessionStep,
+  getTopPaths, getVisitReferrers, getExitPaths, getRecentVisitSessions, getVisitSessionPath, getSearchKeywords,
+  TopPathRow, ReferrerRow, ExitPathRow, VisitSessionRow, SessionStep, SearchKeywordRow,
 } from '@/services/visitAnalyticsService'
 
 /* 방문 경로 분석 — visit_logs 집계. 저장하는 건 없고 읽기만 한다. */
 
-type Tab = 'pages' | 'referrers' | 'exits' | 'sessions'
+type Tab = 'pages' | 'referrers' | 'keywords' | 'exits' | 'sessions'
 const TABS: { v: Tab; label: string }[] = [
   { v: 'pages', label: '페이지별' },
   { v: 'referrers', label: '유입 경로' },
+  { v: 'keywords', label: '검색어' },
   { v: 'exits', label: '이탈 페이지' },
   { v: 'sessions', label: '방문 여정' },
 ]
@@ -42,6 +43,7 @@ export default function VisitPathsSection() {
 
       {tab === 'pages' && <PagesTab days={days} />}
       {tab === 'referrers' && <ReferrersTab days={days} />}
+      {tab === 'keywords' && <KeywordsTab days={days} />}
       {tab === 'exits' && <ExitsTab days={days} />}
       {tab === 'sessions' && <SessionsTab days={days} />}
     </div>
@@ -116,6 +118,81 @@ function ReferrersTab({ days }: { days: number }) {
             right={<><b>{r.sessions.toLocaleString()}</b><Muted> · {total ? Math.round((r.sessions / total) * 100) : 0}%</Muted></>} />
         )}
       />
+    </>
+  )
+}
+
+/* ── 검색어 ───────────────────────────────────────────────── */
+// 네이버·다음 등 검색 결과에서 들어온 방문을 검색어로 묶어 보여준다.
+// 구글·빙은 검색어를 넘겨주지 않아서 "검색어 비공개" 한 줄로만 센다.
+function KeywordsTab({ days }: { days: number }) {
+  const rows = useKeyedFetch<SearchKeywordRow>(String(days), () => getSearchKeywords(days, 150))
+  const [engine, setEngine] = useState<string>('전체')
+  const [sort, setSort] = useState<'count' | 'recent'>('count')
+
+  // 기간이 바뀌면 엔진 필터는 처음으로 (렌더 중 파생 상태 조정)
+  const [prevDays, setPrevDays] = useState(days)
+  if (days !== prevDays) { setPrevDays(days); setEngine('전체') }
+
+  const engines = useMemo(() => {
+    const m = new Map<string, number>()
+    for (const r of rows ?? []) m.set(r.engine, (m.get(r.engine) ?? 0) + r.visits)
+    return Array.from(m.entries()).sort((a, b) => b[1] - a[1])
+  }, [rows])
+
+  const known = useMemo(() => {
+    const list = (rows ?? []).filter(r => r.keyword && (engine === '전체' || r.engine === engine))
+    return sort === 'recent'
+      ? [...list].sort((a, b) => (b.lastAt ?? '').localeCompare(a.lastAt ?? ''))
+      : list
+  }, [rows, engine, sort])
+  const hidden = useMemo(() =>
+    (rows ?? []).filter(r => !r.keyword && (engine === '전체' || r.engine === engine)),
+  [rows, engine])
+
+  const total = engines.reduce((s, [, n]) => s + n, 0)
+  const max = Math.max(1, ...known.map(r => r.visits))
+
+  return (
+    <>
+      <p style={pageHint}>
+        검색 결과를 눌러 들어온 방문을 <b>검색어별로</b> 묶었어요 (같은 방문 안에서 페이지를 옮긴 건 한 번만 셉니다). 검색 유입 합계 {total.toLocaleString()}회.
+        <br />구글·빙은 검색어를 넘겨주지 않아서 “검색어 비공개”로만 보여요. 구글 검색어는 Google Search Console에서 볼 수 있어요.
+      </p>
+
+      {rows !== null && rows.length > 0 && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
+          <button onClick={() => setEngine('전체')} style={chip(engine === '전체')}>전체 {total.toLocaleString()}</button>
+          {engines.map(([e, n]) => (
+            <button key={e} onClick={() => setEngine(e)} style={chip(engine === e)}>{e} {n.toLocaleString()}</button>
+          ))}
+          <span style={{ flex: 1 }} />
+          <button onClick={() => setSort('count')} style={chip(sort === 'count')}>많은 순</button>
+          <button onClick={() => setSort('recent')} style={chip(sort === 'recent')}>최근 순</button>
+        </div>
+      )}
+
+      <Rows
+        rows={rows === null ? null : known}
+        empty={rows && rows.length > 0 ? '검색어가 확인된 유입이 없어요.' : '아직 검색으로 들어온 방문이 없어요.'}
+        render={r => (
+          <Bar key={`${r.engine}|${r.keyword}`} label={r.keyword ?? ''}
+            sub={[engine === '전체' ? r.engine : null, r.landingPath ? `${r.landingPath} 로 들어옴` : null, r.lastAt ? `최근 ${fmtTime(r.lastAt)}` : null].filter(Boolean).join(' · ')}
+            ratio={r.visits / max}
+            right={<><b>{r.visits.toLocaleString()}</b><Muted>회</Muted></>} />
+        )}
+      />
+
+      {hidden.length > 0 && (
+        <div style={{ marginTop: 14, paddingTop: 12, borderTop: '1px dashed var(--border)', display: 'flex', flexDirection: 'column', gap: 7 }}>
+          {hidden.map(r => (
+            <Bar key={`${r.engine}|hidden`} label={`${r.engine} · 검색어 비공개`} muted
+              sub={r.landingPath ? `주로 ${r.landingPath} 로 들어옴` : undefined}
+              ratio={r.visits / Math.max(max, r.visits)}
+              right={<><b>{r.visits.toLocaleString()}</b><Muted>회</Muted></>} />
+          ))}
+        </div>
+      )}
     </>
   )
 }
