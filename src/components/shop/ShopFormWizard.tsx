@@ -203,10 +203,17 @@ export default function ShopFormWizard({ mode, shop }: Props) {
     setStep(s => Math.min(STEPS.length, s + 1))
   }
   function goPrev() { setStep(s => Math.max(1, s - 1)) }
-  function goToStep(n: number) { if (n === 1 || canEnrich) setStep(n) }
+  async function goToStep(n: number) {
+    if (n !== 1 && !canEnrich) return
+    // 1단계(기본 정보)에서 다른 단계로 넘어갈 때는 고친 내용(영문 이름 등)을 먼저 저장
+    if (step === 1 && n !== 1) { if (!(await saveCore())) return }
+    setStep(n)
+  }
   async function finish() {
     if (mode === 'edit') { if (!(await saveCore())) return; leaveEditTo(router, ROUTES.shop(shop!.slug)); return }
-    // 신규: 여기(등록 완료)서야 비공개 임시 → active로 공개된다
+    // 신규: 1단계 저장 뒤에 고친 기본 정보(영문 이름·예약 링크 등)도 빠짐없이 반영하고 나서
+    if (!(await saveCore())) return
+    // 여기(등록 완료)서야 비공개 임시 → active로 공개된다
     if (createdShopId) { setSaving(true); await publishShop(createdShopId); setSaving(false) }
     draft.clear()   // 등록 끝 — 임시저장본 삭제
     // "이 샵의 사장님입니까?" 물어보고, 네면 바로 인증 신청으로
