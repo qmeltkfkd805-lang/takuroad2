@@ -5,6 +5,7 @@
    weeks = 그 달의 몇째 주(1~5), days = 요일. 둘을 곱한 조합이 모두 휴무다.
    "몇째 주"는 달력 줄이 아니라 "그 요일이 그 달에 몇 번째로 오는가"다.
    (예: 1일이 토요일인 달의 첫째 일요일 = 2일, 둘째 일요일 = 9일)
+   weeks 가 1~5 전부면 "매주"다 (예: 매주 화요일 휴무).
    스키마 변경 없음(jsonb). */
 
 export type WeekdayKey = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'
@@ -39,11 +40,18 @@ export function isMonthlyOffDate(hours: unknown, date: Date): boolean {
   return m.weeks.includes(nth)
 }
 
-/* 표시용 문구 — "매월 둘째·넷째 일요일 휴무" */
+/* 첫째~다섯째 주를 모두 고른 상태 = 매주 */
+export const ALL_WEEKS = [1, 2, 3, 4, 5]
+export function isEveryWeek(weeks: number[]): boolean {
+  return ALL_WEEKS.every(w => weeks.includes(w))
+}
+
+/* 표시용 문구 — "매월 둘째·넷째 일요일 휴무" / "매주 화요일 휴무" */
 export function monthlyOffLabel(hours: unknown): string | null {
   const m = getMonthlyOff(hours)
   if (!m) return null
-  const w = m.weeks.map(n => WEEK_KO[n - 1]).join('·')
   const d = m.days.map(x => DAY_KO[x] + '요일').join('·')
+  if (isEveryWeek(m.weeks)) return `매주 ${d} 휴무`
+  const w = m.weeks.map(n => WEEK_KO[n - 1]).join('·')
   return `매월 ${w} ${d} 휴무`
 }

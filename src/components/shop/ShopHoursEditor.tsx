@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { WEEKDAYS, WEEKDAY_LABEL } from '@/lib/constants/categories'
 import { BusinessHours, DayHours } from '@/types/database'
-import { getMonthlyOff, monthlyOffLabel, WEEK_KO, type MonthlyOff } from '@/lib/utils/monthlyOff'
+import { getMonthlyOff, monthlyOffLabel, WEEK_KO, ALL_WEEKS, isEveryWeek, type MonthlyOff } from '@/lib/utils/monthlyOff'
 import { catInfoOf } from '@/lib/constants/categories'
 
 /* 영업시간 편집기 — 샵 등록 위저드와 사장님 매장 관리가 같은 걸 쓴다.
@@ -217,8 +217,14 @@ export default function ShopHoursEditor({ value, onChange, lastOrder = false }: 
     emit(groups, { ...extras, monthlyOff: next.weeks.length && next.days.length ? next : undefined })
   }
   function toggleMonthlyWeek(w: number) {
+    // '매주' 상태에서 특정 주를 누르면 그 주만 고른 것으로 바꾼다
+    if (isEveryWeek(monthlyView.weeks)) { setMonthly({ ...monthlyView, weeks: [w] }); return }
     const ws = monthlyView.weeks.includes(w) ? monthlyView.weeks.filter(x => x !== w) : [...monthlyView.weeks, w].sort((a, b) => a - b)
     setMonthly({ ...monthlyView, weeks: ws })
+  }
+  // '매주' — 첫째~다섯째 주 전부를 한 번에 켜고 끈다 (예: 매주 화요일 휴무)
+  function toggleEveryWeek() {
+    setMonthly({ ...monthlyView, weeks: isEveryWeek(monthlyView.weeks) ? [] : [...ALL_WEEKS] })
   }
   function toggleMonthlyDay(d: Day) {
     const ds = monthlyView.days.includes(d) ? monthlyView.days.filter(x => x !== d) : WEEKDAYS.filter(x => x === d || monthlyView.days.includes(x))
@@ -367,18 +373,19 @@ export default function ShopHoursEditor({ value, onChange, lastOrder = false }: 
 
       {/* 정기휴무·연중무휴 */}
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
-        <ToggleBtn on={monthlyOn} onClick={toggleMonthly} label="매달 정기휴무" />
+        <ToggleBtn on={monthlyOn} onClick={toggleMonthly} label="정기휴무" />
         <ToggleBtn on={yearRound} onClick={toggleYearRound} label="연중무휴" />
       </div>
 
-      {/* 매달 정기휴무 — 예) 대형마트 둘째·넷째 일요일 */}
+      {/* 정기휴무 — 예) 매주 화요일 / 대형마트 둘째·넷째 일요일 */}
       {monthlyOn && (
         <div style={{ padding: '14px 16px', borderRadius: 14, border: '1.5px solid var(--border)', background: 'var(--surface)', display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <div style={{ fontSize: 13, color: 'var(--muted)' }}>매달 쉬는 주와 요일을 눌러주세요 (예: 이마트 등 대형마트 안 매장은 보통 둘째·넷째 일요일)</div>
+          <div style={{ fontSize: 13, color: 'var(--muted)' }}>쉬는 요일을 눌러주세요. 매주 쉬면 '매주', 특정 주만 쉬면 몇째 주를 골라주세요 (예: 대형마트 안 매장은 보통 둘째·넷째 일요일)</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6 }}>
             <span style={{ ...stepLabel, minWidth: 44, fontSize: 13.5 }}>몇째 주</span>
+            <SoftChip on={isEveryWeek(monthlyView.weeks)} onClick={toggleEveryWeek} label="매주" wide />
             {WEEK_KO.map((label, i) => (
-              <SoftChip key={label} on={monthlyView.weeks.includes(i + 1)} onClick={() => toggleMonthlyWeek(i + 1)} label={label} wide />
+              <SoftChip key={label} on={!isEveryWeek(monthlyView.weeks) && monthlyView.weeks.includes(i + 1)} onClick={() => toggleMonthlyWeek(i + 1)} label={label} wide />
             ))}
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6 }}>
