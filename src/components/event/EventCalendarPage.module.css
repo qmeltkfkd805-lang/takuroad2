@@ -142,7 +142,7 @@
 }
 
 /* 모바일 — 위 "한 화면 맞추기"는 쓰지 않는다 (넓은 태블릿이 두 쿼리에 모두 걸릴 수 있어 되돌린다) */
-@media (hover: none) and (pointer: coarse) {
+@media (pointer: coarse) {
   .page { padding: 12px 12px 40px; display: block; height: auto; overflow: visible; }
   .layout { min-height: 0; align-items: start; }
   .grid { grid-auto-rows: auto; overflow: visible; }

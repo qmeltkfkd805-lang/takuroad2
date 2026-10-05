@@ -94,7 +94,7 @@ export default function MapBottomSheet({ shops, events = [], onSelectShop, onSel
   const [state, setState] = useState<SheetState>('peek')
   // 📱 모바일은 처음에 접힌 상태(제목 줄만)로 — 지도를 넓게. 위로 올리면 카드 줄, 한 번 더 올리면 전체 목록
   useEffect(() => {
-    if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) setState('closed')
+    if (window.matchMedia('(pointer: coarse)').matches) setState('closed')
   }, [])
   useEffect(() => { onStateChange?.(state) }, [state, onStateChange])
   const startY = useRef<number | null>(null)

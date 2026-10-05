@@ -452,7 +452,7 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
           </div>
         </aside>
       </div>
-      <style>{`@media (hover:none) and (pointer:coarse) and (max-width: 1000px){
+      <style>{`@media (pointer: coarse) and (max-width: 1000px){
         .wr-root{ padding: 12px 14px !important; }
         .wr-cols{ flex-direction: column !important; gap: 0 !important; }
         .wr-cols > aside{ display: none !important; }               /* 모바일: 작품 미리보기·가이드 숨김 */

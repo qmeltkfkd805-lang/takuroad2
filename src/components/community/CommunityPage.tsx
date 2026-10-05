@@ -396,11 +396,11 @@ export default function CommunityPage() {
     <div className="taku-comm-min" style={{ width: '100%', padding: '20px 24px 72px' }}>
       <style>{`
         .taku-comm{display:grid;grid-template-columns:minmax(0,3fr) 1fr;gap:24px;align-items:start}
-        @media (hover:none) and (pointer:coarse) and (max-width:1024px){.taku-comm{grid-template-columns:1fr}.taku-comm-side{display:none}}
+        @media (pointer: coarse) and (max-width:1024px){.taku-comm{grid-template-columns:1fr}.taku-comm-side{display:none}}
         .taku-noscroll::-webkit-scrollbar{display:none}.taku-noscroll{scrollbar-width:none}
                 .taku-prow:hover{background:var(--surface2)}
         .taku-comm-min{min-width:1040px}
-        @media (hover:none) and (pointer:coarse) and (max-width:1024px){.taku-comm-min{min-width:0}}
+        @media (pointer: coarse) and (max-width:1024px){.taku-comm-min{min-width:0}}
       `}</style>
 
       {/* 게시판 메뉴 — 전체 폭 한 줄(오른쪽 사이드바와 무관) + 우측 글쓰기 */}

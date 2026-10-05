@@ -97,7 +97,7 @@ export default function PostImageCarousel({ images, alt = '굿즈' }: { images: 
         .pic-track::-webkit-scrollbar{display:none}
         .pic-wrap .pic-arrow{opacity:0;transition:opacity .15s}
         .pic-wrap:hover .pic-arrow{opacity:1}
-        @media (hover:none) and (pointer:coarse){ .pic-arrow{display:none !important} }
+        @media (pointer: coarse){ .pic-arrow{display:none !important} }
         @media (prefers-reduced-motion: reduce){ .pic-track{scroll-behavior:auto} }
       `}</style>
 

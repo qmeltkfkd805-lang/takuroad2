@@ -173,11 +173,11 @@
   .skel, .fxSparkle::after, .fxStar::after, .fxSakura::after, .fxAura, .fxNeon { animation: none; }
 }
 
-@media (hover: none) and (pointer: coarse) and (max-width: 900px) {
+@media (pointer: coarse) and (max-width: 900px) {
   .layout { grid-template-columns: minmax(0, 1fr); }
   .previewCol { position: static; }
 }
-@media (hover: none) and (pointer: coarse) and (max-width: 720px) {
+@media (pointer: coarse) and (max-width: 720px) {
   .page { padding: 22px 16px 70px; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
 }

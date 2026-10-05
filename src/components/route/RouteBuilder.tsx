@@ -503,7 +503,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
         .rb-root{ width:100%; max-width:100%; overflow-x:hidden; }
         .rb-bottom{ position:sticky; bottom:0; }
         .rb-head{ position:sticky; top:0; z-index:35; background:var(--bg, #fff); padding:10px 0; margin-top:-10px; }
-        @media (hover:none) and (pointer:coarse){
+        @media (pointer: coarse){
           .rb-root{ padding:12px 14px 96px !important; }
           .rb-form{ padding:16px 16px !important; border-radius:14px !important; border-left:none !important; border-right:none !important; margin:0 -14px !important; }
           .rb-bottom{ position:fixed !important; left:0; right:0; bottom:0; }

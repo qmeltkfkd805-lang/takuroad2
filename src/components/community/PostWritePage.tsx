@@ -586,7 +586,7 @@ export default function PostWritePage() {
         .tb-btn:hover{background:var(--surface2)}
         .pw-worklane{scrollbar-width:none}
         .pw-worklane::-webkit-scrollbar{display:none}
-        @media (hover:none) and (pointer:coarse) and (max-width:900px){
+        @media (pointer: coarse) and (max-width:900px){
           .taku-write-grid{grid-template-columns:1fr}
           .pw-body{ padding: 4px 16px 150px !important; }
           /* 네모칸 제거 — 게시판·작품·본문을 밑줄 스타일로, 게시판 아래 작품 세로 배치 */

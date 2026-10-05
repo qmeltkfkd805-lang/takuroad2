@@ -38,12 +38,12 @@
 
 .login { font-size: 13px; font-weight: 800; color: var(--accent); text-decoration: none; padding: 8px 14px; border-radius: var(--r-full); background: var(--accent-l); }
 
-@media (hover: none) and (pointer: coarse) and (max-width: 640px) {
+@media (pointer: coarse) and (max-width: 640px) {
   .userMeta { display: none; }
 }
 
 /* 📱 마이페이지(/profile): 모바일에서 전역 검색창 숨김 — 페이지 자체 헤더와 중복 */
-@media (hover: none) and (pointer: coarse) {
+@media (pointer: coarse) {
   .hideSearchMobile { display: none !important; }
 }
 
@@ -80,14 +80,14 @@
 .dropText { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* 📱 모바일 상단바에서 내 프로필(아바타·닉네임) 숨김 — 하단 탭 '마이'로 들어간다 */
-@media (hover: none) and (pointer: coarse) {
+@media (pointer: coarse) {
   .userHideMobile { display: none !important; }
 }
 /* 지도 화면 검색 — 샵은 지도에서 위치 보기 */
 .dropMapHint { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--accent); }
 
 /* 📱 지도: 지도 위에 떠 있는 흰 검색창 (그림자) — 버튼도 흰 동그라미로 */
-@media (hover: none) and (pointer: coarse) and (max-width: 1023px) {
+@media (pointer: coarse) and (max-width: 1023px) {
   .barMap .searchWrap { max-width: none; }
   .barMap .search {
     background: var(--surface); border-color: transparent;

@@ -202,9 +202,9 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
       <div className="sdp-wrap" style={{ maxWidth: 1240, margin: '0 auto', padding: '20px 24px 64px' }}>
         <style>{`.taku-page-2col{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
         .sdp-back{display:none}
-        @media (hover:none) and (pointer:coarse) and (max-width:900px){.taku-page-2col{grid-template-columns:1fr}}
+        @media (pointer: coarse) and (max-width:900px){.taku-page-2col{grid-template-columns:1fr}}
         /* 📱 모바일도 PC와 같은 상세 화면 — 폭만 맞춘다 */
-        @media (hover:none) and (pointer:coarse) and (max-width:1023px){
+        @media (pointer: coarse) and (max-width:1023px){
           .sdp-wrap{ padding:0 16px calc(96px + env(safe-area-inset-bottom)) !important; }
           .sdp-crumb{ display:none !important; }
           .sdp-hero{ margin:0 -16px !important; border-radius:0 !important; height:calc(330px + env(safe-area-inset-top)) !important; }

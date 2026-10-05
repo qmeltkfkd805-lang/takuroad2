@@ -45,7 +45,7 @@
 .newsSlideMeta { font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .newsChev { color: var(--muted); flex-shrink: 0; }
 
-@media (hover: none) and (pointer: coarse) {
+@media (pointer: coarse) {
   .newsSection { padding: 8px 16px 0; }
   .newsSlideLink { width: 82%; }
 }
@@ -91,7 +91,7 @@
 .routeTags { display: flex; gap: 5px; margin-top: 2px; overflow: hidden; }
 .routeTag { flex-shrink: 0; padding: 2px 8px; border-radius: 9999px; background: var(--accent-l); color: var(--accent); font-size: 11px; font-weight: 700; white-space: nowrap; }
 
-@media (hover: none) and (pointer: coarse) {
+@media (pointer: coarse) {
   .routeSection { padding: 8px 16px 0; }
   .routeSlideLink { flex-basis: 82%; }
   .routeSlideLinkMap { flex-basis: 88%; }
@@ -102,7 +102,7 @@
 .sectionCard { background: transparent; border: none; border-radius: 0; padding: 8px 0 0; margin-bottom: 30px; }
 
 /* 📱 모바일에서는 카드가 화면 끝까지 — 좌우 테두리·라운드 없이 꽉 찬 밴드 */
-@media (hover: none) and (pointer: coarse) {
+@media (pointer: coarse) {
   .sectionCard { border: none; border-radius: 0; padding: 8px 18px; margin-bottom: 2px; }
   /* 바로 위에 추천 루트가 올 때만 이벤트 섹션 위 간격을 좁힘 (다른 섹션은 그대로) */
   .tightTop { margin-top: -14px; }
@@ -142,7 +142,7 @@
 
 /* 📱 모바일: 가로 줄(최애·이벤트·샵)의 좌우 추가 여백 제거 — 아이콘 시작 위치에 맞춤.
    ⚠️ 반드시 .shopRow 기본 규칙(위쪽 padding: 2px 16px 8px)보다 뒤에 와야 덮어쓴다 */
-@media (hover: none) and (pointer: coarse) {
+@media (pointer: coarse) {
   .feedGrid, .eventRow, .shopRow { padding-left: 0; padding-right: 0; }
   /* 카드를 위쪽 정렬 — 짧은 카드가 가장 큰 카드 높이로 늘어나며 아래에 빈 공간 만드는 것 방지
      (특히 루트 카드가 이벤트 카드보다 짧아 생기던 둘 사이 공백 제거) */
@@ -169,7 +169,7 @@
 .railWrap:hover .railArrow { opacity: 1; pointer-events: auto; }
 .railArrow:hover { transform: translateY(-50%) scale(1.06); }
 /* 터치 기기(모바일)는 손가락으로 밀면 되니 화살표를 숨긴다 */
-@media (hover: none) { .railArrow { display: none; } }
+@media (pointer: coarse) { .railArrow { display: none; } }
 
 /* 성지순례(루트) 카드 — 지도 칸을 루트 페이지 카드 지도(약 185×132)와 비슷하게 넓혀 같은 모양으로 보이게 */
 .routeSlideMap { height: 132px; }

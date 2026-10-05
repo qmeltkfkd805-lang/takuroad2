@@ -170,7 +170,7 @@
 .relNext { right: -8px; }
 
 /* 모바일은 화살표 없이 손가락으로 넘긴다 */
-@media (hover: none) and (pointer: coarse) {
+@media (pointer: coarse) {
   .relNav { display: none; }
   .relItem { min-width: 150px; max-width: none; }
 }
@@ -212,7 +212,7 @@
 }
 
 /* no-wrap-4 : 좁은 화면에서도 4칸 한 줄 유지, 대신 가로 스크롤 (metaGrid만) */
-@media (hover: none) and (pointer: coarse) and (max-width: 720px) {
+@media (pointer: coarse) and (max-width: 720px) {
   .metaGrid {
     grid-template-columns: repeat(4, minmax(max-content, 1fr));
     overflow-x: auto;
@@ -246,7 +246,7 @@
 
 /* 수정 폼 */
 .editGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-@media (hover: none) and (pointer: coarse) and (max-width: 640px) { .editGrid { grid-template-columns: minmax(0, 1fr); } }
+@media (pointer: coarse) and (max-width: 640px) { .editGrid { grid-template-columns: minmax(0, 1fr); } }
 .editGrid label { display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; font-weight: 700; color: var(--muted); }
 .editGrid input, .editGrid select {
   border: 1px solid var(--border); border-radius: 10px; padding: 11px 12px;
@@ -362,7 +362,7 @@
 /* 📱 모바일 — 포스터 히어로를 화면 가로·위까지 꽉 채운다
    - 브레드크럼(홈 › 이벤트 › …)은 숨김: 이벤트 이름은 포스터 위 제목으로 보인다
    - 소개 글은 포스터 위에 올리지 않는다 (아래 '이벤트 소개' 카드에 그대로 있음) */
-@media (hover: none) and (pointer: coarse) and (max-width: 1023px) {
+@media (pointer: coarse) and (max-width: 1023px) {
   .page { padding-top: 0; }
   .crumbs { display: none; }
   .hero, .heroPhoto {

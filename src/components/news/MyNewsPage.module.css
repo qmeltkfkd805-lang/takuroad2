@@ -106,7 +106,7 @@
 .chipRow { display: none; }
 .sheetOverlay { display: none; }
 
-@media (hover: none) and (pointer: coarse) {
+@media (pointer: coarse) {
   .page { padding: 0 0 20px; }
   .bcrumb, .head { display: none; }
 

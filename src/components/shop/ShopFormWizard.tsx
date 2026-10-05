@@ -245,7 +245,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
   return (
     <div className="sw-root" style={{ maxWidth: 1320, margin: '0 auto', padding: '20px 32px 60px' }}>
       <style>{`.taku-page-2col{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
-      @media (hover:none) and (pointer:coarse) and (max-width:900px){
+      @media (pointer: coarse) and (max-width:900px){
         .sw-root{ padding: 12px 14px 60px !important; }
         .taku-page-2col{ grid-template-columns:1fr; gap:0 }
         .taku-page-2col > aside{ display:none !important; }           /* 모바일: 샵 미리보기·TIP 숨김 */

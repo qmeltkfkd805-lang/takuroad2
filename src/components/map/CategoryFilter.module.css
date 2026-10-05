@@ -11,7 +11,7 @@
 }
 .filterLabel, .filterChevron { display: inline-flex; }
 
-@media (hover: none) and (pointer: coarse) and (max-width: 900px) {
+@media (pointer: coarse) and (max-width: 900px) {
   .filterBtn {
     width: 34px; height: 34px;
     padding: 0; margin: 0 10px 0 4px;
@@ -22,7 +22,7 @@
 }
 
 .filterDot { display: none; }
-@media (hover: none) and (pointer: coarse) and (max-width: 900px) {
+@media (pointer: coarse) and (max-width: 900px) {
   .filterBtn { position: relative; }
   .filterDot {
     display: block; position: absolute; top: 2px; right: 2px;
@@ -32,7 +32,7 @@
 }
 
 /* 📱 지도 위에 떠 있는 칩 — 칩마다 흰 알약 + 그림자 (카드 배경 없음) */
-@media (hover: none) and (pointer: coarse) and (max-width: 1023px) {
+@media (pointer: coarse) and (max-width: 1023px) {
   .chipRow { padding: 2px 12px 8px !important; }
   .chip {
     padding: 5px 11px !important; font-size: 12px !important;

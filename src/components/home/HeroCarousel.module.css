@@ -72,7 +72,7 @@
 .dot { width: 7px; height: 7px; border-radius: var(--r-full); border: none; background: rgba(255,255,255,.7); cursor: pointer; padding: 0; box-shadow: 0 1px 3px rgba(0,0,0,.4); }
 .dotActive { background: #fff; width: 18px; }
 
-@media (hover: none) and (pointer: coarse) and (max-width: 640px) {
+@media (pointer: coarse) and (max-width: 640px) {
   .wrap { padding: 0 0 12px; }
   .viewport { border-radius: 0; }
   .slide { min-height: 224px; padding: 20px; border: none; border-radius: 0; }

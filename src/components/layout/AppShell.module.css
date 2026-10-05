@@ -10,7 +10,7 @@
 .logoText { font-size: 19px; font-weight: 900; color: var(--accent); letter-spacing: -0.3px; }
 .headerBar { flex: 1; min-width: 0; }
 /* 📱 마이페이지: 자체 헤더가 있어 모바일에선 전역 상단바 전체 숨김 */
-@media (hover: none) and (pointer: coarse) {
+@media (pointer: coarse) {
   .headerHiddenMobile { display: none !important; }
   /* 📱 지도에서 위로 쓸어 올리면 검색 바를 위로 밀어 숨김 (MapPage 가 html[data-map-bar] 설정) */
   .header { transition: transform .25s cubic-bezier(.32,.72,0,1); }
@@ -40,7 +40,7 @@
 }
 
 /* 📱 지도: 흰 상단바 대신 지도 위에 검색창만 둥둥 떠 있게 (지도가 화면 맨 위까지) */
-@media (hover: none) and (pointer: coarse) and (max-width: 1023px) {
+@media (pointer: coarse) and (max-width: 1023px) {
   .headerMap {
     position: fixed; top: 0; left: 0; right: 0;
     height: auto; padding: calc(10px + env(safe-area-inset-top)) 12px 0;

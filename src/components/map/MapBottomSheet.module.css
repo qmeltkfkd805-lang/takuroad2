@@ -59,7 +59,7 @@
 .cardWrap > * { height: 100%; }
 
 /* 📱 모바일: 접힘(peek) 미리보기 카드를 낮춰 시트 높이 축소 → 지도 더 보이게 (PC는 그대로) */
-@media (hover: none) and (pointer: coarse) {
+@media (pointer: coarse) {
   .cardWrap { width: 190px; height: 240px; }
   /* 카테고리 칩만 작게 — 낮아진 카드에서 안 잘리게 (지도 미리보기 카드에 한함) */
   .cardWrap :global(.shopcard-cats) > span {
@@ -118,7 +118,7 @@
 .moreNum { font-size: 22px; font-weight: 900; color: var(--accent); }
 
 /* 📱 펼친 목록은 지도 위에 떠 있는 검색창·카테고리 칩 줄 아래부터 */
-@media (hover: none) and (pointer: coarse) and (max-width: 1023px) {
+@media (pointer: coarse) and (max-width: 1023px) {
   .sheetExpanded { top: calc(144px + env(safe-area-inset-top)); }
 }
 /* 손잡이는 얇아서 누르기 어렵다 — 보이는 모양은 그대로, 누르는 범위만 넓힌다 */

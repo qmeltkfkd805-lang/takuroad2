@@ -5,7 +5,7 @@
 .heroFull { width: 100%; padding: 0 24px; }
 
 /* 📱 모바일(터치 기기)에서는 좌우 여백 없이 화면 꽉 차게 */
-@media (hover: none) and (pointer: coarse) {
+@media (pointer: coarse) {
   .homeLayout { padding: 0; }
   .heroFull { padding: 0; }
   .hideMobile { display: none; }   /* 내 컬렉션·최근 체크인 모바일에서 숨김 */

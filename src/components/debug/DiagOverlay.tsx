@@ -9,7 +9,8 @@ import { useAuth } from '@/components/layout/AuthProvider'
 const MQ = [
   '(hover: hover)', '(hover: none)', '(pointer: fine)', '(pointer: coarse)', '(pointer: none)',
   '(any-hover: hover)', '(any-hover: none)', '(any-pointer: fine)', '(any-pointer: coarse)',
-  '(hover: none) and (pointer: coarse)',                       // 사이트의 '모바일' 기준
+  '(hover: none) and (pointer: coarse)',                       // 예전 '모바일' 기준 (네이버 앱은 false 였음)
+  '(pointer: coarse) and (max-width: 1023px)',
   '(hover: hover) and (pointer: fine)',                        // 사이트의 'PC' 기준
   '(hover: none) and (pointer: coarse) and (max-width: 640px)',
   '(hover: none) and (pointer: coarse) and (max-width: 1023px)',
