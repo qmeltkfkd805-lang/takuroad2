@@ -267,9 +267,9 @@ export default function ShopForm({ mode, shop }: Props) {
                       <div style={{
                         width: '40px', height: '40px', borderRadius: '50%',
                         background: cat.color, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '20px',
                       }}>
-                        {cat.icon}
+                        {/* cat.icon 은 아이콘 파일 이름(/icons/goods.png 등) — 글자로 찍지 말고 흰색 아이콘으로 */}
+                        <CatIcon name={cat.icon} color="#fff" size={22} />
                       </div>
                       <span style={{ fontSize: '13px', fontWeight: 900, color: selected ? cat.color : 'var(--text)' }}>
                         {cat.name}
@@ -408,8 +408,10 @@ export default function ShopForm({ mode, shop }: Props) {
                 onChange={e => set('description', e.target.value)}
                 placeholder="샵에 대한 간단한 소개를 입력해주세요"
                 rows={4}
+                maxLength={300}
                 style={{ ...inputStyle, resize: 'vertical' }}
               />
+              <div style={{ textAlign: 'right', fontSize: 11.5, color: (form.description ?? '').length >= 300 ? 'var(--accent)' : 'var(--muted)', marginTop: 4 }}>{(form.description ?? '').length}/300</div>
             </Field>
 
             <Field label="공식 링크">
@@ -563,6 +565,20 @@ export default function ShopForm({ mode, shop }: Props) {
         )}
       </div>
     </div>
+  )
+}
+
+/* 카테고리 아이콘 — /icons/{name}.png 를 마스크로 써서 원하는 색으로 칠한다 (PC 위저드와 같은 방식) */
+function CatIcon({ name, color, size = 18 }: { name: string; color: string; size?: number }) {
+  return (
+    <span aria-hidden style={{
+      width: size, height: size, display: 'inline-block', flexShrink: 0,
+      backgroundColor: color,
+      WebkitMaskImage: `url(/icons/${name}.png)`, maskImage: `url(/icons/${name}.png)`,
+      WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat',
+      WebkitMaskSize: 'contain', maskSize: 'contain',
+      WebkitMaskPosition: 'center', maskPosition: 'center',
+    }} />
   )
 }
 

@@ -353,8 +353,8 @@ export default function ShopFormWizard({ mode, shop }: Props) {
             </Field>
 
             <Field label="샵 한 줄 소개">
-              <textarea value={form.description ?? ''} onChange={e => set('description', e.target.value)} rows={3} maxLength={100} placeholder="예: 다양한 애니메이션 굿즈와 이벤트가 가득한 공간!" style={{ ...inp, resize: 'vertical' }} />
-              <div style={{ textAlign: 'right', fontSize: 11.5, color: form.description.length >= 100 ? 'var(--accent)' : 'var(--muted)', marginTop: 4 }}>{form.description.length}/100</div>
+              <textarea value={form.description ?? ''} onChange={e => set('description', e.target.value)} rows={4} maxLength={300} placeholder="예: 다양한 애니메이션 굿즈와 이벤트가 가득한 공간!" style={{ ...inp, resize: 'vertical' }} />
+              <div style={{ textAlign: 'right', fontSize: 11.5, color: form.description.length >= 300 ? 'var(--accent)' : 'var(--muted)', marginTop: 4 }}>{form.description.length}/300</div>
             </Field>
 
             {/* 같은 건물 여러 층의 본점·1호점 — 소개글 대신 표로 한눈에 */}
