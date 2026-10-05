@@ -472,7 +472,7 @@ export async function getShopsByTag(tagSlug: string): Promise<Shop[]> {
     .select(`
       tags!inner ( slug ),
       shops!inner (
-        id, slug, name, description,
+        id, slug, name, name_en, description,
         addr, country, region, city, district,
         lat, lng, google_place_id,
         place_id, floor, unit,
@@ -595,7 +595,7 @@ export async function getAdminShopsExcludingDeleted(): Promise<Shop[]> {
   const { data, error } = await supabase
     .from('shops')
     .select(`
-      id, slug, name, description,
+      id, slug, name, name_en, description,
       addr, country, region, city, district,
       lat, lng, google_place_id,
       place_id, floor, unit, floor_info,
@@ -633,7 +633,7 @@ export async function getShopsForReview(status: ShopReviewStatus): Promise<Shop[
   const { data, error } = await supabase
     .from('shops')
     .select(`
-      id, slug, name, description,
+      id, slug, name, name_en, description,
       addr, country, region, city, district,
       lat, lng, google_place_id,
       place_id, floor, unit, floor_info,
@@ -681,7 +681,7 @@ export async function getPendingShops(): Promise<Shop[]> {
   const { data, error } = await supabase
     .from('shops')
     .select(`
-      id, slug, name, description,
+      id, slug, name, name_en, description,
       addr, country, region, city, district,
       lat, lng, google_place_id,
       place_id, floor, unit, floor_info,
@@ -728,7 +728,7 @@ export async function rejectShop(shopId: string): Promise<boolean> {
 const VERIFY_SELECT = `
   id, shop_id, user_id, note, reject_reason, evidence_url, extra,
   status, created_at, updated_at, reviewed_by,
-  shops ( id, name, slug ),
+  shops ( id, name, name_en, slug ),
   profiles!shop_verify_requests_user_id_fkey ( id, nickname ),
   reviewer:profiles!shop_verify_requests_reviewed_by_fkey ( id, nickname )
 `
@@ -817,7 +817,7 @@ export async function getMyShops(userId: string): Promise<Shop[]> {
   const { data, error } = await supabase
     .from('shops')
     .select(`
-      id, slug, name, description,
+      id, slug, name, name_en, description,
       addr, country, region, city, district,
       lat, lng, google_place_id,
       place_id, floor, unit, floor_info,
@@ -846,7 +846,7 @@ export async function getSavedShops(userId: string): Promise<Shop[]> {
     .from('saved_shops')
     .select(`
       shops (
-        id, slug, name, description,
+        id, slug, name, name_en, description,
         addr, country, region, city, district,
         lat, lng, google_place_id,
         place_id, floor, unit,
@@ -878,7 +878,7 @@ export async function getVisitedShops(userId: string): Promise<Shop[]> {
     .from('check_ins')
     .select(`
       shops (
-        id, slug, name, description,
+        id, slug, name, name_en, description,
         addr, country, region, city, district,
         lat, lng, google_place_id,
         place_id, floor, unit,

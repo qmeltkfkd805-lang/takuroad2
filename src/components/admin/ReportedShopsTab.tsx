@@ -216,6 +216,7 @@ export default function ReportedShopsTab({ onResolved }: {
       if (reasonFilter && !g.reports.some(r => reasonGroup(r) === reasonFilter)) return false
       if (q === '') return true
       if ((g.shop?.name ?? '').toLowerCase().includes(q)) return true
+      if ((g.shop?.name_en ?? '').toLowerCase().includes(q)) return true   // 영문 이름으로도
       return g.reports.some(r => reasonOf(r).toLowerCase().includes(q))
     })
     // 오래된 신고순 = 그룹의 가장 오래된 접수일 / 최근 신고순 = 그룹의 가장 최근 접수일
@@ -227,7 +228,7 @@ export default function ReportedShopsTab({ onResolved }: {
     const filtered = completed.filter(r => {
       if (reasonFilter && reasonGroup(r) !== reasonFilter) return false
       if (q === '') return true
-      return (r.shops?.name ?? '').toLowerCase().includes(q) || reasonOf(r).toLowerCase().includes(q)
+      return (r.shops?.name ?? '').toLowerCase().includes(q) || (r.shops?.name_en ?? '').toLowerCase().includes(q) || reasonOf(r).toLowerCase().includes(q)
     })
     const key = (r: ShopReportRow) => new Date(r.created_at).getTime()
     return [...filtered].sort((a, b) => sort === 'old' ? key(a) - key(b) : key(b) - key(a))

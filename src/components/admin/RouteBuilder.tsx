@@ -124,7 +124,7 @@ export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRo
   const q = query.trim().toLowerCase()
   const filtered = useMemo(() => {
     if (!q) return candidates
-    return candidates.filter((s) => (s.name ?? '').toLowerCase().includes(q) || (s.addr ?? '').toLowerCase().includes(q) || shopRegion(s).toLowerCase().includes(q))
+    return candidates.filter((s) => (s.name ?? '').toLowerCase().includes(q) || (s.name_en ?? '').toLowerCase().includes(q) || (s.addr ?? '').toLowerCase().includes(q) || shopRegion(s).toLowerCase().includes(q))
   }, [candidates, q])
   const addedIds = useMemo(() => new Set(added.map((s) => s.id)), [added])
 

@@ -14,6 +14,7 @@ import { createClient } from '@/lib/supabase/client'
 export interface ShopReportShop {
   id: string
   name: string | null
+  name_en: string | null
   slug: string | null
   addr: string | null
   region: string | null
@@ -45,7 +46,7 @@ const REPORT_SELECT = `
   id, shop_id, user_id, payload, image_url,
   status, created_at, reviewed_at, reviewed_by,
   shops (
-    id, name, slug, addr, region, city, district, status, phone, info_last_confirmed_at,
+    id, name, name_en, slug, addr, region, city, district, status, phone, info_last_confirmed_at,
     shop_images ( image_url, is_cover, sort_order )
   ),
   profiles!shop_suggestions_user_id_fkey ( id, nickname )

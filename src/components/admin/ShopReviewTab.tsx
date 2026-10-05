@@ -121,6 +121,7 @@ export default function ShopReviewTab({ onReviewed }: { onReviewed?: () => void 
     const list = needle
       ? shops.filter((s) =>
           s.name.trim().toLowerCase().includes(needle) ||
+          (s.name_en ?? '').toLowerCase().includes(needle) ||   // 영문 이름으로도
           shopRegion(s).toLowerCase().includes(needle))
       : shops
     return list.map((s) => ({ shop: s, cp: quickCompleteness(s), region: shopRegion(s) }))
@@ -217,8 +218,8 @@ export default function ShopReviewTab({ onReviewed }: { onReviewed?: () => void 
               className={styles.search}
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="샵명 또는 지역 검색"
-              aria-label="샵명 또는 지역 검색"
+              placeholder="샵명(한글·영문) 또는 지역 검색"
+              aria-label="샵명(한글·영문) 또는 지역 검색"
             />
           </div>
 

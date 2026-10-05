@@ -143,6 +143,7 @@ export default function ShopAdminTab() {
     if (q) {
       out = out.filter((r) =>
         r.shop.name.toLowerCase().includes(q) ||
+        (r.shop.name_en ?? '').toLowerCase().includes(q) ||   // 영문 이름으로도
         r.region.toLowerCase().includes(q) ||
         r.shop.slug.toLowerCase().includes(q))
     }
@@ -262,7 +263,7 @@ export default function ShopAdminTab() {
                 className={styles.search}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="샵명, 지역 또는 slug 검색"
+                placeholder="샵명(한글·영문), 지역 또는 slug 검색"
                 aria-label="샵명, 지역 또는 slug 검색"
               />
             </div>

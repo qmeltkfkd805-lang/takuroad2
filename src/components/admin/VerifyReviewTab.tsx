@@ -40,7 +40,7 @@ export interface VerifyRequestRow {
   created_at: string
   updated_at: string | null
   reviewed_by: string | null
-  shops: { id: string; name: string | null; slug: string | null } | null
+  shops: { id: string; name: string | null; name_en?: string | null; slug: string | null } | null
   /** 신청자 — user_id FK */
   profiles: { id: string; nickname: string | null } | null
   /** 처리자 — reviewed_by FK (shop_verify_requests_reviewed_by_fkey → profiles.id) */
@@ -207,6 +207,7 @@ export default function VerifyReviewTab({ onPendingCount }: {
     const q = query.trim().toLowerCase()
     const filtered = q === '' ? source : source.filter(r =>
       (r.shops?.name ?? '').toLowerCase().includes(q) ||
+      (r.shops?.name_en ?? '').toLowerCase().includes(q) ||   // 영문 이름으로도
       (r.profiles?.nickname ?? '').toLowerCase().includes(q))
     const key = (r: VerifyRequestRow) => new Date(r.created_at).getTime()
     return [...filtered].sort((a, b) => sort === 'old' ? key(a) - key(b) : key(b) - key(a))
