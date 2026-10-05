@@ -18,8 +18,8 @@ import styles from './MapPage.module.css'
 import fab from './MapFab.module.css'
 import { CATEGORY_NAME_MAP, CATEGORIES, catInfoOf } from '@/lib/constants/categories'
 import MapBottomSheet from './MapBottomSheet'
-import MapPinModal from './MapPinModal'
 import MapShopBubble from './MapShopBubble'
+import MapEventBubble from './MapEventBubble'
 import { getOngoingMapEvents, MapEvent } from '@/services/mapEventService'
 import RouteMapMode from '@/components/route/RouteMapMode'
 import RouteMapMobile from '@/components/route/RouteMapMobile'
@@ -140,6 +140,9 @@ export default function MapPage() {
   const handleSelectEvent = useCallback((ev: MapEvent) => {
     setSelectedShop(null)
     setSelectedEvent(ev)
+    setGroupShops(null)
+    // 샵과 같이 — 그 이벤트 위치로 이동해서 말풍선이 보이게
+    if (ev.lat && ev.lng) mapRef.current?.moveCenter(ev.lat, ev.lng, 3)
   }, [setSelectedShop])
 
   const handleSelectShop = useCallback((shop: Shop) => {
@@ -176,6 +179,7 @@ export default function MapPage() {
 
   const handleMapClick = useCallback(() => {
     setSelectedShop(null)
+    setSelectedEvent(null)   // 이벤트 말풍선도 지도 빈 곳을 누르면 닫힌다
 
   }, [setSelectedShop])
 
@@ -405,12 +409,17 @@ export default function MapPage() {
             onSelectEvent={handleSelectEvent}
             onMapClick={handleMapClick}
             onSelectGroup={handleSelectGroup}
-            /* 고른 샵 — 가운데 모달 대신 샵 위치(핀 위)에 말풍선으로 */
+            /* 고른 샵·이벤트 — 가운데 모달 대신 그 위치(핀 위)에 말풍선으로 */
             bubble={selectedShop && dispLat(selectedShop) && dispLng(selectedShop) ? {
               key: selectedShop.id,
               lat: dispLat(selectedShop) as number,
               lng: dispLng(selectedShop) as number,
               content: <MapShopBubble shop={selectedShop} onClose={() => setSelectedShop(null)} />,
+            } : selectedEvent && selectedEvent.lat && selectedEvent.lng ? {
+              key: `ev:${selectedEvent.id}`,
+              lat: selectedEvent.lat,
+              lng: selectedEvent.lng,
+              content: <MapEventBubble event={selectedEvent} onClose={() => setSelectedEvent(null)} />,
             } : null}
             bubbleTopPad={() => {
               const z = topZoneRef.current
@@ -421,7 +430,7 @@ export default function MapPage() {
 
         <div style={{
           position: 'absolute', right: '16px', zIndex: 130,
-          bottom: selectedShop ? '110px' : sheetState === 'peek' ? '380px' : '24px',
+          bottom: (selectedShop || selectedEvent) ? '110px' : sheetState === 'peek' ? '380px' : '24px',
           opacity: sheetState === 'expanded' ? 0 : 1,
           pointerEvents: sheetState === 'expanded' ? 'none' : 'auto',
           transition: 'bottom .28s cubic-bezier(.32,.72,0,1), opacity .2s ease',
@@ -476,19 +485,11 @@ export default function MapPage() {
             PC에서는 IP 기반으로 위치를 찾기 때문에<br />실제 위치와 다를 수 있어요
           </div>
         )}
-        {!selectedShop && (
+        {!selectedShop && !selectedEvent && (
           <MapBottomSheet shops={shownListShops} events={shownEvents} onSelectShop={handleSelectShop} onSelectEvent={handleSelectEvent} onStateChange={setSheetState} onListClick={goToFilteredList}
             regionLabel={regionLabel} layer={layer} onListScrollDir={dir => setBarHidden(dir === 'down')} />
         )}
 
-        {/* 이벤트 핀 클릭 — 이벤트 요약 모달 (전체보기 → 상세). 샵은 지도 위 말풍선으로 보여준다 */}
-        {selectedEvent && (
-          <MapPinModal
-            shop={null}
-            event={selectedEvent}
-            onClose={() => { setSelectedShop(null); setSelectedEvent(null) }}
-          />
-        )}
 
         {/* 같은 위치 샵 목록 바텀시트 */}
         <BottomSheet
