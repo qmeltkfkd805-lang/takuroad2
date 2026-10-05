@@ -38,6 +38,12 @@ export const metadata: Metadata = {
     images: [OG_IMAGE.url],
   },
   robots: { index: true, follow: true },
+  // 검색엔진 사이트 소유 확인 — <meta name="naver-site-verification" …> 로 출력된다
+  verification: {
+    other: {
+      'naver-site-verification': '791033d87bd5712f00c01979fb39fe6e5b12ebfb',
+    },
+  },
 }
 
 export const viewport = {
