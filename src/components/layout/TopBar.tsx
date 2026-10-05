@@ -244,7 +244,7 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
               )}
             </div>
 
-            <Link href="/profile" className={`${styles.user} ${styles.userHideMobile}`}>
+            <Link href="/profile" data-diag="header-user" className={`${styles.user} ${styles.userHideMobile}`}>
               <span className={styles.avatar}>
                 <UserAvatar
                   userId={user?.id}

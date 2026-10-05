@@ -65,6 +65,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${env.kakao.appKey}&libraries=services&autoload=false`}
           async
         />
+        {/* 🔎 화면 진단(?diag=1)일 때만: 화면이 뜨기 전 오류(하이드레이션 등)를 모아 둔다 → DiagOverlay 가 보여줌 */}
+        <script
+          dangerouslySetInnerHTML={{ __html: `(function(){try{if(!/[?&]diag=1/.test(location.search))return;var a=window.__TAKU_DIAG_ERRORS=[];var p=function(k,m){a.length<50&&a.push(k+': '+String(m).slice(0,300))};window.addEventListener('error',function(e){p('error',e.message+' @'+(e.filename||'').split('/').pop()+':'+e.lineno)});window.addEventListener('unhandledrejection',function(e){p('promise',e.reason&&e.reason.message||e.reason)});var ce=console.error;console.error=function(){try{p('console',Array.prototype.map.call(arguments,function(x){return x&&x.message||x}).join(' '))}catch(_){}return ce.apply(console,arguments)}}catch(_){}})()` }}
+        />
       </head>
       <body>
         <AuthProvider>

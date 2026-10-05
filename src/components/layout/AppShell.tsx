@@ -17,6 +17,10 @@ import { captureFirstTouch } from '@/lib/utils/firstTouch'
 import { trackNav } from '@/lib/nav/leaveEdit'
 import { exploreListOf } from '@/lib/nav/explore'
 import ExploreNav from './ExploreNav'
+import dynamic from 'next/dynamic'
+
+// 🔎 화면 진단 패널 — 주소에 ?diag=1 이 있을 때만 불러온다
+const DiagOverlay = dynamic(() => import('@/components/debug/DiagOverlay'), { ssr: false })
 
 const NO_SHELL = ['/login', '/admin', '/dev', '/test']
 
@@ -64,6 +68,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     })
   }, [pathname, bare, user])
 
+  const [diag, setDiag] = useState(false)
+  useEffect(() => { setDiag(new URLSearchParams(window.location.search).get('diag') === '1') }, [pathname])
+
   const [trending, setTrending] = useState<ActiveWork[]>([])
   useEffect(() => {
     getActiveWorks(10).then(setTrending).catch(() => setTrending([]))
@@ -86,7 +93,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <UnlockModal />
     <LevelUpModal />
     <div className={styles.shell}>
-      <header className={`${styles.header}${hideHeaderMobile ? ' ' + styles.headerHiddenMobile : ''}${pathname === '/map' ? ' ' + styles.headerMap : ''}`}>
+      {diag && <DiagOverlay />}
+      <header data-diag="header" className={`${styles.header}${hideHeaderMobile ? ' ' + styles.headerHiddenMobile : ''}${pathname === '/map' ? ' ' + styles.headerMap : ''}`}>
         <Link href="/" className={styles.logo}>
           <img src="/brand/takuroad-logo.png" alt="TAKUROAD" />
         </Link>

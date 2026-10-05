@@ -46,9 +46,10 @@ export default function HeroCarousel({ slots }: { slots: HeroCard[] }) {
 
 
   return (
-    <div className={styles.wrap}>
+    <div className={styles.wrap} data-diag="hero-wrap">
       <div
         className={styles.viewport}
+        data-diag="hero-viewport"
         tabIndex={0}
         role="region"
         aria-roledescription="carousel"
@@ -114,7 +115,7 @@ function HeroSlide({ card, guard }: { card: HeroCard; guard: React.MutableRefObj
   const slideClass = styles.slide + ' ' + (hasImage ? styles.slideImage : styles[`tint_${card.category}`])
 
   return (
-    <div className={slideClass} style={{ position: 'relative' }}>
+    <div className={slideClass} data-diag="hero-slide" style={{ position: 'relative' }}>
       {hasImage && (
         <div className={styles.bgImage}>
           <img src={card.imageUrl!} alt="" draggable={false} />
@@ -126,7 +127,7 @@ function HeroSlide({ card, guard }: { card: HeroCard; guard: React.MutableRefObj
           {card.label && <span className={styles.label}>{card.label}</span>}
           {card.badge && <span className={styles.startChip}>{card.badge}</span>}
         </div>
-        <h2 className={styles.title}>{card.headline}</h2>
+        <h2 className={styles.title} data-diag="hero-title">{card.headline}</h2>
         {card.meta && <p className={styles.meta}>{card.meta}</p>}
         {card.description && <p className={styles.subtitle}>{card.description}</p>}
       </div>
