@@ -2,6 +2,13 @@
 export const IP_TYPES = ['웹툰', '웹소설', '소설', '애니', '영화', '특촬', '만화', '버튜버', '캐릭터', '게임', '카드게임', '완구', '보컬로이드', '브랜드', '제작사'] as const
 export type IpType = (typeof IP_TYPES)[number]
 
+// 행사 자체는 작품이 아니므로 작품 유형으로 노출하거나 저장하지 않는다.
+const EVENT_LIKE_TYPE = /(?:행사|이벤트|영화제|축제|전시회|페스티벌|festival|exhibition)/i
+
+export function isEventLikeIpType(raw?: string | null): boolean {
+  return !!raw && EVENT_LIKE_TYPE.test(raw.trim())
+}
+
 // 기존에 제각각 저장된 값(anime / 애니메이션 / 버추얼 등)을 표준 라벨로 정리한다.
 const ALIAS: Record<string, string> = {
   anime: '애니', 애니메이션: '애니', 애니메: '애니', animation: '애니',
@@ -26,6 +33,7 @@ export function normIpType(raw?: string | null): string | null {
   if (!raw) return null
   const s = raw.trim()
   if (!s) return null
+  if (isEventLikeIpType(s)) return null
   if ((IP_TYPES as readonly string[]).includes(s)) return s
   return ALIAS[s.toLowerCase()] ?? ALIAS[s] ?? s
 }
@@ -35,4 +43,3 @@ export function ipTypeList(raw?: string | null): string[] {
   if (!raw) return []
   return [...new Set(String(raw).split(',').map(s => normIpType(s)).filter((x): x is string => !!x))]
 }
-
