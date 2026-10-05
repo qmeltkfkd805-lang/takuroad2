@@ -371,6 +371,7 @@
     border-radius: 0;
   }
   .heroDesc { display: none; }
+  .title { font-size: 22px; line-height: 1.32; margin-bottom: 12px; }
   .heroPhoto .heroText { padding: 56px 20px 22px; }
   .railMobileHide { display: none; }
 }

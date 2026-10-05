@@ -114,7 +114,8 @@ export default function CategoryFilter({
   }
 
   const label = !regionOn ? '지역' : districtOn ? `${selectedRegion} ${selectedDistrict}` : selectedRegion
-  const districts = viewRegion ? (districtsByRegion[viewRegion] ?? []) : []
+  // 구/군 목록 — 데이터에 '전체'가 섞여 오면 뺀다 (위에 '○○ 전체' 버튼이 따로 있다)
+  const districts = viewRegion ? (districtsByRegion[viewRegion] ?? []).filter(d => d && d !== '전체') : []
 
   // 항목이 3개를 넘으면 그 이상은 스크롤 (반 줄 살짝 보이게 해서 더 있다는 신호)
   const ROW = 36, GAP = 4, PAD = 6, PEEK = 14
