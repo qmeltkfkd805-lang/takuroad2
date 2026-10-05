@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useIsDesktop } from '@/hooks/useIsDesktop'
+import { useSessionState } from '@/hooks/useSessionState'
 import { Icon } from '@/components/tds'
 import { EventStatusBadge } from '@/components/tds/EventStatusBadge'
 import { getEventStatus, EventStatusKind } from '@/lib/utils/eventStatus'
@@ -239,8 +240,9 @@ export default function EventHomePage() {
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(true)
 
-  const [tab, setTab] = useState<StatusTab>('all')
-  const [search, setSearch] = useState('')
+  // 검색어·필터는 이 탭에 기억 — 📱 탐색 메뉴를 오가거나 상세에 다녀와도 그대로
+  const [tab, setTab] = useSessionState<StatusTab>('taku:ev:tab', 'all')
+  const [search, setSearch] = useSessionState('taku:ev:q', '')
   // 검색하는 동안 결과 칸 높이를 줄이지 않는다 — 결과 수에 따라 페이지가 줄었다 늘었다 하며 화면이 튀지 않게
   const resultsRef = useRef<HTMLDivElement>(null)
   const [resultsMinH, setResultsMinH] = useState(0)
@@ -249,11 +251,11 @@ export default function EventHomePage() {
     else setResultsMinH(h => Math.max(h, resultsRef.current?.offsetHeight ?? 0))
     setSearch(v)
   }
-  const [region, setRegion] = useState<string | null>(null)
-  const [type, setType] = useState<string | null>(null)
-  const [period, setPeriod] = useState<Period>('all')
-  const [workId, setWorkId] = useState<string | null>(null)
-  const [selectedDay, setSelectedDay] = useState<string | null>(null)
+  const [region, setRegion] = useSessionState<string | null>('taku:ev:region', null)
+  const [type, setType] = useSessionState<string | null>('taku:ev:type', null)
+  const [period, setPeriod] = useSessionState<Period>('taku:ev:period', 'all')
+  const [workId, setWorkId] = useSessionState<string | null>('taku:ev:work', null)
+  const [selectedDay, setSelectedDay] = useSessionState<string | null>('taku:ev:day', null)
   const [sheet, setSheet] = useState(false)
 
   useEffect(() => { getEventHomeItems().then(setItems).catch(() => {}).finally(() => setLoading(false)) }, [])
@@ -387,7 +389,8 @@ export default function EventHomePage() {
     <div className={styles.page}>
       {/* 추천 + 캘린더 */}
       <div className={styles.topRow}>
-        <div className={styles.heroCard}>
+        {/* 📱 모바일은 홈 히어로처럼 포스터가 화면을 꽉 채우고 정보가 그 위에 — 카드 아무 데나 누르면 상세로 */}
+        <div className={styles.heroCard} onClick={() => { if (hero) openEvent(hero) }} role={hero ? 'link' : undefined}>
           {hero ? (
             <>
               <div className={styles.heroPoster}>
@@ -411,7 +414,7 @@ export default function EventHomePage() {
                 </div>
                 <div className={styles.heroMeta}><CalIcon />{periodText(hero.startDate, hero.endDate)}</div>
                 {(hero.placeName ?? hero.shopName) && <div className={styles.heroMeta}><PinIcon /><span className={styles.cMetaText}>{hero.placeName ?? hero.shopName}</span></div>}
-                <button className={styles.heroCta} onClick={() => openEvent(hero)}>
+                <button className={styles.heroCta} onClick={e => { e.stopPropagation(); openEvent(hero) }}>
                   상세 보기
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 6 6 6-6 6" /></svg>
                 </button>
