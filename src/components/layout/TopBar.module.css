@@ -91,11 +91,11 @@
   .barMap .searchWrap { max-width: none; }
   .barMap .search {
     background: var(--surface); border-color: transparent;
-    box-shadow: 0 2px 12px rgba(0,0,0,.16);
-    padding: 12px 18px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.15);
+    padding: 9px 16px;
   }
-  .barMap .search svg { width: 18px; height: 18px; stroke: var(--text); }
-  .barMap .search input { font-size: 15px; }
-  .barMap .iconBtn { width: 46px; height: 46px; background: var(--surface); box-shadow: 0 2px 12px rgba(0,0,0,.16); }
-  .barMap .login { padding: 13px 15px; background: var(--surface); box-shadow: 0 2px 12px rgba(0,0,0,.16); }
+  .barMap .search svg { width: 16px; height: 16px; stroke: var(--text); }
+  .barMap .search input { font-size: 14px; }
+  /* 지도에선 검색창만 가로로 길게 — 알림·로그인 버튼은 숨김 (하단 '마이' 탭에서) */
+  .barMap .right { display: none; }
 }

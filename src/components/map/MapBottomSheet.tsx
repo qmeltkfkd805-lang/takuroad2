@@ -92,6 +92,10 @@ export default function MapBottomSheet({ shops, events = [], onSelectShop, onSel
   const { user } = useAuth()
   const router = useRouter()
   const [state, setState] = useState<SheetState>('peek')
+  // 📱 모바일은 처음에 접힌 상태(제목 줄만)로 — 지도를 넓게. 위로 올리면 카드 줄, 한 번 더 올리면 전체 목록
+  useEffect(() => {
+    if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) setState('closed')
+  }, [])
   useEffect(() => { onStateChange?.(state) }, [state, onStateChange])
   const startY = useRef<number | null>(null)
   const movedRef = useRef(0)
@@ -156,33 +160,21 @@ export default function MapBottomSheet({ shops, events = [], onSelectShop, onSel
     if (hDrag.current.moved) { e.preventDefault(); e.stopPropagation() }
   }
 
-  // 닫힘: 작은 핸들만
-  if (state === 'closed') {
-    return (
-      <button
-        className={styles.reopen}
-        onClick={() => setState('peek')}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-        aria-label="목록 열기"
-      >
-        <span className={styles.reopenHandle} />
-      </button>
-    )
-  }
-
   const expanded = state === 'expanded'
+  const collapsed = state === 'closed'   // 접힘: '주변 샵 N개 · 이벤트 N / 루트 보기 / 목록 보기' 줄만
 
   return (
     <div className={expanded ? styles.sheetExpanded : styles.sheet}>
       <div
         className={styles.dragZone}
+        // 접혀 있을 땐 제목 줄 아무 데나 눌러도 카드 줄이 펼쳐진다 (루트 보기·목록 보기 버튼은 제외)
+        onClick={e => { if (collapsed && !(e.target as HTMLElement).closest('button')) setState('peek') }}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
-        <div className={styles.handle} onClick={() => step(-1)} />
+        <div className={styles.handle} onClick={() => step(collapsed ? 1 : -1)}
+          role="button" aria-label={collapsed ? '샵 카드 펼치기' : '접기'} />
         <div className={styles.header}>
           <div className={styles.title}>
             {layer === 'event'
@@ -193,7 +185,7 @@ export default function MapBottomSheet({ shops, events = [], onSelectShop, onSel
         </div>
       </div>
 
-      {expanded ? (
+      {collapsed ? null : expanded ? (
         <div className={styles.list} onScroll={onListScroll}>
           {shops.slice(0, listCount).map(shop => (
             <ShopRow key={shop.id} shop={shop} isActive={false} onClick={onSelectShop} />

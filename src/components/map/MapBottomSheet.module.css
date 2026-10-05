@@ -111,3 +111,11 @@
   color: var(--text); font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer;
 }
 .moreNum { font-size: 22px; font-weight: 900; color: var(--accent); }
+
+/* 📱 펼친 목록은 지도 위에 떠 있는 검색창·카테고리 칩 줄 아래부터 */
+@media (hover: none) and (pointer: coarse) and (max-width: 1023px) {
+  .sheetExpanded { top: calc(144px + env(safe-area-inset-top)); }
+}
+/* 손잡이는 얇아서 누르기 어렵다 — 보이는 모양은 그대로, 누르는 범위만 넓힌다 */
+.handle { position: relative; }
+.handle::before { content: ''; position: absolute; inset: -12px -60px; }
