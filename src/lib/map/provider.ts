@@ -19,6 +19,12 @@ export interface MapInstance {
   /** 지금 화면에 보이는 영역 */
   getBounds(): { swLat: number; swLng: number; neLat: number; neLng: number } | null
   getLevel(): number
+  /** 지도 중심을 픽셀만큼 부드럽게 옮긴다 (dx 양수 = 중심이 오른쪽으로 → 내용은 왼쪽으로, dy 양수 = 중심이 아래로 → 내용은 위로) */
+  panBy(dx: number, dy: number): void
+  /** 좌표가 지도 화면 안에서 어디(px)에 있는지 */
+  pointOf(lat: number, lng: number): { x: number; y: number } | null
+  /** 지도 화면 크기(px) */
+  getSize(): { w: number; h: number }
   raw: any
 }
 
@@ -77,6 +83,14 @@ export function createMap(el: HTMLElement, opts: { lat: number; lng: number; lev
       } catch { return null }
     },
     getLevel() { return map.getLevel() },
+    panBy(dx, dy) { map.panBy(Math.round(dx), Math.round(dy)) },
+    pointOf(lat, lng) {
+      try {
+        const p = map.getProjection().containerPointFromCoords(new window.kakao.maps.LatLng(lat, lng))
+        return { x: p.x, y: p.y }
+      } catch { return null }
+    },
+    getSize() { return { w: el.clientWidth, h: el.clientHeight } },
   }
 }
 

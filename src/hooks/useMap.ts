@@ -39,6 +39,8 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
   const pinsRef = useRef<Map<string, PinEntry>>(new Map())
   const eventPinsRef = useRef<Map<string, EventPinEntry>>(new Map())
   const myLocRef = useRef<OverlayHandle | null>(null)
+  // 선택한 샵 위 말풍선 (내용 DOM 은 KakaoMap 이 React 포털로 채운다)
+  const bubbleRef = useRef<{ handle: OverlayHandle; lat: number; lng: number } | null>(null)
   const activeIdRef = useRef<string | null>(null)
   // 클릭 핸들러는 ref 로 들고 있다가 최신 것을 부른다 (핀 DOM 재사용용)
   const onShopClickRef = useRef<(shop: Shop) => void>(() => {})
@@ -127,11 +129,16 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     const map = mapRef.current
     if (!map) return
 
+    // 핀 묶기 — 같은 건물만 하나로 합친다
+    //  · 같은 장소(place_id)에 속한 샵 → 한 핀
+    //  · 장소가 없으면 좌표가 사실상 같을 때(소수점 5자리 ≈ 1m)만 → 같은 주소로 찍힌 샵
+    //  (예전엔 소수점 3자리(≈100m)로 묶어서 옆 건물끼리도 합쳐졌음)
     const posMap = new Map<string, Shop[]>()
     for (const s of shops) {
       const la = dispLat(s), ln = dispLng(s)
       if (!la || !ln) continue
-      const key = `${Math.round(la * 1000)},${Math.round(ln * 1000)}`
+      const pid = (s as any).place_id as string | null | undefined
+      const key = pid ? `p:${pid}` : `${Math.round(la * 100000)},${Math.round(ln * 100000)}`
       const g = posMap.get(key)
       if (g) g.push(s); else posMap.set(key, [s])
     }
@@ -253,5 +260,41 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     mapRef.current.setCenter(c.lat, c.lng)
   }, [])
 
-  return { isLoaded, moveCenter, onMapClick, renderMarkers, setActive, renderEventMarkers, clearMarkers, clearEventMarkers, setMyLocation, relayout }
+  // 말풍선 — 샵 위치(핀 위)에 띄운다. 핀과 따로 관리해서 화면 밖 핀 숨기기와 상관없이 보인다
+  const showBubble = useCallback((lat: number, lng: number, el: HTMLElement) => {
+    const map = mapRef.current
+    if (!map) return
+    bubbleRef.current?.handle.remove()
+    const handle = createOverlay(map, { lat, lng, content: el, yAnchor: 1, xAnchor: 0.5, zIndex: 50 })
+    bubbleRef.current = { handle, lat, lng }
+  }, [])
+
+  const hideBubble = useCallback(() => {
+    bubbleRef.current?.handle.remove()
+    bubbleRef.current = null
+  }, [])
+
+  // 말풍선이 화면(위 필터·아래 여백 제외) 안에 다 들어오게 지도를 살짝 민다
+  const fitBubble = useCallback((el: HTMLElement, pad: { top: number; bottom: number; side: number }) => {
+    const map = mapRef.current, b = bubbleRef.current
+    if (!map || !b) return
+    const p = map.pointOf(b.lat, b.lng)
+    if (!p) return
+    const { w, h } = map.getSize()
+    const bw = el.offsetWidth, bh = el.offsetHeight
+    const top = p.y - bh, left = p.x - bw / 2, right = p.x + bw / 2
+    // dx·dy = 지도 중심을 옮길 거리 (중심이 위로 가면 말풍선은 화면 아래로 내려온다)
+    let dx = 0, dy = 0
+    if (top < pad.top) dy = top - pad.top                          // 위 필터에 가리면 → 말풍선을 아래로
+    else if (p.y > h - pad.bottom) dy = p.y - (h - pad.bottom)     // 아래로 넘치면 → 위로
+    if (bw + pad.side * 2 <= w) {
+      if (left < pad.side) dx = left - pad.side
+      else if (right > w - pad.side) dx = right - (w - pad.side)
+    } else {
+      dx = p.x - w / 2   // 화면보다 넓으면 가운데로
+    }
+    if (dx || dy) map.panBy(dx, dy)
+  }, [])
+
+  return { isLoaded, moveCenter, onMapClick, renderMarkers, setActive, renderEventMarkers, clearMarkers, clearEventMarkers, setMyLocation, relayout, showBubble, hideBubble, fitBubble }
 }

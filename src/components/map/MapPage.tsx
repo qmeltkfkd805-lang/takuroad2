@@ -19,6 +19,7 @@ import fab from './MapFab.module.css'
 import { CATEGORY_NAME_MAP, CATEGORIES, catInfoOf } from '@/lib/constants/categories'
 import MapBottomSheet from './MapBottomSheet'
 import MapPinModal from './MapPinModal'
+import MapShopBubble from './MapShopBubble'
 import { getOngoingMapEvents, MapEvent } from '@/services/mapEventService'
 import RouteMapMode from '@/components/route/RouteMapMode'
 import RouteMapMobile from '@/components/route/RouteMapMobile'
@@ -404,6 +405,17 @@ export default function MapPage() {
             onSelectEvent={handleSelectEvent}
             onMapClick={handleMapClick}
             onSelectGroup={handleSelectGroup}
+            /* 고른 샵 — 가운데 모달 대신 샵 위치(핀 위)에 말풍선으로 */
+            bubble={selectedShop && dispLat(selectedShop) && dispLng(selectedShop) ? {
+              key: selectedShop.id,
+              lat: dispLat(selectedShop) as number,
+              lng: dispLng(selectedShop) as number,
+              content: <MapShopBubble shop={selectedShop} onClose={() => setSelectedShop(null)} />,
+            } : null}
+            bubbleTopPad={() => {
+              const z = topZoneRef.current
+              return z ? z.offsetTop + z.offsetHeight : 0
+            }}
           />
         </div>
 
@@ -469,10 +481,10 @@ export default function MapPage() {
             regionLabel={regionLabel} layer={layer} onListScrollDir={dir => setBarHidden(dir === 'down')} />
         )}
 
-        {/* 핀 클릭 — 샵/이벤트 요약 모달 (전체보기 → 상세) */}
-        {(selectedShop || selectedEvent) && (
+        {/* 이벤트 핀 클릭 — 이벤트 요약 모달 (전체보기 → 상세). 샵은 지도 위 말풍선으로 보여준다 */}
+        {selectedEvent && (
           <MapPinModal
-            shop={selectedShop ? ({ ...selectedShop, isSaved: isSaved(selectedShop.id) } as Shop) : null}
+            shop={null}
             event={selectedEvent}
             onClose={() => { setSelectedShop(null); setSelectedEvent(null) }}
           />
