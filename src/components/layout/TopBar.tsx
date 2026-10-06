@@ -57,15 +57,34 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
   const [notiList, setNotiList] = useState<Notification[]>([])
   const notiRef = useRef<HTMLDivElement>(null)
 
+  /* 안 읽은 알림 수 — 2분마다 + 화면으로 돌아왔을 때 + 알림을 읽었을 때.
+     ⚠️ 예전엔 정리(clearInterval·removeEventListener)가 없고 user 객체가 바뀔 때마다 다시 붙어서,
+        탭을 오래 열어 두면 45초 타이머가 계속 쌓였다 → Supabase 요청·로그의 절반 가까이가 이 조회였다.
+        이제 사용자 id 가 바뀔 때만 다시 붙이고, 떠날 때 정리하고, 안 보이는 탭에선 묻지 않는다. */
+  const uid = user?.id ?? null
   useEffect(() => {
-    if (!user) { setUnread(0); setLevel(null); return }
-    const _tick = () => getUnreadCount(user.id).then(setUnread).catch(() => {})
-    _tick()
-    const _iv = setInterval(_tick, 45000)
-    window.addEventListener('focus', _tick)
-    window.addEventListener('noti-read', _tick)
-    getMyLevelInfo(user.id).then(i => setLevel(i.level)).catch(() => {})
-  }, [user])
+    if (!uid) { setUnread(0); setLevel(null); return }
+    let last = 0
+    const tick = (force = false) => {
+      if (document.visibilityState === 'hidden') return
+      const now = Date.now()
+      if (!force && now - last < 20000) return   // 포커스·화면 전환이 몰려도 20초에 한 번만
+      last = now
+      getUnreadCount(uid).then(setUnread).catch(() => {})
+    }
+    const onVisible = () => tick()
+    const onRead = () => tick(true)
+    tick(true)
+    const iv = setInterval(() => tick(true), 120000)
+    document.addEventListener('visibilitychange', onVisible)
+    window.addEventListener('noti-read', onRead)
+    getMyLevelInfo(uid).then(i => setLevel(i.level)).catch(() => {})
+    return () => {
+      clearInterval(iv)
+      document.removeEventListener('visibilitychange', onVisible)
+      window.removeEventListener('noti-read', onRead)
+    }
+  }, [uid])
 
   useEffect(() => {
     const term = q.trim()
