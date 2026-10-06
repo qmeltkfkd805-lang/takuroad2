@@ -19,7 +19,7 @@ export const placeLabel = (s: ShopHomeItem) => {
 
 /* ───────── 큰 카드 : 지금 핫한 샵 ───────── */
 
-export default function ShopHomeCard({ shop, rank }: { shop: ShopHomeItem; rank?: number }) {
+export default function ShopHomeCard({ shop, rank, compactOnMobile = false }: { shop: ShopHomeItem; rank?: number; /** 📱 모바일에서 작은 카드(사진+이름+지역만) — 3개를 가로로 한눈에 */ compactOnMobile?: boolean }) {
   const router = useRouter()
   // 샵 사진이 우선. 없으면 진행 중 이벤트 포스터로 채운다.
   const shopPhoto = shop.images[0] ?? null
@@ -28,7 +28,7 @@ export default function ShopHomeCard({ shop, rank }: { shop: ShopHomeItem; rank?
   const isPoster = !shopPhoto && !!shop.eventCover
 
   return (
-    <article className={styles.card} onClick={() => router.push(ROUTES.shop(shop.slug))}>
+    <article className={`${styles.card}${compactOnMobile ? ' ' + styles.mCompact : ''}`} onClick={() => router.push(ROUTES.shop(shop.slug))}>
       <div className={`${styles.thumb} ${isPoster ? styles.thumbContain : ''}`}>
         {cover ? <img src={cover} alt="" loading="lazy" /> : <div className={styles.noImage}>사진 준비 중</div>}
         {rank != null && (

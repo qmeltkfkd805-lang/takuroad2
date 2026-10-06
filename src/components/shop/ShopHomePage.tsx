@@ -121,7 +121,7 @@ export default function ShopHomePage() {
           {hot.length > 0 && (
             <Section icon="fire" color="var(--accent)" title="지금 핫한 샵" desc="방문, 찜, 후기 기준으로 지금 가장 인기 있는 샵이에요" onSeeAll={() => go('/shops/all?section=hot')}>
               <div className={styles.hotGrid}>
-                {hot.map((s, i) => <ShopHomeCard key={s.id} shop={s} rank={i + 1} />)}
+                {hot.map((s, i) => <ShopHomeCard key={s.id} shop={s} rank={i + 1} compactOnMobile />)}
               </div>
             </Section>
           )}
@@ -168,7 +168,7 @@ export default function ShopHomePage() {
 
         {/* 우측 개인화 레일 */}
         <aside className={styles.rail}>
-          <section className={styles.railCard}>
+          <section className={`${styles.railCard} ${styles.favCard}`}>
             <div className={styles.railHead}>
               <h3>내 최애 작품 취급샵</h3>
               {favGroups.length > 0 && <button onClick={() => go('/shops/all?section=favorite')}>전체 보기 ›</button>}
