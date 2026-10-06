@@ -8,6 +8,7 @@ import { CATEGORIES } from '@/lib/constants/categories'
 import { ROUTES } from '@/lib/constants/routes'
 import { shopDistrict } from '@/lib/utils/region'
 import { Icon } from '@/components/tds'
+import AppIcon from '@/components/tds/AppIcon'
 import { EventIcon, EventIconName } from '@/components/event/EventIcon'
 import ShopHomeCard, { ShopMiniCard, compact, placeLabel } from './ShopHomeCard'
 import {
@@ -26,6 +27,7 @@ export default function ShopHomePage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [regionIdx, setRegionIdx] = useState(0)
+  const [q, setQ] = useState('')   // 📱 모바일 상단 검색 — 샵 전체보기(/shops/all?q=)의 검색으로 넘긴다
 
   useEffect(() => {
     let alive = true
@@ -91,6 +93,30 @@ export default function ShopHomePage() {
             )}
           </section>
 
+          {/* 📱 모바일 상단 — 제목 + 작은 등록 링크 + 검색 (PC는 히어로가 이 역할이라 숨김) */}
+          <div className={styles.mTop}>
+            <div className={styles.mTitleRow}>
+              <h1 className={styles.mTitle}>샵 둘러보기</h1>
+              <button type="button" className={styles.mRegLink} onClick={() => go('/shop/new')}>+ 등록</button>
+            </div>
+            {/* 검색은 새로 만들지 않고 샵 전체보기의 검색(이름·영문명·지역)을 그대로 쓴다 */}
+            <form
+              role="search"
+              className={styles.mSearch}
+              onSubmit={e => { e.preventDefault(); const t = q.trim(); go(t ? `/shops/all?q=${encodeURIComponent(t)}` : '/shops/all') }}
+            >
+              <AppIcon name="search" size={18} color="var(--muted)" />
+              <input
+                type="search"
+                enterKeyHint="search"
+                value={q}
+                onChange={e => setQ(e.target.value)}
+                placeholder="샵 이름이나 지역을 검색해보세요"
+                aria-label="샵 이름이나 지역 검색"
+              />
+            </form>
+          </div>
+
           {/* 카테고리 바로가기 */}
           <div>
             <div className={styles.catHead}>
@@ -100,7 +126,10 @@ export default function ShopHomePage() {
               </button>
             </div>
             <div className={styles.catGrid}>
-              {/* PC는 7개, 📱 모바일은 전부 가로로 길게 (넘겨서 보기) */}
+              {/* PC는 7개, 📱 모바일은 '전체' + 전부를 낮은 칩으로 가로로 길게 (넘겨서 보기). 누르면 샵 전체보기로 이동(기존 동작 그대로) */}
+              <button className={`${styles.catTile} ${styles.catAll}`} onClick={() => go('/shops/all')}>
+                <span className={styles.catName}>전체</span>
+              </button>
               {CATEGORIES.map((c, i) => (
                 <button key={c.slug} className={`${styles.catTile}${i >= 7 ? ' ' + styles.catExtra : ''}`} onClick={() => go(`/shops/all?cat=${c.slug}`)}>
                   <span className={styles.catIcon} style={{ background: c.bgColor }}>
@@ -110,11 +139,22 @@ export default function ShopHomePage() {
                 </button>
               ))}
             </div>
-            {/* 📱 모바일엔 히어로가 없어서 샵 등록 버튼만 여기에 */}
-            <button className={styles.regBtnMobile} onClick={() => go('/shop/new')}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
-              샵 등록하기
-            </button>
+            {/* 📱 지역 선택(→ 그 지역 샵 전체보기) + 지도에서 보기. 등록은 위 제목 옆 작은 링크로 옮김 */}
+            <div className={styles.mRegionRow}>
+              {regions.length > 0 ? (
+                <RegionSelect
+                  regions={regions}
+                  value={-1}
+                  allLabel="전체 지역"
+                  plain
+                  onChange={i => go(i < 0 ? '/shops/all' : `/shops/all?region=${encodeURIComponent(regions[i].key)}`)}
+                />
+              ) : <span />}
+              <button type="button" className={styles.mMapLink} onClick={() => go('/map')}>
+                지도에서 보기
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+              </button>
+            </div>
           </div>
 
           {/* 지금 핫한 샵 — 3열 */}
@@ -240,10 +280,14 @@ export default function ShopHomePage() {
 }
 
 /* ── 지역 선택 드롭다운 (지역이 많아져도 감당 가능) ── */
-function RegionSelect({ regions, value, onChange }: {
+function RegionSelect({ regions, value, onChange, allLabel, plain }: {
   regions: { key: string; district: string; count: number }[]
   value: number
   onChange: (i: number) => void
+  /** 있으면 맨 위에 '전체' 항목을 두고, value < 0 이면 이 글자를 보여준다 (📱 모바일 상단) */
+  allLabel?: string
+  /** 테두리 없는 글자형 버튼 (📱 모바일 상단) */
+  plain?: boolean
 }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -253,16 +297,21 @@ function RegionSelect({ regions, value, onChange }: {
     document.addEventListener('mousedown', onDown)
     return () => document.removeEventListener('mousedown', onDown)
   }, [open])
-  const cur = regions[value] ?? regions[0]
+  const cur = allLabel && value < 0 ? null : (regions[value] ?? regions[0])
   return (
     <div className={styles.regionSelect} ref={ref}>
-      <button className={styles.regionSelectBtn} onClick={() => setOpen(o => !o)} aria-haspopup="listbox" aria-expanded={open}>
-        <EventIcon name="pin" size={14} color="var(--accent)" />
-        {cur?.district ?? '지역 선택'}
+      <button className={plain ? styles.regionSelectPlain : styles.regionSelectBtn} onClick={() => setOpen(o => !o)} aria-haspopup="listbox" aria-expanded={open}>
+        {!plain && <EventIcon name="pin" size={14} color="var(--accent)" />}
+        {cur?.district ?? allLabel ?? '지역 선택'}
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .15s' }}><path d="m6 9 6 6 6-6" /></svg>
       </button>
       {open && (
         <div className={styles.regionMenu} role="listbox">
+          {allLabel && (
+            <button role="option" aria-selected={value < 0} className={styles.regionMenuItem} onClick={() => { onChange(-1); setOpen(false) }}>
+              <span>{allLabel}</span>
+            </button>
+          )}
           {regions.map((g, i) => (
             <button key={g.key} role="option" aria-selected={i === value} className={styles.regionMenuItem} onClick={() => { onChange(i); setOpen(false) }}>
               <span>{g.district}</span>
