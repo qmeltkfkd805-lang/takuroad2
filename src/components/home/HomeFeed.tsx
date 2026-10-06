@@ -30,6 +30,7 @@ import { Icon } from '@/components/tds'
 import styles from './HomeFeed.module.css'
 import RankList from './RankList'
 import LogoLoader from '@/components/common/LogoLoader'
+import ThumbImg from '@/components/common/ThumbImg'
 
 const PALETTE = [
   { bg: '#EEEDFE', fg: '#3C3489' }, { bg: '#E1F5EE', fg: '#0F6E56' },
@@ -66,20 +67,17 @@ const kindMeta = (k: string) => NEWS_KIND[k] ?? { label: '소식', dot: '#C7C2BA
 
 function NewsSlideCard({ item }: { item: FeedItem }) {
   const inner = (
+    // 샵 홈 '지금 핫한 샵' 카드와 같은 모양·크기 — 위에 4:3 사진, 아래에 글
     <div className={styles.newsSlide}>
       <div className={styles.newsSlideThumb} style={{ background: item.imageUrl ? undefined : '#F1EFEA' }}>
-        {item.imageUrl ? <img src={item.imageUrl} alt="" draggable={false} /> : <WorkIcon size={20} style={{ opacity: 0.4 }} />}
+        {item.imageUrl ? <ThumbImg src={item.imageUrl} alt="" draggable={false} loading="lazy" /> : <WorkIcon size={36} style={{ opacity: 0.4 }} />}
+        <span className={styles.newsNewPill}>NEW</span>
       </div>
       <div className={styles.newsSlideBody}>
-        <div className={styles.newsSlideTop}>
-          <span className={styles.newsSlideWork}>{item.contextLabel ?? kindMeta(item.kind).label}</span>
-          <span className={styles.newsNewDot} />
-          <span className={styles.newsNew}>NEW</span>
-        </div>
         <div className={styles.newsSlideTitle}>{item.title}</div>
+        <div className={styles.newsSlideWork}>{item.contextLabel ?? kindMeta(item.kind).label}</div>
         {item.subtitle && <div className={styles.newsSlideMeta}>{item.subtitle}</div>}
       </div>
-      <svg className={styles.newsChev} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="m9 18 6-6-6-6" /></svg>
     </div>
   )
   return item.href ? <Link href={item.href} className={styles.newsSlideLink}>{inner}</Link> : <div className={styles.newsSlideLink}>{inner}</div>
