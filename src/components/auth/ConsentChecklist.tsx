@@ -9,6 +9,14 @@ export type ConsentValue = { terms: boolean; privacy: boolean; overseas: boolean
 export const EMPTY_CONSENT: ConsentValue = { terms: false, privacy: false, overseas: false, age14: false, marketing: false }
 export const requiredDone = (v: ConsentValue) => v.terms && v.privacy && v.overseas && v.age14
 
+/** 아직 체크 안 한 필수 항목 이름 — 버튼이 왜 안 눌리는지 알려줄 때 */
+export const missingRequired = (v: ConsentValue): string[] => [
+  !v.terms && '이용약관',
+  !v.privacy && '개인정보 수집·이용',
+  !v.overseas && '개인정보 국외이전',
+  !v.age14 && '만 14세 이상 확인',
+].filter(Boolean) as string[]
+
 type Key = keyof ConsentValue
 
 const Check = ({ on }: { on: boolean }) => (

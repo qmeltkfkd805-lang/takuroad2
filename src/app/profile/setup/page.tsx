@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { readFirstTouch, channelOf } from '@/lib/utils/firstTouch'
-import ConsentChecklist, { EMPTY_CONSENT, requiredDone, type ConsentValue } from '@/components/auth/ConsentChecklist'
+import ConsentChecklist, { EMPTY_CONSENT, requiredDone, missingRequired, type ConsentValue } from '@/components/auth/ConsentChecklist'
 import { recordConsents } from '@/lib/consent'
 
 export default function ProfileSetupPage() {
@@ -14,6 +14,15 @@ export default function ProfileSetupPage() {
   const [consent, setConsent] = useState<ConsentValue>(EMPTY_CONSENT)
   const consentOk = requiredDone(consent)
   const router = useRouter()
+
+  // 버튼이 왜 안 눌리는지 — 버튼 바로 아래에 알려준다
+  const blockReasons: string[] = []
+  const nick = nickname.trim()
+  if (!nick) blockReasons.push('닉네임을 입력해 주세요')
+  else if (nick.length < 2) blockReasons.push('닉네임은 2자 이상이어야 해요')
+  else if (!/^[a-zA-Z0-9가-힣_]+$/.test(nick)) blockReasons.push('닉네임은 한글, 영문, 숫자, 언더바(_)만 쓸 수 있어요')
+  const missing = missingRequired(consent)
+  if (missing.length) blockReasons.push(`필수 동의가 남았어요: ${missing.join(', ')}`)
 
   async function handleSubmit() {
     const trimmed = nickname.trim()
@@ -155,6 +164,16 @@ export default function ProfileSetupPage() {
         >
           {loading ? '설정 중...' : '동의하고 시작하기'}
         </button>
+
+        {!loading && blockReasons.length > 0 && (
+          <ul role="status" style={{ listStyle: 'none', margin: '10px 0 0', padding: '10px 12px', borderRadius: 10, background: 'var(--surface2)', display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {blockReasons.map(r => (
+              <li key={r} style={{ fontSize: 12.5, color: 'var(--muted)', display: 'flex', gap: 6, lineHeight: 1.5 }}>
+                <span aria-hidden style={{ color: 'var(--accent)', fontWeight: 900 }}>!</span>{r}
+              </li>
+            ))}
+          </ul>
+        )}
 
         <p style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '12px', textAlign: 'center' }}>
           한글, 영문, 숫자, 언더바(_) 사용 가능

@@ -6,7 +6,6 @@ import { getActiveEvents } from '@/services/eventService'
 import { getHeroSlots } from '@/services/heroService.server'
 import { pickHotMap } from '@/lib/home/hotMap'
 import { imagesFirst } from '@/lib/utils/shopOrder'
-import { Shop } from '@/types/shop'
 import HomeFeed from '@/components/home/HomeFeed'
 import HomeRail from '@/components/home/HomeRail'
 import HeroCarousel from '@/components/home/HeroCarousel'
@@ -23,14 +22,10 @@ const getHomeShopData = unstable_cache(async () => {
   // 인기 샵: 사진 있는 샵 먼저 → 방문 많은 순
   const popularShops = imagesFirst([...allShops].sort((a, b) => (b.visit_count ?? 0) - (a.visit_count ?? 0))).slice(0, 6)
   const hotMap = pickHotMap(allShops)
-  // 덕질 지도(PC 오른쪽)로 넘기는 샵은 지도·목록에 쓰는 값만 — 소개글 같은 긴 글은 빼서 전송량을 줄인다
-  const mapShops = imagesFirst(allShops).map(s => ({
-    ...s,
-    description: null, event_info: null, parking_note: null, temporary_holiday_message: null,
-    images: s.images.slice(0, 1),
-  })) as Shop[]
-  return { popularShops, hotMap, mapShops }
-}, ['home-shops-v1'], { revalidate: 60 })
+  // 덕질 지도(PC 오른쪽)의 샵 목록은 홈 서버 응답에 싣지 않는다 — HomeRail 이 화면이 뜬 뒤 PC에서만 따로 가져온다.
+  // (예전엔 전체 샵 정보를 실어 보내서 홈 응답이 1.3MB를 넘었고, 그래서 화면이 늦게 떴다)
+  return { popularShops, hotMap }
+}, ['home-shops-v2'], { revalidate: 60 })
 
 const getHomeRoutes = unstable_cache(async () => ((await getPublicRoutes()) ?? []).slice(0, 5), ['home-routes-v1'], { revalidate: 60 })
 const getHomeWorks = unstable_cache(() => getActiveWorks(10), ['home-works-v1'], { revalidate: 60 })
@@ -53,7 +48,7 @@ export default async function HomePage() {
         <div>
           <HomeFeed popularShops={shopData.popularShops} routes={routes} activeWorks={activeWorks} events={events} />
         </div>
-        <HomeRail shops={shopData.mapShops} hotMap={shopData.hotMap} eventCount={events.length} />
+        <HomeRail hotMap={shopData.hotMap} eventCount={events.length} />
       </div>
     </>
   )

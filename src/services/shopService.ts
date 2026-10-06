@@ -1237,3 +1237,20 @@ export async function reorderShopImages(items: { id: string; sort_order: number 
   )
   return results.every(r => !r.error)
 }
+
+/** 홈 덕질 지도(PC)용 — 핀·짧은 목록에 필요한 값만 가볍게. (전체 샵 정보를 홈 서버 응답에 싣지 않으려고 따로 둔다) */
+export async function getShopsForMiniMap(): Promise<Shop[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('shops')
+    .select(`
+      id, slug, name, lat, lng, place_id, region, city, district,
+      places ( lat, lng ),
+      hours, status, visit_count, bookmark_count, rating_avg, rating_count,
+      shop_images ( image_url, is_cover, sort_order ),
+      cats
+    `)
+    .eq('status', 'active')
+  if (error) { console.error('getShopsForMiniMap error:', error); return [] }
+  return (data ?? []).map(toShop)
+}

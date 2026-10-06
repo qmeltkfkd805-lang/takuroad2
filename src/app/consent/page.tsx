@@ -3,7 +3,7 @@
    AuthProvider 가 여기로 보낸다. 동의하면 원래 보던 화면으로 돌아간다. */
 import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import ConsentChecklist, { EMPTY_CONSENT, requiredDone, type ConsentValue } from '@/components/auth/ConsentChecklist'
+import ConsentChecklist, { EMPTY_CONSENT, requiredDone, missingRequired, type ConsentValue } from '@/components/auth/ConsentChecklist'
 import { recordConsents } from '@/lib/consent'
 import { useAuth } from '@/components/layout/AuthProvider'
 
@@ -44,6 +44,13 @@ function ConsentInner() {
           style={{ width: '100%', marginTop: 20, padding: 14, border: 'none', borderRadius: 12, fontFamily: 'inherit', fontSize: 16, fontWeight: 800, color: '#fff', background: ok && !busy ? 'var(--accent)' : 'var(--border)', cursor: ok && !busy ? 'pointer' : 'not-allowed' }}>
           {busy ? '저장 중…' : '동의하고 계속하기'}
         </button>
+        {/* 버튼이 왜 안 눌리는지 */}
+        {!ok && !busy && (
+          <p role="status" style={{ fontSize: 12.5, color: 'var(--muted)', margin: '10px 0 0', padding: '10px 12px', borderRadius: 10, background: 'var(--surface2)', lineHeight: 1.5 }}>
+            <span aria-hidden style={{ color: 'var(--accent)', fontWeight: 900, marginRight: 6 }}>!</span>
+            필수 동의가 남았어요: {missingRequired(value).join(', ')}
+          </p>
+        )}
         <button type="button" onClick={async () => { await signOut(); router.replace('/') }}
           style={{ display: 'block', margin: '14px auto 0', background: 'none', border: 'none', fontFamily: 'inherit', fontSize: 13, color: 'var(--muted)', textDecoration: 'underline', cursor: 'pointer' }}>
           동의하지 않고 로그아웃
