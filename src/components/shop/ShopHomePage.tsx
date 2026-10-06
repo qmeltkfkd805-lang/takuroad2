@@ -100,8 +100,9 @@ export default function ShopHomePage() {
               </button>
             </div>
             <div className={styles.catGrid}>
-              {CATEGORIES.slice(0, 7).map(c => (
-                <button key={c.slug} className={styles.catTile} onClick={() => go(`/shops/all?cat=${c.slug}`)}>
+              {/* PC는 7개, 📱 모바일은 전부 가로로 길게 (넘겨서 보기) */}
+              {CATEGORIES.map((c, i) => (
+                <button key={c.slug} className={`${styles.catTile}${i >= 7 ? ' ' + styles.catExtra : ''}`} onClick={() => go(`/shops/all?cat=${c.slug}`)}>
                   <span className={styles.catIcon} style={{ background: c.bgColor }}>
                     <Icon name={c.icon as any} size={22} />
                   </span>
@@ -109,6 +110,11 @@ export default function ShopHomePage() {
                 </button>
               ))}
             </div>
+            {/* 📱 모바일엔 히어로가 없어서 샵 등록 버튼만 여기에 */}
+            <button className={styles.regBtnMobile} onClick={() => go('/shop/new')}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
+              샵 등록하기
+            </button>
           </div>
 
           {/* 지금 핫한 샵 — 3열 */}
