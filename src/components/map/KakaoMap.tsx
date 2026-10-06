@@ -19,6 +19,8 @@ interface KakaoMapProps {
   bubble?: { key: string; lat: number; lng: number; content: ReactNode } | null
   /** 말풍선을 맞출 때 위쪽에 비워 둘 높이(px) — 지도 위에 떠 있는 필터 등 */
   bubbleTopPad?: () => number
+  /** 고른 카테고리 이름 — 있으면 핀을 모두 그 카테고리 색으로 통일 (없으면 샵마다 자기 색) */
+  pinCat?: string | null
 }
 
 export interface KakaoMapRef {
@@ -39,6 +41,7 @@ const KakaoMap = forwardRef<KakaoMapRef, KakaoMapProps>(function KakaoMap({
   onSelectGroup,
   bubble,
   bubbleTopPad,
+  pinCat = null,
 }, ref) {
   const containerRef = useRef<HTMLDivElement>(null)
   const { isLoaded, renderMarkers, setActive, renderEventMarkers, onMapClick: registerClick, moveCenter, setMyLocation, relayout, showBubble, hideBubble, fitBubble } = useMap(containerRef)
@@ -64,8 +67,8 @@ const KakaoMap = forwardRef<KakaoMapRef, KakaoMapProps>(function KakaoMap({
 
   useEffect(() => {
     if (!isLoaded) return
-    renderMarkers(shops, activeRef.current, s => selShopRef.current(s), g => selGroupRef.current(g))
-  }, [isLoaded, shops, renderMarkers])
+    renderMarkers(shops, activeRef.current, s => selShopRef.current(s), g => selGroupRef.current(g), pinCat)
+  }, [isLoaded, shops, renderMarkers, pinCat])
 
   // 선택만 바뀌면 핀 크기만 바꾼다
   useEffect(() => {

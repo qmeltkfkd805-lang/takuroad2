@@ -423,6 +423,8 @@ export default function MapPage() {
             onSelectEvent={handleSelectEvent}
             onMapClick={handleMapClick}
             onSelectGroup={handleSelectGroup}
+            /* 카테고리를 고르면 핀을 모두 그 카테고리 색으로 — 전체 보기일 때만 알록달록 */
+            pinCat={selectedCat && selectedCat !== '전체' && CATEGORY_NAME_MAP[selectedCat] ? selectedCat : null}
             /* 고른 샵·이벤트 — 가운데 모달 대신 그 위치(핀 위)에 말풍선으로 */
             bubble={selectedShop && dispLat(selectedShop) && dispLng(selectedShop) ? {
               key: selectedShop.id,

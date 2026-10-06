@@ -122,7 +122,9 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     shops: Shop[],
     activeId: string | null,
     onClick: (shop: Shop) => void,
-    onGroupClick: (shops: Shop[]) => void
+    onGroupClick: (shops: Shop[]) => void,
+    /** 카테고리를 골랐으면 그 카테고리 이름 — 모든 핀을 그 색 하나로 (전체 보기일 때만 샵마다 색이 다르다) */
+    forceCat: string | null = null,
   ) => {
     onShopClickRef.current = onClick
     onGroupClickRef.current = onGroupClick
@@ -146,7 +148,7 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
     const next = new Map<string, PinEntry>()
     posMap.forEach((group, key) => {
       const first = group[0]
-      const color = catColor((first as any).cat ?? (first.cats && first.cats[0]))
+      const color = catColor(forceCat ?? (first as any).cat ?? (first.cats && first.cats[0]))
       const ids = group.map(s => s.id)
       const sig = ids.join('|') + '#' + color
       const old = pinsRef.current.get(key)
