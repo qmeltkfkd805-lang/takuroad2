@@ -20,7 +20,7 @@ import { ipTypeList } from '@/lib/constants/ipType'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { deleteWork } from '@/services/workRegisterService'
 import styles from './WorkHomePage.module.css'
-import { useDragScroll } from '@/hooks/useDragScroll'
+import { useSlider } from '@/hooks/useSlider'
 
 const AVAIL_COLOR: Record<string, string> = {
   many: 'var(--green)', normal: 'var(--accent)', few: '#EAB308',
@@ -109,9 +109,10 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
     return () => document.removeEventListener('mousedown', onDoc)
   }, [menuOpen])
   // 가로 줄(새 소식·굿즈샵·루트) — PC에서 마우스로 밀어서 넘기기
-  const feedDrag = useDragScroll()
-  const shopDrag = useDragScroll()
-  const routeDrag = useDragScroll()
+  // 가로 줄 — 홈과 같이 마우스를 줄 위에 올리면 < > 버튼이 뜬다 (SlideRail)
+  const feedSlider = useSlider(212)
+  const shopSlider = useSlider(212)
+  const routeSlider = useSlider(312)
   const tabsRef = useRef<HTMLElement | null>(null)
 
   // 커버가 없으면 히어로 이미지를 대표/인기 팬아트로 채움
@@ -259,9 +260,9 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
                   )}
                   {/* 나머지 소식 — 가로로 넘겨 보기 */}
                   {rest.length > 0 && (
-                    <div className={styles.hScroll} {...feedDrag}>
+                    <SlideRail slider={feedSlider}>
                       {rest.map((item, i) => (<div key={i} className={styles.hItem}><HomeFeedCard item={item} /></div>))}
-                    </div>
+                    </SlideRail>
                   )}
                 </>
               )
@@ -274,7 +275,7 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
             <div className={styles.rowScroll}>
               {eventCards.map((e: any) => (
                 <div key={e.id} className={styles.rowItem}>
-                  <EventCard event={{ id: e.id, title: e.title, type: e.type, workName: tag.name, place: e.shopName, startDate: e.startDate, endDate: e.endDate, coverUrl: null }} now={now} onClick={() => e.shopSlug && router.push(`/shop/${e.shopSlug}`)} />
+                  <EventCard event={{ id: e.id, title: e.title, type: e.type, workName: tag.name, place: e.shopName, startDate: e.startDate, endDate: e.endDate, coverUrl: e.coverUrl ?? tag.cover_url ?? null }} now={now} onClick={() => e.shopSlug && router.push(`/shop/${e.shopSlug}`)} />
                 </div>
               ))}
               <Link href={`/event/new?tag=${tag.id}`} className={styles.report}>+ 이벤트 등록하기</Link>
@@ -286,9 +287,9 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
             {/* 전체 보기 → 샵 전체보기 화면에서 이 작품이 골라진 상태로 */}
             <SectionHeader title="굿즈샵" icon={<Icon name="colorshop" size={24} />} plainIcon actionLabel={shops.length > 0 ? '전체 보기' : undefined} onAction={() => router.push(`/shops/all?works=${encodeURIComponent(tag.slug)}`)} />
             {shops.length > 0 ? (
-              <div className={styles.hScroll} {...shopDrag}>
+              <SlideRail slider={shopSlider}>
                 {shops.map((s: any) => (<div key={s.id} className={styles.hItem}><ShopCard shop={s} meta="region" onClick={() => router.push(`/shop/${s.slug}`)} /></div>))}
-              </div>
+              </SlideRail>
             ) : <Empty text="아직 등록된 샵이 없어요" />}
           </section>}
 
@@ -319,13 +320,13 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
             {/* 전체 보기 → 루트 전체보기 화면에서 이 작품이 골라진 상태로 */}
             <SectionHeader title="성지순례 루트" icon={<Icon name="colorroute" size={24} />} plainIcon actionLabel={routes.length > 0 ? '전체 보기' : undefined} onAction={() => router.push(`/routes/all?work=${encodeURIComponent(tag.name)}`)} />
             {routes.length > 0 ? (
-              <div className={styles.hScroll} {...routeDrag}>
+              <SlideRail slider={routeSlider}>
                 {routes.map((r: any) => (
                   <div key={r.id} className={styles.hItemWide}>
                     <RouteCard route={{ id: r.id, title: r.title, summary: r.description ?? null, shopCount: r.route_shops?.length ?? 0, distanceM: r.total_distance_m, durationMin: r.total_duration_min }} onClick={() => router.push(`/route/${r.share_token}`)} />
                   </div>
                 ))}
-              </div>
+              </SlideRail>
             ) : <Empty text="아직 추천 루트가 없어요" />}
           </section>}
 
@@ -389,6 +390,27 @@ function Empty({ strong, text }: { strong?: string; text: string }) {
     <div className={styles.empty}>
       {strong && <div className={styles.emptyStrong}>{strong}</div>}
       {text}
+    </div>
+  )
+}
+
+/* 가로 줄 + 좌우 화살표 (홈 HomeFeed 의 SlideRail 과 같은 방식).
+   화살표는 마우스를 줄 위에 올렸을 때만 보이고(CSS :hover), 더 넘길 쪽이 없으면 그쪽은 그리지 않는다.
+   터치 기기(모바일)에선 숨긴다 — 손가락으로 밀면 된다. */
+function SlideRail({ slider, children }: { slider: ReturnType<typeof useSlider>; children: React.ReactNode }) {
+  return (
+    <div className={styles.railWrap}>
+      <div className={styles.hScroll} {...slider.railProps}>{children}</div>
+      {slider.canLeft && (
+        <button type="button" aria-label="이전" onClick={() => slider.scrollBy(-1)} className={`${styles.railArrow} ${styles.railArrowLeft}`}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+      )}
+      {slider.canRight && (
+        <button type="button" aria-label="다음" onClick={() => slider.scrollBy(1)} className={`${styles.railArrow} ${styles.railArrowRight}`}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+      )}
     </div>
   )
 }

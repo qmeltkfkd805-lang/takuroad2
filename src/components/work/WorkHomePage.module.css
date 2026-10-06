@@ -226,15 +226,32 @@
   display: flex; gap: 12px; overflow-x: auto; overflow-y: hidden;
   padding: 2px 2px 8px; scrollbar-width: none;
   scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
-  cursor: grab;
+  scroll-padding-left: 2px;   /* 카드가 안쪽 여백만큼 밀려 붙지 않게 — 맨 앞에선 < 버튼이 안 뜨도록 */
 }
 .hScroll::-webkit-scrollbar { display: none; }
 .hItem { flex: 0 0 200px; min-width: 0; scroll-snap-align: start; }
 .hItemWide { flex: 0 0 300px; min-width: 0; scroll-snap-align: start; }
 .hItem > *, .hItemWide > * { height: 100%; }
 .hItem img, .hItemWide img { -webkit-user-drag: none; user-select: none; }
+
+/* 가로 줄 좌우 화살표 — 홈과 같이 마우스를 줄 위에 올렸을 때만 보인다 */
+.railWrap { position: relative; }
+.railArrow {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+  width: 42px; height: 42px; border-radius: 9999px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  box-shadow: 0 6px 18px rgba(0,0,0,.16);
+  display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0;
+  opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease;
+}
+.railArrowLeft { left: 8px; }
+.railArrowRight { right: 8px; }
+.railWrap:hover .railArrow { opacity: 1; pointer-events: auto; }
+.railArrow:hover { transform: translateY(-50%) scale(1.06); }
+/* 터치 기기(모바일)는 손가락으로 밀면 되니 화살표를 숨긴다 */
+@media (pointer: coarse) { .railArrow { display: none; } }
 @media (pointer: coarse) and (max-width: 1023px) {
-  .hScroll { cursor: auto; margin: 0 -4px; padding: 2px 4px 8px; }
+  .hScroll { margin: 0 -4px; padding: 2px 4px 8px; scroll-padding-left: 4px; }
   .hItem { flex-basis: 150px; }
   .hItemWide { flex-basis: 260px; }
 }
