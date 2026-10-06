@@ -84,7 +84,7 @@ const QUICK_CATALOG: QuickItem[] = [
   { key: 'badges', label: '배지', icon: 'medal', view: 'badges' },
   { key: 'growth', label: '성장센터', icon: 'sparkle', view: 'growth' },
   { key: 'chronicle', label: '연대기', icon: 'calendar', view: 'chronicle' },
-  { key: 'collection', label: '컬렉션', icon: 'collection', view: 'collection' },
+  { key: 'collection', label: '컬렉션', icon: 'collection', href: '/collection' },   // 나의 덕질 컬렉션 화면 (사이드바에서 옮겨 옴)
 ]
 const QUICK_BY_KEY = new Map<string, QuickItem>(QUICK_CATALOG.map(i => [i.key, i]))
 const DEFAULT_QUICK = ['comments', 'saved', 'savedroutes', 'likedworks', 'posts', 'visited']
@@ -481,7 +481,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
               <section className={`${styles.card} ${styles.collBadgeMobile}`}>
                 <div className={styles.cardHead}>
                   <span className={styles.cardTitle}>내 컬렉션</span>
-                  <button className={styles.moreLink} onClick={() => setView('collection')}>전체 보기 ›</button>
+                  <button className={styles.moreLink} onClick={() => router.push('/collection')}>전체 보기 ›</button>
                 </div>
                 <div className={styles.mCollRow}>
                   {collection ? (
@@ -512,7 +512,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
             <section className={`${styles.card} ${styles.collCard}`}>
               <div className={styles.cardHead}>
                 <span className={styles.cardTitle}>나의 컬렉션</span>
-                <button className={styles.moreLink} onClick={() => setView('collection')}>전체 보기 ›</button>
+                <button className={styles.moreLink} onClick={() => router.push('/collection')}>전체 보기 ›</button>
               </div>
               {collection ? (
                 <button className={styles.collItem} onClick={() => collection.slug && router.push(`/tag/${collection.slug}`)}>
