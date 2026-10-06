@@ -3,12 +3,33 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { HeroCard } from '@/lib/home/heroTypes'
+import { useAuth } from '@/components/layout/AuthProvider'
 import styles from './HeroCarousel.module.css'
 
 const AUTO_MS = 5000
 const SWIPE_THRESHOLD = 50
 
-export default function HeroCarousel({ slots }: { slots: HeroCard[] }) {
+export default function HeroCarousel({ slots: initialSlots }: { slots: HeroCard[] }) {
+  // 처음엔 서버가 미리 만든 비로그인 기준 히어로. 로그인 사용자면 최애 작품 기준으로 다시 받아 바꿔 낀다.
+  const [slots, setSlots] = useState(initialSlots)
+  useEffect(() => { setSlots(initialSlots) }, [initialSlots])
+  const { user } = useAuth()
+  const userId = user?.id ?? null
+  useEffect(() => {
+    if (!userId) return
+    let alive = true
+    fetch('/api/home/hero', { cache: 'no-store' })
+      .then(r => (r.ok ? r.json() : null))
+      .then(j => {
+        const next: HeroCard[] | null = j?.slots ?? null
+        if (!alive || !next || next.length === 0) return
+        // 내용이 같으면(최애 작품 이벤트가 없으면) 그대로 둔다 — 깜빡임 없음
+        setSlots(prev => (prev.map(s => s.id + s.label).join('|') === next.map(s => s.id + s.label).join('|') ? prev : next))
+      })
+      .catch(() => {})
+    return () => { alive = false }
+  }, [userId])
+
   const [idx, setIdx] = useState(0)
   const [paused, setPaused] = useState(false)      // hover/포커스/드래그 등 일시 정지
   const dragX = useRef(0)

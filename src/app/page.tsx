@@ -3,7 +3,7 @@ import { getShops } from '@/services/shopService'
 import { getPublicRoutes } from '@/services/routeService'
 import { getActiveWorks } from '@/services/activeWorksService'
 import { getActiveEvents } from '@/services/eventService'
-import { getHeroSlots } from '@/services/heroService.server'
+import { getPublicHeroSlots } from '@/services/heroService.server'
 import { pickHotMap } from '@/lib/home/hotMap'
 import { imagesFirst } from '@/lib/utils/shopOrder'
 import HomeFeed from '@/components/home/HomeFeed'
@@ -11,12 +11,14 @@ import HomeRail from '@/components/home/HomeRail'
 import HeroCarousel from '@/components/home/HeroCarousel'
 import styles from '@/components/home/rail.module.css'
 
-// 홈은 히어로가 로그인 사용자(관심 작품)에 따라 달라서 요청마다 렌더한다.
-export const dynamic = 'force-dynamic'
+// ⚡ 홈은 미리 만들어 두고 60초마다 새로 만든다 (샵·이벤트 페이지처럼 바로 뜸).
+//    예전엔 히어로가 로그인 사용자(최애 작품)에 따라 달라서 요청마다 서버에서 렌더했다 →
+//    이제 히어로는 비로그인 기준으로 그리고, 로그인 사용자는 화면이 뜬 뒤 HeroCarousel 이 개인화 결과로 바꿔 낀다.
+export const revalidate = 60
 
 /* ⚡ 홈 로딩 속도 — 누구에게나 같은 공개 데이터(샵·루트·작품·이벤트)는 60초 동안 캐시해 둔다.
    예전에는 홈을 열 때마다 전체 샵 + 전체 루트(샵·태그 포함)를 DB에서 새로 읽어서 느렸다.
-   히어로(getHeroSlots)만 사용자별이라 매번 읽는다. */
+   히어로도 공통 재료는 60초 캐시(getHeroBase), 사용자별 정렬만 /api/home/hero 에서 따로. */
 const getHomeShopData = unstable_cache(async () => {
   const allShops = await getShops()
   // 인기 샵: 사진 있는 샵 먼저 → 방문 많은 순
@@ -36,7 +38,7 @@ export default async function HomePage() {
     getHomeShopData(),
     getHomeRoutes(),
     getHomeWorks(),
-    getHeroSlots(),          // 홈 히어로: 수동 슬롯 우선 + 시작예정 이벤트 자동 채움 (최대 5)
+    getPublicHeroSlots(),    // 홈 히어로: 수동 슬롯 우선 + 시작예정 이벤트 자동 채움 (최대 5, 비로그인 기준)
     getHomeEvents(),
   ])
   return (
