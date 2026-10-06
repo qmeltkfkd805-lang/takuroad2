@@ -346,7 +346,7 @@ export async function uploadEventCover(file: File): Promise<{ url: string | null
 
   const { error } = await supabase.storage
     .from('event-goods')
-    .upload(`covers/${rand}.${ext}`, up, { contentType: prep.contentType })
+    .upload(`covers/${rand}.${ext}`, up, { cacheControl: '31536000', contentType: prep.contentType })
   if (error) {
     console.error('[이벤트 커버 업로드 실패]', error.message)
     return { url: null, error: error.message }

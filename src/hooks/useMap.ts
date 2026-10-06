@@ -6,6 +6,8 @@ import { MapEvent } from '@/services/mapEventService'
 import { catColor } from '@/lib/constants/categories'
 import { loadMaps, createMap, createOverlay, MapInstance, OverlayHandle } from '@/lib/map/provider'
 import { eventSpotKey } from '@/lib/map/eventSpot'
+import { thumbUrl } from '@/lib/utils/thumb'
+import { requestThumb } from '@/components/common/ThumbImg'
 
 // Place 소속 샵은 place 좌표로 접어서 표시한다 (저장 좌표 lat/lng 은 안 건드림)
 const dispLat = (s: any) => s.displayLat ?? s.lat ?? 0
@@ -236,10 +238,17 @@ export function useMap(containerRef: RefObject<HTMLDivElement | null>) {
       const el = document.createElement('div')
       el.style.cssText = 'position:relative;cursor:pointer;width:34px;height:34px'
       if (off.dx || off.dy) el.style.transform = `translate(${off.dx}px, ${off.dy}px)`
-      el.innerHTML = (ev.coverUrl
-        ? `<div style="width:34px;height:34px;border-radius:50%;border:2.5px solid #e8006f;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.35);background:#fff"><img src="${ev.coverUrl}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover" /></div>`
+      // 34px 동그라미에 원본 포스터를 받지 않도록 작은 썸네일 사용 (없으면 원본으로 바꾸고 만들어 달라고 요청)
+      const pinSrc = ev.coverUrl ? (thumbUrl(ev.coverUrl) ?? ev.coverUrl) : null
+      el.innerHTML = (pinSrc
+        ? `<div style="width:34px;height:34px;border-radius:50%;border:2.5px solid #e8006f;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.35);background:#fff"><img src="${pinSrc}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover" /></div>`
         : `<div style="width:30px;height:30px;border-radius:50%;border:2.5px solid #fff;background:#e8006f;box-shadow:0 1px 3px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.7 1.4 6.8L12 17.8 5.9 21.2l1.4-6.8L2.2 9.7l6.9-.7z"/></svg></div>`)
         + (n > 1 ? `<span style="position:absolute;top:-5px;right:-7px;min-width:18px;height:18px;padding:0 5px;box-sizing:border-box;border-radius:9px;background:#e8006f;color:#fff;border:2px solid #fff;font:800 10.5px/14px sans-serif;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.3)">${n}</span>` : '')
+      const pinImg = el.querySelector('img')
+      if (pinImg && ev.coverUrl && pinSrc !== ev.coverUrl) {
+        const orig = ev.coverUrl
+        pinImg.addEventListener('error', () => { pinImg.src = orig; requestThumb(orig) }, { once: true })
+      }
       el.addEventListener('click', () => onEventClickRef.current(ev))
       const handle = createOverlay(map, { lat: ev.lat, lng: ev.lng, content: el, yAnchor: 0.5, xAnchor: 0.5, hidden: !inView(ev.lat, ev.lng) })
       next.set(key, { handle, sig, lat: ev.lat, lng: ev.lng })

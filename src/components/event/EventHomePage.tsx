@@ -14,6 +14,7 @@ import { getEventHomeItems, getRecentlyEndedEventItems, getMyAffinityTagIds, Eve
 import { getMySavedEventIds, saveEvent, unsaveEvent } from '@/services/eventSaveService'
 import { monthCells, eventOnDay, ymd, addDays, WEEKDAY_KO } from '@/lib/event/calendar'
 import styles from './EventHomePage.module.css'
+import ThumbImg from '@/components/common/ThumbImg'
 
 const MINT = '#14B8A0', BLUE = '#3B9BE8', PINK = '#FF5692'
 const TYPE_LABEL: Record<string, string> = { popup: '팝업스토어', collab_cafe: '콜라보 카페', exhibition: '전시', official_event: '행사' }
@@ -81,7 +82,7 @@ function PosterCard({ ev, saved, onToggleSave, onOpen, ended = false, branchCoun
     <div className={styles.card} onClick={() => onOpen(ev)}>
       <div className={styles.poster}>
         {showImg
-          ? <img className={styles.posterImg + grey} src={ev.coverUrl!} alt="" draggable={false} onError={() => setImgErr(true)} />
+          ? <ThumbImg className={styles.posterImg + grey} src={ev.coverUrl!} loading="lazy" alt="" draggable={false} onError={() => setImgErr(true)} />
           : <div className={styles.posterPh + grey}><Icon name={TYPE_ICON[ev.type] ?? 'calendar'} size={44} style={{ opacity: .4 }} /></div>}
         <span className={styles.badgeTL}><EventStatusBadge startDate={ev.startDate} endDate={ev.endDate} /></span>
         {branchCount > 1 && (
@@ -436,7 +437,7 @@ export default function EventHomePage() {
               <button key={i.id} className={styles.endingItem} onClick={() => openEvent(i)}>
                 <span className={styles.endingD}>{d === 0 ? '오늘' : `D-${d}`}</span>
                 <span className={styles.endingThumb}>
-                  {i.coverUrl ? <img src={i.coverUrl} alt="" /> : <Icon name={TYPE_ICON[i.type] ?? 'calendar'} size={14} style={{ opacity: .5 }} />}
+                  {i.coverUrl ? <ThumbImg src={i.coverUrl} alt="" loading="lazy" /> : <Icon name={TYPE_ICON[i.type] ?? 'calendar'} size={14} style={{ opacity: .5 }} />}
                 </span>
                 <span className={styles.endingName}>{i.title}</span>
               </button>

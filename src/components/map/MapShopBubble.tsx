@@ -5,6 +5,7 @@ import { Shop } from '@/types/shop'
 import { ROUTES } from '@/lib/constants/routes'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import { getTodayStatus } from '@/lib/utils/date'
+import ThumbImg from '@/components/common/ThumbImg'
 
 /* 지도에서 고른 샵 — 샵 위치(핀 위)에 뜨는 말풍선.
    예전 가운데 모달(MapPinModal)과 같은 정보: 커버 · 이름 · 오늘 영업 · 주소 · 카테고리 · 전체보기.
@@ -52,7 +53,7 @@ export default function MapShopBubble({ shop, onClose }: Props) {
           style={{ position: 'relative', height: 112, background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
         >
           {cover
-            ? <img src={cover} alt={shop.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            ? <ThumbImg src={cover} alt={shop.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
             : <span style={{ color: 'var(--muted)', fontSize: 13 }}>샵</span>}
           <button
             type="button"

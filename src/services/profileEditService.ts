@@ -66,7 +66,7 @@ export async function uploadAvatarBlob(
   const path = `${userId}/${crypto.randomUUID()}.webp`
   const { error } = await supabase.storage
     .from(AVATAR_BUCKET)
-    .upload(path, blob, { contentType: 'image/webp', upsert: false })
+    .upload(path, blob, { cacheControl: '31536000', contentType: 'image/webp', upsert: false })
   if (error) {
     console.error('[아바타 업로드 실패]', error.message)
     return { ok: false, error: '이미지 업로드에 실패했어요.' }

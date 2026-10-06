@@ -1007,7 +1007,7 @@ export async function uploadShopImage(file: File, shopSlug: string): Promise<Upl
 
   const { error } = await supabase.storage
     .from('shop-images')
-    .upload(path, prep.data, { contentType: prep.contentType, upsert: false })
+    .upload(path, prep.data, { cacheControl: '31536000', contentType: prep.contentType, upsert: false })
   if (error) {
     console.error('[uploadShopImage]', error.message)   // 응답 전문·URL·키는 남기지 않는다
     return { ok: false, code: 'upload-failed' }

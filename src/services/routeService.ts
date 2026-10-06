@@ -370,7 +370,7 @@ export async function uploadRouteCover(file: File, userId: string, routeKey: str
      두 장이 올라가도 경로가 겹치지 않게 한다. */
   const key = routeKey && routeKey !== 'new' ? routeKey : 'drafts'
   const path = `routes/${userId}/${key}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${prep.ext}`
-  const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { contentType: prep.contentType })
+  const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { cacheControl: '31536000', contentType: prep.contentType })
   if (error) { console.error('[route cover upload]', error); return null }
   const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
   return data.publicUrl
@@ -475,7 +475,7 @@ export async function uploadFloorMap(userId: string, file: File): Promise<string
   const { blob, ext, type } = await shrink(file)
   const id = (() => { try { return crypto.randomUUID() } catch { return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}` } })()
   const path = `${userId}/floormaps/${id}.${ext}`
-  const { error } = await supabase.storage.from('route-photos').upload(path, blob, { contentType: type, upsert: false })
+  const { error } = await supabase.storage.from('route-photos').upload(path, blob, { cacheControl: '31536000', contentType: type, upsert: false })
   if (error) { console.error('[floor map upload]', error.message); return null }
   return supabase.storage.from('route-photos').getPublicUrl(path).data.publicUrl
 }

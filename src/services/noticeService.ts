@@ -66,7 +66,7 @@ export async function uploadNoticeImage(file: File): Promise<string | null> {
   const supabase = createClient()
   const prep = await prepareImage(file)
   const path = 'notices/' + Date.now() + '.' + prep.ext
-  const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { contentType: prep.contentType })
+  const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { cacheControl: '31536000', contentType: prep.contentType })
   if (error) { console.error('uploadNoticeImage:', JSON.stringify(error)); return null }
   const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
   return data.publicUrl

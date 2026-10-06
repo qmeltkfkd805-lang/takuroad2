@@ -4,6 +4,7 @@ import { Shop } from '@/types/shop'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import { formatDistance } from '@/hooks/useCurrentLocation'
 import VerifiedBadge from './VerifiedBadge'
+import ThumbImg from '@/components/common/ThumbImg'
 
 interface ShopCardProps {
   shop: Shop
@@ -44,8 +45,8 @@ export default function ShopCard({ shop, isActive, onClick }: ShopCardProps) {
         fontSize: '22px',
       }}>
         {(shop.eventCover ?? shop.images[0]) ? (
-          <img
-            src={shop.eventCover ?? shop.images[0]}
+          <ThumbImg
+            src={(shop.eventCover ?? shop.images[0])!}
             alt={shop.name}
             loading="lazy"
             decoding="async"

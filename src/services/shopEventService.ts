@@ -119,7 +119,7 @@ export async function uploadEventImage(file: File, shopSlug: string): Promise<st
 
   const { error } = await supabase.storage
     .from('shop-images')
-    .upload(path, prep.data, { contentType: prep.contentType })
+    .upload(path, prep.data, { cacheControl: '31536000', contentType: prep.contentType })
 
   if (error) return null
 
@@ -138,7 +138,7 @@ export async function uploadEventVideo(file: File, shopSlug: string): Promise<st
 
   const { error } = await supabase.storage
     .from('shop-images')
-    .upload(path, file, { contentType: file.type })
+    .upload(path, file, { cacheControl: '31536000', contentType: file.type })
 
   if (error) {
     console.error('uploadEventVideo 실패:', file.type, file.size, JSON.stringify(error))

@@ -35,7 +35,7 @@ export async function uploadHighlightImage(file: File, shopSlug: string): Promis
 
   const { error } = await supabase.storage
     .from('shop-images')
-    .upload(path, prep.data, { contentType: prep.contentType })
+    .upload(path, prep.data, { cacheControl: '31536000', contentType: prep.contentType })
 
   if (error) return null
 

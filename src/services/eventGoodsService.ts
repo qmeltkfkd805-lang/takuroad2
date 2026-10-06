@@ -131,7 +131,7 @@ export async function uploadGoodsImage(eventId: string, file: File): Promise<Upl
 
   const { error } = await supabase.storage
     .from('event-goods')
-    .upload(path, up, { contentType: prep.contentType, upsert: false })
+    .upload(path, up, { cacheControl: '31536000', contentType: prep.contentType, upsert: false })
   if (error) {
     // 원인을 삼키지 않는다 — 버킷 없음 / RLS 거부 / 용량 초과가 전부 여기로 온다
     console.error('[굿즈 이미지 업로드 실패]', error.message, error)

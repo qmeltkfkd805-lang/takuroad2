@@ -68,7 +68,7 @@ export async function uploadVisitPhotos(userId: string, eventId: string, files: 
   for (const f of picked) {
     const { blob, ext, type } = await shrink(f)
     const path = `${userId}/${eventId}/${uuid()}.${ext}`
-    const { error: upErr } = await supabase.storage.from(BUCKET).upload(path, blob, { contentType: type, upsert: false })
+    const { error: upErr } = await supabase.storage.from(BUCKET).upload(path, blob, { cacheControl: '31536000', contentType: type, upsert: false })
     if (upErr) throw new Error('사진을 올리지 못했어요')
     // 공개 여부는 DB 기본값(public)을 따른다
     const { error: rowErr } = await supabase.from('event_visit_photos').insert({ user_id: userId, event_id: eventId, object_path: path } as any)

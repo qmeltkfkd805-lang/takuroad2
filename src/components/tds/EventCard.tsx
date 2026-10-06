@@ -2,6 +2,7 @@
 import { CSSProperties } from 'react'
 import { Icon } from './Icon'
 import { EventStatusBadge } from './EventStatusBadge'
+import ThumbImg from '@/components/common/ThumbImg'
 
 export type EventType = 'popup' | 'collab_cafe' | 'exhibition' | 'official_event'
 
@@ -55,7 +56,7 @@ export function EventCard({ event, now, onClick, style }: EventCardProps) {
     >
       <div style={{ position: 'relative', aspectRatio: '4 / 5', background: cover ? '#F7F7F8' : t.grad, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {cover ? (
-          <img src={cover} alt={event.title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
+          <ThumbImg src={cover} alt={event.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
         ) : (
           <Icon name={t.icon} size={46} style={{ opacity: 0.45 }} />
         )}

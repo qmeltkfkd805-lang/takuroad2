@@ -7,6 +7,7 @@ import { ShopHomeItem } from '@/services/shopHomeService'
 import { MapEvent, MAP_EVENT_TYPE_LABEL } from '@/services/mapEventService'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import styles from './ShopHomeCard.module.css'
+import ThumbImg from '@/components/common/ThumbImg'
 
 /** 2100 → 2.1k. 찜 수가 네 자리를 넘으면 카드가 흔들린다 */
 export const compact = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(1)}k` : String(n))
@@ -30,7 +31,7 @@ export default function ShopHomeCard({ shop, rank, compactOnMobile = false }: { 
   return (
     <article className={`${styles.card}${compactOnMobile ? ' ' + styles.mCompact : ''}`} onClick={() => router.push(ROUTES.shop(shop.slug))}>
       <div className={`${styles.thumb} ${isPoster ? styles.thumbContain : ''}`}>
-        {cover ? <img src={cover} alt="" loading="lazy" /> : <div className={styles.noImage}>사진 준비 중</div>}
+        {cover ? <ThumbImg src={cover} alt="" loading="lazy" /> : <div className={styles.noImage}>사진 준비 중</div>}
         {rank != null && (
           <span className={rank <= 3 ? styles.rankHot : styles.rank}>
             {rank <= 3 ? `HOT ${rank}` : rank}
@@ -88,7 +89,7 @@ export function EventHomeCard({ event, onClick }: { event: MapEvent; onClick: ()
   return (
     <article className={styles.card} onClick={onClick}>
       <div className={styles.thumb}>
-        {event.coverUrl ? <img src={event.coverUrl} alt="" /> : <div className={styles.noImage}>이벤트</div>}
+        {event.coverUrl ? <ThumbImg src={event.coverUrl} alt="" loading="lazy" /> : <div className={styles.noImage}>이벤트</div>}
       </div>
       <div className={styles.body}>
         <h3 className={styles.name} title={event.title}>{event.title}</h3>
@@ -124,7 +125,7 @@ export function ShopMiniCard({
   return (
     <article className={styles.mini} onClick={() => router.push(ROUTES.shop(shop.slug))}>
       <div className={styles.miniThumb}>
-        {cover ? <img src={cover} alt="" loading="lazy" /> : <div className={styles.noImage} />}
+        {cover ? <ThumbImg src={cover} alt="" loading="lazy" /> : <div className={styles.noImage} />}
         <span className={badgeTone === 'event' ? styles.badgeEvent : styles.badgeNew}>{badge}</span>
       </div>
       <div className={styles.miniBody}>

@@ -53,7 +53,7 @@ async function uploadPlaceCover(file: File): Promise<{ url: string | null; error
   const prep = await prepareImage(file)
   const path = `covers/${rand}.${prep.ext}`
 
-  const { error } = await supabase.storage.from('places').upload(path, prep.data, { contentType: prep.contentType })
+  const { error } = await supabase.storage.from('places').upload(path, prep.data, { cacheControl: '31536000', contentType: prep.contentType })
   if (error) {
     console.error('[Place 커버 업로드 실패]', error.message)
     return { url: null, error: error.message }

@@ -21,6 +21,7 @@ import { getFollowingIds } from '@/services/followService'
 import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import AppIcon from '@/components/tds/AppIcon'
 import LogoLoader from '@/components/common/LogoLoader'
+import ThumbImg from '@/components/common/ThumbImg'
 
 type Scope = 'all' | 'popular' | 'mine' | 'subscribed' | 'worksub'
 type View = 'list' | 'grid'
@@ -630,7 +631,7 @@ function PannRow({ p, showBoard, onOpen, tagNames }: { p: CommunityPost; showBoa
       {thumb && (
         <div style={{ width: 64, height: 64, borderRadius: 10, overflow: 'hidden', flexShrink: 0, background: 'var(--surface2)' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={thumb} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <ThumbImg src={thumb} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
       )}
     </div>

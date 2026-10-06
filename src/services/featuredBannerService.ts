@@ -39,7 +39,7 @@ export async function uploadBannerImage(file: File): Promise<string | null> {
   const supabase = createClient()
   const prep = await prepareImage(file)
   const path = `banners/${Date.now()}.${prep.ext}`
-  const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { contentType: prep.contentType })
+  const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { cacheControl: '31536000', contentType: prep.contentType })
   if (error) {
     console.error('배너 업로드 실패:', error.message)
     return null

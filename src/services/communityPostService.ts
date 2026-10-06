@@ -55,7 +55,7 @@ export async function uploadPostImage(file: File, userId: string): Promise<strin
   const supabase = createClient()
   const prep = await prepareImage(file)
   const path = `community/${userId}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${prep.ext}`
-  const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { contentType: prep.contentType })
+  const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { cacheControl: '31536000', contentType: prep.contentType })
   if (error) { console.error('[게시글 이미지 업로드 실패]', error.message); return null }
   const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
   return data.publicUrl
@@ -294,7 +294,7 @@ export async function uploadAppealImage(file: File, userId: string): Promise<str
   const supabase = createClient()
   const prep = await prepareImage(file)
   const path = `community-appeal/${userId}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${prep.ext}`
-  const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { contentType: prep.contentType })
+  const { error } = await supabase.storage.from('shop-images').upload(path, prep.data, { cacheControl: '31536000', contentType: prep.contentType })
   if (error) { console.error('[이의제기 이미지 업로드 실패]', error.message); return null }
   const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
   return data.publicUrl

@@ -7,6 +7,7 @@ import { ShopHomeItem } from '@/services/shopHomeService'
 import { MapEvent, MAP_EVENT_TYPE_LABEL } from '@/services/mapEventService'
 import { CATEGORY_NAME_MAP } from '@/lib/constants/categories'
 import styles from './ShopResultCards.module.css'
+import ThumbImg from '@/components/common/ThumbImg'
 
 export type CardView = 'grid' | 'list'
 
@@ -80,7 +81,7 @@ export function ShopResultCard({
   const thumb = (
     <div className={styles.thumb}>
       {cover
-        ? <img src={cover} alt="" loading="lazy" />
+        ? <ThumbImg src={cover} alt="" loading="lazy" />
         : <div className={styles.noImage}>사진 준비 중</div>}
       {badge && <span className={styles.status} data-tone={badge.tone}>{badge.text}</span>}
       {heart}
@@ -159,7 +160,7 @@ export function EventResultCard({
   const thumb = (
     <div className={`${styles.thumb} ${ended ? styles.thumbEnded : ''}`}>
       {event.coverUrl
-        ? <img src={event.coverUrl} alt="" loading="lazy" />
+        ? <ThumbImg src={event.coverUrl} alt="" loading="lazy" />
         : <div className={styles.noImage}>이벤트</div>}
       <span className={styles.status} data-tone={badge.tone}>{badge.text}</span>
     </div>

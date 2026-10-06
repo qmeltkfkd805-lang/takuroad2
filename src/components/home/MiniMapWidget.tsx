@@ -13,6 +13,7 @@ import { useSaved } from '@/hooks/useSaved'
 import { getUserShopContext } from '@/services/shopHomeService'
 import styles from './rail.module.css'
 import AppIcon from '@/components/tds/AppIcon'
+import ThumbImg from '@/components/common/ThumbImg'
 
 interface Props {
   shops: Shop[]
@@ -115,7 +116,7 @@ export default function MiniMapWidget({ shops, hotMap }: Props) {
     return (
       <Link key={shop.id} href={`/shop/${shop.slug}`} className={picked ? styles.mapShopCardOn : styles.mapShopCard}>
         <span className={styles.mapShopThumb}>
-          {shop.images?.[0] ? <img src={shop.images[0]} alt="" /> : <AppIcon name="shop" size={22} color="var(--muted)" />}
+          {shop.images?.[0] ? <ThumbImg src={shop.images[0]} alt="" loading="lazy" /> : <AppIcon name="shop" size={22} color="var(--muted)" />}
         </span>
         <span className={styles.mapShopBody}>
           {picked && (

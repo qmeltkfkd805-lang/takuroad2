@@ -405,7 +405,7 @@ function uuid(): string {
 async function uploadOwnGoodsImage(userId: string, blob: Blob): Promise<string> {
   const supabase = createClient()
   const path = `${userId}/${uuid()}.webp`
-  const { error } = await supabase.storage.from('goods-images').upload(path, blob, { contentType: 'image/webp', upsert: false })
+  const { error } = await supabase.storage.from('goods-images').upload(path, blob, { cacheControl: '31536000', contentType: 'image/webp', upsert: false })
   if (error) throw error
   return path
 }
@@ -519,7 +519,7 @@ export async function createSharedGoods(input: SharedGoodsInput, files: File[]):
     for (const f of files) {
       const blob = await processImageToWebp(f)
       const path = `community/${user.id}/${uuid()}.webp`
-      const { error } = await supabase.storage.from('shop-images').upload(path, blob, { contentType: 'image/webp', upsert: false })
+      const { error } = await supabase.storage.from('shop-images').upload(path, blob, { cacheControl: '31536000', contentType: 'image/webp', upsert: false })
       if (error) throw error
       const { data } = supabase.storage.from('shop-images').getPublicUrl(path)
       uploaded.push({ path, url: data.publicUrl })

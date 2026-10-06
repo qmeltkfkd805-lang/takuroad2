@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { MapEvent, MAP_EVENT_TYPE_LABEL } from '@/services/mapEventService'
+import ThumbImg from '@/components/common/ThumbImg'
 
 /* 지도에서 고른 이벤트 — 이벤트 위치(핀 위)에 뜨는 말풍선.
    포스터 · 제목 · 기간 · 장소 · 종류 · 전체보기.
@@ -101,7 +102,7 @@ export default function MapEventBubble({ events, initialId = null, onClose }: Pr
           style={{ position: 'relative', height: 150, background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', overflow: 'hidden' }}
         >
           {event.coverUrl
-            ? <img key={event.id} src={event.coverUrl} alt={event.title} draggable={false} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
+            ? <ThumbImg key={event.id} src={event.coverUrl} alt={event.title} draggable={false} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
             : <span style={{ color: 'var(--muted)', fontSize: 13 }}>이벤트</span>}
           <button
             type="button"

@@ -6,6 +6,7 @@ import { formatDistance } from '@/hooks/useCurrentLocation'
 import { Icon } from './Icon'
 import { StatusBadge } from './StatusBadge'
 import { Chip } from './Chip'
+import ThumbImg from '@/components/common/ThumbImg'
 
 const BADGE_STYLE: Record<string, { bg: string; fg: string; label: string }> = {
   recommend: { bg: '#E1F7F2', fg: '#0E7A63', label: '추천' },
@@ -44,7 +45,7 @@ export function ShopCard({ shop, meta = 'region', badge, onClick, onToggleSave, 
     >
       <div style={{ position: 'relative', height: 120, background: '#F7F7F8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {cover ? (
-          <img src={cover} alt={shop.name} loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <ThumbImg src={cover} alt={shop.name} loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         ) : (
           <Icon name="shop" size={40} style={{ opacity: 0.4 }} />
         )}

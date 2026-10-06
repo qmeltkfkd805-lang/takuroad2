@@ -106,7 +106,7 @@ export async function saveRouteReview(
   for (const [i, f] of files.entries()) {
     const { blob, ext, type } = await shrink(f)
     const path = `${userId}/${routeId}/${uuid()}.${ext}`
-    const { error: upErr } = await supabase.storage.from(BUCKET).upload(path, blob, { contentType: type, upsert: false })
+    const { error: upErr } = await supabase.storage.from(BUCKET).upload(path, blob, { cacheControl: '31536000', contentType: type, upsert: false })
     if (upErr) throw new Error('사진을 올리지 못했어요')
     const { error: rowErr } = await supabase.from('route_review_photos')
       .insert({ review_id: reviewId, user_id: userId, object_path: path, sort: Math.floor(Date.now() / 1000) + i } as any)

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { FeedItem, FeedTone } from '@/lib/feed/types'
 import { WorkIcon } from '@/components/tds/WorkIcon'
 import styles from './HomeFeedCard.module.css'
+import ThumbImg from '@/components/common/ThumbImg'
 
 // tone → 색 (소식 뱃지 알약 + 강조)
 const TONE: Record<FeedTone, { bg: string; fg: string }> = {
@@ -41,7 +42,7 @@ export default function HomeFeedCard({ item }: { item: FeedItem }) {
       {/* 상단 비주얼: 이미지 있으면 이미지, 없으면 색블록+이니셜 */}
       <div className={styles.visual} style={{ background: item.imageUrl ? undefined : tone.bg }}>
         {item.imageUrl ? (
-          <img src={item.imageUrl} alt="" className={styles.cover} draggable={false} />
+          <ThumbImg src={item.imageUrl} alt="" className={styles.cover} draggable={false} loading="lazy" />
         ) : (
           <WorkIcon size={36} style={{ opacity: 0.45 }} />
         )}
