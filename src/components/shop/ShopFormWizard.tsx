@@ -259,6 +259,11 @@ export default function ShopFormWizard({ mode, shop }: Props) {
         .sw-steps > button{ padding:8px 8px !important; gap:5px !important; }
         .sw-steps > button > span:first-child{ width:22px !important; height:22px !important; font-size:12px !important; }
         .sw-steps > button > span:last-child{ font-size:13px !important; }
+        /* 카테고리: 아이콘 빼고 글자만, 한 줄에 3개씩 — 화면을 덜 차지하게 */
+        .sw-cats{ grid-template-columns:repeat(3, minmax(0, 1fr)) !important; gap:6px !important; }
+        .sw-cats > button{ justify-content:center !important; padding:9px 4px !important; border-radius:10px !important; }
+        .sw-cats > button > :first-child{ display:none !important; }
+        .sw-cats > button > span:last-child{ font-size:12.5px !important; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
       }`}</style>
 
       {/* 등록 완료 → "이 샵의 사장님입니까?" 모달 */}
@@ -372,7 +377,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
             </Field>
 
             <Field label="샵 카테고리 *" hint="복수 선택 가능">
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 10 }}>
+              <div className="sw-cats" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 10 }}>
                 {CATEGORIES.map(cat => {
                   const selected = form.cats.includes(cat.name)
                   return (
