@@ -14,6 +14,7 @@ import {
   saveProfileEdit, checkNicknameAvailable, type ProfileEditSnapshot, type AvatarChange,
 } from '@/services/profileEditService'
 import LogoLoader from '@/components/common/LogoLoader'
+import { TitleChip } from '@/components/cosmetic/UserFace'
 
 const NICK_MIN = 2
 const NICK_MAX = 12
@@ -271,7 +272,7 @@ export default function ProfileEditPage() {
             <button className={styles.pickRow} onClick={() => setModal('title')}>
               <span className={styles.pickLabel}>대표 칭호</span>
               <span className={styles.pickValue}>
-                {curTitle ? <span className={styles.pickValText}>{curTitle.name}</span> : <span className={styles.pickPlaceholder}>선택 안 함</span>}
+                {curTitle ? <TitleChip name={curTitle.name} size="md" /> : <span className={styles.pickPlaceholder}>선택 안 함</span>}
                 <span className={styles.chev}><Chevron /></span>
               </span>
             </button>
@@ -359,7 +360,7 @@ function TitlePicker({ titles, current, onClose, onPick }: { titles: Cosmetic[];
             const locked = !t.unlocked
             return (
               <button key={t.id} className={`${styles.optRow} ${on ? styles.on : ''} ${locked ? styles.locked : ''}`} disabled={locked} onClick={() => !locked && onPick(t.id)}>
-                <span className={styles.optTitlePill}>{t.name}</span>
+                <TitleChip name={t.name} size="md" />{/* 실제 닉네임 옆에 보이는 칭호와 같은 모양 */}
                 <span className={styles.optBody}>{locked && <span className={styles.optSub}>{t.fromBadge ?? '잠김'}</span>}</span>
                 {on && <span className={styles.optCheck}><Check /></span>}
               </button>

@@ -38,15 +38,20 @@ export function UserAvatar({ src, name, size = 40, className }: AvatarProps) {
   )
 }
 
+/** 칭호 알약 모양 그대로 — 이름만 넘기면 된다 (프로필 편집처럼 아직 저장 안 한 칭호를 미리 보여줄 때) */
+export function TitleChip({ name, size = 'sm' }: { name: string; size?: 'sm' | 'md' }) {
+  return (
+    <span className={`${styles.title} ${size === 'md' ? styles.titleMd : ''}`}>
+      {name}
+    </span>
+  )
+}
+
 /** 칭호 — 닉네임 옆에 */
 export function UserTitle({ userId, size = 'sm' }: { userId?: string | null; size?: 'sm' | 'md' }) {
   const worn = useWorn(userId)
   if (!worn.title) return null
-  return (
-    <span className={`${styles.title} ${size === 'md' ? styles.titleMd : ''}`}>
-      {worn.title.name}
-    </span>
-  )
+  return <TitleChip name={worn.title.name} size={size} />
 }
 
 /** 아바타 + 닉네임 + 칭호 한 줄 — 커뮤니티·리뷰에서 제일 많이 쓴다 */
