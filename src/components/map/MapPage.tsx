@@ -20,6 +20,7 @@ import { CATEGORY_NAME_MAP, CATEGORIES, catInfoOf } from '@/lib/constants/catego
 import MapBottomSheet from './MapBottomSheet'
 import MapShopBubble from './MapShopBubble'
 import MapEventBubble from './MapEventBubble'
+import { eventSpotKey } from '@/lib/map/eventSpot'
 import { getOngoingMapEvents, MapEvent } from '@/services/mapEventService'
 import RouteMapMode from '@/components/route/RouteMapMode'
 import RouteMapMobile from '@/components/route/RouteMapMobile'
@@ -103,6 +104,13 @@ export default function MapPage() {
   const listShopsSorted = useMemo(() => imagesFirst(filtered), [filtered])
   const shownListShops = layer === 'event' ? EMPTY_SHOPS : listShopsSorted
   const shownEvents = layer === 'shop' ? EMPTY_EVENTS : filteredEvents
+  // 고른 이벤트와 같은 장소의 이벤트들 — 핀은 하나, 말풍선에서 옆으로 넘겨 본다
+  const selectedSpot = selectedEvent ? eventSpotKey(selectedEvent) : null
+  const eventGroup = useMemo(() => {
+    if (!selectedEvent) return []
+    const same = selectedSpot ? shownEvents.filter(e => eventSpotKey(e) === selectedSpot) : []
+    return same.some(e => e.id === selectedEvent.id) ? same : [selectedEvent, ...same]
+  }, [selectedEvent, selectedSpot, shownEvents])
 
   // 지역별 샵 수 (지금 카테고리 기준, 지도에 표시되는 샵만) — 지역 고르는 창에 숫자로
   const { regionCounts, districtCounts } = useMemo(() => {
@@ -432,10 +440,10 @@ export default function MapPage() {
               lng: dispLng(selectedShop) as number,
               content: <MapShopBubble shop={selectedShop} onClose={() => setSelectedShop(null)} />,
             } : selectedEvent && selectedEvent.lat && selectedEvent.lng ? {
-              key: `ev:${selectedEvent.id}`,
+              key: `ev:${selectedSpot ?? selectedEvent.id}`,
               lat: selectedEvent.lat,
               lng: selectedEvent.lng,
-              content: <MapEventBubble event={selectedEvent} onClose={() => setSelectedEvent(null)} />,
+              content: <MapEventBubble events={eventGroup} initialId={selectedEvent.id} onClose={() => setSelectedEvent(null)} />,
             } : null}
             bubbleTopPad={() => {
               const z = topZoneRef.current
@@ -581,12 +589,7 @@ export default function MapPage() {
         </BottomSheet>
       </div>
 
-      {/* 오른쪽 광고 칸 (데스크톱만, 모바일은 숨김) */}
-      <aside className={styles.adCol}>
-        <div className={styles.adSlot}>
-          {/* 여기에 구글 애드센스 <ins> 태그를 넣으세요 */}
-        </div>
-      </aside>
+      {/* (오른쪽 빈 광고 칸은 없앴다 — PC에서 지도가 오른쪽 끝까지 넓게) */}
     </div>
   )
 }
