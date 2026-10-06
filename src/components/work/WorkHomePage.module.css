@@ -220,3 +220,21 @@
 .feedBanner { margin-bottom: 16px; }
 .feedBanner > * { max-width: none !important; width: 100%; display: block; }
 .feedBanner :global(img) { max-height: none !important; }
+
+/* === 가로로 넘겨 보는 줄 — 새 소식·굿즈샵·성지순례 루트 (맨 아래에 둬서 위 규칙보다 우선) === */
+.hScroll {
+  display: flex; gap: 12px; overflow-x: auto; overflow-y: hidden;
+  padding: 2px 2px 8px; scrollbar-width: none;
+  scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+  cursor: grab;
+}
+.hScroll::-webkit-scrollbar { display: none; }
+.hItem { flex: 0 0 200px; min-width: 0; scroll-snap-align: start; }
+.hItemWide { flex: 0 0 300px; min-width: 0; scroll-snap-align: start; }
+.hItem > *, .hItemWide > * { height: 100%; }
+.hItem img, .hItemWide img { -webkit-user-drag: none; user-select: none; }
+@media (pointer: coarse) and (max-width: 1023px) {
+  .hScroll { cursor: auto; margin: 0 -4px; padding: 2px 4px 8px; }
+  .hItem { flex-basis: 150px; }
+  .hItemWide { flex-basis: 260px; }
+}

@@ -20,6 +20,7 @@ import { ipTypeList } from '@/lib/constants/ipType'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { deleteWork } from '@/services/workRegisterService'
 import styles from './WorkHomePage.module.css'
+import { useDragScroll } from '@/hooks/useDragScroll'
 
 const AVAIL_COLOR: Record<string, string> = {
   many: 'var(--green)', normal: 'var(--accent)', few: '#EAB308',
@@ -100,7 +101,6 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
   const [menuOpen, setMenuOpen] = useState(false)
   const heroImage = tag.cover_url || fanartHero
   const heroColor = useDominantColor(heroImage)
-  const clickLockRef = useRef(false)
   const menuRef = useRef<HTMLDivElement | null>(null)
   useEffect(() => {
     if (!menuOpen) return
@@ -108,18 +108,11 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
     document.addEventListener('mousedown', onDoc)
     return () => document.removeEventListener('mousedown', onDoc)
   }, [menuOpen])
-  useEffect(() => {
-    const els = TABS.map(t => document.getElementById(t.id)).filter(Boolean) as HTMLElement[]
-    if (!els.length) return
-    const obs = new IntersectionObserver((entries) => {
-      if (clickLockRef.current) return
-      const vis = entries.filter(e => e.isIntersecting)
-        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
-      if (vis[0]) setActiveId((vis[0].target as HTMLElement).id)
-    }, { rootMargin: '-120px 0px -55% 0px', threshold: 0 })
-    els.forEach(el => obs.observe(el))
-    return () => obs.disconnect()
-  }, [])
+  // 가로 줄(새 소식·굿즈샵·루트) — PC에서 마우스로 밀어서 넘기기
+  const feedDrag = useDragScroll()
+  const shopDrag = useDragScroll()
+  const routeDrag = useDragScroll()
+  const tabsRef = useRef<HTMLElement | null>(null)
 
   // 커버가 없으면 히어로 이미지를 대표/인기 팬아트로 채움
   useEffect(() => {
@@ -133,13 +126,17 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
 
   const eventCards = (events ?? []).filter((e: any) => EVENT_TYPES.includes(e.type))
 
+  /* 탭 = 개별 화면. 누르면 그 탭 내용만 보여준다 (예전처럼 아래로 스크롤해 내려가지 않는다).
+     탭 줄이 화면 위로 올라가 있으면 탭 줄이 보이는 곳까지만 올려 준다. */
   const scrollTo = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault()
     setActiveId(id)
-    clickLockRef.current = true
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-    setTimeout(() => { clickLockRef.current = false }, 700)
+    const nav = tabsRef.current
+    if (nav && nav.getBoundingClientRect().top < 0) {
+      window.scrollTo({ top: window.scrollY + nav.getBoundingClientRect().top - 8, behavior: 'smooth' })
+    }
   }
+  const show = (id: string) => activeId === id
 
   const share = async () => {
     const url = typeof window !== 'undefined' ? window.location.href : ''
@@ -217,7 +214,7 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
       <WorkExploration tagId={tag.id} />
 
       {/* Tabs */}
-      <nav className={styles.tabs}>
+      <nav ref={tabsRef} className={styles.tabs}>
         {TABS.map(t => (
           <a key={t.id} href={`#${t.id}`} className={`${styles.tab} ${activeId === t.id ? styles.tabActive : ''}`} onClick={scrollTo(t.id)}>
             <TabIcon id={t.id} />
@@ -229,8 +226,8 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
       {/* 본문 + 우측 광고칸 */}
       <div className={styles.layout}>
         <div className={styles.main}>
-          {/* 0) 공식 사이트 */}
-          {Array.isArray((tag as any).links) && (tag as any).links.filter((l: any) => l?.url).length > 0 && (
+          {/* 0) 공식 사이트 — 홈 탭 */}
+          {show('feed') && Array.isArray((tag as any).links) && (tag as any).links.filter((l: any) => l?.url).length > 0 && (
             <section id="links" className={styles.section}>
               <SectionHeader title="공식 사이트" icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1" /><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" /></svg>} plainIcon />
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -246,7 +243,7 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
           )}
 
           {/* 1) Feed */}
-          <section id="feed" className={styles.section}>
+          {show('feed') && <section id="feed" className={styles.section}>
             <SectionHeader title="새 소식 (Feed)" icon={<Icon name="colorfire" size={24} />} plainIcon />
             {feed.length > 0 ? (() => {
               // 팝업/콜라보카페/전시 같은 이벤트성 소식이 있으면 맨 위 전체폭 배너로
@@ -260,16 +257,19 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
                       <WorkFeedBanner item={hero} />
                     </div>
                   )}
-                  <div className={styles.feedGrid}>
-                    {rest.map((item, i) => (<div key={i}><HomeFeedCard item={item} /></div>))}
-                  </div>
+                  {/* 나머지 소식 — 가로로 넘겨 보기 */}
+                  {rest.length > 0 && (
+                    <div className={styles.hScroll} {...feedDrag}>
+                      {rest.map((item, i) => (<div key={i} className={styles.hItem}><HomeFeedCard item={item} /></div>))}
+                    </div>
+                  )}
                 </>
               )
             })() : <Empty text="아직 새 소식이 없어요" />}
-          </section>
+          </section>}
 
           {/* 2) 이벤트 */}
-          <section id="events" className={styles.section}>
+          {show('events') && <section id="events" className={styles.section}>
             <SectionHeader title="진행 중 이벤트" icon={<Icon name="colorevent" size={24} />} plainIcon />
             <div className={styles.rowScroll}>
               {eventCards.map((e: any) => (
@@ -279,20 +279,21 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
               ))}
               <Link href={`/event/new?tag=${tag.id}`} className={styles.report}>+ 이벤트 등록하기</Link>
             </div>
-          </section>
+          </section>}
 
           {/* 3) 굿즈샵 */}
-          <section id="shops" className={styles.section}>
-            <SectionHeader title="굿즈샵" icon={<Icon name="colorshop" size={24} />} plainIcon actionLabel={shops.length > 0 ? '지도에서 보기' : undefined} onAction={() => router.push('/map')} />
+          {show('shops') && <section id="shops" className={styles.section}>
+            {/* 전체 보기 → 샵 전체보기 화면에서 이 작품이 골라진 상태로 */}
+            <SectionHeader title="굿즈샵" icon={<Icon name="colorshop" size={24} />} plainIcon actionLabel={shops.length > 0 ? '전체 보기' : undefined} onAction={() => router.push(`/shops/all?works=${encodeURIComponent(tag.slug)}`)} />
             {shops.length > 0 ? (
-              <div className={styles.rowScroll}>
-                {shops.map((s: any) => (<div key={s.id} className={styles.rowItem}><ShopCard shop={s} meta="region" onClick={() => router.push(`/shop/${s.slug}`)} /></div>))}
+              <div className={styles.hScroll} {...shopDrag}>
+                {shops.map((s: any) => (<div key={s.id} className={styles.hItem}><ShopCard shop={s} meta="region" onClick={() => router.push(`/shop/${s.slug}`)} /></div>))}
               </div>
             ) : <Empty text="아직 등록된 샵이 없어요" />}
-          </section>
+          </section>}
 
           {/* 4) 굿즈 */}
-          <section id="goods" className={styles.section}>
+          {show('goods') && <section id="goods" className={styles.section}>
             <SectionHeader title="굿즈" icon={<Icon name="colorgift" size={24} />} plainIcon />
             {goods.length > 0 ? (
               <div className={styles.rowScroll}>
@@ -311,34 +312,37 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
                 })}
               </div>
             ) : <Empty text="아직 등록된 굿즈가 없어요" />}
-          </section>
+          </section>}
 
           {/* 5) 루트 */}
-          <section id="routes" className={styles.section}>
-            <SectionHeader title="성지순례 루트" icon={<Icon name="colorroute" size={24} />} plainIcon actionLabel={routes.length > 0 ? '전체 보기' : undefined} onAction={() => router.push('/routes')} />
+          {show('routes') && <section id="routes" className={styles.section}>
+            {/* 전체 보기 → 루트 전체보기 화면에서 이 작품이 골라진 상태로 */}
+            <SectionHeader title="성지순례 루트" icon={<Icon name="colorroute" size={24} />} plainIcon actionLabel={routes.length > 0 ? '전체 보기' : undefined} onAction={() => router.push(`/routes/all?work=${encodeURIComponent(tag.name)}`)} />
             {routes.length > 0 ? (
-              <div className={styles.list}>
+              <div className={styles.hScroll} {...routeDrag}>
                 {routes.map((r: any) => (
-                  <RouteCard key={r.id} route={{ id: r.id, title: r.title, summary: r.description ?? null, shopCount: r.route_shops?.length ?? 0, distanceM: r.total_distance_m, durationMin: r.total_duration_min }} onClick={() => router.push(`/route/${r.share_token}`)} />
+                  <div key={r.id} className={styles.hItemWide}>
+                    <RouteCard route={{ id: r.id, title: r.title, summary: r.description ?? null, shopCount: r.route_shops?.length ?? 0, distanceM: r.total_distance_m, durationMin: r.total_duration_min }} onClick={() => router.push(`/route/${r.share_token}`)} />
+                  </div>
                 ))}
               </div>
             ) : <Empty text="아직 추천 루트가 없어요" />}
-          </section>
+          </section>}
 
           {/* 창작 (팬아트/팬창작/굿즈자랑) */}
-          <section id="fanart" className={styles.section}>
+          {show('fanart') && <section id="fanart" className={styles.section}>
             <SectionHeader title="창작" icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E8006F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="13.5" cy="6.8" r="1.25" fill="#E8006F" stroke="none" /><circle cx="17" cy="10.5" r="1.25" fill="#E8006F" stroke="none" /><circle cx="8" cy="7.5" r="1.25" fill="#E8006F" stroke="none" /><circle cx="6.6" cy="12" r="1.25" fill="#E8006F" stroke="none" /><path d="M12 3a9 9 0 0 0 0 18c1 0 1.8-.8 1.8-1.8 0-.5-.2-.9-.5-1.2-.3-.4-.5-.8-.5-1.2 0-1 .8-1.8 1.8-1.8H16a5 5 0 0 0 5-5c0-4.4-4-8-9-8z" /></svg>} plainIcon />
             <WorkCommunityTabs tagId={tag.id} workName={tag.name} />
-          </section>
+          </section>}
 
           {/* 6) 커뮤니티 */}
-          <section id="community" className={styles.section}>
+          {show('community') && <section id="community" className={styles.section}>
             <SectionHeader title="커뮤니티" icon={<span style={{ width: 22, height: 22, display: "inline-block", backgroundColor: "#3B9BE8", WebkitMaskImage: "url(/icons/news.png)", maskImage: "url(/icons/news.png)", WebkitMaskRepeat: "no-repeat", maskRepeat: "no-repeat", WebkitMaskSize: "contain", maskSize: "contain", WebkitMaskPosition: "center", maskPosition: "center" }} />} plainIcon />
             <div className={styles.typeChips}>
               {['자유', '질문', '후기', '교환', '공동구매', '동행', '굿즈자랑'].map(t => (<span key={t} className={styles.typeChip}>#{t}</span>))}
             </div>
             <WorkCommunityPreview tagId={tag.id} workName={tag.name} />
-          </section>
+          </section>}
         </div>
 
         {/* 우측 광고칸 (데스크톱) */}
