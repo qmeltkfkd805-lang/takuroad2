@@ -5,7 +5,8 @@ import { getSavedShops } from '@/services/shopService'
 import ShopHomeCard from '@/components/shop/ShopHomeCard'
 import AppIcon from '@/components/tds/AppIcon'
 
-export default function SavedShopsTab({ userId }: { userId: string }) {
+/** onCount — 저장함 탭에 개수를 띄우려고 실제로 보여주는 샵 수를 알려준다 (불러오기 실패면 부르지 않는다) */
+export default function SavedShopsTab({ userId, onCount }: { userId: string; onCount?: (n: number) => void }) {
   const [shops, setShops] = useState<ShopHomeItem[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -17,6 +18,7 @@ export default function SavedShopsTab({ userId }: { userId: string }) {
         .filter(Boolean) as ShopHomeItem[]
       setShops(items)
       setLoading(false)
+      onCount?.(items.length)
     }).catch(() => setLoading(false))
   }, [userId])
 

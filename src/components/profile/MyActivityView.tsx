@@ -22,14 +22,14 @@ export type ActivityTab = 'posts' | 'comments'
 
 type Load<T> = { state: 'loading' } | { state: 'error' } | { state: 'done'; items: T[] }
 
-const fmtDate = (s: string) => {
+export const fmtDate = (s: string) => {
   const d = new Date(s)
   if (Number.isNaN(d.getTime())) return ''
   return `${d.getFullYear()}. ${String(d.getMonth() + 1).padStart(2, '0')}. ${String(d.getDate()).padStart(2, '0')}.`
 }
 
 /** 글 본문은 에디터 HTML 이라 목록에선 글자만 꺼내 보여준다 */
-function plainText(html: string | null | undefined): string {
+export function plainText(html: string | null | undefined): string {
   if (!html) return ''
   return html
     .replace(/<br\s*\/?>/gi, ' ').replace(/<\/(p|div|li|h\d)>/gi, ' ')
@@ -38,7 +38,7 @@ function plainText(html: string | null | undefined): string {
     .replace(/\s+/g, ' ').trim()
 }
 /** 본문 속 첫 이미지 (따로 저장된 이미지가 없을 때 썸네일로) */
-function firstImg(html: string | null | undefined): string | null {
+export function firstImg(html: string | null | undefined): string | null {
   const m = html ? /<img[^>]+src=["']([^"']+)["']/i.exec(html) : null
   return m ? m[1] : null
 }
@@ -47,7 +47,7 @@ const Chev = () => <svg className={styles.chev} width="16" height="16" viewBox="
 const Reply = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ flexShrink: 0 }}><path d="M5 4v7a4 4 0 0 0 4 4h10" /><path d="m15 11 4 4-4 4" /></svg>
 
 /** 스크롤될 수 있는 곳들 — 화면(문서)과, 있으면 감싸는 스크롤 칸. 탭마다 둘 다 기억해 둔다 */
-function scrollersOf(el: HTMLElement | null): HTMLElement[] {
+export function scrollersOf(el: HTMLElement | null): HTMLElement[] {
   const out: HTMLElement[] = [(document.scrollingElement as HTMLElement) ?? document.documentElement]
   let p = el?.parentElement ?? null
   while (p) {

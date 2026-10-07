@@ -215,6 +215,50 @@ export async function togglePostLike(postId: string, userId: string): Promise<bo
   return true
 }
 
+// ── 글 저장 (saved_posts — migrations/saved_posts.sql). 마이페이지 › 저장함 › 글 탭 ──
+/** 내가 이 글을 저장했는지. 조회 실패(표가 아직 없음 등)면 false */
+export async function isPostSaved(postId: string, userId: string): Promise<boolean> {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('saved_posts').select('post_id').eq('post_id', postId).eq('user_id', userId).maybeSingle()
+  if (error) { console.error('[글 저장] 조회 실패:', error.message); return false }
+  return !!data
+}
+
+/** 저장 / 저장 해제. 성공하면 true (이미 저장된 글을 또 저장해도 성공으로 본다) */
+export async function setPostSaved(postId: string, userId: string, save: boolean): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = save
+    ? await supabase.from('saved_posts').insert({ user_id: userId, post_id: postId } as any)
+    : await supabase.from('saved_posts').delete().eq('user_id', userId).eq('post_id', postId)
+  if (error && !(save && error.code === '23505')) { console.error('[글 저장] ' + (save ? '저장' : '해제') + ' 실패:', error.message); return false }
+  return true
+}
+
+export interface SavedPostEntry {
+  postId: string
+  savedAt: string
+  /** 지워졌거나 지금은 볼 수 없는 글이면 null */
+  post: CommunityPost | null
+}
+
+/** 내가 저장한 글 — 저장한 순서(최신 먼저). 실패하면 throw (화면에서 '다시 시도'를 보여준다) */
+export async function getSavedPosts(userId: string): Promise<SavedPostEntry[]> {
+  const supabase = createClient()
+  const { data: saves, error } = await supabase
+    .from('saved_posts').select('post_id, created_at').eq('user_id', userId).order('created_at', { ascending: false })
+  if (error) throw error
+  const rows = (saves ?? []) as { post_id: string; created_at: string }[]
+  if (rows.length === 0) return []
+  const ids = rows.map(r => r.post_id)
+  const { data: posts, error: postError } = await supabase
+    .from('community_posts_visible').select(SELECT).in('id', ids)
+  if (postError) throw postError
+  const likedSet = await likedSetFor(ids, userId)
+  const byId = new Map<string, CommunityPost>((posts ?? []).map((p: any) => [String(p.id), toPost(p, likedSet)]))
+  return rows.map(r => ({ postId: String(r.post_id), savedAt: r.created_at, post: byId.get(String(r.post_id)) ?? null }))
+}
+
 // ── 조회수 ──
 const _viewedThisSession = new Set<string>()
 export async function incrementPostView(postId: string): Promise<void> {

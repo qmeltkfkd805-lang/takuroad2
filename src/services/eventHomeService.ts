@@ -130,6 +130,24 @@ export async function getPastEventItems(limit = 12): Promise<EventHomeItem[]> {
   return hydrate(data ?? [])
 }
 
+/** 내가 저장한 이벤트 (saved_events) — 마이페이지 › 저장함 › 이벤트 탭.
+    끝난 이벤트도 포함한다(저장해 둔 기록이라). 숨긴(삭제 요청된) 이벤트는 빠진다.
+    실패하면 throw — 화면에서 '다시 시도'를 보여준다. */
+export async function getSavedEventItems(userId: string): Promise<EventHomeItem[]> {
+  const supabase = createClient()
+  const { data: saves, error } = await supabase.from('saved_events').select('event_id').eq('user_id', userId)
+  if (error) throw error
+  const ids = [...new Set((saves ?? []).map((r: any) => r.event_id).filter(Boolean))]
+  if (ids.length === 0) return []
+  const { data, error: evError } = await supabase
+    .from('events')
+    .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, cover_url, place_name, place_addr, series_key')
+    .in('id', ids)
+    .is('deleted_at', null)
+  if (evError) throw evError
+  return hydrate(data ?? [])
+}
+
 /** 내 최애 작품 id들 (user_favorite_tags.tier = 'favorite') */
 /** 최애 + 관심을 한 번에 (카드 배지용). rankEvents 점수에는 최애만 쓴다 */
 export async function getMyAffinityTagIds(userId: string): Promise<{ favorites: string[]; interests: string[] }> {

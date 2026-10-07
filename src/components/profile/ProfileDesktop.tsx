@@ -18,14 +18,13 @@ import GrowthPage from '@/components/growth/GrowthPage'
 import ChroniclePage from '@/components/collection/ChroniclePage'
 import BadgesTab from './BadgesTab'
 import CollectionTab from './CollectionTab'
-import SavedShopsTab from './SavedShopsTab'
 import VisitedShopsTab from './VisitedShopsTab'
 import MyRoutesTab from './MyRoutesTab'
-import SavedRoutesTab from './SavedRoutesTab'
 import LikedWorksTab from './LikedWorksTab'
 import CompletedRoutesTab from './CompletedRoutesTab'
 import MyReviewsTab from './MyReviewsTab'
 import MyActivityView, { type ActivityTab } from './MyActivityView'
+import SavedView from './SavedView'
 import MyPageSubShell from './MyPageSubShell'
 import actStyles from './MyActivity.module.css'
 import MyShopsTab from './MyShopsTab'
@@ -46,8 +45,6 @@ const SUB_SET = new Set<Sub>([
 
 /* 새 틀(MyPageSubShell)을 쓰는 화면의 짧은 설명 — 여기 있는 화면만 새 틀로 그린다 */
 const SUB_DESC: Partial<Record<Sub, string>> = {
-  saved: '찜해 둔 샵을 모아봤어요.',
-  savedroutes: '저장해 둔 루트를 모아봤어요.',
   likedworks: '최애·관심으로 담은 작품을 모아봤어요.',
   routes: '내가 만든 루트를 모아봤어요.',
   completed: '끝까지 다녀온 루트를 모아봤어요.',
@@ -59,7 +56,7 @@ const SUB_DESC: Partial<Record<Sub, string>> = {
 }
 
 const SUB_TITLE: Record<Sub, string> = {
-  saved: '저장한 샵', savedroutes: '저장한 루트', likedworks: '좋아요 작품', routes: '내 루트', completed: '완주한 루트', visited: '방문 기록',
+  saved: '저장함', savedroutes: '저장함', likedworks: '좋아요 작품', routes: '내 루트', completed: '완주한 루트', visited: '방문 기록',
   activity: '내 활동', posts: '작성한 글', comments: '내 댓글', reviews: '내 후기', shops: '등록한 샵', verify: '인증 현황',
   badges: '배지', growth: '성장센터', chronicle: '연대기', collection: '컬렉션',
 }
@@ -88,8 +85,8 @@ type QuickItem = { key: string; label: string; icon: string; view?: Sub; href?: 
 const QUICK_CATALOG: QuickItem[] = [
   // '작성한 글'·'내 댓글'은 '내 활동' 하나로 합쳤다 (예전에 저장한 빠른 메뉴의 posts/comments 는 activity 로 바꿔 읽는다)
   { key: 'activity', label: '내 활동', icon: 'commentbox', view: 'activity' },
-  { key: 'saved', label: '저장한 샵', icon: 'shop', view: 'saved' },
-  { key: 'savedroutes', label: '저장한 루트', icon: 'route', view: 'savedroutes' },
+  // '저장한 샵'·'저장한 루트'는 '저장함' 하나로 합쳤다 (샵·루트·글·이벤트 탭). 예전 savedroutes 키는 saved 로 바꿔 읽는다
+  { key: 'saved', label: '저장함', icon: 'bookmark', view: 'saved' },
   { key: 'likedworks', label: '좋아요 작품', icon: 'heart', view: 'likedworks' },   // 최애·관심 작품만 모아 보기 (예전엔 /my-works 로 보냄)
   { key: 'visited', label: '방문 기록', icon: 'pushpin', view: 'visited' },
   { key: 'reviews', label: '내 후기', icon: 'star', view: 'reviews' },
@@ -103,9 +100,9 @@ const QUICK_CATALOG: QuickItem[] = [
   { key: 'collection', label: '컬렉션', icon: 'collection', href: '/collection' },   // 나의 덕질 컬렉션 화면 (사이드바에서 옮겨 옴)
 ]
 const QUICK_BY_KEY = new Map<string, QuickItem>(QUICK_CATALOG.map(i => [i.key, i]))
-const DEFAULT_QUICK = ['activity', 'saved', 'savedroutes', 'likedworks', 'visited', 'reviews']
-// 예전 빠른 메뉴 키 → 지금 키 (내 글·내 댓글 → 내 활동)
-const LEGACY_QUICK: Record<string, string> = { posts: 'activity', comments: 'activity' }
+const DEFAULT_QUICK = ['activity', 'saved', 'likedworks', 'visited', 'reviews', 'routes']
+// 예전 빠른 메뉴 키 → 지금 키 (내 글·내 댓글 → 내 활동, 저장한 루트 → 저장함)
+const LEGACY_QUICK: Record<string, string> = { posts: 'activity', comments: 'activity', savedroutes: 'saved' }
 const MAX_QUICK = 6   // 빠른 메뉴는 최대 6개까지
 
 const fmtDate = (s: string | null | undefined) => {
@@ -316,6 +313,11 @@ export default function ProfileDesktop({ passport, userId }: Props) {
     return <MyActivityView userId={userId} initialTab={view === 'comments' ? 'comments' : activityTab} onBack={() => setView('dashboard')} />
   }
 
+  // ───────── 저장함 (샵 · 루트 · 글 · 이벤트) — 예전 주소 ?tab=saved 는 샵 탭, ?tab=savedroutes 는 루트 탭으로 연다 ─────────
+  if (view === 'saved' || view === 'savedroutes') {
+    return <SavedView userId={userId} initialTab={view === 'savedroutes' ? 'routes' : 'shops'} onBack={() => setView('dashboard')} />
+  }
+
   // ───────── 하위 화면 — '내 활동'과 같은 틀(‹ 마이페이지 · 제목 · 설명) ─────────
   //  성장센터·연대기·인증 현황은 화면 안에 자체 제목이 있어서 아래 예전 틀을 그대로 쓴다
   if (view in SUB_DESC) {
@@ -327,8 +329,6 @@ export default function ProfileDesktop({ passport, userId }: Props) {
         onBack={back}
         action={view === 'routes' ? <button type="button" className={actStyles.headAction} onClick={() => router.push('/route/new')}>+ 루트 만들기</button> : undefined}
       >
-        {view === 'saved' && <SavedShopsTab userId={userId} />}
-        {view === 'savedroutes' && <SavedRoutesTab userId={userId} />}
         {view === 'likedworks' && <LikedWorksTab userId={userId} />}
         {view === 'routes' && <MyRoutesTab userId={userId} />}
         {view === 'completed' && <CompletedRoutesTab userId={userId} />}
@@ -355,16 +355,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
           )}
         </div>
         <div className={styles.subBody}>
-          {view === 'saved' && <SavedShopsTab userId={userId} />}
-          {view === 'savedroutes' && <SavedRoutesTab userId={userId} />}
-          {view === 'likedworks' && <LikedWorksTab userId={userId} />}
-          {view === 'routes' && <MyRoutesTab userId={userId} />}
-          {view === 'completed' && <CompletedRoutesTab userId={userId} />}
-          {view === 'visited' && <VisitedShopsTab userId={userId} />}
-          {view === 'reviews' && <MyReviewsTab userId={userId} />}
-          {view === 'shops' && <MyShopsTab userId={userId} />}
           {view === 'verify' && <VerifyStatusTab userId={userId} />}
-          {view === 'badges' && <BadgesTab userId={userId} />}
           {view === 'growth' && <GrowthPage />}
           {view === 'chronicle' && <ChroniclePage />}
           {view === 'collection' && <CollectionTab userId={userId} />}

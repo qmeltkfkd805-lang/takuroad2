@@ -11,7 +11,7 @@ import UserLevelBadge from '@/components/cosmetic/UserLevelBadge'
 import {
   togglePostLike, incrementPostView, getComments, addComment, deleteComment, toggleCommentLike,
   reportPost, deletePostWithGoods, setPostVisibility, getWorkPosts,
-  getAdjacentPosts, type PostNeighbor,
+  getAdjacentPosts, type PostNeighbor, isPostSaved, setPostSaved,
 } from '@/services/communityPostService'
 import { CommunityPost, PostComment, ReportReason, REPORT_REASONS, BOARD_LABEL, Poll } from '@/types/community-post'
 import { getPollByPost, votePoll } from '@/services/pollService'
@@ -168,6 +168,25 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
     setPost(p => ({ ...p, likedByMe: willLike, likeCount: Math.max(0, p.likeCount + (willLike ? 1 : -1)) }))
     await togglePostLike(post.id, user.id)
   }
+  // 저장 — 마이페이지 › 저장함 › 글 탭에 모인다 (saved_posts)
+  const [saved, setSaved] = useState(false)
+  const [savingPost, setSavingPost] = useState(false)
+  useEffect(() => {
+    if (!user) { setSaved(false); return }
+    let alive = true
+    isPostSaved(post.id, user.id).then(v => { if (alive) setSaved(v) })
+    return () => { alive = false }
+  }, [post.id, user])
+  const toggleSave = async () => {
+    if (!user) { router.push(ROUTES.login); return }
+    if (savingPost) return
+    const next = !saved
+    setSaved(next)
+    setSavingPost(true)
+    const ok = await setPostSaved(post.id, user.id, next)
+    setSavingPost(false)
+    if (!ok) { setSaved(!next); window.alert(next ? '저장하지 못했어요. 잠시 후 다시 시도해 주세요.' : '저장 해제에 실패했어요. 잠시 후 다시 시도해 주세요.') }
+  }
   const share = async () => {
     const url = `${window.location.origin}/community/${post.id}`
     const title = post.title || '타쿠로드 게시글'
@@ -310,6 +329,10 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
         </span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <button onClick={toggleSave} aria-pressed={saved} title={saved ? '저장 해제' : '저장 — 마이페이지 저장함에 모아 둬요'} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, color: saved ? 'var(--accent)' : 'var(--muted)' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill={saved ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6.5 3.5h11a1 1 0 0 1 1 1v16l-6.5-4-6.5 4v-16a1 1 0 0 1 1-1z" /></svg>
+          {saved ? '저장됨' : '저장'}
+        </button>
         <button onClick={share} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, color: 'var(--muted)' }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7" /><path d="M16 6l-4-4-4 4" /><path d="M12 2v13" /></svg>
           공유

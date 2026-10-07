@@ -14,13 +14,19 @@ function stopsOf(r: any): { lat: number; lng: number }[] {
     .filter((s: any) => typeof s.lat === 'number' && typeof s.lng === 'number')
 }
 
-export default function SavedRoutesTab({ userId }: { userId: string }) {
+/** onCount — 저장함 탭에 개수를 띄우려고 지금 목록 수를 알려준다 (불러오기 실패면 부르지 않는다, 저장 해제하면 다시 알려준다) */
+export default function SavedRoutesTab({ userId, onCount }: { userId: string; onCount?: (n: number) => void }) {
   const [routes, setRoutes] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    getSavedRoutes(userId).then((d) => { setRoutes(d); setLoading(false) }).catch(() => setLoading(false))
+    getSavedRoutes(userId).then((d) => { setRoutes(d); setLoading(false); setLoaded(true) }).catch(() => setLoading(false))
   }, [userId])
+
+  useEffect(() => {
+    if (loaded) onCount?.(routes.length)
+  }, [loaded, routes.length])
 
   async function unsave(route: any) {
     if (!confirm('저장을 해제할까요?')) return
