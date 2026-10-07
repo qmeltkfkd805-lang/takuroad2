@@ -14,6 +14,7 @@ import { getUserShopContext } from '@/services/shopHomeService'
 import styles from './rail.module.css'
 import AppIcon from '@/components/tds/AppIcon'
 import ThumbImg from '@/components/common/ThumbImg'
+import { useSlider } from '@/hooks/useSlider'
 
 interface Props {
   shops: Shop[]
@@ -56,6 +57,8 @@ export default function MiniMapWidget({ shops, hotMap }: Props) {
   const { user } = useAuth()
   const router = useRouter()
   const { isSaved, toggleSave } = useSaved()
+  // 카테고리 칩 — 마우스를 올리면 < > 로 좌우 이동 (홈 가로 줄과 같은 방식)
+  const chipSlider = useSlider(140)
   const mapRef = useRef<KakaoMapRef>(null)
   const [selectedCat, setSelectedCat] = useState('전체')
   const [selectedShop, setSelectedShop] = useState<Shop | null>(null)
@@ -150,7 +153,8 @@ export default function MiniMapWidget({ shops, hotMap }: Props) {
         <Link href="/map" className={styles.widgetMore}>전체 지도 보기</Link>
       </div>
 
-      <div className={styles.mapChips}>
+      <div className={styles.chipWrap}>
+      <div className={styles.mapChips} {...chipSlider.railProps}>
         <button
           type="button"
           className={selectedCat === '전체' ? styles.mapChipOn : styles.mapChip}
@@ -168,6 +172,17 @@ export default function MiniMapWidget({ shops, hotMap }: Props) {
             {c.name}
           </button>
         ))}
+      </div>
+      {chipSlider.canLeft && (
+        <button type="button" aria-label="이전 카테고리" className={`${styles.chipArrow} ${styles.chipArrowL}`} onClick={() => chipSlider.scrollBy(-1)}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+      )}
+      {chipSlider.canRight && (
+        <button type="button" aria-label="다음 카테고리" className={`${styles.chipArrow} ${styles.chipArrowR}`} onClick={() => chipSlider.scrollBy(1)}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+      )}
       </div>
 
       <div className={styles.miniMap}>
