@@ -104,11 +104,14 @@ export async function getAllMyComments(userId: string) {
     id: c.id, source: '후기', content: c.content, created_at: c.created_at,
     title: c.reviews?.shops?.name ?? '삭제된 샵',
     slug: c.reviews?.shops?.slug ?? null, reviewId: c.reviews?.id ?? null, kind: 'shop' as const,
+    originMissing: !c.reviews?.shops,   // 후기·샵이 지워졌거나 볼 수 없음
   }))
   const postComments = (pc.data ?? []).map((c: any) => ({
     id: c.id, source: '커뮤니티', content: c.content, created_at: c.created_at,
-    title: titleMap.get(c.post_id) ?? '삭제된 글',
+    // 제목 없는 글(팬아트 등)은 '삭제된 글'로 잘못 보였다 → 있는 글이면 '(제목 없는 글)'
+    title: titleMap.has(c.post_id) ? (titleMap.get(c.post_id) || '(제목 없는 글)') : '삭제된 글',
     postId: c.post_id ?? null, kind: 'post' as const,
+    originMissing: !titleMap.has(c.post_id),   // 원글이 지워졌거나(숨김 등) 볼 수 없음
   }))
   return [...reviewComments, ...postComments].sort((a, b) =>
     new Date(b.created_at).getTime() - new Date(a.created_at).getTime())

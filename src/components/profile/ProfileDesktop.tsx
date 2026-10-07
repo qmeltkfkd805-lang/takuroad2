@@ -22,29 +22,29 @@ import SavedShopsTab from './SavedShopsTab'
 import VisitedShopsTab from './VisitedShopsTab'
 import MyRoutesTab from './MyRoutesTab'
 import SavedRoutesTab from './SavedRoutesTab'
+import LikedWorksTab from './LikedWorksTab'
 import CompletedRoutesTab from './CompletedRoutesTab'
 import MyReviewsTab from './MyReviewsTab'
-import MyCommentsTab from './MyCommentsTab'
-import MyPostsTab from './MyPostsTab'
+import MyActivityView, { type ActivityTab } from './MyActivityView'
 import MyShopsTab from './MyShopsTab'
 import VerifyStatusTab from './VerifyStatusTab'
 import styles from './ProfileDesktop.module.css'
 import LogoLoader from '@/components/common/LogoLoader'
 
 type Sub =
-  | 'saved' | 'savedroutes' | 'routes' | 'completed' | 'visited'
-  | 'posts' | 'comments' | 'reviews' | 'shops' | 'verify'
+  | 'saved' | 'savedroutes' | 'likedworks' | 'routes' | 'completed' | 'visited'
+  | 'activity' | 'posts' | 'comments' | 'reviews' | 'shops' | 'verify'
   | 'badges' | 'growth' | 'chronicle' | 'collection'
 
 const SUB_SET = new Set<Sub>([
-  'saved', 'savedroutes', 'routes', 'completed', 'visited',
-  'posts', 'comments', 'reviews', 'shops', 'verify',
+  'saved', 'savedroutes', 'likedworks', 'routes', 'completed', 'visited',
+  'activity', 'posts', 'comments', 'reviews', 'shops', 'verify',
   'badges', 'growth', 'chronicle', 'collection',
 ])
 
 const SUB_TITLE: Record<Sub, string> = {
-  saved: '저장한 샵', savedroutes: '저장한 루트', routes: '내 루트', completed: '완주한 루트', visited: '방문 기록',
-  posts: '작성한 글', comments: '내 댓글', reviews: '내 후기', shops: '등록한 샵', verify: '인증 현황',
+  saved: '저장한 샵', savedroutes: '저장한 루트', likedworks: '좋아요 작품', routes: '내 루트', completed: '완주한 루트', visited: '방문 기록',
+  activity: '내 활동', posts: '작성한 글', comments: '내 댓글', reviews: '내 후기', shops: '등록한 샵', verify: '인증 현황',
   badges: '배지', growth: '성장센터', chronicle: '연대기', collection: '컬렉션',
 }
 
@@ -70,11 +70,11 @@ const ACT_COLOR: Record<string, string> = { checkin: '#3B9BE8', shop: '#3B9BE8',
 // 빠른 메뉴에 넣을 수 있는 전체 항목 카탈로그. view = 마이페이지 하위 화면, href = 외부 페이지.
 type QuickItem = { key: string; label: string; icon: string; view?: Sub; href?: string }
 const QUICK_CATALOG: QuickItem[] = [
-  { key: 'comments', label: '내 댓글', icon: 'commentbox', view: 'comments' },
+  // '작성한 글'·'내 댓글'은 '내 활동' 하나로 합쳤다 (예전에 저장한 빠른 메뉴의 posts/comments 는 activity 로 바꿔 읽는다)
+  { key: 'activity', label: '내 활동', icon: 'commentbox', view: 'activity' },
   { key: 'saved', label: '저장한 샵', icon: 'shop', view: 'saved' },
   { key: 'savedroutes', label: '저장한 루트', icon: 'route', view: 'savedroutes' },
-  { key: 'likedworks', label: '좋아요 작품', icon: 'heart', href: '/my-works' },
-  { key: 'posts', label: '작성한 글', icon: 'pencil', view: 'posts' },
+  { key: 'likedworks', label: '좋아요 작품', icon: 'heart', view: 'likedworks' },   // 최애·관심 작품만 모아 보기 (예전엔 /my-works 로 보냄)
   { key: 'visited', label: '방문 기록', icon: 'pushpin', view: 'visited' },
   { key: 'reviews', label: '내 후기', icon: 'star', view: 'reviews' },
   { key: 'completed', label: '완주한 루트', icon: 'route', view: 'completed' },
@@ -87,7 +87,9 @@ const QUICK_CATALOG: QuickItem[] = [
   { key: 'collection', label: '컬렉션', icon: 'collection', href: '/collection' },   // 나의 덕질 컬렉션 화면 (사이드바에서 옮겨 옴)
 ]
 const QUICK_BY_KEY = new Map<string, QuickItem>(QUICK_CATALOG.map(i => [i.key, i]))
-const DEFAULT_QUICK = ['comments', 'saved', 'savedroutes', 'likedworks', 'posts', 'visited']
+const DEFAULT_QUICK = ['activity', 'saved', 'savedroutes', 'likedworks', 'visited', 'reviews']
+// 예전 빠른 메뉴 키 → 지금 키 (내 글·내 댓글 → 내 활동)
+const LEGACY_QUICK: Record<string, string> = { posts: 'activity', comments: 'activity' }
 const MAX_QUICK = 6   // 빠른 메뉴는 최대 6개까지
 
 const fmtDate = (s: string | null | undefined) => {
@@ -108,7 +110,10 @@ export default function ProfileDesktop({ passport, userId }: Props) {
   const worn = useWorn(userId)
   const urlTab = useSearchParams().get('tab')
 
-  const urlView: 'dashboard' | Sub = urlTab && SUB_SET.has(urlTab as Sub) ? (urlTab as Sub) : 'dashboard'
+  /* 예전 주소 ?tab=posts / ?tab=comments (알림·'내 댓글' 미리보기·북마크)는 '내 활동'의 그 탭으로 연다 */
+  const urlSub: 'dashboard' | Sub = urlTab && SUB_SET.has(urlTab as Sub) ? (urlTab as Sub) : 'dashboard'
+  const urlView: 'dashboard' | Sub = urlSub === 'posts' || urlSub === 'comments' ? 'activity' : urlSub
+  const activityTab: ActivityTab = urlTab === 'comments' ? 'comments' : 'posts'
   const [view, setView] = useState<'dashboard' | Sub>(urlView)
 
   /* URL 의 ?tab 이 바뀌면 화면도 따라간다.
@@ -150,7 +155,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
     getMyRecentActivities(userId, 8).then(setActivities).catch(() => {})
     getFollowFeed(userId, 12).then(setFeed).catch(() => {})
     getQuickMenu(userId).then(keys => {
-      const valid = (keys ?? []).filter(k => QUICK_BY_KEY.has(k)).slice(0, MAX_QUICK)
+      const valid = [...new Set((keys ?? []).map(k => LEGACY_QUICK[k] ?? k))].filter(k => QUICK_BY_KEY.has(k)).slice(0, MAX_QUICK)
       if (valid.length) setQuickKeys(valid)
     }).catch(() => {})
     // 조회에 실패하면 카드를 안 그린다 — 대시보드를 막을 정보가 아니다
@@ -290,6 +295,11 @@ export default function ProfileDesktop({ passport, userId }: Props) {
   const collection = passport?.topVisitedSeries?.[0] ?? null
   const featuredBadges = (passport?.featuredBadges ?? []).slice(0, 3)
 
+  // ───────── 내 활동 (내 글 + 내 댓글) — 자체 머리말(마이페이지로 · 제목 · 설명 · 탭)을 쓴다 ─────────
+  if (view === 'activity' || view === 'posts' || view === 'comments') {
+    return <MyActivityView userId={userId} initialTab={view === 'comments' ? 'comments' : activityTab} onBack={() => setView('dashboard')} />
+  }
+
   // ───────── 하위 화면 (빠른 메뉴/전체 보기에서 진입) ─────────
   if (view !== 'dashboard') {
     return (
@@ -306,11 +316,10 @@ export default function ProfileDesktop({ passport, userId }: Props) {
         <div className={styles.subBody}>
           {view === 'saved' && <SavedShopsTab userId={userId} />}
           {view === 'savedroutes' && <SavedRoutesTab userId={userId} />}
+          {view === 'likedworks' && <LikedWorksTab userId={userId} />}
           {view === 'routes' && <MyRoutesTab userId={userId} />}
           {view === 'completed' && <CompletedRoutesTab userId={userId} />}
           {view === 'visited' && <VisitedShopsTab userId={userId} />}
-          {view === 'posts' && <MyPostsTab userId={userId} />}
-          {view === 'comments' && <MyCommentsTab userId={userId} />}
           {view === 'reviews' && <MyReviewsTab userId={userId} />}
           {view === 'shops' && <MyShopsTab userId={userId} />}
           {view === 'verify' && <VerifyStatusTab userId={userId} />}
