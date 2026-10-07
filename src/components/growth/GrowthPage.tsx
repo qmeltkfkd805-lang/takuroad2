@@ -55,7 +55,7 @@ export default function GrowthPage() {
     <div className={styles.page}>
       <header className={styles.head}>
         <div>
-          <h1>성장 센터 <Icon name="colorstar" size={22} /></h1>
+          <h1>성장 센터</h1>
           <p>덕질은 끝이 없습니다. 다음 목표를 달성하고 새로운 꾸미기 요소를 해금해보세요.</p>
         </div>
         {d && d.totalSteps > 0 && (
@@ -222,7 +222,7 @@ export default function GrowthPage() {
           <div className={top ? styles.challengeRow : undefined}>
             <section className={styles.block}>
               <div className={styles.blockHead}>
-                <h2><Icon name="colorstar" size={17} /> 지금 도전 중</h2>
+                <h2>지금 도전 중</h2>
               </div>
 
               {loading ? (
