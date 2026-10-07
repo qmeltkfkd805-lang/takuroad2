@@ -229,7 +229,6 @@ export default function GrowthPage() {
                 <div className={styles.cards}>{[0,1,2].map(i => <div key={i} className={styles.skelCard} />)}</div>
               ) : challenges.length === 0 ? (
                 <div className={styles.empty}>
-                  <Taku pose="sit" size={92} />
                   <p>모든 도전을 완료했어요. 새 목표가 곧 열려요.</p>
                 </div>
               ) : (
