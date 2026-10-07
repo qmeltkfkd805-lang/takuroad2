@@ -66,9 +66,9 @@ export default function RouteBrowser({ routes, badgeFor, menuFor, emptyText, hre
   }, [routes, region, sort])
 
   return (
-    <div style={{ paddingTop: 14, paddingBottom: 88 }}>
+    <div style={{ paddingBottom: 88 }}>   {/* 좌우·위 여백은 마이페이지 하위 화면 틀(MyPageSubShell)이 준다 */}
       {/* 필터 한 줄 */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 16px 12px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 0 12px' }}>
         <Dropdown
           label={region ?? '전체 지역'}
           options={[{ key: '__all__', label: '전체 지역', active: region === null }, ...regionList.map(g => ({ key: g, label: g, active: region === g }))]}
@@ -94,7 +94,7 @@ export default function RouteBrowser({ routes, badgeFor, menuFor, emptyText, hre
       {shown.length === 0 ? (
         <div style={{ padding: '50px 20px', textAlign: 'center', color: 'var(--muted)', fontSize: 14 }}>{region ? `'${region}' 지역 루트가 없어요` : emptyText}</div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: cols === 2 ? 'repeat(auto-fill, minmax(150px, 1fr))' : '1fr', gap: 12, padding: '0 16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: cols === 2 ? 'repeat(auto-fill, minmax(150px, 1fr))' : '1fr', gap: 12 }}>
           {shown.map(r => (
             <RouteCard key={r.id} route={r} onOpen={() => { const href = hrefFor?.(r) ?? (r.shareToken ? '/route/' + r.shareToken : null); if (href) window.location.href = href }} badge={badgeFor?.(r) ?? null} menu={menuFor?.(r) ?? null} />
           ))}

@@ -26,6 +26,8 @@ import LikedWorksTab from './LikedWorksTab'
 import CompletedRoutesTab from './CompletedRoutesTab'
 import MyReviewsTab from './MyReviewsTab'
 import MyActivityView, { type ActivityTab } from './MyActivityView'
+import MyPageSubShell from './MyPageSubShell'
+import actStyles from './MyActivity.module.css'
 import MyShopsTab from './MyShopsTab'
 import VerifyStatusTab from './VerifyStatusTab'
 import styles from './ProfileDesktop.module.css'
@@ -41,6 +43,20 @@ const SUB_SET = new Set<Sub>([
   'activity', 'posts', 'comments', 'reviews', 'shops', 'verify',
   'badges', 'growth', 'chronicle', 'collection',
 ])
+
+/* 새 틀(MyPageSubShell)을 쓰는 화면의 짧은 설명 — 여기 있는 화면만 새 틀로 그린다 */
+const SUB_DESC: Partial<Record<Sub, string>> = {
+  saved: '찜해 둔 샵을 모아봤어요.',
+  savedroutes: '저장해 둔 루트를 모아봤어요.',
+  likedworks: '최애·관심으로 담은 작품을 모아봤어요.',
+  routes: '내가 만든 루트를 모아봤어요.',
+  completed: '끝까지 다녀온 루트를 모아봤어요.',
+  visited: '다녀온 샵을 모아봤어요.',
+  reviews: '내가 남긴 후기를 모아봤어요.',
+  shops: '내가 등록한 샵을 모아봤어요.',
+  badges: '지금까지 모은 배지예요.',
+  collection: '작품별로 모은 덕질 기록이에요.',
+}
 
 const SUB_TITLE: Record<Sub, string> = {
   saved: '저장한 샵', savedroutes: '저장한 루트', likedworks: '좋아요 작품', routes: '내 루트', completed: '완주한 루트', visited: '방문 기록',
@@ -300,7 +316,32 @@ export default function ProfileDesktop({ passport, userId }: Props) {
     return <MyActivityView userId={userId} initialTab={view === 'comments' ? 'comments' : activityTab} onBack={() => setView('dashboard')} />
   }
 
-  // ───────── 하위 화면 (빠른 메뉴/전체 보기에서 진입) ─────────
+  // ───────── 하위 화면 — '내 활동'과 같은 틀(‹ 마이페이지 · 제목 · 설명) ─────────
+  //  성장센터·연대기·인증 현황은 화면 안에 자체 제목이 있어서 아래 예전 틀을 그대로 쓴다
+  if (view in SUB_DESC) {
+    const back = () => setView('dashboard')
+    return (
+      <MyPageSubShell
+        title={SUB_TITLE[view as Sub]}
+        desc={SUB_DESC[view as Sub]}
+        onBack={back}
+        action={view === 'routes' ? <button type="button" className={actStyles.headAction} onClick={() => router.push('/route/new')}>+ 루트 만들기</button> : undefined}
+      >
+        {view === 'saved' && <SavedShopsTab userId={userId} />}
+        {view === 'savedroutes' && <SavedRoutesTab userId={userId} />}
+        {view === 'likedworks' && <LikedWorksTab userId={userId} />}
+        {view === 'routes' && <MyRoutesTab userId={userId} />}
+        {view === 'completed' && <CompletedRoutesTab userId={userId} />}
+        {view === 'visited' && <VisitedShopsTab userId={userId} />}
+        {view === 'reviews' && <MyReviewsTab userId={userId} />}
+        {view === 'shops' && <MyShopsTab userId={userId} />}
+        {view === 'badges' && <BadgesTab userId={userId} />}
+        {view === 'collection' && <CollectionTab userId={userId} />}
+      </MyPageSubShell>
+    )
+  }
+
+  // ───────── 하위 화면 (예전 틀 — 자체 제목이 있는 화면) ─────────
   if (view !== 'dashboard') {
     return (
       <div className={styles.subWrap}>
