@@ -265,7 +265,7 @@ export default function GrowthPage() {
               {loading ? (
                 <div className={styles.skelPreview} />
               ) : !d?.nextReward ? (
-                <p className={styles.dim}>도전을 시작하면 보상이 보여요.</p>
+                <p className={styles.dim}>{challenges.length > 0 ? '지금 도전 중인 배지에는 칭호 보상이 없어요. 다른 배지에 도전해 보세요!' : '도전을 시작하면 보상이 보여요.'}</p>
               ) : (
                 <div className={styles.preview}>
                   <div className={styles.previewBox}>
@@ -277,11 +277,9 @@ export default function GrowthPage() {
                     <p className={styles.previewCond}>
                       <b>{d.nextReward.tierName}</b> 달성 시 해금
                     </p>
-                    {top && (
-                      <div className={styles.previewBar}>
-                        <span style={{ width: `${top.pct}%` }} />
-                      </div>
-                    )}
+                    <div className={styles.previewBar}>
+                      <span style={{ width: `${d.nextReward.pct}%` }} />
+                    </div>
                   </div>
                 </div>
               )}

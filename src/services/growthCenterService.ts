@@ -57,7 +57,8 @@ export interface GrowthCenter {
   /** 최근 해금한 배지 */
   recent: EarnedBadge[]
   /** 이번 보상 미리보기 — 지금 가장 가까운 도전이 주는 것 */
-  nextReward: { cosmetic: Cosmetic; tierName: string } | null
+  /** 이번 보상 미리보기 — 칭호를 주는 가장 가까운 도전. pct = 그 도전의 진행률 */
+  nextReward: { cosmetic: Cosmetic; tierName: string; pct: number } | null
   /** 다음 레벨 보상 — 내 레벨보다 높은 가장 가까운 level_rewards */
   nextLevelReward: { level: number; reward: LevelReward } | null
   /** 꾸미기 보상 진행도 */
@@ -99,19 +100,19 @@ export async function getGrowthCenter(userId: string): Promise<GrowthCenter> {
   /* ── 이번 보상 미리보기 ──
      지금 가장 가까운 도전(challenges[0])이 주는 코스메틱.
      ⭐ 이게 시안의 진짜 발명이다 — 뭘 주는지 크게 보여줘야 갖고 싶어진다. */
+  /* 보상은 칭호만 남아서, 가장 가까운 도전의 보상이 옛 프레임·배경이면 비어 버린다.
+     → 가까운 순서대로 보며 '칭호를 주는' 첫 도전을 보여준다. (myCosmetics 는 칭호만 담고 있다) */
   let nextReward: GrowthCenter['nextReward'] = null
-  const top = challenges[0]
-  if (top) {
-    const { data: tier } = await supabase
+  if (challenges.length > 0) {
+    const { data: tiers } = await supabase
       .from('badge_tiers')
-      .select('name, reward_cosmetic_id')
-      .eq('id', top.tierId)
-      .maybeSingle()
-
-    const cosId = (tier as any)?.reward_cosmetic_id
-    if (cosId) {
-      const c = myCosmetics.find(x => x.id === cosId)
-      if (c) nextReward = { cosmetic: c, tierName: (tier as any).name ?? top.tierName }
+      .select('id, name, reward_cosmetic_id')
+      .in('id', challenges.map(ch => ch.tierId))
+    const tierById = new Map(((tiers ?? []) as any[]).map(t => [t.id, t]))
+    for (const ch of challenges) {
+      const tier: any = tierById.get(ch.tierId)
+      const c = tier?.reward_cosmetic_id ? myCosmetics.find(x => x.id === tier.reward_cosmetic_id) : null
+      if (c) { nextReward = { cosmetic: c, tierName: tier.name ?? ch.tierName, pct: ch.pct }; break }
     }
   }
 
