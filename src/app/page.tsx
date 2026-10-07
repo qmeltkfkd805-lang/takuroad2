@@ -2,7 +2,9 @@ import { unstable_cache } from 'next/cache'
 import { getShops } from '@/services/shopService'
 import { getPublicRoutes } from '@/services/routeService'
 import { getActiveWorks } from '@/services/activeWorksService'
-import { getActiveEvents } from '@/services/eventService'
+import { getEventHomeItems } from '@/services/eventHomeService'
+import { rankEvents } from '@/lib/event/rankEvents'
+import { collapseEventSeries } from '@/lib/event/eventSeries'
 import { getPublicHeroSlots } from '@/services/heroService.server'
 import { pickHotMap } from '@/lib/home/hotMap'
 import { imagesFirst } from '@/lib/utils/shopOrder'
@@ -31,7 +33,13 @@ const getHomeShopData = unstable_cache(async () => {
 
 const getHomeRoutes = unstable_cache(async () => ((await getPublicRoutes()) ?? []).slice(0, 5), ['home-routes-v1'], { revalidate: 60 })
 const getHomeWorks = unstable_cache(() => getActiveWorks(10), ['home-works-v1'], { revalidate: 60 })
-const getHomeEvents = unstable_cache(() => getActiveEvents(8), ['home-events-v1'], { revalidate: 60 })
+/* 덕질 이벤트 — 이벤트 화면 '전체' 목록과 같은 순서로 8개.
+   같은 데이터(getEventHomeItems) → 같은 정렬(rankEvents: 오늘 종료 → 종료 임박 → 진행 중·오늘 시작 → 곧 시작)
+   → 여러 지점에서 하는 같은 이벤트는 하나로(collapseEventSeries). (최애 작품 우선은 로그인별이라 홈에선 빼고) */
+const getHomeEvents = unstable_cache(async () => {
+  const items = await getEventHomeItems()
+  return collapseEventSeries(rankEvents(items).map(r => r.event)).slice(0, 8)
+}, ['home-events-v2'], { revalidate: 60 })
 
 export default async function HomePage() {
   const [shopData, routes, activeWorks, hero, events] = await Promise.all([
