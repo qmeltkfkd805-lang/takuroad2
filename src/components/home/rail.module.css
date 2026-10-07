@@ -14,7 +14,7 @@
 @media (min-width: 1024px), (hover: hover) and (pointer: fine) {
   .homeLayout { display: grid; grid-template-columns: minmax(0, 1fr) 400px; align-items: start; gap: 40px; max-width: 1480px; }
   .heroFull { max-width: 1480px; margin: 0 auto; }
-  .rail { position: sticky; top: 76px; padding: 20px 20px 20px 0; }
+  .rail { position: sticky; top: 76px; padding: 20px 0; }   /* 오른쪽 여백 0 — 덕질 지도 오른쪽 끝선을 히어로와 맞춘다 (예전엔 20px 안쪽으로 들어가 있었음) */
 }
 
 .widget { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; }
