@@ -78,6 +78,16 @@
 .evBadge { position: absolute; top: 6px; left: 6px; z-index: 2; padding: 2px 8px; border-radius: 9999px; background: var(--accent); color: #fff; font-size: 10.5px; font-weight: 800; box-shadow: 0 1px 4px rgba(0,0,0,.15); }
 /* 이벤트 카드 — 정보가 많아 루트 카드보다 살짝 높게, 정보 아이콘 행 */
 .evCard { height: 158px; }
+/* 덕질 이벤트 — 이벤트 화면 포스터 카드와 같은 모양, 포스터는 4:5 로 조금 낮게 */
+.evPLink { flex: 0 0 210px; scroll-snap-align: start; text-decoration: none; color: inherit; user-select: none; -webkit-user-select: none; }
+.evPCard { display: flex; flex-direction: column; height: 100%; border: 1px solid var(--border); border-radius: var(--r); background: var(--surface); overflow: hidden; transition: border-color .12s ease, box-shadow .12s ease; }
+.evPLink:hover .evPCard { border-color: var(--accent); box-shadow: 0 6px 16px rgba(0,0,0,.06); }
+.evPoster { position: relative; width: 100%; aspect-ratio: 4 / 5; background: #F2F2F4; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.evPoster img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.evPoster .evBadge { top: 10px; left: 10px; padding: 3px 9px; font-size: 11px; }
+.evPBody { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; padding: 11px 12px 13px; }
+.evPWork { font-size: 11.5px; font-weight: 600; color: #5A43B5; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.evPBody .evTitle { font-size: 14px; min-height: 2.6em; }
 .evBody { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 12px 14px; justify-content: center; gap: 4px; }
 .evTitle { font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .evWork { font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 1px; }
@@ -96,6 +106,7 @@
   .routeSection { padding: 8px 16px 0; }
   .routeSlideLink { flex-basis: 82%; }
   .routeSlideLinkMap { flex-basis: 88%; }
+  .evPLink { flex-basis: 44%; }   /* 📱 이벤트 포스터 카드 2장 조금 넘게 보이게 */
   .routeArrows { display: none; }
 }
 

@@ -152,17 +152,18 @@ function EventSlideCard({ ev }: { ev: any }) {
   const date = evDateFull(ev.startDate, ev.endDate)
   const status = evStatus(ev.startDate, ev.endDate)
   return (
-    <Link href={`/event/${ev.id}`} className={styles.routeSlideLink}>
-      <div className={`${styles.routeSlide} ${styles.evCard}`}>
-        <div className={styles.routeThumb}>
+    // 이벤트 화면의 포스터 카드와 같은 모양 — 포스터만 3:4 → 4:5 로 세로를 조금 줄였다
+    <Link href={`/event/${ev.id}`} className={styles.evPLink}>
+      <div className={styles.evPCard}>
+        <div className={styles.evPoster}>
           {ev.coverUrl
-            ? <img src={ev.coverUrl} alt="" draggable={false} />
-            : <Icon name="colorevent" size={30} />}
+            ? <ThumbImg src={ev.coverUrl} alt="" draggable={false} loading="lazy" />
+            : <Icon name="colorevent" size={36} />}
           {status && <span className={styles.evBadge} style={{ background: status.color }}>{status.label}</span>}
         </div>
-        <div className={styles.evBody}>
+        <div className={styles.evPBody}>
+          {ev.workName && <div className={styles.evPWork}>{ev.workName}</div>}
           <div className={styles.evTitle}>{ev.title}</div>
-          {ev.workName && <div className={styles.evWork}>{ev.workName}</div>}
           {date && <div className={styles.evRow}><EvCal /><span className={styles.evRowText}>{date}</span></div>}
           {ev.place && <div className={styles.evRow}><EvPin /><span className={styles.evRowText}>{ev.place}</span></div>}
         </div>

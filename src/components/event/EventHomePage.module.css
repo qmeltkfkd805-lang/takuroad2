@@ -31,6 +31,11 @@
 .heroCta:hover { transform: translateY(-1px); border-color: var(--accent); box-shadow: 0 6px 16px rgba(0,0,0,.09); }
 .heroCta:hover svg { transform: translateX(2px); }
 .heroCta:active { transform: translateY(0); }
+/* 히어로 3개 넘겨 보기 점 */
+.heroCard { position: relative; }
+.heroDots { position: absolute; right: 16px; bottom: 14px; z-index: 3; display: flex; gap: 6px; }
+.heroDot { width: 8px; height: 8px; padding: 0; border: none; border-radius: 9999px; background: rgba(0,0,0,.18); cursor: pointer; transition: width .2s ease, background .2s ease; }
+.heroDotOn { width: 20px; background: var(--accent); }
 .heroEmpty { flex: 1; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; padding: 40px; }
 
 /* ── 캘린더 ── */
@@ -182,4 +187,8 @@
   .heroMeta { color: rgba(255,255,255,.92); font-size: 12.5px; }
   .heroMeta svg { color: #fff; stroke: currentColor; }
   .heroCta { display: none; }
+  /* 포스터 위라 점을 밝게, 위쪽 오른쪽에 (아래는 글자 자리) */
+  .heroDots { top: 14px; bottom: auto; right: 14px; }
+  .heroDot { background: rgba(255,255,255,.55); }
+  .heroDotOn { background: #fff; }
 }

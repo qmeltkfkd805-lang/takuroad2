@@ -282,8 +282,45 @@ export default function EventHomePage() {
     })
   }
 
-  // 히어로 — 필터와 무관하게 "이번 주 추천"
-  const hero = useMemo(() => rankEvents(items, { favoriteTagIds: favTagIds })[0]?.event ?? null, [items, favTagIds])
+  /* 히어로 — 필터와 무관하게, 지금 사람들이 관심 있어 하는 이벤트 3개를 넘겨 가며 보여준다.
+     관심 = 최근 14일 상세 조회 수 + 저장 + 방문 인증 (/api/events/popular, 10분 캐시).
+     오늘 끝나는 이벤트는 '곧 종료해요' 줄에 따로 나오니 히어로에선 뺀다.
+     인기 데이터가 3개가 안 되면 기존 "이번 주 추천" 순서로 채운다. */
+  const [popular, setPopular] = useState<Map<string, number>>(new Map())
+  useEffect(() => {
+    fetch('/api/events/popular')
+      .then(r => (r.ok ? r.json() : null))
+      .then(j => { if (Array.isArray(j?.items)) setPopular(new Map(j.items.map((x: any) => [String(x.id), Number(x.score) || 0]))) })
+      .catch(() => {})
+  }, [])
+  const heroes = useMemo(() => {
+    const live = items.filter(i => bucketOf(getEventStatus(i).kind) !== null && !(i.endDate && daysUntil(i.endDate) <= 0))
+    const out: { ev: EventHomeItem; kind: 'popular' | 'pick' }[] = []
+    const used = new Set<string>()
+    const keyOf = (i: EventHomeItem) => i.seriesKey ?? i.id   // 같은 이벤트의 여러 지점은 하나만
+    const take = (ev: EventHomeItem, kind: 'popular' | 'pick') => {
+      if (out.length >= 3 || used.has(keyOf(ev))) return
+      used.add(keyOf(ev)); out.push({ ev, kind })
+    }
+    live.filter(i => (popular.get(i.id) ?? 0) > 0)
+      .sort((a, b) => (popular.get(b.id) ?? 0) - (popular.get(a.id) ?? 0))
+      .forEach(i => take(i, 'popular'))
+    if (out.length < 3) {
+      const liveIds = new Set(live.map(i => i.id))
+      rankEvents(items, { favoriteTagIds: favTagIds }).map(r => r.event).filter(e => liveIds.has(e.id)).forEach(e => take(e, 'pick'))
+    }
+    return out
+  }, [items, favTagIds, popular])
+  const [heroIdx, setHeroIdx] = useState(0)
+  const [heroPaused, setHeroPaused] = useState(false)
+  useEffect(() => { if (heroIdx >= heroes.length) setHeroIdx(0) }, [heroes.length, heroIdx])
+  useEffect(() => {
+    if (heroes.length < 2 || heroPaused) return
+    const t = setTimeout(() => setHeroIdx(i => (i + 1) % heroes.length), 6000)
+    return () => clearTimeout(t)
+  }, [heroIdx, heroes.length, heroPaused])
+  const heroSlot = heroes[Math.min(heroIdx, Math.max(0, heroes.length - 1))] ?? null
+  const hero = heroSlot?.ev ?? null
 
   // 곧 종료 — 남은 일수 적은 순 3건 (종료된 것 제외)
   const endingSoon = useMemo(() => items
@@ -391,7 +428,8 @@ export default function EventHomePage() {
       {/* 추천 + 캘린더 */}
       <div className={styles.topRow}>
         {/* 📱 모바일은 홈 히어로처럼 포스터가 화면을 꽉 채우고 정보가 그 위에 — 카드 아무 데나 누르면 상세로 */}
-        <div className={styles.heroCard} onClick={() => { if (hero) openEvent(hero) }} role={hero ? 'link' : undefined}>
+        <div className={styles.heroCard} onClick={() => { if (hero) openEvent(hero) }} role={hero ? 'link' : undefined}
+          onMouseEnter={() => setHeroPaused(true)} onMouseLeave={() => setHeroPaused(false)}>
           {hero ? (
             <>
               <div className={styles.heroPoster}>
@@ -403,7 +441,7 @@ export default function EventHomePage() {
                 <div className={styles.heroTop}>
                   <span className={styles.heroBadge}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="#F7A928" style={{ display: 'block' }}><path d="M12 2.5 14.7 9.3 21.5 12 14.7 14.7 12 21.5 9.3 14.7 2.5 12 9.3 9.3Z" /></svg>
-                    이번 주 추천
+                    {heroSlot?.kind === 'popular' ? '지금 인기' : '이번 주 추천'}
                   </span>
                   <EventStatusBadge startDate={hero.startDate} endDate={hero.endDate} />
                 </div>
@@ -420,6 +458,16 @@ export default function EventHomePage() {
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 6 6 6-6 6" /></svg>
                 </button>
               </div>
+              {/* 3개 넘겨 보기 — 점을 누르면 그 이벤트로 */}
+              {heroes.length > 1 && (
+                <div className={styles.heroDots} onClick={e => e.stopPropagation()}>
+                  {heroes.map((h, i) => (
+                    <button key={h.ev.id} type="button" aria-label={`${i + 1}번째 이벤트`} aria-current={i === heroIdx}
+                      className={i === heroIdx ? `${styles.heroDot} ${styles.heroDotOn}` : styles.heroDot}
+                      onClick={() => setHeroIdx(i)} />
+                  ))}
+                </div>
+              )}
             </>
           ) : (
             <div className={styles.heroEmpty}>아직 등록된 이벤트가 없어요.</div>
