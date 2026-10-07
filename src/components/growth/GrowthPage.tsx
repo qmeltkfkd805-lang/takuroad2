@@ -205,9 +205,9 @@ export default function GrowthPage() {
         )
       })()}
 
-      <div className={styles.layout}>
-        {/* ═══ 왼쪽 — 도전 ═══ */}
-        <div className={styles.main}>
+      {/* 배치: 지금 도전 중(가로 전체) → 최근 해금 · 이번 보상 미리보기 · 칭호 보상(한 줄) → 업적 카테고리(가로 전체)
+          오른쪽 세로 칸을 없애 빈 공간이 생기지 않게 했다. 오늘의 추천 도전은 도전이 있을 때만 지금 도전 중 옆에 붙는다. */}
+      <div className={styles.stack}>
           {masters.length > 0 && (
             <section className={styles.block}>
               <div className={styles.blockHead}>
@@ -218,28 +218,45 @@ export default function GrowthPage() {
               </div>
             </section>
           )}
-          <section className={styles.block}>
-            <div className={styles.blockHead}>
-              <h2><Icon name="colorstar" size={17} /> 지금 도전 중</h2>
-            </div>
 
-            {loading ? (
-              <div className={styles.cards}>{[0,1,2].map(i => <div key={i} className={styles.skelCard} />)}</div>
-            ) : challenges.length === 0 ? (
-              <div className={styles.empty}>
-                <Taku pose="sit" size={92} />
-                <p>모든 도전을 완료했어요. 새 목표가 곧 열려요.</p>
+          <div className={top ? styles.challengeRow : undefined}>
+            <section className={styles.block}>
+              <div className={styles.blockHead}>
+                <h2><Icon name="colorstar" size={17} /> 지금 도전 중</h2>
               </div>
-            ) : (
-              <div className={styles.cards}>
-                {challenges.slice(0, 3).map(c => (
-                  <ChallengeCard key={c.tierId} c={c} onGo={() => router.push(c.ctaHref)} />
-                ))}
-              </div>
+
+              {loading ? (
+                <div className={styles.cards}>{[0,1,2].map(i => <div key={i} className={styles.skelCard} />)}</div>
+              ) : challenges.length === 0 ? (
+                <div className={styles.empty}>
+                  <Taku pose="sit" size={92} />
+                  <p>모든 도전을 완료했어요. 새 목표가 곧 열려요.</p>
+                </div>
+              ) : (
+                <div className={styles.cards}>
+                  {challenges.slice(0, 3).map(c => (
+                    <ChallengeCard key={c.tierId} c={c} onGo={() => router.push(c.ctaHref)} />
+                  ))}
+                </div>
+              )}
+            </section>
+            {/* 오늘의 추천 도전 */}
+            {top && (
+              <section className={styles.rec}>
+                <div className={styles.recHead}>오늘의 추천 도전</div>
+                <p className={styles.recLine}>
+                  {top.verb} <b>{Math.max(0, top.target - top.done)}회</b>만 더 하면
+                </p>
+                <p className={styles.recGoal}>{top.rewardName} 달성!</p>
+                <div className={styles.recTaku}><Taku pose="walk" size={96} /></div>
+                <button className={styles.recBtn} onClick={() => router.push(top.ctaHref)}>
+                  {top.ctaLabel} ›
+                </button>
+              </section>
             )}
-          </section>
+          </div>
 
-          <div className={styles.two}>
+          <div className={styles.three}>
             {/* 최근 해금 */}
             <section className={styles.block}>
               <div className={styles.blockHead}>
@@ -284,6 +301,21 @@ export default function GrowthPage() {
                 </div>
               )}
             </section>
+
+            {/* 칭호 보상 — 모은 칭호는 프로필 수정에서 고른다 */}
+            <section className={styles.block}>
+              <div className={styles.blockHead}>
+                <h2>칭호 보상</h2>
+                <button className={styles.ghostSm} onClick={() => router.push('/profile/settings/profile')}>칭호 고르기 ›</button>
+              </div>
+              {loading ? (
+                <div className={styles.cosList}>{[0,1,2,3].map(i => <div key={i} className={styles.skelRow} />)}</div>
+              ) : (
+                <div className={styles.cosList}>
+                  {(d?.cosmetics ?? []).map(c => <CosRow key={c.type} c={c} onClick={() => router.push('/profile/settings/profile')} />)}
+                </div>
+              )}
+            </section>
           </div>
 
           {/* 업적 카테고리 */}
@@ -297,40 +329,6 @@ export default function GrowthPage() {
               </div>
             )}
           </section>
-        </div>
-
-        {/* ═══ 오른쪽 ═══ */}
-        <aside className={styles.side}>
-          {/* 오늘의 추천 도전 */}
-          {top && (
-            <section className={styles.rec}>
-              <div className={styles.recHead}>오늘의 추천 도전</div>
-              <p className={styles.recLine}>
-                {top.verb} <b>{Math.max(0, top.target - top.done)}회</b>만 더 하면
-              </p>
-              <p className={styles.recGoal}>{top.rewardName} 달성!</p>
-              <div className={styles.recTaku}><Taku pose="walk" size={96} /></div>
-              <button className={styles.recBtn} onClick={() => router.push(top.ctaHref)}>
-                {top.ctaLabel} ›
-              </button>
-            </section>
-          )}
-
-          {/* 칭호 보상 — 모은 칭호는 프로필 수정에서 고른다 */}
-          <section className={styles.block}>
-            <div className={styles.blockHead}>
-              <h2>칭호 보상</h2>
-              <button className={styles.ghostSm} onClick={() => router.push('/profile/settings/profile')}>칭호 고르기 ›</button>
-            </div>
-            {loading ? (
-              <div className={styles.cosList}>{[0,1,2,3].map(i => <div key={i} className={styles.skelRow} />)}</div>
-            ) : (
-              <div className={styles.cosList}>
-                {(d?.cosmetics ?? []).map(c => <CosRow key={c.type} c={c} onClick={() => router.push('/profile/settings/profile')} />)}
-              </div>
-            )}
-          </section>
-        </aside>
       </div>
     </div>
   )
