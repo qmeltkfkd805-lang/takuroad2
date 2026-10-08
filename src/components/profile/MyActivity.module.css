@@ -52,6 +52,9 @@
 .kind { font-weight: 800; color: var(--accent); flex-shrink: 0; }
 .kindMuted { font-weight: 800; color: var(--muted); flex-shrink: 0; }
 .date { margin-left: auto; color: var(--muted); flex-shrink: 0; font-variant-numeric: tabular-nums; }
+/* 내 후기 — 별점 */
+.stars { flex-shrink: 0; color: #F7A928; letter-spacing: 1px; font-size: 12px; }
+.starsOff { color: var(--border); }
 .hiddenChip { flex-shrink: 0; font-size: 11px; font-weight: 800; color: #c0392b; background: rgba(239,90,90,.1); padding: 2px 8px; border-radius: 9999px; }
 
 /* 본문 — 가장 잘 보이게 (2~3줄, 넘치면 …) */

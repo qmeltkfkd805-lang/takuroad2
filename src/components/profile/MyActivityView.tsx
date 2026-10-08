@@ -1,6 +1,7 @@
 'use client'
 
-/* 마이페이지 › 내 활동 — '작성한 글'과 '내 댓글'을 한 화면으로 합쳤다.
+/* 마이페이지 › 내 활동 — '작성한 글'·'내 댓글'·'내 후기'를 한 화면으로 합쳤다.
+   (내 후기: getMyReviews — 샵 후기, 최신순, 누르면 그 샵의 그 후기(?review=)로. 2026-10-08 합침)
    - 위: 마이페이지로 → 내 활동 → 설명 → [내 글 | 내 댓글] (기본 내 글, 글·댓글을 섞는 '전체' 탭은 없음)
    - 목록은 표가 아니라 '내 활동 목록' — 흰 배경 · 핑크 포인트 · 얇은 구분선
    - 데이터·정렬·이동은 예전 두 화면(MyPostsTab / MyCommentsTab) 그대로:
@@ -12,13 +13,14 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { getMyPosts } from '@/services/communityPostService'
 import { getAllMyComments } from '@/services/commentService'
+import { getMyReviews } from '@/services/reviewService'
 import { CommunityPost, BOARD_LABEL, REASON_LABEL } from '@/types/community-post'
 import { ROUTES } from '@/lib/constants/routes'
 import AppealModal from '@/components/community/AppealModal'
 import ThumbImg from '@/components/common/ThumbImg'
 import styles from './MyActivity.module.css'
 
-export type ActivityTab = 'posts' | 'comments'
+export type ActivityTab = 'posts' | 'comments' | 'reviews'
 
 type Load<T> = { state: 'loading' } | { state: 'error' } | { state: 'done'; items: T[] }
 
@@ -71,6 +73,8 @@ export default function MyActivityView({ userId, initialTab = 'posts', onBack }:
   const [comments, setComments] = useState<Load<any>>({ state: 'loading' })
   const [postsKey, setPostsKey] = useState(0)        // 이의제기 접수 후·다시 시도 시 다시 불러오기
   const [commentsKey, setCommentsKey] = useState(0)
+  const [reviews, setReviews] = useState<Load<any>>({ state: 'loading' })
+  const [reviewsKey, setReviewsKey] = useState(0)
   const [appealing, setAppealing] = useState<CommunityPost | null>(null)
 
   useEffect(() => {
@@ -91,9 +95,18 @@ export default function MyActivityView({ userId, initialTab = 'posts', onBack }:
     return () => { alive = false }
   }, [userId, commentsKey])
 
+  useEffect(() => {
+    let alive = true
+    setReviews({ state: 'loading' })
+    getMyReviews(userId)
+      .then(items => { if (alive) setReviews({ state: 'done', items }) })
+      .catch(() => { if (alive) setReviews({ state: 'error' }) })
+    return () => { alive = false }
+  }, [userId, reviewsKey])
+
   // 탭마다 스크롤 위치 기억 → 돌아오면 그 자리로
   const wrapRef = useRef<HTMLDivElement>(null)
-  const scrollPos = useRef<Record<ActivityTab, number[]>>({ posts: [], comments: [] })
+  const scrollPos = useRef<Record<ActivityTab, number[]>>({ posts: [], comments: [], reviews: [] })
   const switchTab = (next: ActivityTab) => {
     if (next === tab) return
     scrollPos.current[tab] = scrollersOf(wrapRef.current).map(s => s.scrollTop)
@@ -130,11 +143,12 @@ export default function MyActivityView({ userId, initialTab = 'posts', onBack }:
           마이페이지
         </button>
         <h1 className={styles.title}>내 활동</h1>
-        <p className={styles.desc}>내가 쓴 글과 댓글을 모아봤어요.</p>
+        <p className={styles.desc}>내가 쓴 글·댓글·후기를 모아봤어요.</p>
 
         <div className={styles.tabs} role="tablist" aria-label="내 활동">
           {tabBtn('posts', '내 글', count(posts))}
           {tabBtn('comments', '내 댓글', count(comments))}
+          {tabBtn('reviews', '내 후기', count(reviews))}
         </div>
 
         {/* 두 목록 모두 그려 두고 하나만 보여준다 — 탭을 오가도 다시 불러오지 않는다 */}
@@ -143,6 +157,9 @@ export default function MyActivityView({ userId, initialTab = 'posts', onBack }:
         </div>
         <div role="tabpanel" hidden={tab !== 'comments'}>
           <CommentList load={comments} onRetry={() => setCommentsKey(k => k + 1)} onOpen={goComment} />
+        </div>
+        <div role="tabpanel" hidden={tab !== 'reviews'}>
+          <ReviewList load={reviews} onRetry={() => setReviewsKey(k => k + 1)} onOpen={r => router.push(ROUTES.shop(r.shops.slug) + '?review=' + r.id)} />
         </div>
       </div>
 
@@ -209,6 +226,47 @@ function PostList({ load, onRetry, onOpen, onAppeal }: {
                 <button type="button" className={styles.appealBtn} onClick={() => onAppeal(p)}>이의제기하기 →</button>
               </div>
             )}
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
+function ReviewList({ load, onRetry, onOpen }: { load: Load<any>; onRetry: () => void; onOpen: (r: any) => void }) {
+  if (load.state !== 'done' || load.items.length === 0) return <StateBox load={load} emptyText="아직 작성한 후기가 없어요" onRetry={onRetry} kind="내 후기" />
+  return (
+    <ul className={styles.list}>
+      {load.items.map((r: any) => {
+        // 샵이 지워졌거나 볼 수 없으면 이동하지 않는다
+        const gone = !r.shops?.slug
+        const stars = Math.max(0, Math.min(5, Math.round(Number(r.stars) || 0)))
+        const img = [...(r.review_images ?? [])].sort((a: any, b: any) => (a.sort_order ?? 0) - (b.sort_order ?? 0))[0]?.image_url ?? null
+        const inner = (
+          <>
+            <div className={styles.main}>
+              <div className={styles.meta}>
+                <span className={styles.kind}>샵 후기</span>
+                <span className={styles.stars} aria-label={`별점 ${stars}점`}>{'★'.repeat(stars)}<span className={styles.starsOff}>{'★'.repeat(5 - stars)}</span></span>
+                <span className={styles.date}>{fmtDate(r.created_at)}</span>
+              </div>
+              <p className={styles.body}>{(r.content ?? '').trim() || '(내용 없음)'}</p>
+              <div className={styles.origin}>
+                <Reply />
+                {gone
+                  ? <span className={`${styles.originText} ${styles.originGone}`}>삭제되었거나 볼 수 없는 샵</span>
+                  : <span className={styles.originText}>{r.shops.name}</span>}
+              </div>
+            </div>
+            {img && <ThumbImg className={styles.thumb} src={img} alt="" loading="lazy" />}
+            {!gone && <Chev />}
+          </>
+        )
+        return (
+          <li key={r.id} className={styles.item}>
+            {gone
+              ? <div className={`${styles.row} ${styles.rowStatic}`}>{inner}</div>
+              : <button type="button" className={styles.row} onClick={() => onOpen(r)}>{inner}</button>}
           </li>
         )
       })}
