@@ -19,13 +19,11 @@ import ChroniclePage from '@/components/collection/ChroniclePage'
 import BadgesTab from './BadgesTab'
 import CollectionTab from './CollectionTab'
 import VisitedShopsTab from './VisitedShopsTab'
-import MyRoutesTab from './MyRoutesTab'
 import LikedWorksTab from './LikedWorksTab'
-import CompletedRoutesTab from './CompletedRoutesTab'
 import MyActivityView, { type ActivityTab } from './MyActivityView'
 import SavedView from './SavedView'
+import RoutesView from './RoutesView'
 import MyPageSubShell from './MyPageSubShell'
-import actStyles from './MyActivity.module.css'
 import MyShopsTab from './MyShopsTab'
 import VerifyStatusTab from './VerifyStatusTab'
 import styles from './ProfileDesktop.module.css'
@@ -45,8 +43,6 @@ const SUB_SET = new Set<Sub>([
 /* 새 틀(MyPageSubShell)을 쓰는 화면의 짧은 설명 — 여기 있는 화면만 새 틀로 그린다 */
 const SUB_DESC: Partial<Record<Sub, string>> = {
   likedworks: '최애·관심으로 담은 작품을 모아봤어요.',
-  routes: '내가 만든 루트를 모아봤어요.',
-  completed: '끝까지 다녀온 루트를 모아봤어요.',
   visited: '다녀온 샵을 모아봤어요.',
   shops: '내가 등록한 샵을 모아봤어요.',
   badges: '지금까지 모은 배지예요.',
@@ -87,7 +83,6 @@ const QUICK_CATALOG: QuickItem[] = [
   { key: 'saved', label: '저장함', icon: 'bookmark', view: 'saved' },
   { key: 'likedworks', label: '좋아요 작품', icon: 'heart', view: 'likedworks' },   // 최애·관심 작품만 모아 보기 (예전엔 /my-works 로 보냄)
   { key: 'visited', label: '방문 기록', icon: 'pushpin', view: 'visited' },
-  { key: 'completed', label: '완주한 루트', icon: 'route', view: 'completed' },
   { key: 'routes', label: '내 루트', icon: 'map', view: 'routes' },
   { key: 'shops', label: '등록한 샵', icon: 'shop', view: 'shops' },
   { key: 'verify', label: '인증 현황', icon: 'check', view: 'verify' },
@@ -97,9 +92,9 @@ const QUICK_CATALOG: QuickItem[] = [
   { key: 'collection', label: '컬렉션', icon: 'collection', href: '/collection' },   // 나의 덕질 컬렉션 화면 (사이드바에서 옮겨 옴)
 ]
 const QUICK_BY_KEY = new Map<string, QuickItem>(QUICK_CATALOG.map(i => [i.key, i]))
-const DEFAULT_QUICK = ['activity', 'saved', 'likedworks', 'visited', 'routes', 'completed']
+const DEFAULT_QUICK = ['activity', 'saved', 'likedworks', 'visited', 'routes', 'badges']
 // 예전 빠른 메뉴 키 → 지금 키 (내 글·내 댓글 → 내 활동, 저장한 루트 → 저장함)
-const LEGACY_QUICK: Record<string, string> = { posts: 'activity', comments: 'activity', reviews: 'activity', savedroutes: 'saved' }
+const LEGACY_QUICK: Record<string, string> = { posts: 'activity', comments: 'activity', reviews: 'activity', savedroutes: 'saved', completed: 'routes' }
 const MAX_QUICK = 6   // 빠른 메뉴는 최대 6개까지
 
 const fmtDate = (s: string | null | undefined) => {
@@ -316,6 +311,11 @@ export default function ProfileDesktop({ passport, userId }: Props) {
     return <SavedView userId={userId} initialTab={view === 'savedroutes' ? 'routes' : 'shops'} onBack={() => setView('dashboard')} />
   }
 
+  // ───────── 내 루트 (만든 루트 · 완주한 루트) — 예전 주소 ?tab=completed 는 완주한 루트 탭으로 연다 ─────────
+  if (view === 'routes' || view === 'completed') {
+    return <RoutesView userId={userId} initialTab={view === 'completed' ? 'completed' : 'mine'} onBack={() => setView('dashboard')} />
+  }
+
   // ───────── 하위 화면 — '내 활동'과 같은 틀(‹ 마이페이지 · 제목 · 설명) ─────────
   //  성장센터·연대기·인증 현황은 화면 안에 자체 제목이 있어서 아래 예전 틀을 그대로 쓴다
   if (view in SUB_DESC) {
@@ -325,11 +325,8 @@ export default function ProfileDesktop({ passport, userId }: Props) {
         title={SUB_TITLE[view as Sub]}
         desc={SUB_DESC[view as Sub]}
         onBack={back}
-        action={view === 'routes' ? <button type="button" className={actStyles.headAction} onClick={() => router.push('/route/new')}>+ 루트 만들기</button> : undefined}
       >
         {view === 'likedworks' && <LikedWorksTab userId={userId} />}
-        {view === 'routes' && <MyRoutesTab userId={userId} />}
-        {view === 'completed' && <CompletedRoutesTab userId={userId} />}
         {view === 'visited' && <VisitedShopsTab userId={userId} />}
         {view === 'shops' && <MyShopsTab userId={userId} />}
         {view === 'badges' && <BadgesTab userId={userId} />}
@@ -347,9 +344,6 @@ export default function ProfileDesktop({ passport, userId }: Props) {
             <AppIcon name="arrow-left" size={18} />마이페이지
           </button>
           <span className={styles.subTitle}>{SUB_TITLE[view]}</span>
-          {view === 'routes' && (
-            <button className={styles.editLink} style={{ marginLeft: 'auto' }} onClick={() => router.push('/route/new')}>+ 루트 만들기</button>
-          )}
         </div>
         <div className={styles.subBody}>
           {view === 'verify' && <VerifyStatusTab userId={userId} />}

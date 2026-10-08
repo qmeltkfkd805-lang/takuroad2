@@ -5,12 +5,13 @@ import RouteBrowser from './RouteBrowser'
 import type { UIRoute } from './RouteCard'
 import LogoLoader from '@/components/common/LogoLoader'
 
-export default function CompletedRoutesTab({ userId }: { userId: string }) {
+/** onCount — 마이페이지 '내 루트' 탭에 개수를 띄우려고 완주한 루트 수를 알려준다 (불러오기 실패면 부르지 않는다) */
+export default function CompletedRoutesTab({ userId, onCount }: { userId: string; onCount?: (n: number) => void }) {
   const [routes, setRoutes] = useState<CompletedRoute[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getCompletedRoutes(userId).then((d) => { setRoutes(d); setLoading(false) }).catch(() => setLoading(false))
+    getCompletedRoutes(userId).then((d) => { setRoutes(d); setLoading(false); onCount?.(d.length) }).catch(() => setLoading(false))
   }, [userId])
 
   if (loading) return <LogoLoader size="md" />

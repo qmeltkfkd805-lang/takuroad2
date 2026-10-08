@@ -15,11 +15,15 @@ function stopsOf(r: any): { lat: number; lng: number }[] {
     .filter((s: any) => typeof s.lat === 'number' && typeof s.lng === 'number')
 }
 
-export default function MyRoutesTab({ userId, readOnly }: { userId: string; readOnly?: boolean }) {
+/** onCount — 마이페이지 '내 루트' 탭에 개수를 띄우려고 지금 목록 수를 알려준다 (삭제하면 다시 알려준다) */
+export default function MyRoutesTab({ userId, readOnly, onCount }: { userId: string; readOnly?: boolean; onCount?: (n: number) => void }) {
   const router = useRouter()
   const { isAdmin } = useAuth()
   const [routes, setRoutes] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    if (!loading) onCount?.(routes.length)
+  }, [loading, routes.length])
 
   useEffect(() => { load() }, [userId])
   async function load() {
