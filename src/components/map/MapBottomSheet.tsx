@@ -13,6 +13,7 @@ import styles from './MapBottomSheet.module.css'
 
 type SheetState = 'closed' | 'peek' | 'expanded'
 const ORDER: SheetState[] = ['closed', 'peek', 'expanded']
+const EMPTY_EVENTS: MapEvent[] = []
 
 interface MapBottomSheetProps {
   shops: Shop[]
@@ -27,6 +28,8 @@ interface MapBottomSheetProps {
   layer?: 'all' | 'shop' | 'event'
   /** 펼친 목록을 아래로 스크롤하면 위 바를 숨기고, 맨 위로 오면 다시 보이게 */
   onListScrollDir?: (dir: 'down' | 'up') => void
+  /** 샵 목록을 아직 불러오는 중 — 그동안 먼저 온 이벤트로 채웠다가 샵으로 바뀌지 않게, 자리만 잡아 둔다 */
+  loading?: boolean
 }
 
 // 📱 렉 줄이기 — 접힌 가로 카드는 앞쪽 몇 개만, 펼친 목록은 스크롤하면서 조금씩 더 그린다
@@ -87,7 +90,11 @@ function EventRow({ ev, onClick }: { ev: MapEvent; onClick: () => void }) {
   )
 }
 
-export default function MapBottomSheet({ shops, events = [], onSelectShop, onSelectEvent, onStateChange, onListClick, regionLabel = null, layer = 'all', onListScrollDir }: MapBottomSheetProps) {
+export default function MapBottomSheet({ shops, events: eventsIn = [], onSelectShop, onSelectEvent, onStateChange, onListClick, regionLabel = null, layer = 'all', onListScrollDir, loading = false }: MapBottomSheetProps) {
+  /* 샵이 오기 전엔(샵을 보여주는 보기에서) 이벤트도 띄우지 않는다.
+     예전엔 이벤트가 먼저 와서 카드 줄에 이벤트가 보였다가, 샵이 오면 샵으로 밀려 바뀌었다 */
+  const waitShops = loading && layer !== 'event'
+  const events = waitShops ? EMPTY_EVENTS : eventsIn
   const { isSaved, toggleSave } = useSaved()
   const { user } = useAuth()
   const router = useRouter()
@@ -214,7 +221,9 @@ export default function MapBottomSheet({ shops, events = [], onSelectShop, onSel
           role="button" aria-label={collapsed ? '샵 카드 펼치기' : '접기'} />
         <div className={styles.header}>
           <div className={styles.title}>
-            {layer === 'event'
+            {waitShops
+              ? <>{regionLabel ? `${regionLabel} ` : '주변 '}샵 불러오는 중…</>
+              : layer === 'event'
               ? <>{regionLabel ? `${regionLabel} ` : '진행 중 '}이벤트 <strong>{events.length}</strong>개</>
               : <>{regionLabel ? `${regionLabel} ` : '주변 '}샵 <strong>{shops.length}</strong>개{layer === 'all' && events.length > 0 && <> · 이벤트 <strong>{events.length}</strong></>}</>}
           </div>
@@ -222,7 +231,11 @@ export default function MapBottomSheet({ shops, events = [], onSelectShop, onSel
         </div>
       </div>
 
-      {collapsed ? null : expanded ? (
+      {collapsed ? null : waitShops ? (
+        expanded
+          ? <div className={styles.list} aria-busy="true">{[0, 1, 2, 3, 4].map(i => <div key={i} className={styles.skelRow} />)}</div>
+          : <div className={styles.row} aria-busy="true">{[0, 1, 2].map(i => <div key={i} className={styles.cardWrap}><div className={styles.skelCard} /></div>)}</div>
+      ) : expanded ? (
         <div className={styles.list} data-sheet-list onScroll={onListScroll}>
           {shops.slice(0, listCount).map(shop => (
             <ShopRow key={shop.id} shop={shop} isActive={false} onClick={onSelectShop} />

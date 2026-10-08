@@ -511,7 +511,7 @@ export default function MapPage() {
         )}
         {!selectedShop && !selectedEvent && (
           <MapBottomSheet shops={shownListShops} events={shownEvents} onSelectShop={handleSelectShop} onSelectEvent={handleSelectEvent} onStateChange={setSheetState} onListClick={goToFilteredList}
-            regionLabel={regionLabel} layer={layer} onListScrollDir={dir => setBarHidden(dir === 'down')} />
+            regionLabel={regionLabel} layer={layer} onListScrollDir={dir => setBarHidden(dir === 'down')} loading={loading} />
         )}
 
 

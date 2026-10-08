@@ -58,6 +58,16 @@
 .row img { pointer-events: none; -webkit-user-drag: none; user-select: none; }
 .cardWrap > * { height: 100%; }
 
+/* 샵 목록 불러오는 동안 자리 — 카드·줄 모양 그대로 회색으로 */
+.skelCard, .skelRow {
+  border-radius: 18px;
+  background: linear-gradient(90deg, var(--surface2) 0%, #f7f6f4 50%, var(--surface2) 100%);
+  background-size: 200% 100%;
+  animation: sheetShimmer 1.2s infinite;
+}
+.skelRow { height: 76px; margin: 8px 16px; border-radius: 12px; }
+@keyframes sheetShimmer { from { background-position: 200% 0 } to { background-position: -200% 0 } }
+
 /* 📱 모바일: 접힘(peek) 미리보기 카드를 낮춰 시트 높이 축소 → 지도 더 보이게 (PC는 그대로) */
 @media (pointer: coarse) {
   .cardWrap { width: 190px; height: 240px; }
