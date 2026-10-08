@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { kstToday } from '@/lib/utils/kstDate'
 
 export interface InfoConfirmationStats {
   count: number
@@ -65,13 +66,13 @@ export async function getConfirmationStats(
 // 오늘 이미 체크인했는지 (확인 버튼 문구 분기용)
 export async function hasCheckedInToday(userId: string, shopId: string): Promise<string | null> {
   const supabase = createClient()
-  const today = new Date().toISOString().slice(0, 10)
+  const today = kstToday()
   const { data } = await supabase
     .from('check_ins')
     .select('id')
     .eq('user_id', userId)
     .eq('shop_id', shopId)
-    .gte('created_at', `${today}T00:00:00`)
+    .gte('created_at', `${today}T00:00:00+09:00`)
     .maybeSingle()
   return data?.id ?? null
 }

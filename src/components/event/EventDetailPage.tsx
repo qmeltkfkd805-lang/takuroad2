@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { kstToday } from '@/lib/utils/kstDate'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { EventCard } from '@/components/tds'
@@ -236,7 +237,7 @@ export default function EventDetailPage() {
   const mapLng = event.shop?.lng ?? event.placeLng
 
   // 사전예약 진행 여부 (오늘이 예약 기간 안인지)
-  const todayStr = new Date().toISOString().slice(0, 10)
+  const todayStr = kstToday()
   const reserveOpen = !!event.reserveStart && !!event.reserveEnd
     && event.reserveStart <= todayStr && todayStr <= event.reserveEnd
 

@@ -1,4 +1,5 @@
 import { SupabaseClient } from '@supabase/supabase-js'
+import { kstToday } from '@/lib/utils/kstDate'
 import { createClient } from '@/lib/supabase/client'
 import { toShop } from '@/services/shopService'
 import { fetchAllRows } from '@/lib/supabase/fetchAll'
@@ -75,7 +76,7 @@ export async function getPlaceBySlug(
   }
   if (!place) return null
 
-  const today = new Date().toISOString().slice(0, 10)
+  const today = kstToday()
 
   // 입점 샵 + 그 장소 직속/소속 이벤트
   const [shopRes, evRes] = await Promise.all([

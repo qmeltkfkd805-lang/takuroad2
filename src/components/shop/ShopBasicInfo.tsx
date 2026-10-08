@@ -42,9 +42,10 @@ const CHANNEL_NAME: Record<string, string> = {
   kakao: '카카오톡', navercafe: '네이버 카페', naverblog: '네이버 블로그', naver: '네이버', globe: '홈페이지',
 }
 const CHANNEL_ICON_FILES: Record<string, string[]> = {
-  instagram: ['instagram', 'instargram'],
+  // 실제 파일 이름(public/icons/instargram.png, X.png)을 먼저 — 예전 순서는 매번 없는 파일을 먼저 불러 404 가 났다
+  instagram: ['instargram', 'instagram'],
   threads: ['threads'],
-  x: ['x', 'X'],
+  x: ['X', 'x'],
   kakao: ['kakao', 'kakaotalk'],
   youtube: ['youtube'],
   naver: ['naver'],

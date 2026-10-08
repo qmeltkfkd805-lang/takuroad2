@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { kstToday } from '@/lib/utils/kstDate'
 import { resolveEventCover } from '@/lib/event/eventCover'
 import { EventHomeType } from '@/services/eventHomeService'
 import { BusinessHours } from '@/types/database'
@@ -171,7 +172,7 @@ export async function getRelatedEvents(
   opts: { excludeSeriesKey?: string | null; limit?: number } = {},
 ): Promise<RelatedEvent[]> {
   const supabase = createClient()
-  const today = new Date().toISOString().slice(0, 10)
+  const today = kstToday()
   const limit = opts.limit ?? 12
   const skipKey = (opts.excludeSeriesKey ?? '').trim()
 

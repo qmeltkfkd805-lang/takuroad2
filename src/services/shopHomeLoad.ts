@@ -2,6 +2,7 @@
 // 'use client' 가 없어서 서버(/api/shops/home-items)와 브라우저 양쪽에서 쓸 수 있다.
 // 화면에서는 보통 shopHomeService.getShopHomeItems() 를 쓴다 (캐시된 API 를 먼저 부르고, 실패하면 이걸 직접 부름).
 import { createClient } from '@/lib/supabase/client'
+import { kstToday } from '@/lib/utils/kstDate'
 import { toShop } from '@/services/shopService'
 import { resolveEventCover } from '@/lib/event/eventCover'
 import type { ShopHomeItem } from '@/services/shopHomeService'
@@ -25,7 +26,7 @@ const SHOP_SELECT = `
 /** 샵 + 취급 작품 + 진행 중 이벤트를 한 번에 (DB에서 직접) */
 export async function loadShopHomeItems(): Promise<ShopHomeItem[]> {
   const supabase = createClient()
-  const today = new Date().toISOString().slice(0, 10)
+  const today = kstToday()
 
   /* 샵·취급 작품·굿즈 연결은 1,000줄을 넘는다 — 한 번에 받으면 뒤쪽이 말없이 잘려서
      (샵이 빠지거나, 취급 작품이 비어 작품 필터에 안 걸리는 샵이 생겼다) 나눠서 끝까지 받는다 */

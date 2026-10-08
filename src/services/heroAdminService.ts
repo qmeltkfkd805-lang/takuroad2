@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { kstToday } from '@/lib/utils/kstDate'
 import { adminUpsert } from '@/services/adminUpsertService'
 import { HeroCategory, HeroCard } from '@/lib/home/heroTypes'
 
@@ -12,7 +13,7 @@ export async function getHeroPreview(): Promise<HeroCard[]> {
   } catch { return [] }
 }
 
-const today = () => new Date().toISOString().slice(0, 10)
+const today = () => kstToday()
 
 export interface HeroSlotRow {
   id: string

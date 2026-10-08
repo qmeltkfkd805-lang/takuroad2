@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { kstToday, kstDateStr } from '@/lib/utils/kstDate'
 import { shopRegion } from '@/lib/utils/region'
 import { resolveEventCover } from '@/lib/event/eventCover'
 
@@ -28,7 +29,7 @@ export interface EventHomeItem {
   seriesKey: string | null
 }
 
-const today = () => new Date().toISOString().slice(0, 10)
+const today = () => kstToday()
 
 // events 행 + 작품/샵 정보를 붙여 EventHomeItem으로
 async function hydrate(rows: any[]): Promise<EventHomeItem[]> {
@@ -100,7 +101,7 @@ export async function getEventHomeItems(): Promise<EventHomeItem[]> {
     (DB에서 지우는 게 아니라 목록 노출 기간만 제한한다. 그 이전 것도 상세 링크는 계속 살아있음) */
 export async function getRecentlyEndedEventItems(days = 30): Promise<EventHomeItem[]> {
   const supabase = createClient()
-  const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
+  const cutoff = kstDateStr(new Date(Date.now() - days * 24 * 60 * 60 * 1000))
   const { data, error } = await supabase
     .from('events')
     .select('id, tag_id, type, shop_id, title, start_date, end_date, reserve_start, reserve_end, cover_url, place_name, place_addr, series_key')

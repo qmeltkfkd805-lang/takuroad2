@@ -5,6 +5,7 @@
 //    사용자마다 다른 건 "최애 작품 이벤트를 앞으로" 정렬 하나뿐이라, 그건 composeHero 에서 가볍게 계산한다.
 //    홈 페이지는 비로그인 기준 히어로로 미리 만들어 두고(정적), 로그인 사용자는 /api/home/hero 로 개인화 결과를 받아 바꿔 낀다.
 import { unstable_cache } from 'next/cache'
+import { kstToday } from '@/lib/utils/kstDate'
 import { createClient } from '@/lib/supabase/server'
 import { createClient as createAnonClient } from '@/lib/supabase/client'
 import { resolveEventCover } from '@/lib/event/eventCover'
@@ -15,7 +16,6 @@ import { AutoEventCand, rankAutoEvents, isFavoriteCand, mergeToMax } from '@/lib
 const MAX = 5
 const AUTO_WINDOW_DAYS = 14
 
-const ymd = (d: Date) => d.toISOString().slice(0, 10)
 const addDays = (day: string, n: number) => {
   const d = new Date(`${day}T12:00:00Z`)
   d.setUTCDate(d.getUTCDate() + n)
@@ -41,7 +41,7 @@ export interface HeroBase {
 }
 
 async function loadHeroBase(supabase: any): Promise<HeroBase> {
-  const today = ymd(new Date())
+  const today = kstToday()
   const nowIso = new Date().toISOString()
 
   // 1) 수동 슬롯 (게시중 + 노출기간 유효) — RLS 의존 않고 명시 필터 (관리자 홈에서 초안 노출 방지)

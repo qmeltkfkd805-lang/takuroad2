@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { kstToday } from '@/lib/utils/kstDate'
 import { regionFromAddr, districtFromAddr } from '@/lib/utils/region'
 
 // 지도에 핀으로 띄울 '진행중 이벤트' 최소 타입.
@@ -30,7 +31,7 @@ export const MAP_EVENT_TYPE_LABEL: Record<string, string> = {
 // 오늘 기준 진행중(시작<=오늘, 종료 없음 또는 종료>=오늘)인 이벤트 중 좌표가 있는 것만.
 export async function getOngoingMapEvents(): Promise<MapEvent[]> {
   const supabase = createClient()
-  const today = new Date().toISOString().slice(0, 10)
+  const today = kstToday()
 
   const { data, error } = await supabase
     .from('events')

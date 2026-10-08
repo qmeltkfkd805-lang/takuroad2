@@ -1,6 +1,7 @@
 'use client'
 
 import { useFormDraft } from '@/hooks/useFormDraft'
+import { kstToday } from '@/lib/utils/kstDate'
 import DraftNotice from '@/components/common/DraftNotice'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -697,7 +698,7 @@ function Preview({ form, tagName }: { form: EventFormData; tagName: string | nul
     : null
   const dLeft = form.endDate ? daysUntil(form.endDate) : null
 
-  const today = new Date().toISOString().slice(0, 10)
+  const today = kstToday()
   const reserveOpen = !!form.reserveStart && !!form.reserveEnd
     && form.reserveStart <= today && today <= form.reserveEnd
 

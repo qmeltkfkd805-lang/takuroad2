@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useMemo, ReactNode } from 'react'
+import { kstToday } from '@/lib/utils/kstDate'
 import { uploadBannerImage } from '@/services/featuredBannerService'
 import {
   listHeroSlots, heroSummary, getHeroPreview, HeroSlotView, HeroSlotDraft,
@@ -433,7 +434,7 @@ function RegisterPanel({ initial, onSaved, onClose }: {
 
   const previewImg = imgMode === 'upload' ? (customImg || picked?.thumb) : picked?.thumb
   const previewTitle = headline || picked?.title || ''
-  const reserve = !!startDate && startDate > new Date().toISOString().slice(0, 10)
+  const reserve = !!startDate && startDate > kstToday()
 
   return (
     <div className={styles.panel}>

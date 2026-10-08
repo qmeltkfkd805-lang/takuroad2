@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { kstToday } from '@/lib/utils/kstDate'
 import { resolveEventCover } from '@/lib/event/eventCover'
 import { rankEvents } from '@/lib/event/rankEvents'
 
@@ -134,7 +135,7 @@ export interface ShopWorkEvent {
 
 export async function getEventsByShop(shopId: string): Promise<ShopWorkEvent[]> {
   const supabase = createClient()
-  const today = new Date().toISOString().slice(0, 10)   // YYYY-MM-DD
+  const today = kstToday()   // YYYY-MM-DD
 
   const { data, error } = await supabase
     .from('events')
@@ -243,7 +244,7 @@ const toLinkable = (e: any): LinkableEvent => ({
 /** 아직 샵에 안 붙은 이벤트 중 아직 안 끝난 것들 (연결 후보 풀). 매칭 점수는 화면에서 계산. */
 export async function getUnlinkedEvents(limit = 300): Promise<LinkableEvent[]> {
   const supabase = createClient()
-  const today = new Date().toISOString().slice(0, 10)
+  const today = kstToday()
   const { data, error } = await supabase
     .from('events')
     .select(EVENT_LINK_COLS)
@@ -298,7 +299,7 @@ export interface ActiveEvent {
 
 export async function getActiveEvents(limit = 8): Promise<ActiveEvent[]> {
   const supabase = createClient()
-  const today = new Date().toISOString().slice(0, 10)
+  const today = kstToday()
   const { data, error } = await supabase
     .from('events')
     .select('id, tag_id, type, shop_id, title, start_date, end_date, cover_url, place_name')

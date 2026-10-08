@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { kstToday } from '@/lib/utils/kstDate'
 import { prepareImage } from '@/lib/storage/compressImage'
 import { recordActivity } from '@/services/activityService'
 import { geekAreaFromAddr } from '@/lib/utils/geekArea'
@@ -445,7 +446,7 @@ export async function updateShop(
 // 진행 중 이벤트의 포스터를 각 샵에 붙인다 (지도·바텀시트 카드 이미지용)
 async function attachEvents(supabase: any, shops: Shop[]): Promise<Shop[]> {
   if (shops.length === 0) return shops
-  const today = new Date().toISOString().slice(0, 10)
+  const today = kstToday()
   // 예전엔 샵 id 전부를 .in() 으로 주소에 실었다 — 샵이 1,000곳을 넘으면 주소가 너무 길어진다.
   // 진행 중이면서 샵에 연결된 이벤트는 몇십 개뿐이라, 그걸 다 받아서 샵마다 고른다.
   const wanted = new Set(shops.map(s => s.id))

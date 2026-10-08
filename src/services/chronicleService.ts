@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { kstDateStr } from '@/lib/utils/kstDate'
 
 export interface ChronicleEvent {
   id: string
@@ -66,7 +67,7 @@ export async function getMemoriesOnThisDay(userId: string) {
   for (let yearsAgo = 1; yearsAgo <= 5; yearsAgo++) {
     const targetDate = new Date(today)
     targetDate.setFullYear(today.getFullYear() - yearsAgo)
-    const dateStr = targetDate.toISOString().slice(0, 10)
+    const dateStr = kstDateStr(targetDate)
 
     const { data } = await supabase
       .from('activity_logs')

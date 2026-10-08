@@ -97,9 +97,14 @@ export async function countActivity(userId: string, target: ActivityCountTarget,
     const regRows = rows.filter(r => (r as any).type === 'shop_register')
     if (regRows.length > 0) {
       const ids = [...new Set(regRows.map(r => r.related_id).filter(Boolean))]
-      const { data: alive } = await supabase
-        .from('shops').select('id').in('id', ids).eq('status', 'active')
-      const aliveSet = new Set((alive ?? []).map((s: any) => s.id))
+      /* 샵 id 를 한 번에 다 주소에 실으면, 샵을 수백 곳 등록한 계정에선 주소가 너무 길어져 조회가 실패하고
+         살아있는 샵이 0곳으로 세졌다 → 200개씩 나눠 묻는다 */
+      const aliveSet = new Set<string>()
+      for (let i = 0; i < ids.length; i += 200) {
+        const { data: alive } = await supabase
+          .from('shops').select('id').in('id', ids.slice(i, i + 200)).eq('status', 'active')
+        for (const s of (alive ?? []) as any[]) aliveSet.add(s.id)
+      }
       rows = rows.filter(r => (r as any).type !== 'shop_register' || aliveSet.has(r.related_id))
     }
   }

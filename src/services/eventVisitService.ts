@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { kstToday } from '@/lib/utils/kstDate'
 import { recordActivity } from './activityService'
 
 /* ============================================================
@@ -33,7 +34,7 @@ export interface EventVisitResult {
  *      · 진행 중          → 오늘
  */
 function resolveVisitedOn(startDate: string | null, endDate: string | null): string {
-  const today = new Date().toISOString().slice(0, 10)
+  const today = kstToday()
   if (endDate && today > endDate) return endDate
   if (startDate && today < startDate) return startDate
   return today

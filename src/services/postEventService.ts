@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { kstToday } from '@/lib/utils/kstDate'
 
 /* 덕메게시판 글 ↔ 이벤트 연결 (글 하나에 이벤트 하나).
    DB: migrations/community_post_events.sql (community_post_events 표) */
@@ -28,7 +29,7 @@ const EVENT_COLS = 'id, title, cover_url, start_date, end_date, place_name, shop
 /** 고를 수 있는 이벤트 — 끝나지 않은(진행 중·예정) 이벤트를 제목으로 찾는다. 검색어가 없으면 곧 끝나는/진행 중인 것부터 */
 export async function searchCompanionEvents(q: string, limit = 20): Promise<PostEventSummary[]> {
   const supabase = createClient()
-  const today = new Date().toISOString().slice(0, 10)
+  const today = kstToday()
   let query = supabase
     .from('events')
     .select(EVENT_COLS)
