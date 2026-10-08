@@ -328,23 +328,23 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
           댓글 {post.commentCount}
         </span>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <button onClick={toggleSave} aria-pressed={saved} title={saved ? '저장 해제' : '저장 — 마이페이지 저장함에 모아 둬요'} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, color: saved ? 'var(--accent)' : 'var(--muted)' }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill={saved ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6.5 3.5h11a1 1 0 0 1 1 1v16l-6.5-4-6.5 4v-16a1 1 0 0 1 1-1z" /></svg>
-          {saved ? '저장됨' : '저장'}
-        </button>
-        <button onClick={share} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, color: 'var(--muted)' }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7" /><path d="M16 6l-4-4-4 4" /><path d="M12 2v13" /></svg>
-          공유
-        </button>
-        {user && (
-          <>
-            <span style={{ color: 'var(--border)' }}>|</span>
-            <button onClick={() => setReporting(true)} style={{ border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, color: 'var(--muted)' }}>신고</button>
-          </>
-        )}
-      </div>
     </div>
+  )
+
+  /* 저장 · 공유 · 신고 — 글 위쪽(작성자·날짜 줄 오른쪽)에 둔다. 좋아요·댓글 수는 본문 아래 그대로 */
+  const toolBtn: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 4, border: 'none', background: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 700, color: 'var(--muted)', whiteSpace: 'nowrap' }
+  const postTools = (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12 }}>
+      <button onClick={toggleSave} aria-pressed={saved} title={saved ? '저장 해제' : '저장 — 마이페이지 저장함에 모아 둬요'} style={{ ...toolBtn, color: saved ? 'var(--accent)' : 'var(--muted)' }}>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill={saved ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6.5 3.5h11a1 1 0 0 1 1 1v16l-6.5-4-6.5 4v-16a1 1 0 0 1 1-1z" /></svg>
+        {saved ? '저장됨' : '저장'}
+      </button>
+      <button onClick={share} style={toolBtn}>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7" /><path d="M16 6l-4-4-4 4" /><path d="M12 2v13" /></svg>
+        공유
+      </button>
+      {user && <button onClick={() => setReporting(true)} style={toolBtn}>신고</button>}
+    </span>
   )
 
   const commentsBlock = (
@@ -441,6 +441,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
             <span>· {fmtDate(post.createdAt)}</span>
             <span>· 조회 {post.viewCount}</span>
             {visBadge}
+            <span style={{ marginLeft: 'auto' }}>{postTools}</span>
           </div>
           {goodsHtml && (goodsIsHtml
             ? <div className="taku-post-body" onClick={lb.onBodyClick} style={{ fontSize: 14.5, lineHeight: 1.7, margin: '0 0 16px', wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(goodsHtml) }} />
@@ -496,9 +497,11 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
                 <UserLevelBadge userId={post.author?.id} />
                 <span>· {fmtDate(post.createdAt)}</span>
               </span>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12 }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                 <span>조회 {post.viewCount}</span>
                 <span>댓글 {post.commentCount}</span>
+                <span style={{ color: 'var(--border)' }}>|</span>
+                {postTools}
                 {kebab}
               </span>
             </div>
@@ -512,7 +515,10 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
               <UserLevelBadge userId={post.author?.id} />
               <span>· {fmtDate(post.createdAt)}</span>
               <span>· 조회 {post.viewCount}</span>
-              {kebab}
+              <span style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                {postTools}
+                {kebab && <span style={{ display: 'inline-flex' }}>{kebab}</span>}
+              </span>
             </div>
           </>
         )}
