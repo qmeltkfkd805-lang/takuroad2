@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { createContext, useContext, useEffect, useRef, useState, ReactNode } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { User } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
@@ -65,15 +65,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfileLoaded(true)
   }
 
+  /* ⚡ 같은 사람이면 user 객체를 바꾸지 않는다.
+     처음 열 때 getUser() 와 onAuthStateChange(INITIAL_SESSION), 그리고 토큰 갱신(TOKEN_REFRESHED)이
+     같은 사람인데도 매번 새 user 객체를 넣어서, [user] 에 걸린 화면 조회가 페이지마다 2~3번씩 다시 돌았다
+     (홈 한 번 열 때 찜 목록 6번, 방문 기록 3번 저장 등). 프로필도 같은 사람이면 다시 읽지 않는다. */
+  const profileFor = useRef<string | null>(null)
+  const sameUser = (a: User | null, b: User | null) =>
+    a === b || (!!a && !!b && a.id === b.id && a.updated_at === b.updated_at && a.email === b.email)
+  function applyUser(next: User | null) {
+    setUser(prev => (sameUser(prev, next) ? prev : next))
+  }
+
   useEffect(() => {
     let active = true
 
     // 초기 세션 확인 (콜백 밖이라 await 안전)
     supabase.auth.getUser().then(async ({ data: { user } }) => {
       if (!active) return
-      setUser(user)
-      if (user) await loadProfile(user.id)
-      else setProfileLoaded(true)
+      applyUser(user)
+      if (user) {
+        if (profileFor.current !== user.id) { profileFor.current = user.id; await loadProfile(user.id) }
+      } else setProfileLoaded(true)
       if (active) setLoading(false)
     })
 
@@ -83,11 +95,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         const currentUser = session?.user ?? null
-        setUser(currentUser)
+        applyUser(currentUser)
         if (currentUser) {
-          setProfileLoaded(false)
-          setTimeout(() => { if (active) loadProfile(currentUser.id) }, 0)
+          // 같은 사람의 토큰 갱신·초기 세션 알림이면 프로필은 이미 있다 — 다시 읽지 않는다
+          if (profileFor.current !== currentUser.id) {
+            profileFor.current = currentUser.id
+            setProfileLoaded(false)
+            setTimeout(() => { if (active) loadProfile(currentUser.id) }, 0)
+          }
         } else {
+          profileFor.current = null
           setProfile(null)
           setProfileLoaded(true)
         }
@@ -139,6 +156,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function signOut() {
     await supabase.auth.signOut()
+    profileFor.current = null
     setUser(null)
     setProfile(null)
     setProfileLoaded(true)

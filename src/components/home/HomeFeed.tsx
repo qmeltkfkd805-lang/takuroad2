@@ -8,8 +8,8 @@ import { WorkRelationship } from '@/types/work-relationship'
 import { AFFINITY_LABEL } from '@/lib/constants/workRelationship'
 import { pickHeroRelationship } from '@/lib/home/pickHeroRelationship'
 import HeroSlot from './HeroSlot'
-import { getProductsByTag } from '@/services/shopProductService'
-import { getShopsByTag } from '@/services/shopService'
+import { countProductsByTag } from '@/services/shopProductService'
+import { countShopsByTag } from '@/services/shopService'
 import { useSaved } from '@/hooks/useSaved'
 import { useSlider } from '@/hooks/useSlider'
 import type { Shop } from '@/types/shop'
@@ -20,7 +20,7 @@ import RouteThumb from '@/components/route/RouteThumb'
 import { rtStops, rtRegions, fmtDur } from '@/components/route/routeMeta'
 import { formatDistance } from '@/hooks/useCurrentLocation'
 import { toggleRouteSave, getMySavedRouteIds } from '@/services/routeService'
-import { getEventsByTag } from '@/services/eventService'
+import { getEventsByTags } from '@/services/eventService'
 import { getMySavedEventIds, saveEvent, unsaveEvent } from '@/services/eventSaveService'
 import { pickWorkNews } from '@/lib/home/pickWorkNews'
 import { FeedItem, FeedKind } from '@/lib/feed/types'
@@ -220,21 +220,20 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
   useEffect(() => {
     if (!heroPick) { setHeroCounts(null); return }
     const { slug, id } = heroPick.relationship.work
-    Promise.all([getProductsByTag(id), getShopsByTag(slug)])
-      .then(([goods, shops]) => setHeroCounts({ goods: goods.length, shops: shops.length }))
+    // 개수만 필요해서 목록 대신 개수만 센다 (예전엔 취급 샵 전체 정보·굿즈 전체를 받아 길이만 썼다)
+    Promise.all([countProductsByTag(id), countShopsByTag(id)])
+      .then(([goods, shops]) => setHeroCounts({ goods, shops }))
   }, [heroPick?.relationship.work.id])
 
   // 내 작품들의 새 소식 (작품별 이벤트 → pickWorkNews → FeedItem)
   const [newsItems, setNewsItems] = useState<FeedItem[]>([])
   useEffect(() => {
     if (myWorks.length === 0) { setNewsItems([]); return }
-    Promise.all(
-      myWorks.map(r =>
-        getEventsByTag(r.work.id)
-          .then(events => pickWorkNews(r.work, events, r.affinity))
-          .catch(() => pickWorkNews(r.work, [], r.affinity))
-      )
-    ).then(items => {
+    // 작품마다 따로 부르지 않고 한 번에 (최애·관심 7개면 조회 14번 → 2번)
+    getEventsByTags(myWorks.map(r => r.work.id), 3)
+      .catch(() => new Map())
+      .then(byTag => myWorks.map(r => pickWorkNews(r.work, byTag.get(r.work.id) ?? [], r.affinity)))
+      .then(items => {
       // 새 소식 있는 작품(none 아님)을 앞으로 정렬
       const sorted = [...items].sort((a, b) => (a.kind === 'none' ? 1 : 0) - (b.kind === 'none' ? 1 : 0))
       setNewsItems(sorted)

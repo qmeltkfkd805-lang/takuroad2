@@ -285,6 +285,18 @@ export async function deactivateProductsByTag(shopId: string, tagId: string): Pr
 }
 
 // 이 작품(tag)의 판매 중인 굿즈 — 재고순. 작품 홈 "판매 중인 굿즈" 섹션용.
+/** 작품의 판매 중인 굿즈 수 — getProductsByTag(...).length 와 같은 기준(확인 안 됨·판매 안 함 제외)을 개수만 센다 */
+export async function countProductsByTag(tagId: string): Promise<number> {
+  const supabase = createClient()
+  const { count, error } = await supabase
+    .from('shop_products')
+    .select('id', { count: 'exact', head: true })
+    .eq('tag_id', tagId)
+    .not('availability', 'in', '(unknown,not_sold)')
+  if (error) return 0
+  return count ?? 0
+}
+
 export async function getProductsByTag(tagId: string) {
   const supabase = createClient()
   const { data } = await supabase

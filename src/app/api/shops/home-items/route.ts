@@ -2,11 +2,12 @@
    누구에게나 같은 공개 정보(활성 샵·취급 작품·굿즈·진행 중 이벤트)만 담는다. 개인 정보(찜·방문 등)는 각 화면이 따로 읽는다. */
 import { NextResponse } from 'next/server'
 import { loadShopHomeItems } from '@/services/shopHomeLoad'
+import { slimShopForList } from '@/lib/shop/slimShop'
 
 export const revalidate = 60
 
 export async function GET() {
-  const items = await loadShopHomeItems()
+  const items = (await loadShopHomeItems()).map(slimShopForList)   // 목록에서 안 쓰는 칸(소개글·SNS 등)은 빼고
   return NextResponse.json(
     { items },
     { headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' } },

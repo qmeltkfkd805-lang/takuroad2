@@ -46,16 +46,24 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   // 📱 탐색 목록 화면(샵·이벤트·루트·작품) — 본문 위에 탐색 네 메뉴 (PC에선 CSS로 숨김)
   const exploreList = exploreListOf(pathname)
   const hideHeaderMobile = !showHeaderMobile
-  const { user } = useAuth()
+  const { user, loading: authLoading } = useAuth()
+  const uid = user?.id ?? null
   const evalOnceRef = useRef(false)
+  const loggedPathRef = useRef<string | null>(null)
   // 유입 경로는 랜딩 순간에 한 번만 — /login 같은 bare 화면에서도 잡아야 하므로 bare 체크 위에서 실행
   useEffect(() => { captureFirstTouch() }, [])
   // 바로 전 페이지 기록 — 수정 화면에서 저장 후 나갈 때(leaveEditTo) 뒤로가기 기록을 정리하는 데 쓴다
   useEffect(() => { trackNav(pathname) }, [pathname])
+  /* 방문 기록은 화면마다 한 번 — 로그인 확인이 끝난 뒤에 남긴다.
+     예전엔 로그인 확인 전(비로그인)·후(로그인)·토큰 갱신 때마다 같은 화면이 2~3번 기록돼
+     방문 통계가 부풀고 visit_logs 저장도 그만큼 늘었다. */
   useEffect(() => {
-    if (bare) return
-    logVisit(pathname, user?.id ?? null).catch(() => {}).then(() => {
-      if (!user || evalOnceRef.current) return
+    if (bare || authLoading) return
+    const firstTime = loggedPathRef.current !== pathname
+    loggedPathRef.current = pathname
+    const logged = firstTime ? logVisit(pathname, uid).catch(() => {}) : Promise.resolve()
+    logged.then(() => {
+      if (!uid || evalOnceRef.current) return
       evalOnceRef.current = true
       ;(async () => {
         const [{ requestBadgeEvaluation }, { announceUnlock }] = await Promise.all([
@@ -66,7 +74,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         if (newTiers.length > 0) announceUnlock(newTiers)
       })()
     })
-  }, [pathname, bare, user])
+  }, [pathname, bare, authLoading, uid])
 
   const [diag, setDiag] = useState(false)
   useEffect(() => { setDiag(new URLSearchParams(window.location.search).get('diag') === '1') }, [pathname])

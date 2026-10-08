@@ -5,6 +5,7 @@ import { geekAreaFromAddr } from '@/lib/utils/geekArea'
 import { resolveEventCover } from '@/lib/event/eventCover'
 import { Shop, ShopBranch } from '@/types/shop'
 import { UploadErrorCode, extOfMime, uuid } from '@/lib/utils/imageEncode'
+import { fetchAllRows } from '@/lib/supabase/fetchAll'
 
 export function toShop(raw: any): Shop {
   // 카테고리는 shops.cats(text[]) 컬럼에 직접 저장 — categories/shop_categories 테이블 의존 제거.
@@ -112,7 +113,8 @@ export function normalizeBranches(v: unknown): ShopBranch[] {
 export async function getShops(): Promise<Shop[]> {
   const supabase = createClient()
 
-  const { data, error } = await supabase
+  // 운영 중인 샵이 1,000곳을 넘어서, 한 번에 받으면 뒤쪽이 잘린다 → 나눠서 끝까지 (lib/supabase/fetchAll)
+  const { data, error } = await fetchAllRows<any>((from, to) => supabase
     .from('shops')
     .select(`
       id, slug, name, name_en, description,
@@ -132,6 +134,8 @@ export async function getShops(): Promise<Shop[]> {
     `)
     .eq('status', 'active')
     .order('created_at', { ascending: false })
+    .order('id', { ascending: true })
+    .range(from, to))
 
   if (error) {
     console.error('getShops error:', error)
@@ -442,16 +446,20 @@ export async function updateShop(
 async function attachEvents(supabase: any, shops: Shop[]): Promise<Shop[]> {
   if (shops.length === 0) return shops
   const today = new Date().toISOString().slice(0, 10)
-  const ids = shops.map(s => s.id)
+  // 예전엔 샵 id 전부를 .in() 으로 주소에 실었다 — 샵이 1,000곳을 넘으면 주소가 너무 길어진다.
+  // 진행 중이면서 샵에 연결된 이벤트는 몇십 개뿐이라, 그걸 다 받아서 샵마다 고른다.
+  const wanted = new Set(shops.map(s => s.id))
 
-  const { data: evs } = await supabase
+  const { data: evsAll } = await supabase
     .from('events')
     .select('shop_id, title, cover_url, tag_id, start_date, end_date')
-    .in('shop_id', ids)
+    .not('shop_id', 'is', null)
+    .is('deleted_at', null)
     .lte('start_date', today)
     .or(`end_date.is.null,end_date.gte.${today}`)
 
-  if (!evs || evs.length === 0) return shops
+  const evs = (evsAll ?? []).filter((e: any) => wanted.has(e.shop_id))
+  if (evs.length === 0) return shops
 
   // 작품 커버 폴백용 tags
   const tagIds = [...new Set(evs.map((e: any) => e.tag_id).filter(Boolean))]
@@ -478,6 +486,18 @@ async function attachEvents(supabase: any, shops: Shop[]): Promise<Shop[]> {
       }),
     }
   })
+}
+
+/** 작품을 취급하는 운영 중 샵 수 — getShopsByTag(...).length 와 같은 기준을 개수만 센다 (샵 정보는 안 받음) */
+export async function countShopsByTag(tagId: string): Promise<number> {
+  const supabase = createClient()
+  const { count, error } = await supabase
+    .from('shop_tags')
+    .select('shop_id, shops!inner ( id )', { count: 'exact', head: true })
+    .eq('tag_id', tagId)
+    .eq('shops.status', 'active')
+  if (error) return 0
+  return count ?? 0
 }
 
 export async function getShopsByTag(tagSlug: string): Promise<Shop[]> {
@@ -608,7 +628,7 @@ export async function getMyVerifyRequest(shopId: string, userId: string) {
    그때는 여기와 RPC를 함께 고쳐야 한다(한쪽만 고치면 숫자가 어긋난다). */
 export async function getAdminShopsExcludingDeleted(): Promise<Shop[]> {
   const supabase = createClient()
-  const { data, error } = await supabase
+  const { data, error } = await fetchAllRows<any>((from, to) => supabase
     .from('shops')
     .select(`
       id, slug, name, name_en, description,
@@ -627,6 +647,8 @@ export async function getAdminShopsExcludingDeleted(): Promise<Shop[]> {
     `)
     .neq('status', 'deleted')
     .order('created_at', { ascending: false })
+    .order('id', { ascending: true })
+    .range(from, to))
 
   if (error) {
     // PostgrestError는 통째로 찍으면 {}로만 보인다 — 필드를 펼쳐서 남긴다
@@ -1257,7 +1279,7 @@ export async function reorderShopImages(items: { id: string; sort_order: number 
 /** 홈 덕질 지도(PC)용 — 핀·짧은 목록에 필요한 값만 가볍게. (전체 샵 정보를 홈 서버 응답에 싣지 않으려고 따로 둔다) */
 export async function getShopsForMiniMap(): Promise<Shop[]> {
   const supabase = createClient()
-  const { data, error } = await supabase
+  const { data, error } = await fetchAllRows<any>((from, to) => supabase
     .from('shops')
     .select(`
       id, slug, name, lat, lng, place_id, region, city, district,
@@ -1267,6 +1289,8 @@ export async function getShopsForMiniMap(): Promise<Shop[]> {
       cats
     `)
     .eq('status', 'active')
+    .order('id', { ascending: true })
+    .range(from, to))
   if (error) { console.error('getShopsForMiniMap error:', error); return [] }
   return (data ?? []).map(toShop)
 }

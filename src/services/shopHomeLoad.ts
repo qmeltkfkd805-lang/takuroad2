@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { toShop } from '@/services/shopService'
 import { resolveEventCover } from '@/lib/event/eventCover'
 import type { ShopHomeItem } from '@/services/shopHomeService'
+import { fetchAllRows } from '@/lib/supabase/fetchAll'
 
 const SHOP_SELECT = `
   id, slug, name, name_en, description,
@@ -26,11 +27,13 @@ export async function loadShopHomeItems(): Promise<ShopHomeItem[]> {
   const supabase = createClient()
   const today = new Date().toISOString().slice(0, 10)
 
+  /* 샵·취급 작품·굿즈 연결은 1,000줄을 넘는다 — 한 번에 받으면 뒤쪽이 말없이 잘려서
+     (샵이 빠지거나, 취급 작품이 비어 작품 필터에 안 걸리는 샵이 생겼다) 나눠서 끝까지 받는다 */
   const [shopRes, tagRes, goodsRes, goodsCatRes, evRes] = await Promise.all([
-    supabase.from('shops').select(SHOP_SELECT).eq('status', 'active'),
-    supabase.from('shop_tags').select('shop_id, tags ( id, name, slug )'),
-    supabase.from('shop_products').select('shop_id, goods_types ( slug )'),
-    supabase.from('shop_goods_categories').select('shop_id, goods_types ( slug )'),
+    fetchAllRows<any>((from, to) => supabase.from('shops').select(SHOP_SELECT).eq('status', 'active').order('id', { ascending: true }).range(from, to)),
+    fetchAllRows<any>((from, to) => supabase.from('shop_tags').select('shop_id, tag_id, tags ( id, name, slug )').order('shop_id', { ascending: true }).order('tag_id', { ascending: true }).range(from, to)),
+    fetchAllRows<any>((from, to) => supabase.from('shop_products').select('id, shop_id, goods_types ( slug )').order('id', { ascending: true }).range(from, to)),
+    fetchAllRows<any>((from, to) => supabase.from('shop_goods_categories').select('shop_id, goods_type_id, goods_types ( slug )').order('shop_id', { ascending: true }).order('goods_type_id', { ascending: true }).range(from, to)),
     supabase
       .from('events')
       .select('shop_id, title, end_date, cover_url, tag_id')

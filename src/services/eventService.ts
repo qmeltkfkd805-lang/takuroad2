@@ -64,6 +64,57 @@ export async function getEventsByTag(tagId: string, limit = 20): Promise<WorkEve
   }))
 }
 
+/** 여러 작품의 최근 Event 를 한 번에 — 작품마다 getEventsByTag 를 부르던 홈 '최애 새소식'용.
+    (최애·관심 작품이 7개면 이벤트 조회 7번 + 샵 조회 7번이 나갔다 → 이벤트 1번 + 샵 1번)
+    돌려주는 모양은 작품 id → getEventsByTag 와 같은 목록(작품마다 최신 limit 개). */
+export async function getEventsByTags(tagIds: string[], limit = 20): Promise<Map<string, WorkEvent[]>> {
+  const out = new Map<string, WorkEvent[]>()
+  const ids = [...new Set(tagIds.filter(Boolean))]
+  if (ids.length === 0) return out
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('events')
+    .select('id, tag_id, type, shop_id, title, created_at, start_date, end_date, cover_url')
+    .is('deleted_at', null)   // 숨긴(삭제 요청된) 이벤트 제외 — migrations/events_soft_delete.sql
+    .in('tag_id', ids)
+    .order('created_at', { ascending: false })
+    // 한 작품 소식이 몰려도 다른 작품 최신 소식이 잘리지 않게 넉넉히 (작품당 40개분, 최대 1,000)
+    .limit(Math.min(1000, Math.max(200, ids.length * 40)))
+  if (error) return out
+
+  // 작품마다 최신 limit 개만
+  const perTag = new Map<string, any[]>()
+  for (const e of (data ?? []) as any[]) {
+    const list = perTag.get(e.tag_id) ?? []
+    if (list.length < limit) { list.push(e); perTag.set(e.tag_id, list) }
+  }
+  const rows = [...perTag.values()].flat()
+
+  const shopIds = [...new Set(rows.map((e: any) => e.shop_id).filter(Boolean))]
+  let shopMap = new Map<string, any>()
+  if (shopIds.length) {
+    const { data: shops } = await supabase.from('shops').select('id, name, slug, shop_images ( image_url, is_cover )').in('id', shopIds)
+    shopMap = new Map((shops ?? []).map((s: any) => [s.id, s]))
+  }
+  for (const [tagId, list] of perTag) {
+    out.set(tagId, list.map((e: any) => ({
+      id: e.id,
+      tagId: e.tag_id,
+      type: e.type,
+      shopId: e.shop_id,
+      title: e.title,
+      createdAt: e.created_at,
+      startDate: e.start_date,
+      endDate: e.end_date,
+      shopName: e.shop_id ? (shopMap.get(e.shop_id)?.name ?? null) : null,
+      shopSlug: e.shop_id ? (shopMap.get(e.shop_id)?.slug ?? null) : null,
+      coverUrl: e.cover_url ?? null,
+      shopImage: ((shopMap.get(e.shop_id)?.shop_images ?? []).find((i: any) => i.is_cover)?.image_url ?? (shopMap.get(e.shop_id)?.shop_images ?? [])[0]?.image_url ?? null),
+    })))
+  }
+  return out
+}
+
 // 한 샵에서 열리는 작품 이벤트 (샵 상세 타임라인용).
 // - 팝업/콜라보/전시만 (goods_added는 작품 피드용이라 샵 소식엔 제외)
 // - 만료된 건 제외 (end_date가 없거나 오늘 이후인 것만)
