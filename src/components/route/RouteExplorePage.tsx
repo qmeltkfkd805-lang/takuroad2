@@ -177,11 +177,6 @@ export default function RouteExplorePage() {
         </div>
         <p className={styles.msub}>나에게 맞는 굿즈 코스를 찾아보세요</p>
 
-        <form className={styles.msearch} onSubmit={submitSearch}>
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="지역 · 작품 · 루트 검색" aria-label="루트 검색" />
-          <button type="submit" className={styles.msearchBtn} aria-label="검색"><SearchSvg /></button>
-        </form>
-
         <div className={styles.mchips} role="tablist" aria-label="루트 정렬">
           {SORT_TABS.map(t => (
             <button key={t.key} role="tab" aria-selected={t.key === sort}
@@ -219,6 +214,12 @@ export default function RouteExplorePage() {
                 </div>
               </section>
             )}
+
+            {/* 루트 검색 — 히어로 바로 아래 (히어로가 없는 정렬 탭에선 정렬 칩 바로 아래) */}
+            <form className={styles.msearch} onSubmit={submitSearch}>
+              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="지역 · 작품 · 루트 검색" aria-label="루트 검색" />
+              <button type="submit" className={styles.msearchBtn} aria-label="검색"><SearchSvg /></button>
+            </form>
 
             {/* 추천(기본) 탭: 히어로에만 추천 루트, 아래는 PC처럼 '인기 있는 루트' · '새로 등록된 루트' */}
             {sort === 'recommended' ? (
@@ -324,14 +325,6 @@ export default function RouteExplorePage() {
           </div>
         </div>
 
-        <form className={styles.searchRow} onSubmit={submitSearch}>
-          <div className={styles.search}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3-3" /></svg>
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="루트·지역·작품 검색" aria-label="루트 검색" />
-          </div>
-          <button type="submit" className={styles.searchBtn}>검색</button>
-        </form>
-
         {error ? (
           <div className={styles.empty}>루트를 불러오지 못했어요.</div>
         ) : routes.length === 0 ? (
@@ -369,6 +362,15 @@ export default function RouteExplorePage() {
                 </div>
               </div>
             )}
+
+            {/* 루트 검색 — 히어로 바로 아래 */}
+            <form className={styles.searchRow} onSubmit={submitSearch}>
+              <div className={styles.search}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3-3" /></svg>
+                <input value={search} onChange={e => setSearch(e.target.value)} placeholder="루트·지역·작품 검색" aria-label="루트 검색" />
+              </div>
+              <button type="submit" className={styles.searchBtn}>검색</button>
+            </form>
 
             {tasteRecos.length > 0 && (
               <Section title={taste.length ? '취향에 맞는 추천 루트' : '지금 인기 있는 루트'} desc={taste.length ? '회원님의 취향을 반영한 맞춤 루트예요.' : undefined} onMore={() => toAll(taste.length ? undefined : 'sort=popular')}>
