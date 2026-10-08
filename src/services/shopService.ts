@@ -668,7 +668,8 @@ export type ShopReviewStatus = 'pending' | 'reviewed' | 'needs_attention'
 
 export async function getShopsForReview(status: ShopReviewStatus): Promise<Shop[]> {
   const supabase = createClient()
-  const { data, error } = await supabase
+  // '검수 완료' 탭은 1,000곳을 넘는다 → 나눠서 끝까지
+  const { data, error } = await fetchAllRows<any>((from, to) => supabase
     .from('shops')
     .select(`
       id, slug, name, name_en, description,
@@ -688,6 +689,8 @@ export async function getShopsForReview(status: ShopReviewStatus): Promise<Shop[
     .eq('review_status', status)
     .neq('status', 'deleted')   // 삭제한 샵(같은 샵으로 합치며 지운 것 등)은 검수 목록에서 뺀다
     .order('created_at', { ascending: true })   // 오래 기다린 것부터
+    .order('id', { ascending: true })
+    .range(from, to))
 
   if (error) {
     console.error('[샵 검수 목록] 조회 실패:', error.message, error.code, error.details, error.hint)
@@ -852,7 +855,8 @@ export async function getEvidenceFileUrl(
 // 내가 등록한 샵 목록 (마이페이지용)
 export async function getMyShops(userId: string): Promise<Shop[]> {
   const supabase = createClient()
-  const { data, error } = await supabase
+  // 운영자 계정은 등록한 샵이 1,000곳을 넘는다 → 나눠서 끝까지
+  const { data, error } = await fetchAllRows<any>((from, to) => supabase
     .from('shops')
     .select(`
       id, slug, name, name_en, description,
@@ -872,6 +876,8 @@ export async function getMyShops(userId: string): Promise<Shop[]> {
     .eq('added_by', userId)
     .neq('status', 'deleted')
     .order('created_at', { ascending: false })
+    .order('id', { ascending: true })
+    .range(from, to))
 
   if (error) return []
   return (data ?? []).map(toShop)

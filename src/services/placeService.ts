@@ -1,6 +1,7 @@
 import { SupabaseClient } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
 import { toShop } from '@/services/shopService'
+import { fetchAllRows } from '@/lib/supabase/fetchAll'
 import { resolveEventCover } from '@/lib/event/eventCover'
 import type { Shop } from '@/types/shop'
 
@@ -221,11 +222,14 @@ export async function findPlaceBySameAddr(addr: string | null): Promise<{ id: st
   if (!key) return null
   const supabase = createClient()
 
-  const { data, error } = await supabase
+  // 장소에 묶인 샵이 많아지면 1,000줄을 넘는다 → 나눠서 끝까지
+  const { data, error } = await fetchAllRows<any>((from, to) => supabase
     .from('shops')
-    .select('addr, places ( id, name, slug )')
+    .select('id, addr, places ( id, name, slug )')
     .not('place_id', 'is', null)
     .eq('status', 'active')
+    .order('id', { ascending: true })
+    .range(from, to))
 
   if (error) { console.error('[place] 동일 주소 샵 조회 실패:', error.message); return null }
   for (const row of (data ?? []) as any[]) {

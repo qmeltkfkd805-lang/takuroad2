@@ -426,21 +426,34 @@ export async function evaluateBadgeTiersDetailed(
 
   const existingIds = new Set((existing ?? []).map(e => e.badge_tier_id))
 
-  for (const tier of tiers) {
-    if (existingIds.has(tier.id)) continue
-
+  /* ⚡ 예전엔 배지 단계마다 차례로 조건을 계산해서(같은 활동 수를 단계마다 다시 세고, 방문 기록 3,000줄도 여러 번)
+     접속할 때마다 이 요청이 3초 가까이 걸렸다.
+     - 조건 계산은 한꺼번에 하고, 같은 조회(같은 활동 수·연속 방문일 등)는 한 번만 한다 (memo)
+     - 조건 판정은 이번 평가 시작 때 가진 배지(existingIds)만 보므로, 한꺼번에 해도 결과는 예전과 같다
+     - 지급(insert·EXP)은 예전처럼 순서대로 하나씩 */
+  const now = new Date()
+  const candidates = (tiers as any[]).filter(tier => {
+    if (existingIds.has(tier.id)) return false
     if (tier.is_limited) {
-      const now = new Date()
-      if (tier.available_from && now < new Date(tier.available_from)) continue
-      if (tier.available_until && now > new Date(tier.available_until)) continue
+      if (tier.available_from && now < new Date(tier.available_from)) return false
+      if (tier.available_until && now > new Date(tier.available_until)) return false
     }
+    return true
+  })
+  const memo: EvalMemo = new Map()
+  const judged = await Promise.all(candidates.map(tier =>
+    checkTierCondition(userId, tier, existingIds as Set<string>, supabase, memo)
+      .then(ok => ({ ok, error: null as unknown }), error => ({ ok: false, error }))))
 
+  for (let i = 0; i < candidates.length; i++) {
+    const tier = candidates[i]
     const tierName: string = tier.name ?? '배지'
 
     // ⚠️ 배지 하나가 터져도 나머지 평가는 계속돼야 한다.
     //    (옛 조건 하나가 에러를 던지면 뒤의 성장 배지가 전부 안 돌던 버그)
     try {
-      const qualifies = await checkTierCondition(userId, tier, existingIds, supabase)
+      if (judged[i].error) throw judged[i].error
+      const qualifies = judged[i].ok
       if (!qualifies) continue
 
       const { error } = await supabase
@@ -509,34 +522,47 @@ export async function requestBadgeEvaluation(): Promise<string[]> {
   }
 }
 
-async function checkTierCondition(userId: string, tier: any, earnedTierIds: Set<string>, supabase: SupabaseClient<Database>): Promise<boolean> {
+/** 한 번 평가하는 동안 같은 조회를 다시 하지 않게 결과를 붙잡아 둔다 (키 → 진행 중인 조회) */
+type EvalMemo = Map<string, Promise<any>>
+function once<T>(memo: EvalMemo | undefined, key: string, run: () => Promise<T>): Promise<T> {
+  if (!memo) return run()
+  if (!memo.has(key)) memo.set(key, run())
+  return memo.get(key) as Promise<T>
+}
+
+async function checkTierCondition(userId: string, tier: any, earnedTierIds: Set<string>, supabase: SupabaseClient<Database>, memo?: EvalMemo): Promise<boolean> {
   const type = tier.condition_type
   const target = tier.condition_target
   // ⭐ 성장 시스템 — 조건 타입은 영원히 이거 하나.
   //    새 활동이 생겨도 activity_type 값만 늘어난다.
   if (type === 'activity_count') {
-    const done = await countActivity(userId, target, supabase)
+    // 같은 활동을 단계(1·2·3·4단계)마다 다시 세지 않는다 — 목표 개수(count)만 빼고 같으면 같은 조회
+    const { count: _need, ...countKey } = (target ?? {}) as Record<string, unknown>
+    const done = await once(memo, 'act:' + JSON.stringify(countKey), () => countActivity(userId, target, supabase))
     const need = target?.count ?? 1
     return done >= need
   }
 
   if (type === 'consecutive_days') {
-    const streak = await getMaxCheckInStreak(userId, supabase)
+    const streak = await once(memo, 'streak', () => getMaxCheckInStreak(userId, supabase))
     return streak >= (target?.count ?? 1)
   }
 
   if (type === 'comment_count') {
-    const c = await getCommentCount(userId, supabase)
+    const c = await once(memo, 'comments', () => getCommentCount(userId, supabase))
     return c >= (target?.count ?? 1)
   }
 
   if (type === 'community_starter') {
-    const [posts, comments] = await Promise.all([getPostCount(userId, supabase), getCommentCount(userId, supabase)])
+    const [posts, comments] = await Promise.all([
+      once(memo, 'posts', () => getPostCount(userId, supabase)),
+      once(memo, 'comments', () => getCommentCount(userId, supabase)),
+    ])
     return posts >= 1 && comments >= 1
   }
 
   if (type === 'likes_received') {
-    const n = await getLikesReceived(userId, supabase)
+    const n = await once(memo, 'likes', () => getLikesReceived(userId, supabase))
     return n >= (target?.count ?? 1)
   }
 

@@ -65,6 +65,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     logged.then(() => {
       if (!uid || evalOnceRef.current) return
       evalOnceRef.current = true
+      /* 접속 때 배지 확인은 30분에 한 번만 — 새로고침·새 화면마다 서버 평가(조회 수십 번)를 돌리지 않는다.
+         활동(방문·글·루트 등)으로 바로 받는 배지는 그 활동을 저장할 때 따로 평가하므로 늦어지지 않는다. */
+      try {
+        const KEY = 'taku:badgeEvalAt'
+        const last = Number(sessionStorage.getItem(KEY) || 0)
+        if (Date.now() - last < 30 * 60 * 1000) return
+        sessionStorage.setItem(KEY, String(Date.now()))
+      } catch { /* 저장소를 못 쓰면 예전처럼 매번 */ }
       ;(async () => {
         const [{ requestBadgeEvaluation }, { announceUnlock }] = await Promise.all([
           import('@/services/badgeService'),

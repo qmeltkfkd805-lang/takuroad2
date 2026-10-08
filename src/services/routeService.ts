@@ -3,6 +3,7 @@ import { prepareImage } from '@/lib/storage/compressImage'
 import { recordActivity } from '@/services/activityService'
 import { calcDistance } from '@/hooks/useCurrentLocation'
 import { withStopKeys } from '@/lib/route/stopKey'
+import { fetchAllRows } from '@/lib/supabase/fetchAll'
 
 // ??醫뚰몴 媛??꾨낫 ?쒓컙 異붿젙 (?됯퇏 4km/h)
 function estimateWalkMinutes(meters: number): number {
@@ -274,11 +275,14 @@ export async function getPublicRoutes(filters?: { region?: string; tag?: string;
 // ?꾪꽣?????꾩껜 吏??紐⑸줉
 export async function getAllRegions() {
   const supabase = createClient()
-  const { data } = await supabase
+  // 샵이 1,000곳을 넘어 한 번에 받으면 뒤쪽 지역이 빠질 수 있다 → 나눠서 끝까지
+  const { data } = await fetchAllRows<any>((from, to) => supabase
     .from('shops')
-    .select('region')
+    .select('id, region')
     .eq('status', 'active')
     .not('region', 'is', null)
+    .order('id', { ascending: true })
+    .range(from, to))
 
   const regions = new Set((data ?? []).map((d: any) => d.region))
   return Array.from(regions).sort()
@@ -287,10 +291,13 @@ export async function getAllRegions() {
 // ?꾪꽣?????꾩껜 ?묓뭹(?쒓렇) 紐⑸줉
 export async function getAllSeriesTags() {
   const supabase = createClient()
-  const { data } = await supabase
+  // 작품이 2,500개를 넘는다 → 나눠서 끝까지 (예전엔 가나다순 앞 1,000개만 왔다)
+  const { data } = await fetchAllRows<any>((from, to) => supabase
     .from('tags')
-    .select('name')
+    .select('id, name')
     .order('name')
+    .order('id', { ascending: true })
+    .range(from, to))
   return (data ?? []).map((d: any) => d.name)
 }
 

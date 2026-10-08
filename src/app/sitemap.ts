@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { createClient } from '@supabase/supabase-js'
+import { fetchAllRows } from '@/lib/supabase/fetchAll'
 
 const SITE_URL = 'https://takuroad.kr'
 
@@ -67,20 +68,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   })
 
   try {
+    /* 한 번 조회는 1,000줄까지라, 샵(1,000곳 넘음)·작품(2,500개 넘음)이 사이트맵에서 잘려
+       검색엔진에 알리지 못한 페이지가 많았다 → 전부 나눠서 끝까지 받는다 */
     const [shops, works, events, places, routes] = await Promise.all([
-      supabase
+      fetchAllRows<any>((from, to) => supabase
         .from('shops')
-        .select('slug, updated_at')
+        .select('id, slug, updated_at')
         .in('status', ['active', 'temporary_closed', 'closed'])
-        .not('slug', 'is', null),
-      supabase.from('tags').select('slug, updated_at').not('slug', 'is', null),
-      supabase.from('events').select('id, updated_at'),
-      supabase.from('places').select('slug, updated_at').not('slug', 'is', null),
-      supabase
+        .not('slug', 'is', null)
+        .order('id', { ascending: true })
+        .range(from, to)),
+      // tags 에는 updated_at 칸이 없다 — 예전엔 이 조회가 통째로 실패해서 작품 페이지가 사이트맵에 하나도 안 들어갔다
+      fetchAllRows<any>((from, to) => supabase.from('tags').select('id, slug, created_at').not('slug', 'is', null).order('id', { ascending: true }).range(from, to)),
+      fetchAllRows<any>((from, to) => supabase.from('events').select('id, updated_at').order('id', { ascending: true }).range(from, to)),
+      fetchAllRows<any>((from, to) => supabase.from('places').select('id, slug, updated_at').not('slug', 'is', null).order('id', { ascending: true }).range(from, to)),
+      fetchAllRows<any>((from, to) => supabase
         .from('routes')
-        .select('share_token, updated_at')
+        .select('id, share_token, updated_at')
         .or('is_shared.eq.true,is_official.eq.true')
-        .not('share_token', 'is', null),
+        .not('share_token', 'is', null)
+        .order('id', { ascending: true })
+        .range(from, to)),
     ])
 
     const dynamicEntries: MetadataRoute.Sitemap = [
@@ -94,7 +102,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...(works.data ?? []).map((work) =>
         toSitemapEntry({
           path: `/work/${encodeURIComponent(work.slug)}`,
-          lastModified: work.updated_at,
+          lastModified: work.created_at,
           priority: 0.8,
         }),
       ),

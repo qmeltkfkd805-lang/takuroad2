@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
 import { isEventLikeIpType } from '@/lib/constants/ipType'
+import { fetchAllRows } from '@/lib/supabase/fetchAll'
 export { uploadWorkImage } from '@/services/workAdminService'
 
 export interface NewWork {
@@ -81,7 +82,8 @@ export async function deleteWork(id: string): Promise<{ ok: boolean; error?: str
 function norm(s: string): string { return s.toLowerCase().replace(/\s+/g, '').trim() }
 export async function findDuplicateWork(name: string, eng: string, aliases: string[]): Promise<string | null> {
   const supabase = createClient()
-  const { data } = await supabase.from('tags').select('name, english_name, aliases')
+  // 작품이 2,500개를 넘는다 — 예전엔 앞 1,000개하고만 비교해서 중복을 놓쳤다 → 끝까지
+  const { data } = await fetchAllRows<any>((from, to) => supabase.from('tags').select('id, name, english_name, aliases').order('id', { ascending: true }).range(from, to))
   const cands = new Set<string>([name, eng, ...aliases].map(norm).filter(Boolean))
   for (const row of (data ?? []) as any[]) {
     const existing = [row.name, row.english_name, ...(row.aliases ?? [])].map((x: any) => norm(x || '')).filter(Boolean)
@@ -98,7 +100,7 @@ export async function findDuplicateWork(name: string, eng: string, aliases: stri
 const normTag = (s: string) => s.trim().replace(/\s+/g, ' ')
 export async function getPromotedGenres(minCount = 3, exclude: string[] = []): Promise<string[]> {
   const supabase = createClient()
-  const { data } = await supabase.from('tags').select('keywords')
+  const { data } = await fetchAllRows<any>((from, to) => supabase.from('tags').select('id, keywords').order('id', { ascending: true }).range(from, to))
   const excl = new Set(exclude.map(normTag))
   const counts = new Map<string, number>()   // 태그(표시용) → 쓰인 작품 수
   for (const row of (data ?? []) as any[]) {

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { fetchAllRows } from '@/lib/supabase/fetchAll'
 
 // 운영자가 만든 공식 성지 리스트 전체
 export async function getOfficialLists() {
@@ -40,11 +41,14 @@ export async function getMyProgress(userId: string, listId: string) {
 export async function getRegionCollections(userId: string) {
   const supabase = createClient()
 
-  const { data: shops } = await supabase
+  // 샵이 1,000곳을 넘는다 → 나눠서 끝까지 (lib/supabase/fetchAll)
+  const { data: shops } = await fetchAllRows<any>((from, to) => supabase
     .from('shops')
     .select('id, region')
     .eq('status', 'active')
     .not('region', 'is', null)
+    .order('id', { ascending: true })
+    .range(from, to))
 
   if (!shops) return []
 
@@ -80,11 +84,13 @@ export async function getRegionCollections(userId: string) {
 export async function getUnvisitedShopsForRegion(userId: string, region: string) {
   const supabase = createClient()
 
-  const { data: shops } = await supabase
+  const { data: shops } = await fetchAllRows<any>((from, to) => supabase
     .from('shops')
     .select('id, slug, name, addr')
     .eq('status', 'active')
     .eq('region', region)
+    .order('id', { ascending: true })
+    .range(from, to))
 
   const { data: checkIns } = await supabase
     .from('check_ins')
