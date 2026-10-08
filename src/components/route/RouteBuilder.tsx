@@ -2,7 +2,7 @@
 import { useState, useEffect, useLayoutEffect, useMemo, useRef, Fragment } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getAllTagsFull, AdminTag } from '@/services/workAdminService'
-import { getShops, getSavedShops } from '@/services/shopService'
+import { getShopsCached, getSavedShops } from '@/services/shopService'
 import { autoOrder, floorNumber, floorGroupKey, floorGroupLabel, hasFloorGroups, type AutoOrderMode } from '@/lib/route/autoOrder'
 import { createRoute, updateRouteMeta, updateRoute, getRouteForEdit, getRouteMeta, deleteRoute, toggleRouteShare, getRouteFloorMaps, saveRouteFloorMaps, uploadFloorMap, getRouteSources, saveRouteSources, type FloorMap, type RouteSource } from '@/services/routeService'
 import { useRouter } from 'next/navigation'
@@ -256,7 +256,7 @@ export default function RouteBuilder({ mode = 'create', editRouteId = null, edit
   useEffect(() => {
     if (sourceMode === 'work') return
     setLoadingShops(true)
-    const p = sourceMode === 'region' ? getShops() : (user ? getSavedShops(user.id) : Promise.resolve([]))
+    const p = sourceMode === 'region' ? getShopsCached() : (user ? getSavedShops(user.id) : Promise.resolve([]))
     p.then((shops) => setCandidates((shops as Shop[]).filter((s) => s.lat != null && s.lng != null)))
       .catch(() => setCandidates([]))
       .finally(() => setLoadingShops(false))

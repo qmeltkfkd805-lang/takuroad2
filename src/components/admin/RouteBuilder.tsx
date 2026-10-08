@@ -2,7 +2,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getAllTagsFull, AdminTag } from '@/services/workAdminService'
-import { getShopsByTag, getShops, getSavedShops } from '@/services/shopService'
+import { getShopsByTag, getShopsCached, getSavedShops } from '@/services/shopService'
 import { createRoute, getRouteForEdit, updateRoute, getRouteStats, uploadRouteCover, updateRouteMeta, getRouteMeta } from '@/services/routeService'
 import { approveOfficialRoute } from '@/services/adminRouteService'
 import { shopRegion } from '@/lib/shop/quickCompleteness'
@@ -93,7 +93,7 @@ export default function RouteBuilder({ editRouteId, onDone, onCancel }: { editRo
   useEffect(() => {
     if (sourceMode === 'work') return
     let alive = true
-    const p = sourceMode === 'region' ? getShops() : (user ? getSavedShops(user.id) : Promise.resolve([]))
+    const p = sourceMode === 'region' ? getShopsCached() : (user ? getSavedShops(user.id) : Promise.resolve([]))
     p.then((shops) => { if (alive) setCandidates((shops as Shop[]).filter((s) => s.lat != null && s.lng != null)) })
       .catch(() => { if (alive) setCandidates([]) })
       .finally(() => { if (alive) setLoadingShops(false) })

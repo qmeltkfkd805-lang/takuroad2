@@ -142,6 +142,22 @@ export async function getShops(): Promise<Shop[]> {
   return attachEvents(supabase, shops)
 }
 
+/* ⚡ 전체 샵 목록 (화면용) — 브라우저에선 서버(/api/shops/all)가 60초마다 만들어 두는 getShops 결과를 받는다.
+   (예전엔 지도를 열 때마다 사람마다 전체 샵을 DB에서 새로 읽었다 — DB 사용 시간 1위)
+   받아 오지 못하면 예전처럼 DB에서 직접. 서버에선 getShops 를 그대로 쓴다. */
+export async function getShopsCached(): Promise<Shop[]> {
+  if (typeof window !== 'undefined') {
+    try {
+      const res = await fetch('/api/shops/all')
+      if (res.ok) {
+        const j = await res.json()
+        if (Array.isArray(j?.items)) return j.items as Shop[]
+      }
+    } catch { /* 아래에서 직접 읽기 */ }
+  }
+  return getShops()
+}
+
 export async function getShopBySlug(slug: string): Promise<Shop | null> {
   const supabase = createClient()
 

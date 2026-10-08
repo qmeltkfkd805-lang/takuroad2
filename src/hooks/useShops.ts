@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { Shop } from '@/types/shop'
-import { getShops } from '@/services/shopService'
+import { getShopsCached } from '@/services/shopService'
 import { shopRegion, shopDistrict } from '@/lib/utils/region'
 
 export function useShops() {
@@ -14,7 +14,7 @@ export function useShops() {
   const [selectedShop, setSelectedShop] = useState<Shop | null>(null)
 
   useEffect(() => {
-    getShops().then(data => {
+    getShopsCached().then(data => {   // 서버가 60초마다 만들어 두는 목록 (/api/shops/all)
       setShops(data)
       setLoading(false)
     })

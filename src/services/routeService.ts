@@ -191,7 +191,8 @@ export async function toggleRouteShare(routeId: string, userId: string, isShared
 }
 
 // 怨듦컻??猷⑦듃 ?꾩껜 紐⑸줉 (醫뗭븘?붿닚, 吏???쒓렇 ?꾪꽣 媛??
-export async function getPublicRoutes(filters?: { region?: string; tag?: string; search?: string }) {
+/** 공유된 루트 전부 — DB에서 직접 (서버 /api/routes/public 과, 그게 안 될 때 브라우저가 쓴다) */
+export async function loadPublicRoutes(): Promise<any[]> {
   const supabase = createClient()
 
   const query = supabase
@@ -215,8 +216,27 @@ export async function getPublicRoutes(filters?: { region?: string; tag?: string;
     console.error('getPublicRoutes error:', JSON.stringify(error))
     return []
   }
+  return data ?? []
+}
 
-  let routes = data ?? []
+/* ⚡ 공개 루트 목록 — 브라우저에선 서버(/api/routes/public)가 60초마다 만들어 두는 목록을 받는다.
+   (예전엔 루트 화면을 열 때마다 사람마다 공개 루트 전부를 DB에서 새로 읽었다 — DB 사용 시간 2위)
+   받아 오지 못하면 예전처럼 DB에서 직접. 서버(홈·작품 화면)에선 DB 직접. 거르기는 여기서 한다. */
+async function fetchPublicRoutes(): Promise<any[]> {
+  if (typeof window !== 'undefined') {
+    try {
+      const res = await fetch('/api/routes/public')
+      if (res.ok) {
+        const j = await res.json()
+        if (Array.isArray(j?.items)) return j.items
+      }
+    } catch { /* 아래에서 직접 읽기 */ }
+  }
+  return loadPublicRoutes()
+}
+
+export async function getPublicRoutes(filters?: { region?: string; tag?: string; search?: string }) {
+  let routes = await fetchPublicRoutes()
 
   if (filters?.region) {
     routes = routes.filter((r: any) =>
