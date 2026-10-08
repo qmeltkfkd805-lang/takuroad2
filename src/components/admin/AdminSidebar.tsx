@@ -25,7 +25,6 @@ const GROUPS: MenuGroup[] = [
       { tab: 'shopmanage', label: '샵 관리',        icon: 'shop' },
       { tab: 'places',     label: '장소 관리',      icon: 'place' },
       { tab: 'routes',     label: '추천 루트',      icon: 'route' },
-      { tab: 'events',     label: '시즌 이벤트',    icon: 'season' },
     ],
   },
   {

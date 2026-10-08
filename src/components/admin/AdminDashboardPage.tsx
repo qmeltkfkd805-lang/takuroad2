@@ -150,7 +150,8 @@ export default function AdminDashboardPage({ onNavigate, todo, pendingVerify, ba
           <div className={styles.statGrid}>
             <StatBox icon="work"   label="작품"      value={stats?.works}     onClick={() => onNavigate('works')} />
             <StatBox icon="shop"   label="샵"        value={stats?.shops}     onClick={() => onNavigate('shopmanage')} />
-            <StatBox icon="season" label="이벤트"    value={stats?.events}    onClick={() => onNavigate('events')} />
+            {/* 덕질 이벤트(events) 개수 — 예전엔 누르면 '시즌 이벤트' 탭으로 갔는데 그 탭은 없앴다(2026-10-08) */}
+            <StatBox icon="season" label="이벤트"    value={stats?.events} />
             <StatBox icon="hero"   label="배너"      value={stats?.banners}   onClick={() => onNavigate('hero')} />
             <StatBox icon="member" label="회원"      value={stats?.members}   onClick={() => onNavigate('members')} />
             <StatBox icon="approve" label="최애 등록" value={stats?.favorites} />

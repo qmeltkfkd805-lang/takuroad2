@@ -8,7 +8,6 @@ import { Shop } from '@/types/shop'
 import Link from 'next/link'
 import { ROUTES } from '@/lib/constants/routes'
 import OfficialRouteTab from './OfficialRouteTab'
-import SeasonalEventTab from './SeasonalEventTab'
 import ReportedShopsTab from './ReportedShopsTab'
 import PostReportsTab from './PostReportsTab'
 import AdminDashboardPage from './AdminDashboardPage'
@@ -31,7 +30,7 @@ import LogoLoader from '@/components/common/LogoLoader'
    (타입만 있으면 검사할 수가 없다. 유니온 타입은 배열에서 뽑는다) */
 const TABS = [
   'dashboard', 'hero', 'shops', 'shopmanage', 'shopreview', 'works', 'members', 'verify',
-  'routes', 'events', 'reported', 'postreports', 'places', 'contacts', 'partners', 'suggestions', 'workrequests',
+  'routes', 'reported', 'postreports', 'places', 'contacts', 'partners', 'suggestions', 'workrequests',
 ] as const
 type Tab = typeof TABS[number]
 
@@ -239,7 +238,6 @@ export default function AdminPage() {
       {tab === 'suggestions' && <SuggestionAdminTab onChanged={refreshBadges} />}
       {tab === 'workrequests' && <WorkRequestAdminTab onChanged={refreshBadges} />}
       {tab === 'routes' && <OfficialRouteTab />}
-      {tab === 'events' && <SeasonalEventTab />}
       </div>
     </div>
   )
