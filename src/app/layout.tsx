@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ko_KR',
     siteName: '타쿠로드',
-    url: SITE_URL,
+    // url 은 여기 두지 않는다 — 두면 모든 페이지의 og:url 이 홈 주소가 된다. 페이지마다 lib/seo/pageMeta 로 단다
     title: '타쿠로드 | 덕후의 성지순례 지도',
     description: '한국의 애니·오타쿠 쇼핑 명소를 한눈에. 피규어, 굿즈, 카드, 팝업스토어를 지도에서 찾아보세요.',
     images: [OG_IMAGE],

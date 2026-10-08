@@ -3,6 +3,8 @@ import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import RouteDetailGate from '@/components/route/RouteDetailGate'
 import { withStopKeys } from '@/lib/route/stopKey'
+import { cache } from 'react'
+import { pageMeta, toDescription } from '@/lib/seo/pageMeta'
 
 interface Props {
   params: Promise<{ token: string }>
@@ -24,21 +26,27 @@ const SELECT = `
   )
 `
 
-async function fetchRoute(token: string) {
+const fetchRoute = cache(async (token: string) => {
   const supabase = await createClient()
   const { data } = await supabase.from('routes').select(SELECT).eq('share_token', token).maybeSingle()
   // 같은 샵이 층마다 나뉜 방문지는 shops.id = "샵id@층", floor_info = 그 층 (lib/route/stopKey)
   return data ? withStopKeys(data as any) : (data as any)
-}
+})
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { token } = await params
   const route = await fetchRoute(token)
-  if (!route) return { title: '루트를 찾을 수 없어요' }
-  return {
-    title: `${route.title} - 타쿠로드 루트`,
-    description: route.description ?? `${route.route_shops?.length ?? 0}개의 성지를 도는 루트`,
-  }
+  if (!route) return { title: '루트를 찾을 수 없어요', robots: { index: false, follow: true } }
+  // 비공개(임시 저장) 루트는 검색에 싣지 않는다
+  const isPublic = !!(route.is_shared || route.is_official)
+  const n = route.route_shops?.length ?? 0
+  return pageMeta({
+    title: `${route.title} · 덕질 루트`,
+    description: toDescription(route.description) || `${n}곳의 굿즈샵·성지를 도는 덕질 루트예요.`,
+    path: `/route/${encodeURIComponent(token)}`,
+    image: route.cover_image_url,
+    noindex: !isPublic,
+  })
 }
 
 export default async function RouteSharePage({ params }: Props) {

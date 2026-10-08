@@ -18,6 +18,20 @@ import styles from '@/components/home/rail.module.css'
 //    이제 히어로는 비로그인 기준으로 그리고, 로그인 사용자는 화면이 뜬 뒤 HeroCarousel 이 개인화 결과로 바꿔 낀다.
 export const revalidate = 60
 
+// 홈의 대표 주소·공유 주소 (제목은 layout 기본값 '타쿠로드 | 덕후의 성지순례 지도' 그대로)
+export const metadata = {
+  alternates: { canonical: 'https://www.takuroad.kr/' },
+  openGraph: {
+    type: 'website',
+    locale: 'ko_KR',
+    siteName: '타쿠로드',
+    url: 'https://www.takuroad.kr/',
+    title: '타쿠로드 | 덕후의 성지순례 지도',
+    description: '한국의 애니·오타쿠 쇼핑 명소를 한눈에. 피규어, 굿즈, 카드, 팝업스토어를 지도에서 찾아보세요.',
+    images: [{ url: '/og-default.png', width: 1200, height: 630, alt: '타쿠로드 TAKUROAD' }],
+  },
+}
+
 /* ⚡ 홈 로딩 속도 — 누구에게나 같은 공개 데이터(샵·루트·작품·이벤트)는 60초 동안 캐시해 둔다.
    예전에는 홈을 열 때마다 전체 샵 + 전체 루트(샵·태그 포함)를 DB에서 새로 읽어서 느렸다.
    히어로도 공통 재료는 60초 캐시(getHeroBase), 사용자별 정렬만 /api/home/hero 에서 따로. */
