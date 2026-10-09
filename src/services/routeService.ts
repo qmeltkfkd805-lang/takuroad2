@@ -237,7 +237,12 @@ async function fetchPublicRoutes(): Promise<any[]> {
 }
 
 export async function getPublicRoutes(filters?: { region?: string; tag?: string; search?: string }) {
-  let routes = await fetchPublicRoutes()
+  return filterPublicRoutes(await fetchPublicRoutes(), filters)
+}
+
+/** 공개 루트 목록 거르기 (지역·작품·검색어) — 서버 화면이 캐시해 둔 목록에도 같은 규칙을 쓰려고 따로 뺐다 */
+export function filterPublicRoutes(all: any[], filters?: { region?: string; tag?: string; search?: string }) {
+  let routes = all
 
   if (filters?.region) {
     routes = routes.filter((r: any) =>

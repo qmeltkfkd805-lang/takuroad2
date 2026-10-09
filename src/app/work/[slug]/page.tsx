@@ -1,11 +1,12 @@
 ﻿export const dynamic = 'force-dynamic'
 
 import { cache } from 'react'
+import { unstable_cache } from 'next/cache'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getTagBySlug, getShopsByTag } from '@/services/shopService'
 import { getProductsByTag } from '@/services/shopProductService'
-import { getPublicRoutes } from '@/services/routeService'
+import { loadPublicRoutes, filterPublicRoutes } from '@/services/routeService'
 import { getEventsByTag } from '@/services/eventService'
 import { getFavoriteCount } from '@/services/workRelationshipService'
 import { buildWorkFeed } from '@/lib/work/buildWorkFeed'
@@ -14,6 +15,11 @@ import { pageMeta, toDescription } from '@/lib/seo/pageMeta'
 
 // 메타데이터와 화면이 같은 작품을 두 번 읽지 않게 (한 요청 안에서 한 번만)
 const getTag = cache((slug: string) => getTagBySlug(slug))
+
+/* ⚡ 공개 루트 전체는 60초 동안 모든 작품 페이지가 같이 쓴다.
+   예전엔 작품 페이지를 열 때마다(검색엔진이 2,500개 작품을 훑을 때도) 공개 루트 전부를 경유 샵·태그까지 DB에서 새로 읽었다
+   — 10/9 기준 DB 사용 시간 1위(3,518회 · 평균 27ms). 작품별 거르기는 그 뒤에 여기서 한다. */
+const getAllPublicRoutes = unstable_cache(() => loadPublicRoutes(), ['public-routes-all-v1'], { revalidate: 60 })
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -45,7 +51,7 @@ export default async function WorkSlugPage({ params }: Props) {
   const [goods, shops, routes, events, favoriteCount] = await Promise.all([
     getProductsByTag(tag.id),
     getShopsByTag(slug),
-    getPublicRoutes({ tag: tag.name }),
+    getAllPublicRoutes().then(all => filterPublicRoutes(all, { tag: tag.name })),
     getEventsByTag(tag.id),
     getFavoriteCount(tag.id),
   ])

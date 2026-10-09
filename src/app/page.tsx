@@ -46,7 +46,8 @@ const getHomeShopData = unstable_cache(async () => {
 }, ['home-shops-v2'], { revalidate: 60 })
 
 const getHomeRoutes = unstable_cache(async () => ((await getPublicRoutes()) ?? []).slice(0, 5), ['home-routes-v1'], { revalidate: 60 })
-const getHomeWorks = unstable_cache(() => getActiveWorks(10), ['home-works-v1'], { revalidate: 60 })
+// '지금 뜨는 작품'은 무거운 집계(get_active_works)라 10분마다 (/api/works/active 와 같은 주기). 60초였을 땐 홈 때문에만 하루 수백 번 돌았다
+const getHomeWorks = unstable_cache(() => getActiveWorks(10), ['home-works-v1'], { revalidate: 600 })
 /* 덕질 이벤트 — 이벤트 화면 '전체' 목록과 같은 순서로 8개.
    같은 데이터(getEventHomeItems) → 같은 정렬(rankEvents: 오늘 종료 → 종료 임박 → 진행 중·오늘 시작 → 곧 시작)
    → 여러 지점에서 하는 같은 이벤트는 하나로(collapseEventSeries). (최애 작품 우선은 로그인별이라 홈에선 빼고) */
