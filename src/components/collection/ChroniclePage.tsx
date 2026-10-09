@@ -1,6 +1,6 @@
 ﻿'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getMyStories, Story, StoryItem } from '@/services/storyBuilder'
@@ -76,7 +76,8 @@ function Sum({ icon, n, unit }: { icon: string; n: number; unit: string }) {
   )
 }
 
-export default function ChroniclePage() {
+/** extra — 머리말 바로 아래에 끼울 칸 (📱 마이페이지에서 열 때 '방문한 샵·작성 리뷰·획득 배지·완주 루트' 4칸) */
+export default function ChroniclePage({ extra }: { extra?: ReactNode } = {}) {
   const { user, profile } = useAuth()
   const router = useRouter()
 
@@ -241,6 +242,8 @@ export default function ChroniclePage() {
               )}
             </div>
           </div>
+
+          {extra && <div className={styles.extra}>{extra}</div>}
 
           {overview.total > 0 && (
             <div className={styles.overview}>

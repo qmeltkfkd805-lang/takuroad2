@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useIsDesktop } from '@/hooks/useIsDesktop'
@@ -265,7 +265,7 @@ export default function EventCalendarPage() {
                   const shown = list.slice(0, CELL_MAX)
                   const rest = list.length - shown.length
                   return (
-                    <button key={c} className={`${styles.cell}${isSel ? ' ' + styles.cellSel : ''}`} onClick={() => selectDay(c)}>
+                    <button key={c} className={`${styles.cell}${isSel ? ' ' + styles.cellSel : ''}${isToday ? ' ' + styles.cellToday : ''}`} onClick={() => selectDay(c)}>
                       <div className={styles.cellTop}>
                         <span className={styles.dayNum} style={{ color: isToday ? undefined : dow === 0 ? PINK : dow === 6 ? BLUE : 'var(--text)' }}>{day}</span>
                         {isToday && <span className={styles.todayTag}>오늘</span>}
@@ -276,13 +276,13 @@ export default function EventCalendarPage() {
                           const dEnd = ev.endDate ? daysUntil(ev.endDate) : 99
                           const soon = dEnd >= 0 && dEnd <= 2
                           return (
-                            <span key={ev.id} className={styles.evPill} style={{ background: cat.bg }} title={ev.title} aria-label={`${cat.label}: ${ev.title}`}>
+                            <span key={ev.id} className={styles.evPill} style={{ background: cat.bg, ['--dot' as string]: cat.dot } as CSSProperties} title={ev.title} aria-label={`${cat.label}: ${ev.title}`}>
                               <span className={styles.evName}>{ev.title}</span>
                               {soon && <span className={styles.evDday}>D-{dEnd}</span>}
                             </span>
                           )
                         })}
-                        {rest > 0 && <span className={styles.moreLink}>+{rest}개 더보기</span>}
+                        {rest > 0 && <span className={styles.moreLink}>+{rest}<span className={styles.moreTxt}>개 더보기</span></span>}
                       </div>
                     </button>
                   )

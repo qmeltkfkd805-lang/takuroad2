@@ -5,6 +5,7 @@ import { useState, useMemo, useRef, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useRouter } from 'next/navigation'
+import { goBack } from '@/lib/nav/leaveEdit'
 import { createWork, uploadWorkImage, findDuplicateWork, getWorkForEdit, updateWork, getPromotedGenres, searchParentWorks, getParentWork } from '@/services/workRegisterService'
 import { IP_TYPES, normIpType, ipTypeList } from '@/lib/constants/ipType'
 
@@ -254,7 +255,7 @@ export default function WorkRegister({ mode = 'create', editId = null }: { mode?
     <div className="wr-root" style={{ maxWidth: 1500, margin: '0 auto', padding: '20px 40px' }}>
       <div style={{ position: 'sticky', top: 64, zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18, padding: '10px 0', background: 'var(--bg, var(--surface))', borderBottom: '1px solid var(--border)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <button onClick={() => router.push(editing && slug ? `/work/${slug}` : '/my-works')} style={iconBtn} aria-label="뒤로"><Svg><path d="m15 18-6-6 6-6" /></Svg></button>
+          <button onClick={() => goBack(router, editing && slug ? `/work/${slug}` : '/my-works')} style={iconBtn} aria-label="뒤로"><Svg><path d="m15 18-6-6 6-6" /></Svg></button>
           <h1 style={{ fontSize: 26, fontWeight: 900, margin: 0 }}>{editing ? '작품 수정' : '작품 등록'}</h1>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>

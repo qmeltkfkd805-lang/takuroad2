@@ -32,6 +32,32 @@ export const metadata = {
   },
 }
 
+/* 🔎 '타쿠로드'를 검색하면 홈이 맨 위에 사이트 이름으로 뜨도록 — 검색엔진에 사이트 이름·대표 주소·로고를 알려 준다.
+   (구글 '사이트 이름'은 WebSite 구조화 데이터의 name / alternateName 을 본다. 네이버·다음도 Organization 을 읽는다) */
+const SITE_JSONLD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://www.takuroad.kr/#website',
+      url: 'https://www.takuroad.kr/',
+      name: '타쿠로드',
+      alternateName: ['TAKUROAD', '타쿠로드 TAKUROAD', 'takuroad.kr'],
+      description: '한국의 애니·오타쿠 쇼핑 명소를 한눈에. 피규어, 굿즈, 카드, 팝업스토어를 지도에서 찾아보세요.',
+      inLanguage: 'ko-KR',
+      publisher: { '@id': 'https://www.takuroad.kr/#organization' },
+    },
+    {
+      '@type': 'Organization',
+      '@id': 'https://www.takuroad.kr/#organization',
+      name: '타쿠로드',
+      alternateName: 'TAKUROAD',
+      url: 'https://www.takuroad.kr/',
+      logo: 'https://www.takuroad.kr/icon.png',
+    },
+  ],
+}
+
 /* ⚡ 홈 로딩 속도 — 누구에게나 같은 공개 데이터(샵·루트·작품·이벤트)는 60초 동안 캐시해 둔다.
    예전에는 홈을 열 때마다 전체 샵 + 전체 루트(샵·태그 포함)를 DB에서 새로 읽어서 느렸다.
    히어로도 공통 재료는 60초 캐시(getHeroBase), 사용자별 정렬만 /api/home/hero 에서 따로. */
@@ -66,6 +92,7 @@ export default async function HomePage() {
   ])
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(SITE_JSONLD) }} />
       <div className={styles.heroFull}>
         <HeroCarousel slots={hero} />
       </div>

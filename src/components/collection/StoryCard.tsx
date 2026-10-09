@@ -63,6 +63,13 @@ export default function StoryCard({ story }: { story: Story }) {
   const hl = story.highlight
   // 사진 크게 보기 — 어느 항목의 몇 번째 사진인지
   const [viewer, setViewer] = useState<{ title: string; photos: string[]; index: number } | null>(null)
+  // 같은 건물(장소)에 묶인 샵들 — 처음엔 접어 두고 › 를 누르면 펼친다 (한 건물에 샵이 많으면 카드가 너무 길어져서)
+  const [openPlaces, setOpenPlaces] = useState<Set<number>>(() => new Set())
+  const togglePlace = (i: number) => setOpenPlaces(prev => {
+    const next = new Set(prev)
+    next.has(i) ? next.delete(i) : next.add(i)
+    return next
+  })
 
   return (
     <article className={styles.card}>
@@ -75,14 +82,23 @@ export default function StoryCard({ story }: { story: Story }) {
       </header>
 
       <div className={styles.body}>
-        {story.places.map((place, i) => (
+        {story.places.map((place, i) => {
+          const foldable = !!place.placeName
+          const open = !foldable || openPlaces.has(i)
+          return (
           <div key={i} className={styles.placeGroup}>
             {place.placeName && (
-              <div className={styles.placeName}>
+              <button type="button" className={styles.placeName} onClick={() => togglePlace(i)} aria-expanded={open}>
                 <LineIcon name="pin" size={15} color="var(--accent)" />
-                {place.placeName}
-              </div>
+                <span className={styles.placeText}>{place.placeName}</span>
+                <span className={styles.placeCount}>{place.items.length}곳</span>
+                <svg className={open ? `${styles.placeChev} ${styles.placeChevOpen}` : styles.placeChev}
+                  width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="m9 6 6 6-6 6" />
+                </svg>
+              </button>
             )}
+            {open && (
             <ul className={place.placeName ? styles.itemsNested : styles.items}>
               {place.items.map(item => {
                 const href = itemHref(item)
@@ -114,8 +130,10 @@ export default function StoryCard({ story }: { story: Story }) {
                 )
               })}
             </ul>
+            )}
           </div>
-        ))}
+          )
+        })}
       </div>
 
       {hl ? (

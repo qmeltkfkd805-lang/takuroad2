@@ -19,6 +19,16 @@
   font-size: 13.5px; font-weight: 800; color: var(--text);
   margin-bottom: 8px;
 }
+/* 같은 건물 샵 묶음 — 이름 줄을 누르면 접기/펼치기 */
+button.placeName {
+  width: 100%; padding: 6px 0; margin-bottom: 2px; border: none; background: none;
+  font-family: inherit; text-align: left; cursor: pointer;
+}
+.placeText { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.placeCount { font-size: 12px; font-weight: 700; color: var(--muted); flex-shrink: 0; }
+.placeChev { margin-left: auto; flex-shrink: 0; color: var(--muted); transition: transform .15s ease; }
+.placeChevOpen { transform: rotate(90deg); }
+.placeGroup .itemsNested { margin-top: 6px; }
 
 .items, .itemsNested { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .itemsNested { padding-left: 18px; border-left: 2px solid var(--border); margin-left: 4px; }

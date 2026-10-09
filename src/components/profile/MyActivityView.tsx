@@ -1,6 +1,8 @@
 'use client'
 
-/* 마이페이지 › 내 활동 — '작성한 글'·'내 댓글'·'내 후기'를 한 화면으로 합쳤다.
+/* 마이페이지 › 내 활동 — '작성한 글'·'내 댓글'·'내 후기'·'최근 활동'을 한 화면으로 합쳤다.
+   (최근 활동: 마이페이지 대시보드의 '최근 활동' 카드(내 활동 / 팔로우 소식)를 모바일에서 여기로 옮김. 2026-10-09
+    — 탭을 처음 열 때만 불러온다)
    (내 후기: getMyReviews — 샵 후기, 최신순, 누르면 그 샵의 그 후기(?review=)로. 2026-10-08 합침)
    - 위: 마이페이지로 → 내 활동 → 설명 → [내 글 | 내 댓글] (기본 내 글, 글·댓글을 섞는 '전체' 탭은 없음)
    - 목록은 표가 아니라 '내 활동 목록' — 흰 배경 · 핑크 포인트 · 얇은 구분선
@@ -17,10 +19,13 @@ import { getMyReviews } from '@/services/reviewService'
 import { CommunityPost, BOARD_LABEL, REASON_LABEL } from '@/types/community-post'
 import { ROUTES } from '@/lib/constants/routes'
 import AppealModal from '@/components/community/AppealModal'
+import AppIcon from '@/components/tds/AppIcon'
+import { getMyRecentActivities, type RecentActivity } from '@/services/activityService'
+import { getFollowFeed, type FollowFeedItem } from '@/services/followService'
 import ThumbImg from '@/components/common/ThumbImg'
 import styles from './MyActivity.module.css'
 
-export type ActivityTab = 'posts' | 'comments' | 'reviews'
+export type ActivityTab = 'posts' | 'comments' | 'reviews' | 'recent'
 
 type Load<T> = { state: 'loading' } | { state: 'error' } | { state: 'done'; items: T[] }
 
@@ -76,6 +81,24 @@ export default function MyActivityView({ userId, initialTab = 'posts', onBack }:
   const [reviews, setReviews] = useState<Load<any>>({ state: 'loading' })
   const [reviewsKey, setReviewsKey] = useState(0)
   const [appealing, setAppealing] = useState<CommunityPost | null>(null)
+  // 최근 활동 — 탭을 처음 열 때 불러온다 (안 여는 사람은 조회하지 않게)
+  const [recent, setRecent] = useState<Load<RecentActivity>>({ state: 'loading' })
+  const [feed, setFeed] = useState<Load<FollowFeedItem>>({ state: 'loading' })
+  const [recentKey, setRecentKey] = useState(0)
+  const [recentOpened, setRecentOpened] = useState(initialTab === 'recent')
+  useEffect(() => { if (tab === 'recent') setRecentOpened(true) }, [tab])
+  useEffect(() => {
+    if (!recentOpened) return
+    let alive = true
+    setRecent({ state: 'loading' }); setFeed({ state: 'loading' })
+    getMyRecentActivities(userId, 30)
+      .then(items => { if (alive) setRecent({ state: 'done', items }) })
+      .catch(() => { if (alive) setRecent({ state: 'error' }) })
+    getFollowFeed(userId, 30)
+      .then(items => { if (alive) setFeed({ state: 'done', items }) })
+      .catch(() => { if (alive) setFeed({ state: 'error' }) })
+    return () => { alive = false }
+  }, [userId, recentOpened, recentKey])
 
   useEffect(() => {
     let alive = true
@@ -106,7 +129,7 @@ export default function MyActivityView({ userId, initialTab = 'posts', onBack }:
 
   // 탭마다 스크롤 위치 기억 → 돌아오면 그 자리로
   const wrapRef = useRef<HTMLDivElement>(null)
-  const scrollPos = useRef<Record<ActivityTab, number[]>>({ posts: [], comments: [], reviews: [] })
+  const scrollPos = useRef<Record<ActivityTab, number[]>>({ posts: [], comments: [], reviews: [], recent: [] })
   const switchTab = (next: ActivityTab) => {
     if (next === tab) return
     scrollPos.current[tab] = scrollersOf(wrapRef.current).map(s => s.scrollTop)
@@ -143,12 +166,13 @@ export default function MyActivityView({ userId, initialTab = 'posts', onBack }:
           마이페이지
         </button>
         <h1 className={styles.title}>내 활동</h1>
-        <p className={styles.desc}>내가 쓴 글·댓글·후기를 모아봤어요.</p>
+        <p className={styles.desc}>내가 쓴 글·댓글·후기와 최근 활동을 모아봤어요.</p>
 
         <div className={styles.tabs} role="tablist" aria-label="내 활동">
           {tabBtn('posts', '내 글', count(posts))}
           {tabBtn('comments', '내 댓글', count(comments))}
           {tabBtn('reviews', '내 후기', count(reviews))}
+          {tabBtn('recent', '최근 활동', null)}
         </div>
 
         {/* 두 목록 모두 그려 두고 하나만 보여준다 — 탭을 오가도 다시 불러오지 않는다 */}
@@ -161,6 +185,9 @@ export default function MyActivityView({ userId, initialTab = 'posts', onBack }:
         <div role="tabpanel" hidden={tab !== 'reviews'}>
           <ReviewList load={reviews} onRetry={() => setReviewsKey(k => k + 1)} onOpen={r => router.push(ROUTES.shop(r.shops.slug) + '?review=' + r.id)} />
         </div>
+        <div role="tabpanel" hidden={tab !== 'recent'}>
+          {recentOpened && <RecentList recent={recent} feed={feed} onRetry={() => setRecentKey(k => k + 1)} onOpen={href => router.push(href)} />}
+        </div>
       </div>
 
       {appealing && (
@@ -171,6 +198,65 @@ export default function MyActivityView({ userId, initialTab = 'posts', onBack }:
         />
       )}
     </div>
+  )
+}
+
+/* 최근 활동 — [내 활동 | 팔로우 소식] (예전 마이페이지 '최근 활동' 카드와 같은 내용, 더 많이) */
+const ACT_ICON: Record<string, string> = { checkin: 'pushpin', event: 'event', route: 'route', star: 'medal', shop: 'shop', work: 'sparkle' }
+const ACT_COLOR: Record<string, string> = { checkin: '#3B9BE8', shop: '#3B9BE8', route: '#FF5692', star: '#F7A928', event: '#14B8A0', work: '#8B5CF6' }
+
+function RecentList({ recent, feed, onRetry, onOpen }: {
+  recent: Load<RecentActivity>; feed: Load<FollowFeedItem>; onRetry: () => void; onOpen: (href: string) => void
+}) {
+  const [sub, setSub] = useState<'mine' | 'follow'>('mine')
+  const load = sub === 'mine' ? recent : feed
+  return (
+    <>
+      <div className={styles.subTabs}>
+        <button type="button" className={sub === 'mine' ? `${styles.subTab} ${styles.subTabOn}` : styles.subTab} onClick={() => setSub('mine')}>내 활동</button>
+        <button type="button" className={sub === 'follow' ? `${styles.subTab} ${styles.subTabOn}` : styles.subTab} onClick={() => setSub('follow')}>팔로우 소식</button>
+      </div>
+      {load.state !== 'done' || load.items.length === 0 ? (
+        <StateBox load={load} onRetry={onRetry} kind={sub === 'mine' ? '최근 활동' : '팔로우 소식'}
+          emptyText={sub === 'mine' ? '아직 활동 기록이 없어요' : '유저를 팔로우하면 새 소식이 여기에 모여요'} />
+      ) : sub === 'mine' ? (
+        <ul className={styles.list}>
+          {(load.items as RecentActivity[]).map(a => {
+            const inner = (
+              <>
+                <span className={styles.actIcon}><AppIcon name={ACT_ICON[a.icon] ?? 'sparkle'} size={18} color={ACT_COLOR[a.icon] ?? 'var(--accent)'} /></span>
+                <div className={styles.main}><p className={styles.body}>{a.title}</p></div>
+                <span className={styles.date}>{fmtDate(a.occurredAt)}</span>
+                {a.href && <Chev />}
+              </>
+            )
+            return (
+              <li key={a.id} className={styles.item}>
+                {a.href
+                  ? <button type="button" className={styles.row} onClick={() => onOpen(a.href!)}>{inner}</button>
+                  : <div className={`${styles.row} ${styles.rowStatic}`}>{inner}</div>}
+              </li>
+            )
+          })}
+        </ul>
+      ) : (
+        <ul className={styles.list}>
+          {(load.items as FollowFeedItem[]).map(f => (
+            <li key={f.id} className={styles.item}>
+              <button type="button" className={styles.row} onClick={() => onOpen(f.href)}>
+                <span className={styles.actIcon}><AppIcon name={f.kind === 'route' ? 'route' : 'pencil'} size={18} color={f.kind === 'route' ? '#FF5692' : '#3B9BE8'} /></span>
+                <div className={styles.main}>
+                  <p className={styles.body}>{f.title}</p>
+                  <div className={styles.meta}><span className={styles.author}>{f.author} · {f.kind === 'route' ? '루트' : '커뮤니티 글'}</span></div>
+                </div>
+                <span className={styles.date}>{fmtDate(f.date)}</span>
+                <Chev />
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
   )
 }
 

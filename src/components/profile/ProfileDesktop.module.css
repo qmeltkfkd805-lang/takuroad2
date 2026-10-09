@@ -321,6 +321,10 @@
 
 .loading { padding: 60px; text-align: center; color: var(--muted); }
 
+/* 📱 모바일 전용 / PC 전용 (모바일 기준 640px) */
+.mPageTitle { display: none; }
+.mobileOnly { display: none; }
+
 /* ── 반응형 (태블릿 이하에서 1열) ── */
 @media (max-width: 1023px) {
   .cols { grid-template-columns: 1fr; }
@@ -365,6 +369,12 @@
 
   .card { padding: 16px; }
   .cardTitle { font-size: 15px; }
+
+  /* 2026-10-09 모바일 정리 — 맨 위 '마이페이지' 제목, 순서 프로필 → 빠른 메뉴 → 굿즈 보관함 → 계정 메뉴.
+     통계 4칸은 연대기 화면으로, 최근 활동은 '내 활동' 탭으로 옮겼고 내 컬렉션·인증 현황은 빠른 메뉴로 들어간다 */
+  .mPageTitle { display: block; margin: 2px 2px 0; font-size: 23px; font-weight: 900; letter-spacing: -0.02em; color: var(--text); }
+  .mobileOnly { display: block; }
+  .desktopOnly { display: none !important; }
   .quickGrid { gap: 8px; }
   .quickItem { padding: 13px 6px; }
 }

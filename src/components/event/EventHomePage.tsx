@@ -28,6 +28,8 @@ type Period = 'all' | 'week' | 'month'
 
 /** 종료 탭 노출 기간 — 끝난 뒤 이 일수까지만 목록에 남는다(DB에서 지우진 않음) */
 const ENDED_WINDOW_DAYS = 30
+/** 📱 모바일 목록은 이만큼씩 보여 준다 — 한 번에 100개 넘게 그리면 화면이 2만 px 넘게 길어졌다 */
+const MOBILE_PAGE = 20
 
 // 이벤트가 목록에 뜰 수 있는 상태인지 (종료·불명은 제외)
 function bucketOf(kind: EventStatusKind): 'ongoing' | 'upcoming' | 'ending' | null {
@@ -414,6 +416,34 @@ export default function EventHomePage() {
     workId && { key: 'work', label: works.find(w => w.id === workId)?.name ?? '작품', clear: () => setWorkId(null) },
   ].filter(Boolean) as { key: string; label: string; clear: () => void }[]
 
+  // 📱 모바일 목록 — MOBILE_PAGE개씩 '더 보기'. 탭·검색·필터가 바뀌면 처음부터
+  const [shownN, setShownN] = useState(MOBILE_PAGE)
+  useEffect(() => { setShownN(MOBILE_PAGE) }, [tab, search, region, type, period, workId, selectedDay])
+  const visibleList = isDesktop ? list : list.slice(0, shownN)
+
+  /* 검색·필터 — PC는 탭 아래, 📱 모바일은 맨 위 제목 바로 아래 */
+  const controlsEl = (
+      <div className={styles.controls}>
+        <div className={styles.search}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3-3" /></svg>
+          <input className={styles.searchInput} placeholder="이벤트명·작품 검색" value={search} onChange={e => onSearchChange(e.target.value)} />
+        </div>
+        {isDesktop ? (
+          <>
+            {regions.length > 0 && <Dropdown label="지역" value={region} options={regions.map(r => ({ v: r, label: r }))} onSelect={setRegion} />}
+            <Dropdown label="종류" value={type} options={Object.keys(TYPE_LABEL).map(k => ({ v: k, label: TYPE_LABEL[k] }))} onSelect={setType} />
+            <Dropdown label="기간" value={period === 'all' ? null : period} options={[{ v: 'week', label: '이번 주' }, { v: 'month', label: '이번 달' }]} onSelect={v => setPeriod((v as Period) ?? 'all')} />
+            <button className={workId ? `${styles.ctrlChip} ${styles.ctrlOn}` : styles.ctrlChip} onClick={() => setSheet(true)}>필터</button>
+          </>
+        ) : (
+          <button className={styles.filterBtn} onClick={() => setSheet(true)}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 6h16M7 12h10M10 18h4" /></svg>
+            필터
+          </button>
+        )}
+      </div>
+  )
+
   const TABS: { key: StatusTab; label: string; count?: number }[] = [
     { key: 'all', label: '전체', count: counts.all },
     { key: 'ongoing', label: '진행 중', count: counts.ongoing },
@@ -425,6 +455,24 @@ export default function EventHomePage() {
 
   return (
     <div className={styles.page}>
+      {/* 📱 모바일 — 샵·루트 화면처럼 맨 위에 제목, 그 아래 검색창. 캘린더는 버튼으로만 (미니 캘린더 없음) */}
+      {!isDesktop && (
+        <div className={styles.mTop}>
+          <div className={styles.mHead}>
+            <h1 className={styles.mTitle}><Icon name="colorevent" size={24} />이벤트</h1>
+            <div className={styles.mBtns}>
+              <button type="button" className={styles.mCalBtn} onClick={() => router.push('/events/calendar')}>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" /><path d="M3.5 10h17M8 3v4M16 3v4" /></svg>
+                캘린더
+              </button>
+              <button type="button" className={styles.mRegBtn} onClick={() => router.push(user ? '/event/new' : '/login?redirect=/event/new')}>+ 등록</button>
+            </div>
+          </div>
+          <p className={styles.mSub}>지금 열리는 팝업·콜라보 카페·전시를 찾아보세요</p>
+          {controlsEl}
+        </div>
+      )}
+
       {/* 추천 + 캘린더 */}
       <div className={styles.topRow}>
         {/* 📱 모바일은 홈 히어로처럼 포스터가 화면을 꽉 채우고 정보가 그 위에 — 카드 아무 데나 누르면 상세로 */}
@@ -473,7 +521,7 @@ export default function EventHomePage() {
             <div className={styles.heroEmpty}>아직 등록된 이벤트가 없어요.</div>
           )}
         </div>
-        <MonthCalendar items={items} selectedDay={selectedDay} onSelectDay={setSelectedDay} />
+        {isDesktop && <MonthCalendar items={items} selectedDay={selectedDay} onSelectDay={setSelectedDay} />}
       </div>
 
       {/* 곧 종료 */}
@@ -504,29 +552,11 @@ export default function EventHomePage() {
             </button>
           ))}
         </div>
-        <button className={styles.regBtn} onClick={() => router.push(user ? '/event/new' : '/login?redirect=/event/new')}>+ 이벤트 등록</button>
+        {isDesktop && <button className={styles.regBtn} onClick={() => router.push(user ? '/event/new' : '/login?redirect=/event/new')}>+ 이벤트 등록</button>}
       </div>
 
-      {/* 검색·필터 */}
-      <div className={styles.controls}>
-        <div className={styles.search}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3-3" /></svg>
-          <input className={styles.searchInput} placeholder="이벤트명·작품 검색" value={search} onChange={e => onSearchChange(e.target.value)} />
-        </div>
-        {isDesktop ? (
-          <>
-            {regions.length > 0 && <Dropdown label="지역" value={region} options={regions.map(r => ({ v: r, label: r }))} onSelect={setRegion} />}
-            <Dropdown label="종류" value={type} options={Object.keys(TYPE_LABEL).map(k => ({ v: k, label: TYPE_LABEL[k] }))} onSelect={setType} />
-            <Dropdown label="기간" value={period === 'all' ? null : period} options={[{ v: 'week', label: '이번 주' }, { v: 'month', label: '이번 달' }]} onSelect={v => setPeriod((v as Period) ?? 'all')} />
-            <button className={workId ? `${styles.ctrlChip} ${styles.ctrlOn}` : styles.ctrlChip} onClick={() => setSheet(true)}>필터</button>
-          </>
-        ) : (
-          <button className={styles.filterBtn} onClick={() => setSheet(true)}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 6h16M7 12h10M10 18h4" /></svg>
-            필터
-          </button>
-        )}
-      </div>
+      {/* 검색·필터 (PC) — 📱 모바일은 맨 위로 옮김 */}
+      {isDesktop && controlsEl}
 
       {/* 목록 제목 + 적용 칩 */}
       <div className={styles.listHead}>
@@ -554,12 +584,19 @@ export default function EventHomePage() {
           {activeChips.length > 0 && <button className={styles.emptyReset} onClick={() => { setRegion(null); setType(null); setPeriod('all'); setWorkId(null); setSelectedDay(null); onSearchChange('') }}>필터 초기화</button>}
         </div>
       ) : (
+        <>
         <div className={styles.grid}>
-          {list.map(ev => (
+          {visibleList.map(ev => (
             <PosterCard key={ev.id} ev={ev} saved={savedIds.has(ev.id)} onToggleSave={toggleSave} onOpen={openEvent}
               branchCount={ev.branchCount} ended={getEventStatus(ev).kind === 'ended'} />
           ))}
         </div>
+        {visibleList.length < list.length && (
+          <button type="button" className={styles.moreBtn} onClick={() => setShownN(n => n + MOBILE_PAGE)}>
+            더 보기 <span className={styles.moreCount}>{list.length - visibleList.length}개 남음</span>
+          </button>
+        )}
+        </>
       )}
       </div>
 

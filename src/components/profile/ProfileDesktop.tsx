@@ -179,8 +179,24 @@ export default function ProfileDesktop({ passport, userId }: Props) {
     return () => m.removeEventListener('change', on)
   }, [])
 
+  /* 하위 화면 이동도 주소(?tab=)에 남긴다 — 📱 휴대폰 '뒤로'를 누르면 바로 전 화면(대시보드 등)으로 돌아온다.
+     예전엔 화면만 바꾸고 주소는 그대로라, 뒤로를 누르면 마이페이지 밖(그 전에 보던 페이지)으로 나가 버렸다.
+     화면 안 '‹ 마이페이지' 버튼도 같은 기록을 되돌린다(뒤로 = 한 칸 전). 주소로 바로 들어온 경우엔 대시보드로 바꿔 끼운다 */
+  const enteredByPush = useRef(false)
+  function openView(v: 'dashboard' | Sub) {
+    if (v === 'dashboard') {
+      if (enteredByPush.current) { enteredByPush.current = false; router.back() }
+      else { setView('dashboard'); router.replace('/profile', { scroll: false }) }
+      return
+    }
+    if (v === view) return
+    enteredByPush.current = true
+    setView(v)
+    router.push(`/profile?tab=${v}`, { scroll: false })
+  }
+
   function runQuick(item: QuickItem) {
-    if (item.view) setView(item.view)
+    if (item.view) openView(item.view)
     else if (item.href) router.push(item.href)
   }
   function openMenuEditor() { setDraft([...quickKeys]); setEditOpen(true) }
@@ -289,13 +305,54 @@ export default function ProfileDesktop({ passport, userId }: Props) {
   const expLabel = expSpan ? `EXP ${expCur} / ${expSpan}` : `EXP ${levelInfo?.totalExp ?? 0}`
 
   const stats = [
-    { img: '/icons/colorshop.png', label: '방문한 샵', value: passport?.visitedShopCount ?? 0, go: () => setView('visited') },
-    { img: '/icons/colorstar.png', label: '작성 리뷰', value: passport?.reviewCount ?? 0, go: () => setView('reviews') },
-    { img: '/icons/colorcollection.png', label: '획득 배지', value: passport?.totalBadgeCount ?? 0, go: () => setView('badges') },
-    { img: '/icons/colorroute.png', label: '완주 루트', value: passport?.pilgrimageCount ?? 0, go: () => setView('completed') },
+    { img: '/icons/colorshop.png', label: '방문한 샵', value: passport?.visitedShopCount ?? 0, go: () => openView('visited') },
+    { img: '/icons/colorstar.png', label: '작성 리뷰', value: passport?.reviewCount ?? 0, go: () => openView('reviews') },
+    { img: '/icons/colorcollection.png', label: '획득 배지', value: passport?.totalBadgeCount ?? 0, go: () => openView('badges') },
+    { img: '/icons/colorroute.png', label: '완주 루트', value: passport?.pilgrimageCount ?? 0, go: () => openView('completed') },
   ]
 
   const quickItems = quickKeys.map(k => QUICK_BY_KEY.get(k)).filter(Boolean) as QuickItem[]
+
+  // 활동 통계 4칸 — PC는 대시보드에, 📱 모바일은 연대기 화면 위쪽에 (2026-10-09 옮김)
+  const statsCard = (extraCls = '') => (
+    <section className={`${styles.card} ${styles.statsCard} ${extraCls}`}>
+      <div className={styles.stats}>
+        {stats.map(s => (
+          <button key={s.label} className={styles.stat} onClick={s.go}>
+            <span className={styles.statIcon}><img src={s.img} alt="" /></span>
+            <span className={styles.statText}>
+              <span className={styles.statLabel}>{s.label}</span>
+              <span className={styles.statValue}>{s.value}</span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </section>
+  )
+
+  // 빠른 메뉴 — PC는 왼쪽 열 맨 위, 📱 모바일은 프로필 바로 아래(굿즈 보관함 위)
+  const quickCard = (extraCls = '') => (
+    <section className={`${styles.card} ${styles.quickCard} ${extraCls}`}>
+      <div className={styles.cardHead}>
+        <span className={styles.cardTitle}>빠른 메뉴</span>
+        <button className={styles.editLink} onClick={openMenuEditor}>
+          <AppIcon name="pencil" size={13} />메뉴 편집
+        </button>
+      </div>
+      {quickItems.length === 0 ? (
+        <div className={styles.empty}>표시할 메뉴가 없어요. ‘메뉴 편집’에서 추가해보세요.</div>
+      ) : (
+        <div className={styles.quickGrid}>
+          {quickItems.map(m => (
+            <button key={m.key} className={styles.quickItem} onClick={() => runQuick(m)}>
+              <span className={styles.quickIcon}><AppIcon name={m.icon} size={22} /></span>
+              <span className={styles.quickLabel}>{m.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </section>
+  )
   const addable = QUICK_CATALOG.filter(i => !draft.includes(i.key))
 
   const collection = passport?.topVisitedSeries?.[0] ?? null
@@ -303,23 +360,23 @@ export default function ProfileDesktop({ passport, userId }: Props) {
 
   // ───────── 내 활동 (내 글 + 내 댓글) — 자체 머리말(마이페이지로 · 제목 · 설명 · 탭)을 쓴다 ─────────
   if (view === 'activity' || view === 'posts' || view === 'comments' || view === 'reviews') {
-    return <MyActivityView userId={userId} initialTab={view === 'comments' ? 'comments' : view === 'reviews' ? 'reviews' : activityTab} onBack={() => setView('dashboard')} />
+    return <MyActivityView userId={userId} initialTab={view === 'comments' ? 'comments' : view === 'reviews' ? 'reviews' : activityTab} onBack={() => openView('dashboard')} />
   }
 
   // ───────── 저장함 (샵 · 루트 · 글 · 이벤트) — 예전 주소 ?tab=saved 는 샵 탭, ?tab=savedroutes 는 루트 탭으로 연다 ─────────
   if (view === 'saved' || view === 'savedroutes') {
-    return <SavedView userId={userId} initialTab={view === 'savedroutes' ? 'routes' : 'shops'} onBack={() => setView('dashboard')} />
+    return <SavedView userId={userId} initialTab={view === 'savedroutes' ? 'routes' : 'shops'} onBack={() => openView('dashboard')} />
   }
 
   // ───────── 내 루트 (만든 루트 · 완주한 루트) — 예전 주소 ?tab=completed 는 완주한 루트 탭으로 연다 ─────────
   if (view === 'routes' || view === 'completed') {
-    return <RoutesView userId={userId} initialTab={view === 'completed' ? 'completed' : 'mine'} onBack={() => setView('dashboard')} />
+    return <RoutesView userId={userId} initialTab={view === 'completed' ? 'completed' : 'mine'} onBack={() => openView('dashboard')} />
   }
 
   // ───────── 하위 화면 — '내 활동'과 같은 틀(‹ 마이페이지 · 제목 · 설명) ─────────
   //  성장센터·연대기·인증 현황은 화면 안에 자체 제목이 있어서 아래 예전 틀을 그대로 쓴다
   if (view in SUB_DESC) {
-    const back = () => setView('dashboard')
+    const back = () => openView('dashboard')
     return (
       <MyPageSubShell
         title={SUB_TITLE[view as Sub]}
@@ -340,7 +397,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
     return (
       <div className={styles.subWrap}>
         <div className={styles.subHead}>
-          <button className={styles.backBtn} onClick={() => setView('dashboard')}>
+          <button className={styles.backBtn} onClick={() => openView('dashboard')}>
             <AppIcon name="arrow-left" size={18} />마이페이지
           </button>
           <span className={styles.subTitle}>{SUB_TITLE[view]}</span>
@@ -348,7 +405,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
         <div className={styles.subBody}>
           {view === 'verify' && <VerifyStatusTab userId={userId} />}
           {view === 'growth' && <GrowthPage />}
-          {view === 'chronicle' && <ChroniclePage />}
+          {view === 'chronicle' && <ChroniclePage extra={statsCard(styles.mobileOnly)} />}
           {view === 'collection' && <CollectionTab userId={userId} />}
         </div>
       </div>
@@ -359,6 +416,8 @@ export default function ProfileDesktop({ passport, userId }: Props) {
   return (
     <div className={styles.wrap}>
       <div className={styles.dash}>
+        {/* 📱 모바일 — 맨 위 화면 제목 (샵·루트 화면처럼) */}
+        <h1 className={styles.mPageTitle}>마이페이지</h1>
 
         {/* 프로필 요약 카드 */}
         <section className={styles.profileCard}>
@@ -393,20 +452,11 @@ export default function ProfileDesktop({ passport, userId }: Props) {
           </div>
         </section>
 
-        {/* 활동 통계 — 별도 카드, 가로 4칸 */}
-        <section className={`${styles.card} ${styles.statsCard}`}>
-          <div className={styles.stats}>
-            {stats.map(s => (
-              <button key={s.label} className={styles.stat} onClick={s.go}>
-                <span className={styles.statIcon}><img src={s.img} alt="" /></span>
-                <span className={styles.statText}>
-                  <span className={styles.statLabel}>{s.label}</span>
-                  <span className={styles.statValue}>{s.value}</span>
-                </span>
-              </button>
-            ))}
-          </div>
-        </section>
+        {/* 활동 통계 — 별도 카드, 가로 4칸 (📱 모바일은 연대기로 옮겨서 여기선 숨김) */}
+        {statsCard(styles.desktopOnly)}
+
+        {/* 📱 모바일 순서: 프로필 → 빠른 메뉴 → 굿즈 보관함 → 계정 메뉴 */}
+        {quickCard(styles.mobileOnly)}
 
         {/* 나의 굿즈 보관함 (주요 콘텐츠 영역) */}
         <MyGoodsSection />
@@ -415,40 +465,21 @@ export default function ProfileDesktop({ passport, userId }: Props) {
         <div className={styles.cols}>
           {/* 왼쪽 */}
           <div className={styles.colLeft}>
-            {/* 빠른 메뉴 */}
-            <section className={`${styles.card} ${styles.quickCard}`}>
-              <div className={styles.cardHead}>
-                <span className={styles.cardTitle}>빠른 메뉴</span>
-                <button className={styles.editLink} onClick={openMenuEditor}>
-                  <AppIcon name="pencil" size={13} />메뉴 편집
-                </button>
-              </div>
-              {quickItems.length === 0 ? (
-                <div className={styles.empty}>표시할 메뉴가 없어요. ‘메뉴 편집’에서 추가해보세요.</div>
-              ) : (
-                <div className={styles.quickGrid}>
-                  {quickItems.map(m => (
-                    <button key={m.key} className={styles.quickItem} onClick={() => runQuick(m)}>
-                      <span className={styles.quickIcon}><AppIcon name={m.icon} size={22} /></span>
-                      <span className={styles.quickLabel}>{m.label}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </section>
+            {/* 빠른 메뉴 (PC) */}
+            {quickCard(styles.desktopOnly)}
 
             {/* 인증 현황 — 신청 이력이 있을 때만 그린다 */}
             {verifyReqs.length > 0 && (
-              <section className={styles.card}>
+              <section className={`${styles.card} ${styles.desktopOnly}`}>
                 <div className={styles.cardHead}>
                   <span className={styles.cardTitle}>인증 현황</span>
-                  <button className={styles.moreLink} onClick={() => setView('verify')}>전체 보기 ›</button>
+                  <button className={styles.moreLink} onClick={() => openView('verify')}>전체 보기 ›</button>
                 </div>
                 <div className={styles.verifyList}>
                   {verifyReqs.slice(0, 3).map(r => {
                     const s = VERIFY_LABEL[r.status]
                     return (
-                      <button key={r.id} className={styles.verifyRow} onClick={() => setView('verify')}>
+                      <button key={r.id} className={styles.verifyRow} onClick={() => openView('verify')}>
                         <span className={styles.verifyName}>{r.shops?.name ?? '삭제된 샵'}</span>
                         <span className={`${styles.verifyChip} ${s ? styles[s.cls] : styles.verifyUnknown}`}>
                           {s ? s.text : r.status}
@@ -461,10 +492,10 @@ export default function ProfileDesktop({ passport, userId }: Props) {
             )}
 
             {/* 최근 활동 */}
-            <section className={`${styles.card} ${styles.recentCard}`}>
+            <section className={`${styles.card} ${styles.recentCard} ${styles.desktopOnly}`}>
               <div className={styles.cardHead}>
                 <span className={styles.cardTitle}>최근 활동</span>
-                <button className={styles.moreLink} onClick={() => setView('chronicle')}>전체 보기 ›</button>
+                <button className={styles.moreLink} onClick={() => openView('chronicle')}>전체 보기 ›</button>
               </div>
               <div className={styles.actTabs}>
                 <button className={actTab === 'mine' ? styles.actTabOn : styles.actTab} onClick={() => setActTab('mine')}>내 활동</button>
@@ -509,8 +540,8 @@ export default function ProfileDesktop({ passport, userId }: Props) {
           {/* 오른쪽 */}
           <div className={styles.colRight}>
             {isMobile ? (
-              /* 모바일: 내 컬렉션 + 대표 배지를 한 장의 카드에 */
-              <section className={`${styles.card} ${styles.collBadgeMobile}`}>
+              /* 모바일: 내 컬렉션 + 대표 배지 — 2026-10-09 모바일에선 숨김 (빠른 메뉴 '컬렉션'·'배지'로 들어간다) */
+              <section className={`${styles.card} ${styles.collBadgeMobile} ${styles.desktopOnly}`}>
                 <div className={styles.cardHead}>
                   <span className={styles.cardTitle}>내 컬렉션</span>
                   <button className={styles.moreLink} onClick={() => router.push('/collection')}>전체 보기 ›</button>
@@ -529,7 +560,7 @@ export default function ProfileDesktop({ passport, userId }: Props) {
                   {featuredBadges.length > 0 && (
                     <div className={styles.mBadges}>
                       {featuredBadges.map((b, i) => (
-                        <button key={i} className={styles.mBadge} onClick={() => setView('badges')}>
+                        <button key={i} className={styles.mBadge} onClick={() => openView('badges')}>
                           <span className={styles.mBadgeIcon}>{b.iconUrl ? <img src={b.iconUrl} alt="" /> : <Icon name="colorcollection" size={22} />}</span>
                           <span className={styles.mBadgeName}>{b.name}</span>
                         </button>
@@ -569,12 +600,12 @@ export default function ProfileDesktop({ passport, userId }: Props) {
             <section className={`${styles.card} ${styles.badgeCard}`}>
               <div className={styles.cardHead}>
                 <span className={styles.cardTitle}>대표 배지</span>
-                <button className={styles.moreLink} onClick={() => setView('badges')}>전체 보기 ›</button>
+                <button className={styles.moreLink} onClick={() => openView('badges')}>전체 보기 ›</button>
               </div>
               {featuredBadges.length > 0 ? (
                 <div className={styles.badgeRow}>
                   {featuredBadges.map((b, i) => (
-                    <button key={i} className={styles.badgeItem} onClick={() => setView('badges')}>
+                    <button key={i} className={styles.badgeItem} onClick={() => openView('badges')}>
                       <span className={styles.badgeIcon}>
                         {b.iconUrl ? <img src={b.iconUrl} alt="" /> : <Icon name="colorcollection" size={28} />}
                       </span>

@@ -22,6 +22,15 @@ export function trackNav(pathname: string) {
 
 type Router = { back(): void; replace(href: string): void; refresh(): void }
 
+/** 화면 '뒤로' 버튼 — 이 탭에서 사이트 안 이전 화면이 있으면 그 화면으로(브라우저 뒤로와 같음),
+ *  주소로 바로 들어와서 이전 화면이 없으면 fallback 으로 (사이트 밖으로 나가 버리지 않게) */
+export function goBack(router: { back(): void; replace(href: string): void }, fallback: string) {
+  let prev: string | null = null
+  try { prev = sessionStorage.getItem(PREV) } catch { /* noop */ }
+  if (prev && typeof window !== 'undefined' && window.history.length > 1) router.back()
+  else router.replace(fallback)
+}
+
 export function leaveEditTo(router: Router, href: string) {
   let prev: string | null = null
   try { prev = sessionStorage.getItem(PREV) } catch { /* noop */ }

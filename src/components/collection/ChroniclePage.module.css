@@ -1,6 +1,12 @@
 .page { width: 100%; max-width: 980px; margin: 0 auto; padding: 28px 32px 80px; }
 
 /* ── 헤더 ─────────────────────────────────────────── */
+/* 머리말 아래 끼우는 칸 (마이페이지 통계 4칸) */
+.extra { margin: 0; }
+@media (max-width: 640px) {
+  .headLeft { width: 100%; }
+  .extra { margin: 16px 0 4px; }
+}
 .head {
   display: flex; align-items: flex-start; justify-content: space-between;
   gap: 20px; flex-wrap: wrap; margin-bottom: 22px;
