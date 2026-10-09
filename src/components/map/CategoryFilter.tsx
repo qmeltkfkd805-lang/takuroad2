@@ -1,5 +1,5 @@
 'use client'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
 import { CATEGORIES } from '@/lib/constants/categories'
 import styles from './CategoryFilter.module.css'
 
@@ -115,7 +115,19 @@ export default function CategoryFilter({
 
   const label = !regionOn ? '지역' : districtOn ? `${selectedRegion} ${selectedDistrict}` : selectedRegion
   // 구/군 목록 — 데이터에 '전체'가 섞여 오면 뺀다 (위에 '○○ 전체' 버튼이 따로 있다)
-  const districts = viewRegion ? (districtsByRegion[viewRegion] ?? []).filter(d => d && d !== '전체') : []
+  // 시/도·구/군 모두 샵 많은 순 (지금 카테고리 기준 개수). 같으면 이름순. '전체'는 맨 위 그대로
+  const byCount = (cnt: Record<string, number> | undefined) => (a: string, b: string) =>
+    ((cnt?.[b] ?? 0) - (cnt?.[a] ?? 0)) || a.localeCompare(b, 'ko')
+  const sortedRegions = useMemo(
+    () => ['전체', ...regions.filter(r => r && r !== '전체').sort(byCount(regionCounts))],
+    [regions, regionCounts],
+  )
+  const districts = useMemo(
+    () => viewRegion
+      ? (districtsByRegion[viewRegion] ?? []).filter(d => d && d !== '전체').sort(byCount(districtCounts?.[viewRegion]))
+      : [],
+    [viewRegion, districtsByRegion, districtCounts],
+  )
 
   // 항목이 3개를 넘으면 그 이상은 스크롤 (반 줄 살짝 보이게 해서 더 있다는 신호)
   const ROW = 36, GAP = 4, PAD = 6, PEEK = 14
@@ -251,7 +263,7 @@ export default function CategoryFilter({
               <div style={{ display: 'grid', gridTemplateColumns: '128px 1fr' }}>
                 {/* 왼쪽: 시/도 */}
                 <div style={{ borderRight: '1px solid var(--border)', padding: PAD, ...regionBoxStyle }}>
-                  {regions.map(r => {
+                  {sortedRegions.map(r => {
                     const viewing = r === '전체' ? !regionOn : viewRegion === r
                     return (
                       <button
