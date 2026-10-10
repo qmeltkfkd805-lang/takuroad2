@@ -459,7 +459,7 @@ export default function EventHomePage() {
       {!isDesktop && (
         <div className={styles.mTop}>
           <div className={styles.mHead}>
-            <h1 className={styles.mTitle}><Icon name="colorevent" size={24} />이벤트</h1>
+            <h1 className={styles.mTitle}>이벤트 둘러보기</h1>
             <div className={styles.mBtns}>
               <button type="button" className={styles.mCalBtn} onClick={() => router.push('/events/calendar')}>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" /><path d="M3.5 10h17M8 3v4M16 3v4" /></svg>
@@ -468,7 +468,6 @@ export default function EventHomePage() {
               <button type="button" className={styles.mRegBtn} onClick={() => router.push(user ? '/event/new' : '/login?redirect=/event/new')}>+ 등록</button>
             </div>
           </div>
-          <p className={styles.mSub}>지금 열리는 팝업·콜라보 카페·전시를 찾아보세요</p>
           {controlsEl}
         </div>
       )}

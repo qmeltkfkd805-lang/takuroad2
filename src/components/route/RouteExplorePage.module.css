@@ -265,3 +265,29 @@
 .mrail { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; margin: 0 -16px; padding: 2px 16px 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
 .mrail::-webkit-scrollbar { display: none; }
 .mrailItem { flex: 0 0 78%; max-width: 300px; scroll-snap-align: start; min-width: 0; }
+
+/* 📱 2026-10-10 상단을 '샵 둘러보기'와 같은 모양으로 — 제목만(아이콘·설명 없음), 작은 글자 링크, 낮은 알약(고른 것 연한 핑크) */
+.mhead { padding: 2px 0 0; }
+.mtitle { color: var(--text); white-space: nowrap; }
+.mcreate {
+  min-height: 0; padding: 6px 2px; border: none; border-radius: 0; background: none;
+  font-size: 14px; color: var(--accent); white-space: nowrap;
+}
+.mchips { gap: 6px; margin-top: 12px; }
+.mchip, .mchipOn { min-height: 0; height: 34px; padding: 0 14px; font-size: 13px; }
+.mchip { border: 1px solid var(--border); background: var(--surface); color: var(--text); font-weight: 700; }
+.mchipOn { border: 1px solid var(--accent-l); background: var(--accent-l); color: var(--accent); font-weight: 800; }
+/* 검색창 — 샵 둘러보기와 같은 회색 알약 (돋보기 왼쪽) */
+.msearch {
+  align-items: center; gap: 8px; margin-top: 12px; height: 46px; padding: 0 14px;
+  border-radius: 9999px; background: var(--surface2); border: 1px solid transparent;
+}
+.msearch:focus-within { border-color: var(--accent); background: var(--surface); }
+.msearchIcon { display: inline-flex; flex-shrink: 0; color: var(--muted); }
+.msearch input {
+  height: 100%; padding: 0; border: none; border-radius: 0; background: none;
+  font-size: 16px;   /* 16px 미만이면 iOS가 확대한다 */
+}
+.msearch input::placeholder { color: var(--muted); font-size: 14.5px; }
+.msearch input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.msearch input:focus { border: none; }

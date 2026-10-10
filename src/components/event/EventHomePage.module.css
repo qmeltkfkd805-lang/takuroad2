@@ -192,7 +192,7 @@
 
 /* 📱 모바일 — 추천 이벤트를 홈 히어로처럼: 화면 좌우·위까지 꽉 채운 포스터 + 그 위에 흰 글씨 정보 */
 @media (pointer: coarse) and (max-width: 1023px) {
-  .page { padding-top: 14px; }
+  .page { padding: 14px 16px 60px; }   /* 📱 좌우 여백을 샵·루트 화면과 비슷하게 (32 → 16) */
   .heroCard {
     position: relative; cursor: pointer;
     width: 100vw; margin-left: calc(50% - 50vw);
@@ -224,3 +224,17 @@
   .heroDot { background: rgba(255,255,255,.55); }
   .heroDotOn { background: #fff; }
 }
+
+/* 📱 2026-10-10 상단을 '샵 둘러보기'와 같은 모양으로 — 제목만(아이콘·설명 없음), 작은 글자 버튼, 회색 알약 검색창 */
+.mTop { display: flex; flex-direction: column; gap: 12px; }
+.mHead { padding: 2px 0 0; }
+.mTitle { white-space: nowrap; }
+.mBtns { gap: 14px; }
+.mCalBtn, .mRegBtn { min-height: 0; padding: 6px 2px; border: none; border-radius: 0; background: none; font-size: 14px; }
+.mCalBtn { color: var(--muted); }
+.mRegBtn { color: var(--accent); }
+.mTop .search { height: 46px; border-radius: 9999px; border: 1px solid transparent; background: var(--surface2); }
+.mTop .search:focus-within { border-color: var(--accent); background: var(--surface); }
+.mTop .searchInput { font-size: 16px; }   /* 16px 미만이면 iOS가 확대한다 */
+.mTop .searchInput::placeholder { font-size: 14.5px; color: var(--muted); }
+.mTop .filterBtn { height: 46px; border-radius: 9999px; border: 1px solid transparent; background: var(--surface2); }

@@ -170,12 +170,15 @@ export default function RouteExplorePage() {
     return (
       <div className={styles.mwrap}>
         <div className={styles.mhead}>
-          <h1 className={styles.mtitle}>
-            <img src="/icons/colormap.png" alt="" width={24} height={24} style={{ display: 'block' }} />루트
-          </h1>
-          <button className={styles.mcreate} onClick={() => router.push('/route/new')}>+ 루트 만들기</button>
+          <h1 className={styles.mtitle}>루트 둘러보기</h1>
+          <button className={styles.mcreate} onClick={() => router.push('/route/new')}>+ 만들기</button>
         </div>
-        <p className={styles.msub}>나에게 맞는 굿즈 코스를 찾아보세요</p>
+
+        {/* 루트 검색 — 샵 둘러보기처럼 제목 바로 아래 회색 알약 검색창 */}
+        <form role="search" className={styles.msearch} onSubmit={submitSearch}>
+          <span className={styles.msearchIcon}><SearchSvg /></span>
+          <input type="search" enterKeyHint="search" value={search} onChange={e => setSearch(e.target.value)} placeholder="지역 · 작품 · 루트 검색" aria-label="루트 검색" />
+        </form>
 
         <div className={styles.mchips} role="tablist" aria-label="루트 정렬">
           {SORT_TABS.map(t => (
@@ -214,12 +217,6 @@ export default function RouteExplorePage() {
                 </div>
               </section>
             )}
-
-            {/* 루트 검색 — 히어로 바로 아래 (히어로가 없는 정렬 탭에선 정렬 칩 바로 아래) */}
-            <form className={styles.msearch} onSubmit={submitSearch}>
-              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="지역 · 작품 · 루트 검색" aria-label="루트 검색" />
-              <button type="submit" className={styles.msearchBtn} aria-label="검색"><SearchSvg /></button>
-            </form>
 
             {/* 추천(기본) 탭: 히어로에만 추천 루트, 아래는 PC처럼 '인기 있는 루트' · '새로 등록된 루트' */}
             {sort === 'recommended' ? (
