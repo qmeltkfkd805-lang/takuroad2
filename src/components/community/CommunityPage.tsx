@@ -674,7 +674,7 @@ function PannRow({ p, showBoard, onOpen, tagNames }: { p: CommunityPost; showBoa
         </div>
       </div>
       {thumb && (
-        <div style={{ width: 64, height: 64, borderRadius: 10, overflow: 'hidden', flexShrink: 0, background: 'var(--surface2)' }}>
+        <div style={{ width: 46, height: 46, borderRadius: 7, overflow: 'hidden', flexShrink: 0, background: 'var(--surface2)' }}>   {/* 제목 줄 위 ~ 조회·추천 줄 아래 높이(약 46px)에 맞춤 */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <ThumbImg src={thumb} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
