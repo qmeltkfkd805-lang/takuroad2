@@ -79,8 +79,8 @@
 /* 이벤트 카드 — 정보가 많아 루트 카드보다 살짝 높게, 정보 아이콘 행 */
 .evCard { height: 158px; }
 /* 덕질 이벤트 — 이벤트 화면 포스터 카드와 같은 모양, 포스터는 4:5 로 조금 낮게 */
-.evPLink { flex: 0 0 210px; align-self: flex-start; scroll-snap-align: start; text-decoration: none; color: inherit; user-select: none; -webkit-user-select: none; }
-.evPCard { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: var(--r); background: var(--surface); overflow: hidden; transition: border-color .12s ease, box-shadow .12s ease; }
+.evPLink { flex: 0 0 210px; min-width: 0; overflow: hidden; align-self: flex-start; scroll-snap-align: start; text-decoration: none; color: inherit; user-select: none; -webkit-user-select: none; }
+.evPCard { display: flex; flex-direction: column; min-width: 0; border: 1px solid var(--border); border-radius: var(--r); background: var(--surface); overflow: hidden; transition: border-color .12s ease, box-shadow .12s ease; }
 .evPLink:hover .evPCard { border-color: var(--accent); box-shadow: 0 6px 16px rgba(0,0,0,.06); }
 .evPoster { position: relative; width: 100%; aspect-ratio: 4 / 5; background: #F2F2F4; overflow: hidden; display: flex; align-items: center; justify-content: center; }
 .evPoster img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
