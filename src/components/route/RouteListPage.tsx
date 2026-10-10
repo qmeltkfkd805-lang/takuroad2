@@ -205,7 +205,8 @@ export default function RouteListPage() {
           <input value={q} onChange={e => setQ(e.target.value)} placeholder="루트·지역·작품 검색" aria-label="루트 검색" />
           {q && <button className={styles.searchClear} onClick={() => setQ('')} aria-label="검색어 지우기"><XIcon /></button>}
         </div>
-        <div className={styles.resultCount}>{resultText}</div>
+        {/* 결과 개수는 검색하거나 필터를 걸었을 때만 */}
+        {(debouncedQ.trim() || anyFilter) && <div className={styles.resultCount}>{resultText}</div>}
       </div>
 
       {/* 필터 툴바 */}
