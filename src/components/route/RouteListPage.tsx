@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getPublicRoutes, toggleRouteSave, getMySavedRouteIds } from '@/services/routeService'
 import RouteResultCard, { RouteView } from './RouteResultCard'
-import { rtRegions, rtNames, rtTags } from './routeMeta'
+import { rtRegions, rtNames } from './routeMeta'
 import styles from './RouteListPage.module.css'
 
 const PAGE_SIZE = 12
@@ -18,6 +18,14 @@ const DURATIONS = [
 const STOPS = [{ key: '2', label: '2곳+' }, { key: '3', label: '3곳+' }, { key: '4', label: '4곳+' }, { key: '5', label: '5곳+' }]
 const PERIODS = [{ key: '7', label: '최근 7일' }, { key: '30', label: '최근 30일' }]
 const SORTS = [{ key: 'popular', label: '인기순' }, { key: 'latest', label: '최신순' }, { key: 'saves', label: '저장 많은순' }]
+
+/* 검색 — 루트 제목·대표 작품·들르는 샵 이름·지역.
+   ⚠️ 루트에 들어 있는 샵의 취급 작품(rtTags)은 넣지 않는다 — 예전엔 '치이카와'를 검색하면
+      대표 작품이 치이카와가 아닌 루트도 '치이카와 굿즈를 파는 샵이 하나 있다'는 이유로 같이 나왔다 */
+function matchesQuery(r: any, qq: string): boolean {
+  const hay = norm([r.title ?? '', r.primary_tag?.name ?? '', rtNames(r).join(' '), rtRegions(r).join(' ')].join(' '))
+  return hay.includes(qq)
+}
 
 export default function RouteListPage() {
   const router = useRouter()
@@ -89,11 +97,19 @@ export default function RouteListPage() {
     routes.forEach(r => rtRegions(r).forEach(x => m.set(x, (m.get(x) ?? 0) + 1)))
     return Array.from(m.entries()).sort((a, b) => b[1] - a[1])
   }, [routes])
+  // 작품 목록 — 지금 검색어에 맞는 루트의 작품만 (치이카와를 검색했는데 다른 작품이 뜨지 않게)
   const workOpts = useMemo(() => {
+    const qq = norm(debouncedQ)
     const m = new Map<string, number>()
-    routes.forEach(r => { const n = r.primary_tag?.name; if (n) m.set(n, (m.get(n) ?? 0) + 1) })
-    return Array.from(m.entries()).sort((a, b) => b[1] - a[1])
-  }, [routes])
+    routes.forEach(r => {
+      if (qq && !matchesQuery(r, qq)) return
+      const n = r.primary_tag?.name; if (n) m.set(n, (m.get(n) ?? 0) + 1)
+    })
+    const opts = Array.from(m.entries()).sort((a, b) => b[1] - a[1])
+    // 이미 고른 작품은 목록에 남겨 둔다 (해제할 수 있게)
+    if (work && !m.has(work)) opts.unshift([work, 0])
+    return opts
+  }, [routes, debouncedQ, work])
   const themeOpts = useMemo(() => {
     const m = new Map<string, number>()
     routes.forEach(r => (r.themes ?? []).forEach((t: string) => m.set(t, (m.get(t) ?? 0) + 1)))
@@ -115,10 +131,7 @@ export default function RouteListPage() {
       if (theme && !(r.themes ?? []).includes(theme)) return false
       if (minStops && (r.route_shops?.length ?? 0) < minStops) return false
       if (cutoff && new Date(r.created_at).getTime() < cutoff) return false
-      if (qq) {
-        const hay = norm([r.title ?? '', r.primary_tag?.name ?? '', rtNames(r).join(' '), rtRegions(r).join(' '), rtTags(r).join(' ')].join(' '))
-        if (!hay.includes(qq)) return false
-      }
+      if (qq && !matchesQuery(r, qq)) return false
       return true
     })
     const infoScore = (r: any) => (r.route_shops?.length ?? 0) + (r.route_tips?.[0]?.count ?? 0)
@@ -175,10 +188,7 @@ export default function RouteListPage() {
       {/* 헤더 */}
       <div className={styles.head}>
         <div className={styles.titleWrap}>
-          <h1 className={styles.title}>
-            <img src="/icons/colormap.png" alt="" width={26} height={26} style={{ display: 'block' }} />전체 루트
-          </h1>
-          <span className={styles.resultCount}>{resultText}</span>
+          <h1 className={styles.title}>전체 루트</h1>
         </div>
         <div className={styles.headBtns}>
           <button className={styles.subBtn} onClick={() => router.push(user ? '/profile?tab=myroutes' : '/login')}>
@@ -195,6 +205,7 @@ export default function RouteListPage() {
           <input value={q} onChange={e => setQ(e.target.value)} placeholder="루트·지역·작품 검색" aria-label="루트 검색" />
           {q && <button className={styles.searchClear} onClick={() => setQ('')} aria-label="검색어 지우기"><XIcon /></button>}
         </div>
+        <div className={styles.resultCount}>{resultText}</div>
       </div>
 
       {/* 필터 툴바 */}
