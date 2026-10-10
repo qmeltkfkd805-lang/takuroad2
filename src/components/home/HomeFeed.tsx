@@ -162,10 +162,11 @@ function EventSlideCard({ ev }: { ev: any }) {
           {status && <span className={styles.evBadge} style={{ background: status.color }}>{status.label}</span>}
         </div>
         <div className={styles.evPBody}>
-          {ev.workName && <div className={styles.evPWork}>{ev.workName}</div>}
+          {/* 카드 높이를 모두 같게 — 작품명·제목 2줄·날짜·장소 자리를 항상 같은 높이로 잡아 둔다 */}
+          <div className={styles.evPWork}>{ev.workName ?? ''}</div>
           <div className={styles.evTitle}>{ev.title}</div>
-          {date && <div className={styles.evRow}><EvCal /><span className={styles.evRowText}>{date}</span></div>}
-          {ev.place && <div className={styles.evRow}><EvPin /><span className={styles.evRowText}>{ev.place}</span></div>}
+          <div className={styles.evRow} style={date ? undefined : { visibility: 'hidden' }}><EvCal /><span className={styles.evRowText}>{date || '-'}</span></div>
+          <div className={styles.evRow} style={ev.place ? undefined : { visibility: 'hidden' }}><EvPin /><span className={styles.evRowText}>{ev.place || '-'}</span></div>
         </div>
       </div>
     </Link>
