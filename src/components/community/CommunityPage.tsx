@@ -650,17 +650,16 @@ function PannRow({ p, showBoard, onOpen, tagNames }: { p: CommunityPost; showBoa
           {p.title || '(제목 없음)'}
           {p.commentCount > 0 && <span style={{ color: 'var(--accent)', fontWeight: 800, marginLeft: 5 }}>({p.commentCount})</span>}
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6, fontSize: 12, color: 'var(--muted)' }}>
-          {showBoard && <><span style={{ color: 'var(--accent)', fontWeight: 700 }}>{BOARD_LABEL[p.board]}</span><span>·</span></>}
-          <span>조회 {p.viewCount}</span><span>·</span><span>추천 {p.likeCount}</span>
+        {/* 게시판 · 작품 · 조회 · 추천 — 한 줄 (작품 태그를 따로 칩 줄로 두면 글 한 칸이 너무 커져서 이 줄에 넣음) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6, fontSize: 12, color: 'var(--muted)', minWidth: 0, whiteSpace: 'nowrap' }}>
+          {showBoard && <><span style={{ color: 'var(--accent)', fontWeight: 700, flexShrink: 0 }}>{BOARD_LABEL[p.board]}</span><span style={{ flexShrink: 0 }}>·</span></>}
+          {tagNames && tagNames.length > 0 && <>
+            <span style={{ fontWeight: 700, color: 'var(--text)', opacity: .7, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>{tagNames[0]}</span>
+            {tagNames.length > 1 && <span style={{ flexShrink: 0, fontWeight: 700, opacity: .7 }}>+{tagNames.length - 1}</span>}
+            <span style={{ flexShrink: 0 }}>·</span>
+          </>}
+          <span style={{ flexShrink: 0 }}>조회 {p.viewCount}</span><span style={{ flexShrink: 0 }}>·</span><span style={{ flexShrink: 0 }}>추천 {p.likeCount}</span>
         </div>
-        {tagNames && tagNames.length > 0 && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginTop: 8 }}>
-            {tagNames.slice(0, 5).map((n, i) => (
-              <span key={i} style={{ fontSize: 11.5, fontWeight: 600, color: 'var(--muted)', border: '1px solid var(--border)', borderRadius: 8, padding: '3px 9px', maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{n}</span>
-            ))}
-          </div>
-        )}
       </div>
       {thumb && (
         <div style={{ width: 64, height: 64, borderRadius: 10, overflow: 'hidden', flexShrink: 0, background: 'var(--surface2)' }}>
