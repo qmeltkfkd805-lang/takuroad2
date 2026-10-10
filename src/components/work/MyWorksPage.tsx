@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { getAllTags } from '@/services/shopService'
-import { getAffinitiesForTags } from '@/services/workRelationshipService'
+import { getMyAffinityMap } from '@/services/workRelationshipService'
 import { WorkCard, WorkCardData } from '@/components/tds/WorkCard'
 import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { IP_TYPES, normIpType, ipTypeList } from '@/lib/constants/ipType'
@@ -16,13 +16,35 @@ import LogoLoader from '@/components/common/LogoLoader'
 // 작품 홈 — 등록된 작품을 카드로 쭉.
 //   최애 작품 → 관심 작품 → 나머지 등록 작품 순서.
 
-type Work = { id: string; name: string; slug: string; cover_url?: string | null; banner_image?: string | null; english_name?: string | null; ip_type?: string | null; release_year?: number | null; genres?: any; description?: string | null }
+type Work = { id: string; name: string; slug: string; cover_url?: string | null; banner_image?: string | null; english_name?: string | null; ip_type?: string | null; release_year?: number | null; genres?: any; description?: string | null; score?: number }
+
+/* ⚡ 작품 목록 — 서버가 5분마다 만들어 두는 목록(/api/works/all)을 받는다. 한 번 받으면 이 탭에서 다시 받지 않는다.
+   (예전엔 화면을 열 때마다 작품 2,500여 개를 1,000개씩 이어서 두 번 읽고, 최애 여부도 200개씩 13번 나눠 물어서
+    '불러오는 중'이 몇 초씩 걸렸다) 받아 오지 못하면 예전처럼 DB에서 직접 */
+let worksCache: Promise<Work[]> | null = null
+function loadWorks(): Promise<Work[]> {
+  if (!worksCache) {
+    worksCache = fetch('/api/works/all')
+      .then(r => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then(j => (Array.isArray(j?.items) ? (j.items as Work[]) : Promise.reject(new Error('bad'))))
+      .catch(async () => {
+        const all = (await getAllTags()) as Work[]
+        return [...all].sort((a, b) => (completeness(b) - completeness(a)) || a.name.localeCompare(b.name, 'ko'))
+      })
+    worksCache.catch(() => { worksCache = null })
+  }
+  return worksCache
+}
+
+/** 카드는 이만큼씩 그린다 — 2,500장을 한 번에 그리면(사진까지) 폰이 한참 멈췄다. 끝에 닿으면 이어서 */
+const PAGE = 40
 
 // 장르 필터 표시 순서 (작품 등록 화면과 동일)
 const GENRE_ORDER = ['액션', '격투', '판타지', '모험', '학원', '일상', '가족', 'SF', '추리', '퍼즐', '로맨스', 'BL', 'GL', '코미디', '스포츠', '음악', '아이돌', '요리', '호러', '드라마', '마법소녀', '소년물', '로봇/메카', '19', '고어', '기타']
 const genreList = (w: Work): string[] => Array.isArray(w.genres) ? w.genres.filter((g: any) => typeof g === 'string') : []
 
 function completeness(w: Work): number {
+  if (typeof w.score === 'number') return w.score   // 서버 목록은 미리 계산해 둔 점수
   let n = 0
   if (w.cover_url) n += 4        // 이미지(대표) 최우선
   if (w.banner_image) n += 3     // 이미지(배너) 가중
@@ -64,24 +86,39 @@ export default function MyWorksPage() {
     return () => document.removeEventListener('mousedown', onDoc)
   }, [filterOpen])
 
+  // 작품 목록은 한 번만 (로그인 확인이 끝나도 다시 읽지 않는다)
   useEffect(() => {
-    setLoading(true)
-    getAllTags()
-      .then(async (all: any[]) => {
-        setWorks([...(all as Work[])].sort((a, b) => {
-          const d = completeness(b) - completeness(a)
-          return d !== 0 ? d : a.name.localeCompare(b.name, 'ko')
-        }))
-        if (user && all.length) {
-          const m = await getAffinitiesForTags(user.id, all.map(w => w.id))
-          setAffMap(m as Record<string, 'favorite' | 'interest'>)
-        } else {
-          setAffMap({})
-        }
-      })
-      .catch(() => setWorks([]))
-      .finally(() => setLoading(false))
-  }, [user])
+    let alive = true
+    loadWorks()
+      .then(list => { if (alive) setWorks(list) })
+      .catch(() => { if (alive) setWorks([]) })
+      .finally(() => { if (alive) setLoading(false) })
+    return () => { alive = false }
+  }, [])
+  // 내 최애·관심 — 내 것만 한 번에 (목록과 동시에)
+  const uid = user?.id ?? null
+  useEffect(() => {
+    if (!uid) { setAffMap({}); return }
+    let alive = true
+    getMyAffinityMap(uid)
+      .then(m => { if (alive) setAffMap(m as Record<string, 'favorite' | 'interest'>) })
+      .catch(() => {})
+    return () => { alive = false }
+  }, [uid])
+
+  // 카드 나눠 그리기 — 필터·정렬이 바뀌면 처음부터, 목록 끝 표시(sentinel)가 보이면 다음 묶음
+  const [shownN, setShownN] = useState(PAGE)
+  useEffect(() => { setShownN(PAGE) }, [selectedGenres, selectedTypes, selectedYears, mSort])
+  const moreRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = moreRef.current
+    if (!el) return
+    const io = new IntersectionObserver(entries => {
+      if (entries.some(e => e.isIntersecting)) setShownN(n => n + PAGE)
+    }, { rootMargin: '600px 0px' })
+    io.observe(el)
+    return () => io.disconnect()
+  })
 
   // 화면에 존재하는 장르만 필터 칩으로 (등록 순서대로)
   const present = new Set(works.flatMap(genreList))
@@ -192,9 +229,10 @@ export default function MyWorksPage() {
               <div style={{ padding: '40px 16px', textAlign: 'center', color: 'var(--muted)', fontSize: 14 }}>조건에 맞는 작품이 없어요.</div>
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px 12px', padding: '4px 16px' }}>
-                {sortedGrid.map(w => <GridCard key={w.id} w={w} affinity={affMap[w.id]} onClick={() => go(toCard(w))} />)}
+                {sortedGrid.slice(0, shownN).map(w => <GridCard key={w.id} w={w} affinity={affMap[w.id]} onClick={() => go(toCard(w))} />)}
               </div>
             )}
+            {shownN < sortedGrid.length && <div ref={moreRef} style={{ height: 1 }} aria-hidden />}
           </>
         )}
 
@@ -367,10 +405,11 @@ export default function MyWorksPage() {
           {others.length > 0 && (
             <Section title="등록 작품">
               <Grid>
-                {others.map(w => (
+                {others.slice(0, shownN).map(w => (
                   <WorkCard key={w.id} work={toCard(w)} onClick={go} />
                 ))}
               </Grid>
+              {shownN < others.length && <div ref={moreRef} style={{ height: 1 }} aria-hidden />}
             </Section>
           )}
         </>
@@ -422,7 +461,7 @@ function GridCard({ w, affinity, onClick }: { w: Work; affinity?: 'favorite' | '
       <div style={{ position: 'relative', width: '100%', aspectRatio: '16 / 10', borderRadius: 12, overflow: 'hidden', background: 'var(--surface2)' }}>
         {img ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src={img} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         ) : (
           <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)' }}>
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="m4 16 4.5-4.5 3 3L16 10l4 5" /><circle cx="8.5" cy="9" r="1.5" /></svg>

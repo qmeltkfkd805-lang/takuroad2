@@ -15,6 +15,19 @@ export async function getAffinity(userId: string, tagId: string): Promise<Favori
   return (data as any)?.tier ?? null
 }
 
+/** 내가 최애·관심으로 담은 작품 전부 — { tagId: tier }. 작품 목록 전체(2,500개)의 id를 넘기지 않고 내 것만 한 번에 읽는다 */
+export async function getMyAffinityMap(userId: string): Promise<Record<string, FavoriteTier>> {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('user_favorite_tags')
+    .select('tag_id, tier')
+    .eq('user_id', userId)
+  if (error) throw error
+  const map: Record<string, FavoriteTier> = {}
+  for (const row of data ?? []) map[(row as any).tag_id] = (row as any).tier
+  return map
+}
+
 // 여러 작품의 affinity를 한 번에 조회 — { tagId: tier } 맵 반환.
 // 리스트(샵 상세 취급 작품 등)에서 작품마다 따로 조회하는 N+1을 피함.
 export async function getAffinitiesForTags(

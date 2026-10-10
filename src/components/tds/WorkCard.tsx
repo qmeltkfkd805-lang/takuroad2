@@ -48,7 +48,7 @@ export function WorkCard({ work, onClick, style }: WorkCardProps) {
     >
       <div style={{ position: 'relative', height: 180, background: '#F7F7F8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {cover ? (
-          <img src={cover} alt={work.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src={cover} alt={work.name} loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         ) : (
           <WorkIcon size={44} style={{ opacity: 0.4 }} />
         )}
