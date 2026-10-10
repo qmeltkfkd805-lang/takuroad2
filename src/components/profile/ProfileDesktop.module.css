@@ -396,4 +396,6 @@
   .profileCard { padding: 16px 18px 20px; }
   .card, .dash > section { padding: 18px 18px !important; }
   .accountCard { padding-top: 4px !important; padding-bottom: 4px !important; }
+  /* 빠른 메뉴는 화면 코드 순서대로(굿즈 보관함 바로 아래) — 예전 order:1 때문에 맨 아래로 밀리던 것 방지 */
+  .quickCard { order: 0; }
 }

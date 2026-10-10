@@ -455,19 +455,16 @@ export default function ProfileDesktop({ passport, userId }: Props) {
         {/* 활동 통계 — 별도 카드, 가로 4칸 (📱 모바일은 연대기로 옮겨서 여기선 숨김) */}
         {statsCard(styles.desktopOnly)}
 
-        {/* 📱 모바일 순서: 프로필 → 빠른 메뉴 → 굿즈 보관함 → 계정 메뉴 */}
-        {quickCard(styles.mobileOnly)}
-
         {/* 나의 굿즈 보관함 (주요 콘텐츠 영역) */}
         <MyGoodsSection />
+
+        {/* 빠른 메뉴 — PC·📱 모바일 모두 굿즈 보관함 바로 아래 (순서: 프로필 → 굿즈 보관함 → 빠른 메뉴 → …) */}
+        {quickCard()}
 
         {/* 2열 */}
         <div className={styles.cols}>
           {/* 왼쪽 */}
           <div className={styles.colLeft}>
-            {/* 빠른 메뉴 (PC) */}
-            {quickCard(styles.desktopOnly)}
-
             {/* 인증 현황 — 신청 이력이 있을 때만 그린다 */}
             {verifyReqs.length > 0 && (
               <section className={`${styles.card} ${styles.desktopOnly}`}>
