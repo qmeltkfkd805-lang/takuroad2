@@ -246,9 +246,16 @@ export default function RouteListPage() {
         </button>
 
         <div className={styles.toolbarRight}>
-          <select className={styles.sort} value={sort} onChange={e => go({ sort: e.target.value, page: 1 })} aria-label="정렬">
-            {SORTS.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
-          </select>
+          {/* 정렬 — 기본 select 대신 지역·작품과 같은 드롭다운 */}
+          <Popover label={SORTS.find(s => s.key === sort)?.label ?? '인기순'}>
+            {close => (
+              <div className={styles.popList} role="listbox" aria-label="정렬">
+                {SORTS.map(s => (
+                  <button key={s.key} className={sort === s.key ? styles.popItemOn : styles.popItem} onClick={() => { go({ sort: s.key, page: 1 }); close() }}>{s.label}</button>
+                ))}
+              </div>
+            )}
+          </Popover>
           <div className={styles.viewToggle} role="group" aria-label="보기 방식">
             <button className={view === 'grid' ? styles.viewOn : styles.viewBtn} aria-pressed={view === 'grid'} title="그리드 보기" aria-label="그리드 보기" onClick={() => go({ view: 'grid' })}><GridIcon /></button>
             <button className={view === 'list' ? styles.viewOn : styles.viewBtn} aria-pressed={view === 'list'} title="리스트 보기" aria-label="리스트 보기" onClick={() => go({ view: 'list' })}><ListIcon /></button>

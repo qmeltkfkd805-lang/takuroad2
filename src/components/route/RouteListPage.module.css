@@ -127,3 +127,11 @@
   /* 오른쪽 끝 쪽 메뉴는 화면 밖으로 안 나가게 오른쪽 정렬 */
   .toolbar > .pop:nth-child(3) .popMenu { left: auto; right: 0; }
 }
+
+/* 정렬 드롭다운 — 오른쪽 묶음 안에선 늘어나지 않게, 메뉴는 짧게 */
+.toolbarRight .pop { flex: 0 0 auto; }
+.toolbarRight .popMenu { min-width: 140px; }
+@media (max-width: 640px) {
+  .toolbarRight .popBtn { padding: 0 12px; }
+  .viewToggle { height: 38px; }
+}
