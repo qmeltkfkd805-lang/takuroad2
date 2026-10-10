@@ -47,7 +47,7 @@ export default function AdminDashboardPage({ onNavigate, todo, pendingVerify, ba
   // 처리해야 할 업무 — 사이드바 배지와 같은 값(같은 출처). 1건 이상인 업무만 보여준다
   const allTodos: { key: string; label: string; icon: AdminIconName; count: number | null; tab?: string }[] = [
     // 옛 '샵 승인'(status='pending')은 뺐다 — 선등록 후검수로 정책이 바뀌었다
-    { key: 'shopreview', label: '신규 샵 검수',  icon: 'approve',  count: badges ? badges.shopReview : null, tab: 'shopreview' },
+    { key: 'shopreview', label: '샵 등록 요청',  icon: 'approve',  count: badges ? badges.shopReview : null, tab: 'shopreview' },
     { key: 'verify',   label: '인증 심사',       icon: 'verify',   count: pendingVerify, tab: 'verify' },
     { key: 'reported', label: '샵 신고',         icon: 'flagShop', count: todo ? todo.pendingSuggestions : null, tab: 'reported' },
     { key: 'postreports', label: '게시글 신고',  icon: 'flagPost', count: badges ? badges.pendingPostReports : null, tab: 'postreports' },

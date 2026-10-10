@@ -2,14 +2,23 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
-import { getShopsForReview, setShopReviewStatus, ShopReviewStatus } from '@/services/shopService'
+import { getShopsForReview, setShopReviewStatus, processShopRequest, ShopReviewStatus } from '@/services/shopService'
 import { Shop } from '@/types/shop'
 import { quickCompleteness, shopRegion, QuickCheck } from '@/lib/shop/quickCompleteness'
 import AdminIcon, { AdminIconName } from './AdminIcon'
 import styles from './shopReview.module.css'
 
 /* ============================================================
-   신규 샵 검수 (선등록 후검수)
+   샵 등록 요청 (2026-10-10 — 예전 '신규 샵 검수'를 바꿨다)
+
+   일반 사용자가 등록한 샵은 바로 공개되지 않고 status='pending'(등록 요청)으로 들어온다.
+   여기서 정보를 확인하고
+     확인하고 공개  → active + 확인 완료 + 등록자 경험치(15) + 알림
+     보완 요청      → 임시(hidden)로 되돌리고 '보완 요청' + 알림(사유)
+   두 동작은 서버(/api/admin/shop-request, service_role)가 처리한다.
+   관리자·인증 사장님이 등록한 샵은 지금처럼 바로 공개된다.
+
+   ↓ 아래는 예전 설명 — 이미 공개된 샵(예전 방식)의 검수 대기도 '등록 요청' 탭에 같이 보인다.
 
    샵은 등록 즉시 공개된다(status='active'). 여기서 다루는 건 공개 여부가 아니라
    운영 검수 진행도(review_status)다 — 축이 다르다.
@@ -26,9 +35,9 @@ import styles from './shopReview.module.css'
    ============================================================ */
 
 const TABS: { value: ShopReviewStatus; label: string; icon: AdminIconName }[] = [
-  { value: 'pending', label: '검수 대기', icon: 'inbox' },
-  { value: 'needs_attention', label: '추가 확인', icon: 'alert' },
-  { value: 'reviewed', label: '검수 완료', icon: 'checkCircle' },
+  { value: 'pending', label: '등록 요청', icon: 'inbox' },
+  { value: 'needs_attention', label: '보완 요청', icon: 'alert' },
+  { value: 'reviewed', label: '확인 완료', icon: 'checkCircle' },
 ]
 
 const BADGE_CLASS: Record<ShopReviewStatus, string> = {
@@ -37,9 +46,18 @@ const BADGE_CLASS: Record<ShopReviewStatus, string> = {
   reviewed: styles.badgeReviewed,
 }
 const BADGE_LABEL: Record<ShopReviewStatus, string> = {
-  pending: '검수 대기',
-  needs_attention: '추가 확인',
-  reviewed: '검수 완료',
+  pending: '등록 요청',
+  needs_attention: '보완 요청',
+  reviewed: '확인 완료',
+}
+
+/** 공개 상태를 사람 말로 */
+const PUBLIC_LABEL: Record<string, string> = {
+  pending: '등록 요청 · 비공개',
+  hidden: '임시저장 · 비공개',
+  active: '공개 중',
+  temporary_closed: '임시휴업',
+  closed: '폐업',
 }
 
 /** 완성도 '충족' 경계 — 샵 관리 화면과 같은 기준(기존 pct()의 초록 기준) */
@@ -138,6 +156,34 @@ export default function ShopReviewTab({ onReviewed }: { onReviewed?: () => void 
 
   const selected = rows.find((r) => r.shop.id === selectedId) ?? null
 
+  /** 확인하고 공개(경험치 지급) / 보완 요청 — 서버가 처리한다 */
+  async function processRequest(s: Shop, action: 'approve' | 'return') {
+    let note = ''
+    if (action === 'approve') {
+      if (!confirm(`"${s.name}"을(를) 확인 완료하고 ${s.status === 'active' ? '' : '지도에 공개하고 '}등록자에게 경험치를 줄까요?`)) return
+    } else {
+      // ⚠️ prompt 는 취소하면 null — 취소를 '빈 사유로 진행'으로 받으면 안 된다
+      const v = window.prompt(`"${s.name}" 등록자에게 보완 요청을 보내요.\n무엇을 채우면 좋을지 적어 주세요 (비워도 돼요).`, '')
+      if (v === null) return
+      note = v.trim()
+    }
+    setBusyId(s.id)
+    const res = await processShopRequest(s.id, action, note)
+    setBusyId(null)
+    const label = action === 'approve' ? '공개' : '보완 요청'
+    if (!res.ok) {
+      showNotice(false, `"${s.name}" ${label} 처리에 실패했어요. ${res.error ?? ''}`)
+      return
+    }
+    showNotice(!res.rewardFailed, action === 'approve'
+      ? (res.rewardFailed
+          ? `"${s.name}"은(는) 공개됐지만 경험치 지급에 실패했어요. '확인 완료' 탭에서 다시 눌러 주세요.`
+          : `"${s.name}"을(를) 공개했어요.${res.rewarded ? ' 등록자에게 경험치를 줬어요.' : ''}`)
+      : `"${s.name}" 등록자에게 보완 요청을 보냈어요.`)
+    setReloadKey((k) => k + 1)
+    onReviewed?.()
+  }
+
   async function changeStatus(s: Shop, next: ShopReviewStatus, label: string) {
     if (!confirm(`"${s.name}"을(를) ${label} 처리할까요?`)) return
     setBusyId(s.id)
@@ -156,8 +202,8 @@ export default function ShopReviewTab({ onReviewed }: { onReviewed?: () => void 
     <div className={styles.wrap}>
       <div className={styles.head}>
         <div>
-          <h1 className={styles.h1}>신규 샵 검수</h1>
-          <p className={styles.headSub}>새로 등록된 샵의 정보를 확인하고 부족한 부분을 채운 뒤 검수 완료로 넘기세요</p>
+          <h1 className={styles.h1}>샵 등록 요청</h1>
+          <p className={styles.headSub}>사용자가 등록한 샵이에요. 정보가 잘 적혀 있으면 ‘확인하고 공개’를 눌러 주세요 — 지도에 공개되고 등록자에게 경험치 15가 지급돼요.</p>
         </div>
         <div className={styles.headRight}>
           {fetchedAt && (
@@ -255,8 +301,8 @@ export default function ShopReviewTab({ onReviewed }: { onReviewed?: () => void 
                 </>
               ) : tab === 'pending' ? (
                 <>
-                  <strong className={styles.stateStrong}>검수 대기 중인 샵이 없습니다</strong>
-                  새로운 샵이 등록되면 이곳에 표시됩니다.
+                  <strong className={styles.stateStrong}>등록 요청이 없습니다</strong>
+                  사용자가 샵을 등록 요청하면 이곳에 표시됩니다.
                 </>
               ) : (
                 <>
@@ -321,6 +367,7 @@ export default function ShopReviewTab({ onReviewed }: { onReviewed?: () => void 
               busy={busyId === selected.shop.id}
               tab={tab}
               onChange={changeStatus}
+              onProcess={processRequest}
             />
           )}
         </section>
@@ -329,11 +376,12 @@ export default function ShopReviewTab({ onReviewed }: { onReviewed?: () => void 
   )
 }
 
-function ShopReviewDetail({ row, busy, tab, onChange }: {
+function ShopReviewDetail({ row, busy, tab, onChange, onProcess }: {
   row: { shop: Shop; cp: ReturnType<typeof quickCompleteness>; region: string }
   busy: boolean
   tab: ShopReviewStatus
   onChange: (s: Shop, next: ShopReviewStatus, label: string) => void
+  onProcess: (s: Shop, action: 'approve' | 'return') => void
 }) {
   const s = row.shop
   const done = row.cp.checks.filter((c: QuickCheck) => c.ok).length
@@ -347,7 +395,7 @@ function ShopReviewDetail({ row, busy, tab, onChange }: {
         <div style={{ minWidth: 0 }}>
           <h2 className={styles.detailName}>{s.name}</h2>
           <span className={styles.detailSub}>
-            등록 {new Date(s.created_at).toLocaleString('ko-KR')} · 공개 상태 {s.status}
+            등록 {new Date(s.created_at).toLocaleString('ko-KR')} · {PUBLIC_LABEL[s.status] ?? s.status}
           </span>
         </div>
         <span className={`${styles.badge} ${BADGE_CLASS[tab]}`}>{BADGE_LABEL[tab]}</span>
@@ -421,31 +469,41 @@ function ShopReviewDetail({ row, busy, tab, onChange }: {
         <Link className={styles.ghostBtn} href={`/shop/${s.slug}/edit`}>
           <AdminIcon name="edit" size={16} />정보 편집
         </Link>
-        <a className={styles.ghostBtn} href={`/shop/${s.slug}`} target="_blank" rel="noreferrer noopener">
-          사이트 보기
-        </a>
+        {s.status === 'active' && (
+          <a className={styles.ghostBtn} href={`/shop/${s.slug}`} target="_blank" rel="noreferrer noopener">
+            사이트 보기
+          </a>
+        )}
         {tab !== 'reviewed' && (
           <button type="button" className={styles.primaryBtn} disabled={busy}
-                  onClick={() => onChange(s, 'reviewed', '검수 완료')}>
-            {busy ? '처리 중…' : '검수 완료'}
+                  onClick={() => onProcess(s, 'approve')}>
+            {busy ? '처리 중…' : s.status === 'active' ? '확인 완료 · 경험치 지급' : '확인하고 공개'}
           </button>
         )}
-        {tab !== 'needs_attention' && (
+        {tab === 'pending' && (
           <button type="button" className={styles.warnBtn} disabled={busy}
-                  onClick={() => onChange(s, 'needs_attention', '추가 확인')}>
-            추가 확인으로
+                  onClick={() => onProcess(s, 'return')}>
+            보완 요청
           </button>
         )}
         {tab === 'reviewed' && (
-          <button type="button" className={styles.ghostBtn} disabled={busy}
-                  onClick={() => onChange(s, 'pending', '검수 대기로 되돌리기')}>
-            검수 대기로
-          </button>
+          <>
+            {/* 공개는 됐는데 경험치만 실패한 경우 — 다시 눌러도 경험치는 한 번만 지급된다 */}
+            <button type="button" className={styles.ghostBtn} disabled={busy}
+                    onClick={() => onProcess(s, 'approve')}>
+              경험치 다시 지급
+            </button>
+            <button type="button" className={styles.ghostBtn} disabled={busy}
+                    onClick={() => onChange(s, 'pending', '등록 요청으로 되돌리기')}>
+              등록 요청으로
+            </button>
+          </>
         )}
       </div>
       <p className={styles.actionNote}>
-        정보 편집은 사용자 화면의 샵 수정 화면으로 이동합니다. 편집했다고 자동으로 검수 완료가 되지는 않으니,
-        돌아와서 직접 눌러주세요. 공개 상태(active·hidden)는 샵 관리 화면에서 따로 다룹니다.
+        정보가 부족하면 ‘정보 편집’에서 직접 채우거나 ‘보완 요청’으로 등록자에게 돌려보내세요.
+        보완 요청한 샵은 비공개 임시저장으로 돌아가고, 등록자가 고쳐서 다시 등록 요청하면 이 탭에 다시 나타나요.
+        공개하면 지도에 바로 보이고 등록자에게 경험치 15와 알림이 가요(같은 샵은 한 번만).
       </p>
     </>
   )

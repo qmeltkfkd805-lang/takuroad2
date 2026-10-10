@@ -75,6 +75,8 @@ export interface Shop {
   status: string
   added_by: string | null
   owner_id: string | null
+  /** 등록 요청 검토 상태 — pending / reviewed / needs_attention / null(기능 도입 전) */
+  review_status?: string | null
 
   created_at: string
   updated_at: string

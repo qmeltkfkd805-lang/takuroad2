@@ -75,6 +75,7 @@ export function toShop(raw: any): Shop {
     status:         raw.status,
     added_by:       raw.added_by,
     owner_id:       raw.owner_id,
+    review_status:  raw.review_status ?? null,
     created_at:     raw.created_at,
     updated_at:     raw.updated_at,
   }
@@ -324,7 +325,36 @@ export async function createShop(
   return { slug: shop.slug, id: shop.id }
 }
 
-/** 임시(hidden) 샵을 공개(active)로 전환 — 위저드 '등록 완료' 시 호출.
+/** 바로 공개할 수 있는 사람인가 — 관리자 또는 사장님 인증을 받은 사람(인증 샵 1곳 이상).
+ *  그 외 사용자가 등록한 샵은 '등록 요청'(pending)으로 들어가 관리자가 확인한 뒤 공개된다.
+ *  (DB 트리거도 같은 기준으로 강제한다 — migrations/shop_register_request.sql) */
+export async function canPublishShopDirectly(userId: string): Promise<boolean> {
+  const supabase = createClient()
+  const [{ data: prof }, { count }] = await Promise.all([
+    supabase.from('profiles').select('role').eq('id', userId).maybeSingle(),
+    supabase.from('shops').select('id', { count: 'exact', head: true })
+      .eq('owner_id', userId).eq('is_claimed', true).neq('status', 'deleted'),
+  ])
+  return (prof as any)?.role === 'admin' || (count ?? 0) > 0
+}
+
+/** 위저드 '등록 요청'·'등록 완료' — 임시 샵(hidden)을 일반 사용자는 등록 요청(pending)으로,
+ *  관리자·인증 사장님은 바로 공개(active)로 넘긴다.
+ *  등록 요청은 경험치를 주지 않는다 — 관리자가 확인하고 공개할 때 서버가 준다(/api/admin/shop-request). */
+export async function submitShopRegistration(shopId: string, userId: string): Promise<'published' | 'requested' | null> {
+  if (await canPublishShopDirectly(userId)) return (await publishShop(shopId)) ? 'published' : null
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('shops')
+    .update({ status: 'pending' } as any)
+    .eq('id', shopId)
+    .in('status', ['hidden', 'pending'])
+    .select('id')
+  if (error || !data?.length) { console.error('[shop] 등록 요청 실패:', error?.message ?? '대상 없음'); return null }
+  return 'requested'
+}
+
+/** 임시(hidden) 샵을 공개(active)로 전환 — 관리자·인증 사장님의 '등록 완료' 시 호출.
  *  이때(등록이 실제로 완료된 시점) 최초 1회 경험치를 준다. */
 export async function publishShop(shopId: string): Promise<boolean> {
   const supabase = createClient()
@@ -359,7 +389,7 @@ export async function updateShop(
   // 변경 전 값 가져오기 (로그용)
   const { data: before } = await supabase
     .from('shops')
-    .select('name, description, addr, lat, lng, hours, parking, parking_note, shop_link, sns_links, phone, start_date, end_date, event_info, is_claimed, owner_id')
+    .select('name, description, addr, lat, lng, hours, parking, parking_note, shop_link, sns_links, phone, start_date, end_date, event_info, is_claimed, owner_id, added_by')
     .eq('id', shopId)
     .maybeSingle()
 
@@ -409,11 +439,17 @@ export async function updateShop(
       return false
     }
     if (claimed) updateQuery = updateQuery.eq('owner_id', userId)
-    // 미인증 매장은 로그인 사용자 누구나 수정 가능 (필터 없음)
+    // 미인증 매장은 처음 등록한 사람만 (2026-10-10 — 그 외 사용자는 '정보 수정 제안'으로)
+    if (!claimed && (before as any)?.added_by !== userId) {
+      console.warn('[updateShop] 직접 등록한 샵만 수정할 수 있어요.')
+      return false
+    }
+    if (!claimed) updateQuery = updateQuery.eq('added_by', userId)
   }
-  const { error } = await updateQuery
+  // RLS 로 막히면 에러 없이 0행이 바뀐다 → 실제로 바뀐 행이 있는지까지 본다
+  const { data: updated, error } = await updateQuery.select('id')
 
-  if (error) return false
+  if (error || !updated?.length) return false
 
   // 변경 이력 기록 (필드별로 실제 변경된 것만)
   if (before) {
@@ -667,6 +703,34 @@ export async function getAdminShopsExcludingDeleted(): Promise<Shop[]> {
    기존 샵(기능 도입 전)은 NULL이라 대기열에 잡히지 않는다. */
 export type ShopReviewStatus = 'pending' | 'reviewed' | 'needs_attention'
 
+/* 2026-10-10 '샵 등록 요청'으로 바뀌며 탭 기준을 공개 상태와 함께 본다.
+     pending          등록 요청(status='pending') + 예전 방식으로 이미 공개된 검수 대기(active·pending)
+                      — 아직 '등록 요청'을 누르지 않은 임시(hidden) 샵은 빼고
+     needs_attention  보완 요청 — 다시 등록 요청한 샵(status='pending')은 '등록 요청'으로 옮겨간다
+     reviewed         확인 완료 */
+export const REVIEW_TAB_FILTER: Record<ShopReviewStatus, string> = {
+  pending:         'status.eq.pending,and(status.eq.active,review_status.eq.pending)',
+  needs_attention: 'and(review_status.eq.needs_attention,status.neq.pending)',
+  reviewed:        'and(review_status.eq.reviewed,status.neq.pending)',
+}
+
+/** 관리자 — 등록 요청 공개(경험치 지급) / 보완 요청. 서버(service_role)가 처리한다. */
+export async function processShopRequest(
+  shopId: string, action: 'approve' | 'return', note?: string,
+): Promise<{ ok: boolean; rewarded?: boolean; rewardFailed?: boolean; error?: string }> {
+  try {
+    const res = await fetch('/api/admin/shop-request', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ shopId, action, note: note ?? '' }),
+    })
+    const j = await res.json().catch(() => ({}))
+    if (!res.ok) return { ok: false, error: j?.error ?? `요청 실패 (${res.status})` }
+    return { ok: true, rewarded: !!j.rewarded, rewardFailed: !!j.rewardFailed }
+  } catch (e: any) {
+    return { ok: false, error: e?.message ?? '네트워크 오류' }
+  }
+}
+
 export async function getShopsForReview(status: ShopReviewStatus): Promise<Shop[]> {
   const supabase = createClient()
   // '검수 완료' 탭은 1,000곳을 넘는다 → 나눠서 끝까지
@@ -681,13 +745,13 @@ export async function getShopsForReview(status: ShopReviewStatus): Promise<Shop[
       hours, parking, parking_note, shop_link, sns_links, phone,
       start_date, end_date, event_info,
       rating_avg, rating_count, visit_count, bookmark_count,
-      is_verified, is_claimed, status,
+      is_verified, is_claimed, status, review_status,
       temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
       added_by, owner_id, created_at, updated_at,
       shop_images ( image_url, is_cover, sort_order ),
       cats
     `)
-    .eq('review_status', status)
+    .or(REVIEW_TAB_FILTER[status])
     .neq('status', 'deleted')   // 삭제한 샵(같은 샵으로 합치며 지운 것 등)은 검수 목록에서 뺀다
     .order('created_at', { ascending: true })   // 오래 기다린 것부터
     .order('id', { ascending: true })
@@ -868,7 +932,7 @@ export async function getMyShops(userId: string): Promise<Shop[]> {
       hours, parking, parking_note, shop_link, sns_links, phone,
       start_date, end_date, event_info,
       rating_avg, rating_count, visit_count, bookmark_count,
-      is_verified, is_claimed, status,
+      is_verified, is_claimed, status, review_status,
       temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
       added_by, owner_id, created_at, updated_at,
       shop_images ( image_url, is_cover, sort_order ),

@@ -65,7 +65,8 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
   const saved = isSaved(shop.id)
   const [bookmarkCount, setBookmarkCount] = useState(shop.bookmark_count)
   const [menuOpen, setMenuOpen] = useState(false)
-  const canManage = isAdmin || (!!user && shop.owner_id === user.id)
+  // 직접 수정 — 관리자 / 인증 매장의 사장님 / 미인증 매장의 등록자 (DB 정책 shops_update_scoped 와 같은 기준)
+  const canManage = isAdmin || (!!user && (shop.is_claimed ? shop.owner_id === user.id : shop.added_by === user.id))
   const region = [shop.region, shop.district ?? shop.city].filter(Boolean)
 
   const holidayLabel = holidayRuleLabel(shop.hours)   // "공휴일 휴무" / "공휴일 10:30 ~ 22:00"
@@ -280,7 +281,8 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
                       style={{ ...menuItemStyle, borderTop: canManage ? '1px solid var(--border)' : undefined }}
                       onClose={() => setMenuOpen(false)}
                     />
-                    {canManage && (
+                    {/* 삭제는 관리자만 — DB(shops_delete_admin)도 관리자만 허용한다 */}
+                    {isAdmin && (
                       <button onClick={handleDelete} style={{ ...menuItemStyle, color: '#e04343', borderTop: '1px solid var(--border)' }}>샵 삭제하기</button>
                     )}
                   </div>

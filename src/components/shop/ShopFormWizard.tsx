@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { CATEGORIES } from '@/lib/constants/categories'
 import { ROUTES } from '@/lib/constants/routes'
-import { createShop, updateShop, publishShop } from '@/services/shopService'
+import { createShop, updateShop, submitShopRegistration, canPublishShopDirectly } from '@/services/shopService'
 import { Shop, ShopFormData } from '@/types/shop'
 import { generateSlug } from '@/lib/utils/shop'
 import { geocodeAddress, searchPlace, PlaceSearchResult } from '@/lib/utils/geocode'
@@ -61,6 +61,9 @@ export default function ShopFormWizard({ mode, shop }: Props) {
   const [error, setError] = useState('')
   const [savedNote, setSavedNote] = useState('')
   const [ownerAsk, setOwnerAsk] = useState(false)   // 등록 완료 후 "사장님입니까?" 모달
+  const [requested, setRequested] = useState(false) // 등록 요청 완료 모달 (일반 사용자)
+  // 바로 공개할 수 있는 사람(관리자·인증 사장님)인가 — 아니면 '등록 요청' → 관리자 확인 후 공개
+  const [directPublish, setDirectPublish] = useState<boolean | null>(null)
   const [placeResults, setPlaceResults] = useState<PlaceSearchResult[]>([])
   const [searchingPlace, setSearchingPlace] = useState(false)
   const placeBoxRef = useRef<HTMLDivElement>(null)
@@ -76,6 +79,12 @@ export default function ShopFormWizard({ mode, shop }: Props) {
   const [links, setLinks] = useState<string[]>([''])
 
   useEffect(() => { if (!user) router.push(ROUTES.login) }, [user, router])
+  useEffect(() => {
+    if (!user) return
+    let alive = true
+    canPublishShopDirectly(user.id).then(v => { if (alive) setDirectPublish(v) }).catch(() => { if (alive) setDirectPublish(false) })
+    return () => { alive = false }
+  }, [user])
 
   useEffect(() => {
     if (mode === 'edit' && shop) {
@@ -209,19 +218,42 @@ export default function ShopFormWizard({ mode, shop }: Props) {
     if (step === 1 && n !== 1) { if (!(await saveCore())) return }
     setStep(n)
   }
+  /** 임시(hidden) 샵을 등록 요청(일반 사용자) 또는 공개(관리자·인증 사장님) */
+  async function submit(id: string): Promise<boolean> {
+    if (!user) return false
+    setSaving(true)
+    const r = await submitShopRegistration(id, user.id)
+    setSaving(false)
+    if (!r) { setError('등록 요청에 실패했어요. 잠시 후 다시 시도해 주세요.'); return false }
+    if (r === 'requested') setRequested(true)
+    else setOwnerAsk(true)   // "이 샵의 사장님입니까?" 물어보고, 네면 바로 인증 신청으로
+    return true
+  }
+  // 아직 공개 전인 샵(임시저장·보완 요청·등록 요청 중)을 고치는 중인가 — 이때 마지막 버튼은 '등록 요청'
+  //  (관리자가 남의 등록 요청을 고칠 때는 저장만 — 공개·경험치는 [샵 등록 요청] 화면에서)
+  const unpublishedEdit = mode === 'edit' && (shop?.status === 'hidden' || shop?.status === 'pending')
+    && !!user && shop?.added_by === user.id
   async function finish() {
-    if (mode === 'edit') { if (!(await saveCore())) return; leaveEditTo(router, ROUTES.shop(shop!.slug)); return }
+    if (mode === 'edit') {
+      if (!(await saveCore())) return
+      // 보완 요청을 받았거나 임시저장한 샵 → 고친 뒤 다시 등록 요청
+      if (unpublishedEdit && shop) { await submit(shop.id); return }
+      leaveEditTo(router, ROUTES.shop(shop!.slug)); return
+    }
     // 신규: 1단계 저장 뒤에 고친 기본 정보(영문 이름·예약 링크 등)도 빠짐없이 반영하고 나서
     if (!(await saveCore())) return
-    // 여기(등록 완료)서야 비공개 임시 → active로 공개된다
-    if (createdShopId) { setSaving(true); await publishShop(createdShopId); setSaving(false) }
+    // 여기서야 비공개 임시 → 등록 요청(또는 바로 공개)
+    if (createdShopId && !(await submit(createdShopId))) return
     draft.clear()   // 등록 끝 — 임시저장본 삭제
-    // "이 샵의 사장님입니까?" 물어보고, 네면 바로 인증 신청으로
-    setOwnerAsk(true)
   }
   function goShopAfterRegister() {
     router.push(shopSlug ? ROUTES.shop(shopSlug) : '/profile?tab=shops')
   }
+  // 등록 요청한 샵은 아직 공개 전이라 샵 화면이 열리지 않는다 → 내가 등록한 샵 목록으로
+  function goMyShops() { router.push('/profile?tab=shops') }
+  const finishLabel = mode === 'edit'
+    ? (unpublishedEdit && directPublish === false ? '다시 등록 요청' : unpublishedEdit ? '등록 완료' : '수정 완료')
+    : (directPublish === false ? '등록 요청' : '등록 완료')
   function goClaim() {
     if (shopSlug) router.push(`/shop/claim/${shopSlug}`)
     else router.push('/profile?tab=shops')
@@ -265,6 +297,30 @@ export default function ShopFormWizard({ mode, shop }: Props) {
         .sw-cats > button > :first-child{ display:none !important; }
         .sw-cats > button > span:last-child{ font-size:12.5px !important; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
       }`}</style>
+
+      {/* 등록 요청 완료 (일반 사용자) — 관리자가 확인하면 공개 + 경험치 */}
+      {requested && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 3000, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+          <div style={{ width: '100%', maxWidth: 420, background: 'var(--surface)', borderRadius: 18, padding: '26px 24px', boxShadow: '0 16px 48px rgba(0,0,0,.28)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, textAlign: 'center', marginBottom: 18 }}>
+              <div style={{ width: 48, height: 48, borderRadius: 9999, background: 'var(--accent-l, rgba(232,0,111,.1))', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 4 }}>
+                <CheckIcon size={22} color="var(--accent)" />
+              </div>
+              <h2 style={{ fontSize: 20, fontWeight: 900, margin: 0 }}>등록 요청을 보냈어요</h2>
+              <p style={{ fontSize: 13.5, color: 'var(--muted)', margin: 0, lineHeight: 1.6 }}>
+                타쿠로드가 정보를 확인한 뒤 지도에 공개하고, 그때 <b style={{ color: 'var(--text)' }}>경험치</b>를 드려요.
+                진행 상황은 마이페이지 ‘등록한 샵’에서 볼 수 있고, 알림으로도 알려드려요.
+              </p>
+            </div>
+            <button
+              onClick={goMyShops}
+              style={{ width: '100%', padding: '13px', borderRadius: 12, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: 'pointer', fontFamily: 'inherit' }}
+            >
+              등록한 샵 보기
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* 등록 완료 → "이 샵의 사장님입니까?" 모달 */}
       {ownerAsk && (
@@ -533,7 +589,13 @@ export default function ShopFormWizard({ mode, shop }: Props) {
               <ReviewRow label="주소" value={form.addr || '미입력'} ok={!!form.addr.trim()} />
               <ReviewRow label="영업시간" value={form.hours && Object.values(form.hours).some(Boolean) ? '입력됨' : '미입력'} ok={!!form.hours && Object.values(form.hours).some(Boolean)} />
             </div>
-            {mode === 'create' && <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>‘등록 완료’를 눌러야 지도에 공개돼요. 그전까지는 저장돼도 비공개(임시)예요.</p>}
+            {(mode === 'create' || unpublishedEdit) && (
+              <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>
+                {directPublish === false
+                  ? '‘등록 요청’을 누르면 타쿠로드가 정보를 확인한 뒤 지도에 공개해요. 공개되면 경험치를 드려요.'
+                  : '‘등록 완료’를 눌러야 지도에 공개돼요. 그전까지는 저장돼도 비공개(임시)예요.'}
+              </p>
+            )}
           </>
         )}
 
@@ -547,7 +609,7 @@ export default function ShopFormWizard({ mode, shop }: Props) {
           {step < STEPS.length ? (
             <button onClick={goNext} disabled={saving} style={nextBtn}>{saving ? '저장 중...' : '다음 단계'}<Svg size={15} color="#fff"><path d="m9 18 6-6-6-6" /></Svg></button>
           ) : (
-            <button onClick={finish} disabled={saving} style={nextBtn}>{mode === 'edit' ? '수정 완료' : '등록 완료'}<CheckIcon size={15} color="#fff" /></button>
+            <button onClick={finish} disabled={saving} style={nextBtn}>{finishLabel}<CheckIcon size={15} color="#fff" /></button>
           )}
         </div>
       </div>

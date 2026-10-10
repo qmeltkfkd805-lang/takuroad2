@@ -29,8 +29,16 @@ export default function MyShopsTab({ userId }: { userId: string }) {
     <div>
       {shops.map(shop => {
         const handedOver = shop.owner_id && shop.owner_id !== userId
+        // 아직 공개 전인 샵(등록 요청 중·보완 필요·임시저장)은 샵 화면이 열리지 않는다 → 수정 화면으로
+        const unpublished = shop.status === 'pending' || shop.status === 'hidden'
+        const needsFix = shop.status === 'hidden' && shop.review_status === 'needs_attention'
+        const label = shop.status === 'pending' ? '등록 요청 중'
+          : needsFix ? '보완 필요'
+          : shop.status === 'hidden' ? '임시저장'
+          : (SHOP_STATUS_LABEL[shop.status] ?? shop.status)
+        const color = needsFix ? 'var(--red)' : statusColor[shop.status] ?? 'var(--muted)'
         return (
-          <Link key={shop.id} href={ROUTES.shop(shop.slug)} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Link key={shop.id} href={unpublished ? ROUTES.shopEdit(shop.slug) : ROUTES.shop(shop.slug)} style={{ textDecoration: 'none', color: 'inherit' }}>
             <div style={{ padding: '14px 16px', borderBottom: '1px solid var(--border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <div style={{ flex: 1 }}>
@@ -39,13 +47,28 @@ export default function MyShopsTab({ userId }: { userId: string }) {
                 </div>
                 <span style={{
                   fontSize: '11px', fontWeight: 700,
-                  color: statusColor[shop.status] ?? 'var(--muted)',
-                  border: '1px solid ' + (statusColor[shop.status] ?? 'var(--border)'),
+                  color,
+                  border: '1px solid ' + color,
                   borderRadius: '6px', padding: '3px 8px', flexShrink: 0,
                 }}>
-                  {SHOP_STATUS_LABEL[shop.status] ?? shop.status}
+                  {label}
                 </span>
               </div>
+              {shop.status === 'pending' && (
+                <div style={{ marginTop: 8, fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
+                  타쿠로드가 정보를 확인하고 있어요. 공개되면 알림과 경험치를 드려요.
+                </div>
+              )}
+              {needsFix && (
+                <div style={{ marginTop: 8, fontSize: 12, color: 'var(--red)', lineHeight: 1.5 }}>
+                  정보 보완 요청이 왔어요. 눌러서 고친 뒤 다시 등록 요청해 주세요. 자세한 내용은 알림에서 볼 수 있어요.
+                </div>
+              )}
+              {shop.status === 'hidden' && !needsFix && (
+                <div style={{ marginTop: 8, fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
+                  아직 등록 요청 전이에요. 눌러서 마저 입력하고 등록 요청해 주세요.
+                </div>
+              )}
               {handedOver && (
                 <div style={{
                   marginTop: 10, padding: '10px 12px',

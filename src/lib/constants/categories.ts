@@ -43,7 +43,7 @@ export function catColor(value?: string | null): string {
 
 // 샵 상태 라벨
 export const SHOP_STATUS_LABEL: Record<string, string> = {
-  pending:          '승인 대기',
+  pending:          '등록 요청',
   active:           '운영중',
   hidden:           '숨김',
   closed:           '폐업',
