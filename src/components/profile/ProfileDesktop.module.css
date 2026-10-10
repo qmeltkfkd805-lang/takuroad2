@@ -378,3 +378,22 @@
   .quickGrid { gap: 8px; }
   .quickItem { padding: 13px 6px; }
 }
+
+/* 📱 2026-10-10 모바일 — 둥근 네모 카드 대신, 화면 끝까지 꽉 찬 흰 영역을 굵은 회색 띠 하나로 나눈다 */
+@media (max-width: 640px) {
+  .wrap { padding: 0 0 92px; background: var(--surface2); }
+  .dash { gap: 8px; }                       /* 영역 사이 = 회색 띠 */
+  .mPageTitle {
+    margin: 0 0 -8px; padding: 16px 18px 2px;   /* 제목과 프로필은 띠 없이 한 영역으로 이어지게 */
+    background: var(--surface);
+  }
+  .cols { gap: 8px; }
+  /* 프로필·빠른 메뉴·굿즈 보관함·계정 메뉴 — 테두리·둥근 모서리 없이 */
+  .profileCard, .card, .dash > section {
+    border: none !important; border-radius: 0 !important;
+    background: var(--surface) !important;
+  }
+  .profileCard { padding: 16px 18px 20px; }
+  .card, .dash > section { padding: 18px 18px !important; }
+  .accountCard { padding-top: 4px !important; padding-bottom: 4px !important; }
+}
