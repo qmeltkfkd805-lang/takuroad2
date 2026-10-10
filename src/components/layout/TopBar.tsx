@@ -150,7 +150,7 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
   }
 
   return (
-    <div className={`${styles.bar}${onMap ? ' ' + styles.barMap : ''}`}>
+    <div className={`${styles.bar}${onMap ? ' ' + styles.barMap : ''}${pathname === '/' ? ' ' + styles.barHome : ''}`}>
       <div className={`${styles.searchWrap}${isProfile ? ' ' + styles.hideSearchMobile : ''}`} ref={wrapRef}>
         <form className={styles.search} onSubmit={onSearch}>
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>

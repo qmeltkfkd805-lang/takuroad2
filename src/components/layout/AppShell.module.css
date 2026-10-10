@@ -49,3 +49,12 @@
   }
   .headerMap > * { pointer-events: auto; }
 }
+
+/* 📱 홈: 위 줄 = 로고(왼쪽) · 알림(오른쪽 끝), 아래 줄 = 화면 폭 가득 검색창
+   (TopBar 의 .barHome 이 display: contents 라 검색창·알림이 헤더에 바로 놓인다) */
+@media (pointer: coarse) and (max-width: 1023px) {
+  .headerHome { flex-wrap: wrap; height: auto; padding: 6px 16px 10px; gap: 0; row-gap: 4px; }
+  .headerHome .logo { display: flex; height: 44px; order: 0; }
+  .headerHome .logo img { height: 34px; }
+  .headerHome .headerBar { display: contents; }
+}

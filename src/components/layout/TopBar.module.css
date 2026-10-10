@@ -99,3 +99,12 @@
   /* 지도에선 검색창만 가로로 길게 — 알림·로그인 버튼은 숨김 (하단 '마이' 탭에서) */
   .barMap .right { display: none; }
 }
+
+/* 📱 홈: 로고 줄 오른쪽 끝에 알림, 그 아래 줄에 검색창을 화면 폭 가득 (헤더 쪽은 AppShell .headerHome) */
+@media (pointer: coarse) and (max-width: 1023px) {
+  .barHome { display: contents; }
+  .barHome .right { order: 1; margin-left: auto; }
+  .barHome .searchWrap { order: 2; flex: 0 0 100%; max-width: none; margin: 0; }
+  .barHome .search { padding: 10px 16px; }
+  .barHome .search input { font-size: 14px; }
+}

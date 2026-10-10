@@ -110,7 +110,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <LevelUpModal />
     <div className={styles.shell}>
       {diag && <DiagOverlay />}
-      <header data-diag="header" className={`${styles.header}${hideHeaderMobile ? ' ' + styles.headerHiddenMobile : ''}${pathname === '/map' ? ' ' + styles.headerMap : ''}`}>
+      <header data-diag="header" className={`${styles.header}${hideHeaderMobile ? ' ' + styles.headerHiddenMobile : ''}${pathname === '/map' ? ' ' + styles.headerMap : ''}${pathname === '/' ? ' ' + styles.headerHome : ''}`}>
         <Link href="/" className={styles.logo}>
           <img src="/brand/takuroad-logo.png" alt="TAKUROAD" />
         </Link>
