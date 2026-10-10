@@ -283,3 +283,10 @@
   /* 내 최애 작품 취급샵 — 모바일에선 빼기 */
   .favCard { display: none; }
 }
+
+/* 📱 모바일: 섹션 제목 밑 설명 문구(“방문, 찜, 후기 기준으로…” 등) 숨김 — 제목만 */
+@media (pointer: coarse) and (max-width: 1023px) {
+  .sectionHead p { display: none; }
+  .sectionHead { align-items: center; }
+  .sectionHead h2 { margin-bottom: 0; }
+}
