@@ -62,6 +62,10 @@ export default function CommunityPage() {
   const listCols = showCat ? '76px 1fr 66px 66px 52px 44px' : '1fr 76px 66px 52px 44px'
   const [sort, setSort] = useState<PostSort>('latest')
   const [scope, setScope] = useState<Scope>('all')
+  // 작품구독 — 내 최애·관심 작품 알약(전체 + 작품별). null = 전체
+  const [myWorks, setMyWorks] = useState<{ id: string; name: string }[]>([])
+  const [workSubId, setWorkSubId] = useState<string | null>(null)
+  const [worksubAll, setWorksubAll] = useState<CommunityPost[]>([])
   const [view, setView] = useState<View>('list')
   const [page, setPage] = useState(1)
 
@@ -123,12 +127,13 @@ export default function CommunityPage() {
         getNotices(board),
         getMyWorkRelationships(user.id),
       ])
-      const myWorkIds = new Set(rels.filter(r => r.affinity).map(r => r.work.id))
+      const subWorks = rels.filter(r => r.affinity).map(r => ({ id: r.work.id, name: r.work.name }))
+      const myWorkIds = new Set(subWorks.map(w => w.id))
       // 구독(최애·관심)한 작품이 태그된 글. tag_ids뿐 아니라 대표 태그(tag_id)·작품(work)도 함께 매칭
-      setPosts(all.filter(p => {
-        const ids = [...(p.tagIds ?? []), p.tagId, p.work?.id].filter(Boolean) as string[]
-        return ids.some(id => myWorkIds.has(id))
-      }))
+      const sub = all.filter(p => postWorkIds(p).some(id => myWorkIds.has(id)))
+      setMyWorks(subWorks)
+      setWorksubAll(sub)
+      setPosts(sub)
       setNotices(ntc); setLoading(false); setPage(1)
       return
     }
@@ -163,6 +168,17 @@ export default function CommunityPage() {
   }, [board, sort, scope, search, searchField, tagFilter?.id, user?.id, isDesktop])
 
   useEffect(() => { load() }, [load])
+
+  // 작품구독 알약 — 다시 불러오지 않고 받아 둔 글에서 작품별로 거른다
+  useEffect(() => {
+    if (scope !== 'worksub') return
+    setPosts(workSubId ? worksubAll.filter(p => postWorkIds(p).includes(workSubId)) : worksubAll)
+    setPage(1)
+  }, [scope, workSubId, worksubAll])
+  // 고른 작품이 구독 목록에서 빠졌으면 전체로
+  useEffect(() => {
+    if (workSubId && myWorks.length > 0 && !myWorks.some(w => w.id === workSubId)) setWorkSubId(null)
+  }, [myWorks, workSubId])
 
   // URL 파라미터로 게시판/작품 필터 초기화 (?board=goods&tag=<workId>) — 최초 1회
   const urlAppliedRef = useRef(false)
@@ -267,6 +283,14 @@ export default function CommunityPage() {
         <div className="taku-noscroll" style={{ display: 'flex', overflowX: 'auto', background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
           {mobTabs.map(t => <MobTab key={t.label} label={t.label} active={t.active} onClick={t.on} />)}
         </div>
+
+        {/* 작품구독 — 탭 아래 알약: 전체 + 내 최애·관심 작품별 */}
+        {scope === 'worksub' && user && myWorks.length > 0 && (
+          <div className="taku-noscroll" style={{ display: 'flex', gap: 8, overflowX: 'auto', padding: '10px 16px', background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
+            <WorkPill label="전체" active={workSubId === null} onClick={() => setWorkSubId(null)} />
+            {myWorks.map(w => <WorkPill key={w.id} label={w.name} active={workSubId === w.id} onClick={() => setWorkSubId(w.id)} />)}
+          </div>
+        )}
 
         {/* 통합 검색 — 제목·글쓴이·댓글 */}
         {searchOpen && (
@@ -597,6 +621,16 @@ const iconBtn: React.CSSProperties = {
   width: 38, height: 38, borderRadius: 10, border: 'none', background: 'var(--surface2)',
   color: 'var(--text)', display: 'flex', alignItems: 'center', justifyContent: 'center',
   cursor: 'pointer', flexShrink: 0, fontFamily: 'inherit',
+}
+
+function postWorkIds(p: CommunityPost): string[] {
+  return [...(p.tagIds ?? []), p.tagId, p.work?.id].filter(Boolean) as string[]
+}
+
+function WorkPill({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button onClick={onClick} style={{ flexShrink: 0, padding: '7px 14px', borderRadius: 9999, border: `1px solid ${active ? 'rgba(255,86,146,.4)' : 'var(--border)'}`, background: active ? 'rgba(255,86,146,.12)' : 'var(--surface)', color: active ? 'var(--accent)' : 'var(--text)', fontFamily: 'inherit', fontSize: 13, fontWeight: active ? 800 : 600, whiteSpace: 'nowrap', cursor: 'pointer', maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis' }}>{label}</button>
+  )
 }
 
 function MobTab({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
