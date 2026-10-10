@@ -325,21 +325,18 @@ export async function createShop(
   return { slug: shop.slug, id: shop.id }
 }
 
-/** 바로 공개할 수 있는 사람인가 — 관리자 또는 사장님 인증을 받은 사람(인증 샵 1곳 이상).
- *  그 외 사용자가 등록한 샵은 '등록 요청'(pending)으로 들어가 관리자가 확인한 뒤 공개된다.
- *  (DB 트리거도 같은 기준으로 강제한다 — migrations/shop_register_request.sql) */
+/** 바로 공개할 수 있는 사람인가 — 관리자만 (2026-10-10).
+ *  사장님 인증을 받은 사람도 새 샵은 '등록 요청'(pending) → 관리자 확인을 거친다.
+ *  (사장님 인증은 그 매장 하나에 대한 것이지, 다른 샵을 바로 올릴 권한이 아니다)
+ *  DB 트리거도 같은 기준으로 강제한다 — migrations/shop_register_request_fix.sql */
 export async function canPublishShopDirectly(userId: string): Promise<boolean> {
   const supabase = createClient()
-  const [{ data: prof }, { count }] = await Promise.all([
-    supabase.from('profiles').select('role').eq('id', userId).maybeSingle(),
-    supabase.from('shops').select('id', { count: 'exact', head: true })
-      .eq('owner_id', userId).eq('is_claimed', true).neq('status', 'deleted'),
-  ])
-  return (prof as any)?.role === 'admin' || (count ?? 0) > 0
+  const { data: prof } = await supabase.from('profiles').select('role').eq('id', userId).maybeSingle()
+  return (prof as any)?.role === 'admin'
 }
 
 /** 위저드 '등록 요청'·'등록 완료' — 임시 샵(hidden)을 일반 사용자는 등록 요청(pending)으로,
- *  관리자·인증 사장님은 바로 공개(active)로 넘긴다.
+ *  관리자는 바로 공개(active)로 넘긴다.
  *  등록 요청은 경험치를 주지 않는다 — 관리자가 확인하고 공개할 때 서버가 준다(/api/admin/shop-request). */
 export async function submitShopRegistration(shopId: string, userId: string): Promise<'published' | 'requested' | null> {
   if (await canPublishShopDirectly(userId)) return (await publishShop(shopId)) ? 'published' : null
@@ -354,7 +351,7 @@ export async function submitShopRegistration(shopId: string, userId: string): Pr
   return 'requested'
 }
 
-/** 임시(hidden) 샵을 공개(active)로 전환 — 관리자·인증 사장님의 '등록 완료' 시 호출.
+/** 임시(hidden) 샵을 공개(active)로 전환 — 관리자의 '등록 완료' 시 호출.
  *  이때(등록이 실제로 완료된 시점) 최초 1회 경험치를 준다. */
 export async function publishShop(shopId: string): Promise<boolean> {
   const supabase = createClient()

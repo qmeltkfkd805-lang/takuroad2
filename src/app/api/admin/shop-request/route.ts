@@ -98,10 +98,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: '공개 처리에 실패했어요' }, { status: 500 })
   }
 
-  // 3) 등록자에게 경험치 — 관리자가 직접 등록한 샵은 대상 아님(애초에 이 목록에 안 온다)
+  // 3) 등록자에게 경험치 — 관리자 계정이 올린 샵(운영 계정·일괄 등록 등)은 대상 아님
   let rewarded = false
   let rewardError: string | null = null
-  if (s.added_by && s.added_by !== user.id) {
+  let adderIsAdmin = false
+  if (s.added_by) {
+    const { data: adder } = await svc.from('profiles').select('role').eq('id', s.added_by).maybeSingle()
+    adderIsAdmin = (adder as any)?.role === 'admin'
+  }
+  if (s.added_by && s.added_by !== user.id && !adderIsAdmin) {
     const { data, error } = await svc.rpc('record_activity_reward', {
       p_user: s.added_by,
       p_type: 'shop_register',
