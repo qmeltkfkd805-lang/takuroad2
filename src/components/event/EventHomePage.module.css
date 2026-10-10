@@ -18,7 +18,10 @@
 .heroCard { height: 340px; }
 .heroCard { display: flex; min-height: 0; border: 1px solid var(--border); border-radius: var(--r); background: linear-gradient(135deg, #EFEEFB 0%, #F8F7FE 62%); overflow: hidden; }
 .heroPoster { width: 40%; min-width: 130px; flex-shrink: 0; background: #EAE9F6; display: flex; align-items: center; justify-content: center; }
-.heroImg { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
+.heroImg { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
+/* 포스터 뒤 블러 배경 — 같은 이미지를 꽉 채워 흐리게 */
+.heroPoster { position: relative; overflow: hidden; }
+.heroBlur { position: absolute; inset: -24px; width: calc(100% + 48px); height: calc(100% + 48px); object-fit: cover; filter: blur(22px) saturate(1.2) brightness(.85); transform: scale(1.08); pointer-events: none; }
 .heroInfo { flex: 1; min-width: 0; overflow: hidden; padding: 18px 24px; display: flex; flex-direction: column; justify-content: center; gap: 6px; }
 .heroTop { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
 .heroBadge { display: inline-flex; align-items: center; gap: 5px; background: var(--accent); color: #fff; font-size: 12.5px; font-weight: 800; padding: 5px 12px 5px 10px; border-radius: 9999px; }
@@ -193,14 +196,16 @@
   .heroCard {
     position: relative; cursor: pointer;
     width: 100vw; margin-left: calc(50% - 50vw);
-    height: 300px; min-height: 0;   /* 📱 높이 고정 */
+    height: 380px; min-height: 0;   /* 📱 높이 고정 */
     border: none; border-radius: 0; background: #1d1d24;
   }
   .heroPoster { position: absolute; inset: 0; width: 100%; min-width: 0; background: #1d1d24; }
-  .heroImg { object-fit: cover; }
+  /* 포스터는 안 잘리게 가운데, 양옆은 블러 배경이 채움 */
+  .heroImg { object-fit: contain; filter: drop-shadow(0 10px 28px rgba(0,0,0,.45)); }
+  .heroBlur { filter: blur(26px) saturate(1.2) brightness(.7); }
   /* 글자가 읽히게 아래쪽을 어둡게 (홈 히어로와 같은 방식) */
   .heroPoster::after {
-    content: ''; position: absolute; inset: 0; pointer-events: none;
+    content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
     background: linear-gradient(180deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,.18) 40%, rgba(0,0,0,.78) 100%);
   }
   .heroInfo {

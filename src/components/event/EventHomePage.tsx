@@ -482,7 +482,11 @@ export default function EventHomePage() {
             <>
               <div className={styles.heroPoster}>
                 {hero.coverUrl
-                  ? <img className={styles.heroImg} src={hero.coverUrl} alt="" />
+                  ? <>
+                      {/* 뒤: 같은 포스터를 크게 블러 → 빈 자리 채움 / 앞: 포스터 전체가 잘리지 않게 가운데 */}
+                      <img className={styles.heroBlur} src={hero.coverUrl} alt="" aria-hidden="true" />
+                      <img className={styles.heroImg} src={hero.coverUrl} alt="" />
+                    </>
                   : <div className={styles.posterPh}><Icon name={TYPE_ICON[hero.type] ?? 'calendar'} size={54} style={{ opacity: .4 }} /></div>}
               </div>
               <div className={styles.heroInfo}>
