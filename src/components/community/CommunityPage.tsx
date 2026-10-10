@@ -18,7 +18,7 @@ import {
 } from '@/types/community-post'
 import { PostCard } from '@/components/community/PostUI'
 import { getFollowingIds } from '@/services/followService'
-import { getMyWorkRelationships } from '@/services/workRelationshipService'
+import { getMyWorkRelationships, getMyAffinityMap } from '@/services/workRelationshipService'
 import AppIcon from '@/components/tds/AppIcon'
 import LogoLoader from '@/components/common/LogoLoader'
 import ThumbImg from '@/components/common/ThumbImg'
@@ -66,6 +66,8 @@ export default function CommunityPage() {
   const [myWorks, setMyWorks] = useState<{ id: string; name: string }[]>([])
   const [workSubId, setWorkSubId] = useState<string | null>(null)
   const [worksubAll, setWorksubAll] = useState<CommunityPost[]>([])
+  // 내 최애·관심 작품 id — 글 목록의 작품 태그를 보여줄 때 이 작품들을 맨 앞에
+  const [myAffIds, setMyAffIds] = useState<Set<string>>(new Set())
   const [view, setView] = useState<View>('list')
   const [page, setPage] = useState(1)
 
@@ -169,6 +171,11 @@ export default function CommunityPage() {
 
   useEffect(() => { load() }, [load])
 
+  useEffect(() => {
+    if (!user?.id) { setMyAffIds(new Set()); return }
+    getMyAffinityMap(user.id).then(m => setMyAffIds(new Set(Object.keys(m)))).catch(() => {})
+  }, [user?.id])
+
   // 작품구독 알약 — 다시 불러오지 않고 받아 둔 글에서 작품별로 거른다
   useEffect(() => {
     if (scope !== 'worksub') return
@@ -247,7 +254,12 @@ export default function CommunityPage() {
   if (!isDesktop) {
     const boardLabel = board === 'all' ? '커뮤니티' : (BOARD_LABEL[board] ?? '커뮤니티')
     const tagNameById = new Map(allTags.map(t => [t.id, t.name]))
-    const namesOf = (p: CommunityPost) => (p.tagIds ?? []).map(id => tagNameById.get(id)).filter((n): n is string => !!n)
+    // 작품 태그 순서: ① 작품구독에서 고른 작품 → ② 내 최애·관심 작품 → ③ 글쓴이가 태그한 순서
+    const pickId = scope === 'worksub' ? workSubId : null
+    const tagRank = (id: string) => (id === pickId ? 0 : myAffIds.has(id) ? 1 : 2)
+    const namesOf = (p: CommunityPost) => [...(p.tagIds ?? [])]
+      .sort((a, b) => tagRank(a) - tagRank(b))
+      .map(id => tagNameById.get(id)).filter((n): n is string => !!n)
     const rows = paged.map(p => <PannRow key={p.id} p={p} showBoard={board === 'all' || board === 'fancraft'} onOpen={openPost} tagNames={namesOf(p)} />)
     const mainBoards = BOARDS.filter(b => !CREATION_BOARDS.includes(b.value))   // 창작게시판(팬아트·팬창작물) 제외한 일반 게시판
     const mobTabs: { label: string; active: boolean; on: () => void }[] = [
