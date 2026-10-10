@@ -49,12 +49,12 @@ export default function MyGoodsSection() {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-        <span style={{ fontSize: 17, fontWeight: 800, color: 'var(--text)' }}>나의 굿즈 보관함</span>
+        <span style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)' }}>나의 굿즈 보관함</span>
         <button
           onClick={() => router.push('/community/write?board=goods')}
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 5, border: 'none', cursor: 'pointer',
-            background: 'var(--accent)', color: '#fff', fontFamily: 'inherit', fontSize: 13, fontWeight: 800,
+            background: 'var(--accent)', color: '#fff', fontFamily: 'inherit', fontSize: 12, fontWeight: 800,
             padding: '8px 14px', borderRadius: 9999,
           }}
         >
@@ -82,11 +82,11 @@ export default function MyGoodsSection() {
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
             }}>{t.icon}</span>
             <span style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
-              <span style={{ fontSize: 22, fontWeight: 900, color: 'var(--text)', display: 'flex', alignItems: 'baseline', gap: 6 }}>
+              <span style={{ fontSize: 19, fontWeight: 900, color: 'var(--text)', display: 'flex', alignItems: 'baseline', gap: 6 }}>
                 {loading && !t.soon ? '–' : t.value}
                 {t.soon && <em style={{ fontSize: 11, fontWeight: 800, fontStyle: 'normal', color: 'var(--muted)' }}>준비 중</em>}
               </span>
-              <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--muted)' }}>{t.label}</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--muted)' }}>{t.label}</span>
             </span>
           </button>
         ))}

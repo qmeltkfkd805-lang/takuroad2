@@ -398,4 +398,17 @@
   .accountCard { padding-top: 4px !important; padding-bottom: 4px !important; }
   /* 빠른 메뉴는 화면 코드 순서대로(굿즈 보관함 바로 아래) — 예전 order:1 때문에 맨 아래로 밀리던 것 방지 */
   .quickCard { order: 0; }
+
+  /* 글씨 한 단계 작게 (2026-10-10) */
+  .mPageTitle { font-size: 20px; }
+  .name { font-size: 18px; }
+  .titleChip { font-size: 11px; padding: 2px 9px; }
+  .tagline { font-size: 12px; }
+  .followLink { font-size: 12.5px; }
+  .expLabel { font-size: 11.5px; }
+  .editBtn { font-size: 12px; padding: 7px 11px; }
+  .cardTitle { font-size: 14px; }
+  .editLink { font-size: 11.5px; padding: 5px 10px; }
+  .quickLabel { font-size: 11.5px; }
+  .acctRow { font-size: 13px; padding: 13px 2px; }
 }
