@@ -98,6 +98,26 @@ export default function MapPage() {
     })
   }, [mapEvents, selectedCat, selectedRegion, selectedDistrict])
 
+  /* 지도 검색어(?q=) — 같은 이름의 샵(지점)이 여러 곳이면, 첫 샵 핀에 말풍선을 띄우고
+     아래 목록에 그 이름의 샵들을 모아 보여준다. 2곳 미만이면 평소 목록 그대로. */
+  const nameQ = (searchParams.get('q') ?? '').trim()
+  const nameMatches = useMemo(() => {
+    if (!nameQ) return null
+    const norm = (v: string | null | undefined) => (v ?? '').toLowerCase().replace(/\s+/g, '')
+    const n = norm(nameQ)
+    if (!n) return null
+    const list = shops.filter(s => norm(s.name).includes(n) || norm((s as any).name_en).includes(n))
+    if (list.length < 2) return null
+    // 검색으로 고른 샵(말풍선 뜬 샵)을 맨 앞에
+    const first = searchParams.get('shop')
+    return [...list].sort((a, b) => Number(b.slug === first) - Number(a.slug === first))
+  }, [nameQ, shops, searchParams])
+  const clearNameSearch = useCallback(() => {
+    const p = new URLSearchParams(searchParams.toString())
+    p.delete('q')
+    router.replace(p.toString() ? `/map?${p}` : '/map', { scroll: false })
+  }, [searchParams, router])
+
   // 샵만/이벤트만 보기
   const shownShops = layer === 'event' ? EMPTY_SHOPS : mapShops
   // 목록(하단 시트)은 사진 있는 샵 먼저
@@ -509,7 +529,12 @@ export default function MapPage() {
             PC에서는 IP 기반으로 위치를 찾기 때문에<br />실제 위치와 다를 수 있어요
           </div>
         )}
-        {!selectedShop && !selectedEvent && (
+        {nameMatches ? (
+          /* 같은 이름 샵 여러 곳 — 말풍선이 떠 있어도 아래에 그 샵들 목록을 같이 */
+          <MapBottomSheet shops={nameMatches} events={EMPTY_EVENTS} onSelectShop={handleSelectShop} onSelectEvent={handleSelectEvent} onStateChange={setSheetState} onListClick={goToFilteredList}
+            layer="shop" onListScrollDir={dir => setBarHidden(dir === 'down')} loading={loading}
+            searchLabel={nameQ} onClearSearch={clearNameSearch} />
+        ) : !selectedShop && !selectedEvent && (
           <MapBottomSheet shops={shownListShops} events={shownEvents} onSelectShop={handleSelectShop} onSelectEvent={handleSelectEvent} onStateChange={setSheetState} onListClick={goToFilteredList}
             regionLabel={regionLabel} layer={layer} onListScrollDir={dir => setBarHidden(dir === 'down')} loading={loading} />
         )}

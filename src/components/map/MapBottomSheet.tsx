@@ -30,6 +30,9 @@ interface MapBottomSheetProps {
   onListScrollDir?: (dir: 'down' | 'up') => void
   /** 샵 목록을 아직 불러오는 중 — 그동안 먼저 온 이벤트로 채웠다가 샵으로 바뀌지 않게, 자리만 잡아 둔다 */
   loading?: boolean
+  /** 검색어로 모은 목록일 때 — 제목에 검색어를 쓰고, 옆에 ✕(검색 해제) */
+  searchLabel?: string | null
+  onClearSearch?: () => void
 }
 
 // 📱 렉 줄이기 — 접힌 가로 카드는 앞쪽 몇 개만, 펼친 목록은 스크롤하면서 조금씩 더 그린다
@@ -90,7 +93,7 @@ function EventRow({ ev, onClick }: { ev: MapEvent; onClick: () => void }) {
   )
 }
 
-export default function MapBottomSheet({ shops, events: eventsIn = [], onSelectShop, onSelectEvent, onStateChange, onListClick, regionLabel = null, layer = 'all', onListScrollDir, loading = false }: MapBottomSheetProps) {
+export default function MapBottomSheet({ shops, events: eventsIn = [], onSelectShop, onSelectEvent, onStateChange, onListClick, regionLabel = null, layer = 'all', onListScrollDir, loading = false, searchLabel = null, onClearSearch }: MapBottomSheetProps) {
   /* 샵이 오기 전엔(샵을 보여주는 보기에서) 이벤트도 띄우지 않는다.
      예전엔 이벤트가 먼저 와서 카드 줄에 이벤트가 보였다가, 샵이 오면 샵으로 밀려 바뀌었다 */
   const waitShops = loading && layer !== 'event'
@@ -221,7 +224,13 @@ export default function MapBottomSheet({ shops, events: eventsIn = [], onSelectS
           role="button" aria-label={collapsed ? '샵 카드 펼치기' : '접기'} />
         <div className={styles.header}>
           <div className={styles.title}>
-            {waitShops
+            {searchLabel
+              ? <>‘{searchLabel}’ 샵 <strong>{shops.length}</strong>곳
+                  {onClearSearch && (
+                    <button type="button" onClick={e => { e.stopPropagation(); onClearSearch() }} aria-label="검색 해제"
+                      style={{ marginLeft: 6, border: 'none', background: 'var(--surface2)', color: 'var(--muted)', borderRadius: 9999, width: 22, height: 22, fontSize: 12, lineHeight: '22px', cursor: 'pointer', verticalAlign: '1px' }}>✕</button>
+                  )}</>
+              : waitShops
               ? <>{regionLabel ? `${regionLabel} ` : '주변 '}샵 불러오는 중…</>
               : layer === 'event'
               ? <>{regionLabel ? `${regionLabel} ` : '진행 중 '}이벤트 <strong>{events.length}</strong>개</>

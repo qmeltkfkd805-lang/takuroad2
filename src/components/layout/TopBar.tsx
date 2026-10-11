@@ -145,7 +145,8 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
     if (onMap && s.mapSlug) {
       setOpen(false); setQ('')
       ;(document.activeElement as HTMLElement | null)?.blur?.()   // 📱 키보드 내리기
-      router.replace(`/map?shop=${encodeURIComponent(s.mapSlug)}&t=${Date.now()}`, { scroll: false })
+      // q = 검색어 — 같은 이름의 샵(지점)이 여러 곳이면 지도 아래 목록에 그 샵들을 모아 보여준다 (MapPage)
+      router.replace(`/map?shop=${encodeURIComponent(s.mapSlug)}&q=${encodeURIComponent(term)}&t=${Date.now()}`, { scroll: false })
       return
     }
     go(s.href)
