@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient as createServerClient } from '@/lib/supabase/server'
 import { serviceClient } from '@/lib/supabase/service'
 import { geekAreaFromAddr } from '@/lib/utils/geekArea'
+import { purgeShopLists } from '@/lib/cache/shopListCache'
 
 export const runtime = 'nodejs'
 
@@ -97,6 +98,7 @@ export async function POST(req: NextRequest) {
     console.error('[shop-request] 공개 실패', upErr.code, upErr.message)
     return NextResponse.json({ error: '공개 처리에 실패했어요' }, { status: 500 })
   }
+  purgeShopLists()   // 지도·샵 목록에 바로 보이게
 
   // 3) 등록자에게 경험치 — 관리자 계정이 올린 샵(운영 계정·일괄 등록 등)은 대상 아님
   let rewarded = false

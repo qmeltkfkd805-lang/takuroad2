@@ -8,6 +8,7 @@ import { collapseEventSeries } from '@/lib/event/eventSeries'
 import { getPublicHeroSlots } from '@/services/heroService.server'
 import { pickHotMap } from '@/lib/home/hotMap'
 import { imagesFirst } from '@/lib/utils/shopOrder'
+import { SHOP_LIST_TAG, SHOP_LIST_REVALIDATE } from '@/lib/cache/shopListCache'
 import HomeFeed from '@/components/home/HomeFeed'
 import HomeRail from '@/components/home/HomeRail'
 import HeroCarousel from '@/components/home/HeroCarousel'
@@ -69,7 +70,7 @@ const getHomeShopData = unstable_cache(async () => {
   // 덕질 지도(PC 오른쪽)의 샵 목록은 홈 서버 응답에 싣지 않는다 — HomeRail 이 화면이 뜬 뒤 PC에서만 따로 가져온다.
   // (예전엔 전체 샵 정보를 실어 보내서 홈 응답이 1.3MB를 넘었고, 그래서 화면이 늦게 떴다)
   return { popularShops, hotMap }
-}, ['home-shops-v2'], { revalidate: 60 })
+}, ['home-shops-v3'], { revalidate: SHOP_LIST_REVALIDATE, tags: [SHOP_LIST_TAG] })   // ⚡ 전체 샵을 읽어서 30분 (샵 변경 시 즉시 비움)
 
 const getHomeRoutes = unstable_cache(async () => ((await getPublicRoutes()) ?? []).slice(0, 5), ['home-routes-v1'], { revalidate: 60 })
 // '지금 뜨는 작품'은 무거운 집계(get_active_works)라 10분마다 (/api/works/active 와 같은 주기). 60초였을 땐 홈 때문에만 하루 수백 번 돌았다

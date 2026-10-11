@@ -325,6 +325,13 @@ export async function createShop(
   return { slug: shop.slug, id: shop.id }
 }
 
+/** 지도·샵 목록 캐시 비우기 요청 — 샵 정보·사진·공개 상태를 바꾼 뒤 부른다.
+ *  목록 캐시는 30분짜리라, 안 부르면 바뀐 내용이 지도·목록에 늦게 보인다. 결과는 기다리지 않는다. */
+export function refreshShopLists(): void {
+  if (typeof window === 'undefined') return
+  fetch('/api/revalidate/shops', { method: 'POST' }).catch(() => {})
+}
+
 /** 바로 공개할 수 있는 사람인가 — 관리자만 (2026-10-10).
  *  사장님 인증을 받은 사람도 새 샵은 '등록 요청'(pending) → 관리자 확인을 거친다.
  *  (사장님 인증은 그 매장 하나에 대한 것이지, 다른 샵을 바로 올릴 권한이 아니다)
@@ -373,6 +380,7 @@ export async function publishShop(shopId: string): Promise<boolean> {
     // ⚠️ 보상 대상은 세션 사용자다. 관리자가 남의 임시 샵을 공개 전환하면 서버가 403 으로 거부한다.
     await recordActivity('shop_register', shopId, (before as any).added_by)
   }
+  refreshShopLists()
   return true
 }
 
@@ -447,6 +455,7 @@ export async function updateShop(
   const { data: updated, error } = await updateQuery.select('id')
 
   if (error || !updated?.length) return false
+  refreshShopLists()   // 지도·샵 목록 캐시에 바로 반영
 
   // 변경 이력 기록 (필드별로 실제 변경된 것만)
   if (before) {
@@ -1212,6 +1221,7 @@ export async function updateShopFields(
   let q = supabase.from('shops').update({ ...fields, info_last_confirmed_at: new Date().toISOString() } as any).eq('id', shopId)
   if (!isAdmin) q = q.eq('owner_id', userId)
   const { error } = await q
+  if (!error) refreshShopLists()
   return !error
 }
 // ── 사진 관리 (사장님 매장 관리) ──
@@ -1271,12 +1281,14 @@ export async function addShopImage(
     console.error('[addShopImage]', error.message)
     return null
   }
+  refreshShopLists()
   return (data as { id: string }).id
 }
 
 export async function deleteShopImage(imageId: string): Promise<boolean> {
   const supabase = createClient()
   const { error } = await supabase.from('shop_images').delete().eq('id', imageId)
+  if (!error) refreshShopLists()
   return !error
 }
 
@@ -1332,7 +1344,9 @@ export async function setShopCoverImage(shopId: string, imageId: string): Promis
     console.error('[setShopCoverImage]', error.code ?? error.message)
     return false
   }
-  return (data as { ok?: boolean } | null)?.ok === true
+  const ok = (data as { ok?: boolean } | null)?.ok === true
+  if (ok) refreshShopLists()
+  return ok
 }
 
 /** 순서 일괄 갱신 */
@@ -1341,7 +1355,9 @@ export async function reorderShopImages(items: { id: string; sort_order: number 
   const results = await Promise.all(
     items.map(it => supabase.from('shop_images').update({ sort_order: it.sort_order } as any).eq('id', it.id))
   )
-  return results.every(r => !r.error)
+  const ok = results.every(r => !r.error)
+  if (ok) refreshShopLists()
+  return ok
 }
 
 /** 홈 덕질 지도(PC)용 — 핀·짧은 목록에 필요한 값만 가볍게. (전체 샵 정보를 홈 서버 응답에 싣지 않으려고 따로 둔다) */

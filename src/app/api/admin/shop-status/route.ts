@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { createClient as createServerClient } from '@/lib/supabase/server'
+import { purgeShopLists } from '@/lib/cache/shopListCache'
 
 export async function PATCH(request: NextRequest) {
   // 1. 요청한 사람이 로그인했는지 + admin인지 확인 (일반 클라이언트로, RLS 그대로 적용)
@@ -49,5 +50,6 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
+  purgeShopLists()   // 숨김·폐업·삭제가 지도·샵 목록에 바로 반영되게
   return NextResponse.json({ success: true })
 }
