@@ -65,12 +65,22 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
   useEffect(() => {
     if (!uid) { setUnread(0); setLevel(null); return }
     let last = 0
+    let prevUnread = -1   // 처음 한 번은 비교하지 않는다
     const tick = (force = false) => {
       if (document.visibilityState === 'hidden') return
       const now = Date.now()
       if (!force && now - last < 20000) return   // 포커스·화면 전환이 몰려도 20초에 한 번만
       last = now
-      getUnreadCount(uid).then(setUnread).catch(() => {})
+      getUnreadCount(uid).then(n => {
+        setUnread(n)
+        // 새 알림이 왔다 = 다른 사람이 나에게 뭔가 해 줬을 수 있다(샵 공개 경험치·배지 등).
+        // 레벨을 다시 읽고, 마이페이지 등 경험치를 보여주는 화면에 다시 읽으라고 알린다(새로고침 없이 반영).
+        if (prevUnread >= 0 && n > prevUnread) {
+          getMyLevelInfo(uid).then(i => setLevel(i.level)).catch(() => {})
+          window.dispatchEvent(new Event('exp-changed'))
+        }
+        prevUnread = n
+      }).catch(() => {})
     }
     const onVisible = () => tick()
     const onRead = () => tick(true)
@@ -113,7 +123,21 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
   const suggestions = useMemo(() => buildSuggestions(results, term), [results, term])
   const showDrop = open && term.length > 0
 
-  function onSearch(e: FormEvent) { e.preventDefault(); goAll() }
+  async function onSearch(e: FormEvent) {
+    e.preventDefault()
+    // 지도에서 엔터 → 검색 결과 화면 대신, 가장 잘 맞는 샵의 핀으로 가서 말풍선을 연다
+    if (onMap && term) {
+      let pick = suggestions.find(s => s.mapSlug)
+      if (!pick) {
+        // 아직 자동완성이 안 왔으면(빠르게 엔터) 바로 한 번 찾는다
+        try { pick = buildSuggestions(await globalSearch(term, user?.id ?? null), term).find(s => s.mapSlug) } catch { /* 아래로 */ }
+      }
+      if (pick) { goSuggestion(pick); return }
+      setOpen(true)   // 지도에 보여줄 샵이 없으면 검색창 아래 '결과 없음'을 그대로 보여준다
+      return
+    }
+    goAll()
+  }
   function goAll() { if (term) { setOpen(false); router.push('/search?q=' + encodeURIComponent(term)) } }
   function go(href: string) { setOpen(false); setQ(''); router.push(href) }
   // 지도 화면: 샵·굿즈는 지도에서 그 샵 위치로 (t = 같은 샵을 다시 골라도 다시 이동하게)

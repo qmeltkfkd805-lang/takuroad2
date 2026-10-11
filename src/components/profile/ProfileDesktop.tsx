@@ -136,6 +136,24 @@ export default function ProfileDesktop({ passport, userId }: Props) {
   }
 
   const [levelInfo, setLevelInfo] = useState<LevelInfo | null>(null)
+  // 경험치가 바뀌었을 수 있을 때(새 알림 도착 'exp-changed' · 다른 화면에서 돌아옴) 레벨·EXP 를 다시 읽는다
+  //  — 관리자가 샵을 공개해 경험치가 들어와도 새로고침 없이 반영되게
+  useEffect(() => {
+    if (!userId) return
+    let last = 0
+    const reload = () => {
+      if (document.visibilityState === 'hidden') return
+      if (Date.now() - last < 15000) return
+      last = Date.now()
+      getMyLevelInfo(userId).then(setLevelInfo).catch(() => {})
+    }
+    window.addEventListener('exp-changed', reload)
+    document.addEventListener('visibilitychange', reload)
+    return () => {
+      window.removeEventListener('exp-changed', reload)
+      document.removeEventListener('visibilitychange', reload)
+    }
+  }, [userId])
   const [follow, setFollow] = useState<{ followers: number; following: number }>({ followers: 0, following: 0 })
   const [activities, setActivities] = useState<RecentActivity[]>([])
   const [feed, setFeed] = useState<FollowFeedItem[]>([])
