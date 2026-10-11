@@ -323,7 +323,7 @@ export default function MapPage() {
     handledWorkKey.current = key
     const first = workEvents[0]
     if (!first) {
-      // 지도에 띄울 진행 중 이벤트가 없다 → 안내만 (작품 화면으로 갈 수 있게)
+      // 지도에 띄울 진행 중 이벤트가 없다 → 안내 + 이벤트 화면에서 그 작품으로 검색
       setWorkToast({ name: searchParams.get('q') ?? '이 작품', slug: searchParams.get('ws') ?? '' })
       return
     }
@@ -566,12 +566,11 @@ export default function MapPage() {
             boxShadow: '0 4px 16px rgba(0,0,0,.25)', display: 'flex', alignItems: 'center', gap: 10,
           }}>
             <span>‘{workToast.name}’ 진행 중인 이벤트가 지도에 없어요</span>
-            {workToast.slug && (
-              <button type="button" onClick={() => router.push(`/work/${workToast.slug}`)}
-                style={{ flexShrink: 0, border: 'none', background: '#fff', color: 'var(--text)', borderRadius: 9999, padding: '5px 10px', fontSize: 12, fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit' }}>
-                작품 보기
-              </button>
-            )}
+            {/* 지도에 좌표가 없는 이벤트(극장·온라인 등)도 있으니 이벤트 화면에서 그 작품으로 검색해 보여준다 */}
+            <button type="button" onClick={() => router.push(`/events?q=${encodeURIComponent(workToast.name)}`)}
+              style={{ flexShrink: 0, border: 'none', background: '#fff', color: 'var(--text)', borderRadius: 9999, padding: '5px 10px', fontSize: 12, fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit' }}>
+              이벤트 보기
+            </button>
           </div>
         )}
 

@@ -260,6 +260,15 @@ export default function EventHomePage() {
   const [workId, setWorkId] = useSessionState<string | null>('taku:ev:work', null)
   const [selectedDay, setSelectedDay] = useSessionState<string | null>('taku:ev:day', null)
   const [sheet, setSheet] = useState(false)
+  // 주소의 ?q= 로 들어오면(지도에서 '진행 중인 이벤트가 지도에 없어요' → 이벤트 보기) 그 검색어로 바로 찾는다.
+  // 다른 필터에 가려지지 않게 전체 탭·필터 해제. 처음 한 번만.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get('q')?.trim()
+    if (!q) return
+    setTab('all'); setRegion(null); setType(null); setPeriod('all'); setWorkId(null); setSelectedDay(null)
+    onSearchChange(q)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => { getEventHomeItems().then(setItems).catch(() => {}).finally(() => setLoading(false)) }, [])
   useEffect(() => {
