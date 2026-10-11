@@ -15,7 +15,7 @@ import styles from './TopBar.module.css'
 
 const EMPTY: GlobalSearchResult = { shops: [], products: [], tags: [], characters: [], totalCount: 0 }
 
-type Suggestion = { kind: 'work' | 'shop' | 'goods'; label: string; href: string; sub?: string; mapSlug?: string }
+type Suggestion = { kind: 'work' | 'shop' | 'goods'; label: string; href: string; sub?: string; mapSlug?: string; workId?: string }
 const TYPE_RANK: Record<string, number> = { work: 0, shop: 1, goods: 2 }
 const KIND_ICON: Record<string, string> = { work: 'work', shop: 'colorshop', goods: 'colorgift' }
 const NOTI_ICON: Record<string, string> = { review_comment: 'commentbox', shop_comment: 'commentbox', comment: 'commentbox', post_comment: 'commentbox', like: 'heart', post_like: 'heart', review_like: 'heart', check_in: 'pushpin', checkin: 'pushpin', goods: 'gift', goods_restock: 'gift', product_restock: 'gift', shop_approved: 'shop', shop_review: 'pencil', verify_approved: 'check', verify_rejected: 'close', event: 'event', notice: 'megaphone', announcement: 'megaphone', report: 'warning', report_resolved: 'warning', post_report: 'warning', follow: 'bell', follow_post: 'bell', follow_route: 'bell', badge: 'medal', badge_earned: 'medal', route_completed: 'road', route_saved: 'road', review: 'pencil', contact_answered: 'commentbox' }
@@ -24,7 +24,7 @@ const stripSpaces = (s: string) => s.toLowerCase().replace(/\s+/g, '')
 function buildSuggestions(r: GlobalSearchResult, term: string): Suggestion[] {
   const t = stripSpaces(term)
   const items: Suggestion[] = []
-  r.tags.forEach(x => items.push({ kind: 'work', label: x.name, href: `/work/${x.slug}` }))
+  r.tags.forEach(x => items.push({ kind: 'work', label: x.name, href: `/work/${x.slug}`, workId: x.id }))
   r.shops.forEach(x => items.push({ kind: 'shop', label: x.name, href: `/shop/${x.slug}`, mapSlug: x.slug }))
   r.products.forEach(p => items.push({ kind: 'goods', label: `${p.tagName} ${p.goodsTypeName}`.trim(), href: `/shop/${p.shopSlug}`, sub: p.shopName, mapSlug: p.shopSlug }))
   const seen = new Set<string>()
@@ -127,10 +127,12 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
     e.preventDefault()
     // 지도에서 엔터 → 검색 결과 화면 대신, 가장 잘 맞는 샵의 핀으로 가서 말풍선을 연다
     if (onMap && term) {
-      let pick = suggestions.find(s => s.mapSlug)
+      // 맨 위 후보가 작품이면 그 작품의 이벤트로, 샵·굿즈면 그 샵으로
+      const mapable = (s: Suggestion) => !!s.mapSlug || (s.kind === 'work' && !!s.workId)
+      let pick = suggestions.find(mapable)
       if (!pick) {
         // 아직 자동완성이 안 왔으면(빠르게 엔터) 바로 한 번 찾는다
-        try { pick = buildSuggestions(await globalSearch(term, user?.id ?? null), term).find(s => s.mapSlug) } catch { /* 아래로 */ }
+        try { pick = buildSuggestions(await globalSearch(term, user?.id ?? null), term).find(mapable) } catch { /* 아래로 */ }
       }
       if (pick) { goSuggestion(pick); return }
       setOpen(true)   // 지도에 보여줄 샵이 없으면 검색창 아래 '결과 없음'을 그대로 보여준다
@@ -142,6 +144,14 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
   function go(href: string) { setOpen(false); setQ(''); router.push(href) }
   // 지도 화면: 샵·굿즈는 지도에서 그 샵 위치로 (t = 같은 샵을 다시 골라도 다시 이동하게)
   function goSuggestion(s: Suggestion) {
+    // 지도 화면: 작품은 그 작품의 진행 중 이벤트 핀으로 (여러 개면 아래 목록에 모아서 — MapPage)
+    if (onMap && s.kind === 'work' && s.workId) {
+      setOpen(false); setQ('')
+      ;(document.activeElement as HTMLElement | null)?.blur?.()
+      const slug = s.href.replace(/^\/work\//, '')
+      router.replace(`/map?work=${encodeURIComponent(s.workId)}&ws=${encodeURIComponent(slug)}&q=${encodeURIComponent(s.label)}&t=${Date.now()}`, { scroll: false })
+      return
+    }
     if (onMap && s.mapSlug) {
       setOpen(false); setQ('')
       ;(document.activeElement as HTMLElement | null)?.blur?.()   // 📱 키보드 내리기

@@ -102,7 +102,7 @@ export default function MapPage() {
      아래 목록에 그 이름의 샵들을 모아 보여준다. 2곳 미만이면 평소 목록 그대로. */
   const nameQ = (searchParams.get('q') ?? '').trim()
   const nameMatches = useMemo(() => {
-    if (!nameQ) return null
+    if (!nameQ || searchParams.get('work')) return null   // 작품 검색일 땐 이벤트 목록을 쓴다
     const norm = (v: string | null | undefined) => (v ?? '').toLowerCase().replace(/\s+/g, '')
     const n = norm(nameQ)
     if (!n) return null
@@ -112,9 +112,17 @@ export default function MapPage() {
     const first = searchParams.get('shop')
     return [...list].sort((a, b) => Number(b.slug === first) - Number(a.slug === first))
   }, [nameQ, shops, searchParams])
+  /* 지도 작품 검색(?work=작품id) — 그 작품의 진행 중 이벤트 핀으로 가고, 여러 개면 아래 목록에 모아 보여준다 */
+  const workId = searchParams.get('work')
+  const [eventsLoaded, setEventsLoaded] = useState(false)
+  const workEvents = useMemo(() => (workId ? mapEvents.filter(e => e.tagId === workId) : []), [workId, mapEvents])
+  const workSheet = workEvents.length >= 2 ? workEvents : null
+  const [workToast, setWorkToast] = useState<{ name: string; slug: string } | null>(null)
+  const searchSheetOn = !!nameMatches || !!workSheet
+
   const clearNameSearch = useCallback(() => {
     const p = new URLSearchParams(searchParams.toString())
-    p.delete('q')
+    p.delete('q'); p.delete('work'); p.delete('ws')
     router.replace(p.toString() ? `/map?${p}` : '/map', { scroll: false })
   }, [searchParams, router])
 
@@ -164,7 +172,7 @@ export default function MapPage() {
   // 진행중 이벤트를 지도에 핀으로 (전시 등 — 샵과 별개로 자체 좌표로 표시)
   useEffect(() => {
     let alive = true
-    getOngoingMapEvents().then(evs => { if (alive) setMapEvents(evs) })
+    getOngoingMapEvents().then(evs => { if (alive) { setMapEvents(evs); setEventsLoaded(true) } })
     return () => { alive = false }
   }, [])
 
@@ -304,6 +312,36 @@ export default function MapPage() {
     whenMapReady(() => mapRef.current?.moveCenter(tla, tln, 3))
     setSelectedShop(target)
   }, [searchParams, shops, selectedCat, selectedRegion, selectedDistrict, layer, whenMapReady, setSelectedCat, setSelectedRegion, setSelectedDistrict, setSelectedShop])
+
+  // URL의 ?work=작품id — 그 작품의 진행 중 이벤트 중 첫 번째 핀으로 이동해 말풍선. 같은 작품을 다시 검색해도 동작하게 t 까지 키로
+  const handledWorkKey = useRef<string | null>(null)
+  useEffect(() => {
+    if (!workId) { handledWorkKey.current = null; return }
+    if (!eventsLoaded) return
+    const key = `${workId}|${searchParams.get('t') ?? ''}`
+    if (handledWorkKey.current === key) return
+    handledWorkKey.current = key
+    const first = workEvents[0]
+    if (!first) {
+      // 지도에 띄울 진행 중 이벤트가 없다 → 안내만 (작품 화면으로 갈 수 있게)
+      setWorkToast({ name: searchParams.get('q') ?? '이 작품', slug: searchParams.get('ws') ?? '' })
+      return
+    }
+    setWorkToast(null)
+    // 필터에 가려지지 않게 — 카테고리·지역·보기 종류를 전체로
+    setSelectedCat('전체'); setSelectedRegion('전체'); setSelectedDistrict('전체')
+    setLayer('all')
+    setSelectedShop(null)
+    setGroupShops(null)
+    setBarHidden(false)
+    setSelectedEvent(first)
+    whenMapReady(() => mapRef.current?.moveCenter(first.lat, first.lng, 3))
+  }, [workId, eventsLoaded, workEvents, searchParams, whenMapReady, setSelectedCat, setSelectedRegion, setSelectedDistrict, setSelectedShop])
+  useEffect(() => {
+    if (!workToast) return
+    const t = setTimeout(() => setWorkToast(null), 6000)
+    return () => clearTimeout(t)
+  }, [workToast])
 
   // URL의 카테고리·지역·탭 — 덕질 지도 칩(?cat=이름), 전체 샵 목록의 '지도 보기'(?region=&district=&cats=&tab=)에서 진입
   const appliedFilterQs = useRef<string | null>(null)
@@ -475,7 +513,7 @@ export default function MapPage() {
         <div style={{
           position: 'absolute', right: '16px', zIndex: 130,
           // 아래 시트가 떠 있으면(같은 이름 샵 목록 포함) 시트 높이에 맞춰 올린다 — 말풍선만 있을 땐 110px
-          bottom: (selectedShop || selectedEvent) && !nameMatches ? '110px' : sheetState === 'peek' ? '380px' : sheetState === 'closed' ? '96px' : '24px',   // 접힌 시트 위로 12px 띄움 (84px 였을 땐 3px 붙어 보였다)
+          bottom: (selectedShop || selectedEvent) && !searchSheetOn ? '110px' : sheetState === 'peek' ? '380px' : sheetState === 'closed' ? '96px' : '24px',   // 접힌 시트 위로 12px 띄움 (84px 였을 땐 3px 붙어 보였다)
           opacity: sheetState === 'expanded' ? 0 : 1,
           pointerEvents: sheetState === 'expanded' ? 'none' : 'auto',
           transition: 'bottom .28s cubic-bezier(.32,.72,0,1), opacity .2s ease',
@@ -518,6 +556,25 @@ export default function MapPage() {
           )}
         </div>
 
+        {workToast && (
+          <div role="status" style={{
+            position: 'absolute', left: '50%', top: '120px', transform: 'translateX(-50%)',
+            zIndex: 150, width: 'max-content', maxWidth: '88%',
+            background: 'rgba(32,32,45,.92)', color: '#fff',
+            padding: '10px 14px', borderRadius: '12px',
+            fontSize: '13px', fontWeight: 600, lineHeight: 1.45,
+            boxShadow: '0 4px 16px rgba(0,0,0,.25)', display: 'flex', alignItems: 'center', gap: 10,
+          }}>
+            <span>‘{workToast.name}’ 진행 중인 이벤트가 지도에 없어요</span>
+            {workToast.slug && (
+              <button type="button" onClick={() => router.push(`/work/${workToast.slug}`)}
+                style={{ flexShrink: 0, border: 'none', background: '#fff', color: 'var(--text)', borderRadius: 9999, padding: '5px 10px', fontSize: 12, fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit' }}>
+                작품 보기
+              </button>
+            )}
+          </div>
+        )}
+
         {locToast && (
           <div style={{
             position: 'absolute', left: '50%', bottom: '16px', transform: 'translateX(-50%)',
@@ -530,7 +587,12 @@ export default function MapPage() {
             PC에서는 IP 기반으로 위치를 찾기 때문에<br />실제 위치와 다를 수 있어요
           </div>
         )}
-        {nameMatches ? (
+        {workSheet ? (
+          /* 작품 이벤트 여러 개 — 첫 이벤트 말풍선 + 아래에 그 작품 이벤트들 목록 */
+          <MapBottomSheet shops={EMPTY_SHOPS} events={workSheet} onSelectShop={handleSelectShop} onSelectEvent={handleSelectEvent} onStateChange={setSheetState} onListClick={goToFilteredList}
+            layer="event" onListScrollDir={dir => setBarHidden(dir === 'down')}
+            searchLabel={searchParams.get('q') ?? ''} onClearSearch={clearNameSearch} />
+        ) : nameMatches ? (
           /* 같은 이름 샵 여러 곳 — 말풍선이 떠 있어도 아래에 그 샵들 목록을 같이 */
           <MapBottomSheet shops={nameMatches} events={EMPTY_EVENTS} onSelectShop={handleSelectShop} onSelectEvent={handleSelectEvent} onStateChange={setSheetState} onListClick={goToFilteredList}
             layer="shop" onListScrollDir={dir => setBarHidden(dir === 'down')} loading={loading}

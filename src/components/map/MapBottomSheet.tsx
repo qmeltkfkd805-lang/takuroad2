@@ -225,7 +225,7 @@ export default function MapBottomSheet({ shops, events: eventsIn = [], onSelectS
         <div className={styles.header}>
           <div className={styles.title}>
             {searchLabel
-              ? <>‘{searchLabel}’ 샵 <strong>{shops.length}</strong>곳
+              ? <><span style={{ display: 'inline-block', maxWidth: 130, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', verticalAlign: 'bottom' }}>‘{searchLabel}’</span> <span style={{ whiteSpace: 'nowrap' }}>{layer === 'event' ? <>이벤트 <strong>{events.length}</strong>개</> : <>샵 <strong>{shops.length}</strong>곳</>}</span>
                   {onClearSearch && (
                     <button type="button" onClick={e => { e.stopPropagation(); onClearSearch() }} aria-label="검색 해제"
                       style={{ marginLeft: 6, border: 'none', background: 'var(--surface2)', color: 'var(--muted)', borderRadius: 9999, width: 22, height: 22, fontSize: 12, lineHeight: '22px', cursor: 'pointer', verticalAlign: '1px' }}>✕</button>
