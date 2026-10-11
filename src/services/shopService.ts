@@ -713,13 +713,14 @@ export async function getAdminShopsExcludingDeleted(): Promise<Shop[]> {
 export type ShopReviewStatus = 'pending' | 'reviewed' | 'needs_attention'
 
 /* 2026-10-10 '샵 등록 요청'으로 바뀌며 탭 기준을 공개 상태와 함께 본다.
-     pending          등록 요청(status='pending') + 예전 방식으로 이미 공개된 검수 대기(active·pending)
-                      — 아직 '등록 요청'을 누르지 않은 임시(hidden) 샵은 빼고
-     needs_attention  보완 요청 — 다시 등록 요청한 샵(status='pending')은 '등록 요청'으로 옮겨간다
-     reviewed         확인 완료 */
+     pending          등록 요청 — 사용자가 새로 등록 요청한 샵만(status='pending')
+     needs_attention  보완 요청 — 관리자가 돌려보낸 샵 + 기능 도입 전부터 공개돼 있던 확인 전 샵
+                      (active·review_status='pending'). 다시 등록 요청한 샵(status='pending')은 '등록 요청'으로
+     reviewed         확인 완료
+   아직 '등록 요청'을 누르지 않은 임시(hidden) 샵은 어느 탭에도 안 나온다. */
 export const REVIEW_TAB_FILTER: Record<ShopReviewStatus, string> = {
-  pending:         'status.eq.pending,and(status.eq.active,review_status.eq.pending)',
-  needs_attention: 'and(review_status.eq.needs_attention,status.neq.pending)',
+  pending:         'status.eq.pending',
+  needs_attention: 'and(status.neq.pending,or(review_status.eq.needs_attention,and(status.eq.active,review_status.eq.pending)))',
   reviewed:        'and(review_status.eq.reviewed,status.neq.pending)',
 }
 

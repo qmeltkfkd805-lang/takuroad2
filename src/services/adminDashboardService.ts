@@ -104,7 +104,7 @@ export interface AdminBadgeCounts {
   pendingPostReports: number | null
   openContacts: number | null
   openPartners: number | null
-  /** 샵 등록 요청 (status='pending') + 예전 방식으로 공개된 검수 대기(active·review_status='pending') */
+  /** 샵 등록 요청 (status='pending') — 사용자가 새로 등록 요청한 샵 */
   shopReview: number | null
   /** 작품 추가 요청 중 검토 대기 (work_requests.status='pending' — WorkRequestAdminTab '검토 중') */
   pendingWorkRequests: number | null
@@ -135,9 +135,9 @@ export async function getAdminBadgeCounts(): Promise<AdminBadgeCounts> {
       .neq('status', CONTACT_STATUS_DONE).neq('type', CONTACT_TYPE_PARTNER),
     supabase.from('contact_messages').select('id', { count: 'exact', head: true })
       .neq('status', CONTACT_STATUS_DONE).eq('type', CONTACT_TYPE_PARTNER),
-    // 샵 등록 요청 — 관리자 화면 '등록 요청' 탭과 같은 기준(shopService.REVIEW_TAB_FILTER.pending)
+    // 샵 등록 요청 — 관리자 화면 '등록 요청' 탭과 같은 기준(shopService.REVIEW_TAB_FILTER.pending): 새로 요청된 샵만
     supabase.from('shops').select('id', { count: 'exact', head: true })
-      .or(`status.eq.pending,and(status.eq.active,review_status.eq.${SHOP_REVIEW_PENDING})`).neq('status', 'deleted'),
+      .eq('status', 'pending'),
     supabase.from('work_requests').select('id', { count: 'exact', head: true })
       .eq('status', WORK_REQUEST_PENDING),
     supabase.from('feature_suggestions').select('id', { count: 'exact', head: true })
