@@ -474,7 +474,8 @@ export default function MapPage() {
 
         <div style={{
           position: 'absolute', right: '16px', zIndex: 130,
-          bottom: (selectedShop || selectedEvent) ? '110px' : sheetState === 'peek' ? '380px' : sheetState === 'closed' ? '84px' : '24px',
+          // 아래 시트가 떠 있으면(같은 이름 샵 목록 포함) 시트 높이에 맞춰 올린다 — 말풍선만 있을 땐 110px
+          bottom: (selectedShop || selectedEvent) && !nameMatches ? '110px' : sheetState === 'peek' ? '380px' : sheetState === 'closed' ? '96px' : '24px',   // 접힌 시트 위로 12px 띄움 (84px 였을 땐 3px 붙어 보였다)
           opacity: sheetState === 'expanded' ? 0 : 1,
           pointerEvents: sheetState === 'expanded' ? 'none' : 'auto',
           transition: 'bottom .28s cubic-bezier(.32,.72,0,1), opacity .2s ease',
