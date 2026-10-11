@@ -112,6 +112,10 @@ export function normalizeBranches(v: unknown): ShopBranch[] {
     .slice(0, 20)
 }
 
+/** 전체 샵 목록 — 지도·샵 목록·홈 인기 샵 같은 '목록'용.
+ *  ⚡ 2026-10-11 목록에서 안 쓰는 칸(소개글·SNS·전화·주차·등록자 등, lib/shop/slimShop 의 LIST_UNUSED)은
+ *  DB에서부터 받지 않는다. 예전엔 다 받아 놓고 API에서 지웠는데, Supabase 전송량은 'DB에서 받은 양'으로 센다.
+ *  상세·수정 화면은 getShopBySlug 등 자기 조회를 따로 한다. */
 export async function getShops(): Promise<Shop[]> {
   const supabase = createClient()
 
@@ -119,18 +123,17 @@ export async function getShops(): Promise<Shop[]> {
   const { data, error } = await fetchAllRows<any>((from, to) => supabase
     .from('shops')
     .select(`
-      id, slug, name, name_en, description,
+      id, slug, name, name_en,
       addr, country, region, city, district,
-      lat, lng, google_place_id,
+      lat, lng,
       place_id, floor, unit, floor_info,
       places ( slug, name, lat, lng, access_note ),
-      hours, parking, parking_note, shop_link, sns_links, phone,
-      start_date, end_date, event_info,
+      hours,
+      start_date, end_date,
       rating_avg, rating_count, visit_count, bookmark_count,
       is_verified, is_claimed, status,
-      temporary_holiday_start, temporary_holiday_end, temporary_holiday_message,
-      added_by, owner_id,
-      created_at, updated_at,
+      temporary_holiday_start, temporary_holiday_end,
+      created_at,
       shop_images ( image_url, is_cover, sort_order ),
       cats
     `)

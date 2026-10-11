@@ -8,17 +8,17 @@ import { resolveEventCover } from '@/lib/event/eventCover'
 import type { ShopHomeItem } from '@/services/shopHomeService'
 import { fetchAllRows } from '@/lib/supabase/fetchAll'
 
+// ⚡ 2026-10-11 목록에서 안 쓰는 칸(lib/shop/slimShop 의 LIST_UNUSED)은 DB에서부터 받지 않는다 (Supabase 전송량 절감)
 const SHOP_SELECT = `
-  id, slug, name, name_en, description,
+  id, slug, name, name_en,
   addr, country, region, city, district,
-  lat, lng, google_place_id,
-  hours, parking, parking_note, shop_link, sns_links, phone,
-  start_date, end_date, event_info,
+  lat, lng,
+  hours,
+  start_date, end_date,
   rating_avg, rating_count, visit_count, bookmark_count,
   is_verified, is_claimed, status,
-      temporary_holiday_start, temporary_holiday_end, temporary_holiday_message, featured_order,
-  added_by, owner_id,
-  created_at, updated_at,
+      temporary_holiday_start, temporary_holiday_end, featured_order,
+  created_at,
   shop_images ( image_url, is_cover, sort_order ),
   cats
 `
