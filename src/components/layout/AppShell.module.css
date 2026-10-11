@@ -58,3 +58,7 @@
   .headerHome .logo img { height: 34px; }
   .headerHome .headerBar { display: contents; }
 }
+
+/* 검색 중(검색창이나 자동완성 목록에 포커스)에는 상단바를 화면 맨 위로 — 자동완성 목록이
+   지도 카테고리·바텀시트(z-index 최대 200) 같은 다른 요소에 가려지지 않게. 모달(999)보다는 아래 */
+.header:focus-within { z-index: 900; }
