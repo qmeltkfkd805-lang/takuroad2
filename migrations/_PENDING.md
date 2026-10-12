@@ -3,10 +3,9 @@
 > 코드는 커밋됐지만 DB에 반영이 안 된 것들. 돌리고 나면 이 목록에서 지운다.
 > **배포(`git push`) 전에 반드시 여기가 비어 있어야 한다.**
 
-## `account_delete_reasons.sql` — 탈퇴 사유(선택) (2026-10-12)
+## 없음 ✅
 
-- 안 돌리면: 탈퇴는 정상으로 되지만 고른 사유가 저장되지 않는다(서버 로그에 '탈퇴 사유 저장 실패').
-- 확인: 파일 맨 아래 [확인] 쿼리 1행.
+2026-10-12 기준으로 밀린 마이그레이션 없음.
 
 ---
 
@@ -53,6 +52,7 @@ psql "postgresql://postgres:<비밀번호>@db.<프로젝트ref>.supabase.co:5432
 
 | 날짜 | 파일 | 내용 |
 | --- | --- | --- |
+| 2026-10-12 | `account_delete_reasons.sql` | 탈퇴 사유(선택) 테이블 `account_deletion_reasons`(reason 7종 check · detail ≤300자 · created_at). 회원 식별 정보 없음. RLS 켜고 public·anon·authenticated 권한 전부 회수, service_role 만 select·insert(`/api/account/delete`가 탈퇴 완료 후 저장). 검증: relrowsecurity=true |
 | 2026-10-12 | `members_exclude_deleted.sql` | 탈퇴 회원(profiles.status='deleted' 껍데기)을 `get_dashboard_stats` 의 전체 회원·오늘 가입과 `get_admin_members` 목록·검색·총 건수에서 제외. 운영 함수 본문을 읽어 조건만 끼워 넣는 방식(자리 못 찾으면 중단). 검증: 두 함수 본문에 deleted 제외 확인 |
 | 2026-10-12 | `account_delete.sql` | 회원 탈퇴 — `profiles_id_fkey`(→auth.users CASCADE) 제거해 계정 삭제 후에도 profiles 를 '탈퇴한회원_xxxxxxxx' 껍데기로 남김(글·댓글·후기·루트 보존). `route_reviews`·`route_review_photos`·`event_visit_photos` 외래키를 profiles(cascade)로, `contact_messages` 를 profiles(set null)로 재연결. `delete_account_data(uid)`(service_role 전용) — 개인 기록 삭제·인증 매장 해제·프로필 익명화, 관리자 거부. 서버 `/api/account/delete` 가 이 함수 후 `auth.admin.deleteUser`. 사전 점검: 재연결 4테이블 고아 행 0. 탈퇴 실동작 확인 |
 | 2026-10-10 | `shop_register_request_fix.sql` | 바로 공개는 관리자만 — 처음엔 '사장님 인증 1곳 이상'인 사람도 새 샵을 즉시 공개하게 했는데, 인증은 그 매장 하나에 대한 것이라 제거. INSERT 는 일반 사용자 항상 hidden, status 는 본인 샵 hidden↔pending 만. `is_verified_shop_owner()` 는 승인된 인증 요청 기준으로 바로잡고 남겨 둠(미사용). 검증: 두 트리거 함수에 사장님 예외 없음 |
