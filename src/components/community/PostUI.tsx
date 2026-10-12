@@ -20,6 +20,7 @@ import { getExhibitEntryIdForPost, addExhibitEntry, deleteExhibit, exhibitRemove
 import AppIcon from '@/components/tds/AppIcon'
 import LogoLoader from '@/components/common/LogoLoader'
 import { PostEventLinkCard } from './CompanionEventPicker'
+import { blockUser } from '@/services/blockService'
 import { getPostEvent, PostEventSummary } from '@/services/postEventService'
 
 // ── 대표 팬아트 배지 ──
@@ -234,6 +235,22 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
 
   const isAuthor = !!user && post.author?.id === user.id
 
+  // ── 차단 (글 작성자 · 댓글 작성자) ──
+  // 차단하면 community_posts_visible / post_comments_visible 에서 빠지므로
+  // 글 작성자면 글을 닫고, 댓글 작성자면 댓글을 다시 불러온다. 해제는 설정 > 차단 관리.
+  const [blockBusy, setBlockBusy] = useState(false)
+  async function blockAuthor(target: { id: string; nickname?: string | null }, isPostAuthor: boolean) {
+    if (!user || blockBusy || target.id === user.id) return
+    const who = target.nickname ? `${target.nickname}님을` : '이 사용자를'
+    if (!window.confirm(`${who} 차단할까요?\n서로의 글·댓글이 보이지 않게 되고, 기존 팔로우도 해제돼요.\n해제는 설정 > 차단 관리에서 할 수 있어요.`)) return
+    setBlockBusy(true)
+    const r = await blockUser(target.id)
+    setBlockBusy(false)
+    if (!r.ok) { window.alert(r.message ?? '차단할 수 없어요.'); return }
+    if (isPostAuthor) { window.alert('차단했어요.'); onChanged?.(); onClose() }
+    else loadComments()
+  }
+
   // ── 전시관 추가/제외 (내 굿즈 글 + 활성 글만) ──
   // undefined = 아직 모름(메뉴 열 때 확인), null = 전시 안 함, string = 전시 id
   const canExhibit = isAuthor && post.board === 'goods' && post.status === 'active'
@@ -344,6 +361,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
         공유
       </button>
       {user && <button onClick={() => setReporting(true)} style={toolBtn}>신고</button>}
+      {canBlock(user, post.author) && <button onClick={() => blockAuthor(post.author!, true)} disabled={blockBusy} style={toolBtn}>차단</button>}
     </span>
   )
 
@@ -353,9 +371,9 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 14 }}>
         {comments.map(c => (
           <div key={c.id} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <CommentRow c={c} highlight={c.id === highlightId} user={user} isAdmin={isAdmin} onLike={likeComment} onReply={(id) => { setReplyTo(replyTo === id ? null : id); setReplyText('') }} onDelete={removeComment} />
+            <CommentRow c={c} highlight={c.id === highlightId} user={user} isAdmin={isAdmin} onLike={likeComment} onReply={(id) => { setReplyTo(replyTo === id ? null : id); setReplyText('') }} onDelete={removeComment} onBlock={(a) => blockAuthor(a, false)} />
             {c.replies.map(r => (
-              <CommentRow key={r.id} c={r} highlight={r.id === highlightId} isReply user={user} isAdmin={isAdmin} onLike={likeComment} onDelete={removeComment} />
+              <CommentRow key={r.id} c={r} highlight={r.id === highlightId} isReply user={user} isAdmin={isAdmin} onLike={likeComment} onDelete={removeComment} onBlock={(a) => blockAuthor(a, false)} />
             ))}
             {replyTo === c.id && user && (
               <div style={{ display: 'flex', gap: 8, marginLeft: 28 }}>
@@ -810,9 +828,16 @@ function RelatedGoodsCard({ posts, onOpen, onMore }: { posts: CommunityPost[]; o
 }
 
 
-function CommentRow({ c, isReply, highlight, user, isAdmin, onLike, onReply, onDelete }: {
+/* 차단 버튼을 보일지 — 로그인했고, 남이고, 탈퇴한 회원이 아닐 때만
+   (탈퇴한 회원은 로그인 계정이 없어 차단 대상이 될 수 없다) */
+function canBlock(user: { id: string } | null, author: { id: string; nickname?: string | null } | null | undefined): boolean {
+  return !!user && !!author?.id && author.id !== user.id && !(author.nickname ?? '').startsWith('탈퇴한회원_')
+}
+
+function CommentRow({ c, isReply, highlight, user, isAdmin, onLike, onReply, onDelete, onBlock }: {
   c: PostComment; isReply?: boolean; highlight?: boolean; user: { id: string } | null; isAdmin: boolean;
-  onLike: (c: PostComment) => void; onReply?: (id: string) => void; onDelete: (id: string) => void
+  onLike: (c: PostComment) => void; onReply?: (id: string) => void; onDelete: (id: string) => void;
+  onBlock?: (author: { id: string; nickname?: string | null }) => void
 }) {
   const canDelete = isAdmin || (!!user && c.author?.id === user.id)
   const rowRef = useRef<HTMLDivElement>(null)
@@ -836,6 +861,7 @@ function CommentRow({ c, isReply, highlight, user, isAdmin, onLike, onReply, onD
           {c.likeCount > 0 ? c.likeCount : ''}
         </button>
         {canDelete && <button onClick={() => onDelete(c.id)} style={{ border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 11, color: 'var(--muted)' }}>삭제</button>}
+        {!canDelete && onBlock && canBlock(user, c.author) && <button onClick={() => onBlock(c.author!)} style={{ border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 11, color: 'var(--muted)' }}>차단</button>}
       </div>
     </div>
   )
