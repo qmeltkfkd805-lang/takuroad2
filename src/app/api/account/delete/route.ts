@@ -17,13 +17,15 @@ export const runtime = 'nodejs'
    ============================================================ */
 
 const CONFIRM_PHRASE = '탈퇴합니다'
+// 탈퇴 사유(선택) — DeleteAccountPage 의 REASONS 와 같은 값. migrations/account_delete_reasons.sql
+const REASON_CODES = ['lack_features', 'no_info', 'hard_to_use', 'too_many_alerts', 'other_account', 'privacy', 'etc'] as const
 
 export async function POST(req: NextRequest) {
   const userSupabase = await createServerClient()
   const { data: { user } } = await userSupabase.auth.getUser()
   if (!user) return NextResponse.json({ error: '로그인이 필요해요' }, { status: 401 })
 
-  let body: { phrase?: unknown }
+  let body: { phrase?: unknown; reason?: unknown; detail?: unknown }
   try { body = await req.json() } catch { body = {} }
   if (body.phrase !== CONFIRM_PHRASE) {
     return NextResponse.json({ error: '확인 문구가 맞지 않아요' }, { status: 400 })
@@ -48,6 +50,14 @@ export async function POST(req: NextRequest) {
   if (authErr) {
     console.error('[account-delete] 계정 삭제 실패', { status: authErr.status, message: authErr.message })
     return NextResponse.json({ error: '탈퇴 처리를 마치지 못했어요. 다시 한 번 눌러 주세요.' }, { status: 500 })
+  }
+
+  // 3) 탈퇴 사유(선택) — 누가 남겼는지는 저장하지 않는다. 실패해도 탈퇴는 이미 끝났으므로 성공으로 응답
+  const reason = typeof body.reason === 'string' && (REASON_CODES as readonly string[]).includes(body.reason) ? body.reason : null
+  if (reason) {
+    const detail = typeof body.detail === 'string' ? body.detail.trim().slice(0, 300) : ''
+    const { error: rErr } = await svc.from('account_deletion_reasons').insert({ reason, detail: detail || null })
+    if (rErr) console.error('[account-delete] 탈퇴 사유 저장 실패', { code: rErr.code, message: rErr.message })
   }
 
   return NextResponse.json({ success: true })

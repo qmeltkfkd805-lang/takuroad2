@@ -19,6 +19,17 @@ const REMOVED = [
   '굿즈 보관함 · 전시관',
   '알림 · 사장님 인증',
 ]
+// 탈퇴 사유(선택) — 값은 /api/account/delete 의 REASON_CODES 와 같아야 한다
+const REASONS: { code: string; label: string }[] = [
+  { code: 'lack_features', label: '원하는 기능이 없어요' },
+  { code: 'no_info', label: '찾는 샵·이벤트 정보가 부족해요' },
+  { code: 'hard_to_use', label: '사용하기 불편해요' },
+  { code: 'too_many_alerts', label: '알림이 너무 많아요' },
+  { code: 'other_account', label: '다른 계정을 쓰고 있어요' },
+  { code: 'privacy', label: '개인정보가 걱정돼요' },
+  { code: 'etc', label: '기타' },
+]
+
 const IconTrash = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M4 7h16" /><path d="M9 7V4.8A.8.8 0 0 1 9.8 4h4.4a.8.8 0 0 1 .8.8V7" /><path d="M6 7l1 12.2A2 2 0 0 0 9 21h6a2 2 0 0 0 2-1.8L18 7" /><path d="M10 11v6M14 11v6" />
@@ -50,6 +61,8 @@ export default function DeleteAccountPage() {
   const [phrase, setPhrase] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const [reason, setReason] = useState<string | null>(null)
+  const [detail, setDetail] = useState('')
 
   useEffect(() => {
     if (!loading && !user) router.replace('/login')
@@ -71,7 +84,7 @@ export default function DeleteAccountPage() {
       const res = await fetch('/api/account/delete', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phrase }),
+        body: JSON.stringify({ phrase, reason, detail: reason ? detail.trim() : '' }),
       })
       const json = await res.json().catch(() => ({}))
       if (!res.ok) { setError(json.error ?? '탈퇴 처리에 실패했어요. 잠시 후 다시 시도해 주세요.'); setBusy(false); return }
@@ -173,6 +186,28 @@ export default function DeleteAccountPage() {
             {step === 3 && (
               <div style={box}>
                 <h2 style={{ fontSize: 16, fontWeight: 900, margin: '0 0 12px' }}>마지막 확인</h2>
+
+                <div className={da.reasonBox}>
+                  <p className={da.reasonTitle}>떠나시는 이유를 알려주세요 <span className={da.optional}>선택</span></p>
+                  <p className={da.reasonDesc}>더 나은 타쿠로드를 만드는 데 참고할게요. 누가 남겼는지는 저장하지 않아요.</p>
+                  <div className={da.reasonChips} role="radiogroup" aria-label="탈퇴 사유">
+                    {REASONS.map(r => (
+                      <button key={r.code} type="button" role="radio" aria-checked={reason === r.code}
+                        className={`${da.chip} ${reason === r.code ? da.chipOn : ''}`}
+                        onClick={() => setReason(reason === r.code ? null : r.code)}>
+                        {r.label}
+                      </button>
+                    ))}
+                  </div>
+                  {reason && (
+                    <textarea
+                      className={da.reasonText} value={detail} onChange={e => setDetail(e.target.value)}
+                      maxLength={300} rows={3}
+                      placeholder={reason === 'etc' ? '어떤 점이 아쉬웠는지 적어 주세요 (선택)' : '더 하고 싶은 말이 있다면 적어 주세요 (선택)'}
+                    />
+                  )}
+                </div>
+
                 <p style={{ fontSize: 13.5, color: 'var(--muted)', lineHeight: 1.7, margin: '0 0 12px' }}>
                   탈퇴하려면 <b style={{ color: 'var(--text)' }}>{CONFIRM_PHRASE}</b> 를 입력해 주세요.
                 </p>

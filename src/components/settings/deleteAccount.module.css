@@ -59,6 +59,24 @@
 .btnPrimary { background: var(--accent); color: #fff; border: none; }
 .btnPrimary:hover { filter: brightness(.97); }
 
+/* ── 3단계: 탈퇴 사유(선택) ── */
+.reasonBox { margin: 0 0 18px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+.reasonTitle { font-size: 14px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.optional { font-size: 11.5px; font-weight: 700; color: var(--muted); background: var(--surface2); padding: 2px 7px; border-radius: 6px; }
+.reasonDesc { margin-top: 4px; font-size: 12.5px; color: var(--muted); line-height: 1.55; word-break: keep-all; }
+.reasonChips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.chip {
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  border-radius: 9999px; padding: 7px 12px; font-family: inherit; font-size: 13px; font-weight: 600;
+  cursor: pointer; line-height: 1.3; text-align: left; word-break: keep-all;
+}
+.chipOn { border-color: rgba(255,86,146,.4); background: rgba(255,86,146,.12); color: var(--accent); font-weight: 800; }
+.reasonText {
+  width: 100%; margin-top: 10px; padding: 10px 12px; box-sizing: border-box;
+  border: 1px solid var(--border); border-radius: 10px; background: var(--surface);
+  font-family: inherit; font-size: 13.5px; color: var(--text); resize: vertical; line-height: 1.5;
+}
+
 /* 모바일(터치) — 좌우 20px, 본문 14.5px */
 @media (pointer: coarse) and (max-width: 1023px) {
   .sheet { padding: 28px 20px calc(32px + env(safe-area-inset-bottom)); }
