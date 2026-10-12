@@ -64,13 +64,29 @@
 .reasonTitle { font-size: 14px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .optional { font-size: 11.5px; font-weight: 700; color: var(--muted); background: var(--surface2); padding: 2px 7px; border-radius: 6px; }
 .reasonDesc { margin-top: 4px; font-size: 12.5px; color: var(--muted); line-height: 1.55; word-break: keep-all; }
-.reasonChips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-.chip {
-  border: 1px solid var(--border); background: var(--surface); color: var(--text);
-  border-radius: 9999px; padding: 7px 12px; font-family: inherit; font-size: 13px; font-weight: 600;
-  cursor: pointer; line-height: 1.3; text-align: left; word-break: keep-all;
+.sel { position: relative; margin-top: 12px; }
+.selBtn, .selBtnOn {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%;
+  height: 46px; padding: 0 14px; border-radius: 11px; cursor: pointer; text-align: left;
+  font-family: inherit; font-size: 14px; font-weight: 600; border: 1px solid var(--border); background: var(--surface); color: var(--muted);
 }
-.chipOn { border-color: rgba(255,86,146,.4); background: rgba(255,86,146,.12); color: var(--accent); font-weight: 800; }
+.selBtn:hover { border-color: var(--accent); }
+.selBtnOn { border-color: var(--accent); background: var(--accent-l); color: var(--accent); font-weight: 700; }
+.selText { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chevDown, .chevUp { flex-shrink: 0; transition: transform .15s ease; opacity: .6; }
+.chevUp { transform: rotate(180deg); }
+.selMenu {
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 40;
+  max-height: 320px; overflow-y: auto; display: flex; flex-direction: column;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 6px;
+}
+.selItem, .selItemOn {
+  display: flex; align-items: center; width: 100%; text-align: left; padding: 10px 10px;
+  border: none; background: none; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 13.5px; color: var(--text); word-break: keep-all;
+}
+.selItem:hover { background: var(--surface2); }
+.selItemOn { background: var(--accent-l); color: var(--accent); font-weight: 700; }
 .askWrap { margin-top: 14px; }
 .askLabel { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 13.5px; font-weight: 800; color: var(--text); word-break: keep-all; }
 .askCount { margin-top: 4px; text-align: right; font-size: 11.5px; color: var(--muted); }

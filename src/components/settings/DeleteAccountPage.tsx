@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import styles from './settings.module.css'
@@ -30,6 +30,39 @@ const REASONS: { code: string; label: string; ask?: string; hint?: string }[] = 
   { code: 'privacy', label: '개인정보가 걱정돼요' },
   { code: 'etc', label: '기타', ask: '어떤 점이 아쉬웠는지 알려주세요', hint: '자유롭게 적어 주세요' },
 ]
+
+/* 사유 드롭다운 — 루트 목록 정렬·필터와 같은 모양(버튼 + 펼침 목록) */
+function ReasonSelect({ value, onChange }: { value: string | null; onChange: (v: string | null) => void }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (!open) return
+    const h = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false) }
+    document.addEventListener('mousedown', h)
+    return () => document.removeEventListener('mousedown', h)
+  }, [open])
+  const picked = REASONS.find(r => r.code === value)
+  const pick = (v: string | null) => { onChange(v); setOpen(false) }
+  return (
+    <div className={da.sel} ref={ref}>
+      <button type="button" className={picked ? da.selBtnOn : da.selBtn} onClick={() => setOpen(o => !o)} aria-expanded={open} aria-haspopup="listbox">
+        <span className={da.selText}>{picked?.label ?? '사유를 골라 주세요'}</span>
+        <svg className={open ? da.chevUp : da.chevDown} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+      </button>
+      {open && (
+        <div className={da.selMenu} role="listbox" aria-label="탈퇴 사유">
+          <button type="button" role="option" aria-selected={!value} className={!value ? da.selItemOn : da.selItem} onClick={() => pick(null)}>선택 안 함</button>
+          {REASONS.map(r => (
+            <button key={r.code} type="button" role="option" aria-selected={value === r.code}
+              className={value === r.code ? da.selItemOn : da.selItem} onClick={() => pick(r.code)}>
+              {r.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
 const IconTrash = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -192,15 +225,7 @@ export default function DeleteAccountPage() {
                 <div className={da.reasonBox}>
                   <p className={da.reasonTitle}>떠나시는 이유를 알려주세요 <span className={da.optional}>선택</span></p>
                   <p className={da.reasonDesc}>더 나은 타쿠로드를 만드는 데 참고할게요. 누가 남겼는지는 저장하지 않아요.</p>
-                  <div className={da.reasonChips} role="radiogroup" aria-label="탈퇴 사유">
-                    {REASONS.map(r => (
-                      <button key={r.code} type="button" role="radio" aria-checked={reason === r.code}
-                        className={`${da.chip} ${reason === r.code ? da.chipOn : ''}`}
-                        onClick={() => setReason(reason === r.code ? null : r.code)}>
-                        {r.label}
-                      </button>
-                    ))}
-                  </div>
+                  <ReasonSelect value={reason} onChange={setReason} />
                   {(() => {
                     const picked = REASONS.find(r => r.code === reason)
                     if (!picked?.ask) return null
