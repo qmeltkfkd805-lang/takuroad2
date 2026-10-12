@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import styles from './settings.module.css'
+import da from './deleteAccount.module.css'
 
 /* 회원 탈퇴 (2026-10-12)
    실제 처리는 서버(/api/account/delete)가 한다 — 개인 기록 삭제 + 로그인 계정 삭제.
@@ -18,6 +19,22 @@ const REMOVED = [
   '굿즈 보관함 · 전시관',
   '알림 · 사장님 인증',
 ]
+const IconTrash = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M4 7h16" /><path d="M9 7V4.8A.8.8 0 0 1 9.8 4h4.4a.8.8 0 0 1 .8.8V7" /><path d="M6 7l1 12.2A2 2 0 0 0 9 21h6a2 2 0 0 0 2-1.8L18 7" /><path d="M10 11v6M14 11v6" />
+  </svg>
+)
+const IconDoc = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5" /><path d="M9 13h6M9 17h4" />
+  </svg>
+)
+const IconInfo = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="9" /><path d="M12 11v5" /><path d="M12 7.6v.2" />
+  </svg>
+)
+
 const KEPT = [
   '커뮤니티 글 · 댓글',
   '이벤트 후기 · Q&A, 샵 리뷰',
@@ -83,7 +100,7 @@ export default function DeleteAccountPage() {
         </div>
       </div>
 
-      <div className={styles.container}>
+      <div className={!isAdmin && step === 1 ? undefined : styles.container}>
         {isAdmin ? (
           <div style={box}>
             <h2 style={{ fontSize: 16, fontWeight: 900, margin: '0 0 12px' }}>관리자 계정은 탈퇴할 수 없어요</h2>
@@ -94,16 +111,45 @@ export default function DeleteAccountPage() {
         ) : (
           <>
             {step === 1 && (
-              <div style={box}>
-                <h2 style={{ fontSize: 16, fontWeight: 900, margin: '0 0 6px' }}>탈퇴하면 이렇게 돼요</h2>
-                <p style={label}>삭제돼요 · 되돌릴 수 없어요</p>
-                <ul style={listStyle}>{REMOVED.map(t => <li key={t}>{t}</li>)}</ul>
-                <p style={label}>‘탈퇴한 회원’ 이름으로 남아요</p>
-                <ul style={listStyle}>{KEPT.map(t => <li key={t}>{t}</li>)}</ul>
-                <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.7, margin: '14px 0 0' }}>
-                  남기고 싶지 않은 글은 탈퇴 전에 직접 지워 주세요. 같은 계정으로 다시 가입하면 새 회원으로 시작해요.
-                </p>
-                <button style={primaryBtn} onClick={() => setStep(2)}>확인했어요</button>
+              <div className={da.sheet}>
+                <div className={da.inner}>
+                  <div className={da.head}>
+                    <h2 className={da.title}>탈퇴 전 확인해 주세요</h2>
+                    <p className={da.desc}>삭제되는 정보와 남는 게시물을 안내해 드려요.</p>
+                  </div>
+
+                  <section className={da.section} aria-labelledby="da-removed">
+                    <div className={da.secHead}>
+                      <span className={`${da.secIcon} ${da.secIconDel}`}><IconTrash /></span>
+                      <h3 id="da-removed" className={da.secTitle}>삭제되는 정보</h3>
+                      <span className={`${da.badge} ${da.badgeDel}`}>복구 불가</span>
+                    </div>
+                    <ul className={da.list}>{REMOVED.map(t => <li key={t}>{t}</li>)}</ul>
+                  </section>
+
+                  <section className={da.section} aria-labelledby="da-kept">
+                    <div className={da.secHead}>
+                      <span className={`${da.secIcon} ${da.secIconKeep}`}><IconDoc /></span>
+                      <h3 id="da-kept" className={da.secTitle}>남는 게시물</h3>
+                      <span className={`${da.badge} ${da.badgeKeep}`}>탈퇴한 회원으로 표시</span>
+                    </div>
+                    <ul className={da.list}>{KEPT.map(t => <li key={t}>{t}</li>)}</ul>
+                  </section>
+
+                  <div className={da.note}>
+                    <span className={da.noteIcon}><IconInfo /></span>
+                    <div>
+                      <p className={da.noteMain}>남기고 싶지 않은 글은 탈퇴 전에 직접 삭제해 주세요.</p>
+                      <p className={da.noteSub}>같은 계정으로 다시 가입해도 새 회원으로 시작해요.</p>
+                    </div>
+                  </div>
+
+                  {/* 이 버튼은 탈퇴를 실행하지 않는다 — 2단계(계정 확인)로 넘어갈 뿐. 실제 탈퇴는 3단계 '탈퇴하기' */}
+                  <div className={da.actions}>
+                    <button type="button" className={`${da.btn} ${da.btnGhost}`} onClick={() => router.push('/profile/settings')}>돌아가기</button>
+                    <button type="button" className={`${da.btn} ${da.btnPrimary}`} onClick={() => setStep(2)}>확인하고 계속</button>
+                  </div>
+                </div>
               </div>
             )}
 

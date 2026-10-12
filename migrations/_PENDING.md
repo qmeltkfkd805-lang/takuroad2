@@ -3,11 +3,9 @@
 > 코드는 커밋됐지만 DB에 반영이 안 된 것들. 돌리고 나면 이 목록에서 지운다.
 > **배포(`git push`) 전에 반드시 여기가 비어 있어야 한다.**
 
-## `account_delete.sql` — 회원 탈퇴 (2026-10-12)
+## 없음 ✅
 
-- 안 돌리면: 설정 > 회원 탈퇴가 `delete_account_data` 없음으로 실패한다(데이터는 안 건드림).
-- 하는 일: `profiles_id_fkey` 제거, `route_reviews`·`route_review_photos`·`event_visit_photos`·`contact_messages` 의 user_id 를 profiles 로 재연결, `delete_account_data(uid)` (service_role 전용) 추가.
-- 확인: 파일 맨 아래 [확인] 쿼리 3개.
+2026-10-12 기준으로 밀린 마이그레이션 없음.
 
 ---
 

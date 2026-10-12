@@ -1,0 +1,77 @@
+/* ===== 회원 탈퇴 — 1단계 안내 화면 (2026-10-12) =====
+   설정 공통 헤더(settings.module.css)는 그대로 쓰고, 본문만 흰 바탕 한 장으로.
+   카드·그림자 없이 구분선 하나로 '삭제되는 정보 / 남는 게시물'을 나눈다. */
+
+.sheet {
+  background: var(--surface);
+  min-height: calc(100dvh - 56px);
+  padding: 40px 24px calc(40px + env(safe-area-inset-bottom));
+}
+.inner { max-width: 600px; margin: 0 auto; }
+
+.head { text-align: center; margin-bottom: 28px; }
+.title { font-size: 26px; font-weight: 900; color: var(--text); line-height: 1.35; letter-spacing: -0.02em; word-break: keep-all; }
+.desc { margin-top: 6px; font-size: 14.5px; color: var(--muted); line-height: 1.6; word-break: keep-all; }
+
+.section { padding: 4px 0 22px; }
+.section + .section { border-top: 1px solid var(--border); padding-top: 22px; }
+
+.secHead { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; }
+.secIcon { flex-shrink: 0; display: inline-flex; width: 22px; justify-content: center; }
+.secIconDel { color: var(--red); }
+.secIconKeep { color: var(--muted); }
+.secTitle { font-size: 17px; font-weight: 800; color: var(--text); }
+.badge {
+  display: inline-flex; align-items: center;
+  font-size: 12px; font-weight: 700; line-height: 1.4;
+  padding: 3px 9px; border-radius: 6px; white-space: nowrap;
+}
+.badgeDel { color: var(--red); background: var(--red-l); }
+.badgeKeep { color: var(--muted); background: var(--surface2); }
+
+.list { list-style: none; margin: 12px 0 0; padding: 0 0 0 32px; }
+.list li {
+  position: relative; padding-left: 14px;
+  font-size: 15px; color: var(--text); line-height: 1.55; word-break: keep-all;
+}
+.list li + li { margin-top: 6px; }
+.list li::before {
+  content: ''; position: absolute; left: 0; top: 0.68em;
+  width: 5px; height: 5px; border-radius: 9999px; background: #C4C4CC;
+}
+
+.note {
+  display: flex; gap: 10px; align-items: flex-start;
+  margin-top: 8px; padding: 14px 16px;
+  background: var(--surface2); border-radius: 12px;
+}
+.noteIcon { flex-shrink: 0; color: var(--muted); display: inline-flex; margin-top: 2px; }
+.noteMain { font-size: 14px; color: var(--text); line-height: 1.55; word-break: keep-all; }
+.noteSub { margin-top: 2px; font-size: 13px; color: var(--muted); line-height: 1.55; word-break: keep-all; }
+
+.actions { display: grid; grid-template-columns: 1fr 1.2fr; gap: 10px; margin-top: 20px; }
+.btn {
+  height: 50px; border-radius: 12px; font-family: inherit;
+  font-size: 15px; font-weight: 800; cursor: pointer; padding: 0 12px;
+}
+.btnGhost { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+.btnGhost:hover { background: var(--surface2); }
+.btnPrimary { background: var(--accent); color: #fff; border: none; }
+.btnPrimary:hover { filter: brightness(.97); }
+
+/* 모바일(터치) — 좌우 20px, 본문 14.5px */
+@media (pointer: coarse) and (max-width: 1023px) {
+  .sheet { padding: 28px 20px calc(32px + env(safe-area-inset-bottom)); }
+  .head { margin-bottom: 22px; }
+  .title { font-size: 21px; }
+  .desc { font-size: 13.5px; }
+  .section { padding-bottom: 18px; }
+  .section + .section { padding-top: 18px; }
+  .secTitle { font-size: 16px; }
+  .list { margin-top: 10px; padding-left: 30px; }
+  .list li { font-size: 14.5px; }
+  .note { padding: 12px 14px; }
+  .noteMain { font-size: 13.5px; }
+  .noteSub { font-size: 12.5px; }
+  .btn { height: 48px; font-size: 14.5px; }
+}
