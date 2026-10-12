@@ -71,8 +71,11 @@
   cursor: pointer; line-height: 1.3; text-align: left; word-break: keep-all;
 }
 .chipOn { border-color: rgba(255,86,146,.4); background: rgba(255,86,146,.12); color: var(--accent); font-weight: 800; }
+.askWrap { margin-top: 14px; }
+.askLabel { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 13.5px; font-weight: 800; color: var(--text); word-break: keep-all; }
+.askCount { margin-top: 4px; text-align: right; font-size: 11.5px; color: var(--muted); }
 .reasonText {
-  width: 100%; margin-top: 10px; padding: 10px 12px; box-sizing: border-box;
+  width: 100%; margin-top: 8px; padding: 10px 12px; box-sizing: border-box;
   border: 1px solid var(--border); border-radius: 10px; background: var(--surface);
   font-family: inherit; font-size: 13.5px; color: var(--text); resize: vertical; line-height: 1.5;
 }

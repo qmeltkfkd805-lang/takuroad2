@@ -20,14 +20,15 @@ const REMOVED = [
   '알림 · 사장님 인증',
 ]
 // 탈퇴 사유(선택) — 값은 /api/account/delete 의 REASON_CODES 와 같아야 한다
-const REASONS: { code: string; label: string }[] = [
-  { code: 'lack_features', label: '원하는 기능이 없어요' },
-  { code: 'no_info', label: '찾는 샵·이벤트 정보가 부족해요' },
-  { code: 'hard_to_use', label: '사용하기 불편해요' },
-  { code: 'too_many_alerts', label: '알림이 너무 많아요' },
-  { code: 'other_account', label: '다른 계정을 쓰고 있어요' },
-  { code: 'privacy', label: '개인정보가 걱정돼요' },
-  { code: 'etc', label: '기타' },
+// ask = 사유를 고르면 바로 아래에 보이는 질문(어떤 점에서 그렇게 느꼈는지)
+const REASONS: { code: string; label: string; ask: string; hint: string }[] = [
+  { code: 'lack_features', label: '원하는 기능이 없어요', ask: '어떤 기능이 있었으면 좋았을까요?', hint: '예) 이런 기능이 있었으면 계속 썼을 것 같아요' },
+  { code: 'no_info', label: '찾는 샵·이벤트 정보가 부족해요', ask: '어떤 정보가 부족했나요?', hint: '예) 찾던 지역·작품·샵이나 이벤트' },
+  { code: 'hard_to_use', label: '사용하기 불편해요', ask: '어떤 점이 불편했나요?', hint: '예) 불편했던 화면이나 기능' },
+  { code: 'too_many_alerts', label: '알림이 너무 많아요', ask: '어떤 알림이 많다고 느끼셨나요?', hint: '예) 받기 싫었던 알림 종류' },
+  { code: 'other_account', label: '다른 계정을 쓰고 있어요', ask: '다른 계정을 쓰게 된 이유가 있나요?', hint: '예) 로그인 방법을 바꾸고 싶었어요' },
+  { code: 'privacy', label: '개인정보가 걱정돼요', ask: '어떤 점이 걱정되셨나요?', hint: '예) 걱정됐던 정보나 화면' },
+  { code: 'etc', label: '기타', ask: '어떤 점이 아쉬웠는지 알려주세요', hint: '자유롭게 적어 주세요' },
 ]
 
 const IconTrash = () => (
@@ -199,13 +200,22 @@ export default function DeleteAccountPage() {
                       </button>
                     ))}
                   </div>
-                  {reason && (
-                    <textarea
-                      className={da.reasonText} value={detail} onChange={e => setDetail(e.target.value)}
-                      maxLength={300} rows={3}
-                      placeholder={reason === 'etc' ? '어떤 점이 아쉬웠는지 적어 주세요 (선택)' : '더 하고 싶은 말이 있다면 적어 주세요 (선택)'}
-                    />
-                  )}
+                  {(() => {
+                    const picked = REASONS.find(r => r.code === reason)
+                    if (!picked) return null
+                    return (
+                      <div className={da.askWrap}>
+                        <label htmlFor="da-detail" className={da.askLabel}>
+                          {picked.ask} <span className={da.optional}>선택</span>
+                        </label>
+                        <textarea
+                          id="da-detail" className={da.reasonText} value={detail} onChange={e => setDetail(e.target.value)}
+                          maxLength={300} rows={3} placeholder={picked.hint}
+                        />
+                        <p className={da.askCount}>{detail.length}/300</p>
+                      </div>
+                    )
+                  })()}
                 </div>
 
                 <p style={{ fontSize: 13.5, color: 'var(--muted)', lineHeight: 1.7, margin: '0 0 12px' }}>
