@@ -84,8 +84,8 @@ export default function SettingsPage() {
     {
       rows: [
         { icon: <IconLogout />, label: '로그아웃', onClick: handleLogout },
-        // 계정 탈퇴: 현재 deleteAccount가 닉네임 익명화+로그아웃(재로그인 시 복구)일 뿐이라
-        // 실제 탈퇴/비활성화가 아니므로 운영 UI에서 숨김. 진짜 삭제 RPC 구현 후 다시 노출.
+        // 회원 탈퇴 — /api/account/delete (개인 기록 삭제 + 계정 삭제, 글·후기·루트는 '탈퇴한 회원'으로 남음)
+        { icon: <IconUserX />, label: '회원 탈퇴', href: '/profile/settings/delete' },
       ],
     },
   ]

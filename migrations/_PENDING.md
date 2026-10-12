@@ -3,11 +3,11 @@
 > 코드는 커밋됐지만 DB에 반영이 안 된 것들. 돌리고 나면 이 목록에서 지운다.
 > **배포(`git push`) 전에 반드시 여기가 비어 있어야 한다.**
 
-## `shop_register_request.sql` (2026-10-10) — 샵 등록 요청 + 샵 수정 권한
+## `account_delete.sql` — 회원 탈퇴 (2026-10-12)
 
-- **안 돌리면**: 새 코드의 ‘등록 요청’(hidden→pending)이 지금 트리거에 막혀 실패한다. 관리자 ‘확인하고 공개’도 검수 트리거에 막힌다(service_role).
-- **순서**: 코드 배포 직후 바로 실행. 실행 전에 파일 맨 위 0) 쿼리로 shops UPDATE 정책이 `shops_update_tiered` 하나뿐인지 확인.
-- **확인 쿼리**: 파일 아래 [적용 후 검증] 1)~3).
+- 안 돌리면: 설정 > 회원 탈퇴가 `delete_account_data` 없음으로 실패한다(데이터는 안 건드림).
+- 하는 일: `profiles_id_fkey` 제거, `route_reviews`·`route_review_photos`·`event_visit_photos`·`contact_messages` 의 user_id 를 profiles 로 재연결, `delete_account_data(uid)` (service_role 전용) 추가.
+- 확인: 파일 맨 아래 [확인] 쿼리 3개.
 
 ---
 
@@ -54,6 +54,8 @@ psql "postgresql://postgres:<비밀번호>@db.<프로젝트ref>.supabase.co:5432
 
 | 날짜 | 파일 | 내용 |
 | --- | --- | --- |
+| 2026-10-10 | `shop_register_request_fix.sql` | 바로 공개는 관리자만 — 처음엔 '사장님 인증 1곳 이상'인 사람도 새 샵을 즉시 공개하게 했는데, 인증은 그 매장 하나에 대한 것이라 제거. INSERT 는 일반 사용자 항상 hidden, status 는 본인 샵 hidden↔pending 만. `is_verified_shop_owner()` 는 승인된 인증 요청 기준으로 바로잡고 남겨 둠(미사용). 검증: 두 트리거 함수에 사장님 예외 없음 |
+| 2026-10-10 | `shop_register_request.sql` | 샵 등록 요청 + 수정 권한 — `shops_update_tiered`(로그인한 누구나 미인증 샵 수정)를 `shops_update_scoped`(관리자·인증 사장님·미인증 샵 등록자)로 교체, `is_verified_shop_owner()` 신설, INSERT·status 트리거가 일반 사용자의 즉시 공개를 막고 hidden↔pending 만 허용, 검수 트리거가 service_role 허용(`/api/admin/shop-request`). 검증: UPDATE 정책 1개, 함수 4개 본문 확인, 상태별 개수 변화 없음 |
 | 2026-09-22 | `activity_reward_4_lockdown.sql` | 🚨 보안 — 권한 회수(최종). `activity_logs` INSERT/UPDATE/DELETE 와 `user_badge_tiers` INSERT/UPDATE/DELETE 를 public·anon·authenticated 에서 회수하고 service_role 에만 부여, `activity_logs_insert_own` 정책 삭제, `grant_exp` EXECUTE 를 service_role 전용으로. 조회(SELECT)는 유지. 사전 점검: 브라우저 쓰기 경로 0건(createActivity 는 호출부 없는 죽은 코드), `admin_grant_exp`·`claim_daily_*`·`record_*` 전부 security definer 라 영향 없음. 위조 테스트: 일반 사용자 JWT 로 배지 INSERT·활동 INSERT·grant_exp 모두 42501 차단 |
 | 2026-09-22 | `activity_reward_3_badges.sql` | 검증 불가 활동 기반 배지 15종 `is_active=false` (shop_visit 6 · event_visit 4 · work_register 4 · all_masters 1). 적용 전 이름·조건·보유자 수 15행 대조 완료, 보유 행(user_badge_tiers 10건)은 회수하지 않음. 루트 배지 3종은 유지 — 5b 이후 GPS 검증 완주로만 진행됨 |
 | 2026-09-22 | `activity_reward_5_route_completed.sql` | 🚨 보안 — 루트 완주 기록·보상 분리. `record_activity_reward` 의 `route_completed` 분기에서 gps 조건을 빼 비GPS 완주도 연대기에 기록되게 하고, EXP 15 는 `verification_source=gps_session` 일 때만. 비GPS 완주는 새 서버 라우트 `/api/route/complete` 가 `route_progress` 로 완주 조건을 대조한 뒤 기록(EXP 0). GPS 완주는 루트의 모든 샵이 현장 확인 체크포인트로 덮이고 위험 신호 없을 때만 인정. 배지 집계는 `snapshot.verified=gps` 만. 테스트 5종 통과(조건 미충족 거부·조건 충족 기록·재호출 중복 방지·세션 시작 직후 종료 위조 차단·남의 세션 거부) |
