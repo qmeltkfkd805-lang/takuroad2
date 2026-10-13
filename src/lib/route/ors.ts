@@ -41,7 +41,7 @@ function chunkWaypoints(points: LatLng[], size: number): LatLng[][] {
   return chunks
 }
 
-async function callSegment(points: LatLng[], apiKey: string) {
+async function callSegmentOnce(points: LatLng[], apiKey: string) {
   const res = await fetch(ORS_URL, {
     method: 'POST',
     headers: { Authorization: apiKey, 'Content-Type': 'application/json', Accept: 'application/geo+json' },
@@ -52,7 +52,7 @@ async function callSegment(points: LatLng[], apiKey: string) {
   if (!res.ok) {
     let msg = `HTTP ${res.status}`
     try { const j = await res.json(); msg = j?.error?.message || msg } catch { /* noop */ }
-    return { ok: false as const, error: msg }
+    return { ok: false as const, error: msg, retryable: res.status >= 500 || res.status === 429 }
   }
   const gj = await res.json()
   const f = gj?.features?.[0]
@@ -63,6 +63,18 @@ async function callSegment(points: LatLng[], apiKey: string) {
     distance: Math.round(f.properties?.summary?.distance ?? 0),
     duration: Math.round((f.properties?.summary?.duration ?? 0) / 60),
   }
+}
+
+/* ORS 쪽 일시 장애(502·503·504·429)나 연결 끊김은 1.2초 뒤 한 번만 다시 시도한다.
+   2026-10-14 api.heigit.org 가 502 를 내서 루트 선이 전부 안 그려진 일이 있었다. */
+async function callSegment(points: LatLng[], apiKey: string) {
+  try {
+    const first = await callSegmentOnce(points, apiKey)
+    if (first.ok || !('retryable' in first) || !first.retryable) return first
+  } catch { /* 연결 오류 → 아래에서 다시 */ }
+  await new Promise(r => setTimeout(r, 1200))
+  try { return await callSegmentOnce(points, apiKey) }
+  catch (e) { return { ok: false as const, error: (e as Error)?.message || 'fetch failed' } }
 }
 
 /** 방문순서 좌표 → 실제 도보 경로. 입력 좌표는 이미 유효(lat/lng 존재) 가정. */

@@ -73,6 +73,17 @@ export async function GET(request: NextRequest) {
   const path = await fetchOrsPath(valid, apiKey)
   if (path.status !== 'ok') console.error('[route-path] ORS 실패:', routeId, path.status, path.error)
 
+  // 새 경로를 못 받았는데 예전에 저장한 경로가 있으면(장소·순서가 바뀌기 전 것) 그거라도 보여준다.
+  // 저장분은 덮어쓰지 않는다 — 다음에 ORS 가 살아나면 새로 받아 바뀐다.
+  if (path.status === 'failed' && cached && Array.isArray((cached as any).geometry) && (cached as any).geometry.length > 1) {
+    const c = cached as any
+    return NextResponse.json({
+      ...base, status: 'ok', cached: true, stale: true,
+      geometry: c.geometry, distance_m: c.distance_m, duration_min: c.duration_min,
+      attribution: c.attribution ?? ORS_ATTRIBUTION, failed_segments: [], error: path.error,
+    })
+  }
+
   // 성공/부분성공만 저장 (Service Role, RLS 우회). 저장 실패해도 경로 표시는 유지.
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY

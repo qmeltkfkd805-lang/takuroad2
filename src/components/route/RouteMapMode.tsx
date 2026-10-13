@@ -55,8 +55,7 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
   const [selectedShopId, setSelectedShopId] = useState<string | null>(params?.get('spotId') ?? null)
   const [fitKey, setFitKey] = useState(0)
   const [toast, setToast] = useState<string | null>(null)
-  const [path, setPath] = useState<{ status: string; geometry: [number, number][]; distance_m: number | null; duration_min: number | null } | null>(null)
-  const [pathReload, setPathReload] = useState(0)
+  const [path, setPath] = useState<{ status: string; geometry: [number, number][]; distance_m: number | null; duration_min: number | null; error?: string } | null>(null)
   const [hasReturn, setHasReturn] = useState(false)
   const [visitedIds, setVisitedIds] = useState<Set<string>>(new Set())
   const [showComplete, setShowComplete] = useState(false)
@@ -105,9 +104,9 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
     fetch(`/api/route-path?routeId=${route.id}`)
       .then(r => r.json())
       .then(d => { if (!cancelled) setPath(d) })
-      .catch(() => { if (!cancelled) setPath({ status: 'failed', geometry: [], distance_m: null, duration_min: null }) })
+      .catch(() => { if (!cancelled) setPath({ status: 'failed', geometry: [], distance_m: null, duration_min: null, error: 'network' }) })
     return () => { cancelled = true }
-  }, [route?.id, pathReload])
+  }, [route?.id])
 
   const stops = useMemo(() => (route?.route_shops ?? []).slice().sort((a: any, b: any) => a.sort_order - b.sort_order), [route])
   // 따라가기 '다음 장소' — 직접 체크하지 않은 첫 장소 (GPS 자동 확인은 쓰지 않는다)
@@ -260,7 +259,6 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
   const metaDist = realDist ?? route.total_distance_m
   const metaLine = [region, `${spotCount}곳`, fmtDur(realDur ?? route.total_duration_min), metaDist ? `도보 ${formatDistance(metaDist)}` : null].filter(Boolean).join(' · ')
   const pathLine = path && (path.status === 'ok' || path.status === 'partial') && path.geometry.length ? path.geometry : null
-  const pathFailed = !!path && path.status === 'failed'   // 한 곳뿐·같은 건물(insufficient/same_place)은 실패가 아님
   const selIdx = coordIndexOf(selectedShopId)
   const selectedShop = selectedShopId ? stops.find((rs: any) => rs.shops?.id === selectedShopId)?.shops ?? null : null
 
@@ -343,13 +341,7 @@ export default function RouteMapMode({ routeId }: { routeId: string }) {
           <>
             <RouteMap key={fitKey} shops={shopsWithCoords} geometry={pathLine} selectedIndex={selIdx >= 0 ? selIdx : null} onSelectIndex={(i: number) => selectSpot(shopsWithCoords[i]?.id ?? null)} onHasReturn={setHasReturn} />
             <MapControls onFit={() => setFitKey(k => k + 1)} />
-            {pathFailed && (
-              <div className={styles.pathWarn} role="status">
-                도보 경로를 불러오지 못했어요
-                <button onClick={() => setPathReload(k => k + 1)}>다시 시도</button>
-              </div>
-            )}
-            {path?.status === 'partial' && <div className={styles.pathWarn} role="status">일부 구간의 도보 경로를 불러오지 못했어요<button onClick={() => setPathReload(k => k + 1)}>다시 시도</button></div>}
+            {/* 도보 경로(선)는 받아지면 그리고, 못 받으면 안내 없이 번호 핀만 (2026-10-14 결정 — 사용자가 고칠 수 있는 문제가 아니라서) */}
             <MapLegend hasReturn={hasReturn} />
             {selectedShop && (
               <SpotPreviewCard shop={selectedShop} order={selIdx >= 0 ? selIdx + 1 : null} onClose={() => selectSpot(null)} />
