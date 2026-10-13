@@ -2,11 +2,11 @@
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/components/layout/AuthProvider'
 import {
-  getAdminMembers, getMemberDetail, getMemberItems, getMemberSignupSource,
+  getAdminMembers, getMemberDetail, getMemberItems, getMemberSignupSource, getMemberRecentVisits,
   getMemberBadges, getManualBadges, setMemberRole, saveAdminNote, setBetaTester,
   grantBadge, grantExp,
   ROLE_LABEL,
-  AdminMember, MemberDetail, MemberItem, MemberItemKind, MemberSignupSource,
+  AdminMember, MemberDetail, MemberItem, MemberItemKind, MemberSignupSource, MemberRecentVisits,
   MemberBadge, ManualBadge, MemberRole, MemberSort, MemberRoleFilter, MemberStatusFilter,
 } from '@/services/adminMemberService'
 import { getAdminStats, AdminStats } from '@/services/adminDashboardService'
@@ -56,6 +56,17 @@ const fmtDateTime = (s: string | null | undefined) => {
   if (!s) return ''
   const d = new Date(s)
   return Number.isNaN(d.getTime()) ? '' : d.toLocaleString('ko-KR', { dateStyle: 'medium', timeStyle: 'short' })
+}
+/** '방금 전' · 'N분 전' · 'N시간 전' · 'N일 전' */
+function timeAgo(s: string): string {
+  const t = new Date(s).getTime()
+  if (Number.isNaN(t)) return ''
+  const m = Math.floor((Date.now() - t) / 60000)
+  if (m < 1) return '방금 전'
+  if (m < 60) return `${m}분 전`
+  const h = Math.floor(m / 60)
+  if (h < 24) return `${h}시간 전`
+  return `${Math.floor(h / 24)}일 전`
 }
 const fmtTime = (d: Date) => d.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
 const hasText = (v: unknown): v is string => typeof v === 'string' && v.trim() !== ''
@@ -461,6 +472,9 @@ function MemberDetailPanel({ member, isSelf, onToast, onDirtyChange, onRoleChang
 
   const [src, setSrc] = useState<MemberSignupSource | null>(null)
   const [srcOpen, setSrcOpen] = useState(false)
+  // 최근 방문 — undefined = 불러오는 중, null = 실패
+  const [visits, setVisits] = useState<{ uid: string; v: MemberRecentVisits | null } | undefined>(undefined)
+  const [visitsOpen, setVisitsOpen] = useState(false)
 
   const [badges, setBadges] = useState<MemberBadge[] | null>(null)
   const [badgesError, setBadgesError] = useState(false)
@@ -519,6 +533,15 @@ function MemberDetailPanel({ member, isSelf, onToast, onDirtyChange, onRoleChang
     getMemberSignupSource(uid).then(s => { if (alive) setSrc(s) }).catch(() => {})
     return () => { alive = false }
   }, [uid])
+
+  useEffect(() => {
+    let alive = true
+    getMemberRecentVisits(uid)
+      .then(v => { if (alive) setVisits({ uid, v }) })
+      .catch(e => { console.error('[최근 방문] 조회 실패:', e); if (alive) setVisits({ uid, v: null }) })
+    return () => { alive = false }
+  }, [uid])
+  const rv = visits && visits.uid === uid ? visits : undefined
 
   useEffect(() => {
     let alive = true
@@ -771,6 +794,50 @@ function MemberDetailPanel({ member, isSelf, onToast, onDirtyChange, onRoleChang
                   </div>
                 )}
               </div>
+            )}
+          </div>
+
+          <div className={styles.section}>
+            <div className={styles.sectionTitle}>최근 방문</div>
+            {!rv ? (
+              <div className={styles.infoBox}><div className={styles.infoRow}><span className={styles.infoEmpty}>불러오는 중…</span></div></div>
+            ) : !rv.v ? (
+              <div className={styles.infoBox}><div className={styles.infoRow}><span className={styles.infoEmpty}>방문 기록을 불러오지 못했어요.</span></div></div>
+            ) : (
+              <>
+                <div className={styles.infoBox}>
+                  <div className={styles.infoRow}>
+                    <span className={styles.infoLabel}>마지막 방문</span>
+                    {rv.v.last_at
+                      ? <span className={styles.infoValue}>{fmtDateTime(rv.v.last_at)}<span style={{ color: 'var(--muted)', fontWeight: 500 }}> · {timeAgo(rv.v.last_at)}</span></span>
+                      : <span className={styles.infoEmpty}>기록 없음</span>}
+                  </div>
+                  <div className={styles.infoRow}>
+                    <span className={styles.infoLabel}>최근 30일</span>
+                    <span className={styles.infoValue}>{rv.v.days_30}일 방문 <span style={{ color: 'var(--muted)', fontWeight: 500 }}>· 화면 {rv.v.views_30.toLocaleString()}번</span></span>
+                  </div>
+                </div>
+                {rv.v.recent.length > 0 && (
+                  <div className={styles.fold}>
+                    <button type="button" className={styles.foldBtn} aria-expanded={visitsOpen} onClick={() => setVisitsOpen(o => !o)}>
+                      최근 본 화면 {rv.v.recent.length}개 {visitsOpen ? '접기' : '펼치기'}
+                    </button>
+                    {visitsOpen && (
+                      <div className={styles.infoBox} style={{ marginTop: 8 }}>
+                        {rv.v.recent.map((r, i) => (
+                          <div key={`${r.at}-${i}`} className={styles.infoRow}>
+                            <span className={styles.infoLabel} style={{ fontWeight: 500 }}>{fmtDateTime(r.at)}</span>
+                            <span className={`${styles.infoValue} ${styles.mono}`}>{r.path}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+                <p style={{ fontSize: 11.5, color: 'var(--muted)', margin: '8px 2px 0', lineHeight: 1.6 }}>
+                  로그인한 상태로 본 화면만 잡혀요. 로컬(localhost) 접속은 기록되지 않아요.
+                </p>
+              </>
             )}
           </div>
         </>

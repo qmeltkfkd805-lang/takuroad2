@@ -129,6 +129,27 @@ export async function getMemberSignupSource(uid: string): Promise<MemberSignupSo
   return (row as MemberSignupSource) ?? null
 }
 
+/* ── 최근 방문 (관리자 전용 RPC, migrations/member_recent_visits.sql) ──
+   visit_logs 에서 로그인 상태로 본 화면만 잡힌다. */
+export interface MemberRecentVisits {
+  last_at: string | null
+  days_30: number
+  views_30: number
+  recent: { path: string; at: string }[]
+}
+export async function getMemberRecentVisits(uid: string, limit = 20): Promise<MemberRecentVisits> {
+  const supabase = createClient()
+  const { data, error } = await supabase.rpc('get_member_recent_visits', { uid, page_limit: limit })
+  if (error) throw error
+  const d = (data ?? {}) as Partial<MemberRecentVisits>
+  return {
+    last_at: d.last_at ?? null,
+    days_30: Number(d.days_30) || 0,
+    views_30: Number(d.views_30) || 0,
+    recent: Array.isArray(d.recent) ? d.recent : [],
+  }
+}
+
 /* 활동 타일 클릭 → 그 회원이 실제로 뭘 했는지 목록 (관리자 전용).
    여섯 종류를 한 가지 모양으로 돌려주므로 UI 하나로 렌더한다.
    상세를 열 때 한꺼번에 다 가져오지 않는다 — 누른 종류만 그때 조회한다. */
