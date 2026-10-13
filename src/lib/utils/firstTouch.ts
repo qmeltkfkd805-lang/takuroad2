@@ -37,6 +37,25 @@ export function channelOf(t: Pick<FirstTouch, 'referrer' | 'utmSource'> | null):
   return host || '알 수 없음'
 }
 
+/* 저장된 가입 채널(signup_channel) → 관리자 화면에 보여줄 이름.
+   utm_source 는 받은 그대로 저장되므로(예: 인스타그램이 링크에 자동으로 붙이는 'ig')
+   보여줄 때만 사람이 읽는 이름으로 묶는다. 저장값은 바꾸지 않는다.
+   모르는 값은 그대로 돌려준다. */
+const UTM_LABEL: Record<string, string> = {
+  ig: '인스타그램', instagram: '인스타그램', insta: '인스타그램',
+  threads: '스레드',
+  fb: '페이스북', facebook: '페이스북',
+  x: 'X(트위터)', twitter: 'X(트위터)', tw: 'X(트위터)',
+  yt: '유튜브', youtube: '유튜브',
+  naver: '네이버', google: '구글', daum: '다음',
+  kakao: '카카오', kakaotalk: '카카오',
+}
+export function channelLabel(raw: string | null | undefined): string {
+  const v = (raw ?? '').trim()
+  if (!v) return v
+  return UTM_LABEL[v.toLowerCase()] ?? v
+}
+
 /** 앱 첫 로드 때 호출. 이미 기록돼 있으면 아무것도 하지 않는다. */
 export function captureFirstTouch(): void {
   if (typeof window === 'undefined') return

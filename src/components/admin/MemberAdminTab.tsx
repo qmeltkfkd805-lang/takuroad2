@@ -13,6 +13,7 @@ import { getAdminStats, AdminStats } from '@/services/adminDashboardService'
 import AdminIcon, { AdminIconName } from './AdminIcon'
 import AdminConfirmModal from './AdminConfirmModal'
 import styles from './memberAdmin.module.css'
+import { channelLabel } from '@/lib/utils/firstTouch'
 
 /* 관리자 > 회원 관리.
 
@@ -729,7 +730,12 @@ function MemberDetailPanel({ member, isSelf, onToast, onDirtyChange, onRoleChang
               <div className={styles.infoRow}>
                 <span className={styles.infoLabel}>가입 채널</span>
                 {hasText(src?.signup_channel)
-                  ? <span className={styles.infoValue}>{src!.signup_channel}</span>
+                  ? <span className={styles.infoValue}>
+                      {channelLabel(src!.signup_channel)}
+                      {channelLabel(src!.signup_channel) !== src!.signup_channel!.trim() && (
+                        <span style={{ color: 'var(--muted)', fontWeight: 500 }}> ({src!.signup_channel})</span>
+                      )}
+                    </span>
                   : <span className={styles.infoEmpty}>기록 없음</span>}
               </div>
               <div className={styles.infoRow}>

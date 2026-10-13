@@ -1,4 +1,5 @@
-﻿import { createClient } from '@/lib/supabase/client'
+﻿import { channelLabel } from '@/lib/utils/firstTouch'
+import { createClient } from '@/lib/supabase/client'
 import { getOrCreateAnonymousId } from '@/lib/utils/anonymousId'
 
 export type Metric = 'visits' | 'signups' | 'checkins' | 'searches' | 'activity'
@@ -43,7 +44,14 @@ export async function getSignupSources(days: number): Promise<SignupSourceRow[]>
     })
     return []
   }
-  return ((data ?? []) as any[]).map(r => ({ channel: r.channel, count: Number(r.count) || 0 }))
+  // 'ig' 와 '인스타그램' 처럼 같은 채널이 다른 값으로 저장된 걸 하나로 합친다(보여줄 때만)
+  const merged = new Map<string, number>()
+  for (const r of (data ?? []) as any[]) {
+    const ch = channelLabel(r.channel) || r.channel
+    merged.set(ch, (merged.get(ch) ?? 0) + (Number(r.count) || 0))
+  }
+  return Array.from(merged, ([channel, count]) => ({ channel, count }))
+    .sort((a, b) => (a.channel === '기록 없음' ? 1 : 0) - (b.channel === '기록 없음' ? 1 : 0) || b.count - a.count)
 }
 
 export async function getVisitSummary(): Promise<VisitSummary | null> {
