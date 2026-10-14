@@ -292,8 +292,8 @@
 .msearch input::-webkit-search-cancel-button { -webkit-appearance: none; }
 .msearch input:focus { border: none; }
 
-/* 🖥 새로 등록된 루트 — 한 줄 가로 넘김 (2026-10-14). 3장 남짓 보이고 나머지는 옆으로.
+/* 🖥 새로 등록된 루트 — 한 줄 가로 넘김 (2026-10-14). ⚠️ .rail 은 오른쪽 사이드 열 이름이라 따로 씀. 3장 남짓 보이고 나머지는 옆으로.
    마우스는 끌어서(useDragScroll), 트랙패드는 그냥 옆으로 밀면 된다. */
-.rail { display: flex; gap: 16px; overflow-x: auto; padding: 2px 2px 8px; scrollbar-width: thin; cursor: grab; }
-.rail:active { cursor: grabbing; }
-.railItem { flex: 0 0 calc((100% - 32px) / 3.2); min-width: 240px; }
+.newRow { display: flex; flex-direction: row; flex-wrap: nowrap; gap: 16px; overflow-x: auto; padding: 2px 2px 8px; scrollbar-width: thin; cursor: grab; }
+.newRow:active { cursor: grabbing; }
+.newRowItem { flex: 0 0 calc((100% - 32px) / 3.2); min-width: 240px; }

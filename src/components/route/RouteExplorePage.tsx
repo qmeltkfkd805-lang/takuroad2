@@ -382,9 +382,9 @@ export default function RouteExplorePage() {
 
             {recentTop.length > 0 && (
               <Section title="새로 등록된 루트" onMore={() => toAll('sort=latest')}>
-                <div className={styles.rail} {...newDrag}>
+                <div className={styles.newRow} {...newDrag}>
                   {recentTop.map(r => (
-                    <div key={r.id} className={styles.railItem}>
+                    <div key={r.id} className={styles.newRowItem}>
                       <RouteResultCard route={r} saved={savedIds.has(r.id)} onOpen={() => go(r)} onToggleSave={e => onSave(e, r)} />
                     </div>
                   ))}
