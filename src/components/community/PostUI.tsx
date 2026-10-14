@@ -24,6 +24,7 @@ import { blockUser } from '@/services/blockService'
 import LinkPreviewCard from './LinkPreviewCard'
 import { createPortal } from 'react-dom'
 import { findLinkBlock } from '@/lib/utils/linkUrl'
+import { linkCardHtml, LINK_CARD_HOLDER_STYLE, type LinkPreview } from '@/lib/utils/linkCardHtml'
 import { getPostEvent, PostEventSummary } from '@/services/postEventService'
 
 // ── 대표 팬아트 배지 ──
@@ -190,6 +191,20 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
     setPlace({ key: placeKey, host: holder })
     return () => { holder.remove() }
   }, [cardUrl, placeKey])
+  useEffect(() => {
+    const body = bodyRef.current
+    if (!body) return
+    let alive = true
+    body.querySelectorAll<HTMLElement>('[data-link-card][data-url]').forEach(n => {
+      const u = n.getAttribute('data-url')
+      if (!u) return
+      n.setAttribute('style', LINK_CARD_HOLDER_STYLE)
+      fetch(`/api/link-preview?url=${encodeURIComponent(u)}`).then(r => (r.ok ? r.json() : null))
+        .then((pv: LinkPreview | null) => { if (alive && pv?.ok && n.isConnected) n.innerHTML = linkCardHtml(u, pv, false) })
+        .catch(() => {})
+    })
+    return () => { alive = false }
+  }, [post.id, post.content])
   const curPlace = place && place.key === placeKey ? place : undefined
   const cardNode = cardUrl ? <LinkPreviewCard url={cardUrl} /> : null
   const inlineCard = cardNode && curPlace?.host && curPlace.host !== bodyRef.current ? createPortal(cardNode, curPlace.host) : null

@@ -8,7 +8,7 @@ import { ROUTES } from '@/lib/constants/routes'
 import { getAllTagsForSelect, getMyRoutes } from '@/services/routeService'
 import { createPost, updatePost, getPost, uploadPostImage } from '@/services/communityPostService'
 import { linkBlocksIn } from '@/lib/utils/linkUrl'
-import { linkCardHtml, linkCardLoadingHtml, cleanLinkCards, LINK_CARD_HOLDER_STYLE, type LinkPreview } from '@/lib/utils/linkCardHtml'
+import { linkCardHtml, linkCardLoadingHtml, cleanLinkCards, LINK_CARD_HOLDER_STYLE, REMOVE_BTN, type LinkPreview } from '@/lib/utils/linkCardHtml'
 import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import { createPoll } from '@/services/pollService'
 import { Board, BOARDS, BOARD_FLAIRS, CREATION_BOARDS, boardMeta, NewPost, NewPoll } from '@/types/community-post'
@@ -193,10 +193,15 @@ export default function PostWritePage() {
       if (pp.board === 'companion') getPostEvent(editId).then(ev => setCompanionEvent(ev))
       setBoard(pp.board); setTagIds(pp.tagIds?.length ? pp.tagIds : (pp.tagId ? [pp.tagId] : [])); setTitle(pp.title ?? ''); setImages(pp.images ?? []); setSpoiler(pp.isSpoiler); setFlair(pp.flair ?? null)
       if (editorRef.current) editorRef.current.innerHTML = (pp.content ?? '').replace(/<div data-gm="1"[\s\S]*?<\/div>/gi, '')
-      // 링크 카드: 이미 글에 들어 있는 카드는 그대로(✕ 버튼만 다시 붙임). 카드가 없는 링크는 지금 붙인다.
-      editorRef.current?.querySelectorAll('[data-link-card]').forEach(n => {
-        if (!n.querySelector('[data-lp-remove]')) n.insertAdjacentHTML('afterbegin', '<button type="button" data-lp-remove="1" aria-label="링크 카드 빼기" style="position:absolute;top:8px;right:8px;z-index:2;width:28px;height:28px;border-radius:9999px;border:none;background:rgba(0,0,0,.55);color:#fff;cursor:pointer;font-size:14px;line-height:28px;padding:0;text-align:center">✕</button>')
+      // 링크 카드: 이미 글에 들어 있는 카드는 지금 모양으로 다시 그린다(서버 저장분이라 빠름) + ✕ 버튼.
+      // 카드가 없는 링크는 지금 붙인다.
+      editorRef.current?.querySelectorAll<HTMLElement>('[data-link-card]').forEach(n => {
         n.setAttribute('contenteditable', 'false')
+        n.setAttribute('style', LINK_CARD_HOLDER_STYLE)
+        if (!n.querySelector('[data-lp-remove]')) n.insertAdjacentHTML('afterbegin', REMOVE_BTN)
+        const u = n.getAttribute('data-url')
+        if (u) fetch(`/api/link-preview?url=${encodeURIComponent(u)}`).then(r => (r.ok ? r.json() : null))
+          .then((pv: LinkPreview | null) => { if (pv?.ok && n.isConnected) n.innerHTML = linkCardHtml(u, pv, true) }).catch(() => {})
       })
       rememberCards(); attachLinkCards()
       // 굿즈자랑 글이면 연결된 굿즈의 캐릭터·태그 프리필
