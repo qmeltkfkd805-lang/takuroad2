@@ -6,9 +6,9 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { ROUTES } from '@/lib/constants/routes'
 import { getAllTagsForSelect, getMyRoutes } from '@/services/routeService'
-import { createPost, updatePost, getPost, uploadPostImage, getPostLinkUrl } from '@/services/communityPostService'
-import LinkPreviewCard from './LinkPreviewCard'
-import { firstUrl } from '@/lib/utils/linkUrl'
+import { createPost, updatePost, getPost, uploadPostImage } from '@/services/communityPostService'
+import { linkBlocksIn } from '@/lib/utils/linkUrl'
+import { linkCardHtml, linkCardLoadingHtml, cleanLinkCards, LINK_CARD_HOLDER_STYLE, type LinkPreview } from '@/lib/utils/linkCardHtml'
 import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import { createPoll } from '@/services/pollService'
 import { Board, BOARDS, BOARD_FLAIRS, CREATION_BOARDS, boardMeta, NewPost, NewPoll } from '@/types/community-post'
@@ -45,12 +45,54 @@ export default function PostWritePage() {
   const editId = sp.get('edit')
   const goodsIdParam = sp.get('goodsId')   // 기존 굿즈로 새 자랑 글 작성 모드
   const editorRef = useRef<HTMLDivElement>(null)
-  // 링크 미리보기 카드 — 본문 글자에서 첫 링크를 찾아 아래에 카드로. ✕로 빼면 그 링크는 카드 없이
-  const [editorText, setEditorText] = useState('')
-  const [linkOffUrl, setLinkOffUrl] = useState<string | null>(null)
-  const syncEditorText = () => setEditorText(editorRef.current?.innerText ?? '')
-  const detectedUrl = firstUrl(editorText)
-  const linkUrl = detectedUrl && detectedUrl !== linkOffUrl ? detectedUrl : null
+  /* 링크 미리보기 카드 — 본문에 링크를 붙이면 그 줄 바로 아래에 카드가 생긴다(편집기 안, 글에 그대로 저장).
+     cardEver: 한 번이라도 카드를 붙였던 주소. ✕나 지우기로 카드를 없앤 주소엔 다시 붙이지 않는다. */
+  const cardEver = useRef<Set<string>>(new Set())
+  const linkTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const MAX_LINK_CARDS = 5
+  const rememberCards = () => {
+    editorRef.current?.querySelectorAll('[data-link-card][data-url]').forEach(n => { const u = n.getAttribute('data-url'); if (u) cardEver.current.add(u) })
+  }
+  const attachLinkCards = () => {
+    const root = editorRef.current
+    if (!root) return
+    const have = new Set(Array.from(root.querySelectorAll('[data-link-card][data-url]')).map(n => n.getAttribute('data-url')))
+    let count = have.size
+    for (const { url, block } of linkBlocksIn(root)) {
+      if (count >= MAX_LINK_CARDS) break
+      if (have.has(url) || cardEver.current.has(url)) continue
+      have.add(url); cardEver.current.add(url); count++
+      const holder = document.createElement('div')
+      holder.setAttribute('data-link-card', '1')
+      holder.setAttribute('data-url', url)
+      holder.setAttribute('data-loading', '1')
+      holder.setAttribute('contenteditable', 'false')
+      holder.setAttribute('style', LINK_CARD_HOLDER_STYLE)
+      holder.innerHTML = linkCardLoadingHtml(url)
+      if (block) block.insertAdjacentElement('afterend', holder); else root.appendChild(holder)
+      // 카드 뒤에 줄이 없으면 하나 만들어 둔다 — 카드 다음에 이어서 쓸 수 있게
+      if (!holder.nextElementSibling) { const p = document.createElement('p'); p.innerHTML = '<br>'; holder.after(p) }
+      fetch(`/api/link-preview?url=${encodeURIComponent(url)}`)
+        .then(r => (r.ok ? r.json() : null))
+        .then((pv: LinkPreview | null) => {
+          if (!holder.isConnected) return
+          if (pv?.ok) { holder.removeAttribute('data-loading'); holder.innerHTML = linkCardHtml(url, pv, true) }
+          else holder.remove()   // 미리보기를 못 만드는 링크 → 카드 없이 링크만
+        })
+        .catch(() => { if (holder.isConnected) holder.remove() })
+    }
+  }
+  // 입력이 멈추고 잠깐 뒤에 찾는다 — 주소를 치는 도중에 반쪽짜리 주소로 카드가 생기지 않게
+  const syncEditorText = () => {
+    if (linkTimer.current) clearTimeout(linkTimer.current)
+    linkTimer.current = setTimeout(attachLinkCards, 700)
+  }
+  const onEditorClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const t = e.target as HTMLElement
+    const rm = t.closest('[data-lp-remove]')
+    if (rm) { e.preventDefault(); rm.closest('[data-link-card]')?.remove(); return }
+    if (t.closest('[data-link-card]')) e.preventDefault()   // 편집 중엔 카드를 눌러도 이동하지 않게
+  }
   const tagBoxRef = useRef<HTMLDivElement>(null)
   const boardRef = useRef<HTMLDivElement>(null)
   const workLaneRef = useRef<HTMLDivElement>(null)
@@ -151,10 +193,12 @@ export default function PostWritePage() {
       if (pp.board === 'companion') getPostEvent(editId).then(ev => setCompanionEvent(ev))
       setBoard(pp.board); setTagIds(pp.tagIds?.length ? pp.tagIds : (pp.tagId ? [pp.tagId] : [])); setTitle(pp.title ?? ''); setImages(pp.images ?? []); setSpoiler(pp.isSpoiler); setFlair(pp.flair ?? null)
       if (editorRef.current) editorRef.current.innerHTML = (pp.content ?? '').replace(/<div data-gm="1"[\s\S]*?<\/div>/gi, '')
-      // 링크 카드: 저장 때 카드를 뺐던 글이면(링크는 있는데 link_url 없음) 그 상태 그대로
-      const txt = editorRef.current?.innerText ?? ''
-      setEditorText(txt)
-      getPostLinkUrl(editId).then(lu => { const d = firstUrl(txt); if (!lu && d) setLinkOffUrl(d) })
+      // 링크 카드: 이미 글에 들어 있는 카드는 그대로(✕ 버튼만 다시 붙임). 카드가 없는 링크는 지금 붙인다.
+      editorRef.current?.querySelectorAll('[data-link-card]').forEach(n => {
+        if (!n.querySelector('[data-lp-remove]')) n.insertAdjacentHTML('afterbegin', '<button type="button" data-lp-remove="1" aria-label="링크 카드 빼기" style="position:absolute;top:8px;right:8px;z-index:2;width:28px;height:28px;border-radius:9999px;border:none;background:rgba(0,0,0,.55);color:#fff;cursor:pointer;font-size:14px;line-height:28px;padding:0;text-align:center">✕</button>')
+        n.setAttribute('contenteditable', 'false')
+      })
+      rememberCards(); attachLinkCards()
       // 굿즈자랑 글이면 연결된 굿즈의 캐릭터·태그 프리필
       if (pp.board === 'goods') {
         import('@/services/goodsService').then(async ({ getPostGoodsId, getGoodsDetail }) => {
@@ -368,7 +412,7 @@ export default function PostWritePage() {
     setTitle(''); setImages([]); setPollData(null); setSpoiler(false); setFlair(null); setTagIds(sp.get('tag') ? [sp.get('tag')!] : [])
     setGoodsChars([]); setGoodsTypeList([]); setGoodsStore(''); setGoodsPrice('')
     if (editorRef.current) { editorRef.current.innerHTML = ''; applyBoardTemplate(board) }
-    setEditorText(''); setLinkOffUrl(null)
+    cardEver.current = new Set()
   }
 
   // ── 임시저장 ──
@@ -390,7 +434,7 @@ export default function PostWritePage() {
       if (typeof d.goodsStore === 'string') setGoodsStore(d.goodsStore)
       if (typeof d.goodsPrice === 'string') setGoodsPrice(d.goodsPrice)
       if (editorRef.current) editorRef.current.innerHTML = d.html ?? ''
-      syncEditorText()
+      rememberCards()
       setShowDraftBanner(false)
     } catch { /* noop */ }
   }
@@ -434,9 +478,15 @@ export default function PostWritePage() {
 
   const submit = async () => {
     if (!user) { router.push(ROUTES.login); return }
-    let html = stripGoodsMeta(editorRef.current?.innerHTML ?? '')
+    if (linkTimer.current) { clearTimeout(linkTimer.current); linkTimer.current = null }
+    const cleaned = editorRef.current ? cleanLinkCards(editorRef.current) : null
+    let html = stripGoodsMeta(cleaned?.innerHTML ?? '')
     const plain = (editorRef.current?.innerText ?? '').trim()
-    const imgs = collectImages(html)
+    // 사진 목록(썸네일)엔 링크 카드 이미지를 넣지 않는다
+    const noCards = cleaned ? (cleaned.cloneNode(true) as HTMLElement) : null
+    noCards?.querySelectorAll('[data-link-card]').forEach(n => n.remove())
+    const imgs = collectImages(stripGoodsMeta(noCards?.innerHTML ?? ''))
+    const linkUrl = cleaned?.querySelector('[data-link-card][data-url]')?.getAttribute('data-url') ?? null
     if (isGoods) { const meta = buildGoodsMetaHtml(); if (meta) html = html + meta }
     const notice = isAdmin && isNotice
     if (!notice) {
@@ -593,6 +643,8 @@ export default function PostWritePage() {
       <style>{`
         .taku-editor:empty:before{content:attr(data-ph);color:var(--muted)}
         .taku-editor{outline:none}
+        .taku-editor a[href]:not([contenteditable="false"]):not([data-lp]),.taku-editor a[href]:not([contenteditable="false"]):not([data-lp]) *{color:var(--accent) !important;text-decoration:underline !important;text-underline-offset:3px}
+        .taku-editor [data-link-card]{cursor:default;user-select:none}
         .taku-editor img{max-width:100%}
         .taku-editor blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}
         .taku-write-grid{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:24px}
@@ -833,16 +885,8 @@ export default function PostWritePage() {
             </div>
 
             {/* 본문 */}
-            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown} onInput={syncEditorText}
+            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown} onInput={syncEditorText} onClick={onEditorClick}
               style={{ minHeight: 340, maxHeight: isGoods && isDesktop ? 'none' : '55vh', flex: isGoods && isDesktop ? 1 : undefined, overflowY: 'auto', fontSize: 16, lineHeight: 1.7, color: 'var(--text)', padding: '12px 14px', border: '1px solid var(--border)', borderRadius: 12 }} />
-
-            {/* 링크 미리보기 — 본문에 링크를 붙이면 글 아래에 이렇게 보인다 */}
-            {linkUrl && (
-              <div style={{ marginTop: 12 }}>
-                <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--muted)', marginBottom: 6 }}>링크 미리보기 (글 아래에 표시돼요)</div>
-                <LinkPreviewCard url={linkUrl} compact onRemove={() => setLinkOffUrl(linkUrl)} />
-              </div>
-            )}
 
             {pollData && (
               <div style={{ marginTop: 12 }}>

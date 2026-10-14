@@ -67,7 +67,7 @@ export default function LinkPreviewCard({ url, onRemove, compact }: { url: strin
 
   const showImg = p.image && imgFailed !== p.image
   return (
-    <a href={url} target="_blank" rel="noopener noreferrer nofollow ugc" style={box} onClick={editing ? e => e.preventDefault() : undefined}>
+    <a data-lp="1" href={url} target="_blank" rel="noopener noreferrer nofollow ugc" style={box} onClick={editing ? e => e.preventDefault() : undefined}>
       {removeBtn}
       {showImg && (
         <div style={{ width: '100%', aspectRatio: '1.91 / 1', maxHeight: compact ? 200 : 270, background: 'var(--surface2)', overflow: 'hidden' }}>

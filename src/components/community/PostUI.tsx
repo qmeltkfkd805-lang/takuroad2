@@ -22,6 +22,8 @@ import LogoLoader from '@/components/common/LogoLoader'
 import { PostEventLinkCard } from './CompanionEventPicker'
 import { blockUser } from '@/services/blockService'
 import LinkPreviewCard from './LinkPreviewCard'
+import { createPortal } from 'react-dom'
+import { findLinkBlock } from '@/lib/utils/linkUrl'
 import { getPostEvent, PostEventSummary } from '@/services/postEventService'
 
 // ── 대표 팬아트 배지 ──
@@ -169,6 +171,29 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
     return () => { alive = false }
   }, [post.id])
   const cardUrl = linkUrl && linkUrl.id === post.id ? linkUrl.url : null
+  /* 카드는 본문 속 그 링크가 있는 줄 바로 아래에 끼워 넣는다(포털). 링크를 못 찾으면 본문 맨 아래.
+     place: undefined = 아직 찾는 중(깜빡임 방지로 아무 데도 안 그림) / null = 못 찾음 → 맨 아래 */
+  const bodyRef = useRef<HTMLDivElement>(null)
+  const [place, setPlace] = useState<{ key: string; host: HTMLElement | null } | undefined>(undefined)
+  const placeKey = `${post.id}|${cardUrl ?? ''}|${post.content?.length ?? 0}`
+  useEffect(() => {
+    const body = bodyRef.current
+    if (!cardUrl || !body) { setPlace({ key: placeKey, host: null }); return }
+    // 새 방식: 글쓰기에서 카드가 본문 안에 같이 저장됨 → 여기서 또 붙이지 않는다
+    if (body.querySelector('[data-link-card]')) { setPlace({ key: placeKey, host: body }); return }
+    const block = findLinkBlock(body, cardUrl)
+    if (!block) { setPlace({ key: placeKey, host: null }); return }
+    const holder = document.createElement('div')
+    holder.setAttribute('data-link-card', '1')
+    holder.style.margin = '10px 0 16px'
+    block.insertAdjacentElement('afterend', holder)
+    setPlace({ key: placeKey, host: holder })
+    return () => { holder.remove() }
+  }, [cardUrl, placeKey])
+  const curPlace = place && place.key === placeKey ? place : undefined
+  const cardNode = cardUrl ? <LinkPreviewCard url={cardUrl} /> : null
+  const inlineCard = cardNode && curPlace?.host && curPlace.host !== bodyRef.current ? createPortal(cardNode, curPlace.host) : null
+  const bottomCard = cardNode && curPlace && !curPlace.host ? cardNode : null
   useEffect(() => { loadComments() }, [loadComments])
 
   const like = async () => {
@@ -471,9 +496,10 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
             <span style={{ marginLeft: 'auto' }}>{postTools}</span>
           </div>
           {goodsHtml && (goodsIsHtml
-            ? <div className="taku-post-body" onClick={lb.onBodyClick} style={{ fontSize: 14.5, lineHeight: 1.7, margin: '0 0 16px', wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(goodsHtml) }} />
+            ? <div ref={bodyRef} className="taku-post-body" onClick={lb.onBodyClick} style={{ fontSize: 14.5, lineHeight: 1.7, margin: '0 0 16px', wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(goodsHtml) }} />
             : <p style={{ fontSize: 14.5, lineHeight: 1.7, whiteSpace: 'pre-wrap', margin: '0 0 16px' }}>{goodsHtml}</p>)}
-          {cardUrl && <div style={{ margin: '0 0 16px' }}><LinkPreviewCard url={cardUrl} /></div>}
+          {inlineCard}
+          {bottomCard && <div style={{ margin: '0 0 16px' }}>{bottomCard}</div>}
           <GoodsInfoCard
             detail={goodsDetail}
             coverUrl={goodsDetail?.images?.[0]?.url ?? null}
@@ -553,9 +579,10 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
         <div style={{ minHeight: isPage ? 160 : undefined, marginBottom: isPage ? 28 : 16, padding: isPage ? '0 4px' : undefined }}>
           {companionEvent && <PostEventLinkCard ev={companionEvent} />}
           {post.content && (isHtml
-            ? <div className="taku-post-body" onClick={lb.onBodyClick} style={{ fontSize: isPage ? 16 : 14.5, lineHeight: isPage ? 1.8 : 1.65, margin: 0, wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
+            ? <div ref={bodyRef} className="taku-post-body" onClick={lb.onBodyClick} style={{ fontSize: isPage ? 16 : 14.5, lineHeight: isPage ? 1.8 : 1.65, margin: 0, wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
             : <p style={{ fontSize: isPage ? 16 : 14.5, lineHeight: isPage ? 1.8 : 1.65, whiteSpace: 'pre-wrap', margin: 0 }}>{post.content}</p>)}
-          {cardUrl && <div style={{ marginTop: 18 }}><LinkPreviewCard url={cardUrl} /></div>}
+          {inlineCard}
+          {bottomCard && <div style={{ marginTop: 18 }}>{bottomCard}</div>}
         </div>
 
         {poll && <PollView poll={poll} userId={user?.id ?? null} onChanged={loadPoll} onRequireLogin={() => router.push(ROUTES.login)} />}
@@ -571,7 +598,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
     <div onClick={isPage ? undefined : onClose} style={isPage ? { width: '100%' } : { position: 'fixed', inset: 0, background: 'rgba(0,0,0,.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000, padding: 16 }}>
       <div onClick={isPage ? undefined : (e => e.stopPropagation())} style={isPage ? { width: '100%' } : { background: 'var(--surface)', borderRadius: 18, maxWidth: 560, width: '100%', maxHeight: '92vh', overflow: 'auto' }}>
         {/* 상단 "‹ 커뮤니티" 줄은 없앴다 — 제목 헤더의 게시판 이름이 그 역할을 한다 */}
-        <style>{`.taku-post-body img{max-width:100%;border-radius:10px}.taku-post-body video{max-width:100%;border-radius:10px}.taku-post-body blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}.taku-post-body a{color:var(--accent)}`}</style>
+        <style>{`.taku-post-body img{max-width:100%;border-radius:10px}.taku-post-body video{max-width:100%;border-radius:10px}.taku-post-body blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}.taku-post-body a{color:var(--accent)}.taku-post-body a[href]:not([data-lp]),.taku-post-body a[href]:not([data-lp]) *{color:var(--accent) !important;text-decoration:underline !important;text-underline-offset:3px}.taku-post-body [data-link-card] img{border-radius:0 !important;cursor:pointer !important;max-width:none}.taku-post-body [data-lp-remove]{display:none !important}`}</style>
         {isGoodsBoard && goodsLoading
           ? <LogoLoader size="sm" />
           : isGoods ? goodsBody : genericBody}

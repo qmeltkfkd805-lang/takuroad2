@@ -124,7 +124,8 @@ export function usePostLightbox() {
   const onBodyClick = useCallback((e: React.MouseEvent<HTMLElement>) => {
     const t = e.target as HTMLElement | null
     if (!t || t.tagName !== 'IMG') return
-    const imgs = Array.from(e.currentTarget.querySelectorAll('img'))
+    if (t.closest('[data-link-card]')) return   // 링크 미리보기 카드 이미지는 확대 대상 아님(누르면 링크로)
+    const imgs = Array.from(e.currentTarget.querySelectorAll('img')).filter(m => !m.closest('[data-link-card]'))
     const k = imgs.indexOf(t as HTMLImageElement)
     if (k < 0) return
     e.preventDefault()
