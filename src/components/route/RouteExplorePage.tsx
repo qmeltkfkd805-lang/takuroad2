@@ -1,4 +1,5 @@
 'use client'
+import { useDragScroll } from '@/hooks/useDragScroll'
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
@@ -142,7 +143,9 @@ export default function RouteExplorePage() {
     return Array.from(m.entries()).sort((a, b) => b[1] - a[1])
   }, [routes])
   const tasteRecos = useMemo(() => (taste.length ? taste : popular).slice(0, 3), [taste, popular])
-  const recentTop = useMemo(() => recent.slice(0, 4), [recent])
+  // 새로 등록된 루트 — 루트 홈에서는 최대 5개, 한 줄로 놓고 옆으로 넘긴다(PC는 마우스로 끌어서)
+  const recentTop = useMemo(() => recent.slice(0, 5), [recent])
+  const newDrag = useDragScroll()
 
   function go(r: any) { const t = r.share_token ?? r.shareToken; if (t) router.push(`/route/${t}`) }
   async function onSave(e: React.MouseEvent, r: any) {
@@ -223,7 +226,7 @@ export default function RouteExplorePage() {
               <>
                 {[
                   { key: 'popular', title: '지금 인기 있는 루트', list: popular.slice(0, 8), more: 'sort=popular' },
-                  { key: 'new', title: '새로 등록된 루트', list: recent.slice(0, 8), more: 'sort=latest' },
+                  { key: 'new', title: '새로 등록된 루트', list: recent.slice(0, 5), more: 'sort=latest' },
                 ].filter(sec => sec.list.length > 0).map(sec => (
                   <section key={sec.key} className={styles.mlist}>
                     <div className={styles.mlistHead}>
@@ -379,8 +382,12 @@ export default function RouteExplorePage() {
 
             {recentTop.length > 0 && (
               <Section title="새로 등록된 루트" onMore={() => toAll('sort=latest')}>
-                <div className={styles.grid3}>
-                  {recentTop.map(r => <RouteResultCard key={r.id} route={r} saved={savedIds.has(r.id)} onOpen={() => go(r)} onToggleSave={e => onSave(e, r)} />)}
+                <div className={styles.rail} {...newDrag}>
+                  {recentTop.map(r => (
+                    <div key={r.id} className={styles.railItem}>
+                      <RouteResultCard route={r} saved={savedIds.has(r.id)} onOpen={() => go(r)} onToggleSave={e => onSave(e, r)} />
+                    </div>
+                  ))}
                 </div>
               </Section>
             )}
