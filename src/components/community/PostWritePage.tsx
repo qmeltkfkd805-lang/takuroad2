@@ -51,7 +51,16 @@ export default function PostWritePage() {
   const linkTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const MAX_LINK_CARDS = 5
   const rememberCards = () => {
-    editorRef.current?.querySelectorAll('[data-link-card][data-url]').forEach(n => { const u = n.getAttribute('data-url'); if (u) cardEver.current.add(u) })
+    editorRef.current?.querySelectorAll<HTMLElement>('[data-link-card][data-url]').forEach(n => {
+      const u = n.getAttribute('data-url')
+      if (!u) return
+      cardEver.current.add(u)
+      // 예전 모양으로 저장된 카드는 지금 모양으로 다시 그린다
+      n.setAttribute('contenteditable', 'false')
+      n.setAttribute('style', LINK_CARD_HOLDER_STYLE)
+      fetch(`/api/link-preview?url=${encodeURIComponent(u)}`).then(r => (r.ok ? r.json() : null))
+        .then((pv: LinkPreview | null) => { if (pv?.ok && n.isConnected) n.innerHTML = linkCardHtml(u, pv, true) }).catch(() => {})
+    })
   }
   const attachLinkCards = () => {
     const root = editorRef.current
@@ -87,6 +96,7 @@ export default function PostWritePage() {
     if (linkTimer.current) clearTimeout(linkTimer.current)
     linkTimer.current = setTimeout(attachLinkCards, 700)
   }
+  useEffect(() => { const t = setTimeout(rememberCards, 300); return () => clearTimeout(t) }, [])   // eslint-disable-line react-hooks/exhaustive-deps
   const onEditorClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const t = e.target as HTMLElement
     const rm = t.closest('[data-lp-remove]')
@@ -196,12 +206,7 @@ export default function PostWritePage() {
       // 링크 카드: 이미 글에 들어 있는 카드는 지금 모양으로 다시 그린다(서버 저장분이라 빠름) + ✕ 버튼.
       // 카드가 없는 링크는 지금 붙인다.
       editorRef.current?.querySelectorAll<HTMLElement>('[data-link-card]').forEach(n => {
-        n.setAttribute('contenteditable', 'false')
-        n.setAttribute('style', LINK_CARD_HOLDER_STYLE)
         if (!n.querySelector('[data-lp-remove]')) n.insertAdjacentHTML('afterbegin', REMOVE_BTN)
-        const u = n.getAttribute('data-url')
-        if (u) fetch(`/api/link-preview?url=${encodeURIComponent(u)}`).then(r => (r.ok ? r.json() : null))
-          .then((pv: LinkPreview | null) => { if (pv?.ok && n.isConnected) n.innerHTML = linkCardHtml(u, pv, true) }).catch(() => {})
       })
       rememberCards(); attachLinkCards()
       // 굿즈자랑 글이면 연결된 굿즈의 캐릭터·태그 프리필
@@ -650,6 +655,7 @@ export default function PostWritePage() {
         .taku-editor{outline:none}
         .taku-editor a[href]:not([contenteditable="false"]):not([data-lp]),.taku-editor a[href]:not([contenteditable="false"]):not([data-lp]) *{color:var(--accent) !important;text-decoration:underline !important;text-underline-offset:3px}
         .taku-editor [data-link-card]{cursor:default;user-select:none}
+        .taku-editor [data-link-card]{max-width:300px !important;width:100%}   /* 예전에 만든 큰 카드도 이 너비로 */
         .taku-editor img{max-width:100%}
         .taku-editor blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}
         .taku-write-grid{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:24px}
