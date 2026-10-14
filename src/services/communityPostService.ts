@@ -79,11 +79,16 @@ export async function createPost(userId: string, input: NewPost): Promise<string
       notice_all: input.noticeAll ?? false,
       is_spoiler: input.spoiler ?? false,
       flair: input.flair ?? null,
+      ...(input.linkUrl ? { link_url: input.linkUrl } : {}),
     } as any)
     .select('id')
     .single()
-  if (error) { console.error('[게시글 등록 실패]', error.message, error.code); return null }
-  const postId = data?.id ?? null
+  let postId: string | null = data?.id ?? null
+  if (error) {
+    // link_url 컬럼이 아직 없을 때(SQL 적용 전) — 카드 없이라도 글은 올라가게 한 번 더
+    if (input.linkUrl && isMissingLinkColumn(error)) return createPost(userId, { ...input, linkUrl: null })
+    console.error('[게시글 등록 실패]', error.message, error.code); return null
+  }
 
   // 팬아트 업로드 XP — 금액은 서버가 정한다. activity_logs 행은 만들지 않는다(기존 동작 유지).
   if (postId && input.board === 'fanart') {
@@ -690,7 +695,7 @@ export async function getWorkSearchCounts(): Promise<Record<string, number>> {
 
 // ── 작성자: 글 수정 ──
 export async function updatePost(id: string, patch: {
-  board?: Board; tagIds?: string[]; title?: string | null; content?: string | null; images?: string[]; showOnWork?: boolean; spoiler?: boolean; flair?: string | null
+  board?: Board; tagIds?: string[]; title?: string | null; content?: string | null; images?: string[]; showOnWork?: boolean; spoiler?: boolean; flair?: string | null; linkUrl?: string | null
 }): Promise<boolean> {
   const supabase = createClient()
   const upd: any = {}
@@ -702,9 +707,29 @@ export async function updatePost(id: string, patch: {
   if (patch.showOnWork !== undefined) upd.show_on_work = patch.showOnWork
   if (patch.spoiler !== undefined) upd.is_spoiler = patch.spoiler
   if (patch.flair !== undefined) upd.flair = patch.flair
+  if (patch.linkUrl !== undefined) upd.link_url = patch.linkUrl
   const { error } = await supabase.from('community_posts').update(upd).eq('id', id)
+  if (error && patch.linkUrl !== undefined && isMissingLinkColumn(error)) {
+    const { linkUrl: _drop, ...rest } = patch
+    return updatePost(id, rest)
+  }
   if (error) console.error('[updatePost]', error.message)
   return !error
+}
+
+/* ── 링크 미리보기 카드 링크 (community_posts.link_url) ──
+   목록 SELECT(community_posts_visible 뷰)에는 넣지 않고 상세에서만 따로 읽는다.
+   컬럼이 아직 없거나(SQL 적용 전) 못 읽으면 null — 카드만 안 나올 뿐 글은 그대로 보인다. */
+export async function getPostLinkUrl(id: string): Promise<string | null> {
+  try {
+    const supabase = createClient()
+    const { data, error } = await supabase.from('community_posts').select('link_url').eq('id', id).maybeSingle()
+    if (error) return null
+    return ((data as any)?.link_url as string | null) ?? null
+  } catch { return null }
+}
+function isMissingLinkColumn(error: { code?: string; message?: string }): boolean {
+  return error.code === 'PGRST204' || error.code === '42703' || /link_url/.test(error.message ?? '')
 }
 
 // ── 작성자: 공개범위 (public | private=나만보기) ──

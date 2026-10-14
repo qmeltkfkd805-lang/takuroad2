@@ -6,7 +6,9 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { ROUTES } from '@/lib/constants/routes'
 import { getAllTagsForSelect, getMyRoutes } from '@/services/routeService'
-import { createPost, updatePost, getPost, uploadPostImage } from '@/services/communityPostService'
+import { createPost, updatePost, getPost, uploadPostImage, getPostLinkUrl } from '@/services/communityPostService'
+import LinkPreviewCard from './LinkPreviewCard'
+import { firstUrl } from '@/lib/utils/linkUrl'
 import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import { createPoll } from '@/services/pollService'
 import { Board, BOARDS, BOARD_FLAIRS, CREATION_BOARDS, boardMeta, NewPost, NewPoll } from '@/types/community-post'
@@ -43,6 +45,12 @@ export default function PostWritePage() {
   const editId = sp.get('edit')
   const goodsIdParam = sp.get('goodsId')   // 기존 굿즈로 새 자랑 글 작성 모드
   const editorRef = useRef<HTMLDivElement>(null)
+  // 링크 미리보기 카드 — 본문 글자에서 첫 링크를 찾아 아래에 카드로. ✕로 빼면 그 링크는 카드 없이
+  const [editorText, setEditorText] = useState('')
+  const [linkOffUrl, setLinkOffUrl] = useState<string | null>(null)
+  const syncEditorText = () => setEditorText(editorRef.current?.innerText ?? '')
+  const detectedUrl = firstUrl(editorText)
+  const linkUrl = detectedUrl && detectedUrl !== linkOffUrl ? detectedUrl : null
   const tagBoxRef = useRef<HTMLDivElement>(null)
   const boardRef = useRef<HTMLDivElement>(null)
   const workLaneRef = useRef<HTMLDivElement>(null)
@@ -143,6 +151,10 @@ export default function PostWritePage() {
       if (pp.board === 'companion') getPostEvent(editId).then(ev => setCompanionEvent(ev))
       setBoard(pp.board); setTagIds(pp.tagIds?.length ? pp.tagIds : (pp.tagId ? [pp.tagId] : [])); setTitle(pp.title ?? ''); setImages(pp.images ?? []); setSpoiler(pp.isSpoiler); setFlair(pp.flair ?? null)
       if (editorRef.current) editorRef.current.innerHTML = (pp.content ?? '').replace(/<div data-gm="1"[\s\S]*?<\/div>/gi, '')
+      // 링크 카드: 저장 때 카드를 뺐던 글이면(링크는 있는데 link_url 없음) 그 상태 그대로
+      const txt = editorRef.current?.innerText ?? ''
+      setEditorText(txt)
+      getPostLinkUrl(editId).then(lu => { const d = firstUrl(txt); if (!lu && d) setLinkOffUrl(d) })
       // 굿즈자랑 글이면 연결된 굿즈의 캐릭터·태그 프리필
       if (pp.board === 'goods') {
         import('@/services/goodsService').then(async ({ getPostGoodsId, getGoodsDetail }) => {
@@ -356,6 +368,7 @@ export default function PostWritePage() {
     setTitle(''); setImages([]); setPollData(null); setSpoiler(false); setFlair(null); setTagIds(sp.get('tag') ? [sp.get('tag')!] : [])
     setGoodsChars([]); setGoodsTypeList([]); setGoodsStore(''); setGoodsPrice('')
     if (editorRef.current) { editorRef.current.innerHTML = ''; applyBoardTemplate(board) }
+    setEditorText(''); setLinkOffUrl(null)
   }
 
   // ── 임시저장 ──
@@ -377,6 +390,7 @@ export default function PostWritePage() {
       if (typeof d.goodsStore === 'string') setGoodsStore(d.goodsStore)
       if (typeof d.goodsPrice === 'string') setGoodsPrice(d.goodsPrice)
       if (editorRef.current) editorRef.current.innerHTML = d.html ?? ''
+      syncEditorText()
       setShowDraftBanner(false)
     } catch { /* noop */ }
   }
@@ -435,7 +449,7 @@ export default function PostWritePage() {
     setErr(''); setSaving(true)
     const finalBoard: Board = (notice && noticeScope !== 'all') ? noticeScope : board
     if (editId) {
-      const ok = await updatePost(editId, { board: finalBoard, tagIds, title, content: html, images: imgs, showOnWork, spoiler, flair: BOARD_FLAIRS[finalBoard] ? flair : null })
+      const ok = await updatePost(editId, { board: finalBoard, tagIds, title, content: html, images: imgs, showOnWork, spoiler, flair: BOARD_FLAIRS[finalBoard] ? flair : null, linkUrl })
       // 덕메게시판: 같이 갈 이벤트 연결 갱신 (다른 게시판으로 옮기면 연결 해제)
       if (ok) await setPostEvent(editId, finalBoard === 'companion' ? companionEvent?.id ?? null : null)
       // 굿즈자랑 글이면 연결된 굿즈의 이름·캐릭터·태그도 함께 갱신
@@ -449,7 +463,7 @@ export default function PostWritePage() {
       if (ok) { draftBlocked.current = true; clearDraft(); router.push(`/community/${editId}`) } else setErr('수정에 실패했어요.')
       return
     }
-    const payload: NewPost = { board: finalBoard, tagIds, title, content: html, images: imgs, showOnWork, isNotice: notice, noticeAll: notice && noticeScope === 'all', spoiler, flair: BOARD_FLAIRS[finalBoard] ? flair : null }
+    const payload: NewPost = { board: finalBoard, tagIds, title, content: html, images: imgs, showOnWork, isNotice: notice, noticeAll: notice && noticeScope === 'all', spoiler, flair: BOARD_FLAIRS[finalBoard] ? flair : null, linkUrl }
     const id = await createPost(user.id, payload)
     if (!id) { setSaving(false); setErr('등록에 실패했어요. 잠시 후 다시 시도해주세요.'); return }
     if (pollData) { await createPoll(id, pollData) }
@@ -819,8 +833,16 @@ export default function PostWritePage() {
             </div>
 
             {/* 본문 */}
-            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown}
+            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown} onInput={syncEditorText}
               style={{ minHeight: 340, maxHeight: isGoods && isDesktop ? 'none' : '55vh', flex: isGoods && isDesktop ? 1 : undefined, overflowY: 'auto', fontSize: 16, lineHeight: 1.7, color: 'var(--text)', padding: '12px 14px', border: '1px solid var(--border)', borderRadius: 12 }} />
+
+            {/* 링크 미리보기 — 본문에 링크를 붙이면 글 아래에 이렇게 보인다 */}
+            {linkUrl && (
+              <div style={{ marginTop: 12 }}>
+                <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--muted)', marginBottom: 6 }}>링크 미리보기 (글 아래에 표시돼요)</div>
+                <LinkPreviewCard url={linkUrl} compact onRemove={() => setLinkOffUrl(linkUrl)} />
+              </div>
+            )}
 
             {pollData && (
               <div style={{ marginTop: 12 }}>

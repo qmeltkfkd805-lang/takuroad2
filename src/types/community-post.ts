@@ -103,6 +103,7 @@ export interface CommunityPost {
   likedByMe: boolean
   createdAt: string
   featured?: 'current' | 'past' | null   // 대표 팬아트 배지 (featured_fanart 기준)
+  linkUrl?: string | null   // 링크 미리보기 카드로 보여줄 링크 (getPostLinkUrl 로 따로 읽음)
 }
 
 export interface NewPost {
@@ -116,6 +117,7 @@ export interface NewPost {
   noticeAll?: boolean
   spoiler?: boolean
   flair?: string | null
+  linkUrl?: string | null   // 링크 미리보기 카드 (없으면 카드 없음)
 }
 
 export interface PostComment {

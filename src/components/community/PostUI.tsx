@@ -10,7 +10,7 @@ import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import UserLevelBadge from '@/components/cosmetic/UserLevelBadge'
 import {
   togglePostLike, incrementPostView, getComments, addComment, deleteComment, toggleCommentLike,
-  reportPost, deletePostWithGoods, setPostVisibility, getWorkPosts,
+  reportPost, deletePostWithGoods, setPostVisibility, getWorkPosts, getPostLinkUrl,
   getAdjacentPosts, type PostNeighbor, isPostSaved, setPostSaved,
 } from '@/services/communityPostService'
 import { CommunityPost, PostComment, ReportReason, REPORT_REASONS, BOARD_LABEL, Poll } from '@/types/community-post'
@@ -21,6 +21,7 @@ import AppIcon from '@/components/tds/AppIcon'
 import LogoLoader from '@/components/common/LogoLoader'
 import { PostEventLinkCard } from './CompanionEventPicker'
 import { blockUser } from '@/services/blockService'
+import LinkPreviewCard from './LinkPreviewCard'
 import { getPostEvent, PostEventSummary } from '@/services/postEventService'
 
 // ── 대표 팬아트 배지 ──
@@ -160,6 +161,14 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
   }, [post.id, post.board, post.createdAt, variant])
 
   const loadComments = useCallback(async () => setComments(await getComments(post.id, user?.id)), [post.id, user?.id])
+  // 링크 미리보기 카드 — 목록에서 연 글엔 link_url 이 없어서 따로 읽는다
+  const [linkUrl, setLinkUrl] = useState<{ id: string; url: string | null } | null>(null)
+  useEffect(() => {
+    let alive = true
+    getPostLinkUrl(post.id).then(u => { if (alive) setLinkUrl({ id: post.id, url: u }) })
+    return () => { alive = false }
+  }, [post.id])
+  const cardUrl = linkUrl && linkUrl.id === post.id ? linkUrl.url : null
   useEffect(() => { loadComments() }, [loadComments])
 
   const like = async () => {
@@ -464,6 +473,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
           {goodsHtml && (goodsIsHtml
             ? <div className="taku-post-body" onClick={lb.onBodyClick} style={{ fontSize: 14.5, lineHeight: 1.7, margin: '0 0 16px', wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(goodsHtml) }} />
             : <p style={{ fontSize: 14.5, lineHeight: 1.7, whiteSpace: 'pre-wrap', margin: '0 0 16px' }}>{goodsHtml}</p>)}
+          {cardUrl && <div style={{ margin: '0 0 16px' }}><LinkPreviewCard url={cardUrl} /></div>}
           <GoodsInfoCard
             detail={goodsDetail}
             coverUrl={goodsDetail?.images?.[0]?.url ?? null}
@@ -545,6 +555,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
           {post.content && (isHtml
             ? <div className="taku-post-body" onClick={lb.onBodyClick} style={{ fontSize: isPage ? 16 : 14.5, lineHeight: isPage ? 1.8 : 1.65, margin: 0, wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
             : <p style={{ fontSize: isPage ? 16 : 14.5, lineHeight: isPage ? 1.8 : 1.65, whiteSpace: 'pre-wrap', margin: 0 }}>{post.content}</p>)}
+          {cardUrl && <div style={{ marginTop: 18 }}><LinkPreviewCard url={cardUrl} /></div>}
         </div>
 
         {poll && <PollView poll={poll} userId={user?.id ?? null} onChanged={loadPoll} onRequireLogin={() => router.push(ROUTES.login)} />}
