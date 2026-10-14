@@ -24,7 +24,7 @@ import { blockUser } from '@/services/blockService'
 import LinkPreviewCard from './LinkPreviewCard'
 import { createPortal } from 'react-dom'
 import { findLinkBlock } from '@/lib/utils/linkUrl'
-import { linkCardHtml, LINK_CARD_HOLDER_STYLE, type LinkPreview } from '@/lib/utils/linkCardHtml'
+import { linkCardHtml, LINK_CARD_HOLDER_STYLE, LINK_CARD_VERSION, type LinkPreview } from '@/lib/utils/linkCardHtml'
 import { getPostEvent, PostEventSummary } from '@/services/postEventService'
 
 // ── 대표 팬아트 배지 ──
@@ -197,7 +197,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
     let alive = true
     body.querySelectorAll<HTMLElement>('[data-link-card][data-url]').forEach(n => {
       const u = n.getAttribute('data-url')
-      if (!u) return
+      if (!u || n.getAttribute('data-v') === LINK_CARD_VERSION) return   // 이미 지금 모양 → 그대로 바로 보임
       n.setAttribute('style', LINK_CARD_HOLDER_STYLE)
       fetch(`/api/link-preview?url=${encodeURIComponent(u)}`).then(r => (r.ok ? r.json() : null))
         .then((pv: LinkPreview | null) => { if (alive && pv?.ok && n.isConnected) n.innerHTML = linkCardHtml(u, pv, false) })

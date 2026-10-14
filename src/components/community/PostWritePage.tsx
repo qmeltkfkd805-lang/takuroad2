@@ -8,7 +8,7 @@ import { ROUTES } from '@/lib/constants/routes'
 import { getAllTagsForSelect, getMyRoutes } from '@/services/routeService'
 import { createPost, updatePost, getPost, uploadPostImage } from '@/services/communityPostService'
 import { linkBlocksIn } from '@/lib/utils/linkUrl'
-import { linkCardHtml, linkCardLoadingHtml, cleanLinkCards, LINK_CARD_HOLDER_STYLE, REMOVE_BTN, type LinkPreview } from '@/lib/utils/linkCardHtml'
+import { linkCardHtml, linkCardLoadingHtml, cleanLinkCards, LINK_CARD_HOLDER_STYLE, LINK_CARD_VERSION, REMOVE_BTN, type LinkPreview } from '@/lib/utils/linkCardHtml'
 import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import { createPoll } from '@/services/pollService'
 import { Board, BOARDS, BOARD_FLAIRS, CREATION_BOARDS, boardMeta, NewPost, NewPoll } from '@/types/community-post'
@@ -55,9 +55,11 @@ export default function PostWritePage() {
       const u = n.getAttribute('data-url')
       if (!u) return
       cardEver.current.add(u)
-      // 예전 모양으로 저장된 카드는 지금 모양으로 다시 그린다
+      // 예전 모양으로 저장된 카드만 지금 모양으로 다시 그린다
       n.setAttribute('contenteditable', 'false')
+      if (n.getAttribute('data-v') === LINK_CARD_VERSION) return
       n.setAttribute('style', LINK_CARD_HOLDER_STYLE)
+      n.setAttribute('data-v', LINK_CARD_VERSION)
       fetch(`/api/link-preview?url=${encodeURIComponent(u)}`).then(r => (r.ok ? r.json() : null))
         .then((pv: LinkPreview | null) => { if (pv?.ok && n.isConnected) n.innerHTML = linkCardHtml(u, pv, true) }).catch(() => {})
     })
@@ -77,6 +79,7 @@ export default function PostWritePage() {
       holder.setAttribute('data-loading', '1')
       holder.setAttribute('contenteditable', 'false')
       holder.setAttribute('style', LINK_CARD_HOLDER_STYLE)
+      holder.setAttribute('data-v', LINK_CARD_VERSION)
       holder.innerHTML = linkCardLoadingHtml(url)
       if (block) block.insertAdjacentElement('afterend', holder); else root.appendChild(holder)
       // 카드 뒤에 줄이 없으면 하나 만들어 둔다 — 카드 다음에 이어서 쓸 수 있게
@@ -91,11 +94,16 @@ export default function PostWritePage() {
         .catch(() => { if (holder.isConnected) holder.remove() })
     }
   }
-  // 입력이 멈추고 잠깐 뒤에 찾는다 — 주소를 치는 도중에 반쪽짜리 주소로 카드가 생기지 않게
+  // 직접 칠 땐 입력이 멈추고 잠깐 뒤에 찾는다(반쪽짜리 주소로 카드가 생기지 않게).
+  // 붙여넣기는 주소가 한 번에 다 들어오므로 바로.
+  const pastedRef = useRef(false)
   const syncEditorText = () => {
     if (linkTimer.current) clearTimeout(linkTimer.current)
-    linkTimer.current = setTimeout(attachLinkCards, 700)
+    const wait = pastedRef.current ? 0 : 500
+    pastedRef.current = false
+    linkTimer.current = setTimeout(attachLinkCards, wait)
   }
+  const onEditorPaste = () => { pastedRef.current = true }
   useEffect(() => { const t = setTimeout(rememberCards, 300); return () => clearTimeout(t) }, [])   // eslint-disable-line react-hooks/exhaustive-deps
   const onEditorClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const t = e.target as HTMLElement
@@ -896,7 +904,7 @@ export default function PostWritePage() {
             </div>
 
             {/* 본문 */}
-            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown} onInput={syncEditorText} onClick={onEditorClick}
+            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown} onInput={syncEditorText} onPaste={onEditorPaste} onClick={onEditorClick}
               style={{ minHeight: 340, maxHeight: isGoods && isDesktop ? 'none' : '55vh', flex: isGoods && isDesktop ? 1 : undefined, overflowY: 'auto', fontSize: 16, lineHeight: 1.7, color: 'var(--text)', padding: '12px 14px', border: '1px solid var(--border)', borderRadius: 12 }} />
 
             {pollData && (

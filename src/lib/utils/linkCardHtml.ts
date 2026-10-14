@@ -11,6 +11,8 @@ const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 const host = (u: string) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return '' } }
 
 // 크기 — 너비 300px (위 이미지 + 아래 글, 2026-10-14 사용자가 표시한 크기)
+/* 카드 모양 버전 — 모양을 바꾸면 올린다. 이미 지금 모양인 카드는 다시 그리지 않는다(깜빡임·요청 줄이기) */
+export const LINK_CARD_VERSION = '3'
 export const LINK_CARD_HOLDER_STYLE = 'position:relative;max-width:300px;margin:6px 0 10px;'
 
 export const REMOVE_BTN = '<button type="button" data-lp-remove="1" aria-label="링크 카드 빼기" style="position:absolute;top:4px;right:4px;z-index:2;width:18px;height:18px;border-radius:9999px;border:none;background:rgba(0,0,0,.5);color:#fff;cursor:pointer;font-size:9px;line-height:18px;padding:0;text-align:center">✕</button>'
