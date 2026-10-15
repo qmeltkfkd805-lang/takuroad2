@@ -17,7 +17,7 @@ import { Board, BOARDS, BOARD_FLAIRS, CREATION_BOARDS, boardMeta, NewPost, NewPo
 import DraftNotice from '@/components/common/DraftNotice'
 import { PostBodyPreview } from './PostUI'
 import ImageEditModal from './ImageEditModal'
-import { searchShopsForEmbed, searchEventsForEmbed, type EmbedShop, type EmbedEvent } from '@/services/embedSearchService'
+import { searchShopsForEmbed, searchEventsForEmbed, getSavedShopsForEmbed, getSavedEventsForEmbed, type EmbedShop, type EmbedEvent } from '@/services/embedSearchService'
 import { createClient as createSupabase } from '@/lib/supabase/client'
 import CompanionEventPicker from './CompanionEventPicker'
 import { getPostEvent, setPostEvent, PostEventSummary } from '@/services/postEventService'
@@ -1191,6 +1191,14 @@ export default function PostWritePage() {
   const [embedShops, setEmbedShops] = useState<EmbedShop[]>([])
   const [embedEvents, setEmbedEvents] = useState<EmbedEvent[]>([])
   const [embedLoading, setEmbedLoading] = useState(false)
+  // 검색어가 없을 땐 내가 저장한 샵·이벤트를 먼저 보여준다
+  const [savedShops, setSavedShops] = useState<EmbedShop[] | null>(null)
+  const [savedEvents, setSavedEvents] = useState<EmbedEvent[] | null>(null)
+  useEffect(() => {
+    if (!embedPick || !user) return
+    if (embedPick === 'shop' && savedShops === null) getSavedShopsForEmbed(user.id).then(setSavedShops).catch(() => setSavedShops([]))
+    if (embedPick === 'event' && savedEvents === null) getSavedEventsForEmbed(user.id).then(setSavedEvents).catch(() => setSavedEvents([]))
+  }, [embedPick, user, savedShops, savedEvents])
   useEffect(() => {
     if (!embedPick) return
     let alive = true
@@ -2171,26 +2179,49 @@ export default function PostWritePage() {
             </div>
             <div style={{ overflowY: 'auto', padding: '0 8px 12px' }}>
               {embedLoading && <div style={{ padding: 14, fontSize: 13, color: 'var(--muted)' }}>찾는 중…</div>}
-              {!embedLoading && embedPick === 'shop' && (embedQ.trim() ? (embedShops.length ? embedShops.map(sh => (
-                <button key={sh.id} type="button" onClick={() => insertShopCard(sh)} style={embedRow}>
-                  {sh.image
-                    // eslint-disable-next-line @next/next/no-img-element
-                    ? <img src={sh.image} alt="" style={{ width: 44, height: 44, borderRadius: 8, objectFit: 'cover', flex: 'none' }} />
-                    : <span style={{ width: 44, height: 44, borderRadius: 8, background: 'var(--surface2)', flex: 'none' }} />}
-                  <span style={{ minWidth: 0 }}><span style={{ display: 'block', fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{sh.name}</span>
-                    <span style={{ display: 'block', fontSize: 12, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{sh.addr ?? ''}</span></span>
-                </button>
-              )) : <div style={{ padding: 14, fontSize: 13, color: 'var(--muted)' }}>찾는 샵이 없어요</div>) : <div style={{ padding: 14, fontSize: 13, color: 'var(--muted)' }}>샵 이름을 입력하세요</div>)}
-              {!embedLoading && embedPick === 'event' && (embedEvents.length ? embedEvents.map(ev => (
-                <button key={ev.id} type="button" onClick={() => insertEventCard(ev)} style={embedRow}>
-                  {ev.cover
-                    // eslint-disable-next-line @next/next/no-img-element
-                    ? <img src={ev.cover} alt="" style={{ width: 44, height: 44, borderRadius: 8, objectFit: 'cover', flex: 'none' }} />
-                    : <span style={{ width: 44, height: 44, borderRadius: 8, background: 'var(--surface2)', flex: 'none' }} />}
-                  <span style={{ minWidth: 0 }}><span style={{ display: 'block', fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ev.title}</span>
-                    <span style={{ display: 'block', fontSize: 12, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{[ev.start ? `${fmtD(ev.start)}${ev.end && ev.end !== ev.start ? ` ~ ${fmtD(ev.end)}` : ''}` : '', ev.place].filter(Boolean).join(' · ')}</span></span>
-                </button>
-              )) : <div style={{ padding: 14, fontSize: 13, color: 'var(--muted)' }}>찾는 이벤트가 없어요</div>)}
+              {!embedLoading && embedPick === 'shop' && (() => {
+                const typed = !!embedQ.trim()
+                const list = typed ? embedShops : (savedShops ?? [])
+                return (<>
+                  {!typed && <div style={embedHead}>내가 저장한 샵{savedShops ? ` ${savedShops.length}` : ''}</div>}
+                  <div style={typed ? undefined : embedSavedBox}>
+                  {list.map(sh => (
+                    <button key={sh.id} type="button" onClick={() => insertShopCard(sh)} style={embedRow}>
+                      {sh.image
+                        // eslint-disable-next-line @next/next/no-img-element
+                        ? <img src={sh.image} alt="" style={{ width: 44, height: 44, borderRadius: 8, objectFit: 'cover', flex: 'none' }} />
+                        : <span style={{ width: 44, height: 44, borderRadius: 8, background: 'var(--surface2)', flex: 'none' }} />}
+                      <span style={{ minWidth: 0 }}><span style={{ display: 'block', fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{sh.name}</span>
+                        <span style={{ display: 'block', fontSize: 12, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{sh.addr ?? ''}</span></span>
+                    </button>
+                  ))}
+                  </div>
+                  {list.length === 0 && <div style={{ padding: 14, fontSize: 13, color: 'var(--muted)' }}>{typed ? '찾는 샵이 없어요' : savedShops === null ? '불러오는 중…' : '저장한 샵이 없어요. 위에서 이름으로 찾아보세요.'}</div>}
+                </>)
+              })()}
+              {!embedLoading && embedPick === 'event' && (() => {
+                const typed = !!embedQ.trim()
+                const row = (ev: EmbedEvent) => (
+                  <button key={ev.id} type="button" onClick={() => insertEventCard(ev)} style={embedRow}>
+                    {ev.cover
+                      // eslint-disable-next-line @next/next/no-img-element
+                      ? <img src={ev.cover} alt="" style={{ width: 44, height: 44, borderRadius: 8, objectFit: 'cover', flex: 'none' }} />
+                      : <span style={{ width: 44, height: 44, borderRadius: 8, background: 'var(--surface2)', flex: 'none' }} />}
+                    <span style={{ minWidth: 0 }}><span style={{ display: 'block', fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ev.title}</span>
+                      <span style={{ display: 'block', fontSize: 12, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{[ev.start ? `${fmtD(ev.start)}${ev.end && ev.end !== ev.start ? ` ~ ${fmtD(ev.end)}` : ''}` : '', ev.place].filter(Boolean).join(' · ')}</span></span>
+                  </button>
+                )
+                if (typed) return embedEvents.length ? embedEvents.map(row) : <div style={{ padding: 14, fontSize: 13, color: 'var(--muted)' }}>찾는 이벤트가 없어요</div>
+                const savedIds = new Set((savedEvents ?? []).map(e => e.id))
+                return (<>
+                  <div style={embedHead}>내가 저장한 이벤트{savedEvents ? ` ${savedEvents.length}` : ''}</div>
+                  {!!savedEvents?.length && <div style={embedSavedBox}>{savedEvents.map(row)}</div>}
+                  {savedEvents !== null && savedEvents.length === 0 && <div style={{ padding: '6px 10px 10px', fontSize: 13, color: 'var(--muted)' }}>저장한 이벤트가 없어요</div>}
+                  {savedEvents === null && <div style={{ padding: '6px 10px 10px', fontSize: 13, color: 'var(--muted)' }}>불러오는 중…</div>}
+                  <div style={embedHead}>최근 이벤트</div>
+                  {embedEvents.filter(e => !savedIds.has(e.id)).map(row)}
+                </>)
+              })()}
             </div>
           </div>
         </div>
@@ -2325,6 +2356,9 @@ function RouteIcon() {
     </svg>
   )
 }
+/* 저장한 목록은 3개까지 한눈에, 더 있으면 그 칸 안에서 스크롤 (창이 길어지지 않게) */
+const embedSavedBox: React.CSSProperties = { maxHeight: 182, overflowY: 'auto', overscrollBehavior: 'contain' }
+const embedHead: React.CSSProperties = { fontSize: 12, fontWeight: 800, color: 'var(--muted)', padding: '10px 10px 4px' }
 const embedRow: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: 10, width: '100%', textAlign: 'left', border: 'none', background: 'none', borderRadius: 10, padding: '8px 8px', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, color: 'var(--text)' }
 
 function MoreItem({ label, icon, onClick }: { label: string; icon: React.ReactNode; onClick: () => void }) {
