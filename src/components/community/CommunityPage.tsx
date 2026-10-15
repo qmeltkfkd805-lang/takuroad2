@@ -41,6 +41,16 @@ function timeAgo(iso: string): string {
 
 /* 커뮤니티 목록 결과 기억 (화면을 옮겨 다녀도 유지, 새로고침하면 비워짐) */
 const listCache = new Map<string, { posts: CommunityPost[]; notices: CommunityPost[] }>()
+/* 옆 칸(인기글·통계·태그 등) 결과 기억 — 다시 들어오면 바로 보이게. 작품 태그 목록·검색량은 잘 안 바뀌어서 브라우저 탭 동안(sessionStorage) 유지 */
+const side: {
+  popular?: CommunityPost[]; tags?: TrendingTag[]; stats?: CommunityStats; cafePopular?: CommunityPost[]
+  weeklyPopular?: CommunityPost[]; boardCounts?: Record<string, number>
+  allTags?: { id: string; name: string; slug: string }[]; searchCounts?: Record<string, number>
+} = {}
+const SS_TAGS = 'takuroad_cm_tags_v1'
+const ssGet = <T,>(k: string): T | undefined => { try { const v = sessionStorage.getItem(k); return v ? JSON.parse(v) as T : undefined } catch { return undefined } }
+const ssSet = (k: string, v: unknown) => { try { sessionStorage.setItem(k, JSON.stringify(v)) } catch { /* 저장 못 해도 그만 */ } }
+const keep = <K extends keyof typeof side>(k: K, set: (v: NonNullable<(typeof side)[K]>) => void) => (v: NonNullable<(typeof side)[K]>) => { side[k] = v; set(v) }
 
 export default function CommunityPage() {
   const { user, profile } = useAuth()
@@ -81,19 +91,19 @@ export default function CommunityPage() {
   const [tagFilter, setTagFilter] = useState<Tag | null>(null)
   const [tagQuery, setTagQuery] = useState('')
   const [tagOpen, setTagOpen] = useState(false)
-  const [allTags, setAllTags] = useState<Tag[]>([])
-  const [searchCounts, setSearchCounts] = useState<Record<string, number>>({})
+  const [allTags, setAllTags] = useState<Tag[]>(() => side.allTags ?? [])
+  const [searchCounts, setSearchCounts] = useState<Record<string, number>>(() => side.searchCounts ?? {})
 
   const [posts, setPosts] = useState<CommunityPost[]>([])
   const [notices, setNotices] = useState<CommunityPost[]>([])
   const [loading, setLoading] = useState(true)
 
-  const [popular, setPopular] = useState<CommunityPost[]>([])
-  const [tags, setTags] = useState<TrendingTag[]>([])
-  const [stats, setStats] = useState<CommunityStats | null>(null)
-  const [cafePopular, setCafePopular] = useState<CommunityPost[]>([])   // 카페 인기글: 최근 30일
-  const [weeklyPopular, setWeeklyPopular] = useState<CommunityPost[]>([]) // 이번 주 인기글: 최근 7일
-  const [boardCounts, setBoardCounts] = useState<Record<string, number>>({})
+  const [popular, setPopular] = useState<CommunityPost[]>(() => side.popular ?? [])
+  const [tags, setTags] = useState<TrendingTag[]>(() => side.tags ?? [])
+  const [stats, setStats] = useState<CommunityStats | null>(() => side.stats ?? null)
+  const [cafePopular, setCafePopular] = useState<CommunityPost[]>(() => side.cafePopular ?? [])   // 카페 인기글: 최근 30일
+  const [weeklyPopular, setWeeklyPopular] = useState<CommunityPost[]>(() => side.weeklyPopular ?? []) // 이번 주 인기글: 최근 7일
+  const [boardCounts, setBoardCounts] = useState<Record<string, number>>(() => side.boardCounts ?? {})
   const [myActivity, setMyActivity] = useState<{ posts: number; comments: number } | null>(null)
   const [moreOpen, setMoreOpen] = useState(false)   // 게시판 메뉴 '더보기'
   const [sideCreationOpen, setSideCreationOpen] = useState(false)   // 사이드 바로가기: 창작게시판 펼침
@@ -218,16 +228,33 @@ export default function CommunityPage() {
     tagAppliedRef.current = true
   }, [allTags, searchParams])
 
-  useEffect(() => {
-    getPopularPostsInWindow(3650, 5).then(setPopular).catch(() => {})   // 전체 인기글 — 메인 인기글과 같은 종합점수(좋아요·3+댓글·2+조회·0.1)
-    getTrendingTags(10).then(setTags).catch(() => {})
-    getCommunityStats().then(setStats).catch(() => {})
-    getAllTagsForSelect().then((t) => setAllTags(t as Tag[])).catch(() => {})
-    getWorkSearchCounts().then(setSearchCounts).catch(() => {})
-    getPopularPostsInWindow(30, 6).then(setCafePopular).catch(() => {})   // 카페 인기글
-    getPopularPostsInWindow(7, 5).then(setWeeklyPopular).catch(() => {})  // 이번 주 인기글
-    getBoardCounts().then(setBoardCounts).catch(() => {})
+  /* 옆 칸은 글 목록이 먼저 뜬 다음에 불러온다 — 한꺼번에 20개 넘게 요청하면 서로 밀려서 목록까지 늦어졌다.
+     (목록이 늦어지면 1.5초 뒤엔 그냥 시작) */
+  const [sideGo, setSideGo] = useState(false)
+  useEffect(() => {   // 이 탭에서 받아 둔 작품 태그가 있으면 바로(모바일 글 줄의 작품 이름에 쓰임)
+    if (side.allTags) return
+    const cached = ssGet<{ allTags: Tag[]; searchCounts: Record<string, number> }>(SS_TAGS)
+    if (cached?.allTags?.length) { side.allTags = cached.allTags; side.searchCounts = cached.searchCounts ?? {}; setAllTags(cached.allTags); setSearchCounts(cached.searchCounts ?? {}) }
   }, [])
+  useEffect(() => { if (!loading) setSideGo(true) }, [loading])
+  useEffect(() => { const t = setTimeout(() => setSideGo(true), 1500); return () => clearTimeout(t) }, [])
+  useEffect(() => {
+    if (!sideGo) return
+    getPopularPostsInWindow(3650, 5).then(keep('popular', setPopular)).catch(() => {})   // 전체 인기글 — 메인 인기글과 같은 종합점수(좋아요·3+댓글·2+조회·0.1)
+    getTrendingTags(10).then(keep('tags', setTags)).catch(() => {})
+    getCommunityStats().then(keep('stats', setStats)).catch(() => {})
+    getPopularPostsInWindow(30, 6).then(keep('cafePopular', setCafePopular)).catch(() => {})   // 카페 인기글
+    getPopularPostsInWindow(7, 5).then(keep('weeklyPopular', setWeeklyPopular)).catch(() => {})  // 이번 주 인기글
+    getBoardCounts().then(keep('boardCounts', setBoardCounts)).catch(() => {})
+    // 작품 태그 3천여 개·검색량 5천 줄 — 이 탭에서 한 번 받았으면 다시 안 받는다
+    if (!side.allTags) {
+      Promise.all([getAllTagsForSelect(), getWorkSearchCounts().catch(() => ({} as Record<string, number>))]).then(([t, c]) => {
+        side.allTags = t; side.searchCounts = c
+        setAllTags(t as Tag[]); setSearchCounts(c)
+        ssSet(SS_TAGS, { allTags: t, searchCounts: c })
+      }).catch(() => {})
+    }
+  }, [sideGo])
 
   const reloadSidebar = () => {
     getPopularPostsInWindow(3650, 5).then(setPopular).catch(() => {})   // 전체 인기글 — 메인 인기글과 같은 종합점수(좋아요·3+댓글·2+조회·0.1)
