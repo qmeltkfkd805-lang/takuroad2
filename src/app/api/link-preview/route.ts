@@ -23,7 +23,14 @@ export const runtime = 'nodejs'
 
 const FRESH_MS = 7 * 24 * 60 * 60 * 1000
 const MAX_BYTES = 512 * 1024
-const UA = 'Mozilla/5.0 (compatible; TakuroadLinkPreview/1.0; +https://www.takuroad.kr)'
+/* 노션·인스타처럼 화면을 자바스크립트로 그리는 사이트는, '미리보기 봇'으로 알아보는 요청에만
+   그 페이지의 제목·이미지(og)를 넣어 준다. 일반 요청엔 사이트 공통 소개(예: 'Notion | Where teams…')만 준다.
+   네이버·카톡이 노션 카드를 제대로 보여주는 것도 그 때문.
+   1차: 우리 봇 이름 / 2차: 아이메시지처럼 널리 알려진 미리보기 봇 표기를 덧붙여 한 번 더. */
+const UAS = [
+  'Mozilla/5.0 (compatible; TakuroadBot/1.0; +https://www.takuroad.kr)',
+  'Mozilla/5.0 (compatible; TakuroadBot/1.0; +https://www.takuroad.kr) facebookexternalhit/1.1 Facebot Twitterbot/1.0',
+]
 
 type Preview = { url: string; ok: boolean; title: string | null; description: string | null; image: string | null; siteName: string | null }
 
@@ -109,11 +116,23 @@ function parseMeta(html: string, baseUrl: string) {
     try { const iu = new URL(image, baseUrl); image = iu.protocol === 'http:' || iu.protocol === 'https:' ? iu.toString() : null } catch { image = null }
   }
   const siteName = meta['og:site_name'] || null
+  const ogUrl = meta['og:url'] || null
   const cut = (s: string | null, n: number) => (s ? s.slice(0, n) : null)
-  return { title: cut(title, 300), description: cut(description, 500), image: cut(image, 2000), siteName: cut(siteName, 120) }
+  return { title: cut(title, 300), description: cut(description, 500), image: cut(image, 2000), siteName: cut(siteName, 120), ogUrl }
 }
 
-async function fetchPreview(url: string): Promise<Omit<Preview, 'url'>> {
+/* 받은 og 가 '그 페이지'가 아니라 사이트 공통 소개인지 — og:url 이 전혀 다른 사이트를 가리키면 공통 소개로 본다
+   (노션: 페이지는 xxx.notion.site 인데 og:url 은 www.notion.com) */
+const baseDomain = (h: string) => h.replace(/^www\./, '').split('.').slice(-2).join('.')
+function looksGeneric(pageUrl: string, ogUrl: string | null): boolean {
+  if (!ogUrl) return false
+  try {
+    const a = new URL(pageUrl).hostname, b = new URL(ogUrl, pageUrl).hostname
+    return baseDomain(a) !== baseDomain(b)
+  } catch { return false }
+}
+
+async function fetchOnce(url: string, ua: string): Promise<(Omit<Preview, 'url'> & { generic: boolean }) | null> {
   let current = new URL(url)
   const ctrl = new AbortController()
   const timer = setTimeout(() => ctrl.abort(), 6000)
@@ -122,7 +141,7 @@ async function fetchPreview(url: string): Promise<Omit<Preview, 'url'>> {
       await assertPublic(current)
       const res = await fetch(current, {
         redirect: 'manual', signal: ctrl.signal, cache: 'no-store',
-        headers: { 'User-Agent': UA, Accept: 'text/html,application/xhtml+xml', 'Accept-Language': 'ko,en;q=0.8' },
+        headers: { 'User-Agent': ua, Accept: 'text/html,application/xhtml+xml', 'Accept-Language': 'ko,en;q=0.8' },
       })
       if (res.status >= 300 && res.status < 400) {
         const loc = res.headers.get('location')
@@ -134,9 +153,19 @@ async function fetchPreview(url: string): Promise<Omit<Preview, 'url'>> {
       if (!res.ok || !/text\/html|application\/xhtml/i.test(ct)) break
       const html = decodeHtml(await readLimited(res), ct)
       const m = parseMeta(html, current.toString())
-      return { ok: !!(m.title || m.description || m.image), ...m }
+      const { ogUrl, ...rest } = m
+      return { ok: !!(m.title || m.description || m.image), ...rest, generic: looksGeneric(current.toString(), ogUrl) }
     }
-  } catch { /* 실패 → 카드 없이 */ } finally { clearTimeout(timer) }
+  } catch { /* 실패 */ } finally { clearTimeout(timer) }
+  return null
+}
+
+async function fetchPreview(url: string): Promise<Omit<Preview, 'url'>> {
+  for (const ua of UAS) {
+    const r = await fetchOnce(url, ua)
+    if (r && r.ok && !r.generic) { const { generic: _g, ...p } = r; return p }
+  }
+  // 끝까지 사이트 공통 소개뿐이면 카드를 만들지 않는다(엉뚱한 카드보다 링크만 있는 게 낫다)
   return { ok: false, title: null, description: null, image: null, siteName: null }
 }
 
