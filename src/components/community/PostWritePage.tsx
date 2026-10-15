@@ -7,7 +7,7 @@ import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { ROUTES } from '@/lib/constants/routes'
 import { getAllTagsForSelect, getMyRoutes } from '@/services/routeService'
 import { createPost, updatePost, getPost, uploadPostImage } from '@/services/communityPostService'
-import { linkBlocksIn, wrapLineOf } from '@/lib/utils/linkUrl'
+import { linkBlocksIn, lineOf } from '@/lib/utils/linkUrl'
 import { linkCardHtml, linkCardLoadingHtml, cleanLinkCards, LINK_CARD_HOLDER_STYLE, LINK_CARD_VERSION, REMOVE_BTN, type LinkPreview } from '@/lib/utils/linkCardHtml'
 import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import { createPoll } from '@/services/pollService'
@@ -69,7 +69,7 @@ export default function PostWritePage() {
     if (!root) return
     const have = new Set(Array.from(root.querySelectorAll('[data-link-card][data-url]')).map(n => n.getAttribute('data-url')))
     let count = have.size
-    for (const { url, block: found, node } of linkBlocksIn(root)) {
+    for (const { url, node } of linkBlocksIn(root)) {
       if (count >= MAX_LINK_CARDS) break
       if (have.has(url) || cardEver.current.has(url)) continue
       have.add(url); cardEver.current.add(url); count++
@@ -82,7 +82,7 @@ export default function PostWritePage() {
       holder.setAttribute('data-v', LINK_CARD_VERSION)
       holder.innerHTML = linkCardLoadingHtml(url)
       // 링크가 든 줄 바로 아래에. 줄 구분 없이 바로 들어간 링크면 그 줄을 <p>로 감싸서 그 아래에(글 맨 끝으로 보내지 않는다)
-      const block = found ?? wrapLineOf(root, node)
+      const block = lineOf(root, node)
       if (block) block.insertAdjacentElement('afterend', holder); else root.appendChild(holder)
       // 카드 뒤에 줄이 없으면 하나 만들어 둔다 — 카드 다음에 이어서 쓸 수 있게
       if (!holder.nextElementSibling) { const p = document.createElement('p'); p.innerHTML = '<br>'; holder.after(p) }

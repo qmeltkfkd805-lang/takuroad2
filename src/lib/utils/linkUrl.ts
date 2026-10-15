@@ -122,3 +122,40 @@ export function wrapLineOf(root: HTMLElement, node: Node): HTMLElement | null {
   if (takeBr && p.nextSibling && (p.nextSibling as HTMLElement).tagName === 'BR') p.nextSibling.remove()
   return p
 }
+
+/* 링크가 들어 있는 '그 한 줄'을 찾는다 — 카드를 바로 그 아래에 넣으려고 (2026-10-15 다시 고침)
+   예전엔 편집기 바로 아래 단계 블록을 썼는데, 붙여넣은 글이 큰 <div>·<span> 하나에 통째로 싸여 있으면
+   그 덩어리 전체 = '한 줄'로 잡혀서 카드가 글 맨 아래로 갔다.
+   이제는 링크에서 위로 올라가며, 형제 중에 줄바꿈(<br>)·블록이 있는 첫 단계에서 그 줄만 잘라 감싼다.
+   링크 혼자 들어 있는 작은 블록(<p>·<div>·<li> 등)을 만나면 그 블록이 곧 그 줄이다. */
+const isLineBreak = (n: Node | null) => !!n && n.nodeType === Node.ELEMENT_NODE && ((n as HTMLElement).tagName === 'BR' || BLOCK_TAGS.has((n as HTMLElement).tagName))
+const hasBreakSibling = (n: Node) => {
+  for (let x = n.previousSibling; x; x = x.previousSibling) if (isLineBreak(x)) return true
+  for (let x = n.nextSibling; x; x = x.nextSibling) if (isLineBreak(x)) return true
+  return false
+}
+function wrapRun(parent: Node, cur: Node): HTMLElement {
+  let first: Node = cur
+  while (first.previousSibling && !isLineBreak(first.previousSibling)) first = first.previousSibling
+  let last: Node = cur
+  while (last.nextSibling && !isLineBreak(last.nextSibling)) last = last.nextSibling
+  const tail = last.nextSibling
+  const wrap = document.createElement('div')
+  parent.insertBefore(wrap, first)
+  let x: Node | null = first
+  while (x) { const next: Node | null = x.nextSibling; wrap.appendChild(x); if (x === last) break; x = next }
+  if (tail && tail.nodeType === Node.ELEMENT_NODE && (tail as HTMLElement).tagName === 'BR') tail.parentNode?.removeChild(tail)
+  return wrap
+}
+export function lineOf(root: HTMLElement, node: Node): HTMLElement | null {
+  if (!root.contains(node) || node === root) return null
+  let cur: Node = node
+  while (cur.parentNode && cur.parentNode !== root) {
+    const parent = cur.parentNode as HTMLElement
+    if (hasBreakSibling(cur)) return wrapRun(parent, cur)            // 이 단계에서 줄이 나뉜다 → 그 줄만 감싸기
+    if (BLOCK_TAGS.has(parent.tagName)) return parent                // 링크 줄 하나만 든 블록
+    cur = parent
+  }
+  if (cur.nodeType === Node.ELEMENT_NODE && BLOCK_TAGS.has((cur as HTMLElement).tagName)) return cur as HTMLElement
+  return wrapRun(root, cur)
+}
