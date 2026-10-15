@@ -395,6 +395,24 @@ export default function PostWritePage() {
     const sel = window.getSelection(); sel?.removeAllRanges(); sel?.addRange(r)
     setSelImg(null)
   }
+  /* 사진 도구 줄 자리 — 줄 높이를 재서 사진 '위'에 붙이고(모바일에서 두 줄이 돼도 사진·모서리 손잡이를 가리지 않게),
+     위에 자리가 없으면 사진 아래로. 오른쪽 끝도 화면 밖으로 안 나가게 */
+  const toolRef = useRef<HTMLDivElement>(null)
+  const [toolSize, setToolSize] = useState({ w: 0, h: 46 })
+  useEffect(() => {
+    const el = toolRef.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    if (Math.abs(r.width - toolSize.w) > 1 || Math.abs(r.height - toolSize.h) > 1) setToolSize({ w: r.width, h: r.height })
+  })
+  const toolPos = (rect: DOMRect) => {
+    const vw = typeof window !== 'undefined' ? window.innerWidth : 1200
+    const vh = typeof window !== 'undefined' ? window.innerHeight : 800
+    const left = Math.max(8, Math.min(rect.left, vw - toolSize.w - 8))
+    const above = rect.top - toolSize.h - 14
+    const top = above >= 8 ? above : Math.min(rect.bottom + 14, vh - toolSize.h - 8)
+    return { left, top }
+  }
   const setImgWidth = (img: HTMLImageElement, pct: number) => {
     const v = Math.max(15, Math.min(100, pct))
     img.style.width = `${Math.round(v * 10) / 10}%`
@@ -2038,7 +2056,7 @@ export default function PostWritePage() {
             {selImg && imgRect && (
               <>
                 <div aria-hidden="true" style={{ position: 'fixed', left: imgRect.left - 2, top: imgRect.top - 2, width: imgRect.width + 4, height: imgRect.height + 4, border: '2px solid var(--accent)', borderRadius: 8, pointerEvents: 'none', zIndex: 60 }} />
-                <div data-img-tools="1" style={{ position: 'fixed', left: Math.max(8, imgRect.left), top: Math.max(8, imgRect.top - 50), zIndex: 61, display: 'flex', flexWrap: 'wrap', maxWidth: 'calc(100vw - 16px)', gap: 4, padding: 4, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 6px 18px rgba(0,0,0,.14)' }}>
+                <div data-img-tools="1" ref={toolRef} style={{ position: 'fixed', ...toolPos(imgRect), zIndex: 61, display: 'flex', flexWrap: 'wrap', maxWidth: 'calc(100vw - 16px)', gap: 4, padding: 4, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 6px 18px rgba(0,0,0,.14)' }}>
                   {([['작게', 33], ['중간', 50], ['크게', 75], ['원래', 100]] as const).map(([label, pct]) => (
                     <button key={label} type="button" onMouseDown={e => e.preventDefault()} onClick={() => setImgWidth(selImg, pct)}
                       style={{ border: 'none', borderRadius: 7, padding: '6px 10px', fontSize: 12.5, fontWeight: 800, fontFamily: 'inherit', cursor: 'pointer',
@@ -2170,8 +2188,9 @@ export default function PostWritePage() {
       {tableOpen && <TableModal onClose={() => setTableOpen(false)} onConfirm={html => { appendBlock(html); setTableOpen(false) }} />}
       {editImg && <ImageEditModal src={editImg.getAttribute('src') || ''} onClose={() => setEditImg(null)} onApply={applyImageEdit} />}
       {embedPick && (
-        <div onClick={() => setEmbedPick(null)} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: isDesktop ? 'center' : 'flex-end', justifyContent: 'center', padding: isDesktop ? 16 : 0 }}>
-          <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 460, maxHeight: '80vh', display: 'flex', flexDirection: 'column', background: 'var(--surface)', borderRadius: isDesktop ? 16 : '16px 16px 0 0', boxShadow: '0 12px 40px rgba(0,0,0,.2)' }}>
+        <div onClick={() => setEmbedPick(null)} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: isDesktop ? 'center' : 'flex-start', justifyContent: 'center', padding: isDesktop ? 16 : '56px 12px 12px' }}>
+          {/* 📱 위쪽에 띄운다 — 아래에 붙이면 검색할 때 올라오는 키보드에 가려진다 */}
+          <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 460, maxHeight: isDesktop ? '80vh' : '60vh', display: 'flex', flexDirection: 'column', background: 'var(--surface)', borderRadius: 16, boxShadow: '0 12px 40px rgba(0,0,0,.2)' }}>
             <div style={{ padding: '16px 16px 10px' }}>
               <div style={{ fontSize: 16, fontWeight: 800, color: 'var(--text)', marginBottom: 10 }}>{embedPick === 'shop' ? '샵 카드 넣기' : '이벤트 카드 넣기'}</div>
               <input autoFocus value={embedQ} onChange={e => setEmbedQ(e.target.value)} placeholder={embedPick === 'shop' ? '샵 이름으로 찾기' : '이벤트 이름으로 찾기'}
