@@ -64,9 +64,9 @@ export function findLinkBlock(root: HTMLElement, url: string): HTMLElement | nul
 
 /* 편집기 안의 링크들과 각 링크가 들어 있는 줄(편집기 바로 아래 단계 블록). 순서대로, 주소 중복 없이.
    이미 붙은 카드 안의 링크, 첨부파일(📎·저장소 주소)은 뺀다. */
-export function linkBlocksIn(root: HTMLElement | null): { url: string; block: HTMLElement | null }[] {
+export function linkBlocksIn(root: HTMLElement | null): { url: string; block: HTMLElement | null; node: Node }[] {
   if (!root || typeof document === 'undefined') return []
-  const out: { url: string; block: HTMLElement | null }[] = []
+  const out: { url: string; block: HTMLElement | null; node: Node }[] = []
   const seen = new Set<string>()
   const topBlock = (n: Node): HTMLElement | null => {
     let el: HTMLElement | null = n.nodeType === Node.ELEMENT_NODE ? (n as HTMLElement) : n.parentElement
@@ -89,7 +89,36 @@ export function linkBlocksIn(root: HTMLElement | null): { url: string; block: HT
     }
     if (!u || /\/storage\/v1\/object\//.test(u) || seen.has(u)) continue
     seen.add(u)
-    out.push({ url: u, block: topBlock(n) })
+    out.push({ url: u, block: topBlock(n), node: n })
   }
   return out
+}
+
+/* 링크가 줄 구분(<p>·<div>) 없이 편집기에 바로 들어가 있을 때 — 첫 줄을 그냥 치거나, 빈 편집기에 링크를 붙여넣은 경우.
+   그 링크가 있는 '한 줄'(앞뒤로 <br>·블록이 나올 때까지)을 <p> 로 감싸서 돌려준다. 카드를 그 줄 바로 아래에 붙이려고. */
+const BLOCK_TAGS = new Set(['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'UL', 'OL', 'LI', 'BLOCKQUOTE', 'PRE', 'TABLE', 'FIGURE', 'HR', 'SECTION'])
+export function wrapLineOf(root: HTMLElement, node: Node): HTMLElement | null {
+  let top: Node | null = node
+  while (top && top.parentNode !== root) top = top.parentNode
+  if (!top) return null
+  if (top.nodeType === Node.ELEMENT_NODE && BLOCK_TAGS.has((top as HTMLElement).tagName)) return top as HTMLElement
+  const isBreak = (n: Node | null) => !!n && n.nodeType === Node.ELEMENT_NODE && ((n as HTMLElement).tagName === 'BR' || BLOCK_TAGS.has((n as HTMLElement).tagName))
+  let first: Node = top
+  while (first.previousSibling && !isBreak(first.previousSibling)) first = first.previousSibling
+  let last: Node = top
+  while (last.nextSibling && !isBreak(last.nextSibling)) last = last.nextSibling
+  // 줄 끝의 <br> 은 줄과 함께 감싼다(빈 줄이 생기지 않게)
+  const tail = last.nextSibling
+  const takeBr = !!tail && tail.nodeType === Node.ELEMENT_NODE && (tail as HTMLElement).tagName === 'BR'
+  const p = document.createElement('p')
+  root.insertBefore(p, first)
+  let cur: Node | null = first
+  while (cur) {
+    const next: Node | null = cur.nextSibling
+    p.appendChild(cur)
+    if (cur === last) break
+    cur = next
+  }
+  if (takeBr && p.nextSibling && (p.nextSibling as HTMLElement).tagName === 'BR') p.nextSibling.remove()
+  return p
 }

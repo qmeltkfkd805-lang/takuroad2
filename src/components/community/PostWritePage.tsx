@@ -7,7 +7,7 @@ import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { ROUTES } from '@/lib/constants/routes'
 import { getAllTagsForSelect, getMyRoutes } from '@/services/routeService'
 import { createPost, updatePost, getPost, uploadPostImage } from '@/services/communityPostService'
-import { linkBlocksIn } from '@/lib/utils/linkUrl'
+import { linkBlocksIn, wrapLineOf } from '@/lib/utils/linkUrl'
 import { linkCardHtml, linkCardLoadingHtml, cleanLinkCards, LINK_CARD_HOLDER_STYLE, LINK_CARD_VERSION, REMOVE_BTN, type LinkPreview } from '@/lib/utils/linkCardHtml'
 import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import { createPoll } from '@/services/pollService'
@@ -69,7 +69,7 @@ export default function PostWritePage() {
     if (!root) return
     const have = new Set(Array.from(root.querySelectorAll('[data-link-card][data-url]')).map(n => n.getAttribute('data-url')))
     let count = have.size
-    for (const { url, block } of linkBlocksIn(root)) {
+    for (const { url, block: found, node } of linkBlocksIn(root)) {
       if (count >= MAX_LINK_CARDS) break
       if (have.has(url) || cardEver.current.has(url)) continue
       have.add(url); cardEver.current.add(url); count++
@@ -81,6 +81,8 @@ export default function PostWritePage() {
       holder.setAttribute('style', LINK_CARD_HOLDER_STYLE)
       holder.setAttribute('data-v', LINK_CARD_VERSION)
       holder.innerHTML = linkCardLoadingHtml(url)
+      // 링크가 든 줄 바로 아래에. 줄 구분 없이 바로 들어간 링크면 그 줄을 <p>로 감싸서 그 아래에(글 맨 끝으로 보내지 않는다)
+      const block = found ?? wrapLineOf(root, node)
       if (block) block.insertAdjacentElement('afterend', holder); else root.appendChild(holder)
       // 카드 뒤에 줄이 없으면 하나 만들어 둔다 — 카드 다음에 이어서 쓸 수 있게
       if (!holder.nextElementSibling) { const p = document.createElement('p'); p.innerHTML = '<br>'; holder.after(p) }
@@ -142,15 +144,22 @@ export default function PostWritePage() {
       ed?.removeEventListener('input', rerender)
     }
   }, [selImg])
-  const startImgDrag = (e: React.PointerEvent) => {
+  // 네 모서리 어디서든 — 바깥쪽으로 끌면 커지고 안쪽으로 끌면 작아진다(가로·세로 중 더 많이 움직인 쪽 기준)
+  const startImgDrag = (e: React.PointerEvent, sx: 1 | -1, sy: 1 | -1) => {
     const img = selImg, ed = editorRef.current
     if (!img || !ed) return
     e.preventDefault(); e.stopPropagation()
-    const startX = e.clientX
-    const startW = img.getBoundingClientRect().width
+    const startX = e.clientX, startY = e.clientY
+    const r0 = img.getBoundingClientRect()
+    const startW = r0.width, ratio = r0.height > 0 ? r0.width / r0.height : 1
     const cs = getComputedStyle(ed)
     const boxW = ed.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)
-    const move = (ev: PointerEvent) => { setImgWidth(img, ((startW + ev.clientX - startX) / boxW) * 100) }
+    const move = (ev: PointerEvent) => {
+      const byX = sx * (ev.clientX - startX)
+      const byY = sy * (ev.clientY - startY) * ratio
+      const d = Math.abs(byX) >= Math.abs(byY) ? byX : byY
+      setImgWidth(img, ((startW + d) / boxW) * 100)
+    }
     const up = () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up) }
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', up)
@@ -966,7 +975,7 @@ export default function PostWritePage() {
             {selImg && imgRect && (
               <>
                 <div aria-hidden="true" style={{ position: 'fixed', left: imgRect.left - 2, top: imgRect.top - 2, width: imgRect.width + 4, height: imgRect.height + 4, border: '2px solid var(--accent)', borderRadius: 8, pointerEvents: 'none', zIndex: 60 }} />
-                <div data-img-tools="1" style={{ position: 'fixed', left: Math.max(8, imgRect.left), top: Math.max(8, imgRect.top - 44), zIndex: 61, display: 'flex', gap: 4, padding: 4, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 6px 18px rgba(0,0,0,.14)' }}>
+                <div data-img-tools="1" style={{ position: 'fixed', left: Math.max(8, imgRect.left), top: Math.max(8, imgRect.top - 50), zIndex: 61, display: 'flex', gap: 4, padding: 4, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 6px 18px rgba(0,0,0,.14)' }}>
                   {([['작게', 33], ['중간', 50], ['크게', 75], ['원래', 100]] as const).map(([label, pct]) => (
                     <button key={label} type="button" onMouseDown={e => e.preventDefault()} onClick={() => setImgWidth(selImg, pct)}
                       style={{ border: 'none', borderRadius: 7, padding: '6px 10px', fontSize: 12.5, fontWeight: 800, fontFamily: 'inherit', cursor: 'pointer',
@@ -976,8 +985,12 @@ export default function PostWritePage() {
                   ))}
                   <span style={{ alignSelf: 'center', fontSize: 11.5, color: 'var(--muted)', padding: '0 4px 0 2px', minWidth: 34, textAlign: 'right' }}>{Math.round(curPct)}%</span>
                 </div>
-                <div data-img-tools="1" onPointerDown={startImgDrag} title="끌어서 크기 조절"
-                  style={{ position: 'fixed', left: imgRect.right - 9, top: imgRect.bottom - 9, width: 18, height: 18, borderRadius: 4, background: 'var(--accent)', border: '2px solid #fff', boxShadow: '0 1px 4px rgba(0,0,0,.3)', cursor: 'nwse-resize', zIndex: 61, touchAction: 'none' }} />
+                {([[-1, -1], [1, -1], [-1, 1], [1, 1]] as const).map(([sx, sy]) => (
+                  <div key={`${sx}${sy}`} data-img-tools="1" onPointerDown={e => startImgDrag(e, sx, sy)} title="끌어서 크기 조절"
+                    style={{ position: 'fixed', left: (sx < 0 ? imgRect.left : imgRect.right) - 9, top: (sy < 0 ? imgRect.top : imgRect.bottom) - 9,
+                      width: 18, height: 18, borderRadius: 4, background: 'var(--accent)', border: '2px solid #fff', boxShadow: '0 1px 4px rgba(0,0,0,.3)',
+                      cursor: sx === sy ? 'nwse-resize' : 'nesw-resize', zIndex: 61, touchAction: 'none' }} />
+                ))}
               </>
             )}
 
