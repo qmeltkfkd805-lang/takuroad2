@@ -16,6 +16,8 @@ import { createPoll } from '@/services/pollService'
 import { Board, BOARDS, BOARD_FLAIRS, CREATION_BOARDS, boardMeta, NewPost, NewPoll } from '@/types/community-post'
 import DraftNotice from '@/components/common/DraftNotice'
 import { PostBodyPreview } from './PostUI'
+import ImageEditModal from './ImageEditModal'
+import { searchShopsForEmbed, searchEventsForEmbed, type EmbedShop, type EmbedEvent } from '@/services/embedSearchService'
 import { createClient as createSupabase } from '@/lib/supabase/client'
 import CompanionEventPicker from './CompanionEventPicker'
 import { getPostEvent, setPostEvent, PostEventSummary } from '@/services/postEventService'
@@ -23,6 +25,46 @@ import { getPostEvent, setPostEvent, PostEventSummary } from '@/services/postEve
 type Tag = { id: string; name: string; slug: string }
 const DRAFT_KEY = 'takuroad_community_draft'
 const EDIT_DRAFT_PREFIX = 'takuroad_community_edit_draft:'   // + 글 id — 수정하던 내용
+/* 새 글 임시저장은 여러 개(최대 10개, 오래된 것부터 밀려남). 예전 한 칸짜리(DRAFT_KEY)는 처음 열 때 목록으로 옮긴다 */
+const DRAFTS_KEY = 'takuroad_community_drafts'
+const MAX_DRAFTS = 10
+type DraftItem = { id: string; savedAt: number; title?: string; html?: string; board?: string; [k: string]: unknown }
+function readDrafts(): DraftItem[] {
+  try {
+    const list: DraftItem[] = JSON.parse(localStorage.getItem(DRAFTS_KEY) || '[]')
+    const old = localStorage.getItem(DRAFT_KEY)
+    if (old) {
+      const d = JSON.parse(old)
+      list.unshift({ ...d, id: 'd' + (d.savedAt ?? Date.now()), savedAt: d.savedAt ?? Date.now() })
+      localStorage.setItem(DRAFTS_KEY, JSON.stringify(list.slice(0, MAX_DRAFTS)))
+      localStorage.removeItem(DRAFT_KEY)
+    }
+    return Array.isArray(list) ? list.sort((a, b) => b.savedAt - a.savedAt) : []
+  } catch { return [] }
+}
+function writeDrafts(list: DraftItem[]) {
+  try { localStorage.setItem(DRAFTS_KEY, JSON.stringify(list.sort((a, b) => b.savedAt - a.savedAt).slice(0, MAX_DRAFTS))) } catch { /* 저장소가 꽉 참 */ }
+}
+function draftLabel(d: DraftItem): string {
+  const t = String(d.title ?? '').trim()
+  if (t) return t
+  const tmp = typeof document !== 'undefined' ? document.createElement('div') : null
+  if (tmp) {
+    tmp.innerHTML = String(d.html ?? '')
+    tmp.querySelectorAll('[data-lp-remove],[data-link-card],[data-embed],[data-slides],[data-uploading]').forEach(n => n.remove())   // 카드·✕ 글자는 빼고
+    const x = (tmp.textContent || '').trim().replace(/\s+/g, ' ')
+    if (x) return x.slice(0, 40)
+  }
+  return '(제목 없는 글)'
+}
+function agoText(ms: number): string {
+  const m = Math.floor((Date.now() - ms) / 60000)
+  if (m < 1) return '방금'
+  if (m < 60) return `${m}분 전`
+  const h = Math.floor(m / 60)
+  if (h < 24) return `${h}시간 전`
+  return `${Math.floor(h / 24)}일 전`
+}
 
 const BOARD_TEMPLATES: Partial<Record<Board, string>> = {
   companion:
@@ -435,7 +477,16 @@ export default function PostWritePage() {
     if (justDragged.current) return
     const t = e.target as HTMLElement
     const rm = t.closest('[data-lp-remove]')
-    if (rm) { e.preventDefault(); rm.closest('[data-link-card]')?.remove(); return }
+    if (rm) { e.preventDefault(); rm.closest('[data-link-card],[data-slides],[data-embed]')?.remove(); return }
+    if (t.closest('summary') && t.closest('details[data-fold]')) { e.preventDefault(); return }   // 편집 중엔 접기 칸이 닫히지 않게
+    if (t.closest('a[data-embed]')) { e.preventDefault(); return }
+    // 체크리스트: 줄 앞 네모를 누르면 체크/해제
+    const li = t.closest('ul[data-checklist] > li') as HTMLElement | null
+    if (li && e.clientX - li.getBoundingClientRect().left < 26) {
+      e.preventDefault()
+      li.setAttribute('data-checked', li.getAttribute('data-checked') === '1' ? '0' : '1')
+      return
+    }
     if (t.closest('[data-link-card]')) { e.preventDefault(); return }   // 편집 중엔 카드를 눌러도 이동하지 않게
     const img = resizableImg(t)
     setSelImg(img)
@@ -523,20 +574,23 @@ export default function PostWritePage() {
   const editReadyRef = useRef(false)
   const editDraftUsedRef = useRef(false)
   const [draftAuto, setDraftAuto] = useState(false)
+  const curDraftId = useRef<string | null>(null)        // 지금 쓰는 새 글이 저장되는 임시저장 칸
+  const [drafts, setDrafts] = useState<DraftItem[]>([])
+  const [draftsOpen, setDraftsOpen] = useState(false)
+  const refreshDrafts = () => setDrafts(readDrafts())
   useEffect(() => {
     if (editId) return
-    try {
-      const raw = localStorage.getItem(DRAFT_KEY)
-      if (raw) {
-        setHasDraft(true)
-        if (goodsIdParam) setShowDraftBanner(true)
-        else autoLoadRef.current = true
-      }
-    } catch { /* noop */ }
+    const list = readDrafts()
+    setDrafts(list)
+    if (list.length) {
+      setHasDraft(true)
+      if (goodsIdParam) setShowDraftBanner(true)
+      else autoLoadRef.current = true
+    }
   }, [editId])
   useEffect(() => {
     if (editId) return
-    if (autoLoadRef.current) { loadDraft(); setDraftAuto(true); return }
+    if (autoLoadRef.current) { loadDraft(readDrafts()[0]); setDraftAuto(true); return }
     applyBoardTemplate(board)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -552,6 +606,7 @@ export default function PostWritePage() {
       editorRef.current?.querySelectorAll<HTMLElement>('[data-link-card]').forEach(n => {
         if (!n.querySelector('[data-lp-remove]')) n.insertAdjacentHTML('afterbegin', REMOVE_BTN)
       })
+      editorRef.current?.querySelectorAll('details[data-fold]').forEach(n => n.setAttribute('open', ''))   // 편집 중엔 접기를 펼쳐 둔다
       rememberCards(); attachLinkCards()
       // 원래 글 기억(되돌리기용) → 수정하던 내용이 남아 있으면 그걸로 채운다
       const serverHtml = editorRef.current?.innerHTML ?? ''
@@ -836,6 +891,23 @@ export default function PostWritePage() {
     const mod = e.ctrlKey || e.metaKey
     if (mod && !e.altKey && (e.key === 'z' || e.key === 'Z')) { e.preventDefault(); if (e.shiftKey) redo(); else undo(); return }
     if (mod && !e.altKey && (e.key === 'y' || e.key === 'Y')) { e.preventDefault(); redo(); return }
+    // 접기 제목에서 엔터 → 접기 안쪽 내용으로 / 체크리스트 새 줄은 체크 안 된 상태로
+    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+      const an0 = window.getSelection()?.anchorNode
+      const el0 = an0 ? (an0.nodeType === 1 ? (an0 as Element) : an0.parentElement) : null
+      const sum = el0?.closest('details[data-fold] > summary')
+      if (sum && editorRef.current?.contains(sum)) {
+        e.preventDefault()
+        const body = sum.parentElement!.querySelector(':scope > div') ?? sum.parentElement!.appendChild(Object.assign(document.createElement('div'), { innerHTML: '<br>' }))
+        placeCaretIn(body)
+        return
+      }
+      if (el0?.closest('ul[data-checklist] > li')) setTimeout(() => {
+        const a = window.getSelection()?.anchorNode
+        const li = (a ? (a.nodeType === 1 ? (a as Element) : a.parentElement) : null)?.closest('ul[data-checklist] > li')
+        if (li && !(li.textContent || '').trim()) li.setAttribute('data-checked', '0')
+      }, 0)
+    }
     // 사진 설명 줄에서 엔터 → 설명 밖 새 줄로
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       const sel0 = window.getSelection()
@@ -971,16 +1043,17 @@ export default function PostWritePage() {
   const [uploadingCount, setUploadingCount] = useState(0)
   const uploadingRef = useRef(0)
   const bumpUploading = (d: number) => { uploadingRef.current = Math.max(0, uploadingRef.current + d); setUploadingCount(uploadingRef.current) }
-  const uploadWithPlaceholder = async (files: File[], kind: 'img' | 'video') => {
+  const uploadWithPlaceholder = async (files: File[], kind: 'img' | 'video' | 'slides') => {
     if (!user || !files.length) return
-    const slots = files.map(f => {
-      const id = 'up' + Math.random().toString(36).slice(2, 10)
-      const blob = URL.createObjectURL(f)
-      insertBlockAtCaret(kind === 'img'
-        ? `<p data-uploading="${id}"><img data-uploading="${id}" src="${blob}" alt="" style="max-width:100%;border-radius:10px;" /></p>`
-        : `<p data-uploading="${id}"><video data-uploading="${id}" src="${blob}" muted playsinline style="max-width:100%;border-radius:10px;"></video></p>`)
-      return { f, id, blob }
-    })
+    const slots = files.map(f => ({ f, id: 'up' + Math.random().toString(36).slice(2, 10), blob: URL.createObjectURL(f) }))
+    if (kind === 'slides') {
+      // 사진첩: 한 칸에 사진 여러 장(옆으로 넘겨 보기). 칸째로 ✕ 로 뺄 수 있다
+      insertBlockAtCaret(`<div data-slides="1" contenteditable="false">${REMOVE_BTN}${slots.map(s => `<img data-uploading="${s.id}" src="${s.blob}" alt="" />`).join('')}</div>`)
+    } else {
+      for (const s of slots) insertBlockAtCaret(kind === 'img'
+        ? `<p data-uploading="${s.id}"><img data-uploading="${s.id}" src="${s.blob}" alt="" style="max-width:100%;border-radius:10px;" /></p>`
+        : `<p data-uploading="${s.id}"><video data-uploading="${s.id}" src="${s.blob}" muted playsinline style="max-width:100%;border-radius:10px;"></video></p>`)
+    }
     bumpUploading(slots.length)
     let failed = 0
     const queue = [...slots]
@@ -998,7 +1071,7 @@ export default function PostWritePage() {
           if (kind === 'video') { media.removeAttribute('muted'); media.setAttribute('controls', '') }
           else setImages(prev => [...prev, url!])
         } else {
-          holder?.remove()          // 실패했거나, 올리는 사이에 지운 자리
+          if (kind === 'slides') media?.remove(); else holder?.remove()   // 실패했거나, 올리는 사이에 지운 자리
           if (!url) failed++
         }
         URL.revokeObjectURL(s.blob)
@@ -1006,12 +1079,18 @@ export default function PostWritePage() {
       }
     }
     await Promise.all([worker(), worker(), worker()])
-    if (failed) setErr(`${kind === 'img' ? '사진' : '동영상'} ${failed}개를 올리지 못했어요. 다시 넣어 주세요.`)
+    if (kind === 'slides') editorRef.current?.querySelectorAll('[data-slides]').forEach(b => { if (!b.querySelector('img')) b.remove() })
+    if (failed) setErr(`${kind === 'video' ? '동영상' : '사진'} ${failed}개를 올리지 못했어요. 다시 넣어 주세요.`)
   }
   const onPickImages = (list: FileList | File[] | null) =>
     uploadWithPlaceholder(Array.from((list ?? []) as ArrayLike<File>).filter(f => f.type.startsWith('image/') || !f.type), 'img')
   const onPickVideo = (list: FileList | File[] | null) =>
     uploadWithPlaceholder(Array.from((list ?? []) as ArrayLike<File>), 'video')
+  const onPickSlides = (list: FileList | null) => {
+    const files = Array.from(list ?? []).filter(f => f.type.startsWith('image/')).slice(0, 20)
+    if (files.length < 2) { setErr('사진첩은 사진을 2장 이상 골라 주세요. (최대 20장)'); return }
+    void uploadWithPlaceholder(files, 'slides')
+  }
   const onPickFile = async (list: FileList | null) => {
     if (!user || !list) return
     for (const f of Array.from(list)) {
@@ -1045,6 +1124,118 @@ export default function PostWritePage() {
     if (empty) el.innerHTML = tmpl
   }
   const insertTable = () => setTableOpen(true)
+
+  /* ── 부분 스포일러 ── 고른 글자(또는 사진)를 가린다. 이미 가린 곳 안에서 누르면 풀린다 */
+  const toggleSpoiler = () => {
+    const root = editorRef.current
+    const sel = window.getSelection()
+    if (!root || !sel || !sel.rangeCount || !root.contains(sel.anchorNode)) { setErr('가릴 글자를 먼저 드래그해서 골라 주세요.'); return }
+    const an = sel.anchorNode!
+    const inside = (an.nodeType === 1 ? (an as Element) : an.parentElement)?.closest('span[data-spoiler]')
+    if (inside && root.contains(inside)) {   // 풀기
+      histFlush()
+      const parent = inside.parentNode!
+      while (inside.firstChild) parent.insertBefore(inside.firstChild, inside)
+      parent.removeChild(inside)
+      return
+    }
+    if (sel.isCollapsed) { setErr('가릴 글자를 먼저 드래그해서 골라 주세요.'); return }
+    histFlush()
+    const range = sel.getRangeAt(0)
+    // 고른 범위 안의 사진은 사진째 가리기
+    root.querySelectorAll('img').forEach(img => { if (range.intersectsNode(img) && !img.closest('[contenteditable="false"]')) img.setAttribute('data-spoiler', '1') })
+    // 글자는 덩어리마다 감싼다(여러 줄에 걸쳐도)
+    const texts: Text[] = []
+    const w = document.createTreeWalker(range.commonAncestorContainer.nodeType === 3 ? range.commonAncestorContainer.parentNode! : range.commonAncestorContainer, NodeFilter.SHOW_TEXT)
+    for (let n = w.nextNode(); n; n = w.nextNode()) {
+      if (!range.intersectsNode(n) || !(n.textContent || '').trim()) continue
+      if ((n.parentElement)?.closest('[contenteditable="false"],span[data-spoiler]')) continue
+      texts.push(n as Text)
+    }
+    let last: Node | null = null
+    for (let t of texts) {
+      if (t === range.endContainer && range.endOffset < t.length) t.splitText(range.endOffset)
+      if (t === range.startContainer && range.startOffset > 0) t = t.splitText(range.startOffset)
+      const span = document.createElement('span')
+      span.setAttribute('data-spoiler', '1')
+      t.parentNode!.insertBefore(span, t)
+      span.appendChild(t)
+      last = span
+    }
+    if (last) { const r = document.createRange(); r.setStartAfter(last); r.collapse(true); sel.removeAllRanges(); sel.addRange(r) }
+  }
+
+  /* ── 체크리스트 · 접기 ── */
+  const placeCaretIn = (el: Element | null) => {
+    if (!el) return
+    editorRef.current?.focus()
+    const r = document.createRange(); r.selectNodeContents(el); r.collapse(false)
+    const sel = window.getSelection(); sel?.removeAllRanges(); sel?.addRange(r)
+  }
+  const insertChecklist = () => {
+    insertBlockAtCaret('<ul data-checklist="1" data-new="1"><li data-checked="0"><br></li></ul>')
+    const ul = editorRef.current?.querySelector('ul[data-new]')
+    ul?.removeAttribute('data-new')
+    placeCaretIn(ul?.querySelector('li') ?? null)
+  }
+  const insertFold = () => {
+    insertBlockAtCaret('<details data-fold="1" open="" data-new="1"><summary>더보기</summary><div><br></div></details>')
+    const d = editorRef.current?.querySelector('details[data-new]')
+    d?.removeAttribute('data-new')
+    placeCaretIn(d?.querySelector(':scope > div') ?? null)
+  }
+
+  /* ── 샵·이벤트 카드 넣기 ── */
+  const [embedPick, setEmbedPick] = useState<'shop' | 'event' | null>(null)
+  const [embedQ, setEmbedQ] = useState('')
+  const [embedShops, setEmbedShops] = useState<EmbedShop[]>([])
+  const [embedEvents, setEmbedEvents] = useState<EmbedEvent[]>([])
+  const [embedLoading, setEmbedLoading] = useState(false)
+  useEffect(() => {
+    if (!embedPick) return
+    let alive = true
+    const t = setTimeout(async () => {
+      setEmbedLoading(true)
+      if (embedPick === 'shop') { const r = embedQ.trim() ? await searchShopsForEmbed(embedQ) : []; if (alive) setEmbedShops(r) }
+      else { const r = await searchEventsForEmbed(embedQ); if (alive) setEmbedEvents(r) }
+      if (alive) setEmbedLoading(false)
+    }, 200)
+    return () => { alive = false; clearTimeout(t) }
+  }, [embedPick, embedQ])
+  const embedCard = (href: string, kind: 'shop' | 'event', label: string, title: string, sub: string, img: string | null) => {
+    const pin = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>'
+    const cal = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>'
+    const cover = img
+      ? `<img src="${escapeHtml(img)}" alt="" style="width:64px;height:64px;border-radius:10px;object-fit:cover;flex:none;max-width:none" />`
+      : `<span style="width:64px;height:64px;border-radius:10px;background:#f3f3f5;display:inline-flex;align-items:center;justify-content:center;color:#aaa;flex:none">${kind === 'shop' ? pin : cal}</span>`
+    return `<a href="${escapeHtml(href)}" data-embed="${kind}" data-lp="1" contenteditable="false" style="position:relative;display:flex;align-items:center;gap:12px;border:1px solid #eee;border-radius:14px;padding:12px 14px;margin:8px 0;max-width:460px;text-decoration:none;color:inherit;background:#fafafa;">`
+      + REMOVE_BTN + cover
+      + `<span style="min-width:0;"><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;color:#e8006f;">${kind === 'shop' ? pin : cal} ${label}</span>`
+      + `<span style="display:block;font-weight:800;font-size:15px;color:#111;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(title)}</span>`
+      + (sub ? `<span style="display:block;font-size:12px;color:#888;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(sub)}</span>` : '')
+      + `</span></a>`
+  }
+  const fmtD = (d: string | null) => (d ? d.slice(5, 10).replace('-', '.') : '')
+  const insertShopCard = (sh: EmbedShop) => { appendBlock(embedCard(`/shop/${sh.slug}`, 'shop', '샵', sh.name, sh.addr ?? '', sh.image)); setEmbedPick(null); setEmbedQ('') }
+  const insertEventCard = (ev: EmbedEvent) => {
+    const when = ev.start ? `${fmtD(ev.start)}${ev.end && ev.end !== ev.start ? ` ~ ${fmtD(ev.end)}` : ''}` : ''
+    appendBlock(embedCard(`/event/${ev.id}`, 'event', '이벤트', ev.title, [when, ev.place].filter(Boolean).join(' · '), ev.cover))
+    setEmbedPick(null); setEmbedQ('')
+  }
+
+  /* ── 사진 자르기·돌리기 ── */
+  const [editImg, setEditImg] = useState<HTMLImageElement | null>(null)
+  const applyImageEdit = async (file: File) => {
+    const img = editImg
+    if (!img || !user) return
+    const url = await uploadPostImage(file, user.id)
+    if (!url) throw new Error('upload')
+    histFlush()
+    img.setAttribute('src', url)
+    img.removeAttribute('width'); img.removeAttribute('height')
+    setImages(prev => [...prev, url])
+    setEditImg(null); setSelImg(null)
+  }
   const insertPoll = () => setPollOpen(true)
 
   const collectImages = (html: string): string[] => {
@@ -1103,10 +1294,12 @@ export default function PostWritePage() {
     const tmpl = BOARD_TEMPLATES[d.board] ?? ''
     const bodyEmpty = !html || html === tmpl || (!(el.innerText || '').trim() && !el.querySelector('img,video,a,table'))
     const empty = bodyEmpty && !d.title.trim() && d.images.length === 0 && !d.poll && d.goodsChars.length === 0 && d.goodsTypeList.length === 0 && !d.goodsStore && !d.goodsPrice
-    try {
-      if (empty) return
-      localStorage.setItem(DRAFT_KEY, JSON.stringify({ ...d, html, savedAt: Date.now() }))
-    } catch { /* noop */ }
+    if (empty) return
+    if (!curDraftId.current) curDraftId.current = 'd' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6)
+    const list = readDrafts().filter(x => x.id !== curDraftId.current)
+    list.unshift({ ...d, html, id: curDraftId.current, savedAt: Date.now() })
+    writeDrafts(list)
+    setDrafts(readDrafts())
   }, [editId])
   useEffect(() => {
     if (!autosaveOn) return
@@ -1127,9 +1320,9 @@ export default function PostWritePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editId, goodsIdParam])
   // "새로 쓰기" — 불러온 글을 지우고 빈 글로
-  const startOver = () => {
-    try { localStorage.removeItem(DRAFT_KEY) } catch { /* noop */ }
-    setHasDraft(false); setDraftAuto(false)
+  const startOver = () => {   // 불러온 글은 임시저장 목록에 그대로 두고, 새 칸에 새 글
+    curDraftId.current = null
+    setDraftAuto(false)
     setTitle(''); setImages([]); setPollData(null); setSpoiler(false); setFlair(null); setTagIds(sp.get('tag') ? [sp.get('tag')!] : [])
     setGoodsChars([]); setGoodsTypeList([]); setGoodsStore(''); setGoodsPrice('')
     if (editorRef.current) { editorRef.current.innerHTML = ''; applyBoardTemplate(board) }
@@ -1138,6 +1331,7 @@ export default function PostWritePage() {
 
   // ── 임시저장 ──
   const saveDraft = () => {
+    if (!editId) { writeDraftSilent(); refreshDrafts(); setDraftsOpen(true); return }   // 새 글: 지금 글을 저장하고 목록을 연다
     const html = editorHtmlForDraft() ?? ''
     try {
       localStorage.setItem(draftKey, JSON.stringify({ board, tagIds, title, html, images, poll: pollData, spoiler, flair, goodsChars, goodsTypeList, goodsStore, goodsPrice, savedAt: Date.now() }))
@@ -1145,22 +1339,35 @@ export default function PostWritePage() {
       window.alert('임시저장되었어요.')
     } catch { window.alert('임시저장에 실패했어요.') }
   }
-  const loadDraft = () => {
+  const loadDraft = (pick?: DraftItem) => {
     try {
-      const raw = localStorage.getItem(DRAFT_KEY); if (!raw) return
-      const d = JSON.parse(raw)
-      setBoard(d.board ?? 'free'); setTagIds(d.tagIds ?? []); setTitle(d.title ?? ''); setImages(d.images ?? []); setPollData(d.poll ?? null); setSpoiler(d.spoiler ?? false); setFlair(d.flair ?? null)
+      if (!pick) writeDraftSilent()   // 목록에서 고른 게 아니면 = 처음 자동 불러오기
+      else if (curDraftId.current !== pick.id) writeDraftSilent()   // 쓰던 글은 먼저 저장해 두고
+      const d = pick ?? readDrafts()[0]
+      if (!d) return
+      curDraftId.current = d.id
+      linkSeen.current = new WeakMap()
+      setBoard((d.board as Board) ?? 'free'); setTagIds((d.tagIds as string[]) ?? []); setTitle(String(d.title ?? '')); setImages((d.images as string[]) ?? []); setPollData((d.poll as NewPoll) ?? null); setSpoiler(Boolean(d.spoiler)); setFlair((d.flair as string) ?? null)
       if (Array.isArray(d.goodsChars)) setGoodsChars(d.goodsChars)
       if (Array.isArray(d.goodsTypeList)) setGoodsTypeList(d.goodsTypeList)
       if (typeof d.goodsStore === 'string') setGoodsStore(d.goodsStore)
       if (typeof d.goodsPrice === 'string') setGoodsPrice(d.goodsPrice)
-      if (editorRef.current) editorRef.current.innerHTML = d.html ?? ''
+      if (editorRef.current) editorRef.current.innerHTML = String(d.html ?? '')
       rememberCards()
       setShowDraftBanner(false)
       setTimeout(() => { hist.current = { stack: [], idx: -1 }; histRecord() }, 0)   // 불러온 글이 되돌리기의 시작점
     } catch { /* noop */ }
   }
-  const clearDraft = () => { try { localStorage.removeItem(draftKey) } catch { /* noop */ }; setHasDraft(false); setShowDraftBanner(false) }
+  const clearDraft = () => {
+    if (editId) { try { localStorage.removeItem(draftKey) } catch { /* noop */ }; setHasDraft(false) }
+    else if (curDraftId.current) { writeDrafts(readDrafts().filter(x => x.id !== curDraftId.current)); curDraftId.current = null; refreshDrafts() }
+    setShowDraftBanner(false)
+  }
+  const deleteDraft = (id: string) => {
+    writeDrafts(readDrafts().filter(x => x.id !== id))
+    if (curDraftId.current === id) curDraftId.current = null
+    refreshDrafts()
+  }
   // 수정: 불러온 '수정하던 내용'을 버리고 원래 글로
   const revertEdit = () => {
     const o = editOriginalRef.current
@@ -1219,6 +1426,7 @@ export default function PostWritePage() {
     const c = cleanLinkCards(el)
     c.querySelectorAll('p[data-uploading]').forEach(n => n.remove())
     c.querySelectorAll('p[data-caption]').forEach(n => { if (!(n.textContent || '').trim()) n.remove() })
+    c.querySelectorAll('details[data-fold]').forEach(n => n.removeAttribute('open'))
     setPreview(c.innerHTML)
   }
   const leavingRef = useRef(false)
@@ -1256,6 +1464,8 @@ export default function PostWritePage() {
     if (to === 'back') router.back(); else if (to) router.push(to)
   }
 
+  const [checkList, setCheckList] = useState<string[] | null>(null)
+  const skipCheckRef = useRef(false)
   const submit = async () => {
     if (!user) { router.push(ROUTES.login); return }
     if (uploadingRef.current > 0) { setErr('사진·동영상을 올리는 중이에요. 다 올라간 뒤에 등록해 주세요.'); return }
@@ -1267,6 +1477,7 @@ export default function PostWritePage() {
     if (!inlineOk) { setErr('붙여넣은 사진 중 일부를 올리지 못해서 뺐어요. 확인하고 다시 등록해주세요.'); return }
     const cleaned = editorRef.current ? cleanLinkCards(editorRef.current) : null
     cleaned?.querySelectorAll('p[data-caption]').forEach(n => { if (!(n.textContent || '').trim()) n.remove() })   // 비운 사진 설명 줄
+    cleaned?.querySelectorAll('details[data-fold]').forEach(n => n.removeAttribute('open'))   // 접기는 닫힌 채로 올라간다
     let html = stripGoodsMeta(cleaned?.innerHTML ?? '')
     const plain = (editorRef.current?.innerText ?? '').trim()
     // 사진 목록(썸네일)엔 링크 카드 이미지를 넣지 않는다
@@ -1286,6 +1497,18 @@ export default function PostWritePage() {
     if (!title.trim() && !plain && imgs.length === 0 && !pollData) { setErr('제목이나 내용을 입력해주세요.'); return }
     if (isFanart && !notice && !allAgreed) { setErr('업로드 전 확인 항목에 모두 동의해주세요.'); return }
     if (/src="(data|blob):/i.test(html) || html.length > 500_000) { setErr('본문이 너무 커요. 사진은 사진 버튼으로 넣어주세요.'); return }
+    // 등록 전 점검 — 놓치기 쉬운 것만 가볍게. [그대로 올리기]를 누르면 다시 묻지 않는다
+    if (!skipCheckRef.current) {
+      const warn: string[] = []
+      if (!notice && tagIds.length === 0 && !workRequired) warn.push('작품을 연결하지 않았어요. 연결하면 작품 페이지에도 글이 보여요.')
+      if (title.trim().length < 2) warn.push('제목이 없거나 너무 짧아요.')
+      if (plain.length < 10 && imgs.length <= 1 && !pollData) warn.push('본문이 아주 짧아요.')
+      if (imgs.length >= 4 && !coverSrc) warn.push(`사진이 ${imgs.length}장이에요. 목록에 보일 대표 사진을 골라 보세요. (사진을 누르고 [대표 사진])`)
+      if (!spoiler && !noCards?.querySelector('[data-spoiler]') && /스포/.test(title + ' ' + plain)) warn.push("'스포'라는 말이 있는데 스포일러 표시가 없어요. 글 전체 스포일러를 켜거나, 가릴 부분을 골라 [스포]를 눌러 보세요.")
+      if (uploadingRef.current > 0) warn.push('아직 올라가는 중인 사진이 있어요.')
+      if (warn.length) { setCheckList(warn); return }
+    }
+    skipCheckRef.current = false
 
     setErr(''); setSaving(true)
     const finalBoard: Board = (notice && noticeScope !== 'all') ? noticeScope : board
@@ -1441,6 +1664,22 @@ export default function PostWritePage() {
         .taku-editor img[data-cover]{outline:3px solid var(--accent);outline-offset:2px}   /* 대표 사진 */
         .taku-editor p[data-caption]:has(> br:only-child)::before{content:'사진 설명을 입력하세요';color:#bbb;pointer-events:none}
         .taku-editor a[data-work],.taku-editor a[data-mention]{color:var(--accent) !important;font-weight:700;text-decoration:none !important;cursor:default}
+        .taku-editor span[data-spoiler]{background:repeating-linear-gradient(-45deg,rgba(232,0,111,.14) 0 5px,rgba(232,0,111,.04) 5px 10px);border-radius:4px;box-shadow:inset 0 -2px 0 rgba(232,0,111,.45)}
+        .taku-editor img[data-spoiler]{filter:blur(3px) saturate(.6);outline:2px dashed var(--accent);outline-offset:2px}
+        .taku-editor ul[data-checklist]{list-style:none;padding-left:2px;margin:8px 0}
+        .taku-editor ul[data-checklist] li{position:relative;padding-left:28px;margin:4px 0;list-style:none}
+        .taku-editor ul[data-checklist] li::before{content:'';position:absolute;left:2px;top:.32em;width:16px;height:16px;border:2px solid #c9c9cf;border-radius:5px;box-sizing:border-box;background:#fff;cursor:pointer}
+        .taku-editor ul[data-checklist] li[data-checked="1"]::before{background:#e8006f;border-color:#e8006f}
+        .taku-editor ul[data-checklist] li[data-checked="1"]::after{content:'';position:absolute;left:7.5px;top:calc(.32em + 3px);width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);pointer-events:none}
+        .taku-editor ul[data-checklist] li[data-checked="1"]{color:var(--muted);text-decoration:line-through}
+        .taku-editor details[data-fold]{border:1px dashed var(--accent);border-radius:12px;padding:10px 14px;margin:10px 0}
+        .taku-editor details[data-fold] > summary{font-weight:800;color:var(--accent);list-style:none;margin-bottom:8px;cursor:text}
+        .taku-editor details[data-fold] > summary::-webkit-details-marker{display:none}
+        .taku-editor details[data-fold] > summary::after{content:' · 글에선 눌러야 펼쳐져요';font-weight:600;font-size:11.5px;color:var(--muted)}
+        .taku-editor [data-slides]{position:relative;display:flex;gap:6px;overflow-x:auto;padding:8px;margin:8px 0;border:1px solid var(--border);border-radius:12px;background:var(--surface2);max-width:640px}
+        .taku-editor [data-slides] img{height:150px;width:auto;flex:none;border-radius:8px;object-fit:cover;max-width:none}
+        .taku-editor [data-slides]::before{content:'사진첩 · 글에선 옆으로 넘겨 봐요';position:absolute;left:10px;bottom:10px;z-index:1;padding:2px 8px;border-radius:9999px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;font-weight:700;pointer-events:none}
+        .taku-editor a[data-embed]{cursor:default}
         .taku-editor img{max-width:100%;height:auto;cursor:grab;-webkit-user-drag:none;-webkit-touch-callout:none}
         .taku-editor blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}
         .taku-write-grid{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:24px}
@@ -1483,8 +1722,32 @@ export default function PostWritePage() {
             미리보기
           </button>
           <button onClick={saveDraft} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '9px 16px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>
-            임시저장 <span style={{ color: 'var(--muted)', fontWeight: 800 }}>{hasDraft ? 1 : 0}</span>
+            임시저장 <span style={{ color: 'var(--muted)', fontWeight: 800 }}>{editId ? (hasDraft ? 1 : 0) : drafts.length}</span>
           </button>
+          {draftsOpen && !editId && (
+            <div onClick={() => setDraftsOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 900 }}>
+              <div onClick={e => e.stopPropagation()} role="dialog" aria-label="임시저장한 글" style={{ position: 'absolute', right: 16, top: 60, width: 340, maxWidth: 'calc(100vw - 32px)', maxHeight: '70vh', overflowY: 'auto', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, boxShadow: '0 12px 32px rgba(0,0,0,.18)', padding: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 8px 8px' }}>
+                  <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>임시저장한 글 {drafts.length}/{MAX_DRAFTS}</span>
+                  <span style={{ fontSize: 11.5, color: 'var(--muted)' }}>쓰는 중엔 자동으로 저장돼요</span>
+                </div>
+                {drafts.length === 0 && <div style={{ padding: '10px 8px 14px', fontSize: 13, color: 'var(--muted)' }}>아직 임시저장한 글이 없어요</div>}
+                {drafts.map(d => (
+                  <div key={d.id} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 8px', borderRadius: 10, background: d.id === curDraftId.current ? 'var(--accent-l)' : 'transparent' }}>
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <div style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{draftLabel(d)}</div>
+                      <div style={{ fontSize: 11.5, color: 'var(--muted)' }}>{agoText(d.savedAt)}{d.id === curDraftId.current ? ' · 지금 쓰는 글' : ''}</div>
+                    </div>
+                    {d.id !== curDraftId.current && (
+                      <button onClick={() => { loadDraft(d); setDraftAuto(false); setDraftsOpen(false) }} style={{ border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 12, padding: '6px 10px', borderRadius: 8, cursor: 'pointer', fontFamily: 'inherit' }}>불러오기</button>
+                    )}
+                    <button onClick={() => deleteDraft(d.id)} aria-label="임시저장 삭제" style={{ border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--muted)', fontSize: 12, padding: '6px 9px', borderRadius: 8, cursor: 'pointer', fontFamily: 'inherit' }}>삭제</button>
+                  </div>
+                ))}
+                <button onClick={() => { startOver(); setDraftsOpen(false) }} style={{ width: '100%', marginTop: 6, border: '1px dashed var(--border)', background: 'none', color: 'var(--text)', fontWeight: 700, fontSize: 13, padding: '9px 0', borderRadius: 10, cursor: 'pointer', fontFamily: 'inherit' }}>+ 새 글 쓰기 (지금 글은 목록에 남아요)</button>
+              </div>
+            </div>
+          )}
           <button onClick={() => { if (isDesktop) submit(); else setSettingsOpen(true) }} disabled={saving || (isDesktop && isFanart && !allAgreed)} style={{ padding: '9px 22px', borderRadius: 10, border: 'none', background: (saving || (isDesktop && isFanart && !allAgreed)) ? 'var(--border)' : 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: (saving || (isDesktop && isFanart && !allAgreed)) ? 'default' : 'pointer', fontFamily: 'inherit' }}>{saving ? (editId ? '수정 중…' : '등록 중…') : (editId ? '수정' : (existingGoodsId ? '게시글 등록' : '등록'))}</button>
         </div>
       </div>
@@ -1494,7 +1757,7 @@ export default function PostWritePage() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, background: 'var(--surface2)', borderRadius: 12, padding: '12px 16px', marginBottom: 16, fontSize: 14 }}>
             <span>임시저장된 글이 있어요. 이어서 작성할까요?</span>
             <span style={{ display: 'flex', gap: 8 }}>
-              <button onClick={loadDraft} style={{ border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 13, padding: '7px 14px', borderRadius: 9, cursor: 'pointer', fontFamily: 'inherit' }}>불러오기</button>
+              <button onClick={() => loadDraft(drafts[0])} style={{ border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 13, padding: '7px 14px', borderRadius: 9, cursor: 'pointer', fontFamily: 'inherit' }}>불러오기</button>
               <button onClick={clearDraft} style={{ border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--muted)', fontSize: 13, padding: '7px 12px', borderRadius: 9, cursor: 'pointer', fontFamily: 'inherit' }}>삭제</button>
             </span>
           </div>
@@ -1629,6 +1892,20 @@ export default function PostWritePage() {
                 <Sep />
                 <button className="tb-btn" title="인용구" onClick={() => exec('formatBlock', 'blockquote')} style={{ fontSize: 16 }}>&ldquo;</button>
                 <button className="tb-btn" title="구분선" onClick={() => exec('insertHorizontalRule')}>―</button>
+                <Sep />
+                <button className="tb-btn" title="스포일러 가리기 (글자를 고른 뒤)" onMouseDown={e => e.preventDefault()} onClick={toggleSpoiler} style={{ fontSize: 12, fontWeight: 900, width: 'auto', padding: '0 7px' }}>스포</button>
+                <button className="tb-btn" title="체크리스트" onClick={insertChecklist}>
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="6" height="6" rx="1.5" /><path d="m4.5 7 1 1 2-2" /><rect x="3" y="14" width="6" height="6" rx="1.5" /><path d="M12 7h9M12 17h9" /></svg>
+                </button>
+                <button className="tb-btn" title="접기 (더보기)" onClick={insertFold}>
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /><path d="M4 4h16M4 20h16" /></svg>
+                </button>
+                <label className="tb-btn" title="사진첩 (여러 장을 옆으로 넘겨 보기)" style={{ cursor: 'pointer' }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="6" y="5" width="12" height="14" rx="2" /><path d="M3 8v8M21 8v8" /></svg>
+                  <input type="file" accept="image/*" multiple onChange={e => { onPickSlides(e.target.files); e.target.value = '' }} style={{ display: 'none' }} />
+                </label>
+                <button className="tb-btn" title="샵 카드" onClick={() => setEmbedPick('shop')} style={{ fontSize: 12, fontWeight: 800, width: 'auto', padding: '0 7px' }}>샵</button>
+                <button className="tb-btn" title="이벤트 카드" onClick={() => setEmbedPick('event')} style={{ fontSize: 12, fontWeight: 800, width: 'auto', padding: '0 7px' }}>이벤트</button>
                 </span>
                 {/* 📱 모바일 전용: 더보기 (…) — 투표·링크·파일·인용구·내 루트 공유 */}
                 <button className="pw-more-btn tb-btn" title="더보기" onClick={() => setMoreOpen(o => !o)} style={{ display: 'none', ...(moreOpen ? { background: 'rgba(232,0,111,.14)', color: 'var(--accent)' } : {}) }}>
@@ -1681,6 +1958,16 @@ export default function PostWritePage() {
                   <MoreItem label="표" onClick={() => { setMoreOpen(false); insertTable() }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 10h18M3 15h18M9 4v16M15 4v16" /></svg>} />
                   <MoreItem label="구분선" onClick={() => { setMoreOpen(false); exec('insertHorizontalRule') }} icon={<span style={{ fontSize: 22, fontWeight: 800, lineHeight: 1 }}>―</span>} />
                   <MoreItem label="내 루트" onClick={() => { setMoreOpen(false); setRoutePickOpen(true) }} icon={<RouteIcon />} />
+                  <MoreItem label="샵 카드" onClick={() => { setMoreOpen(false); setEmbedPick('shop') }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>} />
+                  <MoreItem label="이벤트 카드" onClick={() => { setMoreOpen(false); setEmbedPick('event') }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4M3 10h18" /></svg>} />
+                  <MoreItem label="스포 가리기" onClick={() => { setMoreOpen(false); toggleSpoiler() }} icon={<span style={{ fontSize: 13, fontWeight: 900 }}>스포</span>} />
+                  <MoreItem label="체크리스트" onClick={() => { setMoreOpen(false); insertChecklist() }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="6" height="6" rx="1.5" /><path d="m4.5 7 1 1 2-2" /><rect x="3" y="14" width="6" height="6" rx="1.5" /><path d="M12 7h9M12 17h9" /></svg>} />
+                  <MoreItem label="접기" onClick={() => { setMoreOpen(false); insertFold() }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /><path d="M4 4h16M4 20h16" /></svg>} />
+                  <label style={moreItemStyle}>
+                    <span style={moreIconStyle}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="6" y="5" width="12" height="14" rx="2" /><path d="M3 8v8M21 8v8" /></svg></span>
+                    <span style={{ fontSize: 12, fontWeight: 700 }}>사진첩</span>
+                    <input type="file" accept="image/*" multiple onChange={e => { onPickSlides(e.target.files); e.target.value = ''; setMoreOpen(false) }} style={{ display: 'none' }} />
+                  </label>
                 </div>
               )}
             </div>
@@ -1743,7 +2030,7 @@ export default function PostWritePage() {
             {selImg && imgRect && (
               <>
                 <div aria-hidden="true" style={{ position: 'fixed', left: imgRect.left - 2, top: imgRect.top - 2, width: imgRect.width + 4, height: imgRect.height + 4, border: '2px solid var(--accent)', borderRadius: 8, pointerEvents: 'none', zIndex: 60 }} />
-                <div data-img-tools="1" style={{ position: 'fixed', left: Math.max(8, imgRect.left), top: Math.max(8, imgRect.top - 50), zIndex: 61, display: 'flex', gap: 4, padding: 4, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 6px 18px rgba(0,0,0,.14)' }}>
+                <div data-img-tools="1" style={{ position: 'fixed', left: Math.max(8, imgRect.left), top: Math.max(8, imgRect.top - 50), zIndex: 61, display: 'flex', flexWrap: 'wrap', maxWidth: 'calc(100vw - 16px)', gap: 4, padding: 4, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 6px 18px rgba(0,0,0,.14)' }}>
                   {([['작게', 33], ['중간', 50], ['크게', 75], ['원래', 100]] as const).map(([label, pct]) => (
                     <button key={label} type="button" onMouseDown={e => e.preventDefault()} onClick={() => setImgWidth(selImg, pct)}
                       style={{ border: 'none', borderRadius: 7, padding: '6px 10px', fontSize: 12.5, fontWeight: 800, fontFamily: 'inherit', cursor: 'pointer',
@@ -1758,11 +2045,20 @@ export default function PostWritePage() {
                       background: selImg.hasAttribute('data-cover') ? 'var(--accent)' : 'var(--surface2)', color: selImg.hasAttribute('data-cover') ? '#fff' : 'var(--text)' }}>
                     {selImg.hasAttribute('data-cover') ? '대표 ✓' : '대표 사진'}
                   </button>
+                  <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditImg(selImg)} title="자르기·돌리기"
+                    style={{ border: 'none', borderRadius: 7, padding: '6px 10px', fontSize: 12.5, fontWeight: 800, fontFamily: 'inherit', cursor: 'pointer', whiteSpace: 'nowrap', background: 'var(--surface2)', color: 'var(--text)' }}>
+                    자르기·돌리기
+                  </button>
+                  <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => { if (selImg.hasAttribute('data-spoiler')) selImg.removeAttribute('data-spoiler'); else selImg.setAttribute('data-spoiler', '1'); setImgTick(t => t + 1) }} title="스포일러로 가리기"
+                    style={{ border: 'none', borderRadius: 7, padding: '6px 10px', fontSize: 12.5, fontWeight: 800, fontFamily: 'inherit', cursor: 'pointer', whiteSpace: 'nowrap',
+                      background: selImg.hasAttribute('data-spoiler') ? 'var(--accent)' : 'var(--surface2)', color: selImg.hasAttribute('data-spoiler') ? '#fff' : 'var(--text)' }}>
+                    {selImg.hasAttribute('data-spoiler') ? '스포 ✓' : '스포 가리기'}
+                  </button>
                   <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => addCaption(selImg)} title="사진 아래에 설명 달기"
                     style={{ border: 'none', borderRadius: 7, padding: '6px 10px', fontSize: 12.5, fontWeight: 800, fontFamily: 'inherit', cursor: 'pointer', whiteSpace: 'nowrap', background: 'var(--surface2)', color: 'var(--text)' }}>
                     설명
                   </button>
-                  <span style={{ alignSelf: 'center', fontSize: 11, color: 'var(--muted)', paddingRight: 6, whiteSpace: 'nowrap' }}>· 끌어서 다른 사진 옆에 놓으면 나란히</span>
+
                 </div>
                 {([[-1, -1], [1, -1], [-1, 1], [1, 1]] as const).map(([sx, sy]) => (
                   <div key={`${sx}${sy}`} data-img-tools="1" onPointerDown={e => startImgDrag(e, sx, sy)} title="끌어서 크기 조절"
@@ -1864,6 +2160,41 @@ export default function PostWritePage() {
       </div>
       {pollOpen && <PollModal onClose={() => setPollOpen(false)} onConfirm={data => { setPollData(data); setPollOpen(false) }} />}
       {tableOpen && <TableModal onClose={() => setTableOpen(false)} onConfirm={html => { appendBlock(html); setTableOpen(false) }} />}
+      {editImg && <ImageEditModal src={editImg.getAttribute('src') || ''} onClose={() => setEditImg(null)} onApply={applyImageEdit} />}
+      {embedPick && (
+        <div onClick={() => setEmbedPick(null)} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: isDesktop ? 'center' : 'flex-end', justifyContent: 'center', padding: isDesktop ? 16 : 0 }}>
+          <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 460, maxHeight: '80vh', display: 'flex', flexDirection: 'column', background: 'var(--surface)', borderRadius: isDesktop ? 16 : '16px 16px 0 0', boxShadow: '0 12px 40px rgba(0,0,0,.2)' }}>
+            <div style={{ padding: '16px 16px 10px' }}>
+              <div style={{ fontSize: 16, fontWeight: 800, color: 'var(--text)', marginBottom: 10 }}>{embedPick === 'shop' ? '샵 카드 넣기' : '이벤트 카드 넣기'}</div>
+              <input autoFocus value={embedQ} onChange={e => setEmbedQ(e.target.value)} placeholder={embedPick === 'shop' ? '샵 이름으로 찾기' : '이벤트 이름으로 찾기'}
+                style={{ width: '100%', boxSizing: 'border-box', padding: '10px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', fontSize: 14, fontFamily: 'inherit' }} />
+            </div>
+            <div style={{ overflowY: 'auto', padding: '0 8px 12px' }}>
+              {embedLoading && <div style={{ padding: 14, fontSize: 13, color: 'var(--muted)' }}>찾는 중…</div>}
+              {!embedLoading && embedPick === 'shop' && (embedQ.trim() ? (embedShops.length ? embedShops.map(sh => (
+                <button key={sh.id} type="button" onClick={() => insertShopCard(sh)} style={embedRow}>
+                  {sh.image
+                    // eslint-disable-next-line @next/next/no-img-element
+                    ? <img src={sh.image} alt="" style={{ width: 44, height: 44, borderRadius: 8, objectFit: 'cover', flex: 'none' }} />
+                    : <span style={{ width: 44, height: 44, borderRadius: 8, background: 'var(--surface2)', flex: 'none' }} />}
+                  <span style={{ minWidth: 0 }}><span style={{ display: 'block', fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{sh.name}</span>
+                    <span style={{ display: 'block', fontSize: 12, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{sh.addr ?? ''}</span></span>
+                </button>
+              )) : <div style={{ padding: 14, fontSize: 13, color: 'var(--muted)' }}>찾는 샵이 없어요</div>) : <div style={{ padding: 14, fontSize: 13, color: 'var(--muted)' }}>샵 이름을 입력하세요</div>)}
+              {!embedLoading && embedPick === 'event' && (embedEvents.length ? embedEvents.map(ev => (
+                <button key={ev.id} type="button" onClick={() => insertEventCard(ev)} style={embedRow}>
+                  {ev.cover
+                    // eslint-disable-next-line @next/next/no-img-element
+                    ? <img src={ev.cover} alt="" style={{ width: 44, height: 44, borderRadius: 8, objectFit: 'cover', flex: 'none' }} />
+                    : <span style={{ width: 44, height: 44, borderRadius: 8, background: 'var(--surface2)', flex: 'none' }} />}
+                  <span style={{ minWidth: 0 }}><span style={{ display: 'block', fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ev.title}</span>
+                    <span style={{ display: 'block', fontSize: 12, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{[ev.start ? `${fmtD(ev.start)}${ev.end && ev.end !== ev.start ? ` ~ ${fmtD(ev.end)}` : ''}` : '', ev.place].filter(Boolean).join(' · ')}</span></span>
+                </button>
+              )) : <div style={{ padding: 14, fontSize: 13, color: 'var(--muted)' }}>찾는 이벤트가 없어요</div>)}
+            </div>
+          </div>
+        </div>
+      )}
       {preview !== null && (
         <div onClick={() => setPreview(null)} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,.5)', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', overflowY: 'auto', padding: isDesktop ? '40px 16px' : 0 }}>
           <div role="dialog" aria-modal="true" aria-label="미리보기" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 1120, minHeight: isDesktop ? undefined : '100%', background: 'var(--bg)', borderRadius: isDesktop ? 16 : 0, boxShadow: '0 12px 40px rgba(0,0,0,.25)', overflow: 'hidden' }}>
@@ -1880,6 +2211,24 @@ export default function PostWritePage() {
                 </div>
                 <PostBodyPreview html={preview} isPage />
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {checkList && (
+        <div onClick={() => setCheckList(null)} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
+          <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 420, background: 'var(--surface)', borderRadius: 16, padding: '22px 20px 16px', boxShadow: '0 12px 40px rgba(0,0,0,.2)' }}>
+            <div style={{ fontSize: 17, fontWeight: 800, color: 'var(--text)', marginBottom: 12 }}>올리기 전에 한 번 볼까요?</div>
+            <ul style={{ margin: '0 0 18px', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {checkList.map((w, i) => (
+                <li key={i} style={{ display: 'flex', gap: 8, fontSize: 14, lineHeight: 1.55, color: 'var(--text)' }}>
+                  <span style={{ color: 'var(--accent)', fontWeight: 900, flex: 'none' }}>·</span><span>{w}</span>
+                </li>
+              ))}
+            </ul>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button onClick={() => setCheckList(null)} style={{ flex: 1, padding: '11px 0', borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>고치러 가기</button>
+              <button onClick={() => { setCheckList(null); skipCheckRef.current = true; setSettingsOpen(false); void submit() }} style={{ flex: 1, padding: '11px 0', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>그대로 올리기</button>
             </div>
           </div>
         </div>
@@ -1976,6 +2325,8 @@ function RouteIcon() {
     </svg>
   )
 }
+const embedRow: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: 10, width: '100%', textAlign: 'left', border: 'none', background: 'none', borderRadius: 10, padding: '8px 8px', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, color: 'var(--text)' }
+
 function MoreItem({ label, icon, onClick }: { label: string; icon: React.ReactNode; onClick: () => void }) {
   return (
     <button onClick={onClick} style={moreItemStyle}>

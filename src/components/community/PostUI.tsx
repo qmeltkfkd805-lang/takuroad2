@@ -27,6 +27,7 @@ import { findLinkBlock } from '@/lib/utils/linkUrl'
 import { linkCardHtml, LINK_CARD_HOLDER_STYLE, LINK_CARD_VERSION, type LinkPreview } from '@/lib/utils/linkCardHtml'
 import { getPostEvent, PostEventSummary } from '@/services/postEventService'
 import { hydrateYoutube } from '@/lib/utils/youtube'
+import { bindPostBody, POST_FX_CSS } from '@/lib/utils/postBodyFx'
 
 // ── 대표 팬아트 배지 ──
 export function FeaturedTag({ kind, inline }: { kind: 'current' | 'past'; inline?: boolean }) {
@@ -205,7 +206,8 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
         .catch(() => {})
     })
     hydrateYoutube(body)   // 유튜브 블록 → 실제 재생기
-    return () => { alive = false }
+    const unbind = bindPostBody(body)   // 부분 스포일러·사진첩
+    return () => { alive = false; unbind() }
   }, [post.id, post.content])
   const curPlace = place && place.key === placeKey ? place : undefined
   const cardNode = cardUrl ? <LinkPreviewCard url={cardUrl} /> : null
@@ -932,12 +934,12 @@ const menuItem: React.CSSProperties = {
 }
 
 /* 유튜브 영상 블록은 크게, #작품·@멘션은 밑줄 없는 분홍 글씨 */
-const POST_BODY_EXTRA_CSS = '.taku-post-body [data-link-card][data-yt]{max-width:560px !important}.taku-post-body a[href][data-work]:not([data-lp]),.taku-post-body a[href][data-mention]:not([data-lp]),.taku-post-body a[href][data-work]:not([data-lp]) *,.taku-post-body a[href][data-mention]:not([data-lp]) *{text-decoration:none !important;font-weight:700}.taku-post-body a[href][data-work]:not([data-lp]):hover,.taku-post-body a[href][data-mention]:not([data-lp]):hover{text-decoration:underline !important}'
+const POST_BODY_EXTRA_CSS = POST_FX_CSS + '.taku-post-body [data-link-card][data-yt]{max-width:560px !important}.taku-post-body a[href][data-work]:not([data-lp]),.taku-post-body a[href][data-mention]:not([data-lp]),.taku-post-body a[href][data-work]:not([data-lp]) *,.taku-post-body a[href][data-mention]:not([data-lp]) *{text-decoration:none !important;font-weight:700}.taku-post-body a[href][data-work]:not([data-lp]):hover,.taku-post-body a[href][data-mention]:not([data-lp]):hover{text-decoration:underline !important}'
 
 /** 올리기 전 미리보기 — 글 화면 본문과 똑같은 걸러내기·모양·영상 처리 */
 export function PostBodyPreview({ html, isPage = true }: { html: string; isPage?: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => { hydrateYoutube(ref.current) }, [html])
+  useEffect(() => { hydrateYoutube(ref.current); return bindPostBody(ref.current) }, [html])
   return (
     <>
       <div ref={ref} className="taku-post-body" style={{ fontSize: isPage ? 16 : 14.5, lineHeight: isPage ? 1.8 : 1.65, margin: 0, wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(html) }} />
