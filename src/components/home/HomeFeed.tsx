@@ -30,6 +30,7 @@ import { Icon } from '@/components/tds'
 import styles from './HomeFeed.module.css'
 import RankList from './RankList'
 import LogoLoader from '@/components/common/LogoLoader'
+import { peekCache, putCache } from '@/lib/utils/pageCache'
 import ThumbImg from '@/components/common/ThumbImg'
 
 const PALETTE = [
@@ -190,15 +191,16 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
   const routeSlider = useSlider(320)
   const eventSlider = useSlider(320)
   const shopsSlider = useSlider(424)
-  const [rels, setRels] = useState<WorkRelationship[]>([])
-  const [loading, setLoading] = useState(true)
+  // 내 작품 관계 — 한 번 받았으면 바로 보여주고 뒤에서 새로 받는다
+  const [rels, setRels] = useState<WorkRelationship[]>(() => peekCache<{ uid: string; rels: WorkRelationship[] }>('home:rels')?.rels ?? [])
+  const [loading, setLoading] = useState(() => !peekCache('home:rels'))
   const [newsFilter, setNewsFilter] = useState<'all' | 'work' | 'event' | 'shop'>('all')
   const [savedEventIds, setSavedEventIds] = useState<Set<string>>(new Set())
   const [savedRouteIds, setSavedRouteIds] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     if (!user) { setLoading(false); return }
-    getMyWorkRelationships(user.id).then(setRels).finally(() => setLoading(false))
+    getMyWorkRelationships(user.id).then(r => { putCache('home:rels', { uid: user.id, rels: r }); setRels(r) }).finally(() => setLoading(false))
   }, [user])
 
   // 최애 먼저, 그다음 좋아하는 작품 (관계 있는 것만)

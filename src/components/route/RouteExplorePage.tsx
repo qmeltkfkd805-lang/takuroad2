@@ -15,6 +15,7 @@ import { rtStops, rtRegions, fmtDur, metaShort } from './routeMeta'
 import { buildRouteHero, byRoutePopularity, routeInfoScore, ROUTE_HERO_MAX } from '@/lib/route/heroOrder'
 import styles from './RouteExplorePage.module.css'
 import LogoLoader from '@/components/common/LogoLoader'
+import { peekCache, putCache } from '@/lib/utils/pageCache'
 
 /* 마스크 아이콘 (히어로 메타용) */
 function MaskIcon({ name, size = 15, color = 'currentColor' }: { name: string; size?: number; color?: string }) {
@@ -60,8 +61,9 @@ export default function RouteExplorePage() {
   const params = useSearchParams()
   const isDesktop = useIsDesktop()
   const { user } = useAuth()
-  const [routes, setRoutes] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+  // 한 번 본 루트 목록은 바로 보여주고 뒤에서 새로 받는다
+  const [routes, setRoutes] = useState<any[]>(() => peekCache<any[]>('routes:public') ?? [])
+  const [loading, setLoading] = useState(() => !peekCache('routes:public'))
   const [error, setError] = useState(false)
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
   const [savedRoutes, setSavedRoutes] = useState<any[]>([])
@@ -74,8 +76,10 @@ export default function RouteExplorePage() {
   const nearbyReqRef = useRef(false)
 
   useEffect(() => {
-    setLoading(true); setError(false)
-    getPublicRoutes().then(setRoutes).catch(() => setError(true)).finally(() => setLoading(false))
+    const had = !!peekCache('routes:public')
+    if (!had) setLoading(true)
+    setError(false)
+    getPublicRoutes().then(r => setRoutes(putCache('routes:public', r ?? []))).catch(() => { if (!had) setError(true) }).finally(() => setLoading(false))
   }, [])
   useEffect(() => {
     if (!user) { setSavedIds(new Set()); setSavedRoutes([]); setFavTagIds(new Set()); return }

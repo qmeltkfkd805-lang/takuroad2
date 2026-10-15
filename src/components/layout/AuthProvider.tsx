@@ -33,6 +33,7 @@ const AuthContext = createContext<AuthContextType>({
 const SETUP_EXEMPT = ['/profile/setup', '/login', '/auth']
 // 동의 전에도 볼 수 있는 경로 (동의 화면 · 약관 전문 · 로그인)
 const CONSENT_EXEMPT = ['/consent', '/policies', '/profile/setup', '/login', '/auth']
+const PROFILE_KEY = 'taku:profile'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
@@ -60,9 +61,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .select('id, nickname, avatar_url, bio, role, created_at, updated_at')
       .eq('id', userId)
       .maybeSingle()
-    if (error) console.error('[AuthProvider] 프로필 읽기 실패:', error)
+    if (error) { console.error('[AuthProvider] 프로필 읽기 실패:', error); setProfileLoaded(true); return }   // 못 읽었으면 기억해 둔 걸 그대로 둔다
     setProfile(data ?? null)
     setProfileLoaded(true)
+    try { if (data) localStorage.setItem(PROFILE_KEY, JSON.stringify(data)); else localStorage.removeItem(PROFILE_KEY) } catch { /* 저장소 막힘 */ }
+  }
+  /* ⚡ 내 프로필(닉네임·사진·역할)을 기억해 뒀다가 다음에 열 때 바로 쓴다 — 마이페이지 등이 프로필 조회를 기다리며
+     '불러오는 중'을 띄우던 시간이 없어진다. 실제 값은 곧바로 다시 읽어 바꾼다(권한 판단은 어차피 서버가 한다). */
+  function cachedProfile(userId: string): Profile | null {
+    try {
+      const p = JSON.parse(localStorage.getItem(PROFILE_KEY) || 'null') as Profile | null
+      return p && p.id === userId ? p : null
+    } catch { return null }
   }
 
   /* ⚡ 같은 사람이면 user 객체를 바꾸지 않는다.
@@ -100,7 +110,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           // 같은 사람의 토큰 갱신·초기 세션 알림이면 프로필은 이미 있다 — 다시 읽지 않는다
           if (profileFor.current !== currentUser.id) {
             profileFor.current = currentUser.id
-            setProfileLoaded(false)
+            const remembered = cachedProfile(currentUser.id)
+            if (remembered) { setProfile(remembered); setProfileLoaded(true) } else setProfileLoaded(false)
             setTimeout(() => { if (active) loadProfile(currentUser.id) }, 0)
           }
         } else {
@@ -155,6 +166,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function signOut() {
+    try { localStorage.removeItem(PROFILE_KEY) } catch { /* 저장소 막힘 */ }
     await supabase.auth.signOut()
     profileFor.current = null
     setUser(null)

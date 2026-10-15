@@ -7,6 +7,7 @@ import { getNotifications, markAsRead, markAllAsRead, getNotificationLink, Notif
 import { ROUTES } from '@/lib/constants/routes'
 import AppIcon from '@/components/tds/AppIcon'
 import LogoLoader from '@/components/common/LogoLoader'
+import { peekCache, putCache } from '@/lib/utils/pageCache'
 
 /* 알림 — 날짜 그룹형 리스트 (카드 없이, 왼쪽 정렬, 타입별 아이콘)
    ⭐ 타쿠로드는 이미 카드가 많다. 알림은 리스트가 더 깔끔하다. */
@@ -54,17 +55,24 @@ function timeAgo(iso: string): string {
 export default function NotificationsPage() {
   const router = useRouter()
   const { user, loading: authLoading } = useAuth()
-  const [notifications, setNotifications] = useState<Notification[]>([])
-  const [loading, setLoading] = useState(true)
+  // 한 번 본 알림은 바로 보여주고 뒤에서 새로 받는다
+  const [cached] = useState(() => peekCache<{ uid: string; list: Notification[] }>('notifications'))
+  const [notifications, setNotifications] = useState<Notification[]>(() => cached?.list ?? [])
+  const [loading, setLoading] = useState(() => !cached)
 
   useEffect(() => {
     if (authLoading) return
     if (!user) { router.push(ROUTES.login); return }
+    if (cached && cached.uid !== user.id) { setNotifications([]); setLoading(true) }
     getNotifications(user.id).then(data => {
       setNotifications(data)
       setLoading(false)
     })
-  }, [user, authLoading, router])
+  }, [user, authLoading, router, cached])
+  // 읽음 처리까지 기억해 둔다
+  useEffect(() => {
+    if (user && !loading) putCache('notifications', { uid: user.id, list: notifications })
+  }, [user, loading, notifications])
 
   async function handleClick(noti: Notification) {
     if (!noti.is_read) {
@@ -83,7 +91,7 @@ export default function NotificationsPage() {
     window.dispatchEvent(new Event('noti-read'))
   }
 
-  if (loading || authLoading) {
+  if (loading || (authLoading && !cached)) {
     return <LogoLoader size="md" />
   }
 

@@ -22,6 +22,7 @@ type Work = { id: string; name: string; slug: string; cover_url?: string | null;
    (예전엔 화면을 열 때마다 작품 2,500여 개를 1,000개씩 이어서 두 번 읽고, 최애 여부도 200개씩 13번 나눠 물어서
     '불러오는 중'이 몇 초씩 걸렸다) 받아 오지 못하면 예전처럼 DB에서 직접 */
 let worksCache: Promise<Work[]> | null = null
+let worksReady: Work[] | null = null   // 받아 둔 목록 — 다시 열면 '불러오는 중' 없이 바로
 function loadWorks(): Promise<Work[]> {
   if (!worksCache) {
     worksCache = fetch('/api/works/all')
@@ -31,7 +32,7 @@ function loadWorks(): Promise<Work[]> {
         const all = (await getAllTags()) as Work[]
         return [...all].sort((a, b) => (completeness(b) - completeness(a)) || a.name.localeCompare(b.name, 'ko'))
       })
-    worksCache.catch(() => { worksCache = null })
+    worksCache.then(list => { worksReady = list }, () => { worksCache = null })
   }
   return worksCache
 }
@@ -60,9 +61,9 @@ export default function MyWorksPage() {
   const isDesktop = useIsDesktop()
   const { user, isAdmin } = useAuth()
   const router = useRouter()
-  const [works, setWorks] = useState<Work[]>([])
+  const [works, setWorks] = useState<Work[]>(() => (typeof window !== 'undefined' && worksReady) || [])
   const [affMap, setAffMap] = useState<Record<string, 'favorite' | 'interest'>>({})
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(() => !(typeof window !== 'undefined' && worksReady))
   const favRowRef = useRef<HTMLDivElement>(null)
   const [favOverflow, setFavOverflow] = useState(false)
   const scrollFav = (dir: number) => favRowRef.current?.scrollBy({ left: dir * 480, behavior: 'smooth' })
