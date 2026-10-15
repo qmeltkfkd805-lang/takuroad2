@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { createClient as createServerClient } from '@/lib/supabase/server'
+import { purgeWorks } from '@/lib/cache/workCache'
 
 const ALLOWED: Record<string, string[]> = {
   /* ⚠️ role 은 여기 다시 넣지 말 것.
@@ -43,18 +44,21 @@ export async function POST(request: NextRequest) {
       if (!id) return NextResponse.json({ error: 'id가 필요해요' }, { status: 400 })
       const { error } = await admin.from(table).delete().eq('id', id)
       if (error) throw error
+      if (table === 'tags') purgeWorks()
       return NextResponse.json({ success: true })
     }
     if (action === 'insert') {
       if (table === 'home_hero_slots') clean.created_by = user.id   // 작성자 서버에서 주입 (스푸핑 방지)
       const { data, error } = await admin.from(table).insert(clean).select().single()
       if (error) throw error
+      if (table === 'tags') purgeWorks((data as any)?.slug)
       return NextResponse.json({ success: true, row: data })
     }
     if (!id) return NextResponse.json({ error: 'id가 필요해요' }, { status: 400 })
     if (Object.keys(clean).length === 0) return NextResponse.json({ error: '수정할 값이 없어요' }, { status: 400 })
     const { data, error } = await admin.from(table).update(clean).eq('id', id).select().single()
     if (error) throw error
+    if (table === 'tags') purgeWorks((data as any)?.slug)   // 작품 사진·정보 바꾸면 목록·상세 캐시 바로 비움
     return NextResponse.json({ success: true, row: data })
   } catch (e: any) {
     return NextResponse.json({ error: e.message ?? '알 수 없는 오류' }, { status: 500 })

@@ -2,6 +2,7 @@
 
 import { cache } from 'react'
 import { unstable_cache } from 'next/cache'
+import { WORKS_TAG } from '@/lib/cache/workCache'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getTagBySlug, getShopsByTag } from '@/services/shopService'
@@ -52,7 +53,7 @@ const getWorkCached = cache((slug: string) => unstable_cache(async () => {
     shops: (shops ?? []).map(slimWorkShop),
     routes: (routes ?? []).map(slimWorkRoute),
   }
-}, ['work-page-v1', slug], { revalidate: 120 })())
+}, ['work-page-v1', slug], { revalidate: 120, tags: [WORKS_TAG] })())   // 작품 수정 시 purgeWorks()로 바로 비움
 
 /* ⚡ 공개 루트 전체는 60초 동안 모든 작품 페이지가 같이 쓴다.
    예전엔 작품 페이지를 열 때마다(검색엔진이 2,500개 작품을 훑을 때도) 공개 루트 전부를 경유 샵·태그까지 DB에서 새로 읽었다

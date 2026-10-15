@@ -4,6 +4,7 @@
 import { NextResponse } from 'next/server'
 import { unstable_cache } from 'next/cache'
 import { getAllTags } from '@/services/shopService'
+import { WORKS_TAG } from '@/lib/cache/workCache'
 
 export const revalidate = 300
 
@@ -30,12 +31,12 @@ const getCached = unstable_cache(async () => {
       score: score(w),
     }))
     .sort((a, b) => (b.score - a.score) || String(a.name).localeCompare(String(b.name), 'ko'))
-}, ['works-all-v1'], { revalidate: 300 })
+}, ['works-all-v1'], { revalidate: 300, tags: [WORKS_TAG] })   // 작품 수정 시 purgeWorks()로 바로 비움
 
 export async function GET() {
   const items = await getCached()
   return NextResponse.json(
     { items },
-    { headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=1800' } },
+    { headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=60' } },
   )
 }
