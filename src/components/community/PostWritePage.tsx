@@ -11,9 +11,12 @@ import { linkBlocksIn, lineOf } from '@/lib/utils/linkUrl'
 import { dropBeside, dropAsLine, rowOf, PHOTO_ROW_MAX } from '@/lib/utils/photoRow'
 import { linkCardHtml, linkCardLoadingHtml, cleanLinkCards, LINK_CARD_HOLDER_STYLE, LINK_CARD_VERSION, REMOVE_BTN, type LinkPreview } from '@/lib/utils/linkCardHtml'
 import { getMyWorkRelationships } from '@/services/workRelationshipService'
+import { youtubeId, youtubeInnerHtml, YT_HOLDER_STYLE } from '@/lib/utils/youtube'
 import { createPoll } from '@/services/pollService'
 import { Board, BOARDS, BOARD_FLAIRS, CREATION_BOARDS, boardMeta, NewPost, NewPoll } from '@/types/community-post'
 import DraftNotice from '@/components/common/DraftNotice'
+import { PostBodyPreview } from './PostUI'
+import { createClient as createSupabase } from '@/lib/supabase/client'
 import CompanionEventPicker from './CompanionEventPicker'
 import { getPostEvent, setPostEvent, PostEventSummary } from '@/services/postEventService'
 
@@ -39,7 +42,7 @@ const FANART_AGREE = [
 ]
 
 export default function PostWritePage() {
-  const { user, isAdmin } = useAuth()
+  const { user, isAdmin, profile } = useAuth()
   const isDesktop = useIsDesktop()
   const router = useRouter()
   const sp = useSearchParams()
@@ -79,6 +82,7 @@ export default function PostWritePage() {
   const attachLinkCards = () => {
     const root = editorRef.current
     if (!root) return
+    histFlush()
     const cardEls = Array.from(root.querySelectorAll('[data-link-card][data-url]'))
     const cards = new Map<string, number>()
     for (const n of cardEls) { const u = n.getAttribute('data-url') || ''; cards.set(u, (cards.get(u) ?? 0) + 1) }
@@ -100,7 +104,13 @@ export default function PostWritePage() {
       holder.setAttribute('contenteditable', 'false')
       holder.setAttribute('style', LINK_CARD_HOLDER_STYLE)
       holder.setAttribute('data-v', LINK_CARD_VERSION)
-      holder.innerHTML = linkCardLoadingHtml(url)
+      const yt = youtubeId(url)
+      if (yt) {   // 유튜브 → 카드 대신 영상 블록(글 화면에서 바로 재생)
+        holder.removeAttribute('data-loading')
+        holder.setAttribute('data-yt', yt)
+        holder.setAttribute('style', YT_HOLDER_STYLE)
+        holder.innerHTML = youtubeInnerHtml(yt, REMOVE_BTN)
+      } else holder.innerHTML = linkCardLoadingHtml(url)
       // 링크가 든 줄 바로 아래에. 줄 구분 없이 바로 들어간 링크면 그 줄을 <p>로 감싸서 그 아래에(글 맨 끝으로 보내지 않는다)
       // 같은 줄에 링크가 여럿이면 앞서 붙은 카드들 뒤에 차례로
       let anchor: Element | null = lineOf(root, node)
@@ -108,6 +118,7 @@ export default function PostWritePage() {
       if (anchor) anchor.insertAdjacentElement('afterend', holder); else root.appendChild(holder)
       // 카드 뒤에 줄이 없으면 하나 만들어 둔다 — 카드 다음에 이어서 쓸 수 있게
       if (!holder.nextElementSibling) { const p = document.createElement('p'); p.innerHTML = '<br>'; holder.after(p) }
+      if (yt) continue
       fetch(`/api/link-preview?url=${encodeURIComponent(url)}`)
         .then(r => (r.ok ? r.json() : null))
         .then((pv: LinkPreview | null) => {
@@ -126,6 +137,7 @@ export default function PostWritePage() {
     const wait = pastedRef.current ? 0 : 500
     pastedRef.current = false
     linkTimer.current = setTimeout(attachLinkCards, wait)
+    updateAc()
     if (editorRef.current?.querySelector('img[src^="data:"]:not([data-uploading]), img[src^="blob:"]:not([data-uploading])')) setTimeout(() => { void uploadInlineImages() }, 0)
   }
   /* ── 붙여넣기·끌어다 놓은 사진 ──
@@ -157,6 +169,7 @@ export default function PostWritePage() {
   }
   const imageFilesOf = (dt: DataTransfer | null) => Array.from(dt?.files ?? []).filter(f => f.type.startsWith('image/'))
   const onEditorPaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    histFlush()
     pastedRef.current = true
     const files = imageFilesOf(e.clipboardData)
     if (files.length && user) {
@@ -313,6 +326,33 @@ export default function PostWritePage() {
     }, 350)
     dragRef.current = d
   }
+  /* 대표 사진 — 목록 썸네일로 쓸 사진 (data-cover). 한 장만. 다시 누르면 해제(첫 사진이 대표) */
+  const toggleCover = (img: HTMLImageElement) => {
+    const was = img.hasAttribute('data-cover')
+    editorRef.current?.querySelectorAll('img[data-cover]').forEach(n => n.removeAttribute('data-cover'))
+    if (!was) img.setAttribute('data-cover', '1')
+    setImgTick(t => t + 1)
+  }
+  /* 사진 설명 — 사진 바로 아래 작은 회색 가운데 글씨 줄(p[data-caption]). 있으면 그 줄로 커서만 옮긴다 */
+  const addCaption = (img: HTMLImageElement) => {
+    const root = editorRef.current
+    if (!root) return
+    let block: Node = img
+    while (block.parentNode && block.parentNode !== root) block = block.parentNode
+    if (block.parentNode !== root || block.nodeType !== 1) return
+    let cap = (block as Element).nextElementSibling
+    if (!cap || !cap.matches('p[data-caption]')) {
+      cap = document.createElement('p')
+      cap.setAttribute('data-caption', '1')
+      cap.setAttribute('style', 'text-align:center;font-size:13px;color:#8a8a8a;margin:4px 0 14px;line-height:1.5')
+      cap.innerHTML = '<br>'
+      ;(block as Element).after(cap)
+    }
+    root.focus()
+    const r = document.createRange(); r.selectNodeContents(cap); r.collapse(false)
+    const sel = window.getSelection(); sel?.removeAllRanges(); sel?.addRange(r)
+    setSelImg(null)
+  }
   const setImgWidth = (img: HTMLImageElement, pct: number) => {
     const v = Math.max(15, Math.min(100, pct))
     img.style.width = `${Math.round(v * 10) / 10}%`
@@ -391,6 +431,7 @@ export default function PostWritePage() {
   }
 
   const onEditorClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    setAc(null)
     if (justDragged.current) return
     const t = e.target as HTMLElement
     const rm = t.closest('[data-lp-remove]')
@@ -541,6 +582,7 @@ export default function PostWritePage() {
           ? { html: o.html, title: o.title }
           : { html: editorRef.current?.innerHTML ?? '', title: o?.title ?? '' }
         editReadyRef.current = true
+        hist.current = { stack: [], idx: -1 }; histRecord()   // 불러온 글이 되돌리기의 시작점
       }, 1500)
       // 굿즈자랑 글이면 연결된 굿즈의 캐릭터·태그 프리필
       if (pp.board === 'goods') {
@@ -645,7 +687,169 @@ export default function PostWritePage() {
     if (changed) setTimeout(attachLinkCards, 0)   // 엔터로 줄이 나뉜 다음에 — 카드는 링크 줄 바로 아래로 간다
   }
 
+  /* ── 본문에서 #작품 · @닉네임 부르기 (2026-10-15) ──
+     # 뒤에 글자를 치면 작품 목록, @ 뒤에 치면 회원 목록이 커서 아래에 뜬다. 방향키·엔터(또는 클릭)로 고른다.
+     #작품 → 작품 페이지 링크 + 이 글의 작품 태그에도 추가 / @닉네임 → 그 회원 프로필 링크 + 글을 올리면 그 회원에게 알림(DB 트리거). */
+  type AcItem = { kind: '#'; id: string; name: string; slug: string } | { kind: '@'; id: string; name: string; avatar: string | null }
+  const [ac, setAc] = useState<{ kind: '#' | '@'; q: string; rect: DOMRect; items: AcItem[]; idx: number; loading?: boolean } | null>(null)
+  const acSeq = useRef(0)
+  const acTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const acTrigger = () => {
+    const root = editorRef.current, sel = window.getSelection()
+    if (!root || !sel || !sel.isCollapsed || !sel.rangeCount) return null
+    const n = sel.anchorNode
+    if (!n || n.nodeType !== 3 || !root.contains(n)) return null
+    if (n.parentElement?.closest('a,[contenteditable="false"]')) return null
+    const off = sel.anchorOffset
+    const before = (n.textContent || '').slice(0, off)
+    const m = /(^|[\s\u00a0])([#@])([^\s\u00a0#@]{0,20})$/.exec(before)
+    if (!m) return null
+    const start = off - m[3].length - 1
+    const r = document.createRange(); r.setStart(n, start); r.setEnd(n, off)
+    return { kind: m[2] as '#' | '@', q: m[3], node: n as Text, start, end: off, rect: r.getBoundingClientRect() }
+  }
+  const updateAc = () => {
+    const t = acTrigger()
+    if (!t) { setAc(null); return }
+    const seq = ++acSeq.current
+    if (t.kind === '#') {
+      const q = t.q.toLowerCase()
+      const mine = new Set(myWorks.map(w => w.id))
+      const items: AcItem[] = (q ? tags.filter(x => x.name.toLowerCase().includes(q)) : tags.filter(x => mine.has(x.id)))
+        .sort((a, b) => (Number(b.name.toLowerCase().startsWith(q)) - Number(a.name.toLowerCase().startsWith(q)))
+          || (Number(mine.has(b.id)) - Number(mine.has(a.id))) || a.name.length - b.name.length)
+        .slice(0, 6).map(x => ({ kind: '#' as const, id: x.id, name: x.name, slug: x.slug }))
+      setAc({ kind: '#', q: t.q, rect: t.rect, items, idx: 0 })
+      return
+    }
+    if (!t.q) { setAc({ kind: '@', q: '', rect: t.rect, items: [], idx: 0 }); return }
+    setAc(prev => ({ kind: '@', q: t.q, rect: t.rect, items: prev?.kind === '@' ? prev.items : [], idx: 0, loading: true }))
+    if (acTimer.current) clearTimeout(acTimer.current)
+    acTimer.current = setTimeout(async () => {
+      const like = t.q.replace(/[\\%_]/g, c => '\\' + c)
+      const { data } = await createSupabase().from('profiles').select('id, nickname, avatar_url').ilike('nickname', `${like}%`).limit(10)
+      if (seq !== acSeq.current) return
+      const items: AcItem[] = ((data ?? []) as any[])
+        .filter(p => p.nickname && p.id !== user?.id && !String(p.nickname).startsWith('탈퇴한회원_'))
+        .slice(0, 6).map(p => ({ kind: '@' as const, id: p.id, name: p.nickname, avatar: p.avatar_url ?? null }))
+      setAc(prev => (prev && prev.kind === '@' ? { ...prev, items, idx: 0, loading: false } : prev))
+    }, 150)
+  }
+  const chooseAc = (item: AcItem) => {
+    const t = acTrigger()
+    setAc(null)
+    if (!t) return
+    histFlush()
+    const r = document.createRange(); r.setStart(t.node, t.start); r.setEnd(t.node, t.end); r.deleteContents()
+    const a = document.createElement('a')
+    a.setAttribute('contenteditable', 'false')
+    a.setAttribute('style', 'color:#e8006f;font-weight:700;text-decoration:none')
+    if (item.kind === '#') {
+      a.setAttribute('href', `/work/${encodeURIComponent(item.slug)}`)
+      a.setAttribute('data-work', item.id)
+      a.textContent = '#' + item.name
+      setTagIds(prev => (prev.includes(item.id) ? prev : [...prev, item.id]))   // 이 글의 작품 태그에도
+    } else {
+      a.setAttribute('href', `/user/${encodeURIComponent(item.name)}`)
+      a.setAttribute('data-mention', item.id)
+      a.textContent = '@' + item.name
+    }
+    r.insertNode(a)
+    const sp = document.createTextNode('\u00a0')
+    a.after(sp)
+    const r2 = document.createRange(); r2.setStart(sp, 1); r2.collapse(true)
+    const sel = window.getSelection(); sel?.removeAllRanges(); sel?.addRange(r2)
+  }
+
+  /* ── 실행 취소·다시 실행 (2026-10-15) ──
+     브라우저 기본 되돌리기는 링크 카드·사진 옮기기·붙여넣은 사진처럼 코드가 바꾼 부분을 모른다.
+     그래서 본문이 바뀔 때마다(입력이 0.35초 멈추면) 본문을 통째로 기억해 두고, Ctrl+Z / Ctrl+Shift+Z(Ctrl+Y)로 오간다.
+     올리는 중인 사진 자리는 기억하지 않는다. 최대 100단계. */
+  type Snap = { html: string; caret: { path: number[]; offset: number } | null }
+  const hist = useRef<{ stack: Snap[]; idx: number }>({ stack: [], idx: -1 })
+  const histTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const caretOf = (): Snap['caret'] => {
+    const root = editorRef.current, sel = window.getSelection()
+    if (!root || !sel || !sel.rangeCount || !root.contains(sel.anchorNode)) return null
+    const path: number[] = []
+    let n: Node | null = sel.anchorNode
+    while (n && n !== root) { const par: Node | null = n.parentNode; if (!par) return null; path.unshift(Array.prototype.indexOf.call(par.childNodes, n)); n = par }
+    return { path, offset: sel.anchorOffset }
+  }
+  const histRecord = () => {
+    if (histTimer.current) { clearTimeout(histTimer.current); histTimer.current = null }
+    if (uploadingRef.current > 0) return
+    const html = editorHtmlForDraft()
+    if (html === null) return
+    const h = hist.current
+    if (h.idx >= 0 && h.stack[h.idx].html === html) { h.stack[h.idx].caret = caretOf(); return }
+    h.stack = h.stack.slice(0, h.idx + 1)
+    h.stack.push({ html, caret: caretOf() })
+    if (h.stack.length > 100) h.stack.shift()
+    h.idx = h.stack.length - 1
+  }
+  const histFlush = () => { if (histTimer.current) histRecord() }
+  const histApply = (snap: Snap) => {
+    const root = editorRef.current
+    if (!root) return
+    root.innerHTML = snap.html
+    root.querySelectorAll('[data-link-card][data-loading]').forEach(n => n.remove())
+    for (const l of linkBlocksIn(root, true)) linkSeen.current.set(l.node, l.url)   // 되돌린 상태 그대로 — 카드를 새로 붙이지 않는다
+    setSelImg(null)
+    root.focus()
+    try {
+      if (snap.caret) {
+        let n: Node = root
+        for (const i of snap.caret.path) n = n.childNodes[i]
+        const r = document.createRange()
+        r.setStart(n, Math.min(snap.caret.offset, n.nodeType === 3 ? (n.textContent || '').length : n.childNodes.length))
+        r.collapse(true)
+        const sel = window.getSelection(); sel?.removeAllRanges(); sel?.addRange(r)
+      }
+    } catch { /* 커서 자리를 못 찾으면 그냥 둔다 */ }
+  }
+  const undo = () => { histFlush(); const h = hist.current; if (h.idx <= 0) return; h.idx--; histApply(h.stack[h.idx]) }
+  const redo = () => { histFlush(); const h = hist.current; if (h.idx >= h.stack.length - 1) return; h.idx++; histApply(h.stack[h.idx]) }
+  useEffect(() => {
+    const el = editorRef.current
+    if (!el) return
+    const first = setTimeout(histRecord, 600)   // 처음 상태(템플릿·불러온 글)
+    const mo = new MutationObserver(() => { if (histTimer.current) clearTimeout(histTimer.current); histTimer.current = setTimeout(histRecord, 350) })
+    mo.observe(el, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['style', 'data-cover', 'src'] })
+    const onBeforeInput = (e: InputEvent) => {   // 메뉴의 '실행 취소'·모바일 흔들기 등
+      if (e.inputType === 'historyUndo') { e.preventDefault(); undo() }
+      else if (e.inputType === 'historyRedo') { e.preventDefault(); redo() }
+    }
+    el.addEventListener('beforeinput', onBeforeInput)
+    return () => { clearTimeout(first); mo.disconnect(); el.removeEventListener('beforeinput', onBeforeInput) }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const onEditorKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    // #작품 · @닉네임 고르기 목록이 열려 있으면 방향키·엔터는 목록이 먼저
+    if (ac && ac.items.length && !e.nativeEvent.isComposing) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); setAc({ ...ac, idx: (ac.idx + 1) % ac.items.length }); return }
+      if (e.key === 'ArrowUp') { e.preventDefault(); setAc({ ...ac, idx: (ac.idx - 1 + ac.items.length) % ac.items.length }); return }
+      if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); chooseAc(ac.items[ac.idx]); return }
+    }
+    if (ac && e.key === 'Escape') { e.preventDefault(); setAc(null); return }
+    const mod = e.ctrlKey || e.metaKey
+    if (mod && !e.altKey && (e.key === 'z' || e.key === 'Z')) { e.preventDefault(); if (e.shiftKey) redo(); else undo(); return }
+    if (mod && !e.altKey && (e.key === 'y' || e.key === 'Y')) { e.preventDefault(); redo(); return }
+    // 사진 설명 줄에서 엔터 → 설명 밖 새 줄로
+    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+      const sel0 = window.getSelection()
+      const an = sel0?.anchorNode
+      const cap = an ? (an.nodeType === 1 ? (an as Element) : an.parentElement)?.closest('p[data-caption]') : null
+      if (cap && editorRef.current?.contains(cap)) {
+        e.preventDefault()
+        const np = document.createElement('p'); np.innerHTML = '<br>'
+        cap.after(np)
+        const r = document.createRange(); r.setStart(np, 0); r.collapse(true)
+        sel0?.removeAllRanges(); sel0?.addRange(r)
+        return
+      }
+    }
     if (e.key === 'Enter' && !e.shiftKey) recardOnEnter()
     if (e.key !== 'Enter' || e.shiftKey || e.nativeEvent.isComposing) return
     const sel = window.getSelection()
@@ -676,6 +880,7 @@ export default function PostWritePage() {
   const insertBlockAtCaret = (html: string) => {
     const root = editorRef.current
     if (!root) return
+    histFlush()
     const tpl = document.createElement('template')
     tpl.innerHTML = html
     const blocks = Array.from(tpl.content.childNodes)
@@ -952,6 +1157,7 @@ export default function PostWritePage() {
       if (editorRef.current) editorRef.current.innerHTML = d.html ?? ''
       rememberCards()
       setShowDraftBanner(false)
+      setTimeout(() => { hist.current = { stack: [], idx: -1 }; histRecord() }, 0)   // 불러온 글이 되돌리기의 시작점
     } catch { /* noop */ }
   }
   const clearDraft = () => { try { localStorage.removeItem(draftKey) } catch { /* noop */ }; setHasDraft(false); setShowDraftBanner(false) }
@@ -1005,6 +1211,16 @@ export default function PostWritePage() {
 
   /* ── 나가기 경고 ── 쓰던(고친) 내용이 있는데 다른 메뉴·뒤로·창 닫기를 누르면 한 번 묻는다 */
   const [leaveTo, setLeaveTo] = useState<string | null>(null)   // 'back' 또는 이동할 주소
+  /* ── 올리기 전 미리보기 ── 등록할 때와 같은 본문(카드 ✕·올리는 중 자리 뺀)을 글 화면과 같은 모양으로 */
+  const [preview, setPreview] = useState<string | null>(null)
+  const openPreview = () => {
+    const el = editorRef.current
+    if (!el) return
+    const c = cleanLinkCards(el)
+    c.querySelectorAll('p[data-uploading]').forEach(n => n.remove())
+    c.querySelectorAll('p[data-caption]').forEach(n => { if (!(n.textContent || '').trim()) n.remove() })
+    setPreview(c.innerHTML)
+  }
   const leavingRef = useRef(false)
   const isDirtyRef = useRef(isDirty)
   isDirtyRef.current = isDirty
@@ -1050,13 +1266,17 @@ export default function PostWritePage() {
     setSaving(false)
     if (!inlineOk) { setErr('붙여넣은 사진 중 일부를 올리지 못해서 뺐어요. 확인하고 다시 등록해주세요.'); return }
     const cleaned = editorRef.current ? cleanLinkCards(editorRef.current) : null
+    cleaned?.querySelectorAll('p[data-caption]').forEach(n => { if (!(n.textContent || '').trim()) n.remove() })   // 비운 사진 설명 줄
     let html = stripGoodsMeta(cleaned?.innerHTML ?? '')
     const plain = (editorRef.current?.innerText ?? '').trim()
     // 사진 목록(썸네일)엔 링크 카드 이미지를 넣지 않는다
     const noCards = cleaned ? (cleaned.cloneNode(true) as HTMLElement) : null
     noCards?.querySelectorAll('[data-link-card]').forEach(n => n.remove())
     const imgs = collectImages(stripGoodsMeta(noCards?.innerHTML ?? ''))
-    const linkUrl = cleaned?.querySelector('[data-link-card][data-url]')?.getAttribute('data-url') ?? null
+    // 대표 사진을 고른 게 있으면 목록 썸네일(첫 사진)로
+    const coverSrc = noCards?.querySelector('img[data-cover]')?.getAttribute('src')
+    if (coverSrc && imgs.includes(coverSrc)) { imgs.splice(imgs.indexOf(coverSrc), 1); imgs.unshift(coverSrc) }
+    const linkUrl = cleaned?.querySelector('[data-link-card][data-url]:not([data-yt])')?.getAttribute('data-url') ?? null
     if (isGoods) { const meta = buildGoodsMetaHtml(); if (meta) html = html + meta }
     const notice = isAdmin && isNotice
     if (!notice) {
@@ -1217,6 +1437,10 @@ export default function PostWritePage() {
         .taku-editor a[href]:not([contenteditable="false"]):not([data-lp]),.taku-editor a[href]:not([contenteditable="false"]):not([data-lp]) *{color:var(--accent) !important;text-decoration:underline !important;text-underline-offset:3px}
         .taku-editor [data-link-card]{cursor:default;user-select:none}
         .taku-editor [data-link-card]{max-width:300px !important;width:100%}   /* 예전에 만든 큰 카드도 이 너비로 */
+        .taku-editor [data-link-card][data-yt]{max-width:560px !important}   /* 유튜브 영상 블록은 크게 */
+        .taku-editor img[data-cover]{outline:3px solid var(--accent);outline-offset:2px}   /* 대표 사진 */
+        .taku-editor p[data-caption]:has(> br:only-child)::before{content:'사진 설명을 입력하세요';color:#bbb;pointer-events:none}
+        .taku-editor a[data-work],.taku-editor a[data-mention]{color:var(--accent) !important;font-weight:700;text-decoration:none !important;cursor:default}
         .taku-editor img{max-width:100%;height:auto;cursor:grab;-webkit-user-drag:none;-webkit-touch-callout:none}
         .taku-editor blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}
         .taku-write-grid{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:24px}
@@ -1255,6 +1479,9 @@ export default function PostWritePage() {
           {isDesktop && <span style={{ fontSize: 19, fontWeight: 900 }}>{editId ? '글 수정' : (existingGoodsId ? '굿즈 자랑 글쓰기' : '글쓰기')}</span>}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <button onClick={openPreview} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>
+            미리보기
+          </button>
           <button onClick={saveDraft} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '9px 16px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>
             임시저장 <span style={{ color: 'var(--muted)', fontWeight: 800 }}>{hasDraft ? 1 : 0}</span>
           </button>
@@ -1467,7 +1694,7 @@ export default function PostWritePage() {
                 <style>{'@keyframes pwSpin{to{transform:rotate(360deg)}}'}</style>
               </div>
             )}
-            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown} onInput={syncEditorText} onPaste={onEditorPaste} onClick={onEditorClick} onPointerDown={onEditorPointerDown}
+            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown} onInput={syncEditorText} onPaste={onEditorPaste} onBlur={() => setTimeout(() => setAc(null), 120)} onClick={onEditorClick} onPointerDown={onEditorPointerDown}
               onDragStart={e => { if ((e.target as HTMLElement).tagName === 'IMG') e.preventDefault() }}
               onContextMenu={e => { if (dragRef.current && (e.target as HTMLElement).tagName === 'IMG') e.preventDefault() }}
               style={{ minHeight: 340, maxHeight: isGoods && isDesktop ? 'none' : '55vh', flex: isGoods && isDesktop ? 1 : undefined, overflowY: 'auto', fontSize: 16, lineHeight: 1.7, color: 'var(--text)', padding: '12px 14px', border: '1px solid var(--border)', borderRadius: 12, ...(fileDragOver ? { outline: '2px dashed #e8006f', outlineOffset: 2, background: 'rgba(232,0,111,0.04)' } : null) }} />
@@ -1525,6 +1752,16 @@ export default function PostWritePage() {
                     </button>
                   ))}
                   <span style={{ alignSelf: 'center', fontSize: 11.5, color: 'var(--muted)', padding: '0 4px 0 2px', minWidth: 34, textAlign: 'right' }}>{Math.round(curPct)}%</span>
+                  <span style={{ width: 1, alignSelf: 'stretch', background: 'var(--border)', margin: '2px 2px' }} />
+                  <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => toggleCover(selImg)} title="목록에 보이는 대표 사진으로"
+                    style={{ border: 'none', borderRadius: 7, padding: '6px 10px', fontSize: 12.5, fontWeight: 800, fontFamily: 'inherit', cursor: 'pointer', whiteSpace: 'nowrap',
+                      background: selImg.hasAttribute('data-cover') ? 'var(--accent)' : 'var(--surface2)', color: selImg.hasAttribute('data-cover') ? '#fff' : 'var(--text)' }}>
+                    {selImg.hasAttribute('data-cover') ? '대표 ✓' : '대표 사진'}
+                  </button>
+                  <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => addCaption(selImg)} title="사진 아래에 설명 달기"
+                    style={{ border: 'none', borderRadius: 7, padding: '6px 10px', fontSize: 12.5, fontWeight: 800, fontFamily: 'inherit', cursor: 'pointer', whiteSpace: 'nowrap', background: 'var(--surface2)', color: 'var(--text)' }}>
+                    설명
+                  </button>
                   <span style={{ alignSelf: 'center', fontSize: 11, color: 'var(--muted)', paddingRight: 6, whiteSpace: 'nowrap' }}>· 끌어서 다른 사진 옆에 놓으면 나란히</span>
                 </div>
                 {([[-1, -1], [1, -1], [-1, 1], [1, 1]] as const).map(([sx, sy]) => (
@@ -1534,6 +1771,28 @@ export default function PostWritePage() {
                       cursor: sx === sy ? 'nwse-resize' : 'nesw-resize', zIndex: 61, touchAction: 'none' }} />
                 ))}
               </>
+            )}
+
+            {ac && (
+              <div data-ac="1" onMouseDown={e => e.preventDefault()} style={{ position: 'fixed', left: Math.max(8, Math.min(ac.rect.left, (typeof window !== 'undefined' ? window.innerWidth : 1000) - 268)), top: ac.rect.bottom + 6, zIndex: 70, width: 260, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 10px 28px rgba(0,0,0,.16)', padding: 4 }}>
+                <div style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--muted)', padding: '6px 10px 4px' }}>{ac.kind === '#' ? '작품 연결' : '회원 부르기 · 올리면 알림이 가요'}</div>
+                {ac.items.length === 0 ? (
+                  <div style={{ fontSize: 13, color: 'var(--muted)', padding: '8px 10px 10px' }}>
+                    {ac.kind === '@' ? (!ac.q ? '닉네임을 입력하세요' : ac.loading ? '찾는 중…' : '찾는 회원이 없어요') : (!ac.q ? '작품 이름을 입력하세요' : '찾는 작품이 없어요')}
+                  </div>
+                ) : ac.items.map((it, i) => (
+                  <button key={it.kind + it.id} type="button" onMouseEnter={() => setAc(a => (a ? { ...a, idx: i } : a))} onClick={() => chooseAc(it)}
+                    style={{ display: 'flex', alignItems: 'center', gap: 9, width: '100%', textAlign: 'left', border: 'none', borderRadius: 8, padding: '8px 10px', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, color: 'var(--text)', background: i === ac.idx ? 'var(--accent-l)' : 'transparent' }}>
+                    {it.kind === '@'
+                      ? (it.avatar
+                        // eslint-disable-next-line @next/next/no-img-element
+                        ? <img src={it.avatar} alt="" width={24} height={24} style={{ width: 24, height: 24, borderRadius: '50%', objectFit: 'cover', flex: 'none' }} />
+                        : <span style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--surface2)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 800, color: 'var(--muted)', flex: 'none' }}>{it.name.slice(0, 1)}</span>)
+                      : <span style={{ color: 'var(--accent)', fontWeight: 900, width: 24, textAlign: 'center', flex: 'none' }}>#</span>}
+                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 700 }}>{it.name}</span>
+                  </button>
+                ))}
+              </div>
             )}
 
             {pollData && (
@@ -1605,6 +1864,26 @@ export default function PostWritePage() {
       </div>
       {pollOpen && <PollModal onClose={() => setPollOpen(false)} onConfirm={data => { setPollData(data); setPollOpen(false) }} />}
       {tableOpen && <TableModal onClose={() => setTableOpen(false)} onConfirm={html => { appendBlock(html); setTableOpen(false) }} />}
+      {preview !== null && (
+        <div onClick={() => setPreview(null)} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,.5)', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', overflowY: 'auto', padding: isDesktop ? '40px 16px' : 0 }}>
+          <div role="dialog" aria-modal="true" aria-label="미리보기" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 1120, minHeight: isDesktop ? undefined : '100%', background: 'var(--bg)', borderRadius: isDesktop ? 16 : 0, boxShadow: '0 12px 40px rgba(0,0,0,.25)', overflow: 'hidden' }}>
+            <div style={{ position: 'sticky', top: 0, zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: '12px 18px', background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
+              <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent)' }}>미리보기 · 아직 올라가지 않았어요</span>
+              <button onClick={() => setPreview(null)} style={{ border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 13.5, padding: '8px 16px', borderRadius: 9, cursor: 'pointer', fontFamily: 'inherit' }}>계속 쓰기</button>
+            </div>
+            <div style={{ padding: isDesktop ? '28px 32px 48px' : '20px 16px 40px' }}>
+              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: isDesktop ? '28px 32px' : '20px 16px' }}>
+                <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--accent)', marginBottom: 6 }}>{meta.label}{flair ? ` · ${flair}` : ''}</div>
+                <h1 style={{ fontSize: isDesktop ? 26 : 21, fontWeight: 900, lineHeight: 1.35, margin: '0 0 12px', color: 'var(--text)', wordBreak: 'break-word' }}>{title.trim() || '(제목 없음)'}</h1>
+                <div style={{ fontSize: 13, color: 'var(--muted)', paddingBottom: 16, marginBottom: 20, borderBottom: '1px solid var(--border)' }}>
+                  {profile?.nickname ?? '나'} · 방금 전{selectedTags.length ? ` · ${selectedTags.map(t => t.name).join(', ')}` : ''}{spoiler ? ' · 스포일러' : ''}
+                </div>
+                <PostBodyPreview html={preview} isPage />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {leaveTo && (
         <div onClick={() => setLeaveTo(null)} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
           <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 380, background: 'var(--surface)', borderRadius: 16, padding: '22px 20px 16px', boxShadow: '0 12px 40px rgba(0,0,0,.2)' }}>

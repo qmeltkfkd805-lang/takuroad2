@@ -26,6 +26,7 @@ import { createPortal } from 'react-dom'
 import { findLinkBlock } from '@/lib/utils/linkUrl'
 import { linkCardHtml, LINK_CARD_HOLDER_STYLE, LINK_CARD_VERSION, type LinkPreview } from '@/lib/utils/linkCardHtml'
 import { getPostEvent, PostEventSummary } from '@/services/postEventService'
+import { hydrateYoutube } from '@/lib/utils/youtube'
 
 // ── 대표 팬아트 배지 ──
 export function FeaturedTag({ kind, inline }: { kind: 'current' | 'past'; inline?: boolean }) {
@@ -203,6 +204,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
         .then((pv: LinkPreview | null) => { if (alive && pv?.ok && n.isConnected) n.innerHTML = linkCardHtml(u, pv, false) })
         .catch(() => {})
     })
+    hydrateYoutube(body)   // 유튜브 블록 → 실제 재생기
     return () => { alive = false }
   }, [post.id, post.content])
   const curPlace = place && place.key === placeKey ? place : undefined
@@ -613,7 +615,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
     <div onClick={isPage ? undefined : onClose} style={isPage ? { width: '100%' } : { position: 'fixed', inset: 0, background: 'rgba(0,0,0,.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000, padding: 16 }}>
       <div onClick={isPage ? undefined : (e => e.stopPropagation())} style={isPage ? { width: '100%' } : { background: 'var(--surface)', borderRadius: 18, maxWidth: 560, width: '100%', maxHeight: '92vh', overflow: 'auto' }}>
         {/* 상단 "‹ 커뮤니티" 줄은 없앴다 — 제목 헤더의 게시판 이름이 그 역할을 한다 */}
-        <style>{`.taku-post-body img{max-width:100%;border-radius:10px}.taku-post-body video{max-width:100%;border-radius:10px}.taku-post-body blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}.taku-post-body a{color:var(--accent)}.taku-post-body a[href]:not([data-lp]),.taku-post-body a[href]:not([data-lp]) *{color:var(--accent) !important;text-decoration:underline !important;text-underline-offset:3px}.taku-post-body [data-link-card] img{border-radius:0 !important;cursor:pointer !important;max-width:none}.taku-post-body [data-lp-remove]{display:none !important}.taku-post-body [data-link-card]{max-width:300px !important;width:100%}`}</style>
+        <style>{`.taku-post-body img{max-width:100%;border-radius:10px}.taku-post-body video{max-width:100%;border-radius:10px}.taku-post-body blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}.taku-post-body a{color:var(--accent)}.taku-post-body a[href]:not([data-lp]),.taku-post-body a[href]:not([data-lp]) *{color:var(--accent) !important;text-decoration:underline !important;text-underline-offset:3px}.taku-post-body [data-link-card] img{border-radius:0 !important;cursor:pointer !important;max-width:none}.taku-post-body [data-lp-remove]{display:none !important}.taku-post-body [data-link-card]{max-width:300px !important;width:100%}${POST_BODY_EXTRA_CSS}`}</style>
         {isGoodsBoard && goodsLoading
           ? <LogoLoader size="sm" />
           : isGoods ? goodsBody : genericBody}
@@ -927,6 +929,21 @@ const flairBadge: React.CSSProperties = {
 const menuItem: React.CSSProperties = {
   display: 'block', width: '100%', textAlign: 'left', border: 'none', background: 'none',
   padding: '11px 14px', fontSize: 14, color: 'var(--text)', cursor: 'pointer', fontFamily: 'inherit',
+}
+
+/* 유튜브 영상 블록은 크게, #작품·@멘션은 밑줄 없는 분홍 글씨 */
+const POST_BODY_EXTRA_CSS = '.taku-post-body [data-link-card][data-yt]{max-width:560px !important}.taku-post-body a[href][data-work]:not([data-lp]),.taku-post-body a[href][data-mention]:not([data-lp]),.taku-post-body a[href][data-work]:not([data-lp]) *,.taku-post-body a[href][data-mention]:not([data-lp]) *{text-decoration:none !important;font-weight:700}.taku-post-body a[href][data-work]:not([data-lp]):hover,.taku-post-body a[href][data-mention]:not([data-lp]):hover{text-decoration:underline !important}'
+
+/** 올리기 전 미리보기 — 글 화면 본문과 똑같은 걸러내기·모양·영상 처리 */
+export function PostBodyPreview({ html, isPage = true }: { html: string; isPage?: boolean }) {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => { hydrateYoutube(ref.current) }, [html])
+  return (
+    <>
+      <div ref={ref} className="taku-post-body" style={{ fontSize: isPage ? 16 : 14.5, lineHeight: isPage ? 1.8 : 1.65, margin: 0, wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(html) }} />
+      <style>{`.taku-post-body img{max-width:100%;border-radius:10px}.taku-post-body video{max-width:100%;border-radius:10px}.taku-post-body blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}.taku-post-body a{color:var(--accent)}.taku-post-body a[href]:not([data-lp]),.taku-post-body a[href]:not([data-lp]) *{color:var(--accent) !important;text-decoration:underline !important;text-underline-offset:3px}.taku-post-body [data-link-card] img{border-radius:0 !important;cursor:pointer !important;max-width:none}.taku-post-body [data-lp-remove]{display:none !important}.taku-post-body [data-link-card]{max-width:300px !important;width:100%}${POST_BODY_EXTRA_CSS}`}</style>
+    </>
+  )
 }
 
 function sanitizeHtml(html: string): string {
