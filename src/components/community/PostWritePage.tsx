@@ -263,6 +263,33 @@ export default function PostWritePage() {
   const imgRect = selImg?.isConnected ? selImg.getBoundingClientRect() : null
   const curPct = selImg ? parseFloat(selImg.style.width || '100') : 100
 
+  /* ── 링크 걸린 글자 선택 시 말풍선 (2026-10-15) ──
+     본문에서 링크가 걸린 부분을 드래그하면 그 위에 분홍 링크 아이콘 + 연결된 주소가 뜬다.
+     분홍 아이콘을 누르면 '선택한 부분만' 링크가 풀린다(나머지 글자는 링크 그대로). */
+  const [linkBubble, setLinkBubble] = useState<{ rect: DOMRect; hrefs: string[] } | null>(null)
+  useEffect(() => {
+    const onSel = () => {
+      const root = editorRef.current
+      const sel = window.getSelection()
+      if (!root || !sel || !sel.rangeCount || sel.isCollapsed || !root.contains(sel.anchorNode)) { setLinkBubble(null); return }
+      const range = sel.getRangeAt(0)
+      const anchors = Array.from(root.querySelectorAll<HTMLAnchorElement>('a[href]'))
+        .filter(a => !a.closest('[data-link-card]') && !a.closest('[contenteditable="false"]') && range.intersectsNode(a))
+      if (!anchors.length) { setLinkBubble(null); return }
+      const hrefs = Array.from(new Set(anchors.map(a => a.getAttribute('href') || '').filter(Boolean)))
+      setLinkBubble({ rect: range.getBoundingClientRect(), hrefs })
+    }
+    document.addEventListener('selectionchange', onSel)
+    const hide = () => setLinkBubble(b => (b ? null : b))
+    window.addEventListener('scroll', hide, true)
+    return () => { document.removeEventListener('selectionchange', onSel); window.removeEventListener('scroll', hide, true) }
+  }, [])
+  const unlinkSelection = () => {
+    document.execCommand('unlink')
+    setLinkBubble(null)
+    syncEditorText()
+  }
+
   const onEditorClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (justDragged.current) return
     const t = e.target as HTMLElement
@@ -1089,6 +1116,32 @@ export default function PostWritePage() {
               style={{ minHeight: 340, maxHeight: isGoods && isDesktop ? 'none' : '55vh', flex: isGoods && isDesktop ? 1 : undefined, overflowY: 'auto', fontSize: 16, lineHeight: 1.7, color: 'var(--text)', padding: '12px 14px', border: '1px solid var(--border)', borderRadius: 12 }} />
 
             {/* 사진 크기 조절 — 고른 사진 위에 띄운다(화면 기준 위치) */}
+            {linkBubble && (() => {
+              const W = 300
+              const r = linkBubble.rect
+              const left = Math.max(8, Math.min(window.innerWidth - W - 8, r.left + r.width / 2 - W / 2))
+              const top = r.top > 64 ? r.top - 52 : r.bottom + 10
+              const first = linkBubble.hrefs[0]
+              return (
+                <div data-img-tools="1" role="dialog" aria-label="연결된 링크"
+                  style={{ position: 'fixed', left, top, width: W, zIndex: 72, display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px 6px 6px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 8px 24px rgba(0,0,0,.16)' }}>
+                  <button type="button" title="이 부분 링크 해제" aria-label="이 부분 링크 해제"
+                    onMouseDown={e => e.preventDefault()} onClick={unlinkSelection}
+                    style={{ flexShrink: 0, width: 32, height: 32, borderRadius: 9999, border: 'none', background: 'var(--accent)', color: '#fff', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5" /><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5" /></svg>
+                  </button>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)' }}>링크 연결됨 · 아이콘을 누르면 해제</div>
+                    <a href={first} target="_blank" rel="noopener noreferrer" onMouseDown={e => e.preventDefault()}
+                      style={{ display: 'block', fontSize: 12.5, color: 'var(--text)', textDecoration: 'underline', textUnderlineOffset: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {first}
+                    </a>
+                    {linkBubble.hrefs.length > 1 && <div style={{ fontSize: 11, color: 'var(--muted)' }}>외 {linkBubble.hrefs.length - 1}개 링크</div>}
+                  </div>
+                </div>
+              )
+            })()}
+
             {dragGhost && (
               <img src={dragGhost.src} alt="" aria-hidden="true"
                 style={{ position: 'fixed', left: dragGhost.x - 40, top: dragGhost.y - 40, width: 80, height: 80, objectFit: 'cover', borderRadius: 10, opacity: .8, boxShadow: '0 8px 24px rgba(0,0,0,.25)', pointerEvents: 'none', zIndex: 70 }} />
