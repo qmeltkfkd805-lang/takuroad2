@@ -38,3 +38,33 @@ export async function searchEventsForEmbed(q: string): Promise<EmbedEvent[]> {
     start: r.start_date ?? null, end: r.end_date ?? null, place: r.place_name ?? r.shops?.name ?? null,
   }))
 }
+
+/** 내가 저장한 샵 (최근 저장 순) */
+export async function getSavedShopsForEmbed(userId: string): Promise<EmbedShop[]> {
+  const { data, error } = await createClient()
+    .from('saved_shops')
+    .select('created_at, shops ( id, slug, name, addr, status, shop_images ( image_url, is_cover, sort_order ) )')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+    .limit(30)
+  if (error) { console.error('[저장한 샵]', error.message); return [] }
+  return ((data ?? []) as any[]).map(d => d.shops).filter((r: any) => r && r.status !== 'deleted' && r.status !== 'hidden').map((r: any) => {
+    const imgs = [...(r.shop_images ?? [])].sort((a: any, b: any) => (Number(b.is_cover) - Number(a.is_cover)) || ((a.sort_order ?? 0) - (b.sort_order ?? 0)))
+    return { id: String(r.id), slug: r.slug, name: r.name, addr: r.addr ?? null, image: imgs[0]?.image_url ?? null }
+  })
+}
+
+/** 내가 저장한 이벤트 (최근 저장 순) */
+export async function getSavedEventsForEmbed(userId: string): Promise<EmbedEvent[]> {
+  const { data, error } = await createClient()
+    .from('saved_events')
+    .select('created_at, events ( id, title, cover_url, start_date, end_date, place_name, deleted_at, shops ( name ) )')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+    .limit(30)
+  if (error) { console.error('[저장한 이벤트]', error.message); return [] }
+  return ((data ?? []) as any[]).map(d => d.events).filter((r: any) => r && !r.deleted_at).map((r: any) => ({
+    id: String(r.id), title: r.title ?? '', cover: r.cover_url ?? null,
+    start: r.start_date ?? null, end: r.end_date ?? null, place: r.place_name ?? r.shops?.name ?? null,
+  }))
+}
