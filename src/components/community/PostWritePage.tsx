@@ -8,6 +8,7 @@ import { ROUTES } from '@/lib/constants/routes'
 import { getAllTagsForSelect, getMyRoutes } from '@/services/routeService'
 import { createPost, updatePost, getPost, uploadPostImage } from '@/services/communityPostService'
 import { linkBlocksIn, lineOf } from '@/lib/utils/linkUrl'
+import { dropBeside, dropAsLine, rowOf, PHOTO_ROW_MAX } from '@/lib/utils/photoRow'
 import { linkCardHtml, linkCardLoadingHtml, cleanLinkCards, LINK_CARD_HOLDER_STYLE, LINK_CARD_VERSION, REMOVE_BTN, type LinkPreview } from '@/lib/utils/linkCardHtml'
 import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import { createPoll } from '@/services/pollService'
@@ -112,10 +113,105 @@ export default function PostWritePage() {
      크기는 사진 style 의 width(본문 너비 대비 %)로 저장 → 글 화면·모바일에서도 같은 비율로 보인다. */
   const [selImg, setSelImg] = useState<HTMLImageElement | null>(null)
   const [, setImgTick] = useState(0)
-  const resizableImg = (t: HTMLElement | null): HTMLImageElement | null => {
-    if (!t || t.tagName !== 'IMG') return null
-    if (t.closest('[data-link-card]') || t.closest('[contenteditable="false"]')) return null   // 링크 카드·루트 카드 등은 제외
+  // 본문에 첨부한 사진만(링크 카드·루트 카드 등 제외)
+  const movableImg = (t: HTMLElement | null): HTMLImageElement | null => {
+    if (!t || t.tagName !== 'IMG' || !editorRef.current?.contains(t)) return null
+    if (t.closest('[data-link-card]') || t.closest('[contenteditable="false"]')) return null
     return t as HTMLImageElement
+  }
+  // 크기 조절은 한 장짜리 사진만 — 나란히 놓인 사진은 비율대로 자동으로 나눠 가진다
+  const resizableImg = (t: HTMLElement | null): HTMLImageElement | null => {
+    const img = movableImg(t)
+    return img && !rowOf(img) ? img : null
+  }
+
+  /* ── 사진 끌어서 옮기기 · 나란히 놓기 ──
+     마우스: 사진을 누른 채 끌기 / 터치: 사진을 꾹(0.35초) 누른 뒤 끌기.
+     다른 사진의 왼쪽·오른쪽에 놓으면 나란히(한 줄 최대 3장), 글 줄 사이에 놓으면 그 자리로. */
+  const dragRef = useRef<{ img: HTMLImageElement; x: number; y: number; active: boolean; timer?: ReturnType<typeof setTimeout>; touch: boolean } | null>(null)
+  const justDragged = useRef(false)
+  const [dragGhost, setDragGhost] = useState<{ x: number; y: number; src: string } | null>(null)
+  const [dropHint, setDropHint] = useState<{ kind: 'side'; target: HTMLImageElement; side: 'left' | 'right'; rect: DOMRect } | { kind: 'line'; block: HTMLElement | null; before: boolean; rect: DOMRect } | { kind: 'full'; rect: DOMRect } | null>(null)
+  const dropHintRef = useRef<typeof dropHint>(null)
+  const findDrop = (x: number, y: number, img: HTMLImageElement): typeof dropHint => {
+    const root = editorRef.current
+    if (!root) return null
+    const el = document.elementFromPoint(x, y) as HTMLElement | null
+    if (!el || !root.contains(el)) return null
+    const t = movableImg(el)
+    if (t && t !== img) {
+      const r = t.getBoundingClientRect()
+      const side = x < r.left + r.width / 2 ? 'left' : 'right'
+      const row = rowOf(t)
+      if (row && row !== rowOf(img) && row.querySelectorAll('img').length >= PHOTO_ROW_MAX) return { kind: 'full', rect: row.getBoundingClientRect() }
+      return { kind: 'side', target: t, side, rect: r }
+    }
+    // 글 줄 사이 — 편집기 바로 아래 단계 줄 중 손가락/마우스 높이에 있는 줄의 위/아래
+    const blocks = Array.from(root.children) as HTMLElement[]
+    for (const b of blocks) {
+      const r = b.getBoundingClientRect()
+      if (y < r.bottom) return { kind: 'line', block: b, before: y < r.top + r.height / 2, rect: r }
+    }
+    const last = blocks[blocks.length - 1]
+    return last ? { kind: 'line', block: last, before: false, rect: last.getBoundingClientRect() } : null
+  }
+  useEffect(() => {
+    const stopTouchScroll = (e: TouchEvent) => { if (dragRef.current?.active) e.preventDefault() }
+    const move = (e: PointerEvent) => {
+      const d = dragRef.current
+      if (!d) return
+      if (!d.active) {
+        const far = Math.hypot(e.clientX - d.x, e.clientY - d.y) > (d.touch ? 8 : 6)
+        if (d.touch) { if (far) { clearTimeout(d.timer); dragRef.current = null } return }   // 꾹 누르기 전에 움직이면 그냥 스크롤
+        if (!far) return
+        d.active = true
+        setSelImg(null)
+      }
+      setDragGhost({ x: e.clientX, y: e.clientY, src: d.img.currentSrc || d.img.src })
+      const h = findDrop(e.clientX, e.clientY, d.img)
+      dropHintRef.current = h; setDropHint(h)
+    }
+    const up = () => {
+      const d = dragRef.current
+      dragRef.current = null
+      if (!d) return
+      clearTimeout(d.timer)
+      const h = dropHintRef.current
+      dropHintRef.current = null; setDropHint(null); setDragGhost(null)
+      if (!d.active) return
+      justDragged.current = true
+      setTimeout(() => { justDragged.current = false }, 50)
+      const root = editorRef.current
+      if (!root || !h) return
+      if (h.kind === 'side') dropBeside(d.img, h.target, h.side, root)
+      else if (h.kind === 'line') dropAsLine(d.img, h.block, h.before, root)
+      syncEditorText()
+    }
+    window.addEventListener('pointermove', move)
+    window.addEventListener('pointerup', up)
+    window.addEventListener('pointercancel', up)
+    window.addEventListener('touchmove', stopTouchScroll, { passive: false })
+    return () => {
+      window.removeEventListener('pointermove', move)
+      window.removeEventListener('pointerup', up)
+      window.removeEventListener('pointercancel', up)
+      window.removeEventListener('touchmove', stopTouchScroll)
+    }
+  }, [])   // eslint-disable-line react-hooks/exhaustive-deps
+  const onEditorPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const img = movableImg(e.target as HTMLElement)
+    if (!img || e.button > 0) return
+    const touch = e.pointerType === 'touch'
+    if (!touch) e.preventDefault()   // 마우스: 글자 선택·브라우저 기본 끌기 대신 우리 끌기
+    const d = { img, x: e.clientX, y: e.clientY, active: false, touch } as NonNullable<typeof dragRef.current>
+    if (touch) d.timer = setTimeout(() => {
+      if (dragRef.current !== d) return
+      d.active = true
+      setSelImg(null)
+      setDragGhost({ x: d.x, y: d.y, src: img.currentSrc || img.src })
+      try { navigator.vibrate?.(15) } catch { /* noop */ }
+    }, 350)
+    dragRef.current = d
   }
   const setImgWidth = (img: HTMLImageElement, pct: number) => {
     const v = Math.max(15, Math.min(100, pct))
@@ -168,6 +264,7 @@ export default function PostWritePage() {
   const curPct = selImg ? parseFloat(selImg.style.width || '100') : 100
 
   const onEditorClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (justDragged.current) return
     const t = e.target as HTMLElement
     const rm = t.closest('[data-lp-remove]')
     if (rm) { e.preventDefault(); rm.closest('[data-link-card]')?.remove(); return }
@@ -746,7 +843,7 @@ export default function PostWritePage() {
         .taku-editor a[href]:not([contenteditable="false"]):not([data-lp]),.taku-editor a[href]:not([contenteditable="false"]):not([data-lp]) *{color:var(--accent) !important;text-decoration:underline !important;text-underline-offset:3px}
         .taku-editor [data-link-card]{cursor:default;user-select:none}
         .taku-editor [data-link-card]{max-width:300px !important;width:100%}   /* 예전에 만든 큰 카드도 이 너비로 */
-        .taku-editor img{max-width:100%;height:auto;cursor:pointer}
+        .taku-editor img{max-width:100%;height:auto;cursor:grab;-webkit-user-drag:none;-webkit-touch-callout:none}
         .taku-editor blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}
         .taku-write-grid{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:24px}
         .tb-btn{width:34px;height:34px;border:none;background:none;border-radius:7px;cursor:pointer;color:var(--text);display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
@@ -986,10 +1083,26 @@ export default function PostWritePage() {
             </div>
 
             {/* 본문 */}
-            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown} onInput={syncEditorText} onPaste={onEditorPaste} onClick={onEditorClick}
+            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown} onInput={syncEditorText} onPaste={onEditorPaste} onClick={onEditorClick} onPointerDown={onEditorPointerDown}
+              onDragStart={e => { if ((e.target as HTMLElement).tagName === 'IMG') e.preventDefault() }}
+              onContextMenu={e => { if (dragRef.current && (e.target as HTMLElement).tagName === 'IMG') e.preventDefault() }}
               style={{ minHeight: 340, maxHeight: isGoods && isDesktop ? 'none' : '55vh', flex: isGoods && isDesktop ? 1 : undefined, overflowY: 'auto', fontSize: 16, lineHeight: 1.7, color: 'var(--text)', padding: '12px 14px', border: '1px solid var(--border)', borderRadius: 12 }} />
 
             {/* 사진 크기 조절 — 고른 사진 위에 띄운다(화면 기준 위치) */}
+            {dragGhost && (
+              <img src={dragGhost.src} alt="" aria-hidden="true"
+                style={{ position: 'fixed', left: dragGhost.x - 40, top: dragGhost.y - 40, width: 80, height: 80, objectFit: 'cover', borderRadius: 10, opacity: .8, boxShadow: '0 8px 24px rgba(0,0,0,.25)', pointerEvents: 'none', zIndex: 70 }} />
+            )}
+            {dropHint && dropHint.kind === 'side' && (
+              <div aria-hidden="true" style={{ position: 'fixed', left: (dropHint.side === 'left' ? dropHint.rect.left : dropHint.rect.right) - 2, top: dropHint.rect.top, width: 4, height: dropHint.rect.height, borderRadius: 4, background: 'var(--accent)', pointerEvents: 'none', zIndex: 69 }} />
+            )}
+            {dropHint && dropHint.kind === 'line' && (
+              <div aria-hidden="true" style={{ position: 'fixed', left: dropHint.rect.left, top: (dropHint.before ? dropHint.rect.top : dropHint.rect.bottom) - 2, width: dropHint.rect.width, height: 4, borderRadius: 4, background: 'var(--accent)', pointerEvents: 'none', zIndex: 69 }} />
+            )}
+            {dropHint && dropHint.kind === 'full' && (
+              <div aria-hidden="true" style={{ position: 'fixed', left: dropHint.rect.left, top: dropHint.rect.top - 26, padding: '3px 8px', borderRadius: 6, fontSize: 12, fontWeight: 700, background: 'rgba(0,0,0,.7)', color: '#fff', pointerEvents: 'none', zIndex: 69 }}>한 줄에 {PHOTO_ROW_MAX}장까지 놓을 수 있어요</div>
+            )}
+
             {selImg && imgRect && (
               <>
                 <div aria-hidden="true" style={{ position: 'fixed', left: imgRect.left - 2, top: imgRect.top - 2, width: imgRect.width + 4, height: imgRect.height + 4, border: '2px solid var(--accent)', borderRadius: 8, pointerEvents: 'none', zIndex: 60 }} />
@@ -1002,6 +1115,7 @@ export default function PostWritePage() {
                     </button>
                   ))}
                   <span style={{ alignSelf: 'center', fontSize: 11.5, color: 'var(--muted)', padding: '0 4px 0 2px', minWidth: 34, textAlign: 'right' }}>{Math.round(curPct)}%</span>
+                  <span style={{ alignSelf: 'center', fontSize: 11, color: 'var(--muted)', paddingRight: 6, whiteSpace: 'nowrap' }}>· 끌어서 다른 사진 옆에 놓으면 나란히</span>
                 </div>
                 {([[-1, -1], [1, -1], [-1, 1], [1, 1]] as const).map(([sx, sy]) => (
                   <div key={`${sx}${sy}`} data-img-tools="1" onPointerDown={e => startImgDrag(e, sx, sy)} title="끌어서 크기 조절"
