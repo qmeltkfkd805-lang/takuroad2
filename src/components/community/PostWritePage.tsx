@@ -48,15 +48,15 @@ export default function PostWritePage() {
   const editorRef = useRef<HTMLDivElement>(null)
   const caretRef = useRef<Range | null>(null)   // 편집기 안에서 마지막으로 커서가 있던 자리 (사진·파일 넣을 위치)
   /* 링크 미리보기 카드 — 본문에 링크를 붙이면 그 줄 바로 아래에 카드가 생긴다(편집기 안, 글에 그대로 저장).
-     cardEver: 한 번이라도 카드를 붙였던 주소. ✕나 지우기로 카드를 없앤 주소엔 다시 붙이지 않는다. */
-  const cardEver = useRef<Set<string>>(new Set())
+     같은 주소라도 링크를 넣을 때마다 그 줄 아래에 카드가 붙는다.
+     linkSeen: 이미 한 번 살펴본 링크 자리(글자 덩어리 → 그때의 주소). ✕나 지우기로 카드를 없앤 자리엔 다시 붙이지 않는다. */
+  const linkSeen = useRef<WeakMap<Node, string>>(new WeakMap())
   const linkTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const MAX_LINK_CARDS = 5
   const rememberCards = () => {
     editorRef.current?.querySelectorAll<HTMLElement>('[data-link-card][data-url]').forEach(n => {
       const u = n.getAttribute('data-url')
       if (!u) return
-      cardEver.current.add(u)
       // 예전 모양으로 저장된 카드만 지금 모양으로 다시 그린다
       n.setAttribute('contenteditable', 'false')
       if (n.getAttribute('data-v') === LINK_CARD_VERSION) return
@@ -66,15 +66,32 @@ export default function PostWritePage() {
         .then((pv: LinkPreview | null) => { if (pv?.ok && n.isConnected) n.innerHTML = linkCardHtml(u, pv, true) }).catch(() => {})
     })
   }
+  // 그 줄 바로 아래(연달아 붙은 카드들 중)에 이 주소 카드가 있는지
+  const cardAfter = (line: Node, url: string) => {
+    let n = (line as Element).nextElementSibling ?? (line.nextSibling as Element | null)
+    while (n && n.nodeType === 1 && n.matches('[data-link-card]')) {
+      if (n.getAttribute('data-url') === url) return true
+      n = n.nextElementSibling
+    }
+    return false
+  }
   const attachLinkCards = () => {
     const root = editorRef.current
     if (!root) return
-    const have = new Set(Array.from(root.querySelectorAll('[data-link-card][data-url]')).map(n => n.getAttribute('data-url')))
-    let count = have.size
-    for (const { url, node } of linkBlocksIn(root)) {
+    const cardEls = Array.from(root.querySelectorAll('[data-link-card][data-url]'))
+    const cards = new Map<string, number>()
+    for (const n of cardEls) { const u = n.getAttribute('data-url') || ''; cards.set(u, (cards.get(u) ?? 0) + 1) }
+    let count = cardEls.length
+    const links = linkBlocksIn(root, true)
+    const occ = new Map<string, number>()
+    for (const l of links) occ.set(l.url, (occ.get(l.url) ?? 0) + 1)
+    for (const { url, node, block } of links) {
       if (count >= MAX_LINK_CARDS) break
-      if (have.has(url) || cardEver.current.has(url)) continue
-      have.add(url); cardEver.current.add(url); count++
+      if (linkSeen.current.get(node) === url) continue   // 이미 살펴본 링크(카드를 지웠어도 다시 안 붙임)
+      linkSeen.current.set(node, url)
+      if (cardAfter(block ?? node, url)) continue          // 이 링크 바로 아래에 이미 카드가 있음
+      if ((cards.get(url) ?? 0) >= (occ.get(url) ?? 0)) continue   // 같은 주소 링크 수만큼 카드가 이미 있음
+      cards.set(url, (cards.get(url) ?? 0) + 1); count++
       const holder = document.createElement('div')
       holder.setAttribute('data-link-card', '1')
       holder.setAttribute('data-url', url)
@@ -84,8 +101,10 @@ export default function PostWritePage() {
       holder.setAttribute('data-v', LINK_CARD_VERSION)
       holder.innerHTML = linkCardLoadingHtml(url)
       // 링크가 든 줄 바로 아래에. 줄 구분 없이 바로 들어간 링크면 그 줄을 <p>로 감싸서 그 아래에(글 맨 끝으로 보내지 않는다)
-      const block = lineOf(root, node)
-      if (block) block.insertAdjacentElement('afterend', holder); else root.appendChild(holder)
+      // 같은 줄에 링크가 여럿이면 앞서 붙은 카드들 뒤에 차례로
+      let anchor: Element | null = lineOf(root, node)
+      while (anchor?.nextElementSibling?.matches('[data-link-card]')) anchor = anchor.nextElementSibling
+      if (anchor) anchor.insertAdjacentElement('afterend', holder); else root.appendChild(holder)
       // 카드 뒤에 줄이 없으면 하나 만들어 둔다 — 카드 다음에 이어서 쓸 수 있게
       if (!holder.nextElementSibling) { const p = document.createElement('p'); p.innerHTML = '<br>'; holder.after(p) }
       fetch(`/api/link-preview?url=${encodeURIComponent(url)}`)
@@ -502,11 +521,10 @@ export default function PostWritePage() {
     let line: Node | null = sel.anchorNode
     while (line && line.parentNode && line.parentNode !== root) line = line.parentNode
     if (!line || line === root) return
-    const urls = linkBlocksIn(root).filter(l => line!.contains(l.node)).map(l => l.url)
-    if (!urls.length) return
-    const have = new Set(Array.from(root.querySelectorAll('[data-link-card][data-url]')).map(n => n.getAttribute('data-url')))
+    const here = linkBlocksIn(root, true).filter(l => line!.contains(l.node))
+    if (!here.length) return
     let changed = false
-    for (const u of urls) if (!have.has(u) && cardEver.current.delete(u)) changed = true
+    for (const l of here) if (!cardAfter(line, l.url) && linkSeen.current.delete(l.node)) changed = true
     if (changed) setTimeout(attachLinkCards, 0)   // 엔터로 줄이 나뉜 다음에 — 카드는 링크 줄 바로 아래로 간다
   }
 
@@ -729,7 +747,7 @@ export default function PostWritePage() {
     setTitle(''); setImages([]); setPollData(null); setSpoiler(false); setFlair(null); setTagIds(sp.get('tag') ? [sp.get('tag')!] : [])
     setGoodsChars([]); setGoodsTypeList([]); setGoodsStore(''); setGoodsPrice('')
     if (editorRef.current) { editorRef.current.innerHTML = ''; applyBoardTemplate(board) }
-    cardEver.current = new Set()
+    linkSeen.current = new WeakMap()
   }
 
   // ── 임시저장 ──

@@ -64,7 +64,8 @@ export function findLinkBlock(root: HTMLElement, url: string): HTMLElement | nul
 
 /* 편집기 안의 링크들과 각 링크가 들어 있는 줄(편집기 바로 아래 단계 블록). 순서대로, 주소 중복 없이.
    이미 붙은 카드 안의 링크, 첨부파일(📎·저장소 주소)은 뺀다. */
-export function linkBlocksIn(root: HTMLElement | null): { url: string; block: HTMLElement | null; node: Node }[] {
+// all=true 면 같은 주소가 여러 번 나와도 나온 자리마다 돌려준다(편집기에서 링크마다 카드를 붙일 때)
+export function linkBlocksIn(root: HTMLElement | null, all = false): { url: string; block: HTMLElement | null; node: Node }[] {
   if (!root || typeof document === 'undefined') return []
   const out: { url: string; block: HTMLElement | null; node: Node }[] = []
   const seen = new Set<string>()
@@ -87,7 +88,7 @@ export function linkBlocksIn(root: HTMLElement | null): { url: string; block: HT
       if (n.parentElement?.closest('a')) continue   // 링크 글자는 위에서 href 로 처리
       u = firstUrl(n.textContent)
     }
-    if (!u || /\/storage\/v1\/object\//.test(u) || seen.has(u)) continue
+    if (!u || /\/storage\/v1\/object\//.test(u) || (!all && seen.has(u))) continue
     seen.add(u)
     out.push({ url: u, block: topBlock(n), node: n })
   }
