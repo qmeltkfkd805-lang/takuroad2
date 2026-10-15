@@ -46,6 +46,7 @@ export default function PostWritePage() {
   const editId = sp.get('edit')
   const goodsIdParam = sp.get('goodsId')   // 기존 굿즈로 새 자랑 글 작성 모드
   const editorRef = useRef<HTMLDivElement>(null)
+  const caretRef = useRef<Range | null>(null)   // 편집기 안에서 마지막으로 커서가 있던 자리 (사진·파일 넣을 위치)
   /* 링크 미리보기 카드 — 본문에 링크를 붙이면 그 줄 바로 아래에 카드가 생긴다(편집기 안, 글에 그대로 저장).
      cardEver: 한 번이라도 카드를 붙였던 주소. ✕나 지우기로 카드를 없앤 주소엔 다시 붙이지 않는다. */
   const cardEver = useRef<Set<string>>(new Set())
@@ -468,6 +469,7 @@ export default function PostWritePage() {
     const el = editorRef.current
     const sel = typeof window !== 'undefined' ? window.getSelection() : null
     if (!el || !sel || !sel.anchorNode || !el.contains(sel.anchorNode)) return
+    if (sel.rangeCount) caretRef.current = sel.getRangeAt(0).cloneRange()
     try {
       setActive({
         bold: document.queryCommandState('bold'),
@@ -532,13 +534,104 @@ export default function PostWritePage() {
     refreshActive()
   }
 
+  /* 사진·동영상·파일·표·루트를 '마지막으로 커서가 있던 자리'에 넣는다.
+     - 빈 줄이면 그 줄을 대신하고, 글 중간이면 그 줄을 커서 위치에서 나눠 사이에 넣는다.
+     - 링크 카드·사진 묶음처럼 편집 불가 블록 위라면 그 블록 바로 다음에 넣는다.
+     - 커서를 둔 적이 없으면 맨 아래에 붙인다. */
+  const insertBlockAtCaret = (html: string) => {
+    const root = editorRef.current
+    if (!root) return
+    const tpl = document.createElement('template')
+    tpl.innerHTML = html
+    const blocks = Array.from(tpl.content.childNodes)
+    if (!blocks.length) return
+    const last = blocks[blocks.length - 1]
+    const isEmpty = (n: Node) => n.nodeType === 1
+      ? !(n as HTMLElement).textContent?.trim() && !(n as HTMLElement).querySelector('img,video,iframe,a,table,hr,[data-link-card],[data-photo-row]')
+      : !n.textContent?.trim()
+
+    let r = caretRef.current
+    if (r && (!root.contains(r.startContainer))) r = null
+    let caretAt: Node | null = null   // 넣은 뒤 커서를 둘 줄
+
+    if (!r) {
+      for (const b of blocks) root.appendChild(b)
+      const p = document.createElement('p'); p.appendChild(document.createElement('br'))
+      root.appendChild(p); caretAt = p
+    } else {
+      r = r.cloneRange(); r.collapse(false)
+      // 커서가 있는 '최상위 줄' 찾기
+      let line: Node | null = r.startContainer
+      if (line === root) {
+        line = root.childNodes[r.startOffset - 1] ?? null   // 줄 사이에 커서 → 앞 줄 뒤에 넣기
+        if (!line) {
+          root.insertBefore(tpl.content, root.firstChild); caretAt = last.nextSibling
+          if (!caretAt) { const p = document.createElement('p'); p.appendChild(document.createElement('br')); root.appendChild(p); caretAt = p }
+        }
+      } else {
+        while (line && line.parentNode !== root) line = line.parentNode
+      }
+      if (line && !caretAt) {
+        const locked = line.nodeType === 1 && ((line as HTMLElement).isContentEditable === false || (line as HTMLElement).matches('[data-link-card],[data-photo-row],[contenteditable="false"]'))
+        if (!locked && isEmpty(line)) {
+          // 빈 줄 → 그 자리를 대신 쓰고, 다음 글 쓸 빈 줄을 하나 남긴다
+          const p = document.createElement('p'); p.appendChild(document.createElement('br'))
+          root.insertBefore(tpl.content, line); root.insertBefore(p, line); line.parentNode!.removeChild(line)
+          caretAt = p
+        } else {
+          let tail: Node | null = null
+          // 줄 맨 앞에 커서 → 그 줄 '위'에 넣고 커서는 원래 줄 앞에 그대로
+          const head = document.createRange()
+          head.setStart(line, 0); head.setEnd(r.startContainer, r.startOffset)
+          const headBox = document.createElement('div'); headBox.appendChild(head.cloneContents())
+          if (!locked && line.contains(r.startContainer) && isEmpty(headBox)) {
+            root.insertBefore(tpl.content, line)
+            caretAt = line
+          } else if (!locked && line.contains(r.startContainer)) {
+            const cut = document.createRange()
+            cut.setStart(r.startContainer, r.startOffset)
+            cut.setEnd(line, line.nodeType === 3 ? (line.textContent || '').length : line.childNodes.length)
+            const rest = cut.extractContents()
+            if (line.nodeType === 3) {
+              const t = document.createTextNode(rest.textContent || '')
+              if (t.textContent!.trim()) tail = t
+            } else {
+              const holder = (line as HTMLElement).cloneNode(false) as HTMLElement
+              holder.appendChild(rest)
+              if (!isEmpty(holder)) tail = holder
+              if (isEmpty(line) && !(line as HTMLElement).querySelector('br')) (line as HTMLElement).appendChild(document.createElement('br'))
+            }
+          }
+          if (!caretAt) {
+          const after = line.nextSibling
+          if (tail) root.insertBefore(tail, after)
+          root.insertBefore(tpl.content, tail ?? after)
+          if (tail) caretAt = tail
+          else {
+            const p = document.createElement('p'); p.appendChild(document.createElement('br'))
+            root.insertBefore(p, last.nextSibling); caretAt = p
+          }
+          }
+        }
+      }
+    }
+    // 커서를 넣은 블록 바로 다음 줄 맨 앞으로 — 여러 장을 올리면 차례대로 이어 붙는다
+    if (caretAt) {
+      const nr = document.createRange()
+      nr.setStart(caretAt, 0); nr.collapse(true)
+      caretRef.current = nr.cloneRange()
+      const sel = window.getSelection()
+      if (sel && document.activeElement === root) { sel.removeAllRanges(); sel.addRange(nr) }
+    }
+  }
+
   const onPickImages = async (list: FileList | null) => {
     if (!user || !list) return
     for (const f of Array.from(list)) {
       const url = await uploadPostImage(f, user.id)
       if (url) {
         setImages(prev => [...prev, url])
-        if (editorRef.current) editorRef.current.innerHTML += `<p><img src="${url}" style="max-width:100%;border-radius:10px;" /></p><p><br/></p>`
+        insertBlockAtCaret(`<p><img src="${url}" style="max-width:100%;border-radius:10px;" /></p>`)
       }
     }
   }
@@ -547,18 +640,18 @@ export default function PostWritePage() {
     if (!user || !list) return
     for (const f of Array.from(list)) {
       const url = await uploadPostImage(f, user.id)
-      if (url && editorRef.current) editorRef.current.innerHTML += `<p><video src="${url}" controls playsinline style="max-width:100%;border-radius:10px;"></video></p><p><br/></p>`
+      if (url) insertBlockAtCaret(`<p><video src="${url}" controls playsinline style="max-width:100%;border-radius:10px;"></video></p>`)
     }
   }
   const onPickFile = async (list: FileList | null) => {
     if (!user || !list) return
     for (const f of Array.from(list)) {
       const url = await uploadPostImage(f, user.id)
-      if (url && editorRef.current) editorRef.current.innerHTML += `<p><a href="${url}" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;color:#e8006f;font-weight:700;text-decoration:none;">📎 ${f.name}</a></p><p><br/></p>`
+      if (url) insertBlockAtCaret(`<p><a href="${url}" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;color:#e8006f;font-weight:700;text-decoration:none;">📎 ${escapeHtml(f.name)}</a></p>`)
     }
   }
 
-  const appendBlock = (html: string) => { if (editorRef.current) { editorRef.current.innerHTML += html + '<p><br/></p>'; editorRef.current.focus() } }
+  const appendBlock = (html: string) => { insertBlockAtCaret(html); editorRef.current?.focus() }
   // 내가 만든 루트를 본문에 카드형 링크로 삽입
   const insertRoute = (r: { title: string; share_token: string; cover_image_url: string | null; shopCount: number }) => {
     const routeSvg = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h6a4 4 0 0 0 0-8H10a4 4 0 0 1 0-8h6"/></svg>`
