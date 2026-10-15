@@ -105,11 +105,66 @@ export default function PostWritePage() {
   }
   const onEditorPaste = () => { pastedRef.current = true }
   useEffect(() => { const t = setTimeout(rememberCards, 300); return () => clearTimeout(t) }, [])   // eslint-disable-line react-hooks/exhaustive-deps
+  /* ── 본문 사진 크기 조절 (2026-10-15) ──
+     본문 사진을 누르면 테두리 + 위에 크기 버튼(작게·중간·크게·원래) + 오른쪽 아래 손잡이(끌어서 조절).
+     크기는 사진 style 의 width(본문 너비 대비 %)로 저장 → 글 화면·모바일에서도 같은 비율로 보인다. */
+  const [selImg, setSelImg] = useState<HTMLImageElement | null>(null)
+  const [, setImgTick] = useState(0)
+  const resizableImg = (t: HTMLElement | null): HTMLImageElement | null => {
+    if (!t || t.tagName !== 'IMG') return null
+    if (t.closest('[data-link-card]') || t.closest('[contenteditable="false"]')) return null   // 링크 카드·루트 카드 등은 제외
+    return t as HTMLImageElement
+  }
+  const setImgWidth = (img: HTMLImageElement, pct: number) => {
+    const v = Math.max(15, Math.min(100, pct))
+    img.style.width = `${Math.round(v * 10) / 10}%`
+    img.style.height = 'auto'
+    img.removeAttribute('width'); img.removeAttribute('height')
+    setImgTick(t => t + 1)
+  }
+  useEffect(() => {
+    if (!selImg) return
+    const rerender = () => { if (!selImg.isConnected) setSelImg(null); else setImgTick(t => t + 1) }
+    const outside = (e: PointerEvent) => {
+      const t = e.target as HTMLElement
+      if (t === selImg || t.closest?.('[data-img-tools]')) return
+      setSelImg(null)
+    }
+    window.addEventListener('scroll', rerender, true)
+    window.addEventListener('resize', rerender)
+    document.addEventListener('pointerdown', outside, true)
+    const ed = editorRef.current
+    ed?.addEventListener('input', rerender)
+    return () => {
+      window.removeEventListener('scroll', rerender, true)
+      window.removeEventListener('resize', rerender)
+      document.removeEventListener('pointerdown', outside, true)
+      ed?.removeEventListener('input', rerender)
+    }
+  }, [selImg])
+  const startImgDrag = (e: React.PointerEvent) => {
+    const img = selImg, ed = editorRef.current
+    if (!img || !ed) return
+    e.preventDefault(); e.stopPropagation()
+    const startX = e.clientX
+    const startW = img.getBoundingClientRect().width
+    const cs = getComputedStyle(ed)
+    const boxW = ed.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)
+    const move = (ev: PointerEvent) => { setImgWidth(img, ((startW + ev.clientX - startX) / boxW) * 100) }
+    const up = () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up) }
+    window.addEventListener('pointermove', move)
+    window.addEventListener('pointerup', up)
+  }
+  const imgRect = selImg?.isConnected ? selImg.getBoundingClientRect() : null
+  const curPct = selImg ? parseFloat(selImg.style.width || '100') : 100
+
   const onEditorClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const t = e.target as HTMLElement
     const rm = t.closest('[data-lp-remove]')
     if (rm) { e.preventDefault(); rm.closest('[data-link-card]')?.remove(); return }
-    if (t.closest('[data-link-card]')) e.preventDefault()   // 편집 중엔 카드를 눌러도 이동하지 않게
+    if (t.closest('[data-link-card]')) { e.preventDefault(); return }   // 편집 중엔 카드를 눌러도 이동하지 않게
+    const img = resizableImg(t)
+    setSelImg(img)
   }
   const tagBoxRef = useRef<HTMLDivElement>(null)
   const boardRef = useRef<HTMLDivElement>(null)
@@ -664,7 +719,7 @@ export default function PostWritePage() {
         .taku-editor a[href]:not([contenteditable="false"]):not([data-lp]),.taku-editor a[href]:not([contenteditable="false"]):not([data-lp]) *{color:var(--accent) !important;text-decoration:underline !important;text-underline-offset:3px}
         .taku-editor [data-link-card]{cursor:default;user-select:none}
         .taku-editor [data-link-card]{max-width:300px !important;width:100%}   /* 예전에 만든 큰 카드도 이 너비로 */
-        .taku-editor img{max-width:100%}
+        .taku-editor img{max-width:100%;height:auto;cursor:pointer}
         .taku-editor blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}
         .taku-write-grid{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:24px}
         .tb-btn{width:34px;height:34px;border:none;background:none;border-radius:7px;cursor:pointer;color:var(--text);display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
@@ -906,6 +961,25 @@ export default function PostWritePage() {
             {/* 본문 */}
             <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown} onInput={syncEditorText} onPaste={onEditorPaste} onClick={onEditorClick}
               style={{ minHeight: 340, maxHeight: isGoods && isDesktop ? 'none' : '55vh', flex: isGoods && isDesktop ? 1 : undefined, overflowY: 'auto', fontSize: 16, lineHeight: 1.7, color: 'var(--text)', padding: '12px 14px', border: '1px solid var(--border)', borderRadius: 12 }} />
+
+            {/* 사진 크기 조절 — 고른 사진 위에 띄운다(화면 기준 위치) */}
+            {selImg && imgRect && (
+              <>
+                <div aria-hidden="true" style={{ position: 'fixed', left: imgRect.left - 2, top: imgRect.top - 2, width: imgRect.width + 4, height: imgRect.height + 4, border: '2px solid var(--accent)', borderRadius: 8, pointerEvents: 'none', zIndex: 60 }} />
+                <div data-img-tools="1" style={{ position: 'fixed', left: Math.max(8, imgRect.left), top: Math.max(8, imgRect.top - 44), zIndex: 61, display: 'flex', gap: 4, padding: 4, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 6px 18px rgba(0,0,0,.14)' }}>
+                  {([['작게', 33], ['중간', 50], ['크게', 75], ['원래', 100]] as const).map(([label, pct]) => (
+                    <button key={label} type="button" onMouseDown={e => e.preventDefault()} onClick={() => setImgWidth(selImg, pct)}
+                      style={{ border: 'none', borderRadius: 7, padding: '6px 10px', fontSize: 12.5, fontWeight: 800, fontFamily: 'inherit', cursor: 'pointer',
+                        background: Math.abs(curPct - pct) < 1 ? 'var(--accent)' : 'var(--surface2)', color: Math.abs(curPct - pct) < 1 ? '#fff' : 'var(--text)' }}>
+                      {label}
+                    </button>
+                  ))}
+                  <span style={{ alignSelf: 'center', fontSize: 11.5, color: 'var(--muted)', padding: '0 4px 0 2px', minWidth: 34, textAlign: 'right' }}>{Math.round(curPct)}%</span>
+                </div>
+                <div data-img-tools="1" onPointerDown={startImgDrag} title="끌어서 크기 조절"
+                  style={{ position: 'fixed', left: imgRect.right - 9, top: imgRect.bottom - 9, width: 18, height: 18, borderRadius: 4, background: 'var(--accent)', border: '2px solid #fff', boxShadow: '0 1px 4px rgba(0,0,0,.3)', cursor: 'nwse-resize', zIndex: 61, touchAction: 'none' }} />
+              </>
+            )}
 
             {pollData && (
               <div style={{ marginTop: 12 }}>
