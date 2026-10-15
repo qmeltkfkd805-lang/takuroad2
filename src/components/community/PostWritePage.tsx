@@ -367,7 +367,25 @@ export default function PostWritePage() {
   const exec = (cmd: string, val?: string) => { document.execCommand(cmd, false, val); editorRef.current?.focus(); refreshActive() }
 
   // 인용구 안에서 엔터 → 인용구를 빠져나와 일반 문단으로 (반복 방지). 여러 줄은 Shift+Enter로.
+  /* 카드를 실수로 지웠을 때 — 그 링크가 있는 줄에서 엔터를 치면 링크 바로 아래에 카드를 다시 붙인다.
+     (✕·지우기로 뺀 링크는 평소엔 다시 안 붙이므로, 엔터가 '다시 붙여줘' 신호) */
+  const recardOnEnter = () => {
+    const root = editorRef.current
+    const sel = window.getSelection()
+    if (!root || !sel || !sel.rangeCount) return
+    let line: Node | null = sel.anchorNode
+    while (line && line.parentNode && line.parentNode !== root) line = line.parentNode
+    if (!line || line === root) return
+    const urls = linkBlocksIn(root).filter(l => line!.contains(l.node)).map(l => l.url)
+    if (!urls.length) return
+    const have = new Set(Array.from(root.querySelectorAll('[data-link-card][data-url]')).map(n => n.getAttribute('data-url')))
+    let changed = false
+    for (const u of urls) if (!have.has(u) && cardEver.current.delete(u)) changed = true
+    if (changed) setTimeout(attachLinkCards, 0)   // 엔터로 줄이 나뉜 다음에 — 카드는 링크 줄 바로 아래로 간다
+  }
+
   const onEditorKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) recardOnEnter()
     if (e.key !== 'Enter' || e.shiftKey || e.nativeEvent.isComposing) return
     const sel = window.getSelection()
     if (!sel || !sel.rangeCount) return
