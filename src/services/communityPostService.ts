@@ -265,13 +265,21 @@ export async function getSavedPosts(userId: string): Promise<SavedPostEntry[]> {
 }
 
 // ── 조회수 ──
-const _viewedThisSession = new Set<string>()
+// 같은 사람이 같은 글을 보면 3일에 한 번만 오른다 — 서버(increment_post_view)가 누가 언제 봤는지 기록해서 판단.
+// 로그인 회원은 회원 id, 비회원은 이 브라우저에 만들어 둔 임의 표시(viewer)로 구분한다.
+const _viewedThisSession = new Set<string>()   // 같은 화면 안에서 오갈 땐 서버에 묻지도 않는다
+function viewerId(): string | null {
+  try {
+    let v = localStorage.getItem('taku:viewer')
+    if (!v) { v = crypto.randomUUID(); localStorage.setItem('taku:viewer', v) }
+    return v
+  } catch { return null }
+}
 export async function incrementPostView(postId: string): Promise<void> {
-  // 한 세션(페이지 로드) 안에서 같은 글은 1회만. 재로그인/새로고침하면 다시 집계됨
   if (_viewedThisSession.has(postId)) return
   _viewedThisSession.add(postId)
   const supabase = createClient()
-  await supabase.rpc('increment_post_view', { post: postId })
+  await supabase.rpc('increment_post_view', { post: postId, viewer: viewerId() } as any)
 }
 
 // ── 댓글 ──
