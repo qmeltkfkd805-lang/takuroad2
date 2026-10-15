@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
-import { getPost } from '@/services/communityPostService'
+import { getPost, peekPost } from '@/services/communityPostService'
 import { CommunityPost } from '@/types/community-post'
 import { PostDetailModal } from '@/components/community/PostUI'
 import LogoLoader from '@/components/common/LogoLoader'
@@ -13,12 +13,20 @@ export default function PostDetailPage() {
   const router = useRouter()
   const params = useParams()
   const id = String(params?.id ?? '')
-  const [post, setPost] = useState<CommunityPost | null>(null)
-  const [loading, setLoading] = useState(true)
+  // 목록에서 넘어왔으면 그 글로 바로 그리고, 뒤에서 최신 내용으로 바꾼다(불러오는 중 화면 없이)
+  const [post, setPost] = useState<CommunityPost | null>(() => peekPost(id))
+  const [loading, setLoading] = useState(() => !peekPost(id))
+  const shownId = useRef(id)
 
   const load = useCallback(async () => {
-    setLoading(true)
-    setPost(await getPost(id, user?.id))
+    if (shownId.current !== id) {   // 다른 글로 옮김(이전·다음 글) — 기억해 둔 게 있으면 바로, 없으면 불러오는 중
+      const peek = peekPost(id)
+      if (peek) { setPost(peek); setLoading(false) } else setLoading(true)
+      shownId.current = id
+    }
+    const fresh = await getPost(id, user?.id)
+    if (shownId.current !== id) return   // 그새 다른 글로 옮겼으면 버림
+    setPost(fresh)
     setLoading(false)
   }, [id, user?.id])
   useEffect(() => { load() }, [load])

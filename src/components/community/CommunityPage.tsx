@@ -39,6 +39,9 @@ function timeAgo(iso: string): string {
   return `${String(dt.getMonth() + 1).padStart(2, '0')}.${String(dt.getDate()).padStart(2, '0')}`
 }
 
+/* 커뮤니티 목록 결과 기억 (화면을 옮겨 다녀도 유지, 새로고침하면 비워짐) */
+const listCache = new Map<string, { posts: CommunityPost[]; notices: CommunityPost[] }>()
+
 export default function CommunityPage() {
   const { user, profile } = useAuth()
   const router = useRouter()
@@ -107,7 +110,16 @@ export default function CommunityPage() {
   }, [])
 
   const load = useCallback(async () => {
-    setLoading(true)
+    // 같은 목록을 다시 열면 지난번 결과를 바로 보여주고(불러오는 중 없이) 뒤에서 최신으로 바꾼다
+    const cacheKey = JSON.stringify([board, sort, scope, search, searchField, tagFilter?.id ?? null, isDesktop])
+    const cached = (scope === 'subscribed' || scope === 'worksub') ? null : listCache.get(cacheKey)
+    if (cached) { setPosts(cached.posts); setNotices(cached.notices); setLoading(false) }
+    else setLoading(true)
+    const put = (list: CommunityPost[], ntc: CommunityPost[]) => {
+      listCache.set(cacheKey, { posts: list, notices: ntc })
+      setPosts(list); setNotices(ntc); setLoading(false)
+      if (!cached) setPage(1)
+    }
     // 구독 = 내가 팔로우한 유저의 글만 (커뮤니티 서비스에 필터가 없어 클라이언트에서 걸러낸다)
     if (scope === 'subscribed') {
       if (!user) { setPosts([]); setNotices([]); setLoading(false); setPage(1); return }
@@ -147,7 +159,7 @@ export default function CommunityPage() {
       ])
       const popScore = (p: CommunityPost) => p.likeCount * 3 + p.commentCount * 2 + p.viewCount * 0.1
       const ranked = all.filter(p => popScore(p) > 0).sort((a, b) => popScore(b) - popScore(a))
-      setPosts(ranked); setNotices(ntc); setLoading(false); setPage(1)
+      put(ranked, ntc)
       return
     }
     // 📱 모바일: 팬창작물(부모)을 보면 팬아트(세부) 글도 함께 — 창작게시판 전체. 팬아트 선택 시엔 팬아트만.
@@ -156,8 +168,7 @@ export default function CommunityPage() {
         getPosts('all', sort, user?.id, { mineOnly: scope === 'mine', search, field: searchField, tagId: tagFilter?.id }),
         getNotices(board),
       ])
-      setPosts(all.filter(p => p.board === 'fancraft' || p.board === 'fanart'))
-      setNotices(ntc); setLoading(false); setPage(1)
+      put(all.filter(p => p.board === 'fancraft' || p.board === 'fanart'), ntc)
       return
     }
     const [list, ntc] = await Promise.all([
@@ -166,7 +177,7 @@ export default function CommunityPage() {
       }),
       getNotices(board),
     ])
-    setPosts(list); setNotices(ntc); setLoading(false); setPage(1)
+    put(list, ntc)
   }, [board, sort, scope, search, searchField, tagFilter?.id, user?.id, isDesktop])
 
   useEffect(() => { load() }, [load])

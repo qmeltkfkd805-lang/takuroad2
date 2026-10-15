@@ -551,6 +551,13 @@ export interface PostQuery {
   field?: SearchField // 검색 범위 (기본 both = 제목+내용)
   tagId?: string     // 작품(만화) 필터
 }
+/* 방금 목록에서 받은 글을 잠깐 기억 — 목록에서 글을 누르면 상세가 기다림 없이 바로 뜨게(뒤에서 최신으로 다시 받음) */
+const postPeek = new Map<string, CommunityPost>()
+export function peekPost(id: string): CommunityPost | null { return postPeek.get(id) ?? null }
+export function rememberPosts(list: CommunityPost[]) {
+  for (const p of list) postPeek.set(p.id, p)
+  if (postPeek.size > 400) { const drop = postPeek.size - 400; let i = 0; for (const k of postPeek.keys()) { if (i++ >= drop) break; postPeek.delete(k) } }
+}
 export async function getPosts(
   board: Board | 'all', sort: PostSort = 'latest', userId?: string | null, opts?: PostQuery,
 ): Promise<CommunityPost[]> {
@@ -586,7 +593,9 @@ export async function getPosts(
   if (error) console.error('[getPosts]', error.message, error.details ?? '', error.hint ?? '')
   const rows = data ?? []
   const likedSet = await likedSetFor(rows.map((r: any) => r.id), userId)
-  return rows.map((r: any) => toPost(r, likedSet))
+  const out = rows.map((r: any) => toPost(r, likedSet))
+  rememberPosts(out)
+  return out
 }
 
 // 공지 (상단 고정)
