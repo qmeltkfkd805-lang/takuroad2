@@ -167,15 +167,44 @@ export default function PostWritePage() {
     }
     setTimeout(() => { void uploadInlineImages() }, 0)   // 글+사진이 섞인 붙여넣기 → 들어온 data: 사진을 업로드로 바꿈
   }
-  const onEditorDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    const files = imageFilesOf(e.dataTransfer)
-    if (!files.length || !user) return
-    e.preventDefault()
+  /* ── 내 PC 폴더에서 사진·동영상 끌어다 놓기 ──
+     글쓰기 화면 어디에 놓아도 브라우저가 파일을 열어버리지 않게 막고,
+     본문 위에 놓으면 놓은 자리에, 본문 밖에 놓으면 마지막 커서 자리(없으면 맨 아래)에 넣는다. */
+  const [fileDragOver, setFileDragOver] = useState(false)
+  const dropFilesRef = useRef<(files: File[], x: number, y: number) => void>(() => {})
+  dropFilesRef.current = (files, x, y) => {
+    if (!user) return
     const doc = document as Document & { caretRangeFromPoint?: (x: number, y: number) => Range | null }
-    const r = doc.caretRangeFromPoint?.(e.clientX, e.clientY)
+    const r = doc.caretRangeFromPoint?.(x, y)
     if (r && editorRef.current?.contains(r.startContainer)) caretRef.current = r
-    void onPickImages(files)
+    const imgs = files.filter(f => f.type.startsWith('image/'))
+    const vids = files.filter(f => f.type.startsWith('video/'))
+    void (async () => { if (imgs.length) await onPickImages(imgs); if (vids.length) await onPickVideo(vids) })()
   }
+  useEffect(() => {
+    const hasFiles = (e: DragEvent) => Array.from(e.dataTransfer?.types ?? []).includes('Files')
+    let depth = 0
+    const onEnter = (e: DragEvent) => { if (!hasFiles(e)) return; depth++; setFileDragOver(true) }
+    const onLeave = (e: DragEvent) => { if (!hasFiles(e)) return; depth = Math.max(0, depth - 1); if (!depth) setFileDragOver(false) }
+    const onOver = (e: DragEvent) => { if (!hasFiles(e)) return; e.preventDefault(); if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy' }
+    const onDrop = (e: DragEvent) => {
+      if (!hasFiles(e)) return
+      e.preventDefault(); e.stopPropagation()
+      depth = 0; setFileDragOver(false)
+      const files = Array.from(e.dataTransfer?.files ?? []).filter(f => f.type.startsWith('image/') || f.type.startsWith('video/'))
+      if (files.length) dropFilesRef.current(files, e.clientX, e.clientY)
+    }
+    window.addEventListener('dragenter', onEnter)
+    window.addEventListener('dragleave', onLeave)
+    window.addEventListener('dragover', onOver)
+    window.addEventListener('drop', onDrop, true)
+    return () => {
+      window.removeEventListener('dragenter', onEnter)
+      window.removeEventListener('dragleave', onLeave)
+      window.removeEventListener('dragover', onOver)
+      window.removeEventListener('drop', onDrop, true)
+    }
+  }, [])
   useEffect(() => { const t = setTimeout(rememberCards, 300); return () => clearTimeout(t) }, [])   // eslint-disable-line react-hooks/exhaustive-deps
   /* ── 본문 사진 크기 조절 (2026-10-15) ──
      본문 사진을 누르면 테두리 + 위에 크기 버튼(작게·중간·크게·원래) + 오른쪽 아래 손잡이(끌어서 조절).
@@ -703,9 +732,9 @@ export default function PostWritePage() {
     }
   }
 
-  const onPickVideo = async (list: FileList | null) => {
+  const onPickVideo = async (list: FileList | File[] | null) => {
     if (!user || !list) return
-    for (const f of Array.from(list)) {
+    for (const f of Array.from(list as ArrayLike<File>)) {
       const url = await uploadPostImage(f, user.id)
       if (url) insertBlockAtCaret(`<p><video src="${url}" controls playsinline style="max-width:100%;border-radius:10px;"></video></p>`)
     }
@@ -1276,10 +1305,10 @@ export default function PostWritePage() {
             </div>
 
             {/* 본문 */}
-            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown} onInput={syncEditorText} onPaste={onEditorPaste} onDrop={onEditorDrop} onClick={onEditorClick} onPointerDown={onEditorPointerDown}
+            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown} onInput={syncEditorText} onPaste={onEditorPaste} onClick={onEditorClick} onPointerDown={onEditorPointerDown}
               onDragStart={e => { if ((e.target as HTMLElement).tagName === 'IMG') e.preventDefault() }}
               onContextMenu={e => { if (dragRef.current && (e.target as HTMLElement).tagName === 'IMG') e.preventDefault() }}
-              style={{ minHeight: 340, maxHeight: isGoods && isDesktop ? 'none' : '55vh', flex: isGoods && isDesktop ? 1 : undefined, overflowY: 'auto', fontSize: 16, lineHeight: 1.7, color: 'var(--text)', padding: '12px 14px', border: '1px solid var(--border)', borderRadius: 12 }} />
+              style={{ minHeight: 340, maxHeight: isGoods && isDesktop ? 'none' : '55vh', flex: isGoods && isDesktop ? 1 : undefined, overflowY: 'auto', fontSize: 16, lineHeight: 1.7, color: 'var(--text)', padding: '12px 14px', border: '1px solid var(--border)', borderRadius: 12, ...(fileDragOver ? { outline: '2px dashed #e8006f', outlineOffset: 2, background: 'rgba(232,0,111,0.04)' } : null) }} />
 
             {/* 사진 크기 조절 — 고른 사진 위에 띄운다(화면 기준 위치) */}
             {linkBubble && (() => {
