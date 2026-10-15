@@ -125,8 +125,57 @@ export default function PostWritePage() {
     const wait = pastedRef.current ? 0 : 500
     pastedRef.current = false
     linkTimer.current = setTimeout(attachLinkCards, wait)
+    if (editorRef.current?.querySelector('img[src^="data:"], img[src^="blob:"]')) setTimeout(() => { void uploadInlineImages() }, 0)
   }
-  const onEditorPaste = () => { pastedRef.current = true }
+  /* ── 붙여넣기·끌어다 놓은 사진 ──
+     사진을 복사해 붙여넣으면 브라우저가 사진을 글자(data:image…)로 본문에 박아 넣는다 → 글 하나가 수 MB가 돼서 목록이 안 열린다.
+     그래서 사진 파일은 가로채서 업로드한 뒤 주소로 넣고, 혹시 data: 사진이 들어오면 곧바로 업로드해서 주소로 바꾼다. */
+  const inlineUploading = useRef<WeakSet<HTMLImageElement>>(new WeakSet())
+  const dataUrlToFile = async (src: string) => {
+    const blob = await (await fetch(src)).blob()
+    const ext = (blob.type.split('/')[1] || 'png').replace('jpeg', 'jpg')
+    return new File([blob], `paste.${ext}`, { type: blob.type || 'image/png' })
+  }
+  const uploadInlineImages = async (): Promise<boolean> => {
+    const root = editorRef.current
+    if (!root || !user) return true
+    const imgs = Array.from(root.querySelectorAll<HTMLImageElement>('img[src^="data:"], img[src^="blob:"]'))
+    let ok = true
+    await Promise.all(imgs.map(async img => {
+      if (inlineUploading.current.has(img)) return
+      inlineUploading.current.add(img)
+      img.style.opacity = '0.4'
+      try {
+        const url = await uploadPostImage(await dataUrlToFile(img.src), user.id)
+        if (url) { img.src = url; img.style.opacity = ''; setImages(prev => [...prev, url]) }
+        else { img.remove(); ok = false }
+      } catch { img.remove(); ok = false }
+      finally { inlineUploading.current.delete(img) }
+    }))
+    return ok
+  }
+  const imageFilesOf = (dt: DataTransfer | null) => Array.from(dt?.files ?? []).filter(f => f.type.startsWith('image/'))
+  const onEditorPaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    pastedRef.current = true
+    const files = imageFilesOf(e.clipboardData)
+    if (files.length && user) {
+      e.preventDefault()
+      const sel = window.getSelection()
+      if (sel?.rangeCount && editorRef.current?.contains(sel.anchorNode)) caretRef.current = sel.getRangeAt(0).cloneRange()
+      void onPickImages(files)
+      return
+    }
+    setTimeout(() => { void uploadInlineImages() }, 0)   // 글+사진이 섞인 붙여넣기 → 들어온 data: 사진을 업로드로 바꿈
+  }
+  const onEditorDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    const files = imageFilesOf(e.dataTransfer)
+    if (!files.length || !user) return
+    e.preventDefault()
+    const doc = document as Document & { caretRangeFromPoint?: (x: number, y: number) => Range | null }
+    const r = doc.caretRangeFromPoint?.(e.clientX, e.clientY)
+    if (r && editorRef.current?.contains(r.startContainer)) caretRef.current = r
+    void onPickImages(files)
+  }
   useEffect(() => { const t = setTimeout(rememberCards, 300); return () => clearTimeout(t) }, [])   // eslint-disable-line react-hooks/exhaustive-deps
   /* ── 본문 사진 크기 조절 (2026-10-15) ──
      본문 사진을 누르면 테두리 + 위에 크기 버튼(작게·중간·크게·원래) + 오른쪽 아래 손잡이(끌어서 조절).
@@ -643,9 +692,9 @@ export default function PostWritePage() {
     }
   }
 
-  const onPickImages = async (list: FileList | null) => {
+  const onPickImages = async (list: FileList | File[] | null) => {
     if (!user || !list) return
-    for (const f of Array.from(list)) {
+    for (const f of Array.from(list as ArrayLike<File>)) {
       const url = await uploadPostImage(f, user.id)
       if (url) {
         setImages(prev => [...prev, url])
@@ -814,6 +863,11 @@ export default function PostWritePage() {
   const submit = async () => {
     if (!user) { router.push(ROUTES.login); return }
     if (linkTimer.current) { clearTimeout(linkTimer.current); linkTimer.current = null }
+    // 본문에 글자로 박힌 사진(data:)이 남아 있으면 먼저 업로드해서 주소로 바꾼다
+    setSaving(true)
+    const inlineOk = await uploadInlineImages()
+    setSaving(false)
+    if (!inlineOk) { setErr('붙여넣은 사진 중 일부를 올리지 못해서 뺐어요. 확인하고 다시 등록해주세요.'); return }
     const cleaned = editorRef.current ? cleanLinkCards(editorRef.current) : null
     let html = stripGoodsMeta(cleaned?.innerHTML ?? '')
     const plain = (editorRef.current?.innerText ?? '').trim()
@@ -830,6 +884,7 @@ export default function PostWritePage() {
     }
     if (!title.trim() && !plain && imgs.length === 0 && !pollData) { setErr('제목이나 내용을 입력해주세요.'); return }
     if (isFanart && !notice && !allAgreed) { setErr('업로드 전 확인 항목에 모두 동의해주세요.'); return }
+    if (/src="(data|blob):/i.test(html) || html.length > 500_000) { setErr('본문이 너무 커요. 사진은 사진 버튼으로 넣어주세요.'); return }
 
     setErr(''); setSaving(true)
     const finalBoard: Board = (notice && noticeScope !== 'all') ? noticeScope : board
@@ -1221,7 +1276,7 @@ export default function PostWritePage() {
             </div>
 
             {/* 본문 */}
-            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown} onInput={syncEditorText} onPaste={onEditorPaste} onClick={onEditorClick} onPointerDown={onEditorPointerDown}
+            <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown} onInput={syncEditorText} onPaste={onEditorPaste} onDrop={onEditorDrop} onClick={onEditorClick} onPointerDown={onEditorPointerDown}
               onDragStart={e => { if ((e.target as HTMLElement).tagName === 'IMG') e.preventDefault() }}
               onContextMenu={e => { if (dragRef.current && (e.target as HTMLElement).tagName === 'IMG') e.preventDefault() }}
               style={{ minHeight: 340, maxHeight: isGoods && isDesktop ? 'none' : '55vh', flex: isGoods && isDesktop ? 1 : undefined, overflowY: 'auto', fontSize: 16, lineHeight: 1.7, color: 'var(--text)', padding: '12px 14px', border: '1px solid var(--border)', borderRadius: 12 }} />
