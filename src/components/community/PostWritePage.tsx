@@ -19,6 +19,7 @@ import { getPostEvent, setPostEvent, PostEventSummary } from '@/services/postEve
 
 type Tag = { id: string; name: string; slug: string }
 const DRAFT_KEY = 'takuroad_community_draft'
+const EDIT_DRAFT_PREFIX = 'takuroad_community_edit_draft:'   // + 글 id — 수정하던 내용
 
 const BOARD_TEMPLATES: Partial<Record<Board, string>> = {
   companion:
@@ -125,7 +126,7 @@ export default function PostWritePage() {
     const wait = pastedRef.current ? 0 : 500
     pastedRef.current = false
     linkTimer.current = setTimeout(attachLinkCards, wait)
-    if (editorRef.current?.querySelector('img[src^="data:"], img[src^="blob:"]')) setTimeout(() => { void uploadInlineImages() }, 0)
+    if (editorRef.current?.querySelector('img[src^="data:"]:not([data-uploading]), img[src^="blob:"]:not([data-uploading])')) setTimeout(() => { void uploadInlineImages() }, 0)
   }
   /* ── 붙여넣기·끌어다 놓은 사진 ──
      사진을 복사해 붙여넣으면 브라우저가 사진을 글자(data:image…)로 본문에 박아 넣는다 → 글 하나가 수 MB가 돼서 목록이 안 열린다.
@@ -139,7 +140,7 @@ export default function PostWritePage() {
   const uploadInlineImages = async (): Promise<boolean> => {
     const root = editorRef.current
     if (!root || !user) return true
-    const imgs = Array.from(root.querySelectorAll<HTMLImageElement>('img[src^="data:"], img[src^="blob:"]'))
+    const imgs = Array.from(root.querySelectorAll<HTMLImageElement>('img[src^="data:"]:not([data-uploading]), img[src^="blob:"]:not([data-uploading])'))
     let ok = true
     await Promise.all(imgs.map(async img => {
       if (inlineUploading.current.has(img)) return
@@ -179,7 +180,8 @@ export default function PostWritePage() {
     if (r && editorRef.current?.contains(r.startContainer)) caretRef.current = r
     const imgs = files.filter(f => f.type.startsWith('image/'))
     const vids = files.filter(f => f.type.startsWith('video/'))
-    void (async () => { if (imgs.length) await onPickImages(imgs); if (vids.length) await onPickVideo(vids) })()
+    if (imgs.length) void onPickImages(imgs)   // 자리는 바로(넣은 순서대로) 잡히고, 올리기는 뒤에서
+    if (vids.length) void onPickVideo(vids)
   }
   useEffect(() => {
     const hasFiles = (e: DragEvent) => Array.from(e.dataTransfer?.types ?? []).includes('Files')
@@ -472,6 +474,13 @@ export default function PostWritePage() {
   // 기존 굿즈로 쓰는 글(goodsId)은 그 굿즈 내용이 먼저라 예전처럼 "불러오기" 안내만 띄운다.
   const autoLoadRef = useRef(false)
   const draftBlocked = useRef(false)   // 등록이 끝나면 자동 저장 멈춤
+  const draftKey = editId ? EDIT_DRAFT_PREFIX + editId : DRAFT_KEY
+  // 수정: 서버에서 불러온 원래 글(되돌리기용)과, '안 고쳤음'을 판단할 기준 본문
+  type EditSnap = { board: Board; tagIds: string[]; title: string; html: string; spoiler: boolean; flair: string | null }
+  const editOriginalRef = useRef<EditSnap | null>(null)
+  const editBaselineRef = useRef<{ html: string; title: string } | null>(null)
+  const editReadyRef = useRef(false)
+  const editDraftUsedRef = useRef(false)
   const [draftAuto, setDraftAuto] = useState(false)
   useEffect(() => {
     if (editId) return
@@ -503,6 +512,36 @@ export default function PostWritePage() {
         if (!n.querySelector('[data-lp-remove]')) n.insertAdjacentHTML('afterbegin', REMOVE_BTN)
       })
       rememberCards(); attachLinkCards()
+      // 원래 글 기억(되돌리기용) → 수정하던 내용이 남아 있으면 그걸로 채운다
+      const serverHtml = editorRef.current?.innerHTML ?? ''
+      editOriginalRef.current = { board: pp.board, tagIds: pp.tagIds?.length ? pp.tagIds : (pp.tagId ? [pp.tagId] : []), title: pp.title ?? '', html: serverHtml, spoiler: pp.isSpoiler, flair: pp.flair ?? null }
+      try {
+        const raw = localStorage.getItem(EDIT_DRAFT_PREFIX + editId)
+        if (raw) {
+          const d = JSON.parse(raw)
+          if (d.board) setBoard(d.board)
+          if (Array.isArray(d.tagIds)) setTagIds(d.tagIds)
+          if (typeof d.title === 'string') setTitle(d.title)
+          if (typeof d.spoiler === 'boolean') setSpoiler(d.spoiler)
+          if ('flair' in d) setFlair(d.flair ?? null)
+          if (Array.isArray(d.goodsChars)) setGoodsChars(d.goodsChars)
+          if (Array.isArray(d.goodsTypeList)) setGoodsTypeList(d.goodsTypeList)
+          if (typeof d.goodsStore === 'string') setGoodsStore(d.goodsStore)
+          if (typeof d.goodsPrice === 'string') setGoodsPrice(d.goodsPrice)
+          if (editorRef.current && typeof d.html === 'string') editorRef.current.innerHTML = d.html
+          rememberCards()
+          editDraftUsedRef.current = true
+          setHasDraft(true); setDraftAuto(true)
+        }
+      } catch { /* noop */ }
+      // 카드 붙이기 등이 끝난 뒤를 '안 고친 상태'로 본다
+      setTimeout(() => {
+        const o = editOriginalRef.current
+        editBaselineRef.current = editDraftUsedRef.current && o
+          ? { html: o.html, title: o.title }
+          : { html: editorRef.current?.innerHTML ?? '', title: o?.title ?? '' }
+        editReadyRef.current = true
+      }, 1500)
       // 굿즈자랑 글이면 연결된 굿즈의 캐릭터·태그 프리필
       if (pp.board === 'goods') {
         import('@/services/goodsService').then(async ({ getPostGoodsId, getGoodsDetail }) => {
@@ -510,7 +549,7 @@ export default function PostWritePage() {
           if (!gid) return
           setGoodsId(gid)
           const d = await getGoodsDetail(gid)
-          if (d) {
+          if (d && !editDraftUsedRef.current) {   // 수정하던 내용을 불러왔으면 그걸 덮어쓰지 않는다
             setGoodsChars(d.characterName ? d.characterName.split(',').map(s => s.trim()).filter(Boolean) : [])
             setGoodsTypeList((d.tags ?? []).filter(Boolean))
             setGoodsStore(d.store ?? '')
@@ -721,24 +760,53 @@ export default function PostWritePage() {
     }
   }
 
-  const onPickImages = async (list: FileList | File[] | null) => {
-    if (!user || !list) return
-    for (const f of Array.from(list as ArrayLike<File>)) {
-      const url = await uploadPostImage(f, user.id)
-      if (url) {
-        setImages(prev => [...prev, url])
-        insertBlockAtCaret(`<p><img src="${url}" style="max-width:100%;border-radius:10px;" /></p>`)
+  /* ── 사진·동영상 올리기: 자리를 먼저 잡고 '올리는 중'으로 보여준 뒤, 다 올라가면 진짜 주소로 바꾼다 ──
+     넣는 순간 커서 자리에 미리보기(흐릿하게 깜빡임)가 생겨서 눌렸는지 헷갈리지 않는다. 3개씩 동시에 올린다.
+     올리는 중인 자리는 임시저장·등록에 섞이지 않는다(등록은 다 올라갈 때까지 기다리게 안내). */
+  const [uploadingCount, setUploadingCount] = useState(0)
+  const uploadingRef = useRef(0)
+  const bumpUploading = (d: number) => { uploadingRef.current = Math.max(0, uploadingRef.current + d); setUploadingCount(uploadingRef.current) }
+  const uploadWithPlaceholder = async (files: File[], kind: 'img' | 'video') => {
+    if (!user || !files.length) return
+    const slots = files.map(f => {
+      const id = 'up' + Math.random().toString(36).slice(2, 10)
+      const blob = URL.createObjectURL(f)
+      insertBlockAtCaret(kind === 'img'
+        ? `<p data-uploading="${id}"><img data-uploading="${id}" src="${blob}" alt="" style="max-width:100%;border-radius:10px;" /></p>`
+        : `<p data-uploading="${id}"><video data-uploading="${id}" src="${blob}" muted playsinline style="max-width:100%;border-radius:10px;"></video></p>`)
+      return { f, id, blob }
+    })
+    bumpUploading(slots.length)
+    let failed = 0
+    const queue = [...slots]
+    const worker = async () => {
+      for (let s = queue.shift(); s; s = queue.shift()) {
+        let url: string | null = null
+        try { url = await uploadPostImage(s.f, user.id) } catch { url = null }
+        const root = editorRef.current
+        const media = root?.querySelector<HTMLElement>(`img[data-uploading="${s.id}"], video[data-uploading="${s.id}"]`)
+        const holder = root?.querySelector<HTMLElement>(`p[data-uploading="${s.id}"]`)
+        if (url && media) {
+          media.setAttribute('src', url)
+          media.removeAttribute('data-uploading')
+          holder?.removeAttribute('data-uploading')
+          if (kind === 'video') { media.removeAttribute('muted'); media.setAttribute('controls', '') }
+          else setImages(prev => [...prev, url!])
+        } else {
+          holder?.remove()          // 실패했거나, 올리는 사이에 지운 자리
+          if (!url) failed++
+        }
+        URL.revokeObjectURL(s.blob)
+        bumpUploading(-1)
       }
     }
+    await Promise.all([worker(), worker(), worker()])
+    if (failed) setErr(`${kind === 'img' ? '사진' : '동영상'} ${failed}개를 올리지 못했어요. 다시 넣어 주세요.`)
   }
-
-  const onPickVideo = async (list: FileList | File[] | null) => {
-    if (!user || !list) return
-    for (const f of Array.from(list as ArrayLike<File>)) {
-      const url = await uploadPostImage(f, user.id)
-      if (url) insertBlockAtCaret(`<p><video src="${url}" controls playsinline style="max-width:100%;border-radius:10px;"></video></p>`)
-    }
-  }
+  const onPickImages = (list: FileList | File[] | null) =>
+    uploadWithPlaceholder(Array.from((list ?? []) as ArrayLike<File>).filter(f => f.type.startsWith('image/') || !f.type), 'img')
+  const onPickVideo = (list: FileList | File[] | null) =>
+    uploadWithPlaceholder(Array.from((list ?? []) as ArrayLike<File>), 'video')
   const onPickFile = async (list: FileList | null) => {
     if (!user || !list) return
     for (const f of Array.from(list)) {
@@ -782,18 +850,53 @@ export default function PostWritePage() {
     return out
   }
 
-  // ── 자동 임시저장 (새 글만) ── 입력이 멈추고 0.5초 뒤, 화면을 떠나거나 숨길 때 바로
+  // ── 자동 임시저장 (새 글 + 수정 글) ── 입력이 멈추고 0.5초 뒤, 화면을 떠나거나 숨길 때 바로
+  // 올리는 중인 사진 자리(blob:)는 빼고 저장한다
+  const editorHtmlForDraft = (): string | null => {
+    const el = editorRef.current
+    if (!el) return null
+    if (!el.querySelector('[data-uploading]')) return el.innerHTML
+    const c = el.cloneNode(true) as HTMLElement
+    c.querySelectorAll('p[data-uploading], img[data-uploading], video[data-uploading]').forEach(n => n.remove())
+    return c.innerHTML
+  }
+  const autosaveOn = !!editId || !goodsIdParam
+  /** 지금 쓰던(고친) 내용이 있는지 — 나가기 경고·자동저장 판단 */
+  const isDirty = (): boolean => {
+    if (draftBlocked.current) return false
+    const el = editorRef.current
+    const html = editorHtmlForDraft()
+    if (html === null || !el) return false
+    const d = draftStateRef.current
+    if (editId) {
+      if (!editReadyRef.current) return false
+      const b = editBaselineRef.current
+      return !!b && (html !== b.html || d.title !== b.title) || uploadingRef.current > 0
+    }
+    const tmpl = BOARD_TEMPLATES[d.board] ?? ''
+    const bodyEmpty = !html || html === tmpl || (!(el.innerText || '').trim() && !el.querySelector('img,video,a,table'))
+    return !(bodyEmpty && !d.title.trim() && d.images.length === 0 && !d.poll && d.goodsChars.length === 0 && d.goodsTypeList.length === 0 && !d.goodsStore && !d.goodsPrice) || uploadingRef.current > 0
+  }
   const draftState = { board, tagIds, title, images, poll: pollData, spoiler, flair, goodsChars, goodsTypeList, goodsStore, goodsPrice }
   const draftStateRef = useRef(draftState)
   draftStateRef.current = draftState
   const writeDraftSilent = useCallback(() => {
-    if (editId || draftBlocked.current) return
+    if (draftBlocked.current) return
+    if (editId && !editReadyRef.current) return   // 수정: 원래 글을 다 불러오기 전엔 저장하지 않음
     const d = draftStateRef.current
     const el = editorRef.current
-    const html = el ? el.innerHTML : null
-    if (html === null) return   // 에디터가 없으면(화면 전환 중) 건드리지 않음
+    const html = editorHtmlForDraft()
+    if (html === null || !el) return   // 에디터가 없으면(화면 전환 중) 건드리지 않음
+    if (editId) {
+      const b = editBaselineRef.current
+      try {
+        if (b && html === b.html && d.title === b.title) localStorage.removeItem(EDIT_DRAFT_PREFIX + editId)   // 원래대로면 지움
+        else localStorage.setItem(EDIT_DRAFT_PREFIX + editId, JSON.stringify({ ...d, html, savedAt: Date.now() }))
+      } catch { /* noop */ }
+      return
+    }
     const tmpl = BOARD_TEMPLATES[d.board] ?? ''
-    const bodyEmpty = !html || html === tmpl || (!(el!.innerText || '').trim() && !el!.querySelector('img,video,a,table'))
+    const bodyEmpty = !html || html === tmpl || (!(el.innerText || '').trim() && !el.querySelector('img,video,a,table'))
     const empty = bodyEmpty && !d.title.trim() && d.images.length === 0 && !d.poll && d.goodsChars.length === 0 && d.goodsTypeList.length === 0 && !d.goodsStore && !d.goodsPrice
     try {
       if (empty) return
@@ -801,13 +904,13 @@ export default function PostWritePage() {
     } catch { /* noop */ }
   }, [editId])
   useEffect(() => {
-    if (editId || goodsIdParam) return
+    if (!autosaveOn) return
     const t = setTimeout(writeDraftSilent, 500)
     return () => clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board, tagIds, title, images, pollData, spoiler, flair, goodsChars, goodsTypeList, goodsStore, goodsPrice])
   useEffect(() => {
-    if (editId || goodsIdParam) return
+    if (!autosaveOn) return
     const el = editorRef.current
     let t: ReturnType<typeof setTimeout> | null = null
     const mo = el ? new MutationObserver(() => { if (t) clearTimeout(t); t = setTimeout(writeDraftSilent, 500) }) : null
@@ -830,9 +933,9 @@ export default function PostWritePage() {
 
   // ── 임시저장 ──
   const saveDraft = () => {
-    const html = editorRef.current?.innerHTML ?? ''
+    const html = editorHtmlForDraft() ?? ''
     try {
-      localStorage.setItem(DRAFT_KEY, JSON.stringify({ board, tagIds, title, html, images, poll: pollData, spoiler, flair, goodsChars, goodsTypeList, goodsStore, goodsPrice, savedAt: Date.now() }))
+      localStorage.setItem(draftKey, JSON.stringify({ board, tagIds, title, html, images, poll: pollData, spoiler, flair, goodsChars, goodsTypeList, goodsStore, goodsPrice, savedAt: Date.now() }))
       setHasDraft(true); setShowDraftBanner(false)
       window.alert('임시저장되었어요.')
     } catch { window.alert('임시저장에 실패했어요.') }
@@ -851,7 +954,18 @@ export default function PostWritePage() {
       setShowDraftBanner(false)
     } catch { /* noop */ }
   }
-  const clearDraft = () => { try { localStorage.removeItem(DRAFT_KEY) } catch { /* noop */ }; setHasDraft(false); setShowDraftBanner(false) }
+  const clearDraft = () => { try { localStorage.removeItem(draftKey) } catch { /* noop */ }; setHasDraft(false); setShowDraftBanner(false) }
+  // 수정: 불러온 '수정하던 내용'을 버리고 원래 글로
+  const revertEdit = () => {
+    const o = editOriginalRef.current
+    try { if (editId) localStorage.removeItem(EDIT_DRAFT_PREFIX + editId) } catch { /* noop */ }
+    setHasDraft(false); setDraftAuto(false)
+    if (!o) return
+    setBoard(o.board); setTagIds(o.tagIds); setTitle(o.title); setSpoiler(o.spoiler); setFlair(o.flair)
+    if (editorRef.current) editorRef.current.innerHTML = o.html
+    linkSeen.current = new WeakMap(); rememberCards()
+    editBaselineRef.current = { html: o.html, title: o.title }
+  }
 
   const addGoodsType = (raw: string) => {
     const t = raw.trim().replace(/\s+/g, ' ')
@@ -889,8 +1003,46 @@ export default function PostWritePage() {
   }
   const stripGoodsMeta = (h: string) => h.replace(/<div data-gm="1"[\s\S]*?<\/div>/gi, '')
 
+  /* ── 나가기 경고 ── 쓰던(고친) 내용이 있는데 다른 메뉴·뒤로·창 닫기를 누르면 한 번 묻는다 */
+  const [leaveTo, setLeaveTo] = useState<string | null>(null)   // 'back' 또는 이동할 주소
+  const leavingRef = useRef(false)
+  const isDirtyRef = useRef(isDirty)
+  isDirtyRef.current = isDirty
+  useEffect(() => {
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (leavingRef.current || !isDirtyRef.current()) return
+      writeDraftSilent()
+      e.preventDefault(); e.returnValue = ''
+    }
+    const onClick = (e: MouseEvent) => {
+      if (leavingRef.current || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+      const a = (e.target as HTMLElement | null)?.closest?.('a[href]') as HTMLAnchorElement | null
+      if (!a || a.target === '_blank' || a.hasAttribute('download')) return
+      if (editorRef.current?.contains(a)) return   // 본문 안 링크(편집 중)는 상관없음
+      const url = new URL(a.href, location.href)
+      if (url.origin !== location.origin) return
+      if (url.pathname === location.pathname && url.search === location.search) return
+      if (!isDirtyRef.current()) return
+      e.preventDefault(); e.stopPropagation()
+      setLeaveTo(url.pathname + url.search + url.hash)
+    }
+    window.addEventListener('beforeunload', onBeforeUnload)
+    window.addEventListener('click', onClick, true)
+    return () => { window.removeEventListener('beforeunload', onBeforeUnload); window.removeEventListener('click', onClick, true) }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const goBack = () => { if (isDirty()) setLeaveTo('back'); else router.back() }
+  const confirmLeave = () => {
+    const to = leaveTo
+    setLeaveTo(null)
+    if (autosaveOn) writeDraftSilent()
+    leavingRef.current = true
+    if (to === 'back') router.back(); else if (to) router.push(to)
+  }
+
   const submit = async () => {
     if (!user) { router.push(ROUTES.login); return }
+    if (uploadingRef.current > 0) { setErr('사진·동영상을 올리는 중이에요. 다 올라간 뒤에 등록해 주세요.'); return }
     if (linkTimer.current) { clearTimeout(linkTimer.current); linkTimer.current = null }
     // 본문에 글자로 박힌 사진(data:)이 남아 있으면 먼저 업로드해서 주소로 바꾼다
     setSaving(true)
@@ -1095,7 +1247,7 @@ export default function PostWritePage() {
       {/* 상단 바 */}
       <div style={{ position: 'sticky', top: 0, zIndex: 20, background: 'var(--surface)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <button onClick={() => router.back()} aria-label={isDesktop ? '뒤로' : '닫기'} style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--text)', display: 'flex' }}>
+          <button onClick={goBack} aria-label={isDesktop ? '뒤로' : '닫기'} style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--text)', display: 'flex' }}>
             {isDesktop
               ? <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
               : <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12" /></svg>}
@@ -1120,7 +1272,9 @@ export default function PostWritePage() {
             </span>
           </div>
         )}
-        {draftAuto && <DraftNotice text="작성 중이던 글을 불러왔어요." onDiscard={startOver} onClose={() => setDraftAuto(false)} />}
+        {draftAuto && (editId
+          ? <DraftNotice text="수정하던 내용을 불러왔어요." discardLabel="원래 글로" onDiscard={revertEdit} onClose={() => setDraftAuto(false)} />
+          : <DraftNotice text="작성 중이던 글을 불러왔어요." onDiscard={startOver} onClose={() => setDraftAuto(false)} />)}
         {err && <div style={{ fontSize: 14, color: '#c0392b', background: 'rgba(239,90,90,.08)', borderRadius: 10, padding: '11px 14px', marginBottom: 16 }}>{err}</div>}
 
         {existingGoodsId && (
@@ -1305,6 +1459,14 @@ export default function PostWritePage() {
             </div>
 
             {/* 본문 */}
+            <style>{'.pw-editor img[data-uploading],.pw-editor video[data-uploading]{animation:pwUpl .9s ease-in-out infinite alternate;pointer-events:none}@keyframes pwUpl{from{opacity:.35}to{opacity:.7}}'}</style>
+            {uploadingCount > 0 && (
+              <div role="status" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, margin: '0 0 8px', padding: '6px 12px', borderRadius: 999, background: 'var(--accent-l)', color: 'var(--accent)', fontSize: 12.5, fontWeight: 800 }}>
+                <span style={{ width: 12, height: 12, borderRadius: '50%', border: '2px solid currentColor', borderRightColor: 'transparent', display: 'inline-block', animation: 'pwSpin .8s linear infinite' }} />
+                사진·동영상 올리는 중 · {uploadingCount}개 남음
+                <style>{'@keyframes pwSpin{to{transform:rotate(360deg)}}'}</style>
+              </div>
+            )}
             <div ref={editorRef} className="taku-editor pw-editor" contentEditable suppressContentEditableWarning data-ph={isGoods ? '굿즈 사진과 자랑하고 싶은 이야기를 자유롭게 적어보세요.' : '내용을 입력하세요.'} onKeyDown={onEditorKeyDown} onInput={syncEditorText} onPaste={onEditorPaste} onClick={onEditorClick} onPointerDown={onEditorPointerDown}
               onDragStart={e => { if ((e.target as HTMLElement).tagName === 'IMG') e.preventDefault() }}
               onContextMenu={e => { if (dragRef.current && (e.target as HTMLElement).tagName === 'IMG') e.preventDefault() }}
@@ -1443,6 +1605,23 @@ export default function PostWritePage() {
       </div>
       {pollOpen && <PollModal onClose={() => setPollOpen(false)} onConfirm={data => { setPollData(data); setPollOpen(false) }} />}
       {tableOpen && <TableModal onClose={() => setTableOpen(false)} onConfirm={html => { appendBlock(html); setTableOpen(false) }} />}
+      {leaveTo && (
+        <div onClick={() => setLeaveTo(null)} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
+          <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 380, background: 'var(--surface)', borderRadius: 16, padding: '22px 20px 16px', boxShadow: '0 12px 40px rgba(0,0,0,.2)' }}>
+            <div style={{ fontSize: 17, fontWeight: 800, color: 'var(--text)', marginBottom: 8 }}>{editId ? '고치던 내용이 있어요' : '작성 중인 글이 있어요'}</div>
+            <div style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.6, marginBottom: 18 }}>
+              {autosaveOn
+                ? (editId ? '나가도 고치던 내용은 임시저장돼요. 다시 수정하기를 누르면 이어서 고칠 수 있어요.' : '나가도 쓰던 글은 임시저장돼요. 다시 글쓰기를 누르면 이어서 쓸 수 있어요.')
+                : '지금 나가면 쓰던 내용이 사라져요.'}
+              {uploadingCount > 0 && <><br />올리는 중인 사진·동영상은 저장되지 않아요.</>}
+            </div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button onClick={() => setLeaveTo(null)} style={{ flex: 1, padding: '11px 0', borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>계속 쓰기</button>
+              <button onClick={confirmLeave} style={{ flex: 1, padding: '11px 0', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>나가기</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 📱 등록 옵션 모달 (모바일: 등록 누르면 뜸) */}
       {settingsOpen && (
