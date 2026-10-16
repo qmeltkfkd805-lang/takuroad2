@@ -48,7 +48,7 @@ const CHANNEL_ICON_FILES: Record<string, string[]> = {
   x: ['X', 'x'],
   kakao: ['kakao', 'kakaotalk'],
   youtube: ['youtube'],
-  naver: ['naver'],
+  naver: ['naver', 'naverblog'],
   navercafe: ['navercafe', 'naver'],
   naverblog: ['naverblog', 'naver'],
   globe: ['homepage', 'globe'],
