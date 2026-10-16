@@ -20,7 +20,7 @@ alter table public.community_posts
   add constraint community_posts_images_no_inline
   check (
     images is null
-    or array_to_string(images, '|') !~* '(^|\|)\s*(data|blob):'
+    or images::text !~* '"\s*(data|blob):'   -- images 는 jsonb 배열
   ) not valid;
 
 -- [확인] 제약 2개가 보이면 성공
@@ -33,4 +33,4 @@ select id, length(content) as content_len
   from public.community_posts
  where length(content) > 500000
     or content ~* 'src\s*=\s*["'']?\s*(data|blob):'
-    or array_to_string(images, '|') ~* '(^|\|)\s*(data|blob):';
+    or images::text ~* '"\s*(data|blob):';
