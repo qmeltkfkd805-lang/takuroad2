@@ -28,6 +28,7 @@ import { linkCardHtml, LINK_CARD_HOLDER_STYLE, LINK_CARD_VERSION, type LinkPrevi
 import { getPostEvent, PostEventSummary } from '@/services/postEventService'
 import { hydrateYoutube } from '@/lib/utils/youtube'
 import { bindPostBody, POST_FX_CSS } from '@/lib/utils/postBodyFx'
+import { sanitizePostHtml } from '@/lib/utils/sanitizePostHtml'
 
 // ── 대표 팬아트 배지 ──
 export function FeaturedTag({ kind, inline }: { kind: 'current' | 'past'; inline?: boolean }) {
@@ -949,11 +950,7 @@ export function PostBodyPreview({ html, isPage = true }: { html: string; isPage?
 }
 
 function sanitizeHtml(html: string): string {
-  return html
-    .replace(/<\s*(script|style|iframe|object|embed)[^>]*>[\s\S]*?<\s*\/\s*\1\s*>/gi, '')
-    .replace(/<\s*(script|style|iframe|object|embed)[^>]*\/?>/gi, '')
-    .replace(/ on\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
-    .replace(/(href|src)\s*=\s*("|')?\s*javascript:[^"'>]*("|')?/gi, '$1="#"')
+  return sanitizePostHtml(html)   // 허용 목록 방식 (예전 정규식 필터는 우회 가능했다 — 10-15 점검)
 }
 
 function navBtn(side: 'left' | 'right'): React.CSSProperties {
