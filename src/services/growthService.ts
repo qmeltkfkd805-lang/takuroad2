@@ -320,7 +320,7 @@ const VERB_BY_TYPE: Record<string, string> = {
   consecutive_days: '출석', likes_received: '좋아요', comment_count: '댓글', community_starter: '커뮤니티',
 }
 const CTA_BY_TYPE: Record<string, { label: string; href: string }> = {
-  consecutive_days: { label: '출석하기', href: '/home' },
+  consecutive_days: { label: '출석하기', href: '/' },
   likes_received: { label: '커뮤니티 가기', href: '/community' },
   comment_count: { label: '댓글 쓰기', href: '/community' },
   community_starter: { label: '글 쓰기', href: '/community/write' },

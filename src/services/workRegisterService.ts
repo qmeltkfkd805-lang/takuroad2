@@ -149,7 +149,7 @@ export async function updateWork(id: string, w: NewWork): Promise<{ slug: string
   } as any).eq('id', id)
   if (error) { console.error('[updateWork]', error); return null }
   // 작품 목록·상세가 만들어 둔 옛 정보(사진 등)를 바로 비운다 — 실패해도 저장은 된 것
-  fetch('/api/works/purge', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug }) }).catch(() => {})
+  fetch('/api/works/purge', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) }).catch(() => {})
   return { slug }
 }
 

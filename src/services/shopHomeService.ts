@@ -44,10 +44,18 @@ export function hotScore(s: ShopHomeItem): number {
  *     이제 서버가 60초마다 한 번 만든 목록(/api/shops/home-items, CDN 캐시)을 받는다. 실패하면 예전처럼 직접 읽는다. */
 export async function getShopHomeItems(): Promise<ShopHomeItem[]> {
   try {
-    const res = await fetch('/api/shops/home-items')
+    const res = await fetch('/api/shops/home-items/v2')
     if (res.ok) {
       const j = await res.json()
-      if (Array.isArray(j?.items)) return j.items as ShopHomeItem[]
+      if (Array.isArray(j?.items)) {
+        if (j.v !== 2 || !Array.isArray(j.works)) return j.items as ShopHomeItem[]
+        // v2: 취급 작품을 번호(wi)로 받는다 → 원래 모양(works: {id,name,slug}[])으로 되돌린다
+        const dict = (j.works as [string, string, string][]).map(([id, name, slug]) => ({ id, name, slug }))
+        return (j.items as any[]).map(({ wi, ...rest }) => ({
+          ...rest,
+          works: Array.isArray(wi) ? wi.map((i: number) => dict[i]).filter(Boolean) : [],
+        })) as ShopHomeItem[]
+      }
     }
   } catch { /* 아래에서 직접 읽기 */ }
   return loadShopHomeItems()
