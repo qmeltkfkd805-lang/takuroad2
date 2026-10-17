@@ -143,14 +143,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [loading, profileLoaded, user, profile, pathname, router])
 
   // 가입 동의 확인 — 프로필이 있는 회원이 지금 버전에 동의하지 않았으면 동의 화면으로 (기존 회원 포함, 한 번만)
+  // 같은 사람 동의 확인은 한 번만 — 기억해 둔 프로필로 먼저 그리고 곧 새 프로필로 바뀌면서 두 번씩 물어봤다
+  const consentAsked = useRef<string | null>(null)
   async function checkConsent(uid: string) {
+    consentAsked.current = uid
     const st = await getConsentStatus()
     setConsentFor(uid)
     setConsentOk(st ? st.current : true)
   }
   useEffect(() => {
-    if (!user || !profile) { setConsentOk(null); setConsentFor(null); return }
-    if (consentFor === user.id) return
+    if (!user || !profile) { setConsentOk(null); setConsentFor(null); consentAsked.current = null; return }
+    if (consentFor === user.id || consentAsked.current === user.id) return
     checkConsent(user.id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, profile])
