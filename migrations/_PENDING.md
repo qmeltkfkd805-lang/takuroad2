@@ -3,31 +3,7 @@
 > 코드는 커밋됐지만 DB에 반영이 안 된 것들. 돌리고 나면 이 목록에서 지운다.
 > **배포(`git push`) 전에 반드시 여기가 비어 있어야 한다.**
 
-## `post_mentions.sql` — 커뮤니티 글 @멘션 알림 (2026-10-15)
-
-- 안 돌리면: 글에서 @닉네임으로 불러도 그 회원에게 알림이 안 간다(글 쓰기·링크는 정상).
-- 먼저: 파일 위쪽 0) 쿼리로 notifications.type 제약 확인. 행이 나오면 실행하지 말고 결과 공유.
-- 확인: 파일 맨 아래 [확인] 쿼리 1행.
-
-## `post_view_3days.sql` — 커뮤니티 조회수: 같은 사람은 3일에 한 번만 (2026-10-15)
-
-- 안 돌리면: 글 상세에서 조회수 올리기가 실패한다(화면은 정상, 조회수만 안 오름). 코드는 viewer 를 함께 보내는 새 함수 모양을 쓴다.
-- 확인: 파일 맨 아래 [확인] 쿼리 1행.
-
-## `community_posts_no_inline_images.sql` — 글에 붙여넣은 사진(data:) 저장 금지 (2026-10-15)
-
-- 안 돌리면: 화면에서는 막히지만, 화면을 거치지 않는 경로로 data: 사진이 들어오면 글이 수 MB가 돼서 커뮤니티 목록이 시간 초과로 안 열릴 수 있다.
-- 확인: 파일 맨 아래 [확인] 쿼리 2행, [참고] 쿼리 0행.
-
-## `link_previews.sql` — 커뮤니티 링크 미리보기 카드 (2026-10-14)
-
-- 안 돌리면: 글쓰기에서 카드 미리보기가 '불러오는 중'에서 실패로 끝나고, 글은 카드 없이 저장된다(글 등록 자체는 됨).
-- 확인: 파일 맨 아래 [확인] 쿼리 2개.
-
-## `member_recent_visits.sql` — 회원 상세 최근 방문 (2026-10-13)
-
-- 안 돌리면: 관리자 회원 상세의 '최근 방문'이 "방문 기록을 불러오지 못했어요"로 나온다(다른 화면은 영향 없음).
-- 확인: 파일 맨 아래 [확인] 쿼리 1행.
+(없음)
 
 ---
 
@@ -74,6 +50,11 @@ psql "postgresql://postgres:<비밀번호>@db.<프로젝트ref>.supabase.co:5432
 
 | 날짜 | 파일 | 내용 |
 | --- | --- | --- |
+| 2026-10-16 | `post_mentions.sql` | 커뮤니티 글 @멘션 알림 — 트리거 `notify_post_mentions`. 검증: 트리거 존재 확인 |
+| 2026-10-16 | `post_view_3days.sql` | 커뮤니티 조회수 같은 사람 3일에 한 번 — `post_view_logs` + `increment_post_view(post uuid, viewer text)`. 검증: 함수 인자 확인, 운영 호출 204 |
+| 2026-10-16 | `community_posts_no_inline_images.sql` | 글 본문·images에 data:/blob: 사진 저장 금지 CHECK 2개(NOT VALID, images는 jsonb라 `images::text`로 검사). 검증: 제약 2개 확인 |
+| 2026-10-16 | `link_previews.sql` | 커뮤니티 링크 미리보기 카드. 검증: [확인] 쿼리 |
+| 2026-10-16 | `member_recent_visits.sql` | 관리자 회원 상세 최근 방문. 검증: [확인] 쿼리 |
 | 2026-10-12 | `account_delete_reasons.sql` | 탈퇴 사유(선택) 테이블 `account_deletion_reasons`(reason 7종 check · detail ≤300자 · created_at). 회원 식별 정보 없음. RLS 켜고 public·anon·authenticated 권한 전부 회수, service_role 만 select·insert(`/api/account/delete`가 탈퇴 완료 후 저장). 검증: relrowsecurity=true |
 | 2026-10-12 | `members_exclude_deleted.sql` | 탈퇴 회원(profiles.status='deleted' 껍데기)을 `get_dashboard_stats` 의 전체 회원·오늘 가입과 `get_admin_members` 목록·검색·총 건수에서 제외. 운영 함수 본문을 읽어 조건만 끼워 넣는 방식(자리 못 찾으면 중단). 검증: 두 함수 본문에 deleted 제외 확인 |
 | 2026-10-12 | `account_delete.sql` | 회원 탈퇴 — `profiles_id_fkey`(→auth.users CASCADE) 제거해 계정 삭제 후에도 profiles 를 '탈퇴한회원_xxxxxxxx' 껍데기로 남김(글·댓글·후기·루트 보존). `route_reviews`·`route_review_photos`·`event_visit_photos` 외래키를 profiles(cascade)로, `contact_messages` 를 profiles(set null)로 재연결. `delete_account_data(uid)`(service_role 전용) — 개인 기록 삭제·인증 매장 해제·프로필 익명화, 관리자 거부. 서버 `/api/account/delete` 가 이 함수 후 `auth.admin.deleteUser`. 사전 점검: 재연결 4테이블 고아 행 0. 탈퇴 실동작 확인 |
