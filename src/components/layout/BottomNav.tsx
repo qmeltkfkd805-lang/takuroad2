@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useAppPathname } from '@/lib/nav/useAppPathname'
 import { EXPLORE, ExploreKey, exploreAreaOf, lastExploreUrl } from '@/lib/nav/explore'
 import styles from './BottomNav.module.css'
 
@@ -34,7 +34,7 @@ function activeTab(pathname: string): TabKey | null {
 }
 
 export default function BottomNav() {
-  const pathname = usePathname() ?? '/'
+  const pathname = useAppPathname()
   const active = activeTab(pathname)
   const area = exploreAreaOf(pathname)
   const [open, setOpen] = useState(false)

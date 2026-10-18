@@ -26,6 +26,7 @@ import { getEventReviewSummary } from '@/services/eventReviewService'
 import { getEventQnaCount } from '@/services/eventQnaService'
 import { EventIcon, EventIconName, snsMeta } from './EventIcon'
 import styles from './EventDetailPage.module.css'
+import { goBack } from '@/lib/nav/leaveEdit'
 
 type Tab = 'about' | 'place' | 'goods' | 'info' | 'review' | 'qna'
 
@@ -269,11 +270,20 @@ export default function EventDetailPage() {
                 <span className={styles.heroScrim} />
               </>
             )}
-            {/* 좌측 상단 저장 버튼 */}
+            {/* 좌측 상단 뒤로 — 샵·루트 상세와 같은 자리 (2026-10-18: 예전엔 여기 저장(하트)이 있어 뒤로가기가 없었다) */}
+            <button
+              type="button"
+              onClick={() => goBack(router, '/events')}
+              aria-label="뒤로"
+              style={{ position: 'absolute', top: 12, left: 12, zIndex: 6, width: 40, height: 40, borderRadius: 9999, border: 'none', cursor: 'pointer', background: 'rgba(255,255,255,.95)', color: 'var(--text)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 10px rgba(0,0,0,.18)' }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+            </button>
+            {/* 우측 상단 저장(하트) — 더보기(⋯) 메뉴가 있으면 그 왼쪽 */}
             <button
               onClick={toggleSaveEvent}
               aria-label={saved ? '저장 해제' : '저장'}
-              style={{ position: 'absolute', top: 12, left: 12, zIndex: 6, width: 40, height: 40, borderRadius: 9999, border: 'none', cursor: 'pointer', background: saved ? 'var(--accent)' : 'rgba(255,255,255,.95)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 10px rgba(0,0,0,.18)' }}
+              style={{ position: 'absolute', top: 14, right: canEdit ? 60 : 14, zIndex: 6, width: 40, height: 40, borderRadius: 9999, border: 'none', cursor: 'pointer', background: saved ? 'var(--accent)' : 'rgba(255,255,255,.95)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 10px rgba(0,0,0,.18)' }}
             >
               <EventIcon name="heart" size={20} color={saved ? '#fff' : 'var(--muted)'} />
             </button>

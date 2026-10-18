@@ -6,6 +6,7 @@ import { useDominantColor } from '@/lib/utils/useDominantColor'
 import { getWorkFanartHighlight } from '@/services/fanartService'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { goBack } from '@/lib/nav/leaveEdit'
 import WorkAffinityButton from './WorkAffinityButton'
 import WorkStateButton from './WorkStateButton'
 import WorkCommunityTabs from '@/components/community/WorkCommunityTabs'
@@ -158,7 +159,16 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
     <div className={styles.page}>
       {/* Hero */}
       <section style={{ background: `radial-gradient(130% 130% at 12% 8%, rgba(255,255,255,.18) 0%, transparent 46%), linear-gradient(140deg, ${accent} 0%, ${shade(accent, 0.34)} 55%, ${shade(accent, 0.64)} 100%)` }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 22px', display: 'flex', gap: 22, alignItems: 'center', flexWrap: 'wrap', position: 'relative' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '60px 22px 32px', display: 'flex', gap: 22, alignItems: 'center', flexWrap: 'wrap', position: 'relative' }}>
+          {/* 좌측 상단 뒤로 — 샵·루트·이벤트 상세와 같은 자리 (2026-10-18 추가, 위 여백 32→60) */}
+          <button
+            type="button"
+            onClick={() => goBack(router, '/my-works')}
+            aria-label="뒤로"
+            style={{ position: 'absolute', top: 14, left: 16, zIndex: 20, border: '1px solid rgba(255,255,255,.34)', background: 'rgba(255,255,255,.16)', color: '#fff', cursor: 'pointer', width: 36, height: 36, borderRadius: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+          </button>
           {/* 우측 상단 ... 메뉴 — 정보 수정 */}
           <div ref={menuRef} style={{ position: 'absolute', top: 14, right: 18, zIndex: 20 }}>
             <button

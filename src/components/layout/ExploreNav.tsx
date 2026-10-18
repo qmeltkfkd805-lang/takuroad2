@@ -5,13 +5,14 @@
      → 하단바 '탐색' 말풍선·홈 바로가기가 그 주소로 보내서 검색어·필터가 유지된다
    · 스크롤 위치를 주소별로 저장했다가, 다시 오면(메뉴 전환·상세에서 뒤로) 그 자리로 */
 import { Suspense, useEffect } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
+import { useAppPathname } from '@/lib/nav/useAppPathname'
 import { ExploreKey, exploreListOf, rememberExploreUrl } from '@/lib/nav/explore'
 
 const SCROLL = 'taku:scroll:'
 
 export default function ExploreNav() {
-  const pathname = usePathname() ?? '/'
+  const pathname = useAppPathname()
   const current = exploreListOf(pathname)
   if (!current) return null
   // useSearchParams 는 Suspense 안에서만
@@ -19,7 +20,7 @@ export default function ExploreNav() {
 }
 
 function ExploreMemory({ current }: { current: ExploreKey }) {
-  const pathname = usePathname() ?? '/'
+  const pathname = useAppPathname()
   const params = useSearchParams()
   const qs = params?.toString() ?? ''
   const url = qs ? `${pathname}?${qs}` : pathname

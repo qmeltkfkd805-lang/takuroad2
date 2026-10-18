@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useRef, Suspense } from 'react'
-import { usePathname } from 'next/navigation'
+import { useAppPathname } from '@/lib/nav/useAppPathname'
 import styles from './AppShell.module.css'
 import Sidebar from './Sidebar'
 import TopBar from './TopBar'
@@ -25,7 +25,7 @@ const DiagOverlay = dynamic(() => import('@/components/debug/DiagOverlay'), { ss
 const NO_SHELL = ['/login', '/admin', '/dev', '/test']
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname() ?? '/'
+  const pathname = useAppPathname()
   const bare = NO_SHELL.some(p => pathname === p || pathname.startsWith(p + '/'))
   // 루트 만들기/수정: 작성 전용 화면 (/route/new, /route/[token]/edit)
   const isRouteBuilder = pathname === '/route/new' || (pathname.startsWith('/route/') && pathname.endsWith('/edit'))
@@ -40,9 +40,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   // 글쓰기·루트작성·프로필 편집·내 활동 기록: 하단 네비 숨김
   const isProfileEdit = pathname === '/profile/settings/profile'
   const hideBottomNav = pathname === '/community/write' || isRouteBuilder || isProfileEdit || isBareProfile
-  // 모바일 전역 상단바: 홈·지도에서만 노출, 그 외 화면은 모두 숨김
+  // 모바일 전역 상단바: 홈·검색·지도에서만 노출, 그 외 화면은 모두 숨김
   // (커뮤니티는 자체 헤더+검색이 있어 전역 상단바 제외. 작품은 탐색 화면이라 위에 탐색 메뉴가 붙는다)
-  const showHeaderMobile = pathname === '/' || pathname === '/map'
+  // 2026-10-18 검색 화면 추가 — 폰에서 /search 를 열면 입력할 곳이 없었다(검색창이 이 상단바에만 있음)
+  const showHeaderMobile = pathname === '/' || pathname === '/map' || pathname === '/search'
+  const homeStyleHeader = pathname === '/' || pathname === '/search'   // 로고 + 화면 폭 가득 검색창
   // 📱 탐색 목록 화면(샵·이벤트·루트·작품) — 본문 위에 탐색 네 메뉴 (PC에선 CSS로 숨김)
   const exploreList = exploreListOf(pathname)
   const hideHeaderMobile = !showHeaderMobile
@@ -110,7 +112,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <LevelUpModal />
     <div className={styles.shell}>
       {diag && <DiagOverlay />}
-      <header data-diag="header" className={`${styles.header}${hideHeaderMobile ? ' ' + styles.headerHiddenMobile : ''}${pathname === '/map' ? ' ' + styles.headerMap : ''}${pathname === '/' ? ' ' + styles.headerHome : ''}`}>
+      <header data-diag="header" className={`${styles.header}${hideHeaderMobile ? ' ' + styles.headerHiddenMobile : ''}${pathname === '/map' ? ' ' + styles.headerMap : ''}${homeStyleHeader ? ' ' + styles.headerHome : ''}`}>
         <Link href="/" className={styles.logo}>
           <img src="/brand/takuroad-logo.png" alt="TAKUROAD" />
         </Link>

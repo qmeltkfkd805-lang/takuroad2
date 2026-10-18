@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useAppPathname } from '@/lib/nav/useAppPathname'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import { getMyLevelInfo, LevelInfo } from '@/services/expService'
@@ -22,7 +22,7 @@ const NAV: NavItem[] = [
 ]
 
 export default function Sidebar() {
-  const pathname = usePathname() ?? '/'
+  const pathname = useAppPathname()
   const { user, profile } = useAuth()
   const [info, setInfo] = useState<LevelInfo | null>(null)
 

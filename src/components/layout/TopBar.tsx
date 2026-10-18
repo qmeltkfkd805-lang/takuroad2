@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect, useRef, useMemo, FormEvent } from 'react'
 import Link from 'next/link'
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { useAppPathname } from '@/lib/nav/useAppPathname'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import { getUnreadCount, getNotifications, markAsRead, markAllAsRead, getNotificationLink, Notification } from '@/services/notificationService'
@@ -42,7 +43,8 @@ function buildSuggestions(r: GlobalSearchResult, term: string): Suggestion[] {
 
 export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveWork[] }) {
   const router = useRouter()
-  const pathname = usePathname() ?? ''
+  const pathname = useAppPathname()
+  const onSearchPage = pathname === '/search'   // 검색 화면: 검색창에 지금 검색어를 채워 두고, 비어 있으면 바로 입력할 수 있게
   const isProfile = pathname.startsWith('/profile')   // 📱 마이페이지에선 모바일 검색창 숨김 (자체 헤더가 있어 중복)
   const onMap = pathname === '/map'   // 지도에서 검색하면 샵 상세 대신 지도에서 위치를 보여준다
   const { user, profile, isAdmin } = useAuth()
@@ -53,6 +55,13 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
   const [searching, setSearching] = useState(false)
   const [open, setOpen] = useState(false)
   const wrapRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    if (!onSearchPage) return
+    const cur = new URLSearchParams(window.location.search).get('q') ?? ''
+    setQ(cur)
+    if (!cur) inputRef.current?.focus()
+  }, [onSearchPage])
   const [notiOpen, setNotiOpen] = useState(false)
   const [notiList, setNotiList] = useState<Notification[]>([])
   const notiRef = useRef<HTMLDivElement>(null)
@@ -140,7 +149,13 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
     }
     goAll()
   }
-  function goAll() { if (term) { setOpen(false); router.push('/search?q=' + encodeURIComponent(term)) } }
+  function goAll() {
+    if (!term) return
+    setOpen(false)
+    ;(document.activeElement as HTMLElement | null)?.blur?.()   // 📱 키보드 내리고 결과 보기
+    const url = '/search?q=' + encodeURIComponent(term)
+    if (onSearchPage) router.replace(url); else router.push(url)   // 검색 화면에서 다시 검색하면 뒤로가기 기록을 쌓지 않는다
+  }
   function go(href: string) { setOpen(false); setQ(''); router.push(href) }
   // 지도 화면: 샵·굿즈는 지도에서 그 샵 위치로 (t = 같은 샵을 다시 골라도 다시 이동하게)
   function goSuggestion(s: Suggestion) {
@@ -185,11 +200,13 @@ export default function TopBar({ trendingWorks = [] }: { trendingWorks?: ActiveW
   }
 
   return (
-    <div className={`${styles.bar}${onMap ? ' ' + styles.barMap : ''}${pathname === '/' ? ' ' + styles.barHome : ''}`}>
+    <div className={`${styles.bar}${onMap ? ' ' + styles.barMap : ''}${pathname === '/' || onSearchPage ? ' ' + styles.barHome : ''}`}>
       <div className={`${styles.searchWrap}${isProfile ? ' ' + styles.hideSearchMobile : ''}`} ref={wrapRef}>
         <form className={styles.search} onSubmit={onSearch}>
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
           <input
+            ref={inputRef}
+            enterKeyHint="search"
             value={q}
             onChange={e => { setQ(e.target.value); setOpen(true) }}
             onFocus={() => setOpen(true)}
