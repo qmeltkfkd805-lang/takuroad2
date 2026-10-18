@@ -240,6 +240,15 @@ export async function setPostSaved(postId: string, userId: string, save: boolean
   return true
 }
 
+/** 이 글들 중 내가 저장한 것 (카드 목록의 저장 표시용 — 한 번에 묻는다) */
+export async function getSavedPostIds(userId: string, postIds: string[]): Promise<Set<string>> {
+  if (postIds.length === 0) return new Set()
+  const supabase = createClient()
+  const { data, error } = await supabase.from('saved_posts').select('post_id').eq('user_id', userId).in('post_id', postIds)
+  if (error) { console.error('[글 저장] 목록 조회 실패:', error.message); return new Set() }
+  return new Set((data ?? []).map((r: any) => String(r.post_id)))
+}
+
 export interface SavedPostEntry {
   postId: string
   savedAt: string
@@ -566,6 +575,21 @@ export function rememberPosts(list: CommunityPost[]) {
   for (const p of list) postPeek.set(p.id, p)
   if (postPeek.size > 400) { const drop = postPeek.size - 400; let i = 0; for (const k of postPeek.keys()) { if (i++ >= drop) break; postPeek.delete(k) } }
 }
+/** 글 id 목록 → 지금 남에게 보이는 글만 (공개·활성, 차단 작성자 제외 뷰). 순서는 보장하지 않는다 */
+export async function getVisiblePostsByIds(ids: string[], userId?: string | null): Promise<CommunityPost[]> {
+  if (ids.length === 0) return []
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('community_posts_visible').select(SELECT)
+    .in('id', ids).eq('status', 'active').eq('visibility', 'public')
+  if (error) { console.error('[getVisiblePostsByIds]', error.message); return [] }
+  const rows = data ?? []
+  const likedSet = await likedSetFor(rows.map((r: any) => r.id), userId)
+  const out = rows.map((r: any) => toPost(r, likedSet))
+  rememberPosts(out)
+  return out
+}
+
 export async function getPosts(
   board: Board | 'all', sort: PostSort = 'latest', userId?: string | null, opts?: PostQuery,
 ): Promise<CommunityPost[]> {

@@ -13,7 +13,7 @@ import { linkCardHtml, linkCardLoadingHtml, cleanLinkCards, LINK_CARD_HOLDER_STY
 import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import { youtubeId, youtubeInnerHtml, YT_HOLDER_STYLE } from '@/lib/utils/youtube'
 import { createPoll } from '@/services/pollService'
-import { Board, BOARDS, BOARD_FLAIRS, CREATION_BOARDS, boardMeta, NewPost, NewPoll } from '@/types/community-post'
+import { Board, BOARDS, BOARD_FLAIRS, CREATION_BOARDS, boardMeta, NewPost, NewPoll, DUKMARK_BOARD, DukmarkUse } from '@/types/community-post'
 import DraftNotice from '@/components/common/DraftNotice'
 import { PostBodyPreview } from './PostUI'
 import ImageEditModal from './ImageEditModal'
@@ -21,6 +21,9 @@ import { searchShopsForEmbed, searchEventsForEmbed, getSavedShopsForEmbed, getSa
 import { createClient as createSupabase } from '@/lib/supabase/client'
 import CompanionEventPicker from './CompanionEventPicker'
 import { getPostEvent, setPostEvent, PostEventSummary } from '@/services/postEventService'
+import DukmarkWritePanel from './DukmarkWritePanel'
+import { getPostDukmark, setPostDukmark } from '@/services/dukmarkService'
+import { siteUrlsIn, mergeSiteUrls } from '@/lib/utils/dukmark'
 
 type Tag = { id: string; name: string; slug: string }
 const DRAFT_KEY = 'takuroad_community_draft'
@@ -521,6 +524,17 @@ export default function PostWritePage() {
   const [boardOpen, setBoardOpen] = useState(false)
   const [myWorks, setMyWorks] = useState<{ id: string; name: string }[]>([])   // 내 최애·관심 작품 (빠른 태그)
   const [companionEvent, setCompanionEvent] = useState<PostEventSummary | null>(null)   // 덕메게시판: 같이 갈 이벤트
+  // 덕마크 (덕질 노하우 글만) — 사이트 주소는 본문 링크(dmBodySites)에서 뺀 것(dmRemoved)을 빼고 직접 더한 것(dmAdded)을 더한다
+  const [dukmarkOn, setDukmarkOn] = useState(false)
+  const [dmUses, setDmUses] = useState<DukmarkUse[]>([])
+  const [dmBodySites, setDmBodySites] = useState<string[]>([])
+  const [dmAdded, setDmAdded] = useState<string[]>([])
+  const [dmRemoved, setDmRemoved] = useState<string[]>([])
+  const [dmCover, setDmCover] = useState<string | null>(null)
+  const [dmByMaker, setDmByMaker] = useState(false)
+  const [dmBodyImages, setDmBodyImages] = useState<string[]>([])
+  const dmWasOn = useRef(false)                         // 수정: 원래 덕마크가 있던 글 (끄면 지운다)
+  const dmSavedSites = useRef<string[] | null>(null)   // 수정: 불러온 사이트 목록 — 첫 본문 읽기 때 '뺀 것'을 복원
 
   const [title, setTitle] = useState('')
   const [images, setImages] = useState<string[]>([])
@@ -578,6 +592,48 @@ export default function PostWritePage() {
   const isFanart = board === 'fanart' || board === 'fancraft'
   const allAgreed = !isFanart || agree.every(Boolean)
   const isGoods = board === 'goods'
+  const canDukmark = board === DUKMARK_BOARD
+  const dmRemovedKeys = new Set(dmRemoved.map(u => u.replace(/\/$/, '').toLowerCase()))
+  const dmSites = mergeSiteUrls(dmBodySites.filter(u => !dmRemovedKeys.has(u.replace(/\/$/, '').toLowerCase())), dmAdded)
+
+  // 덕마크: 켜져 있는 동안 본문의 링크·사진을 읽어 둔다 (입력이 멈추고 조금 뒤)
+  useEffect(() => {
+    if (!dukmarkOn || !canDukmark) return
+    const root = editorRef.current
+    let timer: ReturnType<typeof setTimeout> | null = null
+    const scan = () => {
+      const r = editorRef.current
+      const sites = siteUrlsIn(r)
+      setDmBodySites(sites)
+      setDmBodyImages(Array.from(r?.querySelectorAll<HTMLImageElement>('img') ?? [])
+        .filter(img => !img.closest('[data-link-card]'))
+        .map(img => img.getAttribute('src') ?? '')
+        .filter(src => /^https?:\/\//.test(src)))
+      // 수정 화면: 저장돼 있던 목록에 없는 본문 링크 = 예전에 작성자가 뺀 것 (본문을 다 불러온 뒤에 한 번)
+      if (dmSavedSites.current && (r?.innerHTML ?? '').trim()) {
+        const saved = new Set(dmSavedSites.current.map(u => u.replace(/\/$/, '').toLowerCase()))
+        setDmRemoved(sites.filter(u => !saved.has(u.replace(/\/$/, '').toLowerCase())))
+        dmSavedSites.current = null
+      }
+    }
+    scan()
+    // 타이핑뿐 아니라 붙여넣기·링크 카드·수정 글 불러오기처럼 코드로 바뀌는 것도 잡으려고 DOM 변화를 본다
+    const obs = root ? new MutationObserver(() => { if (timer) clearTimeout(timer); timer = setTimeout(scan, 600) }) : null
+    if (root) obs?.observe(root, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['href', 'src'] })
+    return () => { if (timer) clearTimeout(timer); obs?.disconnect() }
+  }, [dukmarkOn, canDukmark])
+
+  // 수정: 원래 덕마크 불러오기
+  useEffect(() => {
+    if (!editId || !user) return
+    getPostDukmark(editId).then(dm => {
+      if (!dm) return
+      dmWasOn.current = true
+      dmSavedSites.current = dm.siteUrls
+      setDmAdded(dm.siteUrls); setDmUses(dm.uses); setDmCover(dm.coverUrl); setDmByMaker(dm.byMaker)
+      setDukmarkOn(true)
+    })
+  }, [editId, user?.id])
 
   useEffect(() => { getAllTagsForSelect().then((t) => setTags(t as Tag[])).catch(() => setTags([])) }, [])
   // 새 글: 쓰던 글이 있으면 들어오자마자 자동으로 채워 넣는다(다른 화면에 다녀오거나 새로고침해도 그대로).
@@ -1522,6 +1578,8 @@ export default function PostWritePage() {
     }
     if (!title.trim() && !plain && imgs.length === 0 && !pollData) { setErr('제목이나 내용을 입력해주세요.'); return }
     if (isFanart && !notice && !allAgreed) { setErr('업로드 전 확인 항목에 모두 동의해주세요.'); return }
+    const dmInput = canDukmark && dukmarkOn ? { uses: dmUses, coverUrl: dmCover, siteUrls: dmSites, byMaker: dmByMaker } : null
+    if (dmInput && dmInput.uses.length === 0) { setErr('덕마크 용도를 1개 이상 골라주세요.'); return }
     if (/src="(data|blob):/i.test(html) || html.length > 500_000) { setErr('본문이 너무 커요. 사진은 사진 버튼으로 넣어주세요.'); return }
     // 등록 전 점검 — 놓치기 쉬운 것만 가볍게. [그대로 올리기]를 누르면 다시 묻지 않는다
     if (!skipCheckRef.current) {
@@ -1542,6 +1600,10 @@ export default function PostWritePage() {
       const ok = await updatePost(editId, { board: finalBoard, tagIds, title, content: html, images: imgs, showOnWork, spoiler, flair: BOARD_FLAIRS[finalBoard] ? flair : null, linkUrl })
       // 덕메게시판: 같이 갈 이벤트 연결 갱신 (다른 게시판으로 옮기면 연결 해제)
       if (ok) await setPostEvent(editId, finalBoard === 'companion' ? companionEvent?.id ?? null : null)
+      // 덕마크: 켜져 있으면 저장, 원래 있었는데 껐으면 지운다 (다른 게시판으로 옮기면 DB 가 알아서 지운다)
+      if (ok && finalBoard === DUKMARK_BOARD && (dmInput || dmWasOn.current)) {
+        if (!(await setPostDukmark(editId, dmInput))) { setSaving(false); setErr('글은 수정됐지만 덕마크를 저장하지 못했어요. 다시 시도해 주세요.'); return }
+      }
       // 굿즈자랑 글이면 연결된 굿즈의 이름·캐릭터·태그도 함께 갱신
       if (ok && finalBoard === 'goods' && goodsId) {
         try {
@@ -1558,6 +1620,11 @@ export default function PostWritePage() {
     if (!id) { setSaving(false); setErr('등록에 실패했어요. 잠시 후 다시 시도해주세요.'); return }
     if (pollData) { await createPoll(id, pollData) }
     if (finalBoard === 'companion' && companionEvent) { await setPostEvent(id, companionEvent.id) }
+    if (finalBoard === DUKMARK_BOARD && dmInput && !(await setPostDukmark(id, dmInput))) {
+      // 글은 올라갔으니 수정 화면으로 보내 덕마크만 다시 켜게 한다
+      window.alert('글은 올라갔지만 덕마크를 저장하지 못했어요. 수정 화면에서 다시 켜 주세요.')
+      setSaving(false); draftBlocked.current = true; clearDraft(); router.push(`/community/write?edit=${id}`); return
+    }
 
     if (finalBoard === 'goods' && !notice && existingGoodsId) {
       // 기존 굿즈로 새 글 작성: 새 굿즈 생성 없이 post_goods_links만 연결
@@ -2143,6 +2210,22 @@ export default function PostWritePage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 9, padding: '14px 16px', background: 'var(--surface2)', borderRadius: 12, marginTop: 18 }}>
                 {fanartAgreeFields}
               </div>
+            )}
+            {/* 덕마크 (덕질 노하우만) — 에디터 바로 아래 */}
+            {canDukmark && (
+              <DukmarkWritePanel
+                desktop={isDesktop}
+                on={dukmarkOn} onToggle={setDukmarkOn}
+                siteUrls={dmSites}
+                onRemoveSite={u => { setDmAdded(prev => prev.filter(x => x !== u)); setDmRemoved(prev => [...prev, u]) }}
+                onAddSite={u => { setDmRemoved(prev => prev.filter(x => x.replace(/\/$/, '').toLowerCase() !== u.replace(/\/$/, '').toLowerCase())); setDmAdded(prev => [...prev, u]) }}
+                works={selectedTags.map(t => ({ id: t.id, name: t.name }))}
+                onRemoveWork={id => toggleTag(id)}
+                onAddWork={() => { const inp = tagBoxRef.current?.querySelector('input'); inp?.scrollIntoView({ behavior: 'smooth', block: 'center' }); inp?.focus({ preventScroll: true }) }}
+                uses={dmUses} onUses={setDmUses}
+                coverUrl={dmCover} bodyImages={dmBodyImages} onCover={setDmCover}
+                byMaker={dmByMaker} onByMaker={setDmByMaker}
+              />
             )}
             </div>
           </div>

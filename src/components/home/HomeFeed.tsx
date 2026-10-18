@@ -32,6 +32,10 @@ import RankList from './RankList'
 import LogoLoader from '@/components/common/LogoLoader'
 import { peekCache, putCache } from '@/lib/utils/pageCache'
 import ThumbImg from '@/components/common/ThumbImg'
+import DukmarkCardView from '@/components/community/DukmarkCardView'
+import DukmarkMark from '@/components/community/DukmarkMark'
+import { getSavedPostIds, setPostSaved } from '@/services/communityPostService'
+import type { DukmarkCard } from '@/types/community-post'
 
 const PALETTE = [
   { bg: '#EEEDFE', fg: '#3C3489' }, { bg: '#E1F5EE', fg: '#0F6E56' },
@@ -179,9 +183,10 @@ interface HomeFeedProps {
   routes: any[]
   events: any[]
   activeWorks: any[]
+  dukmarks?: DukmarkCard[]   // 추천 덕마크 (관리자가 고른 덕마크 글)
 }
 
-export default function HomeFeed({ popularShops, routes, activeWorks, events }: HomeFeedProps) {
+export default function HomeFeed({ popularShops, routes, activeWorks, events, dukmarks = [] }: HomeFeedProps) {
   const { user } = useAuth()
   const router = useRouter()
   const { isSaved, toggleSave } = useSaved()
@@ -190,6 +195,7 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
   const newsSlider = useSlider(260)
   const routeSlider = useSlider(320)
   const eventSlider = useSlider(320)
+  const dukmarkSlider = useSlider(240)
   const shopsSlider = useSlider(424)
   // 내 작품 관계 — 한 번 받았으면 바로 보여주고 뒤에서 새로 받는다
   const [rels, setRels] = useState<WorkRelationship[]>(() => peekCache<{ uid: string; rels: WorkRelationship[] }>('home:rels')?.rels ?? [])
@@ -286,6 +292,20 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
     })
   }
 
+  // 추천 덕마크 — 내가 저장한 글 표시·저장 토글 (저장 = 마이페이지 저장함과 같은 saved_posts)
+  const [dmSaved, setDmSaved] = useState<Set<string>>(new Set())
+  useEffect(() => {
+    if (!user || dukmarks.length === 0) return
+    getSavedPostIds(user.id, dukmarks.map(c => c.post.id)).then(setDmSaved)
+  }, [user, dukmarks])
+  const toggleDukmarkSave = async (postId: string) => {
+    if (!user) { router.push(ROUTES.login); return }
+    const next = !dmSaved.has(postId)
+    const flip = (on: boolean) => setDmSaved(prev => { const s = new Set(prev); if (on) s.add(postId); else s.delete(postId); return s })
+    flip(next)
+    if (!(await setPostSaved(postId, user.id, next))) flip(!next)
+  }
+
   return (
     <div>
       {/* 📰 최애 새소식 — 가로 슬라이드 */}
@@ -325,6 +345,28 @@ export default function HomeFeed({ popularShops, routes, activeWorks, events }: 
           <SlideRail slider={routeSlider} className={styles.routeRail}>
             {routes.map((r: any) => (
               <RouteSlideCard key={r.id} r={r} saved={savedRouteIds.has(r.id)} onToggleSave={toggleSaveRoute} />
+            ))}
+          </SlideRail>
+        </section>
+      )}
+
+      {/* 🔖 추천 덕마크 — 관리자가 고른 덕마크 글, 가로 슬라이드 */}
+      {dukmarks.length > 0 && (
+        <section className={styles.routeSection}>
+          <div className={styles.routeHead}>
+            <div className={styles.dukmarkHeadLeft}>
+              <span className={styles.routeHeadTitle} style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}><DukmarkMark size={18} />추천 덕마크</span>
+              <span className={styles.dukmarkHeadSub}>저장해두고 싶은 덕질 정보</span>
+            </div>
+            <button className={styles.routeMore} onClick={() => router.push('/community?tab=dukmark')}>전체 보기 ›</button>
+          </div>
+          <SlideRail slider={dukmarkSlider} className={styles.routeRail}>
+            {dukmarks.map(c => (
+              <div key={c.post.id} className={styles.dukmarkItem}>
+                <DukmarkCardView card={c} variant="grid" workNames={c.post.work ? [c.post.work.name] : []}
+                  saved={dmSaved.has(c.post.id)} onToggleSave={() => toggleDukmarkSave(c.post.id)}
+                  onOpen={() => router.push(`/community/${c.post.id}`)} />
+              </div>
             ))}
           </SlideRail>
         </section>

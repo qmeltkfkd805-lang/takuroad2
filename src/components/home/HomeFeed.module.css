@@ -191,3 +191,10 @@
    카드 하트는 28px, '전체 보기 ›'는 59×21px 이라 폰에서 잘 안 눌렸다 */
 .routeHeart::after { content: ''; position: absolute; inset: -8px; border-radius: 9999px; }
 .newsMore, .routeMore { min-height: 40px; padding: 0 8px; margin-right: -8px; }
+
+/* 🔖 추천 덕마크 — 제목 아래 한 줄 설명, 카드 폭 고정(모바일은 화면의 62%) */
+.dukmarkHeadLeft { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dukmarkHeadSub { font-size: 13px; font-weight: 600; color: var(--muted); }
+.dukmarkItem { flex: 0 0 auto; width: 230px; min-width: 0; display: flex; scroll-snap-align: start; user-select: none; -webkit-user-select: none; }
+.dukmarkItem > article { flex: 1; }
+@media (max-width: 768px) { .dukmarkItem { width: 62%; } }

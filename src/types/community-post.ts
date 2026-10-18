@@ -120,6 +120,52 @@ export interface NewPost {
   linkUrl?: string | null   // 링크 미리보기 카드 (없으면 카드 없음)
 }
 
+// ── 덕마크 (덕질 노하우 글에 붙는 북마크 표시 — migrations/post_dukmarks.sql) ──
+export const DUKMARK_BOARD: Board = 'tips'   // 이 게시판 글만 덕마크를 켤 수 있다 (DB 정책도 같음)
+
+export type DukmarkUse = 'shopping' | 'info' | 'translate' | 'collection' | 'meme' | 'authentic' | 'waiting' | 'map'
+
+// 용도 — 순서 = 필터·작성 폼 순서. 값은 DB check 제약과 같아야 한다
+export const DUKMARK_USES: { value: DukmarkUse; label: string }[] = [
+  { value: 'shopping',   label: '쇼핑' },
+  { value: 'info',       label: '정보·일정' },
+  { value: 'translate',  label: '번역' },
+  { value: 'collection', label: '도감·기록' },
+  { value: 'meme',       label: '짤·꾸미기' },
+  { value: 'authentic',  label: '정품 구별' },
+  { value: 'waiting',    label: '웨이팅' },
+  { value: 'map',        label: '지도·투어' },
+]
+export const DUKMARK_USE_LABEL: Record<string, string> = Object.fromEntries(DUKMARK_USES.map(u => [u.value, u.label]))
+export const DUKMARK_MAX_USES = 3
+export const DUKMARK_MAX_SITES = 30
+export const DUKMARK_SUMMARY_MAX = 80
+
+export interface PostDukmark {
+  postId: string
+  uses: DukmarkUse[]
+  coverUrl: string | null    // 비우면 글의 첫 이미지
+  summary: string | null     // 비우면 본문 앞부분
+  siteUrls: string[]         // 본문 링크로 채우고 작성자가 빼거나 더한 것 — 카드의 '사이트 N곳'
+  byMaker: boolean           // 글쓴이가 그 사이트를 직접 만들었다
+  saveCount: number
+  featuredAt: string | null  // 홈 '추천 덕마크' (관리자가 고른 시각)
+}
+
+export interface DukmarkInput {
+  uses: DukmarkUse[]
+  coverUrl?: string | null
+  summary?: string | null
+  siteUrls: string[]
+  byMaker?: boolean
+}
+
+// 덕마크 탭·홈 카드 한 장 = 글 + 덕마크 정보
+export interface DukmarkCard {
+  post: CommunityPost
+  dukmark: PostDukmark
+}
+
 export interface PostComment {
   id: string
   author: PostAuthor | null

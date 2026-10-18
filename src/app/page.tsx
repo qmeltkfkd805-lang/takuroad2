@@ -3,6 +3,7 @@ import { getShops } from '@/services/shopService'
 import { getPublicRoutes } from '@/services/routeService'
 import { getActiveWorks } from '@/services/activeWorksService'
 import { getEventHomeItems } from '@/services/eventHomeService'
+import { getFeaturedDukmarkCards } from '@/services/dukmarkService'
 import { rankEvents } from '@/lib/event/rankEvents'
 import { collapseEventSeries } from '@/lib/event/eventSeries'
 import { getPublicHeroSlots } from '@/services/heroService.server'
@@ -83,13 +84,20 @@ const getHomeEvents = unstable_cache(async () => {
   return collapseEventSeries(rankEvents(items).map(r => r.event)).slice(0, 8)
 }, ['home-events-v2'], { revalidate: 60 })
 
+/* 추천 덕마크 — 관리자가 고른 덕마크 글 (최근에 고른 순 10개). 카드엔 본문이 필요 없어 빼고 보낸다(홈 응답을 가볍게) */
+const getHomeDukmarks = unstable_cache(async () => {
+  const cards = await getFeaturedDukmarkCards(10)
+  return cards.map(c => ({ ...c, post: { ...c.post, content: null } }))
+}, ['home-dukmarks-v1'], { revalidate: 60 })
+
 export default async function HomePage() {
-  const [shopData, routes, activeWorks, hero, events] = await Promise.all([
+  const [shopData, routes, activeWorks, hero, events, dukmarks] = await Promise.all([
     getHomeShopData(),
     getHomeRoutes(),
     getHomeWorks(),
     getPublicHeroSlots(),    // 홈 히어로: 수동 슬롯 우선 + 시작예정 이벤트 자동 채움 (최대 5, 비로그인 기준)
     getHomeEvents(),
+    getHomeDukmarks(),
   ])
   return (
     <>
@@ -99,7 +107,7 @@ export default async function HomePage() {
       </div>
       <div className={styles.homeLayout}>
         <div>
-          <HomeFeed popularShops={shopData.popularShops} routes={routes} activeWorks={activeWorks} events={events} />
+          <HomeFeed popularShops={shopData.popularShops} routes={routes} activeWorks={activeWorks} events={events} dukmarks={dukmarks} />
         </div>
         <HomeRail hotMap={shopData.hotMap} eventCount={events.length} />
       </div>

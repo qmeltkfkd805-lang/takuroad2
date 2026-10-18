@@ -26,6 +26,8 @@ import { createPortal } from 'react-dom'
 import { findLinkBlock } from '@/lib/utils/linkUrl'
 import { linkCardHtml, LINK_CARD_HOLDER_STYLE, LINK_CARD_VERSION, type LinkPreview } from '@/lib/utils/linkCardHtml'
 import { getPostEvent, PostEventSummary } from '@/services/postEventService'
+import { getPostDukmark, setDukmarkFeatured } from '@/services/dukmarkService'
+import { DUKMARK_BOARD } from '@/types/community-post'
 import { hydrateYoutube } from '@/lib/utils/youtube'
 import { bindPostBody, POST_FX_CSS } from '@/lib/utils/postBodyFx'
 import { sanitizePostHtml } from '@/lib/utils/sanitizePostHtml'
@@ -323,6 +325,38 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
     return () => { alive = false }
   }, [menuOpen, canExhibit, exhibitEntryId, post.id])
 
+  /* 관리자: 덕마크 글을 홈 '추천 덕마크'에 올리기·내리기 (덕마크가 켜진 덕질 노하우 글만).
+     메뉴를 열 때 지금 상태를 읽는다 — undefined = 확인 중, null = 덕마크 아님, true/false = 추천 여부 */
+  const canFeature = isAdmin && post.board === DUKMARK_BOARD && post.status === 'active'
+  const [featureState, setFeatureState] = useState<{ postId: string; featured: boolean | null } | null>(null)
+  const dmFeatured: boolean | null | undefined = featureState?.postId === post.id ? featureState.featured : undefined
+  const [featureBusy, setFeatureBusy] = useState(false)
+  useEffect(() => {
+    if (!menuOpen || !canFeature || dmFeatured !== undefined) return
+    let alive = true
+    const pid = post.id
+    getPostDukmark(pid)
+      .then(dm => { if (alive) setFeatureState({ postId: pid, featured: dm ? !!dm.featuredAt : null }) })
+      .catch(() => { if (alive) setFeatureState({ postId: pid, featured: null }) })
+    return () => { alive = false }
+  }, [menuOpen, canFeature, dmFeatured, post.id])
+  const toggleFeature = async () => {
+    if (dmFeatured == null || featureBusy) return
+    setMenuOpen(false)
+    setFeatureBusy(true)
+    const next = !dmFeatured
+    const ok = await setDukmarkFeatured(post.id, next)
+    setFeatureBusy(false)
+    if (ok) setFeatureState({ postId: post.id, featured: next })
+    window.alert(ok ? (next ? '홈 추천 덕마크에 올렸어요. 홈에는 1분 안에 보여요.' : '홈 추천 덕마크에서 내렸어요.') : '바꾸지 못했어요. 잠시 후 다시 시도해 주세요.')
+  }
+  const featureItem = canFeature && dmFeatured !== null ? (
+    <button onClick={toggleFeature} disabled={dmFeatured === undefined || featureBusy}
+      style={dmFeatured === undefined ? { ...menuItem, color: 'var(--muted)' } : { ...menuItem, color: 'var(--accent)' }}>
+      {dmFeatured === undefined ? '덕마크 확인 중…' : dmFeatured ? '홈 추천에서 내리기' : '홈 추천 덕마크로 올리기'}
+    </button>
+  ) : null
+
   const toggleExhibit = async () => {
     if (exhibitEntryId === undefined || exhibitBusy) return
     setMenuOpen(false)
@@ -375,6 +409,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
       </button>
       {menuOpen && !isAuthor && (
         <div style={{ position: 'absolute', top: '100%', right: 0, zIndex: 30, marginTop: 4, minWidth: 140, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.14)', overflow: 'hidden' }}>
+          {featureItem}
           <button onClick={() => { setMenuOpen(false); setReporting(true) }} style={{ ...menuItem, color: '#e04343' }}>신고하기</button>
           {canBlock(user, post.author) && <button onClick={() => { setMenuOpen(false); blockAuthor(post.author!, true) }} disabled={blockBusy} style={menuItem}>작성자 차단하기</button>}
         </div>
@@ -382,6 +417,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
       {menuOpen && isAuthor && (
         <div style={{ position: 'absolute', top: '100%', right: 0, zIndex: 30, marginTop: 4, minWidth: 140, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.14)', overflow: 'hidden' }}>
           <button onClick={() => { setMenuOpen(false); router.push(`/community/write?edit=${post.id}`) }} style={menuItem}>수정하기</button>
+          {featureItem}
           <button onClick={togglePrivate} style={menuItem}>{post.visibility === 'private' ? '전체 공개' : '나만보기'}</button>
           {canExhibit && (
             <button onClick={toggleExhibit} disabled={exhibitEntryId === undefined || exhibitBusy}
