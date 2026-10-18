@@ -27,7 +27,8 @@ import { findLinkBlock } from '@/lib/utils/linkUrl'
 import { linkCardHtml, LINK_CARD_HOLDER_STYLE, LINK_CARD_VERSION, type LinkPreview } from '@/lib/utils/linkCardHtml'
 import { getPostEvent, PostEventSummary } from '@/services/postEventService'
 import { getPostDukmark, setDukmarkFeatured } from '@/services/dukmarkService'
-import { DUKMARK_BOARD } from '@/types/community-post'
+import { DUKMARK_BOARD, DUKMARK_USE_LABEL, PostDukmark } from '@/types/community-post'
+import DukmarkMark from './DukmarkMark'
 import { hydrateYoutube } from '@/lib/utils/youtube'
 import { bindPostBody, POST_FX_CSS } from '@/lib/utils/postBodyFx'
 import { sanitizePostHtml } from '@/lib/utils/sanitizePostHtml'
@@ -325,10 +326,25 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
     return () => { alive = false }
   }, [menuOpen, canExhibit, exhibitEntryId, post.id])
 
+  const [featureState, setFeatureState] = useState<{ postId: string; featured: boolean | null } | null>(null)   // 홈 추천 여부 (아래 관리자 메뉴)
+  /* 덕마크 배지 — 덕질 노하우 글이면 덕마크가 켜져 있는지 읽어 둔다 (게시판 이름 옆 배지, 관리자 홈 추천 메뉴가 같이 쓴다) */
+  const [dmState, setDmState] = useState<{ postId: string; dm: PostDukmark | null } | null>(null)
+  const postDukmark: PostDukmark | null = dmState?.postId === post.id ? dmState.dm : null
+  useEffect(() => {
+    if (post.board !== DUKMARK_BOARD) return
+    let alive = true
+    const pid = post.id
+    getPostDukmark(pid).then(dm => {
+      if (!alive) return
+      setDmState({ postId: pid, dm })
+      setFeatureState({ postId: pid, featured: dm ? !!dm.featuredAt : null })
+    }).catch(() => {})
+    return () => { alive = false }
+  }, [post.id, post.board])
+
   /* 관리자: 덕마크 글을 홈 '추천 덕마크'에 올리기·내리기 (덕마크가 켜진 덕질 노하우 글만).
      메뉴를 열 때 지금 상태를 읽는다 — undefined = 확인 중, null = 덕마크 아님, true/false = 추천 여부 */
   const canFeature = isAdmin && post.board === DUKMARK_BOARD && post.status === 'active'
-  const [featureState, setFeatureState] = useState<{ postId: string; featured: boolean | null } | null>(null)
   const dmFeatured: boolean | null | undefined = featureState?.postId === post.id ? featureState.featured : undefined
   const [featureBusy, setFeatureBusy] = useState(false)
   useEffect(() => {
@@ -506,6 +522,15 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
         </button>
       )}
       {post.featured && <FeaturedTag kind={post.featured} inline />}
+      {/* 덕마크 배지 — 누르면 덕마크 탭으로 */}
+      {postDukmark && (
+        <button onClick={e => { e.stopPropagation(); router.push('/community?tab=dukmark') }} title="덕마크에서 작품·용도별로 모아 보기"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11.5, fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l, rgba(255,86,146,.12))', border: 'none', padding: '3px 9px 3px 7px', borderRadius: 9999, cursor: 'pointer', fontFamily: 'inherit' }}>
+          <DukmarkMark size={12} />덕마크
+          {postDukmark.uses.length > 0 && <span style={{ fontWeight: 700, opacity: .85 }}>· {postDukmark.uses.map(u => DUKMARK_USE_LABEL[u] ?? u).join(' · ')}</span>}
+        </button>
+      )}
+      {postDukmark?.byMaker && <span style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', border: '1px solid var(--accent)', borderRadius: 5, padding: '0 5px' }}>제작자</span>}
       {extra}
       {showKebab && kebab}
     </div>
