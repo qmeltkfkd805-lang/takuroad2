@@ -36,7 +36,7 @@
   .fab:hover .label { opacity: 1; }
 }
 /* 현재 위치 — 흰 배경 */
-.locFab { background: var(--surface); border: 1px solid var(--border); }
+.locFab { background: var(--surface); box-shadow: 0 2px 10px rgba(0, 0, 0, .18), inset 0 0 0 1px var(--border); }   /* 테두리(border)는 원을 1px 줄이고 아이콘을 1px 밀어서 아래 + 버튼과 줄이 안 맞았다 → 안쪽 그림자 선으로 (2026-10-18) */
 .locFab .label { color: var(--text); }
 /* 샵 등록 — 핑크 */
 .shopFab { background: var(--accent); box-shadow: 0 2px 12px rgba(255,86,146,.4); }
