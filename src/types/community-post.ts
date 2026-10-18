@@ -141,12 +141,27 @@ export const DUKMARK_MAX_USES = 3
 export const DUKMARK_MAX_SITES = 30
 export const DUKMARK_SUMMARY_MAX = 80
 
+// 소개하는 사이트 한 곳 (글 상세의 사이트 카드) — DB post_dukmarks.sites
+export interface DukmarkSite {
+  url: string
+  name?: string | null       // 비우면 링크 미리보기 제목 → 주소
+  desc?: string | null       // 한 줄 설명
+  maker?: string | null      // 만든 사람
+  makerLinks: { label: string; url: string }[]   // 만든 사람 링크 (Instagram, X, GitHub …)
+}
+// 참고한 출처 한 줄 — DB post_dukmarks.sources
+export interface DukmarkSource { label: string; url?: string | null }
+export const DUKMARK_MAX_SOURCES = 10
+export const DUKMARK_MAX_MAKER_LINKS = 5
+
 export interface PostDukmark {
   postId: string
   uses: DukmarkUse[]
   coverUrl: string | null    // 비우면 글의 첫 이미지
   summary: string | null     // 비우면 본문 앞부분
   siteUrls: string[]         // 본문 링크로 채우고 작성자가 빼거나 더한 것 — 카드의 '사이트 N곳'
+  sites: DukmarkSite[]       // siteUrls 와 같은 순서, 사이트별 정보
+  sources: DukmarkSource[]
   byMaker: boolean           // 글쓴이가 그 사이트를 직접 만들었다
   saveCount: number
   featuredAt: string | null  // 홈 '추천 덕마크' (관리자가 고른 시각)
@@ -156,7 +171,8 @@ export interface DukmarkInput {
   uses: DukmarkUse[]
   coverUrl?: string | null
   summary?: string | null
-  siteUrls: string[]
+  sites: DukmarkSite[]       // 주소 + 사이트별 정보 (DB 가 site_urls 를 여기서 만든다)
+  sources?: DukmarkSource[]
   byMaker?: boolean
 }
 

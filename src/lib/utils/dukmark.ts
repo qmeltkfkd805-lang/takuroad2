@@ -57,3 +57,23 @@ export function dukmarkSummary(post: CommunityPost, dm: PostDukmark, max = 60): 
     .trim()
   return text.length > max ? text.slice(0, max).trimEnd() + '…' : text
 }
+
+/** 같은 사이트인지 비교할 때 쓰는 열쇠 (끝의 / 와 대소문자 무시) */
+export function siteKey(u: string): string {
+  return u.replace(/\/$/, '').toLowerCase()
+}
+
+/** 만든 사람 링크 이름 — 주소로 알아본다 (Instagram, X, GitHub …, 모르면 사이트 주소) */
+export function makerLinkLabel(u: string): string {
+  let h = ''
+  try { h = new URL(u).hostname.replace(/^www\./, '').toLowerCase() } catch { return '링크' }
+  if (h.endsWith('instagram.com')) return 'Instagram'
+  if (h === 'x.com' || h.endsWith('twitter.com')) return 'X'
+  if (h.endsWith('github.com') || h.endsWith('github.io')) return 'GitHub'
+  if (h.endsWith('youtube.com') || h === 'youtu.be') return 'YouTube'
+  if (h.endsWith('blog.naver.com')) return '네이버 블로그'
+  if (h.endsWith('threads.net') || h.endsWith('threads.com')) return 'Threads'
+  if (h.endsWith('bsky.app')) return 'Bluesky'
+  if (h.endsWith('tiktok.com')) return 'TikTok'
+  return h
+}

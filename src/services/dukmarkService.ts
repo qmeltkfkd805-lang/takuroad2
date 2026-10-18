@@ -1,9 +1,9 @@
 import { createClient } from '@/lib/supabase/client'
 import { getVisiblePostsByIds } from '@/services/communityPostService'
-import { mergeSiteUrls } from '@/lib/utils/dukmark'
+import { mergeSiteUrls, cleanSiteUrl } from '@/lib/utils/dukmark'
 import {
   DukmarkCard, DukmarkInput, DukmarkUse, PostDukmark,
-  DUKMARK_USES, DUKMARK_MAX_USES, DUKMARK_SUMMARY_MAX,
+  DUKMARK_USES, DUKMARK_MAX_USES, DUKMARK_SUMMARY_MAX, DUKMARK_MAX_SOURCES, DUKMARK_MAX_MAKER_LINKS,
 } from '@/types/community-post'
 
 /* 덕마크 — 덕질 노하우 글에 붙는 북마크 표시 (글 하나에 하나).
@@ -12,7 +12,7 @@ import {
    - 저장 수는 saved_posts 에 넣고 뺄 때 DB 트리거가 맞춘다
    - 홈 추천은 관리자 RPC(set_dukmark_featured)로만 */
 
-const COLS = 'post_id, uses, cover_url, summary, site_urls, by_maker, save_count, featured_at'
+const COLS = 'post_id, uses, cover_url, summary, site_urls, sites, sources, by_maker, save_count, featured_at'
 const USE_SET = new Set<string>(DUKMARK_USES.map(u => u.value))
 
 function toDukmark(r: any): PostDukmark {
@@ -22,6 +22,8 @@ function toDukmark(r: any): PostDukmark {
     coverUrl: r.cover_url ?? null,
     summary: r.summary ?? null,
     siteUrls: r.site_urls ?? [],
+    sites: ((r.sites ?? []) as any[]).map(s => ({ url: String(s.url), name: s.name ?? null, desc: s.desc ?? null, maker: s.maker ?? null, makerLinks: Array.isArray(s.maker_links) ? s.maker_links : [] })),
+    sources: ((r.sources ?? []) as any[]).map(s => ({ label: String(s.label), url: s.url ?? null })),
     byMaker: r.by_maker === true,
     saveCount: r.save_count ?? 0,
     featuredAt: r.featured_at ?? null,
@@ -62,7 +64,18 @@ export async function setPostDukmark(postId: string, input: DukmarkInput | null)
     uses,
     cover_url: input.coverUrl?.trim() || null,
     summary,
-    site_urls: mergeSiteUrls(input.siteUrls),
+    // 사이트별 정보 — 주소는 정리·중복 제거한 순서대로, 정보는 같은 주소의 것을 붙인다 (site_urls 는 DB 가 sites 에서 만든다)
+    sites: mergeSiteUrls(input.sites.map(s => s.url)).map(url => {
+      const s = input.sites.find(x => cleanSiteUrl(x.url) === url)
+      return {
+        url,
+        name: s?.name?.trim() || null,
+        desc: s?.desc?.trim() || null,
+        maker: s?.maker?.trim() || null,
+        maker_links: (s?.makerLinks ?? []).filter(l => cleanSiteUrl(l.url)).slice(0, DUKMARK_MAX_MAKER_LINKS).map(l => ({ label: l.label.trim() || '링크', url: l.url.trim() })),
+      }
+    }),
+    sources: (input.sources ?? []).filter(s => s.label.trim()).slice(0, DUKMARK_MAX_SOURCES).map(s => ({ label: s.label.trim(), url: s.url?.trim() || null })),
     by_maker: input.byMaker === true,
   }
   // upsert 는 쓰지 않는다 — 충돌 시 post_id 까지 UPDATE 하려 해서 열 단위 권한(post_id 는 UPDATE 불가)에 막힌다.
@@ -102,4 +115,13 @@ export async function setDukmarkFeatured(postId: string, on: boolean): Promise<b
   const { data, error } = await supabase.rpc('set_dukmark_featured', { p_post_id: postId, p_on: on })
   if (error) { console.error('[추천 덕마크] 변경 실패:', error.message); return false }
   return data === true
+}
+
+/** 사이트 아이콘 — 링크 미리보기 저장분(link_previews)의 대표 이미지. 없으면 그 주소는 빠진다 */
+export async function getSiteIcons(urls: string[]): Promise<Record<string, string | null>> {
+  if (urls.length === 0) return {}
+  const supabase: any = createClient()
+  const { data, error } = await supabase.from('link_previews').select('url, image_url').in('url', urls)
+  if (error) return {}
+  return Object.fromEntries((data ?? []).filter((r: any) => r.image_url).map((r: any) => [String(r.url), String(r.image_url)]))
 }

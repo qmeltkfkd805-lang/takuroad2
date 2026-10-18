@@ -26,7 +26,10 @@ import { createPortal } from 'react-dom'
 import { findLinkBlock } from '@/lib/utils/linkUrl'
 import { linkCardHtml, LINK_CARD_HOLDER_STYLE, LINK_CARD_VERSION, type LinkPreview } from '@/lib/utils/linkCardHtml'
 import { getPostEvent, PostEventSummary } from '@/services/postEventService'
-import { getPostDukmark, setDukmarkFeatured } from '@/services/dukmarkService'
+import { getPostDukmark, setDukmarkFeatured, getSiteIcons } from '@/services/dukmarkService'
+import { SiteCard, SiteMiniList, SourcesBox, SectionTitle, type SiteIcons } from './DukmarkPostParts'
+import { dukmarkCover } from '@/lib/utils/dukmark'
+import { useIsDesktop } from '@/hooks/useIsDesktop'
 import { DUKMARK_BOARD, DUKMARK_USE_LABEL, PostDukmark } from '@/types/community-post'
 import DukmarkMark from './DukmarkMark'
 import { hydrateYoutube } from '@/lib/utils/youtube'
@@ -228,11 +231,12 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
   }
   // 저장 — 마이페이지 › 저장함 › 글 탭에 모인다 (saved_posts)
   const [saved, setSaved] = useState(false)
+  const [savedAtLoad, setSavedAtLoad] = useState(false)   // 덕마크 저장 수 표시: 불러올 때 저장돼 있었는지 (누를 때마다 ±1)
   const [savingPost, setSavingPost] = useState(false)
   useEffect(() => {
     if (!user) { setSaved(false); return }
     let alive = true
-    isPostSaved(post.id, user.id).then(v => { if (alive) setSaved(v) })
+    isPostSaved(post.id, user.id).then(v => { if (alive) { setSaved(v); setSavedAtLoad(v) } })
     return () => { alive = false }
   }, [post.id, user])
   const toggleSave = async () => {
@@ -341,6 +345,17 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
     }).catch(() => {})
     return () => { alive = false }
   }, [post.id, post.board])
+
+  // 덕마크 글 상세 — 사이트 아이콘(링크 미리보기 이미지), PC 여부
+  const isDesktopView = useIsDesktop()
+  const [siteIcons, setSiteIcons] = useState<SiteIcons>({})
+  const siteUrlsKey = postDukmark ? postDukmark.sites.map(s => s.url).join('\n') : ''
+  useEffect(() => {
+    if (!siteUrlsKey) return
+    let alive = true
+    getSiteIcons(siteUrlsKey.split('\n')).then(m => { if (alive) setSiteIcons(m) })
+    return () => { alive = false }
+  }, [siteUrlsKey])
 
   /* 관리자: 덕마크 글을 홈 '추천 덕마크'에 올리기·내리기 (덕마크가 켜진 덕질 노하우 글만).
      메뉴를 열 때 지금 상태를 읽는다 — undefined = 확인 중, null = 덕마크 아님, true/false = 추천 여부 */
@@ -611,6 +626,112 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
     </div>
   )
 
+  // ── 덕마크 글 본문 (덕마크가 켜진 덕질 노하우 글, 글 화면에서만 — 시안 2026-10-18) ──
+  // 경로 › 제목 › 작성자 / 대표 이미지 / 작품·용도 태그 / 소개하는 사이트 / 사용해 본 이야기(본문) / 참고한 출처 / 좋아요·저장·공유 / 댓글
+  // PC는 오른쪽에 '이 글의 사이트' + [이 글 저장하기]
+  const dmSaveCount = postDukmark ? Math.max(0, postDukmark.saveCount + (saved ? 1 : 0) - (savedAtLoad ? 1 : 0)) : 0
+  const dmCoverSrc = postDukmark ? dukmarkCover(post, postDukmark) : null
+  const dmTags = postDukmark ? [...(post.work ? [post.work.name] : []), ...postDukmark.uses.map(u => DUKMARK_USE_LABEL[u] ?? u)] : []
+  const pillBtn = (on: boolean): React.CSSProperties => ({ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, flex: isDesktopView ? '0 0 auto' : 1, padding: '10px 16px', borderRadius: 10, border: `1px solid ${on ? 'var(--accent)' : 'var(--border)'}`, background: on ? 'var(--accent-l, rgba(255,86,146,.12))' : 'var(--surface)', color: on ? 'var(--accent)' : 'var(--text)', fontWeight: 800, fontSize: 13.5, cursor: 'pointer', fontFamily: 'inherit' })
+  const dukmarkBody = isPage && postDukmark ? (
+    <div style={{ padding: '14px 0 24px' }}>
+      <style>{`
+        .dm-grid{display:grid;gap:24px;grid-template-columns:minmax(0,1fr)}
+        @media (min-width:1100px){ .dm-grid{grid-template-columns:minmax(0,1fr) 260px;align-items:start} }
+        .dm-aside{display:none}
+        @media (min-width:1100px){ .dm-aside{display:flex;flex-direction:column;gap:12px;position:sticky;top:84px} }
+      `}</style>
+      {lb.node}
+      <div className="dm-grid">
+        <div style={{ minWidth: 0 }}>
+          {/* 경로 */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 13, color: 'var(--muted)', marginBottom: 6 }}>
+            <button onClick={() => router.push('/community')} style={crumbBtn}>커뮤니티</button>
+            <span aria-hidden>›</span>
+            <button onClick={() => router.push('/community?tab=dukmark')} style={{ ...crumbBtn, display: 'inline-flex', alignItems: 'center', gap: 3 }}><DukmarkMark size={12} />덕마크</button>
+          </div>
+          {post.title && <h1 style={{ fontSize: isDesktopView ? 26 : 21, fontWeight: 900, lineHeight: 1.35, margin: '0 0 10px', wordBreak: 'keep-all', letterSpacing: '-0.02em' }}>{post.title}</h1>}
+          {/* 작성자 · 날짜 · 조회 · ⋯ */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: 'var(--muted)', marginBottom: 14, flexWrap: 'wrap' }}>
+            {authorLink}
+            <UserLevelBadge userId={post.author?.id} />
+            <span>· {fmtDate(post.createdAt)}</span>
+            <span>· 조회 {post.viewCount}</span>
+            {visBadge}
+            {postDukmark.byMaker && <span style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', border: '1px solid var(--accent)', borderRadius: 5, padding: '0 5px' }}>제작자</span>}
+            {kebab}
+          </div>
+          {/* 대표 이미지 */}
+          {dmCoverSrc && (
+            <img src={dmCoverSrc} alt="" onClick={() => lb.openAt([dmCoverSrc], 0)}
+              style={{ width: '100%', aspectRatio: '16 / 7', objectFit: 'cover', borderRadius: 14, display: 'block', background: 'var(--surface2)', cursor: 'zoom-in', marginBottom: 12, border: '1px solid var(--border)' }} />
+          )}
+          {/* 작품·용도 태그 */}
+          {dmTags.length > 0 && (
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 26 }}>
+              {dmTags.map(tg => <span key={tg} style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--accent)', background: 'var(--accent-l, rgba(255,86,146,.12))', border: '1px solid var(--accent-l, rgba(255,86,146,.25))', padding: '4px 11px', borderRadius: 9999 }}>{tg}</span>)}
+            </div>
+          )}
+          {/* 소개하는 사이트 */}
+          {postDukmark.sites.length > 0 && (
+            <section style={{ marginBottom: 30 }}>
+              <SectionTitle icon="link">소개하는 사이트 {postDukmark.sites.length}곳</SectionTitle>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {postDukmark.sites.map(s => <SiteCard key={s.url} site={s} icons={siteIcons} desktop={isDesktopView} />)}
+              </div>
+            </section>
+          )}
+          {/* 사용해 본 이야기 = 본문 */}
+          <section style={{ marginBottom: 22 }}>
+            <SectionTitle icon="doc">사용해 본 이야기</SectionTitle>
+            {companionEvent && <PostEventLinkCard ev={companionEvent} />}
+            {post.content && (isHtml
+              ? <div ref={bodyRef} className="taku-post-body" onClick={lb.onBodyClick} style={{ fontSize: 15, lineHeight: 1.75, margin: 0, wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
+              : <p style={{ fontSize: 15, lineHeight: 1.75, whiteSpace: 'pre-wrap', margin: 0 }}>{post.content}</p>)}
+            {inlineCard}
+            {bottomCard && <div style={{ marginTop: 18 }}>{bottomCard}</div>}
+          </section>
+          {poll && <PollView poll={poll} userId={user?.id ?? null} onChanged={loadPoll} onRequireLogin={() => router.push(ROUTES.login)} />}
+          {postDukmark.sources.length > 0 && <div style={{ marginBottom: 18 }}><SourcesBox sources={postDukmark.sources} desktop={isDesktopView} /></div>}
+          {/* 좋아요 · 저장 · 공유 */}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 8, padding: '14px 0', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+            <button onClick={like} aria-pressed={post.likedByMe} style={pillBtn(post.likedByMe)}>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill={post.likedByMe ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" /></svg>
+              좋아요 {post.likeCount}
+            </button>
+            <button onClick={toggleSave} aria-pressed={saved} style={pillBtn(saved)}>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill={saved ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6.5 3.5h11a1 1 0 0 1 1 1v16l-6.5-4-6.5 4v-16a1 1 0 0 1 1-1z" /></svg>
+              저장 {dmSaveCount}
+            </button>
+            <button onClick={share} style={pillBtn(false)}>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7" /><path d="M16 6l-4-4-4 4" /><path d="M12 2v13" /></svg>
+              공유
+            </button>
+          </div>
+          {commentsBlock}
+          <PrevNextNav prev={neighbors.prev} next={neighbors.next} onOpen={id => router.push(`/community/${id}`)} />
+        </div>
+        {/* PC 오른쪽 — 이 글의 사이트 + 이 글 저장하기 */}
+        <aside className="dm-aside">
+          {postDukmark.sites.length > 0 && (
+            <div style={{ border: '1px solid var(--border)', borderRadius: 14, padding: '14px 14px 6px', background: 'var(--surface)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 15, fontWeight: 900, marginBottom: 4 }}>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7" /><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7" /></svg>
+                이 글의 사이트
+              </div>
+              <SiteMiniList sites={postDukmark.sites} icons={siteIcons} />
+            </div>
+          )}
+          <button onClick={toggleSave} aria-pressed={saved}
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '13px', borderRadius: 12, border: '1.5px solid var(--accent)', background: saved ? 'var(--accent)' : 'var(--surface)', color: saved ? '#fff' : 'var(--accent)', fontWeight: 800, fontSize: 14.5, cursor: 'pointer', fontFamily: 'inherit' }}>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill={saved ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6.5 3.5h11a1 1 0 0 1 1 1v16l-6.5-4-6.5 4v-16a1 1 0 0 1 1-1z" /></svg>
+            {saved ? '저장한 글이에요' : '이 글 저장하기'}
+          </button>
+        </aside>
+      </div>
+    </div>
+  ) : null
+
   // ── 일반 게시글 본문 ──
   const genericBody = (
     <>
@@ -689,7 +810,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
         <style>{`.taku-post-body img{max-width:100%;border-radius:10px}.taku-post-body video{max-width:100%;border-radius:10px}.taku-post-body blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}.taku-post-body a{color:var(--accent)}.taku-post-body a[href]:not([data-lp]),.taku-post-body a[href]:not([data-lp]) *{color:var(--accent) !important;text-decoration:underline !important;text-underline-offset:3px}.taku-post-body [data-link-card] img{border-radius:0 !important;cursor:pointer !important;max-width:none}.taku-post-body [data-lp-remove]{display:none !important}.taku-post-body [data-link-card]{max-width:300px !important;width:100%}${POST_BODY_EXTRA_CSS}`}</style>
         {isGoodsBoard && goodsLoading
           ? <LogoLoader size="sm" />
-          : isGoods ? goodsBody : genericBody}
+          : isGoods ? goodsBody : dukmarkBody ?? genericBody}
       </div>
 
       {reporting && <ReportModal postId={post.id} onClose={() => setReporting(false)} />}
@@ -997,6 +1118,7 @@ const flairBadge: React.CSSProperties = {
   display: 'inline-block', fontSize: 11, fontWeight: 800, color: 'var(--accent)', background: 'var(--accent-l, rgba(232,0,111,.12))',
   padding: '1px 7px', borderRadius: 5, marginRight: 6, verticalAlign: 'middle',
 }
+const crumbBtn: React.CSSProperties = { border: "none", background: "none", padding: 0, cursor: "pointer", fontFamily: "inherit", fontSize: 13, color: "var(--muted)", fontWeight: 600 }
 const menuItem: React.CSSProperties = {
   display: 'block', width: '100%', textAlign: 'left', border: 'none', background: 'none',
   padding: '11px 14px', fontSize: 14, color: 'var(--text)', cursor: 'pointer', fontFamily: 'inherit',

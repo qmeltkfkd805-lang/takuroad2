@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import controls from '@/components/settings/settingsControls.module.css'
-import { cleanSiteUrl } from '@/lib/utils/dukmark'
-import { DUKMARK_USES, DUKMARK_MAX_USES, DUKMARK_MAX_SITES, DukmarkUse } from '@/types/community-post'
+import { cleanSiteUrl, makerLinkLabel, siteKey } from '@/lib/utils/dukmark'
+import { DUKMARK_USES, DUKMARK_MAX_USES, DUKMARK_MAX_SITES, DUKMARK_MAX_SOURCES, DUKMARK_MAX_MAKER_LINKS, DukmarkUse, DukmarkSite, DukmarkSource } from '@/types/community-post'
 
 /* 글쓰기 › 덕마크에 올리기 (덕질 노하우 글만) — 에디터·툴바는 노하우 글쓰기 그대로, 이 패널만 아래에 붙는다.
    켜면: 사이트(본문 링크로 자동, 빼고 더하기) · 분류(작품 = 글의 작품 태그 그대로, 용도) · 대표 이미지 · 추가 설정
@@ -16,6 +16,10 @@ interface Props {
   siteUrls: string[]
   onRemoveSite: (url: string) => void
   onAddSite: (url: string) => void
+  siteInfo: (url: string) => Omit<DukmarkSite, 'url'>
+  onSiteInfo: (url: string, patch: Partial<Omit<DukmarkSite, 'url'>>) => void
+  sources: DukmarkSource[]
+  onSources: (sources: DukmarkSource[]) => void
   works: { id: string; name: string }[]
   onRemoveWork: (id: string) => void
   onAddWork: () => void
@@ -37,6 +41,7 @@ export default function DukmarkWritePanel(p: Props) {
   const [coverOpen, setCoverOpen] = useState(false)
   const [moreOpen, setMoreOpen] = useState(false)       // 추가 설정
   const [usesAll, setUsesAll] = useState(false)         // PC: 용도 더보기
+  const [openSite, setOpenSite] = useState<string | null>(null)   // 정보를 펼친 사이트 (siteKey)
 
   const addSite = () => {
     if (!draft.trim()) { setAdding(false); setAddErr(''); return }
@@ -52,13 +57,28 @@ export default function DukmarkWritePanel(p: Props) {
   // ── 조각들 ──
   const siteList = (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flex: 1, minWidth: 0 }}>
-      {p.siteUrls.map(u => (
-        <div key={u} style={siteRow}>
-          <LinkIcon />
-          <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u}</span>
-          <button type="button" aria-label="이 사이트 빼기" onClick={() => p.onRemoveSite(u)} style={xBtn}>×</button>
-        </div>
-      ))}
+      {p.siteUrls.map(u => {
+        const info = p.siteInfo(u)
+        const open = openSite === siteKey(u)
+        const filled = !!(info.name || info.desc || info.maker)
+        return (
+          <div key={u} style={{ borderRadius: 10, border: `1px solid ${open ? 'var(--accent)' : 'var(--border)'}`, background: 'var(--surface)', overflow: 'hidden' }}>
+            <div style={{ ...siteRow, border: 'none', borderRadius: 0 }}>
+              <LinkIcon />
+              <button type="button" onClick={() => setOpenSite(open ? null : siteKey(u))} aria-expanded={open} title="사이트 정보 넣기"
+                style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'baseline', gap: 6, border: 'none', background: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left', color: 'var(--text)', fontSize: 14 }}>
+                {info.name && <b style={{ flexShrink: 0, maxWidth: '45%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{info.name}</b>}
+                <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: info.name ? 'var(--muted)' : 'var(--text)', fontSize: info.name ? 12.5 : 14 }}>{u}</span>
+              </button>
+              <button type="button" onClick={() => setOpenSite(open ? null : siteKey(u))} style={{ flexShrink: 0, border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 12.5, fontWeight: 700, color: filled ? 'var(--muted)' : 'var(--accent)', padding: 0 }}>
+                {open ? '접기' : filled ? '정보 수정' : '정보 넣기'}
+              </button>
+              <button type="button" aria-label="이 사이트 빼기" onClick={() => { p.onRemoveSite(u); if (open) setOpenSite(null) }} style={xBtn}>×</button>
+            </div>
+            {open && <SiteEditor url={u} info={info} onChange={patch => p.onSiteInfo(u, patch)} />}
+          </div>
+        )
+      })}
       {adding && (
         <div style={{ ...siteRow, borderColor: 'var(--accent)' }}>
           <LinkIcon />
@@ -148,10 +168,13 @@ export default function DukmarkWritePanel(p: Props) {
         {p.desktop && <Chevron open={moreOpen} />}
       </button>
       {moreOpen && (
-        <label style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 13.5, cursor: 'pointer', marginTop: 12 }}>
-          <input type="checkbox" checked={p.byMaker} onChange={() => p.onByMaker(!p.byMaker)} style={{ width: 17, height: 17, accentColor: 'var(--accent)' }} />
-          <span>직접 만든 사이트·서비스예요</span>
-        </label>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 12 }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 13.5, cursor: 'pointer' }}>
+            <input type="checkbox" checked={p.byMaker} onChange={() => p.onByMaker(!p.byMaker)} style={{ width: 17, height: 17, accentColor: 'var(--accent)' }} />
+            <span>직접 만든 사이트·서비스예요</span>
+          </label>
+          <SourcesEditor sources={p.sources} onChange={p.onSources} />
+        </div>
       )}
     </div>
   )
@@ -216,6 +239,105 @@ export default function DukmarkWritePanel(p: Props) {
   )
 }
 
+/* 사이트 한 곳의 정보 — 처음 펼칠 때 이름·설명이 비어 있으면 링크 미리보기(/api/link-preview)로 채운다 */
+function SiteEditor({ url, info, onChange }: { url: string; info: Omit<DukmarkSite, 'url'>; onChange: (patch: Partial<Omit<DukmarkSite, 'url'>>) => void }) {
+  const [linkDraft, setLinkDraft] = useState('')
+  const [linkErr, setLinkErr] = useState('')
+  const [filling, setFilling] = useState(false)
+  const changeRef = useRef(onChange)
+  changeRef.current = onChange
+  const empty = !info.name && !info.desc
+  useEffect(() => {
+    // 비어 있을 때 한 번 — 채워지면 empty 가 false 라 다시 안 돈다 (개발 모드의 두 번 실행에도 안전하게 ref 로 막지 않는다)
+    if (!empty) return
+    let alive = true
+    setFilling(true)
+    fetch('/api/link-preview?url=' + encodeURIComponent(url))
+      .then(r => (r.ok ? r.json() : null))
+      .then((pv: { ok?: boolean; title?: string | null; siteName?: string | null; description?: string | null } | null) => {
+        if (!alive || !pv?.ok) return
+        const name = (pv.siteName || pv.title || '').trim().slice(0, 60)
+        const desc = (pv.description || '').replace(/\s+/g, ' ').trim().slice(0, 120)
+        if (name || desc) changeRef.current({ ...(name ? { name } : {}), ...(desc ? { desc } : {}) })
+      })
+      .catch(() => {})
+      .finally(() => { if (alive) setFilling(false) })
+    return () => { alive = false }
+  }, [url, empty])
+  const addLink = () => {
+    const raw = linkDraft.trim()
+    if (!raw) { setLinkErr(''); return }
+    const u = cleanSiteUrl(/^https?:\/\//i.test(raw) ? raw : 'https://' + raw)
+    if (!u) { setLinkErr('주소를 확인해 주세요.'); return }
+    if (info.makerLinks.some(l => siteKey(l.url) === siteKey(u))) { setLinkDraft(''); return }
+    onChange({ makerLinks: [...info.makerLinks, { label: makerLinkLabel(u), url: u }].slice(0, DUKMARK_MAX_MAKER_LINKS) })
+    setLinkDraft(''); setLinkErr('')
+  }
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 4, padding: '4px 14px 14px', borderTop: '1px solid var(--border)', background: 'var(--surface2)' }}>
+      {filling && <div style={{ fontSize: 12, color: 'var(--muted)', paddingTop: 8 }}>사이트 정보를 불러오는 중…</div>}
+      <Field label="이름">
+        <input value={info.name ?? ''} onChange={e => onChange({ name: e.target.value.slice(0, 60) })} placeholder="예: 야하" style={fieldInput} />
+      </Field>
+      <Field label="한 줄 설명">
+        <input value={info.desc ?? ''} onChange={e => onChange({ desc: e.target.value.slice(0, 120) })} placeholder="예: 치이카와 굿즈를 찾아보고 기록할 때" style={fieldInput} />
+      </Field>
+      <Field label="만든 사람" sub="선택">
+        <input value={info.maker ?? ''} onChange={e => onChange({ maker: e.target.value.slice(0, 40) })} placeholder="닉네임 (모르면 비워 두세요)" style={fieldInput} />
+      </Field>
+      <Field label="만든 사람 링크" sub="Instagram · X · GitHub 등">
+        {info.makerLinks.length > 0 && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 6 }}>
+            {info.makerLinks.map(l => (
+              <span key={l.url} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 10px', borderRadius: 9999, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12.5, fontWeight: 700 }}>
+                {l.label}
+                <button type="button" aria-label={`${l.label} 링크 빼기`} onClick={() => onChange({ makerLinks: info.makerLinks.filter(x => x.url !== l.url) })} style={{ ...xBtn, fontSize: 14 }}>×</button>
+              </span>
+            ))}
+          </div>
+        )}
+        {info.makerLinks.length < DUKMARK_MAX_MAKER_LINKS && (
+          <input value={linkDraft} onChange={e => { setLinkDraft(e.target.value); setLinkErr('') }} onBlur={addLink}
+            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addLink() } }}
+            placeholder="https://instagram.com/... 입력 후 Enter" inputMode="url" style={fieldInput} />
+        )}
+        {linkErr && <div style={{ fontSize: 12, color: '#c0392b', marginTop: 4 }}>{linkErr}</div>}
+      </Field>
+    </div>
+  )
+}
+
+/* 참고한 출처 — 문구 + 링크(선택) 여러 줄 */
+function SourcesEditor({ sources, onChange }: { sources: DukmarkSource[]; onChange: (s: DukmarkSource[]) => void }) {
+  const set = (i: number, patch: Partial<DukmarkSource>) => onChange(sources.map((s, j) => (j === i ? { ...s, ...patch } : s)))
+  return (
+    <div>
+      <div style={{ fontSize: 13.5, fontWeight: 800, marginBottom: 6 }}>참고한 출처 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--muted)' }}>· 선택</span></div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {sources.map((s, i) => (
+          <div key={i} style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
+            <input value={s.label} onChange={e => set(i, { label: e.target.value.slice(0, 100) })} placeholder="예: 제작자의 서비스 소개" style={{ ...fieldInput, flex: '1 1 160px', width: 'auto' }} />
+            <input value={s.url ?? ''} onChange={e => set(i, { url: e.target.value })} placeholder="링크 (선택)" inputMode="url" style={{ ...fieldInput, flex: '1 1 160px', width: 'auto' }} />
+            <button type="button" aria-label="이 출처 빼기" onClick={() => onChange(sources.filter((_, j) => j !== i))} style={xBtn}>×</button>
+          </div>
+        ))}
+      </div>
+      {sources.length < DUKMARK_MAX_SOURCES && (
+        <button type="button" onClick={() => onChange([...sources, { label: '', url: '' }])} style={{ marginTop: 8, border: 'none', background: 'none', padding: 0, cursor: 'pointer', color: 'var(--accent)', fontWeight: 700, fontSize: 13.5, fontFamily: 'inherit' }}>+ 출처 추가</button>
+      )}
+    </div>
+  )
+}
+
+function Field({ label, sub, children }: { label: string; sub?: string; children: React.ReactNode }) {
+  return (
+    <div style={{ paddingTop: 8 }}>
+      <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--text)', marginBottom: 5 }}>{label}{sub && <span style={{ fontWeight: 600, color: 'var(--muted)', marginLeft: 5 }}>{sub}</span>}</div>
+      {children}
+    </div>
+  )
+}
+
 // ── 아이콘 (선 아이콘, 글자색 따라감) ──
 const svg = { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
 function LinkIcon() { return <svg {...svg} style={{ color: 'var(--muted)', flexShrink: 0 }}><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7" /><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7" /></svg> }
@@ -232,6 +354,7 @@ const subLabel: React.CSSProperties = { fontSize: 12.5, fontWeight: 700, color: 
 const pcRow: React.CSSProperties = { display: 'flex', alignItems: 'flex-start', gap: 16 }
 const pcLabel: React.CSSProperties = { width: 72, flexShrink: 0, fontSize: 14.5, fontWeight: 800, color: 'var(--text)', paddingTop: 10 }
 const siteRow: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 14, color: 'var(--text)' }
+const fieldInput: React.CSSProperties = { width: '100%', boxSizing: 'border-box', padding: '9px 12px', borderRadius: 9, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontSize: 13.5, fontFamily: 'inherit', outline: 'none' }
 const xBtn: React.CSSProperties = { border: 'none', background: 'none', cursor: 'pointer', color: 'var(--muted)', fontSize: 18, lineHeight: 1, padding: 0, fontFamily: 'inherit', flexShrink: 0 }
 const lineRow: React.CSSProperties = { padding: '14px 2px', borderTop: '1px solid var(--border)' }
 const boxRow: React.CSSProperties = { padding: '12px 16px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)' }

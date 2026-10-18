@@ -13,7 +13,7 @@ import { linkCardHtml, linkCardLoadingHtml, cleanLinkCards, LINK_CARD_HOLDER_STY
 import { getMyWorkRelationships } from '@/services/workRelationshipService'
 import { youtubeId, youtubeInnerHtml, YT_HOLDER_STYLE } from '@/lib/utils/youtube'
 import { createPoll } from '@/services/pollService'
-import { Board, BOARDS, BOARD_FLAIRS, CREATION_BOARDS, boardMeta, NewPost, NewPoll, DUKMARK_BOARD, DukmarkUse } from '@/types/community-post'
+import { Board, BOARDS, BOARD_FLAIRS, CREATION_BOARDS, boardMeta, NewPost, NewPoll, DUKMARK_BOARD, DukmarkUse, DukmarkSite, DukmarkSource } from '@/types/community-post'
 import DraftNotice from '@/components/common/DraftNotice'
 import { PostBodyPreview } from './PostUI'
 import ImageEditModal from './ImageEditModal'
@@ -23,7 +23,7 @@ import CompanionEventPicker from './CompanionEventPicker'
 import { getPostEvent, setPostEvent, PostEventSummary } from '@/services/postEventService'
 import DukmarkWritePanel from './DukmarkWritePanel'
 import { getPostDukmark, setPostDukmark } from '@/services/dukmarkService'
-import { siteUrlsIn, mergeSiteUrls } from '@/lib/utils/dukmark'
+import { siteUrlsIn, mergeSiteUrls, siteKey } from '@/lib/utils/dukmark'
 
 type Tag = { id: string; name: string; slug: string }
 const DRAFT_KEY = 'takuroad_community_draft'
@@ -532,6 +532,9 @@ export default function PostWritePage() {
   const [dmRemoved, setDmRemoved] = useState<string[]>([])
   const [dmCover, setDmCover] = useState<string | null>(null)
   const [dmByMaker, setDmByMaker] = useState(false)
+  // 사이트별 정보(이름·설명·만든 사람·링크) — 주소 열쇠(siteKey)로 보관. 목록에서 빠진 사이트 정보는 저장 때 버린다
+  const [dmSiteInfo, setDmSiteInfo] = useState<Record<string, Omit<DukmarkSite, 'url'>>>({})
+  const [dmSources, setDmSources] = useState<DukmarkSource[]>([])
   const [dmBodyImages, setDmBodyImages] = useState<string[]>([])
   const dmWasOn = useRef(false)                         // 수정: 원래 덕마크가 있던 글 (끄면 지운다)
   const dmSavedSites = useRef<string[] | null>(null)   // 수정: 불러온 사이트 목록 — 첫 본문 읽기 때 '뺀 것'을 복원
@@ -631,6 +634,8 @@ export default function PostWritePage() {
       dmWasOn.current = true
       dmSavedSites.current = dm.siteUrls
       setDmAdded(dm.siteUrls); setDmUses(dm.uses); setDmCover(dm.coverUrl); setDmByMaker(dm.byMaker)
+      setDmSiteInfo(Object.fromEntries(dm.sites.map(s => [siteKey(s.url), { name: s.name, desc: s.desc, maker: s.maker, makerLinks: s.makerLinks }])))
+      setDmSources(dm.sources)
       setDukmarkOn(true)
     })
   }, [editId, user?.id])
@@ -1578,7 +1583,10 @@ export default function PostWritePage() {
     }
     if (!title.trim() && !plain && imgs.length === 0 && !pollData) { setErr('제목이나 내용을 입력해주세요.'); return }
     if (isFanart && !notice && !allAgreed) { setErr('업로드 전 확인 항목에 모두 동의해주세요.'); return }
-    const dmInput = canDukmark && dukmarkOn ? { uses: dmUses, coverUrl: dmCover, siteUrls: dmSites, byMaker: dmByMaker } : null
+    const dmInput = canDukmark && dukmarkOn ? {
+      uses: dmUses, coverUrl: dmCover, byMaker: dmByMaker, sources: dmSources,
+      sites: dmSites.map(url => ({ url, ...(dmSiteInfo[siteKey(url)] ?? { makerLinks: [] }) })),
+    } : null
     if (dmInput && dmInput.uses.length === 0) { setErr('덕마크 용도를 1개 이상 골라주세요.'); return }
     if (/src="(data|blob):/i.test(html) || html.length > 500_000) { setErr('본문이 너무 커요. 사진은 사진 버튼으로 넣어주세요.'); return }
     // 등록 전 점검 — 놓치기 쉬운 것만 가볍게. [그대로 올리기]를 누르면 다시 묻지 않는다
@@ -2217,6 +2225,9 @@ export default function PostWritePage() {
                 desktop={isDesktop}
                 on={dukmarkOn} onToggle={setDukmarkOn}
                 siteUrls={dmSites}
+                siteInfo={u => dmSiteInfo[siteKey(u)] ?? { makerLinks: [] }}
+                onSiteInfo={(u, patch) => setDmSiteInfo(prev => ({ ...prev, [siteKey(u)]: { ...(prev[siteKey(u)] ?? { makerLinks: [] }), ...patch } }))}
+                sources={dmSources} onSources={setDmSources}
                 onRemoveSite={u => { setDmAdded(prev => prev.filter(x => x !== u)); setDmRemoved(prev => [...prev, u]) }}
                 onAddSite={u => { setDmRemoved(prev => prev.filter(x => x.replace(/\/$/, '').toLowerCase() !== u.replace(/\/$/, '').toLowerCase())); setDmAdded(prev => [...prev, u]) }}
                 works={selectedTags.map(t => ({ id: t.id, name: t.name }))}
