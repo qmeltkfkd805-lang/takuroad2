@@ -22,8 +22,9 @@ import { getMyWorkRelationships, getMyAffinityMap } from '@/services/workRelatio
 import AppIcon from '@/components/tds/AppIcon'
 import LogoLoader from '@/components/common/LogoLoader'
 import ThumbImg from '@/components/common/ThumbImg'
-import DukmarkTab from '@/components/community/DukmarkTab'
-import DukmarkMark from '@/components/community/DukmarkMark'
+// 덕마크(작업 중) — 이번 배포에서는 화면에서 빼 둔다. 덕마크 작업을 커밋할 때 이 두 줄을 원래 import 로 되돌릴 것
+const DukmarkTab = (_: Record<string, unknown>) => null
+const DukmarkMark = (_: Record<string, unknown>) => null
 
 type Scope = 'all' | 'popular' | 'mine' | 'subscribed' | 'worksub' | 'dukmark'   // dukmark = 덕마크 탭 (글 목록 대신 DukmarkTab)
 type View = 'list' | 'grid'
@@ -217,7 +218,6 @@ export default function CommunityPage() {
     if (urlAppliedRef.current) return
     const b = searchParams.get('board')
     if (b && b !== 'all' && BOARDS.some(x => x.value === b)) { setBoard(b as Sel); setScope('all') }
-    if (searchParams.get('tab') === 'dukmark') { setBoard('all'); setScope('dukmark') }
     urlAppliedRef.current = true
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -315,7 +315,6 @@ export default function CommunityPage() {
       { label: '전체',    active: board === 'all' && scope === 'all',        on: () => { setBoard('all'); setScope('all') } },
       { label: '인기글',  active: scope === 'popular',                        on: () => { setBoard('all'); setScope('popular') } },
       { label: '팬창작물', active: board === 'fancraft' && scope === 'all',   on: () => { setBoard('fancraft'); setScope('all') } },
-      { label: '덕마크',   active: scope === 'dukmark',                        on: () => { setBoard('all'); setScope('dukmark') }, icon: <DukmarkMark size={14} /> },
       { label: '작품구독', active: scope === 'worksub',                        on: () => { setBoard('all'); setScope('worksub') } },
       { label: '팔로잉',   active: scope === 'subscribed',                     on: () => { setBoard('all'); setScope('subscribed') } },
     ]
@@ -489,7 +488,6 @@ export default function CommunityPage() {
                 <DrawerItem label="인기글" active={scope === 'popular'} onClick={() => { setBoard('all'); setScope('popular'); setDrawerOpen(false) }} />
                 <DrawerItem label="작품구독" active={scope === 'worksub'} onClick={() => { setBoard('all'); setScope('worksub'); setDrawerOpen(false) }} />
                 <DrawerItem label="팔로잉" active={scope === 'subscribed'} onClick={() => { setBoard('all'); setScope('subscribed'); setDrawerOpen(false) }} />
-                <DrawerItem label="덕마크" active={scope === 'dukmark'} onClick={() => { setBoard('all'); setScope('dukmark'); setDrawerOpen(false) }} />
                 <DrawerItem label="내 게시글" active={scope === 'mine'} onClick={() => { setBoard('all'); setScope('mine'); setDrawerOpen(false) }} />
               </DrawerGroup>
             </div>
@@ -536,7 +534,6 @@ export default function CommunityPage() {
             </div>
           )
         })()}
-        <BoardTab label="덕마크" icon={<DukmarkMark size={15} />} active={scope === 'dukmark'} onClick={() => { setBoard('all'); setScope('dukmark') }} />
         <button onClick={openWrite} style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 16px', borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 13.5, cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0, marginBottom: 6 }}>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
           글쓰기
