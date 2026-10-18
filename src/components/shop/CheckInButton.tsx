@@ -88,11 +88,12 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng }: Pr
         disabled={submitting || checkedInToday}
         leftIcon={!checkedInToday && !submitting ? checkinIcon : undefined}
       >
+        {/* 문구는 이벤트의 '다녀왔어요'와 맞춘다 (2026-10-18 — 같은 행동인데 샵은 '방문했어요', 이벤트는 '다녀왔어요'였다) */}
         {checkedInToday
-          ? '오늘 방문 기록했어요'
+          ? '오늘 다녀온 기록을 남겼어요'
           : submitting
             ? '기록 중...'
-            : mine.count > 0 ? '또 방문했어요' : '방문했어요'}
+            : mine.count > 0 ? '또 다녀왔어요' : '다녀왔어요'}
       </Button>
 
       {/* 내 방문 횟수 — 같은 샵은 하루 1번씩 센다 */}

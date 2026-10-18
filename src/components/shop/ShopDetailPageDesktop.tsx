@@ -192,7 +192,15 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
     if (ok) router.push('/map')
     else window.alert('삭제에 실패했어요. 권한이 없거나 연결된 데이터가 있을 수 있어요.')
   }
-  const handleDirections = () => router.push(`/map?shop=${shop.slug}`)
+  /* 길찾기 = 카카오맵 길안내 (2026-10-18). 예전엔 '지도 크게 보기'와 똑같이 우리 지도로만 가서 버튼 두 개가 같은 일을 했다.
+     좌표가 없으면 예전처럼 우리 지도에서 위치를 보여 준다. */
+  const handleDirections = () => {
+    if (shop.lat != null && shop.lng != null) {
+      window.open(`https://map.kakao.com/link/to/${encodeURIComponent(shop.name)},${shop.lat},${shop.lng}`, '_blank', 'noopener')
+      return
+    }
+    router.push(`/map?shop=${shop.slug}`)
+  }
   const handleShare = () => {
     if (navigator.share) navigator.share({ title: shop.name, url: window.location.href })
     else navigator.clipboard?.writeText(window.location.href)
@@ -358,6 +366,8 @@ export default function ShopDetailPageDesktop({ shop }: Props) {
             <div style={{ display: 'flex', gap: 10, margin: '16px 0 8px' }}>
               <QuickBtn onClick={handleSave} active={saved} activeColor={color} icon={<Ico name="bookmark" filled={saved} />} label="저장" />
               <QuickBtn onClick={handleShare} icon={<Ico name="share" />} label="공유" />
+              {/* 길찾기 — 페이지 맨 아래 '위치' 카드에만 있어서 처음 오는 사람이 찾기 어려웠다 (피츠의 법칙, 2026-10-18) */}
+              <QuickBtn onClick={handleDirections} icon={<Ico name="pin" />} label="길찾기" />
             </div>
 
             {/* 방문했어요 — 방문 기록(Activity) 생성 */}

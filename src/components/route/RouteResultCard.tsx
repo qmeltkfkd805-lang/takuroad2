@@ -36,9 +36,19 @@ export default function RouteResultCard({
   mapVariant?: RouteMapVariant
 }) {
   const stops = rtStops(route)
+  /* 카드 전체를 진짜 링크(a href)로 (2026-10-18) — 길게 눌러 새 탭·주소 복사가 되고 검색엔진도 루트 상세로 따라간다.
+     그냥 누르면 예전처럼 onOpen, Ctrl·Cmd·가운데 클릭은 브라우저 기본 동작(새 탭) */
+  const token = route.share_token ?? route.shareToken
+  const href = token ? `/route/${token}` : undefined
+  const open = (e: React.MouseEvent) => {
+    if (href && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0)) return
+    e.preventDefault()
+    onOpen()
+  }
+  const linkStyle: React.CSSProperties = { textDecoration: 'none', color: 'inherit' }
 
   const heart = (
-    <button className={styles.heart} onClick={onToggleSave} aria-pressed={saved} aria-label={saved ? '저장 해제' : '저장'}>
+    <button className={styles.heart} onClick={e => { e.preventDefault(); e.stopPropagation(); onToggleSave(e) }} aria-pressed={saved} aria-label={saved ? '저장 해제' : '저장'}>
       <HeartIcon size={17} filled={saved} color={saved ? 'var(--accent)' : '#8b8f99'} />   {/* 저장 전: 회색 선, 저장 후: 핑크 채움 */}
     </button>
   )
@@ -60,7 +70,7 @@ export default function RouteResultCard({
 
   if (view === 'list') {
     return (
-      <article className={styles.row} onClick={onOpen}>
+      <a href={href} className={styles.row} onClick={open} style={linkStyle} draggable={false}>
         <div className={styles.rowThumb}>
           <RouteThumb stops={stops} height={104} variant={mapVariant} />
         </div>
@@ -72,12 +82,12 @@ export default function RouteResultCard({
           {heart}
           {saves}
         </div>
-      </article>
+      </a>
     )
   }
 
   return (
-    <article className={styles.card} onClick={onOpen}>
+    <a href={href} className={styles.card} onClick={open} style={linkStyle} draggable={false}>
       <div className={styles.thumb}>
         <RouteThumb stops={stops} height={132} variant={mapVariant} />
         {heart}
@@ -85,6 +95,6 @@ export default function RouteResultCard({
       <div className={styles.body}>
         {title}{meta}{foot}
       </div>
-    </article>
+    </a>
   )
 }

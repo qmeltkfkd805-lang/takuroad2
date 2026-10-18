@@ -199,7 +199,9 @@ export default function WorkHomePage({ tag, feed, events, shops, goods, routes, 
               </div>
             )}
           </div>
-          <div style={{ width: 240, height: 180, borderRadius: 14, flexShrink: 0, background: heroImage ? `url(${heroImage}) center/cover` : 'rgba(255,255,255,.16)', border: heroImage ? 'none' : '1px solid rgba(255,255,255,.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+          {/* 대표 사진이 없으면 폰에선 빈 사진 칸을 숨긴다 — 작품 대부분이 사진이 없어 첫 화면 절반이 빈 칸이었다 (2026-10-18) */}
+          {!heroImage && <style>{`@media (max-width: 640px) { .wk-cover-empty { display: none !important; } }`}</style>}
+          <div className={heroImage ? undefined : 'wk-cover-empty'} style={{ width: 240, height: 180, borderRadius: 14, flexShrink: 0, background: heroImage ? `url(${heroImage}) center/cover` : 'rgba(255,255,255,.16)', border: heroImage ? 'none' : '1px solid rgba(255,255,255,.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
             {!heroImage && <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.85)" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-5-5L5 21" /></svg>}
           </div>
           <div style={{ flex: 1, minWidth: 240, color: '#fff' }}>

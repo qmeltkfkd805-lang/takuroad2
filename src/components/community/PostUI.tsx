@@ -366,12 +366,20 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
   const goodsHasInlineImg = /<img/i.test(goodsHtml)
 
   // ── 공용 조각 ──
-  const kebab = isAuthor ? (
+  /* ⋯ 메뉴 — 글쓴이는 수정·공개 범위·전시관·삭제, 다른 회원은 신고·차단 (2026-10-18: 신고·차단이 저장·공유 바로 옆에
+     같은 모양으로 있어 잘못 누르기 쉬웠다 → 메뉴 안으로. 근접성의 법칙) */
+  const kebab = user ? (
     <div style={{ marginLeft: 'auto', position: 'relative' }}>
-      <button onClick={() => setMenuOpen(o => !o)} aria-label="더보기" style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--muted)', padding: 4, display: 'flex' }}>
+      <button onClick={() => setMenuOpen(o => !o)} aria-label="더보기" style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--muted)', padding: 8, margin: -4, display: 'flex' }}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6" /><circle cx="12" cy="12" r="1.6" /><circle cx="12" cy="19" r="1.6" /></svg>
       </button>
-      {menuOpen && (
+      {menuOpen && !isAuthor && (
+        <div style={{ position: 'absolute', top: '100%', right: 0, zIndex: 30, marginTop: 4, minWidth: 140, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.14)', overflow: 'hidden' }}>
+          <button onClick={() => { setMenuOpen(false); setReporting(true) }} style={{ ...menuItem, color: '#e04343' }}>신고하기</button>
+          {canBlock(user, post.author) && <button onClick={() => { setMenuOpen(false); blockAuthor(post.author!, true) }} disabled={blockBusy} style={menuItem}>작성자 차단하기</button>}
+        </div>
+      )}
+      {menuOpen && isAuthor && (
         <div style={{ position: 'absolute', top: '100%', right: 0, zIndex: 30, marginTop: 4, minWidth: 140, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.14)', overflow: 'hidden' }}>
           <button onClick={() => { setMenuOpen(false); router.push(`/community/write?edit=${post.id}`) }} style={menuItem}>수정하기</button>
           <button onClick={togglePrivate} style={menuItem}>{post.visibility === 'private' ? '전체 공개' : '나만보기'}</button>
@@ -402,8 +410,9 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
     </div>
   )
 
-  /* 저장 · 공유 · 신고 — 글 위쪽(작성자·날짜 줄 오른쪽)에 둔다. 좋아요·댓글 수는 본문 아래 그대로 */
-  const toolBtn: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 4, border: 'none', background: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 700, color: 'var(--muted)', whiteSpace: 'nowrap' }
+  /* 저장 · 공유 (신고·차단은 ⋯ 메뉴 안) — 글 위쪽(작성자·날짜 줄 오른쪽)에 둔다. 좋아요·댓글 수는 본문 아래 그대로 */
+  // 터치 영역 — 글자 크기만 하던 것을 높이 36px 로 (보이는 모양은 그대로)
+  const toolBtn: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 4, border: 'none', background: 'none', padding: '0 4px', minHeight: 36, cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 700, color: 'var(--muted)', whiteSpace: 'nowrap' }
   const postTools = (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12 }}>
       <button onClick={toggleSave} aria-pressed={saved} title={saved ? '저장 해제' : '저장 — 마이페이지 저장함에 모아 둬요'} style={{ ...toolBtn, color: saved ? 'var(--accent)' : 'var(--muted)' }}>
@@ -414,8 +423,6 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7" /><path d="M16 6l-4-4-4 4" /><path d="M12 2v13" /></svg>
         공유
       </button>
-      {user && <button onClick={() => setReporting(true)} style={toolBtn}>신고</button>}
-      {canBlock(user, post.author) && <button onClick={() => blockAuthor(post.author!, true)} disabled={blockBusy} style={toolBtn}>차단</button>}
     </span>
   )
 

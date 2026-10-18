@@ -209,4 +209,20 @@
   /* 정렬 메뉴: 모바일에선 정렬 버튼이 왼쪽에 있으므로 좌측 정렬로 되돌린다 */
   .popMenuRight { left: 0; right: auto; }
 }
-@media (max-width: 420px) { .grid { grid-template-columns: 1fr; } }
+/* 2026-10-18 📱 폰 첫 화면 정리 (힉스의 법칙) — 예전엔 결과 전에 테마 칩 5개·탭·검색·필터·정렬이 먼저 나와
+   첫 샵이 화면 맨 아래에 겨우 보였고, 420px 이하에선 카드가 한 줄 1개라 한 화면에 샵이 2곳뿐이었다.
+   → 순서: 제목 → 검색·필터 → 탭 → 테마(한 줄 가로 스크롤) → 결과. 길 안내(홈›샵›전체 샵)는 숨김. 카드는 2열 유지. */
+@media (max-width: 640px) {
+  .page { display: flex; flex-direction: column; }
+  .page > * { order: 10; }
+  .crumbs { display: none; }
+  .head { order: 1; margin-bottom: 14px; }
+  .toolbar { order: 2; margin-bottom: 12px; gap: 8px; }
+  .tabs { order: 3; margin-bottom: 10px; }
+  .themes {
+    order: 4; flex-wrap: nowrap; overflow-x: auto; margin: 0 -18px 14px; padding: 0 18px;
+    scrollbar-width: none;
+  }
+  .themes::-webkit-scrollbar { display: none; }
+  .themes > * { flex-shrink: 0; }
+}

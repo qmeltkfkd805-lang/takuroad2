@@ -206,10 +206,11 @@
   /* 글자가 읽히게 아래쪽을 어둡게 (홈 히어로와 같은 방식) */
   .heroPoster::after {
     content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
-    background: linear-gradient(180deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,.18) 40%, rgba(0,0,0,.78) 100%);
+    /* 2026-10-18 아래쪽을 더 진하게 — 포스터 속 글자 위에 우리 제목이 겹쳐 읽기 어려웠다(글자 자리가 높이의 40%부터 시작) */
+    background: linear-gradient(180deg, rgba(0,0,0,.06) 0%, rgba(0,0,0,.22) 28%, rgba(0,0,0,.8) 52%, rgba(0,0,0,.9) 100%);
   }
   .heroInfo {
-    position: relative; z-index: 1;
+    position: relative; z-index: 3;   /* 2026-10-18 1 → 3: 어둡게 까는 막(::after, 2)이 글자 위에 덮여 제목이 회색으로 흐려 보였다 */
     height: 100%; min-height: 0; justify-content: flex-end;
     padding: 20px 20px 22px; gap: 5px; color: #fff;
   }

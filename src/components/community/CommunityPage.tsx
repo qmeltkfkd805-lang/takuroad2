@@ -22,8 +22,10 @@ import { getMyWorkRelationships, getMyAffinityMap } from '@/services/workRelatio
 import AppIcon from '@/components/tds/AppIcon'
 import LogoLoader from '@/components/common/LogoLoader'
 import ThumbImg from '@/components/common/ThumbImg'
+import DukmarkTab from '@/components/community/DukmarkTab'
+import DukmarkMark from '@/components/community/DukmarkMark'
 
-type Scope = 'all' | 'popular' | 'mine' | 'subscribed' | 'worksub'
+type Scope = 'all' | 'popular' | 'mine' | 'subscribed' | 'worksub' | 'dukmark'   // dukmark = 덕마크 탭 (글 목록 대신 DukmarkTab)
 type View = 'list' | 'grid'
 type Sel = Board | 'all'
 type Tag = { id: string; name: string; slug: string }
@@ -130,6 +132,7 @@ export default function CommunityPage() {
       setPosts(list); setNotices(ntc); setLoading(false)
       if (!cached) setPage(1)
     }
+    if (scope === 'dukmark') { setLoading(false); return }   // 덕마크 탭은 DukmarkTab 이 따로 불러온다
     // 구독 = 내가 팔로우한 유저의 글만 (커뮤니티 서비스에 필터가 없어 클라이언트에서 걸러낸다)
     if (scope === 'subscribed') {
       if (!user) { setPosts([]); setNotices([]); setLoading(false); setPage(1); return }
@@ -214,6 +217,7 @@ export default function CommunityPage() {
     if (urlAppliedRef.current) return
     const b = searchParams.get('board')
     if (b && b !== 'all' && BOARDS.some(x => x.value === b)) { setBoard(b as Sel); setScope('all') }
+    if (searchParams.get('tab') === 'dukmark') { setBoard('all'); setScope('dukmark') }
     urlAppliedRef.current = true
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -278,6 +282,13 @@ export default function CommunityPage() {
   const isNew = (p: CommunityPost) => (Date.now() - new Date(p.createdAt).getTime()) < 86400000
   const openWrite = () => (user ? router.push('/community/write' + (board !== 'all' ? `?board=${board}` : '')) : router.push(ROUTES.login))
   const openPost = (p: CommunityPost) => router.push(`/community/${p.id}`)
+  /* 글 목록 줄은 진짜 링크(a href)로 — 길게 눌러 새 탭으로 열기·주소 복사가 되고 검색엔진도 따라간다 (2026-10-18, 제이콥의 법칙).
+     그냥 누르면 예전처럼 화면 안에서 바로 이동, Ctrl·Cmd·가운데 클릭은 브라우저 기본 동작(새 탭) */
+  const linkClick = (p: CommunityPost) => (e: React.MouseEvent) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+    e.preventDefault()
+    openPost(p)
+  }
 
   const inCreation = CREATION_BOARDS.includes(board as Board)
   const sortedTags = useMemo(
@@ -300,10 +311,11 @@ export default function CommunityPage() {
       .map(id => tagNameById.get(id)).filter((n): n is string => !!n)
     const rows = paged.map(p => <PannRow key={p.id} p={p} showBoard={board === 'all' || board === 'fancraft'} onOpen={openPost} tagNames={namesOf(p)} />)
     const mainBoards = BOARDS.filter(b => !CREATION_BOARDS.includes(b.value))   // 창작게시판(팬아트·팬창작물) 제외한 일반 게시판
-    const mobTabs: { label: string; active: boolean; on: () => void }[] = [
+    const mobTabs: { label: string; active: boolean; on: () => void; icon?: React.ReactNode }[] = [
       { label: '전체',    active: board === 'all' && scope === 'all',        on: () => { setBoard('all'); setScope('all') } },
       { label: '인기글',  active: scope === 'popular',                        on: () => { setBoard('all'); setScope('popular') } },
       { label: '팬창작물', active: board === 'fancraft' && scope === 'all',   on: () => { setBoard('fancraft'); setScope('all') } },
+      { label: '덕마크',   active: scope === 'dukmark',                        on: () => { setBoard('all'); setScope('dukmark') }, icon: <DukmarkMark size={14} /> },
       { label: '작품구독', active: scope === 'worksub',                        on: () => { setBoard('all'); setScope('worksub') } },
       { label: '팔로잉',   active: scope === 'subscribed',                     on: () => { setBoard('all'); setScope('subscribed') } },
     ]
@@ -318,22 +330,40 @@ export default function CommunityPage() {
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
           </button>
           <div style={{ flex: 1, fontSize: 17, fontWeight: 900 }}>{boardLabel}</div>
+          {/* 덕마크 탭은 자기 검색·필터가 있다 */}
+          {scope !== 'dukmark' && (<>
           <button onClick={() => setSearchOpen(o => !o)} aria-label="검색" style={{ ...iconBtn, ...(search || searchOpen ? { background: 'var(--accent)', color: '#fff' } : {}) }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
           </button>
           <button onClick={() => setTagOpen(o => !o)} aria-label="작품 필터" style={{ ...iconBtn, ...(tagFilter || tagOpen ? { background: 'var(--accent)', color: '#fff' } : {}) }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 5h18l-7 8v6l-4-2v-4z" /></svg>
           </button>
-          <button onClick={openWrite} aria-label="글쓰기" style={{ ...iconBtn, background: 'var(--accent)', color: '#fff' }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
-          </button>
+          </>)}
         </div>
+
+        {/* 글쓰기 — 오른쪽 아래 둥근 버튼 (2026-10-18: 예전엔 오른쪽 위 작은 + 라 폰에서 엄지가 안 닿았다. 피츠의 법칙)
+            아래 메뉴(58px) 위로 띄운다. 지도 화면의 + 버튼과 같은 자리·같은 모양 */}
+        <button
+          onClick={openWrite}
+          aria-label="글쓰기"
+          style={{
+            position: 'fixed', right: 16, bottom: 'calc(58px + env(safe-area-inset-bottom) + 16px)', zIndex: 40,
+            width: 56, height: 56, borderRadius: 9999, border: 'none', cursor: 'pointer',
+            background: 'var(--accent)', color: '#fff', boxShadow: '0 4px 16px rgba(255,86,146,.45)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
+        </button>
 
         {/* 카테고리 탭 — 전체 · 인기글 · 팬창작물 · 구독 (나머지 게시판은 왼쪽 서랍에) */}
         <div className="taku-noscroll" style={{ display: 'flex', overflowX: 'auto', background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
-          {mobTabs.map(t => <MobTab key={t.label} label={t.label} active={t.active} onClick={t.on} />)}
+          {mobTabs.map(t => <MobTab key={t.label} label={t.label} icon={t.icon} active={t.active} onClick={t.on} />)}
         </div>
 
+        {scope === 'dukmark' ? (
+          <DukmarkTab desktop={false} userId={user?.id ?? null} tags={allTags} onOpen={openPost} onNeedLogin={() => router.push(ROUTES.login)} />
+        ) : (<>
         {/* 작품구독 — 탭 아래 알약: 전체 + 내 최애·관심 작품별 */}
         {scope === 'worksub' && user && myWorks.length > 0 && (
           <div className="taku-noscroll" style={{ display: 'flex', gap: 8, overflowX: 'auto', padding: '10px 16px', background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
@@ -394,10 +424,10 @@ export default function CommunityPage() {
         {notices.length > 0 && (
           <div style={{ background: 'var(--surface)' }}>
             {notices.map(n => (
-              <div key={n.id} onClick={() => openPost(n)} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', borderBottom: '1px solid var(--border)', cursor: 'pointer' }}>
+              <a href={`/community/${n.id}`} key={n.id} onClick={linkClick(n)} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', borderBottom: '1px solid var(--border)', cursor: 'pointer' }}>
                 <span style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', border: '1px solid var(--accent)', borderRadius: 9999, padding: '2px 8px', flexShrink: 0 }}>공지</span>
                 <span style={{ fontSize: 14, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{n.title || '(제목 없음)'}</span>
-              </div>
+              </a>
             ))}
           </div>
         )}
@@ -433,6 +463,8 @@ export default function CommunityPage() {
           </div>
         )}
 
+        </>)}
+
         {/* 왼쪽 서랍 — 카테고리 */}
         {drawerOpen && typeof document !== 'undefined' && createPortal(
           <div onClick={() => setDrawerOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,.45)', overscrollBehavior: 'contain', touchAction: 'none' }}>
@@ -457,6 +489,7 @@ export default function CommunityPage() {
                 <DrawerItem label="인기글" active={scope === 'popular'} onClick={() => { setBoard('all'); setScope('popular'); setDrawerOpen(false) }} />
                 <DrawerItem label="작품구독" active={scope === 'worksub'} onClick={() => { setBoard('all'); setScope('worksub'); setDrawerOpen(false) }} />
                 <DrawerItem label="팔로잉" active={scope === 'subscribed'} onClick={() => { setBoard('all'); setScope('subscribed'); setDrawerOpen(false) }} />
+                <DrawerItem label="덕마크" active={scope === 'dukmark'} onClick={() => { setBoard('all'); setScope('dukmark'); setDrawerOpen(false) }} />
                 <DrawerItem label="내 게시글" active={scope === 'mine'} onClick={() => { setBoard('all'); setScope('mine'); setDrawerOpen(false) }} />
               </DrawerGroup>
             </div>
@@ -480,7 +513,7 @@ export default function CommunityPage() {
 
       {/* 게시판 메뉴 — 전체 폭 한 줄(오른쪽 사이드바와 무관) + 우측 글쓰기 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 2, borderBottom: '1px solid var(--border)', marginBottom: 16 }}>
-        <BoardTab label="전체글" active={board === 'all' && scope !== 'mine'} onClick={() => { setBoard('all'); setScope('all') }} />
+        <BoardTab label="전체글" active={board === 'all' && scope !== 'mine' && scope !== 'dukmark'} onClick={() => { setBoard('all'); setScope('all') }} />
         {(['free', 'promo', 'tips', 'goods', 'exchange', 'companion'] as Board[]).map(b => (
           <BoardTab key={b} label={BOARD_LABEL[b]} active={board === b} onClick={() => { setBoard(b); setScope('all') }} />
         ))}
@@ -503,12 +536,16 @@ export default function CommunityPage() {
             </div>
           )
         })()}
+        <BoardTab label="덕마크" icon={<DukmarkMark size={15} />} active={scope === 'dukmark'} onClick={() => { setBoard('all'); setScope('dukmark') }} />
         <button onClick={openWrite} style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 16px', borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff', fontWeight: 800, fontSize: 13.5, cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0, marginBottom: 6 }}>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
           글쓰기
         </button>
       </div>
 
+      {scope === 'dukmark' ? (
+        <DukmarkTab desktop userId={user?.id ?? null} tags={allTags} onOpen={openPost} onNeedLogin={() => router.push(ROUTES.login)} />
+      ) : (
       <div className="taku-comm">
         <main style={{ minWidth: 0 }}>
 
@@ -573,17 +610,17 @@ export default function CommunityPage() {
                 <span style={{ textAlign: 'center' }}>게시판</span><span>제목</span><span style={{ textAlign: 'center' }}>작성자</span><span style={{ textAlign: 'center' }}>작성일</span><span style={{ textAlign: 'center' }}>조회</span><span style={{ textAlign: 'center' }}>좋아요</span>
               </div>
               {notices.map(n => (
-                <div key={n.id} className="taku-prow" onClick={() => openPost(n)} style={{ display: 'grid', gridTemplateColumns: COLS, gap: 10, padding: '12px', borderBottom: '1px solid var(--border)', alignItems: 'center', cursor: 'pointer', fontSize: 13.5, background: 'rgba(232,0,111,.04)' }}>
+                <a href={`/community/${n.id}`} key={n.id} className="taku-prow" onClick={linkClick(n)} style={{ textDecoration: 'none', color: 'inherit', display: 'grid', gridTemplateColumns: COLS, gap: 10, padding: '12px', borderBottom: '1px solid var(--border)', alignItems: 'center', cursor: 'pointer', fontSize: 13.5, background: 'rgba(232,0,111,.04)' }}>
                   <span style={{ textAlign: 'center' }}><span style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', border: '1px solid var(--accent)', padding: '1px 7px', borderRadius: 9999 }}>공지</span></span>
                   <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 700 }}>{n.title || '(제목 없음)'}{n.commentCount > 0 && <span style={{ color: 'var(--accent)', fontWeight: 800, marginLeft: 6, fontSize: 12.5 }}>[{n.commentCount}]</span>}</span>
                   <span style={cellMuted}>{n.author?.nickname ?? '운영자'}</span>
                   <span style={cellMuted}>{timeAgo(n.createdAt)}</span>
                   <span style={cellMuted}>{n.viewCount}</span>
                   <span style={{ textAlign: 'center', color: '#FF4D6D', fontWeight: 700, fontSize: 12.5 }}>{n.likeCount}</span>
-                </div>
+                </a>
               ))}
               {paged.map(p => (
-                <div key={p.id} className="taku-prow" onClick={() => openPost(p)} style={{ display: 'grid', gridTemplateColumns: COLS, gap: 10, padding: '12px', borderBottom: '1px solid var(--border)', alignItems: 'center', cursor: 'pointer', fontSize: 13.5 }}>
+                <a href={`/community/${p.id}`} key={p.id} className="taku-prow" onClick={linkClick(p)} style={{ textDecoration: 'none', color: 'inherit', display: 'grid', gridTemplateColumns: COLS, gap: 10, padding: '12px', borderBottom: '1px solid var(--border)', alignItems: 'center', cursor: 'pointer', fontSize: 13.5 }}>
                   <span style={{ textAlign: 'center', color: 'var(--muted)', fontSize: 12, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{BOARD_LABEL[p.board]}</span>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
                     {p.flair && <span style={flairBadge}>{p.flair}</span>}
@@ -598,7 +635,7 @@ export default function CommunityPage() {
                   <span style={cellMuted}>{timeAgo(p.createdAt)}</span>
                   <span style={cellMuted}>{p.viewCount}</span>
                   <span style={{ textAlign: 'center', color: '#FF4D6D', fontWeight: 700, fontSize: 12.5 }}>{p.likeCount}</span>
-                </div>
+                </a>
               ))}
             </div>
           )}
@@ -619,10 +656,10 @@ export default function CommunityPage() {
           <SideCard title="전체 인기글">
             <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
               {popular.slice(0, 5).map((p, i) => (
-                <div key={p.id} onClick={() => openPost(p)} style={{ display: 'flex', gap: 10, cursor: 'pointer', alignItems: 'center' }}>
+                <a href={`/community/${p.id}`} key={p.id} onClick={linkClick(p)} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', gap: 10, cursor: 'pointer', alignItems: 'center' }}>
                   <span style={{ width: 18, textAlign: 'center', fontWeight: 900, fontSize: 13.5, color: i < 3 ? 'var(--accent)' : 'var(--muted)', flexShrink: 0 }}>{i + 1}</span>
                   <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.flair && <span style={flairBadge}>{p.flair}</span>}{p.isSpoiler && <span style={spoilerBadge}>스포</span>}{p.title || '(제목 없음)'}{p.commentCount > 0 && <span style={{ color: 'var(--accent)', fontWeight: 800, marginLeft: 5, fontSize: 12 }}>[{p.commentCount}]</span>}</span>
-                </div>
+                </a>
               ))}
               {popular.length === 0 && <div style={{ fontSize: 13, color: 'var(--muted)' }}>아직 인기글이 없어요</div>}
             </div>
@@ -632,16 +669,17 @@ export default function CommunityPage() {
           <SideCard title="이번 주 인기글">
             <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
               {weeklyPopular.slice(0, 5).map((p, i) => (
-                <div key={p.id} onClick={() => openPost(p)} style={{ display: 'flex', gap: 10, cursor: 'pointer', alignItems: 'center' }}>
+                <a href={`/community/${p.id}`} key={p.id} onClick={linkClick(p)} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', gap: 10, cursor: 'pointer', alignItems: 'center' }}>
                   <span style={{ width: 18, textAlign: 'center', fontWeight: 900, fontSize: 13.5, color: i < 3 ? 'var(--accent)' : 'var(--muted)', flexShrink: 0 }}>{i + 1}</span>
                   <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.flair && <span style={flairBadge}>{p.flair}</span>}{p.isSpoiler && <span style={spoilerBadge}>스포</span>}{p.title || '(제목 없음)'}{p.commentCount > 0 && <span style={{ color: 'var(--accent)', fontWeight: 800, marginLeft: 5, fontSize: 12 }}>[{p.commentCount}]</span>}</span>
-                </div>
+                </a>
               ))}
               {weeklyPopular.length === 0 && <div style={{ fontSize: 13, color: 'var(--muted)' }}>이번 주 인기글이 아직 없어요</div>}
             </div>
           </SideCard>
         </aside>
       </div>
+      )}
 
     </div>
   )
@@ -683,16 +721,16 @@ function WorkPill({ label, active, onClick }: { label: string; active: boolean; 
   )
 }
 
-function MobTab({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+function MobTab({ label, icon, active, onClick }: { label: string; icon?: React.ReactNode; active: boolean; onClick: () => void }) {
   return (
-    <button onClick={onClick} style={{ padding: '12px 14px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, fontWeight: active ? 800 : 600, color: active ? 'var(--accent)' : 'var(--muted)', borderBottom: `2.5px solid ${active ? 'var(--accent)' : 'transparent'}`, whiteSpace: 'nowrap', flexShrink: 0 }}>{label}</button>
+    <button onClick={onClick} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '12px 14px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, fontWeight: active ? 800 : 600, color: active ? 'var(--accent)' : 'var(--muted)', borderBottom: `2.5px solid ${active ? 'var(--accent)' : 'transparent'}`, whiteSpace: 'nowrap', flexShrink: 0 }}>{icon}{label}</button>
   )
 }
 
 function PannRow({ p, showBoard, onOpen, tagNames }: { p: CommunityPost; showBoard: boolean; onOpen: (p: CommunityPost) => void; tagNames?: string[] }) {
   const thumb = p.images?.[0]
   return (
-    <div onClick={() => onOpen(p)} style={{ display: 'flex', gap: 12, padding: '13px 16px', borderBottom: '1px solid var(--border)', cursor: 'pointer', alignItems: 'flex-start' }}>
+    <a href={`/community/${p.id}`} onClick={e => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); onOpen(p) }} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', gap: 12, padding: '13px 16px', borderBottom: '1px solid var(--border)', cursor: 'pointer', alignItems: 'flex-start' }}>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.36, color: 'var(--text)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {p.flair && <span style={flairBadge}>{p.flair}</span>}
@@ -717,7 +755,7 @@ function PannRow({ p, showBoard, onOpen, tagNames }: { p: CommunityPost; showBoa
           <ThumbImg src={thumb} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
       )}
-    </div>
+    </a>
   )
 }
 
@@ -736,9 +774,9 @@ function DrawerItem({ label, active, onClick, sub }: { label: string; active: bo
   )
 }
 
-function BoardTab({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+function BoardTab({ label, icon, active, onClick }: { label: string; icon?: React.ReactNode; active: boolean; onClick: () => void }) {
   return (
-    <button onClick={onClick} style={{ padding: '11px 15px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, fontWeight: active ? 800 : 600, color: active ? 'var(--accent)' : 'var(--muted)', borderBottom: `2.5px solid ${active ? 'var(--accent)' : 'transparent'}`, whiteSpace: 'nowrap', flexShrink: 0 }}>{label}</button>
+    <button onClick={onClick} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '11px 15px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, fontWeight: active ? 800 : 600, color: active ? 'var(--accent)' : 'var(--muted)', borderBottom: `2.5px solid ${active ? 'var(--accent)' : 'transparent'}`, whiteSpace: 'nowrap', flexShrink: 0 }}>{icon}{label}</button>
   )
 }
 

@@ -186,3 +186,8 @@
 /* 성지순례(루트) 카드 — 지도 칸을 루트 페이지 카드 지도(약 185×132)와 비슷하게 넓혀 같은 모양으로 보이게 */
 .routeSlideMap { height: 132px; }
 .routeThumbMap { width: 44%; max-width: 170px; }
+
+/* 2026-10-18 터치 영역 넓히기 (피츠의 법칙) — 보이는 크기는 그대로, 손가락이 닿는 범위만 넓힌다.
+   카드 하트는 28px, '전체 보기 ›'는 59×21px 이라 폰에서 잘 안 눌렸다 */
+.routeHeart::after { content: ''; position: absolute; inset: -8px; border-radius: 9999px; }
+.newsMore, .routeMore { min-height: 40px; padding: 0 8px; margin-right: -8px; }
