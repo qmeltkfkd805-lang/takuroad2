@@ -111,6 +111,30 @@ export function decorCss(s: string): string {
     `${s} ol[data-steps]{list-style:none;counter-reset:step;padding:0;margin:12px 0}`,
     `${s} ol[data-steps] > li{counter-increment:step;position:relative;margin:0 0 8px;padding:12px 14px 12px 52px;border:1px solid var(--border);border-radius:12px;background:var(--surface);min-height:24px;line-height:1.6}`,
     `${s} ol[data-steps] > li::before{content:counter(step);position:absolute;left:14px;top:11px;width:26px;height:26px;border-radius:9999px;background:var(--accent);color:#fff;font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center}`,
+    // 샵·이벤트 카드 — 이름 길이·설명 줄 유무와 상관없이 늘 같은 크기 (이미 올라간 글의 카드도 같이 맞춘다)
+    // (예전 '내 루트' 카드는 data-embed 표시가 없어서 주소+모양으로 찾는다)
+    `${s} a[data-embed],${s} a[href^="/route/"][style*="display:flex"],${s} a[href^="/route/"][style*="display: flex"]{width:100% !important;max-width:460px !important;height:90px !important;box-sizing:border-box !important;overflow:hidden}`,
+    `${s} a[data-embed] > span:last-child,${s} a[href^="/route/"][style*="flex"] > span:last-child{flex:1 1 auto;min-width:0}`,
+    `${s} a[href^="/route/"][style*="flex"] > span:last-child > span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}`,
+    // 목록 모양 — 기본 점(•)·숫자(1.)는 브라우저 그대로, 나머지는 data-list 표시를 보고 그린다
+    `${s} ul,${s} ol{padding-left:1.6em;margin:8px 0}`,
+    // 사이트 기본 CSS(Tailwind)가 목록 표시를 없애 둬서 기본 점·숫자를 다시 켠다 (체크리스트·단계 블록은 제외)
+    `${s} ul:not([data-list]):not([data-checklist]){list-style:disc}`,
+    `${s} ol:not([data-list]):not([data-steps]){list-style:decimal}`,
+    `${s} ul ul:not([data-list]):not([data-checklist]){list-style:circle}`,
+    `${s} ul[data-list]{list-style:none}`,
+    `${s} ul[data-list] > li{position:relative}`,
+    `${s} ul[data-list] > li::before{position:absolute;left:-1.35em;top:0;color:var(--accent);font-weight:900}`,
+    `${s} ul[data-list="circle"] > li::before{content:'\\25E6';font-size:1.2em;line-height:1.3}`,
+    `${s} ul[data-list="heart"] > li::before{content:'\\2665';font-size:.72em;line-height:2.1}`,
+    `${s} ul[data-list="star"] > li::before{content:'\\2605';font-size:.72em;line-height:2.1}`,
+    `${s} ul[data-list="check"] > li::before{content:'\\2713'}`,
+    `${s} ul[data-list="arrow"] > li::before{content:'\\2192'}`,
+    `${s} ol[data-list="circle"]{list-style:none;counter-reset:dl}`,
+    `${s} ol[data-list="circle"] > li{position:relative;counter-increment:dl}`,
+    `${s} ol[data-list="circle"] > li::before{content:counter(dl);position:absolute;left:-1.55em;top:.2em;width:1.25em;height:1.25em;border-radius:9999px;background:var(--accent);color:#fff;font-size:.8em;font-weight:900;display:flex;align-items:center;justify-content:center}`,
+    `${s} ol[data-list="hangul"]{list-style-type:hangul}`,
+    `${s} ol[data-list="alpha"]{list-style-type:upper-alpha}`,
     // 인용구 모양 (기본 <blockquote> = 왼쪽 핑크 세로줄은 그대로)
     `${s} blockquote[data-quote]{border-left:none;color:var(--text);margin:14px 0}`,
     `${s} blockquote[data-quote="mark"]{position:relative;text-align:center;padding:30px 36px 26px;font-weight:600}`,

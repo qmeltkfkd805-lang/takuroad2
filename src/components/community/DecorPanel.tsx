@@ -199,3 +199,27 @@ export function DividerPicker(p: PickerProps<DividerKind>) {
 export function QuotePicker(p: PickerProps<QuoteKind>) {
   return <StylePicker title="인용구" items={QUOTES} toggleAttr="data-quote-toggle" {...p} />
 }
+
+/* 툴바 목록 버튼 → 목록 모양 고르기 */
+export type ListKind = 'disc' | 'circle' | 'heart' | 'star' | 'check' | 'arrow' | 'num' | 'cnum' | 'hangul' | 'alpha' | 'none'
+const lsample = (marks: string[], color = 'var(--accent)') => (
+  <span style={{ display: 'flex', flexDirection: 'column', gap: 1, fontSize: 10, lineHeight: 1, alignItems: 'flex-start' }}>
+    {marks.map((m, i) => <span key={i}><b style={{ color, marginRight: 3 }}>{m}</b><span style={{ display: 'inline-block', width: 14, height: 3, borderRadius: 2, background: 'var(--border)', verticalAlign: 'middle' }} /></span>)}
+  </span>
+)
+const LISTS: { kind: ListKind; label: string; sample: React.ReactNode }[] = [
+  { kind: 'disc', label: '점', sample: lsample(['•', '•'], 'var(--text)') },
+  { kind: 'circle', label: '동그라미', sample: lsample(['◦', '◦']) },
+  { kind: 'heart', label: '하트', sample: lsample(['♥', '♥']) },
+  { kind: 'star', label: '별', sample: lsample(['★', '★']) },
+  { kind: 'check', label: '체크', sample: lsample(['✓', '✓']) },
+  { kind: 'arrow', label: '화살표', sample: lsample(['→', '→']) },
+  { kind: 'num', label: '숫자', sample: lsample(['1.', '2.'], 'var(--text)') },
+  { kind: 'cnum', label: '동그라미 숫자', sample: lsample(['①', '②']) },
+  { kind: 'hangul', label: '가나다', sample: lsample(['가.', '나.'], 'var(--text)') },
+  { kind: 'alpha', label: 'ABC', sample: lsample(['A.', 'B.'], 'var(--text)') },
+  { kind: 'none', label: '목록 해제', sample: <span style={{ fontSize: 14, color: 'var(--muted)' }}>⊘</span> },
+]
+export function ListPicker(p: PickerProps<ListKind>) {
+  return <StylePicker title="목록" items={LISTS} cols={4} toggleAttr="data-list-toggle" {...p} />
+}

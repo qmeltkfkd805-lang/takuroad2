@@ -24,7 +24,7 @@ import CompanionEventPicker from './CompanionEventPicker'
 import { getPostEvent, setPostEvent, PostEventSummary } from '@/services/postEventService'
 import DukmarkWritePanel from './DukmarkWritePanel'
 import ColorPalette, { TAKU_COLORS, pushRecentColor } from './ColorPalette'
-import DecorPanel, { DividerPicker, QuotePicker, HIGHLIGHTS, type CalloutKind, type DividerKind, type QuoteKind } from './DecorPanel'
+import DecorPanel, { DividerPicker, QuotePicker, ListPicker, type ListKind, HIGHLIGHTS, type CalloutKind, type DividerKind, type QuoteKind } from './DecorPanel'
 import { decorCss } from '@/lib/utils/postBodyFx'
 import { getPostDukmark, setPostDukmark } from '@/services/dukmarkService'
 import { siteUrlsIn, mergeSiteUrls, siteKey } from '@/lib/utils/dukmark'
@@ -569,6 +569,7 @@ export default function PostWritePage() {
   const [decorAnchor, setDecorAnchor] = useState<DOMRect | null>(null)   // PC 팝오버 위치 (툴바가 넘침을 숨겨서 화면 위에 띄움)
   const [hlAnchor, setHlAnchor] = useState<DOMRect | null>(null)
   const [fmtOpen, setFmtOpen] = useState(false)   // 📱 서식 패널 (줄 종류·글자·색·형광펜·정렬)
+  const [listPick, setListPick] = useState<DOMRect | 'sheet' | null>(null)        // 목록 모양 고르기
   const [quotePick, setQuotePick] = useState<DOMRect | 'sheet' | null>(null)       // 인용구 모양 고르기
   const [dividerPick, setDividerPick] = useState<DOMRect | 'sheet' | null>(null)   // 구분선 모양 고르기 (PC: 버튼 위치 / 모바일: 시트)
   const [addToCollection, setAddToCollection] = useState(true)  // 굿즈자랑: 내 컬렉션에도 담기
@@ -1235,11 +1236,11 @@ export default function PostWritePage() {
       ? `<img src="${escapeHtml(r.cover_image_url)}" style="width:60px;height:60px;border-radius:10px;object-fit:cover;flex:none;" />`
       : `<span style="width:60px;height:60px;border-radius:10px;background:#f3f3f5;display:inline-flex;align-items:center;justify-content:center;color:#999;flex:none;">${routeSvg}</span>`
     appendBlock(
-      `<a href="/route/${escapeHtml(r.share_token)}" contenteditable="false" style="display:flex;align-items:center;gap:12px;border:1px solid #eee;border-radius:14px;padding:12px 14px;margin:8px 0;text-decoration:none;color:inherit;background:#fafafa;">`
+      `<a href="/route/${escapeHtml(r.share_token)}" data-embed="route" contenteditable="false" style="display:flex;align-items:center;gap:12px;border:1px solid #eee;border-radius:14px;padding:12px 14px;margin:8px 0;width:100%;max-width:460px;height:90px;box-sizing:border-box;overflow:hidden;text-decoration:none;color:inherit;background:#fafafa;">`
       + cover
-      + `<span style="min-width:0;"><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;color:#e8006f;">${routeSvg.replace('width="20" height="20"', 'width="13" height="13"')} 내 루트</span>`
-      + `<span style="display:block;font-weight:800;font-size:15px;color:#111;margin-top:2px;">${escapeHtml(r.title)}</span>`
-      + `<span style="display:block;font-size:12px;color:#888;margin-top:2px;">${r.shopCount}개 장소 · 눌러서 루트 보기</span></span></a>`
+      + `<span style="flex:1 1 auto;min-width:0;"><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;color:#e8006f;">${routeSvg.replace('width="20" height="20"', 'width="13" height="13"')} 내 루트</span>`
+      + `<span style="display:block;font-weight:800;font-size:15px;color:#111;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(r.title)}</span>`
+      + `<span style="display:block;font-size:12px;color:#888;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.shopCount}개 장소 · 눌러서 루트 보기</span></span></a>`
     )
     setRoutePickOpen(false)
     setMoreOpen(false)
@@ -1347,6 +1348,40 @@ export default function PostWritePage() {
   }
   /* 형광펜 — 'full' = 글자 배경 전체 / 'under' = 글자 아래쪽만(밑줄처럼). null 색 = 지우기(두 방식 모두)
      브라우저 기능(hiliteColor)은 단색만 칠하므로, 표시용 색으로 칠한 뒤 그 칸만 찾아 원하는 모양으로 바꾼다 */
+  // 목록 — 지금 줄(또는 고른 줄들)을 점·숫자 목록으로 바꾸고 모양 표시(data-list)를 붙인다. 'none' = 목록 해제
+  const applyList = (kind: ListKind) => {
+    restoreCaret()
+    const listOf = () => {
+      const n = window.getSelection()?.anchorNode
+      const el = n ? (n.nodeType === Node.ELEMENT_NODE ? (n as HTMLElement) : n.parentElement) : null
+      const l = el?.closest('ul,ol') as HTMLElement | null
+      return l && editorRef.current?.contains(l) && !l.matches('[data-checklist],[data-steps]') ? l : null
+    }
+    // 브라우저가 남기는 군더더기 정리: <p> 안에 들어간 목록은 꺼내고(글 화면에서 빈 줄이 생김), 기본 글자색만 든 <span> 은 푼다
+    const tidy = () => {
+      const root = editorRef.current
+      root?.querySelectorAll('p > ul, p > ol').forEach(l => {
+        const p = l.parentElement!
+        if (Array.from(p.childNodes).every(c => c === l || (c.nodeType === Node.TEXT_NODE && !c.textContent?.trim()) || (c as HTMLElement).tagName === 'BR')) p.replaceWith(l)
+      })
+      root?.querySelectorAll<HTMLElement>('span[style]').forEach(sp => {
+        if (sp.getAttribute('style')?.replace(/\s/g, '') === 'color:var(--text);') { while (sp.firstChild) sp.before(sp.firstChild); sp.remove() }
+      })
+    }
+    const cur = listOf()
+    if (kind === 'none') {
+      if (cur) exec(cur.tagName === 'OL' ? 'insertOrderedList' : 'insertUnorderedList')   // 같은 명령을 한 번 더 = 해제
+      tidy(); syncEditorText(); return
+    }
+    const ordered = kind === 'num' || kind === 'cnum' || kind === 'hangul' || kind === 'alpha'
+    if (!cur || (cur.tagName === 'OL') !== ordered) exec(ordered ? 'insertOrderedList' : 'insertUnorderedList')
+    const l = listOf()
+    if (l) {
+      const mark = kind === 'cnum' ? 'circle' : kind
+      if (kind === 'disc' || kind === 'num') l.removeAttribute('data-list'); else l.setAttribute('data-list', mark)
+    }
+    tidy(); syncEditorText(); refreshActive()
+  }
   // 정렬 — 글자를 고르지 않고 누르면 글 전체, 고른 게 있으면 그 줄들만
   const applyAlign = (cmd: 'justifyLeft' | 'justifyCenter' | 'justifyRight') => {
     const root = editorRef.current
@@ -1475,9 +1510,9 @@ export default function PostWritePage() {
     const cover = img
       ? `<img src="${escapeHtml(img)}" alt="" style="width:64px;height:64px;border-radius:10px;object-fit:cover;flex:none;max-width:none" />`
       : `<span style="width:64px;height:64px;border-radius:10px;background:#f3f3f5;display:inline-flex;align-items:center;justify-content:center;color:#aaa;flex:none">${kind === 'shop' ? pin : cal}</span>`
-    return `<a href="${escapeHtml(href)}" data-embed="${kind}" data-lp="1" contenteditable="false" style="position:relative;display:flex;align-items:center;gap:12px;border:1px solid #eee;border-radius:14px;padding:12px 14px;margin:8px 0;max-width:460px;text-decoration:none;color:inherit;background:#fafafa;">`
+    return `<a href="${escapeHtml(href)}" data-embed="${kind}" data-lp="1" contenteditable="false" style="position:relative;display:flex;align-items:center;gap:12px;border:1px solid #eee;border-radius:14px;padding:12px 14px;margin:8px 0;width:100%;max-width:460px;height:90px;box-sizing:border-box;overflow:hidden;text-decoration:none;color:inherit;background:#fafafa;">`
       + REMOVE_BTN + cover
-      + `<span style="min-width:0;"><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;color:#e8006f;">${kind === 'shop' ? pin : cal} ${label}</span>`
+      + `<span style="flex:1 1 auto;min-width:0;"><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;color:#e8006f;">${kind === 'shop' ? pin : cal} ${label}</span>`
       + `<span style="display:block;font-weight:800;font-size:15px;color:#111;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(title)}</span>`
       + (sub ? `<span style="display:block;font-size:12px;color:#888;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(sub)}</span>` : '')
       + `</span></a>`
@@ -2312,6 +2347,12 @@ export default function PostWritePage() {
                 <button className="tb-btn" title="왼쪽 정렬" onMouseDown={e => e.preventDefault()} onClick={() => applyAlign('justifyLeft')} style={act(active.justifyLeft)}><AlignIcon dir="left" /></button>
                 <button className="tb-btn" title="가운데 정렬" onMouseDown={e => e.preventDefault()} onClick={() => applyAlign('justifyCenter')} style={act(active.justifyCenter)}><AlignIcon dir="center" /></button>
                 <button className="tb-btn" title="오른쪽 정렬" onMouseDown={e => e.preventDefault()} onClick={() => applyAlign('justifyRight')} style={act(active.justifyRight)}><AlignIcon dir="right" /></button>
+                <Sep />
+                <button className="tb-btn" data-list-toggle="1" title="목록 (모양 고르기)" onMouseDown={e => e.preventDefault()} onClick={e => { const r = e.currentTarget.getBoundingClientRect(); setQuotePick(null); setDividerPick(null); setListPick(p => (p ? null : r)) }}
+                  style={{ width: 'auto', padding: '0 6px', gap: 2, ...(listPick ? { background: 'rgba(232,0,111,.12)' } : {}) }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6h11M9 12h11M9 18h11" /><circle cx="4.5" cy="6" r="1" fill="currentColor" /><circle cx="4.5" cy="12" r="1" fill="currentColor" /><circle cx="4.5" cy="18" r="1" fill="currentColor" /></svg>
+                  <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="m1.5 3.5 3.5 3.5 3.5-3.5" /></svg>
+                </button>
               </div>
               {/* 📱 서식 패널 — 자주 쓰는 글자 꾸미기를 성격별로 묶어서 (줄 종류 · 글자 · 색 · 형광펜 · 정렬) */}
               {fmtOpen && (
@@ -2355,6 +2396,11 @@ export default function PostWritePage() {
                       ))}
                     </div>
                     <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => applyHighlight(null)} style={{ ...mobChip, width: '100%', marginTop: 6, color: 'var(--muted)', fontSize: 12.5 }}>형광펜 지우기</button>
+                  </MobSection>
+                  <MobSection title="목록">
+                    <button type="button" data-list-toggle="1" onMouseDown={e => e.preventDefault()} onClick={() => setListPick('sheet')} style={{ ...mobChip, width: '100%', gap: 8 }}>
+                      <span style={{ color: 'var(--accent)', fontWeight: 900 }}>• ♥ ★ ✓ 1. ①</span> 목록 모양 고르기
+                    </button>
                   </MobSection>
                   <MobSection title="정렬" sub="글자를 고르지 않으면 글 전체">
                     <div style={{ display: 'flex', gap: 6 }}>
@@ -2406,6 +2452,7 @@ export default function PostWritePage() {
             </div>
 
             {decorOpen && !isDesktop && decorPanel(false)}
+            {listPick && <ListPicker desktop={listPick !== 'sheet'} anchor={listPick === 'sheet' ? null : listPick} onPick={applyList} onClose={() => setListPick(null)} />}
             {quotePick && <QuotePicker desktop={quotePick !== 'sheet'} anchor={quotePick === 'sheet' ? null : quotePick} onPick={applyQuote} onClose={() => setQuotePick(null)} />}
             {dividerPick && <DividerPicker desktop={dividerPick !== 'sheet'} anchor={dividerPick === 'sheet' ? null : dividerPick} onPick={insertDivider} onClose={() => setDividerPick(null)} />}
             {/* 본문 */}
