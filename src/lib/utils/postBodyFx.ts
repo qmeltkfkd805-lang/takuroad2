@@ -35,7 +35,7 @@ export const POST_FX_CSS = [
   '.taku-post-body .sl-count{position:absolute;right:10px;top:10px;padding:2px 9px;border-radius:9999px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:700}',
   // 샵·이벤트 카드
   '.taku-post-body a[data-embed],.taku-post-body a[data-embed] *{text-decoration:none !important;color:inherit !important}',
-].join('')
+].join('') + decorCss('.taku-post-body')
 
 /** 본문에 스포일러·사진첩 움직임을 붙인다. 돌려주는 함수로 떼어낸다 */
 export function bindPostBody(root: HTMLElement | null): () => void {
@@ -80,4 +80,53 @@ export function bindPostBody(root: HTMLElement | null): () => void {
     cleanups.push(() => { prev.removeEventListener('click', onPrev); next.removeEventListener('click', onNext); box.removeEventListener('scroll', update) })
   })
   return () => { root.removeEventListener('click', onClick, true); cleanups.forEach(f => f()) }
+}
+
+
+/* 글 꾸미기 (2026-10-19) — 소제목·형광펜·강조 박스·별점·단계·꾸밈 구분선.
+   글쓰기 편집기(.taku-editor)와 글 화면(.taku-post-body)이 같은 모양이 되도록 같은 규칙을 범위만 바꿔 쓴다.
+   저장된 HTML 엔 data-* 표시만 있다 — 강조 박스의 이름표(💡 꿀팁 등)·단계 번호·구분선 무늬는 CSS 가 그린다. */
+export function decorCss(s: string): string {
+  return [
+    // 소제목 — 장식 없이 글씨 크기·굵기만 (색·형광펜은 쓰는 사람이 직접). 큰(h2) / 작은(h3)
+    `${s} h2{font-size:1.4em;font-weight:900;line-height:1.4;margin:24px 0 12px;padding:0;border:none;background:none}`,
+    `${s} h3{font-size:1.1em;font-weight:800;line-height:1.45;margin:16px 0 6px}`,
+    // 강조 박스
+    `${s} div[data-callout]{position:relative;margin:12px 0;padding:34px 16px 12px;border-radius:12px;border:1px solid;line-height:1.65}`,
+    `${s} div[data-callout]::before{position:absolute;top:10px;left:16px;font-size:.85em;font-weight:900}`,
+    `${s} div[data-callout] > :first-child{margin-top:0}`,
+    `${s} div[data-callout] > :last-child{margin-bottom:0}`,
+    `${s} div[data-callout="tip"]{background:rgba(255,86,146,.08);border-color:rgba(255,86,146,.35)}`,
+    `${s} div[data-callout="tip"]::before{content:'💡 꿀팁';color:#E8006F}`,
+    `${s} div[data-callout="info"]{background:rgba(123,198,255,.12);border-color:rgba(59,155,232,.35)}`,
+    `${s} div[data-callout="info"]::before{content:'📌 정보';color:#1F7BC9}`,
+    `${s} div[data-callout="warn"]{background:rgba(245,177,0,.12);border-color:rgba(245,177,0,.45)}`,
+    `${s} div[data-callout="warn"]::before{content:'⚠️ 주의';color:#A87500}`,
+    `${s} div[data-callout="check"]{background:rgba(110,220,202,.16);border-color:rgba(20,184,160,.4)}`,
+    `${s} div[data-callout="check"]::before{content:'✅ 체크';color:#0E8A78}`,
+    // 별점 — "이름 ★★★★☆" 한 줄
+    `${s} div[data-stars]{display:flex;align-items:center;gap:10px;margin:10px 0;padding:10px 14px;border-radius:12px;background:var(--surface2);font-weight:800}`,
+    `${s} div[data-stars] [data-stars-value]{color:#FFB400;letter-spacing:2px;font-size:1.15em}`,
+    // 단계 — 번호 동그라미 카드
+    `${s} ol[data-steps]{list-style:none;counter-reset:step;padding:0;margin:12px 0}`,
+    `${s} ol[data-steps] > li{counter-increment:step;position:relative;margin:0 0 8px;padding:12px 14px 12px 52px;border:1px solid var(--border);border-radius:12px;background:var(--surface);min-height:24px;line-height:1.6}`,
+    `${s} ol[data-steps] > li::before{content:counter(step);position:absolute;left:14px;top:11px;width:26px;height:26px;border-radius:9999px;background:var(--accent);color:#fff;font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center}`,
+    // 인용구 모양 (기본 <blockquote> = 왼쪽 핑크 세로줄은 그대로)
+    `${s} blockquote[data-quote]{border-left:none;color:var(--text);margin:14px 0}`,
+    `${s} blockquote[data-quote="mark"]{position:relative;text-align:center;padding:30px 36px 26px;font-weight:600}`,
+    `${s} blockquote[data-quote="mark"]::before,${s} blockquote[data-quote="mark"]::after{position:absolute;font-size:44px;line-height:1;color:var(--accent);font-family:Georgia,serif;opacity:.85}`,
+    `${s} blockquote[data-quote="mark"]::before{content:'\\201C';left:6px;top:2px}`,
+    `${s} blockquote[data-quote="mark"]::after{content:'\\201D';right:6px;bottom:-14px}`,
+    `${s} blockquote[data-quote="bubble"]{position:relative;background:var(--surface2);border-radius:16px;padding:14px 18px;margin-bottom:22px}`,
+    `${s} blockquote[data-quote="bubble"]::after{content:'';position:absolute;left:24px;bottom:-10px;border:10px solid transparent;border-top-color:var(--surface2);border-bottom:0}`,
+    `${s} blockquote[data-quote="box"]{border:1.5px solid var(--border);border-radius:12px;padding:14px 18px}`,
+    `${s} blockquote[data-quote="note"]{background:#FFF4B8;color:#3a3200;border-radius:4px;padding:16px 18px;box-shadow:0 2px 6px rgba(0,0,0,.08)}`,
+    // 구분선 — 기본(<hr>)도 점선과 같은 색·두께의 실선
+    `${s} hr:not([data-divider]){border:none;border-top:2px solid var(--border);height:0;margin:18px 0;background:none}`,
+    `${s} hr[data-divider]{border:none;height:auto;margin:18px 0;text-align:center;overflow:visible;background:none}`,
+    `${s} hr[data-divider="dot"]{border-top:2px dashed var(--border)}`,
+    `${s} hr[data-divider="heart"]::after{content:'♡  ♡  ♡';color:var(--accent);font-size:15px;letter-spacing:4px}`,
+    `${s} hr[data-divider="star"]::after{content:'✦  ✦  ✦';color:var(--accent);font-size:14px;letter-spacing:4px}`,
+    `${s} hr[data-divider="wave"]{height:10px;background:radial-gradient(circle at 6px -3px,transparent 6px,var(--accent) 6.5px,var(--accent) 8px,transparent 8.5px) 0 0/12px 10px repeat-x;opacity:.55}`,
+  ].join('')
 }

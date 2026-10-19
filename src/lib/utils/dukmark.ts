@@ -72,6 +72,8 @@ export function makerLinkLabel(u: string): string {
   if (h.endsWith('github.com') || h.endsWith('github.io')) return 'GitHub'
   if (h.endsWith('youtube.com') || h === 'youtu.be') return 'YouTube'
   if (h.endsWith('blog.naver.com')) return '네이버 블로그'
+  if (h === 'cafe.naver.com' || h === 'm.cafe.naver.com') return '네이버 카페'
+  if (h.endsWith('kakao.com')) return '카카오'
   if (h.endsWith('threads.net') || h.endsWith('threads.com')) return 'Threads'
   if (h.endsWith('bsky.app')) return 'Bluesky'
   if (h.endsWith('tiktok.com')) return 'TikTok'

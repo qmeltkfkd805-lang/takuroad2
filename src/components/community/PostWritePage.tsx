@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, Fragment } from 'react'
+import { createPortal } from 'react-dom'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/layout/AuthProvider'
 import { useIsDesktop } from '@/hooks/useIsDesktop'
@@ -22,6 +23,9 @@ import { createClient as createSupabase } from '@/lib/supabase/client'
 import CompanionEventPicker from './CompanionEventPicker'
 import { getPostEvent, setPostEvent, PostEventSummary } from '@/services/postEventService'
 import DukmarkWritePanel from './DukmarkWritePanel'
+import ColorPalette, { TAKU_COLORS, pushRecentColor } from './ColorPalette'
+import DecorPanel, { DividerPicker, QuotePicker, HIGHLIGHTS, type CalloutKind, type DividerKind, type QuoteKind } from './DecorPanel'
+import { decorCss } from '@/lib/utils/postBodyFx'
 import { getPostDukmark, setPostDukmark } from '@/services/dukmarkService'
 import { siteUrlsIn, mergeSiteUrls, siteKey } from '@/lib/utils/dukmark'
 
@@ -558,6 +562,15 @@ export default function PostWritePage() {
   const [settingsOpen, setSettingsOpen] = useState(false)   // 모바일: 등록 시 옵션 선택 모달
   const [pollData, setPollData] = useState<NewPoll | null>(null)
   const [moreOpen, setMoreOpen] = useState(false)           // 모바일: 툴바 "더보기" 패널
+  const [blockType, setBlockType] = useState<'p' | 'h2' | 'h3'>('p')   // 지금 줄: 본문·큰 소제목·작은 소제목 (글꼴 왼쪽 고르기)
+  const [decorOpen, setDecorOpen] = useState(false)         // 꾸미기 (소제목·형광펜·강조 박스·별점·단계·구분선)
+  const [colorAnchor, setColorAnchor] = useState<DOMRect | null>(null)   // 글자색 표 (열려 있으면 버튼 위치)
+  const [hlOpen, setHlOpen] = useState(false)               // PC: 형광펜 색 고르기
+  const [decorAnchor, setDecorAnchor] = useState<DOMRect | null>(null)   // PC 팝오버 위치 (툴바가 넘침을 숨겨서 화면 위에 띄움)
+  const [hlAnchor, setHlAnchor] = useState<DOMRect | null>(null)
+  const [fmtOpen, setFmtOpen] = useState(false)   // 📱 서식 패널 (줄 종류·글자·색·형광펜·정렬)
+  const [quotePick, setQuotePick] = useState<DOMRect | 'sheet' | null>(null)       // 인용구 모양 고르기
+  const [dividerPick, setDividerPick] = useState<DOMRect | 'sheet' | null>(null)   // 구분선 모양 고르기 (PC: 버튼 위치 / 모바일: 시트)
   const [addToCollection, setAddToCollection] = useState(true)  // 굿즈자랑: 내 컬렉션에도 담기
   const [existingGoodsId, setExistingGoodsId] = useState<string | null>(null)   // 기존 굿즈로 새 글 작성 시 연결할 굿즈
   const [prefillNotice, setPrefillNotice] = useState<string | null>(null)       // 비공개 이미지 안내
@@ -792,6 +805,8 @@ export default function PostWritePage() {
         justifyCenter: document.queryCommandState('justifyCenter'),
         justifyRight: document.queryCommandState('justifyRight'),
       })
+      const fb = String(document.queryCommandValue('formatBlock') || '').toLowerCase()
+      setBlockType(fb === 'h2' || fb === 'h3' ? fb : 'p')
       const c = document.queryCommandValue('foreColor')
       const hex = rgbToHex(String(c || ''))
       if (hex) setColor(hex)
@@ -960,6 +975,40 @@ export default function PostWritePage() {
   }, [])
 
   const onEditorKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    // 형광펜은 칠한 글자에만 — 칠한 글자 바로 앞·뒤에서 새로 쓰면 형광펜 밖에 쓰이게 커서를 옮긴다.
+    // (한글 입력은 조합 중이라 입력을 가로챌 수 없어서, 글자가 들어가기 전 keydown 에서 커서 자리를 바꾼다.
+    //  빈 글자(\u200B)를 형광펜 밖에 두고 그 안으로 커서를 넣는다. 저장할 때 빈 글자는 지운다)
+    if (!e.ctrlKey && !e.metaKey && !e.altKey && (e.key.length === 1 || e.key === 'Process' || e.key === 'Unidentified')) {
+      const sel = window.getSelection()
+      const root = editorRef.current
+      if (sel && sel.isCollapsed && sel.rangeCount && root?.contains(sel.anchorNode)) {
+        const caret = sel.getRangeAt(0)
+        // 커서가 있는 줄 안의 형광펜들 중, 커서가 '딱 시작점'이나 '딱 끝점'에 붙어 있는 것을 찾는다
+        // (커서가 글자 안이든 줄 자체(<p> 0번 자리)든 같은 방식으로 비교 — 줄 맨 앞도 잡힌다)
+        const startEl = caret.startContainer.nodeType === Node.ELEMENT_NODE ? (caret.startContainer as HTMLElement) : caret.startContainer.parentElement
+        const block = startEl?.closest('p,div,li,h1,h2,h3,h4,blockquote,td,th') ?? root
+        for (const hl of Array.from(block.querySelectorAll<HTMLElement>(HL_SEL))) {
+          const span = document.createRange(); span.selectNodeContents(hl)
+          let place: 'before' | 'after' | null = null
+          if (caret.compareBoundaryPoints(Range.START_TO_START, span) <= 0) {
+            const gap = document.createRange(); gap.setStart(caret.startContainer, caret.startOffset); gap.setEnd(span.startContainer, span.startOffset)
+            if (gap.toString() === '') place = 'before'
+          }
+          if (!place && caret.compareBoundaryPoints(Range.END_TO_END, span) >= 0) {
+            const gap = document.createRange(); gap.setStart(span.endContainer, span.endOffset); gap.setEnd(caret.startContainer, caret.startOffset)
+            if (gap.toString() === '') place = 'after'
+          }
+          if (!place) continue
+          const z = document.createTextNode('\u200B')
+          if (place === 'after') hl.after(z); else hl.before(z)
+          // 엔터로 새 줄이 생기며 남은 빈 형광펜 칸(<br> 만 든 것)은 풀어 둔다
+          if (hl.textContent === '') { while (hl.firstChild) hl.before(hl.firstChild); hl.remove() }
+          const r = document.createRange(); r.setStart(z, 1); r.collapse(true)
+          sel.removeAllRanges(); sel.addRange(r)
+          break
+        }
+      }
+    }
     // #작품 · @닉네임 고르기 목록이 열려 있으면 방향키·엔터는 목록이 먼저
     if (ac && ac.items.length && !e.nativeEvent.isComposing) {
       if (e.key === 'ArrowDown') { e.preventDefault(); setAc({ ...ac, idx: (ac.idx + 1) % ac.items.length }); return }
@@ -1264,6 +1313,137 @@ export default function PostWritePage() {
     placeCaretIn(d?.querySelector(':scope > div') ?? null)
   }
 
+  /* ── 꾸미기 (2026-10-19) — 모양은 postBodyFx 의 decorCss 가 편집기·글 화면에 똑같이 그린다 ── */
+  // 꾸미기 창을 누르는 사이 편집기 선택이 풀릴 수 있어, 마지막으로 기억한 위치(caretRef)를 되살린 뒤 서식을 건다
+  const restoreCaret = () => {
+    const r = caretRef.current
+    editorRef.current?.focus()
+    if (!r) return
+    const sel = window.getSelection(); sel?.removeAllRanges(); sel?.addRange(r.cloneRange())
+  }
+  // 본문 / 큰 소제목 / 작은 소제목 — 글꼴 왼쪽 고르기 (지금 줄에 건다)
+  const applyBlockType = (v: 'p' | 'h2' | 'h3') => {
+    restoreCaret()
+    exec('formatBlock', v)
+  }
+  // 글자색 — null 이면 색을 지워 기본 글자색으로 (표시용 색으로 칠한 뒤 그 색만 걷어낸다)
+  const applyTextColor = (c: string | null) => {
+    restoreCaret()
+    if (c) { exec('foreColor', c); setColor(c); return }
+    const MARK = '#010203'
+    document.execCommand('foreColor', false, MARK)
+    const root = editorRef.current
+    root?.querySelectorAll('font[color]').forEach(el => {
+      if ((el.getAttribute('color') || '').toLowerCase() !== MARK) return
+      const p = el.parentNode; if (!p) return
+      while (el.firstChild) p.insertBefore(el.firstChild, el)
+      p.removeChild(el)
+    })
+    root?.querySelectorAll<HTMLElement>('[style*="color"]').forEach(el => {
+      if (el.style.color.replace(/\s/g, '') === 'rgb(1,2,3)') el.style.removeProperty('color')
+      if (!el.getAttribute('style')) el.removeAttribute('style')
+    })
+    setColor('#20202D'); syncEditorText(); refreshActive()
+  }
+  /* 형광펜 — 'full' = 글자 배경 전체 / 'under' = 글자 아래쪽만(밑줄처럼). null 색 = 지우기(두 방식 모두)
+     브라우저 기능(hiliteColor)은 단색만 칠하므로, 표시용 색으로 칠한 뒤 그 칸만 찾아 원하는 모양으로 바꾼다 */
+  // 정렬 — 글자를 고르지 않고 누르면 글 전체, 고른 게 있으면 그 줄들만
+  const applyAlign = (cmd: 'justifyLeft' | 'justifyCenter' | 'justifyRight') => {
+    const root = editorRef.current
+    if (!root) return
+    restoreCaret()
+    const sel = window.getSelection()
+    if (!sel || !sel.rangeCount || !sel.isCollapsed) { exec(cmd); return }
+    const keepCaret = sel.getRangeAt(0).cloneRange()
+    const all = document.createRange(); all.selectNodeContents(root)
+    sel.removeAllRanges(); sel.addRange(all)
+    document.execCommand(cmd, false)
+    sel.removeAllRanges(); sel.addRange(keepCaret)   // 커서는 원래 자리로
+    root.focus(); syncEditorText(); refreshActive()
+  }
+  const applyHighlight = (color: string | null, mode: 'full' | 'under' = 'full') => {
+    restoreCaret()
+    const MARK = 'rgb(1, 2, 4)'
+    document.execCommand('styleWithCSS', false, 'true')   // <span style="background-color"> 로 남기기 (font 태그 대신)
+    document.execCommand('hiliteColor', false, color && mode === 'full' ? color : '#010204')
+    document.execCommand('styleWithCSS', false, 'false')
+    const root = editorRef.current
+    root?.querySelectorAll<HTMLElement>(HL_SEL).forEach(el => {
+      if (el.style.backgroundColor !== MARK) return
+      el.style.removeProperty('background-color')
+      if (color) {
+        el.style.setProperty('background', `linear-gradient(transparent 58%, ${color} 58%)`)
+      } else {
+        el.style.removeProperty('background')
+        el.style.removeProperty('background-image')
+        // 지우기: 고른 글자를 통째로 감싼 바깥 형광펜(밑줄형)도 걷어낸다
+        for (let p = el.parentElement; p && p !== root; p = p.parentElement) {
+          if (p.matches(HL_SEL) && p.textContent === el.textContent) {
+            p.style.removeProperty('background'); p.style.removeProperty('background-image'); p.style.removeProperty('background-color')
+            if (!p.getAttribute('style')) p.removeAttribute('style')
+          }
+        }
+      }
+      if (!el.getAttribute('style')) el.removeAttribute('style')
+    })
+    // 꾸밈이 다 빠진 빈 <span> 은 풀어서 본문을 깔끔하게
+    root?.querySelectorAll('span:not([class]):not([style])').forEach(sp => {
+      if (sp.attributes.length) return
+      const p = sp.parentNode; if (!p) return
+      while (sp.firstChild) p.insertBefore(sp.firstChild, sp)
+      p.removeChild(sp)
+    })
+    syncEditorText()
+    refreshActive()
+  }
+  const insertCallout = (kind: CalloutKind) => {
+    insertBlockAtCaret(`<div data-callout="${kind}" data-new="1"><p><br></p></div>`)
+    const d = editorRef.current?.querySelector('div[data-callout][data-new]')
+    d?.removeAttribute('data-new')
+    placeCaretIn(d?.querySelector('p') ?? null)
+  }
+  const insertStars = (n: number, label: string) => {
+    const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    const k = Math.max(1, Math.min(5, n))
+    insertBlockAtCaret(`<div data-stars="${k}" contenteditable="false"><span data-stars-label="1">${esc(label)}</span><span data-stars-value="1">${'★'.repeat(k)}${'☆'.repeat(5 - k)}</span></div>`)
+  }
+  const insertSteps = () => {
+    insertBlockAtCaret('<ol data-steps="1" data-new="1"><li><br></li><li><br></li><li><br></li></ol>')
+    const ol = editorRef.current?.querySelector('ol[data-steps][data-new]')
+    ol?.removeAttribute('data-new')
+    placeCaretIn(ol?.querySelector('li') ?? null)
+  }
+  // 인용구 — 지금 줄을 인용구로 바꾸고 모양 표시(data-quote)를 붙인다. 이미 인용구면 모양만 바꾼다. 기본 = 표시 없음
+  const applyQuote = (kind: QuoteKind) => {
+    restoreCaret()
+    const blockOf = () => {
+      const n = window.getSelection()?.anchorNode
+      const el = n ? (n.nodeType === Node.ELEMENT_NODE ? (n as HTMLElement) : n.parentElement) : null
+      return el?.closest('blockquote') as HTMLElement | null
+    }
+    let bq = blockOf()
+    if (!bq || !editorRef.current?.contains(bq)) { exec('formatBlock', 'blockquote'); bq = blockOf() }
+    if (bq && editorRef.current?.contains(bq)) {
+      if (kind === 'line') bq.removeAttribute('data-quote'); else bq.setAttribute('data-quote', kind)
+    }
+    syncEditorText()
+  }
+  const insertDivider = (kind: DividerKind) => {
+    insertBlockAtCaret(kind === 'line' ? '<hr>' : `<hr data-divider="${kind}">`)
+  }
+  // 형광펜 색 창: 바깥을 누르면 닫기
+  useEffect(() => {
+    if (!hlOpen) return
+    const onDown = (e: MouseEvent) => { const el = e.target as HTMLElement; if (!el.closest('[data-hl-pop],[data-hl-toggle]')) setHlOpen(false) }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [hlOpen])
+  const decorPanel = (desktop: boolean) => (
+    <DecorPanel desktop={desktop} anchor={decorAnchor} onClose={() => setDecorOpen(false)}
+      onCallout={insertCallout}
+      onStars={insertStars} onSteps={insertSteps} />
+  )
+
   /* ── 샵·이벤트 카드 넣기 ── */
   const [embedPick, setEmbedPick] = useState<'shop' | 'event' | null>(null)
   const [embedQ, setEmbedQ] = useState('')
@@ -1565,7 +1745,7 @@ export default function PostWritePage() {
     const cleaned = editorRef.current ? cleanLinkCards(editorRef.current) : null
     cleaned?.querySelectorAll('p[data-caption]').forEach(n => { if (!(n.textContent || '').trim()) n.remove() })   // 비운 사진 설명 줄
     cleaned?.querySelectorAll('details[data-fold]').forEach(n => n.removeAttribute('open'))   // 접기는 닫힌 채로 올라간다
-    let html = stripGoodsMeta(cleaned?.innerHTML ?? '')
+    let html = stripGoodsMeta(cleaned?.innerHTML ?? '').replace(/\u200B/g, '')   // 형광펜 밖 커서 자리용 빈 글자
     const plain = (editorRef.current?.innerText ?? '').trim()
     // 사진 목록(썸네일)엔 링크 카드 이미지를 넣지 않는다
     const noCards = cleaned ? (cleaned.cloneNode(true) as HTMLElement) : null
@@ -1783,14 +1963,22 @@ export default function PostWritePage() {
         .taku-editor a[data-embed]{cursor:default}
         .taku-editor img{max-width:100%;height:auto;cursor:grab;-webkit-user-drag:none;-webkit-touch-callout:none}
         .taku-editor blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 14px;color:var(--muted)}
+        ${decorCss('.taku-editor')}
+        .taku-editor div[data-stars]{cursor:default;user-select:none}
         .taku-write-grid{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:24px}
         .tb-btn{width:34px;height:34px;border:none;background:none;border-radius:7px;cursor:pointer;color:var(--text);display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
         .tb-btn:hover{background:var(--surface2)}
+        .tb-big{width:auto;min-width:42px;height:54px;flex-direction:column;gap:4px;padding:6px 4px 4px;flex-shrink:0}
+        .pw-tb-insert{flex-wrap:nowrap !important;overflow-x:auto;scrollbar-width:none}
+        .pw-tb-insert::-webkit-scrollbar{display:none}
+        .tb-lbl{font-size:11px;font-weight:600;color:var(--muted);line-height:1;white-space:nowrap}
+        .pw-mob-only{display:none}
+        .tb-big:hover .tb-lbl{color:var(--text)}
         .pw-worklane{scrollbar-width:none}
         .pw-worklane::-webkit-scrollbar{display:none}
         @media (pointer: coarse) and (max-width:900px){
           .taku-write-grid{grid-template-columns:1fr}
-          .pw-body{ padding: 4px 16px 150px !important; }
+          .pw-body{ padding: 4px 16px 170px !important; }
           /* 네모칸 제거 — 게시판·작품·본문을 밑줄 스타일로, 게시판 아래 작품 세로 배치 */
           .pw-catrow{ flex-direction: column !important; gap: 0 !important; }
           .pw-catrow .pw-select-btn, .pw-catrow input{ border:none !important; border-bottom:1px solid var(--border) !important; border-radius:0 !important; background:none !important; padding:15px 2px !important; font-size:16px !important; width:100% !important; box-sizing:border-box !important; }
@@ -1802,8 +1990,14 @@ export default function PostWritePage() {
           .pw-tb-format{ display:none !important; }   /* 모바일: 글꼴·크기·서식 줄 숨김 */
           .pw-tb-extra{ display:none !important; }     /* 모바일: 툴바 부가 버튼은 더보기 패널로 이동 */
           .pw-more-btn{ display:inline-flex !important; }  /* 모바일: 더보기(…) 노출 */
-          /* 더보기 패널 — 사진·동영상·더보기 줄 아래에 그리드로 펼쳐짐 (툴바 줄은 그대로 유지) */
-          .pw-more-panel{ display:grid !important; grid-template-columns:repeat(4,1fr); gap:6px 8px; padding:14px 12px 12px; border-top:1px solid var(--border); background:var(--surface); overflow:visible !important; flex-wrap:wrap !important; }
+          /* 모바일 아래 줄: 5개를 고르게 펼치고 아이콘+이름을 크게 (엄지로 누르기 쉽게) */
+          .pw-tb-insert{ justify-content:space-around; padding:4px 4px !important; }
+          .pw-mob-only{ display:inline-flex !important; }
+          .tb-big{ height:52px; min-width:56px; padding:4px 0; gap:3px }
+          .tb-lbl{ display:block; font-size:10.5px }
+          /* 서식·더보기 패널 — 아래 줄 위로 펼쳐짐. 묶음마다 제목, 묶음 사이는 넓게 */
+          .pw-sheet-panel{ display:flex !important; flex-direction:column; gap:18px; padding:16px 16px 14px; border-top:1px solid var(--border); background:var(--surface); max-height:52vh; overflow-y:auto !important; flex-wrap:nowrap !important; }
+          .pw-mob-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:4px 4px; }
           .taku-editor a[contenteditable="false"]{ user-select:none; }
         }
       `}</style>
@@ -1965,56 +2159,104 @@ export default function PostWritePage() {
 
             {/* 툴바 — 모바일에선 하단 고정 */}
             <div className="pw-toolbar" style={{ border: '1px solid var(--border)', borderRadius: 12, marginBottom: 12, overflow: 'hidden', position: 'sticky', top: 62, zIndex: 5, background: 'var(--surface)' }}>
-              {/* 1행: 삽입 */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap', padding: '6px 8px' }}>
-                <label className="tb-btn" title="사진" style={{ cursor: 'pointer' }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="8.5" cy="9.5" r="1.5" /><path d="m4 17 4.5-4.5 3 3L16 11l4 4.5" /></svg>
+              {/* 1행: 삽입 — PC는 아이콘 아래 이름(무슨 기능인지 바로 보이게, 2026-10-19). 모바일은 이름 없이 작게(.tb-lbl 숨김) */}
+              <div className="pw-tb-insert" style={{ display: 'flex', alignItems: 'center', gap: 1, padding: '4px 6px' }}>
+                <label className="tb-btn tb-big" title="사진" style={{ cursor: 'pointer' }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="8.5" cy="9.5" r="1.5" /><path d="m4 17 4.5-4.5 3 3L16 11l4 4.5" /></svg>
+                  <span className="tb-lbl">사진</span>
                   <input type="file" accept="image/*" multiple onChange={e => onPickImages(e.target.files)} style={{ display: 'none' }} />
                 </label>
-                <label className="tb-btn" title="동영상" style={{ cursor: 'pointer' }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2.5" y="6" width="14" height="12" rx="2" /><path d="m16.5 10 5-2.5v9L16.5 14" /></svg>
+                <label className="tb-btn tb-big" title="동영상" style={{ cursor: 'pointer' }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="2.5" y="6" width="14" height="12" rx="2" /><path d="m16.5 10 5-2.5v9L16.5 14" /></svg>
+                  <span className="tb-lbl">동영상</span>
                   <input type="file" accept="video/*" multiple onChange={e => onPickVideo(e.target.files)} style={{ display: 'none' }} />
                 </label>
                 <span className="pw-tb-extra" style={{ display: 'contents' }}>
-                <label className="tb-btn" title="파일" style={{ cursor: 'pointer' }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.5 12.5 21a5 5 0 0 1-7-7l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7L10.1 18.7a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8" /></svg>
-                  <input type="file" multiple onChange={e => onPickFile(e.target.files)} style={{ display: 'none' }} />
-                </label>
-                <button className="tb-btn" title="링크" onClick={() => { const u = window.prompt('링크 URL'); if (u) exec('createLink', u) }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1" /><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1" /></svg>
-                </button>
-                <Sep />
-                <button className="tb-btn" title="투표" onClick={insertPoll}>
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M6 20v-6M12 20V4M18 20v-9" /></svg>
-                </button>
-                <button className="tb-btn" title="표" onClick={insertTable}>
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 10h18M3 15h18M9 4v16M15 4v16" /></svg>
-                </button>
-                <Sep />
-                <button className="tb-btn" title="인용구" onClick={() => exec('formatBlock', 'blockquote')} style={{ fontSize: 16 }}>&ldquo;</button>
-                <button className="tb-btn" title="구분선" onClick={() => exec('insertHorizontalRule')}>―</button>
-                <Sep />
-                <button className="tb-btn" title="스포일러 가리기 (글자를 고른 뒤)" onMouseDown={e => e.preventDefault()} onClick={toggleSpoiler} style={{ fontSize: 12, fontWeight: 900, width: 'auto', padding: '0 7px' }}>스포</button>
-                <button className="tb-btn" title="체크리스트" onClick={insertChecklist}>
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="6" height="6" rx="1.5" /><path d="m4.5 7 1 1 2-2" /><rect x="3" y="14" width="6" height="6" rx="1.5" /><path d="M12 7h9M12 17h9" /></svg>
-                </button>
-                <button className="tb-btn" title="접기 (더보기)" onClick={insertFold}>
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /><path d="M4 4h16M4 20h16" /></svg>
-                </button>
-                <label className="tb-btn" title="사진첩 (여러 장을 옆으로 넘겨 보기)" style={{ cursor: 'pointer' }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="6" y="5" width="12" height="14" rx="2" /><path d="M3 8v8M21 8v8" /></svg>
+                <label className="tb-btn tb-big" title="사진첩 (여러 장을 옆으로 넘겨 보기)" style={{ cursor: 'pointer' }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="6" y="5" width="12" height="14" rx="2" /><path d="M3 8v8M21 8v8" /></svg>
+                  <span className="tb-lbl">사진첩</span>
                   <input type="file" accept="image/*" multiple onChange={e => { onPickSlides(e.target.files); e.target.value = '' }} style={{ display: 'none' }} />
                 </label>
-                <button className="tb-btn" title="샵 카드" onClick={() => setEmbedPick('shop')} style={{ fontSize: 12, fontWeight: 800, width: 'auto', padding: '0 7px' }}>샵</button>
-                <button className="tb-btn" title="이벤트 카드" onClick={() => setEmbedPick('event')} style={{ fontSize: 12, fontWeight: 800, width: 'auto', padding: '0 7px' }}>이벤트</button>
+                <label className="tb-btn tb-big" title="파일" style={{ cursor: 'pointer' }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.5 12.5 21a5 5 0 0 1-7-7l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7L10.1 18.7a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8" /></svg>
+                  <span className="tb-lbl">파일</span>
+                  <input type="file" multiple onChange={e => onPickFile(e.target.files)} style={{ display: 'none' }} />
+                </label>
+                <button className="tb-btn tb-big" title="링크" onClick={() => { const u = window.prompt('링크 URL'); if (u) exec('createLink', u) }}>
+                  <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1" /><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1" /></svg>
+                  <span className="tb-lbl">링크</span>
+                </button>
+                <Sep />
+                <button className="tb-btn tb-big" data-quote-toggle="1" title="인용구 (모양 고르기)" onMouseDown={e => e.preventDefault()} onClick={e => { const r = e.currentTarget.getBoundingClientRect(); setDividerPick(null); setQuotePick(p => (p ? null : r)) }} style={quotePick ? { background: 'rgba(232,0,111,.12)' } : undefined}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 2, height: 22 }}><span style={{ fontSize: 26, fontWeight: 800, lineHeight: '22px', height: 22 }}>&ldquo;</span><svg width='8' height='8' viewBox='0 0 10 10' fill='none' stroke='currentColor' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'><path d='m1.5 3.5 3.5 3.5 3.5-3.5' /></svg></span>
+                  <span className="tb-lbl">인용구</span>
+                </button>
+                <button className="tb-btn tb-big" data-divider-toggle="1" title="구분선 (모양 고르기)" onMouseDown={e => e.preventDefault()} onClick={e => { const r = e.currentTarget.getBoundingClientRect(); setQuotePick(null); setDividerPick(p => (p ? null : r)) }} style={dividerPick ? { background: 'rgba(232,0,111,.12)' } : undefined}>
+                  <svg width="26" height="22" viewBox="0 0 30 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12h18" /><path d="m24 10.5 2.5 2.5 2.5-2.5" /></svg>
+                  <span className="tb-lbl">구분선</span>
+                </button>
+                <button className="tb-btn tb-big" title="표" onClick={insertTable}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 10h18M3 15h18M9 4v16M15 4v16" /></svg>
+                  <span className="tb-lbl">표</span>
+                </button>
+                <button className="tb-btn tb-big" title="체크리스트" onClick={insertChecklist}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="6" height="6" rx="1.5" /><path d="m4.5 7 1 1 2-2" /><rect x="3" y="14" width="6" height="6" rx="1.5" /><path d="M12 7h9M12 17h9" /></svg>
+                  <span className="tb-lbl">체크리스트</span>
+                </button>
+                <button className="tb-btn tb-big" title="접기 (더보기)" onClick={insertFold}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /><path d="M4 4h16M4 20h16" /></svg>
+                  <span className="tb-lbl">접기</span>
+                </button>
+                <button className="tb-btn tb-big" title="스포일러 가리기 (글자를 고른 뒤)" onMouseDown={e => e.preventDefault()} onClick={toggleSpoiler}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M10.6 5.1A10 10 0 0 1 12 5c5 0 9 4.5 10 7-.4 1-1.2 2.3-2.4 3.5M6.6 6.6C4.4 8 2.9 10.1 2 12c1 2.5 5 7 10 7 1.9 0 3.6-.6 5-1.5" /><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2M3 3l18 18" /></svg>
+                  <span className="tb-lbl">스포</span>
+                </button>
+                <Sep />
+                <button className="tb-btn tb-big" title="투표" onClick={insertPoll}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M6 20v-6M12 20V4M18 20v-9" /></svg>
+                  <span className="tb-lbl">투표</span>
+                </button>
+                <button className="tb-btn tb-big" title="샵 카드" onClick={() => setEmbedPick('shop')}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>
+                  <span className="tb-lbl">샵</span>
+                </button>
+                <button className="tb-btn tb-big" title="이벤트 카드" onClick={() => setEmbedPick('event')}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4M3 10h18" /></svg>
+                  <span className="tb-lbl">이벤트</span>
+                </button>
+                {/* 꾸미기 — 소제목·강조 박스·별점·단계 */}
+                <span style={{ position: 'relative', display: 'inline-flex' }}>
+                  <button className="tb-btn tb-big" data-decor-toggle="1" title="꾸미기 (강조 박스·별점·단계)" onMouseDown={e => e.preventDefault()} onClick={e => { setDecorAnchor(e.currentTarget.getBoundingClientRect()); setHlOpen(false); setDecorOpen(o => !o) }}
+                    style={{ color: 'var(--accent)', ...(decorOpen ? { background: 'rgba(232,0,111,.12)' } : {}) }}>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3 1.9 5.8L20 10l-5 3.9L16.6 20 12 16.6 7.4 20 9 13.9 4 10l6.1-1.2z" /></svg>
+                    <span className="tb-lbl" style={{ color: 'var(--accent)' }}>꾸미기</span>
+                  </button>
+                  {decorOpen && isDesktop && decorPanel(true)}
                 </span>
-                {/* 📱 모바일 전용: 더보기 (…) — 투표·링크·파일·인용구·내 루트 공유 */}
-                <button className="pw-more-btn tb-btn" title="더보기" onClick={() => setMoreOpen(o => !o)} style={{ display: 'none', ...(moreOpen ? { background: 'rgba(232,0,111,.14)', color: 'var(--accent)' } : {}) }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8" /><circle cx="12" cy="12" r="1.8" /><circle cx="19" cy="12" r="1.8" /></svg>
+                </span>
+                {/* 📱 모바일 아래 줄 — 자주 쓰는 5개만 크게(엄지가 닿는 곳): 사진 · 동영상 · 서식 · 꾸미기 · 더보기 */}
+                <button className="pw-mob-only tb-btn tb-big" title="서식" onMouseDown={e => e.preventDefault()} onClick={() => { setMoreOpen(false); setDecorOpen(false); setFmtOpen(o => !o) }} style={fmtOpen ? { color: 'var(--accent)' } : undefined}>
+                  <span style={{ fontSize: 19, fontWeight: 900, lineHeight: '22px', height: 22, letterSpacing: '-0.04em' }}>Aa</span>
+                  <span className="tb-lbl" style={fmtOpen ? { color: 'var(--accent)' } : undefined}>서식</span>
+                </button>
+                <button className="pw-mob-only tb-btn tb-big" title="꾸미기" onMouseDown={e => e.preventDefault()} onClick={() => { setMoreOpen(false); setFmtOpen(false); setDecorOpen(true) }} style={{ color: 'var(--accent)' }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3 1.9 5.8L20 10l-5 3.9L16.6 20 12 16.6 7.4 20 9 13.9 4 10l6.1-1.2z" /></svg>
+                  <span className="tb-lbl" style={{ color: 'var(--accent)' }}>꾸미기</span>
+                </button>
+                <button className="pw-more-btn tb-btn tb-big" title="더보기" onClick={() => { setFmtOpen(false); setMoreOpen(o => !o) }} style={{ display: 'none', ...(moreOpen ? { color: 'var(--accent)' } : {}) }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8" /><circle cx="12" cy="12" r="1.8" /><circle cx="19" cy="12" r="1.8" /></svg>
+                  <span className="tb-lbl" style={moreOpen ? { color: 'var(--accent)' } : undefined}>더보기</span>
                 </button>
               </div>
               {/* 2행: 글자 서식 (모바일에선 숨김) */}
               <div className="pw-tb-format" style={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap', padding: '6px 8px', borderTop: '1px solid var(--border)', background: 'var(--surface2)' }}>
+                {/* 본문·소제목 — 지금 줄의 종류 */}
+                <select value={blockType} onMouseDown={() => { const s = window.getSelection(); if (s?.rangeCount && editorRef.current?.contains(s.anchorNode)) caretRef.current = s.getRangeAt(0).cloneRange() }}
+                  onChange={e => applyBlockType(e.target.value as 'p' | 'h2' | 'h3')} title="본문 / 소제목" aria-label="본문 / 소제목" style={{ ...tbSelect, fontWeight: 700 }}>
+                  <option value="p">본문</option>
+                  <option value="h2">큰 소제목</option>
+                  <option value="h3">작은 소제목</option>
+                </select>
                 <select onChange={e => { exec('fontName', e.target.value); e.target.selectedIndex = 0 }} defaultValue="" style={{ ...tbSelect }}>
                   <option value="" disabled>글꼴</option>
                   <option value="sans-serif">기본서체</option>
@@ -2036,43 +2278,136 @@ export default function PostWritePage() {
                 <button className="tb-btn" title="기울임" onClick={() => exec('italic')} style={{ fontStyle: 'italic', ...act(active.italic) }}>I</button>
                 <button className="tb-btn" title="밑줄" onClick={() => exec('underline')} style={{ textDecoration: 'underline', ...act(active.underline) }}>U</button>
                 <button className="tb-btn" title="취소선" onClick={() => exec('strikeThrough')} style={{ textDecoration: 'line-through', ...act(active.strikeThrough) }}>S</button>
-                <label className="tb-btn" title="글자색" style={{ cursor: 'pointer', position: 'relative' }}>
+                <button className="tb-btn" data-color-toggle="1" title="글자색" onMouseDown={e => e.preventDefault()}
+                  onClick={e => { const r = e.currentTarget.getBoundingClientRect(); setHlOpen(false); setColorAnchor(a => (a ? null : r)) }}
+                  style={colorAnchor ? { background: 'rgba(232,0,111,.12)' } : undefined}>
                   <span style={{ borderBottom: `3px solid ${color}`, lineHeight: 1 }}>A</span>
-                  <input type="color" value={color} onChange={e => { setColor(e.target.value); exec('foreColor', e.target.value) }} style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }} />
-                </label>
+                </button>
+                {colorAnchor && <ColorPalette anchor={colorAnchor} current={color} onPick={applyTextColor} onClose={() => setColorAnchor(null)} />}
+                {/* 형광펜 — 글자를 고른 뒤 색을 누른다 */}
+                <span style={{ position: 'relative', display: 'inline-flex' }}>
+                  <button className="tb-btn" data-hl-toggle="1" title="형광펜 (글자를 고른 뒤)" onMouseDown={e => e.preventDefault()} onClick={e => { setHlAnchor(e.currentTarget.getBoundingClientRect()); setDecorOpen(false); setHlOpen(o => !o) }} style={hlOpen ? { background: 'rgba(232,0,111,.12)' } : undefined}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="m9 11-6 6v3h9l3-3" /><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4" /><path d="M3 21h18" stroke="#FFB400" strokeWidth="3" /></svg>
+                  </button>
+                  {hlOpen && hlAnchor && typeof document !== 'undefined' && createPortal(
+                    <span data-hl-pop="1" style={{ position: 'fixed', top: hlAnchor.bottom + 4, left: hlAnchor.left, zIndex: 3000, display: 'grid', gridTemplateColumns: 'auto repeat(4, 30px)', gap: 6, alignItems: 'center', padding: 10, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 8px 24px rgba(0,0,0,.14)' }}>
+                      {(['full', 'under'] as const).map(mode => (
+                        <Fragment key={mode}>
+                          <span style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--muted)', paddingRight: 4 }}>{mode === 'full' ? '전체' : '밑줄'}</span>
+                          {HIGHLIGHTS.map(h => (
+                            <button key={h.color} type="button" aria-label={`${h.label} 형광펜 ${mode === 'full' ? '전체' : '밑줄'}`} title={`${h.label} ${mode === 'full' ? '전체' : '밑줄'}`} onMouseDown={e => e.preventDefault()} onClick={() => { applyHighlight(h.color, mode); setHlOpen(false) }}
+                              style={{ width: 30, height: 26, borderRadius: 6, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', padding: 0, fontSize: 13, fontWeight: 800, color: 'var(--text)', fontFamily: 'inherit' }}>
+                              <span style={mode === 'full' ? { background: h.color, padding: '1px 3px', borderRadius: 2 } : { background: `linear-gradient(transparent 58%, ${h.color} 58%)`, padding: '0 3px' }}>가</span>
+                            </button>
+                          ))}
+                        </Fragment>
+                      ))}
+                      <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => { applyHighlight(null); setHlOpen(false) }}
+                        style={{ gridColumn: '1 / -1', marginTop: 2, padding: '6px 0', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', fontSize: 12, fontWeight: 700, color: 'var(--muted)', fontFamily: 'inherit' }}>형광펜 지우기</button>
+                    </span>,
+                    document.body,
+                  )}
+                </span>
                 <Sep />
-                <button className="tb-btn" title="왼쪽 정렬" onClick={() => exec('justifyLeft')} style={act(active.justifyLeft)}><AlignIcon dir="left" /></button>
-                <button className="tb-btn" title="가운데 정렬" onClick={() => exec('justifyCenter')} style={act(active.justifyCenter)}><AlignIcon dir="center" /></button>
-                <button className="tb-btn" title="오른쪽 정렬" onClick={() => exec('justifyRight')} style={act(active.justifyRight)}><AlignIcon dir="right" /></button>
+                <button className="tb-btn" title="왼쪽 정렬" onMouseDown={e => e.preventDefault()} onClick={() => applyAlign('justifyLeft')} style={act(active.justifyLeft)}><AlignIcon dir="left" /></button>
+                <button className="tb-btn" title="가운데 정렬" onMouseDown={e => e.preventDefault()} onClick={() => applyAlign('justifyCenter')} style={act(active.justifyCenter)}><AlignIcon dir="center" /></button>
+                <button className="tb-btn" title="오른쪽 정렬" onMouseDown={e => e.preventDefault()} onClick={() => applyAlign('justifyRight')} style={act(active.justifyRight)}><AlignIcon dir="right" /></button>
               </div>
-              {/* 📱 더보기 패널 — 툴바(사진·동영상·더보기 줄) 아래에 펼쳐짐 (모바일 전용) */}
+              {/* 📱 서식 패널 — 자주 쓰는 글자 꾸미기를 성격별로 묶어서 (줄 종류 · 글자 · 색 · 형광펜 · 정렬) */}
+              {fmtOpen && (
+                <div className="pw-sheet-panel">
+                  <MobSection title="줄">
+                    <div style={{ display: 'flex', gap: 6 }}>
+                      {([['p', '본문'], ['h2', '큰 소제목'], ['h3', '작은 소제목']] as const).map(([v, l]) => (
+                        <button key={v} type="button" onMouseDown={e => e.preventDefault()} onClick={() => applyBlockType(v)}
+                          style={{ ...mobChip, flex: 1, ...(blockType === v ? mobChipOn : {}), fontWeight: v === 'p' ? 700 : 900, fontSize: v === 'h2' ? 15 : 13.5 }}>{l}</button>
+                      ))}
+                    </div>
+                  </MobSection>
+                  <MobSection title="글자">
+                    <div style={{ display: 'flex', gap: 6 }}>
+                      <button type="button" aria-label="굵게" onMouseDown={e => e.preventDefault()} onClick={() => exec('bold')} style={{ ...mobChip, flex: 1, fontWeight: 900, ...(active.bold ? mobChipOn : {}) }}>B</button>
+                      <button type="button" aria-label="기울임" onMouseDown={e => e.preventDefault()} onClick={() => exec('italic')} style={{ ...mobChip, flex: 1, fontStyle: 'italic', ...(active.italic ? mobChipOn : {}) }}>I</button>
+                      <button type="button" aria-label="밑줄" onMouseDown={e => e.preventDefault()} onClick={() => exec('underline')} style={{ ...mobChip, flex: 1, textDecoration: 'underline', ...(active.underline ? mobChipOn : {}) }}>U</button>
+                      <button type="button" aria-label="취소선" onMouseDown={e => e.preventDefault()} onClick={() => exec('strikeThrough')} style={{ ...mobChip, flex: 1, textDecoration: 'line-through', ...(active.strikeThrough ? mobChipOn : {}) }}>S</button>
+                    </div>
+                  </MobSection>
+                  <MobSection title="글자색">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                      {TAKU_COLORS.map(c => (
+                        <button key={c.c} type="button" aria-label={`글자색 ${c.name}`} onMouseDown={e => e.preventDefault()} onClick={() => { pushRecentColor(c.c); applyTextColor(c.c) }}
+                          style={{ width: 28, height: 28, borderRadius: 9999, border: 'none', padding: 0, cursor: 'pointer', background: c.c, boxShadow: color.toUpperCase() === c.c ? '0 0 0 2px var(--surface), 0 0 0 4px var(--accent)' : 'inset 0 0 0 1px rgba(0,0,0,.08)' }} />
+                      ))}
+                      <button type="button" data-color-toggle="1" onMouseDown={e => e.preventDefault()} onClick={e => { const r = e.currentTarget.getBoundingClientRect(); setColorAnchor(a => (a ? null : r)) }} style={{ ...mobChip, padding: '6px 12px' }}>더보기</button>
+                    </div>
+                  </MobSection>
+                  <MobSection title="형광펜">
+                    <div style={{ display: 'grid', gridTemplateColumns: 'auto repeat(4, 1fr)', gap: 6, alignItems: 'center' }}>
+                      {(['full', 'under'] as const).map(mode => (
+                        <Fragment key={mode}>
+                          <span style={{ fontSize: 12, fontWeight: 800, color: 'var(--muted)', paddingRight: 2 }}>{mode === 'full' ? '전체' : '밑줄'}</span>
+                          {HIGHLIGHTS.map(h => (
+                            <button key={h.color} type="button" aria-label={`${h.label} 형광펜 ${mode === 'full' ? '전체' : '밑줄'}`} onMouseDown={e => e.preventDefault()} onClick={() => applyHighlight(h.color, mode)} style={{ ...mobChip, padding: '7px 0' }}>
+                              <span style={mode === 'full' ? { background: h.color, padding: '1px 5px', borderRadius: 2 } : { background: `linear-gradient(transparent 58%, ${h.color} 58%)`, padding: '0 5px' }}>가</span>
+                            </button>
+                          ))}
+                        </Fragment>
+                      ))}
+                    </div>
+                    <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => applyHighlight(null)} style={{ ...mobChip, width: '100%', marginTop: 6, color: 'var(--muted)', fontSize: 12.5 }}>형광펜 지우기</button>
+                  </MobSection>
+                  <MobSection title="정렬" sub="글자를 고르지 않으면 글 전체">
+                    <div style={{ display: 'flex', gap: 6 }}>
+                      <button type="button" aria-label="왼쪽 정렬" onMouseDown={e => e.preventDefault()} onClick={() => applyAlign('justifyLeft')} style={{ ...mobChip, flex: 1, ...(active.justifyLeft ? mobChipOn : {}) }}><AlignIcon dir="left" /></button>
+                      <button type="button" aria-label="가운데 정렬" onMouseDown={e => e.preventDefault()} onClick={() => applyAlign('justifyCenter')} style={{ ...mobChip, flex: 1, ...(active.justifyCenter ? mobChipOn : {}) }}><AlignIcon dir="center" /></button>
+                      <button type="button" aria-label="오른쪽 정렬" onMouseDown={e => e.preventDefault()} onClick={() => applyAlign('justifyRight')} style={{ ...mobChip, flex: 1, ...(active.justifyRight ? mobChipOn : {}) }}><AlignIcon dir="right" /></button>
+                    </div>
+                  </MobSection>
+                </div>
+              )}
+              {/* 📱 더보기 패널 — 넣는 것들을 성격별로 묶어서 (넣기 · 글 정리 · 카드) */}
               {moreOpen && (
-                <div className="pw-more-panel">
-                  <MoreItem label="투표" onClick={() => { setMoreOpen(false); insertPoll() }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M6 20v-6M12 20V4M18 20v-9" /></svg>} />
-                  <MoreItem label="링크" onClick={() => { setMoreOpen(false); const u = window.prompt('링크 URL'); if (u) exec('createLink', u) }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1" /><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1" /></svg>} />
-                  <label style={moreItemStyle}>
-                    <span style={moreIconStyle}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.5 12.5 21a5 5 0 0 1-7-7l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7L10.1 18.7a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8" /></svg></span>
-                    <span style={{ fontSize: 12, fontWeight: 700 }}>파일</span>
-                    <input type="file" multiple onChange={e => { onPickFile(e.target.files); setMoreOpen(false) }} style={{ display: 'none' }} />
-                  </label>
-                  <MoreItem label="인용구" onClick={() => { setMoreOpen(false); exec('formatBlock', 'blockquote') }} icon={<span style={{ fontSize: 26, fontWeight: 800, lineHeight: 1 }}>&ldquo;</span>} />
-                  <MoreItem label="표" onClick={() => { setMoreOpen(false); insertTable() }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 10h18M3 15h18M9 4v16M15 4v16" /></svg>} />
-                  <MoreItem label="구분선" onClick={() => { setMoreOpen(false); exec('insertHorizontalRule') }} icon={<span style={{ fontSize: 22, fontWeight: 800, lineHeight: 1 }}>―</span>} />
-                  <MoreItem label="내 루트" onClick={() => { setMoreOpen(false); setRoutePickOpen(true) }} icon={<RouteIcon />} />
-                  <MoreItem label="샵 카드" onClick={() => { setMoreOpen(false); setEmbedPick('shop') }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>} />
-                  <MoreItem label="이벤트 카드" onClick={() => { setMoreOpen(false); setEmbedPick('event') }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4M3 10h18" /></svg>} />
-                  <MoreItem label="스포 가리기" onClick={() => { setMoreOpen(false); toggleSpoiler() }} icon={<span style={{ fontSize: 13, fontWeight: 900 }}>스포</span>} />
-                  <MoreItem label="체크리스트" onClick={() => { setMoreOpen(false); insertChecklist() }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="6" height="6" rx="1.5" /><path d="m4.5 7 1 1 2-2" /><rect x="3" y="14" width="6" height="6" rx="1.5" /><path d="M12 7h9M12 17h9" /></svg>} />
-                  <MoreItem label="접기" onClick={() => { setMoreOpen(false); insertFold() }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /><path d="M4 4h16M4 20h16" /></svg>} />
-                  <label style={moreItemStyle}>
-                    <span style={moreIconStyle}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="6" y="5" width="12" height="14" rx="2" /><path d="M3 8v8M21 8v8" /></svg></span>
-                    <span style={{ fontSize: 12, fontWeight: 700 }}>사진첩</span>
-                    <input type="file" accept="image/*" multiple onChange={e => { onPickSlides(e.target.files); e.target.value = ''; setMoreOpen(false) }} style={{ display: 'none' }} />
-                  </label>
+                <div className="pw-sheet-panel">
+                  <MobSection title="넣기">
+                    <div className="pw-mob-grid">
+                      <label style={moreItemStyle}>
+                        <span style={moreIconStyle}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="6" y="5" width="12" height="14" rx="2" /><path d="M3 8v8M21 8v8" /></svg></span>
+                        <span style={{ fontSize: 12, fontWeight: 700 }}>사진첩</span>
+                        <input type="file" accept="image/*" multiple onChange={e => { onPickSlides(e.target.files); e.target.value = ''; setMoreOpen(false) }} style={{ display: 'none' }} />
+                      </label>
+                      <label style={moreItemStyle}>
+                        <span style={moreIconStyle}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.5 12.5 21a5 5 0 0 1-7-7l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7L10.1 18.7a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8" /></svg></span>
+                        <span style={{ fontSize: 12, fontWeight: 700 }}>파일</span>
+                        <input type="file" multiple onChange={e => { onPickFile(e.target.files); setMoreOpen(false) }} style={{ display: 'none' }} />
+                      </label>
+                      <MoreItem label="링크" onClick={() => { setMoreOpen(false); const u = window.prompt('링크 URL'); if (u) exec('createLink', u) }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1" /><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1" /></svg>} />
+                      <MoreItem label="표" onClick={() => { setMoreOpen(false); insertTable() }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 10h18M3 15h18M9 4v16M15 4v16" /></svg>} />
+                    </div>
+                  </MobSection>
+                  <MobSection title="글 정리">
+                    <div className="pw-mob-grid">
+                      <MoreItem label="인용구" onClick={() => { setMoreOpen(false); setQuotePick('sheet') }} icon={<span style={{ fontSize: 26, fontWeight: 800, lineHeight: 1 }}>&ldquo;</span>} />
+                      <MoreItem label="구분선" onClick={() => { setMoreOpen(false); setDividerPick('sheet') }} icon={<span style={{ fontSize: 22, fontWeight: 800, lineHeight: 1 }}>―</span>} />
+                      <MoreItem label="체크리스트" onClick={() => { setMoreOpen(false); insertChecklist() }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="6" height="6" rx="1.5" /><path d="m4.5 7 1 1 2-2" /><rect x="3" y="14" width="6" height="6" rx="1.5" /><path d="M12 7h9M12 17h9" /></svg>} />
+                      <MoreItem label="접기" onClick={() => { setMoreOpen(false); insertFold() }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /><path d="M4 4h16M4 20h16" /></svg>} />
+                      <MoreItem label="스포 가리기" onClick={() => { setMoreOpen(false); toggleSpoiler() }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M10.6 5.1A10 10 0 0 1 12 5c5 0 9 4.5 10 7-.4 1-1.2 2.3-2.4 3.5M6.6 6.6C4.4 8 2.9 10.1 2 12c1 2.5 5 7 10 7 1.9 0 3.6-.6 5-1.5" /><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2M3 3l18 18" /></svg>} />
+                    </div>
+                  </MobSection>
+                  <MobSection title="카드">
+                    <div className="pw-mob-grid">
+                      <MoreItem label="투표" onClick={() => { setMoreOpen(false); insertPoll() }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M6 20v-6M12 20V4M18 20v-9" /></svg>} />
+                      <MoreItem label="샵 카드" onClick={() => { setMoreOpen(false); setEmbedPick('shop') }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>} />
+                      <MoreItem label="이벤트 카드" onClick={() => { setMoreOpen(false); setEmbedPick('event') }} icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4M3 10h18" /></svg>} />
+                      <MoreItem label="내 루트" onClick={() => { setMoreOpen(false); setRoutePickOpen(true) }} icon={<RouteIcon />} />
+                    </div>
+                  </MobSection>
                 </div>
               )}
             </div>
 
+            {decorOpen && !isDesktop && decorPanel(false)}
+            {quotePick && <QuotePicker desktop={quotePick !== 'sheet'} anchor={quotePick === 'sheet' ? null : quotePick} onPick={applyQuote} onClose={() => setQuotePick(null)} />}
+            {dividerPick && <DividerPicker desktop={dividerPick !== 'sheet'} anchor={dividerPick === 'sheet' ? null : dividerPick} onPick={insertDivider} onClose={() => setDividerPick(null)} />}
             {/* 본문 */}
             <style>{'.pw-editor img[data-uploading],.pw-editor video[data-uploading]{animation:pwUpl .9s ease-in-out infinite alternate;pointer-events:none}@keyframes pwUpl{from{opacity:.35}to{opacity:.7}}'}</style>
             {uploadingCount > 0 && (
@@ -2473,6 +2808,21 @@ function RouteIcon() {
 const embedSavedBox: React.CSSProperties = { maxHeight: 182, overflowY: 'auto', overscrollBehavior: 'contain' }
 const embedHead: React.CSSProperties = { fontSize: 12, fontWeight: 800, color: 'var(--muted)', padding: '10px 10px 4px' }
 const embedRow: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: 10, width: '100%', textAlign: 'left', border: 'none', background: 'none', borderRadius: 10, padding: '8px 8px', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, color: 'var(--text)' }
+
+/* 📱 패널 안의 묶음 — 작은 제목 + 내용 (가까운 것끼리 한 묶음, 묶음 사이는 띄움) */
+/* 형광펜이 칠해진 글자 칸 — 보통 <span>, 이미 색·굵게가 있던 글자면 <font>·<b> 등에 붙는다 */
+const HL_SEL = ['span', 'font', 'b', 'strong', 'i', 'em', 'u', 's', 'strike'].map(t => `${t}[style*="background"]`).join(',')
+
+function MobSection({ title, sub, children }: { title: string; sub?: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <div style={{ fontSize: 12.5, fontWeight: 900, color: 'var(--text)', marginBottom: 8 }}>{title}{sub && <span style={{ fontWeight: 600, color: 'var(--muted)', marginLeft: 6, fontSize: 11.5 }}>{sub}</span>}</div>
+      {children}
+    </div>
+  )
+}
+const mobChip: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', padding: '9px 0', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }
+const mobChipOn: React.CSSProperties = { borderColor: 'var(--accent)', background: 'var(--accent-l, rgba(255,86,146,.12))', color: 'var(--accent)' }
 
 function MoreItem({ label, icon, onClick }: { label: string; icon: React.ReactNode; onClick: () => void }) {
   return (

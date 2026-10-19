@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import controls from '@/components/settings/settingsControls.module.css'
+import MakerLinkIcon from './MakerLinkIcon'
 import { cleanSiteUrl, makerLinkLabel, siteKey } from '@/lib/utils/dukmark'
 import { DUKMARK_USES, DUKMARK_MAX_USES, DUKMARK_MAX_SITES, DUKMARK_MAX_SOURCES, DUKMARK_MAX_MAKER_LINKS, DukmarkUse, DukmarkSite, DukmarkSource } from '@/types/community-post'
 
@@ -290,16 +291,22 @@ function SiteEditor({ url, info, onChange }: { url: string; info: Omit<DukmarkSi
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 6 }}>
             {info.makerLinks.map(l => (
               <span key={l.url} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 10px', borderRadius: 9999, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12.5, fontWeight: 700 }}>
-                {l.label}
+                <MakerLinkIcon url={l.url} />{l.label}
                 <button type="button" aria-label={`${l.label} 링크 빼기`} onClick={() => onChange({ makerLinks: info.makerLinks.filter(x => x.url !== l.url) })} style={{ ...xBtn, fontSize: 14 }}>×</button>
               </span>
             ))}
           </div>
         )}
         {info.makerLinks.length < DUKMARK_MAX_MAKER_LINKS && (
-          <input value={linkDraft} onChange={e => { setLinkDraft(e.target.value); setLinkErr('') }} onBlur={addLink}
-            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addLink() } }}
-            placeholder="https://instagram.com/... 입력 후 Enter" inputMode="url" style={fieldInput} />
+          <div style={{ display: 'flex', gap: 6 }}>
+            <input value={linkDraft} onChange={e => { setLinkDraft(e.target.value); setLinkErr('') }}
+              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addLink() } }}
+              placeholder="https://instagram.com/..." inputMode="url" aria-label="만든 사람 링크" style={{ ...fieldInput, flex: 1, minWidth: 0 }} />
+            <button type="button" onClick={addLink} disabled={!linkDraft.trim()}
+              style={{ flexShrink: 0, padding: '0 16px', borderRadius: 9, border: 'none', background: linkDraft.trim() ? 'var(--accent)' : 'var(--border)', color: '#fff', fontWeight: 800, fontSize: 13.5, cursor: linkDraft.trim() ? 'pointer' : 'default', fontFamily: 'inherit' }}>
+              저장
+            </button>
+          </div>
         )}
         {linkErr && <div style={{ fontSize: 12, color: '#c0392b', marginTop: 4 }}>{linkErr}</div>}
       </Field>

@@ -1,6 +1,7 @@
 'use client'
 
 import { hostOf } from '@/lib/utils/linkUrl'
+import MakerLinkIcon from './MakerLinkIcon'
 import { DukmarkSite, DukmarkSource } from '@/types/community-post'
 
 /* 덕마크 글 상세 조각 (시안 2026-10-18)
@@ -56,7 +57,7 @@ export function SiteCard({ site, icons, desktop }: { site: DukmarkSite; icons: S
             {site.makerLinks.map(l => (
               <button key={l.url} type="button" onClick={() => openNew(l.url)}
                 style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '7px 14px', borderRadius: 9, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', fontWeight: 700, fontSize: 12.5, cursor: 'pointer', fontFamily: 'inherit' }}>
-                {l.label} <ArrowIcon size={12} />
+                <MakerLinkIcon url={l.url} />{l.label} <ArrowIcon size={12} />
               </button>
             ))}
           </div>
