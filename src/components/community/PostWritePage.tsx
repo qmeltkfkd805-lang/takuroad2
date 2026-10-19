@@ -1045,6 +1045,32 @@ export default function PostWritePage() {
         if (li && !(li.textContent || '').trim()) li.setAttribute('data-checked', '0')
       }, 0)
     }
+    // 목록(점·숫자·체크리스트·단계)의 빈 줄에서 엔터 → 목록을 끝내고 목록 아래 새 줄로
+    // (브라우저 기본 동작은 커서를 목록 옆에 붙여서 이상하게 보였다. 가운데 줄이면 목록을 둘로 나누고 사이에 새 줄)
+    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+      const sel1 = window.getSelection()
+      const a1 = sel1?.anchorNode
+      const li = a1 ? (a1.nodeType === 1 ? (a1 as Element) : a1.parentElement)?.closest('li') as HTMLElement | null : null
+      const list = li?.parentElement
+      if (li && list && /^(UL|OL)$/.test(list.tagName) && editorRef.current?.contains(list) && !(li.textContent || '').replace(/​/g, '').trim() && !li.querySelector('img,video,iframe')) {
+        e.preventDefault()
+        histFlush()
+        const np = document.createElement('p'); np.innerHTML = '<br>'
+        const rest = Array.from(list.children).slice(Array.from(list.children).indexOf(li) + 1)
+        li.remove()
+        list.after(np)
+        if (rest.length) {   // 빈 줄 아래에 남은 항목들은 같은 모양의 새 목록으로
+          const tail = list.cloneNode(false) as HTMLElement
+          rest.forEach(n => tail.appendChild(n))
+          np.after(tail)
+        }
+        if (!list.children.length) list.remove()
+        const r = document.createRange(); r.setStart(np, 0); r.collapse(true)
+        sel1?.removeAllRanges(); sel1?.addRange(r)
+        syncEditorText()
+        return
+      }
+    }
     // 사진 설명 줄에서 엔터 → 설명 밖 새 줄로
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       const sel0 = window.getSelection()
