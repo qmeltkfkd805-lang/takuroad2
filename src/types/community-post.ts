@@ -123,18 +123,20 @@ export interface NewPost {
 // ── 덕마크 (덕질 노하우 글에 붙는 북마크 표시 — migrations/post_dukmarks.sql) ──
 export const DUKMARK_BOARD: Board = 'tips'   // 이 게시판 글만 덕마크를 켤 수 있다 (DB 정책도 같음)
 
-export type DukmarkUse = 'shopping' | 'info' | 'translate' | 'collection' | 'meme' | 'authentic' | 'waiting' | 'map'
+export type DukmarkUse = 'buy' | 'popup' | 'care' | 'storage' | 'itabag' | 'photo' | 'authentic' | 'sites' | 'travel'
 
-// 용도 — 순서 = 필터·작성 폼 순서. 값은 DB check 제약과 같아야 한다
+// 용도 — 덕질 노하우 게시판에서 실제로 찾는 주제 (게시판 이용 안내의 '작성 가능한 내용' 기준, 2026-10-19)
+// 순서 = 필터·작성 폼 순서. 값은 DB check 제약(migrations/post_dukmarks_uses_v2.sql)과 같아야 한다
 export const DUKMARK_USES: { value: DukmarkUse; label: string }[] = [
-  { value: 'shopping',   label: '쇼핑' },
-  { value: 'info',       label: '정보·일정' },
-  { value: 'translate',  label: '번역' },
-  { value: 'collection', label: '도감·기록' },
-  { value: 'meme',       label: '짤·꾸미기' },
-  { value: 'authentic',  label: '정품 구별' },
-  { value: 'waiting',    label: '웨이팅' },
-  { value: 'map',        label: '지도·투어' },
+  { value: 'buy',       label: '굿즈 구매·직구' },
+  { value: 'popup',     label: '팝업·콜라보카페' },
+  { value: 'care',      label: '굿즈 보관·관리' },
+  { value: 'storage',   label: '수납·장식장' },
+  { value: 'itabag',    label: '이타백·꾸미기' },
+  { value: 'photo',     label: '굿즈 촬영' },
+  { value: 'authentic', label: '정품 구별' },
+  { value: 'sites',     label: '덕질 사이트·앱' },
+  { value: 'travel',    label: '성지순례·여행' },
 ]
 export const DUKMARK_USE_LABEL: Record<string, string> = Object.fromEntries(DUKMARK_USES.map(u => [u.value, u.label]))
 export const DUKMARK_MAX_USES = 3
