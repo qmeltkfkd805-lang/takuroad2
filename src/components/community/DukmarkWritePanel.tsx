@@ -149,7 +149,7 @@ export default function DukmarkWritePanel(p: Props) {
           {p.bodyImages.map((src, i) => {
             const sel = (p.coverUrl ?? p.bodyImages[0]) === src
             return (
-              <button key={src} type="button" aria-label={`${i + 1}번째 사진을 대표 이미지로`} onClick={() => { p.onCover(i === 0 ? null : src); setCoverOpen(false) }}
+              <button key={src} type="button" aria-label={`${i + 1}번째 사진을 대표 이미지로`} onClick={() => { p.onCover(src); setCoverOpen(false) }}
                 style={{ flexShrink: 0, padding: 0, border: `2px solid ${sel ? 'var(--accent)' : 'transparent'}`, borderRadius: 10, background: 'none', cursor: 'pointer' }}>
                 <img src={src} alt="" style={{ width: 72, height: 54, borderRadius: 8, objectFit: 'cover', display: 'block' }} />
               </button>

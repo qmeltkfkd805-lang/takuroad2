@@ -534,7 +534,9 @@ export default function PostWritePage() {
   const [dmBodySites, setDmBodySites] = useState<string[]>([])
   const [dmAdded, setDmAdded] = useState<string[]>([])
   const [dmRemoved, setDmRemoved] = useState<string[]>([])
+  // 덕마크 대표 이미지 = 본문의 대표 사진(img[data-cover]) — 사진 도구의 [대표 사진]과 같은 것. dmCover 는 화면 표시용으로 읽어 둔 주소
   const [dmCover, setDmCover] = useState<string | null>(null)
+  const dmSavedCover = useRef<string | null>(null)   // 수정: 예전에 따로 저장된 덕마크 대표 이미지 — 본문 사진에 대표 표시로 옮긴다
   const [dmByMaker, setDmByMaker] = useState(false)
   // 사이트별 정보(이름·설명·만든 사람·링크) — 주소 열쇠(siteKey)로 보관. 목록에서 빠진 사이트 정보는 저장 때 버린다
   const [dmSiteInfo, setDmSiteInfo] = useState<Record<string, Omit<DukmarkSite, 'url'>>>({})
@@ -626,6 +628,12 @@ export default function PostWritePage() {
         .filter(img => !img.closest('[data-link-card]'))
         .map(img => img.getAttribute('src') ?? '')
         .filter(src => /^https?:\/\//.test(src)))
+      // 예전에 덕마크에만 따로 저장해 둔 대표 이미지가 있으면 그 본문 사진에 대표 표시를 옮겨 붙인다 (한 번)
+      if (dmSavedCover.current && r && !r.querySelector('img[data-cover]')) {
+        const hit = Array.from(r.querySelectorAll<HTMLImageElement>('img')).find(img => img.getAttribute('src') === dmSavedCover.current)
+        if (hit) { hit.setAttribute('data-cover', '1'); dmSavedCover.current = null }
+      }
+      setDmCover(r?.querySelector('img[data-cover]')?.getAttribute('src') ?? null)
       // 수정 화면: 저장돼 있던 목록에 없는 본문 링크 = 예전에 작성자가 뺀 것 (본문을 다 불러온 뒤에 한 번)
       if (dmSavedSites.current && (r?.innerHTML ?? '').trim()) {
         const saved = new Set(dmSavedSites.current.map(u => u.replace(/\/$/, '').toLowerCase()))
@@ -636,7 +644,7 @@ export default function PostWritePage() {
     scan()
     // 타이핑뿐 아니라 붙여넣기·링크 카드·수정 글 불러오기처럼 코드로 바뀌는 것도 잡으려고 DOM 변화를 본다
     const obs = root ? new MutationObserver(() => { if (timer) clearTimeout(timer); timer = setTimeout(scan, 600) }) : null
-    if (root) obs?.observe(root, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['href', 'src'] })
+    if (root) obs?.observe(root, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['href', 'src', 'data-cover'] })
     return () => { if (timer) clearTimeout(timer); obs?.disconnect() }
   }, [dukmarkOn, canDukmark])
 
@@ -647,7 +655,7 @@ export default function PostWritePage() {
       if (!dm) return
       dmWasOn.current = true
       dmSavedSites.current = dm.siteUrls
-      setDmAdded(dm.siteUrls); setDmUses(dm.uses); setDmCover(dm.coverUrl); setDmByMaker(dm.byMaker)
+      setDmAdded(dm.siteUrls); setDmUses(dm.uses); dmSavedCover.current = dm.coverUrl; setDmByMaker(dm.byMaker)
       setDmSiteInfo(Object.fromEntries(dm.sites.map(s => [siteKey(s.url), { name: s.name, desc: s.desc, maker: s.maker, makerLinks: s.makerLinks }])))
       setDmSources(dm.sources)
       setDukmarkOn(true)
@@ -1799,7 +1807,7 @@ export default function PostWritePage() {
     if (!title.trim() && !plain && imgs.length === 0 && !pollData) { setErr('제목이나 내용을 입력해주세요.'); return }
     if (isFanart && !notice && !allAgreed) { setErr('업로드 전 확인 항목에 모두 동의해주세요.'); return }
     const dmInput = canDukmark && dukmarkOn ? {
-      uses: dmUses, coverUrl: dmCover, byMaker: dmByMaker, sources: dmSources,
+      uses: dmUses, coverUrl: null, byMaker: dmByMaker, sources: dmSources,   // 대표 이미지는 본문 대표 사진(data-cover → 목록 첫 사진)으로
       sites: dmSites.map(url => ({ url, ...(dmSiteInfo[siteKey(url)] ?? { makerLinks: [] }) })),
     } : null
     if (dmInput && dmInput.uses.length === 0) { setErr('덕마크 용도를 1개 이상 골라주세요.'); return }
@@ -2616,7 +2624,13 @@ export default function PostWritePage() {
                 onRemoveWork={id => toggleTag(id)}
                 onAddWork={() => { const inp = tagBoxRef.current?.querySelector('input'); inp?.scrollIntoView({ behavior: 'smooth', block: 'center' }); inp?.focus({ preventScroll: true }) }}
                 uses={dmUses} onUses={setDmUses}
-                coverUrl={dmCover} bodyImages={dmBodyImages} onCover={setDmCover}
+                coverUrl={dmCover} bodyImages={dmBodyImages} onCover={src => {
+                  const root = editorRef.current
+                  root?.querySelectorAll('img[data-cover]').forEach(n => n.removeAttribute('data-cover'))
+                  const hit = src ? Array.from(root?.querySelectorAll<HTMLImageElement>('img') ?? []).find(img => img.getAttribute('src') === src && !img.closest('[data-link-card]')) : null
+                  hit?.setAttribute('data-cover', '1')
+                  setDmCover(hit ? src : null); setImgTick(n => n + 1)
+                }}
                 byMaker={dmByMaker} onByMaker={setDmByMaker}
               />
             )}
