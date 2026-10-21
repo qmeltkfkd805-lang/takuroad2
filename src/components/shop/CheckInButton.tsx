@@ -24,6 +24,15 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng }: Pr
   const [submitting, setSubmitting] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
   const [newBadge, setNewBadge] = useState<{ name: string; rarity: string } | null>(null)
+  // 잘못 눌러 바로 기록되는 걸 막는 확인 창 (2026-10-21)
+  const [confirmOpen, setConfirmOpen] = useState(false)
+
+  useEffect(() => {
+    if (!confirmOpen) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setConfirmOpen(false) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [confirmOpen])
 
   useEffect(() => {
     if (user) {
@@ -35,6 +44,7 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng }: Pr
   async function handleCheckIn() {
     if (!user) return
 
+    setConfirmOpen(false)
     setSubmitting(true)
     // 방문 기록 — GPS 없이, 갔다 와서 눌러도 된다
     const result = await createCheckIn(
@@ -84,7 +94,7 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng }: Pr
         variant="primary"
         size="lg"
         fullWidth
-        onClick={handleCheckIn}
+        onClick={() => { if (user) setConfirmOpen(true) }}
         disabled={submitting || checkedInToday}
         leftIcon={!checkedInToday && !submitting ? checkinIcon : undefined}
       >
@@ -114,6 +124,52 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng }: Pr
           whiteSpace: 'nowrap',
         }}>
           {toast}
+        </div>
+      )}
+
+      {confirmOpen && (
+        <div
+          onClick={() => setConfirmOpen(false)}
+          role="presentation"
+          style={{
+            position: 'fixed', inset: 0, zIndex: 1000,
+            background: 'rgba(0,0,0,.5)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: '20px',
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="checkin-confirm-title"
+            onClick={e => e.stopPropagation()}
+            style={{
+              background: 'var(--surface)', borderRadius: '20px',
+              padding: '28px 24px 20px', width: '100%', maxWidth: '360px',
+              textAlign: 'center', boxShadow: 'var(--sh-lg)',
+            }}
+          >
+            <p id="checkin-confirm-title" style={{ fontSize: '17px', fontWeight: 900, marginBottom: '8px', wordBreak: 'keep-all' }}>
+              {shopName}에 다녀오셨나요?
+            </p>
+            <p style={{ fontSize: '14px', color: 'var(--muted)', marginBottom: '22px', wordBreak: 'keep-all' }}>
+              {mine.count > 0
+                ? `${mine.count + 1}번째 방문으로 기록돼요.`
+                : '방문 기록이 남아요.'}
+            </p>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <div style={{ flex: 1 }}>
+                <Button variant="secondary" size="lg" fullWidth onClick={() => setConfirmOpen(false)}>
+                  취소
+                </Button>
+              </div>
+              <div style={{ flex: 1 }}>
+                <Button variant="primary" size="lg" fullWidth onClick={handleCheckIn}>
+                  다녀왔어요
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
