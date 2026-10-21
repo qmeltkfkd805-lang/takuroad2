@@ -159,12 +159,12 @@ export default function CheckInButton({ shopId, shopName, shopLat, shopLng }: Pr
             </p>
             <div style={{ display: 'flex', gap: '8px' }}>
               <div style={{ flex: 1 }}>
-                <Button variant="secondary" size="lg" fullWidth onClick={() => setConfirmOpen(false)}>
+                <Button variant="action" fullWidth onClick={() => setConfirmOpen(false)} style={{ padding: '7px 14px', fontSize: 14, borderRadius: 12 }}>
                   취소
                 </Button>
               </div>
               <div style={{ flex: 1 }}>
-                <Button variant="primary" size="lg" fullWidth onClick={handleCheckIn}>
+                <Button variant="primary" fullWidth onClick={handleCheckIn} style={{ padding: '7px 14px', fontSize: 14, borderRadius: 12 }}>
                   다녀왔어요
                 </Button>
               </div>
