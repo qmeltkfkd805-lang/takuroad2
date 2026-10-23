@@ -228,6 +228,19 @@ export default function PostWritePage() {
       void onPickImages(files)
       return
     }
+    // 다른 곳(블로그·카톡·문서)에서 복사한 글 → 글씨와 기본 모양(굵게·링크·목록·줄바꿈·사진)만 남기고
+    // 배경색·글자색·글꼴·크기 같은 원래 꾸밈은 뺀다. 타쿠로드 꾸밈 표시(data-*)는 그대로 둔다
+    const html = e.clipboardData.getData('text/html')
+    if (html) {
+      e.preventDefault()
+      document.execCommand('insertHTML', false, cleanPastedHtml(html))
+      // 브라우저가 붙여 넣으며 덧붙이는 '기본 글자색' 표시(color: var(--text))도 걷어낸다
+      editorRef.current?.querySelectorAll<HTMLElement>('[style]').forEach(el => {
+        if (el.getAttribute('style')?.replace(/\s/g, '') !== 'color:var(--text);') return
+        if (el.tagName === 'SPAN') { while (el.firstChild) el.before(el.firstChild); el.remove() } else el.removeAttribute('style')
+      })
+      syncEditorText()
+    }
     setTimeout(() => { void uploadInlineImages() }, 0)   // 글+사진이 섞인 붙여넣기 → 들어온 data: 사진을 업로드로 바꿈
   }
   /* ── 내 PC 폴더에서 사진·동영상 끌어다 놓기 ──
@@ -1466,6 +1479,43 @@ export default function PostWritePage() {
     refreshActive()
   }
   const insertCallout = (kind: CalloutKind) => {
+    // 글자를 드래그해 둔 상태면 고른 글을 강조 박스 안으로 옮긴다
+    const root = editorRef.current
+    const rng = caretRef.current
+    if (root && rng && !rng.collapsed && root.contains(rng.commonAncestorContainer) && rng.toString().trim()) {
+      histFlush()
+      const topOf = (n: Node): HTMLElement | null => {
+        let el: Node | null = n
+        while (el && el.parentNode !== root) el = el.parentNode
+        return el && el.nodeType === Node.ELEMENT_NODE ? (el as HTMLElement) : null
+      }
+      const first = topOf(rng.startContainer), last = topOf(rng.endContainer)
+      const box = document.createElement('div'); box.setAttribute('data-callout', kind)
+      if (first && last && first !== last) {
+        // 여러 줄 → 그 줄들을 통째로 박스 안으로
+        first.before(box)
+        let n: Element | null = first
+        while (n) { const next: Element | null = n === last ? null : n.nextElementSibling; box.appendChild(n); n = next }
+      } else if (first) {
+        // 한 줄 안의 일부(또는 전부) → 고른 부분만 박스로, 앞·뒤 글은 원래 줄에 남긴다
+        const tail = document.createRange(); tail.setStart(rng.endContainer, rng.endOffset); tail.setEndAfter(first.lastChild ?? first)
+        const afterFrag = tail.extractContents()
+        const picked = rng.extractContents()
+        const p = document.createElement('p'); p.appendChild(picked); box.appendChild(p)
+        first.after(box)
+        const restText = (afterFrag.textContent ?? '').trim()
+        if (restText || afterFrag.querySelector?.('img')) {
+          const rest = first.cloneNode(false) as HTMLElement; rest.appendChild(afterFrag); box.after(rest)
+        }
+        if (!(first.textContent ?? '').trim() && !first.querySelector('img,video,[data-embed],[data-link-card]')) first.remove()
+      }
+      if (box.isConnected) {
+        if (!box.nextElementSibling) box.after(Object.assign(document.createElement('p'), { innerHTML: '<br>' }))   // 박스 아래에서 계속 쓸 줄
+        placeCaretIn(box.lastElementChild as HTMLElement | null)
+        syncEditorText()
+        return
+      }
+    }
     insertBlockAtCaret(`<div data-callout="${kind}" data-new="1"><p><br></p></div>`)
     const d = editorRef.current?.querySelector('div[data-callout][data-new]')
     d?.removeAttribute('data-new')
@@ -2571,6 +2621,22 @@ export default function PostWritePage() {
                       background: selImg.hasAttribute('data-spoiler') ? 'var(--accent)' : 'var(--surface2)', color: selImg.hasAttribute('data-spoiler') ? '#fff' : 'var(--text)' }}>
                     {selImg.hasAttribute('data-spoiler') ? '스포 ✓' : '스포 가리기'}
                   </button>
+                  <button type="button" onMouseDown={e => e.preventDefault()} title="사진을 누르면 열릴 링크"
+                    onClick={() => {
+                      // 사진 링크 — 사진은 그대로 두고 주소만 표시(data-href). 글 화면에서 누르면 확대 대신 이 주소로 간다
+                      const cur = selImg.getAttribute('data-href') ?? ''
+                      const v = window.prompt('사진을 누르면 열릴 주소 (비우면 링크 빼기)', cur || 'https://')
+                      if (v === null) return
+                      const u = v.trim()
+                      if (!u || u === 'https://') selImg.removeAttribute('data-href')
+                      else if (/^https?:\/\/\S+$/i.test(u) || /^\/\S*$/.test(u)) selImg.setAttribute('data-href', u)
+                      else { window.alert('http:// 또는 https:// 로 시작하는 주소를 넣어 주세요.'); return }
+                      setImgTick(t => t + 1); syncEditorText()
+                    }}
+                    style={{ border: 'none', borderRadius: 7, padding: '6px 10px', fontSize: 12.5, fontWeight: 800, fontFamily: 'inherit', cursor: 'pointer', whiteSpace: 'nowrap',
+                      background: selImg.hasAttribute('data-href') ? 'var(--accent)' : 'var(--surface2)', color: selImg.hasAttribute('data-href') ? '#fff' : 'var(--text)' }}>
+                    {selImg.hasAttribute('data-href') ? '링크 ✓' : '링크'}
+                  </button>
                   <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => addCaption(selImg)} title="사진 아래에 설명 달기"
                     style={{ border: 'none', borderRadius: 7, padding: '6px 10px', fontSize: 12.5, fontWeight: 800, fontFamily: 'inherit', cursor: 'pointer', whiteSpace: 'nowrap', background: 'var(--surface2)', color: 'var(--text)' }}>
                     설명
@@ -2897,6 +2963,36 @@ const embedHead: React.CSSProperties = { fontSize: 12, fontWeight: 800, color: '
 const embedRow: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: 10, width: '100%', textAlign: 'left', border: 'none', background: 'none', borderRadius: 10, padding: '8px 8px', cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, color: 'var(--text)' }
 
 /* 📱 패널 안의 묶음 — 작은 제목 + 내용 (가까운 것끼리 한 묶음, 묶음 사이는 띄움) */
+/* 붙여넣기 정리 — 다른 곳에서 복사한 HTML 에서 원래 꾸밈(배경색·글자색·글꼴·크기·class)을 걷어내고
+   글씨와 기본 구조만 남긴다. 위험한 태그(script 등)도 뺀다. 타쿠로드가 붙인 data-* 표시는 남긴다 */
+function cleanPastedHtml(html: string): string {
+  const doc = new DOMParser().parseFromString(html, 'text/html')
+  const body = doc.body
+  body.querySelectorAll('script,style,meta,link,title,iframe,object,embed,form,input,button,select,textarea,svg,canvas,noscript').forEach(n => n.remove())
+  // 주석 지우기 (워드·구글문서가 남기는 <!--StartFragment--> 등)
+  const walker = doc.createTreeWalker(body, NodeFilter.SHOW_COMMENT)
+  const comments: Node[] = []
+  for (let n = walker.nextNode(); n; n = walker.nextNode()) comments.push(n)
+  comments.forEach(n => n.parentNode?.removeChild(n))
+  const KEEP: Record<string, string[]> = { a: ['href'], img: ['src', 'alt'], ol: ['start'], td: ['colspan', 'rowspan'], th: ['colspan', 'rowspan'] }
+  body.querySelectorAll('*').forEach(el => {
+    const tag = el.tagName.toLowerCase()
+    for (const attr of Array.from(el.attributes)) {
+      if (attr.name.startsWith('data-')) continue
+      if ((KEEP[tag] ?? []).includes(attr.name)) continue
+      el.removeAttribute(attr.name)
+    }
+    if (tag === 'a') { const h = el.getAttribute('href') ?? ''; if (!/^(https?:|mailto:|\/)/i.test(h)) el.removeAttribute('href') }
+  })
+  // 꾸밈만 하던 껍데기 태그(<span>·<font>)는 풀어서 글씨만
+  body.querySelectorAll('span,font').forEach(el => {
+    if (el.attributes.length) return
+    while (el.firstChild) el.parentNode?.insertBefore(el.firstChild, el)
+    el.remove()
+  })
+  return body.innerHTML
+}
+
 /* 형광펜이 칠해진 글자 칸 — 보통 <span>, 이미 색·굵게가 있던 글자면 <font>·<b> 등에 붙는다 */
 const HL_SEL = ['span', 'font', 'b', 'strong', 'i', 'em', 'u', 's', 'strike'].map(t => `${t}[style*="background"]`).join(',')
 

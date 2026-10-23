@@ -125,6 +125,14 @@ export function usePostLightbox() {
     const t = e.target as HTMLElement | null
     if (!t || t.tagName !== 'IMG') return
     if (t.closest('[data-link-card]')) return   // 링크 미리보기 카드 이미지는 확대 대상 아님(누르면 링크로)
+    // 링크를 달아 둔 사진(data-href) → 확대 대신 그 주소로 (밖의 사이트는 새 탭, 타쿠로드 안 주소는 그 자리에서)
+    const href = t.getAttribute('data-href') ?? ''
+    if (/^https?:\/\/\S+$/i.test(href) || /^\/(?!\/)\S*$/.test(href)) {
+      e.preventDefault()
+      if (href.startsWith('/')) window.location.assign(href)
+      else window.open(href, '_blank', 'noopener,noreferrer')
+      return
+    }
     const imgs = Array.from(e.currentTarget.querySelectorAll('img')).filter(m => !m.closest('[data-link-card]'))
     const k = imgs.indexOf(t as HTMLImageElement)
     if (k < 0) return

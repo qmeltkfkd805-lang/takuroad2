@@ -111,6 +111,8 @@ export function decorCss(s: string): string {
     `${s} ol[data-steps]{list-style:none;counter-reset:step;padding:0;margin:12px 0}`,
     `${s} ol[data-steps] > li{counter-increment:step;position:relative;margin:0 0 8px;padding:12px 14px 12px 52px;border:1px solid var(--border);border-radius:12px;background:var(--surface);min-height:24px;line-height:1.6}`,
     `${s} ol[data-steps] > li::before{content:counter(step);position:absolute;left:14px;top:11px;width:26px;height:26px;border-radius:9999px;background:var(--accent);color:#fff;font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center}`,
+    // 링크 단 사진 — 누르면 링크로 가니까 손가락 모양
+    `${s} img[data-href]{cursor:pointer}`,
     // 샵·이벤트 카드 — 이름 길이·설명 줄 유무와 상관없이 늘 같은 크기 (이미 올라간 글의 카드도 같이 맞춘다)
     // (예전 '내 루트' 카드는 data-embed 표시가 없어서 주소+모양으로 찾는다)
     `${s} a[data-embed],${s} a[href^="/route/"][style*="display:flex"],${s} a[href^="/route/"][style*="display: flex"]{width:100% !important;max-width:460px !important;height:90px !important;box-sizing:border-box !important;overflow:hidden}`,
