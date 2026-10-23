@@ -111,6 +111,9 @@ export function decorCss(s: string): string {
     `${s} ol[data-steps]{list-style:none;counter-reset:step;padding:0;margin:12px 0}`,
     `${s} ol[data-steps] > li{counter-increment:step;position:relative;margin:0 0 8px;padding:12px 14px 12px 52px;border:1px solid var(--border);border-radius:12px;background:var(--surface);min-height:24px;line-height:1.6}`,
     `${s} ol[data-steps] > li::before{content:counter(step);position:absolute;left:14px;top:11px;width:26px;height:26px;border-radius:9999px;background:var(--accent);color:#fff;font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center}`,
+    // 사진 정렬 — 사이트 기본 CSS 가 사진을 block 으로 만들어 글 정렬(text-align)을 안 따르므로, 줄의 정렬을 사진에도 적용
+    `${s} [style*="text-align: center"] > img,${s} [style*="text-align:center"] > img{margin-left:auto;margin-right:auto}`,
+    `${s} [style*="text-align: right"] > img,${s} [style*="text-align:right"] > img{margin-left:auto;margin-right:0}`,
     // 링크 단 사진 — 누르면 링크로 가니까 손가락 모양
     `${s} img[data-href]{cursor:pointer}`,
     // 샵·이벤트 카드 — 이름 길이·설명 줄 유무와 상관없이 늘 같은 크기 (이미 올라간 글의 카드도 같이 맞춘다)

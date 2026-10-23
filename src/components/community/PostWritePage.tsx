@@ -433,6 +433,29 @@ export default function PostWritePage() {
     const top = above >= 8 ? above : Math.min(rect.bottom + 14, vh - toolSize.h - 8)
     return { left, top }
   }
+  /* 사진 정렬 — 한 장짜리 사진이 들어 있는 줄을 왼쪽·가운데·오른쪽으로. 왼쪽 = 정렬 표시 빼기 */
+  const imgLineOf = (img: HTMLImageElement): HTMLElement | null => {
+    const root = editorRef.current
+    if (!root) return null
+    if (img.closest('[data-photo-row]')) return null   // 나란히 놓은 사진 줄은 늘 꽉 차서 정렬이 없다
+    let el: HTMLElement | null = img.parentElement
+    while (el && el !== root && !/^(P|DIV|FIGURE|LI|BLOCKQUOTE|H2|H3)$/.test(el.tagName)) el = el.parentElement
+    if (el && el !== root) return el
+    // 줄 없이 편집기에 바로 들어간 사진 → 줄(<p>)로 감싼다
+    const p = document.createElement('p'); img.before(p); p.appendChild(img)
+    return p
+  }
+  const imgAlignOf = (img: HTMLImageElement): 'left' | 'center' | 'right' => {
+    const a = img.closest<HTMLElement>('p,div,figure,li,blockquote,h2,h3')?.style.textAlign
+    return a === 'center' || a === 'right' ? a : 'left'
+  }
+  const setImgAlign = (img: HTMLImageElement, a: 'left' | 'center' | 'right') => {
+    const line = imgLineOf(img)
+    if (!line) return
+    if (a === 'left') line.style.removeProperty('text-align'); else line.style.textAlign = a
+    if (!line.getAttribute('style')) line.removeAttribute('style')
+    setImgTick(t => t + 1); syncEditorText()
+  }
   const setImgWidth = (img: HTMLImageElement, pct: number) => {
     const v = Math.max(15, Math.min(100, pct))
     img.style.width = `${Math.round(v * 10) / 10}%`
@@ -2606,6 +2629,19 @@ export default function PostWritePage() {
                     </button>
                   ))}
                   <span style={{ alignSelf: 'center', fontSize: 11.5, color: 'var(--muted)', padding: '0 4px 0 2px', minWidth: 34, textAlign: 'right' }}>{Math.round(curPct)}%</span>
+                  <span style={{ width: 1, alignSelf: 'stretch', background: 'var(--border)', margin: '2px 2px' }} />
+                  {/* 사진 정렬 (한 장짜리 사진만 — 나란히 놓은 줄은 늘 꽉 찬다) */}
+                  {!selImg.closest('[data-photo-row]') && (['left', 'center', 'right'] as const).map(a => {
+                    const on = imgAlignOf(selImg) === a
+                    return (
+                      <button key={a} type="button" onMouseDown={e => e.preventDefault()} onClick={() => setImgAlign(selImg, a)}
+                        title={a === 'left' ? '사진 왼쪽 정렬' : a === 'center' ? '사진 가운데 정렬' : '사진 오른쪽 정렬'} aria-pressed={on}
+                        style={{ border: 'none', borderRadius: 7, width: 30, height: 30, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+                          background: on ? 'var(--accent)' : 'var(--surface2)', color: on ? '#fff' : 'var(--text)' }}>
+                        <AlignIcon dir={a} />
+                      </button>
+                    )
+                  })}
                   <span style={{ width: 1, alignSelf: 'stretch', background: 'var(--border)', margin: '2px 2px' }} />
                   <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => toggleCover(selImg)} title="목록에 보이는 대표 사진으로"
                     style={{ border: 'none', borderRadius: 7, padding: '6px 10px', fontSize: 12.5, fontWeight: 800, fontFamily: 'inherit', cursor: 'pointer', whiteSpace: 'nowrap',
