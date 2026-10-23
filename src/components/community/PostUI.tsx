@@ -8,6 +8,8 @@ import { useAuth } from '@/components/layout/AuthProvider'
 import { ROUTES } from '@/lib/constants/routes'
 import { UserAvatar, UserTitle } from '@/components/cosmetic/UserFace'
 import UserLevelBadge from '@/components/cosmetic/UserLevelBadge'
+import AuthorTransferModal from './AuthorTransferModal'
+import { TAKUROAD_ACCOUNT_ID } from '@/lib/constants/takuroadAccount'
 import {
   togglePostLike, incrementPostView, getComments, addComment, deleteComment, toggleCommentLike,
   reportPost, deletePostWithGoods, setPostVisibility, getWorkPosts, getPostLinkUrl,
@@ -127,6 +129,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
   const [replyText, setReplyText] = useState('')
   const [reporting, setReporting] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [transferOpen, setTransferOpen] = useState(false)   // 작성자 바꾸기 (타쿠로드 계정만)
   const [poll, setPoll] = useState<Poll | null>(null)
   const loadPoll = useCallback(async () => { setPoll(await getPollByPost(post.id, user?.id)) }, [post.id, user?.id])
   useEffect(() => { loadPoll() }, [loadPoll])
@@ -441,6 +444,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
       {menuOpen && !isAuthor && (
         <div style={{ position: 'absolute', top: '100%', right: 0, zIndex: 30, marginTop: 4, minWidth: 140, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.14)', overflow: 'hidden' }}>
           {featureItem}
+          {user?.id === TAKUROAD_ACCOUNT_ID && <button onClick={() => { setMenuOpen(false); setTransferOpen(true) }} style={menuItem}>작성자 바꾸기</button>}
           <button onClick={() => { setMenuOpen(false); setReporting(true) }} style={{ ...menuItem, color: '#e04343' }}>신고하기</button>
           {canBlock(user, post.author) && <button onClick={() => { setMenuOpen(false); blockAuthor(post.author!, true) }} disabled={blockBusy} style={menuItem}>작성자 차단하기</button>}
         </div>
@@ -449,6 +453,7 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
         <div style={{ position: 'absolute', top: '100%', right: 0, zIndex: 30, marginTop: 4, minWidth: 140, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.14)', overflow: 'hidden' }}>
           <button onClick={() => { setMenuOpen(false); router.push(`/community/write?edit=${post.id}`) }} style={menuItem}>수정하기</button>
           {featureItem}
+          {user?.id === TAKUROAD_ACCOUNT_ID && <button onClick={() => { setMenuOpen(false); setTransferOpen(true) }} style={menuItem}>작성자 바꾸기</button>}
           <button onClick={togglePrivate} style={menuItem}>{post.visibility === 'private' ? '전체 공개' : '나만보기'}</button>
           {canExhibit && (
             <button onClick={toggleExhibit} disabled={exhibitEntryId === undefined || exhibitBusy}
@@ -814,6 +819,10 @@ export function PostDetailModal({ post: initial, onClose, onChanged, variant = '
       </div>
 
       {reporting && <ReportModal postId={post.id} onClose={() => setReporting(false)} />}
+      {transferOpen && (
+        <AuthorTransferModal postId={post.id} currentAuthor={post.author?.nickname ?? null} onClose={() => setTransferOpen(false)}
+          onDone={a => { setPost(p => ({ ...p, author: { id: a.id, nickname: a.nickname, avatarUrl: a.avatarUrl } })); onChanged?.() }} />
+      )}
     </div>
   )
 }
