@@ -19,7 +19,7 @@
 | `/api/shops/all`, `/api/shops/home-items(+v2)` | ✅ 1800초, `purgeShopLists()`로 즉시 비움 |
 | `/api/works/*`, `/api/events/popular`, `/api/routes/public` | ✅ 60~600초 |
 | **`/shop/[slug]`** | ✅ **이번에 적용 (아래)** |
-| `/event/[id]` | ❌ 쿠키 클라이언트 — **다음 작업** |
+| **`/event/[id]`** | ✅ **적용 (아래 "2차")** |
 | `/place/[slug]` | ❌ 쿠키 클라이언트 — **다음 작업** |
 | `/route/[token]` | ❌ 쿠키 클라이언트 + `auth.getUser()` — ⚠️주의 필요 |
 | `/community/[id]` | ❌ 쿠키 클라이언트 — ⚠️주의 필요 |
@@ -42,10 +42,20 @@
 - 배포 후 샵 정보 수정 → 상세에 바로 반영되는지.
 - 며칠 뒤 Vercel 관측 가능성 → 기능 → 타쿠로드2 → 경로별 Active CPU 순위로 효과 확인.
 
+## 2차 — `/event/[id]` (2026-10-24)
+- `src/app/event/[id]/page.tsx`: `createPublicClient()` + `revalidate = 300` + `generateStaticParams() → []`.
+  서버는 메타데이터·JSON-LD만 만들고 화면은 `EventDetailPage`(브라우저)라, 캐시 영향은 제목·설명·대표 이미지뿐.
+  anon RLS(`events_soft_delete.sql`)상 삭제 요청된 이벤트는 못 읽어서 '찾을 수 없어요'(noindex)로 나감 — 검색엔 그게 맞음.
+- 새 `src/lib/cache/eventPageCache.ts` — `purgeEventPage(id)`: `revalidatePath('/event/<id>')` (그 이벤트 한 페이지만, 그래서 스로틀 없음).
+- 새 `src/app/api/revalidate/events/route.ts` — POST `{ id }`, 로그인 필요.
+- 브라우저 쪽 `refreshEventPage(id)`(`services/eventDetailService.ts`)를 저장 성공 후 호출:
+  `saveEventExtra`(위저드 등록·수정, 항상 `updateEventDraft` 뒤에 불림), `updateEvent`, `deleteEvent`, `setEventShop`.
+  `createEventDraft`·`api/admin/approve-submission`은 새 id라 캐시가 없어서 안 붙임.
+- 알려진 부작용: 연결된 **샵 이름·주소, 작품 커버** 변경은 이벤트 페이지 메타에 최대 5분 늦게 반영.
+- 검증(사용자): `npm run build`에서 `/event/[id]`가 `●` + 5m. 배포 후 이벤트 제목 수정 → 공유 미리보기/탭 제목에 바로 반영되는지.
+
 ## 다음 할 일
-1. **`/event/[id]`** — `getEvent`를 `createPublicClient()`로, `revalidate = 300` + `generateStaticParams` 빈 배열.
-   이벤트 수정·삭제·공개 시 비우는 함수가 없으므로 `src/lib/cache/`에 `purgeEventPages()`(예: `revalidatePath('/event/[id]','page')`) 추가하고,
-   이벤트 저장 경로(서버 API — `api/admin/approve-submission`, 이벤트 위저드 저장 등)에서 호출. 브라우저에서 저장하는 경로면 `/api/revalidate/shops`처럼 로그인 확인 + 스로틀 API를 하나 만든다.
+1. ~~`/event/[id]`~~ ✅ 완료 (위 "2차").
 2. **`/place/[slug]`** — 같은 방식. 장소 변경 시 비우기 연결.
 3. **`/route/[token]`** ⚠️ — `auth.getUser()`로 `author_blocked`(차단한 작성자) 처리를 서버에서 함 → 이 부분을 브라우저로 옮겨야 캐시 가능.
    또 비공개 루트를 share_token으로 여는 구조인지 RLS 확인 필요(anon으로 못 읽으면 캐시 전환 시 깨짐). 사용자와 상의 후 진행.

@@ -3,7 +3,7 @@ import { prepareImage } from '@/lib/storage/compressImage'
 import { uploadContentAddressed } from '@/lib/storage/contentAddressed'
 import { EventHomeType } from '@/services/eventHomeService'
 import { BusinessHours } from '@/types/database'
-import { getEventDetail } from '@/services/eventDetailService'
+import { getEventDetail, refreshEventPage } from '@/services/eventDetailService'
 
 // 위저드가 다루는 전체 폼. 전부 events 한 테이블에 저장된다.
 //   전부 events 컬럼. (예전엔 소개·장소·링크가 event_submissions에 있었다)
@@ -152,6 +152,7 @@ export async function saveEventExtra(eventId: string, form: EventFormData, userI
     console.error('[이벤트 저장 실패]', error.message)
     return { ok: false, message: error.message }
   }
+  refreshEventPage(eventId)   // 이벤트 상세 페이지 캐시(5분)를 바로 비운다
   return { ok: true }
 }
 

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { cache } from 'react'
-import { createClient } from '@/lib/supabase/server'
+import { createPublicClient } from '@/lib/supabase/public'
 import EventDetailPage from '@/components/event/EventDetailPage'
 import { pageMeta, toDescription, SITE_URL } from '@/lib/seo/pageMeta'
 
@@ -9,11 +9,20 @@ import { pageMeta, toDescription, SITE_URL } from '@/lib/seo/pageMeta'
    (예전엔 모든 이벤트 페이지가 같은 제목·설명이라 검색에서 구분이 안 됐다) */
 interface Props { params: Promise<{ id: string }> }
 
+/* 페이지 캐시 (2026-10-24) — 같은 이벤트 페이지는 5분 동안 한 번 만든 걸 그대로 보여준다.
+   예전엔 로그인 쿠키를 읽는 클라이언트를 써서 봇이 긁을 때마다 새로 그렸다.
+   이벤트를 만들거나 고치거나 지우면 purgeEventPage()가 그 페이지를 바로 비운다 (lib/cache/eventPageCache.ts).
+   샵 이름·주소, 작품 커버가 바뀐 건 최대 5분 늦게 반영된다. */
+export const revalidate = 300
+// 빌드 때 미리 만들지 않고, 처음 열릴 때 만들어서 캐시한다
+export async function generateStaticParams() { return [] }
+
 const TYPE_LABEL: Record<string, string> = { popup: '팝업스토어', collab_cafe: '콜라보 카페', exhibition: '전시', official_event: '행사', goods_added: '굿즈 입고' }
 
 const getEvent = cache(async (id: string) => {
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null
-  const supabase = await createClient()
+  // 비로그인(anon) 권한으로 읽는다 — 삭제 요청된 이벤트는 못 읽어서 '찾을 수 없어요'로 나간다(검색 노출 X, 화면은 브라우저가 따로 그림)
+  const supabase = createPublicClient()
   const { data } = await supabase
     .from('events')
     .select('id, title, type, start_date, end_date, place_name, place_addr, cover_url, description, deleted_at, tags ( name, cover_url ), shops ( name, addr )')

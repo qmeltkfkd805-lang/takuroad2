@@ -269,6 +269,7 @@ export async function updateEvent(id: string, input: EventEditInput): Promise<{ 
     .eq('id', id)
 
   if (error) return { ok: false, message: error.message }
+  refreshEventPage(id)
   return { ok: true }
 }
 
@@ -277,5 +278,17 @@ export async function deleteEvent(id: string): Promise<{ ok: boolean; message?: 
   const supabase = createClient()
   const { error } = await supabase.from('events').delete().eq('id', id)
   if (error) return { ok: false, message: error.message }
+  refreshEventPage(id)
   return { ok: true }
+}
+
+/** 이벤트 상세 페이지(/event/[id]) 캐시를 비워 달라고 서버에 알린다 — 저장·삭제 직후에 부른다.
+ *  실패해도 늦어도 5분이면 새로 만들어지므로 기다리지 않는다 (lib/cache/eventPageCache.ts) */
+export function refreshEventPage(id: string): void {
+  if (typeof window === 'undefined') return
+  fetch('/api/revalidate/events', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id }),
+  }).catch(() => {})
 }

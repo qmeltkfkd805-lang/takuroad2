@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/client'
 import { kstToday } from '@/lib/utils/kstDate'
 import { resolveEventCover } from '@/lib/event/eventCover'
 import { rankEvents } from '@/lib/event/rankEvents'
+import { refreshEventPage } from '@/services/eventDetailService'
 
 // 작품(tag)에 일어난 사건. type별로 표시만 다르게.
 export interface WorkEvent {
@@ -278,6 +279,7 @@ export async function setEventShop(eventId: string, shopId: string | null, userI
     .update({ shop_id: shopId, updated_by: userId, updated_at: new Date().toISOString() } as any)
     .eq('id', eventId)
   if (error) { console.error('[이벤트 연결] 저장 실패:', error.message); return false }
+  refreshEventPage(eventId)   // 상세 페이지의 장소(샵) 정보도 바뀌므로 캐시를 비운다
   return true
 }
 
