@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { createClient as createServerClient } from '@/lib/supabase/server'
 import { purgeWorks } from '@/lib/cache/workCache'
+import { purgePlacePages } from '@/lib/cache/placePageCache'
 
 const ALLOWED: Record<string, string[]> = {
   /* ⚠️ role 은 여기 다시 넣지 말 것.
@@ -45,6 +46,7 @@ export async function POST(request: NextRequest) {
       const { error } = await admin.from(table).delete().eq('id', id)
       if (error) throw error
       if (table === 'tags') purgeWorks()
+      if (table === 'places') purgePlacePages()
       return NextResponse.json({ success: true })
     }
     if (action === 'insert') {
@@ -52,6 +54,7 @@ export async function POST(request: NextRequest) {
       const { data, error } = await admin.from(table).insert(clean).select().single()
       if (error) throw error
       if (table === 'tags') purgeWorks((data as any)?.slug)
+      if (table === 'places') purgePlacePages()
       return NextResponse.json({ success: true, row: data })
     }
     if (!id) return NextResponse.json({ error: 'id가 필요해요' }, { status: 400 })
@@ -59,6 +62,7 @@ export async function POST(request: NextRequest) {
     const { data, error } = await admin.from(table).update(clean).eq('id', id).select().single()
     if (error) throw error
     if (table === 'tags') purgeWorks((data as any)?.slug)   // 작품 사진·정보 바꾸면 목록·상세 캐시 바로 비움
+    if (table === 'places') purgePlacePages()               // 장소 이름·사진 등 바꾸면 장소 상세 캐시 바로 비움
     return NextResponse.json({ success: true, row: data })
   } catch (e: any) {
     return NextResponse.json({ error: e.message ?? '알 수 없는 오류' }, { status: 500 })

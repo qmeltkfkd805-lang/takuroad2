@@ -1,4 +1,5 @@
 import { revalidatePath, revalidateTag } from 'next/cache'
+import { purgePlacePages } from '@/lib/cache/placePageCache'
 
 /* 공개 샵 목록 캐시 (2026-10-11)
    샵이 1,100곳을 넘으며 '전체 샵 목록'이 한 번에 1MB가 넘는다. 이걸 60초마다 DB에서 다시 받아서
@@ -19,4 +20,6 @@ export function purgeShopLists() {
   revalidatePath('/')
   // 샵 상세 페이지 캐시(5분)도 같이 비운다 — 수정한 내용이 바로 보이게 (2026-10-24)
   revalidatePath('/shop/[slug]', 'page')
+  // 장소 페이지에도 입점 샵 목록이 들어 있다 (2026-10-24)
+  purgePlacePages()
 }

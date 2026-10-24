@@ -20,7 +20,7 @@
 | `/api/works/*`, `/api/events/popular`, `/api/routes/public` | ✅ 60~600초 |
 | **`/shop/[slug]`** | ✅ **이번에 적용 (아래)** |
 | **`/event/[id]`** | ✅ **적용 (아래 "2차")** |
-| `/place/[slug]` | ❌ 쿠키 클라이언트 — **다음 작업** |
+| **`/place/[slug]`** | ✅ **적용 (아래 "3차")** |
 | `/route/[token]` | ❌ 쿠키 클라이언트 + `auth.getUser()` — ⚠️주의 필요 |
 | `/community/[id]` | ❌ 쿠키 클라이언트 — ⚠️주의 필요 |
 | `/work/[slug]`, `/user/[nickname]` | `force-dynamic` (일부러) — 손대기 전 사용자 확인 |
@@ -54,9 +54,25 @@
 - 알려진 부작용: 연결된 **샵 이름·주소, 작품 커버** 변경은 이벤트 페이지 메타에 최대 5분 늦게 반영.
 - 검증(사용자): `npm run build`에서 `/event/[id]`가 `●` + 5m. 배포 후 이벤트 제목 수정 → 공유 미리보기/탭 제목에 바로 반영되는지.
 
+## 3차 — `/place/[slug]` (2026-10-24)
+- `src/app/place/[slug]/page.tsx`: `createPublicClient()` + `revalidate = 300` + `generateStaticParams() → []`.
+  `getPlaceBySlug`를 React `cache`로 감싸 메타데이터·화면이 한 번만 읽게 함(예전엔 장소·샵·이벤트를 요청마다 두 번 읽었음).
+  anon으로 `places` 읽기 가능 확인(63곳). 입점 샵(active)·이벤트도 anon 공개.
+- 이 페이지는 **장소 + 입점 샵 + 진행 중 이벤트**를 서버에서 통째로 넘기므로, 셋 중 뭐가 바뀌어도 비워야 함.
+  새 `src/lib/cache/placePageCache.ts` — `purgePlacePages()`: `revalidatePath('/place/[slug]','page')` (60여 곳이라 전부 비워도 부담 적음).
+  호출: `purgeShopLists()`(샵 변경), `/api/revalidate/events`(이벤트 변경), `/api/admin/upsert`의 `places` 수정·추가·삭제.
+- 알려진 부작용: 날짜가 바뀌어 시작·종료되는 이벤트는 최대 5분 늦게 반영. `/api/admin/place-note`(access_note)는 장소 페이지에 안 나와서 연결 안 함.
+
+### 2·3차 검증 (Claude, 2026-10-24 — 작업 폴더 복사본에서 빌드)
+- `npm run build` 성공: `/event/[id]`·`/place/[slug]`·`/shop/[slug]` 모두 `●`.
+- `next start`로 같은 페이지 두 번 요청 → `x-nextjs-cache: MISS → HIT`, `Cache-Control: s-maxage=300` 확인. 제목 메타 정상.
+- `/api/revalidate/events` 비로그인 POST → 401.
+- 참고(기존 동작): 없는 샵·장소 주소는 HTTP 200 + `noindex` + not-found 화면(샵 상세도 원래 그랬음). 검색 노출은 안 됨.
+- 로그인 상태의 '저장 → 즉시 반영'은 배포 후 직접 확인 필요.
+
 ## 다음 할 일
 1. ~~`/event/[id]`~~ ✅ 완료 (위 "2차").
-2. **`/place/[slug]`** — 같은 방식. 장소 변경 시 비우기 연결.
+2. ~~`/place/[slug]`~~ ✅ 완료 (위 "3차").
 3. **`/route/[token]`** ⚠️ — `auth.getUser()`로 `author_blocked`(차단한 작성자) 처리를 서버에서 함 → 이 부분을 브라우저로 옮겨야 캐시 가능.
    또 비공개 루트를 share_token으로 여는 구조인지 RLS 확인 필요(anon으로 못 읽으면 캐시 전환 시 깨짐). 사용자와 상의 후 진행.
 4. **`/community/[id]`** ⚠️ — `community_posts_visible` 뷰 + visibility. 팔로워 공개 글 등 로그인별로 보이는 글이 있으면 anon 전환 시 안 보이게 됨. RLS·뷰 정의 확인 후 진행.
