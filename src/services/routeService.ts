@@ -140,7 +140,15 @@ export async function deleteRoute(routeId: string, userId: string): Promise<bool
     .delete()
     .eq('id', routeId)
     .eq('user_id', userId)
+  if (!error) refreshRoutePages()
   return !error
+}
+
+/** 루트 상세 페이지(/route/[token]) 캐시를 비워 달라고 서버에 알린다 — 저장·공개 전환·삭제 직후에 부른다.
+ *  실패해도 늦어도 5분이면 새로 만들어지므로 기다리지 않는다 (lib/cache/routePageCache.ts) */
+export function refreshRoutePages(): void {
+  if (typeof window === 'undefined') return
+  fetch('/api/revalidate/routes', { method: 'POST' }).catch(() => {})
 }
 
 // 관리자: 남의 루트도 삭제/공개설정 (서버 API가 admin 확인 후 Service Role로 처리)
@@ -188,6 +196,7 @@ export async function toggleRouteShare(routeId: string, userId: string, isShared
     .update({ is_shared: isShared } as any)
     .eq('id', routeId)
     .eq('user_id', userId)
+  if (!error) refreshRoutePages()
   return !error
 }
 
@@ -363,8 +372,10 @@ export async function updateRoute(routeId: string, title: string, description: s
       const { error: backErr } = await supabase.from('route_shops').insert((before as any[]).map(({ id, created_at, ...r }) => r) as any)
       if (backErr) console.error('[route shops restore]', backErr.code, backErr.message)
     }
+    refreshRoutePages()   // 제목·거리는 이미 바뀌었다
     return false
   }
+  refreshRoutePages()
   return true
 }
 
@@ -412,6 +423,7 @@ export async function updateRouteMeta(routeId: string, meta: { cover_image_url?:
   const supabase = createClient()
   const { error } = await supabase.from('routes').update(meta as any).eq('id', routeId)
   if (error) { console.error('[route meta]', error); return false }
+  refreshRoutePages()
   return true
 }
 
@@ -446,7 +458,41 @@ export async function toggleRouteSave(routeId: string, userId: string): Promise<
   } else {
     await supabase.from('route_saves').insert({ route_id: routeId, user_id: userId } as any)
     await supabase.rpc('increment_route_likes', { rid: routeId, delta: 1 })
+    // 저장하면 하트(좋아요)도 같이 눌린다 — 저장 해제는 하트를 건드리지 않는다.
+    // migrations/2026-10_route_likes.sql 적용 전이면 표가 없어 실패하는데, 저장 자체는 막지 않는다
+    await setRouteLike(routeId, userId, true).catch(() => {})
     return true
+  }
+}
+
+/* ── 루트 좋아요(하트) — 저장(북마크)과 별개의 가벼운 반응 (2026-10-21, migrations/2026-10_route_likes.sql) ──
+   수는 routes.like_count(트리거가 센다). 표가 아직 없으면 전부 에러를 던지고, 화면은 하트를 숨긴다 */
+
+/** 공개 루트별 좋아요 수 — 공개 목록 select 와 따로 받는다 (like_count 칸이 없어도 목록은 멀쩡하게) */
+export async function getRouteLikeCounts(): Promise<Map<string, number>> {
+  const supabase = createClient()
+  const { data, error } = await supabase.from('routes').select('id, like_count').eq('is_shared', true)
+  if (error) throw error
+  return new Map((data ?? []).map((r: any) => [r.id, r.like_count ?? 0]))
+}
+
+/** 내가 하트 누른 루트 id */
+export async function getMyLikedRouteIds(userId: string): Promise<string[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase.from('route_likes').select('route_id').eq('user_id', userId)
+  if (error) throw error
+  return (data ?? []).map((r: any) => r.route_id)
+}
+
+/** 하트 켜기/끄기 — 이미 그 상태면 아무 일 없음 */
+export async function setRouteLike(routeId: string, userId: string, on: boolean): Promise<void> {
+  const supabase = createClient()
+  if (on) {
+    const { error } = await supabase.from('route_likes').insert({ route_id: routeId, user_id: userId } as any)
+    if (error && error.code !== '23505') throw error   // 23505 = 이미 눌러 둔 것
+  } else {
+    const { error } = await supabase.from('route_likes').delete().eq('route_id', routeId).eq('user_id', userId)
+    if (error) throw error
   }
 }
 

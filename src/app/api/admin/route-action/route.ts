@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { createClient as createServerClient } from '@/lib/supabase/server'
+import { purgeRoutePages } from '@/lib/cache/routePageCache'
 
 // 관리자 전용 루트 관리 (삭제 / 공개·비공개 / 작성자 넘기기). 요청자가 admin인지 확인 후 Service Role로 RLS 우회.
 export async function POST(request: NextRequest) {
@@ -53,6 +54,7 @@ export async function POST(request: NextRequest) {
       ;({ error } = await admin.from('routes').update({ user_id: targetUserId }).eq('id', routeId))
     }
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    purgeRoutePages()   // 상세 페이지의 작성자 이름이 바뀐다
     return NextResponse.json({ success: true, nickname: target.nickname })
   }
 
@@ -66,5 +68,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: '알 수 없는 동작' }, { status: 400 })
   }
 
+  purgeRoutePages()   // 삭제·공개 전환이 루트 상세 캐시에 바로 반영되게
   return NextResponse.json({ success: true })
 }

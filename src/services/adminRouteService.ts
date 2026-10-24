@@ -1,4 +1,5 @@
 ﻿import { createClient } from '@/lib/supabase/client'
+import { refreshRoutePages } from '@/services/routeService'
 
 export async function getOfficialRouteCandidates() {
   const supabase = createClient()
@@ -71,7 +72,7 @@ export async function approveOfficialRoute(routeId: string, difficulty: number, 
 
   if (error) {
     console.error('approveOfficialRoute error:', JSON.stringify(error))
-  }
+  } else refreshRoutePages()   // 공식 루트가 되면 비로그인에게도 보여야 한다
   return !error
 }
 
@@ -81,6 +82,7 @@ export async function revokeOfficialRoute(routeId: string): Promise<boolean> {
     .from('routes')
     .update({ is_official: false } as any)
     .eq('id', routeId)
+  if (!error) refreshRoutePages()
   return !error
 }
 

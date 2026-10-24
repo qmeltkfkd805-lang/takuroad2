@@ -21,7 +21,7 @@
 | **`/shop/[slug]`** | ✅ **이번에 적용 (아래)** |
 | **`/event/[id]`** | ✅ **적용 (아래 "2차")** |
 | **`/place/[slug]`** | ✅ **적용 (아래 "3차")** |
-| `/route/[token]` | ❌ 쿠키 클라이언트 + `auth.getUser()` — ⚠️주의 필요 |
+| **`/route/[token]`** | ✅ **적용 (아래 "4차")** |
 | `/community/[id]` | ❌ 쿠키 클라이언트 — ⚠️주의 필요 |
 | `/work/[slug]`, `/user/[nickname]` | `force-dynamic` (일부러) — 손대기 전 사용자 확인 |
 
@@ -70,11 +70,38 @@
 - 참고(기존 동작): 없는 샵·장소 주소는 HTTP 200 + `noindex` + not-found 화면(샵 상세도 원래 그랬음). 검색 노출은 안 됨.
 - 로그인 상태의 '저장 → 즉시 반영'은 배포 후 직접 확인 필요.
 
+## 4차 — `/route/[token]` (2026-10-24)
+- 새 `src/lib/route/routeDetailQuery.ts` — `ROUTE_DETAIL_SELECT` + `fetchRouteDetail(supabase, token)`. 서버·브라우저가 같은 모양으로 읽음.
+- `src/app/route/[token]/page.tsx`: `createPublicClient()` + `revalidate = 300` + `generateStaticParams() → []`. `auth.getUser()`·차단 RPC 제거.
+  공개·공식 루트만 서버가 읽음. 못 읽으면(비공개·없는 루트) `route=null`로 빈 화면만 캐시(메타: '덕질 루트', noindex). `notFound()`는 더 이상 안 부름.
+- `src/components/route/RouteDetailGate.tsx`(브라우저):
+  - `route=null`이고 로그인 상태면 그 세션으로 `fetchRouteDetail` 재조회 → RLS상 작성자 본인 비공개 루트만 읽힘. 탭 제목도 루트 이름으로 바꿈.
+  - 못 읽으면 '루트를 볼 수 없어요(비공개로 바뀌었거나 없는 루트)', 읽었는데 비공개+남이면 '비공개 루트예요'(기존 문구).
+  - 차단 확인: `is_blocked_between` RPC → true면 `profiles=null`, `author_blocked=true`(→ '사용자'). **확인되기 전 잠깐은 닉네임이 보임**(모든 로그인 사용자에게 깜빡임이 생기지 않게 확인 후에만 가림). 닉네임은 anon도 읽을 수 있어서 노출 수준은 예전과 같음.
+- 새 `src/lib/cache/routePageCache.ts` — `purgeRoutePages()`: `revalidatePath('/route/[token]','page')` (루트 12개라 전체).
+  새 `src/app/api/revalidate/routes/route.ts`(로그인 필요) + 브라우저 `refreshRoutePages()`(`services/routeService.ts`).
+  호출: `deleteRoute`, `toggleRouteShare`, `updateRoute`, `updateRouteMeta`, `adminRouteService.approveOfficialRoute/revokeOfficialRoute`, `/api/admin/route-action`(양도·삭제·공개 전환).
+  층 지도·출처는 상세에서 브라우저가 따로 읽으므로 연결 안 함. `createRoute`는 새 token이라 캐시 없음.
+- 알려진 부작용: **좋아요 수(`likes`)**, 작성자 닉네임 변경, 경유 샵 정보는 최대 5분 늦게 반영.
+- 검증(Claude, 복사본 빌드 + `next start`): `/route/[token]` `●`. 공개 루트 MISS→HIT·작성자 이름·index 정상.
+  비공개 루트 2개·없는 token → 200, '덕질 루트' + noindex, **HTML에 비공개 루트 제목 없음**(누출 X), 비로그인 화면 '루트를 볼 수 없어요'.
+  `/api/revalidate/routes` 비로그인 401. ⚠️ **작성자 로그인으로 비공개 루트 열기 / 차단 관계 가리기는 로그인이 필요해 미검증** — 배포 후 직접 확인.
+
 ## 다음 할 일
 1. ~~`/event/[id]`~~ ✅ 완료 (위 "2차").
 2. ~~`/place/[slug]`~~ ✅ 완료 (위 "3차").
+3. ~~`/route/[token]`~~ ✅ 완료 (위 "4차") — 아래 원래 메모는 조사 기록으로 남김.
 3. **`/route/[token]`** ⚠️ — `auth.getUser()`로 `author_blocked`(차단한 작성자) 처리를 서버에서 함 → 이 부분을 브라우저로 옮겨야 캐시 가능.
    또 비공개 루트를 share_token으로 여는 구조인지 RLS 확인 필요(anon으로 못 읽으면 캐시 전환 시 깨짐). 사용자와 상의 후 진행.
+   **조사 결과 (2026-10-24, 코드 변경 없음)**
+   - routes RLS(정책은 대시보드에서 만든 듯, migrations에 없음): anon은 `is_shared or is_official`만 읽힘 — 전체 12개 중 공개 10(공식 4), 비공개 2개는 안 보임.
+     route_shops도 같은 기준(248개 중 비공개 루트 경유지 55개는 anon에 안 보임). `route_reviews` 정책(`r.is_shared or r.is_official or r.user_id = auth.uid()`)과 같은 모양.
+   - ⇒ anon 클라이언트로 바꾸면 **작성자가 자기 비공개 루트를 열 때 404**가 남(서버가 못 읽음). 비공개 루트는 브라우저(작성자 세션)가 따로 읽는 대체 경로가 필요.
+   - 차단: 서버가 `is_blocked_between` RPC로 확인 → `profiles=null`, `author_blocked=true`. 화면은 `RouteDetailPage`에서 `author_blocked ? '사용자' : nickname`만 씀.
+     anon이 profiles 닉네임을 읽을 수 있어서(비로그인 방문자에겐 원래 보임) "닉네임이 브라우저로 안 간다"는 실질적 보호는 아님 → 브라우저에서 RPC 확인 후 가리는 방식으로 옮겨도 노출 수준은 같음.
+   - 캐시 시 늦게 바뀌는 것: `likes`(increment_route_likes), 작성자 닉네임, 경유 샵 정보.
+   - 비울 곳: `services/routeService.ts`(저장·경유지 교체·메타·공유 전환·삭제·층지도·출처), `app/api/admin/route-action`(양도·삭제·공유), `services/adminRouteService.ts`(공식 지정/해제). 루트가 12개뿐이라 `revalidatePath('/route/[token]','page')` 전체 비우기로 충분.
+   - 공개 루트가 10개라 봇 트래픽 비중은 샵(1,100+)보다 훨씬 작음 → Vercel 경로별 CPU 확인 후 우선순위 정해도 됨.
 4. **`/community/[id]`** ⚠️ — `community_posts_visible` 뷰 + visibility. 팔로워 공개 글 등 로그인별로 보이는 글이 있으면 anon 전환 시 안 보이게 됨. RLS·뷰 정의 확인 후 진행.
 5. `/work/[slug]`, `/user/[nickname]`의 `force-dynamic`은 의도된 것 — 바꾸기 전 사용자에게 확인.
 
