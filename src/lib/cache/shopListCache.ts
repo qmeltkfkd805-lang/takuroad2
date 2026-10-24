@@ -5,7 +5,7 @@ import { revalidatePath, revalidateTag } from 'next/cache'
    Supabase 데이터 전송량(Egress)의 대부분을 차지했다(하루 수백 MB, 99%가 PostgREST).
    → 30분마다만 새로 받고, 대신 샵이 공개·수정되면 그 순간 purgeShopLists()로 비워서 바로 반영한다.
 
-   이 캐시를 쓰는 곳: /api/shops/all, /api/shops/home-items(+/v2), 홈(app/page.tsx)의 인기 샵·덕질 지도 */
+   이 캐시를 쓰는 곳: /api/shops/all, /api/shops/home-items(+/v2), 홈(app/page.tsx)의 인기 샵·덕질 지도, 샵 상세(/shop/[slug]) */
 export const SHOP_LIST_TAG = 'public-shop-lists'
 /** 초 — route 의 `export const revalidate` 는 숫자 그대로 써야 해서 거기엔 1800 을 직접 적는다 */
 export const SHOP_LIST_REVALIDATE = 1800
@@ -17,4 +17,6 @@ export function purgeShopLists() {
   revalidatePath('/api/shops/home-items')
   revalidatePath('/api/shops/home-items/v2')
   revalidatePath('/')
+  // 샵 상세 페이지 캐시(5분)도 같이 비운다 — 수정한 내용이 바로 보이게 (2026-10-24)
+  revalidatePath('/shop/[slug]', 'page')
 }
